@@ -327,3 +327,57 @@ export function fireShowMoreButtonClickEvent(
     },
   );
 }
+
+export function fireAutocompleteRenderedEvent(
+  duration: number,
+  searchSessionId: string,
+  query: string,
+  autocompleteText: string,
+  queryVersion: number,
+  fromCache: boolean,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
+) {
+  fireGasEvent(
+    createAnalyticsEvent,
+    'rendered',
+    'autocomplete',
+    '',
+    'operational',
+    {
+      duration,
+      searchSessionId,
+      ...getQueryAttributes(query),
+      autocompleteTextHash: hash(autocompleteText),
+      queryVersion,
+      fromCache,
+    },
+    {
+      ...getNonPrivacySafeAttributes(query),
+      autocompleteText,
+    },
+  );
+}
+
+export function fireAutocompleteCompletedEvent(
+  searchSessionId: string,
+  query: string,
+  completedText: string,
+  createAnalyticsEvent?: CreateAnalyticsEventFn,
+) {
+  fireGasEvent(
+    createAnalyticsEvent,
+    'completed',
+    'autocomplete',
+    '',
+    'ui',
+    {
+      searchSessionId,
+      ...getQueryAttributes(query),
+      completedTextHash: hash(completedText),
+    },
+    {
+      ...getNonPrivacySafeAttributes(query),
+      completedText,
+    },
+  );
+}
