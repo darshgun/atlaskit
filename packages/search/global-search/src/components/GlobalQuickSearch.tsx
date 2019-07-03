@@ -20,6 +20,7 @@ import {
   fireSelectedAdvancedSearch,
   fireTextEnteredEvent,
   fireDismissedEvent,
+  fireAutocompleteRenderedEvent,
 } from '../util/analytics-event-helper';
 
 import { CreateAnalyticsEventFn } from './analytics/types';
@@ -54,6 +55,7 @@ export interface Props {
 
 export interface State {
   query: string;
+  autocompleteText: string | undefined;
 }
 
 /**
@@ -61,14 +63,54 @@ export interface State {
  */
 export class GlobalQuickSearch extends React.Component<Props, State> {
   queryVersion: number = 0;
+  autoCompleteVersion: number = 0;
+  autoCompleteLastTimeStamp: number = 0;
   resultSelected: boolean = false;
 
   state = {
     query: '',
+    autocompleteText: undefined,
   };
+
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const { autocompleteSuggestions } = props;
+    const { query } = state;
+
+    return {
+      ...state,
+      autocompleteText: getAutocompleteText(query, autocompleteSuggestions),
+    };
+  }
 
   componentDidMount() {
     this.props.onMount && this.props.onMount();
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const {
+      createAnalyticsEvent,
+      searchSessionId,
+      autocompleteSuggestions,
+    } = this.props;
+    const { query, autocompleteText } = this.state;
+    if (
+      query.length > 0 &&
+      autocompleteText &&
+      (query !== prevState.query ||
+        autocompleteText !== prevState.autocompleteText)
+    ) {
+      const duration = +new Date() - this.autoCompleteLastTimeStamp;
+      fireAutocompleteRenderedEvent(
+        duration,
+        searchSessionId,
+        query,
+        autocompleteText,
+        this.autoCompleteVersion,
+        autocompleteSuggestions === prevProps.autocompleteSuggestions,
+        createAnalyticsEvent,
+      );
+      this.autoCompleteLastTimeStamp = +new Date();
+    }
   }
 
   handleSearchInput = ({ target }: React.FormEvent<HTMLInputElement>) => {
@@ -78,6 +120,7 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
     });
     this.debouncedSearch(query);
     if (query.length > 0) {
+      this.autoCompleteLastTimeStamp = +new Date();
       this.debouncedAutocomplete(query);
     }
   };
@@ -182,14 +225,8 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
       selectedResultId,
       onSelectedResultIdChanged,
       inputControls,
-      autocompleteSuggestions,
     } = this.props;
-    const { query } = this.state;
-
-    const autocompleteText = getAutocompleteText(
-      query,
-      autocompleteSuggestions,
-    );
+    const { query, autocompleteText } = this.state;
 
     return (
       <AnalyticsContext data={{ searchSessionId: this.props.searchSessionId }}>
