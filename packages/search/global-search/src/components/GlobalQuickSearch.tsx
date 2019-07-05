@@ -76,7 +76,7 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
   };
 
   static getDerivedStateFromProps(
-    nextProps: Readonly<Props>,
+    nextProps: Readonly<any>,
     prevState: State,
   ): State {
     const { autocompleteSuggestions } = nextProps;
