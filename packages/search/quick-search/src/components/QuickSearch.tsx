@@ -90,7 +90,10 @@ export type Props = {
   /** onBlur callback for search input */
   onSearchBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   /** onInput callback for search input */
-  onSearchInput?: (event: React.FormEvent<HTMLInputElement>) => void;
+  onSearchInput?: (
+    event: React.FormEvent<HTMLInputElement>,
+    isAutocompleted?: boolean,
+  ) => void;
   /** onKeyDown callback for search input */
   onSearchKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Called when the user submits the search form without selecting a result */
@@ -432,7 +435,7 @@ export class QuickSearch extends React.Component<Props, State> {
       this.inputSearchRef.value = newValue;
     }
     if (onSearchInput) {
-      onSearchInput(event);
+      onSearchInput(event, true);
     }
   };
 

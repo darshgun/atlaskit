@@ -21,6 +21,7 @@ import {
   fireTextEnteredEvent,
   fireDismissedEvent,
   fireAutocompleteRenderedEvent,
+  fireAutocompleteCompletedEvent,
 } from '../util/analytics-event-helper';
 
 import { CreateAnalyticsEventFn } from './analytics/types';
@@ -98,6 +99,7 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
     if (
       query.length > 0 &&
       autocompleteText &&
+      autocompleteText.length > query.length &&
       (query !== prevState.query ||
         autocompleteText !== prevState.autocompleteText)
     ) {
@@ -112,19 +114,33 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
         createAnalyticsEvent,
       );
       this.autoCompleteLastTimeStamp = +new Date();
+      this.autoCompleteVersion++;
     }
   }
 
-  handleSearchInput = ({ target }: React.FormEvent<HTMLInputElement>) => {
+  handleSearchInput = (
+    { target }: React.FormEvent<HTMLInputElement>,
+    isAutocompleted?: boolean,
+  ) => {
     const query = (target as HTMLInputElement).value;
-    this.setState({
-      query,
-    });
     this.debouncedSearch(query);
     if (query.length > 0) {
       this.autoCompleteLastTimeStamp = +new Date();
       this.debouncedAutocomplete(query);
     }
+    if (isAutocompleted) {
+      const { searchSessionId, createAnalyticsEvent } = this.props;
+      const { query: prevQuery } = this.state;
+      fireAutocompleteCompletedEvent(
+        searchSessionId,
+        prevQuery,
+        query,
+        createAnalyticsEvent,
+      );
+    }
+    this.setState({
+      query,
+    });
   };
 
   debouncedSearch = debounce(this.doSearch, 350);

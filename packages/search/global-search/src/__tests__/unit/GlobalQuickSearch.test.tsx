@@ -17,6 +17,7 @@ const DEFAULT_PROPS = {
   searchSessionId: 'abc',
   children: [],
 };
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 function render(partialProps: Partial<Props>) {
   const props: Props = {
@@ -114,10 +115,23 @@ describe('GlobalQuickSearch', () => {
       ) => void
     >;
 
+    let fireAutocompleteCompletedEventSpy: jest.SpyInstance<
+      (
+        searchSessionId: string,
+        query: string,
+        completedText: string,
+        createAnalyticsEvent?: CreateAnalyticsEventFn,
+      ) => void
+    >;
+
     beforeEach(() => {
       fireAutocompleteRenderedEventSpy = jest.spyOn(
         AnalyticsHelper,
         'fireAutocompleteRenderedEvent',
+      );
+      fireAutocompleteCompletedEventSpy = jest.spyOn(
+        AnalyticsHelper,
+        'fireAutocompleteCompletedEvent',
       );
     });
 
@@ -184,6 +198,40 @@ describe('GlobalQuickSearch', () => {
       expect(fireAutocompleteRenderedEventSpy.mock.calls[0][5]).toBe(true);
     });
 
+    it('should increase version when user autosuggestion updates', () => {
+      const wrapper = render({});
+
+      const onSearchInput: Function = wrapper
+        .children()
+        .first()
+        .prop('onSearchInput');
+      onSearchInput({ target: { value: 'au' } });
+
+      wrapper.setProps({ autocompleteSuggestions: ['auto', 'australia'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][4]).toBe(0);
+      onSearchInput({ target: { value: 'aus' } });
+      wrapper.setProps({ autocompleteSuggestions: ['australia'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[1][4]).toBe(1);
+    });
+
+    it('should measure duration between autocomplete renders', async () => {
+      const wrapper = render({});
+
+      const onSearchInput: Function = wrapper
+        .children()
+        .first()
+        .prop('onSearchInput');
+      onSearchInput({ target: { value: 'au' } });
+
+      const latency = 100;
+      await sleep(latency);
+
+      wrapper.setProps({ autocompleteSuggestions: ['auto', 'australia'] });
+      expect(
+        fireAutocompleteRenderedEventSpy.mock.calls[0][0],
+      ).toBeGreaterThanOrEqual(latency);
+    });
+
     it('should not fire fireAutocompleteRenderedEvent on initial render', () => {
       render({});
       expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
@@ -192,6 +240,26 @@ describe('GlobalQuickSearch', () => {
     it('should not fire fireAutocompleteRenderedEvent if query is empty', () => {
       render({ autocompleteSuggestions: ['auto', 'complete'] });
       expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
+    });
+
+    it('should fire fireAutocompleteCompletedEvent when user accepts autcomplete suggestion', () => {
+      const wrapper = render({
+        autocompleteSuggestions: ['auto', 'autocomplete'],
+      });
+
+      const onSearchInput: Function = wrapper
+        .children()
+        .first()
+        .prop('onSearchInput');
+
+      onSearchInput({ target: { value: 'au' } });
+
+      expect(fireAutocompleteCompletedEventSpy.mock.calls.length).toBe(0);
+      onSearchInput({ target: { value: 'auto ' } }, true);
+      expect(fireAutocompleteCompletedEventSpy.mock.calls.length).toBe(1);
+      expect(fireAutocompleteCompletedEventSpy.mock.calls[0][0]).toBe('abc');
+      expect(fireAutocompleteCompletedEventSpy.mock.calls[0][1]).toBe('au');
+      expect(fireAutocompleteCompletedEventSpy.mock.calls[0][2]).toBe('auto ');
     });
   });
 
