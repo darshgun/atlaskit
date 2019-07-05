@@ -101,6 +101,100 @@ describe('GlobalQuickSearch', () => {
     expect(searchMock).toHaveBeenCalledWith('pattio', 0, undefined);
   });
 
+  describe('Autocomplete', () => {
+    let fireAutocompleteRenderedEventSpy: jest.SpyInstance<
+      (
+        duration: number,
+        searchSessionId: string,
+        query: string,
+        autocompleteText: string,
+        queryVersion: number,
+        fromCache: boolean,
+        createAnalyticsEvent?: CreateAnalyticsEventFn,
+      ) => void
+    >;
+
+    beforeEach(() => {
+      fireAutocompleteRenderedEventSpy = jest.spyOn(
+        AnalyticsHelper,
+        'fireAutocompleteRenderedEvent',
+      );
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should fire fireAutocompleteRenderedEvent when autocomplete suggestions rendered', () => {
+      const wrapper = render({});
+
+      const onSearchInput: Function = wrapper
+        .children()
+        .first()
+        .prop('onSearchInput');
+      onSearchInput({ target: { value: 'au' } });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
+
+      wrapper.setProps({ autocompleteSuggestions: ['auto', 'autocomplete'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(1);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][0]).toBeGreaterThan(
+        -1,
+      );
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][1]).toBe('abc');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][2]).toBe('au');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][3]).toBe('auto');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][4]).toBe(0);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][5]).toBe(false);
+    });
+
+    it('should fire fireAutocompleteRenderedEvent when autocomplete suggestions rendered from cache', () => {
+      const wrapper = render({
+        autocompleteSuggestions: ['auto', 'autocomplete'],
+      });
+
+      const onSearchInput: Function = wrapper
+        .children()
+        .first()
+        .prop('onSearchInput');
+
+      onSearchInput({ target: { value: 'au' } });
+      expect(wrapper.state('query')).toBe('au');
+      // Emulating getDerivedStateFromProps as it's not called by enzyme :(
+      wrapper.setState(
+        GlobalQuickSearch.getDerivedStateFromProps(
+          {
+            ...DEFAULT_PROPS,
+            autocompleteSuggestions: ['auto', 'autocomplete'],
+          },
+          {
+            query: 'au',
+            autocompleteText: undefined,
+          },
+        ),
+      );
+
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(1);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][0]).toBeGreaterThan(
+        -1,
+      );
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][1]).toBe('abc');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][2]).toBe('au');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][3]).toBe('auto');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][4]).toBe(0);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][5]).toBe(true);
+    });
+
+    it('should not fire fireAutocompleteRenderedEvent on initial render', () => {
+      render({});
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
+    });
+
+    it('should not fire fireAutocompleteRenderedEvent if query is empty', () => {
+      render({ autocompleteSuggestions: ['auto', 'complete'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
+    });
+  });
+
   describe('Search result events', () => {
     const searchSessionId = 'random-session-id';
     let fireHighlightEventSpy: jest.SpyInstance<
