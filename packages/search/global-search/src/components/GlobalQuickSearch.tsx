@@ -70,17 +70,20 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
   autoCompleteLastTimeStamp: number = 0;
   resultSelected: boolean = false;
 
-  state = {
+  state: State = {
     query: '',
     autocompleteText: undefined,
   };
 
-  static getDerivedStateFromProps(props: Props, state: State) {
-    const { autocompleteSuggestions } = props;
-    const { query } = state;
+  static getDerivedStateFromProps(
+    nextProps: Readonly<Props>,
+    prevState: State,
+  ): State {
+    const { autocompleteSuggestions } = nextProps;
+    const { query } = prevState;
 
     return {
-      ...state,
+      ...prevState,
       autocompleteText: getAutocompleteText(query, autocompleteSuggestions),
     };
   }
