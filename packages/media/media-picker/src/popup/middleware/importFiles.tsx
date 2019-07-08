@@ -1,7 +1,6 @@
 import uuid from 'uuid/v4';
 import { Store, Dispatch, Middleware } from 'redux';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { map } from 'rxjs/operators/map';
 import {
   TouchFileDescriptor,
   FileState,
@@ -11,6 +10,7 @@ import {
   isPreviewableType,
   MediaType,
   globalMediaEventEmitter,
+  ProcessedFileState,
 } from '@atlaskit/media-client';
 import { State, SelectedItem, LocalUpload, ServiceName } from '../domain';
 import { isStartImportAction } from '../actions/startImport';
@@ -169,7 +169,7 @@ export const touchSelectedFiles = (
         selectedFile.id,
       );
 
-      const fileState: FileState = {
+      const tenantFileState: FileState = {
         id,
         status: 'processing',
         mediaType,
@@ -180,26 +180,25 @@ export const touchSelectedFiles = (
         representations: {},
       };
 
-      tenantMediaClient.emit('file-added', fileState);
-      globalMediaEventEmitter.emit('file-added', fileState);
+      tenantMediaClient.emit('file-added', tenantFileState);
+      globalMediaEventEmitter.emit('file-added', tenantFileState);
 
-      const existingFileState = getFileStreamsCache().get(selectedFileId);
-
+      const clientFileState = getFileStreamsCache().get(selectedFileId);
+      const tenantFileSubject = new ReplaySubject<FileState>(1);
+      getFileStreamsCache().set(id, tenantFileSubject);
       // if we already have a fileState in the cache, we re use it for the new id, otherwise we create a new one
-      if (existingFileState) {
+      if (clientFileState) {
         // We assign the tenant id to the observable to not emit user id instead
-        const tenantFile = existingFileState.pipe(
-          map(file => ({
-            ...file,
+        const subscription = clientFileState.subscribe(fileState => {
+          setTimeout(() => subscription.unsubscribe(), 0);
+          tenantFileSubject.next({
+            ...fileState,
             id,
-            preview: fileState.preview,
-          })),
-        );
-        getFileStreamsCache().set(id, tenantFile);
+            preview,
+          } as ProcessedFileState);
+        });
       } else {
-        const subject = new ReplaySubject<FileState>(1);
-        subject.next(fileState);
-        getFileStreamsCache().set(id, subject);
+        tenantFileSubject.next(tenantFileState);
       }
     },
   );
