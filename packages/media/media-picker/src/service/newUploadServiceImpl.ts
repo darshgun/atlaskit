@@ -6,6 +6,7 @@ import {
   getFileStreamsCache,
   MediaClient,
   globalMediaEventEmitter,
+  FileState,
 } from '@atlaskit/media-client';
 import {
   MediaStore,
@@ -18,7 +19,7 @@ import {
   UploadableFileUpfrontIds,
 } from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
-import { map } from 'rxjs/operators/map';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { MediaFile } from '../domain/file';
 
 import { RECENTS_COLLECTION } from '../popup/config';
@@ -166,7 +167,7 @@ export class NewUploadServiceImpl implements UploadService {
         };
 
         const controller = this.createUploadController();
-        const observable = mediaClient.file.upload(
+        const clientFileObservable = mediaClient.file.upload(
           uploadableFile,
           controller,
           uploadableUpfrontIds,
@@ -214,7 +215,7 @@ export class NewUploadServiceImpl implements UploadService {
           },
         };
 
-        const subscription = observable.subscribe({
+        const subscription = clientFileObservable.subscribe({
           next: state => {
             if (state.status === 'uploading') {
               this.onFileProgress(cancellableFileUpload, state.progress);
@@ -237,16 +238,18 @@ export class NewUploadServiceImpl implements UploadService {
         this.cancellableFilesUploads[id] = cancellableFileUpload;
         // Save observable in the cache
         // We want to save the observable without collection too, due consumers using cards without collection.
-        getFileStreamsCache().set(id, observable);
+        getFileStreamsCache().set(id, clientFileObservable);
         upfrontId.then(id => {
           // We assign the tenant id to the observable to not emit user id instead
-          const tenantObservable = observable.pipe(
-            map(file => ({
-              ...file,
+          const tenantFileObservable = new ReplaySubject<FileState>(1);
+          const subscription = clientFileObservable.subscribe(fileState => {
+            window.setTimeout(() => subscription.unsubscribe(), 0);
+            tenantFileObservable.next({
+              ...fileState,
               id,
-            })),
-          );
-          getFileStreamsCache().set(id, tenantObservable);
+            });
+          });
+          getFileStreamsCache().set(id, tenantFileObservable);
         });
 
         return cancellableFileUpload;
