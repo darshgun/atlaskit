@@ -167,7 +167,7 @@ export class NewUploadServiceImpl implements UploadService {
         };
 
         const controller = this.createUploadController();
-        const clientFileObservable = mediaClient.file.upload(
+        const sourceFileObservable = mediaClient.file.upload(
           uploadableFile,
           controller,
           uploadableUpfrontIds,
@@ -215,7 +215,7 @@ export class NewUploadServiceImpl implements UploadService {
           },
         };
 
-        const subscription = clientFileObservable.subscribe({
+        const subscription = sourceFileObservable.subscribe({
           next: state => {
             if (state.status === 'uploading') {
               this.onFileProgress(cancellableFileUpload, state.progress);
@@ -238,19 +238,21 @@ export class NewUploadServiceImpl implements UploadService {
         this.cancellableFilesUploads[id] = cancellableFileUpload;
         // Save observable in the cache
         // We want to save the observable without collection too, due consumers using cards without collection.
-        getFileStreamsCache().set(id, clientFileObservable);
-        upfrontId.then(id => {
-          // We assign the tenant id to the observable to not emit user id instead
-          const tenantFileObservable = new ReplaySubject<FileState>(1);
-          const subscription = clientFileObservable.subscribe(fileState => {
-            window.setTimeout(() => subscription.unsubscribe(), 0);
-            tenantFileObservable.next({
-              ...fileState,
-              id,
+        getFileStreamsCache().set(id, sourceFileObservable);
+        if (!shouldCopyFileToRecents) {
+          upfrontId.then(id => {
+            // We assign the tenant id to the observable to not emit user id instead
+            const targetFileObservable = new ReplaySubject<FileState>(1);
+            const subscription = sourceFileObservable.subscribe(fileState => {
+              window.setTimeout(() => subscription.unsubscribe(), 0);
+              targetFileObservable.next({
+                ...fileState,
+                id,
+              });
             });
+            getFileStreamsCache().set(id, targetFileObservable);
           });
-          getFileStreamsCache().set(id, tenantFileObservable);
-        });
+        }
 
         return cancellableFileUpload;
       },
