@@ -1,4 +1,8 @@
 import {
+  waitForTooltip,
+  waitForNoTooltip,
+} from '@atlaskit/visual-regression/helper';
+import {
   clickElementWithText,
   getBoundingRect,
   scrollToElement,
@@ -11,6 +15,8 @@ import {
   pressKeyUp,
 } from '../../__helpers/page-objects/_keyboard';
 import { animationFrame } from '../../__helpers/page-objects/_editor';
+import { isVisualRegression } from '../utils';
+import { Page } from 'puppeteer';
 
 export const tableSelectors = {
   contextualMenu: `.${ClassName.CONTEXTUAL_MENU_BUTTON}`,
@@ -178,22 +184,30 @@ export const insertRow = async (page: any, atIndex: number) => {
     tableSelectors.nthRowControl(atIndex),
   );
 
-  if (page.moveTo) {
-    // only for webdriver
-    const y = atIndex % 2 === 0 ? 1 : Math.ceil(bounds.height * 0.51);
-    await page.moveTo(tableSelectors.nthColumnControl(atIndex), 1, y);
-  } else {
+  if (isVisualRegression()) {
     const x = bounds.left;
     const y = bounds.top + bounds.height - 5;
 
     await page.mouse.move(x, y);
+  } else {
+    const y = atIndex % 2 === 0 ? 1 : Math.ceil(bounds.height * 0.51);
+    await page.moveTo(tableSelectors.nthColumnControl(atIndex), 1, y);
   }
 
   await page.waitForSelector(tableSelectors.insertButton);
   await page.click(tableSelectors.insertButton);
+
+  if (isVisualRegression()) {
+    // cursor is still over insert row button so make sure tooltip renders fully
+    await waitForTooltip(page);
+  }
 };
 
-export const insertColumn = async (page: any, atIndex: number) => {
+export const insertColumn = async (
+  page: any,
+  atIndex: number,
+  side: 'left' | 'right' = 'left',
+) => {
   await clickFirstCell(page);
 
   const bounds = await getBoundingRect(
@@ -201,19 +215,26 @@ export const insertColumn = async (page: any, atIndex: number) => {
     tableSelectors.nthColumnControl(atIndex),
   );
 
-  if (page.moveTo) {
-    const x = atIndex % 2 === 0 ? 1 : Math.ceil(bounds.width * 0.51);
-    await page.moveTo(tableSelectors.nthColumnControl(atIndex), x, 1);
-  } else {
-    let offset = atIndex % 2 === 0 ? 1 : 1.5;
+  if (isVisualRegression()) {
+    let offset = bounds.width * (side === 'left' ? 0.5 : 0.55);
 
-    const x = bounds.left * offset;
+    const x = bounds.left + offset;
     const y = bounds.top + bounds.height - 5;
     await page.mouse.move(x, y);
+  } else {
+    const x = atIndex % 2 === 0 ? 1 : Math.ceil(bounds.width * 0.55);
+    await page.moveTo(tableSelectors.nthColumnControl(atIndex), x, 1);
   }
 
   await page.waitForSelector(tableSelectors.insertButton);
   await page.click(tableSelectors.insertButton);
+
+  if (isVisualRegression()) {
+    // cursor could or could not be over an insert col button so move it to 0,0
+    // and wait for tooltip to fade (if one was previously showing)
+    await page.mouse.move(0, 0);
+    await waitForNoTooltip(page);
+  }
 };
 
 export const deleteRow = async (page: any, atIndex: number) => {
@@ -331,6 +352,23 @@ export const grabResizeHandle = async (
   await page.mouse.down();
 };
 
+export const scrollTable = async (page: any, percentage: number = 1) => {
+  await page.evaluate(
+    (selector: string, percentage: number) => {
+      const element = document.querySelector(selector) as HTMLElement;
+
+      if (element) {
+        element.scrollTo(
+          (element.scrollWidth - element.offsetWidth) * percentage,
+          0,
+        );
+      }
+    },
+    `.${ClassName.TABLE_NODE_WRAPPER}`,
+    percentage,
+  );
+};
+
 export const toggleBreakout = async (page: any, times: number) => {
   const timesArray = Array.from({ length: times });
 
@@ -342,6 +380,15 @@ export const toggleBreakout = async (page: any, times: number) => {
 
 export const scrollToTable = async (page: any) => {
   await scrollToElement(page, tableSelectors.tableTd, 50);
+};
+
+export const unselectTable = async (page: Page) => {
+  const rect = await getBoundingRect(page, `.${ClassName.TABLE_NODE_WRAPPER}`)!;
+
+  await page.mouse.click(
+    rect.left + rect.width * 0.5, // Middle of the table
+    rect.top - 20, // 20px outside the top of the table
+  );
 };
 
 const select = (type: 'row' | 'column' | 'numbered') => async (

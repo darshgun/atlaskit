@@ -50,20 +50,12 @@ export interface SearchResultProps<T> extends State<T> {
   onFilterChanged(filter: Filter[]): void;
 }
 
-export interface FilterComponentProps<T> {
-  latestSearchQuery: string;
-  searchResults: T | null;
-  isLoading: boolean;
-  currentFilters: Filter[];
-  onFilterChanged(filter: Filter[]): void;
-}
-
 export interface PartiallyLoadedRecentItems<
   T extends ConfluenceResultsMap | JiraResultsMap
 > {
   // Represents recent items that should be present before any UI is shown
   eagerRecentItemsPromise: Promise<ResultsWithTiming<T>>;
-  // Represents items which can load in after initial UI is shown
+  // Represents items which can load in after initi7al UI is shown
   lazyLoadedRecentItemsPromise: Promise<Partial<T>>;
 }
 
@@ -72,7 +64,6 @@ export interface Props<T extends ConfluenceResultsMap | JiraResultsMap> {
   linkComponent?: LinkComponent;
   product: QuickSearchContext;
   getSearchResultsComponent(state: SearchResultProps<T>): React.ReactNode;
-  getFilterComponent(props: FilterComponentProps<T>): React.ReactNode;
   getRecentItems(sessionId: string): PartiallyLoadedRecentItems<T>;
   getSearchResults(
     query: string,
@@ -146,10 +137,6 @@ export class QuickSearchContainer<
   // used to terminate if component is unmounted while waiting for a promise
   unmounted: boolean = false;
   latestQueryVersion: number = 0;
-
-  static defaultProps = {
-    getFilterComponent: () => null,
-  };
 
   constructor(props: CompleteProps<T>) {
     super(props);
@@ -229,6 +216,7 @@ export class QuickSearchContainer<
               timings || {},
               this.props.searchSessionId,
               this.state.latestSearchQuery,
+              this.state.currentFilters || [],
               this.state.isLoading,
             );
           },
@@ -311,6 +299,7 @@ export class QuickSearchContainer<
     timings: Record<string, number | React.ReactText>,
     searchSessionId: string,
     latestSearchQuery: string,
+    latestFilters: Filter[],
     isLoading: boolean,
   ) => {
     const { features } = this.props;
@@ -324,6 +313,11 @@ export class QuickSearchContainer<
       getPostQueryDisplayedResults,
       referralContextIdentifiers,
     } = this.props;
+
+    const filtersApplied: { [filterType: string]: boolean } = {};
+    for (const filter of latestFilters) {
+      filtersApplied[filter['@type']] = true;
+    }
 
     if (createAnalyticsEvent && getPostQueryDisplayedResults) {
       const resultsArray: Result[][] = resultMapToArray(
@@ -343,6 +337,7 @@ export class QuickSearchContainer<
         performanceTiming,
         searchSessionId,
         latestSearchQuery,
+        filtersApplied,
         createAnalyticsEvent,
         features.abTest,
         referralContextIdentifiers,
@@ -522,7 +517,6 @@ export class QuickSearchContainer<
   render() {
     const {
       linkComponent,
-      getFilterComponent,
       getSearchResultsComponent,
       placeholder,
       selectedResultId,
@@ -556,13 +550,6 @@ export class QuickSearchContainer<
         autocompleteSuggestions={autocompleteSuggestions}
         filters={this.state.currentFilters}
       >
-        {getFilterComponent({
-          onFilterChanged: this.handleFilter,
-          searchResults,
-          currentFilters,
-          isLoading,
-          latestSearchQuery,
-        })}
         {getSearchResultsComponent({
           retrySearch: this.retrySearch,
           latestSearchQuery,
@@ -581,8 +568,13 @@ export class QuickSearchContainer<
   }
 }
 
-const WithAnalyticsQuickSearchContainer = withAnalyticsEvents()(
+const WithAnalyticsQuickSearchContainer = withAnalyticsEvents<any>()(
   QuickSearchContainer,
-) as typeof QuickSearchContainer;
+);
 
-export default injectSearchSession(WithAnalyticsQuickSearchContainer);
+export const BaseConfluenceQuickSearchContainer = injectSearchSession<
+  Props<ConfluenceResultsMap>
+>(WithAnalyticsQuickSearchContainer);
+export const BaseJiraQuickSearchContainerJira = injectSearchSession<
+  Props<JiraResultsMap>
+>(WithAnalyticsQuickSearchContainer);

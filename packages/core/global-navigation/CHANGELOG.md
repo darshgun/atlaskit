@@ -1,5 +1,28 @@
 # @atlaskit/global-navigation
 
+## 7.3.4
+
+- Updated dependencies [7e9d653278](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e9d653278):
+  - @atlaskit/avatar@16.0.8
+  - @atlaskit/navigation-next@6.3.7
+  - @atlaskit/toggle@8.0.0
+
+## 7.3.3
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 7.3.2
+
+### Patch Changes
+
+- [patch][ff3bea5617](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff3bea5617):
+
+  Fix the issue with aria-label not set for profile menu
+
 ## 7.3.1
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

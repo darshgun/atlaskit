@@ -1,5 +1,91 @@
 # @atlaskit/editor-common
 
+## 39.16.5
+
+### Patch Changes
+
+- [patch][ba223c9878](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba223c9878):
+
+  ED-7267: Validate URLs passing through smart links- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 39.16.4
+
+### Patch Changes
+
+- [patch][404c2886f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/404c2886f8):
+
+  fix MediaSingle styles for renderer
+
+## 39.16.3
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 39.16.2
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 39.16.1
+
+### Patch Changes
+
+- [patch][d0db01b410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0db01b410):
+
+  TypeScript users of withAnalyticsEvents and withAnalyticsContext are now required to provide props as a generic type. This is so that TypeScript can correctly calculate the props and defaultProps of the returned component.
+
+  Before:
+
+  ```typescript
+  withAnalyticsEvents()(Button) as ComponentClass<Props>;
+  ```
+
+  After:
+
+  ```typescript
+  withAnalyticsEvents<Props>()(Button);
+  ```
+
+## 39.16.0
+
+### Minor Changes
+
+- [minor][4a22a774a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a22a774a6):
+
+  AUX-36 Add update support for extension handler
+
+## 39.15.0
+
+### Minor Changes
+
+- [minor][d217a12e31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d217a12e31):
+
+  ED-7056: Update prosemirror-utils, this enables us to replace selected nodes while inserting
+  ED-6668: Adds a selected ring to all extensions
+
+## 39.14.0
+
+### Minor Changes
+
+- [minor][2714c80a0b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2714c80a0b):
+
+  ED-7191 Fix regression where cell popup is not place on the correct horizontal place
+
 ## 39.13.2
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

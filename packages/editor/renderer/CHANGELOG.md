@@ -1,5 +1,74 @@
 # @atlaskit/renderer
 
+## 49.7.3
+
+### Patch Changes
+
+- [patch][ba223c9878](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ba223c9878):
+
+  ED-7267: Validate URLs passing through smart links- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 49.7.2
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 49.7.1
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 49.7.0
+
+### Minor Changes
+
+- [minor][92dd3a8d58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/92dd3a8d58):
+
+  Add media attrs to MediaSingle node on renderer
+
+  This ensures we populate the clipboard with enough media information, that can be
+  used later on editor side on paste event, to copy the file to the destination
+  collection.
+
+## 49.6.1
+
+### Patch Changes
+
+- [patch][4aed452b1b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aed452b1b):
+
+  ED-7041, SL-231: fix copying smart link from renderer to editor
+
+## 49.6.0
+
+### Minor Changes
+
+- [minor][e9cdfa5aed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9cdfa5aed):
+
+  ED-7188: Full width mode is now centre aligned.
+
+## 49.5.0
+
+### Minor Changes
+
+- [minor][4a22a774a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a22a774a6):
+
+  AUX-36 Add update support for extension handler
+
 ## 49.4.2
 
 ### Patch Changes
