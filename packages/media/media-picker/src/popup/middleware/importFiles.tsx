@@ -10,7 +10,6 @@ import {
   isPreviewableType,
   MediaType,
   globalMediaEventEmitter,
-  ProcessedFileState,
 } from '@atlaskit/media-client';
 import { State, SelectedItem, LocalUpload, ServiceName } from '../domain';
 import { isStartImportAction } from '../actions/startImport';
@@ -144,7 +143,7 @@ const getPreviewByService = (
   return undefined;
 };
 
-export const touchSelectedFiles = (
+export const touchSelectedFiles = async (
   selectedUploadFiles: SelectedUploadFile[],
   store: Store<State>,
 ) => {
@@ -156,9 +155,17 @@ export const touchSelectedFiles = (
   const tenantCollection =
     config.uploadParams && config.uploadParams.collection;
 
+  const touchFileDescriptors = selectedUploadFiles.map(
+    selectedUploadFile => selectedUploadFile.touchFileDescriptor,
+  );
+  await tenantMediaClient.file.touchFiles(
+    touchFileDescriptors,
+    tenantCollection,
+  );
+
   selectedUploadFiles.forEach(
     ({ file: selectedFile, serviceName, touchFileDescriptor }) => {
-      const id = touchFileDescriptor.fileId;
+      const tenantFileId = touchFileDescriptor.fileId;
       const selectedFileId = selectedFile.id;
 
       const mediaType = getMediaTypeFromMimeType(selectedFile.type);
@@ -169,44 +176,41 @@ export const touchSelectedFiles = (
         selectedFile.id,
       );
 
-      const tenantFileState: FileState = {
-        id,
-        status: 'processing',
-        mediaType,
-        mimeType: selectedFile.type,
-        name: selectedFile.name,
-        size: selectedFile.size,
-        preview,
-        representations: {},
-      };
-
-      tenantMediaClient.emit('file-added', tenantFileState);
-      globalMediaEventEmitter.emit('file-added', tenantFileState);
-
       const clientFileState = getFileStreamsCache().get(selectedFileId);
       const tenantFileSubject = new ReplaySubject<FileState>(1);
-      getFileStreamsCache().set(id, tenantFileSubject);
-      // if we already have a fileState in the cache, we re use it for the new id, otherwise we create a new one
+      getFileStreamsCache().set(tenantFileId, tenantFileSubject);
+      // if we already have a fileState in the cache, we use it for the new id, otherwise we create a new one
       if (clientFileState) {
         // We assign the tenant id to the observable to not emit user id instead
         const subscription = clientFileState.subscribe(fileState => {
-          setTimeout(() => subscription.unsubscribe(), 0);
-          tenantFileSubject.next({
+          const tenantFileState: FileState = {
             ...fileState,
-            id,
+            id: tenantFileId,
             preview,
-          } as ProcessedFileState);
+          } as any;
+
+          tenantMediaClient.emit('file-added', tenantFileState);
+          globalMediaEventEmitter.emit('file-added', tenantFileState);
+          tenantFileSubject.next(tenantFileState);
+          setTimeout(() => subscription.unsubscribe(), 0);
         });
       } else {
+        const tenantFileState: FileState = {
+          id: tenantFileId,
+          status: 'processing',
+          mediaType,
+          mimeType: selectedFile.type,
+          name: selectedFile.name,
+          size: selectedFile.size,
+          preview,
+          representations: {},
+        };
+        tenantMediaClient.emit('file-added', tenantFileState);
+        globalMediaEventEmitter.emit('file-added', tenantFileState);
         tenantFileSubject.next(tenantFileState);
       }
     },
   );
-
-  const touchFileDescriptors = selectedUploadFiles.map(
-    selectedUploadFile => selectedUploadFile.touchFileDescriptor,
-  );
-  tenantMediaClient.file.touchFiles(touchFileDescriptors, tenantCollection);
 };
 
 export async function importFiles(
@@ -224,7 +228,7 @@ export async function importFiles(
     mapSelectedItemToSelectedUploadFile(item, tenantCollection),
   );
 
-  touchSelectedFiles(selectedUploadFiles, store);
+  await touchSelectedFiles(selectedUploadFiles, store);
 
   eventEmitter.emitUploadsStart(
     selectedUploadFiles.map(({ file, touchFileDescriptor }) =>
