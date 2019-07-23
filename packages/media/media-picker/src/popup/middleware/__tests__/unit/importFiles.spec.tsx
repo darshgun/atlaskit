@@ -4,8 +4,6 @@ import {
   mockStore,
   mockWsConnectionHolder,
   mockPopupUploadEventEmitter,
-  nextTick,
-  asMock,
 } from '@atlaskit/media-test-helpers';
 
 import {
@@ -232,18 +230,13 @@ describe('importFiles middleware', () => {
     jest.resetAllMocks();
   });
 
-  it('should call next dispatch if action is START_IMPORT', async () => {
+  it('should call next dispatch if action is START_IMPORT', () => {
     const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
 
     const action = startImport();
     importFilesMiddleware(eventEmitter, mockWsProvider)(store)(nextDispatch)(
       action,
     );
-
-    await nextTick();
-    await asMock(store.getState().tenantMediaClient.file.touchFiles).mock
-      .calls[0][0];
-
     expect(nextDispatch).toBeCalledWith(action);
   });
 
@@ -390,73 +383,72 @@ describe('importFiles middleware', () => {
         });
       });
 
-      it('should bobble up some events', async () => {
+      it('should bobble up some events', done => {
         const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
         importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 
-        await nextTick();
-        await asMock(store.getState().tenantMediaClient.file.touchFiles).mock
-          .calls[0][0];
+        window.setTimeout(() => {
+          const sendUploadEventsCalls = getSendUploadEventPayloads(
+            store,
+            'upload-preview-update',
+          );
 
-        const sendUploadEventsCalls = getSendUploadEventPayloads(
-          store,
-          'upload-preview-update',
-        );
-
-        expect(sendUploadEventsCalls).toHaveLength(2);
-        let firstEvent = sendUploadEventsCalls[0]
-          .event as UploadPreviewUpdateEvent;
-        let secondEvent = sendUploadEventsCalls[1]
-          .event as UploadPreviewUpdateEvent;
-        expect(firstEvent.data.file.name).toEqual('picture1.jpg');
-        expect(secondEvent.data.file.name).toEqual('picture3.jpg');
+          expect(sendUploadEventsCalls).toHaveLength(2);
+          let firstEvent = sendUploadEventsCalls[0]
+            .event as UploadPreviewUpdateEvent;
+          let secondEvent = sendUploadEventsCalls[1]
+            .event as UploadPreviewUpdateEvent;
+          expect(firstEvent.data.file.name).toEqual('picture1.jpg');
+          expect(secondEvent.data.file.name).toEqual('picture3.jpg');
+          done();
+        });
       });
 
-      it('should not bobble up other events', async () => {
+      it('should not bobble up other events', done => {
         const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
         importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 
-        await nextTick();
-        await asMock(store.getState().tenantMediaClient.file.touchFiles).mock
-          .calls[0][0];
-
-        expect(eventEmitter.emitUploadsStart).toHaveBeenCalledTimes(1);
-        expect(getSendUploadEventPayloads(store, 'uploads-start')).toHaveLength(
-          0,
-        );
-        expect(getSendUploadEventPayloads(store, 'upload-end')).toHaveLength(0);
+        window.setTimeout(() => {
+          expect(eventEmitter.emitUploadsStart).toHaveBeenCalledTimes(1);
+          expect(
+            getSendUploadEventPayloads(store, 'uploads-start'),
+          ).toHaveLength(0);
+          expect(getSendUploadEventPayloads(store, 'upload-end')).toHaveLength(
+            0,
+          );
+          done();
+        });
       });
 
-      it('should dispatch SET_EVENT_PROXY action', async () => {
+      it('should dispatch SET_EVENT_PROXY action', done => {
         const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
         importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 
-        await nextTick();
-        await asMock(store.getState().tenantMediaClient.file.touchFiles).mock
-          .calls[0][0];
-
-        const setEventProxyCalls = getDispatchArgs(
-          store,
-          'SET_EVENT_PROXY',
-        ) as SetEventProxyAction[];
-        expect(setEventProxyCalls).toHaveLength(2);
-        expect(setEventProxyCalls[0]).toEqual(
-          setEventProxy('some-selected-item-id-1', expectUUID),
-        );
-        expect(setEventProxyCalls[1]).toEqual(
-          setEventProxy('some-selected-item-id-3', expectUUID),
-        );
+        window.setTimeout(() => {
+          const setEventProxyCalls = getDispatchArgs(
+            store,
+            'SET_EVENT_PROXY',
+          ) as SetEventProxyAction[];
+          expect(setEventProxyCalls).toHaveLength(2);
+          expect(setEventProxyCalls[0]).toEqual(
+            setEventProxy('some-selected-item-id-1', expectUUID),
+          );
+          expect(setEventProxyCalls[1]).toEqual(
+            setEventProxy('some-selected-item-id-3', expectUUID),
+          );
+          done();
+        });
       });
     });
 
     describe('each selected and remote file', () => {
-      it('should initiate the import with a websocket message', async () => {
+      it('should initiate the import with a websocket message', done => {
         const {
           eventEmitter,
           mockWsProvider,
@@ -469,93 +461,90 @@ describe('importFiles middleware', () => {
           nextDispatch,
         )(action);
 
-        await nextTick();
-        await asMock(store.getState().tenantMediaClient.file.touchFiles).mock
-          .calls[0][0];
-
-        expect(wsConnectionHolder.openConnection).toHaveBeenCalledTimes(1);
-        expect(wsConnectionHolder.send).toHaveBeenCalledTimes(1);
-        expect(wsConnectionHolder.send).toHaveBeenCalledWith({
-          type: 'fetchFile',
-          params: {
-            serviceName: 'dropbox',
-            accountId: 'some-account-id',
-            fileId: 'some-selected-item-id-5',
-            fileName: 'picture5.jpg',
-            collection: RECENTS_COLLECTION,
-            jobId: expectUUID,
-          },
+        window.setTimeout(() => {
+          expect(wsConnectionHolder.openConnection).toHaveBeenCalledTimes(1);
+          expect(wsConnectionHolder.send).toHaveBeenCalledTimes(1);
+          expect(wsConnectionHolder.send).toHaveBeenCalledWith({
+            type: 'fetchFile',
+            params: {
+              serviceName: 'dropbox',
+              accountId: 'some-account-id',
+              fileId: 'some-selected-item-id-5',
+              fileName: 'picture5.jpg',
+              collection: RECENTS_COLLECTION,
+              jobId: expectUUID,
+            },
+          });
+          done();
         });
       });
 
-      it('should touch all files to import', async () => {
+      it('should touch all files to import', done => {
         const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
 
         importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
         )(action);
 
-        await nextTick();
-        await asMock(store.getState().tenantMediaClient.file.touchFiles).mock
-          .calls[0][0];
-
-        const { tenantMediaClient } = store.getState();
-        expect(tenantMediaClient.file.touchFiles).toBeCalledTimes(1);
-        expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
-          [
-            {
-              collection: 'tenant-collection',
-              fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-1',
-            },
-            {
-              collection: 'tenant-collection',
-              fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-3',
-            },
-            {
-              collection: 'tenant-collection',
-              fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-4',
-            },
-            {
-              collection: 'tenant-collection',
-              fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-5',
-            },
-          ],
-          'tenant-collection',
-        );
+        window.setTimeout(() => {
+          const { tenantMediaClient } = store.getState();
+          expect(tenantMediaClient.file.touchFiles).toBeCalledTimes(1);
+          expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
+            [
+              {
+                collection: 'tenant-collection',
+                fileId: expectUUID,
+                occurrenceKey: 'occurrence-key-1',
+              },
+              {
+                collection: 'tenant-collection',
+                fileId: expectUUID,
+                occurrenceKey: 'occurrence-key-3',
+              },
+              {
+                collection: 'tenant-collection',
+                fileId: expectUUID,
+                occurrenceKey: 'occurrence-key-4',
+              },
+              {
+                collection: 'tenant-collection',
+                fileId: expectUUID,
+                occurrenceKey: 'occurrence-key-5',
+              },
+            ],
+            'tenant-collection',
+          );
+          done();
+        });
       });
     });
 
-    it('should emit file-added in tenant mediaClient and globalMediaEventEmitter', async () => {
+    it('should emit file-added in tenant mediaClient and globalMediaEventEmitter', done => {
       const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
 
       importFilesMiddleware(eventEmitter, mockWsProvider)(store)(nextDispatch)(
         action,
       );
 
-      await nextTick();
-      await asMock(store.getState().tenantMediaClient.file.touchFiles).mock
-        .calls[0][0];
+      window.setTimeout(() => {
+        const { tenantMediaClient } = store.getState();
+        const fileState = {
+          id: expectUUID,
+          mediaType: 'image',
+          mimeType: 'image/jpg',
+          name: 'picture5.jpg',
+          preview: undefined,
+          representations: {},
+          size: 47,
+          status: 'processing',
+        };
 
-      const { tenantMediaClient } = store.getState();
-      const fileState = {
-        id: expectUUID,
-        mediaType: 'image',
-        mimeType: 'image/jpg',
-        name: 'picture5.jpg',
-        preview: undefined,
-        representations: {},
-        size: 47,
-        status: 'processing',
-      };
-
-      expect(globalEmitSpy).toBeCalledTimes(4);
-      expect(globalEmitSpy).lastCalledWith('file-added', fileState);
-      expect(tenantMediaClient.emit).toBeCalledTimes(4);
-      expect(tenantMediaClient.emit).lastCalledWith('file-added', fileState);
+        expect(globalEmitSpy).toBeCalledTimes(4);
+        expect(globalEmitSpy).lastCalledWith('file-added', fileState);
+        expect(tenantMediaClient.emit).toBeCalledTimes(4);
+        expect(tenantMediaClient.emit).lastCalledWith('file-added', fileState);
+        done();
+      });
     });
   });
 
@@ -575,28 +564,23 @@ describe('importFiles middleware', () => {
 
   describe('touchSelectedFiles()', () => {
     const file: MediaFile = {
-      id: 'user-file-id',
+      id: 'id-1',
       creationDate: 1,
       name: '',
       size: 1,
       type: 'image/png',
       upfrontId: Promise.resolve(''),
     };
-
-    it('should add file preview for Giphy files', async () => {
+    it('should add file preview for Giphy files', done => {
       const selectedFiles: SelectedUploadFile[] = [
         {
-          file: {
-            ...file,
-            id: 'giphy-file-id-1',
-          },
+          file,
           serviceName: 'giphy',
           touchFileDescriptor: {
             fileId: 'id-1',
           },
         },
       ];
-
       const store = mockStore({
         giphy: {
           imageCardModels: [
@@ -604,7 +588,7 @@ describe('importFiles middleware', () => {
               dataURI: 'giphy-preview-1',
               dimensions: { height: 1, width: 1 },
               metadata: {
-                id: 'giphy-file-id-1',
+                id: 'id-1',
               },
             },
             {
@@ -617,41 +601,34 @@ describe('importFiles middleware', () => {
           ],
         },
       });
-      await touchSelectedFiles(selectedFiles, store);
+      touchSelectedFiles(selectedFiles, store);
       const observable = getFileStreamsCache().get('id-1');
 
-      return new Promise(resolve => {
-        observable!.subscribe({
-          next(state) {
-            if (state.status !== 'error') {
-              expect(state.preview).toEqual({
-                value: 'giphy-preview-1',
-              });
-              resolve();
-            }
-          },
-        });
+      observable!.subscribe({
+        next(state) {
+          if (state.status !== 'error') {
+            expect(state.preview).toEqual({
+              value: 'giphy-preview-1',
+            });
+            done();
+          }
+        },
       });
     });
 
-    it('should add file preview for local uploads', async () => {
+    it('should add file preview for local uploads', done => {
       const subject = new ReplaySubject<Partial<FileState>>(1);
       subject.next({
-        id: 'local-file-id-1',
+        id: 'id-1',
         status: 'processing',
         preview: {
           value: 'some-local-preview',
         },
       });
-      getFileStreamsCache().set('local-file-id-1', subject as Observable<
-        FileState
-      >);
+      getFileStreamsCache().set('id-1', subject as Observable<FileState>);
       const selectedFiles: SelectedUploadFile[] = [
         {
-          file: {
-            ...file,
-            id: 'local-file-id-1',
-          },
+          file,
           serviceName: 'upload',
           touchFileDescriptor: {
             fileId: 'id-1',
@@ -659,20 +636,18 @@ describe('importFiles middleware', () => {
         },
       ];
       const store = mockStore();
-      await touchSelectedFiles(selectedFiles, store);
+      touchSelectedFiles(selectedFiles, store);
       const observable = getFileStreamsCache().get('id-1');
 
-      return new Promise(resolve => {
-        observable!.subscribe({
-          async next(state) {
-            if (state.status !== 'error') {
-              expect(await state.preview).toEqual({
-                value: 'some-local-preview',
-              });
-              resolve();
-            }
-          },
-        });
+      observable!.subscribe({
+        async next(state) {
+          if (state.status !== 'error') {
+            expect(await state.preview).toEqual({
+              value: 'some-local-preview',
+            });
+            done();
+          }
+        },
       });
     });
 
@@ -696,7 +671,7 @@ describe('importFiles middleware', () => {
             await state.preview;
             const { userMediaClient } = store.getState();
             expect(userMediaClient.getImage).toBeCalledTimes(1);
-            expect(userMediaClient.getImage).toBeCalledWith('user-file-id', {
+            expect(userMediaClient.getImage).toBeCalledWith('id-1', {
               collection: RECENTS_COLLECTION,
               width: 1920,
               height: 1080,
@@ -707,8 +682,7 @@ describe('importFiles middleware', () => {
         },
       });
     });
-
-    it('should set value of public file id to be new file state', async () => {
+    it('should set value of public file id to be new file state', done => {
       const selectedFiles: SelectedUploadFile[] = [
         {
           file,
@@ -719,22 +693,20 @@ describe('importFiles middleware', () => {
         },
       ];
       const store = mockStore();
-      await touchSelectedFiles(selectedFiles, store);
+      touchSelectedFiles(selectedFiles, store);
       const observable = getFileStreamsCache().get('id-foo-1');
 
-      return new Promise(resolve => {
-        observable!.subscribe({
-          async next(state) {
-            if (state.status !== 'error') {
-              expect(await state.id).toEqual('id-foo-1');
-              resolve();
-            }
-          },
-        });
+      observable!.subscribe({
+        async next(state) {
+          if (state.status !== 'error') {
+            expect(await state.id).toEqual('id-foo-1');
+            done();
+          }
+        },
       });
     });
 
-    it('should reuse existing user file state for tenant id', async () => {
+    it('should reuse existing user file state for tenant id', done => {
       const userFile: MediaFile = {
         id: 'user-id',
         creationDate: 1,
@@ -766,82 +738,20 @@ describe('importFiles middleware', () => {
       getFileStreamsCache().set('user-id', subject as Observable<FileState>);
 
       const store = mockStore();
-      await touchSelectedFiles(selectedFiles, store);
+      touchSelectedFiles(selectedFiles, store);
       const observable = getFileStreamsCache().get('tenant-upfront-id');
 
-      return new Promise(resolve => {
-        observable!.subscribe({
-          async next(state) {
-            const fileState = state as UploadingFileState;
-            // we want to make sure that existing file properties are present
-            expect(fileState.name).toEqual('some_file_name');
-            expect(fileState.progress).toEqual(0.5);
-            expect(await fileState.preview).toEqual({
-              value: 'some-existing-preview',
-            });
-            resolve();
-          },
-        });
-      });
-    });
-
-    it('should emit file-added in tenant mediaClient and globalMediaEventEmitter after touch is done', async () => {
-      const subject = new ReplaySubject<Partial<FileState>>(1);
-      subject.next({
-        id: file.id,
-        status: 'processing',
-        preview: {
-          value: 'some-local-preview',
+      observable!.subscribe({
+        async next(state) {
+          const fileState = state as UploadingFileState;
+          // we want to make sure that existing file properties are present
+          expect(fileState.name).toEqual('some_file_name');
+          expect(fileState.progress).toEqual(0.5);
+          expect(await fileState.preview).toEqual({
+            value: 'some-existing-preview',
+          });
+          done();
         },
-      });
-      getFileStreamsCache().set(file.id, subject as Observable<FileState>);
-      const selectedFiles: SelectedUploadFile[] = [
-        {
-          file,
-          serviceName: 'upload',
-          touchFileDescriptor: {
-            fileId: 'id-1',
-          },
-        },
-      ];
-      const store = mockStore();
-      const tenantMediaClient = store.getState().tenantMediaClient;
-
-      await touchSelectedFiles(selectedFiles, store);
-
-      return new Promise(resolve => {
-        const observable = getFileStreamsCache().get('id-1');
-        observable!.subscribe({
-          async next(state) {
-            if (state.status !== 'error') {
-              expect(await state.preview).toEqual({
-                value: 'some-local-preview',
-              });
-
-              expect(
-                store.getState().tenantMediaClient.file.touchFiles,
-              ).toHaveBeenCalled();
-
-              const expectedFileState: Partial<FileState> = {
-                id: 'id-1',
-                status: 'processing',
-                preview: expect.any(Promise),
-              };
-              expect(globalEmitSpy).toBeCalledTimes(1);
-              expect(globalEmitSpy).lastCalledWith(
-                'file-added',
-                expectedFileState,
-              );
-              expect(tenantMediaClient.emit).toBeCalledTimes(1);
-              expect(tenantMediaClient.emit).lastCalledWith(
-                'file-added',
-                expectedFileState,
-              );
-
-              resolve();
-            }
-          },
-        });
       });
     });
   });
