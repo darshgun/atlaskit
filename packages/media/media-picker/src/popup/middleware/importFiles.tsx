@@ -10,7 +10,8 @@ import {
   isPreviewableType,
   MediaType,
   globalMediaEventEmitter,
-  ProcessedFileState,
+  observableToPromise,
+  isErrorFileState,
 } from '@atlaskit/media-client';
 import { State, SelectedItem, LocalUpload, ServiceName } from '../domain';
 import { isStartImportAction } from '../actions/startImport';
@@ -144,6 +145,90 @@ const getPreviewByService = (
   return undefined;
 };
 
+const getTenantFileState = (store: Store<State>) =>
+  /**
+   * Take selected file (that can be currently uploading one to recents, already uploaded to recents,
+   * selected giphy element or selected remote file (google, dropbox)) and convert it to FileState
+   * that will become tenant file state.
+   * If selected file already in the cache (normal case) we take everything it has, change it's id
+   * to new tenant id (generated on client side) and add a preview.
+   * If selected file is not in the cache (which shouldn't happen) we generate new file state
+   * with details found in selected file.
+   */
+  async (selectedUploadFile: SelectedUploadFile): Promise<FileState> => {
+    const {
+      file: selectedFile,
+      serviceName,
+      touchFileDescriptor,
+    } = selectedUploadFile;
+
+    const tenantFileId = touchFileDescriptor.fileId;
+    const selectedFileId = selectedFile.id;
+
+    const mediaType = getMediaTypeFromMimeType(selectedFile.type);
+    const preview = getPreviewByService(
+      store,
+      serviceName,
+      mediaType,
+      selectedFile.id,
+    );
+
+    const clientFileObservable = getFileStreamsCache().get(selectedFileId);
+    if (clientFileObservable) {
+      // Even though there is await here we will wait mostly for 1 tick, since
+      // observable.next inside observableToPromise will eval synchronously.
+      const clientFileState = await observableToPromise(clientFileObservable);
+      // TODO Do we need to force it to "processing"?
+      // TODO Do we need to force mediaType?
+      if (isErrorFileState(clientFileState)) {
+        return {
+          ...clientFileState,
+          id: tenantFileId,
+        };
+      } else {
+        return {
+          ...clientFileState,
+          id: tenantFileId,
+          preview,
+        };
+      }
+    } else {
+      return {
+        id: tenantFileId,
+        status: 'processing',
+        mediaType,
+        mimeType: selectedFile.type,
+        name: selectedFile.name,
+        size: selectedFile.size,
+        preview,
+        representations: {},
+      };
+    }
+  };
+
+const distributeTenantFileState = (store: Store<State>) => {
+  const { tenantMediaClient } = store.getState();
+  /**
+   * Add tenant state to the cache and then emit this state to everyone who is listening on
+   * 1. mediaClient even-emitter interface (mediaClient.on()).
+   *  Note: There shouldn't be anyone listening here atm. This will be removed as soon as we remove Context API.
+   * 2. globalMediaEventEmitter even-emitter interface.
+   *  Note: This is different from `mediaPicker.on()` event-emitter interface!
+   */
+  return (tenantFileState: FileState) => {
+    const tenantFileSubject = new ReplaySubject<FileState>(1);
+    getFileStreamsCache().set(tenantFileState.id, tenantFileSubject);
+    tenantFileSubject.next(tenantFileState);
+
+    tenantMediaClient.emit('file-added', tenantFileState);
+    globalMediaEventEmitter.emit('file-added', tenantFileState);
+  };
+};
+
+/**
+ * We call `/upload/createWithFiles` (touch) endpoint to create an empty file with client side
+ * generated file ID that we use here as tenant file id.
+ */
 export const touchSelectedFiles = (
   selectedUploadFiles: SelectedUploadFile[],
   store: Store<State>,
@@ -156,57 +241,13 @@ export const touchSelectedFiles = (
   const tenantCollection =
     config.uploadParams && config.uploadParams.collection;
 
-  selectedUploadFiles.forEach(
-    ({ file: selectedFile, serviceName, touchFileDescriptor }) => {
-      const tenantFileId = touchFileDescriptor.fileId;
-      const selectedFileId = selectedFile.id;
-
-      const mediaType = getMediaTypeFromMimeType(selectedFile.type);
-      const preview = getPreviewByService(
-        store,
-        serviceName,
-        mediaType,
-        selectedFile.id,
-      );
-
-      const tenantFileState: FileState = {
-        id: tenantFileId,
-        status: 'processing',
-        mediaType,
-        mimeType: selectedFile.type,
-        name: selectedFile.name,
-        size: selectedFile.size,
-        preview,
-        representations: {},
-      };
-
-      tenantMediaClient.emit('file-added', tenantFileState);
-      globalMediaEventEmitter.emit('file-added', tenantFileState);
-
-      const clientFileState = getFileStreamsCache().get(selectedFileId);
-      const tenantFileSubject = new ReplaySubject<FileState>(1);
-      getFileStreamsCache().set(tenantFileId, tenantFileSubject);
-      // if we already have a fileState in the cache, we re use it for the new id, otherwise we create a new one
-      if (clientFileState) {
-        // We assign the tenant id to the observable to not emit user id instead
-        const subscription = clientFileState.subscribe(fileState => {
-          setTimeout(() => subscription.unsubscribe(), 0);
-          tenantFileSubject.next({
-            ...fileState,
-            id: tenantFileId,
-            preview,
-          } as ProcessedFileState);
-        });
-      } else {
-        tenantFileSubject.next(tenantFileState);
-      }
-    },
-  );
-
   const touchFileDescriptors = selectedUploadFiles.map(
     selectedUploadFile => selectedUploadFile.touchFileDescriptor,
   );
-  tenantMediaClient.file.touchFiles(touchFileDescriptors, tenantCollection);
+  return tenantMediaClient.file.touchFiles(
+    touchFileDescriptors,
+    tenantCollection,
+  );
 };
 
 export async function importFiles(
@@ -220,18 +261,32 @@ export async function importFiles(
   store.dispatch(hidePopup());
 
   const auth = await userMediaClient.config.authProvider();
+
+  // 1. We convert selectedUploadItems into tenant's fileState
   const selectedUploadFiles = selectedItems.map(item =>
     mapSelectedItemToSelectedUploadFile(item, tenantCollection),
   );
+  const deferredTenantFileStates = selectedUploadFiles.map(
+    getTenantFileState(store),
+  );
+  const tenantFileStates = await Promise.all(deferredTenantFileStates);
 
-  touchSelectedFiles(selectedUploadFiles, store);
+  // 2. We store them to the cache and notify all listeners of global event emitter
+  tenantFileStates.forEach(distributeTenantFileState(store));
 
+  // 3. We notify all listeners of mediaPicker event emitter about 'uploads-start' event
   eventEmitter.emitUploadsStart(
     selectedUploadFiles.map(({ file, touchFileDescriptor }) =>
       copyMediaFileForUpload(file, touchFileDescriptor.fileId),
     ),
   );
 
+  // 4. Now we touch the file
+  touchSelectedFiles(selectedUploadFiles, store);
+
+  // 5. Now, when empty file was created we can do all the necessary uploading/copy operations
+  // TODO here we don't have actually guarantee that empty file was created.
+  // https://product-fabric.atlassian.net/browse/MS-2165
   selectedUploadFiles.forEach(selectedUploadFile => {
     const { file, serviceName, touchFileDescriptor } = selectedUploadFile;
     const selectedItemId = file.id;
