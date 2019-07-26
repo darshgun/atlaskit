@@ -7,6 +7,7 @@ import {
   MediaClient,
   globalMediaEventEmitter,
   FileState,
+  observableToPromise,
 } from '@atlaskit/media-client';
 import {
   MediaStore,
@@ -140,10 +141,10 @@ export class NewUploadServiceImpl implements UploadService {
       (fileWithSource, i) => {
         const { file, source } = fileWithSource;
 
-        const { fileId: id, occurrenceKey } = touchFileDescriptors[i];
+        const { fileId: tenantFileId, occurrenceKey } = touchFileDescriptors[i];
         const deferredUploadId = promisedTouchFiles.then(touchedFiles => {
           const touchedFile = touchedFiles.created.find(
-            touchedFile => touchedFile.fileId === id,
+            touchedFile => touchedFile.fileId === tenantFileId,
           );
           if (!touchedFile) {
             throw new Error(
@@ -161,7 +162,7 @@ export class NewUploadServiceImpl implements UploadService {
         };
 
         const uploadableUpfrontIds: UploadableFileUpfrontIds = {
-          id,
+          id: tenantFileId,
           occurrenceKey,
           deferredUploadId,
         };
@@ -175,7 +176,7 @@ export class NewUploadServiceImpl implements UploadService {
 
         let userUpfrontId: Promise<string> | undefined;
         let userOccurrenceKey: Promise<string> | undefined;
-        let upfrontId = Promise.resolve(id);
+        let tenantUpfrontId = Promise.resolve(tenantFileId);
 
         if (!shouldCopyFileToRecents) {
           const tenantOccurrenceKey = uuidV4();
@@ -187,16 +188,16 @@ export class NewUploadServiceImpl implements UploadService {
           // We want to create an empty file in the tenant collection
           // TODO [MS-1355]: using mediaClient.file.touchFiles instead of createFile will speed up things
           // since we can lookup the id in the cache without wait for this to finish
-          upfrontId = this.tenantMediaStore
+          tenantUpfrontId = this.tenantMediaStore
             .createFile(options)
             .then(response => response.data.id);
-          userUpfrontId = Promise.resolve(id);
+          userUpfrontId = Promise.resolve(tenantFileId);
           userOccurrenceKey = Promise.resolve(occurrenceKey);
         }
 
         const mediaFile: MediaFile = {
-          id,
-          upfrontId,
+          id: tenantFileId,
+          upfrontId: tenantUpfrontId,
           userUpfrontId,
           userOccurrenceKey,
           name: file.name,
@@ -227,7 +228,7 @@ export class NewUploadServiceImpl implements UploadService {
                 mediaClient.emit('file-added', state);
                 globalMediaEventEmitter.emit('file-added', state);
               }
-              this.onFileSuccess(cancellableFileUpload, id);
+              this.onFileSuccess(cancellableFileUpload, tenantFileId);
             }
           },
           error: error => {
@@ -235,22 +236,20 @@ export class NewUploadServiceImpl implements UploadService {
           },
         });
 
-        this.cancellableFilesUploads[id] = cancellableFileUpload;
+        this.cancellableFilesUploads[tenantFileId] = cancellableFileUpload;
         // Save observable in the cache
         // We want to save the observable without collection too, due consumers using cards without collection.
-        getFileStreamsCache().set(id, sourceFileObservable);
+        getFileStreamsCache().set(tenantFileId, sourceFileObservable);
         if (!shouldCopyFileToRecents) {
-          upfrontId.then(id => {
+          tenantUpfrontId.then(async tenantFileId => {
             // We assign the tenant id to the observable to not emit user id instead
             const targetFileObservable = new ReplaySubject<FileState>(1);
-            const subscription = sourceFileObservable.subscribe(fileState => {
-              window.setTimeout(() => subscription.unsubscribe(), 0);
-              targetFileObservable.next({
-                ...fileState,
-                id,
-              });
+            const fileState = await observableToPromise(sourceFileObservable);
+            targetFileObservable.next({
+              ...fileState,
+              id: tenantFileId,
             });
-            getFileStreamsCache().set(id, targetFileObservable);
+            getFileStreamsCache().set(tenantFileId, targetFileObservable);
           });
         }
 
