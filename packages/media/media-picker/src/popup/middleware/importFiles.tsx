@@ -145,7 +145,7 @@ const getPreviewByService = (
   return undefined;
 };
 
-const getTenantFileState = (store: Store<State>) =>
+export const getTenantFileState = (store: Store<State>) =>
   /**
    * Take selected file (that can be currently uploading one to recents, already uploaded to recents,
    * selected giphy element or selected remote file (google, dropbox)) and convert it to FileState
@@ -260,7 +260,7 @@ export async function importFiles(
     config.uploadParams && config.uploadParams.collection;
   store.dispatch(hidePopup());
 
-  const auth = await userMediaClient.config.authProvider();
+  const userAuth = await userMediaClient.config.authProvider();
 
   // 1. We convert selectedUploadItems into tenant's fileState
   const selectedUploadFiles = selectedItems.map(item =>
@@ -303,7 +303,7 @@ export async function importFiles(
     } else if (serviceName === 'recent_files') {
       importFilesFromRecentFiles(selectedUploadFile, store);
     } else if (isRemoteService(serviceName)) {
-      const wsConnectionHolder = wsProvider.getWsConnectionHolder(auth);
+      const wsConnectionHolder = wsProvider.getWsConnectionHolder(userAuth);
 
       importFilesFromRemoteService(
         selectedUploadFile,
