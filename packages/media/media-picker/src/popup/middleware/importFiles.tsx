@@ -147,12 +147,11 @@ const getPreviewByService = (
 
 export const getTenantFileState = (store: Store<State>) =>
   /**
-   * Take selected file (that can be currently uploading one to recents, already uploaded to recents,
-   * selected giphy element or selected remote file (google, dropbox)) and convert it to FileState
-   * that will become tenant file state.
-   * If selected file already in the cache (normal case) we take everything it has, change it's id
+   * Take selected file (that can be local uploads, recents or remove file (giphy, google, dropbox))
+   * and convert it to FileState that will become tenant file state.
+   * If selected file already in the cache (for local uploads and recents) we take everything it has, change it's id
    * to new tenant id (generated on client side) and add a preview.
-   * If selected file is not in the cache (which shouldn't happen) we generate new file state
+   * If selected file is not in the cache (for remote selected files) we generate new file state
    * with details found in selected file.
    */
   async (selectedUploadFile: SelectedUploadFile): Promise<FileState> => {
@@ -178,8 +177,6 @@ export const getTenantFileState = (store: Store<State>) =>
       // Even though there is await here we will wait mostly for 1 tick, since
       // observable.next inside observableToPromise will eval synchronously.
       const clientFileState = await observableToPromise(clientFileObservable);
-      // TODO Do we need to force it to "processing"?
-      // TODO Do we need to force mediaType?
       if (isErrorFileState(clientFileState)) {
         return {
           ...clientFileState,
@@ -281,7 +278,7 @@ export async function importFiles(
     ),
   );
 
-  // 4. Now we touch the file
+  // 4. Now we touch the files
   touchSelectedFiles(selectedUploadFiles, store);
 
   // 5. Now, when empty file was created we can do all the necessary uploading/copy operations
