@@ -601,7 +601,7 @@ describe('importFiles middleware', () => {
       }
       const userFileState = await observableToPromise(userFileStateSubject);
 
-      // We are verifying that actions above didn't mendel with it's ID.
+      // We are verifying that actions above didn't meddle with it's ID.
       expect(userFileState.id).toBe('some-selected-item-id-1');
       return;
     });
