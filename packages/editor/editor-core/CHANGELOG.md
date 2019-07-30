@@ -1,5 +1,223 @@
 # @atlaskit/editor-core
 
+## 112.39.9
+
+### Patch Changes
+
+- [patch][6874801bc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6874801bc0):
+
+  ED-7314 Added test helpers for comparing selections. Includes new builders for gap cursors.
+
+## 112.39.8
+
+### Patch Changes
+
+- [patch][060752953d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/060752953d):
+
+  ED-7297: Fixes missing `popupsScrollableElement` prop not being passed down correctly
+
+## 112.39.7
+
+### Patch Changes
+
+- [patch][87719d77c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87719d77c7):
+
+  ED-7308: added performance measurements of ProseMirror document updates
+
+## 112.39.6
+
+### Patch Changes
+
+- [patch][8c50c8731b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c50c8731b):
+
+  [ED-5195] Fix red borders when the user hover the remove column button on tables with merged cells
+
+## 112.39.5
+
+- Updated dependencies [6164bc2629](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6164bc2629):
+  - @atlaskit/adf-utils@6.1.3
+  - @atlaskit/editor-bitbucket-transformer@6.1.3
+  - @atlaskit/editor-json-transformer@6.2.3
+  - @atlaskit/editor-markdown-transformer@3.1.3
+  - @atlaskit/editor-test-helpers@9.11.3
+  - @atlaskit/adf-schema@3.0.0
+  - @atlaskit/editor-common@39.17.0
+  - @atlaskit/renderer@49.7.5
+
+## 112.39.4
+
+### Patch Changes
+
+- [patch][25d1a4dd68](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d1a4dd68):
+
+  ED-6300: fix pasting lists in tables where pasted slice has openStart > openEnd
+
+## 112.39.3
+
+### Patch Changes
+
+- [patch][a892339c19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a892339c19):
+
+  Give all editor decorations a key to prevent ProseMirror from re-rendering decorations constantly.
+
+  Enables YAML language for codeblocks
+
+## 112.39.2
+
+### Patch Changes
+
+- [patch][c68c5119c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c68c5119c8):
+
+  Fixes regression where pasting a plain text link wouldnt convert to link
+
+## 112.39.1
+
+### Patch Changes
+
+- [patch][2d5136732c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d5136732c):
+
+  ED-7315 Ensure text selection remains inside inserted action/decision item when inserting into an empty paragraph below another paragraph
+
+## 112.39.0
+
+### Minor Changes
+
+- [minor][ec66d3c646](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec66d3c646):
+
+  Improve performance of pages with smart cards
+
+## 112.38.0
+
+### Minor Changes
+
+- [minor][e81d32fe9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e81d32fe9a):
+
+  TEAMS-588 : Refactors the Team Spotlight ( which is used in mention typeahead for Fabric Editor and TinyMCE editor). Now can close the spotlight from Fabric Editor by clicking on the x button.
+
+## 112.37.0
+
+### Minor Changes
+
+- [minor][4fc000749a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4fc000749a):
+
+  ED-7216: Internal: Align plugin initialisation
+
+## 112.36.1
+
+### Patch Changes
+
+- [patch][3d94fcc7d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3d94fcc7d8):
+
+  [ED-7128] Fix table split when copy from a table cell with a hard break at the end
+
+## 112.36.0
+
+### Minor Changes
+
+- [minor][06cfea0870](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06cfea0870):
+
+  TEAMS-549 : Adding capability to show a spotlight in Fabric Editor
+
+## 112.35.3
+
+### Patch Changes
+
+- [patch][b62ca2126a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b62ca2126a):
+
+  ED-7304 Fix bug where column keep selection UI when you select a cell
+
+## 112.35.2
+
+### Patch Changes
+
+- [patch][0bb88234e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bb88234e6):
+
+  Upgrade prosemirror-view to 1.9.12
+
+## 112.35.1
+
+### Patch Changes
+
+- [patch][f6ea3777ff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6ea3777ff):
+
+  Upgrade media editor in editor core
+
+## 112.35.0
+
+### Minor Changes
+
+- [minor][d4218e8388](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4218e8388):
+
+  [ED-7018] Improve table performance moving the column controls from external divs to Prosemirror Decorations inside of the table cells.
+
+## 112.34.2
+
+- Updated dependencies [bc0d3bf0b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bc0d3bf0b2):
+  - @atlaskit/share@0.6.0
+
+## 112.34.1
+
+### Patch Changes
+
+- [patch][ec8066a555](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8066a555):
+
+  Upgrade `@types/prosemirror-view` Typescript definitions to latest 1.9.x API
+
+## 112.34.0
+
+### Minor Changes
+
+- [minor][8ea4c1d314](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ea4c1d314):
+
+  ED-6382 Added quick insert option to open the feedback modal dialog in editor
+
+  **Interface Changes**
+  There are also changes in the interface of `Editor` component and `ToolbarFeedback` component.
+
+  **`Editor`**
+  For `Editor` component, a property called `feedbackInfo` is added contains the following properties:
+
+  - `product`
+  - `packageName`
+  - `packageVersion`
+  - `labels`
+
+  The above properties will provide environmental context for the feedback dialog.
+
+  Note that `feedbackInfo` is required to enable editor quick insert option for the feedback dialog.
+
+  **`ToolbarFeedback`**
+  For `ToolbarFeedback` component, the following feedback related properties are deprecated in favour of using the `feedbackInfo` property on Editor.
+
+  - `packageName`
+  - `packageVersion`
+  - `labels`
+
+  **Compatibility**
+  Existing code using the `ToolbarFeedback` component will still work, there will be not no changes on the feedback dialog behavior. However, in order to enable opening feedback dialog from quick insert menu, you need to add `feedbackInfo` property on `Editor`.
+
+  If you have put different value for `packageName`, `packageVersion` and `labels` in both `Editor` and `ToolbarFeedback`, depends on how you opening the feedback dialog, it will use different properties.
+  For example, if a user opens the feedback dialog using the quick insert menu, the feedback modal will use relevant properties from `Editor` component, otherwise opening from toolbar feedback button will bring up a dialog uses relevant properties from `ToolbarFeedback` component.
+
+  **Explanation**
+  In order to enable opening feedback dialog from the quick insert menu, we need to move the feedback dialog code from ToolbarFeedback to Editor itself, because initialize editor plugin from a UI component is not ideal, and it would be very difficult to get properties from an UI component.
+
+## 112.33.35
+
+### Patch Changes
+
+- [patch][d5444d841f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5444d841f):
+
+  Upgrade media-editor in to pull in latest cjs change
+
+## 112.33.34
+
+### Patch Changes
+
+- [patch][926ca90f35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926ca90f35):
+
+  Update i18n strings with latest translations
+
 ## 112.33.33
 
 ### Patch Changes

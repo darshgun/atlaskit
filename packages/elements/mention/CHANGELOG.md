@@ -1,5 +1,21 @@
 # @atlaskit/mention
 
+## 18.10.0
+
+### Minor Changes
+
+- [minor][e81d32fe9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e81d32fe9a):
+
+  TEAMS-588 : Refactors the Team Spotlight ( which is used in mention typeahead for Fabric Editor and TinyMCE editor). Now can close the spotlight from Fabric Editor by clicking on the x button.
+
+## 18.9.0
+
+### Minor Changes
+
+- [minor][06cfea0870](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06cfea0870):
+
+  TEAMS-549 : Adding capability to show a spotlight in Fabric Editor
+
 ## 18.8.0
 
 ### Minor Changes

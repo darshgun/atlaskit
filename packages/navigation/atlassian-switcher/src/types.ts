@@ -49,6 +49,8 @@ export enum Product {
 
 export enum Feature {
   enableUserCentricProducts = 'enableUserCentricProducts',
+  disableCustomLinks = 'disableCustomLinks',
+  disableRecentContainers = 'disableRecentContainers',
   xflow = 'xflow',
 }
 
@@ -136,3 +138,7 @@ export type RecommendationsEngineResponse = RecommendationItem[];
 export interface RecommendationItem {
   productKey: ProductKey;
 }
+
+export type RecommendationsFeatureFlags = {
+  [key: string]: string | boolean;
+};

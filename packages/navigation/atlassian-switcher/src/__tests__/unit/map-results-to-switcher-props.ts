@@ -19,6 +19,8 @@ describe('map-results-to-switcher-props', () => {
         loadingProvidersResult,
         {
           enableUserCentricProducts: true,
+          disableCustomLinks: false,
+          disableRecentContainers: false,
           xflow: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
@@ -78,6 +80,8 @@ describe('map-results-to-switcher-props', () => {
         loadingProvidersResult,
         {
           enableUserCentricProducts: true,
+          disableCustomLinks: false,
+          disableRecentContainers: false,
           xflow: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
@@ -109,6 +113,8 @@ describe('map-results-to-switcher-props', () => {
         loadingProvidersResult,
         {
           enableUserCentricProducts: true,
+          disableCustomLinks: false,
+          disableRecentContainers: false,
           xflow: false,
         },
         asCompletedProvider<AvailableProductsResponse>({

@@ -1,5 +1,36 @@
 # @atlaskit/editor-test-helpers
 
+## 9.11.4
+
+### Patch Changes
+
+- [patch][6874801bc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6874801bc0):
+
+  ED-7314 Added test helpers for comparing selections. Includes new builders for gap cursors.
+
+## 9.11.3
+
+- Updated dependencies [6164bc2629](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6164bc2629):
+  - @atlaskit/editor-core@112.39.5
+  - @atlaskit/adf-schema@3.0.0
+  - @atlaskit/editor-common@39.17.0
+
+## 9.11.2
+
+### Patch Changes
+
+- [patch][0bb88234e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bb88234e6):
+
+  Upgrade prosemirror-view to 1.9.12
+
+## 9.11.1
+
+### Patch Changes
+
+- [patch][ec8066a555](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8066a555):
+
+  Upgrade `@types/prosemirror-view` Typescript definitions to latest 1.9.x API
+
 ## 9.11.0
 
 ### Minor Changes

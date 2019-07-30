@@ -1,5 +1,21 @@
 # @atlaskit/popper
 
+## 3.0.1
+
+### Patch Changes
+
+- [patch][f34776be97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f34776be97):
+
+  Type definition files are now referenced in package.json
+
+## 3.0.0
+
+### Major Changes
+
+- [major][ebfeb03eb7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebfeb03eb7):
+
+  popper has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 2.0.1
 
 ### Patch Changes

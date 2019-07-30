@@ -7,7 +7,7 @@ import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-prop
 import { AvailableProductsProvider } from '../providers/products-data-provider';
 
 type GenericSwitcherProps = {
-  cloudId: string;
+  cloudId?: string;
   messages: Messages;
   features: FeatureMap;
   triggerXFlow: (productKey: string, sourceComponent: string) => void;
@@ -22,6 +22,7 @@ export default (props: GenericSwitcherProps) => (
       <CommonDataProvider
         cloudId={props.cloudId}
         isUserCentric={Boolean(props.features.enableUserCentricProducts)}
+        disableRecentContainers={props.features.disableRecentContainers}
       >
         {providerResults => {
           const switcherLinks = mapResultsToSwitcherProps(

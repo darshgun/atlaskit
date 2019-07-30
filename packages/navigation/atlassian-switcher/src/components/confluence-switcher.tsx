@@ -7,7 +7,11 @@ import {
 } from '../providers/confluence-data-providers';
 import CommonDataProvider from '../providers/common-data-provider';
 import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-props';
-import { FeatureMap, AvailableProductsResponse } from '../types';
+import {
+  FeatureMap,
+  AvailableProductsResponse,
+  RecommendationsFeatureFlags,
+} from '../types';
 import { ProviderResult } from '../providers/as-data-provider';
 import { AvailableProductsProvider } from '../providers/products-data-provider';
 
@@ -16,10 +20,11 @@ type ConfluenceSwitcherProps = {
   messages: Messages;
   features: FeatureMap;
   triggerXFlow: (productKey: string, sourceComponent: string) => void;
+  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
 };
 
 export default (props: ConfluenceSwitcherProps) => (
-  <CustomLinksProvider>
+  <CustomLinksProvider disableCustomLinks={props.features.disableCustomLinks}>
     {customLinks => (
       <AvailableProductsProvider
         isUserCentric={props.features.enableUserCentricProducts}
@@ -28,6 +33,7 @@ export default (props: ConfluenceSwitcherProps) => (
           <CommonDataProvider
             cloudId={props.cloudId}
             isUserCentric={props.features.enableUserCentricProducts}
+            disableRecentContainers={props.features.disableRecentContainers}
           >
             {providerResults => {
               const {

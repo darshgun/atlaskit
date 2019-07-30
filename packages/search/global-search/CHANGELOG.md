@@ -1,5 +1,59 @@
 # @atlaskit/global-search
 
+## 10.6.5
+
+### Patch Changes
+
+- [patch][c9fb04b37b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9fb04b37b):
+
+  Reduced the number of results we get from simple experiments
+
+## 10.6.4
+
+### Patch Changes
+
+- [patch][87510283c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87510283c3):
+
+  Include new analytics event when the space filter is shown
+
+## 10.6.3
+
+### Patch Changes
+
+- [patch][8123915fe4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8123915fe4):
+
+  Added back analytic information to request for quick search
+
+## 10.6.2
+
+- Updated dependencies [75c64ee36a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75c64ee36a):
+  - @atlaskit/quick-search@7.6.6
+  - @atlaskit/drawer@5.0.0
+
+## 10.6.1
+
+### Patch Changes
+
+- [patch][8fcbe23ec6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fcbe23ec6):
+
+  Updated types for analytics-next and buttons to make them easier to consume
+
+## 10.6.0
+
+### Minor Changes
+
+- [minor][38eb4d4da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38eb4d4da6):
+
+  Made quick search more robust against malformed Confluence responses
+
+## 10.5.1
+
+### Patch Changes
+
+- [patch][d3374c9f71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3374c9f71):
+
+  updated quick search translation string
+
 ## 10.5.0
 
 ### Minor Changes

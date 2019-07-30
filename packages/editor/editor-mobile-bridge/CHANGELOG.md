@@ -1,5 +1,29 @@
 # @atlaskit/editor-mobile-bridge
 
+## 8.8.13
+
+### Patch Changes
+
+- [patch][f34776be97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f34776be97):
+
+  Type definition files are now referenced in package.json
+
+## 8.8.12
+
+### Patch Changes
+
+- [patch][0bb88234e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bb88234e6):
+
+  Upgrade prosemirror-view to 1.9.12
+
+## 8.8.11
+
+### Patch Changes
+
+- [patch][ec8066a555](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8066a555):
+
+  Upgrade `@types/prosemirror-view` Typescript definitions to latest 1.9.x API
+
 ## 8.8.10
 
 ### Patch Changes

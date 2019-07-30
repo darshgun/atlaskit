@@ -1,5 +1,50 @@
 # @atlaskit/atlassian-switcher
 
+## 3.11.0
+
+### Minor Changes
+
+- [minor][f0eeeb4f8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0eeeb4f8a):
+
+  Cloud ID is now an optional props. When Cloud ID is not provided, sections like recent containers, admin links, etc will be skipped and not rendered
+
+## 3.10.0
+
+### Minor Changes
+
+- [minor][fee77d9245](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fee77d9245):
+
+  Added an optional parameter to allow an option to disable custom links in Jira and Confluence switcher
+
+## 3.9.0
+
+### Minor Changes
+
+- [minor][7bc30c4cce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bc30c4cce):
+
+  Added a new prop to disable recent containers
+
+## 3.8.2
+
+- Updated dependencies [75c64ee36a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75c64ee36a):
+  - @atlaskit/drawer@5.0.0
+
+## 3.8.1
+
+### Patch Changes
+
+- [patch][91ec1329f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ec1329f7):
+
+  Changing flag key for JSW to Opsgenie experiment
+
+## 3.8.0
+
+### Minor Changes
+
+- [minor][3e25438208](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e25438208):
+
+  Enables AtlassianSwitcher to receive recommendationFeatureFlags which is then passed to the RecommendationProvider to be parsed and handle output based on feature flag values.
+
 ## 3.7.0
 
 ### Minor Changes

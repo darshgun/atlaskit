@@ -6,6 +6,7 @@ import uniqueId from '../../util/id';
 import debug from '../../util/logger';
 import MentionList from '../MentionList';
 import MentionSpotlight from '../MentionSpotlight';
+import MentionSpotlightController from '../MentionSpotlight/MentionSpotlightController';
 
 function applyPresence(mentions: MentionDescription[], presences: PresenceMap) {
   const updatedMentions: MentionDescription[] = [];
@@ -46,7 +47,6 @@ export interface Props {
 export interface State {
   resourceError?: Error;
   mentions: MentionDescription[];
-  isHighlightClosed: boolean;
 }
 
 export default class ResourcedMentionList extends React.PureComponent<
@@ -62,7 +62,6 @@ export default class ResourcedMentionList extends React.PureComponent<
     this.state = {
       resourceError: undefined,
       mentions: [],
-      isHighlightClosed: false,
     };
 
     this.applyPropChanges({} as Props, props);
@@ -224,15 +223,16 @@ export default class ResourcedMentionList extends React.PureComponent<
   };
 
   private closeHighlight = () => {
-    this.setState({ isHighlightClosed: true });
+    MentionSpotlightController.registerClosed();
   };
 
   private mentionsHighlight = () => {
-    const { mentions, isHighlightClosed } = this.state;
+    const { mentions } = this.state;
     const { isTeamMentionHighlightEnabled } = this.props;
-    // TODO include local storage checks - TEAMS-548
+    const enabledViaLocalStorage = MentionSpotlightController.isSpotlightEnabled();
+
     const shouldShow =
-      !isHighlightClosed &&
+      enabledViaLocalStorage &&
       isTeamMentionHighlightEnabled &&
       mentions &&
       mentions.length > 0;

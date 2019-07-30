@@ -21,6 +21,7 @@ import { getPreview } from '../actions/getPreview';
 import { handleCloudFetchingEvent } from '../actions/handleCloudFetchingEvent';
 import { setEventProxy } from '../actions/setEventProxy';
 import { hidePopup } from '../actions/hidePopup';
+import { resetView } from '../actions/resetView';
 import { RECENTS_COLLECTION } from '../config';
 import { WsProvider } from '../tools/websocket/wsProvider';
 import { WsConnectionHolder } from '../tools/websocket/wsConnectionHolder';
@@ -309,6 +310,8 @@ export async function importFiles(
       );
     }
   });
+
+  store.dispatch(resetView());
 }
 
 export const importFilesFromLocalUpload = (

@@ -7,7 +7,10 @@ export {
 export {
   findControlsHoverDecoration,
   createControlsHoverDecoration,
-  updateDecorations,
+  createColumnControlsDecoration,
+  createColumnSelectedDecorations,
+  updatePluginStateDecorations,
+  updateNodeDecorations,
 } from './decoration';
 export {
   isIsolating,
@@ -27,11 +30,15 @@ export {
   removeTableFromLastChild,
   transformSliceToRemoveOpenTable,
   transformSliceToCorrectEmptyTableCells,
+  transformSliceToFixHardBreakProblemOnCopyFromCell,
 } from './paste';
 export {
   isCell,
-  isInsertColumnButton,
+  isCornerButton,
   isInsertRowButton,
+  isColumnControlsDecorations,
+  isTableControlsButton,
+  isRowControlsButton,
   getColumnOrRowIndex,
   getMousePositionHorizontalRelativeByElement,
   getMousePositionVerticalRelativeByElement,
@@ -40,9 +47,7 @@ export {
   getColumnsWidths,
   isColumnDeleteButtonVisible,
   getColumnDeleteButtonParams,
-  getColumnsParams,
   getColumnClassNames,
-  ColumnParams,
 } from './column-controls';
 export {
   getRowHeights,

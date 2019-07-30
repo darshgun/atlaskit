@@ -12,6 +12,7 @@ import {
   akEditorTableNumberColumnWidth,
   akEditorTableBorder,
   tableCellPadding,
+  tableCellBorderWidth,
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
 import { TableCssClassName as ClassName } from '../types';
@@ -59,7 +60,10 @@ export const tableScrollbarOffset = 15;
 export const tableMarginFullWidthMode = 2;
 export const lineMarkerOffsetFromColumnControls = 13;
 export const lineMarkerSize = 4;
-
+export const columnControlsDecorationHeight = 25;
+export const columnControlsZIndex = akEditorUnitZIndex * 10;
+export const columnControlsSelectedZIndex = columnControlsZIndex + 1;
+export const columnResizeHandleZIndex = columnControlsSelectedZIndex + 1;
 
 const isIE11 = browser.ie_version === 11;
 
@@ -125,18 +129,6 @@ const HeaderButton = (css?: string) => `
     ${css}
   }
 
-  .${ClassName.COLUMN_CONTROLS_BUTTON}::after {
-    content: ' ';
-    background-color: transparent;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: -30px;
-    height: 30px;
-    cursor: pointer;
-    z-index: 1;
-  }
-
   .${ClassName.ROW_CONTROLS_BUTTON}::after {
     content: ' ';
     background-color: transparent;
@@ -166,7 +158,7 @@ const HeaderButtonHover = () => `
 `;
 
 const HeaderButtonDanger = () => `
-  .danger .${ClassName.CONTROLS_BUTTON} {
+  .${ClassName.HOVERED_CELL_IN_DANGER} .${ClassName.CONTROLS_BUTTON} {
     background-color: ${tableToolbarDeleteColor};
     border-color: ${tableBorderDeleteColor};
     position: relative;
@@ -255,7 +247,7 @@ const DeleteButton = `
       `)}
     }
   }
-  
+
   .${ClassName.CONTROLS_DELETE_BUTTON}:hover {
     background: ${R300};
     color: white;
@@ -300,6 +292,100 @@ const OverflowShadow = `
     border-left: 1px solid ${tableBorderColor};
   }
 }
+`;
+
+const columnHeaderButton = (css?: string) => `
+  background: ${tableToolbarColor};
+  border-top: 1px solid ${tableBorderColor};
+  border-left: 1px solid ${tableBorderColor};
+  display: block;
+  box-sizing: border-box;
+  padding: 0;
+
+  :focus {
+    outline: none;
+  }
+
+  ${css}
+`;
+
+const columnHeaderButtonSelected = `
+  color: ${N0};
+  background-color: ${tableToolbarSelectedColor};
+  border-color: ${tableBorderSelectedColor};
+  z-index: ${columnControlsSelectedZIndex};
+`;
+
+const columnControlsDecoration = `
+  .${ClassName.COLUMN_CONTROLS_DECORATIONS} {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    width: calc(100% + ${(tableCellPadding + tableCellBorderWidth) * 2}px);
+    left: -${tableCellPadding + tableCellBorderWidth}px;
+    top: -${columnControlsDecorationHeight + tableCellPadding + tableCellBorderWidth}px;
+    height: ${columnControlsDecorationHeight}px;
+
+    &::after {
+      content: ' ';
+
+      ${columnHeaderButton(`
+        border-right: ${tableCellBorderWidth}px solid ${tableBorderColor};
+        border-bottom: none;
+        height: ${tableToolbarSize}px;
+        width: 100%;
+        position: absolute;
+        top: ${columnControlsDecorationHeight - tableToolbarSize}px;
+        left: 0px;
+        z-index: ${columnControlsZIndex};
+      `)}
+    }
+  }
+
+  .${ClassName.WITH_CONTROLS} .${ClassName.COLUMN_CONTROLS_DECORATIONS} {
+    display: block;
+  }
+
+  table tr:first-child td.${ClassName.TABLE_CELL_NODE_WRAPPER},
+  table tr:first-child th.${ClassName.TABLE_HEADER_NODE_WRAPPER} {
+    &.${ClassName.COLUMN_SELECTED},
+    &.${ClassName.HOVERED_COLUMN},
+    &.${ClassName.HOVERED_TABLE} {
+      .${ClassName.COLUMN_CONTROLS_DECORATIONS}::after {
+        ${columnHeaderButtonSelected};
+      }
+
+      &.${ClassName.HOVERED_CELL_IN_DANGER} .${ClassName.COLUMN_CONTROLS_DECORATIONS}::after {
+        background-color: ${tableToolbarDeleteColor};
+        border: 1px solid ${tableBorderDeleteColor};
+        border-bottom: none;
+        z-index: ${akEditorUnitZIndex * 100};
+      }
+    }
+  }
+`;
+
+const hoveredDeleteButton = `
+  .${ClassName.TABLE_CONTAINER}.${ClassName.HOVERED_DELETE_BUTTON} {
+    .${ClassName.SELECTED_CELL},
+    .${ClassName.COLUMN_SELECTED},
+    .${ClassName.HOVERED_CELL} {
+      border: 1px solid ${tableBorderDeleteColor};
+      background: ${tableCellDeleteColor};
+    }
+    .${ClassName.SELECTED_CELL}::after {
+      background: ${tableCellDeleteColor};
+    }
+  }
+`;
+
+const hoveredCell = `
+  :not(.${ClassName.IS_RESIZING}) .${ClassName.TABLE_CONTAINER}:not(.${ClassName.HOVERED_DELETE_BUTTON}) {
+    .${ClassName.HOVERED_CELL} {
+      position: relative;
+      border: 1px solid ${tableBorderSelectedColor};
+    }
+  }
 `
 
 export const tableStyles = css`
@@ -319,6 +405,8 @@ export const tableStyles = css`
   .ProseMirror {
     ${tableSharedStyle};
     ${columnControlsLineMarker};
+    ${hoveredDeleteButton};
+    ${hoveredCell};
 
     .${ClassName.CONTROLS_FLOATING_BUTTON_COLUMN} {
       ${insertColumnButtonWrapper}
@@ -355,49 +443,7 @@ export const tableStyles = css`
       width: 100% !important;
     }
 
-    /* Column controls */
-    .${ClassName.COLUMN_CONTROLS} {
-      height: ${tableToolbarSize}px;
-      box-sizing: border-box;
-      display: none;
-
-      .${ClassName.COLUMN_CONTROLS_INNER} {
-        display: flex;
-      }
-      .${ClassName.COLUMN_CONTROLS_BUTTON_WRAP} {
-        position: relative;
-        margin-right: -1px;
-      }
-      .${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}:last-child > button {
-        border-top-right-radius: ${tableBorderRadiusSize}px;
-      }
-      .${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}.active .${ClassName.CONTROLS_BUTTON},
-      .${ClassName.CONTROLS_BUTTON}:hover {
-        z-index: ${akEditorUnitZIndex};
-        position: relative;
-      }
-      ${HeaderButton(`
-        border-right: 1px solid ${tableBorderColor};
-        border-bottom: none;
-        height: ${tableToolbarSize}px;
-        width: 100%;
-
-        .${ClassName.CONTROLS_BUTTON_OVERLAY} {
-          position: absolute;
-          width: 50%;
-          height: 30px;
-          bottom: 0;
-          right: 0;
-        }
-        .${ClassName.CONTROLS_BUTTON_OVERLAY}:first-child {
-          left: 0;
-        }
-      `)}
-    }
-    :not(.${ClassName.IS_RESIZING}) .${ClassName.COLUMN_CONTROLS} {
-      ${HeaderButtonHover()}
-      ${HeaderButtonDanger()}
-    }
+    ${columnControlsDecoration};
 
     /* Corner controls */
     .${ClassName.CORNER_CONTROLS} {
@@ -456,7 +502,7 @@ export const tableStyles = css`
       background: ${tableToolbarSelectedColor};
       cursor: pointer;
     }
-    :not(.${ClassName.IS_RESIZING}) .${ClassName.CONTROLS_CORNER_BUTTON}.danger {
+    :not(.${ClassName.IS_RESIZING}) .${ClassName.CONTROLS_CORNER_BUTTON}.${ClassName.HOVERED_CELL_IN_DANGER} {
       border-color: ${tableBorderDeleteColor};
       background: ${tableToolbarDeleteColor};
     }
@@ -544,7 +590,6 @@ export const tableStyles = css`
       }
     }
     .${ClassName.WITH_CONTROLS} {
-      .${ClassName.COLUMN_CONTROLS},
       .${ClassName.CORNER_CONTROLS},
       .${ClassName.ROW_CONTROLS} {
         display: block;
@@ -576,9 +621,10 @@ export const tableStyles = css`
         z-index: ${akEditorUnitZIndex};
         color: ${N0};
       }
-      .${ClassName.NUMBERED_COLUMN_BUTTON}.danger {
+      .${ClassName.NUMBERED_COLUMN_BUTTON}.${ClassName.HOVERED_CELL_IN_DANGER} {
         background-color: ${tableToolbarDeleteColor};
         border: 1px solid ${tableBorderDeleteColor};
+        border-left: 0;
         color: ${R500};
         position: relative;
         z-index: ${akEditorUnitZIndex};
@@ -587,12 +633,16 @@ export const tableStyles = css`
 
     /* Table */
     .${ClassName.TABLE_NODE_WRAPPER} > table {
-      overflow: hidden;
+      overflow: hidden visible;
       table-layout: fixed;
-      overflow-y: visible;
 
-      .${ClassName.CELL_NODEVIEW_WRAPPER} {
+      .${ClassName.CELL_NODEVIEW_WRAPPER},
+      .${ClassName.TABLE_CELL_NODEVIEW_CONTENT_DOM} {
         position: relative;
+      }
+
+      .${ClassName.COLUMN_CONTROLS_DECORATIONS} + * {
+        margin-top: 0;
       }
 
       .${ClassName.SELECTED_CELL} {
@@ -613,29 +663,12 @@ export const tableStyles = css`
         pointer-events: none;
       }
     }
-    :not(.${ClassName.IS_RESIZING}) .${ClassName.TABLE_NODE_WRAPPER} > table {
-      .${ClassName.HOVERED_CELL} {
-        position: relative;
-        border: 1px solid ${tableBorderSelectedColor};
-      }
-      .${ClassName.SELECTED_CELL}.danger,
-      .${ClassName.HOVERED_CELL}.danger {
-        border: 1px solid ${tableBorderDeleteColor};
-      }
-      .${ClassName.SELECTED_CELL}.danger::after {
-        background: ${tableCellDeleteColor};
-      }
-    }
-    .${ClassName.COLUMN_CONTROLS_WRAPPER},
     .${ClassName.ROW_CONTROLS_WRAPPER} {
       position: absolute;
       top: ${tableMarginTop - 1}px;
     }
     .${ClassName.ROW_CONTROLS_WRAPPER}.${ClassName.TABLE_LEFT_SHADOW} {
       z-index: ${akEditorUnitZIndex};
-    }
-    .${ClassName.COLUMN_CONTROLS_WRAPPER} {
-      left: 0;
     }
     .${ClassName.ROW_CONTROLS_WRAPPER} {
       left: -${tableToolbarSize}px;
@@ -659,7 +692,7 @@ export const tableStyles = css`
       width: 2px;
       pointer-events: none;
       background-color: ${tableBorderSelectedColor};
-      z-index: ${akEditorUnitZIndex};
+      z-index: ${columnResizeHandleZIndex};
     }
   }
 
@@ -725,15 +758,6 @@ export const tableFullPageEditorStyles = css`
     margin-left: 0;
     margin-right: 0;
     width: 100%;
-  }
-  .ProseMirror:not(.${ClassName.IS_RESIZING}) .${ClassName.TABLE_NODE_WRAPPER} {
-    .${ClassName.SELECTED_CELL}.danger, .${ClassName.HOVERED_CELL}.danger {
-      border: 1px solid ${tableBorderDeleteColor};
-      background: ${tableCellDeleteColor};
-    }
-    .${ClassName.SELECTED_CELL}.danger:after {
-      background: ${tableCellDeleteColor};
-    }
   }
 `;
 
