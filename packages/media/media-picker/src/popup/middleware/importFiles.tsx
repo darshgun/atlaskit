@@ -32,6 +32,8 @@ import { sendUploadEvent } from '../actions/sendUploadEvent';
 import { setUpfrontIdDeferred } from '../actions/setUpfrontIdDeferred';
 import { WsNotifyMetadata } from '../tools/websocket/wsMessageData';
 import { getPreviewFromMetadata } from '../../domain/preview';
+import { Observable } from 'rxjs/Observable';
+
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
   publicId: string;
@@ -155,7 +157,12 @@ export const getTenantFileState = (store: Store<State>) =>
    * If selected file is not in the cache (for remote selected files) we generate new file state
    * with details found in selected file.
    */
-  async (selectedUploadFile: SelectedUploadFile): Promise<FileState> => {
+  async (
+    selectedUploadFile: SelectedUploadFile,
+  ): Promise<{
+    tenantFileState: FileState;
+    userFileObservable?: Observable<FileState>;
+  }> => {
     const {
       file: selectedFile,
       serviceName,
@@ -173,33 +180,43 @@ export const getTenantFileState = (store: Store<State>) =>
       selectedFile.id,
     );
 
-    const clientFileObservable = getFileStreamsCache().get(selectedFileId);
-    if (clientFileObservable) {
+    const userFileObservable = getFileStreamsCache().get(selectedFileId);
+    if (userFileObservable) {
       // Even though there is await here we will wait mostly for 1 tick, since
       // observable.next inside observableToPromise will eval synchronously.
-      const clientFileState = await observableToPromise(clientFileObservable);
-      if (isErrorFileState(clientFileState)) {
+      const userFileState = await observableToPromise(userFileObservable);
+
+      if (isErrorFileState(userFileState)) {
         return {
-          ...clientFileState,
-          id: tenantFileId,
+          tenantFileState: {
+            ...userFileState,
+            id: tenantFileId,
+          },
+          userFileObservable,
         };
       } else {
         return {
-          ...clientFileState,
-          id: tenantFileId,
-          preview,
+          tenantFileState: {
+            ...userFileState,
+            id: tenantFileId,
+            preview,
+          },
+          userFileObservable,
         };
       }
     } else {
       return {
-        id: tenantFileId,
-        status: 'processing',
-        mediaType,
-        mimeType: selectedFile.type,
-        name: selectedFile.name,
-        size: selectedFile.size,
-        preview,
-        representations: {},
+        tenantFileState: {
+          id: tenantFileId,
+          status: 'processing',
+          mediaType,
+          mimeType: selectedFile.type,
+          name: selectedFile.name,
+          size: selectedFile.size,
+          preview,
+          representations: {},
+        },
+        userFileObservable,
       };
     }
   };
@@ -213,10 +230,26 @@ const distributeTenantFileState = (store: Store<State>) => {
    * 2. globalMediaEventEmitter even-emitter interface.
    *  Note: This is different from `mediaPicker.on()` event-emitter interface!
    */
-  return (tenantFileState: FileState) => {
+  return ({
+    tenantFileState,
+    userFileObservable,
+  }: {
+    tenantFileState: FileState;
+    userFileObservable?: Observable<FileState>;
+  }) => {
     const tenantFileSubject = new ReplaySubject<FileState>(1);
+
     getFileStreamsCache().set(tenantFileState.id, tenantFileSubject);
     tenantFileSubject.next(tenantFileState);
+    if (userFileObservable) {
+      userFileObservable.subscribe({
+        next: userFileState =>
+          tenantFileSubject.next({
+            ...userFileState,
+            id: tenantFileState.id,
+          }),
+      });
+    }
 
     tenantMediaClient.emit('file-added', tenantFileState);
     globalMediaEventEmitter.emit('file-added', tenantFileState);
