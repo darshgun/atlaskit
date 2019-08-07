@@ -73,9 +73,8 @@ async function copyFile({
   sourceFile,
   replaceFileId,
 }: CopyFileParams): Promise<SendUploadEventAction> {
-  const { deferredIdUpfronts, tenantMediaClient, config } = store.getState();
+  const { tenantMediaClient, config } = store.getState();
   const collection = config.uploadParams && config.uploadParams.collection;
-  const deferred = deferredIdUpfronts[sourceFile.id];
   const mediaStore = new MediaStore({
     authProvider: tenantMediaClient.config.authProvider,
   });
@@ -91,11 +90,6 @@ async function copyFile({
   try {
     const destinationFile = await mediaStore.copyFileWithToken(body, params);
     const { id: publicId } = destinationFile.data;
-    if (deferred) {
-      const { resolver } = deferred;
-
-      resolver(publicId);
-    }
 
     store.dispatch(
       sendUploadEvent({
@@ -161,12 +155,6 @@ async function copyFile({
       }),
     );
   } catch (error) {
-    if (deferred) {
-      const { rejecter } = deferred;
-
-      rejecter();
-    }
-
     return store.dispatch(
       sendUploadEvent({
         event: {

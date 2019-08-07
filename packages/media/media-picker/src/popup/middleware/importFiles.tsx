@@ -29,7 +29,6 @@ import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActi
 import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/types';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { setUpfrontIdDeferred } from '../actions/setUpfrontIdDeferred';
 import { WsNotifyMetadata } from '../tools/websocket/wsMessageData';
 import { getPreviewFromMetadata } from '../../domain/preview';
 import { Observable } from 'rxjs/Observable';
@@ -65,7 +64,6 @@ const mapSelectedItemToSelectedUploadFile = (
     date,
     serviceName,
     accountId,
-    upfrontId,
     occurrenceKey = uuid(),
   }: SelectedItem,
   collection?: string,
@@ -76,7 +74,6 @@ const mapSelectedItemToSelectedUploadFile = (
     size,
     creationDate: date || Date.now(),
     type: mimeType,
-    upfrontId,
     occurrenceKey,
   },
   serviceName,
@@ -400,14 +397,6 @@ export const importFilesFromRemoteService = (
     file,
   } = selectedUploadFile;
   const { fileId } = touchFileDescriptor;
-  const { deferredIdUpfronts } = store.getState();
-  const deferred = deferredIdUpfronts[file.id];
-
-  if (deferred) {
-    const { rejecter, resolver } = deferred;
-    // We asociate the temporary file.id with the uploadId
-    store.dispatch(setUpfrontIdDeferred(fileId, resolver, rejecter));
-  }
   const uploadActivity = new RemoteUploadActivity(fileId, (event, payload) => {
     if (event === 'NotifyMetadata') {
       const preview = getPreviewFromMetadata(
