@@ -21,6 +21,8 @@ const createPlugin: PMPluginFactory = ({ portalProviderAPI }) => {
 };
 
 const jiraIssuePlugin = (): EditorPlugin => ({
+  name: 'confluenceJiraIssue',
+
   nodes() {
     return [{ name: 'confluenceJiraIssue', node: confluenceJiraIssue }];
   },

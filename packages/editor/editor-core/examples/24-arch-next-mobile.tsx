@@ -2,14 +2,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
-import { WithEditorActions, EditorActions } from '../src';
-import { TitleArea } from '../example-helpers/PageElements';
+import { EditorActions } from '../src';
 
 /**
  * arch next imports
  */
-import { EditorPresetCXHTML } from '../src/labs/next/presets/cxhtml';
-import { FullPage as FullPageEditor } from '../src/labs/next/full-page';
+import { EditorPresetMobile } from '../src/labs/next/presets/mobile';
+import { Mobile as MobileEditor } from '../src/labs/next/mobile';
 
 export const SaveAndCancelButtons = (props: {
   editorActions?: EditorActions;
@@ -54,23 +53,9 @@ export default function Example() {
   return (
     <Wrapper>
       <Content>
-        <EditorPresetCXHTML placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
-          <FullPageEditor
-            contentComponents={[
-              <TitleArea key="title=placeholder" placeholder="Some text..." />,
-            ]}
-            primaryToolbarComponents={[
-              <WithEditorActions
-                key="editor-actions-save"
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />,
-            ]}
-            allowDynamicTextSizing={true}
-          />
-        </EditorPresetCXHTML>
+        <EditorPresetMobile placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
+          <MobileEditor />
+        </EditorPresetMobile>
       </Content>
     </Wrapper>
   );

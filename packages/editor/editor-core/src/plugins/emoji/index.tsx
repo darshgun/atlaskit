@@ -42,6 +42,8 @@ export interface EmojiPluginOptions {
 }
 
 const emojiPlugin = (options?: EmojiPluginOptions): EditorPlugin => ({
+  name: 'emoji',
+
   nodes() {
     return [{ name: 'emoji', node: emoji }];
   },
