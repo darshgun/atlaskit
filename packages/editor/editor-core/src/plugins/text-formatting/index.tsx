@@ -34,6 +34,8 @@ export interface TextFormattingOptions {
 }
 
 const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
+  name: 'textFormatting',
+
   marks() {
     return [
       { name: 'em', mark: em },

@@ -18,6 +18,8 @@ import { Transaction } from 'prosemirror-state';
 import { Fragment } from 'prosemirror-model';
 
 const rulePlugin = (): EditorPlugin => ({
+  name: 'rule',
+
   nodes() {
     return [{ name: 'rule', node: rule }];
   },

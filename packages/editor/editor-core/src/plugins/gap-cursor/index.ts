@@ -6,6 +6,8 @@ export { GapCursorSelection, Side } from './selection';
 export { setCursorForTopLevelBlocks } from './actions';
 
 const gapCursorPlugin = (): EditorPlugin => ({
+  name: 'gapCursor',
+
   pmPlugins() {
     return [
       {

@@ -3,6 +3,8 @@ import { createPlugin } from './pm-plugins/main';
 import inputRulePlugin from './pm-plugins/input-rule';
 
 const imageUpload = (): EditorPlugin => ({
+  name: 'imageUpload',
+
   pmPlugins() {
     return [
       {

@@ -77,6 +77,8 @@ interface BlockTypePluginOptions {
 }
 
 const blockTypePlugin = (options?: BlockTypePluginOptions): EditorPlugin => ({
+  name: 'blockType',
+
   nodes({ allowBlockType }) {
     const nodes: BlockTypeNode[] = [
       { name: 'heading', node: heading },
