@@ -342,7 +342,6 @@ describe('importFiles middleware', () => {
         mediaType: 'image',
         mimeType: 'image/jpg',
         name: 'picture1.jpg',
-        preview: expect.any(Promise),
         progress: 0.5,
         size: 43,
         status: 'uploading',
@@ -435,7 +434,7 @@ describe('importFiles middleware', () => {
         });
       });
 
-      it('should bobble up some events', async () => {
+      it('should bubble up some events', async () => {
         const setupResult = setup();
         await importFilesMiddlewareAndAwait(setupResult);
         const { store } = setupResult;
@@ -454,7 +453,7 @@ describe('importFiles middleware', () => {
         expect(secondEvent.data.file.name).toEqual('picture3.jpg');
       });
 
-      it('should not bobble up other events', async () => {
+      it('should not bubble up other events', async () => {
         const setupResult = setup();
         await importFilesMiddlewareAndAwait(setupResult);
         const { eventEmitter, store } = setupResult;
@@ -559,9 +558,17 @@ describe('importFiles middleware', () => {
       };
 
       expect(globalEmitSpy).toBeCalledTimes(4);
-      expect(globalEmitSpy).lastCalledWith('file-added', fileState);
       expect(tenantMediaClient.emit).toBeCalledTimes(4);
-      expect(tenantMediaClient.emit).lastCalledWith('file-added', fileState);
+
+      const globalEmitSpyCall = globalEmitSpy.mock.calls.find(
+        call => call[1].name === fileState.name,
+      );
+      expect(globalEmitSpyCall).toEqual(['file-added', fileState]);
+
+      const tenantMediaClientEmitCall = asMock(
+        tenantMediaClient.emit,
+      ).mock.calls.find(call => call[1].name === fileState.name);
+      expect(tenantMediaClientEmitCall).toEqual(['file-added', fileState]);
     });
 
     it('should not modify client file state', async () => {
@@ -647,7 +654,7 @@ describe('importFiles middleware', () => {
           ],
         },
       });
-      const fileState = await getTenantFileState(store)(selectedFile);
+      const fileState = await getTenantFileState(store, selectedFile);
       if (isErrorFileState(fileState)) {
         return expect(fileState.status).not.toBe('error');
       }
@@ -679,7 +686,7 @@ describe('importFiles middleware', () => {
         },
       };
       const store = mockStore();
-      const fileState = await getTenantFileState(store)(selectedFile);
+      const fileState = await getTenantFileState(store, selectedFile);
 
       if (isErrorFileState(fileState)) {
         return expect(fileState.status).not.toBe('error');
@@ -701,7 +708,7 @@ describe('importFiles middleware', () => {
       };
       const store = mockStore();
 
-      const fileState = await getTenantFileState(store)(selectedFile);
+      const fileState = await getTenantFileState(store, selectedFile);
 
       if (isErrorFileState(fileState)) {
         return expect(fileState.status).not.toBe('error');
@@ -730,7 +737,7 @@ describe('importFiles middleware', () => {
 
       const store = mockStore();
 
-      const fileState = await getTenantFileState(store)(selectedFile);
+      const fileState = await getTenantFileState(store, selectedFile);
 
       if (isErrorFileState(fileState)) {
         return expect(fileState.status).not.toBe('error');
@@ -772,7 +779,7 @@ describe('importFiles middleware', () => {
       getFileStreamsCache().set('user-id', subject);
 
       const store = mockStore();
-      const fileState = await getTenantFileState(store)(selectedFile);
+      const fileState = await getTenantFileState(store, selectedFile);
 
       if (isErrorFileState(fileState)) {
         return expect(fileState.status).not.toBe('error');
@@ -799,7 +806,6 @@ describe('importFiles middleware', () => {
       name: '',
       size: 1,
       type: 'image/png',
-      upfrontId: Promise.resolve(''),
     };
 
     it('should call touch endpoint', async () => {
