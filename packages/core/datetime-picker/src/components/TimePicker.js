@@ -15,6 +15,8 @@ import {
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 
+import { l10nProvider } from '@atlaskit/calendar/src/util';
+import type { LocalizationProvider } from '@atlaskit/calendar/src/util';
 import {
   name as packageName,
   version as packageVersion,
@@ -47,7 +49,7 @@ type Props = {
   /** Default for `value`. */
   defaultValue: string,
   /** Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
-  formatDisplayLabel: (time: string, timeFormat: string) => string,
+  formatDisplayLabel?: (time: string, timeFormat: string) => string,
   /** The icon to show in the field. */
   icon?: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -82,24 +84,18 @@ type Props = {
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
   /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
-  timeFormat: string,
+  timeFormat?: string,
   /** Placeholder text displayed in input */
   placeholder?: string,
+  locale: string,
 };
 
 type State = {
   isOpen: boolean,
   value: string,
   isFocused: boolean,
+  l10n: LocalizationProvider,
 };
-/** Returns a formatted DT string if valid or empty string if not valid */
-function formatTime(time: string, timeFormat: string): string {
-  const date = parseTime(time);
-  if (date instanceof Date) {
-    return isValid(date) ? format(date, timeFormat) : time;
-  }
-  return '';
-}
 
 const menuStyles = {
   /* Need to remove default absolute positioning as that causes issues with position fixed */
@@ -125,7 +121,6 @@ class TimePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     hideIcon: false,
-    formatDisplayLabel: formatTime,
     id: '',
     innerProps: {},
     isDisabled: false,
@@ -140,14 +135,21 @@ class TimePicker extends Component<Props, State> {
     spacing: 'default',
     times: defaultTimes,
     timeIsEditable: false,
-    timeFormat: defaultTimeFormat,
+    locale: 'en-US',
   };
 
   state = {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
     isFocused: false,
+    l10n: l10nProvider(this.props.locale),
   };
+
+  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+    if (this.props.locale !== nextProps.locale) {
+      this.setState({ l10n: l10nProvider(nextProps.locale) });
+    }
+  }
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
@@ -162,7 +164,7 @@ class TimePicker extends Component<Props, State> {
     return this.props.times.map(
       (time: string): Option => {
         return {
-          label: formatTime(time, this.props.timeFormat),
+          label: this.formatTime(time),
           value: time,
         };
       },
@@ -181,7 +183,10 @@ class TimePicker extends Component<Props, State> {
       const { parseInputValue, timeFormat } = this.props;
       // TODO parseInputValue doesn't accept `timeFormat` as an function arg yet...
       const value =
-        format(parseInputValue(inputValue, timeFormat), 'HH:mm') || '';
+        format(
+          parseInputValue(inputValue, timeFormat || defaultTimeFormat),
+          'HH:mm',
+        ) || '';
       this.setState({ value });
       this.props.onChange(value);
     } else {
@@ -228,10 +233,36 @@ class TimePicker extends Component<Props, State> {
     };
   };
 
+  formatTime = (time: string): string => {
+    const { formatDisplayLabel, timeFormat } = this.props;
+    const { l10n } = this.getState();
+
+    // formatDisplayLabel is priority 1
+    if (formatDisplayLabel) {
+      return formatDisplayLabel(time, timeFormat || defaultTimeFormat);
+    }
+
+    const date = parseTime(time);
+    if (!(date instanceof Date)) {
+      return '';
+    }
+
+    if (!isValid(date)) {
+      return time;
+    }
+
+    // timeFormat is priority 2
+    if (timeFormat) {
+      return format(date, timeFormat);
+    }
+
+    // locale is priority 3
+    return l10n.formatTime(date);
+  };
+
   render() {
     const {
       autoFocus,
-      formatDisplayLabel,
       id,
       innerProps,
       isDisabled,
@@ -239,7 +270,6 @@ class TimePicker extends Component<Props, State> {
       placeholder,
       selectProps,
       spacing,
-      timeFormat,
     } = this.props;
     const { value = '', isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -258,7 +288,7 @@ class TimePicker extends Component<Props, State> {
       : Select;
 
     const labelAndValue = value && {
-      label: formatDisplayLabel(value, timeFormat),
+      label: this.formatTime(value),
       value,
     };
 

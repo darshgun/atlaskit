@@ -78,7 +78,10 @@ export const l10nProvider = (locale: string): LocalizationProvider => {
   const dayFormatter = Intl.DateTimeFormat(locale, { weekday: 'short' });
   const monthFormatter = Intl.DateTimeFormat(locale, { month: 'long' });
   const dateFormatter = Intl.DateTimeFormat(locale);
-  const timeFormatter = Intl.DateTimeFormat(locale, { timeStyle: 'short' });
+  const timeFormatter = Intl.DateTimeFormat(locale, {
+    hour: 'numeric',
+    minute: 'numeric',
+  });
 
   return {
     getDaysShort: () =>

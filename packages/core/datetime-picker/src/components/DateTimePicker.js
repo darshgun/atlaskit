@@ -20,12 +20,7 @@ import {
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
-import {
-  defaultTimes,
-  defaultDateFormat,
-  defaultTimeFormat,
-  formatDateTimeZoneIntoIso,
-} from '../internal';
+import { defaultTimes, formatDateTimeZoneIntoIso } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -78,6 +73,7 @@ type Props = {
   timeFormat?: string,
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing?: 'compact' | 'default',
+  locale: string,
 };
 
 type State = {
@@ -172,9 +168,8 @@ class DateTimePicker extends Component<Props, State> {
     datePickerSelectProps: {},
     timePickerSelectProps: {},
     times: defaultTimes,
-    timeFormat: defaultTimeFormat,
-    dateFormat: defaultDateFormat,
     spacing: 'default',
+    locale: 'en-US',
   };
 
   state = {
@@ -283,6 +278,7 @@ class DateTimePicker extends Component<Props, State> {
       timePickerSelectProps,
       times,
       timeFormat,
+      locale,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
     const icon =
@@ -330,6 +326,7 @@ class DateTimePicker extends Component<Props, State> {
             onChange={this.onDateChange}
             selectProps={mergedDatePickerSelectProps}
             value={dateValue}
+            locale={locale}
             {...datePickerProps}
           />
         </FlexItem>
@@ -343,6 +340,7 @@ class DateTimePicker extends Component<Props, State> {
             timeIsEditable={timeIsEditable}
             times={times}
             timeFormat={timeFormat}
+            locale={locale}
             {...timePickerProps}
           />
         </FlexItem>

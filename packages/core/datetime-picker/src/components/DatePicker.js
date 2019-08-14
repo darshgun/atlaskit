@@ -1,6 +1,10 @@
 // @flow
 
 import Calendar from '@atlaskit/calendar';
+import {
+  l10nProvider,
+  type LocalizationProvider,
+} from '@atlaskit/calendar/src/util';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
@@ -57,7 +61,7 @@ type Props = {
   /* A function for parsing input characters and transforming them into a Date object. By default uses [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) */
   parseInputValue: (date: string, dateFormat: string) => Date,
   /* A function for formatting the date displayed in the input. By default composes together [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) and [date-fn's format method](https://date-fns.org/v1.29.0/docs/format) to return a correctly formatted date string*/
-  formatDisplayLabel: (value: string, dateFormat: string) => string,
+  formatDisplayLabel?: (value: string, dateFormat: string) => string,
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
@@ -70,9 +74,11 @@ type Props = {
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
   /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
-  dateFormat: string,
+  dateFormat?: string,
   /** Placeholder text displayed in input */
   placeholder?: string,
+  /** Locale used to format the the date and calendar. See [DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) */
+  locale: string,
 };
 
 type State = {
@@ -82,6 +88,7 @@ type State = {
   selectedValue: string,
   view: string,
   inputValue: string,
+  l10n: LocalizationProvider,
 };
 
 function getDateObj(date: Date) {
@@ -120,6 +127,7 @@ const Menu = ({ selectProps, innerProps }: Object) => (
           ref={selectProps.calendarRef}
           selected={[selectProps.calendarValue]}
           innerProps={innerProps}
+          locale={selectProps.calendarLocale}
         />
       </StyledMenu>
     }
@@ -135,12 +143,9 @@ class DatePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
-    dateFormat: defaultDateFormat,
     defaultIsOpen: false,
     defaultValue: '',
     disabled: [],
-    formatDisplayLabel: (value: string, dateFormat: string): string =>
-      format(parse(value), dateFormat),
     hideIcon: false,
     icon: CalendarIcon,
     id: '',
@@ -155,6 +160,7 @@ class DatePicker extends Component<Props, State> {
     placeholder: 'e.g. 2018/01/01',
     selectProps: {},
     spacing: 'default',
+    locale: 'en-US',
   };
 
   constructor(props: any) {
@@ -171,7 +177,14 @@ class DatePicker extends Component<Props, State> {
         this.props.value ||
         this.props.defaultValue ||
         `${year}-${padToTwo(month)}-${padToTwo(day)}`,
+      l10n: l10nProvider(this.props.locale),
     };
+  }
+
+  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+    if (this.props.locale !== nextProps.locale) {
+      this.setState({ l10n: l10nProvider(nextProps.locale) });
+    }
   }
 
   // All state needs to be accessed via this function so that the state is mapped from props
@@ -253,7 +266,7 @@ class DatePicker extends Component<Props, State> {
     const { dateFormat, parseInputValue } = this.props;
 
     if (value) {
-      const parsed = parseInputValue(value, dateFormat);
+      const parsed = parseInputValue(value, dateFormat || defaultDateFormat);
       // Only try to set the date if we have month & day
       if (isValid(parsed)) {
         // We format the parsed date to YYYY-MM-DD here because
@@ -348,13 +361,30 @@ class DatePicker extends Component<Props, State> {
     padding: '1px',
   });
 
+  formatDate = (value: string): string => {
+    const { formatDisplayLabel, dateFormat } = this.props;
+    const { l10n } = this.getState();
+
+    // formatDisplayLabel is priority 1
+    if (formatDisplayLabel) {
+      return formatDisplayLabel(value, dateFormat || defaultDateFormat);
+    }
+
+    // dateFormat is priority 2
+    const date = parse(value);
+    if (dateFormat) {
+      return format(date, dateFormat);
+    }
+
+    // locale is priority 3
+    return l10n.formatDate(date);
+  };
+
   render() {
     const {
       appearance,
       autoFocus,
-      dateFormat,
       disabled,
-      formatDisplayLabel,
       hideIcon,
       icon,
       id,
@@ -365,6 +395,7 @@ class DatePicker extends Component<Props, State> {
       placeholder,
       selectProps,
       spacing,
+      locale,
     } = this.props;
     const { value, view, isOpen, inputValue } = this.getState();
     const dropDownIcon = appearance === 'subtle' || hideIcon ? null : icon;
@@ -381,6 +412,7 @@ class DatePicker extends Component<Props, State> {
       calendarView: view,
       onCalendarChange: this.onCalendarChange,
       onCalendarSelect: this.onCalendarSelect,
+      calendarLocale: locale,
     };
 
     return (
@@ -419,7 +451,7 @@ class DatePicker extends Component<Props, State> {
           placeholder={placeholder}
           value={
             value && {
-              label: formatDisplayLabel(value, dateFormat),
+              label: this.formatDate(value),
               value,
             }
           }
