@@ -66,3 +66,30 @@ export function makeArrayFromNumber(i: number): Array<number> {
   }
   return arr;
 }
+
+export interface LocalizationProvider {
+  getDaysShort: () => Array<string>;
+  getMonthsLong: () => Array<string>;
+  formatDate: Date => string;
+  formatTime: Date => string;
+}
+
+export const l10nProvider = (locale: string): LocalizationProvider => {
+  const dayFormatter = Intl.DateTimeFormat(locale, { weekday: 'short' });
+  const monthFormatter = Intl.DateTimeFormat(locale, { month: 'long' });
+  const dateFormatter = Intl.DateTimeFormat(locale);
+  const timeFormatter = Intl.DateTimeFormat(locale, { timeStyle: 'short' });
+
+  return {
+    getDaysShort: () =>
+      [1, 2, 3, 4, 5, 6, 7].map(day =>
+        dayFormatter.format(new Date(2019, 6, day)).substring(0, 4),
+      ),
+    getMonthsLong: () =>
+      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month =>
+        monthFormatter.format(new Date(2019, month, 1)),
+      ),
+    formatDate: (date: Date) => dateFormatter.format(date),
+    formatTime: (date: Date) => timeFormatter.format(date),
+  };
+};

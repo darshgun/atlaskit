@@ -5,13 +5,12 @@ import ArrowrightIcon from '@atlaskit/icon/glyph/chevron-right-large';
 import { colors } from '@atlaskit/theme';
 import React from 'react';
 import styled from 'styled-components';
-import { getMonthName } from '../util';
 import Btn from './Btn';
 
 import { Heading, MonthAndYear } from '../styled/Heading';
 
 type Props = {|
-  month: number,
+  monthString: string,
   year: number,
   handleClickNext?: () => void,
   handleClickPrev?: () => void,
@@ -35,7 +34,7 @@ export default (props: Props) => (
         />
       </Btn>
     </ArrowLeft>
-    <MonthAndYear>{`${getMonthName(props.month)} ${props.year}`}</MonthAndYear>
+    <MonthAndYear>{`${props.monthString} ${props.year}`}</MonthAndYear>
     <ArrowRight>
       <Btn onClick={props.handleClickNext}>
         <ArrowrightIcon
