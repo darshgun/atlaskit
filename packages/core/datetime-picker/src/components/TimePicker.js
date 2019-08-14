@@ -27,6 +27,7 @@ import {
   defaultTimes,
   DropdownIndicator,
   defaultTimeFormat,
+  placeholderDatetime,
 } from '../internal';
 import parseTime from '../internal/parseTime';
 import FixedLayer from '../internal/FixedLayer';
@@ -129,7 +130,6 @@ class TimePicker extends Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    placeholder: 'e.g. 8:00am',
     parseInputValue: (time: string, timeFormat: string) => parseTime(time), // eslint-disable-line no-unused-vars
     selectProps: {},
     spacing: 'default',
@@ -260,6 +260,16 @@ class TimePicker extends Component<Props, State> {
     return l10n.formatTime(date);
   };
 
+  getPlaceholder = () => {
+    const { placeholder } = this.props;
+    if (placeholder) {
+      return placeholder;
+    }
+
+    const { l10n } = this.getState();
+    return `e.g. ${l10n.formatTime(placeholderDatetime)}`;
+  };
+
   render() {
     const {
       autoFocus,
@@ -267,7 +277,6 @@ class TimePicker extends Component<Props, State> {
       innerProps,
       isDisabled,
       name,
-      placeholder,
       selectProps,
       spacing,
     } = this.props;
@@ -314,7 +323,7 @@ class TimePicker extends Component<Props, State> {
           onFocus={this.onFocus}
           onMenuOpen={this.onMenuOpen}
           onMenuClose={this.onMenuClose}
-          placeholder={placeholder}
+          placeholder={this.getPlaceholder()}
           styles={mergeStyles(selectStyles, {
             control: base => ({
               ...base,

@@ -4,6 +4,8 @@ import React from 'react';
 
 export const ClearIndicator = null;
 
+export const placeholderDatetime = new Date(1993, 1, 18, 13);
+
 export const defaultTimes = [
   '09:00',
   '09:30',

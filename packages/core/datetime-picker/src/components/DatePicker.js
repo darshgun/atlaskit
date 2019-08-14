@@ -23,7 +23,12 @@ import {
   version as packageVersion,
 } from '../version.json';
 
-import { ClearIndicator, defaultDateFormat, padToTwo } from '../internal';
+import {
+  ClearIndicator,
+  defaultDateFormat,
+  padToTwo,
+  placeholderDatetime,
+} from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -157,7 +162,6 @@ class DatePicker extends Component<Props, State> {
     onChange: () => {},
     onFocus: () => {},
     parseInputValue: parse,
-    placeholder: 'e.g. 2018/01/01',
     selectProps: {},
     spacing: 'default',
     locale: 'en-US',
@@ -380,6 +384,16 @@ class DatePicker extends Component<Props, State> {
     return l10n.formatDate(date);
   };
 
+  getPlaceholder = () => {
+    const { placeholder } = this.props;
+    if (placeholder) {
+      return placeholder;
+    }
+
+    const { l10n } = this.getState();
+    return `e.g. ${l10n.formatDate(placeholderDatetime)}`;
+  };
+
   render() {
     const {
       appearance,
@@ -392,7 +406,6 @@ class DatePicker extends Component<Props, State> {
       isDisabled,
       isInvalid,
       name,
-      placeholder,
       selectProps,
       spacing,
       locale,
@@ -448,7 +461,7 @@ class DatePicker extends Component<Props, State> {
               ...disabledStyle,
             }),
           })}
-          placeholder={placeholder}
+          placeholder={this.getPlaceholder()}
           value={
             value && {
               label: this.formatDate(value),
