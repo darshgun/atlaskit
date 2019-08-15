@@ -10,7 +10,7 @@ import Btn from './Btn';
 import { Heading, MonthAndYear } from '../styled/Heading';
 
 type Props = {|
-  monthString: string,
+  monthLongTitle: string,
   year: number,
   handleClickNext?: () => void,
   handleClickPrev?: () => void,
@@ -34,7 +34,7 @@ export default (props: Props) => (
         />
       </Btn>
     </ArrowLeft>
-    <MonthAndYear>{`${props.monthString} ${props.year}`}</MonthAndYear>
+    <MonthAndYear>{`${props.monthLongTitle} ${props.year}`}</MonthAndYear>
     <ArrowRight>
       <Btn onClick={props.handleClickNext}>
         <ArrowrightIcon

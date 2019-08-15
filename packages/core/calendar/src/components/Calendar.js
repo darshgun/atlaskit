@@ -456,7 +456,7 @@ class Calendar extends Component<Props, State> {
           <Heading
             // The month number needs to be translated to index in the month
             // name array e.g. 1 (January) -> 0
-            monthString={l10n.getMonthsLong()[mappedState.month - 1]}
+            monthLongTitle={l10n.getMonthsLong()[mappedState.month - 1]}
             year={mappedState.year}
             handleClickNext={this.handleClickNext}
             handleClickPrev={this.handleClickPrev}

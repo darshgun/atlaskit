@@ -8,7 +8,7 @@ import Heading from '../../Heading';
 import { MonthAndYear } from '../../../styled/Heading';
 
 const PredefinedHeading = (props: Object) => (
-  <Heading monthString="January" year={2000} {...props} />
+  <Heading monthLongTitle="January" year={2000} {...props} />
 );
 
 test('render', () => {
