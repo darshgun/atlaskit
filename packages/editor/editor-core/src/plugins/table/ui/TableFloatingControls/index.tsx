@@ -8,6 +8,7 @@ import RowControls from './RowControls';
 import NumberColumn from './NumberColumn';
 import { isSelectionUpdated } from '../../utils';
 import { hoverRows, selectRow } from '../../commands';
+import { TableColumnOrdering } from '../../types';
 
 export interface Props {
   editorView: EditorView;
@@ -22,6 +23,7 @@ export interface Props {
   hasHeaderRow?: boolean;
   tableHeight?: number;
   hoveredRows?: number[];
+  ordering?: TableColumnOrdering;
 }
 
 export default class TableFloatingControls extends Component<Props> {
@@ -37,8 +39,11 @@ export default class TableFloatingControls extends Component<Props> {
       tableHeight,
       tableActive,
       isHeaderColumnEnabled,
+      ordering,
     } = this.props;
+
     return (
+      ordering !== nextProps.ordering ||
       tableRef !== nextProps.tableRef ||
       tableHeight !== nextProps.tableHeight ||
       tableActive !== nextProps.tableActive ||
