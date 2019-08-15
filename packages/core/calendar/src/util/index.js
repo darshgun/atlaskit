@@ -87,7 +87,12 @@ export const createLocalizationProvider = (
 
   // Date range chosen which has a Mon-Sun range so we can pull the titles out
   const daysShort = [1, 2, 3, 4, 5, 6, 7].map(day =>
-    dayFormatter.format(new Date(2000, 4, day)).substring(0, 4),
+    // Some short days are longer than 3 characters but are unique if the first
+    // three non-white characters are used.
+    dayFormatter
+      .format(new Date(2000, 4, day))
+      .replace(/\s/g, '')
+      .substring(0, 3),
   );
   const monthsLong = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month =>
     monthFormatter.format(new Date(2000, month, 1)),
