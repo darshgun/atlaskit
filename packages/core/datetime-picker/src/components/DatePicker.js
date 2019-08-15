@@ -2,7 +2,7 @@
 
 import Calendar from '@atlaskit/calendar';
 import {
-  l10nProvider,
+  createLocalizationProvider,
   type LocalizationProvider,
 } from '@atlaskit/calendar/src/util';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
@@ -181,13 +181,13 @@ class DatePicker extends Component<Props, State> {
         this.props.value ||
         this.props.defaultValue ||
         `${year}-${padToTwo(month)}-${padToTwo(day)}`,
-      l10n: l10nProvider(this.props.locale),
+      l10n: createLocalizationProvider(this.props.locale),
     };
   }
 
   componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
     if (this.props.locale !== nextProps.locale) {
-      this.setState({ l10n: l10nProvider(nextProps.locale) });
+      this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
     }
   }
 

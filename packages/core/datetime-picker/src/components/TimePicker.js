@@ -15,8 +15,10 @@ import {
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 
-import { l10nProvider } from '@atlaskit/calendar/src/util';
-import type { LocalizationProvider } from '@atlaskit/calendar/src/util';
+import {
+  createLocalizationProvider,
+  type LocalizationProvider,
+} from '@atlaskit/calendar/src/util';
 import {
   name as packageName,
   version as packageVersion,
@@ -142,12 +144,12 @@ class TimePicker extends Component<Props, State> {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
     isFocused: false,
-    l10n: l10nProvider(this.props.locale),
+    l10n: createLocalizationProvider(this.props.locale),
   };
 
   componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
     if (this.props.locale !== nextProps.locale) {
-      this.setState({ l10n: l10nProvider(nextProps.locale) });
+      this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
     }
   }
 

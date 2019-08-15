@@ -74,7 +74,9 @@ export interface LocalizationProvider {
   formatTime: Date => string;
 }
 
-export const l10nProvider = (locale: string): LocalizationProvider => {
+export const createLocalizationProvider = (
+  locale: string,
+): LocalizationProvider => {
   const dayFormatter = Intl.DateTimeFormat(locale, { weekday: 'short' });
   const monthFormatter = Intl.DateTimeFormat(locale, { month: 'long' });
   const dateFormatter = Intl.DateTimeFormat(locale);

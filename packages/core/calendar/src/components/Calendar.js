@@ -13,7 +13,11 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-import { dateToString, l10nProvider, type LocalizationProvider } from '../util';
+import {
+  dateToString,
+  createLocalizationProvider,
+  type LocalizationProvider,
+} from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
 import {
@@ -137,7 +141,7 @@ class Calendar extends Component<Props, State> {
       today:
         this.props.today ||
         `${thisYear}-${padToTwo(thisMonth)}-${padToTwo(thisDay)}`,
-      l10n: l10nProvider(this.props.locale),
+      l10n: createLocalizationProvider(this.props.locale),
     };
     this.calendar = new CalendarBase({
       siblingMonths: true,
@@ -147,7 +151,7 @@ class Calendar extends Component<Props, State> {
 
   componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
     if (this.props.locale !== nextProps.locale) {
-      this.setState({ l10n: l10nProvider(nextProps.locale) });
+      this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
     }
   }
 
