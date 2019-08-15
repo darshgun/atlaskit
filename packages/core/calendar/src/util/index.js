@@ -85,13 +85,12 @@ export const createLocalizationProvider = (
     minute: 'numeric',
   });
 
-  // These Date objects will represent Mon-Sun and Jan-Dec and are used to
-  // generate the localized short day and long month strings.
+  // Date range chosen which has a Mon-Sun range so we can pull the titles out
   const daysShort = [1, 2, 3, 4, 5, 6, 7].map(day =>
-    dayFormatter.format(new Date(2019, 6, day)).substring(0, 4),
+    dayFormatter.format(new Date(2000, 4, day)).substring(0, 4),
   );
   const monthsLong = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(month =>
-    monthFormatter.format(new Date(2019, month, 1)),
+    monthFormatter.format(new Date(2000, month, 1)),
   );
 
   return {

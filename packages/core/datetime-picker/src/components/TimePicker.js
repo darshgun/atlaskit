@@ -235,11 +235,17 @@ class TimePicker extends Component<Props, State> {
     };
   };
 
+  /**
+   * There are multiple props that can change how the time is formatted.
+   * The priority of props used is:
+   *   1. formatDisplayLabel
+   *   2. timeFormat
+   *   3. locale
+   */
   formatTime = (time: string): string => {
     const { formatDisplayLabel, timeFormat } = this.props;
     const { l10n } = this.getState();
 
-    // formatDisplayLabel is priority 1
     if (formatDisplayLabel) {
       return formatDisplayLabel(time, timeFormat || defaultTimeFormat);
     }
@@ -253,12 +259,10 @@ class TimePicker extends Component<Props, State> {
       return time;
     }
 
-    // timeFormat is priority 2
     if (timeFormat) {
       return format(date, timeFormat);
     }
 
-    // locale is priority 3
     return l10n.formatTime(date);
   };
 

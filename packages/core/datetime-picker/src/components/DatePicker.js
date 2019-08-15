@@ -365,22 +365,26 @@ class DatePicker extends Component<Props, State> {
     padding: '1px',
   });
 
+  /**
+   * There are multiple props that can change how the date is formatted.
+   * The priority of props used is:
+   *   1. formatDisplayLabel
+   *   2. dateFormat
+   *   3. locale
+   */
   formatDate = (value: string): string => {
     const { formatDisplayLabel, dateFormat } = this.props;
     const { l10n } = this.getState();
 
-    // formatDisplayLabel is priority 1
     if (formatDisplayLabel) {
       return formatDisplayLabel(value, dateFormat || defaultDateFormat);
     }
 
-    // dateFormat is priority 2
     const date = parse(value);
     if (dateFormat) {
       return format(date, dateFormat);
     }
 
-    // locale is priority 3
     return l10n.formatDate(date);
   };
 
