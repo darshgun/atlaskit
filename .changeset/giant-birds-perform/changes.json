@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/calendar", "type": "minor" },
+    { "name": "@atlaskit/datetime-picker", "type": "minor" }
+  ],
+  "dependents": []
+}
