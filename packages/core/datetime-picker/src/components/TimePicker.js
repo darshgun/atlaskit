@@ -51,7 +51,7 @@ type Props = {
   defaultIsOpen: boolean,
   /** Default for `value`. */
   defaultValue: string,
-  /** Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
+  /** DEPRECATED - Use locale instead. Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
   formatDisplayLabel?: (time: string, timeFormat: string) => string,
   /** The icon to show in the field. */
   icon?: Node,
@@ -86,7 +86,7 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
-  /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
+  /** DEPRECATED - Use locale instead. Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
   timeFormat?: string,
   /** Placeholder text displayed in input */
   placeholder?: string,
