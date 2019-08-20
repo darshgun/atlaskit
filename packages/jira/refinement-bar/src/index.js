@@ -6,6 +6,7 @@ export {
   AvatarAsyncSelectFilter,
   IssueSelectFilter,
   IssueAsyncSelectFilter,
+  LozengeAsyncSelectFilter,
   NumberFilter,
   SelectFilter,
   SearchFilter,
@@ -17,4 +18,5 @@ export {
   RefinementBarUI,
   RefinementBarProvider,
   RefinementBarConsumer,
+  useRefinementBar,
 } from './components';

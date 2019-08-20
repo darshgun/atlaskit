@@ -1,5 +1,55 @@
 # @atlaskit/form
 
+## 6.1.8
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 6.1.7
+
+- Updated dependencies [84887b940c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84887b940c):
+  - @atlaskit/icon@19.0.2
+  - @atlaskit/modal-dialog@10.1.2
+  - @atlaskit/textfield@3.0.0
+
+## 6.1.6
+
+### Patch Changes
+
+- [patch][d905cbc0ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d905cbc0ac):
+
+  Adding a condition to check if the component are referenced in tests running in CI. It reduces the noise and help reading the CI log.
+
+## 6.1.5
+
+- Updated dependencies [7e9d653278](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e9d653278):
+  - @atlaskit/toggle@8.0.0
+
+## 6.1.4
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/datetime-picker@8.0.9
+  - @atlaskit/modal-dialog@10.0.10
+  - @atlaskit/select@10.0.0
+
+## 6.1.3
+
+- Updated dependencies [19d9d0f13f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19d9d0f13f):
+  - @atlaskit/datetime-picker@8.0.8
+
+## 6.1.2
+
+- Updated dependencies [87a2638655](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a2638655):
+  - @atlaskit/button@13.0.10
+  - @atlaskit/modal-dialog@10.0.8
+  - @atlaskit/radio@3.0.7
+  - @atlaskit/select@9.1.10
+  - @atlaskit/checkbox@9.0.0
+
 ## 6.1.1
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

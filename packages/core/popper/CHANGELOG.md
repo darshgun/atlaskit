@@ -1,5 +1,37 @@
 # @atlaskit/popper
 
+## 3.1.1
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 3.1.0
+
+### Minor Changes
+
+- [minor][0a3116e217](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a3116e217):
+
+  Add ability to overwrite and adjust modifiers in popper
+
+## 3.0.1
+
+### Patch Changes
+
+- [patch][f34776be97](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f34776be97):
+
+  Type definition files are now referenced in package.json
+
+## 3.0.0
+
+### Major Changes
+
+- [major][ebfeb03eb7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebfeb03eb7):
+
+  popper has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 2.0.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment, type ComponentType } from 'react';
-import deepEqual from 'deep-equal';
+import deepEqual from 'react-fast-compare';
 import { colors } from '@atlaskit/theme';
 
 import RenderBlocker from '../../common/RenderBlocker';
@@ -99,7 +99,7 @@ export class ComposedContainerNavigation extends Component<ComposedContainerNavi
                 backgroundColor: colors.N40A,
               },
             }}
-            tabIndex="0"
+            tabIndex={-1}
           />
         ) : /* eslint-enable */
         null}

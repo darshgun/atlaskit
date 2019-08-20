@@ -21,6 +21,7 @@ import {
   videoLargeFileItem,
   videoProcessingFailedItem,
   wideImageItem,
+  verticalImageItem,
   videoSquareFileIdItem,
 } from '../example-helpers';
 import { MediaViewer } from '../src';
@@ -28,7 +29,7 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { I18NWrapper } from '@atlaskit/media-test-helpers';
 const mediaClientConfig = createStorybookMediaClientConfig();
 
-const handleEvent = (/*analyticsEvent: UIAnalyticsEventInterface*/) => {
+const handleEvent = (/*analyticsEvent: UIAnalyticsEvent*/) => {
   // instrument here...
 };
 
@@ -70,6 +71,7 @@ export default class Example extends React.Component<{}, State> {
               <li>{this.createItem(imageItem, 'Picture')}</li>
               <li>{this.createItem(smallImageItem, 'Icon')}</li>
               <li>{this.createItem(wideImageItem, 'Wide')}</li>
+              <li>{this.createItem(verticalImageItem, 'Vertical')}</li>
               <li>{this.createItem(largeImageItem, 'Large')}</li>
             </ButtonList>
           </Group>

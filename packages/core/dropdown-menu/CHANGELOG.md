@@ -1,5 +1,53 @@
 # @atlaskit/dropdown-menu
 
+## 8.0.14
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 8.0.13
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/droplist@9.0.13
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/avatar@16.0.10
+  - @atlaskit/button@13.1.2
+  - @atlaskit/tooltip@15.0.9
+
+## 8.0.12
+
+### Patch Changes
+
+- [patch][d905cbc0ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d905cbc0ac):
+
+  Adding a condition to check if the component are referenced in tests running in CI. It reduces the noise and help reading the CI log.
+
+## 8.0.11
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 8.0.10
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 8.0.9
+
+- Updated dependencies [18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+  - @atlaskit/build-utils@2.2.2
+  - @atlaskit/button@13.0.14
+  - @atlaskit/lozenge@9.0.2
+
 ## 8.0.8
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

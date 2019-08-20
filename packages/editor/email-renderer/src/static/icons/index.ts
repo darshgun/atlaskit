@@ -11,6 +11,11 @@ export * from './error';
 export * from './decision';
 export * from './taskItemChecked';
 export * from './taskItemUnchecked';
+export * from './genericAttachment';
+export * from './audioAttachment';
+export * from './videoAttachment';
+export * from './archiveAttachment';
+export * from './documentAttachment';
 
 export enum IconName {
   info = 'info',
@@ -22,6 +27,11 @@ export enum IconName {
   decision = 'decision',
   taskItemChecked = 'taskItemChecked',
   taskItemUnchecked = 'taskItemUnchecked',
+  genericAttachment = 'genericAttachment',
+  audioAttachment = 'audioAttachment',
+  videoAttachment = 'videoAttachment',
+  archiveAttachment = 'archiveAttachment',
+  documentAttachment = 'documentAttachment',
 }
 
 export type IconString =
@@ -33,4 +43,9 @@ export type IconString =
   | 'error'
   | 'decision'
   | 'taskItemChecked'
-  | 'taskItemUnchecked';
+  | 'taskItemUnchecked'
+  | 'genericAttachment'
+  | 'audioAttachment'
+  | 'videoAttachment'
+  | 'archiveAttachment'
+  | 'documentAttachment';

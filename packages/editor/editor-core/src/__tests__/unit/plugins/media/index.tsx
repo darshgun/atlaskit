@@ -27,6 +27,7 @@ import {
   sendKeyToPm,
   mountWithIntl,
   Refs,
+  storyContextIdentifierProviderFactory,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -35,17 +36,11 @@ import {
 } from '../../../../plugins/media/pm-plugins/main';
 import { setNodeSelection, setTextSelection } from '../../../../utils';
 import { AnalyticsHandler, analyticsService } from '../../../../analytics';
-import listPlugin from '../../../../plugins/lists';
-import mediaPlugin from '../../../../plugins/media';
-import codeBlockPlugin from '../../../../plugins/code-block';
-import rulePlugin from '../../../../plugins/rule';
-import tablePlugin from '../../../../plugins/table';
-import quickInsertPlugin from '../../../../plugins/quick-insert';
 import {
   insertMediaAsMediaSingle,
   alignAttributes,
 } from '../../../../plugins/media/utils/media-single';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   Clipboard,
   UploadPreviewUpdateEventPayload,
@@ -61,7 +56,8 @@ import {
 } from './_utils';
 import { MediaAttributes, MediaSingleAttributes } from '@atlaskit/adf-schema';
 import { ReactWrapper } from 'enzyme';
-import { ClipboardMediaPickerWrapper } from '../../../../plugins/media/ui/ClipboardMediaPickerWrapper';
+
+import { ClipboardWrapper } from '../../../../plugins/media/ui/MediaPicker/ClipboardWrapper';
 
 const pdfFile = {
   id: `${randomId()}`,
@@ -75,10 +71,14 @@ const pdfFile = {
 describe('Media plugin', () => {
   const createEditor = createEditorFactory<MediaPluginState>();
 
+  const contextIdentifierProvider = storyContextIdentifierProviderFactory();
   const mediaProvider = getFreshMediaProvider();
-  const providerFactory = ProviderFactory.create({ mediaProvider });
+  const providerFactory = ProviderFactory.create({
+    mediaProvider,
+    contextIdentifierProvider,
+  });
 
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
   const mediaPluginOptions = (dropzoneContainer: HTMLElement) => ({
     provider: mediaProvider,
     allowMediaSingle: true,
@@ -89,24 +89,21 @@ describe('Media plugin', () => {
     doc: any,
     editorProps = {},
     dropzoneContainer: HTMLElement = document.body,
-    extraPlugins: any[] = [],
   ) => {
     createAnalyticsEvent = jest.fn().mockReturnValue({
       fire() {},
     });
     return createEditor({
       doc,
-      editorPlugins: [
-        listPlugin,
-        mediaPlugin(mediaPluginOptions(dropzoneContainer)),
-        codeBlockPlugin(),
-        rulePlugin,
-        tablePlugin(),
-        ...extraPlugins,
-      ],
       editorProps: {
         ...editorProps,
+        allowLists: true,
+        media: mediaPluginOptions(dropzoneContainer),
+        allowCodeBlocks: true,
+        allowRule: true,
+        allowTables: true,
         allowAnalyticsGASV3: true,
+        contextIdentifierProvider,
       },
       providerFactory,
       pluginKey: mediaPluginKey,
@@ -178,6 +175,7 @@ describe('Media plugin', () => {
                 __fileName: 'foo.jpg',
                 __fileSize: 100,
                 __fileMimeType: 'image/jpeg',
+                __contextId: 'DUMMY-OBJECT-ID',
                 height: 100,
                 width: 100,
               })(),
@@ -192,6 +190,7 @@ describe('Media plugin', () => {
                 __fileName: 'bar.png',
                 __fileSize: 200,
                 __fileMimeType: 'image/png',
+                __contextId: 'DUMMY-OBJECT-ID',
                 height: 200,
                 width: 200,
               })(),
@@ -331,6 +330,7 @@ describe('Media plugin', () => {
                 __fileMimeType: 'pdf',
                 __fileSize: 200,
                 __fileName: 'lala.pdf',
+                __contextId: 'DUMMY-OBJECT-ID',
                 collection: testCollectionName,
               })(),
             ),
@@ -342,6 +342,7 @@ describe('Media plugin', () => {
                 height: 200,
                 width: 200,
                 __fileMimeType: 'image/png',
+                __contextId: 'DUMMY-OBJECT-ID',
                 type: 'file',
                 collection: testCollectionName,
               })(),
@@ -362,7 +363,7 @@ describe('Media plugin', () => {
 
     await waitForAllPickersInitialised(pluginState);
 
-    expect(pluginState.pickers.length).toBe(2);
+    expect(pluginState.pickers.length).toBe(1);
   });
 
   it('should re-use old pickers when new media provider is set', async () => {
@@ -374,7 +375,7 @@ describe('Media plugin', () => {
     await waitForAllPickersInitialised(pluginState);
 
     const pickersAfterMediaProvider1 = pluginState.pickers;
-    expect(pickersAfterMediaProvider1.length).toBe(2);
+    expect(pickersAfterMediaProvider1.length).toBe(1);
 
     await getFreshMediaProvider();
 
@@ -413,7 +414,7 @@ describe('Media plugin', () => {
     });
   });
 
-  it('should trigger analytics events for picking and dropzone', async () => {
+  it.skip('should trigger analytics events for picking and dropzone', async () => {
     const { pluginState } = editor(doc(p('{<>}')));
     const spy = jest.fn();
     analyticsService.handler = spy as AnalyticsHandler;
@@ -623,11 +624,13 @@ describe('Media plugin', () => {
             id: 'bar',
             type: 'file',
             collection: testCollectionName,
+            __contextId: 'DUMMY-OBJECT-ID',
           })(),
           media({
             id: 'foo',
             type: 'file',
             collection: testCollectionName,
+            __contextId: 'DUMMY-OBJECT-ID',
           })(),
         ),
         p(),
@@ -993,6 +996,7 @@ describe('Media plugin', () => {
               __fileMimeType: pdfFile.fileMimeType,
               __fileName: pdfFile.fileName,
               __fileSize: pdfFile.fileSize,
+              __contextId: 'DUMMY-OBJECT-ID',
               collection: testCollectionName,
             })(),
           ),
@@ -1018,6 +1022,7 @@ describe('Media plugin', () => {
               __fileMimeType: pdfFile.fileMimeType,
               __fileName: pdfFile.fileName,
               __fileSize: pdfFile.fileSize,
+              __contextId: 'DUMMY-OBJECT-ID',
               collection: testCollectionName,
             })(),
           ),
@@ -1036,6 +1041,7 @@ describe('Media plugin', () => {
             __fileMimeType: pdfFile.fileMimeType,
             __fileName: pdfFile.fileName,
             __fileSize: pdfFile.fileSize,
+            __contextId: 'DUMMY-OBJECT-ID',
             collection: testCollectionName,
           })(),
         ),
@@ -1052,11 +1058,11 @@ describe('Media plugin', () => {
           mediaGroup(
             media({
               id: pdfFile.id,
-
               type: 'file',
               __fileMimeType: pdfFile.fileMimeType,
               __fileName: pdfFile.fileName,
               __fileSize: pdfFile.fileSize,
+              __contextId: 'DUMMY-OBJECT-ID',
               collection: testCollectionName,
             })(),
             media({
@@ -1066,6 +1072,7 @@ describe('Media plugin', () => {
               __fileMimeType: pdfFile.fileMimeType,
               __fileName: pdfFile.fileName,
               __fileSize: pdfFile.fileSize,
+              __contextId: 'DUMMY-OBJECT-ID',
               collection: testCollectionName,
             })(),
           ),
@@ -1080,7 +1087,7 @@ describe('Media plugin', () => {
     let editorView: EditorView;
     let mediaState: MediaPluginState;
     let mediaAttributes: MediaAttributes;
-    let clipboardMediaPickerWrapper: ReactWrapper<any, any, any>;
+    let clipboardWrapper: ReactWrapper<any, any, any>;
 
     beforeEach(async () => {
       mediaAttributes = {
@@ -1102,17 +1109,14 @@ describe('Media plugin', () => {
 
       setNodeSelection(editorView, mediaPosition);
 
-      clipboardMediaPickerWrapper = mountWithIntl(
-        <ClipboardMediaPickerWrapper mediaState={mediaState} />,
+      clipboardWrapper = mountWithIntl(
+        <ClipboardWrapper mediaState={mediaState} />,
       );
     });
 
     afterEach(() => {
-      if (
-        clipboardMediaPickerWrapper &&
-        typeof clipboardMediaPickerWrapper.unmount === 'function'
-      ) {
-        clipboardMediaPickerWrapper.unmount();
+      if (clipboardWrapper && typeof clipboardWrapper.unmount === 'function') {
+        clipboardWrapper.unmount();
       }
     });
 
@@ -1134,7 +1138,6 @@ describe('Media plugin', () => {
           name: 'test.png',
           size: 1,
           type: 'file/test',
-          upfrontId: Promise.resolve('test'),
           creationDate: 1,
         },
         preview: {
@@ -1148,15 +1151,15 @@ describe('Media plugin', () => {
 
       await waitUntil(
         () =>
-          (clipboardMediaPickerWrapper as any).state('pickerFacadeInstance') !==
+          (clipboardWrapper as any).state('pickerFacadeInstance') !==
             undefined &&
-          !clipboardMediaPickerWrapper
+          !clipboardWrapper
             .update()
             .find(Clipboard)
             .isEmpty(),
       );
 
-      const onPreviewUpdate = clipboardMediaPickerWrapper
+      const onPreviewUpdate = clipboardWrapper
         .find(Clipboard)
         .prop('onPreviewUpdate');
 
@@ -1175,7 +1178,6 @@ describe('Media plugin', () => {
       doc(p('{<>}')),
       {},
       undefined,
-      [quickInsertPlugin],
     );
     await waitForAllPickersInitialised(pluginState);
     insertText(editorView, '/Files', sel);

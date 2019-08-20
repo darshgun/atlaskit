@@ -9,7 +9,7 @@ describe('TypeScript dist check', function() {
         if (error || stderr) {
           return done.fail(error || stderr);
         }
-
+        expect(stdout).toBeDefined();
         return done();
       },
     );
@@ -21,7 +21,7 @@ describe('TypeScript dist check', function() {
       (error, stdout, stderr) => {
         if (stderr) {
           expect(stderr).toEqual(
-            'Error: Build files in root are  missing some files: index.js\n',
+            'Error: Build files in root are  missing some files or folders: index.js\n',
           );
           return done();
         }

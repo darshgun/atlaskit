@@ -4,15 +4,20 @@ import { Schema, Node, Fragment } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, StateField } from 'prosemirror-state';
 import {
   AnalyticsEventPayload,
-  CreateUIAnalyticsEventSignature,
+  CreateUIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import {
   MentionProvider,
+  TeamMentionProvider,
   isSpecialMention,
   isResolvingMentionProvider,
   MentionDescription,
   ELEMENTS_CHANNEL,
 } from '@atlaskit/mention/resource';
+import {
+  TeamMentionHighlight,
+  TeamMentionHighlightController,
+} from '@atlaskit/mention/spotlight';
 import { MentionItem } from '@atlaskit/mention/item';
 import { TeamMember } from '@atlaskit/mention/team-resource';
 import { mention } from '@atlaskit/adf-schema';
@@ -61,7 +66,7 @@ export interface TeamInfoAttrAnalytics {
 }
 
 const mentionsPlugin = (
-  createAnalyticsEvent?: CreateUIAnalyticsEventSignature,
+  createAnalyticsEvent?: CreateUIAnalyticsEvent,
   sanitizePrivateContent?: boolean,
   mentionInsertDisplayName?: boolean,
 ): EditorPlugin => {
@@ -151,6 +156,27 @@ const mentionsPlugin = (
         // Custom regex must have a capture group around trigger
         // so it's possible to use it without needing to scan through all triggers again
         customRegex: '\\(?(@)',
+        getHighlight: (state: EditorState) => {
+          const pluginState = getMentionPluginState(state);
+          const provider = pluginState.mentionProvider;
+          if (provider) {
+            const teamMentionProvider = provider as TeamMentionProvider;
+            if (
+              isTeamMentionProvider(teamMentionProvider) &&
+              teamMentionProvider.mentionTypeaheadHighlightEnabled()
+            ) {
+              return (
+                <TeamMentionHighlight
+                  createTeamLink={teamMentionProvider.mentionTypeaheadCreateTeamPath()}
+                  onClose={() =>
+                    TeamMentionHighlightController.registerClosed()
+                  }
+                />
+              );
+            }
+          }
+          return null;
+        },
         getItems(
           query,
           state,
@@ -263,6 +289,8 @@ const mentionsPlugin = (
           sessionId = uuid();
 
           if (mentionProvider && isTeamType(userType)) {
+            TeamMentionHighlightController.registerTeamMention();
+
             return insert(
               buildNodesForTeamMention(
                 schema,
@@ -388,7 +416,7 @@ export function getMentionPluginState(state: EditorState) {
 }
 
 export type MentionPluginState = {
-  mentionProvider?: MentionProvider;
+  mentionProvider?: MentionProvider | TeamMentionProvider;
   contextIdentifierProvider?: ContextIdentifierProvider;
   mentions?: Array<MentionDescription>;
 };
@@ -619,3 +647,9 @@ function buildNodesForTeamMention(
   inlineNodes.push(closeBracketText);
   return Fragment.fromArray(inlineNodes);
 }
+
+const isTeamMentionProvider = (p: any): p is TeamMentionProvider =>
+  !!(
+    (p as TeamMentionProvider).mentionTypeaheadHighlightEnabled &&
+    (p as TeamMentionProvider).mentionTypeaheadCreateTeamPath
+  );

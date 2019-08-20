@@ -12,6 +12,10 @@ jest.mock('exenv', () => ({
   },
 }));
 
+beforeEach(() => {
+  jest.setTimeout(10000);
+});
+
 jest.spyOn(global.console, 'error');
 
 afterEach(() => {
@@ -19,7 +23,7 @@ afterEach(() => {
 });
 
 const App = () => <Pagination pages={[1, 2, 3]} />;
-
+// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
 test.skip('should ssr then hydrate tag correctly', () => {
   const canUseDom = jest.spyOn(exenv, 'canUseDOM', 'get');
 

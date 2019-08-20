@@ -16,7 +16,7 @@ import { taskDecision } from '@atlaskit/util-data-test';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { uuid } from '@atlaskit/adf-schema';
 import Button from '@atlaskit/button';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 import { pluginKey as blockTypePluginKey } from '../../../../../plugins/block-type/pm-plugins/main';
 import {
@@ -40,13 +40,12 @@ import {
   INPUT_METHOD,
   DispatchAnalyticsEvent,
 } from '../../../../../plugins/analytics';
-import tablesPlugin from '../../../../../plugins/table';
 import { AnalyticsHandler } from '../../../../../analytics';
 import { ReactWrapper, mount } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
 import { InsertMenuCustomItem } from '../../../../../types';
 import { TooltipShortcut } from '../../../../../keymaps';
-import Icon from '@atlaskit/icon';
+
 const emojiProvider = emojiData.testData.getEmojiResourcePromise();
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
@@ -67,7 +66,7 @@ const getToolbarButton = (
   toolbarOption
     .find(ToolbarButton)
     .filterWhere(
-      toolbarButton => toolbarButton.find(Icon).prop('label') === title,
+      toolbarButton => toolbarButton.find('Icon').prop('label') === title,
     )
     .find(Button);
 
@@ -110,11 +109,11 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   let pluginState: any;
   let toolbarOption: ReactWrapper;
   let analyticsHandlerSpy: jest.Mock<AnalyticsHandler>;
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
   let dispatchAnalyticsSpy: jest.SpyInstance<DispatchAnalyticsEvent>;
   let dispatchSpy: jest.SpyInstance;
 
-  const editor = (doc: any, editorPlugins?: any[]) => {
+  const editor = (doc: any) => {
     createAnalyticsEvent = jest.fn(() => ({ fire() {} }));
     return createEditor({
       doc,
@@ -126,12 +125,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         allowLists: true,
         allowPanel: true,
         allowRule: true,
+        allowTables: true,
         allowAnalyticsGASV3: true,
         taskDecisionProvider: Promise.resolve(
           taskDecision.getMockTaskDecisionResource(),
         ),
       },
-      editorPlugins,
       providerFactory,
       createAnalyticsEvent,
     });
@@ -422,7 +421,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
       describe('click table option', () => {
         beforeEach(() => {
-          ({ editorView } = editor(doc(p('text')), [tablesPlugin()]));
+          ({ editorView } = editor(doc(p('text'))));
           buildToolbarForMenu({ tableSupported: true });
           menu.clickButton(messages.table.defaultMessage, toolbarOption);
         });

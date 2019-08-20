@@ -6,10 +6,14 @@ import { ssr } from '@atlaskit/ssr';
 
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
+beforeEach(() => {
+  jest.setTimeout(10000);
+});
+
 afterEach(() => {
   jest.resetAllMocks();
 });
-
+// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
 test.skip('should ssr then hydrate field-range correctly', async () => {
   const [example] = await getExamplesFor('field-range');
   // $StringLitteral

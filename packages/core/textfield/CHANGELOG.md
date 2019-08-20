@@ -1,5 +1,46 @@
 # @atlaskit/textfield
 
+## 3.0.2
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 3.0.1
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/avatar@16.0.10
+  - @atlaskit/button@13.1.2
+
+## 3.0.0
+
+### Major Changes
+
+- [major][84887b940c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84887b940c):
+
+  - Converting from flow to typescript 🎉
+  - Correctly typing the current prop spreading onto the internal `<input>` element
+  - Removing `isHovered` and `isFocused` from public API as they previously did not do anything
+
+## 2.0.5
+
+### Patch Changes
+
+- [patch][2fe6e8fbdf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2fe6e8fbdf):
+
+  Removed unused dependencies from package.json for textfield: @emotion/core was unused.
+
+## 2.0.4
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
 ## 2.0.3
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

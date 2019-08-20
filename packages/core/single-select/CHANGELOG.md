@@ -1,5 +1,29 @@
 # @atlaskit/single-select
 
+## 8.0.9
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 8.0.8
+
+### Patch Changes
+
+- [patch][d905cbc0ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d905cbc0ac):
+
+  Adding a condition to check if the component are referenced in tests running in CI. It reduces the noise and help reading the CI log.
+
+## 8.0.7
+
+### Patch Changes
+
+- [patch][226a5fece8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/226a5fece8):
+
+  Upating deprecation messages and adding console warning to improve visibility
+
 ## 8.0.6
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

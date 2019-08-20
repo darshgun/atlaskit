@@ -32,6 +32,7 @@ export type TypeAheadProps = {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  highlight?: JSX.Element | null;
 };
 
 export function TypeAhead({
@@ -44,6 +45,7 @@ export function TypeAhead({
   popupsMountPoint,
   popupsBoundariesElement,
   popupsScrollableElement,
+  highlight,
 }: TypeAheadProps) {
   if (!active || !anchorElement || !items || !items.length) {
     return null;
@@ -60,6 +62,7 @@ export function TypeAhead({
       offset={[0, 8]}
     >
       <TypeAheadContent className="fabric-editor-typeahead">
+        {highlight}
         {Array.isArray(items) ? (
           <TypeAheadItemsList
             insertByIndex={index =>

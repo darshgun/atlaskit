@@ -1,5 +1,39 @@
 # @atlaskit/table-tree
 
+## 7.0.11
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 7.0.10
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/select@10.0.3
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/button@13.1.2
+
+## 7.0.9
+
+- Updated dependencies [433311c16a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/433311c16a):
+  - @atlaskit/empty-state@6.0.0
+
+## 7.0.8
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 7.0.7
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/select@10.0.0
+
 ## 7.0.6
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

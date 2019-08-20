@@ -3,7 +3,7 @@ import { hasParentNodeOfType } from 'prosemirror-utils';
 
 import { taskDecisionSliceFilter } from '../../utils/filter';
 import { linkifyContent } from '../hyperlink/utils';
-import { Slice, Mark } from 'prosemirror-model';
+import { Slice, Mark, Node as PMNode, Fragment } from 'prosemirror-model';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { runMacroAutoConvert } from '../macro';
@@ -23,6 +23,8 @@ import { CardOptions } from '../card';
 import { CardAppearance } from '@atlaskit/smart-card';
 import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { MentionAttributes } from '@atlaskit/adf-schema';
+import { insideTable } from '../../utils';
+import { GapCursorSelection, Side } from '../gap-cursor/';
 
 // remove text attribute from mention for copy/paste (GDPR)
 export function handleMention(slice: Slice, schema: Schema): Slice {
@@ -340,10 +342,34 @@ function isOnlyMedia(state: EditorState, slice: Slice) {
   );
 }
 
+function isOnlyMediaSingle(state: EditorState, slice: Slice) {
+  const { mediaSingle } = state.schema.nodes;
+  return (
+    mediaSingle &&
+    slice.content.childCount === 1 &&
+    slice.content.firstChild!.type === mediaSingle
+  );
+}
+
 export function handleMediaSingle(slice: Slice): Command {
-  return (state, _dispatch, view) => {
-    if (view && isOnlyMedia(state, slice)) {
-      return insertMediaAsMediaSingle(view, slice.content.firstChild!);
+  return (state, dispatch, view) => {
+    if (view) {
+      if (isOnlyMedia(state, slice)) {
+        return insertMediaAsMediaSingle(view, slice.content.firstChild!);
+      }
+
+      if (insideTable(state) && isOnlyMediaSingle(state, slice)) {
+        const tr = state.tr.replaceSelection(slice);
+        const nextPos = tr.doc.resolve(
+          tr.mapping.map(state.selection.$from.pos),
+        );
+        if (dispatch) {
+          dispatch(
+            tr.setSelection(new GapCursorSelection(nextPos, Side.RIGHT)),
+          );
+        }
+        return true;
+      }
     }
     return false;
   };
@@ -381,6 +407,35 @@ function hasInlineCode(state: EditorState, slice: Slice) {
   );
 }
 
+function isList(schema: Schema, node: PMNode | null | undefined) {
+  const { bulletList, orderedList } = schema.nodes;
+  return node && (node.type === bulletList || node.type === orderedList);
+}
+
+function flattenList(state: EditorState, node: PMNode, nodesArr: PMNode[]) {
+  const { listItem } = state.schema.nodes;
+  node.content.forEach(child => {
+    if (
+      isList(state.schema, child) ||
+      (child.type === listItem && isList(state.schema, child.firstChild))
+    ) {
+      flattenList(state, child, nodesArr);
+    } else {
+      nodesArr.push(child);
+    }
+  });
+}
+
+function shouldFlattenList(state: EditorState, slice: Slice) {
+  const node = slice.content.firstChild;
+  return (
+    node &&
+    insideTable(state) &&
+    isList(state.schema, node) &&
+    slice.openStart > slice.openEnd
+  );
+}
+
 export function handleRichText(slice: Slice): Command {
   return (state, dispatch) => {
     const { codeBlock } = state.schema.nodes;
@@ -389,6 +444,36 @@ export function handleRichText(slice: Slice): Command {
     const tr = state.tr;
     if (hasInlineCode(state, slice)) {
       removePrecedingBackTick(tr);
+    }
+    /**
+     * ED-6300: When a nested list is pasted in a table cell and the slice has openStart > openEnd,
+     * it splits the table. As a workaround, we flatten the list to even openStart and openEnd
+     *
+     *  Before:
+     *  ul
+     *    ┗━ li
+     *      ┗━ ul
+     *        ┗━ li
+     *          ┗━ p -> "one"
+     *    ┗━ li
+     *      ┗━ p -> "two"
+     *
+     *  After:
+     *  ul
+     *    ┗━ li
+     *      ┗━ p -> "one"
+     *    ┗━ li
+     *      ┗━p -> "two"
+     */
+    if (shouldFlattenList(state, slice) && slice.content.firstChild) {
+      const node = slice.content.firstChild;
+      const nodes: PMNode[] = [];
+      flattenList(state, node, nodes);
+      slice = new Slice(
+        Fragment.from(node.type.createChecked(node.attrs, nodes)),
+        slice.openEnd,
+        slice.openEnd,
+      );
     }
 
     closeHistory(tr);

@@ -10,6 +10,7 @@ export enum Scope {
   People = 'cpus.user',
   UserJira = 'urs.user-jira',
   UserConfluence = 'urs.user-confluence',
+  NavSearchCompleteConfluence = 'nav.completion-confluence',
 }
 
 export type QuickSearchContext = 'jira' | 'confluence';
@@ -41,6 +42,7 @@ export interface ConfluenceItem {
     };
   };
   iconCssClass: string; // icon-file-* for attachments, otherwise not needed
+  friendlyLastModified: string; // e.g. "about 6 hours ago"
 }
 
 export interface JiraItemV1 {
@@ -65,6 +67,8 @@ export interface JiraItemAvatar {
 export interface JiraItemAttributes {
   '@type': 'issue' | 'board' | 'project' | 'filter';
   container?: Container;
+  containerName?: string;
+  containerId?: string;
   ownerId?: string;
   ownerName?: string;
   key?: string;
@@ -79,6 +83,15 @@ export interface JiraItemV2 {
   name: string;
   url: string;
   attributes: JiraItemAttributes;
+}
+
+export interface NavScopeResultItem {
+  query: string;
+}
+
+export interface NavScopeResult {
+  id: string;
+  results: NavScopeResultItem[];
 }
 
 export type JiraItem = JiraItemV1 | JiraItemV2;

@@ -8,7 +8,7 @@ import {
 import {
   withAnalyticsEvents,
   createAndFireEvent,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 
 import {
@@ -55,7 +55,7 @@ export interface CardViewState {
 }
 
 export type CardViewBaseProps = CardViewOwnProps &
-  WithAnalyticsEventProps & {
+  WithAnalyticsEventsProps & {
     readonly mediaItemType: MediaItemType;
   };
 

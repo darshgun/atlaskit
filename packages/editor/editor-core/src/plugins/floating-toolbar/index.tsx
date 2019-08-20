@@ -71,7 +71,7 @@ function filterUndefined<T>(x?: T): x is T {
   return !!x;
 }
 
-const floatingToolbarPlugin: EditorPlugin = {
+const floatingToolbarPlugin = (): EditorPlugin => ({
   name: 'floatingToolbar',
 
   pmPlugins(floatingToolbarHandlers: Array<FloatingToolbarHandler> = []) {
@@ -121,6 +121,7 @@ const floatingToolbarPlugin: EditorPlugin = {
               height,
               width,
               offset = [0, 12],
+              forcePlacement,
             } = floatingToolbarConfig;
             const targetRef = getDomRef(editorView);
 
@@ -131,6 +132,7 @@ const floatingToolbarPlugin: EditorPlugin = {
                   offset={offset}
                   target={targetRef}
                   alignY="bottom"
+                  forcePlacement={forcePlacement}
                   fitHeight={height}
                   fitWidth={width}
                   alignX={align}
@@ -163,7 +165,7 @@ const floatingToolbarPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 
 export default floatingToolbarPlugin;
 

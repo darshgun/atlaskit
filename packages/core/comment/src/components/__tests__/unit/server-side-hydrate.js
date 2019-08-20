@@ -8,10 +8,14 @@ import waitForExpect from 'wait-for-expect';
 
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
+beforeEach(() => {
+  jest.setTimeout(10000);
+});
+
 afterEach(() => {
   jest.resetAllMocks();
 });
-
+// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
 test.skip('should ssr then hydrate comment correctly', async () => {
   const [example] = await getExamplesFor('comment');
   // $StringLitteral
@@ -31,7 +35,7 @@ test.skip('should ssr then hydrate comment correctly', async () => {
         s === 'style'
       ),
   );
-  waitForExpect(() => {
-    expect(mockCalls.length).toBe(0); // eslint-disable-line no-console
+  await waitForExpect(() => {
+    expect(mockCalls.length).toBe(0);
   });
 });

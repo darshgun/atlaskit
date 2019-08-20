@@ -2,7 +2,7 @@
 
 import React, { Component, type ElementType, type Ref } from 'react';
 
-import deepEqual from 'deep-equal';
+import deepEqual from 'react-fast-compare';
 import type { Dataset, ItemPrimitiveProps } from './types';
 import { styleReducerNoOp, withContentTheme } from '../../../theme';
 
@@ -55,7 +55,7 @@ const getItemComponentProps = (props: ItemPrimitiveProps) => {
 class ItemPrimitive extends Component<ItemPrimitiveProps> {
   static defaultProps = {
     dataset: {
-      'data-test-id': 'NavigationItem',
+      'data-testid': 'NavigationItem',
     },
     isActive: false,
     isDragging: false,

@@ -4,7 +4,7 @@ import { EditorState, Transaction, Selection } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { intlShape } from 'react-intl';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   ProviderFactory,
   Transformer,
@@ -58,7 +58,7 @@ import { getNodesCount } from '../utils/document';
 
 export interface EditorViewProps {
   editorProps: EditorProps;
-  createAnalyticsEvent?: CreateUIAnalyticsEventSignature;
+  createAnalyticsEvent?: CreateUIAnalyticsEvent;
   providerFactory: ProviderFactory;
   portalProviderAPI: PortalProviderAPI;
   allowAnalyticsGASV3?: boolean;
@@ -88,6 +88,16 @@ export interface EditorViewProps {
       transformer?: Transformer<string>;
     },
   ) => void;
+}
+
+function handleEditorFocus(view: EditorView) {
+  if (view.hasFocus()) {
+    return;
+  }
+
+  window.setTimeout(() => {
+    view.focus();
+  }, 0);
 }
 
 export default class ReactEditorView<T = {}> extends React.Component<
@@ -155,6 +165,13 @@ export default class ReactEditorView<T = {}> extends React.Component<
       this.view.setProps({
         editable: _state => !nextProps.editorProps.disabled,
       } as DirectEditorProps);
+
+      if (
+        !nextProps.editorProps.disabled &&
+        nextProps.editorProps.shouldFocus
+      ) {
+        handleEditorFocus(this.view);
+      }
     }
 
     // Activate or deactivate analytics if change property
@@ -256,7 +273,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
    * Create analytics event handler, if createAnalyticsEvent exist
    * @param createAnalyticsEvent
    */
-  activateAnalytics(createAnalyticsEvent?: CreateUIAnalyticsEventSignature) {
+  activateAnalytics(createAnalyticsEvent?: CreateUIAnalyticsEvent) {
     if (createAnalyticsEvent) {
       this.analyticsEventHandler = fireAnalyticsEvent(createAnalyticsEvent);
       this.eventDispatcher.on(analyticsEventKey, this.analyticsEventHandler);
@@ -285,7 +302,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
   // Helper to allow tests to inject plugins directly
   getPlugins(
     editorProps: EditorProps,
-    createAnalyticsEvent?: CreateUIAnalyticsEventSignature,
+    createAnalyticsEvent?: CreateUIAnalyticsEvent,
   ): EditorPlugin[] {
     return createPluginList(editorProps, createAnalyticsEvent);
   }
@@ -442,12 +459,20 @@ export default class ReactEditorView<T = {}> extends React.Component<
   handleEditorViewRef = (node: HTMLDivElement) => {
     if (!this.view && node) {
       this.createEditorView(node);
+      const view = this.view!;
       this.props.onEditorCreated({
-        view: this.view!,
+        view,
         config: this.config,
         eventDispatcher: this.eventDispatcher,
         transformer: this.contentTransformer,
       });
+
+      if (
+        this.props.editorProps.shouldFocus &&
+        (view.props.editable && view.props.editable(view.state))
+      ) {
+        handleEditorFocus(view);
+      }
 
       // Set the state of the EditorDisabled plugin to the current value
       this.broadcastDisabled(!!this.props.editorProps.disabled);

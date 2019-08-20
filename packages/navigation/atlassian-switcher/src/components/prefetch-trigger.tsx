@@ -2,6 +2,7 @@ import * as React from 'react';
 import throttle from 'lodash.throttle';
 import now from '../utils/performance-now';
 import { prefetchAll } from '../providers/instance-data-providers';
+import { prefetchAvailableProducts } from '../providers/products-data-provider';
 import {
   NAVIGATION_CHANNEL,
   NavigationAnalyticsContext,
@@ -12,9 +13,10 @@ import {
 } from '../utils/analytics';
 import {
   AnalyticsEventPayload,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import packageContext from '../utils/package-context';
+import { FeatureFlagProps } from '../types';
 
 const THROTTLE_EXPIRES = 60 * 1000; // 60 seconds
 const THROTTLE_OPTIONS = {
@@ -27,14 +29,14 @@ const TRIGGER_CONTEXT = {
   ...packageContext,
 };
 
-interface PrefetchTriggerProps {
+type PrefetchTriggerProps = {
   children: React.ReactNode;
-  cloudId: string;
+  cloudId?: string;
   Container?: React.ReactType;
-}
+} & Partial<FeatureFlagProps>;
 
 class PrefetchTrigger extends React.Component<
-  PrefetchTriggerProps & WithAnalyticsEventProps
+  PrefetchTriggerProps & WithAnalyticsEventsProps
 > {
   private lastEnteredAt?: number;
 
@@ -50,9 +52,15 @@ class PrefetchTrigger extends React.Component<
     }
   };
 
-  private triggerPrefetch: typeof prefetchAll = throttle(
-    (params: any) => {
-      prefetchAll(params);
+  private triggerPrefetch = throttle(
+    () => {
+      const { cloudId } = this.props;
+      if (cloudId) {
+        prefetchAll({ cloudId });
+      }
+      if (this.props.enableUserCentricProducts) {
+        prefetchAvailableProducts();
+      }
       this.fireOperationalEvent({
         action: 'triggered',
       });
@@ -62,7 +70,7 @@ class PrefetchTrigger extends React.Component<
   );
 
   private handleMouseEnter = () => {
-    this.triggerPrefetch({ cloudId: this.props.cloudId });
+    this.triggerPrefetch();
     this.lastEnteredAt = now();
   };
 

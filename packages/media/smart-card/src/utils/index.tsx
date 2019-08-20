@@ -2,14 +2,20 @@ import * as React from 'react';
 import Loadable from 'react-loadable';
 
 import { CardProps } from '../view/Card';
-import { CardWithData } from '../view/Card/types';
 import { CardState } from '../state/types';
 
-export const isCardWithData = (props: CardProps): props is CardWithData =>
-  !!(props as CardWithData).data;
+export const isCardWithData = (props: CardProps) => !!props.data;
+
+export const isSpecialEvent = (evt: React.MouseEvent | React.KeyboardEvent) =>
+  evt.isDefaultPrevented() &&
+  (isIframe() || isSpecialKey(evt) || isSpecialClick(evt as React.MouseEvent));
+
+export const isIframe = () => window.parent !== parent;
 
 export const isSpecialKey = (event: React.MouseEvent | React.KeyboardEvent) =>
-  event.isDefaultPrevented() && (event.metaKey || event.ctrlKey);
+  event.metaKey || event.ctrlKey;
+
+export const isSpecialClick = (event: React.MouseEvent) => event.button === 1;
 
 export const getCollapsedIcon = (
   details: CardState['details'],

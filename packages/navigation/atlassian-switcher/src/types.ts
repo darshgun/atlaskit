@@ -1,12 +1,15 @@
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export interface TriggerXFlowCallback {
   (
     productKey: string,
     sourceComponent: string,
     event: any,
-    analyticsEvent: UIAnalyticsEventInterface,
+    analyticsEvent: UIAnalyticsEvent,
   ): void;
+}
+export interface DiscoverMoreCallback {
+  (event: any, analyticsEvent: UIAnalyticsEvent): void;
 }
 
 export interface WithCloudId {
@@ -49,14 +52,31 @@ export enum Product {
 
 export enum Feature {
   enableUserCentricProducts = 'enableUserCentricProducts',
+  disableCustomLinks = 'disableCustomLinks',
+  disableRecentContainers = 'disableRecentContainers',
+  disableHeadings = 'disableHeadings',
   xflow = 'xflow',
+  isDiscoverMoreForEveryoneEnabled = 'isDiscoverMoreForEveryoneEnabled',
+}
+
+export enum MultiVariateFeature {
+  productTopItemVariation = 'productTopItemVariation',
+}
+
+export enum ProductTopItemVariation {
+  mostFrequentSite = 'most-frequent-site',
+  currentSite = 'current-site',
 }
 
 export type FeatureFlagProps = {
   [key in Exclude<Feature, typeof Feature.xflow>]: boolean
+} & {
+  [MultiVariateFeature.productTopItemVariation]: ProductTopItemVariation;
 };
 
-export type FeatureMap = { [key in Feature]: boolean };
+export type FeatureMap = { [key in Feature]: boolean } & {
+  [MultiVariateFeature.productTopItemVariation]: ProductTopItemVariation;
+};
 
 export type CustomLinksResponse = CustomLink[];
 
@@ -91,6 +111,7 @@ export enum WorklensProductType {
   CONFLUENCE = 'CONFLUENCE',
   OPSGENIE = 'OPSGENIE',
   BITBUCKET = 'BITBUCKET',
+  STATUSPAGE = 'STATUSPAGE',
 }
 
 export type AvailableProduct =
@@ -120,4 +141,28 @@ export interface AvailableSite {
 
 export interface AvailableProductsResponse {
   sites: AvailableSite[];
+}
+
+export enum ProductKey {
+  CONFLUENCE = 'confluence.ondemand',
+  JIRA_CORE = 'jira-core.ondemand',
+  JIRA_SOFTWARE = 'jira-software.ondemand',
+  JIRA_SERVICE_DESK = 'jira-servicedesk.ondemand',
+  JIRA_OPS = 'jira-incident-manager.ondemand',
+  OPSGENIE = 'opsgenie',
+}
+
+export type RecommendationsEngineResponse = RecommendationItem[];
+
+export interface RecommendationItem {
+  productKey: ProductKey;
+}
+
+export type RecommendationsFeatureFlags = {
+  [key: string]: string | boolean;
+};
+
+export interface SwitcherChildItem {
+  href: string;
+  label: string;
 }

@@ -59,9 +59,8 @@ describe('ImageViewer', () => {
     const { el } = createFixture(response);
 
     (el as any).instance()['preventRaceCondition'] = jest.fn();
-
     await awaitError(response, REQUEST_CANCELLED);
-
+    expect(response).toBeDefined();
     expect(
       (el as any).instance()['preventRaceCondition'].mock.calls.length === 1,
     );
@@ -94,7 +93,7 @@ describe('ImageViewer', () => {
     expect(revokeObjectUrl).toHaveBeenCalled();
   });
 
-  it('should pass collectionName to context.getImage', async () => {
+  it('should call mediaClient.getImage when image representation is present', async () => {
     const response = Promise.resolve(new Blob());
     const { el, mediaClient } = createFixture(response);
 
@@ -103,12 +102,18 @@ describe('ImageViewer', () => {
 
     expect(mediaClient.getImage).toHaveBeenCalledWith(
       'some-id',
-      expect.objectContaining({ collection: 'some-collection' }),
+      expect.objectContaining({
+        width: 4096,
+        height: 4096,
+        mode: 'fit',
+        allowAnimated: true,
+        collection: 'some-collection',
+      }),
       expect.anything(),
     );
   });
 
-  it('should not call context.getImage when image representation is not present', async () => {
+  it('should not call mediaClient.getImage when image representation is not present', async () => {
     const response = Promise.resolve(new Blob());
     const { el, mediaClient } = createFixture(response, {
       ...imageItem,

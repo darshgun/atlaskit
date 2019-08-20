@@ -9,10 +9,11 @@ import {
   ResolvingMentionProvider,
   MentionNameDetails,
   MentionNameStatus,
+  TeamMentionProvider,
 } from '@atlaskit/mention/resource';
 import {
   UIAnalyticsEvent,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import debug from '../logger';
 import { mentionResult } from './mention-data';
@@ -30,10 +31,11 @@ export interface MockMentionConfig {
   minWait?: number;
   maxWait?: number;
   mentionNameResolver?: MentionNameResolver;
+  enableTeamMentionHighlight?: boolean;
 }
 
 export const createMockMentionNameResolver = () => {
-  const analyticsProps: WithAnalyticsEventProps = {
+  const analyticsProps: WithAnalyticsEventsProps = {
     createAnalyticsEvent: payload => {
       // eslint-disable-next-line no-console
       console.log('analytics event', payload);
@@ -47,7 +49,7 @@ export const createMockMentionNameResolver = () => {
 };
 
 export class MockMentionResource extends AbstractMentionResource
-  implements ResolvingMentionProvider {
+  implements ResolvingMentionProvider, TeamMentionProvider {
   private config: MockMentionConfig;
   private lastReturnedSearch: number;
 
@@ -140,4 +142,9 @@ export class MockMentionResource extends AbstractMentionResource
   shouldHighlightMention(mention: MentionDescription): boolean {
     return mention.id === 'oscar';
   }
+
+  mentionTypeaheadHighlightEnabled = () =>
+    this.config.enableTeamMentionHighlight || false;
+
+  mentionTypeaheadCreateTeamPath = () => '/people/search#createTeam';
 }

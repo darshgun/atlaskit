@@ -15,11 +15,20 @@ import {
   MentionNameResolver,
 } from '@atlaskit/mention/resource';
 import { EditorView } from 'prosemirror-view';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { selectCurrentItem } from '../../../../plugins/type-ahead/commands/select-item';
 import { dismissCommand } from '../../../../plugins/type-ahead/commands/dismiss';
 import collabPlugin from '../../../../plugins/collab-edit';
 import mentionPlugin from '../../../../plugins/mentions';
+
+let mockRegisterTeamMention = jest.fn();
+
+jest.mock('@atlaskit/mention/spotlight', () => ({
+  __esModule: true,
+  TeamMentionHighlightController: {
+    registerTeamMention: () => mockRegisterTeamMention(),
+  },
+}));
 
 describe('mentionTypeahead', () => {
   const createEditor = createEditorFactory();
@@ -38,7 +47,7 @@ describe('mentionTypeahead', () => {
     editorView: EditorView;
     sel: number;
     mentionProvider: MentionProvider;
-    createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+    createAnalyticsEvent: CreateUIAnalyticsEvent;
     event: any;
     mockMentionNameResolver?: MentionNameResolver;
   };
@@ -561,6 +570,15 @@ describe('mentionTypeahead', () => {
       );
 
       it(
+        'should not register a team mention while selecting a user',
+        withMentionQuery('here', ({ editorView, mentionProvider }) => {
+          // select a user
+          selectCurrentItem()(editorView.state, editorView.dispatch);
+          expect(mockRegisterTeamMention).not.toHaveBeenCalled();
+        }),
+      );
+
+      it(
         'should not insert mention name when collabEdit.sanitizePrivateContent is true and mentionInsertDisplayName is true',
         withMentionQuery(
           'april',
@@ -705,6 +723,15 @@ describe('mentionTypeahead', () => {
               ),
             ),
           );
+        }),
+      );
+
+      it(
+        'should register a team mention ',
+        withMentionQuery('Team Beta', ({ editorView }) => {
+          // select Team Beta team
+          selectCurrentItem()(editorView.state, editorView.dispatch);
+          expect(mockRegisterTeamMention).toHaveBeenCalled();
         }),
       );
 

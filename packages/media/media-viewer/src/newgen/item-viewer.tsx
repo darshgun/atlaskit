@@ -7,7 +7,7 @@ import {
   isFileIdentifier,
 } from '@atlaskit/media-client';
 import { FormattedMessage } from 'react-intl';
-import { messages } from '@atlaskit/media-ui';
+import { messages, WithShowControlMethodProp } from '@atlaskit/media-ui';
 import { Outcome } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
@@ -23,7 +23,7 @@ import ErrorMessage, {
 import { ErrorViewDownloadButton } from './download';
 import {
   withAnalyticsEvents,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import {
   ViewerLoadPayload,
@@ -42,11 +42,11 @@ import { InteractiveImg } from './viewers/image/interactive-img';
 export type Props = Readonly<{
   identifier: Identifier;
   mediaClient: MediaClient;
-  showControls?: () => void;
   onClose?: () => void;
   previewCount: number;
 }> &
-  WithAnalyticsEventProps;
+  WithAnalyticsEventsProps &
+  WithShowControlMethodProp;
 
 export type State = {
   item: Outcome<FileState, MediaViewerError>;

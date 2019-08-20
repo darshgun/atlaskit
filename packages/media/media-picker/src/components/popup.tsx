@@ -6,10 +6,10 @@ import * as exenv from 'exenv';
 import App, { AppProxyReactContext } from '../popup/components/app';
 import { cancelUpload } from '../popup/actions/cancelUpload';
 import { showPopup } from '../popup/actions/showPopup';
-import { resetView } from '../popup/actions/resetView';
 import { getFilesInRecents } from '../popup/actions/getFilesInRecents';
 import { State } from '../popup/domain';
 import { hidePopup } from '../popup/actions/hidePopup';
+import { failureErrorLogger } from '../popup/actions/failureErrorLogger';
 import { createStore } from '../store';
 import { UploadComponent } from './component';
 
@@ -79,7 +79,6 @@ export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
   public async show(): Promise<void> {
     const { dispatch } = this.store;
 
-    dispatch(resetView());
     dispatch(getFilesInRecents());
     dispatch(showPopup());
   }
@@ -100,8 +99,19 @@ export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
     if (!this.container) {
       return;
     }
-    unmountComponentAtNode(this.container);
-    this.container.remove();
+
+    try {
+      unmountComponentAtNode(this.container);
+      this.container.remove();
+    } catch (error) {
+      const { dispatch } = this.store;
+      dispatch(
+        failureErrorLogger({
+          error,
+          info: '`ChildNode#remove()` polyfill is not available in client',
+        }),
+      );
+    }
   }
 
   public hide(): void {

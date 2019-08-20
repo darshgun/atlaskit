@@ -1,5 +1,294 @@
 # @atlaskit/media-picker
 
+## 47.0.0
+
+### Major Changes
+
+- [major][6879d7d01e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6879d7d01e):
+
+  Removed `public` property from Media Picker's `upload-end` event. It has not been used by anything anyway and it's a legacy from the times where we didn't have upfront id so is now redundant.
+
+## 46.0.10
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 46.0.9
+
+- Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
+  - @atlaskit/media-card@63.3.11
+  - @atlaskit/media-client@2.0.1
+  - @atlaskit/media-core@30.0.10
+  - @atlaskit/media-editor@36.2.9
+  - @atlaskit/media-store@12.0.8
+  - @atlaskit/media-viewer@43.2.10
+  - @atlaskit/media-ui@11.5.2
+  - @atlaskit/media-test-helpers@25.0.0
+
+## 46.0.8
+
+### Patch Changes
+
+- [patch][1439241943](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1439241943):
+
+  Adding error boundary in media picker dropzone
+
+## 46.0.7
+
+### Patch Changes
+
+- [patch][d3ccc2e47f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ccc2e47f):
+
+  Fix media picker's dropzone analytics event by including the necessary eventType key
+
+## 46.0.6
+
+### Patch Changes
+
+- [patch][15290ac8ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15290ac8ad):
+
+  Fix issue where popup media-picker doesn't throw upload-end event
+
+## 46.0.5
+
+### Patch Changes
+
+- [patch][7c762529af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c762529af):
+
+  Move @types/bricks.js from dependencies to devDependencies.
+
+## 46.0.4
+
+### Patch Changes
+
+- [patch][116236c249](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/116236c249):
+
+  Instrument analytics for media-picker's dropzone draggedInto, draggedOut and droppedInto actions
+
+## 46.0.3
+
+- Updated dependencies [ee804f3eeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee804f3eeb):
+  - @atlaskit/media-card@63.3.9
+  - @atlaskit/media-core@30.0.9
+  - @atlaskit/media-editor@36.2.7
+  - @atlaskit/media-store@12.0.6
+  - @atlaskit/media-test-helpers@24.3.5
+  - @atlaskit/media-viewer@43.2.8
+  - @atlaskit/media-client@2.0.0
+
+## 46.0.2
+
+### Patch Changes
+
+- [patch][da814b8ebc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da814b8ebc):
+
+  Bump media-picker to fix the master bbranch where bitbucket and npm are out of sync.
+
+## 46.0.1
+
+### Patch Changes
+
+- [patch][6744fe7753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6744fe7753):
+
+  Adding dispatch for failure errors in media picker
+
+## 46.0.0
+
+### Major Changes
+
+- [major][4e8f6f609f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e8f6f609f):
+
+  Remove three fields from MediaFile interface: upfrontId, userUpfrontId and userOccurrenceKey.
+
+## 45.0.9
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 45.0.8
+
+### Patch Changes
+
+- [patch][a58828c9e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a58828c9e2):
+
+  Fix analytics for insert files button and annotate file button
+
+## 45.0.7
+
+### Patch Changes
+
+- [patch][e29ffdb057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e29ffdb057):
+
+  update docs to latest component state (React + Popup), improve information
+
+## 45.0.6
+
+- Updated dependencies [7e9d653278](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e9d653278):
+  - @atlaskit/media-card@63.3.7
+  - @atlaskit/toggle@8.0.0
+
+## 45.0.5
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 45.0.4
+
+### Patch Changes
+
+- [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
+
+  bugfix, fixes missing version.json file
+
+## 45.0.3
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 45.0.2
+
+### Patch Changes
+
+- [patch][6a072313bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a072313bf):
+
+  Fixing analytics for upload handlers in media-picker- [patch][50d3fb94a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d3fb94a6):
+
+  Fixing analytics for upload handlers in @atlaskit/media-picker
+
+## 45.0.1
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/modal-dialog@10.0.10
+  - @atlaskit/media-test-helpers@24.3.1
+  - @atlaskit/select@10.0.0
+
+## 45.0.0
+
+### Major Changes
+
+- [major][e754b5f85e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e754b5f85e):
+
+  Media Picker Dropone component is now migrated to React.
+
+  - Previous vanilla js API:
+
+  ```
+  // instantiation
+  const dropzone = await new MediaPicker('dropzone', context, pickerConfig).init();
+
+  // subscribe to upload events
+  dropzone.on('uploads-start', onUploadsStart);
+  dropzone.on('upload-preview-update', onUploadPreviewUpdate);
+  dropzone.on('upload-status-update', onUploadStatusUpdate);
+  dropzone.on('upload-processing', onUploadProcessing);
+  dropzone.on('upload-end', onUploadEnd);
+  dropzone.on('upload-error', onUploadError);
+  ```
+
+
+    // activate/deactivate dropone
+    dropzone.activate();
+    dropzone.deactivate();
+
+    // cancel ongoing upload
+    dropzone.cancel(uploadId);
+
+    // when we want to dispose the component
+    dropzone.teardown();
+    ```
+
+    - New React API:
+
+    ```
+    class DropzoneConsumer extends React.Component {
+      render() {
+        return (
+          <Dropzone
+            config={config}
+            context={context}
+            onProcessing={onProcessing}
+            onError={onError}
+            onPreviewUpdate={onPreviewUpdate}
+          />
+        )
+      }
+    }
+    ```
+
+    Notes on new API:
+
+    - old `MediaPicker` constructor does not recieve `pickerType` as first parameter anymore, since the only component left to migrate to react is `popup`.
+    Meaning that if before we were doing:
+     ```
+     new MediaPicker('popup', context, config)
+     ```
+    now we will need to just do
+     ```
+     new MediaPicker(context, config)
+     ```
+
+    - No need to explicitly teardown the component. Unmounting the component will do the work
+
+    - `onCancelFn` is a workaround to cancel an ongoing upload. Refer to its type definitions for more info. Before we were saving a ref and calling `ref.cancel()`.
+
+    Basically if we render `Dropzone` component in isolation (meaning, not inside another react component), we will need to do something like:
+
+    ```
+    const saveCancelUploadFn = (cancel) => this.cancelUpload = cancel;
+
+    ...
+
+    <Dropzone
+      onCancelFn={(cancel) => saveCancelUploadFn(cancel)}
+      config={config}
+      context={context}
+      onProcessing={onProcessing}
+      onError={onError}
+      onPreviewUpdate={onPreviewUpdate}
+    />
+    ```
+
+    At a later point we will just need to call `this.cancelUpload` function in that example, in order to cancel an ongoing upload if needed.
+
 ## 44.0.1
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

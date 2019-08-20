@@ -9,15 +9,22 @@ export default function BlockCard(props: {
   url?: string;
   data?: object;
   eventHandlers?: EventHandlers;
+  portal?: HTMLElement;
 }) {
-  const { url, data, eventHandlers } = props;
+  const { url, data, eventHandlers, portal } = props;
   const handler = getEventHandler(eventHandlers, 'smartCard');
   const onClick = url && handler ? () => handler(url) : undefined;
 
-  const cardProps = { url, data, onClick };
+  const cardProps = { url, data, onClick, container: portal };
   return (
-    <CardErrorBoundary unsupportedComponent={UnsupportedBlock} {...cardProps}>
-      <Card appearance="block" {...cardProps} />
-    </CardErrorBoundary>
+    <div
+      data-block-card
+      data-card-data={data ? JSON.stringify(data) : undefined}
+      data-card-url={url}
+    >
+      <CardErrorBoundary unsupportedComponent={UnsupportedBlock} {...cardProps}>
+        <Card appearance="block" {...cardProps} />
+      </CardErrorBoundary>
+    </div>
   );
 }

@@ -11,10 +11,8 @@ import {
   emojiQuery,
   emoji,
 } from '@atlaskit/editor-test-helpers';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
-import emojiPlugin from '../../../../plugins/emoji';
-import codeBlockPlugin from '../../../../plugins/code-block';
 import { EditorState } from 'prosemirror-state';
 
 const emojiProvider = emojiData.testData.getEmojiResourcePromise();
@@ -23,14 +21,17 @@ const providerFactory = ProviderFactory.create({ emojiProvider });
 describe('ascii emojis - input rules', () => {
   const createEditor = createEditorFactory();
 
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   const editor = (doc: any) => {
     createAnalyticsEvent = jest.fn(() => ({ fire() {} }));
     const editor = createEditor({
       doc,
-      editorPlugins: [emojiPlugin(), codeBlockPlugin()],
-      editorProps: { allowAnalyticsGASV3: true },
+      editorProps: {
+        allowAnalyticsGASV3: true,
+        emojiProvider: new Promise(() => {}),
+        allowCodeBlocks: true,
+      },
       providerFactory,
       createAnalyticsEvent,
     });

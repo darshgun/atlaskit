@@ -97,7 +97,8 @@ export {
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
-export { storyMediaProviderFactory } from './media-provider';
+export { storyMediaProviderFactory, fakeMediaProvider } from './media-provider';
+export { activityProviderFactory } from './activity-provider';
 export {
   storyContextIdentifierProviderFactory,
 } from './context-identifier-provider';
@@ -121,3 +122,4 @@ export * from './constants';
 export { autoformattingProvider } from './autoformatting-provider';
 export { extensionHandlers } from './extensions';
 export { analyticsClient } from './analytics-client-mock';
+export const testMediaFileId = 'a559980d-cd47-43e2-8377-27359fcb905f';

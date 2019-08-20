@@ -8,15 +8,13 @@ import {
   taskList,
   taskItem,
 } from '@atlaskit/editor-test-helpers';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
-import saveOnEnterPlugin from '../../../../plugins/save-on-enter';
-import tasksAndDecisionsPlugin from '../../../../plugins/tasks-and-decisions';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 describe('save on enter', () => {
   const createEditor = createEditorFactory();
 
   const onSaveSpy = jest.fn();
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   beforeEach(() => {
     onSaveSpy.mockReset();
@@ -26,10 +24,11 @@ describe('save on enter', () => {
     createAnalyticsEvent = jest.fn().mockReturnValue({ fire() {} });
     return createEditor({
       doc,
-      editorPlugins: [saveOnEnterPlugin, tasksAndDecisionsPlugin],
       editorProps: {
         onSave: onSaveSpy,
         allowAnalyticsGASV3: true,
+        saveOnEnter: true,
+        allowTasksAndDecisions: true,
       },
       createAnalyticsEvent,
     });

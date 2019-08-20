@@ -47,6 +47,8 @@ export interface Result {
   key?: string;
   // used to indicate the result came from the recently viewed FE cache
   isRecentResult?: boolean;
+  // optional key of object, such as the issue key
+  objectKey?: string;
 }
 
 export type ResultsWithTiming<
@@ -85,6 +87,7 @@ export interface ConfluenceObjectResult extends Result {
   contentType: ContentType;
   resultType: ResultType.ConfluenceObjectResult;
   iconClass?: string;
+  friendlyLastModified: string | undefined;
 }
 
 export type ResultsGroup = {

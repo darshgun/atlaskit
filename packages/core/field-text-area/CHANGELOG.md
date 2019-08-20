@@ -1,5 +1,51 @@
 # @atlaskit/field-text-area
 
+## 6.0.8
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 6.0.7
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/button@13.1.2
+
+## 6.0.6
+
+### Patch Changes
+
+- [patch][d905cbc0ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d905cbc0ac):
+
+  Adding a condition to check if the component are referenced in tests running in CI. It reduces the noise and help reading the CI log.
+
+## 6.0.5
+
+### Patch Changes
+
+- [patch][226a5fece8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/226a5fece8):
+
+  Upating deprecation messages and adding console warning to improve visibility
+
+## 6.0.4
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 6.0.3
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
 ## 6.0.2
 
 ### Patch Changes

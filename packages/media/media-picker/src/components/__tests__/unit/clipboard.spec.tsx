@@ -1,15 +1,14 @@
 import * as React from 'react';
 
-jest.mock('../../../service/newUploadServiceImpl');
+jest.mock('../../../service/uploadServiceImpl');
 
 import { MockFile, fakeMediaClient } from '@atlaskit/media-test-helpers';
 import { LocalFileSource } from '../../../service/types';
 import { Clipboard as ClipboardComponent } from '../../clipboard/clipboard';
-import { Clipboard } from '../../types';
 import { mount, ReactWrapper } from 'enzyme';
 
 describe('Clipboard', () => {
-  let clipboard: ReactWrapper<Clipboard>;
+  let clipboard: ReactWrapper<ClipboardComponent>;
   let addFilesWithSourceSpy: any;
   let clipboardInstance: ClipboardComponent;
   let eventsMap: any;

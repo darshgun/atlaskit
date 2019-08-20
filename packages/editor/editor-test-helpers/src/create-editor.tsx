@@ -12,14 +12,16 @@ import {
   PortalProvider,
   PortalProviderAPI,
   PortalRenderer,
+  GapCursorSelection,
+  GapCursorSide,
 } from '@atlaskit/editor-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { mount, ReactWrapper } from 'enzyme';
 import { RefsNode, Refs } from './schema-builder';
 import { Schema } from 'prosemirror-model';
-import { PluginKey } from 'prosemirror-state';
+import { PluginKey, NodeSelection } from 'prosemirror-state';
 import patchEditorViewForJSDOM from './jsdom-fixtures';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];
@@ -44,7 +46,7 @@ export type Options = {
   editorProps?: EditorProps;
   providerFactory?: ProviderFactory;
   pluginKey?: PluginKey;
-  createAnalyticsEvent?: CreateUIAnalyticsEventSignature;
+  createAnalyticsEvent?: CreateUIAnalyticsEvent;
 };
 
 export default function createEditorFactoryForTests<T = any>() {
@@ -80,10 +82,7 @@ export default function createEditorFactoryForTests<T = any>() {
   } => {
     let portalProviderAPI: PortalProviderAPI | undefined;
     const plugins = editorPlugins
-      ? [
-          ...getDefaultPluginsList(editorProps, createAnalyticsEvent),
-          ...editorPlugins,
-        ]
+      ? [...getDefaultPluginsList(editorProps), ...editorPlugins]
       : undefined;
     place = document.body.appendChild(document.createElement('div'));
 
@@ -148,6 +147,7 @@ export default function createEditorFactoryForTests<T = any>() {
 
       refs = defaultDoc.refs;
       if (refs) {
+        const { doc, tr } = editorView.state;
         // Collapsed selection.
         if ('<>' in refs) {
           setTextSelection(editorView!, refs['<>']);
@@ -163,21 +163,45 @@ export default function createEditorFactoryForTests<T = any>() {
         }
         // CellSelection
         else if (refs['<cell'] && refs['cell>']) {
-          const { state } = editorView;
-          const anchorCell = findCellClosestToPos(
-            state.doc.resolve(refs['<cell']),
-          );
-          const headCell = findCellClosestToPos(
-            state.doc.resolve(refs['cell>']),
-          );
+          const anchorCell = findCellClosestToPos(doc.resolve(refs['<cell']));
+          const headCell = findCellClosestToPos(doc.resolve(refs['cell>']));
           if (anchorCell && headCell) {
             dispatch(
-              state.tr.setSelection(new CellSelection(
-                state.doc.resolve(anchorCell.pos),
-                state.doc.resolve(headCell.pos),
+              tr.setSelection(new CellSelection(
+                doc.resolve(anchorCell.pos),
+                doc.resolve(headCell.pos),
               ) as any),
             );
           }
+        }
+        // NodeSelection
+        else if (refs['<node>']) {
+          dispatch(tr.setSelection(NodeSelection.create(doc, refs['<node>'])));
+        }
+        // GapCursor right
+        // This may look the wrong way around here, but looks correct in the tests. Eg:
+        // doc(hr(), '{<|gap>}') = Horizontal rule with a gap cursor on its right
+        // The | denotes the gap cursor's side, based on the node on the side of the |.
+        else if (refs['<|gap>']) {
+          dispatch(
+            tr.setSelection(
+              new GapCursorSelection(
+                doc.resolve(refs['<|gap>']),
+                GapCursorSide.RIGHT,
+              ),
+            ),
+          );
+        }
+        // GapCursor left
+        else if (refs['<gap|>']) {
+          dispatch(
+            tr.setSelection(
+              new GapCursorSelection(
+                doc.resolve(refs['<gap|>']),
+                GapCursorSide.LEFT,
+              ),
+            ),
+          );
         }
       }
     }

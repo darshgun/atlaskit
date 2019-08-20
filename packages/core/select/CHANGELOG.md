@@ -1,5 +1,54 @@
 # @atlaskit/select
 
+## 10.0.4
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 10.0.3
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/button@13.1.2
+  - @atlaskit/checkbox@9.0.5
+  - @atlaskit/modal-dialog@10.1.3
+  - @atlaskit/tooltip@15.0.9
+
+## 10.0.2
+
+### Patch Changes
+
+- [patch][f20ac3080c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f20ac3080c):
+
+  Removed unused dependencies from package.json for select: react-transition-group was unused.
+
+## 10.0.1
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 10.0.0
+
+### Major Changes
+
+- [major][790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+
+  Major bump to react-select which includes a bump from emotion 9 --> 10, this will impact users who are currently creating custom components using emotion. Empty values in selects have also now been changed to be more deterministic across single and multi select. See https://github.com/JedWatson/react-select/issues/3585 for details
+
+## 9.1.10
+
+- Updated dependencies [87a2638655](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a2638655):
+  - @atlaskit/button@13.0.10
+  - @atlaskit/form@6.1.2
+  - @atlaskit/modal-dialog@10.0.8
+  - @atlaskit/checkbox@9.0.0
+
 ## 9.1.9
 
 ### Patch Changes

@@ -26,15 +26,13 @@ import ToolbarAdvancedTextFormatting, {
 } from '../../../../../plugins/text-formatting/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import DropdownMenuWrapper from '../../../../../ui/DropdownMenu';
-import panelPlugin from '../../../../../plugins/panel';
-import codeBlockPlugin from '../../../../../plugins/code-block';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { EditorView } from 'prosemirror-view';
 import { AnalyticsHandler } from '../../../../../analytics';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const createEditor = createEditorFactory();
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEventInterface>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
   let analyticsHandler: AnalyticsHandler;
 
   const editor = (doc: any) => {
@@ -42,11 +40,12 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     analyticsHandler = jest.fn();
     return createEditor({
       doc,
-      editorPlugins: [panelPlugin, codeBlockPlugin()],
       pluginKey: pluginKey,
       editorProps: {
         analyticsHandler,
         allowAnalyticsGASV3: true,
+        allowPanel: true,
+        allowCodeBlocks: true,
       },
       createAnalyticsEvent: createAnalyticsEvent as any,
     });

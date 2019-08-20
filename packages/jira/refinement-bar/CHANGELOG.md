@@ -1,5 +1,67 @@
 # @atlaskit/refinement-bar
 
+## 1.1.2
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/select@10.0.3
+  - @atlaskit/textfield@3.0.1
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/avatar@16.0.10
+  - @atlaskit/button@13.1.2
+  - @atlaskit/tooltip@15.0.9
+
+## 1.1.1
+
+- Updated dependencies [84887b940c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84887b940c):
+  - @atlaskit/icon@19.0.2
+  - @atlaskit/textfield@3.0.0
+
+## 1.1.0
+
+### Minor Changes
+
+- [minor][6c6762f732](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c6762f732):
+
+  Lozenge async filter and support async loading of defaultOptions in all AsyncSelect-based filters.
+
+## 1.0.0
+
+### Major Changes
+
+- [major][d5077a4045](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5077a4045):
+
+  add documentation. finalise some naming decisions.
+
+## 0.5.2
+
+### Patch Changes
+
+- [patch][0870316c7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0870316c7d):
+
+  Add various usage examples. Plus a handful of cleanup.
+
+## 0.5.1
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 0.5.0
+
+### Minor Changes
+
+- [minor][149c9a6222](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/149c9a6222):
+
+  support field refs and controlled popups
+
+## 0.4.9
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/select@10.0.0
+
 ## 0.4.8
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

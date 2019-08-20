@@ -11,11 +11,8 @@ import {
   mention,
   code_block,
 } from '@atlaskit/editor-test-helpers';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { emojiPluginKey } from '../../../../plugins/emoji/pm-plugins/main';
-import emojiPlugin from '../../../../plugins/emoji';
-import codeBlockPlugin from '../../../../plugins/code-block';
-import mentionsPlugin from '../../../../plugins/mentions';
 
 const emojiProvider = emojiData.testData.getEmojiResourcePromise();
 
@@ -23,14 +20,18 @@ describe('emojis - input rules', () => {
   const createEditor = createEditorFactory();
 
   const providerFactory = ProviderFactory.create({ emojiProvider });
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   const editor = (doc: any) => {
     createAnalyticsEvent = jest.fn().mockReturnValue({ fire() {} });
     return createEditor({
       doc,
-      editorProps: { allowAnalyticsGASV3: true },
-      editorPlugins: [emojiPlugin(), codeBlockPlugin(), mentionsPlugin()],
+      editorProps: {
+        allowAnalyticsGASV3: true,
+        emojiProvider: new Promise(() => {}),
+        mentionProvider: new Promise(() => {}),
+        allowCodeBlocks: true,
+      },
       providerFactory,
       pluginKey: emojiPluginKey,
       createAnalyticsEvent,

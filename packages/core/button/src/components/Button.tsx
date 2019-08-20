@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import * as React from 'react';
+import React from 'react';
 import memoize from 'memoize-one';
 import {
   withAnalyticsEvents,
@@ -27,7 +27,7 @@ export type ButtonState = {
 };
 
 export class Button extends React.Component<ButtonProps, ButtonState> {
-  static defaultProps: ButtonProps = {
+  static defaultProps = {
     appearance: 'default',
     autoFocus: false,
     isDisabled: false,
@@ -35,7 +35,6 @@ export class Button extends React.Component<ButtonProps, ButtonState> {
     isSelected: false,
     shouldFitContainer: false,
     spacing: 'default',
-    theme: (current, props) => current(props),
     type: 'button',
   };
 
@@ -236,12 +235,11 @@ export class Button extends React.Component<ButtonProps, ButtonState> {
 }
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-const ButtonWithRef = React.forwardRef<HTMLElement, ButtonProps>(
+const ButtonWithRef = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (props, ref) => <Button {...props} consumerRef={ref} />,
 );
 ButtonWithRef.displayName = 'Button';
 
-// @ts-ignore
 export default withAnalyticsContext({
   componentName: 'button',
   packageName,
@@ -258,4 +256,4 @@ export default withAnalyticsContext({
       },
     }),
   })(ButtonWithRef),
-) as React.ComponentType<ButtonProps>;
+);

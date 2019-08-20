@@ -19,7 +19,7 @@ import {
   ACTION_SUBJECT,
   ACTION,
 } from '../analytics';
-import { toggleBlockQuote, tooltip } from '../../keymaps';
+import * as keymaps from '../../keymaps';
 import { IconQuote, IconHeading } from '../quick-insert/assets';
 import {
   QuickInsertItem,
@@ -40,12 +40,16 @@ const headingPluginOptions = ({
     const descriptionDescriptor = (messages as any)[
       `heading${level}Description`
     ];
+    const keyshortcut = keymaps.tooltip(
+      (keymaps as any)[`toggleHeading${level}`],
+    );
 
     return {
       title: formatMessage((messages as any)[`heading${level}`]),
       description: formatMessage(descriptionDescriptor),
       priority: 1300,
       keywords: [`h${level}`],
+      keyshortcut,
       icon: () => (
         <IconHeading
           level={level}
@@ -68,7 +72,7 @@ const headingPluginOptions = ({
     };
   });
 
-const blockType: EditorPlugin = {
+const blockTypePlugin = (): EditorPlugin => ({
   nodes({ allowBlockType }) {
     const nodes: BlockTypeNode[] = [
       { name: 'heading', node: heading },
@@ -154,7 +158,7 @@ const blockType: EditorPlugin = {
           title: formatMessage(messages.blockquote),
           description: formatMessage(messages.blockquoteDescription),
           priority: 1300,
-          keyshortcut: tooltip(toggleBlockQuote),
+          keyshortcut: keymaps.tooltip(keymaps.toggleBlockQuote),
           icon: () => <IconQuote label={formatMessage(messages.blockquote)} />,
           action(insert, state) {
             const tr = insert(
@@ -179,7 +183,7 @@ const blockType: EditorPlugin = {
       ];
     },
   },
-};
+});
 
-export default blockType;
+export default blockTypePlugin;
 export { pluginKey, BlockTypeState } from './pm-plugins/main';

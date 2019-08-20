@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   createAndFireEvent,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';
 import {
@@ -13,7 +14,7 @@ import ItemWrapper from '../styled/BreadcrumbsItem';
 import Button from '../styled/Button';
 import Separator from '../styled/Separator';
 
-interface IProps {
+interface IProps extends WithAnalyticsEventsProps {
   /** Whether this item will be followed by a separator. */
   hasSeparator?: boolean;
   /** The url or path which the breadcrumb should act as a link to. */
@@ -41,27 +42,15 @@ interface IState {
   hasOverflow: boolean;
 }
 
-type DefaultProps = Pick<
-  IProps,
-  | 'component'
-  | 'hasSeparator'
-  | 'href'
-  | 'truncationWidth'
-  | 'onClick'
-  | 'target'
->;
-
 class BreadcrumbsItem extends React.Component<IProps, IState> {
   // eslint-disable-line react/sort-comp
   button: any = null;
 
-  static defaultProps: DefaultProps = {
-    component: undefined,
+  static defaultProps = {
     hasSeparator: false,
     href: '#',
     truncationWidth: 0,
     onClick: () => {},
-    target: '',
   };
 
   state = { hasOverflow: false };

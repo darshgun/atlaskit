@@ -61,7 +61,14 @@ describe('Snapshot Test', () => {
       'with-banner',
       global.__BASEURL__,
     );
-    const image = await takeScreenShot(global.page, url);
+    const { page } = global;
+    const pageContent = "[class$='LayoutContainer']";
+    await page.waitForSelector(pageContent);
+    await page.evaluate(
+      selector => document.querySelector(selector).scrollBy(0, 500),
+      pageContent,
+    );
+    const image = await takeScreenShot(page, url);
     //$FlowFixMe
     expect(image).toMatchProdImageSnapshot();
   });
@@ -164,7 +171,7 @@ describe('Snapshot Test', () => {
     );
     const { page } = global;
     // TODO: Fix button selector
-    const button = "[data-test-id='Navigation'] > div:last-of-type button";
+    const button = "[data-testid='Navigation'] > div:last-of-type button";
 
     await page.goto(url);
     await page.setViewport({ width: 750, height: 700 });

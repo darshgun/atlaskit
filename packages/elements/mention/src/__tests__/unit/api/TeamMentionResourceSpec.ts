@@ -276,4 +276,22 @@ describe('TeamMentionResourceSpec', () => {
       expect(resource.shouldHighlightMention(testMentionDesc)).toBe(false);
     });
   });
+
+  describe('#spotlightEnable', () => {
+    it('should return false by default', () => {
+      expect(resource.mentionTypeaheadHighlightEnabled()).toBe(false);
+    });
+    it('should return true when enabled', () => {
+      const withSpotlightResource = new TeamMentionResource(
+        apiUserMentionConfig,
+        {
+          ...apiTeamMentionConfig,
+          teamHighlightEnabled: true,
+        },
+      );
+      expect(withSpotlightResource.mentionTypeaheadHighlightEnabled()).toBe(
+        true,
+      );
+    });
+  });
 });

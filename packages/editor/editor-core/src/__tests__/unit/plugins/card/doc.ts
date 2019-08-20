@@ -26,7 +26,6 @@ import { EditorView } from 'prosemirror-view';
 import { Fragment, Slice, Node } from 'prosemirror-model';
 
 import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
-import cardPlugin from '../../../../plugins/card';
 import { CardProvider, CardPluginState } from '../../../../plugins/card/types';
 import {
   setProvider,
@@ -38,13 +37,8 @@ import {
   queueCardsFromChangedTr,
   shouldReplace,
 } from '../../../../plugins/card/pm-plugins/doc';
-import { panelPlugin } from '../../../../plugins';
-import tablePlugin from '../../../../plugins/table';
-import listsPlugin from '../../../../plugins/lists';
-import tasksAndDecisionsPlugin from '../../../../plugins/tasks-and-decisions';
-import extensionPlugin from '../../../../plugins/extension';
 import { INPUT_METHOD } from '../../../../plugins/analytics';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { createCardRequest, setupProvider, ProviderWrapper } from './_helpers';
 
 const inlineCardAdf = {
@@ -64,7 +58,7 @@ const googleUrl = 'http://www.google.com/';
 
 describe('card', () => {
   const createEditor = createEditorFactory();
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEventInterface>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
   const editor = (doc: any) => {
     createAnalyticsEvent = createAnalyticsEventMock();
     const editorWrapper = createEditor({
@@ -74,15 +68,12 @@ describe('card', () => {
           advanced: true,
         },
         allowAnalyticsGASV3: true,
+        allowExtension: true,
+        allowPanel: true,
+        allowLists: true,
+        allowTasksAndDecisions: true,
+        UNSAFE_cards: {},
       },
-      editorPlugins: [
-        cardPlugin,
-        panelPlugin,
-        tablePlugin(),
-        listsPlugin,
-        tasksAndDecisionsPlugin,
-        extensionPlugin,
-      ],
       createAnalyticsEvent: createAnalyticsEvent as any,
       pluginKey,
     });

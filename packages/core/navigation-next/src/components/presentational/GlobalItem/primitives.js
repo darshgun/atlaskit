@@ -3,7 +3,7 @@
 import React, { Fragment, Component } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
-import deepEqual from 'deep-equal';
+import deepEqual from 'react-fast-compare';
 import { styleReducerNoOp, withGlobalTheme } from '../../../theme';
 import type {
   GlobalItemPresentationProps,
@@ -15,7 +15,7 @@ import type {
 class GlobalNavigationItemPrimitive extends Component<GlobalItemPrimitiveProps> {
   static defaultProps = {
     dataset: {
-      'data-test-id': 'GlobalNavigationItem',
+      'data-testid': 'GlobalNavigationItem',
     },
     isActive: false,
     isHover: false,

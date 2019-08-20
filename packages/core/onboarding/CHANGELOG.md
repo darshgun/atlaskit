@@ -1,5 +1,59 @@
 # @atlaskit/onboarding
 
+## 8.0.13
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 8.0.12
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/progress-indicator@7.0.3
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/button@13.1.2
+  - @atlaskit/modal-dialog@10.1.3
+
+## 8.0.11
+
+### Patch Changes
+
+- [patch][678b2407a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/678b2407a1):
+
+  Fix spotlight highlight issue when the offset parent has "fixed" position.
+
+## 8.0.10
+
+### Patch Changes
+
+- [patch][d905cbc0ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d905cbc0ac):
+
+  Spotlight target highlight is out of position if the the target element or any of its parent has a "fixed" position. Fix the issue by checking for fixed position before setting the position values for target highlight.
+  Adding a condition to check if the component are referenced in tests running in CI. It reduces the noise and help reading the CI log.
+
+## 8.0.9
+
+- BROKEN RELEASE. DO NOT USE.
+
+### Patch Changes
+
+- [patch][2e3d9d3e25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e3d9d3e25):
+
+## 8.0.8
+
+- Updated dependencies [ebfeb03eb7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebfeb03eb7):
+  - @atlaskit/popper@3.0.0
+
+## 8.0.7
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
 ## 8.0.6
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

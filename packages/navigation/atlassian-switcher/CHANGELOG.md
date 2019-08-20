@@ -1,5 +1,280 @@
 # @atlaskit/atlassian-switcher
 
+## 3.21.0
+
+### Minor Changes
+
+- [minor][0e43bd0082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e43bd0082):
+
+  Use with width theming property now provided by Item
+
+## 3.20.1
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 3.20.0
+
+### Minor Changes
+
+- [minor][a055fbda01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a055fbda01):
+
+  yRemove description from items that don't have multiple sites
+
+## 3.19.0
+
+### Minor Changes
+
+- [minor][d700e692be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d700e692be):
+
+  Fix ellipsis on item with dropdown
+
+## 3.18.0
+
+### Minor Changes
+
+- [minor][bdbe90c48b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdbe90c48b):
+
+  FIND-133: Allow switcher to be rendered standalone (outside a drawer)
+
+## 3.17.1
+
+### Patch Changes
+
+- [patch][04388187f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04388187f4):
+
+  Added docs and details about i18n
+
+## 3.17.0
+
+### Minor Changes
+
+- [minor][520e77bd9c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/520e77bd9c):
+
+  Fixed analytics bug for A/B testing product sorting algorithm for account-centric products
+
+## 3.16.0
+
+### Minor Changes
+
+- [minor][74501ba0ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74501ba0ea):
+
+  Accept a feature flag to AB test which site to show at the top of the product (efault being the current site, and variation being the most frequently visited)
+
+## 3.15.0
+
+### Minor Changes
+
+- [minor][aac9ae7ee8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aac9ae7ee8):
+
+  Licensed links in switcher are now grouped by product, with a dropdown that containing individual site options for sited products
+
+## 3.14.0
+
+### Minor Changes
+
+- [minor][d4e8e68bf1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4e8e68bf1):
+
+  Added adminLinks to switcher viewed event, so we could know when we show try discover more links to users. Fixed suggestedProductLinks that used to be empty on mount due to race conditions"
+
+## 3.13.0
+
+### Minor Changes
+
+- [minor][43a5cd1e3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43a5cd1e3c):
+
+  Adding isDiscoverMoreForEveryoneEnabled and onDiscoverMoreClicked props onto the Atlassian Switcher API
+
+## 3.12.0
+
+### Minor Changes
+
+- [minor][6c449d7c77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c449d7c77):
+
+  Also made cloud ID optional in the prefetch trigger
+
+## 3.11.0
+
+### Minor Changes
+
+- [minor][f0eeeb4f8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0eeeb4f8a):
+
+  Cloud ID is now an optional props. When Cloud ID is not provided, sections like recent containers, admin links, etc will be skipped and not rendered
+
+## 3.10.0
+
+### Minor Changes
+
+- [minor][fee77d9245](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fee77d9245):
+
+  Added an optional parameter to allow an option to disable custom links in Jira and Confluence switcher
+
+## 3.9.0
+
+### Minor Changes
+
+- [minor][7bc30c4cce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bc30c4cce):
+
+  Added a new prop to disable recent containers
+
+## 3.8.2
+
+- Updated dependencies [75c64ee36a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75c64ee36a):
+  - @atlaskit/drawer@5.0.0
+
+## 3.8.1
+
+### Patch Changes
+
+- [patch][91ec1329f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ec1329f7):
+
+  Changing flag key for JSW to Opsgenie experiment
+
+## 3.8.0
+
+### Minor Changes
+
+- [minor][3e25438208](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e25438208):
+
+  Enables AtlassianSwitcher to receive recommendationFeatureFlags which is then passed to the RecommendationProvider to be parsed and handle output based on feature flag values.
+
+## 3.7.0
+
+### Minor Changes
+
+- [minor][5ac638ae2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ac638ae2e):
+
+  Revert the change that filteres the current product from the list of products in switcher because that makes filtering too eager
+
+## 3.6.0
+
+### Minor Changes
+
+- [minor][f5d0b1aef8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5d0b1aef8):
+
+  Removed the site-product combination the user is on from the switcher options
+
+## 3.5.1
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 3.5.0
+
+### Minor Changes
+
+- [minor][a6dcd23804](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6dcd23804):
+
+  Add a new provider to suggest a list of recommended products, and refactor existing logic
+
+## 3.4.6
+
+### Patch Changes
+
+- [patch][7016422921](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7016422921):
+
+  Passed in empty object in order to get the correct cache key
+
+## 3.4.5
+
+### Patch Changes
+
+- [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
+
+  bugfix, fixes missing version.json file
+
+## 3.4.4
+
+### Patch Changes
+
+- [patch][3371cb9ba0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3371cb9ba0):
+
+  Updated Atlassian Switcher prefecth trigger to accept enableUserCentricProducts feature flag
+
+## 3.4.3
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 3.4.2
+
+### Patch Changes
+
+- [patch][4344114172](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4344114172):
+
+  Update analytics event to include products shown when viewed.
+
+## 3.4.1
+
+### Patch Changes
+
+- [patch][d0db01b410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0db01b410):
+
+  TypeScript users of withAnalyticsEvents and withAnalyticsContext are now required to provide props as a generic type. This is so that TypeScript can correctly calculate the props and defaultProps of the returned component.
+
+  Before:
+
+  ```typescript
+  withAnalyticsEvents()(Button) as ComponentClass<Props>;
+  ```
+
+  After:
+
+  ```typescript
+  withAnalyticsEvents<Props>()(Button);
+  ```
+
+## 3.4.0
+
+### Minor Changes
+
+- [minor][986a1cc91d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/986a1cc91d):
+
+  Enable prefetching for available-products endpoint
+
+## 3.3.0
+
+### Minor Changes
+
+- [minor][b81d931ee3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b81d931ee3):
+
+  Added new OpsGenie logo, fixed the gradient for the StatusPage logo, and refactored atlassian-switcher to use the new logos
+
 ## 3.2.0
 
 ### Minor Changes

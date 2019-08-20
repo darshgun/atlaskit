@@ -7,7 +7,7 @@ import { messages as i18nMessages } from '@atlaskit/media-ui';
 import { cannotViewFile, errorLoadingFile } from './error-images';
 import {
   withAnalyticsEvents,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import { mediaPreviewFailedEvent } from './analytics/item-viewer';
 import {
@@ -120,7 +120,7 @@ export const createError = (
 };
 
 export class ErrorMessage extends React.Component<
-  Props & InjectedIntlProps & WithAnalyticsEventProps,
+  Props & InjectedIntlProps & WithAnalyticsEventsProps,
   {}
 > {
   private fireAnalytics = (payload: GasPayload | GasScreenEventPayload) => {

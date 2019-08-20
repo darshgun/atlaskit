@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import {
+  UIAnalyticsEvent,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
+import { InterpolationWithTheme } from '@emotion/core';
 
 export type ButtonAppearances =
   | 'default'
@@ -15,8 +19,11 @@ export type ButtonAppearances =
 // have the type defined in OnlyButtonProps.
 type HtmlAttributes = Pick<
   React.AllHTMLAttributes<HTMLElement>,
-  Exclude<keyof React.AllHTMLAttributes<HTMLElement>, keyof OnlyButtonProps>
->;
+  Exclude<
+    keyof React.AllHTMLAttributes<HTMLElement>,
+    keyof OnlyButtonProps | 'css'
+  >
+> & { css?: InterpolationWithTheme<any> };
 
 export type OnlyButtonProps = {
   /** The base styling to apply to the button */
@@ -26,7 +33,7 @@ export type OnlyButtonProps = {
   /** Add a classname to the button */
   className?: string;
   /** A custom component to use instead of the default button */
-  component?: React.ComponentType<React.AllHTMLAttributes<HTMLElement>>;
+  component?: React.ElementType<any>;
   /** Internal use only. Please use `ref` to forward refs */
   consumerRef?: React.Ref<HTMLElement>;
   /** Provides a url for buttons being used as a link */
@@ -69,9 +76,13 @@ export type OnlyButtonProps = {
     current: (props: ThemeProps) => ThemeTokens,
     props: ThemeProps,
   ) => ThemeTokens;
+
+  children?: React.ReactNode;
 };
 
-export type ButtonProps = HtmlAttributes & OnlyButtonProps;
+export type ButtonProps = HtmlAttributes &
+  OnlyButtonProps &
+  WithAnalyticsEventsProps;
 
 export type Spacing = 'compact' | 'default' | 'none';
 

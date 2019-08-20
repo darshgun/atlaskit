@@ -1,9 +1,10 @@
-import { JsonLd } from './types';
-export async function request(
+const ALLOWED_RESPONSE_STATUS_CODES = [200, 401, 404];
+
+export async function request<T>(
   method: string,
   url: string,
   data?: any,
-): Promise<JsonLd> {
+): Promise<T> {
   const requestConfig = {
     method,
     credentials: 'include' as RequestCredentials,
@@ -15,25 +16,10 @@ export async function request(
     ...(data ? { body: JSON.stringify(data) } : {}),
   };
 
-  try {
-    const response = await fetch(url, requestConfig);
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw response;
-    }
-  } catch (error) {
-    if (error.status === 404) {
-      return {
-        meta: {
-          visibility: 'not_found',
-          access: 'forbidden',
-          auth: [],
-          definitionId: 'provider-not-found',
-        },
-        data: {},
-      };
-    }
-    throw error;
+  const response = await fetch(url, requestConfig);
+  if (response.ok || ALLOWED_RESPONSE_STATUS_CODES.includes(response.status)) {
+    return await response.json();
   }
+
+  throw response;
 }

@@ -1,8 +1,11 @@
-import * as React from 'react';
+import { withAnalytics } from '@atlaskit/analytics';
+import Avatar from '@atlaskit/avatar';
 import Checkbox from '@atlaskit/checkbox/Checkbox';
-import Avatar from '@atlaskit/avatar/index';
 import baseItem, { withItemFocus } from '@atlaskit/item';
-import { Filter } from '../../api/CrossProductSearchClient';
+import * as React from 'react';
+import { Filter, FilterType } from '../../api/CrossProductSearchClient';
+import { fireSpaceFilterShownEvent } from '../../util/analytics-event-helper';
+import { CreateAnalyticsEventFn } from '../analytics/types';
 
 const Item = withItemFocus(baseItem);
 
@@ -10,19 +13,20 @@ export interface Props {
   spaceAvatar: string;
   spaceTitle: string;
   spaceKey: string;
+  searchSessionId: string;
   isDisabled?: boolean;
   isFilterOn?: boolean;
   onFilterChanged(filter: Filter[]): void;
+
+  // These are provided by the withAnalytics HOC
+  createAnalyticsEvent?: CreateAnalyticsEventFn;
 }
 
 interface State {
   isChecked: boolean;
 }
 
-export default class ConfluenceSpaceFilter extends React.Component<
-  Props,
-  State
-> {
+export class ConfluenceSpaceFilter extends React.Component<Props, State> {
   state = {
     isChecked: false,
   };
@@ -33,7 +37,7 @@ export default class ConfluenceSpaceFilter extends React.Component<
       ? []
       : [
           {
-            '@type': 'spaces',
+            '@type': FilterType.Spaces,
             spaceKeys: [this.props.spaceKey],
           },
         ];
@@ -54,6 +58,13 @@ export default class ConfluenceSpaceFilter extends React.Component<
       this.toggleCheckbox();
     }
   };
+
+  componentDidMount() {
+    fireSpaceFilterShownEvent(
+      this.props.searchSessionId,
+      this.props.createAnalyticsEvent,
+    );
+  }
 
   getIcons() {
     const { isDisabled, spaceAvatar } = this.props;
@@ -76,6 +87,7 @@ export default class ConfluenceSpaceFilter extends React.Component<
     if (state.isChecked !== props.isFilterOn) {
       return { isChecked: props.isFilterOn };
     }
+    return null;
   }
 
   render() {
@@ -94,3 +106,5 @@ export default class ConfluenceSpaceFilter extends React.Component<
     );
   }
 }
+
+export default withAnalytics(ConfluenceSpaceFilter, {}, {});

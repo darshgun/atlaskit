@@ -9,11 +9,18 @@ import {
   UserPermissionProvider,
   XFlowSettingsProvider,
 } from './instance-data-providers';
-import { Permissions } from '../types';
+import { RecommendationsEngineProvider } from './recommendations-provider';
+import {
+  Permissions,
+  RecommendationsEngineResponse,
+  RecommendationsFeatureFlags,
+} from '../types';
 
 interface CommonDataProviderProps {
-  cloudId: string;
+  cloudId?: string;
   isUserCentric: boolean;
+  disableRecentContainers: boolean;
+  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
   children: (
     props: {
       recentContainers: ProviderResult<RecentContainersResponse>;
@@ -21,6 +28,7 @@ interface CommonDataProviderProps {
       managePermission: ProviderResult<boolean>;
       addProductsPermission: ProviderResult<boolean>;
       isXFlowEnabled: ProviderResult<boolean>;
+      productRecommendations: ProviderResult<RecommendationsEngineResponse>;
     },
   ) => React.ReactElement<any>;
 }
@@ -29,9 +37,14 @@ export default ({
   cloudId,
   children,
   isUserCentric,
+  recommendationsFeatureFlags,
+  disableRecentContainers,
 }: CommonDataProviderProps) => {
   return (
-    <RecentContainersProvider cloudId={cloudId}>
+    <RecentContainersProvider
+      cloudId={cloudId}
+      disableRecentContainers={disableRecentContainers}
+    >
       {recentContainers => (
         <LicenseInformationProvider
           cloudId={cloudId}
@@ -49,15 +62,22 @@ export default ({
                 >
                   {addProductsPermission => (
                     <XFlowSettingsProvider cloudId={cloudId}>
-                      {isXFlowEnabled =>
-                        children({
-                          recentContainers,
-                          licenseInformation,
-                          managePermission,
-                          addProductsPermission,
-                          isXFlowEnabled,
-                        })
-                      }
+                      {isXFlowEnabled => (
+                        <RecommendationsEngineProvider
+                          featureFlags={recommendationsFeatureFlags}
+                        >
+                          {productRecommendations =>
+                            children({
+                              recentContainers,
+                              licenseInformation,
+                              managePermission,
+                              addProductsPermission,
+                              isXFlowEnabled,
+                              productRecommendations,
+                            })
+                          }
+                        </RecommendationsEngineProvider>
+                      )}
                     </XFlowSettingsProvider>
                   )}
                 </UserPermissionProvider>

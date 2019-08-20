@@ -4,19 +4,13 @@ import { Identifier } from '@atlaskit/media-client';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
-import { MediaButton } from '@atlaskit/media-ui';
+import { hideControlsClassName, MediaButton } from '@atlaskit/media-ui';
 import { Shortcut } from '@atlaskit/media-ui';
 import {
   withAnalyticsEvents,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
-import {
-  ArrowsWrapper,
-  RightWrapper,
-  LeftWrapper,
-  Arrow,
-  hideControlsClassName,
-} from './styled';
+import { ArrowsWrapper, RightWrapper, LeftWrapper, Arrow } from './styled';
 import { getSelectedIndex } from './utils';
 import { channel } from './analytics';
 import {
@@ -31,7 +25,7 @@ export type NavigationProps = Readonly<{
   selectedItem: Identifier;
   onChange: (item: Identifier) => void;
 }> &
-  WithAnalyticsEventProps;
+  WithAnalyticsEventsProps;
 
 export type NavigationSource = 'keyboard' | 'mouse';
 export class NavigationBase extends Component<NavigationProps, {}> {

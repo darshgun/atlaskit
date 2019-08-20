@@ -1,5 +1,51 @@
 # @atlaskit/website
 
+## 5.1.18
+
+- Updated dependencies [cc461c0022](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc461c0022):
+  - @atlaskit/tag-group@9.0.0
+
+## 5.1.17
+
+- Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
+  - @atlaskit/media-card@63.3.11
+  - @atlaskit/media-core@30.0.10
+  - @atlaskit/media-filmstrip@34.3.2
+  - @atlaskit/media-test-helpers@25.0.0
+
+## 5.1.16
+
+### Patch Changes
+
+- [patch][a73580e138](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a73580e138):
+
+  BUILDTOOLS-260/BUILDTOOLS-261: Replace data-test-id by data-testid to be consistent with react-testing-library.
+  **Products**, you may require to update your integration and end to end tests if they are based on `data-test-id` please replace by `data-testid`.
+
+## 5.1.15
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 5.1.14
+
+- Updated dependencies [1adb8727e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1adb8727e3):
+  - @atlaskit/tag-group@8.0.2
+  - @atlaskit/tag@9.0.0
+
+## 5.1.13
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/inline-dialog@12.0.5
+  - @atlaskit/logo@12.1.1
+  - @atlaskit/modal-dialog@10.0.10
+  - @atlaskit/media-test-helpers@24.3.1
+  - @atlaskit/select@10.0.0
+
 ## 5.1.12
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):

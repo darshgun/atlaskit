@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { Footer, default as ConnectedFooter } from '../../footer';
 import { Wrapper, CancelButton, InsertButton } from '../../styled';
-import { startImport, hidePopup } from '../../../../actions';
+import { startImport, hidePopup, resetView } from '../../../../actions';
 
 const ConnectedFooterWithStore = getComponentClassWithStore(ConnectedFooter);
 
@@ -22,7 +22,6 @@ const createConnectedComponent = () => {
 };
 
 describe('<Footer />', () => {
-  const upfrontId = Promise.resolve('1');
   const SELECTED_ITEM: SelectedItem = {
     serviceName: 'google',
     mimeType: 'image/jpg',
@@ -30,20 +29,23 @@ describe('<Footer />', () => {
     name: 'some-name',
     size: 123456,
     date: Date.now(),
-    upfrontId,
   };
 
   describe('Connected Footer component', () => {
     test('should dispatch an action when onInsert is called', () => {
       const { component, dispatch } = createConnectedComponent();
       component.props().onInsert([SELECTED_ITEM]);
+      expect(dispatch).toBeCalledTimes(1);
       expect(dispatch).toBeCalledWith(startImport());
     });
 
     test('should dispatch an action when onCancel is called', () => {
       const { component, dispatch } = createConnectedComponent();
       component.props().onCancel();
-      expect(dispatch).toBeCalledWith(hidePopup());
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch.mock.calls[0][0]).toEqual(resetView());
+      expect(dispatch.mock.calls[1][0]).toEqual(hidePopup());
     });
 
     test('should pass all required state through to component props', () => {

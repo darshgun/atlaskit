@@ -14,6 +14,7 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import { JiraIcon, JiraWordmark } from '@atlaskit/logo';
 import { ToggleStateless } from '@atlaskit/toggle';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
+import Lorem from 'react-lorem-component';
 
 import {
   ContainerHeader,
@@ -123,7 +124,7 @@ export default class Example extends Component<{}, State> {
   state = {
     shouldDisplayContainerNav: true,
     isBannerVisible: true,
-    bannerHeight: 200,
+    bannerHeight: 52,
   };
 
   toggleContainerNav = () => {
@@ -199,7 +200,18 @@ export default class Example extends Component<{}, State> {
     return (
       <>
         {isBannerVisible && (
-          <div css={{ height: `${bannerHeight}px`, backgroundColor: 'salmon' }}>
+          <div
+            css={{
+              height: `${bannerHeight}px`,
+              boxSizing: 'border-box',
+              backgroundColor: 'salmon',
+              zIndex: 1,
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
             HTML banner
           </div>
         )}
@@ -225,6 +237,7 @@ export default class Example extends Component<{}, State> {
                 />{' '}
                 Show Banner
               </div>
+              <Lorem count={45} />
             </div>
           </LayoutManager>
         </NavigationProvider>
