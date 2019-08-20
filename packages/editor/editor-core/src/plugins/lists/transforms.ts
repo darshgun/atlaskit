@@ -1,4 +1,11 @@
-import { Fragment, NodeRange, Slice } from 'prosemirror-model';
+import {
+  Fragment,
+  NodeRange,
+  Slice,
+  Schema,
+  Node,
+  NodeType,
+} from 'prosemirror-model';
 import {
   EditorState,
   Transaction,
@@ -7,6 +14,7 @@ import {
 } from 'prosemirror-state';
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { getListLiftTarget } from './utils';
+import { mapSlice, mapChildren } from '../../utils/slice';
 
 function liftListItem(
   state: EditorState,
@@ -118,3 +126,169 @@ export function liftSelectionList(
   }
   return tr;
 }
+
+const bullets = /^\s*([\*\-•])(\s*|$)/;
+const numbers = /^\s*(\d)[\.\)](\s*|$)/;
+
+const getListType = (node: Node, schema: Schema): [NodeType, number] | null => {
+  if (!node.text) {
+    return null;
+  }
+
+  const { bulletList, numberedList } = schema.nodes;
+  [
+    {
+      node: bulletList,
+      matcher: bullets,
+    },
+    {
+      node: numberedList,
+      matcher: numbers,
+    },
+  ].forEach(listType => {
+    const match = node.text!.match(listType.matcher);
+    if (match) {
+      return [listType.node, match[0].length];
+    }
+  });
+
+  return null;
+};
+
+const extractListFromParagaph = (node: Node, schema: Schema): Fragment => {
+  const { hardBreak, bulletList, numberedList } = schema.nodes;
+  const content: Array<Node> = mapChildren(node.content, node => node);
+
+  const listTypes = [bulletList, numberedList];
+
+  // wrap each line into a listItem and a containing list
+  const listified = content
+    .map(child => {
+      const listMatch = getListType(child, schema);
+      if (!listMatch || !child.text) {
+        return child;
+      }
+
+      const [nodeType, length] = listMatch;
+
+      // convert to list item
+      const newText = child.text.substr(length);
+      const listItemNode = schema.nodes.listItem.createAndFill(
+        undefined,
+        schema.nodes.paragraph.createChecked(
+          undefined,
+          newText.length ? schema.text(newText) : undefined,
+        ),
+      );
+
+      if (!listItemNode) {
+        return child;
+      }
+
+      return nodeType.createChecked(undefined, [listItemNode]);
+    })
+    .filter((child, idx, arr) => {
+      // remove hardBreaks that have a list node on either side
+
+      // wasn't hardBreak, leave as-is
+      if (child.type !== hardBreak) {
+        return child;
+      }
+
+      if (idx > 0 && listTypes.indexOf(arr[idx - 1].type) > -1) {
+        return null;
+      }
+
+      if (idx < arr.length - 1 && listTypes.indexOf(arr[idx + 1].type) > -1) {
+        return null;
+      }
+
+      return child;
+    });
+
+  // try to re-wrap fragment in paragraph (which is the original node we unwrapped)
+  const { paragraph } = schema.nodes;
+  const fragment = Fragment.from(listified);
+  if (paragraph.validContent(fragment)) {
+    return Fragment.from(paragraph.create(node.attrs, fragment, node.marks));
+  }
+
+  // fragment now contains other nodes, get Prosemirror to wrap with ContentMatch later
+  return fragment;
+};
+
+/**
+ * Walks the slice, creating paragraphs that were previously separated by hardbreaks.
+ * @param slice
+ * @param schema
+ * @returns the original paragraph node (as a fragment), or a fragment containing multiple nodes
+ */
+const splitIntoParagraphs = (fragment: Fragment, schema: Schema): Fragment => {
+  const paragraphs = [];
+  let curChildren: Array<Node> = [];
+  let lastNode: Node | null = null;
+
+  const { hardBreak, paragraph } = schema.nodes;
+
+  fragment.forEach(node => {
+    if (lastNode && lastNode.type === hardBreak && node.type === hardBreak) {
+      // double hardbreak
+
+      // backtrack a little; remove the trailing hardbreak we added last loop
+      curChildren.pop();
+
+      // create a new paragraph
+      paragraphs.push(paragraph.createChecked(undefined, curChildren));
+      curChildren = [];
+      return;
+    }
+
+    // add to this paragraph
+    curChildren.push(node);
+    lastNode = node;
+  });
+
+  if (curChildren.length) {
+    paragraphs.push(paragraph.createChecked(undefined, curChildren));
+  }
+
+  return Fragment.from(
+    paragraphs.length ? paragraphs : [paragraph.createAndFill()!],
+  );
+};
+
+export const splitParagraphs = (slice: Slice, schema: Schema): Slice => {
+  // exclude Text nodes with a code mark, since we transform those later
+  // into a codeblock
+  let hasCodeMark = false;
+  slice.content.forEach(child => {
+    hasCodeMark =
+      hasCodeMark || child.marks.some(mark => mark.type === schema.marks.code);
+  });
+
+  // slice might just be a raw text string
+  if (schema.nodes.paragraph.validContent(slice.content) && !hasCodeMark) {
+    const replSlice = splitIntoParagraphs(slice.content, schema);
+
+    return new Slice(replSlice, slice.openStart + 1, slice.openEnd + 1);
+  }
+
+  return mapSlice(slice, (node, parent) => {
+    if (node.type === schema.nodes.paragraph) {
+      return splitIntoParagraphs(node.content, schema);
+    }
+
+    return node;
+  });
+};
+
+// above will wrap everything in paragraphs for us
+export const upgradeTextToLists = (slice: Slice, schema: Schema): Slice => {
+  return mapSlice(slice, (node, parent) => {
+    if (node.type === schema.nodes.paragraph) {
+      return extractListFromParagaph(node, schema);
+    }
+
+    return node;
+  });
+};
