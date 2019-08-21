@@ -1,5 +1,21 @@
 # @atlaskit/progress-indicator
 
+## 7.0.5
+
+### Patch Changes
+
+- [patch][39c83bb527](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39c83bb527):
+
+  @atlaskit/progress-indicator has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 7.0.4
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
 ## 7.0.3
 
 - Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):

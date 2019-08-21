@@ -137,9 +137,6 @@ describe('importFiles middleware', () => {
         name: 'upload-end',
         data: {
           file,
-          public: {
-            id: `some-public-id-${index}`,
-          },
         },
       };
 
