@@ -77,10 +77,19 @@ export interface LocalizationProvider {
 export const createLocalizationProvider = (
   locale: string,
 ): LocalizationProvider => {
-  const dayFormatter = Intl.DateTimeFormat(locale, { weekday: 'short' });
-  const monthFormatter = Intl.DateTimeFormat(locale, { month: 'long' });
-  const dateFormatter = Intl.DateTimeFormat(locale);
-  const timeFormatter = Intl.DateTimeFormat(locale, {
+  // Intl.DateFormat expects locales in the format of 'la-CO' however it is
+  // common for locale to be provided in the format of 'la_CO', where 'la' is
+  // language and 'CO' is country.
+  const normalizedLocale = locale && locale.replace('_', '-');
+
+  const dayFormatter = Intl.DateTimeFormat(normalizedLocale, {
+    weekday: 'short',
+  });
+  const monthFormatter = Intl.DateTimeFormat(normalizedLocale, {
+    month: 'long',
+  });
+  const dateFormatter = Intl.DateTimeFormat(normalizedLocale);
+  const timeFormatter = Intl.DateTimeFormat(normalizedLocale, {
     hour: 'numeric',
     minute: 'numeric',
   });
