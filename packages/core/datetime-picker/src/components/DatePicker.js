@@ -4,7 +4,7 @@ import Calendar from '@atlaskit/calendar';
 import {
   createLocalizationProvider,
   type LocalizationProvider,
-} from '@atlaskit/calendar/src/util';
+} from '@atlaskit/calendar/util';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';

@@ -18,7 +18,7 @@ import { colors } from '@atlaskit/theme';
 import {
   createLocalizationProvider,
   type LocalizationProvider,
-} from '@atlaskit/calendar/src/util';
+} from '@atlaskit/calendar/util';
 import {
   name as packageName,
   version as packageVersion,
