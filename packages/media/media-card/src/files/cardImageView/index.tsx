@@ -50,6 +50,7 @@ export interface FileCardImageViewProps {
 
   readonly actions?: CardAction[];
   readonly onRetry?: () => void;
+  readonly onDisplayImage?: () => void;
   readonly previewOrientation?: number;
 }
 
@@ -57,6 +58,7 @@ export class FileCardImageViewBase extends Component<
   FileCardImageViewProps & WithAnalyticsEventsProps,
   {}
 > {
+  private wasThumbnailDisplayed = false;
   private lastAnalyticsAction: AnalyticsLoadingAction | undefined;
   static defaultProps = {
     resizeMode: 'crop',
@@ -182,11 +184,25 @@ export class FileCardImageViewBase extends Component<
   };
 
   private renderMediaImage = () => {
-    const { dataURI, mediaType, previewOrientation } = this.props;
+    const {
+      dataURI,
+      mediaType,
+      previewOrientation,
+      onDisplayImage,
+    } = this.props;
 
     if (!shouldDisplayImageThumbnail(dataURI, mediaType)) {
       this.fireLoadingStatusAnalyticsEvent('succeeded');
       return null;
+    }
+
+    if (
+      !this.wasThumbnailDisplayed &&
+      onDisplayImage &&
+      mediaType === 'image'
+    ) {
+      onDisplayImage();
+      this.wasThumbnailDisplayed = true;
     }
 
     return (
