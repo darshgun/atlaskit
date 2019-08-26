@@ -111,8 +111,8 @@ describe('Card', () => {
   });
 
   afterEach(() => {
-    (getDataURIFromFileState as any).mockReset();
     jest.clearAllMocks();
+    (getDataURIFromFileState as any).mockReset();
   });
 
   it('should use the new mediaClient to create the subscription when mediaClient prop changes', async () => {
