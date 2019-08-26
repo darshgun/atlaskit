@@ -29,7 +29,9 @@ export const DropDownMenu: React.FunctionComponent<
   };
 
   const toggleOpen = () => {
-    setState({ ...state, isOpen: !state.isOpen });
+    const { isOpen, selectionIndex: idx } = state;
+    //sets the selectionIndex back to -1 on close
+    setState({ ...state, isOpen: !isOpen, selectionIndex: isOpen ? idx : -1 });
   };
 
   const { children } = props;
@@ -42,10 +44,20 @@ export const DropDownMenu: React.FunctionComponent<
     >
       <Manager>
         <DropdownContext.Provider
-          value={{ state, changeState: stateChanger, toggleOpen }}
+          value={{
+            refs: { button: null, menu: null, items: [] },
+            state,
+            setState: stateChanger,
+            toggleOpen,
+          }}
         >
           {typeof children === 'function'
-            ? children({ state, changeState: stateChanger, toggleOpen }) //this allows render Prop usage by children not hiding
+            ? children({
+                refs: { button: null, menu: null, items: [] },
+                state,
+                setState: stateChanger,
+                toggleOpen,
+              }) //this allows render Prop usage by children not hiding
             : children}
         </DropdownContext.Provider>
       </Manager>
