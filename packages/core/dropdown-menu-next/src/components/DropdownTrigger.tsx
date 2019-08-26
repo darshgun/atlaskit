@@ -11,9 +11,10 @@ export const DropdownTrigger: React.FunctionComponent<
   const { children } = props;
   return (
     <DropdownContext.Consumer>
-      {({ toggleOpen }) => (
+      {({ toggleOpen, refs }) => (
         <Reference>
           {({ ref }) => {
+            const assignButtonRef = (node: Node) => (refs.button = node);
             return (
               <NodeResolver
                 innerRef={(node: HTMLElement) => {
@@ -23,7 +24,11 @@ export const DropdownTrigger: React.FunctionComponent<
                 {children ? (
                   children
                 ) : (
-                  <DefaultButton text="test" onClick={toggleOpen} />
+                  <DefaultButton
+                    text="test"
+                    onClick={toggleOpen}
+                    ref={assignButtonRef}
+                  />
                 )}
               </NodeResolver>
             );

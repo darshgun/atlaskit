@@ -1,5 +1,7 @@
 import React from 'react';
-export const DropdownContext = React.createContext({
+import { DropdownContextShape } from './types';
+export const DropdownContext = React.createContext<DropdownContextShape>({
+  refs: { button: null, menu: null, items: [] },
   state: {
     appearance: 'default',
     boundriesElement: 'viewport',
@@ -9,6 +11,6 @@ export const DropdownContext = React.createContext({
     shouldFlip: true,
     selectionIndex: -1,
   },
-  changeState: ({}): void => {},
+  setState: ({}): void => {},
   toggleOpen: () => {},
 });

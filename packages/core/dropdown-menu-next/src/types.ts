@@ -46,3 +46,19 @@ export type DropdownState = {
 export type DropdownTriggerProps = {
   text?: string;
 };
+
+export type DropdownContextShape = {
+  refs: {
+    button: React.Ref<HTMLElement> | null;
+    menu: React.Ref<HTMLElement> | null;
+    items: React.Ref<HTMLElement>[];
+  };
+  state: DropdownState;
+  setState: (state: object) => void;
+  toggleOpen: () => void;
+};
+
+type StyledMenu = { shouldFitContainer: boolean };
+export type fullStyledMenu = Partial<StyledMenu>;
+
+export type reactRef = React.Ref<HTMLElement>;

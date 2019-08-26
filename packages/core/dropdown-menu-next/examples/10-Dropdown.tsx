@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from '../src';
-import { DropdownTrigger, MenuList } from '../src';
+import { DropdownTrigger, MenuList, MenuItem } from '../src';
 import { Placement } from '@atlaskit/popper';
 
 export default () => {
@@ -35,9 +35,9 @@ export default () => {
       <Dropdown>
         <DropdownTrigger text="test" />
         <MenuList>
-          <div>Item 1</div>
-          <div>Item 2</div>
-          <div>Item 3</div>
+          <MenuItem>Item 1</MenuItem>
+          <MenuItem>Item 2</MenuItem>
+          <MenuItem>Item 3</MenuItem>
         </MenuList>
       </Dropdown>
       <br />
@@ -51,9 +51,9 @@ export default () => {
       <Dropdown defaultIsOpen position={positions[idx]}>
         <DropdownTrigger text="test 2" />
         <MenuList>
-          <div>Item 1</div>
-          <div>Item 2</div>
-          <div>Item 3</div>
+          <MenuItem>Item 1</MenuItem>
+          <MenuItem>Item 2</MenuItem>
+          <MenuItem>Item 3</MenuItem>
         </MenuList>
       </Dropdown>
       <br />
@@ -72,9 +72,9 @@ export default () => {
               </a>
             </DropdownTrigger>
             <MenuList>
-              <div>Item 1</div>
-              <div>Item 2</div>
-              <div>Item 3</div>
+              <MenuItem>Item 1</MenuItem>
+              <MenuItem>Item 2</MenuItem>
+              <MenuItem>Item 3</MenuItem>
             </MenuList>
           </React.Fragment>
         )}
