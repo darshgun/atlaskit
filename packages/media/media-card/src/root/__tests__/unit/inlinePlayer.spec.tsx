@@ -110,7 +110,7 @@ describe('<InlinePlayer />', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   it('should render loading component when the video src is not ready', () => {
