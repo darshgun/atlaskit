@@ -37,6 +37,7 @@ export interface CardViewOwnProps extends SharedCardProps {
   ) => void;
   readonly onMouseEnter?: (event: MouseEvent<HTMLDivElement>) => void;
   readonly onSelectChange?: (result: OnSelectChangeFuncResult) => void;
+  readonly onDisplayImage?: () => void;
 
   // FileCardProps
   readonly dataURI?: string;
@@ -164,6 +165,7 @@ export class CardViewBase extends React.Component<
       selected,
       disableOverlay,
       previewOrientation,
+      onDisplayImage,
     } = this.props;
 
     return (
@@ -181,6 +183,7 @@ export class CardViewBase extends React.Component<
         selected={selected}
         disableOverlay={disableOverlay}
         previewOrientation={previewOrientation}
+        onDisplayImage={onDisplayImage}
       />
     );
   };

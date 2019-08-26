@@ -7,6 +7,7 @@ import {
   FileIdentifier,
   FileState,
   globalMediaEventEmitter,
+  MediaViewedEventPayload,
 } from '@atlaskit/media-client';
 import {
   asMockReturnValue,
@@ -316,7 +317,7 @@ describe('<InlinePlayer />', () => {
     expect(actualReturnedEvent.context).toEqual(actualFiredEvent.context);
   });
 
-  it('should trigger attachment-viewed when video is first played', async () => {
+  it('should trigger media-viewed when video is first played', async () => {
     const { component } = setup();
     await update(component);
     const { onFirstPlay } = component.find(CustomMediaPlayer).props();
@@ -326,11 +327,11 @@ describe('<InlinePlayer />', () => {
     onFirstPlay();
     expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
     expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
-      'attachment-viewed',
+      'media-viewed',
       {
         fileId: 'some-id',
-        viewingExperience: 'full',
-      },
+        viewingLevel: 'full',
+      } as MediaViewedEventPayload,
     ]);
   });
 });

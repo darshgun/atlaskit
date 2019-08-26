@@ -13,6 +13,9 @@ import {
   FileIdentifier,
   ExternalImageIdentifier,
   Identifier,
+  globalMediaEventEmitter,
+  isFileIdentifier,
+  MediaViewedEventPayload,
 } from '@atlaskit/media-client';
 import { MediaViewer } from '@atlaskit/media-viewer';
 import {
@@ -20,6 +23,7 @@ import {
   nextTick,
   asMockReturnValue,
   asMock,
+  expectFunctionToHaveBeenCalledWith,
 } from '@atlaskit/media-test-helpers';
 
 import { CardAction, CardProps, CardDimensions, CardState } from '../..';
@@ -37,7 +41,8 @@ import {
 } from '../../utils/analytics';
 
 describe('Card', () => {
-  const identifier: Identifier = {
+  let identifier: Identifier;
+  const fileIdentifier: FileIdentifier = {
     id: 'some-random-id',
     mediaItemType: 'file',
     collectionName: 'some-collection-name',
@@ -97,6 +102,8 @@ describe('Card', () => {
   const emptyPreview: FilePreview = { src: undefined };
 
   beforeEach(() => {
+    identifier = fileIdentifier;
+    jest.spyOn(globalMediaEventEmitter, 'emit');
     asMock(getDataURIFromFileState).mockReturnValue({
       src: 'some-data-uri',
       orientation: 6,
@@ -105,6 +112,7 @@ describe('Card', () => {
 
   afterEach(() => {
     (getDataURIFromFileState as any).mockReset();
+    jest.clearAllMocks();
   });
 
   it('should use the new mediaClient to create the subscription when mediaClient prop changes', async () => {
@@ -113,7 +121,7 @@ describe('Card', () => {
     const { component } = setup(firstMediaClient);
     component.setProps({ mediaClient: secondMediaClient, identifier });
 
-    const { id, collectionName, occurrenceKey } = identifier;
+    const { id, collectionName, occurrenceKey } = fileIdentifier;
     await nextTick();
     expect(secondMediaClient.file.getFileState).toHaveBeenCalledTimes(1);
     expect(secondMediaClient.file.getFileState).toBeCalledWith(id, {
@@ -820,6 +828,7 @@ describe('Card', () => {
   });
 
   it('should call item download when download Action is executed', async () => {
+    identifier = fileIdentifier;
     const { component, mediaClient } = setup();
     component.setState({
       status: 'failed-processing',
@@ -837,6 +846,65 @@ describe('Card', () => {
       'some-file-name',
       identifier.collectionName,
     );
+  });
+
+  describe('when CardView calls onDisplayImage', () => {
+    const expectMediaViewedEvent = async ({
+      fileId,
+      isUserCollection,
+    }: {
+      fileId: string;
+      isUserCollection: boolean;
+    }) => {
+      const { component } = setup();
+      const { onDisplayImage } = component.find(CardView).props();
+      if (!onDisplayImage) {
+        return expect(onDisplayImage).toBeDefined();
+      }
+      onDisplayImage();
+      if (isFileIdentifier(identifier)) {
+        await identifier.id;
+      }
+      expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
+      expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
+        'media-viewed',
+        {
+          fileId,
+          isUserCollection,
+          viewingLevel: 'minimal',
+        } as MediaViewedEventPayload,
+      ]);
+    };
+
+    it('should trigger "media-viewed" in globalMediaEventEmitter when collection is not recents', async () => {
+      identifier = fileIdentifier;
+      await expectMediaViewedEvent({
+        fileId: 'some-random-id',
+        isUserCollection: false,
+      });
+    });
+
+    it('should trigger "media-viewed" in globalMediaEventEmitter when collection is recents', async () => {
+      identifier = {
+        ...fileIdentifier,
+        collectionName: 'recents',
+      };
+      await expectMediaViewedEvent({
+        fileId: 'some-random-id',
+        isUserCollection: true,
+      });
+    });
+
+    it('should trigger "media-viewed" in globalMediaEventEmitter when external identifier', async () => {
+      identifier = {
+        mediaItemType: 'external-image',
+        dataURI: 'some-data-uri',
+      };
+      await expectMediaViewedEvent({
+        fileId: 'some-data-uri',
+        isUserCollection: false,
+      });
+    });
   });
 
   describe('Inline player', () => {
