@@ -7,6 +7,7 @@ export default function Example() {
       appearance="full-page"
       serializer="react"
       allowHeadingAnchorLinks
+      allowColumnSorting={true}
     />
   );
 }

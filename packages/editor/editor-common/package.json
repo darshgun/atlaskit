@@ -48,6 +48,7 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/util-data-test": "^12.9.6",
     "@atlaskit/editor-json-transformer": "^6.3.2",
     "@atlaskit/editor-test-helpers": "^9.11.13",
     "@atlaskit/media-core": "^30.0.14",

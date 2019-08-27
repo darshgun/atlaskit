@@ -5,6 +5,7 @@ import {
   EVENT_TYPE,
   ACTION_SUBJECT_ID,
 } from './enums';
+import { SortOrder } from '@atlaskit/editor-common';
 
 export enum PLATFORM {
   NATIVE = 'mobileNative',
@@ -65,8 +66,34 @@ type HeadingAnchorLinkButtonAEP = ButtonAEP<
   undefined
 >;
 
+type TableSortColumnNotAllowedAEP = AEP<
+  ACTION.SORT_COLUMN_NOT_ALLOWED,
+  ACTION_SUBJECT.TABLE,
+  undefined,
+  {
+    platform: PLATFORM.WEB;
+    mode: MODE.RENDERER;
+  },
+  EVENT_TYPE.TRACK
+>;
+
+type TableSortColumnAEP = AEP<
+  ACTION.SORT_COLUMN,
+  ACTION_SUBJECT.TABLE,
+  undefined,
+  {
+    platform: PLATFORM.WEB;
+    mode: MODE.RENDERER;
+    sortOrder: SortOrder;
+    columnIndex: number;
+  },
+  EVENT_TYPE.TRACK
+>;
+
 export type AnalyticsEventPayload =
   | RendererStartAEP
   | RendererRenderedAEP
   | HeadingAnchorLinkButtonAEP
-  | AnchorLinkAEP;
+  | AnchorLinkAEP
+  | TableSortColumnNotAllowedAEP
+  | TableSortColumnAEP;
