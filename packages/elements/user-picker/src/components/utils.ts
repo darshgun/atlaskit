@@ -9,6 +9,8 @@ import {
   Promisable,
   Team,
   TeamType,
+  Group,
+  GroupType,
   User,
   UserType,
   Value,
@@ -20,6 +22,9 @@ export const isUser = (option: OptionData): option is User =>
 
 export const isTeam = (option: OptionData): option is Team =>
   option.type === TeamType;
+
+export const isGroup = (option: OptionData): option is Group =>
+  option.type === GroupType;
 
 export const isEmail = (option: OptionData): option is Email =>
   option.type === EmailType;

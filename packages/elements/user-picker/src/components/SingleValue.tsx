@@ -33,6 +33,8 @@ export const SingleValue = (props: Props) => {
     selectProps: { appearance, isFocused },
   } = props;
 
+  console.log({ data });
+
   return !isFocused ? (
     <AvatarItem
       backgroundColor="transparent"
