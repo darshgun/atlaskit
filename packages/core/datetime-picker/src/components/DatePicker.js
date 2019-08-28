@@ -28,6 +28,8 @@ import {
   defaultDateFormat,
   padToTwo,
   placeholderDatetime,
+  createDateParser,
+  type DateParser,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 
@@ -63,8 +65,8 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
-  /* A function for parsing input characters and transforming them into a Date object. By default uses [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) */
-  parseInputValue: (date: string, dateFormat: string) => Date,
+  /** A function for parsing input characters and transforming them into a Date object. By default parses the date string based off the locale */
+  parseInputValue?: (date: string, dateFormat: string) => Date,
   /** DEPRECATED - Use locale instead. A function for formatting the date displayed in the input. By default composes together [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) and [date-fn's format method](https://date-fns.org/v1.29.0/docs/format) to return a correctly formatted date string*/
   formatDisplayLabel?: (value: string, dateFormat: string) => string,
   /** Props to apply to the select. This can be used to set options such as placeholder text.
@@ -94,6 +96,7 @@ type State = {
   view: string,
   inputValue: string,
   l10n: LocalizationProvider,
+  dateParser: DateParser,
 };
 
 function getDateObj(date: Date) {
@@ -161,7 +164,6 @@ class DatePicker extends Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    parseInputValue: parse,
     selectProps: {},
     spacing: 'default',
     locale: 'en-US',
@@ -182,12 +184,16 @@ class DatePicker extends Component<Props, State> {
         this.props.defaultValue ||
         `${year}-${padToTwo(month)}-${padToTwo(day)}`,
       l10n: createLocalizationProvider(this.props.locale),
+      dateParser: createDateParser(this.props.locale),
     };
   }
 
   componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
     if (this.props.locale !== nextProps.locale) {
-      this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
+      this.setState({
+        l10n: createLocalizationProvider(nextProps.locale),
+        dateParser: createDateParser(nextProps.locale),
+      });
     }
   }
 
@@ -267,10 +273,9 @@ class DatePicker extends Component<Props, State> {
 
   onSelectInput = (e: SyntheticInputEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const { dateFormat, parseInputValue } = this.props;
 
     if (value) {
-      const parsed = parseInputValue(value, dateFormat || defaultDateFormat);
+      const parsed = this.parseDate(value);
       // Only try to set the date if we have month & day
       if (isValid(parsed)) {
         // We format the parsed date to YYYY-MM-DD here because
@@ -364,6 +369,24 @@ class DatePicker extends Component<Props, State> {
     backgroundColor: 'transparent',
     padding: '1px',
   });
+
+  /**
+   * There are two props that can change how the date is parsed.
+   * The priority of props used is:
+   *   1. parseInputValue
+   *   2. locale
+   */
+  parseDate = (date: string): Date | null => {
+    const { parseInputValue, dateFormat } = this.props;
+
+    if (parseInputValue) {
+      return parseInputValue(date, dateFormat || defaultDateFormat);
+    }
+
+    const { dateParser } = this.getState();
+
+    return dateParser(date);
+  };
 
   /**
    * There are multiple props that can change how the date is formatted.
