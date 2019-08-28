@@ -28,12 +28,12 @@ cases(
     {
       name: '2/18/1',
       partialDateString: '2/18/1',
-      date: new Date(1901, 1, 18),
+      date: new Date(2001, 1, 18),
     },
     {
       name: '2/18/19',
       partialDateString: '2/18/19',
-      date: new Date(1919, 1, 18),
+      date: new Date(2019, 1, 18),
     },
     {
       name: '2/18/199',

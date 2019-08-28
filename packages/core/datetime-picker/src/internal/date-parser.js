@@ -64,10 +64,18 @@ export const createDateParser = (locale: string): DateParser => {
     const dateParts = extractDateParts(dateMatch);
 
     // Use the previously extracted year/month/day positions to extract each
-    // date piece. The current date is used to fill in
-    const year = dateParts[yearPosition] || now.getFullYear();
-    const month = dateParts[monthPosition] - 1 || now.getMonth();
-    const day = dateParts[dayPosition] || now.getDate();
+    // date piece.
+    const parsedYear = dateParts[yearPosition];
+    const parsedMonth = dateParts[monthPosition] - 1;
+    const parsedDay = dateParts[dayPosition];
+
+    // An input of '19' should evaluate to 2019
+    const normalizedYear = parsedYear < 100 ? 2000 + parsedYear : parsedYear;
+
+    // The current date is used to fill in missing date pieces
+    const year = !isNaN(normalizedYear) ? normalizedYear : now.getFullYear();
+    const month = !isNaN(parsedMonth) ? parsedMonth : now.getMonth();
+    const day = !isNaN(parsedDay) ? parsedDay : now.getDate();
 
     return new Date(year, month, day);
   };
