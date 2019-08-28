@@ -273,7 +273,7 @@ class TimePicker extends Component<Props, State> {
     }
 
     const { l10n } = this.getState();
-    return `e.g. ${l10n.formatTime(placeholderDatetime)}`;
+    return l10n.formatTime(placeholderDatetime);
   };
 
   render() {

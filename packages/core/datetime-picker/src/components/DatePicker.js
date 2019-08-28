@@ -418,7 +418,7 @@ class DatePicker extends Component<Props, State> {
     }
 
     const { l10n } = this.getState();
-    return `e.g. ${l10n.formatDate(placeholderDatetime)}`;
+    return l10n.formatDate(placeholderDatetime);
   };
 
   render() {
