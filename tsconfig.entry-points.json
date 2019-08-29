@@ -239,14 +239,6 @@
         "../../core/dropdown-menu/src/types",
         "./packages/core/dropdown-menu/src/types"
       ],
-      "@atlaskit/dropdown-menu-next": [
-        "../../core/dropdown-menu-next/src/",
-        "./packages/core/dropdown-menu-next/src/"
-      ],
-      "@atlaskit/dropdown-menu-next/types": [
-        "../../core/dropdown-menu-next/src/types",
-        "./packages/core/dropdown-menu-next/src/types"
-      ],
       "@atlaskit/droplist": [
         "../../core/droplist/src/",
         "./packages/core/droplist/src/"

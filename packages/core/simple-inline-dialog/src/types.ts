@@ -1,15 +1,9 @@
-import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { ReactNode } from 'react';
 import { Placement } from '@atlaskit/popper';
 
-export type DefaultButtonProps = {
-  text: string;
-  onClick?: (
-    e: React.MouseEvent<HTMLElement>,
-    analyticsEvent: UIAnalyticsEvent,
-  ) => void;
-};
+export type ReactRef = React.Ref<HTMLElement> | HTMLElement | null;
 
-export type DropdownMenuProps = {
+export type DialogProps = {
   /**
    * Controls the appearance of the menu.
    * Default menu has scroll after its height exceeds the pre-defined amount.
@@ -19,7 +13,7 @@ export type DropdownMenuProps = {
   /** Value passed to the Layer component to determine when to reposition the droplist */
   boundariesElement?: 'viewport' | 'window' | 'scrollParent';
   /** Default menu open state */
-  defaultIsOpen?: boolean;
+  isOpen: boolean;
   /** HTML Id for testing etc */
   id?: string;
   /** Position of the menu. See the documentation of @atlaskit/layer for more details. */
@@ -31,42 +25,27 @@ export type DropdownMenuProps = {
   shouldFlip?: boolean;
   /**testId maps to data-test-id for testing in your application */
   testId?: string;
+
+  content: ReactNode;
+
+  onClose(): void;
 };
 
-export type DropdownState = {
-  appearance: 'default' | 'tall';
-  boundriesElement: 'viewport' | 'window' | 'scrollParent';
-  isOpen: boolean;
-  position: Placement;
+export type DialogContextShape = {
+  menuRef: ReactRef | HTMLElement | null;
+  closeDialog(): void;
+};
+
+type StyledMenu = {
   shouldFitContainer: boolean;
-  shouldFlip: boolean;
-  selectionIndex: number;
+  maxWidth: number;
+  minWidth: number;
 };
 
-export type DropdownTriggerProps = {
-  text?: string;
-};
-
-type refs = {
-  button: React.Ref<HTMLElement> | HTMLElement | null;
-  menu: React.Ref<HTMLElement> | HTMLElement | null;
-  items: React.Ref<HTMLElement>[] | HTMLElement[] | null;
-};
-
-export type DropdownContextShape = {
-  refs: refs;
-  state: DropdownState;
-  setState: (state: object) => void;
-  toggleOpen: () => void;
-};
-
-type StyledMenu = { shouldFitContainer: boolean };
 export type fullStyledMenu = Partial<StyledMenu>;
 
-export type reactRef = React.Ref<HTMLElement>;
-
 export type FocusManagerProps = {
-  refs: refs;
-  state: DropdownState;
-  setState: ({}) => void;
+  dialogRef: HTMLDivElement | undefined;
+  isOpen: boolean;
+  onClose(): void;
 };
