@@ -47,12 +47,14 @@ export type DropdownTriggerProps = {
   text?: string;
 };
 
+type refs = {
+  button: React.Ref<HTMLElement> | HTMLElement | null;
+  menu: React.Ref<HTMLElement> | HTMLElement | null;
+  items: React.Ref<HTMLElement>[] | HTMLElement[] | null;
+};
+
 export type DropdownContextShape = {
-  refs: {
-    button: React.Ref<HTMLElement> | null;
-    menu: React.Ref<HTMLElement> | null;
-    items: React.Ref<HTMLElement>[];
-  };
+  refs: refs;
   state: DropdownState;
   setState: (state: object) => void;
   toggleOpen: () => void;
@@ -62,3 +64,9 @@ type StyledMenu = { shouldFitContainer: boolean };
 export type fullStyledMenu = Partial<StyledMenu>;
 
 export type reactRef = React.Ref<HTMLElement>;
+
+export type FocusManagerProps = {
+  refs: refs;
+  state: DropdownState;
+  setState: ({}) => void;
+};
