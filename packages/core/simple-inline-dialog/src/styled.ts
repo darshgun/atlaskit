@@ -1,12 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
-import { fullStyledMenu } from '../types';
+import styled from '@emotion/styled';
+import { borderRadius, colors, layers } from '@atlaskit/theme';
+import { fullStyledMenu } from './types';
 
 const shadow = colors.N40A;
 
 export const StyledMenu = styled('div')<fullStyledMenu>`
-  background-color: 'white';
+  background-color: ${colors.N0};
   border-radius: ${borderRadius()}px;
   box-shadow: 0 0 0 1px ${shadow}, 0 4px 11px ${shadow};
   z-index: ${layers.layer()};
