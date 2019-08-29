@@ -10,7 +10,7 @@ import { AvatarItemOption, TextWrapper } from './AvatarItemOption';
 import { messages } from './i18n';
 import { HighlightText } from './HighlightText';
 
-const GroupOptionIconWrapper = styled.span`
+export const GroupOptionIconWrapper = styled.span`
   padding: 2px;
 
   > span {
@@ -31,7 +31,6 @@ export class GroupOption extends React.PureComponent<GroupOptionProps> {
       isSelected,
       group: { name, highlight },
     } = this.props;
-
     return [
       <TextWrapper key="name" color={isSelected ? colors.N0 : colors.N800}>
         <HighlightText highlights={highlight && highlight.name}>
