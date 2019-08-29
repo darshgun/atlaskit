@@ -1,4 +1,5 @@
 import React from 'react';
+import Item from '@atlaskit/item';
 
 const assignRef = (ref, value) => {
   if (ref == null) return;
@@ -34,16 +35,15 @@ export const MenuItem = React.forwardRef(
       setState({ isOpen: false });
     };
     return (
-      <div
+      <Item
         {...rest}
         ref={node => {
           assignRef(ref, node);
           assignRef(_ref, node);
         }}
-        data-reach-menu-item={role === 'menuitem' ? true : undefined}
         role={role}
         tabIndex="-1"
-        data-selected={role === 'menuitem' && isSelected ? true : undefined}
+        selected={isSelected ? true : undefined}
         onClick={event => {
           select();
         }}

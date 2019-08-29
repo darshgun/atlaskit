@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
 import { fullStyledMenu } from '../types';
 
+const shadow = colors.N40A;
+
 export const StyledMenu = styled('div')<fullStyledMenu>`
-  padding: 8px 12px;
-  background-color: ${colors.N20};
+  background-color: 'white';
   border-radius: ${borderRadius()}px;
-  z-index: ${layers.dialog};
-  ${elevation.e200};
-  ${props => (props.shouldFitContainer ? 'max-width: 300px' : '')};
+  box-shadow: 0 0 0 1px ${shadow}, 0 4px 11px ${shadow};
+  z-index: ${layers.layer()};
+  min-width: ${props => props.minWidth};
+  max-width: ${props => props.maxWidth};
 `;

@@ -33,7 +33,7 @@ export default () => {
     <div style={{ margin: '20px 50%', width: '200px' }}>
       Default Dropdown
       <Dropdown>
-        <DropdownTrigger text="test" />
+        <DropdownTrigger text="Default Dropdown" />
         <MenuList>
           <MenuItem>Item 1</MenuItem>
           <MenuItem>Item 2</MenuItem>
@@ -48,8 +48,8 @@ export default () => {
       <br />
       <br />
       <br />
-      <Dropdown defaultIsOpen position={positions[idx]}>
-        <DropdownTrigger text="test 2" />
+      <Dropdown defaultIsOpen position={positions[idx]} minWidth="150px">
+        <DropdownTrigger text="Default Open" />
         <MenuList>
           <MenuItem>Item 1</MenuItem>
           <MenuItem>Item 2</MenuItem>
