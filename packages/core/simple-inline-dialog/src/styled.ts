@@ -11,4 +11,15 @@ export const StyledMenu = styled('div')<fullStyledMenu>`
   z-index: ${layers.layer()};
   min-width: ${props => props.minWidth};
   max-width: ${props => props.maxWidth};
+  min-height: ${props => props.minHeight};
+  max-height: ${props => props.maxHeight};
+  box-sizing: border-box;
+  overflow: ${props => props.overflow};
+  display: inline-flex;
+  ${props =>
+    props.shouldFitContainer &&
+    `
+    display: block;
+    flex: 1 1 auto;
+  `};
 `;
