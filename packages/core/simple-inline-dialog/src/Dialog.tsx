@@ -1,4 +1,3 @@
-/**This component is a wrapper that takes props, sets up the default state and a context to pass that state, and returns render Props if needed */
 import React, { FC, memo, useState, useEffect } from 'react';
 import NodeResolver from 'react-node-resolver';
 import ScrollLock from 'react-scrolllock';
