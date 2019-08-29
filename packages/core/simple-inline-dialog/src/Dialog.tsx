@@ -1,5 +1,5 @@
 /**This component is a wrapper that takes props, sets up the default state and a context to pass that state, and returns render Props if needed */
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useState, useEffect } from 'react';
 import NodeResolver from 'react-node-resolver';
 import ScrollLock from 'react-scrolllock';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
@@ -20,9 +20,19 @@ export const Dialog: FC<DialogProps> = memo(
     testId,
     content,
     children,
+    onOpen,
     onClose,
   }) => {
     const [dialogRef, setDialogRef] = useState<HTMLDivElement>();
+
+    useEffect(
+      () => {
+        if (isOpen && onOpen) {
+          onOpen();
+        }
+      },
+      [isOpen],
+    );
 
     return (
       <div style={{ position: 'relative' }}>

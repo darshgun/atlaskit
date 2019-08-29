@@ -36,7 +36,9 @@ export const FocusManager: FC<FocusManagerProps> = ({
   const closeDialog = () => {
     window.removeEventListener('click', handleClick);
     window.removeEventListener('keydown', handleKeyDown);
-    onClose();
+    if (onClose) {
+      onClose();
+    }
   };
 
   useEffect(

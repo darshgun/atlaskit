@@ -28,7 +28,9 @@ export type DialogProps = {
 
   content: ReactNode;
 
-  onClose(): void;
+  onOpen?(): void;
+
+  onClose?(): void;
 };
 
 export type DialogContextShape = {
@@ -47,5 +49,5 @@ export type fullStyledMenu = Partial<StyledMenu>;
 export type FocusManagerProps = {
   dialogRef: HTMLDivElement | undefined;
   isOpen: boolean;
-  onClose(): void;
+  onClose?(): void;
 };
