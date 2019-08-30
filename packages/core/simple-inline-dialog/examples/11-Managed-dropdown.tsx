@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
-import { DialogStateless } from '../src';
+import Dialog from '../src';
 import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
 
-const SpacedButton = styled(Button)`
+const Spacer = styled.div`
   margin: 150px 250px;
 `;
 
@@ -13,7 +13,6 @@ const SizedContent = styled.div`
   text-align: center;
   vertical-align: center;
   padding: 30px;
-  height: 80px;
   overflow: auto;
 `;
 
@@ -39,8 +38,6 @@ const DialogContent: FC<DialogProps> = ({ setPosition, position }) => {
 
 export default () => {
   const [idx, setIdx] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-
   const positions: Array<Placement> = [
     'bottom-start',
     'bottom',
@@ -69,15 +66,14 @@ export default () => {
   const position = positions[idx];
 
   return (
-    <DialogStateless
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      content={<DialogContent setPosition={setPosition} position={position} />}
-      position={position}
-    >
-      <SpacedButton onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? 'Close' : 'Open'} Dialog
-      </SpacedButton>
-    </DialogStateless>
+    <Spacer>
+      <Dialog
+        trigger="Test"
+        content={
+          <DialogContent setPosition={setPosition} position={position} />
+        }
+        position={position}
+      />
+    </Spacer>
   );
 };
