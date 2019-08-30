@@ -1,7 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import Dialog from '../src';
-import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
 
 const Spacer = styled.div`

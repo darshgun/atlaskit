@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
-import { borderRadius, colors, layers } from '@atlaskit/theme';
+import { borderRadius, layers } from '@atlaskit/theme/constants';
+import { N0, N40A } from '@atlaskit/theme/colors';
 import { fullStyledMenu } from './types';
 
-const shadow = colors.N40A;
+const shadow = N40A;
 
 export const StyledMenu = styled('div')<fullStyledMenu>`
-  background-color: ${colors.N0};
+  background-color: ${N0};
   border-radius: ${borderRadius()}px;
   box-shadow: 0 0 0 1px ${shadow}, 0 4px 11px ${shadow};
   z-index: ${layers.layer()};
@@ -22,4 +23,8 @@ export const StyledMenu = styled('div')<fullStyledMenu>`
     display: block;
     flex: 1 1 auto;
   `};
+`;
+
+export const MenuRelContainer = styled.div`
+  position: relative;
 `;

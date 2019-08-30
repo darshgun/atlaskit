@@ -1,5 +1,5 @@
 import React, { FC, memo, useState, useEffect } from 'react';
-import Button from '@atlaskit/button';
+import Button, { ButtonProps } from '@atlaskit/button';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import { DialogProps } from './types';
 import { DialogStateless } from './DialogStateless';
@@ -19,13 +19,12 @@ export const Dialog: FC<DialogProps> = memo(
     shouldFlip = true,
     testId,
     content,
-    children,
     onOpen,
     onClose,
     trigger,
     triggerButtonProps,
     triggerType = 'button',
-  }) => {
+  }: DialogProps) => {
     const [open, setOpen] = useState(isOpen || false);
     useEffect(
       () => {
@@ -49,12 +48,11 @@ export const Dialog: FC<DialogProps> = memo(
     };
 
     const renderTrigger = () => {
-      console.log(triggerType);
       if (triggerType !== 'button') {
         return trigger;
       }
 
-      const triggerProps = { ...triggerButtonProps };
+      const triggerProps: ButtonProps = { ...triggerButtonProps };
       const defaultButtonProps = {
         'aria-controls': id,
         'aria-expanded': isOpen,

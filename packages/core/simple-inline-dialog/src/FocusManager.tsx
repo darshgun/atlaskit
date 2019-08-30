@@ -66,10 +66,10 @@ export const FocusManager: FC<FocusManagerProps> = ({
   useEffect(
     () => {
       if (isOpen && dialogRef) {
-        setTimeout(() => {
+        window.requestAnimationFrame(() => {
           window.addEventListener('click', handleClick);
           window.addEventListener('keydown', handleKeyDown);
-        }, 1);
+        });
       }
 
       return () => {
