@@ -12,11 +12,9 @@ type overflow =
   | `overflow-x`
   | `overflow-y`;
 
-export type DialogPropsStateless = {
+export type DialogPropsRoot = {
   /** Value passed to the Layer component to determine when to reposition the droplist */
   boundariesElement?: 'viewport' | 'window' | 'scrollParent';
-  /** Default menu open state */
-  isOpen: boolean;
   /** HTML Id for testing etc */
   id?: string;
   /** Minimum height for the pop-over any vlid css value can be accepted: `10px`, `50%`, etc. */
@@ -40,23 +38,28 @@ export type DialogPropsStateless = {
   /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
    * fit in the viewport. */
   shouldFlip?: boolean;
-  /**testId maps to data-test-id for testing in your application */
+  /** testId maps to data-test-id for testing in your application */
   testId?: string;
   /**Content to display in the dialog */
   content: ReactNode;
-  /**Callback function when the dialog is opened */
+  /** Callback function when the dialog is opened */
   onOpen?(): void;
-  /**Callback function when the dialog is closed */
+  /** Callback function when the dialog is closed */
   onClose?(): void;
 };
 
-export type DialogProps = {
+export type DialogPropsStateless = DialogPropsRoot & {
+  /** Default menu open state */
+  isOpen: boolean;
+};
+
+export type DialogProps = DialogPropsRoot & {
   /** Default menu open state */
   isOpen?: boolean;
   /**
    * Content which will trigger the dropdown menu to open and close. Use with triggerType to easily get a button trigger.
    */
-  trigger?: React.ReactNode | string;
+  trigger?: ReactNode | string;
   /**
    * Props to pass through to the trigger button. See @atlaskit/button for allowed props.
    */
@@ -68,7 +71,7 @@ export type DialogProps = {
    * and the trigger prop contents inside the button.
    */
   triggerType?: 'default' | 'button';
-} & DialogPropsStateless;
+};
 
 export type DialogContextShape = {
   menuRef: ReactRef | HTMLElement | null;

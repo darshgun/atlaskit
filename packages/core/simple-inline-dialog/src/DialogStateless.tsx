@@ -3,11 +3,11 @@ import NodeResolver from 'react-node-resolver';
 import ScrollLock from 'react-scrolllock';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
-import { StyledMenu } from './styled';
-import { DialogProps } from './types';
+import { StyledMenu, MenuRelContainer } from './styled';
+import { DialogPropsStateless } from './types';
 import { FocusManager } from './FocusManager';
 
-export const DialogStateless: FC<DialogProps> = memo(
+export const DialogStateless: FC<DialogPropsStateless> = memo(
   ({
     boundariesElement,
     isOpen,
@@ -38,7 +38,7 @@ export const DialogStateless: FC<DialogProps> = memo(
     );
 
     return (
-      <div style={{ position: 'relative' }}>
+      <MenuRelContainer>
         <FocusManager dialogRef={dialogRef} isOpen={isOpen} onClose={onClose} />
         <Manager>
           <Reference>
@@ -103,7 +103,7 @@ export const DialogStateless: FC<DialogProps> = memo(
             </Portal>
           ) : null}
         </Manager>
-      </div>
+      </MenuRelContainer>
     );
   },
 );
