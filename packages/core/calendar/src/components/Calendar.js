@@ -1,5 +1,9 @@
 // @flow
 
+import {
+  createLocalizationProvider,
+  LocalizationProvider,
+} from '@atlaskit/locale';
 import { Calendar as CalendarBase } from 'calendar-base';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
@@ -13,11 +17,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-import {
-  dateToString,
-  createLocalizationProvider,
-  type LocalizationProvider,
-} from '../util';
+import { dateToString } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
 import {

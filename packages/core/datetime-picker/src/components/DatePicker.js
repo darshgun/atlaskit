@@ -1,12 +1,12 @@
 // @flow
 
 import Calendar from '@atlaskit/calendar';
+import CalendarIcon from '@atlaskit/icon/glyph/calendar';
+import Select, { mergeStyles } from '@atlaskit/select';
 import {
   createLocalizationProvider,
   type LocalizationProvider,
-} from '@atlaskit/calendar/common';
-import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import Select, { mergeStyles } from '@atlaskit/select';
+} from '@atlaskit/locale';
 import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
 import {
   withAnalyticsEvents,
@@ -28,8 +28,6 @@ import {
   defaultDateFormat,
   padToTwo,
   placeholderDatetime,
-  createDateParser,
-  type DateParser,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 
@@ -96,7 +94,6 @@ type State = {
   view: string,
   inputValue: string,
   l10n: LocalizationProvider,
-  dateParser: DateParser,
 };
 
 function getDateObj(date: Date) {
@@ -184,7 +181,6 @@ class DatePicker extends Component<Props, State> {
         this.props.defaultValue ||
         `${year}-${padToTwo(month)}-${padToTwo(day)}`,
       l10n: createLocalizationProvider(this.props.locale),
-      dateParser: createDateParser(this.props.locale),
     };
   }
 
@@ -192,7 +188,6 @@ class DatePicker extends Component<Props, State> {
     if (this.props.locale !== nextProps.locale) {
       this.setState({
         l10n: createLocalizationProvider(nextProps.locale),
-        dateParser: createDateParser(nextProps.locale),
       });
     }
   }
@@ -383,9 +378,9 @@ class DatePicker extends Component<Props, State> {
       return parseInputValue(date, dateFormat || defaultDateFormat);
     }
 
-    const { dateParser } = this.getState();
+    const { l10n } = this.getState();
 
-    return dateParser(date);
+    return l10n.parseDate(date);
   };
 
   /**

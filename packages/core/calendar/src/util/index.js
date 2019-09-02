@@ -2,11 +2,6 @@
 
 import type { DateObj } from '../types';
 
-export {
-  createLocalizationProvider,
-  LocalizationProvider,
-} from './localization-provider';
-
 type DateToStringOptions = {
   fixMonth: boolean,
 };

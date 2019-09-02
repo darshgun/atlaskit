@@ -24,6 +24,7 @@
     "@atlaskit/analytics-next": "^5.1.2",
     "@atlaskit/button": "^13.0.16",
     "@atlaskit/icon": "^19.0.0",
+    "@atlaskit/locale": "^0.0.0",
     "@atlaskit/theme": "^9.1.1",
     "@babel/runtime": "^7.0.0",
     "calendar-base": "^0.3.0",

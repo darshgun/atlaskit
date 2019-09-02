@@ -25,6 +25,7 @@
     "@atlaskit/calendar": "^8.0.5",
     "@atlaskit/field-base": "^13.0.6",
     "@atlaskit/icon": "^19.0.0",
+    "@atlaskit/locale": "^0.0.0",
     "@atlaskit/popper": "^3.0.0",
     "@atlaskit/select": "^10.0.1",
     "@atlaskit/theme": "^9.1.1",

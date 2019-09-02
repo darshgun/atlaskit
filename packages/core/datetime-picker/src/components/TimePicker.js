@@ -5,6 +5,10 @@ import Select, {
   components,
   mergeStyles,
 } from '@atlaskit/select';
+import {
+  createLocalizationProvider,
+  type LocalizationProvider,
+} from '@atlaskit/locale';
 import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
@@ -14,11 +18,6 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
-
-import {
-  createLocalizationProvider,
-  type LocalizationProvider,
-} from '@atlaskit/calendar/common';
 import {
   name as packageName,
   version as packageVersion,

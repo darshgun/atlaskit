@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-export { createDateParser, DateParser } from './date-parser';
-
 export const ClearIndicator = null;
 
 // This date was chosen to clearly show date and time formats (day > 12)
