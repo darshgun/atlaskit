@@ -201,30 +201,6 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'When a user types a year into the date input in DatetimePicker and subsequently hits enter, the value is correctly updated',
-  { skip: ['safari', 'ie'] }, // Safari and IE drivers have issues - AK-5570, AK-5492
-  async client => {
-    const dateTimePickerTest = new Page(client);
-
-    await dateTimePickerTest.goto(urlDateTimePicker);
-    await dateTimePickerTest.click(dateTimePicker);
-    await dateTimePickerTest.type(dateTimePickerDateInput, [
-      '2',
-      '0',
-      '1',
-      '6',
-    ]);
-    await dateTimePickerTest.keys(['Enter']);
-    await dateTimePickerTest.waitForSelector(dateTimeValues);
-
-    const newDate = await dateTimePickerTest.getText(dateTimeValues);
-
-    expect(newDate.trim()).toBe('1/1/2016');
-    await dateTimePickerTest.checkConsoleErrors();
-  },
-);
-
-BrowserTestCase(
   '[i18n] When entering a new time in Timepicker Editable, the time should be updated to the new value',
   { skip: ['ie'] }, // IE has an issue AK-5570, AK-5492
   async client => {
