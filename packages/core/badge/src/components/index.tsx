@@ -1,4 +1,6 @@
-import GlobalTheme, { ThemeProp, GlobalThemeTokens } from '@atlaskit/theme';
+import GlobalTheme from '@atlaskit/theme/components';
+import { ThemeProp } from '@atlaskit/theme/components';
+import { GlobalThemeTokens } from '@atlaskit/theme/components';
 import React from 'react';
 
 import Container from './Container';
@@ -48,7 +50,7 @@ export default class Badge extends React.Component<BadgeProps> {
   };
 
   // TODO This can be removed when we remove support for onValueUpdated.
-  componentWillUpdate(nextProps: BadgeProps) {
+  UNSAFE_componentWillUpdate(nextProps: BadgeProps) {
     const { children, onValueUpdated, value } = this.props;
     let oldValue = children;
     let newValue = nextProps.children;
