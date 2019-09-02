@@ -4,7 +4,7 @@ import Dialog from '../src';
 import Button from '@atlaskit/button';
 
 const Spacer = styled.div`
-  margin: 150px 250px;
+  margin: 250px;
 `;
 
 const SizedContent = styled.div`

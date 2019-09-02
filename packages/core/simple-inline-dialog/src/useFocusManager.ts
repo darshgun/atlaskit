@@ -1,45 +1,20 @@
-import { FC, useState, useEffect } from 'react';
-import { FocusManagerProps } from './types';
+import { useState, useEffect } from 'react';
+import { FocusManagerHook } from './types';
 import createFocusTrap, { FocusTrap } from 'focus-trap';
 
 const noop = () => {};
 
-export const FocusManager: FC<FocusManagerProps> = ({
+export const useFocusManager = ({
   dialogRef,
   isOpen,
   onClose,
-}) => {
+}: FocusManagerHook): void => {
   const [focusTrap, setFocusTrap] = useState<FocusTrap>({
     activate: noop,
     deactivate: noop,
     pause: noop,
     unpause: noop,
   });
-
-  const handleClick = ({ target }: MouseEvent) => {
-    if (isOpen && (dialogRef && !dialogRef.contains(target as Node))) {
-      closeDialog();
-    }
-  };
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    const { key } = event;
-    switch (key) {
-      case 'Escape':
-      case 'Esc':
-        closeDialog();
-        break;
-      default:
-    }
-  };
-
-  const closeDialog = () => {
-    window.removeEventListener('click', handleClick);
-    window.removeEventListener('keydown', handleKeyDown);
-    if (onClose) {
-      onClose();
-    }
-  };
 
   useEffect(
     () => {
@@ -65,6 +40,31 @@ export const FocusManager: FC<FocusManagerProps> = ({
 
   useEffect(
     () => {
+      const handleClick = ({ target }: MouseEvent) => {
+        if (isOpen && (dialogRef && !dialogRef.contains(target as Node))) {
+          closeDialog();
+        }
+      };
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        const { key } = event;
+        switch (key) {
+          case 'Escape':
+          case 'Esc':
+            closeDialog();
+            break;
+          default:
+        }
+      };
+
+      const closeDialog = () => {
+        window.removeEventListener('click', handleClick);
+        window.removeEventListener('keydown', handleKeyDown);
+        if (onClose) {
+          onClose();
+        }
+      };
+
       if (isOpen && dialogRef) {
         window.requestAnimationFrame(() => {
           window.addEventListener('click', handleClick);
@@ -79,6 +79,4 @@ export const FocusManager: FC<FocusManagerProps> = ({
     },
     [isOpen, dialogRef],
   );
-
-  return null;
 };

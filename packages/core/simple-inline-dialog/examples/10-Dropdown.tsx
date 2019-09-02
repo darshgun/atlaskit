@@ -5,7 +5,7 @@ import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
 
 const SpacedButton = styled(Button)`
-  margin: 150px 250px;
+  margin: 250px;
 `;
 
 const SizedContent = styled.div`
@@ -41,7 +41,7 @@ export default () => {
   const [idx, setIdx] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  const positions: Array<Placement> = [
+  const positions: Placement[] = [
     'bottom-start',
     'bottom',
     'bottom-end',

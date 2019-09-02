@@ -5,7 +5,7 @@ import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
 import { StyledMenu, MenuRelContainer } from './styled';
 import { DialogPropsStateless } from './types';
-import { FocusManager } from './FocusManager';
+import { useFocusManager } from './useFocusManager';
 
 export const DialogStateless: FC<DialogPropsStateless> = memo(
   ({
@@ -37,9 +37,10 @@ export const DialogStateless: FC<DialogPropsStateless> = memo(
       [isOpen],
     );
 
+    useFocusManager({ dialogRef, isOpen, onClose });
+
     return (
       <MenuRelContainer>
-        <FocusManager dialogRef={dialogRef} isOpen={isOpen} onClose={onClose} />
         <Manager>
           <Reference>
             {({ ref }) => {
@@ -69,7 +70,7 @@ export const DialogStateless: FC<DialogPropsStateless> = memo(
                   return (
                     <div
                       id={id}
-                      data-test-id={testId}
+                      data-testid={testId}
                       ref={(node: HTMLDivElement) => {
                         ref(node);
                         setDialogRef(node);
@@ -79,8 +80,6 @@ export const DialogStateless: FC<DialogPropsStateless> = memo(
                     >
                       <ScrollLock />
                       <StyledMenu
-                        id={id}
-                        data-test-id={testId}
                         minWidth={minWidth}
                         maxWidth={maxWidth}
                         minHeight={minHeight}

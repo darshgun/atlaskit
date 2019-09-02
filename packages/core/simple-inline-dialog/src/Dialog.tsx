@@ -41,10 +41,12 @@ export const Dialog: FC<DialogProps> = memo(
     );
 
     const managedOnClose = () => {
-      if (onClose) {
-        onClose();
+      if (!isOpen) {
+        if (onClose) {
+          onClose();
+        }
+        setOpen(false);
       }
-      setOpen(false);
     };
 
     const renderTrigger = () => {
@@ -55,10 +57,10 @@ export const Dialog: FC<DialogProps> = memo(
       const triggerProps: ButtonProps = { ...triggerButtonProps };
       const defaultButtonProps = {
         'aria-controls': id,
-        'aria-expanded': isOpen,
+        'aria-expanded': open,
         onClick: () => setOpen(!open),
         'aria-haspopup': true,
-        isSelected: isOpen,
+        isSelected: open,
       };
       if (!triggerProps.iconAfter && !triggerProps.iconBefore) {
         triggerProps.iconAfter = <ExpandIcon size="medium" label="" />;

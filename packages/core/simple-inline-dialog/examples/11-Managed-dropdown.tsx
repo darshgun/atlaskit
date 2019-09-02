@@ -5,7 +5,7 @@ import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
 
 const Spacer = styled.div`
-  margin: 150px 250px;
+  margin: 250px;
 `;
 
 const SizedContent = styled.div`
@@ -38,7 +38,7 @@ const DialogContent: FC<DialogProps> = ({ setPosition, position }) => {
 
 export default () => {
   const [idx, setIdx] = useState(0);
-  const positions: Array<Placement> = [
+  const positions: Placement[] = [
     'bottom-start',
     'bottom',
     'bottom-end',

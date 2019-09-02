@@ -17,13 +17,13 @@ export type DialogPropsRoot = {
   boundariesElement?: 'viewport' | 'window' | 'scrollParent';
   /** HTML Id for testing etc */
   id?: string;
-  /** Minimum height for the pop-over any vlid css value can be accepted: `10px`, `50%`, etc. */
+  /** Minimum height for the pop-over any valid css value can be accepted: `10px`, `50%`, etc. */
   minHeight?: string;
-  /** Minimum width for the pop-over any vlid css value can be accepted: `10px`, `50%`, etc. */
+  /** Minimum width for the pop-over any valid css value can be accepted: `10px`, `50%`, etc. */
   minWidth?: string;
-  /** Maximum height for the pop-over any vlid css value can be accepted: `10px`, `50%`, etc. */
+  /** Maximum height for the pop-over any valid css value can be accepted: `10px`, `50%`, etc. */
   maxHeight?: string;
-  /** Maximum height for the pop-over any vlid css value can be accepted: `10px`, `50%`, etc. */
+  /** Maximum height for the pop-over any valid css value can be accepted: `10px`, `50%`, etc. */
   maxWidth?: string;
   /**
    * Controls Overflow behavior of the Dialog
@@ -38,9 +38,9 @@ export type DialogPropsRoot = {
   /** Allows the dropdown menu to be placed on the opposite side of its trigger if it does not
    * fit in the viewport. */
   shouldFlip?: boolean;
-  /** testId maps to data-test-id for testing in your application */
+  /** testId maps to data-testid for testing in your application */
   testId?: string;
-  /**Content to display in the dialog */
+  /** Content to display in the dialog */
   content: ReactNode;
   /** Callback function when the dialog is opened */
   onOpen?(): void;
@@ -89,7 +89,7 @@ type StyledMenu = {
 
 export type fullStyledMenu = Partial<StyledMenu>;
 
-export type FocusManagerProps = {
+export type FocusManagerHook = {
   dialogRef: HTMLDivElement | undefined;
   isOpen: boolean;
   onClose?(): void;
