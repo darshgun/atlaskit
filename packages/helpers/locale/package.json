@@ -14,7 +14,7 @@
   ],
   "atlaskit": {
     "name": "Locale",
-    "team": "core"
+    "team": "helpers"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
