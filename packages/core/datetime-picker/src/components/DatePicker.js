@@ -7,7 +7,9 @@ import {
   createLocalizationProvider,
   type LocalizationProvider,
 } from '@atlaskit/locale';
-import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
+import { borderRadius, layers } from '@atlaskit/theme/constants';
+import { N20, B100 } from '@atlaskit/theme/colors';
+import { e200 } from '@atlaskit/theme/elevation';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -111,10 +113,10 @@ function getValidDate(iso: string) {
 }
 
 const StyledMenu = styled.div`
-  background-color: ${colors.N20};
+  background-color: ${N20};
   border-radius: ${borderRadius()}px;
   z-index: ${layers.dialog};
-  ${elevation.e200};
+  ${e200};
 `;
 
 const Menu = ({ selectProps, innerProps }: Object) => (
@@ -360,7 +362,7 @@ class DatePicker extends Component<Props, State> {
   };
 
   getSubtleControlStyles = (isOpen: boolean) => ({
-    border: `2px solid ${isOpen ? colors.B100 : `transparent`}`,
+    border: `2px solid ${isOpen ? B100 : `transparent`}`,
     backgroundColor: 'transparent',
     padding: '1px',
   });
