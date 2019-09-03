@@ -35,9 +35,10 @@ export const createLocalizationProvider = (
     // Some short days are longer than 3 characters but are unique if the first
     // three non-white characters are used.
     dayFormatter
-      // Date range chosen which has a Sun-Sat range so we can pull the titles out
-      .format(new Date(2000, 9, day))
-      .replace(/\s/g, '')
+      // Date range chosen which has a Sun-Sat range so we can extract the names
+      .format(new Date(2000, 9, day, 12))
+      // \u200E matches on the Left-to-Right Mark character in IE/Edge
+      .replace(/[\s\u200E]/g, '')
       .substring(0, 3),
   );
 
