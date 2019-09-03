@@ -7,7 +7,7 @@ const concurrently = require('concurrently');
 
 const createEntryPointsDirectories = require('./create.entry.points.directories');
 
-async function runCommands(commands, opts) {
+async function runCommands(commands, opts = {}) {
   const defaultOpts = {
     killOthers: ['failure'],
     prefix: 'none',
@@ -69,7 +69,6 @@ async function main() {
   // TODO: Need to run some clean script to get rid of build artifacts
   //       current delete:build:artefacts blows too much away
   await createEntryPointsDirectories();
-
   // TODO: Fix up icon package builds that reimplement their own babel cjs
   // TODO: Can JS + TS be parallelised?
   await buildJSPackages();
@@ -82,6 +81,10 @@ async function main() {
 }
 
 if (require.main === module) {
+  process.on('SIGINT', () => {
+    // We need our own SIGINT handler since concurrently overrides the default one (and doesn't even throw)
+    process.exit(2);
+  });
   main().catch(e => {
     console.error(e);
     process.exit(1);
