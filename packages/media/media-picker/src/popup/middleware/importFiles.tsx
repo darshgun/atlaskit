@@ -146,7 +146,7 @@ const getPreviewByService = (
 };
 
 /**
- * Take selected file (that can be local uploads, recents or remove file (giphy, google, dropbox))
+ * Take selected file (that can be local uploads, recents or remote file (giphy, google, dropbox))
  * and convert it to FileState that will become tenant file state.
  * If selected file already in the cache (for local uploads and recents) we take everything it has, change it's id
  * to new tenant id (generated on client side) and add a preview.
@@ -158,23 +158,23 @@ export const getTenantFileState = async (
   selectedUploadFile: SelectedUploadFile,
 ): Promise<FileState> => {
   const {
-    file: selectedFile,
+    file: selectedUserFile,
     serviceName,
     touchFileDescriptor,
   } = selectedUploadFile;
 
   const tenantFileId = touchFileDescriptor.fileId;
-  const selectedFileId = selectedFile.id;
+  const selectedUserFileId = selectedUserFile.id;
 
-  const mediaType = getMediaTypeFromMimeType(selectedFile.type);
+  const mediaType = getMediaTypeFromMimeType(selectedUserFile.type);
   const preview = getPreviewByService(
     store,
     serviceName,
     mediaType,
-    selectedFile.id,
+    selectedUserFileId,
   );
 
-  const userFileObservable = getFileStreamsCache().get(selectedFileId);
+  const userFileObservable = getFileStreamsCache().get(selectedUserFileId);
   if (userFileObservable) {
     // Even though there is await here we will wait mostly for 1 tick, since
     // observable.next inside observableToPromise will eval synchronously.
@@ -197,9 +197,9 @@ export const getTenantFileState = async (
       id: tenantFileId,
       status: 'processing',
       mediaType,
-      mimeType: selectedFile.type,
-      name: selectedFile.name,
-      size: selectedFile.size,
+      mimeType: selectedUserFile.type,
+      name: selectedUserFile.name,
+      size: selectedUserFile.size,
       preview,
       representations: {},
     };
