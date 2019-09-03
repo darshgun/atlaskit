@@ -367,6 +367,7 @@ How you do this will completely depend on what _exactly_ you are trying to achie
 >
 > If your package is a flow package run:
 >
+> TODO: AFP - update this
 > bolt build:babel
 >
 > **or** if you know that you are consuming the package as a module:
