@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { Placement } from '@atlaskit/popper';
-import { ButtonProps } from '@atlaskit/button';
 
 export type ReactRef = React.Ref<HTMLElement> | HTMLElement | null;
 
@@ -12,7 +11,14 @@ type overflow =
   | `overflow-x`
   | `overflow-y`;
 
-export type DialogPropsRoot = {
+type TriggerProps = {
+  ref: any;
+  'aria-controls'?: string;
+  'aria-expanded': boolean;
+  'aria-haspopup': boolean;
+};
+
+export type DialogProps = {
   /** Value passed to the Layer component to determine when to reposition the droplist */
   boundariesElement?: 'viewport' | 'window' | 'scrollParent';
   /** HTML Id for testing etc */
@@ -46,36 +52,10 @@ export type DialogPropsRoot = {
   onOpen?(): void;
   /** Callback function when the dialog is closed */
   onClose?(): void;
-};
 
-export type DialogPropsStateless = DialogPropsRoot & {
-  /** Default menu open state */
   isOpen: boolean;
-};
 
-export type DialogProps = DialogPropsRoot & {
-  /** Default menu open state */
-  isOpen?: boolean;
-  /**
-   * Content which will trigger the dropdown menu to open and close. Use with triggerType to easily get a button trigger.
-   */
-  trigger?: ReactNode | string;
-  /**
-   * Props to pass through to the trigger button. See @atlaskit/button for allowed props.
-   */
-  triggerButtonProps?: ButtonProps;
-  /**
-   * Controls the type of trigger to be used for the dropdown menu.
-   * The default trigger allows you to supply your own trigger component.
-   * Setting this prop to button will render a Button component with an 'expand' icon,
-   * and the trigger prop contents inside the button.
-   */
-  triggerType?: 'default' | 'button';
-};
-
-export type DialogContextShape = {
-  menuRef: ReactRef | HTMLElement | null;
-  closeDialog(): void;
+  trigger(arg0: TriggerProps): ReactNode;
 };
 
 type StyledMenu = {

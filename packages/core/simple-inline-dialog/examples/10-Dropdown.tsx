@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
-import { DialogStateless } from '../src';
+import Dialog from '../src';
 import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
 
-const SpacedButton = styled(Button)`
+const Spacer = styled.div`
   margin: 250px;
 `;
 
@@ -58,6 +58,8 @@ export default () => {
     'auto',
     'auto-end',
   ];
+  const position = positions[idx];
+
   const setPosition = () => {
     if (idx !== positions.length - 1) {
       setIdx(idx + 1);
@@ -66,18 +68,23 @@ export default () => {
     }
   };
 
-  const position = positions[idx];
-
   return (
-    <DialogStateless
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      content={<DialogContent setPosition={setPosition} position={position} />}
-      position={position}
-    >
-      <SpacedButton onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? 'Close' : 'Open'} Dialog
-      </SpacedButton>
-    </DialogStateless>
+    <Spacer>
+      <Button>Dummy Button</Button>
+      <Dialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        content={
+          <DialogContent setPosition={setPosition} position={position} />
+        }
+        trigger={triggerProps => (
+          <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? 'Close' : 'Open'} Dialog
+          </Button>
+        )}
+        position={position}
+      />
+      <Button>Dummy Button</Button>
+    </Spacer>
   );
 };

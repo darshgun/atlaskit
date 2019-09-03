@@ -1,96 +1,95 @@
 import React, { FC, memo, useState, useEffect } from 'react';
-import Button, { ButtonProps } from '@atlaskit/button';
-import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+import ScrollLock from 'react-scrolllock';
+import { Manager, Popper, Reference } from '@atlaskit/popper';
+import Portal from '@atlaskit/portal';
+import { StyledMenu, MenuRelContainer } from './styled';
 import { DialogProps } from './types';
-import { DialogStateless } from './DialogStateless';
+import { useFocusManager } from './useFocusManager';
 
 export const Dialog: FC<DialogProps> = memo(
   ({
     boundariesElement,
-    isOpen = false,
+    isOpen,
     id,
-    minHeight = 'auto',
-    maxHeight = 'auto',
-    minWidth = 'auto',
-    maxWidth = 'auto',
-    overflow = 'auto',
-    position = 'right-end',
-    shouldFitContainer = false,
-    shouldFlip = true,
+    minHeight,
+    maxHeight,
+    minWidth,
+    maxWidth,
+    overflow,
+    position,
+    shouldFitContainer,
+    shouldFlip,
     testId,
     content,
+    trigger,
     onOpen,
     onClose,
-    trigger,
-    triggerButtonProps,
-    triggerType = 'button',
-  }: DialogProps) => {
-    const [open, setOpen] = useState(isOpen || false);
+  }) => {
+    const [dialogRef, setDialogRef] = useState<HTMLDivElement>();
+
+    useFocusManager({ dialogRef, isOpen, onClose });
+
     useEffect(
       () => {
-        setOpen(isOpen);
-        if (onOpen && isOpen) {
-          onOpen();
-          return;
-        }
-        if (onClose && !isOpen) {
-          onClose();
+        if (isOpen) {
+          onOpen && onOpen();
         }
       },
-      [isOpen, onOpen, onClose],
+      [isOpen, onOpen],
     );
 
-    const managedOnClose = () => {
-      if (!isOpen) {
-        if (onClose) {
-          onClose();
-        }
-        setOpen(false);
-      }
-    };
-
-    const renderTrigger = () => {
-      if (triggerType !== 'button') {
-        return trigger;
-      }
-
-      const triggerProps: ButtonProps = { ...triggerButtonProps };
-      const defaultButtonProps = {
-        'aria-controls': id,
-        'aria-expanded': open,
-        onClick: () => setOpen(!open),
-        'aria-haspopup': true,
-        isSelected: open,
-      };
-      if (!triggerProps.iconAfter && !triggerProps.iconBefore) {
-        triggerProps.iconAfter = <ExpandIcon size="medium" label="" />;
-      }
-      return (
-        <Button {...defaultButtonProps} {...triggerProps}>
-          {trigger}
-        </Button>
-      );
-    };
-
     return (
-      <DialogStateless
-        boundariesElement={boundariesElement}
-        isOpen={open}
-        id={id}
-        minHeight={minHeight}
-        maxHeight={maxHeight}
-        minWidth={minWidth}
-        maxWidth={maxWidth}
-        overflow={overflow}
-        position={position}
-        shouldFitContainer={shouldFitContainer}
-        shouldFlip={shouldFlip}
-        testId={testId}
-        content={content}
-        onClose={managedOnClose}
-      >
-        {renderTrigger()}
-      </DialogStateless>
+      <MenuRelContainer>
+        <Manager>
+          <Reference>
+            {({ ref }) =>
+              trigger({
+                ref,
+                'aria-controls': id,
+                'aria-expanded': isOpen,
+                'aria-haspopup': true,
+              })
+            }
+          </Reference>
+          {isOpen ? (
+            <Portal>
+              <Popper
+                placement={position}
+                modifiers={{
+                  flip: {
+                    enabled: shouldFlip || true,
+                    boundariesElement: boundariesElement || 'viewport',
+                  },
+                }}
+              >
+                {({ ref, style, placement }) => {
+                  return (
+                    <StyledMenu
+                      id={id}
+                      data-testid={testId}
+                      ref={(node: HTMLDivElement) => {
+                        ref(node);
+                        setDialogRef(node);
+                      }}
+                      style={style}
+                      data-placement={placement}
+                      minWidth={minWidth}
+                      maxWidth={maxWidth}
+                      minHeight={minHeight}
+                      maxHeight={maxHeight}
+                      overflow={overflow}
+                      shouldFitContainer={shouldFitContainer}
+                    >
+                      <ScrollLock />
+                      {content}
+                    </StyledMenu>
+                  );
+                }}
+              </Popper>
+            </Portal>
+          ) : null}
+        </Manager>
+      </MenuRelContainer>
     );
   },
 );

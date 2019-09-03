@@ -10,19 +10,17 @@ export const StyledMenu = styled('div')<fullStyledMenu>`
   border-radius: ${borderRadius()}px;
   box-shadow: 0 0 0 1px ${shadow}, 0 4px 11px ${shadow};
   z-index: ${layers.layer()};
-  min-width: ${props => props.minWidth};
-  max-width: ${props => props.maxWidth};
-  min-height: ${props => props.minHeight};
-  max-height: ${props => props.maxHeight};
+  min-width: ${({ minWidth }) => minWidth || 'none'};
+  max-width: ${({ maxWidth }) => maxWidth || 'none'};
+  min-height: ${({ minHeight }) => minHeight || 'none'};
+  max-height: ${({ maxHeight }) => maxHeight || 'none'};
   box-sizing: border-box;
-  overflow: ${props => props.overflow};
+  overflow: ${props => props.overflow || 'auto'};
   display: inline-flex;
-  ${props =>
-    props.shouldFitContainer &&
-    `
-    display: block;
-    flex: 1 1 auto;
-  `};
+  ${({ shouldFitContainer }) =>
+    shouldFitContainer &&
+    ` display: block;
+      flex: 1 1 auto;`};
 `;
 
 export const MenuRelContainer = styled.div`
