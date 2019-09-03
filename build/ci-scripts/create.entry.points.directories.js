@@ -2,7 +2,7 @@
 /* This script creates the folder per entry point and add a package.json that maps the path to the entry point .*/
 /**
  * Input:
- * packages/pkg/ 
+ * packages/pkg/
  * └── src
  *     ├── index.ts
  *     ├── a.ts
@@ -31,4 +31,8 @@
  */
 const { createEntryPointsDirWithPkgJson } = require('./createEntryPointsUtils');
 
-createEntryPointsDirWithPkgJson();
+if (require.main === module) {
+  createEntryPointsDirWithPkgJson();
+}
+
+module.exports = createEntryPointsDirWithPkgJson;
