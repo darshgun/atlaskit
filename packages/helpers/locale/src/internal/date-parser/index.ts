@@ -3,11 +3,11 @@ import { normalizeLocale } from '../common';
 
 const INVALID_DATE = new Date(NaN);
 const INVARIANT_DATE = new Date(1993, 1, 18);
-const FORMAT_EXTRACTOR_REGEX = /(\d+)[/. -]+(\d+)[/. -]+(\d+)\.?/;
-const DATE_PARSER_REGEX = /(\d+)[/. -]*(\d+)?[/. -]*(\d+)?\.?/;
+const FORMAT_EXTRACTOR_REGEX = /(\d+)[^\d]+(\d+)[^\d]+(\d+)\.?/;
+const DATE_PARSER_REGEX = /(\d+)[^\d]*(\d+)?[^\d]*(\d+)?\.?/;
 
 // Internet Explorer returns non-printing characters when formatting a date
-const stripExtras = (str: string): string => str.replace(/[^\d/. -]/g, '');
+const stripExtras = (str: string): string => str.replace(/\u200E/g, '');
 const extractDateParts = (matchResult: RegExpMatchArray): number[] => {
   return (
     matchResult
@@ -39,7 +39,6 @@ export const createDateParser = (locale: string): DateParser => {
   // the year/month/day position for the provided locale.
   const rawDateString = dateFormatter.format(INVARIANT_DATE);
 
-  // Some date strings contain whitespace which we can ignore
   const shortDate = stripExtras(rawDateString);
 
   // Extract the date pieces from the locale formatted date string
@@ -56,7 +55,6 @@ export const createDateParser = (locale: string): DateParser => {
   const dayPosition = formatParts.indexOf(18);
 
   return (date: string): Date => {
-    // Some date strings contain whitespace which we can ignore
     const dateMatch = stripExtras(date).match(DATE_PARSER_REGEX);
     if (!dateMatch) {
       return INVALID_DATE;
