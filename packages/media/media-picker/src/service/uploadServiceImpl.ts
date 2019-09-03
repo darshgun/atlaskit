@@ -33,7 +33,6 @@ import {
 } from './types';
 import { LocalFileSource, LocalFileWithSource } from '../service/types';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
-// import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
