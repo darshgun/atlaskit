@@ -56,6 +56,22 @@ export const SearchIssuesView = () => (
   </Fragment>
 );
 
+export const IssuesView = ({ match }: any) => (
+  <Fragment>
+    <SetActiveView id="container/project/index" />
+    <h1>Issue - {match && match.params && match.params.issueId}</h1>
+    <p>Issue content</p>
+  </Fragment>
+);
+
+export const FiltersView = ({ match }: any) => (
+  <Fragment>
+    <SetActiveView id="root/issues" />
+    <h1>Filter - {match && match.params && match.params.filterId}</h1>
+    <p>Filter content</p>
+  </Fragment>
+);
+
 /**
  * Container-level routes
  */
@@ -74,3 +90,26 @@ export class BacklogView extends Component<*> {
     );
   }
 }
+
+export const routes = [
+  {
+    path: '/projects/:projectId',
+    component: BacklogView,
+  },
+  {
+    path: '/projects',
+    component: ProjectsView,
+  },
+  {
+    path: '/issues/:issueId',
+    component: IssuesView,
+  },
+  {
+    path: '/filters/:filterId',
+    component: FiltersView,
+  },
+  {
+    path: '/',
+    component: DashboardsView,
+  },
+];
