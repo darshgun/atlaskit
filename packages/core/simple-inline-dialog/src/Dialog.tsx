@@ -1,10 +1,30 @@
-import React, { FC, memo, useState, useEffect } from 'react';
+import React, {
+  FC,
+  memo,
+  useState,
+  useEffect,
+  ReactElement,
+  PropsWithChildren,
+} from 'react';
 import ScrollLock from 'react-scrolllock';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
 import { StyledMenu, MenuRelContainer } from './styled';
-import { DialogProps } from './types';
+import { DialogProps, ContentContainerProps } from './types';
 import { useFocusManager } from './useFocusManager';
+
+const ContentContainer: FC<ContentContainerProps> = ({
+  scheduleUpdate,
+  children,
+}) => {
+  useEffect(
+    () => {
+      scheduleUpdate();
+    },
+    [children],
+  );
+  return children;
+};
 
 export const Dialog: FC<DialogProps> = memo(
   ({
@@ -26,7 +46,6 @@ export const Dialog: FC<DialogProps> = memo(
     onClose,
   }) => {
     const [dialogRef, setDialogRef] = useState<HTMLDivElement>();
-
     useFocusManager({ dialogRef, isOpen, onClose });
 
     useEffect(
@@ -62,7 +81,7 @@ export const Dialog: FC<DialogProps> = memo(
                   },
                 }}
               >
-                {({ ref, style, placement }) => {
+                {({ ref, style, placement, scheduleUpdate }) => {
                   return (
                     <StyledMenu
                       id={id}
@@ -81,7 +100,17 @@ export const Dialog: FC<DialogProps> = memo(
                       shouldFitContainer={shouldFitContainer}
                     >
                       <ScrollLock />
-                      {content}
+                      <ContentContainer scheduleUpdate={scheduleUpdate}>
+                        {content
+                          ? React.cloneElement(content as ReactElement, {
+                              //passing these props allow the content to manage state
+                              //and update the popper-positioning on changes that don't trigger re-renders
+                              scheduleUpdate,
+                              isOpen,
+                              onClose,
+                            })
+                          : null}
+                      </ContentContainer>
                     </StyledMenu>
                   );
                 }}
