@@ -7,16 +7,24 @@ const concurrently = require('concurrently');
 
 const createEntryPointsDirectories = require('./create.entry.points.directories');
 
-function runCommands(commands, opts) {
+async function runCommands(commands, opts) {
   const defaultOpts = {
     killOthers: ['failure'],
     prefix: 'none',
     raw: false,
   };
-  return concurrently(commands, { ...defaultOpts, ...opts }).catch(e => {
-    // Hide internal concurrently stack trace
-    throw Error('Command failed');
-  });
+  if (commands.length === 1 || !opts.sequential) {
+    return concurrently(commands, { ...defaultOpts, ...opts }).catch(e => {
+      // Hide internal concurrently stack trace
+      throw Error('Command failed');
+    });
+  } else {
+    let result;
+    for (const command of commands) {
+      result = await runCommands([command]);
+    }
+    return result;
+  }
 }
 
 function generateFlowTypeCommands() {
@@ -37,41 +45,38 @@ function buildJSPackages() {
   return runCommands([...babelCommands(), ...generateFlowTypeCommands()]);
 }
 
+function buildTSPackages() {
+  // TODO: Can cli + esm be parallelised?
+  return runCommands(
+    [
+      `NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs || true'`,
+      `NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext || true'`,
+      `NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescriptcli)\" -- bash -c 'tsc --project ./build/cli || true'`,
+    ],
+    { sequential: true },
+  );
+}
+
+function buildExceptionPackages() {
+  // TODO: Refactor this to be per-package pre/post builds
+  return runCommands([
+    `yarn build:adf-schema:json-schema && yarn build:media-editor:copy-binaries && yarn build:css-reset && yarn build:reduced-ui-pack && yarn build:email-renderer && yarn build:util-data-test`,
+  ]);
+}
+
 async function main() {
   // Concerns: Most errors are caught and only handled via a console.log/error
   // TODO: Need to run some clean script to get rid of build artifacts
   //       current delete:build:artefacts blows too much away
-  // yarn build:create:folder:entry-points
   await createEntryPointsDirectories();
 
   // TODO: Fix up icon package builds that reimplement their own babel cjs
-  // run-p
-  // // build:babel
-  // // // run-p
-  // // // // build:babel:cjs
-  // // // // // SHELL: NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel)\" -- babel src -d dist/cjs --root-mode upward
-  // // // // build:babel:esm
-  // // // // // SHELL: NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel)\" -- babel src -d dist/esm --root-mode upward
-
-  // build:flowtypes
-  // // run-p
-  // // // build:flowtypes:cjs
-  // // // // // SHELL: bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel flow)\" -- flow-copy-source -v -i '**/__tests__/**' src dist/cjs
-  // // // build:flowtypes:esm
-  // // // // // SHELL: bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel flow)\" -- flow-copy-source -v -i '**/__tests__/**' src dist/esm
+  // TODO: Can JS + TS be parallelised?
   await buildJSPackages();
-  // run-p --print-label --continue-on-error
-  // // build:typescript
-  // // // run-serial (&&)
-  // // // // yarn build:typescript:cjs
-  // // // // yarn build:typescript:esm
-  // // // // yarn build:typescript:cli
-  // // build:adf-schema:json-schema (Convert to package pre/postbuild script?)
-  // // // SHELL: cd packages/editor/adf-schema && yarn run build:json-schema && echo 'Done.'
-  // yarn build:exception-packages
-  // // yarn build:media-editor:copy-binaries && yarn build:css-reset && yarn build:reduced-ui-pack && yarn build:email-renderer && yarn build:util-data-test
-  // yarn copy:version (killme)
-  // // bolt workspaces exec --ignore-fs '{packages/editor/updater-cli,packages/monorepo-tooling/code-insights,packages/monorepo-tooling/dependency-version-analytics,packages/monorepo-tooling/branch-deploy-product-integrator}' --only-fs 'packages/*/*' -- mkdir -p dist/{cjs,esm} && bolt workspaces exec  --only-fs 'packages/*/*' -- copy-pkg package.json tmp/package.json --only name,version,sideEffects && bolt workspaces exec --ignore-fs '{packages/editor/updater-cli,packages/monorepo-tooling/code-insights,packages/monorepo-tooling/dependency-version-analytics,packages/monorepo-tooling/branch-deploy-product-integrator}' --only-fs 'packages/*/*' -- cp ./tmp/package.json ./dist/cjs/version.json && bolt workspaces exec --ignore-fs '{packages/editor/updater-cli,packages/monorepo-tooling/code-insights,packages/monorepo-tooling/dependency-version-analytics,packages/monorepo-tooling/branch-deploy-product-integrator}' --only-fs 'packages/*/*' -- cp ./tmp/package.json ./dist/esm/version.json && bolt workspaces exec --only-fs '{packages/editor/updater-cli,packages/monorepo-tooling/code-insights,packages/monorepo-tooling/dependency-version-analytics,packages/monorepo-tooling/branch-deploy-product-integrator}' -- cp ./tmp/package.json ./dist/version.json
+  // TODO: Fix up icon package builds that reimplement their own typescript cjs
+  await buildTSPackages();
+  // NOTE: We are knowingly moving adf-schema build to exception packages, doesn't seem to be a reason why it should be run in parallel with '--continue-on-error'
+  await buildExceptionPackages();
   // yarn check:dists
   // // SHELL: node ./build/utils/sanity-check-file-structure-dist.js && yarn check:typescript-dists
 }

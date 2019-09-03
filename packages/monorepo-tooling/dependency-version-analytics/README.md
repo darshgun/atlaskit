@@ -56,6 +56,8 @@ This command will be used to record when atlaskit publish new versions of their 
 
 To develop on this locally, you'll need to first install the peer dependency temporarily by running the following inside the package:
 
+TODO: AFP update
+
 ```sh
 $ npm i @atlassiansox/analytics-node-client --no-save
 $ yarn copy:version
@@ -79,6 +81,8 @@ This will run the built version of the tool that will be published to npm. It wi
 1. Install yalc globally - `yarn global add yalc`
 
 After each dev change,
+
+TODO: AFP update
 
 1. Run `yarn build:typescript:cli` outside the package
 2. Run `yalc publish` inside the package
