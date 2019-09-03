@@ -15,6 +15,7 @@
     "Tom Marra"
   ],
   "atlaskit": {
+    "internal": true,
     "name": "Simple Inline Dialog",
     "team": "core"
   },
@@ -22,6 +23,7 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^6.0.1",
     "@atlaskit/button": "^13.1.3",
+    "@atlaskit/icon": "^19.0.6",
     "@atlaskit/popper": "^3.1.1",
     "@atlaskit/portal": "^3.0.10",
     "@atlaskit/theme": "^9.1.3",

@@ -37,7 +37,7 @@ export const Dialog: FC<DialogProps> = memo(
           onClose();
         }
       },
-      [isOpen],
+      [isOpen, onOpen, onClose],
     );
 
     const managedOnClose = () => {

@@ -34,7 +34,7 @@ export const DialogStateless: FC<DialogPropsStateless> = memo(
           onOpen();
         }
       },
-      [isOpen],
+      [isOpen, onOpen],
     );
 
     useFocusManager({ dialogRef, isOpen, onClose });

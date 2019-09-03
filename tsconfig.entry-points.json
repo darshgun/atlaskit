@@ -755,6 +755,14 @@
         "../../core/select/src/Select",
         "./packages/core/select/src/Select"
       ],
+      "@atlaskit/simple-inline-dialog": [
+        "../../core/simple-inline-dialog/src/",
+        "./packages/core/simple-inline-dialog/src/"
+      ],
+      "@atlaskit/simple-inline-dialog/types": [
+        "../../core/simple-inline-dialog/src/types",
+        "./packages/core/simple-inline-dialog/src/types"
+      ],
       "@atlaskit/single-select": [
         "../../core/single-select/src/",
         "./packages/core/single-select/src/"

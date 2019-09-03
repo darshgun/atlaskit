@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { FocusManagerHook } from './types';
-import createFocusTrap, { FocusTrap } from 'focus-trap';
+import createFocusTrap from 'focus-trap';
 
 const noop = () => {};
 
@@ -9,15 +9,15 @@ export const useFocusManager = ({
   isOpen,
   onClose,
 }: FocusManagerHook): void => {
-  const [focusTrap, setFocusTrap] = useState<FocusTrap>({
-    activate: noop,
-    deactivate: noop,
-    pause: noop,
-    unpause: noop,
-  });
-
   useEffect(
     () => {
+      let focusTrap = {
+        activate: noop,
+        deactivate: noop,
+        pause: noop,
+        unpause: noop,
+      };
+
       const trapConfig = {
         clickOutsideDeactivates: true,
         escapeDeactivates: true,
@@ -26,9 +26,8 @@ export const useFocusManager = ({
       };
 
       if (dialogRef) {
-        const innerFocusTrap = createFocusTrap(dialogRef, trapConfig);
-        setFocusTrap(innerFocusTrap);
-        innerFocusTrap.activate();
+        focusTrap = createFocusTrap(dialogRef, trapConfig);
+        focusTrap.activate();
       }
 
       return () => {
@@ -77,6 +76,6 @@ export const useFocusManager = ({
         window.removeEventListener('keydown', handleKeyDown);
       };
     },
-    [isOpen, dialogRef],
+    [dialogRef, isOpen, onClose],
   );
 };
