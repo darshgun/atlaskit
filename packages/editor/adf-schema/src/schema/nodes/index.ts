@@ -109,12 +109,6 @@ export {
   tableCellContentDomSelector,
 } from './tableNodes';
 export {
-  applicationCard,
-  ApplicationCardAttributes,
-  AppCardAction,
-  ApplicationCardDefinition,
-} from './applicationCard';
-export {
   decisionList,
   DecisionListDefinition,
   decisionListSelector,
