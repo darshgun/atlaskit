@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FieldTextStateless } from '@atlaskit/field-text';
 
 import { LocalizationProvider, createLocalizationProvider } from '../src';
-import { Locale, LocaleSelect } from '../example-helpers/LocaleSelect';
+import LocaleSelect, { Locale } from '../src/LocaleSelect';
 
 type State = {
   l10n: LocalizationProvider;

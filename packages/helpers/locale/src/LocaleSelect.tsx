@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Select from '@atlaskit/select';
 
 export type Locale = {
@@ -6,11 +6,13 @@ export type Locale = {
   label: string;
 };
 
-type Props = {
+export type LocaleSelectProps = {
+  locales: Locale[];
+  defaultLocale: Locale;
   onLocaleChange: (locale: Locale) => void;
 };
 
-const LOCALES: Array<Locale> = [
+export const defaultLocales: Array<Locale> = [
   { value: 'en-AU', label: 'English (Australia)' },
   { value: 'en-GB', label: 'English (United Kingdom)' },
   { value: 'en-US', label: 'English (United States)' },
@@ -39,15 +41,27 @@ const LOCALES: Array<Locale> = [
   { value: 'no-NO', label: 'norsk (Norge)' },
 ];
 
-export const LocaleSelect: React.FunctionComponent<Props> = (props: Props) => (
-  <Select
-    defaultValue={LOCALES[0]}
-    onChange={props.onLocaleChange}
-    options={LOCALES}
-    styles={{
-      container: (css: any) => ({ ...css, width: 300, 'margin-top': '0.5em' }),
-      dropdownIndicator: (css: any) => ({ ...css, paddingLeft: 0 }),
-      menu: (css: any) => ({ ...css, width: 300 }),
-    }}
-  />
-);
+export default class LocaleSelect extends Component<LocaleSelectProps> {
+  static defaultProps = {
+    locales: defaultLocales,
+    defaultLocale: defaultLocales[0],
+    onLocaleChange: () => {},
+  };
+
+  render() {
+    const { locales, defaultLocale, onLocaleChange } = this.props;
+
+    return (
+      <Select
+        options={locales}
+        defaultValue={defaultLocale}
+        onChange={onLocaleChange}
+        styles={{
+          container: (css: any) => ({ ...css, width: 300, margin: '0.5em 0' }),
+          dropdownIndicator: (css: any) => ({ ...css, paddingLeft: 0 }),
+          menu: (css: any) => ({ ...css, width: 300 }),
+        }}
+      />
+    );
+  }
+}
