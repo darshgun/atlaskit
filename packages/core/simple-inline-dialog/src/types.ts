@@ -74,3 +74,7 @@ export type FocusManagerHook = {
   isOpen: boolean;
   onClose?(): void;
 };
+
+export type ContentContainerProps = {
+  scheduleUpdate(): void;
+};
