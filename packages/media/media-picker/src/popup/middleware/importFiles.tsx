@@ -213,7 +213,7 @@ export const getTenantFileState = async (
  * 2. globalMediaEventEmitter even-emitter interface.
  *  Note: This is different from `mediaPicker.on()` event-emitter interface!
  */
-const distributeTenantFileState = (
+const distributeTenantFileState = async (
   store: Store<State>,
   tenantFileState: FileState,
   userSelectedFileId: string,
@@ -225,13 +225,17 @@ const distributeTenantFileState = (
   getFileStreamsCache().set(tenantFileState.id, tenantFileSubject);
   tenantFileSubject.next(tenantFileState);
   if (userFileObservable) {
-    userFileObservable.subscribe({
-      next: userFileState =>
-        tenantFileSubject.next({
-          ...userFileState,
-          id: tenantFileState.id,
-        }),
-    });
+    const userFileState = await observableToPromise(userFileObservable);
+    if (userFileState.status !== 'processed') {
+      // Without this check we might push another processed state that will be without "preview"
+      userFileObservable.subscribe({
+        next: userFileState =>
+          tenantFileSubject.next({
+            ...userFileState,
+            id: tenantFileState.id,
+          }),
+      });
+    }
   }
 
   tenantMediaClient.emit('file-added', tenantFileState);
