@@ -35,6 +35,37 @@ import { getCardStatus } from './getCardStatus';
 import { InlinePlayer } from '../inlinePlayer';
 import { WithCardViewAnalyticsContext } from '../withCardViewAnalyticsContext';
 
+export interface FileAttrs {
+  id: string;
+  size?: number;
+  name?: string;
+  mimeType?: string;
+  collection?: string;
+  contextId?: string;
+  width?: number;
+  height?: number;
+}
+
+// TODO: we might need to encode url values
+const addFileAttrsToUrl = (url: string, fileAttrs: FileAttrs): string => {
+  const mediaIdentifierAttr = {
+    'media-blob-url': 'true',
+  };
+  const mergedAttrs = {
+    ...mediaIdentifierAttr,
+    ...fileAttrs,
+  };
+  const queryAttrs = Object.keys(mergedAttrs)
+    .map(attrName => {
+      const value = mergedAttrs[attrName];
+      return value ? `${attrName}=${value}` : undefined;
+    })
+    .filter(attr => !!attr)
+    .join('&');
+
+  return `${url}#${queryAttrs}`;
+};
+
 export class Card extends Component<CardProps, CardState> {
   private hasBeenMounted: boolean = false;
 
@@ -216,6 +247,24 @@ export class Card extends Component<CardProps, CardState> {
               // We don't want to set status=error if the preview fails, we still want to display the metadata
             }
           }
+
+          if (dataURI) {
+            const { contextId } = this.props;
+
+            dataURI = addFileAttrsToUrl(dataURI, {
+              id: resolvedId,
+              collection: collectionName,
+              contextId,
+              name: metadata.name,
+              size: metadata.size,
+              mimeType: metadata.mimeType,
+              // TODO: pass dimensions, but only when number?
+              // height,
+              // width
+            });
+          }
+
+          console.log({ dataURI });
 
           this.notifyStateChange({
             metadata,
