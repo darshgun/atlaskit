@@ -4094,9 +4094,9 @@ bolt-webpack-analyzer@^0.0.1:
     webpack "^4.5.0"
     webpack-cli "^2.0.14"
 
-bolt@Blasz/bolt#filter-run-workspace-tasks-0.2:
+bolt@Blasz/bolt#filter-run-workspace-tasks-0.3:
   version "0.23.6"
-  resolved "https://codeload.github.com/Blasz/bolt/tar.gz/7d02f75be40ae5f67301928a50f2758a44e9d37c"
+  resolved "https://codeload.github.com/Blasz/bolt/tar.gz/48ebabaca42db94f145d8168ec846f2ccd405cfd"
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"
