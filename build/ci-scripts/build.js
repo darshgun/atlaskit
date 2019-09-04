@@ -6,6 +6,7 @@ const bolt = require('bolt');
 const concurrently = require('concurrently');
 
 const createEntryPointsDirectories = require('./create.entry.points.directories');
+const copyVersion = require('./copy.version');
 
 async function runCommands(commands, opts = {}) {
   const defaultOpts = {
@@ -76,6 +77,7 @@ async function main() {
   await buildTSPackages();
   // NOTE: We are knowingly moving adf-schema build to exception packages, doesn't seem to be a reason why it should be run in parallel with '--continue-on-error'
   await buildExceptionPackages();
+  await copyVersion();
   // yarn check:dists
   // // SHELL: node ./build/utils/sanity-check-file-structure-dist.js && yarn check:typescript-dists
 }
