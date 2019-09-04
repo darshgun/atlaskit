@@ -1,6 +1,7 @@
 /* eslint-disable no-global-assign */
 
 import { createDateParser } from '../../';
+import { toDate, toDateObj } from '../../utils';
 
 const DATE_INVARIANT = new Date(2000, 7, 28);
 
@@ -8,7 +9,7 @@ describe('date-parser', () => {
   describe('Invalid Dates', () => {
     const parseDate = createDateParser('en-US');
 
-    it.each([['potato'], ['0'], ['13/'], ['13/1'], ['2/30']])(
+    it.each([['potato'], ['13/'], ['13/1'], ['2/30']])(
       'parseDate(%s)',
       dateString => {
         expect(isNaN(parseDate(dateString).getTime())).toEqual(true);
@@ -18,13 +19,17 @@ describe('date-parser', () => {
 
   describe('Partial Dates', () => {
     const parseDate = createDateParser('en-US');
+    const now = toDateObj(new Date());
 
     it.each([
-      ['2', new Date(2000, 1, 1)],
-      ['2/', new Date(2000, 1, 1)],
-      ['2/1', new Date(2000, 1, 1)],
-      ['2/18', new Date(2000, 1, 18)],
-      ['2/18/', new Date(2000, 1, 18)],
+      ['0', toDate(now)],
+      ['02', toDate({ ...now, month: 2 })],
+      ['02/', toDate({ ...now, month: 2 })],
+      ['02/1', toDate({ ...now, month: 2, day: 1 })],
+      ['02/18', toDate({ ...now, month: 2, day: 18 })],
+      ['02/18/', toDate({ ...now, month: 2, day: 18 })],
+      ['02/18/1', toDate({ year: 2001, month: 2, day: 18 })],
+      ['02/18/19', toDate({ year: 2019, month: 2, day: 18 })],
     ])('parseDate(%s)', (dateString, expected) => {
       expect(parseDate(dateString)).toEqual(expected);
     });

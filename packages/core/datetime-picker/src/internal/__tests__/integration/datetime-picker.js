@@ -246,7 +246,7 @@ BrowserTestCase(
 
     const newDate = await dateTimePickerTest.getText(dateTimeValues);
 
-    expect(newDate.trim()).toBe('2016/1/1');
+    expect(newDate.trim()).toMatch(/^2016/);
     await dateTimePickerTest.checkConsoleErrors();
   },
 );

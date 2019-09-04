@@ -1,4 +1,4 @@
-import { isValid, normalizeDate } from './utils';
+import { isValid, normalizeDate, toDate } from './utils';
 import { normalizeLocale } from '../common';
 
 const INVALID_DATE = new Date(NaN);
@@ -76,9 +76,6 @@ export const createDateParser = (locale: string): DateParser => {
       return INVALID_DATE;
     }
 
-    const { year, month, day } = normalizedDate;
-
-    // The 'proper' month is stored in a DateObj but Date expects month index
-    return new Date(year, month - 1, day);
+    return toDate(normalizedDate);
   };
 };

@@ -10,6 +10,16 @@ export type DateObj = {
   day: number;
 };
 
+export const toDateObj = (date: Date): DateObj => ({
+  year: date.getFullYear(),
+  month: date.getMonth() + 1,
+  day: date.getDate(),
+});
+
+export const toDate = (date: DateObj): Date =>
+  // The 'proper' month is stored in a DateObj but Date expects month index
+  new Date(date.year, date.month - 1, date.day);
+
 /**
  * Determines if the input year is a leap year
  * See: https://en.wikipedia.org/wiki/Leap_year#Algorithm
@@ -60,15 +70,16 @@ export const isValid = (date: DateObj): boolean => {
  * @returns DateObj
  */
 export const normalizeDate = (date: DateObj): DateObj => {
+  const now = toDateObj(new Date());
   const { year, month, day } = date;
 
   // 19 should evaluate to 2019
   const fullYear = year < 100 ? 2000 + year : year;
 
-  // The backup date is used to fill in missing date pieces
-  const normalizedYear = !isNaN(fullYear) ? fullYear : 2000;
-  const normalizedMonth = !isNaN(month) || month === 0 ? month : 1;
-  const normalizedDay = !isNaN(day) || day === 0 ? day : 1;
+  // Missing date pieces are filled in with their current date values
+  const normalizedYear = !isNaN(fullYear) ? fullYear : now.year;
+  const normalizedMonth = !isNaN(month) && month !== 0 ? month : now.month;
+  const normalizedDay = !isNaN(day) && day !== 0 ? day : now.day;
 
   return {
     year: normalizedYear,
