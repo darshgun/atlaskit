@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
-import Dialog from '../src';
+import Popup from '../src';
 import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
 
@@ -17,12 +17,12 @@ const SizedContent = styled.div`
   overflow: auto;
 `;
 
-type DialogProps = {
+type PopupProps = {
   setPosition(): void;
   position: string;
 };
 
-const DialogContent: FC<DialogProps> = ({ setPosition, position }) => {
+const PopupContent: FC<PopupProps> = ({ setPosition, position }) => {
   return (
     <SizedContent>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
@@ -70,21 +70,19 @@ export default () => {
 
   return (
     <Spacer>
-      <Button>Dummy Button</Button>
-      <Dialog
+      <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        content={
-          <DialogContent setPosition={setPosition} position={position} />
-        }
+        content={() => (
+          <PopupContent setPosition={setPosition} position={position} />
+        )}
         trigger={triggerProps => (
           <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? 'Close' : 'Open'} Dialog
+            {isOpen ? 'Close' : 'Open'} Popup
           </Button>
         )}
         position={position}
       />
-      <Button>Dummy Button</Button>
     </Spacer>
   );
 };

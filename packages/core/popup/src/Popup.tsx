@@ -1,52 +1,43 @@
-import React, {
-  FC,
-  memo,
-  useState,
-  useEffect,
-  ReactElement,
-  PropsWithChildren,
-} from 'react';
+import React, { FC, memo, useState, useEffect, Fragment } from 'react';
 import ScrollLock from 'react-scrolllock';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
-import { StyledMenu, MenuRelContainer } from './styled';
-import { DialogProps, ContentContainerProps } from './types';
+import { StyledPopup, PopupRelContainer } from './styled';
+import { PopupProps, ContentContainerProps } from './types';
 import { useFocusManager } from './useFocusManager';
 
 const ContentContainer: FC<ContentContainerProps> = ({
-  scheduleUpdate,
   children,
+  scheduleUpdate,
 }) => {
   useEffect(
     () => {
       scheduleUpdate();
     },
-    [children],
+    [children, scheduleUpdate],
   );
-  return children;
+  // wrapping in fragment to make TS happy (known issue with FC returning children)
+  return <Fragment>{children}</Fragment>;
 };
 
-export const Dialog: FC<DialogProps> = memo(
+export const Popup: FC<PopupProps> = memo(
   ({
     boundariesElement,
     isOpen,
     id,
-    minHeight,
-    maxHeight,
-    minWidth,
-    maxWidth,
-    overflow,
     position,
-    shouldFitContainer,
     shouldFlip,
     testId,
     content,
     trigger,
     onOpen,
     onClose,
+    lockBodyScroll = false,
+    popupComponent: PopupWrapper = StyledPopup,
   }) => {
-    const [dialogRef, setDialogRef] = useState<HTMLDivElement>();
-    useFocusManager({ dialogRef, isOpen, onClose });
+    const [popupRef, setPopupRef] = useState<HTMLDivElement>();
+    const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement>();
+    useFocusManager({ popupRef, initialFocusRef, isOpen, onClose });
 
     useEffect(
       () => {
@@ -58,7 +49,7 @@ export const Dialog: FC<DialogProps> = memo(
     );
 
     return (
-      <MenuRelContainer>
+      <PopupRelContainer>
         <Manager>
           <Reference>
             {({ ref }) =>
@@ -83,42 +74,34 @@ export const Dialog: FC<DialogProps> = memo(
               >
                 {({ ref, style, placement, scheduleUpdate }) => {
                   return (
-                    <StyledMenu
+                    <PopupWrapper
                       id={id}
                       data-testid={testId}
                       ref={(node: HTMLDivElement) => {
                         ref(node);
-                        setDialogRef(node);
+                        setPopupRef(node);
                       }}
                       style={style}
                       data-placement={placement}
-                      minWidth={minWidth}
-                      maxWidth={maxWidth}
-                      minHeight={minHeight}
-                      maxHeight={maxHeight}
-                      overflow={overflow}
-                      shouldFitContainer={shouldFitContainer}
+                      tabIndex={-1}
                     >
-                      <ScrollLock />
+                      {lockBodyScroll && <ScrollLock />}
                       <ContentContainer scheduleUpdate={scheduleUpdate}>
-                        {content
-                          ? React.cloneElement(content as ReactElement, {
-                              //passing these props allow the content to manage state
-                              //and update the popper-positioning on changes that don't trigger re-renders
-                              scheduleUpdate,
-                              isOpen,
-                              onClose,
-                            })
-                          : null}
+                        {content({
+                          scheduleUpdate,
+                          isOpen,
+                          onClose,
+                          setInitialFocusRef,
+                        })}
                       </ContentContainer>
-                    </StyledMenu>
+                    </PopupWrapper>
                   );
                 }}
               </Popper>
             </Portal>
           ) : null}
         </Manager>
-      </MenuRelContainer>
+      </PopupRelContainer>
     );
   },
 );

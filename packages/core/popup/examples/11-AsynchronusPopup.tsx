@@ -1,14 +1,15 @@
 import React, { FC, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import Dialog from '../src';
+import Popup from '../src';
 import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
 
-type DialogProps = {
+type PopupProps = {
+  loading: boolean;
   setPosition(): void;
   position: string;
   scheduleUpdate?(): void;
-  setButtonWidth(): void;
+  setButtonWidth: any;
   buttonWidth: number;
 };
 
@@ -25,6 +26,7 @@ const SizedContent = styled.div`
   text-align: center;
   vertical-align: center;
   padding: 30px;
+  max-width: 300px;
 `;
 
 const Skeleton = styled.div`
@@ -39,7 +41,8 @@ const Expander = styled.span<ExpanderProps>`
   width: ${props => (props.width ? props.width : 0)}px;
 `;
 
-const DialogContent: FC<DialogProps> = ({
+const PopupContent: FC<PopupProps> = ({
+  loading,
   setPosition,
   position,
   setButtonWidth,
@@ -56,7 +59,9 @@ const DialogContent: FC<DialogProps> = ({
     setContent('');
   };
 
-  return (
+  return loading ? (
+    <Skeleton />
+  ) : (
     <SizedContent>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
       <p>
@@ -70,6 +75,7 @@ const DialogContent: FC<DialogProps> = ({
       <hr />
       <Button onClick={addContent}>Add Content</Button>
       <Button onClick={clearContent}>Clear Content</Button>
+      <br />
       {content}
     </SizedContent>
   );
@@ -120,24 +126,21 @@ export default () => {
 
   return (
     <Spacer>
-      <Dialog
+      <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        content={
-          isLoaded ? (
-            <DialogContent
-              setPosition={setPosition}
-              position={position}
-              setButtonWidth={setButtonWidth}
-              buttonWidth={buttonWidth}
-            />
-          ) : (
-            <Skeleton />
-          )
-        }
+        content={() => (
+          <PopupContent
+            loading={!isLoaded}
+            setPosition={setPosition}
+            position={position}
+            setButtonWidth={setButtonWidth}
+            buttonWidth={buttonWidth}
+          />
+        )}
         trigger={triggerProps => (
           <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? 'Close' : 'Open'} Dialog <Expander width={buttonWidth} />
+            {isOpen ? 'Close' : 'Open'} Popup <Expander width={buttonWidth} />
           </Button>
         )}
         position={position}

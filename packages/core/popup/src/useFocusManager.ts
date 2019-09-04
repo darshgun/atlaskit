@@ -5,7 +5,8 @@ import createFocusTrap from 'focus-trap';
 const noop = () => {};
 
 export const useFocusManager = ({
-  dialogRef,
+  popupRef,
+  initialFocusRef,
   isOpen,
   onClose,
 }: FocusManagerHook): void => {
@@ -21,12 +22,13 @@ export const useFocusManager = ({
       const trapConfig = {
         clickOutsideDeactivates: true,
         escapeDeactivates: true,
-        fallbackFocus: dialogRef,
+        initialFocus: initialFocusRef || popupRef,
+        fallbackFocus: popupRef,
         returnFocusOnDeactivate: true,
       };
 
-      if (dialogRef) {
-        focusTrap = createFocusTrap(dialogRef, trapConfig);
+      if (popupRef) {
+        focusTrap = createFocusTrap(popupRef, trapConfig);
         focusTrap.activate();
       }
 
@@ -34,14 +36,14 @@ export const useFocusManager = ({
         focusTrap.deactivate();
       };
     },
-    [dialogRef],
+    [popupRef, initialFocusRef],
   );
 
   useEffect(
     () => {
       const handleClick = ({ target }: MouseEvent) => {
-        if (isOpen && (dialogRef && !dialogRef.contains(target as Node))) {
-          closeDialog();
+        if (isOpen && (popupRef && !popupRef.contains(target as Node))) {
+          closePopup();
         }
       };
 
@@ -50,13 +52,13 @@ export const useFocusManager = ({
         switch (key) {
           case 'Escape':
           case 'Esc':
-            closeDialog();
+            closePopup();
             break;
           default:
         }
       };
 
-      const closeDialog = () => {
+      const closePopup = () => {
         window.removeEventListener('click', handleClick);
         window.removeEventListener('keydown', handleKeyDown);
         if (onClose) {
@@ -64,7 +66,7 @@ export const useFocusManager = ({
         }
       };
 
-      if (isOpen && dialogRef) {
+      if (isOpen && popupRef) {
         window.requestAnimationFrame(() => {
           window.addEventListener('click', handleClick);
           window.addEventListener('keydown', handleKeyDown);
@@ -76,6 +78,6 @@ export const useFocusManager = ({
         window.removeEventListener('keydown', handleKeyDown);
       };
     },
-    [dialogRef, isOpen, onClose],
+    [popupRef, isOpen, onClose],
   );
 };

@@ -1,13 +1,12 @@
 {
-  "name": "@atlaskit/simple-inline-dialog",
+  "name": "@atlaskit/popup",
   "version": "0.0.1",
-  "description": "Creates a lightweight inline dialog.",
+  "description": "Renders a portaled popup component in reference to a trigger.",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
   "atlaskit:src": "src/index.ts",
-  "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/drop-menu",
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -16,7 +15,7 @@
   ],
   "atlaskit": {
     "internal": true,
-    "name": "Simple Inline Dialog",
+    "name": "Popup",
     "team": "core"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
@@ -39,6 +38,7 @@
     "@atlaskit/button": "^13.1.3",
     "@atlaskit/docs": "^8.1.3",
     "@atlaskit/lozenge": "9.0.7",
+    "@atlaskit/radio": "^3.0.16",
     "@atlaskit/ssr": "^0.1.0",
     "@atlaskit/tooltip": "^15.0.10",
     "enzyme": "^3.7.0",
