@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import {
-  containerSkeletonStyles,
-  productIconSkeletonStyles,
-  productLogoSkeletonStyles,
+  containerSkeletonCSS,
+  productIconSkeletonCSS,
+  productLogoSkeletonCSS,
 } from './styles';
 
 export const ProductHomeSkeleton = () => (
-  <div css={containerSkeletonStyles}>
-    <div css={productLogoSkeletonStyles} />
-    <div css={productIconSkeletonStyles} />
+  <div css={containerSkeletonCSS}>
+    <div css={productLogoSkeletonCSS} />
+    <div css={productIconSkeletonCSS} />
   </div>
 );

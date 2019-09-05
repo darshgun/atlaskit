@@ -11,7 +11,7 @@ import { ProductHomeSkeleton } from '../ProductHome/skeleton';
 import { ProfileSkeleton } from '../Profile/skeleton';
 import { SearchSkeleton } from '../Search/skeleton';
 
-import { styles } from './styles';
+import { containerCSS, leftCSS, rightCSS } from './styles';
 import { AppNavigationSkeletonProps } from './types';
 
 export const AppNavigationSkeleton = ({
@@ -21,22 +21,22 @@ export const AppNavigationSkeleton = ({
 }: AppNavigationSkeletonProps) => {
   return (
     <ThemeProvider theme={theme}>
-      <div css={styles.outer}>
-        <div css={styles.left}>
+      <div css={containerCSS}>
+        <div css={leftCSS}>
           <ProductHomeSkeleton />
           {Array.from({ length: primaryItemsCount }, (_, index) => (
             <PrimaryButtonSkeleton key={index} />
           ))}
         </div>
-        <div css={styles.right}>
+        <div css={rightCSS}>
           <CreateSkeleton />
           <SearchSkeleton />
           {Array.from({ length: secondaryItemsCount }, (_, index) => (
             <IconButtonSkeleton
               key={index}
-              dimension={gridSize() * 3.25}
               marginLeft={0}
               marginRight={5}
+              size={gridSize() * 3.25}
             />
           ))}
           <ProfileSkeleton />

@@ -10,7 +10,8 @@ export type IconButtonProps = Pick<ButtonProps, 'onClick'> & {
 };
 
 export type IconButtonSkeletonProps = {
-  dimension?: number;
+  className?: string;
   marginLeft?: number;
   marginRight?: number;
+  size?: number;
 };

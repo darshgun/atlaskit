@@ -4,7 +4,7 @@ import { jsx } from '@emotion/core';
 
 import { AppNavigationTheme, ThemeProvider, defaultTheme } from '../../theme';
 import { ThemedPrimaryButton } from '../PrimaryButton';
-import { styles } from './styles';
+import { containerCSS, leftCSS, rightCSS } from './styles';
 import { AppNavigationProps } from './types';
 
 const analyticsData = {
@@ -31,14 +31,14 @@ export const AppNavigation = (
   return (
     <ThemeProvider theme={theme}>
       <NavigationAnalyticsContext data={analyticsData}>
-        <div css={styles.outer}>
-          <div css={styles.left}>
+        <div css={containerCSS}>
+          <div css={leftCSS}>
             {ProductHome && <ProductHome />}
             {primaryItems.map(props => (
               <ThemedPrimaryButton key={props.id} {...props} />
             ))}
           </div>
-          <div css={styles.right}>
+          <div css={rightCSS}>
             {Create && <Create />}
             {Search && <Search />}
             {AppSwitcher && <AppSwitcher />}

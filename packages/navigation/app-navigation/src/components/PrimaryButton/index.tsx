@@ -2,7 +2,7 @@
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
 import { jsx } from '@emotion/core';
-import { chevronStyles, getPrimaryButtonTheme } from './styles';
+import { chevronCSS, getPrimaryButtonTheme } from './styles';
 import { PrimaryButtonProps } from './types';
 import { TriggerManager } from '../TriggerManager';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
@@ -37,7 +37,7 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
             href={href}
             iconAfter={
               dropdownContent ? (
-                <span className="chevron" css={chevronStyles}>
+                <span className="chevron" css={chevronCSS}>
                   <ChevronDownIcon label="" />
                 </span>
               ) : (
