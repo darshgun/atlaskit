@@ -1,0 +1,1 @@
+Added isEmceeEnabled prop to enable Embedded Marketplace link with in the product
