@@ -87,6 +87,14 @@ class SmartlingNode {
     });
     formData.append('fileUri', mapSlug(resource));
     formData.append('fileType', 'json');
+    formData.append(
+      'smartling.translate_paths',
+      JSON.stringify({
+        path: '*/translation',
+        key: '{*}/translation',
+        instruction: '*/description',
+      }),
+    );
 
     let more = formData.getHeaders();
     let combined = Object.assign({}, authHeaders.headers);
