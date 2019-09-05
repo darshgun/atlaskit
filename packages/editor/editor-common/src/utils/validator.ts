@@ -140,27 +140,6 @@ const flattenUnknownBlockTree = (
   return output;
 };
 
-// null is Object, also maybe check obj.constructor == Object if we want to skip Class
-const isValidObject = (obj: object) => obj !== null && typeof obj === 'object';
-const isValidString = (str: any): str is string => typeof str === 'string';
-const keysLen = (obj: object) => Object.keys(obj).length;
-
-const isValidIcon = (icon: any) =>
-  isValidObject(icon) &&
-  keysLen(icon) === 2 &&
-  isValidString(icon.url) &&
-  isValidString(icon.label);
-
-const isValidUser = (user: { id: string; icon: any }) => {
-  const len = keysLen(user);
-  return (
-    isValidObject(user) &&
-    len <= 2 &&
-    isValidIcon(user.icon) &&
-    (len === 1 || isValidString(user.id))
-  );
-};
-
 /**
  * Sanitize unknown node tree
  *

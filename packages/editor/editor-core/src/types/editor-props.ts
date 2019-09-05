@@ -151,8 +151,6 @@ export interface EditorProps {
   // Enable dates. You will most likely need backend ADF storage for this feature.
   allowDate?: boolean;
 
-  allowInlineAction?: boolean;
-
   // Temporary flag to enable layouts while it's under development
   // Use object form to enable breakout for layouts, and to enable the newer layouts - left sidebar & right sidebar
   allowLayouts?:

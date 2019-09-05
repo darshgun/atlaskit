@@ -3,7 +3,6 @@ import {
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
-  ApplicationCardAttributes,
   CellAttributes,
   LinkAttributes,
   TableAttributes,
