@@ -35,6 +35,7 @@ import {
   shadowClassNames,
   dateSharedStyle,
   akEditorFullWidthLayoutWidth,
+  mediaSingleClassName,
 } from '@atlaskit/editor-common';
 import { RendererCssClassName } from '../../consts';
 import { RendererAppearance } from './types';
@@ -223,7 +224,7 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
     margin: ${gridSize() * 3}px 0;
   }
 
-  .media-single.media-wrapped + .media-single:not(.media-wrapped) {
+  .${mediaSingleClassName}.media-wrapped + .${mediaSingleClassName}:not(.media-wrapped) {
     clear: both;
   }
 
@@ -231,8 +232,8 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
   & blockquote,
   & hr,
   & > div > div:not(.media-wrapped),
-  .media-single.media-wrapped + .media-wrapped + *:not(.media-wrapped),
-  .media-single.media-wrapped + div:not(.media-wrapped) {
+  .${mediaSingleClassName}.media-wrapped + .media-wrapped + *:not(.media-wrapped),
+  .${mediaSingleClassName}.media-wrapped + div:not(.media-wrapped) {
     clear: both;
   }
 
