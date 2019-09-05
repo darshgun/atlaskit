@@ -57,6 +57,7 @@ export enum Feature {
   disableHeadings = 'disableHeadings',
   xflow = 'xflow',
   isDiscoverMoreForEveryoneEnabled = 'isDiscoverMoreForEveryoneEnabled',
+  isEmceeEnabled = 'isEmceeEnabled',
 }
 
 export enum MultiVariateFeature {
