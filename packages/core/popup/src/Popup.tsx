@@ -1,5 +1,6 @@
 import React, { FC, memo, useState, useEffect, Fragment } from 'react';
 import ScrollLock from 'react-scrolllock';
+import { layers } from '@atlaskit/theme/constants';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
 import { StyledPopup, PopupRelContainer } from './styled';
@@ -34,6 +35,7 @@ export const Popup: FC<PopupProps> = memo(
     onClose,
     lockBodyScroll = false,
     popupComponent: PopupWrapper = StyledPopup,
+    zIndex = layers.layer(),
   }) => {
     const [popupRef, setPopupRef] = useState<HTMLDivElement>();
     const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement>();
@@ -62,7 +64,7 @@ export const Popup: FC<PopupProps> = memo(
             }
           </Reference>
           {isOpen ? (
-            <Portal>
+            <Portal zIndex={zIndex}>
               <Popper
                 placement={position}
                 modifiers={{

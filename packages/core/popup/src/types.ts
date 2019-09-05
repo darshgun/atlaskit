@@ -43,6 +43,8 @@ export type PopupProps = {
   lockBodyScroll?: boolean;
 
   popupComponent?: FC;
+
+  zIndex?: number;
 };
 
 export type FocusManagerHook = {

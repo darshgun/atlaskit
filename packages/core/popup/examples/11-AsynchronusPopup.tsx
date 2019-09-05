@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Popup from '../src';
 import { Placement } from '@atlaskit/popper';
 import Button from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
 
 type PopupProps = {
   loading: boolean;
@@ -29,11 +30,8 @@ const SizedContent = styled.div`
   max-width: 300px;
 `;
 
-const Skeleton = styled.div`
+const SpinnerSpacer = styled.div`
   margin: 20px;
-  width: 200px;
-  height: 25px;
-  background: linear-gradient(270deg, #e4e4e4, #c4c4c4);
 `;
 
 const Expander = styled.span<ExpanderProps>`
@@ -60,7 +58,9 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return loading ? (
-    <Skeleton />
+    <SpinnerSpacer>
+      <Spinner size="large" />
+    </SpinnerSpacer>
   ) : (
     <SizedContent>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
@@ -89,7 +89,7 @@ export default () => {
   useEffect(
     () => {
       if (isOpen) {
-        window.setTimeout(() => setIsLoaded(true), 400);
+        window.setTimeout(() => setIsLoaded(true), 600);
       } else {
         setIsLoaded(false);
       }

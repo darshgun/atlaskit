@@ -28,8 +28,10 @@ export const useFocusManager = ({
       };
 
       if (popupRef) {
-        focusTrap = createFocusTrap(popupRef, trapConfig);
-        focusTrap.activate();
+        window.requestAnimationFrame(() => {
+          focusTrap = createFocusTrap(popupRef, trapConfig);
+          focusTrap.activate();
+        });
       }
 
       return () => {

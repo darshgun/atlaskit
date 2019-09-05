@@ -26,7 +26,8 @@
     "@babel/runtime": "^7.0.0",
     "@emotion/styled": "^10.0.7",
     "focus-trap": "^2.4.5",
-    "react-scrolllock": "^3.0.2"
+    "react-scrolllock": "^3.0.2",
+    "tslib": "^1.9.3"
   },
   "peerDependencies": {
     "react": "^16.8.0",
