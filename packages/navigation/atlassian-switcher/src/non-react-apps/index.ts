@@ -1,1 +1,1 @@
-export { prepareAtlassianSwitcher } from './prepare';
+export { prepareAtlassianSwitcher as default } from './prepare';

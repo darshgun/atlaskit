@@ -3,7 +3,7 @@ import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
 import { withAnalyticsLogger } from './helpers';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
-import { prepareAtlassianSwitcher } from '../src/non-react-apps/index';
+import prepareAtlassianSwitcher from '../src/non-react-apps';
 import memoizeOne from 'memoize-one';
 
 const Container = styled.div`
@@ -15,10 +15,18 @@ const Container = styled.div`
   margin: 5px;
   vertical-align: top;
 `;
-class InlineDialogSwitcherExample extends React.Component {
+
+type Props = {};
+
+type State = {
+  isLoaded: boolean;
+  isMounted: boolean;
+};
+class InlineDialogSwitcherExample extends React.Component<Props, State> {
   private destroy?: () => void;
   state = {
     isLoaded: false,
+    isMounted: false,
   };
 
   componentDidMount() {
@@ -60,7 +68,7 @@ class InlineDialogSwitcherExample extends React.Component {
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.state.isLoaded && !prevState.isLoaded) {
       this.renderSwitcherUsingNativeJSWrapper();
     }
@@ -98,6 +106,11 @@ class InlineDialogSwitcherExample extends React.Component {
   destroySwitcher = () => {
     if (this.destroy) {
       this.destroy();
+      this.destroy = undefined;
+
+      this.setState({
+        isMounted: false,
+      });
     }
   };
 
@@ -116,15 +129,30 @@ class InlineDialogSwitcherExample extends React.Component {
 
     // render the component
     this.destroy = switcher.renderAt(container);
+
+    this.setState({
+      isMounted: true,
+    });
   };
 
   render() {
+    const { isMounted } = this.state;
     return (
       <>
         <Container id="switcher-container" />
-        <Button type="button" onClick={this.destroySwitcher}>
-          Destroy switcher
-        </Button>
+
+        {isMounted ? (
+          <Button type="button" onClick={this.destroySwitcher}>
+            Destroy switcher
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={this.renderSwitcherUsingNativeJSWrapper}
+          >
+            Mount switcher
+          </Button>
+        )}
       </>
     );
   }
