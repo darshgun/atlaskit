@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
 import { withAnalyticsLogger } from './helpers';
+import Button from '@atlaskit/button';
 import styled from 'styled-components';
 import { prepareAtlassianSwitcher } from '../src/non-react-apps/index';
 import memoizeOne from 'memoize-one';
@@ -15,6 +16,7 @@ const Container = styled.div`
   vertical-align: top;
 `;
 class InlineDialogSwitcherExample extends React.Component {
+  private destroy?: () => void;
   state = {
     isLoaded: false,
   };
@@ -93,6 +95,12 @@ class InlineDialogSwitcherExample extends React.Component {
     );
   });
 
+  destroySwitcher = () => {
+    if (this.destroy) {
+      this.destroy();
+    }
+  };
+
   renderSwitcherUsingNativeJSWrapper = () => {
     const container = document.getElementById('switcher-container');
 
@@ -107,11 +115,18 @@ class InlineDialogSwitcherExample extends React.Component {
     switcher.prefetch();
 
     // render the component
-    switcher.renderAt(container);
+    this.destroy = switcher.renderAt(container);
   };
 
   render() {
-    return <Container id="switcher-container" />;
+    return (
+      <>
+        <Container id="switcher-container" />
+        <Button type="button" onClick={this.destroySwitcher}>
+          Destroy switcher
+        </Button>
+      </>
+    );
   }
 }
 

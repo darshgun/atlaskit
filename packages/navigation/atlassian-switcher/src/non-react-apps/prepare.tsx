@@ -18,7 +18,7 @@ export const prepareAtlassianSwitcher = (
   return {
     prefetch: () => prefetch(switcherProps),
     renderAt: (container: HTMLElement) => {
-      render(switcherProps, analyticsListener, container);
+      return render(switcherProps, analyticsListener, container);
     },
   };
 };

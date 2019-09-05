@@ -10,7 +10,7 @@ export const render = (
   switcherProps: AtlassianSwitcherProps,
   analyticsListener: (event: UIAnalyticsEvent, channel?: string) => void,
   container: HTMLElement,
-) =>
+) => {
   ReactDOM.render(
     <IntlProvider>
       <AnalyticsListener channel="*" onEvent={analyticsListener}>
@@ -19,3 +19,8 @@ export const render = (
     </IntlProvider>,
     container,
   );
+
+  return () => {
+    ReactDOM.unmountComponentAtNode(container);
+  };
+};
