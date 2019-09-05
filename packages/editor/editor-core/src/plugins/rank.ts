@@ -139,7 +139,6 @@ export default {
     'strong',
     'textColor',
     'strike',
-    'action',
     'subsup',
     'underline',
     'code',

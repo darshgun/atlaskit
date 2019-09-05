@@ -236,119 +236,6 @@ export const getValidNode = (
 
   if (type) {
     switch (type) {
-      case 'applicationCard': {
-        if (!attrs) {
-          break;
-        }
-        const {
-          text,
-          link,
-          background,
-          preview,
-          title,
-          description,
-          details,
-          actions,
-          context,
-        } = attrs;
-        if (!isValidString(text) || !isValidObject(title) || !title.text) {
-          break;
-        }
-
-        // title can contain at most two keys (text, user)
-        const titleKeys = Object.keys(title);
-        if (titleKeys.length > 2) {
-          break;
-        }
-        if (titleKeys.length === 2 && !title.user) {
-          break;
-        }
-        if (title.user && !isValidUser(title.user)) {
-          break;
-        }
-
-        if (
-          (link && !link.url) ||
-          (background && !background.url) ||
-          (preview && !preview.url) ||
-          (description && !description.text)
-        ) {
-          break;
-        }
-
-        if (context && !isValidString(context.text)) {
-          break;
-        }
-        if (context && (context.icon && !isValidIcon(context.icon))) {
-          break;
-        }
-
-        if (actions && !Array.isArray(actions)) {
-          break;
-        }
-        if (actions && !actions.length) {
-          break;
-        }
-        if (
-          actions &&
-          actions.some((meta: any) => {
-            const { key, title, target, parameters } = meta;
-            if (key && !isValidString(key)) {
-              return true;
-            }
-            if (!isValidString(title)) {
-              return true;
-            }
-            if (!target) {
-              return true;
-            }
-            if (!isValidString(target.key)) {
-              return true;
-            }
-            if (target.receiver && !isValidString(target.receiver)) {
-              return true;
-            }
-            if (parameters && !isValidObject(parameters)) {
-              return true;
-            }
-            return;
-          })
-        ) {
-          break;
-        }
-
-        if (details && !Array.isArray(details)) {
-          break;
-        }
-        if (
-          details &&
-          details.some((meta: any) => {
-            const { badge, lozenge, users } = meta;
-            if (badge && typeof badge.value !== 'number') {
-              return true;
-            }
-            if (lozenge && !lozenge.text) {
-              return true;
-            }
-            if (users && !Array.isArray(users)) {
-              return true;
-            }
-
-            if (users && !users.every(isValidUser)) {
-              return true;
-            }
-            return;
-          })
-        ) {
-          break;
-        }
-
-        return {
-          type,
-          text,
-          attrs,
-        };
-      }
       case 'doc': {
         const { version } = originalNode as ADDoc;
         if (version && content && content.length) {
@@ -818,15 +705,6 @@ export const getValidMark = (
 
   if (type) {
     switch (type) {
-      case 'action': {
-        if (attrs && attrs.target && attrs.target.key) {
-          return {
-            type,
-            attrs,
-          };
-        }
-        break;
-      }
       case 'code': {
         return {
           type,
