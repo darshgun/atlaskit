@@ -81,16 +81,39 @@ function pushCommand(options) {
         context.data = await pushTranslations(project, resource, context.pot);
       },
     },
+    {
+      title: 'Pushing to Smartling',
+      skip: () => dry,
+      task: async context => {
+        const smartling = require('../utils/smartling-lite');
+        try {
+          context.smartlingData = await smartling.pushSource(
+            project,
+            resource,
+            context.messages,
+          );
+        } catch (e) {
+          //For now don't let this kill the build
+          console.log(`Could not push due to Smartling, ${e}`);
+          context.smartlingData = {
+            error: e,
+          };
+        }
+      },
+    },
   ])
     .run()
-    .then(({ pot, data }) => {
+    .then(({ pot, data, smartlingData }) => {
       if (dry) {
         console.log('\n' + pot);
       } else {
         console.log(
           `\nSuccess:\nAdded: ${data.strings_added}\nUpdated: ${
             data.strings_updated
-          }\nDeleted: ${data.strings_delete}`,
+          }\nDeleted: ${
+            data.strings_delete
+          }\nSmartling : ${smartlingData.error || smartlingData.stringCount}
+          `,
         );
       }
     });
