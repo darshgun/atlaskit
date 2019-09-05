@@ -34,7 +34,6 @@ export const getPrimaryButtonTheme = ({
   return {
     buttonStyles: {
       ...buttonStyles,
-      display: 'inline-flex',
       fontSize: fontSizeSmall(),
       fontWeight: 'bold',
       height: buttonHeight,

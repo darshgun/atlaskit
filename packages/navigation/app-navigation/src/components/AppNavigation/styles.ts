@@ -26,6 +26,7 @@ export const containerCSS = (theme: AppNavigationTheme) => {
 export const leftCSS = {
   alignItems: 'center',
   display: 'flex',
+  flexGrow: 1,
   height: 'inherit',
 };
 

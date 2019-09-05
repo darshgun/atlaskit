@@ -29,6 +29,7 @@ const AuthenticatedExample = () => (
     renderProfile={DefaultProfile}
     renderSearch={DefaultSearch}
     renderSettings={DefaultSettings}
+    moreLabel="More"
   />
 );
 
