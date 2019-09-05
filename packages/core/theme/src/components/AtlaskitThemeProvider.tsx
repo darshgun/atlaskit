@@ -1,4 +1,4 @@
-import React, { Component, Node } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
 import exenv from 'exenv';
@@ -18,11 +18,11 @@ function getStylesheetResetCSS(state: ThemeProps) {
 }
 
 interface Props {
-  children: Node,
-  mode: ThemeModes,
-};
+  children: Node;
+  mode: ThemeModes;
+}
 
-function buildThemeState(mode): ThemeProps {
+function buildThemeState(mode: ThemeModes): ThemeProps {
   return { theme: { [CHANNEL]: { mode } } };
 }
 
@@ -67,7 +67,7 @@ const LegacyReset = styled.div`
 
 export default class AtlaskitThemeProvider extends Component<
   Props,
-  ThemeProps,
+  ThemeProps
 > {
   stylesheet: any;
 
@@ -133,7 +133,8 @@ export default class AtlaskitThemeProvider extends Component<
       old theming API. */
       <Theme.Provider value={() => ({ mode: theme[CHANNEL].mode })}>
         <ThemeProvider theme={theme}>
-          <LegacyReset>{children}</LegacyReset>
+          {/* TODO: no idea why I needed to pass theme to this */}
+          <LegacyReset theme={theme}>{children}</LegacyReset>
         </ThemeProvider>
       </Theme.Provider>
     );

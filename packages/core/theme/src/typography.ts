@@ -3,7 +3,7 @@ import { css } from 'styled-components';
 import * as colors from './colors';
 import { gridSize, fontSize } from './constants';
 
-const baseHeading = (size, lineHeight) => `
+const baseHeading = (size: number, lineHeight: number) => `
   font-size: ${size / fontSize()}em;
   font-style: inherit;
   line-height: ${lineHeight / size};

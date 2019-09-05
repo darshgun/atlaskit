@@ -1,10 +1,11 @@
 interface Props {
-  children: Function,
-  props: {} | string,
-  theme: {},
-};
+  children: Function;
+  props: {} | string;
+  theme: {};
+}
 
-export default ({ children, props, theme }: Props) => {
+// TODO: no idea what this is for, or where it is used
+export default function Appearance({ children, props, theme }: Props) {
   const appearance = typeof props === 'object' ? 'default' : props;
   const merged = typeof props === 'object' ? { ...props } : {};
   Object.keys(theme).forEach(key => {
@@ -13,4 +14,4 @@ export default ({ children, props, theme }: Props) => {
     }
   });
   return children(merged);
-};
+}

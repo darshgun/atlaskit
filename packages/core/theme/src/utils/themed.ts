@@ -1,35 +1,51 @@
-/* eslint-disable prefer-rest-params */
-
 import getTheme from './getTheme';
-import { ThemedValue, ThemeProps } from '../types';
+import { ThemedValue, ThemeProps, ThemeModes, Theme } from '../types';
 
 type Value = string | number;
-interface Modes { light: Value, dark: Value };
-interface VariantModes { [string]: Modes };
-
-function themedVariants(variantProp, variants) {
-  return (props: ?ThemeProps) => {
-    const theme = getTheme(props);
-    if (props && props[variantProp] && variants) {
-      const modes = variants[props[variantProp]];
-      if (modes) {
-        return modes[theme.mode];
-      }
-    }
-    return '';
-  };
-}
+type Modes = { [key in ThemeModes]: Value };
 
 export default function themed(
   modesOrVariant: Modes | string,
-  variantModes: ?VariantModes,
+  modesMap?: { [key: string]: Modes },
 ): ThemedValue {
-  if (typeof modesOrVariant === 'string') {
-    return themedVariants(modesOrVariant, variantModes);
+  // passed in a modes
+  if (typeof modesOrVariant === 'object') {
+    const modes: Modes = modesOrVariant;
+    return function getValueFromMode(props: ThemeProps | undefined): Value {
+      const theme: Theme = getTheme(props);
+      return modes[theme.mode];
+    };
   }
-  const modes = modesOrVariant;
-  return (props: ?ThemeProps) => {
-    const theme = getTheme(props);
+
+  // passed in variant and modesMap
+
+  const variant: string = modesOrVariant;
+
+  if (!modesMap) {
+    console.error('Expected map to be passed in with variant');
+    return () => '';
+  }
+
+  return function getValueFromVariant(props: ThemeProps | undefined): Value {
+    if (!props) {
+      return '';
+    }
+
+    // Need to ignore as we are doing a lookup on ThemeProps which doesn't support lookups
+    // @ts-ignore
+    const value: unknown = props[variant];
+
+    if (typeof value !== 'string') {
+      return '';
+    }
+
+    const modes: Modes | undefined = modesMap[value];
+
+    if (!modes) {
+      return '';
+    }
+
+    const theme: Theme = getTheme(props);
     return modes[theme.mode];
   };
 }
