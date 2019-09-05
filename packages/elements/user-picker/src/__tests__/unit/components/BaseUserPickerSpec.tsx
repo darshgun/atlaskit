@@ -846,14 +846,7 @@ describe('BaseUserPicker', () => {
       });
 
       expect(onChange).toHaveBeenCalledWith(
-        [
-          mixedOptions[0],
-          mixedOptions[1],
-          mixedOptions[2],
-          mixedOptions[3],
-          mixedOptions[4],
-          mixedOptions[5],
-        ],
+        mixedOptions.slice(0, 6),
         'select-option',
       );
     });

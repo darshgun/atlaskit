@@ -56,30 +56,27 @@ describe('GroupOption', () => {
   it('should render GroupOption in selected state', () => {
     const component = shallowOption({ isSelected: true });
     const avatarItemOption = component.find(AvatarItemOption);
-    expect(avatarItemOption.props()).toMatchObject({
-      avatar: (
-        <GroupOptionIconWrapper>
-          <PeopleIcon label="group-icon" size="medium" />
-        </GroupOptionIconWrapper>
-      ),
-      primaryText: [
-        <TextWrapper key="name" color={colors.N0}>
-          <HighlightText>dead-jedi-admins</HighlightText>
-        </TextWrapper>,
-      ],
-      secondaryText: (
-        <TextWrapper color={colors.N50}>
-          <FormattedMessage
-            id="fabric.elements.user-picker.group.byline"
-            defaultMessage="Admin-managed group"
-            description="Byline for admin-managed groups"
-          />
-        </TextWrapper>
-      ),
-    });
+    expect(avatarItemOption.props()).toMatchObject(
+      expect.objectContaining({
+        primaryText: [
+          <TextWrapper key="name" color={colors.N0}>
+            <HighlightText>dead-jedi-admins</HighlightText>
+          </TextWrapper>,
+        ],
+        secondaryText: (
+          <TextWrapper color={colors.N50}>
+            <FormattedMessage
+              id="fabric.elements.user-picker.group.byline"
+              defaultMessage="Admin-managed group"
+              description="Byline for admin-managed groups"
+            />
+          </TextWrapper>
+        ),
+      }),
+    );
   });
 
-  it('should highlight text', () => {
+  it('should highlight the primaryText', () => {
     const testHighlightRange = { start: 4, end: 11 };
     const groupWithHighlight = {
       ...group,
@@ -89,28 +86,12 @@ describe('GroupOption', () => {
     };
     const component = shallowOption({ group: groupWithHighlight });
     const avatarItemOption = component.find(AvatarItemOption);
-    expect(avatarItemOption.props()).toMatchObject({
-      avatar: (
-        <GroupOptionIconWrapper>
-          <PeopleIcon label="group-icon" size="medium" />
-        </GroupOptionIconWrapper>
-      ),
-      primaryText: [
-        <TextWrapper key="name" color={colors.N800}>
-          <HighlightText highlights={[testHighlightRange]}>
-            dead-jedi-admins
-          </HighlightText>
-        </TextWrapper>,
-      ],
-      secondaryText: (
-        <TextWrapper color={colors.N200}>
-          <FormattedMessage
-            id="fabric.elements.user-picker.group.byline"
-            defaultMessage="Admin-managed group"
-            description="Byline for admin-managed groups"
-          />
-        </TextWrapper>
-      ),
-    });
+    expect(avatarItemOption.prop('primaryText')).toEqual([
+      <TextWrapper key="name" color={colors.N800}>
+        <HighlightText highlights={[testHighlightRange]}>
+          dead-jedi-admins
+        </HighlightText>
+      </TextWrapper>,
+    ]);
   });
 });
