@@ -230,7 +230,6 @@ describe('utils/links', () => {
 
       const expectedResult =
         '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover';
-      console.log(result.map(({ href }) => href));
       expect(result.map(({ href }) => href)).toContain(expectedResult);
     });
   });
