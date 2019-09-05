@@ -1,0 +1,1 @@
+Provide native js wrapper to allow non react apps to render the switcher

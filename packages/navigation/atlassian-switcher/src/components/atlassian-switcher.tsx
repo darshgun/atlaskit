@@ -25,7 +25,7 @@ import {
   GenericSwitcherLoader,
 } from '../loaders';
 
-type AtlassianSwitcherProps = WithTheme & {
+export type AtlassianSwitcherProps = WithTheme & {
   product: string;
   cloudId?: string;
   triggerXFlow?: TriggerXFlowCallback;

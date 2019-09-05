@@ -56,14 +56,14 @@ class PrefetchTrigger extends React.Component<
 
   private triggerPrefetch = throttle(
     () => {
-      const { cloudId, product } = this.props;
+      const { cloudId, product, enableUserCentricProducts } = this.props;
 
       prefetchSwitcherBundles(product);
 
       if (cloudId) {
         prefetchAll({ cloudId });
       }
-      if (this.props.enableUserCentricProducts) {
+      if (enableUserCentricProducts) {
         prefetchAvailableProducts();
       }
 
