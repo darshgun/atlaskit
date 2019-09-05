@@ -390,7 +390,6 @@ export const getAdministrationLinks = (
       href: `${adminBaseUrl}/billing/addapplication`,
     });
   }
-
   return adminLinks;
 };
 

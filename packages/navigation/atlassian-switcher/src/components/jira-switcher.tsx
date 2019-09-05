@@ -52,6 +52,7 @@ export default (props: JiraSwitcherProps) => (
                 availableProducts,
                 Product.JIRA,
               );
+
               return (
                 <Switcher
                   {...props}
