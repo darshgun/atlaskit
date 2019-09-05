@@ -78,7 +78,7 @@ export default () => {
             {isOpen ? 'Close' : 'Open'} Popup
           </Button>
         )}
-        position="bottom-start"
+        placement="bottom-start"
       />
     </Spacer>
   );

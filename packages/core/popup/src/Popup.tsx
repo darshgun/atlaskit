@@ -1,18 +1,26 @@
-import React, { FC, memo, useState, useEffect, Fragment } from 'react';
+import React, {
+  FC,
+  memo,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  Fragment,
+} from 'react';
 import ScrollLock from 'react-scrolllock';
 import { layers } from '@atlaskit/theme/constants';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
 import { StyledPopup, PopupRelContainer } from './styled';
-import { PopupProps, ContentContainerProps } from './types';
+import { PopupProps, RepositionOnUpdateProps } from './types';
 import { useFocusManager } from './useFocusManager';
 
-const ContentContainer: FC<ContentContainerProps> = ({
+const RepositionOnUpdate: FC<RepositionOnUpdateProps> = ({
   children,
   scheduleUpdate,
 }) => {
-  useEffect(
+  useLayoutEffect(
     () => {
+      //callback function from popper that repositions pop-up on content Update
       scheduleUpdate();
     },
     [children, scheduleUpdate],
@@ -26,8 +34,8 @@ export const Popup: FC<PopupProps> = memo(
     boundariesElement,
     isOpen,
     id,
-    position,
-    shouldFlip,
+    placement,
+    shouldFlip = true,
     testId,
     content,
     trigger,
@@ -66,7 +74,7 @@ export const Popup: FC<PopupProps> = memo(
           {isOpen ? (
             <Portal zIndex={zIndex}>
               <Popper
-                placement={position}
+                placement={placement || 'auto'}
                 modifiers={{
                   flip: {
                     enabled: shouldFlip || true,
@@ -88,14 +96,14 @@ export const Popup: FC<PopupProps> = memo(
                       tabIndex={-1}
                     >
                       {lockBodyScroll && <ScrollLock />}
-                      <ContentContainer scheduleUpdate={scheduleUpdate}>
+                      <RepositionOnUpdate scheduleUpdate={scheduleUpdate}>
                         {content({
                           scheduleUpdate,
                           isOpen,
                           onClose,
                           setInitialFocusRef,
                         })}
-                      </ContentContainer>
+                      </RepositionOnUpdate>
                     </PopupWrapper>
                   );
                 }}

@@ -22,8 +22,8 @@ export type PopupProps = {
   boundariesElement?: 'viewport' | 'window' | 'scrollParent';
   /** HTML Id for testing etc */
   id?: string;
-  /** Position of the Popup. See the documentation of @atlaskit/popper for more details. */
-  position?: Placement;
+  /** Positioning string of the Popup. See the documentation of @atlaskit/popper for more details. */
+  placement?: Placement;
   /** Allows the Popup to be placed on the opposite side of its trigger if it does not
    * fit in the viewport. */
   shouldFlip?: boolean;
@@ -54,6 +54,6 @@ export type FocusManagerHook = {
   onClose?(): void;
 };
 
-export type ContentContainerProps = {
+export type RepositionOnUpdateProps = {
   scheduleUpdate(): void;
 };

@@ -3,6 +3,7 @@ import { FocusManagerHook } from './types';
 import createFocusTrap from 'focus-trap';
 
 const noop = () => {};
+let frameId: number | null;
 
 export const useFocusManager = ({
   popupRef,
@@ -12,6 +13,10 @@ export const useFocusManager = ({
 }: FocusManagerHook): void => {
   useEffect(
     () => {
+      if (!popupRef) {
+        return noop;
+      }
+
       let focusTrap = {
         activate: noop,
         deactivate: noop,
@@ -27,12 +32,10 @@ export const useFocusManager = ({
         returnFocusOnDeactivate: true,
       };
 
-      if (popupRef) {
-        window.requestAnimationFrame(() => {
-          focusTrap = createFocusTrap(popupRef, trapConfig);
-          focusTrap.activate();
-        });
-      }
+      window.requestAnimationFrame(() => {
+        focusTrap = createFocusTrap(popupRef, trapConfig);
+        focusTrap.activate();
+      });
 
       return () => {
         focusTrap.deactivate();
@@ -51,12 +54,8 @@ export const useFocusManager = ({
 
       const handleKeyDown = (event: KeyboardEvent) => {
         const { key } = event;
-        switch (key) {
-          case 'Escape':
-          case 'Esc':
-            closePopup();
-            break;
-          default:
+        if (key === 'Escape' || key === 'Esc') {
+          closePopup();
         }
       };
 
@@ -69,13 +68,18 @@ export const useFocusManager = ({
       };
 
       if (isOpen && popupRef) {
-        window.requestAnimationFrame(() => {
+        frameId = window.requestAnimationFrame(() => {
+          frameId = null;
           window.addEventListener('click', handleClick);
           window.addEventListener('keydown', handleKeyDown);
         });
       }
 
       return () => {
+        if (frameId) {
+          window.cancelAnimationFrame(frameId);
+          frameId = null;
+        }
         window.removeEventListener('click', handleClick);
         window.removeEventListener('keydown', handleKeyDown);
       };

@@ -53,7 +53,7 @@ export default () => {
                 {isOpen ? 'Close' : 'Open'} Popup
               </Button>
             )}
-            position="bottom"
+            placement="bottom"
             lockBodyScroll
           />
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

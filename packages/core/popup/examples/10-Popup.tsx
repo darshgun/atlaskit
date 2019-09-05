@@ -19,15 +19,15 @@ const SizedContent = styled.div`
 
 type PopupProps = {
   setPosition(): void;
-  position: string;
+  placement: string;
 };
 
-const PopupContent: FC<PopupProps> = ({ setPosition, position }) => {
+const PopupContent: FC<PopupProps> = ({ setPosition, placement }) => {
   return (
     <SizedContent>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
       <p>
-        Current position: <strong>{position}</strong>
+        Current placement: <strong>{placement}</strong>
       </p>
       <hr />
       <p>Scroll down.</p>
@@ -41,7 +41,7 @@ export default () => {
   const [idx, setIdx] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  const positions: Placement[] = [
+  const placements: Placement[] = [
     'bottom-start',
     'bottom',
     'bottom-end',
@@ -58,10 +58,10 @@ export default () => {
     'auto',
     'auto-end',
   ];
-  const position = positions[idx];
+  const placement = placements[idx];
 
-  const setPosition = () => {
-    if (idx !== positions.length - 1) {
+  const setPlacement = () => {
+    if (idx !== placements.length - 1) {
       setIdx(idx + 1);
     } else {
       setIdx(0);
@@ -74,14 +74,14 @@ export default () => {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         content={() => (
-          <PopupContent setPosition={setPosition} position={position} />
+          <PopupContent setPosition={setPlacement} placement={placement} />
         )}
         trigger={triggerProps => (
           <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? 'Close' : 'Open'} Popup
           </Button>
         )}
-        position={position}
+        placement={placement}
       />
     </Spacer>
   );

@@ -143,7 +143,7 @@ export default () => {
             {isOpen ? 'Close' : 'Open'} Popup <Expander width={buttonWidth} />
           </Button>
         )}
-        position={position}
+        placement={position}
       />
     </Spacer>
   );
