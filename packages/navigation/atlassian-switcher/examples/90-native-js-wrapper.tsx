@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
-import { withAnalyticsLogger } from './helpers';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
 import prepareAtlassianSwitcher from '../src/vanilla-wrapper';
@@ -22,7 +21,10 @@ type State = {
   isLoaded: boolean;
   isMounted: boolean;
 };
-class InlineDialogSwitcherExample extends React.Component<Props, State> {
+export default class NativeWrapperExample extends React.Component<
+  Props,
+  State
+> {
   private destroy?: () => void;
   state = {
     isLoaded: false,
@@ -157,5 +159,3 @@ class InlineDialogSwitcherExample extends React.Component<Props, State> {
     );
   }
 }
-
-export default withAnalyticsLogger(InlineDialogSwitcherExample);

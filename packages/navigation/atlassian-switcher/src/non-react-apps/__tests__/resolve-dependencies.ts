@@ -1,10 +1,14 @@
 const fakeModule = () => {};
+const fakeReactIntlModule = {
+  IntlProvider: fakeModule,
+};
+
 const missingModule = null;
 
 const reactMock = jest.fn().mockReturnValue(fakeModule);
 const reactDOMMock = jest.fn().mockReturnValue(fakeModule);
 const styledComponentsMock = jest.fn().mockReturnValue(fakeModule);
-const reactIntlMock = jest.fn().mockReturnValue(fakeModule);
+const reactIntlMock = jest.fn().mockReturnValue(fakeReactIntlModule);
 
 const getModuleWithMocks = () => {
   jest.doMock('react', reactMock);
@@ -39,7 +43,7 @@ describe('resolve-dependencies', () => {
       reactMock.mockReturnValue(missingModule);
       reactDOMMock.mockReturnValue(fakeModule);
       styledComponentsMock.mockReturnValue(fakeModule);
-      reactIntlMock.mockReturnValue(fakeModule);
+      reactIntlMock.mockReturnValue(fakeReactIntlModule);
     });
     test('should throw if a dependency is missing', () => {
       const resolveDependencies = getModuleWithMocks();
@@ -53,7 +57,7 @@ describe('resolve-dependencies', () => {
       reactMock.mockReturnValue(fakeModule);
       reactDOMMock.mockReturnValue(fakeModule);
       styledComponentsMock.mockReturnValue(missingModule);
-      reactIntlMock.mockReturnValue(fakeModule);
+      reactIntlMock.mockReturnValue(fakeReactIntlModule);
     });
     test('should throw if a dependency is missing', () => {
       const resolveDependencies = getModuleWithMocks();

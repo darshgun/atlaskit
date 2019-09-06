@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import ReactIntl from 'react-intl';
+import * as ReactIntl from 'react-intl';
 
 type Dependency = {
   [key: string]: DependencyDetails;
@@ -28,7 +28,7 @@ export const resolveDependencies = () => {
     },
     'react-intl': {
       name: 'react-intl',
-      exists: !!ReactIntl,
+      exists: ReactIntl && !!ReactIntl.IntlProvider,
     },
   };
 
