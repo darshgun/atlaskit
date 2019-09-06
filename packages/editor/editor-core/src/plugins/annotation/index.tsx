@@ -41,7 +41,7 @@ const reorderAnnotations = (
 };
 
 const annotationPlugin = (
-  annotationProvider: AnnotationProvider,
+  annotationProvider?: AnnotationProvider,
 ): EditorPlugin => ({
   marks() {
     return [
@@ -54,6 +54,10 @@ const annotationPlugin = (
 
   contentComponent({ editorView }) {
     const { annotation: annotationMarkType } = editorView.state.schema.marks;
+    if (!annotationProvider) {
+      return null;
+    }
+
     const Component = annotationProvider.component;
     if (!Component) {
       return null;
