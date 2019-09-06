@@ -1,5 +1,13 @@
 # @atlaskit/app-navigation
 
+## 0.2.2
+
+### Patch Changes
+
+- [patch][13f8980fb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13f8980fb2):
+
+  Use emotion object style
+
 ## 0.2.1
 
 - Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):

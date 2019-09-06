@@ -1,1 +1,0 @@
-Use emotion object style
