@@ -1,23 +1,28 @@
 import * as React from 'react';
 import { md, code, Props } from '@atlaskit/docs';
+import { peerDependencies } from '../package.json';
+
+const packagesWithVersionsArr = Object.entries(peerDependencies).map(
+  ([packageName, version]) => `${packageName}@${version}`,
+);
+const packagesWithVersionsList = packagesWithVersionsArr.join('\n');
+const packagesWithVersionsStr = packagesWithVersionsArr.join(' ');
 
 export default md`
-  We expose a set of helpers to allow usage of the switcher on non react applications (i.e: backbone, angular, jquery);
+  The Switcher was built using React but we know that not everyone is using React on their products. We expose a set of helpers to make consumption easier if this is your case.
 
   ## Usage:
   ${code`
 import prepareSwitcher from '@atlaskit/atlassian-switcher/vanilla-wrapper';
 
-// bootstrap the switcher
+// initialize the switcher
 const switcher = this.prepareSwitcher({
-  product: 'trello',
+  product: 'opsgenie',
   disableCustomLinks: true,
   disableRecentContainers: true,
   disableHeadings: true,
-  isDiscoverMoreForEveryoneEnabled: true,
   enableUserCentricProducts: true,
   cloudId: 'some-cloud-id',
-  triggerXFlow: this.onTriggerXFlow,
   appearance: 'standalone',
 },
 (event, channel) => {
@@ -36,16 +41,32 @@ const container = document.getElementById('switcher-container');
 
 // render the switcher when you are ready.
 // save the returned value so you can destroy it later.
-this.destroy = switcher.renderAt(container);
+const destroy = switcher.renderAt(container);
 
 // destroy it so event handlers and other resources associated
 // with the switcher can be cleaned up.
-this.destroy();
+destroy();
   `}
 
+  ## Peer Dependencies
+  The switcher was built in React and lists some of its depependecies as peer dependencies, which means that the consumer should provide them.
+
+  Your project might already have some of the dependencies installed, please just ensure that they match the dependency versions as listed below, otherwise, the switcher might not work as expected.
+
+  ${code`${packagesWithVersionsList}`}
+
+  To install all of them run one of the following commands:
+
+  ##### Npm users:
+
+  ${code`npm install ${packagesWithVersionsStr} --save`}
+
+  ##### Yarn users:
+
+  ${code`yarn add ${packagesWithVersionsStr}`}
+
   ## Importing
-  Instead of importing from the root of the package, the helpers for non react apps are only available directly through a sub entry point.
-  We use this approach to avoid polluting the main bundle.
+  The vanilla wrapper lives in its own entry point inside the package to avoid polluting the main bundle. It can be accessed using:
 
   ${code`import prepareSwitcher from '@atlaskit/atlassian-switcher/vanilla-wrapper';`}
 
@@ -58,7 +79,7 @@ this.destroy();
 
   The return value of this method will include 2 other methods:
   - \`prefetch()\` - to prefetch bundles and api calls so when you open the switcher, everything is there already.
-  We recommend to call this method when the user hovers the trigger to open the switcher.
+  We recommend to call this method when the user hovers the trigger to open the switcher. This method only runs once, subsequent calls will do nothing.
 
   - \`renderAt(container)\` - render the switcher on the container specified. The container should be already in the page.
   This method will return a function that should be called when you want to destroy the switcher;
