@@ -72,6 +72,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     const article = this.props.help.getCurrentArticle();
     if (article) {
       if (article.state === REQUEST_STATE.done) {
+        console.log(article.article);
         return (
           article.article && (
             <>
@@ -101,6 +102,8 @@ export class Article extends Component<Props & HelpContextInterface, State> {
 
   render() {
     const { skipArticleFadeInAnimation } = this.state;
+
+    console.log(this.props.help.isArticleVisible());
 
     return (
       <Transition
