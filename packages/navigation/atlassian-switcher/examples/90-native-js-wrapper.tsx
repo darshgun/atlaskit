@@ -3,7 +3,7 @@ import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
 import { withAnalyticsLogger } from './helpers';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
-import prepareAtlassianSwitcher from '../src/non-react-apps';
+import prepareAtlassianSwitcher from '../src/vanilla-wrapper';
 import memoizeOne from 'memoize-one';
 
 const Container = styled.div`

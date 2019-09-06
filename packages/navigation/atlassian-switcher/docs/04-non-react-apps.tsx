@@ -6,10 +6,27 @@ export default md`
 
   ## Usage:
   ${code`
-import prepareSwitcher from '@atlaskit/atlassian-switcher/non-react-apps';
+import prepareSwitcher from '@atlaskit/atlassian-switcher/vanilla-wrapper';
 
 // bootstrap the switcher
-const switcher = this.prepareSwitcher();
+const switcher = this.prepareSwitcher({
+  product: 'trello',
+  disableCustomLinks: true,
+  disableRecentContainers: true,
+  disableHeadings: true,
+  isDiscoverMoreForEveryoneEnabled: true,
+  enableUserCentricProducts: true,
+  cloudId: 'some-cloud-id',
+  triggerXFlow: this.onTriggerXFlow,
+  appearance: 'standalone',
+},
+(event, channel) => {
+  console.log(
+      channel,
+      event.payload,
+      event.context,
+  )
+});
 
 // prefetch bundles and api calls
 switcher.prefetch();
@@ -30,7 +47,7 @@ this.destroy();
   Instead of importing from the root of the package, the helpers for non react apps are only available directly through a sub entry point.
   We use this approach to avoid polluting the main bundle.
 
-  ${code`import prepareSwitcher from '@atlaskit/atlassian-switcher/non-react-apps';`}
+  ${code`import prepareSwitcher from '@atlaskit/atlassian-switcher/vanilla-wrapper';`}
 
   ## API details
 
