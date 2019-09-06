@@ -374,7 +374,7 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
-  if (isAdmin && product && isEmceeEnabled) {
+  if (product && isEmceeEnabled) {
     adminLinks.unshift({
       key: 'browse-apps',
       label: <FormattedMessage {...messages.browseApps} />,
