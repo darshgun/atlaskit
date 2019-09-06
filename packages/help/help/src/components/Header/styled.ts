@@ -28,7 +28,7 @@ export const BackButtonContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.div`
-  color: ${colors.H500};
+  color: ${colors.N500};
   text-align: center;
   font-size: 1rem;
   height: ${gridSize() * 4}px;
