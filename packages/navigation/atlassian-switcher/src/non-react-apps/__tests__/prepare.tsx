@@ -10,6 +10,11 @@ jest.doMock('../prefetch', () => ({ prefetch }));
 const { prepareAtlassianSwitcher } = require('../prepare');
 
 describe('prepare', () => {
+  beforeEach(() => {
+    resolveDependencies.mockReset();
+    render.mockReset();
+    prefetch.mockReset();
+  });
   describe('bootstrap', () => {
     test('should throw if analytics listener is missing', () => {
       expect(() =>
@@ -68,10 +73,34 @@ describe('prepare', () => {
 
       expect(prefetch).toHaveBeenCalledWith(props);
     });
+
+    test('should not prefetch twice', () => {
+      const analyticsListener = jest.fn();
+      const props = {
+        appearance: 'standalone',
+        cloudId: 'some-cloud-id',
+        disableCustomLinks: true,
+        disableHeadings: true,
+        disableRecentContainers: true,
+        enableUserCentricProducts: true,
+        product: 'opsgenie',
+      };
+
+      const switcher = prepareAtlassianSwitcher(props, analyticsListener);
+
+      switcher.prefetch();
+      switcher.prefetch();
+      switcher.prefetch();
+      switcher.prefetch();
+      switcher.prefetch();
+      switcher.prefetch();
+
+      expect(prefetch).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('rendering', () => {
-    test('should pass down all the props to the prefetch method', () => {
+    test('should pass down all the props to the render method', () => {
       const analyticsListener = jest.fn();
       const props = {
         appearance: 'standalone',

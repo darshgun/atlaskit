@@ -15,8 +15,16 @@ export const prepareAtlassianSwitcher = (
 
   resolveDependencies();
 
+  let hasPrefetched = false;
+
   return {
-    prefetch: () => prefetch(switcherProps),
+    prefetch: () => {
+      if (hasPrefetched) {
+        return;
+      }
+      prefetch(switcherProps);
+      hasPrefetched = true;
+    },
     renderAt: (container: HTMLElement) => {
       return render(switcherProps, analyticsListener, container);
     },
