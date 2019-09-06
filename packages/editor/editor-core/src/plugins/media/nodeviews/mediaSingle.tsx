@@ -89,7 +89,6 @@ export default class MediaSingleNode extends Component<
 
     // we want the first child of MediaSingle (type "media")
     const node = this.props.node.firstChild;
-
     if (!node) {
       return;
     }
@@ -100,8 +99,17 @@ export default class MediaSingleNode extends Component<
     }
 
     if (node.attrs.type === 'external') {
-      await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
-      return;
+      if (mediaNodeUpdater.isMediaBlobUrl()) {
+        try {
+          await mediaNodeUpdater.copyNodeFromBlobUrl(this.props.getPos());
+        } catch (e) {
+          await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+          return;
+        }
+      } else {
+        await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+        return;
+      }
     }
 
     const contextId = mediaNodeUpdater.getCurrentContextId();

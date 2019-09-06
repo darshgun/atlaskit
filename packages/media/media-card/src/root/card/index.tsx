@@ -46,6 +46,7 @@ export interface FileAttrs {
   height?: number;
 }
 
+// TODO: move somewhere else
 // TODO: we might need to encode url values
 const addFileAttrsToUrl = (url: string, fileAttrs: FileAttrs): string => {
   const mediaIdentifierAttr = {
@@ -263,8 +264,6 @@ export class Card extends Component<CardProps, CardState> {
               // width
             });
           }
-
-          console.log({ dataURI });
 
           this.notifyStateChange({
             metadata,

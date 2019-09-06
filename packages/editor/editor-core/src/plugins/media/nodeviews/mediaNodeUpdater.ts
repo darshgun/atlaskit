@@ -34,6 +34,12 @@ export interface MediaNodeUpdaterProps {
   dispatchAnalyticsEvent?: DispatchAnalyticsEvent;
 }
 
+interface MediaBlobUrlAttrs {
+  id: string;
+  contextId: string;
+  collection?: string;
+}
+
 export class MediaNodeUpdater {
   props: MediaNodeUpdaterProps;
 
@@ -41,10 +47,20 @@ export class MediaNodeUpdater {
     this.props = props;
   }
 
+  isMediaBlobUrl(): boolean {
+    const attrs = this.getAttrs();
+
+    return !!(
+      attrs &&
+      attrs.type === 'external' &&
+      attrs.url.indexOf('media-blob-url=true') > -1
+    );
+  }
+
   // Updates the node with contextId if it doesn't have one already
   updateContextId = async () => {
     const attrs = this.getAttrs();
-    if (!attrs) {
+    if (!attrs || attrs.type !== 'file') {
       return;
     }
 
@@ -64,7 +80,11 @@ export class MediaNodeUpdater {
   hasFileAttributesDefined = () => {
     const attrs = this.getAttrs();
     return (
-      attrs && attrs.__fileName && attrs.__fileMimeType && attrs.__fileSize
+      attrs &&
+      attrs.type === 'file' &&
+      attrs.__fileName &&
+      attrs.__fileMimeType &&
+      attrs.__fileSize
     );
   };
 
@@ -76,6 +96,7 @@ export class MediaNodeUpdater {
       !mediaProvider ||
       !mediaProvider.uploadParams ||
       !attrs ||
+      attrs.type !== 'file' ||
       !attrs.id ||
       this.hasFileAttributesDefined()
     ) {
@@ -112,7 +133,7 @@ export class MediaNodeUpdater {
     )(this.props.view.state, this.props.view.dispatch);
   };
 
-  getAttrs = (): MediaAttributes | undefined => {
+  getAttrs = (): MediaAttributes | ExternalMediaAttributes | undefined => {
     const { attrs } = this.props.node;
     if (attrs) {
       return attrs as MediaAttributes;
@@ -174,7 +195,7 @@ export class MediaNodeUpdater {
 
   getCurrentContextId = (): string | undefined => {
     const attrs = this.getAttrs();
-    if (!attrs) {
+    if (!attrs || attrs.type !== 'file') {
       return undefined;
     }
 
@@ -248,7 +269,7 @@ export class MediaNodeUpdater {
 
     const currentCollectionName = mediaProvider.uploadParams.collection;
     const attrs = this.getAttrs();
-    if (!attrs) {
+    if (!attrs || attrs.type !== 'file') {
       return false;
     }
 
@@ -262,11 +283,96 @@ export class MediaNodeUpdater {
     return false;
   };
 
+  // TODO: this method can be moved into media-client
+  getAttrsFromUrl = (url: string): MediaBlobUrlAttrs | undefined => {
+    const urlAttrs = url.split('#')[1];
+    if (!urlAttrs.length) {
+      return;
+    }
+
+    const attrs = urlAttrs.split('&');
+    if (!attrs.length) {
+      return;
+    }
+
+    const initialMediaAttrs: MediaBlobUrlAttrs = {
+      id: '',
+      collection: '',
+      contextId: '',
+    };
+    // create an object containing source file attributes from the url query params
+    const mediaAttrs = attrs.reduce((prev, current) => {
+      const parts = current.split('=');
+      const key = parts[0] as keyof MediaBlobUrlAttrs;
+      const value = parts[1];
+      prev[key] = value;
+      return prev;
+    }, initialMediaAttrs);
+
+    return mediaAttrs;
+  };
+
+  copyNodeFromBlobUrl = async (pos: number) => {
+    const attrs = this.getAttrs();
+
+    if (!attrs || attrs.type !== 'external') {
+      return;
+    }
+
+    const { url } = attrs;
+    const mediaAttrs = this.getAttrsFromUrl(url);
+    const mediaProvider = await this.props.mediaProvider;
+    if (!mediaProvider || !mediaProvider.uploadParams || !mediaAttrs) {
+      return;
+    }
+
+    const currentCollectionName = mediaProvider.uploadParams.collection;
+    const { contextId } = mediaAttrs;
+    const uploadMediaClientConfig = await getUploadMediaClientConfigFromMediaProvider(
+      mediaProvider,
+    );
+    if (!uploadMediaClientConfig) {
+      return;
+    }
+    const mediaClient = getMediaClient({
+      mediaClientConfig: uploadMediaClientConfig,
+    });
+
+    if (uploadMediaClientConfig.getAuthFromContext) {
+      const auth = await uploadMediaClientConfig.getAuthFromContext(contextId);
+      const { id, collection } = mediaAttrs;
+      const source = {
+        id,
+        collection,
+        authProvider: () => Promise.resolve(auth),
+      };
+      const destination = {
+        collection: currentCollectionName,
+        authProvider: uploadMediaClientConfig.authProvider,
+        occurrenceKey: uuidV4(),
+      };
+      const mediaFile = await mediaClient.file.copyFile(source, destination);
+
+      replaceExternalMedia(pos + 1, {
+        id: mediaFile.id,
+        collection: currentCollectionName,
+        // TODO: get them from mediaAttrs
+        // height: dimensions.height,
+        // width: dimensions.width,
+      })(this.props.view.state, this.props.view.dispatch);
+    }
+  };
+
   copyNode = async () => {
     const mediaProvider = await this.props.mediaProvider;
     const { isMediaSingle, view } = this.props;
     const attrs = this.getAttrs();
-    if (!mediaProvider || !mediaProvider.uploadParams || !attrs) {
+    if (
+      !mediaProvider ||
+      !mediaProvider.uploadParams ||
+      !attrs ||
+      attrs.type !== 'file'
+    ) {
       return;
     }
 
