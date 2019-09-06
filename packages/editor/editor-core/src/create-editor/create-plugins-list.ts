@@ -260,7 +260,7 @@ export default function createPluginsList(
     plugins.push(macroPlugin());
   }
 
-  if (props.annotationProvider) {
+  if (props.annotationProvider || props.allowConfluenceInlineComment) {
     plugins.push(annotationPlugin(props.annotationProvider));
   }
 
