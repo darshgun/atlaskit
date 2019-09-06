@@ -173,6 +173,7 @@ export interface DemoRendererProps {
   maxHeight?: number;
   truncationEnabled?: boolean;
   allowDynamicTextSizing?: boolean;
+  allowHeadingAnchorLinks?: boolean;
 }
 
 export interface DemoRendererState {
@@ -196,6 +197,13 @@ export default class RendererDemo extends React.Component<
     super(props);
 
     const doc = !!this.props.document ? this.props.document : storyDataDocument;
+
+    // Prevent browser retain the previous scroll position when refresh,
+    // This code is necessary for pages with scrollable body to avoid two scroll actions.
+    // For pages such as confluence(with a scrollable div), this code is not necessary.
+    if (props.allowHeadingAnchorLinks && history.scrollRestoration === 'auto') {
+      history.scrollRestoration = 'manual';
+    }
 
     this.state = {
       input: JSON.stringify(doc, null, 2),
@@ -268,6 +276,10 @@ export default class RendererDemo extends React.Component<
           ? eventHandlers
           : undefined;
         props.dataProviders = providerFactory;
+      }
+
+      if (this.props.allowHeadingAnchorLinks) {
+        props.allowHeadingAnchorLinks = true;
       }
 
       if (this.props.withExtension) {

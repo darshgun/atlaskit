@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   colors,
   gridSize,
@@ -7,6 +7,7 @@ import {
   fontSize,
   borderRadius,
   themed,
+  typography,
 } from '@atlaskit/theme';
 import {
   tableSharedStyle,
@@ -37,6 +38,7 @@ import {
 } from '@atlaskit/editor-common';
 import { RendererCssClassName } from '../../consts';
 import { RendererAppearance } from './types';
+import { HeadingAnchorWrapperClassName } from '../../react/nodes/heading-anchor';
 
 export const FullPagePadding = 32;
 
@@ -44,6 +46,54 @@ export type RendererWrapperProps = {
   appearance?: RendererAppearance;
   theme?: any;
 };
+
+const getLineHeight = (fontCode: string): number =>
+  typography.headingSizes[fontCode].lineHeight /
+  typography.headingSizes[fontCode].size;
+
+export const headingSizes: { [key: string]: { [key: string]: number } } = {
+  h1: {
+    lineHeight: getLineHeight('h700'),
+  },
+  h2: {
+    lineHeight: getLineHeight('h600'),
+  },
+  h3: {
+    lineHeight: getLineHeight('h500'),
+  },
+  h4: {
+    lineHeight: getLineHeight('h400'),
+  },
+  h5: {
+    lineHeight: getLineHeight('h300'),
+  },
+  h6: {
+    lineHeight: getLineHeight('h100'),
+  },
+};
+
+const headingAnchorStyle = (headingTag: string) =>
+  css`
+    & .${HeadingAnchorWrapperClassName} {
+      position: absolute;
+      width: 0;
+      height: ${headingSizes[headingTag].lineHeight}em;
+
+      & button {
+        opacity: 0;
+        transform: translate(8px, 0px);
+        transition: opacity 0.2s ease 0s, transform 0.2s ease 0s;
+      }
+    }
+
+    &:hover {
+      & .${HeadingAnchorWrapperClassName} button {
+        opacity: 1;
+        transform: none;
+        width: unset;
+      }
+    }
+  `;
 
 const tableStyles = ({ appearance }: RendererWrapperProps) => {
   if (appearance === 'mobile') {
@@ -92,6 +142,30 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
 
   ${fullPageStyles}
   ${fullWidthStyles}
+
+  & h1 {
+    ${headingAnchorStyle('h1')}
+  }
+
+  & h2 {
+    ${headingAnchorStyle('h2')}
+  }
+
+  & h3 {
+    ${headingAnchorStyle('h3')}
+  }
+
+  & h4 {
+    ${headingAnchorStyle('h4')}
+  }
+
+  & h5 {
+    ${headingAnchorStyle('h5')}
+  }
+
+  & h6 {
+    ${headingAnchorStyle('h6')}
+  }
 
   & span.akActionMark {
     color: ${colors.B400};
@@ -170,6 +244,19 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
     & + h5,
     & + h6 {
       margin-top: 8px;
+    }
+  }
+
+  & .fabric-editor-block-mark[data-align='end'],
+  & .fabric-editor-block-mark[data-align='center'],
+  & .fabric-editor-block-mark[data-align='right'] {
+    & > h1,
+    & > h2,
+    & > h3,
+    & > h4,
+    & > h5,
+    & > h6 {
+      display: inline-block;
     }
   }
 
