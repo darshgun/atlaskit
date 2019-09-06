@@ -42,6 +42,7 @@ export class MediaNodeUpdater {
   }
 
   // Updates the node with contextId if it doesn't have one already
+  // TODO [MS-2258]: remove updateContextId in order to only use updateFileAttrs
   updateContextId = async () => {
     const attrs = this.getAttrs();
     if (!attrs) {
@@ -100,16 +101,32 @@ export class MediaNodeUpdater {
     }
 
     const { name, mimeType, size } = fileState;
+    const baseAttrs = {
+      __fileName: name,
+      __fileMimeType: mimeType,
+      __fileSize: size,
+    };
+    let contextAttrs = {};
+    const contextId = this.getCurrentContextId();
 
-    updateMediaNodeAttrs(
-      attrs.id,
-      {
-        __fileName: name,
-        __fileMimeType: mimeType,
-        __fileSize: size,
-      },
-      true,
-    )(this.props.view.state, this.props.view.dispatch);
+    if (!contextId) {
+      const objectId = await this.getObjectId();
+      contextAttrs = {
+        __contextId: objectId,
+        contextId: objectId, // TODO [MS-2258]: we should remove contextId
+      };
+    }
+
+    const newAttrs = {
+      ...baseAttrs,
+      ...contextAttrs,
+    };
+
+    // TODO [MS-2258]: we should pass this.props.isMediaSingle and remove hardcoded "true"
+    updateMediaNodeAttrs(attrs.id, newAttrs, true)(
+      this.props.view.state,
+      this.props.view.dispatch,
+    );
   };
 
   getAttrs = (): MediaAttributes | undefined => {

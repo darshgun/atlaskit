@@ -130,6 +130,51 @@ describe('MediaNodeUpdater', () => {
         true,
       );
     });
+
+    it('should update contextId if its not defined', async () => {
+      const node: any = {
+        attrs: {
+          id: 'source-file-id',
+          collection: 'source-collection',
+        },
+      };
+      const { mediaNodeUpdater } = setup({
+        node,
+      });
+      const mediaClient = fakeMediaClient();
+      const fileState: Partial<FileState> = {
+        size: 10,
+        name: 'some-file',
+        mimeType: 'image/jpeg',
+      };
+
+      asMock(mediaClient.file.getCurrentState).mockReturnValue(
+        Promise.resolve(fileState),
+      );
+
+      asMockReturnValue(getMediaClient, mediaClient);
+
+      await mediaNodeUpdater.updateFileAttrs();
+
+      expect(mediaClient.file.getCurrentState).toBeCalledWith(
+        'source-file-id',
+        {
+          collectionName: 'source-collection',
+        },
+      );
+      expect(commands.updateMediaNodeAttrs).toBeCalledTimes(1);
+      expect(commands.updateMediaNodeAttrs).toBeCalledWith(
+        'source-file-id',
+        {
+          __fileName: 'some-file',
+          __fileMimeType: 'image/jpeg',
+          __fileSize: 10,
+          __contextId: 'object-id',
+          contextId: 'object-id',
+        },
+        true,
+      );
+    });
   });
 
   describe('isNodeFromDifferentCollection()', () => {
