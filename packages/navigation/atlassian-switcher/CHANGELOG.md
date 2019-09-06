@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 3.28.0
+
+### Minor Changes
+
+- [minor][9397a40abf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9397a40abf):
+
+  Added isEmceeLinkEnabled prop to enable Embedded Marketplace link with in the product
+
 ## 3.27.1
 
 ### Patch Changes
