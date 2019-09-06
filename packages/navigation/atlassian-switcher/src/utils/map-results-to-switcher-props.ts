@@ -96,7 +96,7 @@ function collectAdminLinks(
   managePermission: ProviderResults['managePermission'],
   addProductsPermission: ProviderResults['addProductsPermission'],
   isDiscoverMoreForEveryoneEnabled: boolean,
-  isEmceeEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
   product?: Product.JIRA | Product.CONFLUENCE,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
@@ -108,7 +108,7 @@ function collectAdminLinks(
       return getAdministrationLinks(
         managePermission.data,
         isDiscoverMoreForEveryoneEnabled,
-        isEmceeEnabled,
+        isEmceeLinkEnabled,
         product,
       );
     }
@@ -296,7 +296,7 @@ export function mapResultsToSwitcherProps(
         managePermission,
         addProductsPermission,
         features.isDiscoverMoreForEveryoneEnabled,
-        features.isEmceeEnabled,
+        features.isEmceeLinkEnabled,
         product,
       ),
       [],

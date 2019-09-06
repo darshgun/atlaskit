@@ -28,7 +28,7 @@ describe('map-results-to-switcher-props', () => {
           productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: true,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -55,7 +55,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           productTopItemVariation: ProductTopItemVariation.currentSite,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -82,7 +82,7 @@ describe('map-results-to-switcher-props', () => {
           productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: true,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -113,7 +113,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           productTopItemVariation: ProductTopItemVariation.currentSite,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -140,7 +140,7 @@ describe('map-results-to-switcher-props', () => {
           productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: true,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -165,7 +165,7 @@ describe('map-results-to-switcher-props', () => {
           productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: false,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -188,7 +188,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -268,7 +268,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -323,7 +323,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -378,7 +378,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -412,7 +412,7 @@ describe('map-results-to-switcher-props', () => {
           productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: false,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -444,7 +444,7 @@ describe('map-results-to-switcher-props', () => {
           productTopItemVariation: ProductTopItemVariation.currentSite,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
-          isEmceeEnabled: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [

@@ -61,7 +61,7 @@ class ConfluenceSwitcherExample extends React.Component {
             product="confluence"
             cloudId="some-cloud-id"
             triggerXFlow={this.onTriggerXFlow}
-            isEmceeEnabled
+            isEmceeLinkEnabled
           />
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>

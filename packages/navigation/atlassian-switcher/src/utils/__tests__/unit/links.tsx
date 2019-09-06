@@ -165,14 +165,14 @@ describe('utils/links', () => {
   });
 
   describe('getAdministrationLinks', () => {
-    let isEmceeEnabled = false;
+    let isEmceeLinkEnabled = false;
     it('should assemble admin links for site admins', () => {
       const isAdmin = true;
       const isDiscoverMoreForEveryoneEnabled = false;
       const result = getAdministrationLinks(
         isAdmin,
         isDiscoverMoreForEveryoneEnabled,
-        isEmceeEnabled,
+        isEmceeLinkEnabled,
       );
       const expectedResult = [`/admin/billing/addapplication`, `/admin`];
       expect(result.map(({ href }) => href)).toMatchObject(expectedResult);
@@ -183,7 +183,7 @@ describe('utils/links', () => {
       const result = getAdministrationLinks(
         isAdmin,
         isDiscoverMoreForEveryoneEnabled,
-        isEmceeEnabled,
+        isEmceeLinkEnabled,
       );
       const expectedResult = [
         `/trusted-admin/billing/addapplication`,
@@ -196,7 +196,7 @@ describe('utils/links', () => {
       const result = getAdministrationLinks(
         true,
         isDiscoverMoreForEveryoneEnabled,
-        isEmceeEnabled,
+        isEmceeLinkEnabled,
       );
 
       const expectedResult = [`administration`];
@@ -204,12 +204,12 @@ describe('utils/links', () => {
     });
     it('When product is Jira & Emcee enabled, should include Jira Emcee link', () => {
       const product = Product.JIRA;
-      isEmceeEnabled = true;
+      isEmceeLinkEnabled = true;
       const isDiscoverMoreForEveryoneEnabled = false;
       const result = getAdministrationLinks(
         true,
         isDiscoverMoreForEveryoneEnabled,
-        isEmceeEnabled,
+        isEmceeLinkEnabled,
         product,
       );
 
@@ -219,12 +219,12 @@ describe('utils/links', () => {
     });
     it('When product is Confluence & Emcee enabled, should include Confluence Emcee link', () => {
       const product = Product.CONFLUENCE;
-      isEmceeEnabled = true;
+      isEmceeLinkEnabled = true;
       const isDiscoverMoreForEveryoneEnabled = false;
       const result = getAdministrationLinks(
         true,
         isDiscoverMoreForEveryoneEnabled,
-        isEmceeEnabled,
+        isEmceeLinkEnabled,
         product,
       );
 

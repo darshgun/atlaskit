@@ -198,12 +198,12 @@ const PRODUCT_ORDER = [
   WorklensProductType.STATUSPAGE,
 ];
 
-const BROWSE_APPS_URL: {
-  [Key in Exclude<
-    Product,
-    Product.HOME | Product.PEOPLE | Product.SITE_ADMIN | Product.TRUSTED_ADMIN
-  >]: string
-} = {
+type JiraConfluenceProduct = Exclude<
+  Product,
+  Product.HOME | Product.PEOPLE | Product.SITE_ADMIN | Product.TRUSTED_ADMIN
+>;
+
+const BROWSE_APPS_URL: { [Key in JiraConfluenceProduct]: string } = {
   [Product.JIRA]: '/plugins/servlet/ac/com.atlassian.jira.emcee/discover',
   [Product.CONFLUENCE]:
     '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
@@ -362,7 +362,7 @@ export const getLicensedProductLinks = (
 export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
-  isEmceeEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
   product?: Product.JIRA | Product.CONFLUENCE,
 ): SwitcherItemType[] => {
   const adminBaseUrl = isAdmin ? `/admin` : '/trusted-admin';
@@ -374,7 +374,7 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
-  if (product && isEmceeEnabled) {
+  if (product && isEmceeLinkEnabled) {
     adminLinks.unshift({
       key: 'browse-apps',
       label: <FormattedMessage {...messages.browseApps} />,
