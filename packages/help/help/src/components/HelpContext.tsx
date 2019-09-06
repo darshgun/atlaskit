@@ -330,7 +330,6 @@ class HelpContextProviderImplementation extends React.Component<
     } else if (history.length === 1) {
       await this.setState({
         articleId: '',
-        // history: [],
         view: VIEW.ARTICLE_NAVIGATION,
         hasNavigatedToDefaultContent: true,
       });
@@ -353,7 +352,6 @@ class HelpContextProviderImplementation extends React.Component<
     return (
       (this.state.view === VIEW.ARTICLE ||
         this.state.view === VIEW.ARTICLE_NAVIGATION) &&
-      // this.state.history.length > 0 &&
       !this.state.hasNavigatedToDefaultContent &&
       this.state.searchValue.length <= MIN_CHARACTERS_FOR_SEARCH
     );
