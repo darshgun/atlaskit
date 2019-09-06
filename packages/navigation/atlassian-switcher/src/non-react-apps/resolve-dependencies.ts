@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-
+import ReactIntl from 'react-intl';
 import packageJson from '../../package.json';
 
 type Dependency = {
@@ -26,6 +26,10 @@ export const resolveDependencies = () => {
     'styled-components': {
       name: 'styled-components',
       exists: !!styled,
+    },
+    'react-intl': {
+      name: 'react-intl',
+      exists: !!ReactIntl,
     },
   };
 
