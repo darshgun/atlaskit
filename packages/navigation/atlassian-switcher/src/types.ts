@@ -57,6 +57,7 @@ export enum Feature {
   disableHeadings = 'disableHeadings',
   xflow = 'xflow',
   isDiscoverMoreForEveryoneEnabled = 'isDiscoverMoreForEveryoneEnabled',
+  // EMCEE stands for Embedded Marketplace with in the product
   isEmceeEnabled = 'isEmceeEnabled',
 }
 
