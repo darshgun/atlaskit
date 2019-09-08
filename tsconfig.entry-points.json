@@ -755,6 +755,14 @@
         "../../core/select/src/Select",
         "./packages/core/select/src/Select"
       ],
+      "@atlaskit/popup": [
+        "../../core/popup/src/",
+        "./packages/core/popup/src/"
+      ],
+      "@atlaskit/popup/types": [
+        "../../core/popup/src/types",
+        "./packages/core/popup/src/types"
+      ],
       "@atlaskit/single-select": [
         "../../core/single-select/src/",
         "./packages/core/single-select/src/"
@@ -1030,6 +1038,10 @@
       "@atlaskit/editor-common": [
         "../../editor/editor-common/src/",
         "./packages/editor/editor-common/src/"
+      ],
+      "@atlaskit/editor-common/validator": [
+        "../../editor/editor-common/src/validator",
+        "./packages/editor/editor-common/src/validator"
       ],
       "@atlaskit/editor-confluence-transformer/collapse-whitespace": [
         "../../editor/editor-confluence-transformer/src/collapse-whitespace",

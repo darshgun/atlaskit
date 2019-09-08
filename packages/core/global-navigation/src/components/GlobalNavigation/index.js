@@ -411,6 +411,9 @@ export default class GlobalNavigation extends Component<
               return null;
             }
 
+            const isFocusLockEnabled = this.props[
+              `is${capitalisedDrawerName}FocusLockEnabled`
+            ];
             const onCloseComplete = this.props[
               `on${capitalisedDrawerName}CloseComplete`
             ];
@@ -422,6 +425,7 @@ export default class GlobalNavigation extends Component<
                 onClose={this.closeDrawer(drawerName)}
                 onCloseComplete={onCloseComplete}
                 shouldUnmountOnExit={shouldUnmountOnExit}
+                isFocusLockEnabled={isFocusLockEnabled}
                 width={this.props[`${drawerName}DrawerWidth`]}
                 icon={drawerBackIcon}
               >

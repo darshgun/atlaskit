@@ -16,7 +16,8 @@
   ],
   "atlaskit": {
     "name": "Layer Manager",
-    "team": "core"
+    "team": "core",
+    "internal": true
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -45,7 +46,8 @@
     "@atlaskit/tooltip": "^15.0.14",
     "@atlaskit/webdriver-runner": "^0.1.4",
     "enzyme": "^3.7.0",
-    "react-dom": "^16.8.0"
+    "react-dom": "^16.8.0",
+    "wait-for-expect": "^1.2.0"
   },
   "keywords": [
     "atlaskit",
