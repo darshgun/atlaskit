@@ -18,7 +18,8 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/select": "^10.0.8"
+    "@atlaskit/select": "^10.0.8",
+    "tslib": "^1.9.3"
   },
   "peerDependencies": {
     "react": "^16.8.0"
