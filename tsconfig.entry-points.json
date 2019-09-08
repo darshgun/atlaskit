@@ -1711,6 +1711,14 @@
         "../../help/help-article/src/",
         "./packages/help/help-article/src/"
       ],
+      "@atlaskit/locale": [
+        "../../helpers/locale/src/",
+        "./packages/helpers/locale/src/"
+      ],
+      "@atlaskit/locale/LocaleSelect": [
+        "../../helpers/locale/src/LocaleSelect",
+        "./packages/helpers/locale/src/LocaleSelect"
+      ],
       "@atlaskit/notification-indicator": [
         "../../home/notification-indicator/src/",
         "./packages/home/notification-indicator/src/"
