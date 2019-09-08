@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
-import { FieldTextStateless } from '@atlaskit/field-text';
+import React, { Component, Fragment } from 'react';
 
 import { LocalizationProvider, createLocalizationProvider } from '../src';
 import LocaleSelect, { Locale } from '../src/LocaleSelect';
 
+import DateParserExample from './1-date-parser';
+import FormatDateExample from './2-format-date';
+import FormatTimeExample from './3-format-time';
+import ShortDaysExample from './4-short-days';
+import LongMonthsExample from './5-long-months';
+
 type State = {
   l10n: LocalizationProvider;
-  dateInput: string;
-  date: Date;
 };
 
 export default class Example extends Component<any, State> {
@@ -15,19 +18,7 @@ export default class Example extends Component<any, State> {
     super(props);
     this.state = {
       l10n: createLocalizationProvider('en-AU'),
-      dateInput: '',
-      date: new Date(),
     };
-  }
-
-  componentDidMount() {
-    setInterval(
-      () =>
-        this.setState({
-          date: new Date(),
-        }),
-      1000,
-    );
   }
 
   onLocaleChange = (locale: Locale) => {
@@ -36,59 +27,20 @@ export default class Example extends Component<any, State> {
     });
   };
 
-  onInputChange = (event: any) => {
-    this.setState({
-      dateInput: event.target.value,
-    });
-  };
-
   render() {
-    const { l10n, dateInput, date } = this.state;
-    const parsedDate = l10n.parseDate(dateInput);
-    const parsedDateISO = isNaN(parsedDate.getDate())
-      ? parsedDate.toString()
-      : parsedDate.toISOString();
+    const { l10n } = this.state;
+
     return (
-      <div>
+      <Fragment>
         <h3>Locale</h3>
         <LocaleSelect onLocaleChange={this.onLocaleChange} />
 
-        <h3>Date Parser</h3>
-        <FieldTextStateless
-          label="Input"
-          value={dateInput}
-          onChange={this.onInputChange}
-          placeholder={l10n.formatDate(date)}
-          shouldFitContainer
-        />
-        <FieldTextStateless
-          label="Output"
-          value={parsedDateISO}
-          isReadOnly
-          disabled
-          shouldFitContainer
-        />
-
-        <h3>Date Formatter</h3>
-        <p>{l10n.formatDate(date)}</p>
-
-        <h3>Time Formatter</h3>
-        <p>{l10n.formatTime(date)}</p>
-
-        <h3>Short Days</h3>
-        <ul>
-          {l10n.getDaysShort().map(day => (
-            <li key={day}>{day}</li>
-          ))}
-        </ul>
-
-        <h3>Long Months</h3>
-        <ul>
-          {l10n.getMonthsLong().map(month => (
-            <li key={month}>{month}</li>
-          ))}
-        </ul>
-      </div>
+        <DateParserExample l10n={l10n} />
+        <FormatDateExample l10n={l10n} />
+        <FormatTimeExample l10n={l10n} />
+        <ShortDaysExample l10n={l10n} />
+        <LongMonthsExample l10n={l10n} />
+      </Fragment>
     );
   }
 }
