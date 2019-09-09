@@ -9,10 +9,18 @@ import {
   ul,
   li,
   code_block,
+  mediaSingle,
 } from '@atlaskit/editor-test-helpers';
 import { safeInsert } from '../../../utils/insert';
+import { insertMediaSingleNode } from '../../../plugins/media/utils/media-single';
+import { INPUT_METHOD } from '../../../plugins/analytics';
 import { NodeType } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import {
+  temporaryMediaWithDimensions,
+  temporaryFileId,
+  testCollectionName,
+} from '../plugins/media/_utils';
 
 const safeInsertNode = (node: NodeType, editorView: EditorView) => {
   const { state, dispatch } = editorView;
@@ -33,12 +41,116 @@ describe('@atlaskit/editor-core/utils insert', () => {
         allowLayouts: true,
         allowLists: true,
         allowCodeBlocks: true,
+        media: {
+          allowMediaSingle: true,
+        },
       },
     });
   };
 
+  const insertDummyMedia = (editorView: EditorView) =>
+    insertMediaSingleNode(
+      editorView,
+      {
+        id: temporaryFileId,
+        status: 'preview',
+        dimensions: {
+          width: 256,
+          height: 128,
+        },
+      },
+      INPUT_METHOD.PICKER_CLOUD,
+      testCollectionName,
+    );
+
   describe('leaf', () => {
     describe('block', () => {
+      describe('media single', () => {
+        it('before text', () => {
+          const { editorView } = editor(doc(p('{<>}onetwo')));
+          insertDummyMedia(editorView);
+
+          expect(editorView.state).toEqualDocumentAndSelection(
+            doc(
+              mediaSingle({ layout: 'center' })(temporaryMediaWithDimensions()),
+              p('onetwo'),
+            ),
+          );
+        });
+
+        it('after text', () => {
+          const { editorView } = editor(doc(p('onetwo{<>}')));
+          insertDummyMedia(editorView);
+
+          expect(editorView.state).toEqualDocumentAndSelection(
+            doc(
+              p('onetwo'),
+              mediaSingle({ layout: 'center' })(temporaryMediaWithDimensions()),
+              p(),
+            ),
+          );
+        });
+
+        it('within valid parent (layout)', () => {
+          const { editorView } = editor(
+            doc(
+              layoutSection(
+                layoutColumn({ width: 50 })(p('{<>}onetwo')),
+                layoutColumn({ width: 50 })(p('three')),
+              ),
+            ),
+          );
+
+          insertDummyMedia(editorView);
+          expect(editorView.state).toEqualDocumentAndSelection(
+            doc(
+              layoutSection(
+                layoutColumn({ width: 50 })(
+                  mediaSingle({ layout: 'center' })(
+                    temporaryMediaWithDimensions(),
+                  ),
+                  p('onetwo'),
+                ),
+                layoutColumn({ width: 50 })(p('three')),
+              ),
+            ),
+          );
+        });
+
+        describe('within invalid parent', () => {
+          it('start of first line', () => {
+            const { editorView } = editor(
+              doc(panel()(p('{<>}onetwo'), p('three'))),
+            );
+            insertDummyMedia(editorView);
+
+            expect(editorView.state.doc).toEqualDocument(
+              doc(
+                mediaSingle({ layout: 'center' })(
+                  temporaryMediaWithDimensions(),
+                ),
+                panel()(p('onetwo'), p('three')),
+              ),
+            );
+          });
+
+          it('end of last line', () => {
+            const { editorView } = editor(
+              doc(panel()(p('onetwo'), p('three{<>}'))),
+            );
+            insertDummyMedia(editorView);
+            expect(editorView.state).toEqualDocumentAndSelection(
+              doc(
+                panel()(p('onetwo'), p('three')),
+                mediaSingle({ layout: 'center' })(
+                  temporaryMediaWithDimensions(),
+                ),
+              ),
+            );
+          });
+        });
+      });
+
       describe('horizontal rule', () => {
         it('empty paragraph', () => {
           const { editorView } = editor(doc(p('{<>}')));
