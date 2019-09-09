@@ -20,12 +20,6 @@ export {
 } from './text-color';
 export { confluenceInlineComment } from './confluence-inline-comment';
 export {
-  action,
-  Action as ActionMarkAction,
-  ActionMarkAttributes,
-  ActionDefinition,
-} from './action';
-export {
   breakout,
   BreakoutMarkAttrs,
   BreakoutMarkDefinition,

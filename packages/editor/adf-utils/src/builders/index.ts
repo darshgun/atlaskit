@@ -1,6 +1,5 @@
 // Marks Builders
 
-export { action } from './marks/action';
 export { breakout } from './marks/breakout';
 export { code } from './marks/code';
 export { em } from './marks/em';

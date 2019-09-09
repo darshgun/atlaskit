@@ -38,15 +38,6 @@
           "marks": [
             {
               "type": "strong"
-            },
-            {
-              "type": "action",
-              "attrs": {
-                "key": "test-action-key",
-                "target": {
-                  "key": "test"
-                }
-              }
             }
           ]
         }

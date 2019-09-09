@@ -13,7 +13,6 @@ export default [
   'blockquote',
   'rule',
   'mediaGroup',
-  'applicationCard',
   'decisionList',
   'taskList',
   'table',

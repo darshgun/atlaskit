@@ -127,9 +127,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
       allowPlaceholderCursor: {
         type: 'removed',
       },
-      allowInlineAction: {
-        type: 'removed',
-      },
       allowConfluenceInlineComment: {
         message:
           'To integrate inline comments use experimental annotationProvider – <Editor annotationProvider={{ provider }} />',

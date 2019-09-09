@@ -6,7 +6,7 @@ import {
   taskDecision,
 } from '@atlaskit/util-data-test';
 import { CardEvent } from '@atlaskit/media-card';
-import { defaultSchema, ActionMarkAction } from '@atlaskit/adf-schema';
+import { defaultSchema } from '@atlaskit/adf-schema';
 import {
   CardSurroundings,
   ProviderFactory,
@@ -156,10 +156,6 @@ const eventHandlers: EventHandlers = {
         analyticsEvent,
       );
     },
-  },
-  action: {
-    onClick: (event: ActionMarkAction) =>
-      console.log('onClick', '[react.MouseEvent]', event),
   },
 };
 

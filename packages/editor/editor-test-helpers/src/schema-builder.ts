@@ -3,7 +3,6 @@ import {
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
-  ApplicationCardAttributes,
   CellAttributes,
   LinkAttributes,
   TableAttributes,
@@ -398,8 +397,6 @@ export const mediaSingle = (
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
 export const media = (attrs: MediaAttributes | ExternalMediaAttributes) =>
   nodeFactory(sampleSchema.nodes.media, attrs);
-export const applicationCard = (attrs: ApplicationCardAttributes) =>
-  nodeFactory(sampleSchema.nodes.applicationCard, attrs);
 export const placeholder = (attrs: { text: string }) =>
   nodeFactory(sampleSchema.nodes.placeholder, attrs)();
 export const layoutSection = nodeFactory(sampleSchema.nodes.layoutSection);
