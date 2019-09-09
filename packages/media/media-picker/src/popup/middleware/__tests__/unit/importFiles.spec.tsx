@@ -167,9 +167,9 @@ describe('importFiles middleware', () => {
     // We fill in cache with local upload states as it would be in real world
     Object.keys(localUploads).forEach(key => {
       const { id, mimeType, name, size } = localUploads[key].file.metadata;
-      const tenantFileSubject = new ReplaySubject<FileState>(1);
-      getFileStreamsCache().set(id, tenantFileSubject);
-      tenantFileSubject.next({
+      const userFileStateSubject = new ReplaySubject<FileState>(1);
+      getFileStreamsCache().set(id, userFileStateSubject);
+      userFileStateSubject.next({
         id,
         mimeType,
         name,
@@ -342,11 +342,80 @@ describe('importFiles middleware', () => {
         progress: 0.5,
         size: 43,
         status: 'uploading',
+        preview: expect.any(Promise),
       });
       expect(getFileStreamsCache().get('some-uuid-1')).toBeDefined();
       expect(getFileStreamsCache().get('some-uuid-2')).toBeDefined();
       expect(getFileStreamsCache().get('some-uuid-3')).toBeDefined();
       return;
+    });
+
+    describe('while piping user file state to tenant file state', () => {
+      let initialTenantFileState1: FileState;
+      let newTenantFileState1: FileState;
+
+      beforeEach(async () => {
+        const { eventEmitter, mockWsProvider, store } = setup();
+        await importFiles(eventEmitter, store, mockWsProvider);
+
+        // Tenant file state stream
+        const tenantFileStateSubject = getFileStreamsCache().get('some-uuid-0');
+        if (!tenantFileStateSubject) {
+          return expect(tenantFileStateSubject).toBeDefined();
+        }
+
+        // It's counterpart user file state stream
+        const userFileStateSubject = getFileStreamsCache().get(
+          'some-selected-item-id-1',
+        ) as ReplaySubject<FileState>;
+        if (!userFileStateSubject) {
+          return expect(userFileStateSubject).toBeDefined();
+        }
+
+        // Get tenant file state before user file state pushed a change
+        initialTenantFileState1 = await observableToPromise(
+          tenantFileStateSubject,
+        );
+
+        // Get user file state
+        const userFileState1 = await observableToPromise(userFileStateSubject);
+        if (isErrorFileState(userFileState1)) {
+          return expect(userFileState1.status).not.toBe('error');
+        }
+
+        // Push new file state (based on an old one) but with new details
+        userFileStateSubject.next({
+          ...userFileState1,
+          preview: Promise.resolve({} as any),
+          name: 'new name',
+        });
+
+        // Get latest tenant file state
+        newTenantFileState1 = await observableToPromise(tenantFileStateSubject);
+      });
+
+      it('should pipe new data from user file state to tenant one', () => {
+        if (isErrorFileState(newTenantFileState1)) {
+          return expect(initialTenantFileState1.status).not.toBe('error');
+        }
+        expect(newTenantFileState1.name).toEqual('new name');
+      });
+
+      it('should keep existing tenant id (not overwrite with user one)', () => {
+        expect(newTenantFileState1.id).toEqual(initialTenantFileState1.id);
+      });
+
+      it('should keep existing promise/object of a preview.', () => {
+        if (isErrorFileState(newTenantFileState1)) {
+          return expect(newTenantFileState1.status).not.toBe('error');
+        }
+        if (isErrorFileState(initialTenantFileState1)) {
+          return expect(initialTenantFileState1.status).not.toBe('error');
+        }
+        expect(newTenantFileState1.preview).toBe(
+          initialTenantFileState1.preview,
+        );
+      });
     });
 
     it('should close popup', async () => {

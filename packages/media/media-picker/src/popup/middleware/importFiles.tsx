@@ -229,17 +229,18 @@ const distributeTenantFileState = async (
   getFileStreamsCache().set(tenantFileState.id, tenantFileSubject);
   tenantFileSubject.next(tenantFileState);
   if (userFileObservable) {
-    const userFileState = await observableToPromise(userFileObservable);
-    if (userFileState.status !== 'processed') {
-      // Without this check we might push another processed state that will be without "preview"
-      userFileObservable.subscribe({
-        next: userFileState =>
-          tenantFileSubject.next({
-            ...userFileState,
-            id: tenantFileState.id,
-          }),
-      });
-    }
+    userFileObservable.subscribe({
+      next: latestUserFileState => {
+        const previewOverride = !isErrorFileState(tenantFileState)
+          ? { preview: tenantFileState.preview }
+          : {};
+        tenantFileSubject.next({
+          ...latestUserFileState,
+          ...previewOverride,
+          id: tenantFileState.id,
+        });
+      },
+    });
   }
 
   tenantMediaClient.emit('file-added', tenantFileState);
