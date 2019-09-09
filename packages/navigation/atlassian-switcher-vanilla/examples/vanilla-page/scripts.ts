@@ -1,5 +1,4 @@
 import prepareSwitcher from '../../src';
-import './styles.css';
 
 /**
  * This file is an example of how to use the Atlassian Switcher with just vanilla JS. Should be easy enough
@@ -31,10 +30,22 @@ export const initSwitcher = () => {
   const container = document.getElementById('switcher-container');
 
   let hasRendered = false;
-  let destroySwitcherHandler = null;
+  let destroySwitcherHandler: any = null;
 
   const triggerBtn = document.getElementById('switcher-trigger');
   const destroyBtn = document.getElementById('switcher-destroy');
+
+  if (!container) {
+    throw 'Missing container';
+  }
+
+  if (!triggerBtn) {
+    throw 'Missing trigger button';
+  }
+
+  if (!destroyBtn) {
+    throw 'Missing destroy button';
+  }
 
   triggerBtn.onmouseenter = function() {
     // prefetch bundles and api calls
