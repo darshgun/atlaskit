@@ -1,5 +1,6 @@
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { AtlassianSwitcherProps, prefetch } from '@atlaskit/atlassian-switcher';
+import { AtlassianSwitcherProps } from '@atlaskit/atlassian-switcher/types';
+import { prefetch } from '@atlaskit/atlassian-switcher/prefetch';
 import { render } from './render';
 
 export const prepareAtlassianSwitcher = (

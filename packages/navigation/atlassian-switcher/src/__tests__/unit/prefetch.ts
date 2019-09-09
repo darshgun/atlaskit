@@ -3,13 +3,13 @@ describe('utils/prefetch', () => {
   const prefetchAvailableProducts = jest.fn();
   const prefetchSwitcherBundles = jest.fn();
 
-  jest.doMock('../../../providers/instance-data-providers', () => ({
+  jest.doMock('../../providers/instance-data-providers', () => ({
     prefetchAll,
   }));
-  jest.doMock('../../../providers/products-data-provider', () => ({
+  jest.doMock('../../providers/products-data-provider', () => ({
     prefetchAvailableProducts,
   }));
-  jest.doMock('../../../prefetch-bundles', () => prefetchSwitcherBundles);
+  jest.doMock('../../utils/prefetch-bundles', () => prefetchSwitcherBundles);
 
   const { prefetch } = require('../../prefetch');
 

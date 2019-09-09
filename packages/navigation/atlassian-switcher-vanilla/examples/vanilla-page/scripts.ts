@@ -17,7 +17,7 @@ export const initSwitcher = () => {
       cloudId: 'some-cloud-id',
       appearance: 'standalone',
     },
-    (event, channel) => {
+    (event: any, channel: any) => {
       console.log(
         `Provided Listener: AnalyticsEvent(${channel})\n\tpayload=%o\n\tcontext=%o`,
         event.payload,

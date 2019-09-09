@@ -1,6 +1,6 @@
 import * as React from 'react';
 import throttle from 'lodash.throttle';
-import { prefetch } from '../utils/prefetch';
+import { prefetch } from '../prefetch';
 import now from '../utils/performance-now';
 import {
   NAVIGATION_CHANNEL,

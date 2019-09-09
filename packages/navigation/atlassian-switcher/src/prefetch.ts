@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { prefetchAll } from '../providers/instance-data-providers';
-import { prefetchAvailableProducts } from '../providers/products-data-provider';
-import prefetchSwitcherBundles from '../prefetch-bundles';
-import { FeatureFlagProps } from '../types';
+import { prefetchAll } from './providers/instance-data-providers';
+import { prefetchAvailableProducts } from './providers/products-data-provider';
+import prefetchSwitcherBundles from './utils/prefetch-bundles';
+import { FeatureFlagProps } from './types';
 
 type PrefetchTriggerProps = {
   cloudId?: string;

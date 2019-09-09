@@ -3,7 +3,7 @@ describe('prepare', () => {
   jest.doMock('../render', () => ({ render }));
 
   const prefetch = jest.fn();
-  jest.doMock('@atlaskit/atlassian-switcher', () => ({ prefetch }));
+  jest.doMock('@atlaskit/atlassian-switcher/prefetch', () => ({ prefetch }));
 
   const { prepareAtlassianSwitcher } = require('../prepare');
   beforeEach(() => {

@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import AtlassianSwitcher, {
-  AtlassianSwitcherProps,
-} from '@atlaskit/atlassian-switcher';
+import AtlassianSwitcher from '@atlaskit/atlassian-switcher';
+import { AtlassianSwitcherProps } from '@atlaskit/atlassian-switcher/types';
 
 export const render = (
   switcherProps: AtlassianSwitcherProps,
