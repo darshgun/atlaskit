@@ -25,6 +25,7 @@ import {
   WorklensProductType,
   ProductKey,
   RecommendationsEngineResponse,
+  Product,
 } from '../types';
 import { createCollector } from './create-collector';
 
@@ -95,6 +96,8 @@ function collectAdminLinks(
   managePermission: ProviderResults['managePermission'],
   addProductsPermission: ProviderResults['addProductsPermission'],
   isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product.JIRA | Product.CONFLUENCE,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
     return [];
@@ -105,6 +108,8 @@ function collectAdminLinks(
       return getAdministrationLinks(
         managePermission.data,
         isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+        product,
       );
     }
 
@@ -228,6 +233,7 @@ export function mapResultsToSwitcherProps(
   results: ProviderResults,
   features: FeatureMap,
   availableProducts: ProviderResult<AvailableProductsResponse>,
+  product?: Product.JIRA | Product.CONFLUENCE,
 ) {
   const collect = createCollector();
 
@@ -290,6 +296,8 @@ export function mapResultsToSwitcherProps(
         managePermission,
         addProductsPermission,
         features.isDiscoverMoreForEveryoneEnabled,
+        features.isEmceeLinkEnabled,
+        product,
       ),
       [],
     ),
