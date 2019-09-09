@@ -1,15 +1,14 @@
+import SignInIcon from '@atlaskit/icon/glyph/sign-in';
 import React from 'react';
-import SettingsIcon from '@atlaskit/icon/glyph/settings';
 
 import { IconButton } from '../IconButton';
-import { SettingsProps } from './types';
+import { SignInProps } from './types';
 
-export const Settings = (props: SettingsProps) => {
+export const SignIn = (props: SignInProps) => {
   const { tooltip, ...iconButtonProps } = props;
-
   return (
     <IconButton
-      icon={<SettingsIcon label={tooltip} />}
+      icon={<SignInIcon label={tooltip} />}
       tooltip={tooltip}
       {...iconButtonProps}
     />

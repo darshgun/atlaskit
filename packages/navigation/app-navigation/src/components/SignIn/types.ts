@@ -1,6 +1,5 @@
 import { IconButtonProps } from '../IconButton/types';
 
-export type SearchProps = Omit<IconButtonProps, 'icon'> & {
-  text: string;
+export type SignInProps = Omit<IconButtonProps, 'icon' | 'tooltip'> & {
   tooltip: string;
 };

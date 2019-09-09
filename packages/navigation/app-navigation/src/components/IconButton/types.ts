@@ -1,7 +1,9 @@
 import { ButtonProps } from '@atlaskit/button';
 
-export type IconButtonProps = Pick<ButtonProps, 'onClick'> & {
-  className?: string;
+export type IconButtonProps = Omit<
+  ButtonProps,
+  'children' | 'iconBefore' | 'iconAfter'
+> & {
   icon: ButtonProps['iconBefore'];
   testId?: string;
   tooltip: string;

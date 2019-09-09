@@ -20,10 +20,11 @@ export const AppNavigation = (
     renderAppSwitcher: AppSwitcher,
     renderCreate: Create,
     renderHelp: Help,
+    renderNotifications: Notifications,
     renderProductHome: ProductHome,
     renderProfile: Profile,
-    renderNotifications: Notifications,
     renderSearch: Search,
+    renderSignIn: SignIn,
     renderSettings: Settings,
     moreLabel,
     theme,
@@ -44,7 +45,8 @@ export const AppNavigation = (
             {Notifications && <Notifications />}
             {Settings && <Settings />}
             {Help && <Help />}
-            <Profile />
+            {SignIn && <SignIn />}
+            {Profile && <Profile />}
           </div>
         </div>
       </NavigationAnalyticsContext>

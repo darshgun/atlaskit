@@ -3,14 +3,12 @@ import React from 'react';
 import { DefaultAppSwitcher } from './shared/AppSwitcher';
 import { DefaultCreate } from './shared/Create';
 import { DefaultHelp } from './shared/Help';
-import { mockEndpoints } from './shared/mock-atlassian-switcher-endpoints';
 import { defaultPrimaryItems } from './shared/PrimaryItems';
 import { DefaultProductHome } from './shared/ProductHome';
-import { AnonymousProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
-import { AppNavigation } from '../src';
+import { AppNavigation, SignIn } from '../src';
 
-mockEndpoints('jira');
+const SignInExample = () => <SignIn tooltip="Sign in" />;
 
 const AnonymousExample = () => (
   <AppNavigation
@@ -19,7 +17,7 @@ const AnonymousExample = () => (
     renderCreate={DefaultCreate}
     renderHelp={DefaultHelp}
     renderProductHome={DefaultProductHome}
-    renderProfile={AnonymousProfile}
+    renderSignIn={SignInExample}
     renderSearch={DefaultSearch}
   />
 );
