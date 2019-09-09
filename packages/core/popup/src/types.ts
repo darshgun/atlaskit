@@ -35,15 +35,15 @@ export type PopupProps = {
   onOpen?(): void;
   /** Callback function when the Popup is closed */
   onClose?(): void;
-
+  /** Open State of the Dialog */
   isOpen: boolean;
-
+  /** Component used to anchor the popup to your content. Usually a button used to open the popup */
   trigger: FC<TriggerProps>;
-
+  /** Whether to lock the scrolling behavior of the page while the popup is open */
   lockBodyScroll?: boolean;
-
+  /** The Container displayed in the portal that wrapps the content. Use to override the default white background with rounded corners*/
   popupComponent?: FC;
-
+  /** Optional override for the Z-index for the react portal */
   zIndex?: number;
 };
 
