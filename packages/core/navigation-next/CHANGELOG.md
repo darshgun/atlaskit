@@ -1,5 +1,13 @@
 # @atlaskit/navigation-next
 
+## 6.7.0
+
+### Minor Changes
+
+- [minor][becd9e83bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/becd9e83bd):
+
+  Support experimental_horizontalGlobalNav
+
 ## 6.6.3
 
 - Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
