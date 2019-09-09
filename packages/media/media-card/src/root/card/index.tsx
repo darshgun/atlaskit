@@ -52,7 +52,7 @@ const addFileAttrsToUrl = (url: string, fileAttrs: FileAttrs): string => {
   const mediaIdentifierAttr = {
     'media-blob-url': 'true',
   };
-  const mergedAttrs = {
+  const mergedAttrs: { [key: string]: string | number | undefined } = {
     ...mediaIdentifierAttr,
     ...fileAttrs,
   };
@@ -64,6 +64,7 @@ const addFileAttrsToUrl = (url: string, fileAttrs: FileAttrs): string => {
     .filter(attr => !!attr)
     .join('&');
 
+  // we can't use '?' separator for blob url params
   return `${url}#${queryAttrs}`;
 };
 

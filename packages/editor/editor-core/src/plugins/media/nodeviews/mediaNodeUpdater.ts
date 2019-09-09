@@ -54,7 +54,7 @@ export class MediaNodeUpdater {
       attrs &&
       attrs.type === 'external' &&
       attrs.url.indexOf('media-blob-url=true') > -1
-    );
+    ); // TODO: move url check into media-client
   }
 
   // Updates the node with contextId if it doesn't have one already
@@ -283,33 +283,25 @@ export class MediaNodeUpdater {
     return false;
   };
 
+  // TODO: return missing attrs (width, height)
   // TODO: this method can be moved into media-client
-  getAttrsFromUrl = (url: string): MediaBlobUrlAttrs | undefined => {
-    const urlAttrs = url.split('#')[1];
-    if (!urlAttrs.length) {
+  getAttrsFromUrl = (blobUrl: string): MediaBlobUrlAttrs | undefined => {
+    const url = new URL(blobUrl);
+    const hash = url.hash.replace('#', '');
+    const params = new URLSearchParams(hash);
+    const id = params.get('id');
+    const contextId = params.get('contextId');
+    const collection = params.get('collection');
+    // check if we have the required params
+    if (!id || !contextId || !collection) {
       return;
     }
 
-    const attrs = urlAttrs.split('&');
-    if (!attrs.length) {
-      return;
-    }
-
-    const initialMediaAttrs: MediaBlobUrlAttrs = {
-      id: '',
-      collection: '',
-      contextId: '',
+    return {
+      id,
+      contextId,
+      collection,
     };
-    // create an object containing source file attributes from the url query params
-    const mediaAttrs = attrs.reduce((prev, current) => {
-      const parts = current.split('=');
-      const key = parts[0] as keyof MediaBlobUrlAttrs;
-      const value = parts[1];
-      prev[key] = value;
-      return prev;
-    }, initialMediaAttrs);
-
-    return mediaAttrs;
   };
 
   copyNodeFromBlobUrl = async (pos: number) => {
