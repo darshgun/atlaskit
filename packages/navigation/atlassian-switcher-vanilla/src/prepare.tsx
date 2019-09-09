@@ -1,9 +1,6 @@
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { AtlassianSwitcherProps } from '../components/atlassian-switcher';
-
-import { prefetch } from './prefetch';
+import { AtlassianSwitcherProps, prefetch } from '@atlaskit/atlassian-switcher';
 import { render } from './render';
-import { resolveDependencies } from './resolve-dependencies';
 
 export const prepareAtlassianSwitcher = (
   switcherProps: AtlassianSwitcherProps,
@@ -12,8 +9,6 @@ export const prepareAtlassianSwitcher = (
   if (!analyticsListener) {
     throw new Error('Atlassian switcher: Missing analytics listener');
   }
-
-  resolveDependencies();
 
   let hasPrefetched = false;
 

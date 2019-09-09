@@ -5,3 +5,5 @@ export {
 } from './components/prefetch-trigger';
 
 export { createCustomTheme } from './theme/theme-builder';
+export { prefetch } from './utils/prefetch';
+export { AtlassianSwitcherProps } from './components/atlassian-switcher';

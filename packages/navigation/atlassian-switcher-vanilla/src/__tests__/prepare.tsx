@@ -1,17 +1,13 @@
-const resolveDependencies = jest.fn();
-jest.doMock('../resolve-dependencies', () => ({ resolveDependencies }));
-
 const render = jest.fn();
 jest.doMock('../render', () => ({ render }));
 
 const prefetch = jest.fn();
-jest.doMock('../prefetch', () => ({ prefetch }));
+jest.doMock('@atlaskit/atlassian-switcher', () => ({ prefetch }));
 
 const { prepareAtlassianSwitcher } = require('../prepare');
 
 describe('prepare', () => {
   beforeEach(() => {
-    resolveDependencies.mockReset();
     render.mockReset();
     prefetch.mockReset();
   });
@@ -48,7 +44,6 @@ describe('prepare', () => {
         analyticsListener,
       );
 
-      expect(resolveDependencies).toHaveBeenCalledTimes(1);
       expect(switcher.prefetch).toBeInstanceOf(Function);
       expect(switcher.renderAt).toBeInstanceOf(Function);
     });

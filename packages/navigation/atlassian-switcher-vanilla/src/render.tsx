@@ -4,7 +4,7 @@ import { IntlProvider } from 'react-intl';
 import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import AtlassianSwitcher, {
   AtlassianSwitcherProps,
-} from '../components/atlassian-switcher';
+} from '@atlaskit/atlassian-switcher';
 
 export const render = (
   switcherProps: AtlassianSwitcherProps,
