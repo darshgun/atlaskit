@@ -1,50 +1,32 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import {
-  containerStyles,
-  customProductIconStyles,
-  customProductLogoStyles,
-  productIconStyles,
-  productLogoStyles,
+  containerCSS,
+  customProductIconCSS,
+  customProductLogoCSS,
+  productIconCSS,
+  productLogoCSS,
 } from './styles';
-import {
-  CustomProductHomeProps,
-  ProductHomeComponentProps,
-  ProductHomeProps,
-} from './types';
+import { CustomProductHomeProps, ProductHomeProps } from './types';
 
-const defaultCustomComponent = (props: ProductHomeComponentProps) => (
-  <div {...props} />
-);
-
-export const ProductHome = ({
-  component: Component = defaultCustomComponent,
-  icon: Icon,
-  logo: Logo,
-}: ProductHomeProps) => (
-  <Component css={containerStyles}>
-    <div css={productLogoStyles}>
+export const ProductHome = ({ icon: Icon, logo: Logo }: ProductHomeProps) => (
+  <div css={containerCSS}>
+    <div css={productLogoCSS}>
       <Logo />
     </div>
-    <div css={productIconStyles}>
+    <div css={productIconCSS}>
       <Icon size="small" />
     </div>
-  </Component>
+  </div>
 );
 
 export const CustomProductHome = (props: CustomProductHomeProps) => {
-  const {
-    component: Component = defaultCustomComponent,
-    iconAlt,
-    iconUrl,
-    logoAlt,
-    logoUrl,
-  } = props;
+  const { iconAlt, iconUrl, logoAlt, logoUrl } = props;
 
   return (
-    <Component css={containerStyles}>
-      <img css={customProductLogoStyles} src={logoUrl} alt={logoAlt} />
-      <img css={customProductIconStyles} src={iconUrl} alt={iconAlt} />
-    </Component>
+    <div css={containerCSS}>
+      <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
+      <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
+    </div>
   );
 };

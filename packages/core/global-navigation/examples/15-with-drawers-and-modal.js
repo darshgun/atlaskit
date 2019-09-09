@@ -11,7 +11,6 @@ import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import { ToggleStateless } from '@atlaskit/toggle';
 import Lorem from 'react-lorem-component';
-import { mockEndpoints } from './helpers/mock-atlassian-switcher-endpoints';
 
 import GlobalNavigation from '../src';
 
@@ -293,10 +292,6 @@ export default class extends Component<{||}, NavState> {
     isHelpDrawerFocusLockEnabled: true,
     isSettingsDrawerFocusLockEnabled: true,
   };
-
-  componentDidMount() {
-    mockEndpoints();
-  }
 
   handleCreateChange = (e: *) => {
     this.setState({ createItemOpens: e.currentTarget.value });

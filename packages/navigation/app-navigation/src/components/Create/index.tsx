@@ -6,24 +6,20 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 
 import { withAppNavigationTheme } from '../../theme';
 import { ThemedIconButton } from '../IconButton';
-import {
-  createButtonStyles,
-  createIconStyles,
-  getCreateButtonTheme,
-} from './styles';
+import { createButtonCSS, createIconCSS, getCreateButtonTheme } from './styles';
 import { CreateProps } from './types';
 
 export const Create = ({ onClick, theme, text }: CreateProps) => (
   <Fragment>
     <Button
-      css={createButtonStyles}
+      css={createButtonCSS}
       onClick={onClick}
       theme={getCreateButtonTheme(theme)}
     >
       {text}
     </Button>
     <ThemedIconButton
-      css={createIconStyles}
+      css={createIconCSS}
       icon={<AddIcon label={text} />}
       onClick={onClick}
       tooltip={text}
