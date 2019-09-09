@@ -10,6 +10,7 @@ import {
   DEFAULT_IMAGE_WIDTH,
   browser,
   ProviderFactory,
+  ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 import { CardEvent } from '@atlaskit/media-card';
 import { NodeSelection } from 'prosemirror-state';
@@ -37,6 +38,7 @@ export interface MediaSingleNodeState {
   width?: number;
   height?: number;
   viewMediaClientConfig?: MediaClientConfig;
+  contextIdentifierProvider?: ContextIdentifierProvider;
 }
 
 export default class MediaSingleNode extends Component<
@@ -47,7 +49,7 @@ export default class MediaSingleNode extends Component<
     mediaOptions: {},
   };
 
-  state = {
+  state: MediaSingleNodeState = {
     width: undefined,
     height: undefined,
     viewMediaClientConfig: undefined,
@@ -125,10 +127,16 @@ export default class MediaSingleNode extends Component<
   };
 
   async componentDidMount() {
+    const { contextIdentifierProvider } = this.props;
+
     await Promise.all([
       this.setViewMediaClientConfig(this.props),
       this.updateMediaNodeAttributes(this.props),
     ]);
+
+    this.setState({
+      contextIdentifierProvider: await contextIdentifierProvider,
+    });
   }
 
   private onExternalImageLoaded = ({
@@ -180,6 +188,7 @@ export default class MediaSingleNode extends Component<
       fullWidthMode,
       view: { state },
     } = this.props;
+    const { contextIdentifierProvider } = this.state;
 
     const { layout, width: mediaSingleWidth } = node.attrs;
     const childNode = node.firstChild!;
@@ -241,6 +250,7 @@ export default class MediaSingleNode extends Component<
         }
         uploadComplete={uploadComplete}
         url={childNode.attrs.url}
+        contextIdentifierProvider={contextIdentifierProvider}
       />
     );
 

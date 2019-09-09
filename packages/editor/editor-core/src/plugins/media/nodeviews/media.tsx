@@ -7,6 +7,7 @@ import {
   ProviderFactory,
   ImageLoaderProps,
   withImageLoader,
+  ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 
 import {
@@ -36,7 +37,7 @@ export interface MediaNodeProps extends ReactNodeProps, ImageLoaderProps {
   view: EditorView;
   node: PMNode;
   getPos: ProsemirrorGetPosHandler;
-  providerFactory?: ProviderFactory;
+  contextIdentifierProvider?: ContextIdentifierProvider;
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
   onClick?: CardOnClickCallback;
@@ -66,7 +67,9 @@ class MediaNode extends Component<MediaNodeProps> {
       this.props.node.attrs.id !== nextProps.node.attrs.id ||
       this.props.node.attrs.collection !== nextProps.node.attrs.collection ||
       this.props.cardDimensions.height !== nextProps.cardDimensions.height ||
-      this.props.cardDimensions.width !== nextProps.cardDimensions.width
+      this.props.cardDimensions.width !== nextProps.cardDimensions.width ||
+      this.props.contextIdentifierProvider !==
+        nextProps.contextIdentifierProvider
     ) {
       return true;
     }
@@ -99,6 +102,7 @@ class MediaNode extends Component<MediaNodeProps> {
       allowLazyLoading,
       viewMediaClientConfig,
       uploadComplete,
+      contextIdentifierProvider,
     } = this.props;
 
     const { id, type, collection, url } = node.attrs;
@@ -123,6 +127,8 @@ class MediaNode extends Component<MediaNodeProps> {
             mediaItemType: 'file',
             collectionName: collection!,
           };
+    const contextId =
+      contextIdentifierProvider && contextIdentifierProvider.objectId;
 
     return (
       <Card
@@ -139,6 +145,7 @@ class MediaNode extends Component<MediaNodeProps> {
         onClick={onClick}
         useInlinePlayer={allowLazyLoading}
         isLazy={allowLazyLoading}
+        contextId={contextId}
       />
     );
   }
