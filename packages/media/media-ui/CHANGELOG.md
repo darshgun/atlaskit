@@ -1,5 +1,13 @@
 # @atlaskit/media-ui
 
+## 11.6.4
+
+### Patch Changes
+
+- [patch][b8fd0f0847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8fd0f0847):
+
+  hot-88372: fix css props breaking in layoutNG.
+
 ## 11.6.3
 
 - Updated dependencies [40bda8f796](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40bda8f796):
