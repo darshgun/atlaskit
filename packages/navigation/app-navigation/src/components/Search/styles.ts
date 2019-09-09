@@ -1,55 +1,52 @@
 import { fontSize, gridSize as gridSizeFn } from '@atlaskit/theme/constants';
-import { css } from '@emotion/core';
 import {
-  actionSectionDesktopStyles,
-  actionSectionMobileStyles,
-  skeletonStyles,
+  actionSectionDesktopCSS,
+  actionSectionMobileCSS,
+  skeletonCSS,
 } from '../../common/styles';
 import { AppNavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-const searchCommonStyles = css`
-  width: 220px;
-  height: ${gridSize * 4}px;
-  border-radius: ${gridSize * 2}px;
-  box-sizing: border-box;
-  padding: 0 ${gridSize}px 0 40px;
-`;
+const searchCommonCSS = {
+  borderRadius: `${gridSize * 2}px`,
+  boxSizing: 'border-box' as const,
+  height: `${gridSize * 4}px`,
+  padding: `0 ${gridSize}px 0 40px`,
+  width: '220px',
+};
 
-export const searchIconStyles = actionSectionMobileStyles;
-export const searchIconSkeletonStyles = searchIconStyles;
+export const searchIconCSS = actionSectionMobileCSS;
+export const searchIconSkeletonCSS = searchIconCSS;
 
-export const searchInputContainerStyles = css`
-  ${actionSectionDesktopStyles}
-  margin-left: 20px;
-  padding-right: ${gridSize}px;
-  position: relative;
-`;
+export const searchInputContainerCSS = {
+  marginLeft: '20px',
+  paddingRight: `${gridSize}px`,
+  position: 'relative' as const,
+  ...actionSectionDesktopCSS,
+};
 
-export const searchInputStyles = ({ mode: { search } }: AppNavigationTheme) => [
-  css`
-    ${searchCommonStyles};
-    outline: none;
-    border: none;
-    font-size: ${fontSize()}px;
-    ::placeholder {
-      color: inherit;
-    }
-  `,
-  search,
-];
+export const searchInputCSS = ({ mode: { search } }: AppNavigationTheme) => ({
+  ...searchCommonCSS,
+  border: 'none',
+  fontSize: `${fontSize()}px`,
+  outline: 'none',
+  '::placeholder': {
+    color: 'inherit',
+  },
+  ...search,
+});
 
-export const searchInputIconStyles = css`
-  position: absolute;
-  left: 10px;
-  top: 5px;
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-`;
+export const searchInputIconCSS = {
+  height: '20px',
+  left: '10px',
+  position: 'absolute' as const,
+  pointerEvents: 'none' as const,
+  top: '5px',
+  width: '20px',
+};
 
-export const searchInputSkeletonStyles = (theme: AppNavigationTheme) => [
-  searchCommonStyles,
-  skeletonStyles(theme),
-];
+export const searchInputSkeletonCSS = (theme: AppNavigationTheme) => ({
+  ...searchCommonCSS,
+  ...skeletonCSS(theme),
+});

@@ -7,10 +7,10 @@ import { ThemedIconButton } from '../IconButton';
 import { TriggerManager } from '../TriggerManager';
 
 import {
-  searchInputContainerStyles,
-  searchIconStyles,
-  searchInputStyles,
-  searchInputIconStyles,
+  searchInputContainerCSS,
+  searchIconCSS,
+  searchInputCSS,
+  searchInputIconCSS,
 } from './styles';
 import { SearchProps } from './types';
 
@@ -28,12 +28,12 @@ const SearchComponent = (props: SearchComponentProps) => {
   };
 
   return (
-    <div css={searchInputContainerStyles}>
-      <div css={searchInputIconStyles}>
+    <div css={searchInputContainerCSS}>
+      <div css={searchInputIconCSS}>
         <SearchIcon label={text} />
       </div>
       <input
-        css={searchInputStyles}
+        css={searchInputCSS}
         placeholder={text}
         onChange={onChange}
         onClick={onClick}
@@ -52,7 +52,7 @@ export const Search = (props: SearchProps) => {
         <Fragment>
           <SearchComponent onClick={onTriggerClick} text={text} />
           <ThemedIconButton
-            css={searchIconStyles}
+            css={searchIconCSS}
             icon={<SearchIcon label={tooltip} />}
             onClick={onTriggerClick}
             tooltip={tooltip}

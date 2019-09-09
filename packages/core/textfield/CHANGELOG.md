@@ -1,5 +1,13 @@
 # @atlaskit/textfield
 
+## 3.0.7
+
+### Patch Changes
+
+- [patch][d5def52d98](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5def52d98):
+
+  Refactored textfield styles to better support border-box being set globally.
+
 ## 3.0.6
 
 - Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):

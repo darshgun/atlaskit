@@ -1,5 +1,21 @@
 # @atlaskit/smart-card
 
+## 12.5.4
+
+### Patch Changes
+
+- [patch][b8fd0f0847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8fd0f0847):
+
+  hot-88372: fix css props breaking in layoutNG.
+
+## 12.5.3
+
+### Patch Changes
+
+- [patch][07dd73fa12](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07dd73fa12):
+
+  FM-2240 Fix issue where smart links would cause hybrid renderer to crash in Android
+
 ## 12.5.2
 
 ### Patch Changes
