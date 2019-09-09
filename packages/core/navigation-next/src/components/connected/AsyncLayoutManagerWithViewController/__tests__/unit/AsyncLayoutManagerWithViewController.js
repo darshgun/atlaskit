@@ -1,14 +1,19 @@
 // @flow
 
-import React from 'react';
+import React, { type ElementConfig } from 'react';
 import { mount } from 'enzyme';
 
-import AsyncLayoutManagerWithViewController from '../../AsyncLayoutManagerWithViewController';
 import { NavigationProvider } from '../../../../../index';
+import AsyncLayoutManagerWithViewController from '../../AsyncLayoutManagerWithViewController';
+import type { AsyncLayoutManagerWithViewControllerProps as Props } from '../../types';
 
-const GlobalNavigationComponent = () => null;
-const SkeletonContainerView = () => null;
-const ItemsRenderer = () => null;
+const GlobalNavigationComponent: $PropertyType<
+  Props,
+  'globalNavigation',
+> = () => null;
+const SkeletonContainerView: $PropertyType<Props, 'containerSkeleton'> = () =>
+  null;
+const ItemsRenderer: $PropertyType<Props, 'itemsRenderer'> = () => null;
 
 describe('AsyncLayoutManagerWithViewController', () => {
   let wrapper;
@@ -19,6 +24,27 @@ describe('AsyncLayoutManagerWithViewController', () => {
   let onExpandEnd;
   let getRefs;
 
+  const createAsyncLayoutManager = (
+    props: $ReadOnly<
+      $Shape<ElementConfig<typeof AsyncLayoutManagerWithViewController>>,
+    >,
+  ) => (
+    <NavigationProvider cache={false} isDebugEnabled={false}>
+      <AsyncLayoutManagerWithViewController
+        containerSkeleton={SkeletonContainerView}
+        firstSkeletonToRender="product"
+        globalNavigation={GlobalNavigationComponent}
+        itemsRenderer={ItemsRenderer}
+        {...props}
+      >
+        <p>
+          Children requires to have `NavigationProvider` as a parent Because of
+          `unstated`. This is an issue
+        </p>
+      </AsyncLayoutManagerWithViewController>
+    </NavigationProvider>
+  );
+
   beforeEach(() => {
     onCollapseStart = jest.fn();
     onCollapseEnd = jest.fn();
@@ -27,24 +53,13 @@ describe('AsyncLayoutManagerWithViewController', () => {
     getRefs = jest.fn();
 
     wrapper = mount(
-      <NavigationProvider cache={false} isDebugEnabled={false}>
-        <AsyncLayoutManagerWithViewController
-          globalNavigation={GlobalNavigationComponent}
-          firstSkeletonToRender="product"
-          onCollapseStart={onCollapseStart}
-          onCollapseEnd={onCollapseEnd}
-          onExpandStart={onExpandStart}
-          onExpandEnd={onExpandEnd}
-          containerSkeleton={SkeletonContainerView}
-          itemsRenderer={ItemsRenderer}
-          getRefs={getRefs}
-        >
-          <p>
-            Children requires to have `NavigationProvider` as a parent Because
-            of `unstated`. This is an issue
-          </p>
-        </AsyncLayoutManagerWithViewController>
-      </NavigationProvider>,
+      createAsyncLayoutManager({
+        getRefs,
+        onCollapseEnd,
+        onCollapseStart,
+        onExpandEnd,
+        onExpandStart,
+      }),
     );
   });
 
@@ -113,24 +128,7 @@ describe('AsyncLayoutManagerWithViewController', () => {
 
     it('should render skeleton using `container` context', () => {
       const containerWrapper = mount(
-        <NavigationProvider cache={false} isDebugEnabled={false}>
-          <AsyncLayoutManagerWithViewController
-            globalNavigation={GlobalNavigationComponent}
-            firstSkeletonToRender="container"
-            onCollapseStart={onCollapseStart}
-            onCollapseEnd={onCollapseEnd}
-            onExpandStart={onExpandStart}
-            onExpandEnd={onExpandEnd}
-            containerSkeleton={SkeletonContainerView}
-            itemsRenderer={ItemsRenderer}
-            getRefs={getRefs}
-          >
-            <p>
-              Children requires to have `NavigationProvider` as a parent Because
-              of `unstated`. This is an issue
-            </p>
-          </AsyncLayoutManagerWithViewController>
-        </NavigationProvider>,
+        createAsyncLayoutManager({ firstSkeletonToRender: 'container' }),
       );
 
       expect(
@@ -162,5 +160,27 @@ describe('AsyncLayoutManagerWithViewController', () => {
       expect(layoutManager.props().onExpandEnd).toBeCalledWith(200);
       expect(layoutManager.props().getRefs).toHaveBeenCalled();
     });
+  });
+
+  it('should forward experimental_horizontalGlobalNav as false to LayoutManager by default', () => {
+    const asyncLayoutManager = mount(createAsyncLayoutManager());
+    const layoutManager = asyncLayoutManager.find('LayoutManager');
+    expect(layoutManager.props().experimental_horizontalGlobalNav).toBe(false);
+  });
+
+  it('should forward a true experimental_horizontalGlobalNav to LayoutManager', () => {
+    const asyncLayoutManager = mount(
+      createAsyncLayoutManager({ experimental_horizontalGlobalNav: true }),
+    );
+    const layoutManager = asyncLayoutManager.find('LayoutManager');
+    expect(layoutManager.props().experimental_horizontalGlobalNav).toBe(true);
+  });
+
+  it('should forward a false experimental_horizontalGlobalNav to LayoutManager', () => {
+    const asyncLayoutManager = mount(
+      createAsyncLayoutManager({ experimental_horizontalGlobalNav: false }),
+    );
+    const layoutManager = asyncLayoutManager.find('LayoutManager');
+    expect(layoutManager.props().experimental_horizontalGlobalNav).toBe(false);
   });
 });
