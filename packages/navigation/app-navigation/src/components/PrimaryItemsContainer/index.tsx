@@ -5,11 +5,9 @@ import {
   useOverflowController,
   OverflowProvider,
 } from '../../controllers/overflow';
-import getStyles from './styles';
+import { containerCSS, widthDetectorContainerStyle } from './styles';
 import { PrimaryItemsContainerProps } from './types';
 import { ThemedPrimaryButton } from '../PrimaryButton';
-
-const styles = getStyles();
 
 export const PrimaryItemsContainer = ({
   moreLabel,
@@ -20,7 +18,7 @@ export const PrimaryItemsContainer = ({
   );
 
   return (
-    <div css={styles.outer}>
+    <div css={containerCSS}>
       <OverflowProvider isVisible>{visibleItems}</OverflowProvider>
       {overflowItems.length > 0 && (
         <ThemedPrimaryButton
@@ -33,7 +31,7 @@ export const PrimaryItemsContainer = ({
         />
       )}
       <WidthDetector
-        containerStyle={{ minWidth: 1, flexShrink: 1 }}
+        containerStyle={widthDetectorContainerStyle}
         onResize={updateWidth}
       >
         {() => null}
