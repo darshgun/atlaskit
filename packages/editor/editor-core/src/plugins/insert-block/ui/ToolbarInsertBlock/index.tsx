@@ -70,6 +70,7 @@ import {
   EVENT_TYPE,
   ACTION_SUBJECT_ID,
   DispatchAnalyticsEvent,
+  addAnalytics,
 } from '../../../analytics';
 import { insertEmoji } from '../../../emoji/commands/insert-emoji';
 import { DropdownItem } from '../../../block-type/ui/ToolbarBlockType';
@@ -815,6 +816,14 @@ class ToolbarInsertBlock extends React.PureComponent<
           editorView.state.selection.to,
           inputMethod,
         );
+      } else {
+        tr = addAnalytics(tr, {
+          action: ACTION.INSERTED,
+          actionSubject: ACTION_SUBJECT.DOCUMENT,
+          actionSubjectId: ACTION_SUBJECT_ID.DIVIDER,
+          attributes: { inputMethod },
+          eventType: EVENT_TYPE.TRACK,
+        });
       }
 
       if (tr) {
