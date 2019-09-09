@@ -10,12 +10,15 @@ export enum ACTION {
   RENDERED = 'rendered',
   CLICKED = 'clicked',
   VIEWED = 'viewed',
+  SORT_COLUMN = 'sortedColumn',
+  SORT_COLUMN_NOT_ALLOWED = 'sortColumnNotAllowed',
 }
 
 export enum ACTION_SUBJECT {
   RENDERER = 'renderer',
   BUTTON = 'button',
   ANCHOR_LINK = 'anchorLink',
+  TABLE = 'table',
 }
 
 export enum ACTION_SUBJECT_ID {

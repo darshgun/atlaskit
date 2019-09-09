@@ -3,10 +3,10 @@ import * as React from 'react';
 // prettier-ignore
 import { ComponentType, Consumer, Provider } from 'react';
 import { Fragment, Mark, MarkType, Node, Schema } from 'prosemirror-model';
-
 import { Serializer } from '../';
 import { getText } from '../utils';
 import { RendererAppearance } from '../ui/Renderer/types';
+import { AnalyticsEventPayload } from '../analytics/events';
 
 import {
   Doc,
@@ -43,6 +43,8 @@ export interface ConstructorParams {
   disableHeadingIDs?: boolean;
   allowDynamicTextSizing?: boolean;
   allowHeadingAnchorLinks?: boolean;
+  allowColumnSorting?: boolean;
+  fireAnalyticsEvent?: (event: AnalyticsEventPayload) => void;
 }
 
 type MarkWithContent = Partial<Mark<any>> & {
@@ -85,6 +87,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private headingIds: string[] = [];
   private allowDynamicTextSizing?: boolean;
   private allowHeadingAnchorLinks?: boolean;
+  private allowColumnSorting?: boolean;
+  private fireAnalyticsEvent?: (event: AnalyticsEventPayload) => void;
 
   constructor({
     providers,
@@ -96,6 +100,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     disableHeadingIDs,
     allowDynamicTextSizing,
     allowHeadingAnchorLinks,
+    allowColumnSorting,
+    fireAnalyticsEvent,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
@@ -106,6 +112,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.disableHeadingIDs = disableHeadingIDs;
     this.allowDynamicTextSizing = allowDynamicTextSizing;
     this.allowHeadingAnchorLinks = allowHeadingAnchorLinks;
+    this.allowColumnSorting = allowColumnSorting;
+    this.fireAnalyticsEvent = fireAnalyticsEvent;
   }
 
   private resetState() {
@@ -138,6 +146,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           props = this.getDateProps(node, parentInfo);
         } else if (node.type.name === 'heading') {
           props = this.getHeadingProps(node, parentInfo && parentInfo.path);
+        } else if (['tableHeader', 'tableRow'].indexOf(node.type.name) > -1) {
+          props = this.getTableChildrenProps(node);
         } else {
           props = this.getProps(node);
         }
@@ -230,10 +240,19 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     );
   }
 
+  private getTableChildrenProps(node: Node) {
+    return {
+      ...this.getProps(node),
+      allowColumnSorting: this.allowColumnSorting,
+    };
+  }
+
   private getTableProps(node: Node) {
     return {
       ...this.getProps(node),
+      allowColumnSorting: this.allowColumnSorting,
       columnWidths: calcTableColumnWidths(node),
+      tableNode: node,
     };
   }
 
@@ -260,6 +279,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       allowDynamicTextSizing: this.allowDynamicTextSizing,
       allowHeadingAnchorLinks: this.allowHeadingAnchorLinks,
       rendererAppearance: this.appearance,
+      fireAnalyticsEvent: this.fireAnalyticsEvent,
       ...node.attrs,
     };
   }
@@ -369,6 +389,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       disableHeadingIDs,
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
+      allowColumnSorting,
     }: ConstructorParams,
   ): ReactSerializer {
     // TODO: Do we actually need the schema here?
@@ -380,6 +401,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       disableHeadingIDs,
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
+      allowColumnSorting,
     });
   }
 }

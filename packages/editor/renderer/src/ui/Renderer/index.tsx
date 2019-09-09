@@ -54,6 +54,7 @@ export interface Props {
   maxHeight?: number;
   truncated?: boolean;
   createAnalyticsEvent?: CreateUIAnalyticsEvent;
+  allowColumnSorting?: boolean;
 }
 
 export class Renderer extends PureComponent<Props, {}> {
@@ -140,6 +141,7 @@ export class Renderer extends PureComponent<Props, {}> {
       disableHeadingIDs,
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
+      allowColumnSorting,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -156,18 +158,19 @@ export class Renderer extends PureComponent<Props, {}> {
       disableHeadingIDs,
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
+      allowColumnSorting,
+      fireAnalyticsEvent: this.fireAnalyticsEvent,
     });
   }
 
-  private fireAnalyticsEvent(
-    event: AnalyticsEventPayload,
-    channel = FabricChannel.editor,
-  ) {
+  private fireAnalyticsEvent = (event: AnalyticsEventPayload) => {
     const { createAnalyticsEvent } = this.props;
+
     if (createAnalyticsEvent) {
+      const channel = FabricChannel.editor;
       createAnalyticsEvent(event).fire(channel);
     }
-  }
+  };
 
   render() {
     const {
@@ -198,7 +201,7 @@ export class Renderer extends PureComponent<Props, {}> {
             <AnalyticsContext.Provider
               value={{
                 fireAnalyticsEvent: (event: AnalyticsEventPayload) =>
-                  this.fireAnalyticsEvent(event, FabricChannel.editor),
+                  this.fireAnalyticsEvent(event),
               }}
             >
               <RendererWrapper
