@@ -1,38 +1,51 @@
-import { B500, B75 } from '@atlaskit/theme/colors';
+import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
 import {
   fontSizeSmall,
   gridSize as gridSizeFn,
 } from '@atlaskit/theme/constants';
 import {
-  actionSectionDesktopStyles,
-  actionSectionMobileStyles,
+  actionSectionDesktopCSS,
+  actionSectionMobileCSS,
+  skeletonCSS,
 } from '../../common/styles';
+import { AppNavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-const buttonOverrides = {
-  backgroundColor: B75,
-  color: B500,
-  fontSize: fontSizeSmall(),
-  fontWeight: 'bold',
-  height: gridSize * 4,
-  textTransform: 'uppercase',
-};
+const buttonHeight = gridSize * 4;
 
-export const buttonTheme: any = (
-  currentTheme: Function,
-  themeProps: { appearance: string },
+export const createButtonCSS = actionSectionDesktopCSS;
+
+export const createButtonSkeletonCSS = (theme: AppNavigationTheme) => ({
+  height: `${buttonHeight}px`,
+  width: '68px',
+  borderRadius: '3px',
+  ...createButtonCSS,
+  ...skeletonCSS(theme),
+});
+
+export const createIconCSS = actionSectionMobileCSS;
+export const createIconSkeletonCSS = createIconCSS;
+
+export const getCreateButtonTheme = ({
+  mode: { create },
+}: AppNavigationTheme) => (
+  current: (props: ThemeProps) => ThemeTokens,
+  props: ThemeProps,
 ) => {
-  const { buttonStyles, spinnerStyles } = currentTheme(themeProps);
+  const { buttonStyles, spinnerStyles } = current(props);
   return {
     buttonStyles: {
       ...buttonStyles,
-      ...buttonOverrides,
+      fontSize: fontSizeSmall(),
+      fontWeight: 'bold',
+      height: buttonHeight,
+      textTransform: 'uppercase',
+      ...create.default,
+      ':hover': create.hover,
+      ':focus': create.focus,
+      ':active': create.active,
     },
     spinnerStyles,
   };
 };
-
-export const createButtonStyles = actionSectionDesktopStyles;
-
-export const createIconStyles = actionSectionMobileStyles;

@@ -39,16 +39,18 @@ export interface Props extends WithAnalyticsEventsProps {
     event?: React.MouseEvent<HTMLElement, MouseEvent>,
     analyticsEvent?: UIAnalyticsEvent,
   ): void;
+  // Footer content. This prop is optional
+  footer?: React.ReactNode;
   // Default content. This prop is optional
   children?: React.ReactNode;
 }
 
 export class Help extends React.Component<Props> {
   render() {
-    const { children, ...rest } = this.props;
+    const { children, footer, ...rest } = this.props;
 
     return (
-      <HelpContextProvider {...rest} defaultContent={children}>
+      <HelpContextProvider {...rest} defaultContent={children} footer={footer}>
         <MessagesIntlProvider>
           <HelpContent />
         </MessagesIntlProvider>

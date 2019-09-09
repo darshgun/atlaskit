@@ -2,10 +2,11 @@
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
 import { jsx } from '@emotion/core';
-import { chevronStyles, primaryButtonTheme } from './styles';
+import { chevronCSS, getPrimaryButtonTheme } from './styles';
 import { PrimaryButtonProps } from './types';
 import { TriggerManager } from '../TriggerManager';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import { withAppNavigationTheme } from '../../theme';
 
 export const PrimaryButton = (props: PrimaryButtonProps) => {
   const {
@@ -16,6 +17,7 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
     target,
     testId,
     text,
+    theme,
     tooltip,
     ...triggerManagerProps
   } = props;
@@ -35,7 +37,7 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
             href={href}
             iconAfter={
               dropdownContent ? (
-                <span className="chevron" css={chevronStyles}>
+                <span className="chevron" css={chevronCSS}>
                   <ChevronDownIcon label="" />
                 </span>
               ) : (
@@ -45,7 +47,7 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
             isSelected={isSelected}
             onClick={onTriggerClick}
             target={target}
-            theme={primaryButtonTheme}
+            theme={getPrimaryButtonTheme(theme)}
           >
             {text}
           </Button>
@@ -59,3 +61,5 @@ PrimaryButton.defaultProps = {
   isSelected: false,
   testId: 'NavigationItem',
 };
+
+export const ThemedPrimaryButton = withAppNavigationTheme(PrimaryButton);

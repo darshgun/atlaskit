@@ -51,7 +51,9 @@ const ContentArea = styled.div`
   line-height: 24px;
   padding-top: 50px;
   padding-bottom: 55px;
-  height: calc(100% - 105px); /* 100% - (padding top & bottom) */
+  height: calc(
+    100% - 105px
+  ); /* fill the viewport: 100% - (padding top & bottom) */
   width: 100%;
   flex-direction: column;
   flex-grow: 1;
@@ -265,6 +267,15 @@ export default class Editor extends React.Component<
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize, false);
+  }
+
+  componentDidUpdate() {
+    if (
+      this.scrollContainer &&
+      this.scrollContainer.clientWidth !== this.state.containerWidth
+    ) {
+      this.updateContainerWidth();
+    }
   }
 
   componentWillUnmount() {

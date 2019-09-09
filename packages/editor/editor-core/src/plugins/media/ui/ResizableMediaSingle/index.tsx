@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
+import {
+  findParentNodeOfTypeClosestToPos,
+  hasParentNodeOfType,
+} from 'prosemirror-utils';
 import { MediaSingleLayout } from '@atlaskit/adf-schema';
 import { MediaClientConfig } from '@atlaskit/media-core';
 import { getMediaClient } from '@atlaskit/media-client';
@@ -16,6 +19,7 @@ import { Props, EnabledHandles } from './types';
 import Resizer from './Resizer';
 import { snapTo, handleSides, imageAlignmentMap } from './utils';
 import { calcMediaPxWidth, wrappedLayouts } from '../../utils/media-single';
+import { getPluginState } from '../../../table/pm-plugins/table-resizing/plugin';
 
 type State = {
   offsetLeft: number;
@@ -71,8 +75,7 @@ export default class ResizableMediaSingle extends React.Component<
     }
 
     const mediaNode = this.props.state.doc.nodeAt($pos.pos + 1);
-
-    if (!mediaNode) {
+    if (!mediaNode || !mediaNode.attrs.id) {
       return;
     }
 
@@ -109,15 +112,16 @@ export default class ResizableMediaSingle extends React.Component<
   }
 
   calcNewSize = (newWidth: number, stop: boolean) => {
-    const { layout } = this.props;
+    const { layout, state } = this.props;
 
     const newPct = calcPctFromPx(newWidth, this.props.lineLength) * 100;
     this.setState({ resizedPctWidth: newPct });
 
-    let newLayout: MediaSingleLayout = this.calcUnwrappedLayout(
-      newPct,
-      newWidth,
-    );
+    let newLayout: MediaSingleLayout = hasParentNodeOfType(
+      state.schema.nodes.table,
+    )(state.selection)
+      ? layout
+      : this.calcUnwrappedLayout(newPct, newWidth);
 
     if (newPct <= 100) {
       if (this.wrappedLayout && (stop ? newPct !== 100 : true)) {
@@ -266,17 +270,17 @@ export default class ResizableMediaSingle extends React.Component<
       return false;
     }
 
-    const { table, listItem } = this.props.view.state.schema.nodes;
-    return !!findParentNodeOfTypeClosestToPos($pos, [table, listItem]);
+    const { listItem } = this.props.view.state.schema.nodes;
+    return !!findParentNodeOfTypeClosestToPos($pos, [listItem]);
   }
 
   highlights = (newWidth: number, snapPoints: number[]) => {
     const snapWidth = snapTo(newWidth, snapPoints);
-    const { layoutColumn } = this.props.view.state.schema.nodes;
+    const { layoutColumn, table } = this.props.view.state.schema.nodes;
 
     if (
       this.$pos &&
-      !!findParentNodeOfTypeClosestToPos(this.$pos, [layoutColumn])
+      !!findParentNodeOfTypeClosestToPos(this.$pos, [layoutColumn, table])
     ) {
       return [];
     }
@@ -314,6 +318,9 @@ export default class ResizableMediaSingle extends React.Component<
       pctWidth,
       containerWidth,
       fullWidthMode,
+      selected,
+      state,
+      children,
     } = this.props;
 
     const pxWidth = this.calcPxWidth();
@@ -352,14 +359,24 @@ export default class ResizableMediaSingle extends React.Component<
           {...this.props}
           width={width}
           height={height}
-          selected={this.props.selected}
+          selected={selected}
           enable={enable}
           calcNewSize={this.calcNewSize}
           snapPoints={this.calcSnapPoints()}
           scaleFactor={!this.wrappedLayout && !this.insideInlineLike ? 2 : 1}
           highlights={this.highlights}
+          handleResizeStart={() => {
+            // Checks if a table drag is currently happening, if so, abort
+            if (state.doc.type.schema.nodes.table) {
+              const { dragging } = getPluginState(state);
+              if (dragging) {
+                return false;
+              }
+            }
+            return true;
+          }}
         >
-          {this.props.children}
+          {children}
         </Resizer>
       </Wrapper>
     );
