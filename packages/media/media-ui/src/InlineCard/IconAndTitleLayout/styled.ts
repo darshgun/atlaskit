@@ -48,7 +48,6 @@ export const IconTitleWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
 export const IconTitleHeadNoBreakWrapper: ComponentClass<
   HTMLAttributes<{}>
 > = styled.span`
-  white-space: nowrap;
   overflow-wrap: break-word;
   min-width: 8ch;
 `;
