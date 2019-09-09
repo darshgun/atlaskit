@@ -6,7 +6,7 @@ import {
   taskDecision,
 } from '@atlaskit/util-data-test';
 import { CardEvent } from '@atlaskit/media-card';
-import { defaultSchema, ActionMarkAction } from '@atlaskit/adf-schema';
+import { defaultSchema } from '@atlaskit/adf-schema';
 import {
   CardSurroundings,
   ProviderFactory,
@@ -157,10 +157,6 @@ const eventHandlers: EventHandlers = {
       );
     },
   },
-  action: {
-    onClick: (event: ActionMarkAction) =>
-      console.log('onClick', '[react.MouseEvent]', event),
-  },
 };
 
 export interface DemoRendererProps {
@@ -174,6 +170,7 @@ export interface DemoRendererProps {
   truncationEnabled?: boolean;
   allowDynamicTextSizing?: boolean;
   allowHeadingAnchorLinks?: boolean;
+  allowColumnSorting?: boolean;
 }
 
 export interface DemoRendererState {
@@ -293,6 +290,7 @@ export default class RendererDemo extends React.Component<
       props.maxHeight = this.props.maxHeight;
       props.truncated = this.props.truncationEnabled && this.state.truncated;
       props.allowDynamicTextSizing = this.props.allowDynamicTextSizing;
+      props.allowColumnSorting = this.props.allowColumnSorting;
 
       if (additionalRendererProps) {
         props = {

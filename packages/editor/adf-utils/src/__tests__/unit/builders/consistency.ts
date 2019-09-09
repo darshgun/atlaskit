@@ -13,7 +13,6 @@ const buildFilesList = (dirPath: string, ignored: Array<string> = []) =>
     .filter((node: string) => ignored.indexOf(node) === -1 && node !== 'index');
 
 const ignoredNodes = [
-  'applicationCard',
   'confluence-jira-issue',
   'confluence-unsupported-block',
   'confluence-unsupported-inline',

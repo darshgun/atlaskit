@@ -390,11 +390,6 @@ export function validator(
       }
     };
 
-    // Don't validate applicationCard
-    if (type === 'applicationCard') {
-      return err('DEPRECATED', 'applicationCard is not supported');
-    }
-
     if (type) {
       const typeOptions = getOptionsForType(type, allowed);
       if (typeOptions === false) {

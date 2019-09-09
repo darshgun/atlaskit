@@ -200,7 +200,7 @@
     "jscodeshift": "^0.5.1",
     "jscodeshift-helper": "^1.1.0",
     "jsdom": "^14.0.0",
-    "json-schema-diff-validator": "^0.3.0",
+    "json-schema-diff-validator": "^0.4.1",
     "jsverify": "^0.8.3",
     "kakapo": "^3.3.5",
     "karma": "^1.7.1",

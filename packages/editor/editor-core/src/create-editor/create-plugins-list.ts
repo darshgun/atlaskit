@@ -38,7 +38,6 @@ import {
   typeAheadPlugin,
   quickInsertPlugin,
   gapCursorPlugin,
-  inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
   statusPlugin,
@@ -124,10 +123,6 @@ export default function createPluginsList(
 
   if (props.allowTextAlignment) {
     plugins.push(alignmentPlugin());
-  }
-
-  if (props.allowInlineAction) {
-    plugins.push(inlineActionPlugin());
   }
 
   if (props.allowTextColor) {
