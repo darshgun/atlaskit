@@ -12,6 +12,7 @@ import {
   isDifferentIdentifier,
   isImageRepresentationReady,
   addFileAttrsToUrl,
+  MediaFileAttrs,
 } from '@atlaskit/media-client';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
@@ -154,6 +155,8 @@ export class Card extends Component<CardProps, CardState> {
             dataURI,
             previewOrientation = 1,
           } = this.state;
+          // TODO: pass contextId from Editor
+          const { contextId } = this.props;
           const metadata = extendMetadata(fileState, this.state.metadata);
 
           if (!dataURI) {
@@ -162,6 +165,16 @@ export class Card extends Component<CardProps, CardState> {
             );
             previewOrientation = orientation || 1;
             dataURI = src;
+            if (dataURI && contextId) {
+              dataURI = addFileAttrsToUrl(dataURI, {
+                id: resolvedId,
+                collection: collectionName,
+                contextId,
+                mimeType: metadata.mimeType,
+                name: metadata.name,
+                size: metadata.size,
+              });
+            }
           }
 
           switch (fileState.status) {
@@ -212,26 +225,22 @@ export class Card extends Component<CardProps, CardState> {
                 allowAnimated: true,
               });
               dataURI = URL.createObjectURL(blob);
+              if (contextId) {
+                dataURI = addFileAttrsToUrl(dataURI, {
+                  id: resolvedId,
+                  collection: collectionName,
+                  contextId,
+                  mimeType: metadata.mimeType,
+                  name: metadata.name,
+                  size: metadata.size,
+                  width,
+                  height,
+                });
+              }
               this.releaseDataURI();
             } catch (e) {
               // We don't want to set status=error if the preview fails, we still want to display the metadata
             }
-          }
-
-          if (dataURI) {
-            const { contextId } = this.props;
-
-            dataURI = addFileAttrsToUrl(dataURI, {
-              id: resolvedId,
-              collection: collectionName,
-              contextId,
-              name: metadata.name,
-              size: metadata.size,
-              mimeType: metadata.mimeType,
-              // TODO: pass dimensions, but only when number?
-              // height,
-              // width
-            });
           }
 
           this.notifyStateChange({

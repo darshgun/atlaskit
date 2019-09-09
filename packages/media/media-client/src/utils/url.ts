@@ -2,19 +2,13 @@ export const isMediaBlobUrl = (url: string): boolean => {
   return url.indexOf('media-blob-url=true') > -1;
 };
 
-export interface MediaBlobUrlAttrs {
+export interface MediaFileAttrs {
   id: string;
   contextId: string;
   collection?: string;
-}
-
-export interface FileAttrs {
-  id: string;
   size?: number;
   name?: string;
   mimeType?: string;
-  collection?: string;
-  contextId?: string;
   width?: number;
   height?: number;
 }
@@ -22,7 +16,7 @@ export interface FileAttrs {
 // TODO: return missing attrs (width, height)
 export const getAttrsFromUrl = (
   blobUrl: string,
-): MediaBlobUrlAttrs | undefined => {
+): MediaFileAttrs | undefined => {
   const url = new URL(blobUrl);
   const hash = url.hash.replace('#', '');
   const params = new URLSearchParams(hash);
@@ -44,7 +38,7 @@ export const getAttrsFromUrl = (
 // TODO: we might need to encode url values
 export const addFileAttrsToUrl = (
   url: string,
-  fileAttrs: FileAttrs,
+  fileAttrs: MediaFileAttrs,
 ): string => {
   const mediaIdentifierAttr = {
     'media-blob-url': 'true',

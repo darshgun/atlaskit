@@ -134,4 +134,5 @@ export {
   isMediaBlobUrl,
   getAttrsFromUrl,
   addFileAttrsToUrl,
+  MediaFileAttrs,
 } from './utils/url';
