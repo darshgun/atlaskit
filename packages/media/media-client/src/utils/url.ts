@@ -24,7 +24,6 @@ const getNumberFromParam = (
     : undefined;
 };
 
-// TODO: return missing attrs (width, height)
 export const getAttrsFromUrl = (
   blobUrl: string,
 ): MediaFileAttrs | undefined => {
