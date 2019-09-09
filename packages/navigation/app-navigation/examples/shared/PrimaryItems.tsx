@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import { ThemedPrimaryButton } from '../../src/components/PrimaryButton';
+import { ThemedPrimaryButtonProps } from '../../src/components/PrimaryButton/types';
 import { useOverflowStatus } from '../../src/controllers/overflow';
 
-const GlobalNavButton = (props: any) => {
+const PrimaryButton = (props: ThemedPrimaryButtonProps) => {
   const { isVisible } = useOverflowStatus();
   if (isVisible) {
     return <ThemedPrimaryButton {...props} />;
@@ -20,7 +21,7 @@ const GlobalNavButton = (props: any) => {
   }
 };
 
-const GlobalNavDropdown = ({ sections }: { sections: typeof projectsData }) => {
+const DropdownContent = ({ sections }: { sections: typeof projectsData }) => {
   const { isVisible } = useOverflowStatus();
   if (isVisible) {
     return (
@@ -50,7 +51,7 @@ const GlobalNavDropdown = ({ sections }: { sections: typeof projectsData }) => {
 };
 
 export const bitbucketPrimaryItems = [
-  <GlobalNavButton
+  <PrimaryButton
     id="work"
     href="#"
     onClick={(...args: any[]) => {
@@ -58,7 +59,7 @@ export const bitbucketPrimaryItems = [
     }}
     text="Your work"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="workspaces"
     href="#"
     onClick={(...args: any[]) => {
@@ -66,7 +67,7 @@ export const bitbucketPrimaryItems = [
     }}
     text="Workspaces"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="repositories"
     href="#"
     onClick={(...args: any[]) => {
@@ -74,7 +75,7 @@ export const bitbucketPrimaryItems = [
     }}
     text="Repositories"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="projects"
     href="#"
     onClick={(...args: any[]) => {
@@ -82,7 +83,7 @@ export const bitbucketPrimaryItems = [
     }}
     text="Projects"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="pullrequests"
     href="#"
     onClick={(...args: any[]) => {
@@ -90,7 +91,7 @@ export const bitbucketPrimaryItems = [
     }}
     text="Pull requests"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="issues"
     href="#"
     onClick={(...args: any[]) => {
@@ -121,7 +122,7 @@ const SpacesContent = () => (
 );
 
 export const confluencePrimaryItems = [
-  <GlobalNavButton
+  <PrimaryButton
     id="activity"
     href="#"
     onClick={(...args: any[]) => {
@@ -129,7 +130,7 @@ export const confluencePrimaryItems = [
     }}
     text="Activity"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="work"
     href="#"
     onClick={(...args: any[]) => {
@@ -137,7 +138,7 @@ export const confluencePrimaryItems = [
     }}
     text="Your work"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     dropdownContent={SpacesContent}
     id="spaces"
     onClick={(...args: any[]) => {
@@ -145,14 +146,14 @@ export const confluencePrimaryItems = [
     }}
     text="Spaces"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="people"
     onClick={(...args: any[]) => {
       console.log('People click', ...args);
     }}
     text="People"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     dropdownContent={ConfluenceAppsContent}
     id="apps"
     onClick={(...args: any[]) => {
@@ -179,7 +180,7 @@ const projectsData = [
   },
 ];
 
-const ProjectsContent = () => <GlobalNavDropdown sections={projectsData} />;
+const ProjectsContent = () => <DropdownContent sections={projectsData} />;
 
 const issuesData = [
   {
@@ -196,21 +197,19 @@ const issuesData = [
   },
 ];
 
-const IssuesContent = () => <GlobalNavDropdown sections={issuesData} />;
+const IssuesContent = () => <DropdownContent sections={issuesData} />;
 
-const DashboardsContent = () => (
-  <Fragment>
-    <DropdownItemGroup>
-      <DropdownItem>System Dashboard</DropdownItem>
-    </DropdownItemGroup>
-    <DropdownItemGroup>
-      <DropdownItem>View all dashboards</DropdownItem>
-    </DropdownItemGroup>
-  </Fragment>
-);
+const dashboardsData = [
+  {
+    title: '',
+    items: ['System Dashboard', 'View all dashboards'],
+  },
+];
+
+const DashboardsContent = () => <DropdownContent sections={dashboardsData} />;
 
 export const jiraPrimaryItems = [
-  <GlobalNavButton
+  <PrimaryButton
     id="home"
     href="#"
     onClick={(...args: any[]) => {
@@ -218,7 +217,7 @@ export const jiraPrimaryItems = [
     }}
     text="Home"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     dropdownContent={ProjectsContent}
     id="projects"
     onClick={(...args: any[]) => {
@@ -226,7 +225,7 @@ export const jiraPrimaryItems = [
     }}
     text="Projects"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     dropdownContent={IssuesContent}
     id="issues"
     onClick={(...args: any[]) => {
@@ -234,7 +233,7 @@ export const jiraPrimaryItems = [
     }}
     text="Issues & Filters"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     dropdownContent={DashboardsContent}
     id="dashboards"
     onClick={(...args: any[]) => {
@@ -245,7 +244,7 @@ export const jiraPrimaryItems = [
 ];
 
 export const opsGeniePrimaryItems = [
-  <GlobalNavButton
+  <PrimaryButton
     id="alerts"
     href="#"
     onClick={(...args: any[]) => {
@@ -253,7 +252,7 @@ export const opsGeniePrimaryItems = [
     }}
     text="Alerts"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="incidents"
     href="#"
     onClick={(...args: any[]) => {
@@ -261,28 +260,28 @@ export const opsGeniePrimaryItems = [
     }}
     text="Incidents"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="oncall"
     onClick={(...args: any[]) => {
       console.log('Who is on-call click', ...args);
     }}
     text="Who is on-call"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="teams"
     onClick={(...args: any[]) => {
       console.log('Teams click', ...args);
     }}
     text="Teams"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="services"
     onClick={(...args: any[]) => {
       console.log('Services click', ...args);
     }}
     text="Services"
   />,
-  <GlobalNavButton
+  <PrimaryButton
     id="analytics"
     onClick={(...args: any[]) => {
       console.log('Analytics click', ...args);
