@@ -10,7 +10,7 @@ import {
 } from '@atlaskit/right-side-panel';
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
-import { ButtonsWrapper } from './utils/styled';
+import { ButtonsWrapper, FooterContent } from './utils/styled';
 
 import Help from '../src';
 
@@ -132,6 +132,11 @@ export default class extends React.Component {
                     }
                     onWasHelpfulNoButtonClick={
                       this.articleWasHelpfulNoButtonClick
+                    }
+                    footer={
+                      <FooterContent>
+                        <span>Footer</span>
+                      </FooterContent>
                     }
                   >
                     <span>Default content</span>

@@ -13,6 +13,14 @@ declare module '@atlaskit/atlassian-switcher' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/avatar' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/avatar-group' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/badge' {
   declare module.exports: any;
 }
@@ -61,6 +69,10 @@ declare module '@atlaskit/icon' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/icon/*' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/inline-dialog' {
   declare module.exports: any;
 }
@@ -78,6 +90,10 @@ declare module '@atlaskit/locale' {
 }
 
 declare module '@atlaskit/locale/LocaleSelect' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/logo' {
   declare module.exports: any;
 }
 
