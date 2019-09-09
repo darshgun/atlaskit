@@ -5,10 +5,14 @@ import {
   Identifier,
   ImageResizeMode,
 } from '@atlaskit/media-client';
-import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import {
+  UIAnalyticsEvent,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
 
 import { CardAction } from './actions';
 import { MediaViewerDataSource } from '@atlaskit/media-viewer';
+import { WithContextProps } from '@atlaskit/analytics-next/src/withAnalyticsContext';
 
 export {
   MediaCardAnalyticsPayolad,
@@ -79,7 +83,11 @@ export interface CardEventProps {
   readonly onLoadingChange?: OnLoadingChangeFunc;
 }
 
-export interface CardProps extends SharedCardProps, CardEventProps {
+export interface CardProps
+  extends SharedCardProps,
+    CardEventProps,
+    WithAnalyticsEventsProps,
+    WithContextProps {
   readonly mediaClient: MediaClient;
   readonly identifier: Identifier;
   readonly isLazy?: boolean;

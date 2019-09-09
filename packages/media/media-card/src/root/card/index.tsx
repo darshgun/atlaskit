@@ -1,6 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
+
+import { GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  AnalyticsContext,
+  UIAnalyticsEvent,
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import {
   MediaClient,
   FileDetails,
@@ -12,11 +21,10 @@ import {
   isImageRepresentationReady,
   addFileAttrsToUrl,
 } from '@atlaskit/media-client';
-import DownloadIcon from '@atlaskit/icon/glyph/download';
-import { AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
+
 import { Subscription } from 'rxjs/Subscription';
 import { IntlProvider } from 'react-intl';
-import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
 import { CardAction, CardDimensions, CardProps, CardState } from '../..';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
@@ -31,7 +39,7 @@ import {
   getBaseAnalyticsContext,
 } from '../../utils/analytics';
 
-export class Card extends Component<CardProps, CardState> {
+export class CardBase extends Component<CardProps, CardState> {
   private hasBeenMounted: boolean = false;
 
   subscription?: Subscription;
@@ -49,10 +57,45 @@ export class Card extends Component<CardProps, CardState> {
     isPlayingFile: false,
   };
 
+  wrapperDivRef: React.RefObject<HTMLDivElement>;
+
+  constructor(props: CardProps) {
+    super(props);
+    this.wrapperDivRef = React.createRef();
+  }
+
+  // so the idea is the following, we add a listener for each of the cards
+  // and then check if the triggered listener is from the card in current selection
+  onCopyListener = () => {
+    const selection = window.getSelection();
+
+    if (
+      this.wrapperDivRef.current instanceof Node &&
+      selection &&
+      selection.containsNode(this.wrapperDivRef.current, true)
+    ) {
+      this.fireAnalytics();
+    }
+  };
+
+  fireAnalytics = () => {
+    const { createAnalyticsEvent, identifier } = this.props;
+    if (createAnalyticsEvent && identifier) {
+      createAnalyticsEvent({
+        eventType: 'ui',
+        action: 'copied',
+        actionSubject: 'file',
+        actionSubjectId:
+          identifier.mediaItemType === 'file' ? identifier.id : 'url',
+      } as GasPayload).fire('media');
+    }
+  };
+
   componentDidMount() {
     const { identifier, mediaClient } = this.props;
     this.hasBeenMounted = true;
     this.subscribe(identifier, mediaClient);
+    document.addEventListener('copy', this.onCopyListener);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: CardProps) {
@@ -91,6 +134,7 @@ export class Card extends Component<CardProps, CardState> {
     this.hasBeenMounted = false;
     this.unsubscribe();
     this.releaseDataURI();
+    document.removeEventListener('copy', this.onCopyListener);
   }
 
   releaseDataURI = () => {
@@ -365,7 +409,7 @@ export class Card extends Component<CardProps, CardState> {
     });
   };
 
-  renderMediaViewer = () => {
+  renderMediaViewer = (): React.ReactPortal | undefined => {
     const { mediaViewerSelectedItem } = this.state;
     const { mediaClient, identifier, mediaViewerDataSource } = this.props;
     if (!mediaViewerSelectedItem) {
@@ -423,6 +467,7 @@ export class Card extends Component<CardProps, CardState> {
         progress={progress}
         onRetry={onRetry}
         previewOrientation={previewOrientation}
+        wrapperDivRef={this.wrapperDivRef}
       />
     );
 
@@ -457,17 +502,11 @@ export class Card extends Component<CardProps, CardState> {
     const { metadata } = this.state;
     return (
       /* 
-        First Context provides data needed to build packageHierarchy in Atlaskit Analytics Listener and Media Analytics Listener.
-        This data is not added to the final GASv3 payload 
-      */
-      <AnalyticsContext data={getBaseAnalyticsContext()}>
-        {/* 
           Second context provides data to be merged with any other context down in the tree and the event's payload.
           This data is usually not available at the time of firing the event, though it is needed to be sent to the backend.
-       */}
-        <AnalyticsContext data={getUIAnalyticsContext(metadata)}>
-          {this.renderContent()}
-        </AnalyticsContext>
+       */
+      <AnalyticsContext data={getUIAnalyticsContext(metadata)}>
+        {this.renderContent()}
       </AnalyticsContext>
     );
   }
@@ -506,3 +545,11 @@ export class Card extends Component<CardProps, CardState> {
     }
   };
 }
+
+/* 
+  This Context provides data needed to build packageHierarchy in Atlaskit Analytics Listener and Media Analytics Listener.
+  This data is not added to the final GASv3 payload 
+*/
+export const Card: React.ComponentType<CardProps> = withAnalyticsContext(
+  getBaseAnalyticsContext(),
+)(withAnalyticsEvents()(CardBase));
