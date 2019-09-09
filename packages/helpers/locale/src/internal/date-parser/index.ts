@@ -1,8 +1,10 @@
-import { isValid, normalizeDate, toDate } from './utils';
+import { DateObj, isValid, normalizeDate, toDate } from './utils';
 import { normalizeLocale } from '../common';
 
-const INVALID_DATE = new Date(NaN);
-const INVARIANT_DATE = new Date(1993, 1, 18);
+const INVALID_DATE: Date = new Date(NaN);
+const INVARIANT: DateObj = { year: 1993, month: 2, day: 18 };
+const INVARIANT_DATE: Date = toDate(INVARIANT);
+
 const FORMAT_EXTRACTOR_REGEX = /(\d+)[^\d]+(\d+)[^\d]+(\d+)\.?/;
 const DATE_PARSER_REGEX = /(\d+)[^\d]*(\d+)?[^\d]*(\d+)?\.?/;
 
@@ -49,10 +51,10 @@ export const createDateParser = (locale: string): DateParser => {
 
   const formatParts = extractDateParts(formatMatch);
 
-  // Find the year/month/day positions
-  const yearPosition = formatParts.indexOf(1993);
-  const monthPosition = formatParts.indexOf(2);
-  const dayPosition = formatParts.indexOf(18);
+  // Find the year/month/day positions of the locale formatted invariant date
+  const yearPosition = formatParts.indexOf(INVARIANT.year);
+  const monthPosition = formatParts.indexOf(INVARIANT.month);
+  const dayPosition = formatParts.indexOf(INVARIANT.day);
 
   return (date: string): Date => {
     const dateMatch = stripExtras(date).match(DATE_PARSER_REGEX);
