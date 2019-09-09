@@ -1,5 +1,13 @@
 # @atlaskit/build-utils
 
+## 2.2.6
+
+### Patch Changes
+
+- [patch][ae47159713](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae47159713):
+
+  Remove unused code inside utils/git.js
+
 ## 2.2.5
 
 ### Patch Changes
