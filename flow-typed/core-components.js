@@ -77,6 +77,10 @@ declare module '@atlaskit/locale' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/locale/LocaleSelect' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/lozenge' {
   declare module.exports: any;
 }
