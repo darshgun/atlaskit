@@ -305,7 +305,7 @@ export class MediaNodeUpdater {
 
     if (uploadMediaClientConfig.getAuthFromContext) {
       const auth = await uploadMediaClientConfig.getAuthFromContext(contextId);
-      const { id, collection } = mediaAttrs;
+      const { id, collection, height, width } = mediaAttrs;
       const source = {
         id,
         collection,
@@ -321,9 +321,8 @@ export class MediaNodeUpdater {
       replaceExternalMedia(pos + 1, {
         id: mediaFile.id,
         collection: currentCollectionName,
-        // TODO: get them from mediaAttrs
-        // height: dimensions.height,
-        // width: dimensions.width,
+        height,
+        width,
       })(this.props.view.state, this.props.view.dispatch);
     }
   };

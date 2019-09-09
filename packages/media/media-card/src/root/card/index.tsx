@@ -155,7 +155,6 @@ export class Card extends Component<CardProps, CardState> {
             dataURI,
             previewOrientation = 1,
           } = this.state;
-          // TODO: pass contextId from Editor
           const { contextId } = this.props;
           const metadata = extendMetadata(fileState, this.state.metadata);
 

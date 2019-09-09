@@ -13,6 +13,17 @@ export interface MediaFileAttrs {
   height?: number;
 }
 
+const getNumberFromParam = (
+  params: URLSearchParams,
+  name: keyof MediaFileAttrs,
+): number | undefined => {
+  const value = params.get(name);
+
+  return typeof value === 'string' && !isNaN(parseInt(value))
+    ? parseInt(value)
+    : undefined;
+};
+
 // TODO: return missing attrs (width, height)
 export const getAttrsFromUrl = (
   blobUrl: string,
@@ -32,6 +43,8 @@ export const getAttrsFromUrl = (
     id,
     contextId,
     collection,
+    height: getNumberFromParam(params, 'height'),
+    width: getNumberFromParam(params, 'width'),
   };
 };
 
