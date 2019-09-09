@@ -1,1 +1,0 @@
-Added Footer and fixed CSS issues
