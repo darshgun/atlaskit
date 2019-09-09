@@ -11,6 +11,7 @@ import {
   isExternalImageIdentifier,
   isDifferentIdentifier,
   isImageRepresentationReady,
+  addFileAttrsToUrl,
 } from '@atlaskit/media-client';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
@@ -34,39 +35,6 @@ import { isBigger } from '../../utils/dimensionComparer';
 import { getCardStatus } from './getCardStatus';
 import { InlinePlayer } from '../inlinePlayer';
 import { WithCardViewAnalyticsContext } from '../withCardViewAnalyticsContext';
-
-export interface FileAttrs {
-  id: string;
-  size?: number;
-  name?: string;
-  mimeType?: string;
-  collection?: string;
-  contextId?: string;
-  width?: number;
-  height?: number;
-}
-
-// TODO: move somewhere else
-// TODO: we might need to encode url values
-const addFileAttrsToUrl = (url: string, fileAttrs: FileAttrs): string => {
-  const mediaIdentifierAttr = {
-    'media-blob-url': 'true',
-  };
-  const mergedAttrs: { [key: string]: string | number | undefined } = {
-    ...mediaIdentifierAttr,
-    ...fileAttrs,
-  };
-  const queryAttrs = Object.keys(mergedAttrs)
-    .map(attrName => {
-      const value = mergedAttrs[attrName];
-      return value ? `${attrName}=${value}` : undefined;
-    })
-    .filter(attr => !!attr)
-    .join('&');
-
-  // we can't use '?' separator for blob url params
-  return `${url}#${queryAttrs}`;
-};
 
 export class Card extends Component<CardProps, CardState> {
   private hasBeenMounted: boolean = false;

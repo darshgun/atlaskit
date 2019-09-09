@@ -9,7 +9,11 @@ import {
   getViewMediaClientConfigFromMediaProvider,
   getUploadMediaClientConfigFromMediaProvider,
 } from '../utils/media-common';
-import { getMediaClient } from '@atlaskit/media-client';
+import {
+  getMediaClient,
+  isMediaBlobUrl,
+  getAttrsFromUrl,
+} from '@atlaskit/media-client';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { MediaProvider } from '../types';
@@ -34,12 +38,6 @@ export interface MediaNodeUpdaterProps {
   dispatchAnalyticsEvent?: DispatchAnalyticsEvent;
 }
 
-interface MediaBlobUrlAttrs {
-  id: string;
-  contextId: string;
-  collection?: string;
-}
-
 export class MediaNodeUpdater {
   props: MediaNodeUpdaterProps;
 
@@ -50,11 +48,7 @@ export class MediaNodeUpdater {
   isMediaBlobUrl(): boolean {
     const attrs = this.getAttrs();
 
-    return !!(
-      attrs &&
-      attrs.type === 'external' &&
-      attrs.url.indexOf('media-blob-url=true') > -1
-    ); // TODO: move url check into media-client
+    return !!(attrs && attrs.type === 'external' && isMediaBlobUrl(attrs.url));
   }
 
   // Updates the node with contextId if it doesn't have one already
@@ -283,27 +277,6 @@ export class MediaNodeUpdater {
     return false;
   };
 
-  // TODO: return missing attrs (width, height)
-  // TODO: this method can be moved into media-client
-  getAttrsFromUrl = (blobUrl: string): MediaBlobUrlAttrs | undefined => {
-    const url = new URL(blobUrl);
-    const hash = url.hash.replace('#', '');
-    const params = new URLSearchParams(hash);
-    const id = params.get('id');
-    const contextId = params.get('contextId');
-    const collection = params.get('collection');
-    // check if we have the required params
-    if (!id || !contextId || !collection) {
-      return;
-    }
-
-    return {
-      id,
-      contextId,
-      collection,
-    };
-  };
-
   copyNodeFromBlobUrl = async (pos: number) => {
     const attrs = this.getAttrs();
 
@@ -312,7 +285,7 @@ export class MediaNodeUpdater {
     }
 
     const { url } = attrs;
-    const mediaAttrs = this.getAttrsFromUrl(url);
+    const mediaAttrs = getAttrsFromUrl(url);
     const mediaProvider = await this.props.mediaProvider;
     if (!mediaProvider || !mediaProvider.uploadParams || !mediaAttrs) {
       return;

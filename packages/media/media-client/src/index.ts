@@ -130,3 +130,8 @@ export {
 } from './utils/with-media-client-hoc';
 
 export { globalMediaEventEmitter } from './globalMediaEventEmitter';
+export {
+  isMediaBlobUrl,
+  getAttrsFromUrl,
+  addFileAttrsToUrl,
+} from './utils/url';
