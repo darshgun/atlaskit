@@ -43,6 +43,8 @@ export interface CardViewOwnProps extends SharedCardProps {
   readonly progress?: number;
   readonly disableOverlay?: boolean;
   readonly previewOrientation?: number;
+
+  readonly wrapperDivRef?: React.RefObject<HTMLDivElement>;
 }
 
 export interface CardViewState {
@@ -128,7 +130,13 @@ export class CardViewBase extends React.Component<
   }
 
   render() {
-    const { dimensions, appearance, onClick, onMouseEnter } = this.props;
+    const {
+      dimensions,
+      appearance,
+      onClick,
+      onMouseEnter,
+      wrapperDivRef,
+    } = this.props;
     const wrapperDimensions = dimensions
       ? dimensions
       : getDefaultCardDimensions(appearance);
@@ -141,6 +149,7 @@ export class CardViewBase extends React.Component<
         dimensions={wrapperDimensions}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
+        innerRef={wrapperDivRef}
       >
         {this.renderFile()}
       </Wrapper>
