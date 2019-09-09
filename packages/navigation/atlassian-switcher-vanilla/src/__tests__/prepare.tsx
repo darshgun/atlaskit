@@ -1,12 +1,11 @@
-const render = jest.fn();
-jest.doMock('../render', () => ({ render }));
-
-const prefetch = jest.fn();
-jest.doMock('@atlaskit/atlassian-switcher', () => ({ prefetch }));
-
-const { prepareAtlassianSwitcher } = require('../prepare');
-
 describe('prepare', () => {
+  const render = jest.fn();
+  jest.doMock('../render', () => ({ render }));
+
+  const prefetch = jest.fn();
+  jest.doMock('@atlaskit/atlassian-switcher', () => ({ prefetch }));
+
+  const { prepareAtlassianSwitcher } = require('../prepare');
   beforeEach(() => {
     render.mockReset();
     prefetch.mockReset();

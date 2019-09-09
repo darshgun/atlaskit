@@ -36,15 +36,15 @@ export const initSwitcher = () => {
   const destroyBtn = document.getElementById('switcher-destroy');
 
   if (!container) {
-    throw 'Missing container';
+    throw new Error('Missing container');
   }
 
   if (!triggerBtn) {
-    throw 'Missing trigger button';
+    throw new Error('Missing trigger button');
   }
 
   if (!destroyBtn) {
-    throw 'Missing destroy button';
+    throw new Error('Missing destroy button');
   }
 
   triggerBtn.onmouseenter = function() {

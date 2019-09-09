@@ -1,18 +1,18 @@
-const prefetchAll = jest.fn();
-const prefetchAvailableProducts = jest.fn();
-const prefetchSwitcherBundles = jest.fn();
-
-jest.doMock('../../../providers/instance-data-providers', () => ({
-  prefetchAll,
-}));
-jest.doMock('../../../providers/products-data-provider', () => ({
-  prefetchAvailableProducts,
-}));
-jest.doMock('../../../prefetch-bundles', () => prefetchSwitcherBundles);
-
-const { prefetch } = require('../../prefetch');
-
 describe('utils/prefetch', () => {
+  const prefetchAll = jest.fn();
+  const prefetchAvailableProducts = jest.fn();
+  const prefetchSwitcherBundles = jest.fn();
+
+  jest.doMock('../../../providers/instance-data-providers', () => ({
+    prefetchAll,
+  }));
+  jest.doMock('../../../providers/products-data-provider', () => ({
+    prefetchAvailableProducts,
+  }));
+  jest.doMock('../../../prefetch-bundles', () => prefetchSwitcherBundles);
+
+  const { prefetch } = require('../../prefetch');
+
   beforeEach(() => {
     prefetchAll.mockReset();
     prefetchAvailableProducts.mockReset();
