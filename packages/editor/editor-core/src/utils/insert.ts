@@ -1,8 +1,4 @@
-import {
-  isNodeSelection,
-  canInsert,
-  safeInsert as pmuSafeInsert,
-} from 'prosemirror-utils';
+import { isNodeSelection, canInsert } from 'prosemirror-utils';
 import { Node, Fragment, NodeType, ResolvedPos } from 'prosemirror-model';
 import { Transaction } from 'prosemirror-state';
 import { ReplaceStep, ReplaceAroundStep } from 'prosemirror-transform';
@@ -51,22 +47,19 @@ const shouldSplit = (nodeType: NodeType, schemaNodes: any) => {
   ].includes(nodeType);
 };
 
-export const safeInsert = (
-  content: InsertableContent,
-  position?: number,
-  tryToReplace?: boolean,
-  fallbackInsert?: Function,
-) => (tr: Transaction) => {
+export const safeInsert = (content: InsertableContent, position?: number) => (
+  tr: Transaction,
+) => {
   // Temporary whitelist of currently implemented nodes
   const whitelist = ['rule', 'mediaSingle'];
   if (content instanceof Fragment || !whitelist.includes(content.type.name)) {
-    return pmuSafeInsert(content, position, tryToReplace)(tr);
+    return null;
   }
 
   // Check for selection
   if (!tr.selection.empty || isNodeSelection(tr.selection)) {
     // NOT IMPLEMENTED
-    return pmuSafeInsert(content, position, tryToReplace)(tr);
+    return null;
   }
 
   const { $from } = tr.selection;
