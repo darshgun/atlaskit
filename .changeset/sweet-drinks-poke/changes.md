@@ -1,0 +1,1 @@
+Remove unused code inside utils/git.js
