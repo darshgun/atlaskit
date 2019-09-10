@@ -1,10 +1,10 @@
-import { Product } from './types';
+import { Product } from '../types';
 import {
   loadAtlassianSwitcher,
   loadJiraSwitcher,
   loadConfluenceSwitcher,
   loadGenericSwitcher,
-} from './loaders';
+} from '../components/loaders';
 
 export default (product?: string) => {
   loadAtlassianSwitcher();

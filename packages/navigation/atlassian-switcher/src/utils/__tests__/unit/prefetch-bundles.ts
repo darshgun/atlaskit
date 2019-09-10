@@ -3,7 +3,7 @@ const loadJiraSwitcher = jest.fn();
 const loadConfluenceSwitcher = jest.fn();
 const loadGenericSwitcher = jest.fn();
 
-jest.doMock('../../loaders', () => ({
+jest.doMock('../../../components/loaders', () => ({
   loadAtlassianSwitcher,
   loadJiraSwitcher,
   loadConfluenceSwitcher,

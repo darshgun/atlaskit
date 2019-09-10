@@ -1,9 +1,7 @@
 import * as React from 'react';
 import throttle from 'lodash.throttle';
+import { prefetch } from '../prefetch';
 import now from '../utils/performance-now';
-import { prefetchAll } from '../providers/instance-data-providers';
-import { prefetchAvailableProducts } from '../providers/products-data-provider';
-import prefetchSwitcherBundles from '../prefetch-bundles';
 import {
   NAVIGATION_CHANNEL,
   NavigationAnalyticsContext,
@@ -56,16 +54,7 @@ class PrefetchTrigger extends React.Component<
 
   private triggerPrefetch = throttle(
     () => {
-      const { cloudId, product } = this.props;
-
-      prefetchSwitcherBundles(product);
-
-      if (cloudId) {
-        prefetchAll({ cloudId });
-      }
-      if (this.props.enableUserCentricProducts) {
-        prefetchAvailableProducts();
-      }
+      prefetch(this.props);
 
       this.fireOperationalEvent({
         action: 'triggered',
