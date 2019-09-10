@@ -4,6 +4,7 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 const urlDateTimePicker = getExampleUrl('core', 'datetime-picker', 'basic');
+const urlI18nDateTimePicker = getExampleUrl('core', 'datetime-picker', 'i18n');
 /* Css used for the test */
 const datepickerDefault = 'label[for="react-select-datepicker-1--input"] + div';
 const datepickerMenu = '[aria-label="calendar"]';
@@ -142,7 +143,7 @@ BrowserTestCase(
     const currentTime = await timePicker.getText(timeValue);
 
     expect(currentTime).not.toBe(previousTime);
-    expect(currentTime).toEqual('12:45pm');
+    expect(currentTime).toEqual('12:45 PM');
 
     await timePicker.checkConsoleErrors();
   },
@@ -200,12 +201,39 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'When a user types a year into the date input in DatetimePicker and subsequently hits enter, the value is correctly updated',
+  '[i18n] When entering a new time in Timepicker Editable, the time should be updated to the new value',
+  { skip: ['ie'] }, // IE has an issue AK-5570, AK-5492
+  async client => {
+    const timePicker = new Page(client);
+
+    await timePicker.goto(urlI18nDateTimePicker);
+    await timePicker.waitForSelector(timepickerDefault);
+    await timePicker.click(timepickerDefault);
+    await timePicker.waitForSelector(timePickerMenu);
+
+    const previousTime = await timePicker.getText(timeValue);
+
+    await timePicker.type(timeInput, ['1:45pm']);
+    await timePicker.waitForSelector(timeOption);
+    await timePicker.keys('Enter');
+    await timePicker.waitForSelector(timeValue);
+
+    const currentTime = await timePicker.getText(timeValue);
+
+    expect(currentTime).not.toBe(previousTime);
+    expect(currentTime).toEqual('13:45');
+
+    await timePicker.checkConsoleErrors();
+  },
+);
+
+BrowserTestCase(
+  '[i18n] When a user types a year into the date input in DatetimePicker and subsequently hits enter, the value is correctly updated',
   { skip: ['safari', 'ie'] }, // Safari and IE drivers have issues - AK-5570, AK-5492
   async client => {
     const dateTimePickerTest = new Page(client);
 
-    await dateTimePickerTest.goto(urlDateTimePicker);
+    await dateTimePickerTest.goto(urlI18nDateTimePicker);
     await dateTimePickerTest.click(dateTimePicker);
     await dateTimePickerTest.type(dateTimePickerDateInput, [
       '2',
@@ -218,7 +246,7 @@ BrowserTestCase(
 
     const newDate = await dateTimePickerTest.getText(dateTimeValues);
 
-    expect(newDate.trim()).toBe('2016/01/01');
+    expect(newDate.trim()).toMatch(/^2016/);
     await dateTimePickerTest.checkConsoleErrors();
   },
 );
