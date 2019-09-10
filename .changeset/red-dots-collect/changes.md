@@ -1,1 +1,0 @@
-Adding vanilla wrapper for Atlassian switcher
