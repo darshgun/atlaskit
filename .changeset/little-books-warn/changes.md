@@ -1,1 +1,0 @@
-remove use of deprecated FieldBase component in quick search

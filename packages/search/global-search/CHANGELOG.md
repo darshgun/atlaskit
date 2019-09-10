@@ -1,5 +1,13 @@
 # @atlaskit/global-search
 
+## 12.0.2
+
+### Patch Changes
+
+- [patch][6aa50ae773](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6aa50ae773):
+
+  remove use of deprecated FieldBase component in quick search
+
 ## 12.0.1
 
 - Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
