@@ -1,5 +1,13 @@
 # @atlaskit/global-search
 
+## 12.0.3
+
+### Patch Changes
+
+- [patch][14e5462b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14e5462b37):
+
+  remove use of deprecated field text area component
+
 ## 12.0.2
 
 ### Patch Changes
