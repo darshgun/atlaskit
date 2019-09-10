@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.16.0
+
+### Minor Changes
+
+- [minor][23349602c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23349602c7):
+
+  Added Footer and fixed CSS issues
+
 ## 0.15.0
 
 ### Minor Changes

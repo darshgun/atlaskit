@@ -2,24 +2,17 @@
 import styled from '@emotion/styled';
 import { gridSize } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
+import { HEADER_HEIGHT } from '../styled';
 
 const HEADER_TITLE_BORDER_BOTTOM = 2;
-
 export const HeaderContainer = styled.div`
-  flex: 1;
-  overflow: auto;
-  flex-direction: column;
+  box-sizing: border-box;
+  height: ${HEADER_HEIGHT}px;
   background-color: ${colors.N10};
   border-bottom: ${HEADER_TITLE_BORDER_BOTTOM}px solid ${colors.N30};
-  height: ${gridSize() * 6}px;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: stretch;
-  flex-flow: row nowrap;
   justify-content: space-between;
-  box-sizing: border-box;
+  padding-top: ${gridSize() - HEADER_TITLE_BORDER_BOTTOM / 2}px;
+  padding-bottom: ${gridSize() - HEADER_TITLE_BORDER_BOTTOM / 2}px;
 `;
 
 export const CloseButtonContainer = styled.div`
@@ -35,10 +28,9 @@ export const BackButtonContainer = styled.div`
 `;
 
 export const HeaderTitle = styled.div`
-  color: ${colors.H500};
+  color: ${colors.N500};
   text-align: center;
   font-size: 1rem;
-  padding-top: ${gridSize() - HEADER_TITLE_BORDER_BOTTOM / 2}px;
   height: ${gridSize() * 4}px;
   line-height: ${gridSize() * 4}px;
   width: 100%;

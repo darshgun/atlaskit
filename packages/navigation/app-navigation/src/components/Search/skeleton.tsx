@@ -1,23 +1,26 @@
 /** @jsx jsx */
+import { gridSize } from '@atlaskit/theme/constants';
 import { jsx } from '@emotion/core';
 import { Fragment } from 'react';
 
+import { IconButtonSkeleton } from '../IconButton/skeleton';
 import {
-  SearchInputSkeleton,
-  SearchWrapper,
-  IconWrapper,
-  SearchIconSkeleton,
-} from './styled';
-import { searchInputStyles } from './styles';
+  searchIconSkeletonCSS,
+  searchInputContainerCSS,
+  searchInputSkeletonCSS,
+} from './styles';
 
 export const SearchSkeleton = () => {
   return (
     <Fragment>
-      <SearchWrapper css={searchInputStyles}>
-        <IconWrapper />
-        <SearchInputSkeleton />
-      </SearchWrapper>
-      <SearchIconSkeleton />
+      <div css={searchInputContainerCSS}>
+        <div css={searchInputSkeletonCSS} />
+      </div>
+      <IconButtonSkeleton
+        css={searchIconSkeletonCSS}
+        marginRight={5}
+        size={gridSize() * 3.25}
+      />
     </Fragment>
   );
 };

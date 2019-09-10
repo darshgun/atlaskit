@@ -8,7 +8,6 @@ import ResizeTransition, { isTransitioning } from '../ResizeTransition';
 import {
   CONTENT_NAV_WIDTH_COLLAPSED,
   CONTENT_NAV_WIDTH_FLYOUT,
-  GLOBAL_NAV_WIDTH,
 } from '../../../common/constants';
 
 type PageProps = {
@@ -19,20 +18,30 @@ type PageProps = {
   isResizing: boolean,
   isCollapsed: boolean,
   productNavWidth: number,
+  topOffset: number,
+  leftOffset: number,
 };
 
 export default class PageContent extends PureComponent<PageProps> {
+  static defaultProps = {
+    leftOffset: 0,
+    topOffset: 0,
+  };
+
   render() {
     const {
+      children,
       flyoutIsOpen,
       innerRef,
       isResizing,
       isCollapsed,
+      leftOffset,
       productNavWidth,
       onExpandStart,
       onExpandEnd,
       onCollapseStart,
       onCollapseEnd,
+      topOffset,
     } = this.props;
     return (
       <ResizeTransition
@@ -53,10 +62,11 @@ export default class PageContent extends PureComponent<PageProps> {
           <PageWrapper
             disableInteraction={isResizing || isTransitioning(transitionState)}
             innerRef={innerRef}
-            offset={GLOBAL_NAV_WIDTH}
+            leftOffset={leftOffset}
+            topOffset={topOffset}
             style={transitionStyle}
           >
-            {this.props.children}
+            {children}
           </PageWrapper>
         )}
       </ResizeTransition>
