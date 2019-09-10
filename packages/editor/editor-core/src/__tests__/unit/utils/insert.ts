@@ -150,6 +150,61 @@ describe('@atlaskit/editor-core/utils insert', () => {
       });
 
       describe('horizontal rule', () => {
+        describe('input rule (--- command)', () => {
+          it('empty paragraph', () => {
+            const { editorView, sel } = editor(doc(p('{<>}')));
+            insertText(editorView, '---', sel);
+            expect(editorView.state).toEqualDocumentAndSelection(
+              doc(hr(), '{<|gap>}'),
+            );
+          });
+
+          it('before text', () => {
+            const { editorView, sel } = editor(doc(p('{<>}onetwo')));
+            insertText(editorView, '---', sel);
+            expect(editorView.state).toEqualDocumentAndSelection(
+              doc(hr(), '{<|gap>}', p('onetwo')),
+            );
+          });
+
+          describe('within invalid parent', () => {
+            it('start of the first line', () => {
+              const { editorView, sel } = editor(
+                doc(panel()(p('{<>}onetwo'), p('three'))),
+              );
+              insertText(editorView, '---', sel);
+              expect(editorView.state).toEqualDocumentAndSelection(
+                doc(hr(), '{<|gap>}', panel()(p('onetwo'), p('three'))),
+              );
+            });
+
+            it('start of the last line', () => {
+              const { editorView, sel } = editor(
+                doc(panel()(p('onetwo'), p('{<>}three'))),
+              );
+              insertText(editorView, '---', sel);
+              expect(editorView.state).toEqualDocumentAndSelection(
+                doc(
+                  panel()(p('onetwo')),
+                  hr(),
+                  '{<|gap>}',
+                  panel()(p('three')),
+                ),
+              );
+            });
+
+            it('start of the last line (empty paragraph)', () => {
+              const { editorView, sel } = editor(
+                doc(panel()(p('onetwo'), p('three'), p('{<>}'))),
+              );
+              insertText(editorView, '---', sel);
+              expect(editorView.state).toEqualDocumentAndSelection(
+                doc(panel()(p('onetwo'), p('three'), p()), hr(), '{<|gap>}'),
+              );
+            });
+          });
+        });
+
         [
           {
             insertMethod: 'toolbar',
@@ -248,7 +303,7 @@ describe('@atlaskit/editor-core/utils insert', () => {
                 );
               });
 
-              it('start of first line (empty)', () => {
+              it.skip('start of first line (empty)', () => {
                 const editorInstance = editor(
                   doc(panel()(p('{<>}'), p('onetwo'), p('three'))),
                 );
