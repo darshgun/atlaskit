@@ -3,6 +3,8 @@ import {
   StatusDefinition,
   DateDefinition,
   MentionAttributes,
+  CardAttributes,
+  UrlType,
 } from '@atlaskit/adf-schema';
 
 enum ContentType {
@@ -12,6 +14,10 @@ enum ContentType {
   DATE = 15,
   STATUS = 20,
   LINK = 25,
+}
+
+interface CompareOptions {
+  getInlineCardTextFromStore(attrs: CardAttributes): string | null; // null means that could not find the title
 }
 
 interface NodeMetaGenerator<Type, Value> {
@@ -32,7 +38,10 @@ function getLinkMark(node: PMNode): Mark | null {
   return linkMark || null;
 }
 
-function getMetaFromNode(node: PMNode): NodeMeta | null {
+function getMetaFromNode(
+  node: PMNode,
+  options: CompareOptions,
+): NodeMeta | null {
   const firstChild = node.firstChild;
   if (!firstChild) {
     return null;
@@ -41,7 +50,22 @@ function getMetaFromNode(node: PMNode): NodeMeta | null {
   switch (firstChild.type.name) {
     // Text case
     case 'paragraph': {
-      return getMetaFromNode(firstChild);
+      return getMetaFromNode(firstChild, options);
+    }
+    case 'inlineCard': {
+      const attrs = firstChild.attrs as CardAttributes;
+      const maybeTitle = options.getInlineCardTextFromStore(attrs);
+      if (maybeTitle) {
+        return {
+          type: ContentType.LINK,
+          value: maybeTitle,
+        };
+      }
+      const url = (attrs as UrlType).url;
+      return {
+        type: ContentType.LINK,
+        value: url ? url : '',
+      };
     }
     case 'text': {
       // treat as a link if contain a link
@@ -121,27 +145,26 @@ function compareValue(
  *    0  -> NodeA === NodeB
  *    -1 -> Node A < NodeB
  */
-export const compareNodes = (
-  nodeA: PMNode | null,
-  nodeB: PMNode | null,
-): number => {
-  if (nodeA === null || nodeB === null) {
-    return nodeB === null ? 1 : -1;
-  }
+export const createCompareNodes = (options: CompareOptions) => {
+  return (nodeA: PMNode | null, nodeB: PMNode | null): number => {
+    if (nodeA === null || nodeB === null) {
+      return nodeB === null ? 1 : -1;
+    }
 
-  const metaNodeA = getMetaFromNode(nodeA);
-  const metaNodeB = getMetaFromNode(nodeB);
-  if (metaNodeA === metaNodeB) {
-    return 0;
-  }
+    const metaNodeA = getMetaFromNode(nodeA, options);
+    const metaNodeB = getMetaFromNode(nodeB, options);
+    if (metaNodeA === metaNodeB) {
+      return 0;
+    }
 
-  if (metaNodeA === null || metaNodeB === null) {
-    return metaNodeB === null ? 1 : -1;
-  }
+    if (metaNodeA === null || metaNodeB === null) {
+      return metaNodeB === null ? 1 : -1;
+    }
 
-  if (metaNodeA.type !== metaNodeB.type) {
-    return metaNodeA.type > metaNodeB.type ? 1 : -1;
-  }
+    if (metaNodeA.type !== metaNodeB.type) {
+      return metaNodeA.type > metaNodeB.type ? 1 : -1;
+    }
 
-  return compareValue(metaNodeA.value, metaNodeB.value);
+    return compareValue(metaNodeA.value, metaNodeB.value);
+  };
 };
