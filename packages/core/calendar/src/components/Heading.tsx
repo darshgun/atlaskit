@@ -1,5 +1,3 @@
-// @flow
-
 import ArrowleftIcon from '@atlaskit/icon/glyph/chevron-left-large';
 import ArrowrightIcon from '@atlaskit/icon/glyph/chevron-right-large';
 import { N70 } from '@atlaskit/theme/colors';
@@ -9,12 +7,12 @@ import Btn from './Btn';
 
 import { Heading, MonthAndYear } from '../styled/Heading';
 
-type Props = {|
-  monthLongTitle: string,
-  year: number,
-  handleClickNext?: () => void,
-  handleClickPrev?: () => void,
-|};
+type Props = {
+  monthLongTitle: string;
+  year: number;
+  handleClickNext?: () => void;
+  handleClickPrev?: () => void;
+};
 
 const ArrowLeft = styled.div`
   margin-left: 8px;

@@ -1,24 +1,22 @@
-// @flow
-
 import React, { Component } from 'react';
 import Calendar from '../src';
 
-const log = msg => e => console.log(msg, e);
+const log = (msg: string) => (e: any) => console.log(msg, e);
 
-type State = {
-  disabled: string[],
-  previouslySelected: string[],
-  selected: string[],
-  day: number,
-  month: number,
-  year: number,
-};
+interface State {
+  disabled: string[];
+  previouslySelected: string[];
+  selected: string[];
+  day: number;
+  month: number;
+  year: number;
+}
 
-type DateObj = {
-  day: number,
-  month: number,
-  year: number,
-};
+interface DateObj {
+  day: number;
+  month: number;
+  year: number;
+}
 
 export default class ControlledCalendar extends Component<{}, State> {
   state = {
@@ -61,9 +59,9 @@ export default class ControlledCalendar extends Component<{}, State> {
             display: 'inline-block',
           },
         }}
-        onBlur={log('blur')}
+        onBlur={() => log('blur')}
         onChange={this.handleChange}
-        onFocus={log('focus')}
+        onFocus={() => log('focus')}
         onSelect={this.handleSelect}
       />
     );

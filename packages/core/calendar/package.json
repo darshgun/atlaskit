@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
-  "atlaskit:src": "src/index.js",
+  "atlaskit:src": "src/index.ts",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/date-picker",
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
@@ -26,10 +26,10 @@
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/locale": "^1.0.0",
     "@atlaskit/theme": "^9.1.6",
-    "@babel/runtime": "^7.0.0",
     "calendar-base": "^0.3.0",
     "lodash.pick": "^4.4.0",
-    "react-uid": "^2.2.0"
+    "react-uid": "^2.2.0",
+    "tslib": "^1.9.3"
   },
   "peerDependencies": {
     "react": "^16.8.0",
@@ -46,5 +46,6 @@
     "react-dom": "^16.8.0",
     "react-test-renderer": "^16.8.0",
     "wait-for-expect": "^1.2.0"
-  }
+  },
+  "types": "dist/cjs/index.d.ts"
 }

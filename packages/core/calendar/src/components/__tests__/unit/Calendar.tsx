@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { parse } from 'date-fns';
@@ -12,7 +10,9 @@ import CalendarWithAnalytics, {
 import Date from '../../Date';
 import { DateTd } from '../../../styled/Date';
 
-function createEvent(opts: Object = {}): Object {
+function createEvent(
+  opts: { key?: string } = {},
+): Partial<React.KeyboardEvent> {
   return {
     ...opts,
     preventDefault: jest.fn(),
@@ -20,7 +20,7 @@ function createEvent(opts: Object = {}): Object {
   };
 }
 
-function createEventData(iso, mix = {}) {
+function createEventData(iso: string, mix = {}) {
   const parsed = parse(iso);
   return {
     day: parsed.getDate(),
@@ -32,17 +32,17 @@ function createEventData(iso, mix = {}) {
 }
 
 test('getNextMonth() / getPrevMonth()', () => {
-  const wrapper = shallow(<Calendar month={1} year={2000} />);
+  const wrapper = shallow<Calendar>(<Calendar month={1} year={2000} />);
   expect(wrapper.instance().getNextMonth()).toEqual({ month: 2, year: 2000 });
   expect(wrapper.instance().getPrevMonth()).toEqual({ month: 12, year: 1999 });
 });
 
 cases(
   'handleContainerKeyDown() calls navigate()',
-  ({ name, key }) => {
-    const i = shallow(<Calendar />).instance();
+  ({ name, key }: { name: string; key: string }) => {
+    const i = shallow<Calendar>(<Calendar />).instance();
     i.navigate = jest.fn();
-    i.handleContainerKeyDown(createEvent({ key }));
+    i.handleContainerKeyDown(createEvent({ key }) as React.KeyboardEvent);
     expect(i.navigate).toHaveBeenCalledWith(name);
   },
   [
@@ -55,9 +55,9 @@ cases(
 
 cases(
   'handleContainerKeyDown() - "Arrow*"',
-  ({ iso, name, type }) => {
+  ({ iso, name, type }: { iso: string; name: string; type: string }) => {
     const mockOnChange = jest.fn();
-    const wrapper = shallow(
+    const wrapper = shallow<Calendar>(
       <Calendar onChange={mockOnChange} defaultDay={1} month={1} year={2000} />,
     );
     const container = wrapper.first();
@@ -77,7 +77,7 @@ cases(
 
 cases(
   'handleContainerKeyDown() - "Enter" / " "',
-  ({ key }) => {
+  ({ key }: { key: string }) => {
     const mock = jest.fn();
     const wrapper = shallow(
       <Calendar onSelect={mock} day={1} month={1} year={2000} />,
@@ -156,16 +156,16 @@ test('handleContainerFocus()', () => {
 });
 
 test('refContainer()', () => {
-  const wrapper = mount(<Calendar />);
+  const wrapper = mount<Calendar>(<Calendar />);
   expect(wrapper.instance().container).toBeInstanceOf(HTMLDivElement);
 });
 
 test('focus()', () => {
-  const wrapper = mount(<Calendar />);
+  const wrapper = mount<Calendar>(<Calendar />);
   const instance = wrapper.instance();
-  instance.container.focus = jest.fn();
+  instance.container!.focus = jest.fn();
   instance.focus();
-  expect(instance.container.focus).toHaveBeenCalledTimes(1);
+  expect(instance.container!.focus).toHaveBeenCalledTimes(1);
 });
 
 describe('CalendarWithAnalytics', () => {
@@ -174,8 +174,10 @@ describe('CalendarWithAnalytics', () => {
     jest.spyOn(global.console, 'error');
   });
   afterEach(() => {
-    global.console.warn.mockRestore();
-    global.console.error.mockRestore();
+    /* eslint-disable no-console */
+    (console.warn as jest.Mock).mockRestore();
+    (console.error as jest.Mock).mockRestore();
+    /* eslint-disable no-console */
   });
 
   it('should mount without errors', () => {

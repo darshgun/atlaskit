@@ -1,20 +1,16 @@
-// @flow
-
 import { shallow } from 'enzyme';
 import React from 'react';
 import DateComponent from '../../Date';
-import { DateDiv, DateTd } from '../../../styled/Date';
+import { DateDiv, DateTd, DateProps } from '../../../styled/Date';
 
-const create = props => {
-  const day: number = 15;
-  const month: number = 1;
-  const year: number = 2017;
-  return shallow(
-    <DateComponent month={month} year={year} {...props}>
-      {day}
+const create = (
+  props: { disabled?: boolean; onClick?: (e: any) => unknown } = {},
+) =>
+  shallow(
+    <DateComponent month={1} year={2017} {...props}>
+      {15}
     </DateComponent>,
   );
-};
 
 const dummyOnClickProp = jest.fn();
 
@@ -50,7 +46,7 @@ test('should call onClick prop when date is enabled (default scenario)', () => {
 });
 
 test('DateDiv props', () => {
-  const div = props =>
+  const div = (props?: DateProps) =>
     create(props)
       .find(DateDiv)
       .props();

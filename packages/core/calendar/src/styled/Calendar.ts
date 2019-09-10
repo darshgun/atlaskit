@@ -1,7 +1,3 @@
-// @flow
-
-/* eslint no-confusing-arrow: 0 */
-
 import styled, { css } from 'styled-components';
 import { themed } from '@atlaskit/theme/components';
 import { N0, N700, N200, text } from '@atlaskit/theme/colors';

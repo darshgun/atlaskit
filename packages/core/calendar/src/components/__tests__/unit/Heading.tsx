@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -7,7 +5,12 @@ import Btn from '../../Btn';
 import Heading from '../../Heading';
 import { MonthAndYear } from '../../../styled/Heading';
 
-const PredefinedHeading = (props: Object) => (
+interface PredefinedHeadingProps {
+  handleClickNext?: () => void;
+  handleClickPrev?: () => void;
+}
+
+const PredefinedHeading = (props: PredefinedHeadingProps) => (
   <Heading monthLongTitle="January" year={2000} {...props} />
 );
 

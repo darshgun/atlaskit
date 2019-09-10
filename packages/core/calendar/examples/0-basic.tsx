@@ -1,9 +1,7 @@
-// @flow
-
 import React from 'react';
 import Calendar from '../src';
 
-const log = msg => e => console.log(msg, e);
+const log = (msg: string) => (e: any) => console.log(msg, e);
 
 export default () => (
   <Calendar
@@ -18,9 +16,9 @@ export default () => (
         display: 'inline-block',
       },
     }}
-    onBlur={log('blur')}
-    onChange={log('change')}
-    onFocus={log('focus')}
-    onSelect={log('select')}
+    onBlur={() => log('blur')}
+    onChange={() => log('change')}
+    onFocus={() => log('focus')}
+    onSelect={() => log('select')}
   />
 );
