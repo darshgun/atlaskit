@@ -12,7 +12,6 @@ import {
   isDifferentIdentifier,
   isImageRepresentationReady,
   addFileAttrsToUrl,
-  MediaFileAttrs,
 } from '@atlaskit/media-client';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';

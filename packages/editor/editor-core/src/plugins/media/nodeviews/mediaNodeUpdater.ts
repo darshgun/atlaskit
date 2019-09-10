@@ -292,39 +292,38 @@ export class MediaNodeUpdater {
     }
 
     const currentCollectionName = mediaProvider.uploadParams.collection;
-    const { contextId } = mediaAttrs;
+    const { contextId, id, collection, height, width } = mediaAttrs;
     const uploadMediaClientConfig = await getUploadMediaClientConfigFromMediaProvider(
       mediaProvider,
     );
-    if (!uploadMediaClientConfig) {
+    if (
+      !uploadMediaClientConfig ||
+      !uploadMediaClientConfig.getAuthFromContext
+    ) {
       return;
     }
     const mediaClient = getMediaClient({
       mediaClientConfig: uploadMediaClientConfig,
     });
+    const auth = await uploadMediaClientConfig.getAuthFromContext(contextId);
+    const source = {
+      id,
+      collection,
+      authProvider: () => Promise.resolve(auth),
+    };
+    const destination = {
+      collection: currentCollectionName,
+      authProvider: uploadMediaClientConfig.authProvider,
+      occurrenceKey: uuidV4(),
+    };
+    const mediaFile = await mediaClient.file.copyFile(source, destination);
 
-    if (uploadMediaClientConfig.getAuthFromContext) {
-      const auth = await uploadMediaClientConfig.getAuthFromContext(contextId);
-      const { id, collection, height, width } = mediaAttrs;
-      const source = {
-        id,
-        collection,
-        authProvider: () => Promise.resolve(auth),
-      };
-      const destination = {
-        collection: currentCollectionName,
-        authProvider: uploadMediaClientConfig.authProvider,
-        occurrenceKey: uuidV4(),
-      };
-      const mediaFile = await mediaClient.file.copyFile(source, destination);
-
-      replaceExternalMedia(pos + 1, {
-        id: mediaFile.id,
-        collection: currentCollectionName,
-        height,
-        width,
-      })(this.props.view.state, this.props.view.dispatch);
-    }
+    replaceExternalMedia(pos + 1, {
+      id: mediaFile.id,
+      collection: currentCollectionName,
+      height,
+      width,
+    })(this.props.view.state, this.props.view.dispatch);
   };
 
   copyNode = async () => {

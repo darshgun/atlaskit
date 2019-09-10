@@ -4,7 +4,6 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
 import {
-  ProviderFactory,
   ImageLoaderProps,
   withImageLoader,
   ContextIdentifierProvider,

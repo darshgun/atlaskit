@@ -1,5 +1,7 @@
+const mediaBlobUrlIdentifier = 'media-blob-url';
+
 export const isMediaBlobUrl = (url: string): boolean => {
-  return url.indexOf('media-blob-url=true') > -1;
+  return url.indexOf(`${mediaBlobUrlIdentifier}=true`) > -1;
 };
 
 export interface MediaFileAttrs {
@@ -47,25 +49,36 @@ export const getAttrsFromUrl = (
   };
 };
 
-// TODO: we might need to encode url values
+export const objectToQueryString = (json: {
+  [key: string]: string | number | boolean | undefined;
+}): string => {
+  return Object.keys(json)
+    .filter(attrName => typeof json[attrName] !== 'undefined')
+    .map(key => {
+      const value = json[key];
+      if (typeof value === 'undefined') {
+        return;
+      }
+
+      return `${encodeURIComponent(key)}=${encodeURIComponent(
+        value.toString(),
+      )}`;
+    })
+    .join('&');
+};
+
 export const addFileAttrsToUrl = (
   url: string,
   fileAttrs: MediaFileAttrs,
 ): string => {
   const mediaIdentifierAttr = {
-    'media-blob-url': 'true',
+    [mediaBlobUrlIdentifier]: 'true',
   };
-  const mergedAttrs: { [key: string]: string | number | undefined } = {
+  const mergedAttrs = {
     ...mediaIdentifierAttr,
     ...fileAttrs,
   };
-  const queryAttrs = Object.keys(mergedAttrs)
-    .map(attrName => {
-      const value = mergedAttrs[attrName];
-      return value ? `${attrName}=${value}` : undefined;
-    })
-    .filter(attr => !!attr)
-    .join('&');
+  const queryAttrs = objectToQueryString(mergedAttrs);
 
   // we can't use '?' separator for blob url params
   return `${url}#${queryAttrs}`;

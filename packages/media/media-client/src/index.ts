@@ -135,4 +135,5 @@ export {
   getAttrsFromUrl,
   addFileAttrsToUrl,
   MediaFileAttrs,
+  objectToQueryString,
 } from './utils/url';

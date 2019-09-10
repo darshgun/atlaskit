@@ -106,12 +106,11 @@ export default class MediaSingleNode extends Component<
           await mediaNodeUpdater.copyNodeFromBlobUrl(this.props.getPos());
         } catch (e) {
           await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
-          return;
         }
       } else {
         await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
-        return;
       }
+      return;
     }
 
     const contextId = mediaNodeUpdater.getCurrentContextId();
