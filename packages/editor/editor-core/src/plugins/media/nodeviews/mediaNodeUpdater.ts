@@ -283,16 +283,23 @@ export class MediaNodeUpdater {
     if (!attrs || attrs.type !== 'external') {
       return;
     }
-
     const { url } = attrs;
     const mediaAttrs = getAttrsFromUrl(url);
     const mediaProvider = await this.props.mediaProvider;
     if (!mediaProvider || !mediaProvider.uploadParams || !mediaAttrs) {
       return;
     }
-
     const currentCollectionName = mediaProvider.uploadParams.collection;
-    const { contextId, id, collection, height, width } = mediaAttrs;
+    const {
+      contextId,
+      id,
+      collection,
+      height,
+      width,
+      mimeType,
+      name,
+      size,
+    } = mediaAttrs;
     const uploadMediaClientConfig = await getUploadMediaClientConfigFromMediaProvider(
       mediaProvider,
     );
@@ -323,6 +330,9 @@ export class MediaNodeUpdater {
       collection: currentCollectionName,
       height,
       width,
+      __fileName: name,
+      __fileMimeType: mimeType,
+      __fileSize: size,
     })(this.props.view.state, this.props.view.dispatch);
   };
 

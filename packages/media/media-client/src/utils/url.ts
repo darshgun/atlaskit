@@ -15,7 +15,7 @@ export interface MediaFileAttrs {
   height?: number;
 }
 
-const getNumberFromParam = (
+const getNumberFromParams = (
   params: URLSearchParams,
   name: keyof MediaFileAttrs,
 ): number | undefined => {
@@ -24,6 +24,18 @@ const getNumberFromParam = (
   return typeof value === 'string' && !isNaN(parseInt(value))
     ? parseInt(value)
     : undefined;
+};
+
+const getStringFromParams = (
+  params: URLSearchParams,
+  name: keyof MediaFileAttrs,
+): string | undefined => {
+  const value = params.get(name);
+  if (!value) {
+    return;
+  }
+
+  return decodeURIComponent(value);
 };
 
 export const getAttrsFromUrl = (
@@ -44,8 +56,11 @@ export const getAttrsFromUrl = (
     id,
     contextId,
     collection,
-    height: getNumberFromParam(params, 'height'),
-    width: getNumberFromParam(params, 'width'),
+    height: getNumberFromParams(params, 'height'),
+    width: getNumberFromParams(params, 'width'),
+    size: getNumberFromParams(params, 'size'),
+    name: getStringFromParams(params, 'name'),
+    mimeType: getStringFromParams(params, 'mimeType'),
   };
 };
 
