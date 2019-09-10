@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/locale",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Utility functions for handling localization",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
