@@ -1,0 +1,1 @@
+[ED-7651] Fix request for classList on SVGElements when trying to add new row or column on tables (IE11 patch)
