@@ -1,0 +1,1 @@
+Provided better description for popup types
