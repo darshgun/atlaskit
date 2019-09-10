@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
-import { analyticsClient } from '@atlaskit/editor-test-helpers';
+import { analyticsClient } from '@atlaskit/editor-test-helpers/src/analytics-client-mock';
 import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import Renderer, { Renderer as BaseRenderer } from '../../../ui/Renderer';
 import { RendererAppearance } from '../../../ui/Renderer/types';
