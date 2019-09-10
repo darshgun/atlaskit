@@ -10,6 +10,8 @@ import {
   li,
   code_block,
   mediaSingle,
+  insertText,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 import { safeInsert } from '../../../utils/insert';
 import { insertMediaSingleNode } from '../../../plugins/media/utils/media-single';
@@ -118,10 +120,8 @@ describe('@atlaskit/editor-core/utils insert', () => {
         });
 
         describe('within invalid parent', () => {
-          it('start of first line', () => {
-            const { editorView } = editor(
-              doc(panel()(p('{<>}onetwo'), p('three'))),
-            );
+          it('start of paragraph', () => {
+            const { editorView } = editor(doc(panel()(p('{<>}onetwo'))));
             insertDummyMedia(editorView);
 
             expect(editorView.state.doc).toEqualDocument(
@@ -129,19 +129,17 @@ describe('@atlaskit/editor-core/utils insert', () => {
                 mediaSingle({ layout: 'center' })(
                   temporaryMediaWithDimensions(),
                 ),
-                panel()(p('onetwo'), p('three')),
+                panel()(p('onetwo')),
               ),
             );
           });
 
-          it('end of last line', () => {
-            const { editorView } = editor(
-              doc(panel()(p('onetwo'), p('three{<>}'))),
-            );
+          it('end of paragraph', () => {
+            const { editorView } = editor(doc(panel()(p('onetwo'))));
             insertDummyMedia(editorView);
             expect(editorView.state).toEqualDocumentAndSelection(
               doc(
-                panel()(p('onetwo'), p('three')),
+                panel()(p('onetwo')),
                 mediaSingle({ layout: 'center' })(
                   temporaryMediaWithDimensions(),
                 ),
@@ -152,303 +150,396 @@ describe('@atlaskit/editor-core/utils insert', () => {
       });
 
       describe('horizontal rule', () => {
-        it('empty paragraph', () => {
-          const { editorView } = editor(doc(p('{<>}')));
-          safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-          expect(editorView.state).toEqualDocumentAndSelection(
-            doc(hr(), '{<|gap>}'),
-          );
-        });
+        [
+          {
+            insertMethod: 'toolbar',
+            insertAction: ({ editorView }: { editorView: EditorView }) =>
+              safeInsertNode(editorView.state.schema.nodes.rule, editorView),
+          },
+          {
+            insertMethod: 'quick insert',
+            insertAction: ({
+              editorView,
+              sel,
+            }: {
+              editorView: EditorView;
+              sel: number;
+            }) => {
+              insertText(editorView, `/divider`, sel);
+              sendKeyToPm(editorView, 'Enter');
+            },
+          },
+        ].forEach(({ insertMethod, insertAction }) => {
+          describe(insertMethod, () => {
+            it('empty paragraph', () => {
+              const editorInstance = editor(doc(p('{<>}')));
+              insertAction(editorInstance);
+              expect(
+                editorInstance.editorView.state,
+              ).toEqualDocumentAndSelection(doc(hr(), '{<|gap>}'));
+            });
 
-        it('before text', () => {
-          const { editorView } = editor(doc(p('{<>}onetwo')));
-          safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-          expect(editorView.state).toEqualDocumentAndSelection(
-            doc(hr(), '{<|gap>}', p('onetwo')),
-          );
-        });
+            it('before text', () => {
+              const editorInstance = editor(doc(p('{<>}onetwo')));
+              insertAction(editorInstance);
+              expect(
+                editorInstance.editorView.state,
+              ).toEqualDocumentAndSelection(doc(hr(), '{<|gap>}', p('onetwo')));
+            });
 
-        it.skip('within text', () => {
-          const { editorView } = editor(doc(p('one{<>}two')));
-          safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-          expect(editorView.state).toEqualDocumentAndSelection(
-            doc(p('one'), hr(), '{<|gap>}', p('two')),
-          );
-        });
-
-        it('after text', () => {
-          const { editorView } = editor(doc(p('onetwo{<>}')));
-          safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-          expect(editorView.state).toEqualDocumentAndSelection(
-            doc(p('onetwo'), hr(), '{<|gap>}'),
-          );
-        });
-
-        it.skip('within valid parent (layout)', () => {
-          const { editorView } = editor(
-            doc(
-              layoutSection(
-                layoutColumn({ width: 50 })(p('one{<>}two')),
-                layoutColumn({ width: 50 })(p('three')),
-              ),
-            ),
-          );
-
-          safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-          expect(editorView.state).toEqualDocumentAndSelection(
-            doc(
-              layoutSection(
-                layoutColumn({ width: 50 })(
-                  p('one'),
-                  hr(),
-                  '{<|gap>}',
-                  p('two'),
-                ),
-                layoutColumn({ width: 50 })(p('three')),
-              ),
-            ),
-          );
-        });
-
-        describe('within invalid parent', () => {
-          it('start of first line', () => {
-            const { editorView } = editor(
-              doc(panel()(p('{<>}onetwo'), p('three'))),
-            );
-            safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-            expect(editorView.state).toEqualDocumentAndSelection(
-              doc(hr(), '{<|gap>}', panel()(p('onetwo'), p('three'))),
-            );
-          });
-
-          it.skip('middle of line', () => {
-            const { editorView } = editor(
-              doc(panel()(p('one{<>}two'), p('three'))),
-            );
-            safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-            expect(editorView.state).toEqualDocumentAndSelection(
-              doc(
-                panel()(p('one')),
-                hr(),
-                '{<|gap>}',
-                panel()(p('two'), p('three')),
-              ),
-            );
-          });
-
-          it('end of first line', () => {
-            const { editorView } = editor(
-              doc(panel()(p('onetwo{<>}'), p('three'))),
-            );
-            safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-            expect(editorView.state).toEqualDocumentAndSelection(
-              doc(panel()(p('onetwo')), hr(), '{<|gap>}', panel()(p('three'))),
-            );
-          });
-
-          it('start of last line', () => {
-            const { editorView } = editor(
-              doc(panel()(p('onetwo'), p('{<>}three'))),
-            );
-            safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-            expect(editorView.state).toEqualDocumentAndSelection(
-              doc(panel()(p('onetwo')), hr(), '{<|gap>}', panel()(p('three'))),
-            );
-          });
-
-          it('end of last line', () => {
-            const { editorView } = editor(
-              doc(panel()(p('onetwo'), p('three{<>}'))),
-            );
-            safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-            expect(editorView.state).toEqualDocumentAndSelection(
-              doc(panel()(p('onetwo'), p('three')), hr(), '{<|gap>}'),
-            );
-          });
-
-          it('empty paragraph', () => {
-            const { editorView } = editor(doc(panel()(p('{<>}'))));
-            safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-            expect(editorView.state).toEqualDocumentAndSelection(
-              doc(panel()(p('')), hr(), '{<|gap>}'),
-            );
-          });
-        });
-
-        it.skip('within nested parents', () => {
-          const { editorView } = editor(
-            doc(panel()(ul(li(code_block()('one{<>}two'))))),
-          );
-          safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-          expect(editorView.state).toEqualDocumentAndSelection(
-            doc(
-              panel()(ul(li(code_block()('one')))),
-              hr(),
-              '{<|gap>}',
-              panel()(ul(li(code_block()('two')))),
-            ),
-          );
-        });
-
-        describe('list', () => {
-          describe('single', () => {
-            it('start of single line', () => {
-              const { editorView } = editor(doc(ul(li(p('{<>}onetwo')))));
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(hr(), '{<|gap>}', ul(li(p('onetwo')))),
+            it.skip('within text', () => {
+              const editorInstance = editor(doc(p('one{<>}two')));
+              insertAction(editorInstance);
+              expect(
+                editorInstance.editorView.state,
+              ).toEqualDocumentAndSelection(
+                doc(p('one'), hr(), '{<|gap>}', p('two')),
               );
             });
 
-            it.skip('middle of single line', () => {
-              const { editorView } = editor(doc(ul(li(p('one{<>}two')))));
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(ul(li(p('one'))), hr(), '{<|gap>}', ul(li(p('two')))),
+            it('after text', () => {
+              const editorInstance = editor(doc(p('onetwo {<>}')));
+              insertAction(editorInstance);
+              expect(
+                editorInstance.editorView.state,
+              ).toEqualDocumentAndSelection(
+                doc(p('onetwo '), hr(), '{<|gap>}'),
               );
             });
 
-            it('end of single line', () => {
-              const { editorView } = editor(doc(ul(li(p('onetwo{<>}')))));
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(ul(li(p('onetwo'))), hr(), '{<|gap>}'),
-              );
-            });
-          });
-
-          describe('simple', () => {
-            it('start of first line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('{<>}one')), li(p('two')), li(p('three')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
+            it.skip('within valid parent (layout)', () => {
+              const editorInstance = editor(
                 doc(
-                  hr(),
-                  '{<|gap>}',
-                  ul(li(p('one')), li(p('two')), li(p('three'))),
+                  layoutSection(
+                    layoutColumn({ width: 50 })(p('one{<>}two')),
+                    layoutColumn({ width: 50 })(p('three')),
+                  ),
+                ),
+              );
+
+              insertAction(editorInstance);
+              expect(
+                editorInstance.editorView.state,
+              ).toEqualDocumentAndSelection(
+                doc(
+                  layoutSection(
+                    layoutColumn({ width: 50 })(
+                      p('one'),
+                      hr(),
+                      '{<|gap>}',
+                      p('two'),
+                    ),
+                    layoutColumn({ width: 50 })(p('three')),
+                  ),
                 ),
               );
             });
 
-            it.skip('middle of first line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('on{<>}e')), li(p('two')), li(p('three')))),
+            describe('within invalid parent', () => {
+              it('start of first line', () => {
+                const editorInstance = editor(
+                  doc(panel()(p('{<>}onetwo'), p('three'))),
+                );
+                insertAction(editorInstance);
+                expect(
+                  editorInstance.editorView.state,
+                ).toEqualDocumentAndSelection(
+                  doc(hr(), '{<|gap>}', panel()(p('onetwo'), p('three'))),
+                );
+              });
+
+              it('start of first line (empty)', () => {
+                const editorInstance = editor(
+                  doc(panel()(p('{<>}'), p('onetwo'), p('three'))),
+                );
+                insertAction(editorInstance);
+                expect(
+                  editorInstance.editorView.state,
+                ).toEqualDocumentAndSelection(
+                  doc(
+                    hr(),
+                    '{<|gap>}',
+                    panel()(p(''), p('onetwo'), p('three')),
+                  ),
+                );
+              });
+
+              it.skip('middle of line', () => {
+                const editorInstance = editor(
+                  doc(panel()(p('one{<>}two'), p('three'))),
+                );
+                insertAction(editorInstance);
+                expect(
+                  editorInstance.editorView.state,
+                ).toEqualDocumentAndSelection(
+                  doc(
+                    panel()(p('one')),
+                    hr(),
+                    '{<|gap>}',
+                    panel()(p('two'), p('three')),
+                  ),
+                );
+              });
+
+              it('end of first line', () => {
+                const editorInstance = editor(
+                  doc(panel()(p('onetwo {<>}'), p('three'))),
+                );
+                insertAction(editorInstance);
+                expect(
+                  editorInstance.editorView.state,
+                ).toEqualDocumentAndSelection(
+                  doc(
+                    panel()(p('onetwo ')),
+                    hr(),
+                    '{<|gap>}',
+                    panel()(p('three')),
+                  ),
+                );
+              });
+
+              it('start of last line', () => {
+                const editorInstance = editor(
+                  doc(panel()(p('onetwo'), p('{<>}three'))),
+                );
+                insertAction(editorInstance);
+                expect(
+                  editorInstance.editorView.state,
+                ).toEqualDocumentAndSelection(
+                  doc(
+                    panel()(p('onetwo')),
+                    hr(),
+                    '{<|gap>}',
+                    panel()(p('three')),
+                  ),
+                );
+              });
+
+              it('end of last line', () => {
+                const editorInstance = editor(
+                  doc(panel()(p('onetwo'), p('three {<>}'))),
+                );
+                insertAction(editorInstance);
+                expect(
+                  editorInstance.editorView.state,
+                ).toEqualDocumentAndSelection(
+                  doc(panel()(p('onetwo'), p('three ')), hr(), '{<|gap>}'),
+                );
+              });
+
+              it('empty paragraph', () => {
+                const editorInstance = editor(doc(panel()(p('{<>}'))));
+                insertAction(editorInstance);
+                expect(
+                  editorInstance.editorView.state,
+                ).toEqualDocumentAndSelection(
+                  doc(panel()(p('')), hr(), '{<|gap>}'),
+                );
+              });
+            });
+
+            it.skip('within nested parents', () => {
+              const editorInstance = editor(
+                doc(panel()(ul(li(code_block()('one{<>}two'))))),
               );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
+              insertAction(editorInstance);
+              expect(
+                editorInstance.editorView.state,
+              ).toEqualDocumentAndSelection(
                 doc(
-                  ul(li(p('on'))),
+                  panel()(ul(li(code_block()('one')))),
                   hr(),
                   '{<|gap>}',
-                  ul(li(p('e')), li(p('two')), li(p('three'))),
+                  panel()(ul(li(code_block()('two')))),
                 ),
               );
             });
 
-            it('end of first line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('one{<>}')), li(p('two')), li(p('three')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(
-                  ul(li(p('one'))),
-                  hr(),
-                  '{<|gap>}',
-                  ul(li(p('two')), li(p('three'))),
-                ),
-              );
-            });
+            describe('list', () => {
+              describe('single', () => {
+                it('start of single line', () => {
+                  const editorInstance = editor(doc(ul(li(p('{<>}onetwo')))));
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(hr(), '{<|gap>}', ul(li(p('onetwo')))),
+                  );
+                });
 
-            it('start of middle line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('one')), li(p('{<>}two')), li(p('three')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(
-                  ul(li(p('one'))),
-                  hr(),
-                  '{<|gap>}',
-                  ul(li(p('two')), li(p('three'))),
-                ),
-              );
-            });
+                it.skip('middle of single line', () => {
+                  const editorInstance = editor(doc(ul(li(p('one{<>}two')))));
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(ul(li(p('one'))), hr(), '{<|gap>}', ul(li(p('two')))),
+                  );
+                });
 
-            it.skip('middle of middle line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('one')), li(p('tw{<>}o')), li(p('three')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(
-                  ul(li(p('one')), li(p('tw'))),
-                  hr(),
-                  '{<|gap>}',
-                  ul(li(p('o')), li(p('three'))),
-                ),
-              );
-            });
+                it('end of single line', () => {
+                  const editorInstance = editor(doc(ul(li(p('onetwo {<>}')))));
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(ul(li(p('onetwo '))), hr(), '{<|gap>}'),
+                  );
+                });
+              });
 
-            it('end of middle line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('one')), li(p('two{<>}')), li(p('three')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(
-                  ul(li(p('one')), li(p('two'))),
-                  hr(),
-                  '{<|gap>}',
-                  ul(li(p('three'))),
-                ),
-              );
-            });
+              describe('simple', () => {
+                it('start of first line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('{<>}one')), li(p('two')), li(p('three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('one')), li(p('two')), li(p('three'))),
+                    ),
+                  );
+                });
 
-            it('start of last line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('one')), li(p('two')), li(p('{<>}three')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(
-                  ul(li(p('one')), li(p('two'))),
-                  hr(),
-                  '{<|gap>}',
-                  ul(li(p('three'))),
-                ),
-              );
-            });
+                it.skip('middle of first line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('on{<>}e')), li(p('two')), li(p('three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('on'))),
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('e')), li(p('two')), li(p('three'))),
+                    ),
+                  );
+                });
 
-            it.skip('middle of end line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('one')), li(p('two')), li(p('thr{<>}ee')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(
-                  ul(li(p('one')), li(p('two')), li(p('thr'))),
-                  hr(),
-                  '{<|gap>}',
-                  ul(li(p('ee'))),
-                ),
-              );
-            });
+                it('end of first line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('one {<>}')), li(p('two')), li(p('three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('one '))),
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('two')), li(p('three'))),
+                    ),
+                  );
+                });
 
-            it('end of end line', () => {
-              const { editorView } = editor(
-                doc(ul(li(p('one')), li(p('two')), li(p('three{<>}')))),
-              );
-              safeInsertNode(editorView.state.schema.nodes.rule, editorView);
-              expect(editorView.state).toEqualDocumentAndSelection(
-                doc(
-                  ul(li(p('one')), li(p('two')), li(p('three'))),
-                  hr(),
-                  '{<|gap>}',
-                ),
-              );
+                it('start of middle line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('one')), li(p('{<>}two')), li(p('three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('one'))),
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('two')), li(p('three'))),
+                    ),
+                  );
+                });
+
+                it.skip('middle of middle line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('one')), li(p('tw{<>}o')), li(p('three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('one')), li(p('tw'))),
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('o')), li(p('three'))),
+                    ),
+                  );
+                });
+
+                it('end of middle line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('one')), li(p('two {<>}')), li(p('three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('one')), li(p('two '))),
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('three'))),
+                    ),
+                  );
+                });
+
+                it('start of last line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('one')), li(p('two')), li(p('{<>}three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('one')), li(p('two'))),
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('three'))),
+                    ),
+                  );
+                });
+
+                it.skip('middle of end line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('one')), li(p('two')), li(p('thr{<>}ee')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('one')), li(p('two')), li(p('thr'))),
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('ee'))),
+                    ),
+                  );
+                });
+
+                it('end of end line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('one')), li(p('two')), li(p('three {<>}')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      ul(li(p('one')), li(p('two')), li(p('three '))),
+                      hr(),
+                      '{<|gap>}',
+                    ),
+                  );
+                });
+              });
             });
           });
         });
