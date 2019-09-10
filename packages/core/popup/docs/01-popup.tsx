@@ -29,7 +29,7 @@ export default md`
   ${(
     <Props
       heading="Popup Props"
-      props={require('!!extract-react-types-loader!./PopupTypeExport')}
+      props={require('!!extract-react-types-loader!../src/Popup')}
     />
   )}
 `;
