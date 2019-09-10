@@ -51,7 +51,7 @@ describe('render', () => {
     const noop = () => {};
     const div = document.createElement('div');
 
-    const destroy = render(
+    const renderedSwitcher = render(
       {
         appearance: 'standalone',
         cloudId: 'some-cloud-id',
@@ -67,7 +67,7 @@ describe('render', () => {
 
     expect(unmountComponentAtNodeMock).toHaveBeenCalledTimes(0);
 
-    destroy();
+    renderedSwitcher.destroy();
 
     expect(unmountComponentAtNodeMock).toHaveBeenCalledWith(div);
   });

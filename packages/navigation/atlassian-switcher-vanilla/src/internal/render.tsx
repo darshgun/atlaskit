@@ -5,11 +5,15 @@ import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import AtlassianSwitcher from '@atlaskit/atlassian-switcher';
 import { AtlassianSwitcherProps } from '@atlaskit/atlassian-switcher/types';
 
+export type InstanceHandlers = {
+  destroy: () => void;
+};
+
 export const render = (
   switcherProps: AtlassianSwitcherProps,
   analyticsListener: (event: UIAnalyticsEvent, channel?: string) => void,
   container: HTMLElement,
-) => {
+): InstanceHandlers => {
   ReactDOM.render(
     <IntlProvider>
       <AnalyticsListener channel="*" onEvent={analyticsListener}>
@@ -19,7 +23,9 @@ export const render = (
     container,
   );
 
-  return () => {
-    ReactDOM.unmountComponentAtNode(container);
+  return {
+    destroy: () => {
+      ReactDOM.unmountComponentAtNode(container);
+    },
   };
 };
