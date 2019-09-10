@@ -1,5 +1,13 @@
 # @atlaskit/datetime-picker
 
+## 8.0.17
+
+### Patch Changes
+
+- [patch][8784191ef6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8784191ef6):
+
+  Date, Time, and DateTime pickers now correctly clear their value when the Backspace or Delete key is pressed
+
 ## 8.0.16
 
 ### Patch Changes
