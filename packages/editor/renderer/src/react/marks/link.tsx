@@ -10,7 +10,7 @@ const StyledAnchor = styled.a`
 
   & > .${mediaSingleClassName} {
     opacity: 1;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.2s ease-in-out;
   }
 
   &:hover {
