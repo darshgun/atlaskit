@@ -10,6 +10,8 @@ export interface TaskListDefinition {
   /**
    * @minItems 1
    */
+  // the following is for stage-0 schemas:
+  // content: Array<TaskItemNode | TaskListDefinition>;
   content: Array<TaskItemNode>;
   attrs: {
     localId: string;
@@ -23,13 +25,13 @@ export const taskListSelector = `[data-node-type="${name}"]`;
 export const taskList: NodeSpec = {
   group: 'block',
   defining: true,
-  content: 'taskItem+',
+  content: 'taskItem+ (taskItem|taskList)*',
   attrs: {
     localId: { default: '' },
   },
   parseDOM: [
     {
-      tag: `ol${taskListSelector}`,
+      tag: `div${taskListSelector}`,
 
       // Default priority is 50. We normaly don't change this but since this node type is
       // also used by ordered-list we need to make sure that we run this parser first.
@@ -48,6 +50,6 @@ export const taskList: NodeSpec = {
       style: 'list-style: none; padding-left: 0',
     };
 
-    return ['ol', attrs, 0];
+    return ['div', attrs, 0];
   },
 };

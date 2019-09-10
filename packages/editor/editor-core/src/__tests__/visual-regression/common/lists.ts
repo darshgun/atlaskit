@@ -160,7 +160,8 @@ describe('Lists adjacent floated media', () => {
 
 async function visualiseListItemBoundingBoxes(page: any) {
   const css = `
-      li > * {
+      li > *,
+      .taskItemView-content-wrap > * {
         /*
         Visualise the bounding box of list item content.
         Using green to ensure it doesn't clash with the red
