@@ -1,0 +1,1 @@
+ED-7680 Prevent insert row or column when selection is not over a table
