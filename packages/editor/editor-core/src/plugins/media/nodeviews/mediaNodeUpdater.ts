@@ -289,8 +289,11 @@ export class MediaNodeUpdater {
     }
     const { url } = attrs;
     const mediaAttrs = getAttrsFromUrl(url);
+    if (!mediaAttrs) {
+      return;
+    }
     const mediaProvider = await this.props.mediaProvider;
-    if (!mediaProvider || !mediaProvider.uploadParams || !mediaAttrs) {
+    if (!mediaProvider || !mediaProvider.uploadParams) {
       return;
     }
     const currentCollectionName = mediaProvider.uploadParams.collection;
