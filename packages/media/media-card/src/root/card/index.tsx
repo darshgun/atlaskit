@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
 
-import { GasPayload } from '@atlaskit/analytics-gas-types';
 import {
   AnalyticsContext,
   UIAnalyticsEvent,
   withAnalyticsEvents,
   withAnalyticsContext,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import {
@@ -37,9 +37,13 @@ import { InlinePlayer } from '../inlinePlayer';
 import {
   getUIAnalyticsContext,
   getBaseAnalyticsContext,
+  createAndFireCustomMediaEvent,
 } from '../../utils/analytics';
 
-export class CardBase extends Component<CardProps, CardState> {
+export class CardBase extends Component<
+  CardProps & WithAnalyticsEventsProps,
+  CardState
+> {
   private hasBeenMounted: boolean = false;
 
   subscription?: Subscription;
@@ -78,17 +82,19 @@ export class CardBase extends Component<CardProps, CardState> {
     }
   };
 
-  fireAnalytics = () => {
+  fireAnalytics = async () => {
     const { createAnalyticsEvent, identifier } = this.props;
-    if (createAnalyticsEvent && identifier) {
-      createAnalyticsEvent({
+
+    createAndFireCustomMediaEvent(
+      {
         eventType: 'ui',
         action: 'copied',
         actionSubject: 'file',
         actionSubjectId:
-          identifier.mediaItemType === 'file' ? identifier.id : 'url',
-      } as GasPayload).fire('media');
-    }
+          identifier.mediaItemType === 'file' ? await identifier.id : 'url',
+      },
+      createAnalyticsEvent,
+    );
   };
 
   componentDidMount() {

@@ -953,7 +953,7 @@ describe('Card', () => {
     expect(actualEvent).toBeDefined();
   });
 
-  it('should fire copied file event on copy if inside a selection', () => {
+  it('should fire copied file event on copy if inside a selection', async () => {
     const mediaClient = fakeMediaClient() as any;
     const onEvent = jest.fn();
     window.getSelection = jest.fn().mockReturnValue({
@@ -965,6 +965,7 @@ describe('Card', () => {
       </AnalyticsListener>,
     );
     document.dispatchEvent(new Event('copy'));
+    await nextTick();
     expect(onEvent).toBeCalledWith(
       expect.objectContaining({
         payload: {
@@ -972,6 +973,9 @@ describe('Card', () => {
           actionSubject: 'file',
           actionSubjectId: 'some-random-id',
           eventType: 'ui',
+          attributes: {
+            packageName: '@atlaskit/media-card',
+          },
         },
         context: [
           {
