@@ -54,6 +54,7 @@ export { JSONDocNode, JSONNode };
 
 export { filterContentByType } from './filter';
 
+export { containsClassName } from './dom';
 export const ZeroWidthSpace = '\u200b';
 
 function validateNode(_node: Node): boolean {

@@ -19,10 +19,12 @@ const LayoutManagerWithNavigationUIController = withNavigationUIController(
 export default class ConnectedLayoutManager extends Component<ConnectedLayoutManagerProps> {
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
-    experimental_flyoutOnHover: false,
     experimental_alternateFlyoutBehaviour: false,
+    experimental_flyoutOnHover: false,
     experimental_fullWidthFlyout: false,
     experimental_hideNavVisuallyOnCollapse: false,
+    experimental_horizontalGlobalNav: false,
+    topOffset: 0,
   };
 
   render() {

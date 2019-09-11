@@ -1,4 +1,5 @@
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { WithTheme } from './theme/types';
 
 export interface TriggerXFlowCallback {
   (
@@ -57,6 +58,8 @@ export enum Feature {
   disableHeadings = 'disableHeadings',
   xflow = 'xflow',
   isDiscoverMoreForEveryoneEnabled = 'isDiscoverMoreForEveryoneEnabled',
+  // EMCEE stands for Embedded Marketplace with in the product
+  isEmceeLinkEnabled = 'isEmceeLinkEnabled',
 }
 
 export enum MultiVariateFeature {
@@ -168,3 +171,11 @@ export interface SwitcherChildItem {
   label: string;
   avatar: string | null;
 }
+
+export type AtlassianSwitcherProps = WithTheme & {
+  product: string;
+  cloudId?: string;
+  triggerXFlow?: TriggerXFlowCallback;
+  onDiscoverMoreClicked?: DiscoverMoreCallback;
+  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
+} & Partial<FeatureFlagProps>;

@@ -28,7 +28,6 @@ import * as text from './__fixtures__/text.adf.json';
 
 import * as image from './__fixtures__/image.adf.json';
 import * as placeholder from './__fixtures__/placeholder.adf.json';
-import * as action from './__fixtures__/action.adf.json';
 import * as annotation from './__fixtures__/annotation.adf.json';
 import * as breakout from './__fixtures__/breakout.adf.json';
 import { MetaDataContext } from '../interfaces';
@@ -86,11 +85,6 @@ describe('Renderer - EmailSerializer', () => {
 
   it('should render nothing for placeholder node', () => {
     const { result } = render(placeholder);
-    expect(result).toMatchSnapshot('html');
-  });
-
-  it('should apply no mark for action marks', () => {
-    const { result } = render(action);
     expect(result).toMatchSnapshot('html');
   });
 

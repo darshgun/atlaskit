@@ -157,7 +157,7 @@ export class UploadServiceImpl implements UploadService {
         };
 
         const controller = this.createUploadController();
-        const observable = mediaClient.file.upload(
+        const sourceFileObservable = mediaClient.file.upload(
           uploadableFile,
           controller,
           uploadableUpfrontIds,
@@ -181,7 +181,7 @@ export class UploadServiceImpl implements UploadService {
           },
         };
 
-        const subscription = observable.subscribe({
+        const subscription = sourceFileObservable.subscribe({
           next: state => {
             if (state.status === 'uploading') {
               this.onFileProgress(cancellableFileUpload, state.progress);
@@ -203,8 +203,7 @@ export class UploadServiceImpl implements UploadService {
 
         this.cancellableFilesUploads[id] = cancellableFileUpload;
         // Save observable in the cache
-        // We want to save the observable without collection too, due consumers using cards without collection.
-        getFileStreamsCache().set(id, observable);
+        getFileStreamsCache().set(id, sourceFileObservable);
 
         return cancellableFileUpload;
       },

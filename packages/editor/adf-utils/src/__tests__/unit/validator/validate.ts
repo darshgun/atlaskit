@@ -30,10 +30,6 @@ describe('validate', () => {
       return;
     }
     valid.forEach((file: any) => {
-      // Don't test Application Card
-      if (file.name.indexOf('applicationCard') === 0) {
-        return;
-      }
       it(`validates '${file.name}'`, async () => {
         // TODO: remove ignore list once this issue is fixed.
         // Added because of expect.hasAssertions()

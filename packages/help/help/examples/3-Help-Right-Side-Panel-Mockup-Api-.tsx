@@ -10,7 +10,7 @@ import {
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 import { getArticle, searchArticle } from './utils/mockData';
-import { ButtonsWrapper } from './utils/styled';
+import { ButtonsWrapper, FooterContent } from './utils/styled';
 
 import Help, { ArticleFeedback } from '../src';
 
@@ -134,7 +134,14 @@ export default class extends React.Component {
                     onWasHelpfulNoButtonClick={
                       this.articleWasHelpfulNoButtonClick
                     }
-                  />
+                    footer={
+                      <FooterContent>
+                        <span>Footer</span>
+                      </FooterContent>
+                    }
+                  >
+                    Default Content
+                  </Help>
                 </LocaleIntlProvider>
               </RightSidePanel>
             </Page>

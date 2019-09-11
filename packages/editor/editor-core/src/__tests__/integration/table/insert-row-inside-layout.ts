@@ -16,7 +16,7 @@ import { clickFirstCell } from '../../__helpers/page-objects/_table';
 
 BrowserTestCase(
   'Should scale remaining columns when adding a new column preventing from going to overflow',
-  { skip: [] },
+  { skip: ['ie'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 

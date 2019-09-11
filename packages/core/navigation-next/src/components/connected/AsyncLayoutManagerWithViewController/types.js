@@ -10,6 +10,7 @@ import type {
 import type { ActiveView } from '../../../view-controller/types';
 
 type Dataset = { [name: string]: string | typeof undefined };
+
 export type AsyncLayoutManagerWithViewControllerProps = {|
   ...$Exact<CollapseListeners>,
   ...$Exact<ExperimentalFeatureFlags>,
