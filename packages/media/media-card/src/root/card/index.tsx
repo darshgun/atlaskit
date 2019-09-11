@@ -61,12 +61,7 @@ export class CardBase extends Component<
     isPlayingFile: false,
   };
 
-  wrapperDivRef: React.RefObject<HTMLDivElement>;
-
-  constructor(props: CardProps) {
-    super(props);
-    this.wrapperDivRef = React.createRef();
-  }
+  wrapperDivRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   // so the idea is the following, we add a listener for each of the cards
   // and then check if the triggered listener is from the card in current selection
@@ -405,6 +400,7 @@ export class CardBase extends Component<
         onError={this.onInlinePlayerError}
         onClick={this.onClick}
         selected={selected}
+        wrapperDivRef={this.wrapperDivRef}
       />
     );
   };

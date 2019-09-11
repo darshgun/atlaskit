@@ -29,6 +29,7 @@ export interface InlinePlayerOwnProps {
     event: React.MouseEvent<HTMLDivElement>,
     analyticsEvent?: UIAnalyticsEvent,
   ) => void;
+  wrapperDivRef: React.RefObject<HTMLDivElement>;
 }
 
 export type InlinePlayerProps = InlinePlayerOwnProps & WithAnalyticsEventsProps;
@@ -174,7 +175,7 @@ class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
   };
 
   render() {
-    const { onClick, dimensions, selected } = this.props;
+    const { onClick, dimensions, selected, wrapperDivRef } = this.props;
     const { fileSrc } = this.state;
 
     if (!fileSrc) {
@@ -186,6 +187,7 @@ class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
         style={this.getStyle()}
         selected={selected}
         onClick={onClick}
+        innerRef={wrapperDivRef}
       >
         <InactivityDetector>
           {() => (
