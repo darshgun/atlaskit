@@ -21,9 +21,9 @@ export default md`
 
   ${code`
 import {
-  akSmallDurationMs,
-  akMediumDurationMs,
-  akLargeDurationMs,
+  smallDurationMs,
+  mediumDurationMs,
+  largeDurationMs,
 } from '@atlaskit/motion';
   `}
 
@@ -46,13 +46,13 @@ import {
     <tbody>
       <tr>
         <td><strong>Short distance</strong></td>
-        <td>akSmallDurationMs</td>
-        <td>akMediumDurationMs</td>
+        <td><code>smallDurationMs</code></td>
+        <td><code>mediumDurationMs</code></td>
       </tr>
       <tr>
         <td><strong>Long distance</strong></td>
-        <td>akMediumDurationMs</td>
-        <td>akLargeDurationMs</td>
+        <td><code>mediumDurationMs</code></td>
+        <td><code>largeDurationMs</code></td>
       </tr>
     </tbody>
   </table>
@@ -68,7 +68,7 @@ import {
   <br />
 
   ${code`
-import { akEaseInOut, akEaseIn, akEaseOut } from '@atlaskit/motion';
+import { easeInOut, easeIn, easeOut } from '@atlaskit/motion';
   `}
 
   <br />
@@ -83,9 +83,9 @@ import { akEaseInOut, akEaseIn, akEaseOut } from '@atlaskit/motion';
     <thead>
       <tr>
         <th></th>
-        <th>akEaseInOut</th>
-        <th>akEaseOut</th>
-        <th>akEaseIn</th>
+        <th><code>easeInOut</code></th>
+        <th><code>easeOut</code></th>
+        <th><code>easeIn</code></th>
       </tr>
     </thead>
     <tbody>

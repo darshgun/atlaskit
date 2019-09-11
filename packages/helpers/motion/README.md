@@ -1,6 +1,6 @@
 # Motion
 
-The Atlaskit motion variables, components, mixins, and helpers.
+Atlassian motion variables, components and more.
 
 ## Installation
 
