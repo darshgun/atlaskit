@@ -1,0 +1,1 @@
+[ED-7690] Fix controls markers on tables showing up when allowControls is false
