@@ -134,19 +134,14 @@ async function getPkgInfo(packageName) {
   return allPkgs[0];
 }
 
-async function main({ cwd, packageName }) {
+async function main({ buildIsClean, cwd, packageName }) {
   console.log(`Building ${packageName ? packageName : 'all packages'}...`);
   let pkg;
   if (packageName) {
     pkg = await getPkgInfo(packageName);
   }
-  // Concerns: Most errors are caught and only handled via a console.log/error
-  // TODO: Need to run some clean script to get rid of build artifacts
-  //       current delete:build:artefacts blows too much away
-  //       Or we could make this idempotent by not erroring on existing entry points by default and adding a flag
-  //       that CI runs to perform the check
   console.log('Creating entry point directories...');
-  await createEntryPointsDirectories({ cwd, packageName });
+  await createEntryPointsDirectories({ buildIsClean, cwd, packageName });
   // TODO: Fix up icon package builds that reimplement their own babel cjs
   // TODO: Can JS + TS be parallelised?
   console.log('Building JS packages...');
@@ -162,14 +157,23 @@ async function main({ cwd, packageName }) {
 }
 
 if (require.main === module) {
+  /**
+   * Usage: build.js [packageName]
+   *
+   * Builds `packageName` or all packages if no package name provided
+   *
+   * Flags:
+   *  --build-is-clean Tells the build that the working directory is clean and errors when entry point folders clash with src
+   */
   process.on('SIGINT', () => {
     // We need our own SIGINT handler since concurrently overrides the default one (and doesn't even throw)
     process.exit(2);
   });
   const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
-  // const flags = process.argv.slice(2).filter(a => a.startsWith('--'));
+  const flags = process.argv.slice(2).filter(a => a.startsWith('--'));
   const packageName = args[0] || undefined;
   main({
+    buildIsClean: flags.includes('--build-is-clean'),
     cwd: process.cwd(),
     packageName,
   }).catch(e => {

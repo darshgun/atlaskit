@@ -30,10 +30,13 @@ async function writeEntryPointsPathInPkgJson(
   );
 }
 
-async function createEntryPointsDirWithPkgJson(
-  { cwd, packageName } = { cwd: process.cwd() },
-) {
-  const packages = await getPackagesInfo(cwd);
+async function createEntryPointsDirWithPkgJson({
+  buildIsClean,
+  cwd,
+  packageName,
+}) {
+  const resolvedCwd = cwd || process.cwd();
+  const packages = await getPackagesInfo(resolvedCwd);
   const pkgContents = packages
     .filter(
       pkg =>
@@ -56,31 +59,34 @@ async function createEntryPointsDirWithPkgJson(
           ),
       };
     });
+  const errors = [];
   for (let pkg of pkgContents) {
     for (let pkgFile of pkg.files) {
       const isTs = pkgFile.includes('.ts');
       pkgFile = path.parse(pkgFile).name;
       const entryPointDirName = path.join(pkg.pkgDirPath, pkgFile);
-      try {
-        if (!fs.existsSync(entryPointDirName)) {
-          fs.mkdirSync(entryPointDirName);
-        }
-        const dirContents = fs.readdirSync(entryPointDirName);
-        if (dirContents.length > 1 || dirContents[0] === 'package.json') {
-          throw Error(
-            `Directory:${entryPointDirName} outside of src has the same name: ${pkgFile} as a file in src/ this is not allowed`,
-          );
-        }
-        await writeEntryPointsPathInPkgJson(
-          isTs,
-          pkg,
-          pkgFile,
-          entryPointDirName,
-        );
-      } catch (err) {
-        console.error(err);
+      if (!fs.existsSync(entryPointDirName)) {
+        fs.mkdirSync(entryPointDirName);
       }
+      const dirContents = fs.readdirSync(entryPointDirName);
+      if (
+        buildIsClean &&
+        (dirContents.length > 1 || dirContents[0] === 'package.json')
+      ) {
+        errors.push(
+          `Directory: ${entryPointDirName} outside of src has the same name: ${pkgFile} as a file in src/ this is not allowed`,
+        );
+      }
+      await writeEntryPointsPathInPkgJson(
+        isTs,
+        pkg,
+        pkgFile,
+        entryPointDirName,
+      );
     }
+  }
+  if (errors.length > 0) {
+    throw Error(errors.join('\n'));
   }
 }
 
