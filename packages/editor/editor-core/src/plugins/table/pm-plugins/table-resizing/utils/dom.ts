@@ -104,15 +104,7 @@ export const getResizeCellPos = (
   if (!cells) {
     return null;
   }
-  let colIndex = 0;
-  let cellPos = 0;
-  cells.forEach((cell, cellIndex) => {
-    if ((index === 0 && cellIndex === 0) || index === colIndex) {
-      cellPos = cell.pos;
-    }
-    colIndex += cell.node.attrs.colspan;
-  });
-
+  const cellPos = cells[index].pos;
   if (!lastColumnResizable) {
     const $cell = state.doc.resolve(cellPos);
     const map = TableMap.get($cell.node(-1));
