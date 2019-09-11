@@ -1,1 +1,0 @@
-ED-7682: Fixes copy and pasting a media based emoji from renderer to editor, provide an ID on the image tag.

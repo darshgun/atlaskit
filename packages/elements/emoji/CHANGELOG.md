@@ -1,5 +1,13 @@
 # @atlaskit/emoji
 
+## 62.4.1
+
+### Patch Changes
+
+- [patch][c2ffd0a09a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2ffd0a09a):
+
+  ED-7682: Fixes copy and pasting a media based emoji from renderer to editor, provide an ID on the image tag.
+
 ## 62.4.0
 
 ### Minor Changes
