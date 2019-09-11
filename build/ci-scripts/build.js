@@ -7,6 +7,7 @@ const concurrently = require('concurrently');
 
 const createEntryPointsDirectories = require('./create.entry.points.directories');
 const copyVersion = require('./copy.version');
+const checkDists = require('../utils/sanity-check-file-structure-dist');
 
 async function runCommands(commands, opts = {}) {
   const defaultOpts = {
@@ -69,20 +70,26 @@ async function buildExceptionPackages() {
 }
 
 async function main() {
+  const cwd = process.cwd();
   // Concerns: Most errors are caught and only handled via a console.log/error
   // TODO: Need to run some clean script to get rid of build artifacts
   //       current delete:build:artefacts blows too much away
+  console.log('Creating entry point directories...');
   await createEntryPointsDirectories();
   // TODO: Fix up icon package builds that reimplement their own babel cjs
   // TODO: Can JS + TS be parallelised?
+  console.log('Building JS packages...');
   await buildJSPackages();
   // TODO: Fix up icon package builds that reimplement their own typescript cjs
+  console.log('Building TS packages...');
   await buildTSPackages();
-  // NOTE: We are knowingly moving adf-schema build to exception packages, doesn't seem to be a reason why it should be run in parallel with '--continue-on-error'
+  console.log('Running post-build scripts for packages...');
   await buildExceptionPackages();
+  console.log('Copying version.json...');
   await copyVersion();
-  // yarn check:dists
-  // // SHELL: node ./build/utils/sanity-check-file-structure-dist.js && yarn check:typescript-dists
+  console.log('Checking dists...');
+  await checkDists({ cwd });
+  console.log('Success');
 }
 
 if (require.main === module) {
