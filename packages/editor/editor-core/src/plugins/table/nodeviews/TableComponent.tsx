@@ -206,7 +206,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
           width: this.state.tableContainerWidth,
         }}
         className={classnames(ClassName.TABLE_CONTAINER, {
-          [ClassName.WITH_CONTROLS]: tableActive,
+          [ClassName.WITH_CONTROLS]: allowControls && tableActive,
           [ClassName.HOVERED_DELETE_BUTTON]: isInDanger,
           [ClassName.TABLE_SELECTED]: isTableSelected(view.state.selection),
           'less-padding': width < akEditorMobileBreakoutPoint,
