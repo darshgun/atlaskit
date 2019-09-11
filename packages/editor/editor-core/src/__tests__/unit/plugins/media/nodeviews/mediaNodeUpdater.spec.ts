@@ -90,7 +90,6 @@ describe('MediaNodeUpdater', () => {
         'source-file-id',
         {
           __contextId: 'object-id',
-          contextId: 'object-id',
         },
         true,
       );
@@ -130,6 +129,7 @@ describe('MediaNodeUpdater', () => {
           __fileName: 'some-file',
           __fileMimeType: 'image/jpeg',
           __fileSize: 10,
+          __contextId: 'source-context-id',
         },
         true,
       );
@@ -140,6 +140,7 @@ describe('MediaNodeUpdater', () => {
         attrs: {
           id: 'source-file-id',
           collection: 'source-collection',
+          type: 'file',
         },
       };
       const { mediaNodeUpdater } = setup({
@@ -174,7 +175,6 @@ describe('MediaNodeUpdater', () => {
           __fileMimeType: 'image/jpeg',
           __fileSize: 10,
           __contextId: 'object-id',
-          contextId: 'object-id',
         },
         true,
       );

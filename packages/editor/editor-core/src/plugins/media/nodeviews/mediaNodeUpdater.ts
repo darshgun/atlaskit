@@ -66,7 +66,6 @@ export class MediaNodeUpdater {
       id,
       {
         __contextId: objectId,
-        contextId: objectId,
       },
       this.props.isMediaSingle,
     )(this.props.view.state, this.props.view.dispatch);
@@ -213,18 +212,16 @@ export class MediaNodeUpdater {
 
   async getRemoteDimensions(): Promise<false | RemoteDimensions> {
     const mediaProvider = await this.props.mediaProvider;
-    const { node, mediaPluginOptions } = this.props;
-    const { attrs } = node;
+    const { mediaPluginOptions } = this.props;
+    const attrs = this.getAttrs();
     if (!mediaProvider || !attrs) {
       return false;
     }
-    const { height, type, width } = attrs as
-      | MediaAttributes
-      | ExternalMediaAttributes;
-    if (type === 'external') {
+    const { height, width } = attrs;
+    if (attrs.type === 'external' || !attrs.id) {
       return false;
     }
-    const { id, collection } = attrs as MediaAttributes;
+    const { id, collection } = attrs;
     if (height && width) {
       return false;
     }
