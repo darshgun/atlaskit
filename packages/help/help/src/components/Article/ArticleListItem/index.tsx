@@ -25,11 +25,20 @@ interface Props {
   title: string;
   description: string;
   icon: React.ReactNode;
+  href?: string;
   id: string;
 }
 
 const ArticlesListItem = (props: Props & Analytics) => {
-  const { id, title, description, icon, onClick, createAnalyticsEvent } = props;
+  const {
+    id,
+    title,
+    description,
+    icon,
+    onClick,
+    href,
+    createAnalyticsEvent,
+  } = props;
 
   const handleOnClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -46,7 +55,7 @@ const ArticlesListItem = (props: Props & Analytics) => {
     <ArticlesListItemWrapper
       aria-disabled="false"
       role="button"
-      href=""
+      href={href}
       onClick={handleOnClick}
     >
       <ArticlesListItemTitle>
