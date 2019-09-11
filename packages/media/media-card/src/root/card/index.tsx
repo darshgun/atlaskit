@@ -26,14 +26,14 @@ import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
 import { Subscription } from 'rxjs/Subscription';
 import { IntlProvider } from 'react-intl';
 import { CardAction, CardDimensions, CardProps, CardState } from '../..';
-import { CardView } from '../cardView';
+import { CardView, CardViewBase } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { extendMetadata } from '../../utils/metadata';
 import { isBigger } from '../../utils/dimensionComparer';
 import { getCardStatus } from './getCardStatus';
-import { InlinePlayer } from '../inlinePlayer';
+import { InlinePlayer, InlinePlayerBase } from '../inlinePlayer';
 import {
   getUIAnalyticsContext,
   getBaseAnalyticsContext,
@@ -45,6 +45,7 @@ export class CardBase extends Component<
   CardState
 > {
   private hasBeenMounted: boolean = false;
+  cardRef: React.RefObject<CardViewBase | InlinePlayerBase> = React.createRef();
 
   subscription?: Subscription;
   static defaultProps: Partial<CardProps> = {
@@ -61,19 +62,22 @@ export class CardBase extends Component<
     isPlayingFile: false,
   };
 
-  wrapperDivRef: React.RefObject<HTMLDivElement> = React.createRef();
-
-  // so the idea is the following, we add a listener for each of the cards
-  // and then check if the triggered listener is from the card in current selection
+  // we add a listener for each of the cards on the page
+  // and then check if the triggered listener is from the card
+  // that contains a div in current window.getSelection()
+  // won't work in IE11
   onCopyListener = () => {
-    const selection = window.getSelection();
+    if (typeof window.getSelection === 'function') {
+      const selection = window.getSelection();
 
-    if (
-      this.wrapperDivRef.current instanceof Node &&
-      selection &&
-      selection.containsNode(this.wrapperDivRef.current, true)
-    ) {
-      this.fireAnalytics();
+      if (
+        this.cardRef.current &&
+        this.cardRef.current.divRef.current instanceof Node &&
+        selection &&
+        selection.containsNode(this.cardRef.current.divRef.current, true)
+      ) {
+        this.fireAnalytics();
+      }
     }
   };
 
@@ -400,7 +404,7 @@ export class CardBase extends Component<
         onError={this.onInlinePlayerError}
         onClick={this.onClick}
         selected={selected}
-        wrapperDivRef={this.wrapperDivRef}
+        ref={this.cardRef}
       />
     );
   };
@@ -469,7 +473,7 @@ export class CardBase extends Component<
         progress={progress}
         onRetry={onRetry}
         previewOrientation={previewOrientation}
-        wrapperDivRef={this.wrapperDivRef}
+        ref={this.cardRef}
       />
     );
 
