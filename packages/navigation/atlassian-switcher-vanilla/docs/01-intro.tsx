@@ -3,11 +3,17 @@ import { md, code } from '@atlaskit/docs';
 export default md`
   Use this wrapper if you need to consume the Atlassian Switcher on a non react app.
 
-  ## Usage:
+  ## Usage
+
+  #### Bootstrap
+
+  Initialize the Atlassian Switcher with the settings for your product and an analytics handler.
+
+  The analytics handler should handle communication with your servers to send the events.
+
   ${code`
 import prepareSwitcher from '@atlaskit/atlassian-switcher-vanilla';
 
-// initialize the switcher
 const switcher = prepareSwitcher({
   product: 'opsgenie',
   disableCustomLinks: true,
@@ -23,22 +29,42 @@ const switcher = prepareSwitcher({
       event.payload,
       event.context,
   )
+
+  // send the events to your server here
 });
+`}
 
-// prefetch bundles and api calls
-switcher.prefetch();
+  *Documentation for the settings available can be found at the main [Atlassian Switcher package](/packages/navigation/atlassian-switcher).*
 
-// get a reference to the element where the switcher will be rendered
-const container = document.getElementById('switcher-container');
+  #### Rendering
 
-// render the switcher when you are ready.
-// save the returned value so you can destroy it later.
-const destroy = switcher.renderAt(container);
+  When you are ready, render the switcher on the appropriate container. Save the result of this
+  method so you can destroy the switcher later.
 
-// destroy it so event handlers and other resources associated
-// with the switcher can be cleaned up.
-destroy();
+  ${code`
+  const renderedSwitcher = switcher.renderAt(container);
   `}
+
+  #### Clean up
+
+  To safely remove the switcher, removing the DOM nodes and event handlers associated to it, call
+  the destroy method included in the result of the \`renderAt\` call.
+
+  ${code`
+  renderedSwitcher.destroy();
+  `}
+
+  #### Performance
+
+  The switcher requires lots of static assets and api calls to be loaded before it can be shown. In order to avoid delays, we
+  expose a \`prefetch\` method that you can call when the intent to open the switcher is clear (i.e: when the trigger is
+  hovered just before the click).
+
+  ${code`
+    triggerBtn.onmouseenter = () => switcher.prefetch();
+  `}
+
+  *Prefetch will call our APIs so please do not abuse it*
 
   ## API details
 
