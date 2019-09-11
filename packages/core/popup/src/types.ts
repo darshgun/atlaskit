@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, FC } from 'react';
 import { Placement } from '@atlaskit/popper';
+import { string } from 'prop-types';
 
 export type ReactRef = React.Ref<HTMLElement> | HTMLElement | null;
 
@@ -41,9 +42,9 @@ export type PopupProps = {
   trigger: FC<TriggerProps>;
   /** Whether to lock the scrolling behavior of the page while the popup is open */
   lockBodyScroll?: boolean;
-  /** The Container displayed in the portal that wrapps the content. Use to override the default white background with rounded corners*/
-  popupComponent?: FC;
-  /** Optional override for the Z-index for the react portal */
+  /** The container displayed in the portal that wrapps the content. Use to override the default white background with rounded corners */
+  popupComponent?: FC<WrapperContainerProps>;
+  /** Optional override for the z-index for the react portal */
   zIndex?: number;
 };
 
@@ -56,4 +57,13 @@ export type FocusManagerHook = {
 
 export type RepositionOnUpdateProps = {
   scheduleUpdate(): void;
+};
+
+export type WrapperContainerProps = {
+  id?: string;
+  'data-testid'?: string;
+  ref: any;
+  style?: object;
+  'data-placement': Placement;
+  tabIndex: number;
 };
