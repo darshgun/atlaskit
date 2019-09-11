@@ -2,7 +2,6 @@ import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
 import {
   findParentDomRefOfType,
   findParentNodeOfType,
-  findTable,
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 
@@ -32,7 +31,7 @@ import {
   handleMouseDown,
   whenTableInFocus,
 } from '../event-handlers';
-import { findControlsHoverDecoration, updateResizeHandles } from '../utils';
+import { findControlsHoverDecoration } from '../utils';
 import { fixTables } from '../transforms';
 import { TableCssClassName as ClassName } from '../types';
 import reducer from '../reducer';
@@ -123,7 +122,6 @@ export const createPlugin = (
           const { selection } = state;
           const pluginState = getPluginState(state);
           let tableRef;
-          let tableNode;
           if (pluginState.editorHasFocus) {
             const parent = findParentDomRefOfType(
               state.schema.nodes.table,
@@ -132,15 +130,9 @@ export const createPlugin = (
             if (parent) {
               tableRef = (parent as HTMLElement).querySelector('table');
             }
-
-            tableNode = findTable(state.selection);
           }
           if (pluginState.tableRef !== tableRef) {
             setTableRef(tableRef)(state, dispatch);
-          }
-
-          if (pluginState.tableNode !== tableNode) {
-            updateResizeHandles(tableRef);
           }
 
           if (pluginState.editorHasFocus && pluginState.tableRef) {
