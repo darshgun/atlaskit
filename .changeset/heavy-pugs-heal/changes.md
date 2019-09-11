@@ -1,1 +1,1 @@
-initial commit
+Initial release of @atlaskit/motion
