@@ -70,10 +70,27 @@ export const safeInsert = (content: InsertableContent, position?: number) => (
     : $from;
 
   let lookDirection: LookDirection | undefined;
-  if ($insertPos.pos === $insertPos.end()) {
-    lookDirection = 'after';
-  } else if ($insertPos.pos === $insertPos.start()) {
-    lookDirection = 'before';
+  const insertPosEnd = $insertPos.end();
+  const insertPosStart = $insertPos.start();
+
+  if (isEmptyParagraph($insertPos.parent)) {
+    if (
+      tr.doc.resolve($insertPos['after']()).parent.lastChild ===
+      $insertPos.parent
+    ) {
+      lookDirection = 'after';
+    } else if (
+      tr.doc.resolve($insertPos['before']()).parent.firstChild ===
+      $insertPos.parent
+    ) {
+      lookDirection = 'before';
+    }
+  } else {
+    if ($insertPos.pos === insertPosEnd) {
+      lookDirection = 'after';
+    } else if ($insertPos.pos === insertPosStart) {
+      lookDirection = 'before';
+    }
   }
 
   if (!lookDirection) {
