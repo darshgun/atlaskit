@@ -56,11 +56,9 @@ This command will be used to record when atlaskit publish new versions of their 
 
 To develop on this locally, you'll need to first install the peer dependency temporarily by running the following inside the package:
 
-TODO: AFP update
-
 ```sh
 $ npm i @atlassiansox/analytics-node-client --no-save
-$ yarn copy:version
+$ bolt build @atlaskit/dependency-version-analytics
 ```
 
 You then have two options:
@@ -82,8 +80,6 @@ This will run the built version of the tool that will be published to npm. It wi
 
 After each dev change,
 
-TODO: AFP update
-
-1. Run `yarn build:typescript:cli` outside the package
+1. Run `bolt build @atlaskit/dependency-version-analytics` outside the package
 2. Run `yalc publish` inside the package
 3. Run `yalc add '@atlaskit/dependency-version-analytics'` inside the product repo of your choosing

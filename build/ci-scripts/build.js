@@ -98,7 +98,6 @@ async function standardTsCommands({ cwd, pkg }) {
 }
 
 async function buildTSPackages({ cwd, pkg }) {
-  // TODO: Can cli + esm be parallelised?
   return runCommands(
     [
       ...(await standardTsCommands({ cwd, pkg })),
@@ -142,11 +141,8 @@ async function main({ buildIsClean, cwd, packageName }) {
   }
   console.log('Creating entry point directories...');
   await createEntryPointsDirectories({ buildIsClean, cwd, packageName });
-  // TODO: Fix up icon package builds that reimplement their own babel cjs
-  // TODO: Can JS + TS be parallelised?
   console.log('Building JS packages...');
   await buildJSPackages({ cwd, pkg });
-  // // TODO: Fix up icon package builds that reimplement their own typescript cjs
   console.log('Building TS packages...');
   await buildTSPackages({ cwd, pkg });
   console.log('Running post-build scripts for packages...');
