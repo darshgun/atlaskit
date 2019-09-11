@@ -1,3 +1,4 @@
+import URLSearchParams from 'url-search-params';
 const mediaBlobUrlIdentifier = 'media-blob-url';
 
 export const isMediaBlobUrl = (url: string): boolean => {
