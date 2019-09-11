@@ -228,8 +228,8 @@ export const insertMediaFromMediaPicker = async (
 
 export const insertMedia = async (
   browser: any,
-  filenames?: Array<string>,
-  fileSelector?: string,
+  filenames = ['one.svg'],
+  fileSelector = 'div=%s',
 ) => {
   const openMediaPopup = `[aria-label="${
     insertBlockMessages.filesAndImages.defaultMessage

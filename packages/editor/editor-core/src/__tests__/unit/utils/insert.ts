@@ -65,6 +65,18 @@ describe('@atlaskit/editor-core/utils insert', () => {
       testCollectionName,
     );
 
+  describe('whitelist', () => {
+    it('should return null if content is not in the whitelist', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const result = safeInsert(
+        editorView.state.schema.nodes.codeBlock.createChecked(),
+        editorView.state.selection.from,
+      )(editorView.state.tr);
+      expect(result).toBeNull();
+      expect(editorView.state.doc).toEqualDocument(doc(p('{<>}')));
+    });
+  });
+
   describe('leaf', () => {
     describe('block', () => {
       describe('media single', () => {
