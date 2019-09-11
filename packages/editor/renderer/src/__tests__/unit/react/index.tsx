@@ -1,7 +1,6 @@
 import { mount, shallow } from 'enzyme';
 import { ReactSerializer } from '../../../index';
 import { defaultSchema as schema } from '@atlaskit/adf-schema';
-import { Action } from '../../../react/marks';
 import { Heading } from '../../../react/nodes';
 import { Emoji } from '../../../react/nodes';
 
@@ -150,35 +149,6 @@ describe('Renderer - ReactSerializer', () => {
       expect(sortedMarks[0].type.name).toEqual('strong');
       expect(sortedMarks[1].type.name).toEqual('strike');
       expect(sortedMarks[2].type.name).toEqual('underline');
-    });
-  });
-
-  describe('getMarkProps', () => {
-    it('should pass eventHandlers to mark component', () => {
-      const eventHandlers = {};
-      const reactSerializer = ReactSerializer.fromSchema(schema, {
-        eventHandlers,
-      });
-      const reactDoc = mount(reactSerializer.serializeFragment(
-        docFromSchema.content,
-      ) as any);
-      expect(reactDoc.find(Action).prop('eventHandlers')).toEqual(
-        eventHandlers,
-      );
-      reactDoc.unmount();
-    });
-
-    it('should pass key from attrs as markKey', () => {
-      const eventHandlers = {};
-      const reactSerializer = ReactSerializer.fromSchema(schema, {
-        eventHandlers,
-      });
-      const reactDoc = mount(reactSerializer.serializeFragment(
-        docFromSchema.content,
-      ) as any);
-      expect(reactDoc.find(Action).prop('markKey')).toEqual('test-action-key');
-      expect(reactDoc.find(Action).key()).not.toEqual('test-action-key');
-      reactDoc.unmount();
     });
   });
 

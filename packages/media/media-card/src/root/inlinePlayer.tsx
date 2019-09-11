@@ -12,14 +12,26 @@ import { InlinePlayerWrapper } from './styled';
 import { CardDimensions, defaultImageCardDimensions } from '..';
 import { CardLoading } from '../utils/lightCards/cardLoading';
 
-export interface InlinePlayerProps {
+import {
+  withAnalyticsEvents,
+  WithAnalyticsEventsProps,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+import { createAndFireMediaEvent } from '../utils/analytics';
+
+export interface InlinePlayerOwnProps {
   identifier: FileIdentifier;
   mediaClient: MediaClient;
   dimensions: CardDimensions;
   selected?: boolean;
   onError?: (error: Error) => void;
-  onClick?: () => void;
+  readonly onClick?: (
+    event: React.MouseEvent<HTMLDivElement>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => void;
 }
+
+export type InlinePlayerProps = InlinePlayerOwnProps & WithAnalyticsEventsProps;
 
 export interface InlinePlayerState {
   fileSrc?: string;
@@ -44,12 +56,13 @@ export const getPreferredVideoArtifact = (
   return undefined;
 };
 
-export class InlinePlayer extends Component<
+export class InlinePlayerBase extends Component<
   InlinePlayerProps,
   InlinePlayerState
 > {
   subscription?: Subscription;
   state: InlinePlayerState = {};
+  divRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   static defaultProps = {
     dimensions: defaultImageCardDimensions,
@@ -105,7 +118,6 @@ export class InlinePlayer extends Component<
 
   setFileSrc = (fileSrc: string) => {
     this.setState({ fileSrc });
-    window.setTimeout(this.unsubscribe, 0);
   };
 
   // Tries to use the binary artifact to provide something to play while the video is still processing
@@ -178,6 +190,7 @@ export class InlinePlayer extends Component<
         style={this.getStyle()}
         selected={selected}
         onClick={onClick}
+        innerRef={this.divRef}
       >
         <InactivityDetector>
           {() => (
@@ -194,3 +207,12 @@ export class InlinePlayer extends Component<
     );
   }
 }
+
+export const InlinePlayer = withAnalyticsEvents({
+  onClick: createAndFireMediaEvent({
+    eventType: 'ui',
+    action: 'clicked',
+    actionSubject: 'mediaCard',
+    actionSubjectId: 'mediaCardInlinePlayer',
+  }),
+})(InlinePlayerBase);

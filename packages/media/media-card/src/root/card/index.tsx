@@ -1,6 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
+
+import {
+  AnalyticsContext,
+  UIAnalyticsEvent,
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import {
   MediaClient,
   FileDetails,
@@ -8,42 +17,34 @@ import {
   FileIdentifier,
   isPreviewableType,
   isFileIdentifier,
-  isExternalImageIdentifier,
   isDifferentIdentifier,
   isImageRepresentationReady,
 } from '@atlaskit/media-client';
-import DownloadIcon from '@atlaskit/icon/glyph/download';
-import {
-  AnalyticsContext,
-  UIAnalyticsEventInterface,
-} from '@atlaskit/analytics-next';
+import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
+
 import { Subscription } from 'rxjs/Subscription';
 import { IntlProvider } from 'react-intl';
-import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
-import {
-  CardAnalyticsContext,
-  CardAction,
-  CardDimensions,
-  CardProps,
-  CardState,
-  CardEvent,
-} from '../..';
-import { CardView } from '../cardView';
+import { CardAction, CardDimensions, CardProps, CardState } from '../..';
+import { CardView, CardViewBase } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
-import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { extendMetadata } from '../../utils/metadata';
 import { isBigger } from '../../utils/dimensionComparer';
 import { getCardStatus } from './getCardStatus';
-import { InlinePlayer } from '../inlinePlayer';
+import { InlinePlayer, InlinePlayerBase } from '../inlinePlayer';
+import {
+  getUIAnalyticsContext,
+  getBaseAnalyticsContext,
+  createAndFireCustomMediaEvent,
+} from '../../utils/analytics';
 
-export class Card extends Component<CardProps, CardState> {
+export class CardBase extends Component<
+  CardProps & WithAnalyticsEventsProps,
+  CardState
+> {
   private hasBeenMounted: boolean = false;
-  private onClickPayload?: {
-    result: CardEvent;
-    analyticsEvent?: UIAnalyticsEventInterface;
-  };
+  cardRef: React.RefObject<CardViewBase | InlinePlayerBase> = React.createRef();
 
   subscription?: Subscription;
   static defaultProps: Partial<CardProps> = {
@@ -60,13 +61,48 @@ export class Card extends Component<CardProps, CardState> {
     isPlayingFile: false,
   };
 
+  // we add a listener for each of the cards on the page
+  // and then check if the triggered listener is from the card
+  // that contains a div in current window.getSelection()
+  // won't work in IE11
+  onCopyListener = () => {
+    if (typeof window.getSelection === 'function') {
+      const selection = window.getSelection();
+
+      if (
+        this.cardRef.current &&
+        this.cardRef.current.divRef.current instanceof Node &&
+        selection &&
+        selection.containsNode(this.cardRef.current.divRef.current, true)
+      ) {
+        this.fireAnalytics();
+      }
+    }
+  };
+
+  fireAnalytics = async () => {
+    const { createAnalyticsEvent, identifier } = this.props;
+
+    createAndFireCustomMediaEvent(
+      {
+        eventType: 'ui',
+        action: 'copied',
+        actionSubject: 'file',
+        actionSubjectId:
+          identifier.mediaItemType === 'file' ? await identifier.id : 'url',
+      },
+      createAnalyticsEvent,
+    );
+  };
+
   componentDidMount() {
     const { identifier, mediaClient } = this.props;
     this.hasBeenMounted = true;
     this.subscribe(identifier, mediaClient);
+    document.addEventListener('copy', this.onCopyListener);
   }
 
-  componentWillReceiveProps(nextProps: CardProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: CardProps) {
     const {
       mediaClient: currentMediaClient,
       identifier: currentIdentifier,
@@ -102,11 +138,14 @@ export class Card extends Component<CardProps, CardState> {
     this.hasBeenMounted = false;
     this.unsubscribe();
     this.releaseDataURI();
+    document.removeEventListener('copy', this.onCopyListener);
   }
 
   releaseDataURI = () => {
+    const { identifier } = this.props;
     const { dataURI } = this.state;
-    if (dataURI) {
+    // we don't want to release external previews, since it might be reused later on
+    if (dataURI && identifier.mediaItemType !== 'external-image') {
       URL.revokeObjectURL(dataURI);
     }
   };
@@ -262,20 +301,11 @@ export class Card extends Component<CardProps, CardState> {
     this.subscribe(identifier, mediaClient);
   };
 
-  get analyticsContext(): CardAnalyticsContext {
-    const { identifier } = this.props;
-    const id = isExternalImageIdentifier(identifier)
-      ? 'external-image'
-      : identifier.id;
-
-    return getBaseAnalyticsContext('Card', id);
-  }
-
   get actions(): CardAction[] {
     const { actions = [], identifier } = this.props;
     const { status, metadata } = this.state;
     if (isFileIdentifier(identifier) && status === 'failed-processing') {
-      actions.unshift({
+      const downloadAction = {
         label: 'Download',
         icon: <DownloadIcon label="Download" />,
         handler: async () =>
@@ -284,39 +314,27 @@ export class Card extends Component<CardProps, CardState> {
             (metadata as FileDetails).name,
             identifier.collectionName,
           ),
-      });
+      };
+      return [downloadAction, ...actions];
+    } else {
+      return actions;
     }
-
-    return actions;
   }
 
-  onClick = async (
-    result: CardEvent,
-    analyticsEvent?: UIAnalyticsEventInterface,
+  onCardViewClick = async (
+    event: React.MouseEvent<HTMLDivElement>,
+    analyticsEvent?: UIAnalyticsEvent,
   ) => {
-    const {
-      identifier,
-      onClick,
-      useInlinePlayer,
-      shouldOpenMediaViewer,
-    } = this.props;
-    const { mediaItemDetails } = result;
+    const { identifier, useInlinePlayer, shouldOpenMediaViewer } = this.props;
+    const { metadata } = this.state;
 
-    this.onClickPayload = {
-      result,
-      analyticsEvent,
-    };
+    this.onClick(event, analyticsEvent);
 
-    if (onClick) {
-      onClick(result, analyticsEvent);
-    }
-    if (!mediaItemDetails) {
+    if (!metadata) {
       return;
     }
 
-    const isVideo =
-      mediaItemDetails &&
-      (mediaItemDetails as FileDetails).mediaType === 'video';
+    const isVideo = metadata && (metadata as FileDetails).mediaType === 'video';
     if (useInlinePlayer && isVideo) {
       this.setState({
         isPlayingFile: true,
@@ -351,24 +369,18 @@ export class Card extends Component<CardProps, CardState> {
     });
   };
 
-  onInlinePlayerClick = () => {
-    const { onClick } = this.props;
-    if (onClick && this.onClickPayload) {
-      onClick(this.onClickPayload.result, this.onClickPayload.analyticsEvent);
-    }
-  };
-
   renderInlinePlayer = () => {
     const { identifier, mediaClient, dimensions, selected } = this.props;
 
     return (
       <InlinePlayer
         mediaClient={mediaClient}
-        dimensions={dimensions}
+        dimensions={dimensions || {}}
         identifier={identifier as FileIdentifier}
         onError={this.onInlinePlayerError}
-        onClick={this.onInlinePlayerClick}
+        onClick={this.onClick}
         selected={selected}
+        ref={this.cardRef}
       />
     );
   };
@@ -379,7 +391,7 @@ export class Card extends Component<CardProps, CardState> {
     });
   };
 
-  renderMediaViewer = () => {
+  renderMediaViewer = (): React.ReactPortal | undefined => {
     const { mediaViewerSelectedItem } = this.state;
     const { mediaClient, identifier, mediaViewerDataSource } = this.props;
     if (!mediaViewerSelectedItem) {
@@ -413,36 +425,32 @@ export class Card extends Component<CardProps, CardState> {
       dimensions,
       selectable,
       selected,
-      onMouseEnter,
       onSelectChange,
       disableOverlay,
-      identifier,
     } = this.props;
     const { progress, metadata, dataURI, previewOrientation } = this.state;
-    const { analyticsContext, onRetry, onClick, actions } = this;
+    const { onRetry, onCardViewClick, actions, onMouseEnter } = this;
     const status = getCardStatus(this.state, this.props);
     const card = (
-      <AnalyticsContext data={analyticsContext}>
-        <CardView
-          status={status}
-          metadata={metadata}
-          dataURI={dataURI}
-          mediaItemType={identifier.mediaItemType}
-          appearance={appearance}
-          resizeMode={resizeMode}
-          dimensions={dimensions}
-          actions={actions}
-          selectable={selectable}
-          selected={selected}
-          onClick={onClick}
-          onMouseEnter={onMouseEnter}
-          onSelectChange={onSelectChange}
-          disableOverlay={disableOverlay}
-          progress={progress}
-          onRetry={onRetry}
-          previewOrientation={previewOrientation}
-        />
-      </AnalyticsContext>
+      <CardView
+        status={status}
+        metadata={metadata}
+        dataURI={dataURI}
+        appearance={appearance}
+        resizeMode={resizeMode}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
+        onClick={onCardViewClick}
+        onMouseEnter={onMouseEnter}
+        onSelectChange={onSelectChange}
+        disableOverlay={disableOverlay}
+        progress={progress}
+        onRetry={onRetry}
+        previewOrientation={previewOrientation}
+        ref={this.cardRef}
+      />
     );
 
     return isLazy ? (
@@ -454,21 +462,34 @@ export class Card extends Component<CardProps, CardState> {
     );
   };
 
-  render() {
+  renderContent() {
     const { isPlayingFile, mediaViewerSelectedItem } = this.state;
-    const content = isPlayingFile
+    const innerContent = isPlayingFile
       ? this.renderInlinePlayer()
       : this.renderCard();
 
     return this.context.intl ? (
-      content
+      innerContent
     ) : (
       <IntlProvider locale="en">
         <>
-          {content}
+          {innerContent}
           {mediaViewerSelectedItem ? this.renderMediaViewer() : null}
         </>
       </IntlProvider>
+    );
+  }
+
+  render() {
+    const { metadata } = this.state;
+    return (
+      /* 
+          Second context provides data to be merged with any other context down in the tree and the event's payload.
+          This data is usually not available at the time of firing the event, though it is needed to be sent to the backend.
+       */
+      <AnalyticsContext data={getUIAnalyticsContext(metadata)}>
+        {this.renderContent()}
+      </AnalyticsContext>
     );
   }
 
@@ -478,4 +499,39 @@ export class Card extends Component<CardProps, CardState> {
       this.subscribe(identifier, mediaClient);
     });
   };
+
+  onClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => {
+    const { onClick } = this.props;
+    const { metadata } = this.state;
+    if (onClick) {
+      const cardEvent = {
+        event,
+        mediaItemDetails: metadata,
+      };
+      onClick(cardEvent, analyticsEvent);
+    }
+  };
+
+  onMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
+    const { onMouseEnter } = this.props;
+    const { metadata } = this.state;
+    if (onMouseEnter) {
+      const cardEvent = {
+        event,
+        mediaItemDetails: metadata,
+      };
+      onMouseEnter(cardEvent);
+    }
+  };
 }
+
+/* 
+  This Context provides data needed to build packageHierarchy in Atlaskit Analytics Listener and Media Analytics Listener.
+  This data is not added to the final GASv3 payload 
+*/
+export const Card: React.ComponentType<CardProps> = withAnalyticsContext(
+  getBaseAnalyticsContext(),
+)(withAnalyticsEvents()(CardBase));

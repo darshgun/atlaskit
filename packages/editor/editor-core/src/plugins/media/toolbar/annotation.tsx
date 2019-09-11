@@ -65,6 +65,7 @@ export const messages = defineMessages({
 type AnnotationToolbarProps = {
   viewMediaClientConfig: MediaClientConfig;
   id: string;
+  collection?: string;
   intl: InjectedIntl;
   view?: EditorView;
 };
@@ -82,7 +83,12 @@ export class AnnotationToolbar extends React.Component<AnnotationToolbarProps> {
     const mediaClient = getMediaClient({
       mediaClientConfig: this.props.viewMediaClientConfig,
     });
-    const state = await mediaClient.file.getCurrentState(this.props.id);
+    if (!this.props.id) {
+      return;
+    }
+    const state = await mediaClient.file.getCurrentState(this.props.id, {
+      collectionName: this.props.collection,
+    });
 
     if (state && state.status !== 'error' && state.mediaType === 'image') {
       this.setState({
@@ -143,6 +149,7 @@ export const renderAnnotationButton = (
         key={idx}
         viewMediaClientConfig={pluginState.mediaClientConfig!}
         id={selectedContainer.firstChild!.attrs.id}
+        collection={selectedContainer.firstChild!.attrs.collection}
         view={view}
         intl={intl}
       />

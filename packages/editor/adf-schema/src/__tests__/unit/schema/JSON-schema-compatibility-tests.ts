@@ -39,7 +39,6 @@ const unsupportedNodes = [
 ];
 
 const unsupportedMarks = [
-  'action',
   'breakout',
   'alignment',
   'indentation',

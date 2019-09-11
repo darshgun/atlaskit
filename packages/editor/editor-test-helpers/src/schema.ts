@@ -12,7 +12,6 @@ export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, Schema };
 export default createSchema({
   nodes: [
     'doc',
-    'applicationCard',
     'paragraph',
     'text',
     'bulletList',
@@ -69,6 +68,7 @@ export default createSchema({
     'breakout',
     'alignment',
     'indentation',
+    'annotation',
   ],
   customNodeSpecs: {
     plain: { ...paragraph, content: 'text*', marks: '' },

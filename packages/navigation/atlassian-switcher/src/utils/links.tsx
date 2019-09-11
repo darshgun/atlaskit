@@ -4,6 +4,7 @@ import { FormattedMessage as FormattedMessageNamespace } from 'react-intl';
 import DiscoverFilledGlyph from '@atlaskit/icon/glyph/discover-filled';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import SettingsGlyph from '@atlaskit/icon/glyph/settings';
+import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 
 import {
   BitbucketIcon,
@@ -25,6 +26,7 @@ import {
   WorklensProductType,
   ProductKey,
   RecommendationsEngineResponse,
+  Product,
   ProductTopItemVariation,
 } from '../types';
 import messages from './messages';
@@ -196,7 +198,19 @@ const PRODUCT_ORDER = [
   WorklensProductType.STATUSPAGE,
 ];
 
+type JiraConfluenceProduct = Exclude<
+  Product,
+  Product.HOME | Product.PEOPLE | Product.SITE_ADMIN | Product.TRUSTED_ADMIN
+>;
+
+const BROWSE_APPS_URL: { [Key in JiraConfluenceProduct]: string } = {
+  [Product.JIRA]: '/plugins/servlet/ac/com.atlassian.jira.emcee/discover',
+  [Product.CONFLUENCE]:
+    '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
+};
+
 interface ConnectedSite {
+  avatar: string | null;
   product: AvailableProduct;
   isCurrentSite: boolean;
   siteName: string;
@@ -216,21 +230,8 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
   return siteUrl + AVAILABLE_PRODUCT_DATA_MAP[product.productType].href;
 };
 
-const getLinkDescription = (
-  siteName: string,
-  singleSite: boolean,
-  productType: WorklensProductType,
-): string | null => {
-  if (singleSite || productType === WorklensProductType.BITBUCKET) {
-    return null;
-  }
-
-  return siteName;
-};
-
 const getAvailableProductLinkFromSiteProduct = (
   connectedSites: ConnectedSite[],
-  singleSite: boolean,
   productTopItemVariation?: string,
 ): SwitcherItemType => {
   // if productTopItemVariation is 'most-frequent-site', we show most frequently visited site at the top
@@ -250,7 +251,7 @@ const getAvailableProductLinkFromSiteProduct = (
     ...productLinkProperties,
     key: productType + topSite.siteName,
     href: getProductSiteUrl(topSite),
-    description: getLinkDescription(topSite.siteName, singleSite, productType),
+    description: topSite.siteName,
     productType,
     childItems:
       connectedSites.length > 1
@@ -258,6 +259,7 @@ const getAvailableProductLinkFromSiteProduct = (
             .map(site => ({
               href: getProductSiteUrl(site),
               label: site.siteName,
+              avatar: site.avatar,
             }))
             .sort((a, b) => a.label.localeCompare(b.label))
         : [],
@@ -272,7 +274,7 @@ export const getAvailableProductLinks = (
   const productsMap: { [key: string]: ConnectedSite[] } = {};
 
   availableProducts.sites.forEach(site => {
-    const { availableProducts, displayName, url } = site;
+    const { availableProducts, avatar, displayName, url } = site;
     availableProducts.forEach(product => {
       const { productType } = product;
 
@@ -285,6 +287,7 @@ export const getAvailableProductLinks = (
         isCurrentSite: Boolean(cloudId) && site.cloudId === cloudId,
         siteName: displayName,
         siteUrl: url,
+        avatar,
       });
     });
   });
@@ -295,7 +298,6 @@ export const getAvailableProductLinks = (
       connectedSites &&
       getAvailableProductLinkFromSiteProduct(
         connectedSites,
-        availableProducts.sites.length === 1,
         productTopItemVariation,
       )
     );
@@ -360,6 +362,8 @@ export const getLicensedProductLinks = (
 export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product.JIRA | Product.CONFLUENCE,
 ): SwitcherItemType[] => {
   const adminBaseUrl = isAdmin ? `/admin` : '/trusted-admin';
   const adminLinks = [
@@ -370,6 +374,14 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
+  if (product && isEmceeLinkEnabled) {
+    adminLinks.unshift({
+      key: 'browse-apps',
+      label: <FormattedMessage {...messages.browseApps} />,
+      Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
+      href: BROWSE_APPS_URL[product],
+    });
+  }
   if (!isDiscoverMoreForEveryoneEnabled) {
     adminLinks.unshift({
       key: 'discover-applications',

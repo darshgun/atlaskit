@@ -15,6 +15,7 @@ import { mention } from '@atlaskit/util-data-test';
 import Editor from './../src/editor';
 import { EditorAppearance } from '../src/types';
 import { EditorActions } from '../src';
+import { ExampleInlineCommentComponent } from '@atlaskit/editor-test-helpers';
 
 import {
   providers,
@@ -90,6 +91,9 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
           UNSAFE_cards={{
             provider: this.cardProviderPromise,
           }}
+          annotationProvider={{
+            component: ExampleInlineCommentComponent,
+          }}
           allowStatus={true}
           {...providers}
           mentionProvider={Promise.resolve(
@@ -99,6 +103,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
             provider: mediaProvider,
             allowMediaSingle: true,
             allowResizing: true,
+            allowLinking: true,
           }}
           insertMenuItems={customInsertMenuItems}
           extensionHandlers={extensionHandlers}
@@ -122,7 +127,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
     this.validateDocument();
   }
 
-  componentWillReceiveProps(newProps: Props) {
+  UNSAFE_componentWillReceiveProps(newProps: Props) {
     if (this.props.actions !== newProps.actions) {
       this.editorView = newProps.actions._privateGetEditorView();
     }

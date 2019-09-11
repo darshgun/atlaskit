@@ -20,6 +20,7 @@ import * as MediaClientModule from '@atlaskit/media-client';
 import { FileState, MediaClient } from '@atlaskit/media-client';
 import {
   asMockReturnValue,
+  expectFunctionToHaveBeenCalledWith,
   fakeMediaClient,
   getDefaultMediaClientConfig,
 } from '@atlaskit/media-test-helpers';
@@ -221,7 +222,25 @@ describe('media', () => {
       expect(toolbar!.items.length).toEqual(1);
     });
 
-    it('should not render any layout buttons when inside a table', () => {
+    it('should render layout buttons when inside a table and allowResizingInTable is enabled', () => {
+      const { editorView } = editor(
+        doc(table()(tr(td()(temporaryMediaSingle)))),
+        {
+          allowResizing: true,
+          allowResizingInTables: true,
+        },
+      );
+
+      const toolbar = floatingToolbar(editorView.state, intl, {
+        allowResizing: true,
+        allowAdvancedToolBarOptions: true,
+        allowResizingInTables: true,
+      });
+      expect(toolbar).toBeDefined();
+      expect(toolbar!.items.length).toEqual(8);
+    });
+
+    it('should not render layout buttons when inside a table and allowResizingInTable is disabled', () => {
       const { editorView } = editor(
         doc(table()(tr(td()(temporaryMediaSingle)))),
       );
@@ -298,6 +317,22 @@ describe('media', () => {
 
       afterEach(() => {
         jest.resetAllMocks();
+      });
+
+      it('should call getCurrentState for current state', () => {
+        shallow(
+          <AnnotationToolbar
+            viewMediaClientConfig={mockMediaClient.config}
+            id="1234"
+            collection="some-collection"
+            intl={intl}
+          />,
+        );
+
+        expectFunctionToHaveBeenCalledWith(
+          mockMediaClient.file.getCurrentState,
+          ['1234', { collectionName: 'some-collection' }],
+        );
       });
 
       it('has an AnnotationToolbar custom toolbar element', async () => {

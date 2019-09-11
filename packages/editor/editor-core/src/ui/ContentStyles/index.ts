@@ -78,6 +78,7 @@ const ContentStyles: ComponentClass<
     max-width: calc(100% - 20px);
     vertical-align: top;
     word-break: break-all;
+    user-select: none;
   }
 
   .inlineCardView-content-wrap .card {
@@ -87,6 +88,7 @@ const ContentStyles: ComponentClass<
 
   .blockCardView-content-wrap {
     display: inline-block;
+    user-select: none;
   }
 
   /* fix cursor alignment */
@@ -144,6 +146,12 @@ const ContentStyles: ComponentClass<
   }
 
   /** Needed to override any cleared floats, e.g. image wrapping */
+
+  span.fabric-editor-annotation {
+    /* Y200 with 40% opacity */
+    background-color: rgba(255, 196, 0, 0.4);
+  }
+
   div.fabric-editor-block-mark[class^='fabric-editor-align'] {
     clear: none !important;
   }

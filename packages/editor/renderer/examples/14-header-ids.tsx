@@ -49,5 +49,11 @@ const document = {
 };
 
 export default function Example() {
-  return <RendererDemo serializer="react" document={document} />;
+  return (
+    <RendererDemo
+      serializer="react"
+      document={document}
+      allowHeadingAnchorLinks
+    />
+  );
 }

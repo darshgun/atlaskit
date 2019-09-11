@@ -47,6 +47,7 @@ export interface MediaOptions {
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
   allowResizing?: boolean;
+  allowResizingInTables?: boolean;
   allowAnnotation?: boolean;
   allowLinking?: boolean;
 }
@@ -105,6 +106,7 @@ const mediaPlugin = (
           errorReporter,
           portalProviderAPI,
           reactContext,
+          dispatchAnalyticsEvent,
         }: PMPluginFactoryParams) =>
           createPlugin(
             schema,
@@ -124,6 +126,7 @@ const mediaPlugin = (
                   options,
                   pluginOptions,
                   pluginOptions && pluginOptions.fullWidthEnabled,
+                  dispatchAnalyticsEvent,
                 ),
               },
               errorReporter,
@@ -245,6 +248,7 @@ const mediaPlugin = (
         providerFactory,
         // appearance, // TODO: required?
         allowResizing: options && options.allowResizing,
+        allowResizingInTables: options && options.allowResizingInTables,
         allowAnnotation: options && options.allowAnnotation,
         allowLinking: options && options.allowLinking,
         allowAdvancedToolBarOptions:

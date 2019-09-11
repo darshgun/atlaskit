@@ -48,6 +48,7 @@ import {
   TableDecorations,
   TablePluginState,
 } from '../types';
+import { CellAttributes } from '@atlaskit/adf-schema';
 // #endregion
 
 // #region Constants
@@ -74,7 +75,7 @@ export const setTableRef = (ref?: HTMLElement | null) =>
         undefined;
       const layout = tableNode ? tableNode.attrs.layout : undefined;
       const {
-        pluginConfig: { allowControls = true },
+        pluginConfig: { allowControls = true, allowColumnResizing },
       } = getPluginState(state);
 
       let decorationSet = DecorationSet.empty;
@@ -82,7 +83,11 @@ export const setTableRef = (ref?: HTMLElement | null) =>
       if (allowControls && tableRef) {
         decorationSet = updatePluginStateDecorations(
           state,
-          createColumnControlsDecoration(state.selection),
+          createColumnControlsDecoration(
+            state.doc,
+            state.selection,
+            allowColumnResizing,
+          ),
           TableDecorations.COLUMN_CONTROLS_DECORATIONS,
         );
       }
@@ -167,6 +172,25 @@ export const triggerUnlessTableHeader = (command: Command): Command => (
   return false;
 };
 
+export const transformSliceRemoveCellBackgroundColor = (
+  slice: Slice,
+  schema: Schema,
+): Slice => {
+  const { tableCell, tableHeader } = schema.nodes;
+  return mapSlice(slice, maybeCell => {
+    if (maybeCell.type === tableCell || maybeCell.type === tableHeader) {
+      const cellAttrs: CellAttributes = { ...maybeCell.attrs };
+      cellAttrs.background = undefined;
+      return maybeCell.type.createChecked(
+        cellAttrs,
+        maybeCell.content,
+        maybeCell.marks,
+      );
+    }
+    return maybeCell;
+  });
+};
+
 export const transformSliceToAddTableHeaders = (
   slice: Slice,
   schema: Schema,
@@ -196,6 +220,27 @@ export const transformSliceToAddTableHeaders = (
       }
     }
     return maybeTable;
+  });
+};
+
+export const transformSliceToRemoveColumnsWidths = (
+  slice: Slice,
+  schema: Schema,
+): Slice => {
+  const { tableHeader, tableCell } = schema.nodes;
+
+  return mapSlice(slice, maybeCell => {
+    if (maybeCell.type === tableCell || maybeCell.type === tableHeader) {
+      if (!maybeCell.attrs.colwidth) {
+        return maybeCell;
+      }
+      return maybeCell.type.createChecked(
+        { ...maybeCell.attrs, colwidth: undefined },
+        maybeCell.content,
+        maybeCell.marks,
+      );
+    }
+    return maybeCell;
   });
 };
 

@@ -162,7 +162,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
     }
   }
 
-  componentWillReceiveProps(newProps: MediaCardProps) {
+  UNSAFE_componentWillReceiveProps(newProps: MediaCardProps) {
     const { mediaClientConfig } = this.state;
     const { id: newId } = newProps;
     if (mediaClientConfig && newId && newId !== this.props.id) {
@@ -181,10 +181,14 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
   }
 
   saveFileState = async (id: string, mediaClientConfig: MediaClientConfig) => {
+    const { collection: collectionName } = this.props;
     const mediaClient = getMediaClient({
       mediaClientConfig,
     });
-    const fileState = await mediaClient.file.getCurrentState(id);
+    const options = {
+      collectionName,
+    };
+    const fileState = await mediaClient.file.getCurrentState(id, options);
     this.setState({
       fileState,
     });

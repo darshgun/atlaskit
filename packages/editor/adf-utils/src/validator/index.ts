@@ -64,11 +64,11 @@ const isPlainObject = (x: any) =>
 const copy = <
   T extends Record<string | number, any> = Record<string | number, any>
 >(
-  source: Record<string, any>,
+  source: Record<string | number, any>,
   dest: T,
   key: string | number,
 ) => {
-  dest[key] = source[key];
+  (dest as Record<string | number, any>)[key] = source[key];
   return dest;
 };
 
@@ -389,11 +389,6 @@ export function validator(
         throw new Error(message);
       }
     };
-
-    // Don't validate applicationCard
-    if (type === 'applicationCard') {
-      return err('DEPRECATED', 'applicationCard is not supported');
-    }
 
     if (type) {
       const typeOptions = getOptionsForType(type, allowed);

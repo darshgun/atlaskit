@@ -31,6 +31,7 @@ export interface Props {
   ariaLabel?: string;
   forcePlacement?: boolean;
   allowOutOfBounds?: boolean; // Allow to correct position elements inside table: https://product-fabric.atlassian.net/browse/ED-7191
+  rect?: DOMRect;
 }
 
 export interface State {
@@ -74,6 +75,7 @@ export default class Popup extends React.Component<Props, State> {
       stick,
       forcePlacement,
       allowOutOfBounds,
+      rect,
     } = props;
     const { popup } = state;
 
@@ -90,6 +92,7 @@ export default class Popup extends React.Component<Props, State> {
       alignY,
       forcePlacement,
     );
+
     if (onPlacementChanged && this.placement.join('') !== placement.join('')) {
       onPlacementChanged(placement);
       this.placement = placement;
@@ -102,6 +105,7 @@ export default class Popup extends React.Component<Props, State> {
       stick,
       offset: offset!,
       allowOutOfBounds,
+      rect,
     });
     position = onPositionCalculated ? onPositionCalculated(position) : position;
 
@@ -165,7 +169,7 @@ export default class Popup extends React.Component<Props, State> {
 
   onResize = () => this.scheduledUpdatePosition();
 
-  componentWillReceiveProps(newProps: Props) {
+  UNSAFE_componentWillReceiveProps(newProps: Props) {
     // We are delaying `updatePosition` otherwise it happens before the children
     // get rendered and we end up with a wrong position
     this.scheduledUpdatePosition(newProps);

@@ -1,3 +1,5 @@
+import React from 'react';
+import { mount } from 'enzyme';
 import {
   code_block,
   strong,
@@ -7,6 +9,7 @@ import {
   p,
   h1,
   code,
+  emoji,
   mention,
   mediaGroup,
   media,
@@ -37,12 +40,16 @@ import {
   inlineCard,
   storyContextIdentifierProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import { mention as mentionData } from '@atlaskit/util-data-test';
+import { ProviderFactory, MediaSingle } from '@atlaskit/editor-common';
+import { EmojiProvider } from '@atlaskit/emoji';
+import {
+  emoji as emojiData,
+  mention as mentionData,
+} from '@atlaskit/util-data-test';
 import { TextSelection } from 'prosemirror-state';
-import { setMacroProvider, MacroAttributes } from '../../../../plugins/macro';
 import { uuid } from '@atlaskit/adf-schema';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { setMacroProvider, MacroAttributes } from '../../../../plugins/macro';
 import { EditorView } from 'prosemirror-view';
 import { ACTION_SUBJECT_ID } from '../../../../plugins/analytics';
 import { CardProvider } from '../../../../plugins/card';
@@ -55,12 +62,16 @@ import { __serializeForClipboard } from 'prosemirror-view';
 describe('paste plugins', () => {
   const createEditor = createEditorFactory();
   let providerFactory: ProviderFactory;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
 
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEventInterface>;
   const editor = (doc: any, props: Partial<EditorProps> = {}) => {
     const contextIdentifierProvider = storyContextIdentifierProviderFactory();
+    const emojiProvider = emojiData.storyData.getEmojiResourceWithStandardAndAtlassianEmojis() as Promise<
+      EmojiProvider
+    >;
     providerFactory = ProviderFactory.create({
       contextIdentifierProvider,
+      emojiProvider,
     });
     createAnalyticsEvent = createAnalyticsEventMock();
     const wrapper = createEditor({
@@ -75,6 +86,7 @@ describe('paste plugins', () => {
         allowPanel: true,
         allowTasksAndDecisions: true,
         allowTables: true,
+        emojiProvider,
         mentionProvider: Promise.resolve(
           mentionData.storyData.resourceProvider,
         ),
@@ -380,6 +392,51 @@ describe('paste plugins', () => {
               })(),
             ),
             p('And this is some more text'),
+          ),
+        );
+      });
+    });
+
+    describe('pasting media from the renderer', () => {
+      it('should insert a media single markup as a media single node', () => {
+        // Couldnt get media to load properly, we're inlining the media node.
+        // We only really care about the media single markup here.
+        const wrapper = mount(
+          <MediaSingle
+            layout="center"
+            width={1333}
+            height={1019}
+            lineLength={680}
+            pctWidth={80}
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  '<div class="sc-eetwQk ddqWZS" data-context-id="414734770" data-type="file" data-node-type="media" data-width="1105" data-height="844" data-id="ade9cc46-35a9-49b1-b4ff-477670463481" data-collection="contentId-414734770"><div class="sc-gkfylT VGelR"><div class="sc-cgThhu bCBaed"><div class="sc-fPCuyW jeMDuK sc-frudsx gquFtT"><div class="wrapper"><div class="img-wrapper"><img class="sc-fIIFii bZNNp" draggable="false" style="transform: translate(-50%, -50%); height: 100%;" src="blob:https://hello.atlassian.net/9faf6f4c-994b-ca4e-b391-c00caa808b6f"></div></div></div></div></div></div>',
+              }}
+            />
+          </MediaSingle>,
+        );
+
+        const { editorView } = editor(doc(p('{<>}')));
+        dispatchPasteEvent(editorView, {
+          html: `<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>${wrapper.html()}</body></html>`,
+        });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            mediaSingle({
+              layout: 'center',
+              width: 80,
+            })(
+              media({
+                __contextId: '414734770',
+                collection: 'contentId-414734770',
+                height: 844,
+                id: 'ade9cc46-35a9-49b1-b4ff-477670463481',
+                type: 'file',
+                width: 1105,
+              })(),
+            ),
           ),
         );
       });
@@ -1230,7 +1287,7 @@ describe('paste plugins', () => {
       );
     });
 
-    it('should paste table with cells that dont have paragraphs', () => {
+    it('should paste table with cells that don`t have paragraphs', () => {
       const { editorView } = editor(doc(p('{<>}')));
 
       const html = `<meta charset='utf-8'><meta name="generator" content="Sheets"/><style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}--></style><table xmlns="http://www.w3.org/1999/xhtml" cellspacing="0" cellpadding="0" dir="ltr" border="1" style="table-layout:fixed;font-size:10pt;font-family:arial,sans,sans-serif;width:0px;border-collapse:collapse;border:none"><colgroup><col width="100"/><col width="86"/></colgroup><tbody><tr style="height:21px;"><td style="overflow:hidden;padding:2px 3px 2px 3px;vertical-align:bottom;"></td><td style="overflow:hidden;padding:2px 3px 2px 3px;vertical-align:bottom;text-align:right;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:2}">2</td></tr><tr style="height:21px;"><td style="overflow:hidden;padding:2px 3px 2px 3px;vertical-align:bottom;text-align:right;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:3}">3</td><td style="overflow:hidden;padding:2px 3px 2px 3px;vertical-align:bottom;text-align:right;" data-sheets-value="{&quot;1&quot;:3,&quot;3&quot;:4}">4</td></tr></tbody></table>`;
@@ -1245,6 +1302,73 @@ describe('paste plugins', () => {
           ),
         ),
       );
+    });
+    describe('cell with background color', () => {
+      const html = `<meta charset='utf-8'><table data-number-column="false" data-layout="default" data-autosize="false" data-pm-slice="1 1 []"><tbody><tr><th class="pm-table-header-content-wrap"><p></p></th></tr><tr><td style="background-color: #ffebe6;" class="pm-table-cell-content-wrap"><p></p></td></tr></tbody></table>`;
+
+      it('should keep cell background on paste when allow background color is enabled', () => {
+        const { editorView } = editor(doc(p('{<>}')), {
+          allowTables: { advanced: true },
+        });
+
+        dispatchPasteEvent(editorView, { html });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table({})(
+              tr(th()(p(''))),
+              tr(
+                td({
+                  background: '#ffebe6',
+                })(p('')),
+              ),
+            ),
+          ),
+        );
+      });
+
+      it('should remove cell background on paste when allow background color is disabled', () => {
+        const { editorView } = editor(doc(p('{<>}')), {
+          allowTables: { advanced: true, allowBackgroundColor: false },
+        });
+
+        dispatchPasteEvent(editorView, { html });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(table({})(tr(th()(p(''))), tr(td()(p(''))))),
+        );
+      });
+    });
+
+    describe('cell with colWidth', () => {
+      const cellWithColWidthHtml = `<meta charset='utf-8'><table data-pm-slice="1 1 []"><tbody><tr><td data-colwidth="96" style="" class="pm-table-cell-content-wrap"><div class="pm-table-cell-nodeview-wrapper"><div class="pm-table-cell-nodeview-content-dom"><p></p></div></div></td><td data-colwidth="122" style="" class="pm-table-cell-content-wrap"><div class="pm-table-cell-nodeview-wrapper"><div class="pm-table-cell-nodeview-content-dom"><p></p></div></div></td></tr></tbody></table>`;
+
+      it('should keep colwidth attribute when allow column resizing is enabled', () => {
+        const { editorView } = editor(doc(p('{<>}')), {
+          allowTables: { allowColumnResizing: true },
+        });
+
+        dispatchPasteEvent(editorView, { html: cellWithColWidthHtml });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table({})(
+              tr(td({ colwidth: [96] })(p('')), td({ colwidth: [122] })(p(''))),
+            ),
+          ),
+        );
+      });
+
+      it('should remove colwidth attribute when allow column resizing is disabled', () => {
+        const { editorView } = editor(doc(p('{<>}')), {
+          allowTables: { allowColumnResizing: false },
+        });
+
+        dispatchPasteEvent(editorView, { html: cellWithColWidthHtml });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(table({})(tr(td()(p('')), td()(p(''))))),
+        );
+      });
     });
   });
 
@@ -1268,6 +1392,31 @@ describe('paste plugins', () => {
       // Paste code block
       dispatchPasteEvent(editorView, { html: dom.innerHTML, plain: text });
       expect(editorView.state.doc).toEqualDocument(content);
+    });
+  });
+
+  describe('emoji copy-paste', () => {
+    it('should handle emoji as sprite copied from renderer', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const html = `<meta charset='utf-8'><span data-emoji-id="1f44d" data-emoji-short-name=":thumbsup:" data-emoji-text="👍" style="color: rgb(23, 43, 77); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: -0.07px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><span class="f1yhv2qy emoji-common-node" aria-label=":thumbsup:" style="display: inline-block; margin: -1px 0px;"><span><span class="emoji-common-emoji-sprite" style="background: url(&quot;https://pf-emoji-service--cdn.us-east-1.staging.public.atl-paas.net/standard/a51a7674-8d5d-4495-a2d2-a67c090f5c3b/64x64/spritesheets/people.png&quot;) 69.4444% 8.57143% / 3700% 3600% no-repeat transparent; display: inline-block; height: 20px; vertical-align: middle; width: 20px;"> </span></span></span></span><span style="color: rgb(23, 43, 77); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: -0.07px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span>`;
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(emoji({ id: '1f44d', shortName: ':thumbsup:', text: '👍' })())),
+      );
+    });
+    it('should handle emoji as image copied from renderer', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const html = `<meta charset='utf-8'><span data-emoji-id="atlassian-yellow_star" data-emoji-short-name=":yellow_star:" data-emoji-text=":yellow_star:" style="color: rgb(23, 43, 77); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: -0.07px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial;"><span class="f14svvg8 emoji-common-node" aria-label=":yellow_star:" style="background-color: transparent; border-radius: 5px; display: inline-block; margin: -1px 0px; vertical-align: middle;"><span><img src="https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/yellow_star_64.png" alt=":yellow_star:" data-emoji-short-name=":yellow_star:" class="emoji" width="20" height="20" style="margin: 0px; padding: 0px; border: 0px; display: block; visibility: visible;"></span></span></span><span style="color: rgb(23, 43, 77); font-family: -apple-system, system-ui, &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, &quot;Fira Sans&quot;, &quot;Droid Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: -0.07px; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: pre-wrap; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span>`;
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(emoji({ shortName: ':yellow_star:', text: '' })())),
+      );
     });
   });
 

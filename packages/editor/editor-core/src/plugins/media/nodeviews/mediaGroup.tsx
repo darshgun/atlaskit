@@ -38,7 +38,7 @@ export type MediaGroupProps = {
   allowLazyLoading?: boolean;
   editorAppearance: EditorAppearance;
   mediaProvider: Promise<MediaProvider>;
-  contextIdentifierProvider: Promise<ContextIdentifierProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
 };
 
 export interface MediaGroupState {
@@ -93,7 +93,7 @@ export default class MediaGroup extends React.Component<
     });
   }
 
-  componentWillReceiveProps(props: MediaGroupProps) {
+  UNSAFE_componentWillReceiveProps(props: MediaGroupProps) {
     this.updateMediaClientConfig();
     this.setMediaItems(props);
   }
@@ -154,10 +154,10 @@ export default class MediaGroup extends React.Component<
         actions: [
           {
             handler: this.props.disabled
-              ? {}
+              ? () => {}
               : this.mediaPluginState.handleMediaNodeRemoval.bind(
                   null,
-                  null,
+                  undefined,
                   () => nodePos,
                 ),
             icon: <EditorCloseIcon label="delete" />,

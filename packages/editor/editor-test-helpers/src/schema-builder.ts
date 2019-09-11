@@ -3,7 +3,6 @@ import {
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
-  ApplicationCardAttributes,
   CellAttributes,
   LinkAttributes,
   TableAttributes,
@@ -11,6 +10,7 @@ import {
   BreakoutMarkAttrs,
   AlignmentAttributes,
   IndentationMarkAttributes,
+  AnnotationMarkAttributes,
 } from '@atlaskit/adf-schema';
 import {
   Fragment,
@@ -397,8 +397,6 @@ export const mediaSingle = (
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
 export const media = (attrs: MediaAttributes | ExternalMediaAttributes) =>
   nodeFactory(sampleSchema.nodes.media, attrs);
-export const applicationCard = (attrs: ApplicationCardAttributes) =>
-  nodeFactory(sampleSchema.nodes.applicationCard, attrs);
 export const placeholder = (attrs: { text: string }) =>
   nodeFactory(sampleSchema.nodes.placeholder, attrs)();
 export const layoutSection = nodeFactory(sampleSchema.nodes.layoutSection);
@@ -436,6 +434,8 @@ export const confluenceInlineComment = (attrs: { reference: string }) =>
     attrs ? attrs : {},
     true,
   );
+export const annotation = (attrs: AnnotationMarkAttributes) =>
+  markFactory(sampleSchema.marks.annotation, attrs, true);
 
 //
 // Block Marks
@@ -446,3 +446,9 @@ export const breakout = (attrs: BreakoutMarkAttrs) =>
   markFactory(sampleSchema.marks.breakout, attrs);
 export const indentation = (attrs: IndentationMarkAttributes) =>
   markFactory(sampleSchema.marks.indentation, attrs);
+
+// builderEval is used for doc-builder example, and needs scope of the above node factories
+export const builderEval = (data: string) => {
+  // eslint-disable-next-line no-eval
+  return eval(data);
+};

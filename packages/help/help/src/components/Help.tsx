@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   withAnalyticsEvents,
+  WithAnalyticsEventsProps,
   withAnalyticsContext,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
@@ -11,7 +12,7 @@ import MessagesIntlProvider from './MessagesIntlProvider';
 
 import HelpContent from './HelpContent';
 
-export interface Props {
+export interface Props extends WithAnalyticsEventsProps {
   // Id of the article to display. This prop is optional, if is not defined the default content will be displayed
   articleId?: string;
   // Function used to get an article content. This prop is optional, if is not defined the default content will be displayed
@@ -38,16 +39,18 @@ export interface Props {
     event?: React.MouseEvent<HTMLElement, MouseEvent>,
     analyticsEvent?: UIAnalyticsEvent,
   ): void;
+  // Footer content. This prop is optional
+  footer?: React.ReactNode;
   // Default content. This prop is optional
   children?: React.ReactNode;
 }
 
 export class Help extends React.Component<Props> {
   render() {
-    const { children, ...rest } = this.props;
+    const { children, footer, ...rest } = this.props;
 
     return (
-      <HelpContextProvider {...rest} defaultContent={children}>
+      <HelpContextProvider {...rest} defaultContent={children} footer={footer}>
         <MessagesIntlProvider>
           <HelpContent />
         </MessagesIntlProvider>
@@ -56,6 +59,6 @@ export class Help extends React.Component<Props> {
   }
 }
 
-export default withAnalyticsContext<Props>(defaultAnalyticsAttributes)(
-  withAnalyticsEvents<Props>()(Help),
+export default withAnalyticsContext(defaultAnalyticsAttributes)(
+  withAnalyticsEvents()(Help),
 );

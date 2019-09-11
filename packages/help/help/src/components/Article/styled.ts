@@ -7,24 +7,21 @@ interface ArticleContainerProps {
   isSearchVisible: boolean;
 }
 
-export const ArticleContainer = styled.div`
+export const ArticleContainer = styled.div<ArticleContainerProps>`
+  padding: ${gridSize() * 2}px ${gridSize() * 3}px ${gridSize() * 2}px
+    ${gridSize() * 3}px;
   position: absolute;
-  height: ${(props: ArticleContainerProps) =>
-    props.isSearchVisible
-      ? `calc(100% - ${13 * gridSize()}px)`
-      : `calc(100% - ${6 * gridSize()}px)`};
+  height: 100%;
   width: 100%;
+  top: 0;
   background-color: #ffffff;
-  top: ${(props: ArticleContainerProps) =>
-    props.isSearchVisible ? `${13 * gridSize()}px` : `${6 * gridSize()}px`};
   left: 100%;
   flex: 1;
   flex-direction: column;
-  padding: ${gridSize() * 2}px ${gridSize() * 3}px ${gridSize() * 2}px
-    ${gridSize() * 3}px;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
+  z-index: 1;
 `;
 
 export const SelectedIcon = styled.div`

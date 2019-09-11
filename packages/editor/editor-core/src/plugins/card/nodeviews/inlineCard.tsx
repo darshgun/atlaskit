@@ -3,6 +3,7 @@ import { EventHandler, MouseEvent, KeyboardEvent } from 'react';
 import * as PropTypes from 'prop-types';
 import { Card as SmartCard } from '@atlaskit/smart-card';
 import { findOverflowScrollParent } from '@atlaskit/editor-common';
+import rafSchedule from 'raf-schd';
 
 import { ZeroWidthSpace } from '../../../utils';
 import { SmartCardProps, Card } from './genericCard';
@@ -18,7 +19,7 @@ export class InlineCardComponent extends React.PureComponent<SmartCardProps> {
     contextAdapter: PropTypes.object,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { view } = this.props;
     const scrollContainer = findOverflowScrollParent(view.dom as HTMLElement);
     this.scrollContainer = scrollContainer || undefined;
@@ -32,12 +33,16 @@ export class InlineCardComponent extends React.PureComponent<SmartCardProps> {
 
     const { title, url } = data;
 
-    view.dispatch(
-      registerCard({
-        title,
-        url,
-        pos: getPos(),
-      })(view.state.tr),
+    // don't dispatch immediately since we might be in the middle of
+    // rendering a nodeview
+    rafSchedule(() =>
+      view.dispatch(
+        registerCard({
+          title,
+          url,
+          pos: getPos(),
+        })(view.state.tr),
+      ),
     );
   };
 

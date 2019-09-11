@@ -24,13 +24,13 @@ import {
 
 import { pluginKey } from '../../../../plugins/table/pm-plugins/main';
 import { TablePluginState } from '../../../../plugins/table/types';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { AnalyticsHandler } from '../../../../analytics';
 
 describe('table keymap', () => {
   const createEditor = createEditorFactory<TablePluginState>();
 
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
   let trackEvent: AnalyticsHandler;
   let editorView: EditorView;
 
@@ -261,12 +261,7 @@ describe('table keymap', () => {
         view.dispatch(tr.delete($head.pos - 1, $head.pos));
       };
 
-      const excludeNodes = [
-        'doc',
-        'table',
-        'applicationCard',
-        'bodiedExtension',
-      ];
+      const excludeNodes = ['doc', 'table', 'bodiedExtension'];
 
       Object.keys(defaultSchema.nodes).forEach(nodeName => {
         const node = defaultSchema.nodes[nodeName];

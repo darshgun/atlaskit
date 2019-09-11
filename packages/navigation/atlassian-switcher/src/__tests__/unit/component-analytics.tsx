@@ -7,11 +7,7 @@ import ManageButton from '../../primitives/manage-button';
 import messages from '../../utils/messages';
 import { IntlProvider } from 'react-intl';
 import createStream, { Stream } from '../../../test-helpers/stream';
-import {
-  AnalyticsListener,
-  UIAnalyticsEventInterface,
-  ObjectType,
-} from '@atlaskit/analytics-next';
+import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { ProductTopItemVariation, WorklensProductType } from '../../types';
 
 const DefaultAtlassianSwitcher = (props: any = {}) => {
@@ -100,7 +96,7 @@ const DefaultAtlassianSwitcher = (props: any = {}) => {
   );
 };
 
-const flattenContext = (context: ObjectType[]) =>
+const flattenContext = (context: Record<string, any>[]) =>
   context.reduce(
     (flattenedContext, contextLayer) =>
       contextLayer.navigationCtx && contextLayer.navigationCtx.attributes
@@ -114,7 +110,7 @@ const flattenContext = (context: ObjectType[]) =>
 
 describe('Atlassian Switcher - Component Analytics', () => {
   let wrapper: ReactWrapper;
-  let eventStream: Stream<UIAnalyticsEventInterface>;
+  let eventStream: Stream<UIAnalyticsEvent>;
   beforeEach(() => {
     eventStream = createStream();
     wrapper = mount(<DefaultAtlassianSwitcher onEventFired={eventStream} />);
@@ -306,11 +302,13 @@ describe('Atlassian Switcher - Component Analytics', () => {
     // skip viewed/rendered events
     eventStream.skip(2);
 
-    const expandToggle = wrapper.find(
-      '[data-test-id="switcher-expand-toggle"]',
-    );
+    const expandToggle = wrapper
+      .find(Item)
+      .find('[data-test-id="switcher-expand-toggle"]');
+
     expandToggle.at(0).simulate('click');
     const { payload, context } = await eventStream.next();
+
     expect(payload).toMatchObject({
       eventType: 'ui',
       action: 'clicked',
@@ -321,7 +319,9 @@ describe('Atlassian Switcher - Component Analytics', () => {
       ...analyticsData,
     });
 
-    const childItem = wrapper.find('[data-test-id="switcher-child-item"]');
+    const childItem = wrapper
+      .find(Item)
+      .find('[data-test-id="switcher-child-item"]');
     childItem.at(0).simulate('click');
 
     const {

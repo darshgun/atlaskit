@@ -30,6 +30,7 @@ export enum ACTION {
   VISITED = 'visited',
   BROWSER_FREEZE = 'browserFreeze',
   SLOW_INPUT = 'slowInput',
+  UPLOAD_EXTERNAL_FAIL = 'uploadExternalFailed',
 }
 
 export enum INPUT_METHOD {
@@ -122,7 +123,7 @@ export enum ACTION_SUBJECT_ID {
   TYPEAHEAD_MENTION = 'mentionTypeAhead',
   TYPEAHEAD_QUICK_INSERT = 'quickInsertTypeAhead',
   PASTE_BLOCK_CARD = 'blockCard',
-  PASTE_BLOCKQUOTE = 'blockquote',
+  PASTE_BLOCKQUOTE = 'blockQuote',
   PASTE_BODIED_EXTENSION = 'bodiedExtension',
   PASTE_BULLET_LIST = 'bulletList',
   PASTE_CODE_BLOCK = 'codeBlock',

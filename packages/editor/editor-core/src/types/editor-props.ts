@@ -30,6 +30,7 @@ import { CodeBlockOptions } from '../plugins/code-block';
 import { CardProvider, CardOptions } from '../plugins/card/types';
 import { QuickInsertOptions } from '../plugins/quick-insert/types';
 import { AutoformattingProvider } from '../plugins/custom-autoformat/types';
+import { AnnotationProvider } from '../plugins/annotation/types';
 
 export type EditorAppearance =
   | 'comment'
@@ -150,8 +151,6 @@ export interface EditorProps {
   // Enable dates. You will most likely need backend ADF storage for this feature.
   allowDate?: boolean;
 
-  allowInlineAction?: boolean;
-
   // Temporary flag to enable layouts while it's under development
   // Use object form to enable breakout for layouts, and to enable the newer layouts - left sidebar & right sidebar
   allowLayouts?:
@@ -196,6 +195,9 @@ export interface EditorProps {
   uploadErrorHandler?: (state: MediaState) => void;
 
   activityProvider?: Promise<ActivityProvider>;
+
+  annotationProvider?: AnnotationProvider;
+
   collabEditProvider?: Promise<CollabEditProvider>;
   presenceProvider?: Promise<any>;
   emojiProvider?: Promise<EmojiProvider>;

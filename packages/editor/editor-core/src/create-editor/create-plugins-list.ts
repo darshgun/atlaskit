@@ -1,4 +1,4 @@
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { EditorPlugin, EditorProps } from '../types';
 import {
   basePlugin,
@@ -7,7 +7,6 @@ import {
   clearMarksOnChangeToEmptyDocumentPlugin,
   codeBlockPlugin,
   collabEditPlugin,
-  confluenceInlineComment,
   datePlugin,
   emojiPlugin,
   extensionPlugin,
@@ -39,7 +38,6 @@ import {
   typeAheadPlugin,
   quickInsertPlugin,
   gapCursorPlugin,
-  inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
   statusPlugin,
@@ -107,7 +105,7 @@ function allowScrollGutter(
 export default function createPluginsList(
   props: EditorProps,
   prevProps?: EditorProps,
-  createAnalyticsEvent?: CreateUIAnalyticsEventSignature,
+  createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ): EditorPlugin[] {
   const isMobile = props.appearance === 'mobile';
   const isFullPage = fullPageCheck(props.appearance);
@@ -125,10 +123,6 @@ export default function createPluginsList(
 
   if (props.allowTextAlignment) {
     plugins.push(alignmentPlugin());
-  }
-
-  if (props.allowInlineAction) {
-    plugins.push(inlineActionPlugin());
   }
 
   if (props.allowTextColor) {
@@ -261,8 +255,8 @@ export default function createPluginsList(
     plugins.push(macroPlugin());
   }
 
-  if (props.allowConfluenceInlineComment) {
-    plugins.push(confluenceInlineComment(), annotationPlugin());
+  if (props.annotationProvider || props.allowConfluenceInlineComment) {
+    plugins.push(annotationPlugin(props.annotationProvider));
   }
 
   if (props.allowDate) {

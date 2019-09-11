@@ -2,7 +2,8 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 
 declare global {
   interface Window {
-    bridge: any;
+    bridge?: any;
+    rendererBridge?: any;
   }
 }
 
@@ -36,8 +37,18 @@ export const renderer = {
   placeholder: '#examples', // FIXME lets add something better to renderer
 };
 
+export const clipboardHelper = {
+  name: 'editor-with-copy-paste',
+  path: getExampleUrl(
+    'editor',
+    'editor-mobile-bridge',
+    'editor-with-copy-paste',
+  ),
+  placeholder: editable,
+};
+
 export const clipboardInput = 'textarea[data-id=clipboardInput]';
-export const copyIcon = 'span[aria-label="copy"]';
+export const copyButton = 'button[aria-label="copy"]';
 
 export const callNativeBridge = async (
   browser: any,
@@ -48,6 +59,23 @@ export const callNativeBridge = async (
     (bridgeFn: any, args: any[]) => {
       if (window.bridge && window.bridge[bridgeFn]) {
         window.bridge[bridgeFn].apply(window.bridge, args);
+      }
+    },
+    bridgeFn,
+    args || [],
+  );
+};
+
+export const callRendererBridge = async (
+  browser: any,
+  bridgeFn: string,
+  ...args: any[]
+) => {
+  return await browser.execute(
+    (bridgeFn: any, args: any[]) => {
+      let bridge = window.rendererBridge || {};
+      if (bridgeFn in bridge) {
+        return bridge[bridgeFn].apply(bridge, args);
       }
     },
     bridgeFn,

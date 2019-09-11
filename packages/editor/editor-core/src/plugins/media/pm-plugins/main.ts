@@ -163,8 +163,10 @@ export class MediaPluginState {
         const viewMediaClientConfig = await getViewMediaClientConfigFromMediaProvider(
           this.mediaProvider,
         );
+
         if (viewMediaClientConfig) {
-          this.mediaProvider.viewMediaClientConfig = viewMediaClientConfig;
+          (this
+            .mediaProvider as MediaProvider).viewMediaClientConfig = viewMediaClientConfig;
         }
       }
 
@@ -428,7 +430,10 @@ export class MediaPluginState {
    * Called from React UI Component when user clicks on "Delete" icon
    * inside of it
    */
-  handleMediaNodeRemoval = (node: PMNode, getPos: ProsemirrorGetPosHandler) => {
+  handleMediaNodeRemoval = (
+    node: PMNode | undefined,
+    getPos: ProsemirrorGetPosHandler,
+  ) => {
     let getNode = node;
     if (!getNode) {
       getNode = this.view.state.doc.nodeAt(getPos()) as PMNode;
@@ -444,7 +449,7 @@ export class MediaPluginState {
   };
 
   /**
-   * Called from React UI Component on componentWillUnmount and componentWillReceiveProps
+   * Called from React UI Component on componentWillUnmount and UNSAFE_componentWillReceiveProps
    * when React component's underlying node property is replaced with a new node
    */
   handleMediaNodeUnmount = (oldNode: PMNode) => {

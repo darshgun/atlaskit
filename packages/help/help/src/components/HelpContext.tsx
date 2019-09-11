@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { withAnalyticsEvents } from '../analytics';
 import {
-  CreateUIAnalyticsEventSignature,
+  CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 
@@ -46,10 +46,15 @@ export interface Props {
   ): void;
   // Default content. This prop is optional
   defaultContent?: React.ReactNode;
+  // Footer content. This prop is optional
+  footer?: React.ReactNode;
+  // Wrapped content
+  children?: React.ReactNode;
 }
 
 export interface State {
   view: VIEW;
+  footer?: React.ReactNode;
   defaultContent?: React.ReactNode;
   // Article
   articleId: string;
@@ -65,6 +70,7 @@ export interface HelpContextInterface {
   help: {
     view: VIEW;
     isDefaultContent(): boolean;
+    isFooter(): boolean;
     isSearchVisible(): boolean;
     loadArticle(id?: string): void;
     isArticleVisible(): boolean;
@@ -82,6 +88,7 @@ export interface HelpContextInterface {
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
     history: HistoryItem[]; // holds all the articles ID the user has navigated
+    footer?: React.ReactNode;
     defaultContent?: React.ReactNode;
     navigateBack(): void;
     onWasHelpfulSubmit?(
@@ -98,6 +105,7 @@ export interface HelpContextInterface {
 
 const defaultValues = {
   view: VIEW.DEFAULT_CONTENT,
+  footer: undefined,
   defaultContent: undefined,
   // Article
   articleId: '',
@@ -116,7 +124,7 @@ const initialiseHelpData = (data: State) => {
 const HelpContext = createContext<Partial<HelpContextInterface>>({});
 
 class HelpContextProviderImplementation extends React.Component<
-  Props & { createAnalyticsEvent?: CreateUIAnalyticsEventSignature },
+  Props & { createAnalyticsEvent?: CreateUIAnalyticsEvent },
   State
 > {
   requestLoadingTimeout: any;
@@ -127,6 +135,7 @@ class HelpContextProviderImplementation extends React.Component<
     this.state = initialiseHelpData({
       ...defaultValues,
       articleId: this.props.articleId ? this.props.articleId : '',
+      footer: this.props.footer,
       defaultContent: this.props.defaultContent,
     });
   }
@@ -198,7 +207,16 @@ class HelpContextProviderImplementation extends React.Component<
     // If articleId isn't empty, try lo load the article with ID = articleId
     // otherwise display the default content
     if (articleId) {
-      this.setState({ view: VIEW.ARTICLE });
+      if (this.state.hasNavigatedToDefaultContent) {
+        await this.setState({
+          hasNavigatedToDefaultContent: false,
+          history: [],
+        });
+      }
+
+      await this.setState({
+        view: VIEW.ARTICLE,
+      });
       this.getArticle(articleId);
     } else {
       this.setState({
@@ -312,7 +330,6 @@ class HelpContextProviderImplementation extends React.Component<
     } else if (history.length === 1) {
       await this.setState({
         articleId: '',
-        history: [],
         view: VIEW.ARTICLE_NAVIGATION,
         hasNavigatedToDefaultContent: true,
       });
@@ -335,9 +352,13 @@ class HelpContextProviderImplementation extends React.Component<
     return (
       (this.state.view === VIEW.ARTICLE ||
         this.state.view === VIEW.ARTICLE_NAVIGATION) &&
-      this.state.history.length > 0 &&
+      !this.state.hasNavigatedToDefaultContent &&
       this.state.searchValue.length <= MIN_CHARACTERS_FOR_SEARCH
     );
+  };
+
+  isFooter = (): boolean => {
+    return this.state.footer !== undefined;
   };
 
   isDefaultContent = (): boolean => {
@@ -359,6 +380,7 @@ class HelpContextProviderImplementation extends React.Component<
           help: {
             ...restState,
             loadArticle: this.loadArticle,
+            isFooter: this.isFooter,
             isDefaultContent: this.isDefaultContent,
             isSearchVisible: this.isSearchVisible,
             isArticleVisible: this.isArticleVisible,
@@ -369,6 +391,7 @@ class HelpContextProviderImplementation extends React.Component<
             onWasHelpfulSubmit: this.props.onWasHelpfulSubmit,
             onWasHelpfulYesButtonClick: this.props.onWasHelpfulYesButtonClick,
             onWasHelpfulNoButtonClick: this.props.onWasHelpfulNoButtonClick,
+            footer: this.props.footer,
             defaultContent: this.props.defaultContent,
             articleId: this.state.articleId,
           },
@@ -379,7 +402,7 @@ class HelpContextProviderImplementation extends React.Component<
   }
 }
 
-export const HelpContextProvider = withAnalyticsEvents<Props>()(
+export const HelpContextProvider = withAnalyticsEvents()(
   HelpContextProviderImplementation,
 );
 
