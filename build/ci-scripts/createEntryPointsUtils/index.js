@@ -34,7 +34,7 @@ async function createEntryPointsDirWithPkgJson({
   buildIsClean,
   cwd,
   packageName,
-}) {
+} = {}) {
   const resolvedCwd = cwd || process.cwd();
   const packages = await getPackagesInfo(resolvedCwd);
   const pkgContents = packages
