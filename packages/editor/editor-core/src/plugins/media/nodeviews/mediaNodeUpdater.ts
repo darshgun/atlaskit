@@ -79,7 +79,8 @@ export class MediaNodeUpdater {
       attrs.type === 'file' &&
       attrs.__fileName &&
       attrs.__fileMimeType &&
-      attrs.__fileSize
+      attrs.__fileSize &&
+      attrs.__contextId
     );
   };
 
@@ -92,7 +93,6 @@ export class MediaNodeUpdater {
       !mediaProvider.uploadParams ||
       !attrs ||
       attrs.type !== 'file' ||
-      !attrs.id ||
       this.hasFileAttributesDefined()
     ) {
       return;
@@ -115,26 +115,13 @@ export class MediaNodeUpdater {
       return;
     }
 
+    const contextId = this.getCurrentContextId() || (await this.getObjectId());
     const { name, mimeType, size } = fileState;
-    const baseAttrs = {
+    const newAttrs = {
       __fileName: name,
       __fileMimeType: mimeType,
       __fileSize: size,
-    };
-    let contextAttrs = {};
-    const contextId = this.getCurrentContextId();
-
-    if (!contextId) {
-      const objectId = await this.getObjectId();
-      contextAttrs = {
-        __contextId: objectId,
-        contextId: objectId, // TODO [MS-2258]: we should remove contextId
-      };
-    }
-
-    const newAttrs = {
-      ...baseAttrs,
-      ...contextAttrs,
+      __contextId: contextId,
     };
 
     // TODO [MS-2258]: we should pass this.props.isMediaSingle and remove hardcoded "true"
