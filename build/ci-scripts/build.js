@@ -45,8 +45,8 @@ async function generateFlowTypeCommands({ cwd, pkg }) {
     ? pkg.relativeDir
     : await getGlobPackagesForTools(['babel', 'flow'], { cwd });
   return [
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -v -i '**/__tests__/**' src dist/cjs`,
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -v -i '**/__tests__/**' src dist/esm`,
+    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs`,
+    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/esm`,
   ];
 }
 
