@@ -32,12 +32,11 @@ async function copyVersionJson(pkg, project) {
   }
 }
 
-async function main() {
+async function main(pkgName) {
   const project = await bolt.getProject();
+  const filterOpts = pkgName ? { only: pkgName } : { onlyFs: 'packages/*/*' };
   await bolt.runWorkspaceTasks(pkg => copyVersionJson(pkg, project), {
-    filterOpts: {
-      onlyFs: 'packages/*/*',
-    },
+    filterOpts,
   });
 }
 

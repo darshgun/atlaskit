@@ -30,11 +30,16 @@ async function writeEntryPointsPathInPkgJson(
   );
 }
 
-async function createEntryPointsDirWithPkgJson() {
-  const cwd = process.cwd();
+async function createEntryPointsDirWithPkgJson(
+  { cwd, packageName } = { cwd: process.cwd() },
+) {
   const packages = await getPackagesInfo(cwd);
   const pkgContents = packages
-    .filter(pkg => pkg.dir.includes('/packages'))
+    .filter(
+      pkg =>
+        pkg.dir.includes('/packages') &&
+        (!packageName || packageName === pkg.name),
+    )
     .map(pkg => {
       return {
         name: pkg.name,
