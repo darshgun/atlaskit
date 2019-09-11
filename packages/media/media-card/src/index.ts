@@ -90,6 +90,7 @@ export interface CardProps extends SharedCardProps, CardEventProps {
   readonly useInlinePlayer?: boolean;
   readonly shouldOpenMediaViewer?: boolean;
   readonly mediaViewerDataSource?: MediaViewerDataSource;
+  readonly contextId?: string;
 }
 
 export interface CardState {

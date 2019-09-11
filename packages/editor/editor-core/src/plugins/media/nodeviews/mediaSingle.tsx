@@ -10,6 +10,7 @@ import {
   DEFAULT_IMAGE_WIDTH,
   browser,
   ProviderFactory,
+  ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 import { CardEvent } from '@atlaskit/media-card';
 import { NodeSelection } from 'prosemirror-state';
@@ -37,6 +38,7 @@ export interface MediaSingleNodeState {
   width?: number;
   height?: number;
   viewMediaClientConfig?: MediaClientConfig;
+  contextIdentifierProvider?: ContextIdentifierProvider;
 }
 
 export default class MediaSingleNode extends Component<
@@ -47,7 +49,7 @@ export default class MediaSingleNode extends Component<
     mediaOptions: {},
   };
 
-  state = {
+  state: MediaSingleNodeState = {
     width: undefined,
     height: undefined,
     viewMediaClientConfig: undefined,
@@ -89,7 +91,6 @@ export default class MediaSingleNode extends Component<
 
     // we want the first child of MediaSingle (type "media")
     const node = this.props.node.firstChild;
-
     if (!node) {
       return;
     }
@@ -100,7 +101,16 @@ export default class MediaSingleNode extends Component<
     }
 
     if (node.attrs.type === 'external') {
-      await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+      // if possible, we try to copy the image using the encoded metadata, otherwise we upload the external reference
+      if (mediaNodeUpdater.isMediaBlobUrl()) {
+        try {
+          await mediaNodeUpdater.copyNodeFromBlobUrl(this.props.getPos());
+        } catch (e) {
+          await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+        }
+      } else {
+        await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+      }
       return;
     }
 
@@ -117,10 +127,16 @@ export default class MediaSingleNode extends Component<
   };
 
   async componentDidMount() {
+    const { contextIdentifierProvider } = this.props;
+
     await Promise.all([
       this.setViewMediaClientConfig(this.props),
       this.updateMediaNodeAttributes(this.props),
     ]);
+
+    this.setState({
+      contextIdentifierProvider: await contextIdentifierProvider,
+    });
   }
 
   private onExternalImageLoaded = ({
@@ -172,6 +188,7 @@ export default class MediaSingleNode extends Component<
       fullWidthMode,
       view: { state },
     } = this.props;
+    const { contextIdentifierProvider } = this.state;
 
     const { layout, width: mediaSingleWidth } = node.attrs;
     const childNode = node.firstChild!;
@@ -233,6 +250,7 @@ export default class MediaSingleNode extends Component<
         }
         uploadComplete={uploadComplete}
         url={childNode.attrs.url}
+        contextIdentifierProvider={contextIdentifierProvider}
       />
     );
 
