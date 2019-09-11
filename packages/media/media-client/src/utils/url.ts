@@ -4,7 +4,7 @@ export const isMediaBlobUrl = (url: string): boolean => {
   return url.indexOf(`${mediaBlobUrlIdentifier}=true`) > -1;
 };
 
-export interface MediaFileAttrs {
+export interface MediaBlobUrlAttrs {
   id: string;
   contextId: string;
   collection?: string;
@@ -17,7 +17,7 @@ export interface MediaFileAttrs {
 
 const getNumberFromParams = (
   params: URLSearchParams,
-  name: keyof MediaFileAttrs,
+  name: keyof MediaBlobUrlAttrs,
 ): number | undefined => {
   const value = params.get(name);
 
@@ -28,7 +28,7 @@ const getNumberFromParams = (
 
 const getStringFromParams = (
   params: URLSearchParams,
-  name: keyof MediaFileAttrs,
+  name: keyof MediaBlobUrlAttrs,
 ): string | undefined => {
   const value = params.get(name);
   if (!value) {
@@ -40,7 +40,7 @@ const getStringFromParams = (
 
 export const getAttrsFromUrl = (
   blobUrl: string,
-): MediaFileAttrs | undefined => {
+): MediaBlobUrlAttrs | undefined => {
   const url = new URL(blobUrl);
   const hash = url.hash.replace('#', '');
   const params = new URLSearchParams(hash);
@@ -84,7 +84,7 @@ export const objectToQueryString = (json: {
 
 export const addFileAttrsToUrl = (
   url: string,
-  fileAttrs: MediaFileAttrs,
+  fileAttrs: MediaBlobUrlAttrs,
 ): string => {
   const mediaIdentifierAttr = {
     [mediaBlobUrlIdentifier]: 'true',
