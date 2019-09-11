@@ -15,7 +15,7 @@
     "Nathan Pickworth"
   ],
   "scripts": {
-    "build": "ts-node --project ./tsconfig.ts-node.json ./build/ts-to-css.ts",
+    "ak-postbuild": "ts-node --project ./tsconfig.ts-node.json ./build/ts-to-css.ts",
     "build:images": "ts-node --files --project ./tsconfig.ts-node.json ./src/static/generator/generate.ts"
   },
   "atlaskit": {

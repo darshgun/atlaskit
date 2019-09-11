@@ -58,11 +58,14 @@ function buildTSPackages() {
   );
 }
 
-function buildExceptionPackages() {
-  // TODO: Refactor this to be per-package pre/post builds
-  return runCommands([
-    `yarn build:adf-schema:json-schema && yarn build:media-editor:copy-binaries && yarn build:css-reset && yarn build:reduced-ui-pack && yarn build:email-renderer && yarn build:util-data-test`,
-  ]);
+async function buildExceptionPackages() {
+  await bolt.workspacesRun({
+    filterOpts: {},
+    spawnOpts: {
+      parallel: true,
+    },
+    script: 'ak-postbuild',
+  });
 }
 
 async function main() {

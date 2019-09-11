@@ -20,6 +20,11 @@
     "name": "Media Editor",
     "team": "media"
   },
+  "scripts": {
+    "check-dist": "cd dist/esm/engine/core/binaries && cd - && cd dist/cjs/engine/core/binaries",
+    "copy-binaries": "cp -r src/engine/core/binaries dist/esm/engine/core && cp -r src/engine/core/binaries dist/cjs/engine/core",
+    "ak-postbuild": "yarn copy-binaries && yarn check-dist"
+  },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/button": "^13.1.6",
