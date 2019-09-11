@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.16.1
+
+### Patch Changes
+
+- [patch][dbd5ab6c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd5ab6c91):
+
+  Added href prop to ArticleListComponent
+
 ## 0.16.0
 
 ### Minor Changes
