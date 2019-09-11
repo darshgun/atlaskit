@@ -29,7 +29,6 @@ export interface InlinePlayerOwnProps {
     event: React.MouseEvent<HTMLDivElement>,
     analyticsEvent?: UIAnalyticsEvent,
   ) => void;
-  wrapperDivRef: React.RefObject<HTMLDivElement>;
 }
 
 export type InlinePlayerProps = InlinePlayerOwnProps & WithAnalyticsEventsProps;
@@ -57,9 +56,13 @@ export const getPreferredVideoArtifact = (
   return undefined;
 };
 
-class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
+export class InlinePlayerBase extends Component<
+  InlinePlayerProps,
+  InlinePlayerState
+> {
   subscription?: Subscription;
   state: InlinePlayerState = {};
+  divRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   static defaultProps = {
     dimensions: defaultImageCardDimensions,
@@ -175,7 +178,7 @@ class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
   };
 
   render() {
-    const { onClick, dimensions, selected, wrapperDivRef } = this.props;
+    const { onClick, dimensions, selected } = this.props;
     const { fileSrc } = this.state;
 
     if (!fileSrc) {
@@ -187,7 +190,7 @@ class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
         style={this.getStyle()}
         selected={selected}
         onClick={onClick}
-        innerRef={wrapperDivRef}
+        innerRef={this.divRef}
       >
         <InactivityDetector>
           {() => (
