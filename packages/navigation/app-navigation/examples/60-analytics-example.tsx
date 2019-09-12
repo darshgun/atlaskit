@@ -17,7 +17,7 @@ import { DefaultProductHome } from './shared/ProductHome';
 import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
-import { AppNavigation, ThemedPrimaryButton } from '../src';
+import { AppNavigation, PrimaryButton } from '../src';
 
 mockEndpoints('jira');
 mockBuiltInNotifications();
@@ -58,25 +58,19 @@ const AnalyticsExample = () => {
   );
 
   const PrimaryItems = [
-    <ThemedPrimaryButton
-      id="home"
-      href="#"
+    <PrimaryButton
       onClick={(...args: any[]) => {
         AnalyticsEventGenerator('home').fire('atlaskit');
       }}
       text="Home"
     />,
-    <ThemedPrimaryButton
-      id="projects"
-      href="#"
+    <PrimaryButton
       onClick={(...args: any[]) => {
         AnalyticsEventGenerator('projects').fire('atlaskit');
       }}
       text="Projects"
     />,
-    <ThemedPrimaryButton
-      id="issues"
-      href="#"
+    <PrimaryButton
       onClick={(...args: any[]) => {
         const IssuesAnalyticsEvent = createAnalyticsEvent({
           action: 'click issues',
@@ -85,8 +79,7 @@ const AnalyticsExample = () => {
       }}
       text="Issues & Filters"
     />,
-    <ThemedPrimaryButton
-      id="dashboards"
+    <PrimaryButton
       dropdownContent={DashboardsContent}
       onClick={(...args: any[]) => {
         const DashboardAnalyticsEvent = createAnalyticsEvent({

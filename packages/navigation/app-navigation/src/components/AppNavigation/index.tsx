@@ -30,9 +30,9 @@ export const AppNavigation = (
   } = props;
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider value={theme}>
       <NavigationAnalyticsContext data={analyticsData}>
-        <div css={containerCSS}>
+        <div css={containerCSS(theme)}>
           <div css={leftCSS}>
             {ProductHome && <ProductHome />}
             <PrimaryItemsContainer moreLabel={moreLabel} items={primaryItems} />

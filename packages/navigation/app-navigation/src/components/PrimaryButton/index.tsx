@@ -1,12 +1,13 @@
 /** @jsx jsx */
 import Button from '@atlaskit/button';
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import Tooltip from '@atlaskit/tooltip';
 import { jsx } from '@emotion/core';
+
+import { useTheme } from '../../theme';
+import { TriggerManager } from '../TriggerManager';
 import { chevronCSS, getPrimaryButtonTheme } from './styles';
 import { PrimaryButtonProps } from './types';
-import { TriggerManager } from '../TriggerManager';
-import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
-import { withAppNavigationTheme } from '../../theme';
 
 export const PrimaryButton = (props: PrimaryButtonProps) => {
   const {
@@ -17,10 +18,10 @@ export const PrimaryButton = (props: PrimaryButtonProps) => {
     target,
     testId,
     text,
-    theme,
     tooltip,
     ...triggerManagerProps
   } = props;
+  const theme = useTheme();
 
   return (
     <Tooltip content={tooltip}>
@@ -61,5 +62,3 @@ PrimaryButton.defaultProps = {
   isSelected: false,
   testId: 'NavigationItem',
 };
-
-export const ThemedPrimaryButton = withAppNavigationTheme(PrimaryButton);

@@ -3,7 +3,8 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import { jsx } from '@emotion/core';
 import { Fragment } from 'react';
 
-import { ThemedIconButton } from '../IconButton';
+import { useTheme } from '../../theme';
+import { IconButton } from '../IconButton';
 import { TriggerManager } from '../TriggerManager';
 
 import {
@@ -21,6 +22,7 @@ type SearchComponentProps = {
 
 const SearchComponent = (props: SearchComponentProps) => {
   const { onClick, text } = props;
+  const theme = useTheme();
 
   const onChange = (...args: any[]) => {
     // @ts-ignore
@@ -33,7 +35,7 @@ const SearchComponent = (props: SearchComponentProps) => {
         <SearchIcon label={text} />
       </div>
       <input
-        css={searchInputCSS}
+        css={searchInputCSS(theme)}
         placeholder={text}
         onChange={onChange}
         onClick={onClick}
@@ -51,7 +53,7 @@ export const Search = (props: SearchProps) => {
       {({ onTriggerClick }) => (
         <Fragment>
           <SearchComponent onClick={onTriggerClick} text={text} />
-          <ThemedIconButton
+          <IconButton
             css={searchIconCSS}
             icon={<SearchIcon label={tooltip} />}
             onClick={onTriggerClick}

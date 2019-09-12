@@ -5,9 +5,9 @@ import {
   useOverflowController,
   OverflowProvider,
 } from '../../controllers/overflow';
+import { PrimaryButton } from '../PrimaryButton';
 import { containerCSS, widthDetectorContainerStyle } from './styles';
 import { PrimaryItemsContainerProps } from './types';
-import { ThemedPrimaryButton } from '../PrimaryButton';
 
 export const PrimaryItemsContainer = ({
   moreLabel,
@@ -21,7 +21,7 @@ export const PrimaryItemsContainer = ({
     <div css={containerCSS}>
       <OverflowProvider isVisible>{visibleItems}</OverflowProvider>
       {overflowItems.length > 0 && (
-        <ThemedPrimaryButton
+        <PrimaryButton
           text={moreLabel}
           dropdownContent={() => (
             <OverflowProvider isVisible={false}>
