@@ -1,9 +1,8 @@
-// @flow
 const bolt = require('bolt');
 const path = require('path');
 const { exists } = require('./fs');
 
-async function getPackagesInfo(cwd /*: string */, opts) {
+async function getPackagesInfo(cwd, opts) {
   let project = await bolt.getProject();
   let packages = await bolt.getWorkspaces({ cwd, ...opts });
 
@@ -82,7 +81,7 @@ const TOOL_NAME_TO_FILTERS /*: { [key: string]: (pkg: Object) => boolean } */ = 
   vr: pkg => pkg.isVisualRegression,
 };
 
-async function getPackageDirsForTools(cwd /*: string */) {
+async function getPackageDirsForTools(cwd) {
   let packages = await getPackagesInfo(cwd);
   let toolGroups = {};
 

@@ -1,4 +1,3 @@
-// @flow
 /*
 In the past, we had several issues related to building and shipping correctly the dist folder in our packages.
 This script will check for each package after having been buit, if it has a dist folder with esm, cjs and for both a version.json.
@@ -14,7 +13,7 @@ const exceptions = [
   '@atlaskit/branch-deploy-product-integrator',
 ];
 
-const checkForDirEmpty = async (folderName /*: string*/) /*: boolean */ => {
+const checkForDirEmpty = async folderName => {
   let hasFolder = false;
   try {
     const content = await fse.readdir(folderName);
@@ -25,7 +24,7 @@ const checkForDirEmpty = async (folderName /*: string*/) /*: boolean */ => {
   return hasFolder;
 };
 
-const checkForFile = async (fileName /*: string*/) /*: boolean */ => {
+const checkForFile = async fileName => {
   let hasFile = false;
   try {
     hasFile = await fse.exists(fileName);
@@ -35,7 +34,7 @@ const checkForFile = async (fileName /*: string*/) /*: boolean */ => {
   return hasFile;
 };
 
-const getPackageDistInfo = async (packages /* array<string */) => {
+const getPackageDistInfo = async packages => {
   return Promise.all(
     packages.map(async pkg => {
       const [
@@ -60,7 +59,8 @@ const getPackageDistInfo = async (packages /* array<string */) => {
   );
 };
 
-async function main({ cwd }) {
+async function main(opts = {}) {
+  const cwd = opts.cwd || process.cwd();
   const packagesInfo = await getPackagesInfo(cwd);
   const packageDistInfo = await getPackageDistInfo(
     packagesInfo.filter(
@@ -78,8 +78,7 @@ async function main({ cwd }) {
 }
 
 if (require.main === module) {
-  const cwd = process.cwd();
-  main({ cwd })
+  main()
     .then(({ success, invalidPackageDists }) => {
       if (!success) {
         console.error(

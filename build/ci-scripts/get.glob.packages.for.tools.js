@@ -1,10 +1,9 @@
-// @flow
 const {
   getPackagesInfo,
   TOOL_NAME_TO_FILTERS,
 } = require('@atlaskit/build-utils/tools');
 
-async function main(toolNames, opts) {
+async function main(toolNames, opts = {}) {
   const { cwd = process.cwd() } = opts;
 
   if (!toolNames.length) {
