@@ -181,6 +181,13 @@ const removeIdsFromDoc = transformDoc(node => {
       );
     }
 
+    if (node.attrs.occurrenceKey) {
+      replacedNode.attrs.occurrenceKey = node.attrs.occurrenceKey.replace(
+        /([a-z0-9\-]+)(:.*)?$/,
+        '12345678-9abc-def0-1234-56789abcdef0$2',
+      );
+    }
+
     return replacedNode;
   }
   if (hasLocalId(node.type)) {
