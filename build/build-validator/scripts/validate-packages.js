@@ -8,12 +8,56 @@ const child_process = require('child_process');
 const fetchNpmDeps = require('./fetch-npm-deps');
 const { getAllPublicPackages } = require('./utils');
 
-const exec = util.promisify(child_process.exec);
-
 function copyFiles(srcDir, destDir, files) {
   return Promise.all(
     files.map(f => fse.copy(path.join(srcDir, f), path.join(destDir, f))),
   );
+}
+
+function toString(bufferOrStr) {
+  return bufferOrStr instanceof Buffer
+    ? bufferOrStr.toString('utf-8')
+    : bufferOrStr;
+}
+
+// Spawns cmd and logs output/stderr to console
+// Returns a promise that resolves when the process exits completely and rejects otherwise
+function spawnPromise(cmd, args, opts = {}) {
+  return new Promise((resolve, reject) => {
+    let finished = false;
+    function done(code, signal) {
+      // Guard against done being called multiple times
+      if (finished) {
+        return;
+      }
+      finished = true;
+      let error;
+      if (code != null && code !== 0) {
+        error = new Error(`Process exited with code ${code}`);
+      } else if (signal != null) {
+        error = new Error(`Process was terminated with ${signal}`);
+      }
+      if (error) {
+        error.code = code;
+        error.signal = signal;
+        reject(error);
+      } else {
+        resolve();
+      }
+    }
+    const spawnedCmd = child_process.spawn(cmd, args, opts);
+    const errorOutput = [];
+    spawnedCmd.stdout.on('data', data => {
+      console.log(toString(data));
+    });
+    spawnedCmd.stderr.on('data', data => {
+      console.error(toString(data));
+    });
+
+    spawnedCmd.on('error', reject);
+    spawnedCmd.on('close', done);
+    spawnedCmd.on('exit', done);
+  });
 }
 
 async function validatePackage(pkgName, pkgDir, quiet, refetch = false) {
@@ -29,12 +73,11 @@ async function validatePackage(pkgName, pkgDir, quiet, refetch = false) {
     await copyFiles(pkgDir, tmpDir, packedRepoFiles);
     let valid = true;
     try {
-      await exec(
-        `diff -W 100 -${quiet ? 'q' : ''}ur '${npmDistPath}' '${tmpDir}'`,
-        {
-          maxBuffer: 1024 * 500,
-        },
-      );
+      await spawnPromise('diff', [
+        `-${quiet ? 'q' : ''}ur`,
+        npmDistPath,
+        tmpDir,
+      ]);
       console.log(`${pkgName} passed validation`);
     } catch (e) {
       if (e.code === 1) {
