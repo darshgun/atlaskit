@@ -1,9 +1,11 @@
 #! /usr/bin/env node
 /**
- * The canonical build script for Atlaskit
+ * The canonical build script for Atlaskit.
+ * See CONTRIBUTING.md#building-packages for more information.
  */
 const bolt = require('bolt');
 const concurrently = require('concurrently');
+const meow = require('meow');
 
 const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
 const getGlobPackagesForTools = require('./get.glob.packages.for.tools');
@@ -153,8 +155,8 @@ async function getPkgInfo(packageName) {
   return allPkgs[0];
 }
 
-async function main(opts = {}) {
-  const { buildIsClean, cwd, packageName, watch } = opts;
+async function main(packageName, opts = {}) {
+  const { buildIsClean, cwd, watch } = opts;
   if (!packageName && watch) {
     throw 'Watch mode is only supported for single package builds only.';
   }
@@ -164,7 +166,7 @@ async function main(opts = {}) {
     console.log(
       'Running initial build for watch mode to cover non-compilation build steps...',
     );
-    await main({ ...opts, watch: false });
+    await main(packageName, { ...opts, watch: false });
   }
 
   console.log(`Building ${packageName ? packageName : 'all packages'}...`);
@@ -186,31 +188,40 @@ async function main(opts = {}) {
 }
 
 if (require.main === module) {
-  /**
-   * Usage: build.js [packageName]
-   *
-   * Builds `packageName` or all packages if no package name provided
-   *
-   * Flags:
-   *  --build-is-clean Tells the build that the working directory is clean and errors when entry point folders clash with src
-   *  --watch Run the build in watch mode. Note this only reruns the compilation step (tsc/babel)
-   */
   process.on('SIGINT', () => {
     // We need our own SIGINT handler since concurrently overrides the default one (and doesn't even throw)
     process.exit(2);
   });
-  const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
-  const flags = process.argv.slice(2).filter(a => a.startsWith('--'));
-  const packageName = args[0] || undefined;
-  const flagOpts = {
-    buildIsClean: flags.includes('--build-is-clean'),
-    watch: flags.includes('--watch'),
-  };
+  const cli = meow(
+    `
+      Usage
+        $ bolt build [packageName]
 
-  main({
+      Options
+        --build-is-clean      Tells the build that the working directory is clean and errors when entry point folders clash with src
+        --watch               Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
+
+      Examples
+        $ bolt build @atlaskit/button --watch
+  `,
+    {
+      description:
+        'Builds [packageName] or all packages if no package name provided',
+      flags: {
+        buildIsClean: {
+          type: 'boolean',
+        },
+        watch: {
+          alias: 'w',
+          type: 'boolean',
+        },
+      },
+    },
+  );
+
+  main(cli.input[0], {
     cwd: process.cwd(),
-    packageName,
-    ...flagOpts,
+    ...cli.flags,
   }).catch(e => {
     console.error(e);
     process.exit(1);
