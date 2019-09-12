@@ -28,7 +28,7 @@ const commit = BITBUCKET_COMMIT.substr(0, 12);
 
 const getExpectedUrl = (pkgName, pkgVersion, commit) => {
   const shortPkgName = pkgName.replace('@atlaskit/', '');
-  `http://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts/${commit}/dists/${shortPkgName}-${pkgVersion}.tgz`;
+  return `http://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts/${commit}/dists/${shortPkgName}-${pkgVersion}.tgz`;
 };
 
 bolt.getWorkspaces().then(workspaces => {
