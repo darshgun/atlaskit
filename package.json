@@ -15,7 +15,6 @@
     "build:adf-schema:checkuptodate": "      cd packages/editor/adf-schema && yarn run generate:json-schema && git diff --exit-code",
     "build:multi-entry-point-tsconfig": "    node ./build/multi-entry-tools/typescript-paths-tsconfig-builder.js > tsconfig.entry-points.json",
     "changeset": "                           changeset",
-    "copy:version": "                        ./build/ci-scripts/copy.version.js",
     "update:icons": "                        bolt w @atlaskit/icon update && bolt w @atlaskit/icon-object update && bolt w @atlaskit/icon-file-type update && bolt w @atlaskit/reduced-ui-pack update",
     "delete": "                              yarn delete:modules && yarn delete:build:artifacts",
     "delete:modules": "                      git clean -dfX --dry-run | grep  node_modules | xargs rm -rf",
