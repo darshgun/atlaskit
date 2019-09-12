@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "main": "index.js",
   "dependencies": {
-    "bolt": "Blasz/bolt#filter-run-workspace-tasks-0.3",
+    "bolt": "^0.24.0",
     "globby": "^6.1.0",
     "loader-utils": "^1.1.0"
   }

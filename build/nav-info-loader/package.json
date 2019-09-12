@@ -4,7 +4,7 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
-    "bolt": "Blasz/bolt#filter-run-workspace-tasks-0.3",
+    "bolt": "^0.24.0",
     "globby": "^6.1.0",
     "loader-utils": "^1.1.0"
   }
