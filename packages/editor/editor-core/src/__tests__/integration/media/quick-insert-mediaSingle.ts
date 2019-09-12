@@ -6,8 +6,6 @@ import {
   quickInsert,
   fullpage,
 } from '../_helpers';
-import constant from 'lodash.constant';
-import times from 'lodash.times';
 import {
   mountEditor,
   goToEditorTestingExample,
@@ -15,164 +13,169 @@ import {
 import { selectors } from '../panel/_utils';
 
 // TODO: try this approach
-// [
-//   {
-//     message: 'Inserts media single before paragraph',
-//     setup: async (page: any) => {
-//       await page.type(editable, 'some text');
-//       await page.keys([...times(9, constant('ArrowLeft'))]);
-//     },
-//   },
-//   {
-//     message: 'Inserts media single after paragraph',
-//     setup: async (page: any) => {
-//       await page.type(editable, 'some text ');
-//     },
-//   },
-//   {
-//     message: 'Inserts media single before paragraph nested in a panel',
-//     setup: async (page: any) => {
-//       await quickInsert(page, 'Info panel');
-//       await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
-//       await page.type(editable, 'some text');
-//       await page.keys([...times(9, constant('ArrowLeft'))]);
-//     },
-//   },
-//   {
-//     message: 'Inserts a media single after paragraph nested in a panel',
-//     setup: async (page: any) => {
-//       await quickInsert(page, 'Info panel');
-//       await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
-//       await page.type(editable, 'some text ');
-//     },
-//   },
-// ].forEach(({ message, setup }) => {
-//   BrowserTestCase(
-//     `quick-insert-mediaSingle.ts: ${message}`,
-//     { skip: ['edge', 'ie', 'safari', 'chrome'] },
-//     async (client: any, testName: string) => {
-//       const page = await goToEditorTestingExample(client);
-//       await mountEditor(page, {
-//         appearance: fullpage.appearance,
-//         media: {
-//           allowMediaSingle: true,
-//           allowMediaGroup: true,
-//         },
-//         allowPanel: true,
-//       });
-
-//       await page.click(editable);
-//       await setup(page);
-
-//       await quickInsert(page, 'Files & images');
-//       await insertMediaFromMediaPicker(page);
-
-//       const doc = await page.$eval(editable, getDocFromElement);
-//       expect(doc).toMatchCustomDocSnapshot(testName);
-//     },
-//   );
-// });
-
-BrowserTestCase(
-  'quick-insert-mediaSingle.ts: Inserts a media single before paragraph',
-  { skip: ['edge', 'ie', 'safari', 'chrome'] },
-  async (client: any, testName: string) => {
-    const page = await goToEditorTestingExample(client);
-    await mountEditor(page, {
-      appearance: fullpage.appearance,
-      media: {
-        allowMediaSingle: true,
-        allowMediaGroup: true,
-      },
-    });
-
-    await page.click(editable);
-    await page.type(editable, 'some text');
-    await page.keys([...times(9, constant('ArrowLeft'))]);
-
-    await quickInsert(page, 'Files & images');
-    await insertMediaFromMediaPicker(page);
-
-    const doc = await page.$eval(editable, getDocFromElement);
-    expect(doc).toMatchCustomDocSnapshot(testName);
+[
+  {
+    skipBrowsers: ['edge', 'ie', 'safari', 'chrome'],
+    message: 'Inserts media single before paragraph',
+    setup: async (page: any) => {
+      await page.type(editable, 'some text');
+      await page.keys(Array(9).fill('ArrowLeft'));
+    },
   },
-);
-
-BrowserTestCase(
-  'quick-insert-mediaSingle.ts: Inserts a media single after paragraph',
-  { skip: ['edge', 'ie', 'safari', 'chrome'] },
-  async (client: any, testName: string) => {
-    const page = await goToEditorTestingExample(client);
-    await mountEditor(page, {
-      appearance: fullpage.appearance,
-      media: {
-        allowMediaSingle: true,
-        allowMediaGroup: true,
-      },
-    });
-
-    await page.click(editable);
-    await page.type(editable, 'some text ');
-
-    await quickInsert(page, 'Files & images');
-    await insertMediaFromMediaPicker(page);
-
-    const doc = await page.$eval(editable, getDocFromElement);
-    expect(doc).toMatchCustomDocSnapshot(testName);
+  {
+    skipBrowsers: ['edge', 'ie', 'safari', 'firefox'],
+    message: 'Inserts media single after paragraph',
+    setup: async (page: any) => {
+      await page.type(editable, 'some text ');
+    },
   },
-);
-
-BrowserTestCase(
-  'quick-insert-mediaSingle.ts: Inserts a media single before paragraph nested in a panel',
-  { skip: ['edge', 'ie', 'safari', 'firefox'] },
-  async (client: any, testName: string) => {
-    const page = await goToEditorTestingExample(client);
-    await mountEditor(page, {
-      appearance: fullpage.appearance,
-      media: {
-        allowMediaSingle: true,
-        allowMediaGroup: true,
-      },
-      allowPanel: true,
-    });
-
-    await page.click(editable);
-    await quickInsert(page, 'Info panel');
-    await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
-    await page.type(editable, 'some text');
-    await page.keys([...times(9, constant('ArrowLeft'))]);
-
-    await quickInsert(page, 'Files & images');
-    await insertMediaFromMediaPicker(page);
-
-    const doc = await page.$eval(editable, getDocFromElement);
-    expect(doc).toMatchCustomDocSnapshot(testName);
+  {
+    skipBrowsers: ['edge', 'ie', 'safari', 'chrome'],
+    message: 'Inserts media single before paragraph nested in a panel',
+    setup: async (page: any) => {
+      await quickInsert(page, 'Info panel');
+      await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
+      await page.type(editable, 'some text');
+      await page.keys(Array(9).fill('ArrowLeft'));
+    },
   },
-);
-
-BrowserTestCase(
-  'quick-insert-mediaSingle.ts: Inserts a media single after paragraph nested in a panel',
-  { skip: ['edge', 'ie', 'safari', 'firefox'] },
-  async (client: any, testName: string) => {
-    const page = await goToEditorTestingExample(client);
-    await mountEditor(page, {
-      appearance: fullpage.appearance,
-      media: {
-        allowMediaSingle: true,
-        allowMediaGroup: true,
-      },
-      allowPanel: true,
-    });
-
-    await page.click(editable);
-    await quickInsert(page, 'Info panel');
-    await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
-    await page.type(editable, 'some text ');
-
-    await quickInsert(page, 'Files & images');
-    await insertMediaFromMediaPicker(page);
-
-    const doc = await page.$eval(editable, getDocFromElement);
-    expect(doc).toMatchCustomDocSnapshot(testName);
+  {
+    skipBrowsers: ['edge', 'ie', 'safari', 'firefox'],
+    message: 'Inserts a media single after paragraph nested in a panel',
+    setup: async (page: any) => {
+      await quickInsert(page, 'Info panel');
+      await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
+      await page.type(editable, 'some text ');
+    },
   },
-);
+].forEach(({ message, setup, skipBrowsers }) => {
+  BrowserTestCase(
+    `quick-insert-mediaSingle.ts: ${message}`,
+    { skip: skipBrowsers },
+    async (client: any, testName: string) => {
+      const page = await goToEditorTestingExample(client);
+      await mountEditor(page, {
+        appearance: fullpage.appearance,
+        media: {
+          allowMediaSingle: true,
+          allowMediaGroup: true,
+        },
+        allowPanel: true,
+      });
+
+      await page.click(editable);
+      await setup(page);
+
+      await quickInsert(page, 'Files & images');
+      await insertMediaFromMediaPicker(page);
+
+      const doc = await page.$eval(editable, getDocFromElement);
+      expect(doc).toMatchCustomDocSnapshot(testName);
+    },
+  );
+});
+
+// BrowserTestCase(
+//   'quick-insert-mediaSingle.ts: Inserts a media single before paragraph',
+//   { skip: ['edge', 'ie', 'safari', 'chrome'] },
+//   async (client: any, testName: string) => {
+//     const page = await goToEditorTestingExample(client);
+//     await mountEditor(page, {
+//       appearance: fullpage.appearance,
+//       media: {
+//         allowMediaSingle: true,
+//         allowMediaGroup: true,
+//       },
+//     });
+
+//     await page.click(editable);
+//     await page.type(editable, 'some text');
+
+//     await page.keys(Array(9).fill('ArrowLeft'));
+
+//     await quickInsert(page, 'Files & images');
+//     await insertMediaFromMediaPicker(page);
+
+//     const doc = await page.$eval(editable, getDocFromElement);
+//     expect(doc).toMatchCustomDocSnapshot(testName);
+//   },
+// );
+
+// BrowserTestCase(
+//   'quick-insert-mediaSingle.ts: Inserts a media single after paragraph',
+//   { skip: ['edge', 'ie', 'safari', 'chrome'] },
+//   async (client: any, testName: string) => {
+//     const page = await goToEditorTestingExample(client);
+//     await mountEditor(page, {
+//       appearance: fullpage.appearance,
+//       media: {
+//         allowMediaSingle: true,
+//         allowMediaGroup: true,
+//       },
+//     });
+
+//     await page.click(editable);
+//     await page.type(editable, 'some text ');
+
+//     await quickInsert(page, 'Files & images');
+//     await insertMediaFromMediaPicker(page);
+
+//     const doc = await page.$eval(editable, getDocFromElement);
+//     expect(doc).toMatchCustomDocSnapshot(testName);
+//   },
+// );
+
+// BrowserTestCase(
+//   'quick-insert-mediaSingle.ts: Inserts a media single before paragraph nested in a panel',
+//   { skip: ['edge', 'ie', 'safari', 'firefox'] },
+//   async (client: any, testName: string) => {
+//     const page = await goToEditorTestingExample(client);
+//     await mountEditor(page, {
+//       appearance: fullpage.appearance,
+//       media: {
+//         allowMediaSingle: true,
+//         allowMediaGroup: true,
+//       },
+//       allowPanel: true,
+//     });
+
+//     await page.click(editable);
+//     await quickInsert(page, 'Info panel');
+//     await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
+//     await page.type(editable, 'some text');
+//     await page.keys(Array(9).fill('ArrowLeft'));
+
+//     await quickInsert(page, 'Files & images');
+//     await insertMediaFromMediaPicker(page);
+
+//     const doc = await page.$eval(editable, getDocFromElement);
+//     expect(doc).toMatchCustomDocSnapshot(testName);
+//   },
+// );
+
+// BrowserTestCase(
+//   'quick-insert-mediaSingle.ts: Inserts a media single after paragraph nested in a panel',
+//   { skip: ['edge', 'ie', 'safari', 'firefox'] },
+//   async (client: any, testName: string) => {
+//     const page = await goToEditorTestingExample(client);
+//     await mountEditor(page, {
+//       appearance: fullpage.appearance,
+//       media: {
+//         allowMediaSingle: true,
+//         allowMediaGroup: true,
+//       },
+//       allowPanel: true,
+//     });
+
+//     await page.click(editable);
+//     await quickInsert(page, 'Info panel');
+//     await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
+//     await page.type(editable, 'some text ');
+
+//     await quickInsert(page, 'Files & images');
+//     await insertMediaFromMediaPicker(page);
+
+//     const doc = await page.$eval(editable, getDocFromElement);
+//     expect(doc).toMatchCustomDocSnapshot(testName);
+//   },
+// );
