@@ -10,10 +10,6 @@ class GenericSwitcherExample extends React.Component {
     isDrawerOpen: false,
   };
 
-  componentDidMount() {
-    this.openDrawer();
-  }
-
   openDrawer = () => {
     mockEndpoints(
       'jira',
