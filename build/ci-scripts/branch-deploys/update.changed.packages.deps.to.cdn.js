@@ -27,7 +27,7 @@ const changedPackages = JSON.parse(CHANGED_PACKAGES);
 const commit = BITBUCKET_COMMIT.substr(0, 12);
 
 const getExpectedUrl = (pkgName, pkgVersion, commit) => {
-  const shortPkgName = pkgName.replace('@atlaskit/', '');
+  const shortPkgName = pkgName.replace('@atlaskit/', 'atlaskit-');
   return `http://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts/${commit}/dists/${shortPkgName}-${pkgVersion}.tgz`;
 };
 
