@@ -37,73 +37,93 @@ async function runCommands(commands, opts = {}) {
   }
 }
 
-async function generateFlowTypeCommands({ cwd, pkg }) {
+async function getPkgGlob(tools, pkg, { cwd }) {
+  return pkg ? pkg.relativeDir : await getGlobPackagesForTools(tools, { cwd });
+}
+
+async function generateFlowTypeCommands({ cwd, pkg, watch }) {
   if (pkg && !(pkg.isBabel && pkg.isFlow)) {
     return [];
   }
-  const pkgGlob = pkg
-    ? pkg.relativeDir
-    : await getGlobPackagesForTools(['babel', 'flow'], { cwd });
+  const pkgGlob = await getPkgGlob(['babel', 'flow'], pkg, { cwd });
+  const watchFlag = watch ? ' -w' : '';
   return [
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs`,
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/esm`,
+    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs${watchFlag}`,
+    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/esm${watchFlag}`,
   ];
 }
 
-async function babelCommands({ cwd, pkg }) {
+async function babelCommands({ cwd, pkg, watch }) {
   if (pkg && !pkg.isBabel) {
     return [];
   }
-  const pkgGlob = pkg
-    ? pkg.relativeDir
-    : await getGlobPackagesForTools(['babel'], { cwd });
+  const pkgGlob = await getPkgGlob(['babel'], pkg, { cwd });
+  // Watch mode does not output anything on recompile, so we have to use verbose to signal something has happened
+  // https://github.com/babel/babel/issues/7926
+  const watchFlag = watch ? ' -w --verbose' : '';
   return [
-    `NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/cjs --root-mode upward`,
-    `NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/esm --root-mode upward`,
+    `NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/cjs --root-mode upward${watchFlag}`,
+    `NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/esm --root-mode upward${watchFlag}`,
   ];
 }
 
-async function buildJSPackages({ cwd, pkg }) {
+async function buildJSPackages({ cwd, pkg, watch }) {
   return runCommands([
-    ...(await babelCommands({ cwd, pkg })),
-    ...(await generateFlowTypeCommands({ cwd, pkg })),
+    ...(await babelCommands({ cwd, pkg, watch })),
+    ...(await generateFlowTypeCommands({ cwd, pkg, watch })),
   ]);
 }
 
-async function cliTsCommands({ cwd, pkg }) {
+async function cliTsCommands({ cwd, pkg, watch }) {
   if (pkg && !pkg.isTypeScriptCLI) {
     return [];
   }
-  const pkgGlob = pkg
-    ? pkg.relativeDir
-    : await getGlobPackagesForTools(['typescriptcli'], { cwd });
 
+  const pkgGlob = await getPkgGlob(['typescriptcli'], pkg, { cwd });
+  const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
   return [
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli || true'`,
+    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} || true'`,
   ];
 }
 
-async function standardTsCommands({ cwd, pkg }) {
+async function standardTsCommands({ cwd, pkg, watch }) {
   if (pkg && !pkg.isTypeScript) {
     return [];
   }
-  const pkgGlob = pkg
-    ? pkg.relativeDir
-    : await getGlobPackagesForTools(['typescript'], { cwd });
 
+  const pkgGlob = await getPkgGlob(['typescript'], pkg, { cwd });
+  // preserveWatchOutput prevents watch from clearing console output on every change
+  const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
+  // The `|| true` at the end of each typescript command was knowingly added in https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/5722/update-tsconfig/diff
+  // to suppress multi-entry point related failures, relying on the separate `typecheck` command to catch typecheck errors. Unfortunately, this also
+  // suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
+  // We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
   return [
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs || true'`,
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext || true'`,
+    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} || true'`,
+    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} || true'`,
   ];
 }
 
-async function buildTSPackages({ cwd, pkg }) {
+/**
+ * Builds typescript packages.
+ *
+ * Typescript packages in a monorepo need to be built in a topological order, meaning dependencies need to be built before their dependents. Otherwise
+ * any dependency types used are treated as `any`.
+ * We are leveraging `bolt workspaces exec`'s default topological execution order to achieve this, however there are some existing issues with this:
+ *  - The topological order factors in devDependencies when they are not required for building source -https://github.com/boltpkg/bolt/pull/244
+ *  - At least one circular dependency exists between packages in the repo, which makes a pure topological sort impossible
+ */
+async function buildTSPackages({ cwd, pkg, watch }) {
   return runCommands(
     [
-      ...(await standardTsCommands({ cwd, pkg })),
-      ...(await cliTsCommands({ cwd, pkg })),
+      ...(await standardTsCommands({ cwd, pkg, watch })),
+      ...(await cliTsCommands({ cwd, pkg, watch })),
     ],
-    { sequential: true },
+    // When building all packages we run the ts commands sequentially  as the `types` field in package.json
+    // references the main index.d.ts in the cjs directory. Resulting in cjs needing to be built before esm/cli
+    // so that packages can properly utilise the types of their atlaskit dependencies.
+    // When building a package individually, we no longer have this requirement as we are only building a single package.
+    { sequential: !pkg },
   );
 }
 
@@ -133,7 +153,20 @@ async function getPkgInfo(packageName) {
   return allPkgs[0];
 }
 
-async function main({ buildIsClean, cwd, packageName }) {
+async function main(opts = {}) {
+  const { buildIsClean, cwd, packageName, watch } = opts;
+  if (!packageName && watch) {
+    throw 'Watch mode is only supported for single package builds only.';
+  }
+  if (watch) {
+    // Do a full build first to ensure non-compilation build steps have built since they are not rerun
+    // in watch mode
+    console.log(
+      'Running initial build for watch mode to cover non-compilation build steps...',
+    );
+    await main({ ...opts, watch: false });
+  }
+
   console.log(`Building ${packageName ? packageName : 'all packages'}...`);
   let pkg;
   if (packageName) {
@@ -142,11 +175,11 @@ async function main({ buildIsClean, cwd, packageName }) {
   console.log('Creating entry point directories...');
   await createEntryPointsDirectories({ buildIsClean, cwd, packageName });
   console.log('Building JS packages...');
-  await buildJSPackages({ cwd, pkg });
+  await buildJSPackages({ cwd, pkg, watch });
   console.log('Building TS packages...');
-  await buildTSPackages({ cwd, pkg });
+  await buildTSPackages({ cwd, pkg, watch });
   console.log('Running post-build scripts for packages...');
-  await buildExceptionPackages({ cwd, pkg });
+  await buildExceptionPackages({ cwd, pkg, watch });
   console.log('Copying version.json...');
   await copyVersion(packageName);
   console.log('Success');
@@ -160,6 +193,7 @@ if (require.main === module) {
    *
    * Flags:
    *  --build-is-clean Tells the build that the working directory is clean and errors when entry point folders clash with src
+   *  --watch Run the build in watch mode. Note this only reruns the compilation step (tsc/babel)
    */
   process.on('SIGINT', () => {
     // We need our own SIGINT handler since concurrently overrides the default one (and doesn't even throw)
@@ -168,10 +202,15 @@ if (require.main === module) {
   const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
   const flags = process.argv.slice(2).filter(a => a.startsWith('--'));
   const packageName = args[0] || undefined;
-  main({
+  const flagOpts = {
     buildIsClean: flags.includes('--build-is-clean'),
+    watch: flags.includes('--watch'),
+  };
+
+  main({
     cwd: process.cwd(),
     packageName,
+    ...flagOpts,
   }).catch(e => {
     console.error(e);
     process.exit(1);
