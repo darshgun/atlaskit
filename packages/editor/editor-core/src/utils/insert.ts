@@ -6,12 +6,20 @@ import { isEmptyParagraph } from './document';
 import { GapCursorSelection, Side } from '../plugins/gap-cursor';
 
 export type InsertableContent = Node | Fragment;
-export type LookDirection = 'before' | 'after';
+export enum LookDirection {
+  Before = 'before',
+  After = 'after',
+}
+
+const isLastChild = ($pos: ResolvedPos<any>, doc: Node<any>): boolean =>
+  doc.resolve($pos.after()).node().lastChild === $pos.node();
+
+const isFirstChild = ($pos: ResolvedPos<any>, doc: Node<any>): boolean =>
+  doc.resolve($pos.before()).node().firstChild === $pos.node();
 
 const insertBeforeOrAfter = (
   tr: Transaction,
   lookDirection: LookDirection,
-  parentNode: Node,
   $parentPos: ResolvedPos,
   $proposedPosition: ResolvedPos,
   content: InsertableContent,
@@ -26,11 +34,12 @@ const insertBeforeOrAfter = (
    *  li
    *  li Scenario two{<>}
    */
+
   if (
-    (parentNode.firstChild === $proposedPosition.node() &&
-      lookDirection === 'before') ||
-    (parentNode.lastChild === $proposedPosition.node() &&
-      lookDirection === 'after')
+    (isFirstChild($proposedPosition, tr.doc) &&
+      lookDirection === LookDirection.Before) ||
+    (isLastChild($proposedPosition, tr.doc) &&
+      lookDirection === LookDirection.After)
   ) {
     return tr.insert($parentPos[lookDirection](), content);
   }
@@ -51,10 +60,8 @@ export const safeInsert = (content: InsertableContent, position?: number) => (
   tr: Transaction,
 ) => {
   // Temporary whitelist of currently implemented nodes
-  const { nodes } = tr.doc.type.schema;
-  const whitelist = [nodes.rule, nodes.mediaSingle];
-
-  if (content instanceof Fragment || !whitelist.includes(content.type)) {
+  const whitelist = ['rule', 'mediaSingle'];
+  if (content instanceof Fragment || !whitelist.includes(content.type.name)) {
     return null;
   }
 
@@ -75,23 +82,19 @@ export const safeInsert = (content: InsertableContent, position?: number) => (
   const insertPosEnd = $insertPos.end();
   const insertPosStart = $insertPos.start();
 
+  // When parent node is an empty paragraph,
+  // check the empty paragraph is the first or last node of its parent.
   if (isEmptyParagraph($insertPos.parent)) {
-    if (
-      tr.doc.resolve($insertPos['after']()).parent.lastChild ===
-      $insertPos.parent
-    ) {
-      lookDirection = 'after';
-    } else if (
-      tr.doc.resolve($insertPos['before']()).parent.firstChild ===
-      $insertPos.parent
-    ) {
-      lookDirection = 'before';
+    if (isLastChild($insertPos, tr.doc)) {
+      lookDirection = LookDirection.After;
+    } else if (isFirstChild($insertPos, tr.doc)) {
+      lookDirection = LookDirection.Before;
     }
   } else {
     if ($insertPos.pos === insertPosEnd) {
-      lookDirection = 'after';
+      lookDirection = LookDirection.After;
     } else if ($insertPos.pos === insertPosStart) {
-      lookDirection = 'before';
+      lookDirection = LookDirection.Before;
     }
   }
 
@@ -130,7 +133,6 @@ export const safeInsert = (content: InsertableContent, position?: number) => (
         insertBeforeOrAfter(
           tr,
           lookDirection,
-          parentNode,
           $parentPos,
           $proposedPosition,
           content,
