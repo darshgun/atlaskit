@@ -51,7 +51,7 @@ import { selectors } from '../panel/_utils';
 ].forEach(({ message, setup, skipBrowsers }) => {
   BrowserTestCase(
     `quick-insert-mediaSingle.ts: ${message}`,
-    { skip: skipBrowsers },
+    { skip: skipBrowsers as any },
     async (client: any, testName: string) => {
       const page = await goToEditorTestingExample(client);
       await mountEditor(page, {
