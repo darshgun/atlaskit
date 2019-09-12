@@ -1,5 +1,13 @@
 # @atlaskit/app-navigation
 
+## 0.3.0
+
+### Minor Changes
+
+- [minor][382273ee49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/382273ee49):
+
+  Add more behaviour
+
 ## 0.2.2
 
 ### Patch Changes
