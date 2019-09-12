@@ -1,7 +1,13 @@
 import React from 'react';
-import { md, Example, Props, code } from '@atlaskit/docs';
+import { md, Example, Props, code, DevPreviewWarning } from '@atlaskit/docs';
 
 export default md`
+  ${(
+    <div style={{ marginTop: '0.5rem' }}>
+      <DevPreviewWarning />
+    </div>
+  )}
+
   ### Popup
   A Component that is used to trigger a pop-over container inside a React Portal.
 
@@ -23,8 +29,7 @@ export default md`
   ${(
     <Props
       heading="Popup Props"
-      props={require('!!extract-react-types-loader!../src/index')}
+      props={require('!!extract-react-types-loader!../src/Popup')}
     />
   )}
-
 `;

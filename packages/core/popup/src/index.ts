@@ -1,2 +1,2 @@
-export { Popup as default } from './Popup';
+export { default } from './Popup';
 export { StyledPopup as PopupContainer } from './styled';

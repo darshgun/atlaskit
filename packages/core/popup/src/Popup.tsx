@@ -29,7 +29,7 @@ const RepositionOnUpdate: FC<RepositionOnUpdateProps> = ({
   return <Fragment>{children}</Fragment>;
 };
 
-export const Popup: FC<PopupProps> = memo(
+const Popup: FC<PopupProps> = memo(
   ({
     boundariesElement,
     isOpen,
@@ -44,7 +44,7 @@ export const Popup: FC<PopupProps> = memo(
     lockBodyScroll = false,
     popupComponent: PopupWrapper = StyledPopup,
     zIndex = layers.layer(),
-  }) => {
+  }: PopupProps) => {
     const [popupRef, setPopupRef] = useState<HTMLDivElement>();
     const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement>();
     useFocusManager({ popupRef, initialFocusRef, isOpen, onClose });
@@ -115,3 +115,5 @@ export const Popup: FC<PopupProps> = memo(
     );
   },
 );
+
+export default Popup;
