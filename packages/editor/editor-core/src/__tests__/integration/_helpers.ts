@@ -167,14 +167,13 @@ export const rerenderEditor = async (browser: any) => {
   await browser.click('.reloadEditorButton');
 };
 
-const insertMediaButton = '.e2e-insert-button';
-
 // This function assumes the media picker modal is already shown.
 export const insertMediaFromMediaPicker = async (
   browser: any,
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
+  const insertMediaButton = '.e2e-insert-button';
   const mediaCardSelector = `${editable} .img-wrapper`;
   const existingMediaCards = await browser.$$(mediaCardSelector);
   // wait for media item, and select it
@@ -238,7 +237,7 @@ export const insertMedia = async (
   // wait for media button in toolbar and click it
   await browser.waitForSelector(openMediaPopup);
   await browser.click(openMediaPopup);
-  insertMediaFromMediaPicker(browser, filenames, fileSelector);
+  await insertMediaFromMediaPicker(browser, filenames, fileSelector);
 };
 
 /**
