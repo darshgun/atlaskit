@@ -22,3 +22,7 @@ export type PrimaryButtonProps = Omit<TriggerManagerProps, 'children'> & {
   /** A string to render as a tooltip */
   tooltip?: string;
 };
+
+export type PrimaryButtonSkeletonProps = {
+  className?: string;
+};

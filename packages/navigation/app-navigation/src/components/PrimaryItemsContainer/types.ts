@@ -6,4 +6,8 @@ export type PrimaryItemsContainerProps = {
   items: ReactNodeArray;
 };
 
+export type PrimaryItemsContainerSkeletonProps = {
+  count: number;
+};
+
 export type DropdownContentType = PrimaryButtonProps['dropdownContent'];
