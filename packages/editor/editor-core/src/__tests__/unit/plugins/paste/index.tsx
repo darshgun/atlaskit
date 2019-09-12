@@ -217,6 +217,33 @@ describe('paste plugins', () => {
             schema.nodes.mediaSingle,
           );
         });
+
+        it('should transform images into mediaSingles', () => {
+          const { editorView } = editor(doc(table({})(tr(td()(p('{<>}'))))));
+
+          dispatchPasteEvent(editorView, {
+            html: `"<meta charset='utf-8'><meta charset="utf-8"><img src="http://atlassian.com" width="624" height="416" style="margin-left: 0px; margin-top: 0px;" />"`,
+          });
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              table({})(
+                tr(
+                  td()(
+                    p('"'),
+                    mediaSingle({ layout: 'center' })(
+                      media({
+                        url: 'http://atlassian.com',
+                        type: 'external',
+                      })(),
+                    ),
+                    p('"'),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
       });
 
       describe('when an external image is copied', () => {
