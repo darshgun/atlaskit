@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, FC } from 'react';
 import { Placement } from '@atlaskit/popper';
-import { string } from 'prop-types';
 
 export type ReactRef = React.Ref<HTMLElement> | HTMLElement | null;
 
