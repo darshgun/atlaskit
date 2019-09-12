@@ -28,7 +28,6 @@ import {
       expect(await page.isVisible('.wrapper')).toBe(true);
 
       const doc = await page.$eval(editable, getDocFromElement);
-      console.log(JSON.stringify(doc));
       expect(doc).toMatchCustomDocSnapshot(testName);
     },
   );
