@@ -9,7 +9,10 @@ import {
   TriggerXFlowCallback,
 } from '../types';
 import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-props';
-import { AvailableProductsProvider } from '../providers/products-data-provider';
+import {
+  AvailableProductsProvider,
+  AvailableProductsDataProvider,
+} from '../providers/products-data-provider';
 import { WithTheme } from '../theme/types';
 
 type GenericSwitcherProps = WithTheme & {
@@ -19,11 +22,13 @@ type GenericSwitcherProps = WithTheme & {
   triggerXFlow: TriggerXFlowCallback;
   onDiscoverMoreClicked: DiscoverMoreCallback;
   product: Exclude<Product, Product.JIRA | Product.CONFLUENCE>;
+  availableProductsDataProvider?: AvailableProductsDataProvider;
 };
 
 export default (props: GenericSwitcherProps) => (
   <AvailableProductsProvider
     isUserCentric={props.features.enableUserCentricProducts}
+    availableProductsDataProvider={props.availableProductsDataProvider}
   >
     {availableProducts => (
       <CommonDataProvider
