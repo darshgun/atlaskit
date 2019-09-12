@@ -1,0 +1,1 @@
+Revert resize handles logic to use mouseMove

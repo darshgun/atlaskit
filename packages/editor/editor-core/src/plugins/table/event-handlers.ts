@@ -10,6 +10,7 @@ import { TableMap, cellAround, CellSelection } from 'prosemirror-tables';
 import { findTable, getSelectionRect, removeTable } from 'prosemirror-utils';
 import rafSchedule from 'raf-schd';
 import { browser } from '@atlaskit/editor-common';
+import { pluginKey as resizingPluginKey } from './pm-plugins/table-resizing/plugin';
 
 import { analyticsService } from '../../analytics';
 import {
@@ -351,11 +352,13 @@ export const whenTableInFocus = (
 ) => (view: EditorView, mouseEvent: Event): boolean => {
   if (
     !getPluginState(view.state).tableNode ||
-    !!getResizePluginState(view.state).dragging
+    (resizingPluginKey.get(view.state) &&
+      !!getResizePluginState(view.state).dragging)
   ) {
     return false;
   }
 
   // debounce event handler
-  return rafSchedule(eventHandler(view, mouseEvent));
+  rafSchedule(eventHandler(view, mouseEvent));
+  return false;
 };

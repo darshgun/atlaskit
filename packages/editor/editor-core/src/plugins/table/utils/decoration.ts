@@ -22,12 +22,6 @@ const filterDecorationByKey = (
 ): Decoration[] =>
   decorationSet.find(undefined, undefined, spec => spec.key.indexOf(key) > -1);
 
-const createResizeHandleNode = (): HTMLElement => {
-  const node = document.createElement('div');
-  node.classList.add(ClassName.RESIZE_HANDLE);
-  return node;
-};
-
 export const findColumnControlSelectedDecoration = (
   decorationSet: DecorationSet,
 ): Decoration[] =>
@@ -141,7 +135,6 @@ export const createColumnControlsDecoration = (
     element.dataset.startIndex = `${index}`;
     index += colspan;
     element.dataset.endIndex = `${index}`;
-    element.appendChild(createResizeHandleNode());
 
     return Decoration.widget(
       cell.pos + 1,
