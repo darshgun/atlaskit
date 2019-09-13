@@ -28,6 +28,10 @@ export interface Props {
   attachPanelTo: string;
   // Right Hand Side panel content
   children?: ReactNode;
+  // Function to be executed when the open animation finishes
+  onOpenAnimationFinished?: void;
+  // Function to be executed when the close animation finishes
+  onCloseAnimationFinished?: void;
 }
 
 export interface State {
@@ -64,7 +68,20 @@ export class RightSidePanel extends Component<Props, State> {
   }
 
   renderDrawer = (Container: HTMLElement) => {
-    const { children, isOpen } = this.props;
+    const {
+      children,
+      isOpen,
+      onOpenAnimationFinished,
+      onCloseAnimationFinished,
+    } = this.props;
+
+    const onEntered = onOpenAnimationFinished
+      ? onOpenAnimationFinished
+      : () => {};
+
+    const onExited = onCloseAnimationFinished
+      ? onCloseAnimationFinished
+      : () => {};
 
     return createPortal(
       <Transition
@@ -73,6 +90,8 @@ export class RightSidePanel extends Component<Props, State> {
         mountOnEnter
         unmountOnExit
         appear
+        onEntered={onEntered}
+        onExited={onExited}
       >
         {(state: TransitionStatus) => (
           <RightSidePanelDrawer
