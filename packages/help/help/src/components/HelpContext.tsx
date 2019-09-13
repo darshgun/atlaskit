@@ -20,7 +20,7 @@ export interface HistoryItem {
 export interface Props {
   // Id of the article to display. This prop is optional, if is not defined the default content will be displayed
   articleId?: string;
-  //
+  // Setter for the articleId. This prop is optional, if is not defined, the back button will not be visible
   articleIdSetter?(id: string): void;
   // Function used to get an article content. This prop is optional, if is not defined the default content will be displayed
   onGetArticle?(id: string): Promise<Article>;
@@ -326,10 +326,8 @@ class HelpContextProviderImplementation extends React.Component<
   navigateBack = async () => {
     const { history } = this.state;
     const { articleIdSetter } = this.props;
-    console.log('navigateBack');
 
     if (articleIdSetter) {
-      console.log('articleIdSetter defined');
       // If the history isn't empty, navigate back through the history
       if (history.length > 1) {
         await this.setState(prevState => {
