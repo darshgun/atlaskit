@@ -1,5 +1,13 @@
 # @atlaskit/media-filmstrip
 
+## 34.3.7
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
 ## 34.3.6
 
 - Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):

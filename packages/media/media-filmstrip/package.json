@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-filmstrip",
-  "version": "34.3.6",
+  "version": "34.3.7",
   "description": "Includes components that show media cards as a filmstrip",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.tsx",
@@ -23,7 +23,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/icon": "^19.0.6",
-    "@atlaskit/media-card": "^65.0.0",
+    "@atlaskit/media-card": "^65.1.1",
     "@atlaskit/media-client": "^2.1.2",
     "@atlaskit/theme": "^9.1.6",
     "@atlaskit/type-helpers": "^4.1.8",

@@ -1,1 +1,0 @@
-Update all the theme imports in media to use multi entry points
