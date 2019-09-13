@@ -49,7 +49,6 @@ pipelines:
               - bolt install --frozen-lockfile
               - yarn build
               - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
-              - node build/utils/sanity-check-file-structure-dist.js
               - export CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js)
               # Change into a glob pattern (removing brackets, spaces and quotes).
               - export CHANGED_PACKAGES_GLOB=$(echo "$CHANGED_PACKAGES" | sed 's/[][" ]//g')

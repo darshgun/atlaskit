@@ -11,6 +11,7 @@ const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
 const getGlobPackagesForTools = require('./get.glob.packages.for.tools');
 const createEntryPointsDirectories = require('./create.entry.points.directories');
 const copyVersion = require('./copy.version');
+const checkDist = require('./sanity.check.file.structure.dist');
 
 async function runCommands(commands, opts = {}) {
   const defaultOpts = {
@@ -155,6 +156,17 @@ async function getPkgInfo(packageName) {
   return allPkgs[0];
 }
 
+async function validateDists(opts) {
+  const { success, invalidPackageDists } = await checkDist(opts);
+  if (!success) {
+    throw new Error(
+      `The following packages have issues with their dist folder structure: ${JSON.stringify(
+        invalidPackageDists,
+      )}`,
+    );
+  }
+}
+
 async function main(packageName, opts = {}) {
   const { cwd, watch } = opts;
   if (!packageName && watch) {
@@ -184,6 +196,9 @@ async function main(packageName, opts = {}) {
   await buildExceptionPackages({ cwd, pkg, watch });
   console.log('Copying version.json...');
   await copyVersion(packageName);
+  console.log('Checking dists...');
+  await validateDists({ cwd, packageName });
+
   console.log('Success');
 }
 

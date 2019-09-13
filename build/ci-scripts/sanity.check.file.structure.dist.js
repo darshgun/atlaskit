@@ -1,10 +1,9 @@
 /*
 In the past, we had several issues related to building and shipping correctly the dist folder in our packages.
-This script will check for each package after having been buit, if it has a dist folder with esm, cjs and for both a version.json.
+This script will check for each package after having been built, if it has a dist folder with esm, cjs and for both a version.json.
 */
 const fse = require('fs-extra');
-const path = require('path');
-const { getPackagesInfo } = require('./tools');
+const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
 
 const exceptions = [
   '@atlaskit/updater-cli',
@@ -37,12 +36,7 @@ const checkForFile = async fileName => {
 const getPackageDistInfo = async packages => {
   return Promise.all(
     packages.map(async pkg => {
-      const [
-        hasEsm,
-        hasCjs,
-        hasVersionInEsm,
-        hasVersionInCjs,
-      ] = await Promise.all([
+      const [hasEsm, hasCjs, hasEsmVersion, hasCjsVersion] = await Promise.all([
         checkForDirEmpty(`${pkg.dir}/dist/esm`),
         checkForDirEmpty(`${pkg.dir}/dist/cjs`),
         checkForFile(`${pkg.dir}/dist/esm/version.json`),
@@ -52,24 +46,26 @@ const getPackageDistInfo = async packages => {
         pkgName: pkg.name,
         hasEsm,
         hasCjs,
-        hasVersionInEsm,
-        hasVersionInCjs,
+        hasEsmVersion,
+        hasCjsVersion,
       };
     }),
   );
 };
 
 async function main(opts = {}) {
-  const cwd = opts.cwd || process.cwd();
+  const { cwd = process.cwd(), packageName } = opts;
   const packagesInfo = await getPackagesInfo(cwd);
-  const packageDistInfo = await getPackageDistInfo(
-    packagesInfo.filter(
-      pkg => pkg.dir.includes('/packages') && !exceptions.includes(pkg.name),
-    ),
+  const packagesToCheck = packagesInfo.filter(
+    pkg =>
+      pkg.dir.includes('/packages') &&
+      !exceptions.includes(pkg.name) &&
+      (!packageName || packageName === pkg.name),
   );
+  const packageDistInfo = await getPackageDistInfo(packagesToCheck);
   const invalidPackageDists = packageDistInfo.filter(
     pkg =>
-      !pkg.hasCjs && !pkg.hasEsm && !pkg.hasCjsVersion && !pkg.hasEsmVersion,
+      !(pkg.hasCjs && pkg.hasEsm && pkg.hasCjsVersion && pkg.hasEsmVersion),
   );
   return {
     success: invalidPackageDists.length === 0,
