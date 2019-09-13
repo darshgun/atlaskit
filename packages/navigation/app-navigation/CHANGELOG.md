@@ -1,5 +1,13 @@
 # @atlaskit/app-navigation
 
+## 0.3.1
+
+### Patch Changes
+
+- [patch][197aa4ed2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/197aa4ed2c):
+
+  Use context hooks in favour of emotion-theming
+
 ## 0.3.0
 
 ### Minor Changes
