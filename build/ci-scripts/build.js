@@ -156,7 +156,7 @@ async function getPkgInfo(packageName) {
 }
 
 async function main(packageName, opts = {}) {
-  const { buildIsClean, cwd, watch } = opts;
+  const { cwd, watch } = opts;
   if (!packageName && watch) {
     throw 'Watch mode is only supported for single package builds only.';
   }
@@ -175,7 +175,7 @@ async function main(packageName, opts = {}) {
     pkg = await getPkgInfo(packageName);
   }
   console.log('Creating entry point directories...');
-  await createEntryPointsDirectories({ buildIsClean, cwd, packageName });
+  await createEntryPointsDirectories({ cwd, packageName });
   console.log('Building JS packages...');
   await buildJSPackages({ cwd, pkg, watch });
   console.log('Building TS packages...');
@@ -198,7 +198,6 @@ if (require.main === module) {
         $ bolt build [packageName]
 
       Options
-        --build-is-clean      Tells the build that the working directory is clean and errors when entry point folders clash with src
         --watch               Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
 
       Examples
@@ -208,9 +207,6 @@ if (require.main === module) {
       description:
         'Builds [packageName] or all packages if no package name provided',
       flags: {
-        buildIsClean: {
-          type: 'boolean',
-        },
         watch: {
           alias: 'w',
           type: 'boolean',

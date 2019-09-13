@@ -2,6 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const promisify = require('util').promisify;
+const bolt = require('bolt');
 const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
 
 const writeFile = promisify(fs.writeFile);
@@ -29,13 +30,10 @@ async function writeEntryPointsPathInPkgJson(
   );
 }
 
-async function createEntryPointsDirWithPkgJson({
-  buildIsClean,
-  cwd,
-  packageName,
-} = {}) {
-  const resolvedCwd = cwd || process.cwd();
-  const packages = await getPackagesInfo(resolvedCwd);
+async function createEntryPointsDirWithPkgJson(opts = {}) {
+  const { cwd = process.cwd(), packageName, warnOnExistingDirs = true } = opts;
+  const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
+  const packages = await getPackagesInfo(cwd);
   const pkgContents = packages
     .filter(
       pkg =>
@@ -58,7 +56,7 @@ async function createEntryPointsDirWithPkgJson({
           ),
       };
     });
-  const errors = [];
+  const existingDirs = [];
   for (let pkg of pkgContents) {
     for (let pkgFile of pkg.files) {
       const isTs = pkgFile.includes('.ts');
@@ -68,13 +66,13 @@ async function createEntryPointsDirWithPkgJson({
         fs.mkdirSync(entryPointDirName);
       }
       const dirContents = fs.readdirSync(entryPointDirName);
-      if (
-        buildIsClean &&
-        (dirContents.length > 1 || dirContents[0] === 'package.json')
-      ) {
-        errors.push(
-          `Directory: ${entryPointDirName} outside of src has the same name: ${pkgFile} as a file in src/ this is not allowed`,
-        );
+      if (dirContents.length > 1 || dirContents[0] === 'package.json') {
+        // Existing directories outside of src won't break anything since the package.json entry point will still be added there
+        // and uploaded to npm. Problems would arise if the directory was already npmignored though
+        existingDirs.push({
+          dir: path.relative(projectRoot, entryPointDirName),
+          pkgFile,
+        });
       }
       await writeEntryPointsPathInPkgJson(
         isTs,
@@ -84,8 +82,11 @@ async function createEntryPointsDirWithPkgJson({
       );
     }
   }
-  if (errors.length > 0) {
-    throw Error(errors.join('\n'));
+  if (warnOnExistingDirs && existingDirs.length > 0) {
+    console.warn(
+      '\tThe following entry point directories already exist. If the project is in a clean build state, this indicates a name clash between entry point files directly underneath src/ and non-src directories with the same name. This may cause issues if the directory is npm-ignored.\nIf this is a rebuild, you can ignore these warnings.',
+    );
+    console.warn(`\tClashing dirs: ${existingDirs.map(p => p.dir).join(', ')}`);
   }
 }
 

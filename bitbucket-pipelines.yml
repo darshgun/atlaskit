@@ -47,7 +47,7 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --frozen-lockfile
-              - yarn build --build-is-clean
+              - yarn build
               - node build/ci-scripts/run.if.package.changed.js @atlaskit/editor-mobile-bridge -- yarn build:editor-mobile-bridge
               - node build/utils/sanity-check-file-structure-dist.js
               - export CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js)

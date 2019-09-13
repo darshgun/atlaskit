@@ -32,7 +32,7 @@
 const { createEntryPointsDirWithPkgJson } = require('./createEntryPointsUtils');
 
 if (require.main === module) {
-  createEntryPointsDirWithPkgJson({ buildIsClean: true }).catch(e => {
+  createEntryPointsDirWithPkgJson().catch(e => {
     console.error(e);
     process.exit(1);
   });
