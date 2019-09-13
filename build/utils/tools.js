@@ -65,6 +65,7 @@ async function getPackageInfo(pkg, project) {
     isStylelint,
     isWebdriver,
     isVisualRegression,
+    isBrowserPackage,
   };
 }
 
