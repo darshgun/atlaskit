@@ -1,5 +1,13 @@
 # @atlaskit/user-picker
 
+## 4.1.0
+
+### Minor Changes
+
+- [minor][c9fbef651f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9fbef651f):
+
+  Add Group as a new Option
+
 ## 4.0.23
 
 ### Patch Changes
