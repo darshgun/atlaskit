@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 3.28.2
+
+### Patch Changes
+
+- [patch][7c4b42ed6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c4b42ed6b):
+
+  yUpdate siwtcher documentation
+
 ## 3.28.1
 
 ### Patch Changes
