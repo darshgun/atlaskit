@@ -1,1 +1,0 @@
-Added articleIdSetter prop and updated the article navigation logic
