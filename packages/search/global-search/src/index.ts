@@ -12,7 +12,7 @@ export {
 } from './components/PrefetchedResultsProvider';
 
 export {
-  default as withFeedbackButton,
+  withFeedbackButton,
   FeedbackCollectorProps,
 } from './components/feedback/withFeedbackButton';
 
