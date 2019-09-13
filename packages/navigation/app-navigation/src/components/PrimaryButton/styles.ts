@@ -37,7 +37,6 @@ export const getPrimaryButtonTheme = ({
       fontSize: fontSizeSmall(),
       fontWeight: 'bold',
       height: buttonHeight,
-      marginLeft: margin.left,
       padding: padding.all,
       textTransform: 'uppercase',
       ...primaryButton.default,
@@ -56,8 +55,6 @@ export const primaryButtonSkeletonCSS = (theme: AppNavigationTheme) => ({
   borderRadius: `${gridSize / 2}px`,
   display: 'inline-flex',
   height: `${buttonHeight - padding.all * 2.5}px`,
-  marginLeft: `${margin.left + padding.all * 2}px`,
-  marginRight: '12px',
   width: '68px',
   ...skeletonCSS(theme),
 });
