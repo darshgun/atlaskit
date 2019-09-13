@@ -23,6 +23,7 @@ const products: Product[] = [
   { label: 'OpsGenie', value: 'OpsGenie' },
   { label: 'StatusPage', value: 'StatusPage' },
   { label: 'Stride', value: 'Stride' },
+  { label: 'Trello', value: 'Trello' },
 ];
 
 const files = [
