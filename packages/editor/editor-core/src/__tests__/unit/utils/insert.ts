@@ -315,7 +315,7 @@ describe('@atlaskit/editor-core/utils insert', () => {
                 );
               });
 
-              it.skip('start of first line (empty)', () => {
+              it('start of first line (empty)', () => {
                 const editorInstance = editor(
                   doc(panel()(p('{<>}'), p('onetwo'), p('three'))),
                 );
@@ -456,6 +456,22 @@ describe('@atlaskit/editor-core/utils insert', () => {
               });
 
               describe('simple', () => {
+                it('start of first empty line', () => {
+                  const editorInstance = editor(
+                    doc(ul(li(p('{<>}')), li(p('two')), li(p('three')))),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      hr(),
+                      '{<|gap>}',
+                      ul(li(p('')), li(p('two')), li(p('three'))),
+                    ),
+                  );
+                });
+
                 it('start of first line', () => {
                   const editorInstance = editor(
                     doc(ul(li(p('{<>}one')), li(p('two')), li(p('three')))),
@@ -498,10 +514,9 @@ describe('@atlaskit/editor-core/utils insert', () => {
                     editorInstance.editorView.state,
                   ).toEqualDocumentAndSelection(
                     doc(
-                      ul(li(p('one '))),
+                      ul(li(p('one ')), li(p('two')), li(p('three'))),
                       hr(),
                       '{<|gap>}',
-                      ul(li(p('two')), li(p('three'))),
                     ),
                   );
                 });
@@ -515,10 +530,9 @@ describe('@atlaskit/editor-core/utils insert', () => {
                     editorInstance.editorView.state,
                   ).toEqualDocumentAndSelection(
                     doc(
-                      ul(li(p('one'))),
+                      ul(li(p('one')), li(p('two')), li(p('three'))),
                       hr(),
                       '{<|gap>}',
-                      ul(li(p('two')), li(p('three'))),
                     ),
                   );
                 });
@@ -549,10 +563,9 @@ describe('@atlaskit/editor-core/utils insert', () => {
                     editorInstance.editorView.state,
                   ).toEqualDocumentAndSelection(
                     doc(
-                      ul(li(p('one')), li(p('two '))),
+                      ul(li(p('one')), li(p('two ')), li(p('three'))),
                       hr(),
                       '{<|gap>}',
-                      ul(li(p('three'))),
                     ),
                   );
                 });
@@ -566,10 +579,9 @@ describe('@atlaskit/editor-core/utils insert', () => {
                     editorInstance.editorView.state,
                   ).toEqualDocumentAndSelection(
                     doc(
-                      ul(li(p('one')), li(p('two'))),
+                      ul(li(p('one')), li(p('two')), li(p('three'))),
                       hr(),
                       '{<|gap>}',
-                      ul(li(p('three'))),
                     ),
                   );
                 });
@@ -606,6 +618,414 @@ describe('@atlaskit/editor-core/utils insert', () => {
                     ),
                   );
                 });
+              });
+
+              describe('nested list', () => {
+                it('start of first line', () => {
+                  const editorInstance = editor(
+                    doc(
+                      ul(
+                        li(p('{<>}one')),
+                        li(
+                          p('two '),
+                          ul(
+                            li(p('a')),
+                            li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  );
+                  insertAction(editorInstance);
+                  expect(
+                    editorInstance.editorView.state,
+                  ).toEqualDocumentAndSelection(
+                    doc(
+                      hr(),
+                      '{<|gap>}',
+                      ul(
+                        li(p('one')),
+                        li(
+                          p('two '),
+                          ul(
+                            li(p('a')),
+                            li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  );
+                });
+
+                // anything else inside a list that is not at the very beggining of it, will insert bellow
+                [
+                  {
+                    message: 'end of first line in first level',
+                    docToTest: doc(
+                      ul(
+                        li(p('one {<>}')),
+                        li(
+                          p('two '),
+                          ul(
+                            li(p('a')),
+                            li(p('b'), ul(li(p('1')), li(p('2 ')), li(p('3')))),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  },
+                  {
+                    message: 'start of second line in first level',
+                    docToTest: doc(
+                      ul(
+                        li(p('one ')),
+                        li(
+                          p('{<>}two '),
+                          ul(
+                            li(p('a')),
+                            li(p('b'), ul(li(p('1')), li(p('2 ')), li(p('3')))),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  },
+                  {
+                    message: 'end of second line in first level',
+                    docToTest: doc(
+                      ul(
+                        li(p('one ')),
+                        li(
+                          p('two {<>}'),
+                          ul(
+                            li(p('a')),
+                            li(p('b'), ul(li(p('1')), li(p('2 ')), li(p('3')))),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  },
+                  {
+                    message: 'start of second line in a deep level',
+                    docToTest: doc(
+                      ul(
+                        li(p('one ')),
+                        li(
+                          p('two '),
+                          ul(
+                            li(p('a')),
+                            li(
+                              p('b'),
+                              ul(li(p('1')), li(p('{<>}2 ')), li(p('3'))),
+                            ),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  },
+                  {
+                    message: 'end of second line in a deep level',
+                    docToTest: doc(
+                      ul(
+                        li(p('one ')),
+                        li(
+                          p('two '),
+                          ul(
+                            li(p('a')),
+                            li(
+                              p('b'),
+                              ul(li(p('1')), li(p('2 {<>}')), li(p('3'))),
+                            ),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  },
+                  {
+                    message: 'start of first line in a deep level',
+                    docToTest: doc(
+                      ul(
+                        li(p('one ')),
+                        li(
+                          p('two '),
+                          ul(
+                            li(p('a')),
+                            li(
+                              p('b'),
+                              ul(li(p('{<>}1')), li(p('2 ')), li(p('3'))),
+                            ),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('three')),
+                      ),
+                    ),
+                  },
+                  {
+                    message: 'start of last line in last level',
+                    docToTest: doc(
+                      ul(
+                        li(p('one ')),
+                        li(
+                          p('two '),
+                          ul(
+                            li(p('a')),
+                            li(
+                              p('b'),
+                              ul(li(p('{<>}1')), li(p('2 ')), li(p('3'))),
+                            ),
+                            li(p('c')),
+                          ),
+                        ),
+                        li(p('{<>}three')),
+                      ),
+                    ),
+                  },
+                ].forEach(({ message, docToTest }) => {
+                  it(message, () => {
+                    const editorInstance = editor(docToTest);
+                    insertAction(editorInstance);
+                    expect(
+                      editorInstance.editorView.state,
+                    ).toEqualDocumentAndSelection(
+                      doc(
+                        ul(
+                          li(p('one ')),
+                          li(
+                            p('two '),
+                            ul(
+                              li(p('a')),
+                              li(
+                                p('b'),
+                                ul(li(p('1')), li(p('2 ')), li(p('3'))),
+                              ),
+                              li(p('c')),
+                            ),
+                          ),
+                          li(p('three')),
+                        ),
+                        hr(),
+                        '{<|gap>}',
+                      ),
+                    );
+                  });
+                });
+
+                //   it('middle of first line', () => {
+                //     const editorInstance = editor(
+                //       doc(
+                //         ul(
+                //           li(p('on{<>}e')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         )
+                //       )
+                //     );
+                //     insertAction(editorInstance);
+                //     expect(
+                //       editorInstance.editorView.state,
+                //     ).toEqualDocumentAndSelection(
+                //       doc(
+                //         ul(
+                //           li(p('one')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         ),
+                //         hr(),
+                //         '{<|gap>}',
+                //       )
+                //     );
+                //   });
+
+                //   it('end of first line', () => {
+                //     const editorInstance = editor(
+                //       doc(
+                //         ul(
+                //           li(p('one{<>}')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         )
+                //       )
+                //     );
+                //     insertAction(editorInstance);
+                //     expect(
+                //       editorInstance.editorView.state,
+                //     ).toEqualDocumentAndSelection(
+                //       doc(
+                //         ul(
+                //           li(p('one')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         ),
+                //         hr(),
+                //         '{<|gap>}',
+                //       )
+                //     );
+                //   });
+                // });
+
+                // describe('third level deep', () => {
+                //   it('start of first line', () => {
+                //     const editorInstance = editor(
+                //       doc(
+                //         ul(
+                //           li(p('one')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('{<>}a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         )
+                //       )
+                //     );
+                //     insertAction(editorInstance);
+                //     expect(
+                //       editorInstance.editorView.state,
+                //     ).toEqualDocumentAndSelection(
+                //       doc(
+                //         hr(),
+                //         '{<|gap>}',
+                //         ul(
+                //           li(p('one')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         )
+                //       )
+                //     );
+                //   });
+
+                //   it('middle of first line', () => {
+                //     const editorInstance = editor(
+                //       doc(
+                //         ul(
+                //           li(p('on{<>}e')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         )
+                //       )
+                //     );
+                //     insertAction(editorInstance);
+                //     expect(
+                //       editorInstance.editorView.state,
+                //     ).toEqualDocumentAndSelection(
+                //       doc(
+                //         ul(
+                //           li(p('one')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         ),
+                //         hr(),
+                //         '{<|gap>}',
+                //       )
+                //     );
+                //   });
+
+                //   it('end of first line', () => {
+                //     const editorInstance = editor(
+                //       doc(
+                //         ul(
+                //           li(p('one{<>}')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         )
+                //       )
+                //     );
+                //     insertAction(editorInstance);
+                //     expect(
+                //       editorInstance.editorView.state,
+                //     ).toEqualDocumentAndSelection(
+                //       doc(
+                //         ul(
+                //           li(p('one')),
+                //           li(
+                //             p('two '),
+                //             ul(
+                //               li(p('a')),
+                //               li(p('b'), ul(li(p('1')), li(p('2')), li(p('3')))),
+                //               li(p('c'))
+                //             )
+                //           ),
+                //           li(p('three'))
+                //         ),
+                //         hr(),
+                //         '{<|gap>}',
+                //       )
+                //     );
+                //   });
+                // });
               });
             });
           });
