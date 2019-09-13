@@ -1,5 +1,13 @@
 # @atlaskit/app-navigation
 
+## 0.3.2
+
+### Patch Changes
+
+- [patch][9a59c6e93b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a59c6e93b):
+
+  Fix badge and primary items container styles
+
 ## 0.3.1
 
 ### Patch Changes
