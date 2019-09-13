@@ -2111,6 +2111,10 @@
         "../../navigation/app-navigation/src/",
         "./packages/navigation/app-navigation/src/"
       ],
+      "@atlaskit/atlassian-switcher/create-custom-provider": [
+        "../../navigation/atlassian-switcher/src/create-custom-provider",
+        "./packages/navigation/atlassian-switcher/src/create-custom-provider"
+      ],
       "@atlaskit/atlassian-switcher": [
         "../../navigation/atlassian-switcher/src/",
         "./packages/navigation/atlassian-switcher/src/"
