@@ -1,7 +1,7 @@
 import React from 'react';
 import { md, code } from '@atlaskit/docs';
 import {
-  easeInOut,
+  easeOut,
   smallDurationMs,
   mediumDurationMs,
   largeDurationMs,
@@ -13,17 +13,29 @@ export default () => md`
 import { smallDurationMs } from '@atlaskit/motion';
   `}
 
-  ${<MovesRightBlock curve={easeInOut} duration={smallDurationMs} />}
+  ${(
+    <MovesRightBlock
+      appearance="small"
+      curve={easeOut}
+      duration={smallDurationMs}
+    />
+  )}
 
   ${code`
 import { mediumDurationMs } from '@atlaskit/motion';
   `}
 
-  ${<MovesRightBlock curve={easeInOut} duration={mediumDurationMs} />}
+  ${<MovesRightBlock curve={easeOut} duration={mediumDurationMs} />}
 
   ${code`
 import { largeDurationMs } from '@atlaskit/motion';
   `}
 
-  ${<MovesRightBlock curve={easeInOut} duration={largeDurationMs} />}
+  ${(
+    <MovesRightBlock
+      appearance="large"
+      curve={easeOut}
+      duration={largeDurationMs}
+    />
+  )}
 `;

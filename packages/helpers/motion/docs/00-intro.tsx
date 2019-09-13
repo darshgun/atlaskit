@@ -1,106 +1,114 @@
 import React from 'react';
-import { md, code, DevPreviewWarning } from '@atlaskit/docs';
+import { md, code, DevPreviewWarning, Props, Example } from '@atlaskit/docs';
 
 export default md`
   ${<DevPreviewWarning />}
 
-  ## Usage
+  ## Components
 
-  ### Motion variables
+  ### FadeIn
 
-  There are various types of variables available from the motion package.
+  Useful for fading in an element.
 
-  #### Duration
+  ${(
+    <Example
+      packageName="@atlaskit/motion"
+      Component={require('../examples/fade-in-single-element').default}
+      title="Single element"
+      source={require('!!raw-loader!../examples/fade-in-single-element')}
+    />
+  )}
 
-  There are three durations available,
-  each size increases in duration.
-  Use a larger duration for an element that moves a large distance,
-  or is a large element.
+  #### Props
+
+  ${(
+    <Props
+      heading=""
+      props={require('!!extract-react-types-loader!../src/entrance/fade-in')}
+    />
+  )}
+
+  ### StaggeredEntrance
+
+  Useful for staggering an entrance animation over multiple elements.
+
+  ${(
+    <Example
+      packageName="@atlaskit/motion"
+      Component={require('../examples/fade-in-list-of-elements').default}
+      title="List of elements"
+      source={require('!!raw-loader!../examples/fade-in-list-of-elements')}
+    />
+  )}
+
+  ${(
+    <Example
+      packageName="@atlaskit/motion"
+      Component={require('../examples/fade-in-grid-of-elements').default}
+      title="Grid of elements"
+      source={require('!!raw-loader!../examples/fade-in-grid-of-elements')}
+    />
+  )}
+
+  #### Props
+
+  ${(
+    <Props
+      heading=""
+      props={require('!!extract-react-types-loader!../src/entrance/staggered-entrance')}
+    />
+  )}
+
+  ## Prefers Reduced Motion
+
+  Atlaskit Motion comes with reduced motion support out of the box.
+  Want to check them yourself in your own app? Too easy.
+
+  [Unsure what reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) is?
+  It enables users to essentially tell websites "hey, I don't actually want animation tbh".
+  However it's up to us - the developers - to ensure they get their wish.
+
+  ### isReducedMotion()
+
+  Useful when performing animation at runtime and you need to check just in time.
 
   <br />
 
   ${code`
-import {
-  smallDurationMs,
-  mediumDurationMs,
-  largeDurationMs,
-} from '@atlaskit/motion';
+import { isReducedMotion } from '@atlaskit/motion';
+
+if (!isReducedMotion()) {
+  // do the motion
+}
   `}
 
-  <br />
+  ### reduceMotionCheck()
 
-  ##### Duration decision matrix
-
-  Use this table if you're unsure what duration you should use.
-
-  <br />
-
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Small element</th>
-        <th>Large element</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Short distance</strong></td>
-        <td><code>smallDurationMs</code></td>
-        <td><code>mediumDurationMs</code></td>
-      </tr>
-      <tr>
-        <td><strong>Long distance</strong></td>
-        <td><code>mediumDurationMs</code></td>
-        <td><code>largeDurationMs</code></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <br />
-
-  #### Curves
-
-  There are three curves available,
-  each used for a particular user interaction,
-  or how the element appears.
+  Useful when performing animation or transitions with just CSS.
 
   <br />
 
   ${code`
-import { easeInOut, easeIn, easeOut } from '@atlaskit/motion';
-  `}
+import { reduceMotionCheck } from '@atlaskit/motion';
 
-  <br />
+// @emotion/core css prop
+<div
+  css={{
+    animationName: 'slide-in',
+    ...reduceMotionCheck()
+  }}
+/>
 
-  ##### Curves decision matrix
+// styled-components template literal
+styled.div\`
+  animation-name: slide-in;
+  \$\{reduceMotionCheck()};
+\`;
 
-  Use this table if you're unsure what curve you should use.
-
-  <br />
-
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th><code>easeInOut</code></th>
-        <th><code>easeOut</code></th>
-        <th><code>easeIn</code></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><i>When to use</i></td>
-        <td>When an element has been interacted with indirectly.</td>
-        <td>When an element has been interacted with directly. <br/>When an element appears from off screen.</td>
-        <td>Use rarely. Only used if an element is moving indirectly entirely off the screen.</td>
-      </tr>
-      <tr>
-        <td><i>Example use case</i></td>
-        <td>A user clicks a button, and a separate element moves.</td>
-        <td>A user clicks an element, and that same element moves. <br/>A drawer appears from off screen.</td>
-        <td>A user clicks a button which spins and waits. After the operation is finished the button enters a confirmed state and the modal slides entirely off the screen.</td>
-      </tr>
-    </tbody>
-  </table>
+// styled-components object
+styled.div({
+  animationName: 'slide-in',
+  ...reduceMotionCheck()
+});
+    `}
 `;
