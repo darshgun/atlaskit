@@ -29,19 +29,23 @@ const logos = [
 ];
 
 export default () => {
-  const [numOfChildren, setNumOfChildren] = useState(9);
-  const [size, setSize] = useState<any>('medium');
+  const [state, setState] = useState(() => ({
+    size: 'medium' as any,
+    numOfChildren: 9,
+  }));
 
   return (
     <div>
       <div css={{ textAlign: 'center', '> *': { margin: '2px' } }}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 50].map(num => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 50, 80].map(num => (
           <Button
             key={num}
-            isSelected={num === numOfChildren}
+            isSelected={num === state.numOfChildren}
             onClick={() => {
-              setSize(num > 9 ? 'small' : 'medium');
-              setNumOfChildren(num);
+              setState({
+                size: num > 9 ? 'small' : 'medium',
+                numOfChildren: num,
+              });
             }}
           >
             {num}
@@ -49,7 +53,7 @@ export default () => {
         ))}
       </div>
 
-      <RetryContainer key={numOfChildren}>
+      <RetryContainer key={state.numOfChildren}>
         <ul
           css={{
             display: 'flex',
@@ -62,7 +66,7 @@ export default () => {
           }}
         >
           <StaggeredEntrance columns="responsive">
-            {Array(numOfChildren)
+            {Array(state.numOfChildren)
               .fill(undefined)
               .map((_, index) => (
                 <FadeIn key={index}>
@@ -71,9 +75,9 @@ export default () => {
                       {...props}
                       css={{ display: 'block', padding: 0, margin: '4px' }}
                     >
-                      <Block appearance={size}>
+                      <Block appearance={state.size}>
                         {cloneElement(logos[index % logos.length], {
-                          size: numOfChildren > 9 ? 'small' : 'xlarge',
+                          size: state.numOfChildren > 9 ? 'small' : 'xlarge',
                         })}
                       </Block>
                     </li>

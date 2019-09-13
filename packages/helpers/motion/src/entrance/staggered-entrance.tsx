@@ -88,12 +88,11 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
           break;
         }
 
-        const box = child.getBoundingClientRect();
         if (!currentTop) {
-          currentTop = box.top;
+          currentTop = child.offsetTop;
         }
 
-        if (currentTop === box.top) {
+        if (currentTop === child.offsetTop) {
           numberColumns += 1;
 
           if (elementRefs.current.length - 1 === i) {
