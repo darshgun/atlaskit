@@ -1,0 +1,10 @@
+{
+  "releases": [{ "name": "@atlaskit/app-navigation", "type": "minor" }],
+  "dependents": [
+    {
+      "name": "@atlaskit/navigation-next",
+      "type": "patch",
+      "dependencies": ["@atlaskit/app-navigation"]
+    }
+  ]
+}
