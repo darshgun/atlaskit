@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
-import { ThemedPrimaryButton } from '../../src/components/PrimaryButton';
-import { ThemedPrimaryButtonProps } from '../../src/components/PrimaryButton/types';
+import { PrimaryButton, PrimaryButtonProps } from '../../src';
 import { useOverflowStatus } from '../../src/controllers/overflow';
 
-const PrimaryButton = (props: ThemedPrimaryButtonProps) => {
+const NavigationButton = (props: PrimaryButtonProps) => {
   const { isVisible } = useOverflowStatus();
   if (isVisible) {
-    return <ThemedPrimaryButton {...props} />;
+    return <PrimaryButton {...props} />;
   } else {
     if (props.dropdownContent) {
       return (
@@ -51,49 +50,37 @@ const DropdownContent = ({ sections }: { sections: typeof projectsData }) => {
 };
 
 export const bitbucketPrimaryItems = [
-  <PrimaryButton
-    id="work"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Your work click', ...args);
     }}
     text="Your work"
   />,
-  <PrimaryButton
-    id="workspaces"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Workspaces click', ...args);
     }}
     text="Workspaces"
   />,
-  <PrimaryButton
-    id="repositories"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Repositories click', ...args);
     }}
     text="Repositories"
   />,
-  <PrimaryButton
-    id="projects"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Projects click', ...args);
     }}
     text="Projects"
   />,
-  <PrimaryButton
-    id="pullrequests"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Pull requests click', ...args);
     }}
     text="Pull requests"
   />,
-  <PrimaryButton
-    id="issues"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Issues click', ...args);
     }}
@@ -122,40 +109,33 @@ const SpacesContent = () => (
 );
 
 export const confluencePrimaryItems = [
-  <PrimaryButton
-    id="activity"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Activity click', ...args);
     }}
     text="Activity"
   />,
-  <PrimaryButton
-    id="work"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Your work click', ...args);
     }}
     text="Your work"
   />,
-  <PrimaryButton
+  <NavigationButton
     dropdownContent={SpacesContent}
-    id="spaces"
     onClick={(...args: any[]) => {
       console.log('Spaces click', ...args);
     }}
     text="Spaces"
   />,
-  <PrimaryButton
-    id="people"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('People click', ...args);
     }}
     text="People"
   />,
-  <PrimaryButton
+  <NavigationButton
     dropdownContent={ConfluenceAppsContent}
-    id="apps"
     onClick={(...args: any[]) => {
       console.log('Apps click', ...args);
     }}
@@ -209,33 +189,29 @@ const dashboardsData = [
 const DashboardsContent = () => <DropdownContent sections={dashboardsData} />;
 
 export const jiraPrimaryItems = [
-  <PrimaryButton
-    id="home"
+  <NavigationButton
     href="#"
     onClick={(...args: any[]) => {
       console.log('Home click...', ...args);
     }}
     text="Home"
   />,
-  <PrimaryButton
+  <NavigationButton
     dropdownContent={ProjectsContent}
-    id="projects"
     onClick={(...args: any[]) => {
       console.log('Projects click', ...args);
     }}
     text="Projects"
   />,
-  <PrimaryButton
+  <NavigationButton
     dropdownContent={IssuesContent}
-    id="issues"
     onClick={(...args: any[]) => {
       console.log('Issues click', ...args);
     }}
     text="Issues & Filters"
   />,
-  <PrimaryButton
+  <NavigationButton
     dropdownContent={DashboardsContent}
-    id="dashboards"
     onClick={(...args: any[]) => {
       console.log('Dashboards click', ...args);
     }}
@@ -244,45 +220,37 @@ export const jiraPrimaryItems = [
 ];
 
 export const opsGeniePrimaryItems = [
-  <PrimaryButton
-    id="alerts"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Alerts click', ...args);
     }}
     text="Alerts"
   />,
-  <PrimaryButton
-    id="incidents"
-    href="#"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Incidents click', ...args);
     }}
     text="Incidents"
   />,
-  <PrimaryButton
-    id="oncall"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Who is on-call click', ...args);
     }}
     text="Who is on-call"
   />,
-  <PrimaryButton
-    id="teams"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Teams click', ...args);
     }}
     text="Teams"
   />,
-  <PrimaryButton
-    id="services"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Services click', ...args);
     }}
     text="Services"
   />,
-  <PrimaryButton
-    id="analytics"
+  <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Analytics click', ...args);
     }}

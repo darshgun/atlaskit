@@ -7,7 +7,7 @@ import { jsx } from '@emotion/core';
 import { ComponentType } from 'react';
 
 import { BadgeContainer } from '../BadgeContainer';
-import { ThemedIconButton } from '../IconButton';
+import { IconButton } from '../IconButton';
 import { TriggerManager } from '../TriggerManager';
 import NotificationDrawer from './NotificationDrawer';
 import { NotificationsProps } from './types';
@@ -53,7 +53,7 @@ export const Notifications = (props: NotificationsProps) => {
     <TriggerManager {...triggerManagerProps} drawerContent={drawer}>
       {({ onTriggerClick }) => (
         <BadgeContainer badge={resolvedBadge}>
-          <ThemedIconButton
+          <IconButton
             icon={<NotificationIcon label={tooltip} />}
             onClick={onTriggerClick}
             tooltip={tooltip}

@@ -20,8 +20,8 @@ export const AppNavigationSkeleton = ({
   theme = defaultTheme,
 }: AppNavigationSkeletonProps) => {
   return (
-    <ThemeProvider theme={theme}>
-      <div css={containerCSS}>
+    <ThemeProvider value={theme}>
+      <div css={containerCSS(theme)}>
         <div css={leftCSS}>
           <ProductHomeSkeleton />
           {Array.from({ length: primaryItemsCount }, (_, index) => (
