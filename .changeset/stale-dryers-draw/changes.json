@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/user-picker", "type": "minor" },
+    { "name": "@atlaskit/util-data-test", "type": "minor" }
+  ],
+  "dependents": []
+}

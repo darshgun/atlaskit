@@ -64,4 +64,9 @@ export const messages = defineMessages({
     defaultMessage: 'Enter email to invite',
     description: 'Byline for a potentially valid email option.',
   },
+  groupByline: {
+    id: 'fabric.elements.user-picker.group.byline',
+    defaultMessage: 'Admin-managed group',
+    description: 'Byline for admin-managed groups',
+  },
 });
