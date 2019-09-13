@@ -1,5 +1,5 @@
-import { fetchJson } from '../utils/fetch';
 import asDataProvider from './as-data-provider';
+import { fetchJson } from '../utils/fetch';
 import { withCached } from '../utils/with-cached';
 
 export const createProvider = <T>(name: string, url: string) => {
