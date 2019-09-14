@@ -8,8 +8,7 @@ import Wrapper from '../Wrapper';
 const svg = (iconGradientStart: string, iconGradientStop: string) => {
   const id = uid({ iconGradientStart: iconGradientStop });
   return `<canvas width="102" height="32" aria-hidden="true"></canvas>
-  <svg viewBox="0 0 102 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false" aria-hidden="true">
-      <title>lockup/trello</title>
+  <svg viewBox="0 0 102 32" version="1.1" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
       <defs>
       <linearGradient x1="50%" x2="50%" y1="109.344%" y2="50%" id="${id}">
         <stop stop-color="${iconGradientStart}" ${
