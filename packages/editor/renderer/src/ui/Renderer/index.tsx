@@ -60,6 +60,7 @@ export interface Props {
 export class Renderer extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
   private serializer?: ReactSerializer;
+  private mountTimeoutId: number | undefined;
 
   constructor(props: Props) {
     super(props);
@@ -87,7 +88,7 @@ export class Renderer extends PureComponent<Props, {}> {
 
   componentDidMount() {
     // add setTimeout to ensure the rendering process has completed.
-    window.setTimeout(() => this.onRenderComplete());
+    this.mountTimeoutId = window.setTimeout(() => this.onRenderComplete());
 
     this.fireAnalyticsEvent({
       action: ACTION.STARTED,
@@ -234,6 +235,8 @@ export class Renderer extends PureComponent<Props, {}> {
 
   componentWillUnmount() {
     const { dataProviders } = this.props;
+
+    window.clearTimeout(this.mountTimeoutId);
 
     // if this is the ProviderFactory which was created in constructor
     // it's safe to destroy it on Renderer unmount

@@ -123,6 +123,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
     intl: intlShape,
   };
 
+  private canDispatchTransactions: boolean = false;
   private focusTimeoutId: number | undefined;
 
   constructor(props: EditorViewProps & T) {
@@ -290,10 +291,22 @@ export default class ReactEditorView<T = {}> extends React.Component<
     }
   }
 
+  componentDidMount() {
+    // Although storing mounted state is an anti-pattern in React,
+    // we do so here so that we can intercept and abort asynchronous
+    // transactions from ProseMirror when a dismount is imminent.
+    this.canDispatchTransactions = true;
+  }
+
   /**
    * Clean up any non-PM resources when the editor is unmounted
    */
   componentWillUnmount() {
+    // We can ignore any transactions from this point onwards.
+    // This serves to avoid potential runtime exceptions which could arise
+    // from an async dispatched transaction after it's unmounted.
+    this.canDispatchTransactions = false;
+
     this.eventDispatcher.destroy();
 
     clearTimeout(this.focusTimeoutId);
@@ -407,7 +420,10 @@ export default class ReactEditorView<T = {}> extends React.Component<
     return {
       state: state || this.editorState,
       dispatchTransaction: (transaction: Transaction) => {
-        if (!this.view) {
+        // Block stale transactions:
+        // Prevent runtime exeptions from async transactions that would attempt to
+        // update the DOM after React has unmounted the Editor.
+        if (!this.view || !this.canDispatchTransactions) {
           return;
         }
 
