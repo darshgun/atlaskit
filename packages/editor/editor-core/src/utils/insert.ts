@@ -59,9 +59,10 @@ const shouldSplit = (nodeType: NodeType, schemaNodes: any) => {
 export const safeInsert = (content: InsertableContent, position?: number) => (
   tr: Transaction,
 ) => {
-  // Temporary whitelist of currently implemented nodes
-  const whitelist = ['rule', 'mediaSingle'];
-  if (content instanceof Fragment || !whitelist.includes(content.type.name)) {
+  const { nodes } = tr.doc.type.schema;
+  const whitelist = [nodes.rule, nodes.mediaSingle];
+
+  if (content instanceof Fragment || !whitelist.includes(content.type)) {
     return null;
   }
 
