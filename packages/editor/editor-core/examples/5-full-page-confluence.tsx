@@ -46,13 +46,19 @@ export default class ExampleEditorComponent extends React.Component<
     appearance: 'full-page' as EditorAppearance,
   };
 
+  private appearanceTimeoutId: number | undefined;
+
   componentDidMount() {
     // Simulate async nature of confluence fetching appearance
     const timeout = Math.floor(Math.random() * (1500 - 750 + 1)) + 750;
     console.log(`async delay is ${timeout}`);
-    setTimeout(() => {
+    this.appearanceTimeoutId = window.setTimeout(() => {
       this.setState(() => ({ disabled: false, appearance: getAppearance() }));
     }, timeout);
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.appearanceTimeoutId);
   }
 
   render() {
