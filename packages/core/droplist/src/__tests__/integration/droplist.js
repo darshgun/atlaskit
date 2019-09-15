@@ -12,7 +12,7 @@ const droplistButton = 'button[type="button"]';
 const droplist = 'div[data-role="droplistContent"]';
 
 BrowserTestCase(
-  'Droplist should close when Escape key is pressed in IE and Edge',
+  'Droplist should close when Escape key is pressed in IE and Edge But should still work on Chrome',
   { skip: ['safari', 'firefox'] }, // the issue was only occurring in IE and Edge - AK-4523
   async client => {
     const droplistTest = new Page(client);
@@ -22,13 +22,19 @@ BrowserTestCase(
 
     expect(await droplistTest.isExisting(droplist)).toBe(true);
     await droplistTest.keys('Escape');
-    // in IE11, after hitting escape, the element disappears from the DOM and can't be queried.
-    try {
-      await droplistTest.isExisting(droplist);
-    } catch (err) {
-      expect(err.toString()).toContain(
-        'Error: Unable to find element with css selector == div[data-role="droplistContent"]',
-      );
+    if (await droplistTest.isBrowser('internet explorer')) {
+      // in IE11, after hitting escape, the element disappears from the DOM and can't be queried.
+      try {
+        await droplistTest.isExisting(droplist);
+      } catch (err) {
+        expect(err.toString()).toContain(
+          'Error: Unable to find element with css selector == div[data-role="droplistContent"]',
+        );
+      }
+    } else {
+      await droplistTest.waitForSelector(droplist, 1000, true);
+      expect(await droplistTest.isExisting(droplist)).toBe(false);
+      await droplistTest.checkConsoleErrors();
     }
   },
 );
