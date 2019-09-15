@@ -1,13 +1,8 @@
-import {
-  isNodeSelection,
-  canInsert,
-  hasParentNodeOfType,
-  findParentNodeOfTypeClosestToPos,
-} from 'prosemirror-utils';
+import { isNodeSelection, canInsert } from 'prosemirror-utils';
 import { Node, Fragment, NodeType, ResolvedPos } from 'prosemirror-model';
 import { Transaction } from 'prosemirror-state';
 import { ReplaceStep, ReplaceAroundStep } from 'prosemirror-transform';
-import { isEmptyParagraph, findFarthestParentNode } from './document';
+import { isEmptyParagraph } from './document';
 import { GapCursorSelection, Side } from '../plugins/gap-cursor';
 
 export type InsertableContent = Node | Fragment;
@@ -21,13 +16,6 @@ const isLastChild = ($pos: ResolvedPos<any>, doc: Node<any>): boolean =>
 
 const isFirstChild = ($pos: ResolvedPos<any>, doc: Node<any>): boolean =>
   doc.resolve($pos.before()).node().firstChild === $pos.node();
-
-const nodeIsInsideAList = (tr: Transaction<any>) => {
-  const { nodes } = tr.doc.type.schema;
-  return hasParentNodeOfType([nodes.orderedList, nodes.bulletList])(
-    tr.selection,
-  );
-};
 
 const insertBeforeOrAfter = (
   tr: Transaction,
@@ -61,17 +49,19 @@ const insertBeforeOrAfter = (
 
 // FIXME: A more sustainable and configurable way to choose when to split
 const shouldSplit = (nodeType: NodeType, schemaNodes: any) => {
-  return [schemaNodes.panel].includes(nodeType);
+  return [
+    schemaNodes.bulletList,
+    schemaNodes.orderedList,
+    schemaNodes.panel,
+  ].includes(nodeType);
 };
 
 export const safeInsert = (content: InsertableContent, position?: number) => (
   tr: Transaction,
 ) => {
   // Temporary whitelist of currently implemented nodes
-  const { nodes } = tr.doc.type.schema;
-  const whitelist = [nodes.rule, nodes.mediaSingle];
-
-  if (content instanceof Fragment || !whitelist.includes(content.type)) {
+  const whitelist = ['rule', 'mediaSingle'];
+  if (content instanceof Fragment || !whitelist.includes(content.type.name)) {
     return null;
   }
 
@@ -92,37 +82,9 @@ export const safeInsert = (content: InsertableContent, position?: number) => (
   const insertPosEnd = $insertPos.end();
   const insertPosStart = $insertPos.start();
 
-  if (nodeIsInsideAList(tr)) {
-    const supportedListNodes = [nodes.orderedList, nodes.bulletList];
-    // find the root parent of current list
-    const rootList = findFarthestParentNode(node =>
-      supportedListNodes.includes(node.type),
-    )(tr.selection);
-
-    // find the closest list item, from position
-    const closestListItem = findParentNodeOfTypeClosestToPos(
-      $insertPos,
-      nodes.listItem,
-    );
-
-    if (
-      /**
-       * if current position is contained in the very first listItem of the current list,
-       * and also, the current position within that listItem is the very beginning, then we insert above.
-       * Any other scenario where current position is contained in a list, we insert bellow.
-       **/
-      rootList &&
-      closestListItem &&
-      rootList.node.firstChild === closestListItem.node &&
-      $insertPos.pos === insertPosStart
-    ) {
-      lookDirection = LookDirection.Before;
-    } else {
-      lookDirection = LookDirection.After;
-    }
-  } else if (isEmptyParagraph($insertPos.parent)) {
-    // When parent node is an empty paragraph,
-    // check the empty paragraph is the first or last node of its parent.
+  // When parent node is an empty paragraph,
+  // check the empty paragraph is the first or last node of its parent.
+  if (isEmptyParagraph($insertPos.parent)) {
     if (isLastChild($insertPos, tr.doc)) {
       lookDirection = LookDirection.After;
     } else if (isFirstChild($insertPos, tr.doc)) {
