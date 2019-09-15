@@ -1,4 +1,8 @@
-import { isNodeSelection, canInsert } from 'prosemirror-utils';
+import {
+  isNodeSelection,
+  canInsert,
+  hasParentNodeOfType,
+} from 'prosemirror-utils';
 import { Node, Fragment, NodeType, ResolvedPos } from 'prosemirror-model';
 import { Transaction } from 'prosemirror-state';
 import { ReplaceStep, ReplaceAroundStep } from 'prosemirror-transform';
@@ -16,6 +20,13 @@ const isLastChild = ($pos: ResolvedPos<any>, doc: Node<any>): boolean =>
 
 const isFirstChild = ($pos: ResolvedPos<any>, doc: Node<any>): boolean =>
   doc.resolve($pos.before()).node().firstChild === $pos.node();
+
+const nodeIsInsideAList = (tr: Transaction<any>) => {
+  const { nodes } = tr.doc.type.schema;
+  return hasParentNodeOfType([nodes.orderedList, nodes.bulletList])(
+    tr.selection,
+  );
+};
 
 const insertBeforeOrAfter = (
   tr: Transaction,
@@ -62,7 +73,12 @@ export const safeInsert = (content: InsertableContent, position?: number) => (
   const { nodes } = tr.doc.type.schema;
   const whitelist = [nodes.rule, nodes.mediaSingle];
 
-  if (content instanceof Fragment || !whitelist.includes(content.type)) {
+  // fallback if the node to insert is not in the whitelist, or if the insertion should happen within a list.
+  if (
+    content instanceof Fragment ||
+    !whitelist.includes(content.type) ||
+    nodeIsInsideAList(tr)
+  ) {
     return null;
   }
 
