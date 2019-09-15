@@ -10,7 +10,7 @@ export const isReducedMotion = () => {
  * Use for any CSS based motion (animation or transition).
  * Always put at the end of your declaration for correct use of the cascade.
  */
-export const reduceMotionCheck = () => ({
+export const prefersReducedMotion = () => ({
   '@media (prefers-reduced-motion: reduce)': {
     animation: 'none',
     transition: 'none',

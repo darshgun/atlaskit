@@ -1,114 +1,71 @@
 import React from 'react';
-import { md, code, DevPreviewWarning, Props, Example } from '@atlaskit/docs';
+import { md, code, DevPreviewWarning, Example } from '@atlaskit/docs';
 
 export default md`
   ${<DevPreviewWarning />}
-
-  ## Components
-
-  ### FadeIn
-
-  Useful for fading in an element.
-
-  ${(
-    <Example
-      packageName="@atlaskit/motion"
-      Component={require('../examples/fade-in-single-element').default}
-      title="Single element"
-      source={require('!!raw-loader!../examples/fade-in-single-element')}
-    />
-  )}
-
-  #### Props
-
-  ${(
-    <Props
-      heading=""
-      props={require('!!extract-react-types-loader!../src/entrance/fade-in')}
-    />
-  )}
-
-  ### StaggeredEntrance
-
-  Useful for staggering an entrance animation over multiple elements.
-
-  ${(
-    <Example
-      packageName="@atlaskit/motion"
-      Component={require('../examples/fade-in-list-of-elements').default}
-      title="List of elements"
-      source={require('!!raw-loader!../examples/fade-in-list-of-elements')}
-    />
-  )}
 
   ${(
     <Example
       packageName="@atlaskit/motion"
       Component={require('../examples/fade-in-grid-of-elements').default}
-      title="Grid of elements"
+      title="Staggered entrance with fade in"
       source={require('!!raw-loader!../examples/fade-in-grid-of-elements')}
     />
   )}
 
-  #### Props
+  ## Documentation
 
-  ${(
-    <Props
-      heading=""
-      props={require('!!extract-react-types-loader!../src/entrance/staggered-entrance')}
-    />
-  )}
+  All the documentation can be found in the **sidebar nav links** 👈
 
-  ## Prefers Reduced Motion
+  ### Quick links
 
-  Atlaskit Motion comes with reduced motion support out of the box.
-  Want to check them yourself in your own app? Too easy.
+  - [Variables](/packages/helpers/motion/docs/variables)
+  - [Entering motions](/packages/helpers/motion/docs/entering-motions)
+  - [Accessibility](/packages/helpers/motion/docs/accessibility)
 
-  [Unsure what reduced motion](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) is?
-  It enables users to essentially tell websites "hey, I don't actually want animation tbh".
-  However it's up to us - the developers - to ensure they get their wish.
+  ## Library Considerations
 
-  ### isReducedMotion()
+  ### CSS over Javascript
 
-  Useful when performing animation at runtime and you need to check just in time.
+  Where possible this library will use CSS exclusively,
+  and only use Javascript when it is impossible otherwise.
+  This is primarily for **Performance**,
+  but also for allowing us to have motion run without waiting for Javascript to execute on initial load (very important for our SSR rendered products).
+
+  What this boils down to is:
+
+  - Use CSS animation/transitions over animation engines unless there is no possible alternative
+  - Avoid any client side calculations to power motion if it can be done with CSS
+  - Emulating any spring styled motions with CSS animation
+  - Highly interactive and/or gestural motions would be contenders for using an animation engine, but we're not there yet
+
+  ### Not rendering markup
+
+  Every component in this library will not render markup,
+  they will just pass down \`props\` for you to wire up.
+  Because of this the majority of _motion components_ will utilise children as props or hooks.
 
   <br />
 
   ${code`
-import { isReducedMotion } from '@atlaskit/motion';
-
-if (!isReducedMotion()) {
-  // do the motion
-}
+  <FadeIn>
+    {props => <div {...props} />}
+  </FadeIn>
   `}
 
-  ### reduceMotionCheck()
+  ### Motion abstractions
 
-  Useful when performing animation or transitions with just CSS.
+  We want you to use abstractions (components) to power your motion and to not worry about underlying tech.
+  We _also_ want a consistent experience across our products.
+  Need a particular motion that doesn't exist yet?
 
-  <br />
+  Think about contributing to \`@atlaskit/motion\` so all products at Atlassian can benefit.
 
-  ${code`
-import { reduceMotionCheck } from '@atlaskit/motion';
+  ### Reduced motion support
 
-// @emotion/core css prop
-<div
-  css={{
-    animationName: 'slide-in',
-    ...reduceMotionCheck()
-  }}
-/>
-
-// styled-components template literal
-styled.div\`
-  animation-name: slide-in;
-  \$\{reduceMotionCheck()};
-\`;
-
-// styled-components object
-styled.div({
-  animationName: 'slide-in',
-  ...reduceMotionCheck()
-});
-    `}
+  While motion is utilised to create relationships,
+  show the most important thing on the page,
+  and create delight,
+  it's also important to allow our users to opt out of it.
+  Every motion component should use the provided utilities (see: [Accessibility](/packages/helpers/motion/docs/accessibility)).
 `;

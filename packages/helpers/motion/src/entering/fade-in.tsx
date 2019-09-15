@@ -2,7 +2,7 @@ import React, { forwardRef, Ref } from 'react';
 import { ClassNames, keyframes } from '@emotion/core';
 import { easeInOut } from '../utils/curves';
 import { largeDurationMs } from '../utils/durations';
-import { reduceMotionCheck } from '../utils/accessibility';
+import { prefersReducedMotion } from '../utils/accessibility';
 
 export const fadeInAnimation = () => ({
   from: {
@@ -31,33 +31,26 @@ interface FadeInProps {
   duration?: number;
 
   /**
-   * Useful for controlling when the animation should occur.
-   * Only really used in conjunction with the <StaggeredEntrance /> component.
-   * Defaults to `"running"`.
+   * Use to pause the animation.
    */
-  playState?: 'running' | 'paused';
+  isPaused?: boolean;
 
   /**
-   * Any valid JSX child.
-   * This will be cloned and passed a className.
+   * Children as function.
+   * Will be passed `props` for you to hook up.
    */
   children: (props: { className: string; ref: Ref<any> }) => JSX.Element;
 }
 
 /**
- * For a single element that needs a fade in entrance animation.
+ * For a single element that needs a fade in entering animation.
  * This does not need Javascript to execute so it will run immediately for any SSR rendered React apps before the JS has executed.
  *
- * Will add a className to the direct child.
+ * Will add a `className` to the direct child.
  */
 const FadeIn: React.FC<FadeInProps> = forwardRef<HTMLElement, FadeInProps>(
   (
-    {
-      children,
-      playState = 'running',
-      delay = 0,
-      duration = largeDurationMs,
-    }: FadeInProps,
+    { children, isPaused, delay = 0, duration = largeDurationMs }: FadeInProps,
     ref,
   ) => {
     return (
@@ -71,8 +64,8 @@ const FadeIn: React.FC<FadeInProps> = forwardRef<HTMLElement, FadeInProps>(
               animationDelay: `${delay}ms`,
               animationFillMode: 'backwards',
               animationDuration: `${duration}ms`,
-              animationPlayState: playState,
-              ...reduceMotionCheck(),
+              animationPlayState: isPaused ? 'paused' : 'running',
+              ...prefersReducedMotion(),
             }),
           })
         }

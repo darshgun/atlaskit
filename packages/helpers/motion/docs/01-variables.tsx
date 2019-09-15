@@ -12,6 +12,7 @@ export default md`
 
   ${code`
 import {
+  durationStep,
   smallDurationMs,
   mediumDurationMs,
   largeDurationMs,
@@ -19,6 +20,10 @@ import {
   `}
 
   <br />
+
+  All durations are multiples of \`durationStep\`.
+  Do the current durations not fit your purpose?
+  No worries! Make sure to create a custom one from \`durationStep\`.
 
   ### Duration decision matrix
 
@@ -48,8 +53,6 @@ import {
     </tbody>
   </table>
 
-  <br />
-
   ## Curves
 
   There are three curves available,
@@ -72,7 +75,7 @@ import { easeInOut, easeIn, easeOut } from '@atlaskit/motion';
 
   <table>
     <thead>
-      <tr>
+      <tr style="vertical-align: top;">
         <th></th>
         <th><code>easeInOut</code></th>
         <th><code>easeOut</code></th>
@@ -80,13 +83,13 @@ import { easeInOut, easeIn, easeOut } from '@atlaskit/motion';
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr style="vertical-align: top;">
         <td><i>When to use</i></td>
         <td>When an element has been interacted with indirectly.</td>
         <td>When an element has been interacted with directly. <br/>When an element appears from off screen.</td>
         <td>Use rarely. Only used if an element is moving indirectly entirely off the screen.</td>
       </tr>
-      <tr>
+      <tr style="vertical-align: top;">
         <td><i>Example use case</i></td>
         <td>A user clicks a button, and a separate element moves.</td>
         <td>A user clicks an element, and that same element moves. <br/>A drawer appears from off screen.</td>

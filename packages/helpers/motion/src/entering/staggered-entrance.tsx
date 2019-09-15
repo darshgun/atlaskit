@@ -19,6 +19,7 @@ interface StaggeredEntranceProps {
    * Number of columns the children elements will be displayed over.
    * Use `"responsive"` to have it calculate dynamically on the client side.
    * **NOTE:** This has a big caveat that the elements will be invisible until the client side Javascript executes.
+   * If you have a fixed grid or list, set this to a specific number.
    * Defaults to `"responsive"`.
    */
   columns?: number | 'responsive';
@@ -31,19 +32,18 @@ interface StaggeredEntranceProps {
   column?: number;
 
   /**
-   * Any child FadeIn components.
-   * This will be cloned and passed a calculated delay value.
+   * Child entering elements, for example the `FadeIn` component.
    */
   children: JSX.Element | JSX.Element[];
 }
 
 /**
  * For a list of elements that need to animate in,
- * this should be used in conjunction with entrance components.
+ * this should be used in conjunction with entering components.
  * This does not need Javascript to execute so it will run immediately for any SSR rendered React apps before the JS has executed.
  *
- * Will dynamically add delay to each child entrance component.
- * Unfortunately all entrance components _NEED_ to be a direct descendant.
+ * Will dynamically add delay to each child entering component.
+ * Unfortunately all entering components _NEED_ to be a direct descendant.
  */
 const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
   children,
@@ -116,7 +116,7 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
     const delayMultiplier = Math.log(currentRow + currentColumn) * 5;
 
     return cloneElement(child as JSX.Element, {
-      playState: actualColumns === 0 ? 'paused' : 'running',
+      isPaused: actualColumns === 0,
       delay:
         Math.abs(
           Math.ceil(Math.log((delayMultiplier + 1) / 2) * delayStep * 2),
