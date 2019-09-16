@@ -606,3 +606,12 @@ pipelines:
             # - yarn build:editor-mobile-bridge
             # Run validation in quiet mode as well to easily check file differences
             - cd build/build-validator && (yarn validate-packages || yarn validate-packages --quiet) || true
+    # This replicates builds that would happen locally on a clean slate for a single package
+    run-build-validator-per-package:
+      - step:
+          name: Run build validator per package
+          script:
+            - source ./build-setup.sh
+            - apt-get update && apt-get install -y jq
+            - bolt install --frozen-lockfile
+            - bolt workspaces exec --serial -- bash -c '[ "$(jq -r .private package.json)" = "true" ] && exit 0 || bolt p run build:clean $(jq -r ".name" package.json) && bolt w @atlaskit/build-validator run validate-packages $(jq -r ".name" package.json) --quiet || true'
