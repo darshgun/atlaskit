@@ -1,5 +1,45 @@
 # @atlaskit/user-picker
 
+## 4.1.0
+
+### Minor Changes
+
+- [minor][c9fbef651f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9fbef651f):
+
+  Add Group as a new Option
+
+## 4.0.23
+
+### Patch Changes
+
+- [patch][8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+
+  @atlaskit/avatar has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 4.0.22
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 4.0.21
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 4.0.20
+
+### Patch Changes
+
+- [patch][abee1a5f4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abee1a5f4f):
+
+  Bumping internal dependency (memoize-one) to latest version (5.1.0). memoize-one@5.1.0 has full typescript support so it is recommended that typescript consumers use it also.
+
 ## 4.0.19
 
 ### Patch Changes

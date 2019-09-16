@@ -10,5 +10,6 @@
     "push-vr-images": "docker push atlassianlabs/atlaskit-mk-2-vr:$npm_package_version && docker push atlassianlabs/atlaskit-mk-2-vr:latest"
   },
   "author": "Luke Batchelor",
+  "maintainers": ["Raja B, Chethana K"],
   "license": "Apache-2.0"
 }

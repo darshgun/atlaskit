@@ -1,5 +1,74 @@
 ## 0.1.0
 
+## 0.17.1
+
+- Updated dependencies [617591dd61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617591dd61):
+  - @atlaskit/right-side-panel@0.2.0
+
+## 0.17.0
+
+### Minor Changes
+
+- [minor][67bb0eb7da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67bb0eb7da):
+
+  Added articleIdSetter prop and updated the article navigation logic
+
+## 0.16.1
+
+### Patch Changes
+
+- [patch][dbd5ab6c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd5ab6c91):
+
+  Added href prop to ArticleListComponent
+
+## 0.16.0
+
+### Minor Changes
+
+- [minor][23349602c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23349602c7):
+
+  Added Footer and fixed CSS issues
+
+## 0.15.0
+
+### Minor Changes
+
+- [minor][eb130ee556](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb130ee556):
+
+  Added analytics event to onclick event in ArticleListItem
+
+## 0.14.5
+
+### Patch Changes
+
+- [patch][9c28ef71fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c28ef71fe):
+
+  Add missing peerDependency in package.json
+
+## 0.14.4
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 0.14.3
+
+### Patch Changes
+
+- [patch][9e23c34ccb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e23c34ccb):
+
+  Use generic types instead of type annotations for styles-components
+
+## 0.14.2
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
 ## 0.14.1
 
 ### Patch Changes

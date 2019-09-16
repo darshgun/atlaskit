@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type StatelessFunctionalComponent } from 'react';
+import React, { type ComponentType } from 'react';
 import QuestionIcon from '@atlaskit/icon/glyph/question-circle';
 import Badge from '@atlaskit/badge';
 import Avatar from '@atlaskit/avatar';
@@ -46,7 +46,7 @@ const generateAvatar = profileIconUrl => {
 };
 type OtherConfig = {
   href?: string,
-  badge?: ?StatelessFunctionalComponent<*>,
+  badge?: ?ComponentType<*>,
   label?: string,
 };
 
@@ -144,11 +144,9 @@ function notificationBadge(badgeCount) {
   return {
     badge: badgeCount
       ? () => (
-          <Badge
-            max={MAX_NOTIFICATIONS_COUNT}
-            appearance="important"
-            value={badgeCount}
-          />
+          <Badge max={MAX_NOTIFICATIONS_COUNT} appearance="important">
+            {badgeCount}
+          </Badge>
         )
       : null,
     badgeCount,
@@ -205,9 +203,6 @@ export default function generateProductConfig(
   isNotificationInbuilt: boolean,
 ): ProductConfigShape {
   const {
-    product,
-    cloudId,
-
     onProductClick,
     productTooltip,
     productLabel,
@@ -232,8 +227,6 @@ export default function generateProductConfig(
     createTooltip,
     createDrawerContents,
     getCreateRef,
-
-    enableAtlassianSwitcher,
 
     searchTooltip,
     searchLabel,
@@ -264,6 +257,7 @@ export default function generateProductConfig(
     onHelpClick,
     helpLabel,
     helpTooltip,
+    helpBadge,
     helpDrawerContents,
     getHelpRef,
 
@@ -281,13 +275,11 @@ export default function generateProductConfig(
     getProfileRef,
   } = props;
 
-  const shouldRenderAtlassianSwitcher =
-    enableAtlassianSwitcher && cloudId && product;
-
-  if (enableAtlassianSwitcher && !shouldRenderAtlassianSwitcher) {
+  // $FlowFixMe
+  if (props.enableAtlassianSwitcher) {
     // eslint-disable-next-line no-console
     console.warn(
-      'When using the enableAtlassianSwitcher prop, be sure to send the cloudId and product props. Falling back to the legacy app-switcher',
+      'Use of `enableAtlassianSwitcher` has been deprecated because `atlassian-switcher` is no longer bundled. Please use `appSwitcherComponent` instead.',
     );
   }
 
@@ -327,22 +319,18 @@ export default function generateProductConfig(
       ? configFactory(
           onHelpClick || (helpDrawerContents && openDrawer('help')),
           helpTooltip,
-          { getRef: getHelpRef, label: helpLabel },
+          { getRef: getHelpRef, label: helpLabel, badge: helpBadge },
         )
       : helpConfigFactory(helpItems, helpTooltip, {
           getRef: getHelpRef,
           label: helpLabel,
+          badge: helpBadge,
         }),
     settings: configFactory(
       onSettingsClick || (settingsDrawerContents && openDrawer('settings')),
       settingsTooltip,
       { getRef: getSettingsRef, label: settingsLabel },
     ),
-    atlassianSwitcher: shouldRenderAtlassianSwitcher
-      ? configFactory(openDrawer('atlassianSwitcher'), '', {
-          getRef: getAppSwitcherRef,
-        })
-      : null,
 
     notification: notificationConfigFactory(
       notificationTooltip,
@@ -361,14 +349,13 @@ export default function generateProductConfig(
       profileIconUrl,
       { getRef: getProfileRef, label: profileLabel },
     ),
-    appSwitcher:
-      appSwitcherComponent && !shouldRenderAtlassianSwitcher
-        ? appSwitcherConfigFactory({
-            itemComponent: appSwitcherComponent,
-            label: appSwitcherLabel,
-            tooltip: appSwitcherTooltip,
-            getRef: getAppSwitcherRef,
-          })
-        : null,
+    appSwitcher: appSwitcherComponent
+      ? appSwitcherConfigFactory({
+          itemComponent: appSwitcherComponent,
+          label: appSwitcherLabel,
+          tooltip: appSwitcherTooltip,
+          getRef: getAppSwitcherRef,
+        })
+      : null,
   };
 }

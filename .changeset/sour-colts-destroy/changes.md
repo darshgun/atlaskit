@@ -1,0 +1,1 @@
+CLI's should return a non-zero return code when a error was thrown

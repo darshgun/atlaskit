@@ -27,7 +27,7 @@ import {
 import { CreateAnalyticsEventFn } from './analytics/types';
 import { isAdvancedSearchResult } from './SearchResultsUtil';
 import { getAutocompleteText } from '../util/autocomplete';
-import { Filter } from './../api/CrossProductSearchClient';
+import { FilterWithMetadata } from './../api/CrossProductSearchClient';
 
 const ATLASKIT_QUICKSEARCH_NS = 'atlaskit.navigation.quick-search';
 const QS_ANALYTICS_EV_KB_CTRLS_USED = `${ATLASKIT_QUICKSEARCH_NS}.keyboard-controls-used`;
@@ -35,7 +35,11 @@ const QS_ANALYTICS_EV_SUBMIT = `${ATLASKIT_QUICKSEARCH_NS}.submit`;
 
 export interface Props {
   onMount?: () => void;
-  onSearch(query: string, queryVersion: number, filters?: Filter[]): void;
+  onSearch(
+    query: string,
+    queryVersion: number,
+    filters?: FilterWithMetadata[],
+  ): void;
   onSearchSubmit?(event: React.KeyboardEvent<HTMLInputElement>): void;
   onAutocomplete?(query: string): void;
   isLoading: boolean;
@@ -50,7 +54,7 @@ export interface Props {
   inputControls?: JSX.Element;
   autocompleteSuggestions?: string[];
   referralContextIdentifiers?: ReferralContextIdentifiers;
-  filters?: Filter[];
+  filters?: FilterWithMetadata[];
   advancedSearchId: string;
 }
 

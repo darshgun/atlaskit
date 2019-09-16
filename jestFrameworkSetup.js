@@ -3,7 +3,7 @@ import { XMLHttpRequest } from 'xmlhttprequest';
 import 'jest-styled-components';
 import { toMatchSnapshot } from 'jest-snapshot';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
-import { createSerializer } from 'jest-emotion';
+import { createSerializer, matchers } from 'jest-emotion';
 import 'jest-localstorage-mock';
 import ScreenshotReporter from './build/visual-regression/utils/screenshotReporter';
 import { cleanup } from '@testing-library/react';
@@ -409,6 +409,7 @@ expect.extend({
     this.currentTestName = oldTestName;
     return ret;
   },
+  toHaveStyleDeclaration: matchers.toHaveStyleRule,
 });
 
 // Copied from react-beautiful-dnd/test/setup.js

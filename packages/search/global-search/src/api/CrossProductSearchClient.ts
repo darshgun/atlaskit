@@ -138,12 +138,23 @@ export interface SpaceFilter {
   spaceKeys: string[];
 }
 
+export interface QueryBasedSpaceFilterMetadata {
+  spaceTitle: string;
+  spaceAvatar: string;
+}
+
 export interface ContributorsFilter {
   '@type': FilterType.Contributors;
   accountIds: string[];
 }
 
+export type FilterMetadata = QueryBasedSpaceFilterMetadata;
 export type Filter = SpaceFilter | ContributorsFilter;
+
+export interface FilterWithMetadata<T = Filter, W = FilterMetadata> {
+  filter: T;
+  metadata?: W;
+}
 
 export interface SearchParams {
   query: string;
@@ -187,6 +198,7 @@ export default class CachingCrossProductSearchClientImpl
   implements CrossProductSearchClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
+  private isUserAnonymous: boolean;
   private abTestDataCache: { [scope: string]: Promise<ABTest> };
   private bootstrapPeopleCache: Promise<CrossProductSearchResults> | undefined;
   private crossProductRecentsCache: Promise<SearchResultsMap> | undefined;
@@ -197,10 +209,12 @@ export default class CachingCrossProductSearchClientImpl
   constructor(
     url: string,
     cloudId: string,
+    isUserAnonymous: boolean,
     prefetchResults: GlobalSearchPrefetchedResults | undefined,
   ) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
+    this.isUserAnonymous = isUserAnonymous;
     this.abTestDataCache = prefetchResults ? prefetchResults.abTestPromise : {};
     this.crossProductRecentsCache = prefetchResults
       ? prefetchResults.crossProductRecentItemsPromise
@@ -307,6 +321,10 @@ export default class CachingCrossProductSearchClientImpl
     filters = [],
     mapItemToResult,
   }: RecentParams): Promise<CrossProductSearchResults> {
+    if (this.isUserAnonymous) {
+      return EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE;
+    }
+
     const scopes = mapContextToScopes(context);
 
     if (this.crossProductRecentsCache) {
@@ -422,6 +440,10 @@ export default class CachingCrossProductSearchClientImpl
             mapItemToResult(scopeResult.id as Scope, result),
           );
 
+          //@ts-ignore mapItemToResult returns a generic result type, technically we can't guarantee that the
+          //           type returned by `mapItemToResult` can be coerced into the expected type, e.g. there's
+          //           no guarantee the `Result` can be casted to `ConfluenceObjectResult`. We just make the assumption
+          //           here for now and suppress the typescript error
           resultsMap[scopeResult.id] = {
             items,
             totalSize:

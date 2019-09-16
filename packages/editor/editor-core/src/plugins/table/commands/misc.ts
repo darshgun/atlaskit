@@ -5,6 +5,7 @@ import {
   selectionCell,
   TableMap,
   CellSelection,
+  splitCellWithType,
 } from 'prosemirror-tables';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import { Node as PMNode, Slice, Schema } from 'prosemirror-model';
@@ -42,7 +43,11 @@ import {
 import { fixAutoSizedTable } from '../transforms';
 import { INPUT_METHOD } from '../../analytics';
 import { insertRowWithAnalytics } from '../commands-with-analytics';
-import { TableCssClassName as ClassName, TableDecorations } from '../types';
+import {
+  TableCssClassName as ClassName,
+  TableDecorations,
+  TablePluginState,
+} from '../types';
 // #endregion
 
 // #region Constants
@@ -69,7 +74,7 @@ export const setTableRef = (ref?: HTMLElement | null) =>
         undefined;
       const layout = tableNode ? tableNode.attrs.layout : undefined;
       const {
-        pluginConfig: { allowControls = true },
+        pluginConfig: { allowControls = true, allowColumnResizing },
       } = getPluginState(state);
 
       let decorationSet = DecorationSet.empty;
@@ -77,7 +82,11 @@ export const setTableRef = (ref?: HTMLElement | null) =>
       if (allowControls && tableRef) {
         decorationSet = updatePluginStateDecorations(
           state,
-          createColumnControlsDecoration(state.selection),
+          createColumnControlsDecoration(
+            state.doc,
+            state.selection,
+            allowColumnResizing,
+          ),
           TableDecorations.COLUMN_CONTROLS_DECORATIONS,
         );
       }
@@ -446,3 +455,22 @@ export const addBoldInEmptyHeaderCells = (
   return false;
 };
 // #endregion
+
+/**
+ * We need to split cell keeping the right type of cell given current table configuration.
+ * We are using prosemirror-tables splitCellWithType that allows you to choose what cell type should be.
+ */
+export const splitCell: Command = (state, dispatch) => {
+  const tableState: TablePluginState = getPluginState(state);
+  const { tableHeader, tableCell } = state.schema.nodes;
+  return splitCellWithType(({ row, col }: { row: number; col: number }) => {
+    if (
+      (row === 0 && tableState.isHeaderRowEnabled) ||
+      (col === 0 && tableState.isHeaderColumnEnabled)
+    ) {
+      return tableHeader;
+    }
+
+    return tableCell;
+  })(state, dispatch);
+};

@@ -1,5 +1,117 @@
 # @atlaskit/atlassian-switcher
 
+## 3.28.2
+
+### Patch Changes
+
+- [patch][7c4b42ed6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c4b42ed6b):
+
+  yUpdate siwtcher documentation
+
+## 3.28.1
+
+### Patch Changes
+
+- [patch][a9bf2f8d31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9bf2f8d31):
+
+  Adding vanilla wrapper for Atlassian switcher
+
+## 3.28.0
+
+### Minor Changes
+
+- [minor][9397a40abf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9397a40abf):
+
+  Added isEmceeLinkEnabled prop to enable Embedded Marketplace link with in the product
+
+## 3.27.1
+
+### Patch Changes
+
+- [patch][5129434a9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5129434a9b):
+
+  Fix examples when Grid was used without Page
+
+## 3.27.0
+
+### Minor Changes
+
+- [minor][f1b05c87ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1b05c87ab):
+
+  Lazy load underlying switcher component to avoid loading unnecessary code
+
+## 3.26.0
+
+### Minor Changes
+
+- [minor][d1997bfbc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1997bfbc2):
+
+  Fixed an edge case where viewed events will be emitted prematurely because we're using the incorrect provider to check for hasLoaded flag
+
+## 3.25.1
+
+### Patch Changes
+
+- [patch][4d8468b055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d8468b055):
+
+  Fix UI alignment between toggle and top level item
+
+## 3.25.0
+
+### Minor Changes
+
+- [minor][03a905d43e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03a905d43e):
+
+  FIND-133: Add support for theming
+
+## 3.24.0
+
+### Minor Changes
+
+- [minor][5f681ceea7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f681ceea7):
+
+  Add a tooltip dependency and hide tooltip on mouse down event
+
+## 3.23.2
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 3.23.1
+
+### Patch Changes
+
+- [patch][0d7d459f1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7d459f1a):
+
+  Fixes type errors which were incompatible with TS 3.6
+
+## 3.23.0
+
+### Minor Changes
+
+- [minor][c0f0ae12ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0f0ae12ce):
+
+  yShow site avatars on switcher child items
+
+## 3.22.1
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 3.22.0
+
+### Minor Changes
+
+- [minor][66d7234386](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66d7234386):
+
+  Bumped up item version to pick up themable item width support
+
 ## 3.21.0
 
 ### Minor Changes

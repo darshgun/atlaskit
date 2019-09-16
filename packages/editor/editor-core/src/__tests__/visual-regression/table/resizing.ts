@@ -1,4 +1,10 @@
-import { snapshot, initFullPageEditorWithAdf, Device } from '../_utils';
+import { waitForTooltip } from '@atlaskit/visual-regression/helper';
+import {
+  snapshot,
+  initFullPageEditorWithAdf,
+  initEditorWithAdf,
+  Appearance,
+} from '../_utils';
 import adf from '../common/__fixtures__/noData-adf.json';
 import {
   deleteColumn,
@@ -11,14 +17,22 @@ import {
   unselectTable,
 } from '../../__helpers/page-objects/_table';
 import { animationFrame } from '../../__helpers/page-objects/_editor';
+import { Page } from '../../__helpers/page-objects/_types';
+import mergedColsAdf from './__fixtures__/table-with-merged-columns-in-first-row.adf.json';
+import mergedAllColsAdf from './__fixtures__/table-with-all-merged-columns-in-first-row.adf.json';
+import mergedRandomColsAdf from './__fixtures__/table-with-randomly-merged-columns.adf.json';
 
 describe('Snapshot Test: table resizing', () => {
   describe('Re-sizing', () => {
-    let page: any;
-    beforeEach(async () => {
+    let page: Page;
+
+    beforeAll(() => {
       // @ts-ignore
       page = global.page;
-      await initFullPageEditorWithAdf(page, adf, Device.LaptopHiDPI);
+    });
+
+    beforeEach(async () => {
+      await initFullPageEditorWithAdf(page, adf);
       await insertTable(page);
     });
 
@@ -35,7 +49,8 @@ describe('Snapshot Test: table resizing', () => {
 
     it(`snaps back to layout width after column removal`, async () => {
       await deleteColumn(page, 1);
-      await animationFrame(page);
+      // after deleting the middle column the cursor will land exactly on an insert col btn
+      await waitForTooltip(page);
       await snapshot(page);
     });
 
@@ -84,11 +99,11 @@ describe('Snapshot Test: table resizing', () => {
 });
 
 describe('Snapshot Test: table resize handle', () => {
-  let page: any;
+  let page: Page;
   beforeEach(async () => {
     // @ts-ignore
     page = global.page;
-    await initFullPageEditorWithAdf(page, adf, Device.LaptopMDPI);
+    await initFullPageEditorWithAdf(page, adf);
     await insertTable(page);
   });
 
@@ -101,12 +116,17 @@ describe('Snapshot Test: table resize handle', () => {
 });
 
 describe('Snapshot Test: table scale', () => {
-  let page: any;
+  let page: Page;
   beforeEach(async () => {
     // @ts-ignore
     page = global.page;
-    await initFullPageEditorWithAdf(page, adf, Device.LaptopHiDPI, undefined, {
-      allowDynamicTextSizing: true,
+    await initEditorWithAdf(page, {
+      appearance: Appearance.fullPage,
+      adf,
+      viewport: { width: 1280, height: 500 },
+      editorProps: {
+        allowDynamicTextSizing: true,
+      },
     });
     await insertTable(page);
     await clickFirstCell(page);
@@ -115,5 +135,59 @@ describe('Snapshot Test: table scale', () => {
   it(`should not overflow the table with dynamic text sizing enabled`, async () => {
     await toggleBreakout(page, 1);
     await snapshot(page);
+  });
+});
+
+describe('Snapshot Test: table with merged columns in the first row', () => {
+  let page: Page;
+  beforeEach(async () => {
+    // @ts-ignore
+    page = global.page;
+  });
+
+  it('should render resize handle', async () => {
+    await initEditorWithAdf(page, {
+      appearance: Appearance.fullPage,
+      adf: mergedColsAdf,
+      viewport: { width: 1280, height: 500 },
+      editorProps: {
+        allowDynamicTextSizing: true,
+      },
+    });
+    await clickFirstCell(page);
+    await grabResizeHandle(page, { colIdx: 1, row: 2 });
+    await snapshot(page);
+  });
+
+  describe('when table all columns merged in the first row', () => {
+    it('should render resize handle', async () => {
+      await initEditorWithAdf(page, {
+        appearance: Appearance.fullPage,
+        adf: mergedAllColsAdf,
+        viewport: { width: 1280, height: 500 },
+        editorProps: {
+          allowDynamicTextSizing: true,
+        },
+      });
+      await clickFirstCell(page);
+      await grabResizeHandle(page, { colIdx: 1, row: 2 });
+      await snapshot(page);
+    });
+  });
+
+  describe('when table columns are randomly merged in the first row', () => {
+    it('should resize columns', async () => {
+      await initEditorWithAdf(page, {
+        appearance: Appearance.fullPage,
+        adf: mergedRandomColsAdf,
+        viewport: { width: 1280, height: 500 },
+        editorProps: {
+          allowDynamicTextSizing: true,
+        },
+      });
+      await clickFirstCell(page);
+      await resizeColumn(page, { colIdx: 3, amount: 100, row: 2 });
+      await snapshot(page);
+    });
   });
 });

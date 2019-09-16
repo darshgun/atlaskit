@@ -4,15 +4,24 @@ import React from 'react';
 import { mount, render, shallow } from 'enzyme';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
-import ContentNavigation from '../../../ContentNavigation';
-import LayoutManager from '../../LayoutManager';
-import Page from '../../../PageContent';
-import ResizeTransition from '../../../ResizeTransition';
-import ResizeControl from '../../ResizeControl';
-import { LayoutEventListener } from '../../LayoutEvent';
+import {
+  GLOBAL_NAV_WIDTH,
+  HORIZONTAL_GLOBAL_NAV_HEIGHT,
+} from '../../../../../common/constants';
 
-import { NavigationContainer } from '../../primitives';
+import ContentNavigation from '../../../ContentNavigation';
 import { ContainerNavigationMask } from '../../../ContentNavigation/primitives';
+import LayoutManager from '../../LayoutManager';
+import PageContent from '../../../PageContent';
+import ResizeTransition from '../../../ResizeTransition';
+
+import { LayoutEventListener } from '../../LayoutEvent';
+import { ComposedGlobalNavigation } from '../../nav-components';
+import {
+  HorizontalNavigationContainer,
+  NavigationContainer,
+} from '../../primitives';
+import ResizeControl from '../../ResizeControl';
 import type { LayoutManagerProps } from '../../types';
 
 const GlobalNavigation = () => null;
@@ -133,6 +142,97 @@ describe('LayoutManager', () => {
     ).toEqual({
       contextualNavigation: '',
     });
+  });
+
+  const testHorizontalNavigationLayout = (
+    layoutManager,
+    topOffset?: number,
+  ) => {
+    const composedGlobalNavigation = layoutManager.find(
+      ComposedGlobalNavigation,
+    );
+    const horizontalNavigation = layoutManager.find(
+      HorizontalNavigationContainer,
+    );
+    const navigationContainer = layoutManager.find(NavigationContainer);
+    const pageContent = layoutManager.find(PageContent);
+
+    expect(composedGlobalNavigation.exists()).toBe(false);
+    expect(horizontalNavigation.exists()).toBe(true);
+    expect(navigationContainer.props().topOffset).toBe(
+      Number.isInteger(topOffset)
+        ? topOffset + HORIZONTAL_GLOBAL_NAV_HEIGHT
+        : HORIZONTAL_GLOBAL_NAV_HEIGHT,
+    );
+    expect(pageContent.props()).toMatchObject({
+      leftOffset: 0,
+      topOffset: HORIZONTAL_GLOBAL_NAV_HEIGHT,
+    });
+  };
+
+  const testVerticalNavigationLayout = (layoutManager, topOffset?: number) => {
+    const composedGlobalNavigation = layoutManager.find(
+      ComposedGlobalNavigation,
+    );
+    const horizontalNavigation = layoutManager.find(
+      HorizontalNavigationContainer,
+    );
+    const navigationContainer = layoutManager.find(NavigationContainer);
+    const pageContent = layoutManager.find(PageContent);
+
+    expect(composedGlobalNavigation.exists()).toBe(true);
+    expect(horizontalNavigation.exists()).toBe(false);
+    expect(navigationContainer.props().topOffset).toBe(
+      Number.isInteger(topOffset) ? topOffset : 0,
+    );
+    expect(pageContent.props()).toMatchObject({
+      leftOffset: GLOBAL_NAV_WIDTH,
+      topOffset: 0,
+    });
+  };
+
+  it('should render the layout correctly by default', () => {
+    const layoutManager = mount(<LayoutManager {...defaultProps} />);
+    testVerticalNavigationLayout(layoutManager);
+  });
+
+  it('should render the layout correctly when experimental_horizontalGlobalNav is false', () => {
+    const layoutManager = mount(
+      <LayoutManager
+        {...defaultProps}
+        experimental_horizontalGlobalNav={false}
+      />,
+    );
+    testVerticalNavigationLayout(layoutManager);
+  });
+
+  it('should render the layout correctly when experimental_horizontalGlobalNav is false and a topOffset is provided', () => {
+    const layoutManager = mount(
+      <LayoutManager
+        {...defaultProps}
+        experimental_horizontalGlobalNav={false}
+        topOffset={50}
+      />,
+    );
+    testVerticalNavigationLayout(layoutManager, 50);
+  });
+
+  it('should render the layout correctly when experimental_horizontalGlobalNav is true', () => {
+    const layoutManager = mount(
+      <LayoutManager {...defaultProps} experimental_horizontalGlobalNav />,
+    );
+    testHorizontalNavigationLayout(layoutManager);
+  });
+
+  it('should render the layout correctly when experimental_horizontalGlobalNav is true and a topOffset is provided', () => {
+    const layoutManager = mount(
+      <LayoutManager
+        {...defaultProps}
+        experimental_horizontalGlobalNav
+        topOffset={50}
+      />,
+    );
+    testHorizontalNavigationLayout(layoutManager, 50);
   });
 
   describe('Flyout', () => {
@@ -552,7 +652,7 @@ describe('LayoutManager', () => {
       const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
       expect(
         wrapper
-          .find(Page)
+          .find(PageContent)
           .find(ResizeTransition)
           .props(),
       ).toEqual(expect.objectContaining(handlers));

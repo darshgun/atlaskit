@@ -72,6 +72,9 @@ export default class TextfieldExample extends Component<void, State> {
 
         <label htmlFor="spell-check">Spell Check</label>
         <Textfield name="spell-check" spellCheck />
+
+        <label htmlFor="compact">Compact</label>
+        <Textfield name="compact" isCompact />
       </div>
     );
   }

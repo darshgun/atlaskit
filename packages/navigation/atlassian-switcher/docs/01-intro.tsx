@@ -1,8 +1,14 @@
 import * as React from 'react';
-import { md, code, Example, AtlassianInternalWarning } from '@atlaskit/docs';
+import {
+  md,
+  code,
+  Props,
+  Example,
+  AtlassianInternalWarning,
+} from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />} 
+  ${<AtlassianInternalWarning />}
 
   \`\`\`<AtlassianSwitcher />\`\`\` is a React app that can be rendered into a container that will show users:
 
@@ -10,30 +16,36 @@ export default md`
   * Their recently viewed containers, if applicable
   * Any cross-flow and admin links, if applicable
   * Any custom links from Jira or Confluence, if applicable
+  
+  ## Integrating switcher
 
-  ## Usage
+  There are multiple ways to integrate switcher within your app. Depending on your application you might need to combine some of the options below.
+
+  * [Atlassian switcher vanilla](/packages/navigation/atlassian-switcher-vanilla) can be used in applications that don't bundle React.
+  * [Standalone switcher](/packages/navigation/atlassian-switcher/docs/standalone-switcher) allows to render the switcher in any container (e.g. inline dialog) other than the drawer by specifying the appearance property.
+  * [Custom themes](/packages/navigation/atlassian-switcher/docs/theming-guide) allow to change the colours in the switcher component.
+  
+  ## Basic example
+
+  This is a basic example of the switcher being rendered in a drawer. 
 
   ${code`import AtlassianSwitcher  from '@atlaskit/atlassian-switcher';`}
 
   ${(
     <Example
-      Component={require('../examples/00-base-example').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/00-base-example')}
+      packageName="@atlaskit/atlassian-switcher"
+      Component={
+        require('../examples/82-uc-generic-switcher-with-xflow').default
+      }
+      title="Basic switcher example"
+      source={require('!!raw-loader!../examples/82-uc-generic-switcher-with-xflow')}
     />
   )}
 
-  ## Internationalisation (i18n)
-  
-  We use [transifex](https://www.transifex.com/atlassian/atlaskit/dashboard/), along with the rest of AtlasKit to provide i18n.
-  
-  In order to push or pull i18n changes, you need to:
-  
-  * Gain access to transifex (Please reach out to component owners)
-  * Log in to [transifex](https://www.transifex.com/atlassian/atlaskit/dashboard/) and generate an API key
-  * To push i18n changes: Run "\`bolt i18n:push\`" with the API key
-  * To pull i18n changes: Run "\`bolt i18n:pull\`" with the API key
-  
-  If you're pulling i18n changes, ensure to commit the changes to master by raising a PR
-   
+  ${(
+    <Props
+      heading="Props"
+      props={require('!!extract-react-types-loader!../src/components/atlassian-switcher')}
+    />
+  )}
 `;

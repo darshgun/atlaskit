@@ -1,5 +1,43 @@
 # @atlaskit/textfield
 
+## 3.0.7
+
+### Patch Changes
+
+- [patch][d5def52d98](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5def52d98):
+
+  Refactored textfield styles to better support border-box being set globally.
+
+## 3.0.6
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 3.0.5
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 3.0.4
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 3.0.3
+
+### Patch Changes
+
+- [patch][708028db86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/708028db86):
+
+  Change all the imports to theme in Core to use multi entry points
+
 ## 3.0.2
 
 ### Patch Changes

@@ -2,7 +2,8 @@
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { mergeStyles } from '@atlaskit/select';
-import { borderRadius, colors } from '@atlaskit/theme';
+import { borderRadius } from '@atlaskit/theme/constants';
+import * as colors from '@atlaskit/theme/colors';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -20,12 +21,7 @@ import {
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
-import {
-  defaultTimes,
-  defaultDateFormat,
-  defaultTimeFormat,
-  formatDateTimeZoneIntoIso,
-} from '../internal';
+import { defaultTimes, formatDateTimeZoneIntoIso } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -45,7 +41,7 @@ type Props = {
   name: string,
   /** Called when the field is blurred. */
   onBlur: () => void,
-  /** Called when the value changes and the date / time is a complete value, or empty. The only value is an ISO string. */
+  /** Called when the value changes and the date / time is a complete value, or empty. The only value is an ISO string or empty string. */
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
@@ -57,7 +53,7 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
-  /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
+  /** DEPRECATED - Use locale instead. Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
   dateFormat?: string,
   datePickerProps: {},
   timePickerProps: {},
@@ -74,10 +70,11 @@ type Props = {
   timePickerSelectProps: {},
   /** The times to show in the times dropdown. */
   times?: Array<string>,
-  /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
+  /** DEPRECATED - Use locale instead. Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
   timeFormat?: string,
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing?: 'compact' | 'default',
+  locale: string,
 };
 
 type State = {
@@ -172,9 +169,8 @@ class DateTimePicker extends Component<Props, State> {
     datePickerSelectProps: {},
     timePickerSelectProps: {},
     times: defaultTimes,
-    timeFormat: defaultTimeFormat,
-    dateFormat: defaultDateFormat,
     spacing: 'default',
+    locale: 'en-US',
   };
 
   state = {
@@ -265,6 +261,10 @@ class DateTimePicker extends Component<Props, State> {
 
       this.setState({ value });
       this.props.onChange(value);
+      // If the date or time value was cleared when there is an existing datetime value, then clear the value.
+    } else if (this.getState().value) {
+      this.setState({ value: '' });
+      this.props.onChange('');
     }
   }
 
@@ -283,6 +283,7 @@ class DateTimePicker extends Component<Props, State> {
       timePickerSelectProps,
       times,
       timeFormat,
+      locale,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
     const icon =
@@ -330,6 +331,7 @@ class DateTimePicker extends Component<Props, State> {
             onChange={this.onDateChange}
             selectProps={mergedDatePickerSelectProps}
             value={dateValue}
+            locale={locale}
             {...datePickerProps}
           />
         </FlexItem>
@@ -343,6 +345,7 @@ class DateTimePicker extends Component<Props, State> {
             timeIsEditable={timeIsEditable}
             times={times}
             timeFormat={timeFormat}
+            locale={locale}
             {...timePickerProps}
           />
         </FlexItem>

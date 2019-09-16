@@ -1,5 +1,8 @@
+import { tableResizeHandleWidth } from '@atlaskit/editor-common';
 import { TableCssClassName as ClassName } from '../types';
 import { closestElement } from '../../../utils';
+import { tableToolbarSize } from '../ui/styles';
+import { ResizeState } from '../pm-plugins/table-resizing/utils';
 
 export const isCell = (node: HTMLElement): boolean => {
   return node && ['TH', 'TD'].indexOf(node.tagName) > -1;
@@ -80,4 +83,48 @@ export const getMousePositionVerticalRelativeByElement = (
   }
 
   return null;
+};
+
+export const updateResizeHandles = (
+  tableRef: HTMLElement | null | undefined,
+  resizeState?: ResizeState,
+  index?: number,
+) => {
+  if (!tableRef) {
+    return;
+  }
+  const height = tableRef.offsetHeight + tableToolbarSize;
+  // see ED-7600
+  const nodes = Array.from(
+    tableRef.querySelectorAll(`.${ClassName.RESIZE_HANDLE}`),
+  ) as Array<HTMLElement>;
+  if (!nodes || !nodes.length) {
+    return;
+  }
+
+  if (resizeState && typeof index === 'number' && nodes[index]) {
+    nodes.forEach((node, idx) => {
+      if (index !== idx) {
+        node.style.display = `none`;
+      }
+    });
+    const colSpanIndex = parseInt(
+      nodes[index].getAttribute('data-colspan-index') || '-1',
+      10,
+    );
+    const left =
+      colSpanIndex > 0
+        ? resizeState.cols
+            .slice(index - colSpanIndex, index + 1)
+            .reduce((acc, col) => acc + col.width, 0)
+        : resizeState.cols[index].width;
+    const offset = tableResizeHandleWidth / 2 + 4;
+    nodes[index].style.left = `${left - offset}px`;
+    nodes[index].style.height = `${height}px`;
+  } else {
+    nodes.forEach(node => {
+      node.style.height = `${height}px`;
+      node.style.display = `block`;
+    });
+  }
 };
