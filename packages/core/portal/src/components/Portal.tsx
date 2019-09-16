@@ -20,9 +20,11 @@ type State = {
 
 type LayerKey = keyof typeof layers;
 
-export type PortalEvent = {
-  element: LayerKey | null;
-  zIndex: number;
+export type PortalEvent = Event & {
+  detail: {
+    layer: LayerKey | null;
+    zIndex: number;
+  };
 };
 
 const createContainer = (zIndex: number | string) => {
@@ -67,12 +69,11 @@ const getLayerName = (zIndex: number): LayerKey | null => {
 };
 
 const fireMountUnmountEvent = (eventName: string, zIndex: number) => {
-  const event = new CustomEvent<PortalEvent>(eventName, {
-    detail: {
-      element: getLayerName(Number(zIndex)),
-      zIndex,
-    },
-  });
+  const event = new Event(eventName);
+  (event as PortalEvent).detail = {
+    layer: getLayerName(Number(zIndex)),
+    zIndex,
+  };
   window.dispatchEvent(event);
 };
 

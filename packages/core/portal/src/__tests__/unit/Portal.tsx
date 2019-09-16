@@ -10,12 +10,20 @@ const zIndex = (elem: HTMLElement | void) =>
 
 let wrapper: any;
 
-const dispatchEventMock = jest.fn();
+const onMountListener = jest.fn();
+const onUnmountListener = jest.fn();
+
 beforeEach(() => {
-  window.dispatchEvent = dispatchEventMock;
+  window.addEventListener(PORTAL_MOUNT_EVENT, onMountListener);
+  window.addEventListener(PORTAL_UNMOUNT_EVENT, onUnmountListener);
 });
 
-afterEach(() => wrapper && wrapper.unmount());
+afterEach(() => {
+  wrapper && wrapper.unmount();
+
+  window.removeEventListener(PORTAL_MOUNT_EVENT, onMountListener);
+  window.removeEventListener(PORTAL_UNMOUNT_EVENT, onUnmountListener);
+});
 
 test('should create a portal', () => {
   wrapper = mount(
@@ -153,16 +161,204 @@ test('should send correct mount and unmount events', () => {
     </App>
   );
   wrapper = mount(<Wrapper renderPortal />);
-  expect(dispatchEventMock).toHaveBeenCalledWith(
+  expect(onMountListener).toHaveBeenCalledWith(
     expect.objectContaining({
       type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'blanket',
+        zIndex: 500,
+      },
     }),
   );
 
   wrapper.setProps({ renderPortal: false });
-  expect(dispatchEventMock).toHaveBeenCalledWith(
+  expect(onUnmountListener).toHaveBeenCalledWith(
     expect.objectContaining({
       type: PORTAL_UNMOUNT_EVENT,
+      detail: {
+        layer: 'blanket',
+        zIndex: 500,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for card', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={100}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'card',
+        zIndex: 100,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for navigation', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={200}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'navigation',
+        zIndex: 200,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for dialog', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={300}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'dialog',
+        zIndex: 300,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for layer', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={400}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'layer',
+        zIndex: 400,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for blanket', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={500}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'blanket',
+        zIndex: 500,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for modal', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={510}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'modal',
+        zIndex: 510,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for flag', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={600}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'flag',
+        zIndex: 600,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for spotlight', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={700}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'spotlight',
+        zIndex: 700,
+      },
+    }),
+  );
+});
+
+test('should send correct layer event for tooltip', () => {
+  wrapper = mount(
+    <App>
+      <Portal zIndex={800}>
+        <div>Hi</div>
+      </Portal>
+    </App>,
+  );
+
+  expect(onMountListener).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+      detail: {
+        layer: 'tooltip',
+        zIndex: 800,
+      },
     }),
   );
 });
