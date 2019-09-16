@@ -1,5 +1,5 @@
 import React from 'react';
-import { md, Props, Example } from '@atlaskit/docs';
+import { md, Props, Example, code } from '@atlaskit/docs';
 
 export default md`
   ## \`<FadeIn />\`
@@ -45,6 +45,25 @@ export default md`
       source={require('!!raw-loader!../examples/fade-in-grid-of-elements')}
     />
   )}
+
+  ### Gotchas
+
+  The direct descendant children need to be an entering component, such as \`<FadeIn />\`.
+  Because of this if you use a custom component make sure to pass the overflow props to it:
+
+  ${code`
+const ListItem = ({ id, ...props }) => (
+  <FadeIn {...props}>{motion => <div {...motion} />}</FadeIn>
+);
+
+const List = () => (
+  <StaggeredEntrance>
+    <ListItem />
+    <ListItem />
+    <ListItem />
+  </StaggeredEntrance>
+)
+  `}
 
   ### Props
 

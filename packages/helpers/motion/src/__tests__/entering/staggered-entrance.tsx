@@ -1,169 +1,165 @@
 import React, { forwardRef } from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
+import FadeIn from '../../entering/fade-in';
 import { StaggeredEntrance } from '../../index';
 
 describe('<StaggeredEntrance />', () => {
-  const firstGroupDelay = 0;
-  const secondGroupDelay = 52;
-  const thirdGroupDelay = 83;
-  const fourthGroupDelay = 104;
-  const fifthGroupDelay = 121;
+  const firstGroupDelay = '0ms';
+  const secondGroupDelay = '52ms';
+  const thirdGroupDelay = '83ms';
+  const fourthGroupDelay = '104ms';
+  const fifthGroupDelay = '121ms';
+
+  const EnteringComponent = forwardRef(
+    ({ id, ...props }: { id: string }, ref) => (
+      <FadeIn {...props}>
+        {motion => <div ref={ref} data-testid={id} {...motion} />}
+      </FadeIn>
+    ),
+  );
 
   it('should set a staggered duration for a list of elements', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance columns={1}>
-        <div id="first" />
-        <div id="second" />
-        <div id="third" />
+        <EnteringComponent id="first" />
+        <EnteringComponent id="second" />
+        <EnteringComponent id="third" />
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
       firstGroupDelay,
     );
-    expect(wrapper.find('#second').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('second')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#third').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('third')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
   });
 
   it('should set a staggered duration for a grid of elements', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance columns={3}>
-        <div id="top-left" />
-        <div id="top-mid" />
-        <div id="top-right" />
-        <div id="mid-left" />
-        <div id="mid-mid" />
-        <div id="mid-right" />
-        <div id="bottom-left" />
-        <div id="bottom-mid" />
-        <div id="bottom-right" />
+        <EnteringComponent id="top-left" />
+        <EnteringComponent id="top-mid" />
+        <EnteringComponent id="top-right" />
+        <EnteringComponent id="mid-left" />
+        <EnteringComponent id="mid-mid" />
+        <EnteringComponent id="mid-right" />
+        <EnteringComponent id="bottom-left" />
+        <EnteringComponent id="bottom-mid" />
+        <EnteringComponent id="bottom-right" />
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#top-left').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('top-left')).toHaveStyleDeclaration(
+      'animation-delay',
       firstGroupDelay,
     );
-    expect(wrapper.find('#top-mid').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('top-mid')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#top-right').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('top-right')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
-    expect(wrapper.find('#mid-left').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('mid-left')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#mid-mid').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('mid-mid')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
-    expect(wrapper.find('#mid-right').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('mid-right')).toHaveStyleDeclaration(
+      'animation-delay',
       fourthGroupDelay,
     );
-    expect(wrapper.find('#bottom-left').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('bottom-left')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
-    expect(wrapper.find('#bottom-mid').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('bottom-mid')).toHaveStyleDeclaration(
+      'animation-delay',
       fourthGroupDelay,
     );
-    expect(wrapper.find('#bottom-right').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('bottom-right')).toHaveStyleDeclaration(
+      'animation-delay',
       fifthGroupDelay,
     );
   });
 
   it('should set a staggered duration for the first column of a grid', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance column={0}>
-        <div id="first" />
-        <div id="second" />
-        <div id="third" />
+        <EnteringComponent id="first" />
+        <EnteringComponent id="second" />
+        <EnteringComponent id="third" />
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
       firstGroupDelay,
     );
-    expect(wrapper.find('#second').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('second')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#third').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('third')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
   });
 
   it('should set a staggered duration for the second column of a grid', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance column={1}>
-        <div id="first" />
-        <div id="second" />
-        <div id="third" />
+        <EnteringComponent id="first" />
+        <EnteringComponent id="second" />
+        <EnteringComponent id="third" />
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#second').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('second')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
-    expect(wrapper.find('#third').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('third')).toHaveStyleDeclaration(
+      'animation-delay',
       fourthGroupDelay,
     );
   });
 
   it('should set a staggered duration for the third column of a grid', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance column={2}>
-        <div id="first" />
-        <div id="second" />
-        <div id="third" />
+        <EnteringComponent id="first" />
+        <EnteringComponent id="second" />
+        <EnteringComponent id="third" />
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
-    expect(wrapper.find('#second').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('second')).toHaveStyleDeclaration(
+      'animation-delay',
       fourthGroupDelay,
     );
-    expect(wrapper.find('#third').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('third')).toHaveStyleDeclaration(
+      'animation-delay',
       fifthGroupDelay,
-    );
-  });
-
-  it('should render with no delay when there is only one child element', () => {
-    const wrapper = mount(
-      <StaggeredEntrance>
-        <div id="first" />
-      </StaggeredEntrance>,
-    );
-
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
-      firstGroupDelay,
     );
   });
 
@@ -177,13 +173,26 @@ describe('<StaggeredEntrance />', () => {
   const ListItem = forwardRef<
     HTMLElement,
     { id: string; box: Partial<BoundingBox> }
-  >(({ box, ...props }, ref) => {
+  >(({ box, id, ...props }, ref) => {
     if (typeof ref === 'function') ref(box as HTMLElement);
-    return <div ref={...props as any} />;
+    return <EnteringComponent {...props} id={id} />;
+  });
+
+  it('should render with no delay when there is only one child element', () => {
+    const { getByTestId } = render(
+      <StaggeredEntrance>
+        <ListItem box={{ offsetTop: 0 }} id="first" />
+      </StaggeredEntrance>,
+    );
+
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
+      firstGroupDelay,
+    );
   });
 
   it('should stagger over one column for a small viewport', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance>
         <ListItem id="first" box={{ offsetTop: 0 }} />
         <ListItem id="second" box={{ offsetTop: 50 }} />
@@ -191,22 +200,22 @@ describe('<StaggeredEntrance />', () => {
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
       firstGroupDelay,
     );
-    expect(wrapper.find('#second').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('second')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#third').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('third')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
   });
 
   it('should stagger over two columns for a medium viewport', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance>
         <ListItem id="first" box={{ offsetTop: 0 }} />
         <ListItem id="second" box={{ offsetTop: 0 }} />
@@ -214,22 +223,22 @@ describe('<StaggeredEntrance />', () => {
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
       firstGroupDelay,
     );
-    expect(wrapper.find('#second').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('second')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#third').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('third')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
   });
 
   it('should stagger over three columns for a large viewport', () => {
-    const wrapper = mount(
+    const { getByTestId } = render(
       <StaggeredEntrance>
         <ListItem id="first" box={{ offsetTop: 0 }} />
         <ListItem id="second" box={{ offsetTop: 0 }} />
@@ -237,16 +246,16 @@ describe('<StaggeredEntrance />', () => {
       </StaggeredEntrance>,
     );
 
-    expect(wrapper.find('#first').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('first')).toHaveStyleDeclaration(
+      'animation-delay',
       firstGroupDelay,
     );
-    expect(wrapper.find('#second').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('second')).toHaveStyleDeclaration(
+      'animation-delay',
       secondGroupDelay,
     );
-    expect(wrapper.find('#third').props()).toHaveProperty(
-      'delay',
+    expect(getByTestId('third')).toHaveStyleDeclaration(
+      'animation-delay',
       thirdGroupDelay,
     );
   });
