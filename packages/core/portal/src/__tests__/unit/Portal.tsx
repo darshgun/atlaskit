@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { mount } from 'enzyme';
 import Portal from '../..';
+import { PORTAL_MOUNT_EVENT, PORTAL_UNMOUNT_EVENT } from '../../constants';
 
 const App = ({ children }: { children: ReactNode }) => <div>{children}</div>;
 
@@ -8,6 +9,11 @@ const zIndex = (elem: HTMLElement | void) =>
   elem ? parseInt(elem.style.getPropertyValue('z-index'), 10) : 0;
 
 let wrapper: any;
+
+const dispatchEventMock = jest.fn();
+beforeEach(() => {
+  window.dispatchEvent = dispatchEventMock;
+});
 
 afterEach(() => wrapper && wrapper.unmount());
 
@@ -134,4 +140,29 @@ test('portal mounts children only when it is attached to DOM', () => {
   );
   wrapper = mount(<Wrapper renderPortal />);
   expect(DOMElement).not.toBeNull();
+});
+
+test('should send correct mount and unmount events', () => {
+  const Wrapper = ({ renderPortal }: { renderPortal: boolean }) => (
+    <App>
+      {renderPortal && (
+        <Portal zIndex={500}>
+          <div>Hi</div>
+        </Portal>
+      )}
+    </App>
+  );
+  wrapper = mount(<Wrapper renderPortal />);
+  expect(dispatchEventMock).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_MOUNT_EVENT,
+    }),
+  );
+
+  wrapper.setProps({ renderPortal: false });
+  expect(dispatchEventMock).toHaveBeenCalledWith(
+    expect.objectContaining({
+      type: PORTAL_UNMOUNT_EVENT,
+    }),
+  );
 });
