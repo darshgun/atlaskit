@@ -1,1 +1,0 @@
-Integrate popup component

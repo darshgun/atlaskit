@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 6.7.3
+
+- Updated dependencies [c5939cb73d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5939cb73d):
+  - @atlaskit/app-navigation@0.4.0
+
 ## 6.7.2
 
 ### Patch Changes
