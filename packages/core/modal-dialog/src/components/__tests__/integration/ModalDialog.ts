@@ -8,8 +8,8 @@ const urlModal = getExampleUrl('core', 'modal-dialog', 'testing');
 /* Css selectors used for the test */
 const openModal = "[data-testid='open-modal']";
 const myModal = "[data-testid='my-modal']";
-const primaryBtn = "[data-testid='button-primary']";
-const secondaryBtn = "[data-testid='button-subtle']";
+const closeBtn = "[data-testid='close']";
+const cancelBtn = "[data-testid='cancel']";
 
 BrowserTestCase(
   'Modal should be able to have a testId, be closed and secondary action can be clicked',
@@ -21,13 +21,13 @@ BrowserTestCase(
     await modalTest.click(openModal);
     await modalTest.waitFor(myModal, 5000);
     expect(await modalTest.isVisible(myModal)).toBe(true);
-    expect(await modalTest.isVisible(primaryBtn)).toBe(true);
-    expect(await modalTest.isVisible(secondaryBtn)).toBe(true);
-    await modalTest.click(secondaryBtn);
+    expect(await modalTest.isVisible(closeBtn)).toBe(true);
+    expect(await modalTest.isVisible(cancelBtn)).toBe(true);
+    await modalTest.click(cancelBtn);
     const textAlert = await modalTest.getAlertText();
     expect(textAlert).toBe('Secondary button has been clicked!');
     await modalTest.acceptAlert();
-    await modalTest.click(primaryBtn);
+    await modalTest.click(closeBtn);
     // As we have closed the modal-dialog, only the open modal button should be visible.
     await modalTest.waitFor(openModal, 5000);
     expect(await modalTest.isVisible(openModal)).toBe(true);

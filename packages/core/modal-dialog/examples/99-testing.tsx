@@ -18,10 +18,14 @@ export default class ExampleBasic extends React.PureComponent<{}, State> {
   render() {
     const { isOpen } = this.state;
     const actions = [
-      { text: 'Close', onClick: this.close },
-      { text: 'Secondary Action', onClick: this.secondaryAction },
+      { text: 'Close', onClick: this.close, testId: 'close' },
+      {
+        text: 'Secondary Action',
+        onClick: this.secondaryAction,
+        testId: 'cancel',
+      },
     ];
-
+    console.log(actions);
     return (
       <div>
         <Button testId={'open-modal'} onClick={this.open}>

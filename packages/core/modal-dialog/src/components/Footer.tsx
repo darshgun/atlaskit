@@ -11,6 +11,8 @@ export interface FooterProps {
   actions?: Array<{
     onClick?: ButtonOnClick;
     text?: string;
+    /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+    testId?: string;
   }>;
   /** Appearance of the primary button. Also adds an icon to the heading, if provided. */
   appearance?: AppearanceType;
@@ -45,15 +47,11 @@ export default class ModalFooter extends React.Component<FooterProps, {}> {
         <JustifyShim />
         <Actions>
           {actions
-            ? actions.map(({ text, ...rest }, idx) => {
+            ? actions.map(({ text, testId, ...rest }, idx) => {
                 const variant = idx !== 0 ? 'subtle' : appearance || 'primary';
                 return (
                   <ActionItem key={text || idx}>
-                    <Button
-                      appearance={variant}
-                      testId={`button-${variant}`}
-                      {...rest}
-                    >
+                    <Button appearance={variant} testId={testId} {...rest}>
                       {text}
                     </Button>
                   </ActionItem>
