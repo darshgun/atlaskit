@@ -156,7 +156,6 @@ export const handleMouseDown = (
       resizeHandlePos === null ||
       !pointsAtCell(state.doc.resolve(resizeHandlePos))
     ) {
-      setDragging(null)(state, dispatch);
       return;
     }
     // resizeHandlePos could be remapped via a collab change.
