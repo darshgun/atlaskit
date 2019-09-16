@@ -73,6 +73,7 @@ async function validatePackage(pkgName, pkgDir, quiet, refetch = false) {
     await copyFiles(pkgDir, tmpDir, packedRepoFiles);
     let valid = true;
     try {
+      console.log(`Comparing ${pkgName}...`);
       await spawnPromise('diff', [
         `-${quiet ? 'q' : ''}ur`,
         npmDistPath,
@@ -84,7 +85,6 @@ async function validatePackage(pkgName, pkgDir, quiet, refetch = false) {
         // If exit code is 1, there is a diff between the two dirs
         valid = false;
         console.error(`${pkgName} differs from npm`);
-        console.error(e.stdout);
       } else {
         throw e;
       }
