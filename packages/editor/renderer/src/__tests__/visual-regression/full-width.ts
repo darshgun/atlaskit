@@ -24,6 +24,7 @@ describe.skip('Snapshot Test: Full Width', () => {
   });
 
   afterEach(async () => {
+    await page.waitForSelector('.code-block');
     await snapshot(page);
   });
 
