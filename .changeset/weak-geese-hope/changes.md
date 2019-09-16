@@ -1,1 +1,0 @@
-Allow consumers to specify a custom provider for available products"
