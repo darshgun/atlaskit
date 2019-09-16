@@ -59,11 +59,6 @@ export class RightSidePanel extends Component<Props, State> {
     container: undefined,
   };
 
-  // static defaultProps: {
-  //   onOpenAnimationFinished: () => void;
-  //   onCloseAnimationFinished: () => void;
-  // };
-
   componentDidMount() {
     this.setState({
       container: canUseDOM
