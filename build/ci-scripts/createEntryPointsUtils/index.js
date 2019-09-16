@@ -66,7 +66,10 @@ async function createEntryPointsDirWithPkgJson(opts = {}) {
         fs.mkdirSync(entryPointDirName);
       }
       const dirContents = fs.readdirSync(entryPointDirName);
-      if (dirContents.length > 1 || dirContents[0] !== 'package.json') {
+      if (
+        dirContents.length > 1 ||
+        (dirContents.length === 1 && dirContents[0] !== 'package.json')
+      ) {
         // Existing directories outside of src won't break anything since the package.json entry point will still be added there
         // and uploaded to npm. Problems would arise if the directory was already npmignored though
         existingDirs.push({
