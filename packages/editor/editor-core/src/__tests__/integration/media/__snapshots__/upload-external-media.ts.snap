@@ -19,7 +19,7 @@ Object {
             "collection": "MediaServicesSample",
             "height": 619,
             "id": "1234-5678-abcd-efgh",
-            "occurrenceKey": null,
+            "occurrenceKey": "12345678-9abc-def0-1234-56789abcdef0",
             "type": "file",
             "url": null,
             "width": 1100,

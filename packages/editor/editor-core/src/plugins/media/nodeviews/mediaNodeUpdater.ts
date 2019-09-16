@@ -176,6 +176,7 @@ export class MediaNodeUpdater {
           collection,
           height: dimensions.height,
           width: dimensions.width,
+          occurrenceKey: uploadableFileUpfrontIds.occurrenceKey,
         })(this.props.view.state, this.props.view.dispatch);
       } catch (e) {
         //keep it as external media
