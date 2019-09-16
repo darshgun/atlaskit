@@ -24,7 +24,7 @@ describe('render', () => {
       result = shallow(<div>{content}</div>);
     });
 
-    const { render } = require('../render');
+    const { render } = require('../../render');
 
     const noop = () => {};
 
@@ -46,7 +46,7 @@ describe('render', () => {
   });
 
   test('should provide a method to destroy the switcher after rendered', () => {
-    const { render } = require('../render');
+    const { render } = require('../../render');
 
     const noop = () => {};
     const div = document.createElement('div');
