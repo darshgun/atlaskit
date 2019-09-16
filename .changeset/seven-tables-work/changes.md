@@ -1,1 +1,0 @@
-Adds a new boolean parameter to show the new people profile url

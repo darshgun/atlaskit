@@ -1,5 +1,13 @@
 # @atlaskit/global-search
 
+## 12.1.0
+
+### Minor Changes
+
+- [minor][7289e02eaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7289e02eaa):
+
+  Adds a new boolean parameter to show the new people profile url
+
 ## 12.0.3
 
 ### Patch Changes
