@@ -1,106 +1,71 @@
 import React from 'react';
-import { md, code, DevPreviewWarning } from '@atlaskit/docs';
+import { md, code, DevPreviewWarning, Example } from '@atlaskit/docs';
 
 export default md`
   ${<DevPreviewWarning />}
 
-  ## Usage
+  ${(
+    <Example
+      packageName="@atlaskit/motion"
+      Component={require('../examples/fade-in-grid-of-elements').default}
+      title="Staggered entrance with fade in"
+      source={require('!!raw-loader!../examples/fade-in-grid-of-elements')}
+    />
+  )}
 
-  ### Motion variables
+  ## Documentation
 
-  There are various types of variables available from the motion package.
+  All the documentation can be found in the **sidebar nav links** 👈
 
-  #### Duration
+  ### Quick links
 
-  There are three durations available,
-  each size increases in duration.
-  Use a larger duration for an element that moves a large distance,
-  or is a large element.
+  - [Variables](/packages/helpers/motion/docs/variables)
+  - [Entering motions](/packages/helpers/motion/docs/entering-motions)
+  - [Accessibility](/packages/helpers/motion/docs/accessibility)
 
-  <br />
+  ## Library Considerations
 
-  ${code`
-import {
-  smallDurationMs,
-  mediumDurationMs,
-  largeDurationMs,
-} from '@atlaskit/motion';
-  `}
+  ### CSS over Javascript
 
-  <br />
+  Where possible this library will use CSS exclusively,
+  and only use Javascript when it is impossible otherwise.
+  This is primarily for **Performance**,
+  but also for allowing us to have motion run without waiting for Javascript to execute on initial load (very important for our SSR rendered products).
 
-  ##### Duration decision matrix
+  What this boils down to is:
 
-  Use this table if you're unsure what duration you should use.
+  - Use CSS animation/transitions over animation engines unless there is no possible alternative
+  - Avoid any client side calculations to power motion if it can be done with CSS
+  - Emulating any spring styled motions with CSS animation
+  - Highly interactive and/or gestural motions would be contenders for using an animation engine, but we're not there yet
 
-  <br />
+  ### Not rendering markup
 
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Small element</th>
-        <th>Large element</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Short distance</strong></td>
-        <td><code>smallDurationMs</code></td>
-        <td><code>mediumDurationMs</code></td>
-      </tr>
-      <tr>
-        <td><strong>Long distance</strong></td>
-        <td><code>mediumDurationMs</code></td>
-        <td><code>largeDurationMs</code></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <br />
-
-  #### Curves
-
-  There are three curves available,
-  each used for a particular user interaction,
-  or how the element appears.
+  Every component in this library will not render markup,
+  they will just pass down \`props\` for you to wire up.
+  Because of this the majority of _motion components_ will utilise children as props or hooks.
 
   <br />
 
   ${code`
-import { easeInOut, easeIn, easeOut } from '@atlaskit/motion';
+  <FadeIn>
+    {props => <div {...props} />}
+  </FadeIn>
   `}
 
-  <br />
+  ### Motion abstractions
 
-  ##### Curves decision matrix
+  We want you to use abstractions (components) to power your motion and to not worry about underlying tech.
+  We _also_ want a consistent experience across our products.
+  Need a particular motion that doesn't exist yet?
 
-  Use this table if you're unsure what curve you should use.
+  Think about contributing to \`@atlaskit/motion\` so all products at Atlassian can benefit.
 
-  <br />
+  ### Reduced motion support
 
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th><code>easeInOut</code></th>
-        <th><code>easeOut</code></th>
-        <th><code>easeIn</code></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><i>When to use</i></td>
-        <td>When an element has been interacted with indirectly.</td>
-        <td>When an element has been interacted with directly. <br/>When an element appears from off screen.</td>
-        <td>Use rarely. Only used if an element is moving indirectly entirely off the screen.</td>
-      </tr>
-      <tr>
-        <td><i>Example use case</i></td>
-        <td>A user clicks a button, and a separate element moves.</td>
-        <td>A user clicks an element, and that same element moves. <br/>A drawer appears from off screen.</td>
-        <td>A user clicks a button which spins and waits. After the operation is finished the button enters a confirmed state and the modal slides entirely off the screen.</td>
-      </tr>
-    </tbody>
-  </table>
+  While motion is utilised to create relationships,
+  show the most important thing on the page,
+  and create delight,
+  it's also important to allow our users to opt out of it.
+  Every motion component should use the provided utilities (see: [Accessibility](/packages/helpers/motion/docs/accessibility)).
 `;

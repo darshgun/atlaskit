@@ -1,6 +1,58 @@
 /** @jsx jsx */
-import { jsx, keyframes } from '@emotion/core';
-import { colors } from '@atlaskit/theme';
+import { forwardRef } from 'react';
+import { jsx, keyframes, css } from '@emotion/core';
+import { colors, elevation } from '@atlaskit/theme';
+import { AtlassianIcon } from '@atlaskit/logo';
+
+interface BlockProps extends React.HTMLProps<HTMLDivElement> {
+  appearance?: 'small' | 'medium' | 'large';
+}
+
+interface AnimatedBlockProps extends BlockProps {
+  curve: string;
+  duration: number;
+}
+
+const blockSize = {
+  small: 50,
+  medium: 150,
+  large: 300,
+};
+
+const logoSize = {
+  large: 'xlarge',
+  medium: 'large',
+  small: 'small',
+};
+
+export const Block = forwardRef<HTMLDivElement, BlockProps>(
+  ({ onClick, appearance = 'medium', ...props }: BlockProps, ref) => {
+    const size = blockSize[appearance];
+    return (
+      <div
+        ref={ref}
+        css={css`
+          ${elevation.e200()}
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 16px;
+          width: ${size}px;
+          height: ${size}px;
+          background-color: ${colors.N0};
+          border-radius: ${Math.floor(size / 7)}px;
+          cursor: ${onClick ? 'pointer' : 'default'};
+          :hover {
+            background-color: ${onClick ? colors.B400 : undefined};
+          }
+        `}
+        {...props}
+      >
+        {props.children || <AtlassianIcon size={logoSize[appearance] as any} />}
+      </div>
+    );
+  },
+);
 
 const movesRight = keyframes`
   from {
@@ -8,32 +60,21 @@ const movesRight = keyframes`
   }
 
   to {
-    transform: translate3d(500px, 0, 0);
+    transform: translate3d(200%, 0, 0);
   }
 `;
 
-export const MovesRightBlock = (
-  props: React.HTMLProps<HTMLDivElement> & {
-    curve: string;
-    duration: number;
-  },
-) => (
-  <div
-    css={{
-      margin: '16px 0 32px',
-      width: '150px',
-      height: '150px',
-      backgroundColor: colors.B300,
-      borderRadius: '20px',
-      animationName: `${movesRight}`,
-      animationDuration: `${props.duration}ms`,
-      animationTimingFunction: props.curve,
-      animationIterationCount: 'infinite',
-      cursor: props.onClick ? 'pointer' : 'default',
-      ':hover': {
-        backgroundColor: props.onClick ? colors.B400 : undefined,
-      },
-    }}
-    {...props}
-  />
+export const MovesRightBlock = forwardRef<HTMLDivElement, AnimatedBlockProps>(
+  (props: AnimatedBlockProps, ref) => (
+    <Block
+      ref={ref as any}
+      css={{
+        animationName: `${movesRight}`,
+        animationDuration: `${props.duration}ms`,
+        animationTimingFunction: props.curve,
+        animationIterationCount: 'infinite',
+      }}
+      {...props}
+    />
+  ),
 );
