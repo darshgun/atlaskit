@@ -1,6 +1,7 @@
 import { Plugin, PluginKey, Transaction, Selection } from 'prosemirror-state';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import { Step, ReplaceStep } from 'prosemirror-transform';
+import { tableEditingKey } from 'prosemirror-tables';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import memoizeOne from 'memoize-one';
 
@@ -72,11 +73,13 @@ export const createPlugin = (
       },
       apply(tr, prevPluginState: PluginState, oldState, newState) {
         const pluginState = prevPluginState.apply(tr);
-
-        if (tr.getMeta('isRemote') !== true) {
-          if (collabEditProvider) {
-            collabEditProvider.send(tr, oldState, newState);
-          }
+        const pmTablesMeta = tr.getMeta(tableEditingKey);
+        if (
+          collabEditProvider &&
+          tr.getMeta('isRemote') !== true &&
+          !(pmTablesMeta && pmTablesMeta.fixTables)
+        ) {
+          collabEditProvider.send(tr, oldState, newState);
         }
 
         const { activeParticipants: prevActiveParticipants } = prevPluginState;
