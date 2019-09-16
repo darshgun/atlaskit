@@ -1375,6 +1375,27 @@ describe('Card', () => {
               },
             },
           }),
+          context: [
+            {
+              packageVersion: '999.9.9',
+              packageName: '@atlaskit/media-card',
+              componentName: 'mediaCard',
+            },
+            {
+              actionSubjectId: 'some-random-id',
+              attributes: {
+                packageName: '@atlaskit/media-card',
+                packageVersion: '999.9.9',
+                componentName: 'mediaCard',
+                fileAttributes: {
+                  fileSource: 'mediaCard',
+                  fileMediatype: 'doc',
+                  fileId: 'some-random-id',
+                  fileSize: 1,
+                },
+              },
+            },
+          ],
         }),
         MEDIA_CHANNEL,
       );
