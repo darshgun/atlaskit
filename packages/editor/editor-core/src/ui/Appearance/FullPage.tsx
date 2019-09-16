@@ -307,6 +307,7 @@ export default class Editor extends React.Component<
       disabled,
       collabEdit,
       dispatchAnalyticsEvent,
+      allowAnnotation,
     } = this.props;
 
     const { showKeyline, containerWidth } = this.state;
@@ -344,6 +345,7 @@ export default class Editor extends React.Component<
         </MainToolbar>
         <ScrollContainer
           innerRef={this.scrollContainerRef}
+          allowAnnotation={allowAnnotation}
           className="fabric-editor-popup-scroll-parent"
         >
           <ClickAreaBlock editorView={editorView}>
