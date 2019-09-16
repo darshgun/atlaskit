@@ -25,15 +25,15 @@ export interface MediaCardAnalyticsFileAttributes {
   fileSize?: number;
 }
 
-export type MediaCardAnalyticsPayoladBase = Partial<GasCorePayload> & {
+export type MediaCardAnalyticsPayloadBase = Partial<GasCorePayload> & {
   action?: string;
   attributes?: GasCorePayload['attributes'] & {
     fileAttributes?: MediaCardAnalyticsFileAttributes;
   };
 };
 
-export type MediaCardAnalyticsPayolad = MediaCardAnalyticsPayoladBase & {
-  attributes: MediaCardAnalyticsPayoladBase['attributes'] & {
+export type MediaCardAnalyticsPayload = MediaCardAnalyticsPayloadBase & {
+  attributes: MediaCardAnalyticsPayloadBase['attributes'] & {
     packageName: string; // Mandatory attribute. It is used by Media Listener to merge this object with Context Data Object
   };
 };
@@ -42,7 +42,7 @@ export function getBaseAnalyticsContext(): GasCorePayload['attributes'] {
   return {
     packageVersion,
     packageName,
-    componentName: 'MediaCard',
+    componentName: 'mediaCard',
   };
 }
 
@@ -59,7 +59,7 @@ export const getFileAttributes = (
 export function getUIAnalyticsContext(
   actionSubjectId: string,
   metadata?: FileDetails,
-): MediaCardAnalyticsPayolad {
+): MediaCardAnalyticsPayload {
   const fileAttributes = getFileAttributes(metadata);
 
   const currentActionSujectId =
@@ -77,8 +77,8 @@ export function getUIAnalyticsContext(
 }
 
 function attachPackageName(
-  basePayload: MediaCardAnalyticsPayoladBase,
-): MediaCardAnalyticsPayolad {
+  basePayload: MediaCardAnalyticsPayloadBase,
+): MediaCardAnalyticsPayload {
   return {
     ...basePayload,
     attributes: {
@@ -89,7 +89,7 @@ function attachPackageName(
 }
 
 export function createAndFireCustomMediaEvent(
-  basePayload: MediaCardAnalyticsPayoladBase,
+  basePayload: MediaCardAnalyticsPayloadBase,
   createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ) {
   const payload = attachPackageName(basePayload);
@@ -100,7 +100,7 @@ export function createAndFireCustomMediaEvent(
 }
 
 type CreateAndFireMediaEvent = (
-  basePayload: MediaCardAnalyticsPayoladBase,
+  basePayload: MediaCardAnalyticsPayloadBase,
 ) => (createAnalyticsEvent: CreateUIAnalyticsEvent) => UIAnalyticsEvent;
 
 export const createAndFireMediaEvent: CreateAndFireMediaEvent = basePayload => {
