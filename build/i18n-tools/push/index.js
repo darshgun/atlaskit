@@ -5,7 +5,7 @@ const { msg2pot } = require('babel-plugin-react-intl-pot');
 
 const { extractMessagesFromFile, isTypeScript } = require('../utils');
 const { pushTranslations } = require('../utils/transifex');
-const smartling = require('@atlassian/traduki-lite');
+const smartling = require('traduki-lite');
 
 const getExtensions = type => (isTypeScript(type) ? '.ts{,x}' : '.js{,x}');
 

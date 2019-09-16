@@ -37,14 +37,6 @@
   dependencies:
     babel-runtime "^6.11.6"
 
-"@atlassian/traduki-lite@^1.0.1":
-  version "1.0.1"
-  resolved "https://packages.atlassian.com/api/npm/atlassian-npm/@atlassian/traduki-lite/-/@atlassian/traduki-lite-1.0.1.tgz#d9409e356b9ea3c557035f1fe8d8b2c1e43b9c6f"
-  integrity sha1-2UCeNWueo8VXA18f6NiyweQ7nG8=
-  dependencies:
-    axios "^0.18.0"
-    form-data "^2.5.1"
-
 "@babel/cli@^7.1.0":
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.1.0.tgz#a9429fd63911711b0fa93ae50d73beee6c42aef8"
@@ -17852,6 +17844,14 @@ tr46@^1.0.1:
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-1.0.1.tgz#a8b13fd6bfd2489519674ccde55ba3693b706d09"
   dependencies:
     punycode "^2.1.0"
+
+traduki-lite@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/traduki-lite/-/traduki-lite-1.0.1.tgz#9cc2ea584a799b784bac0ff001a0dbd642848212"
+  integrity sha512-z2ia8pTYV+Azpc+itnl53YADz5ztxZ4cxHCmGxV08TAj5S9W8JQSqrWGin1675XrpAaVPAUAKJ+KWGEOq1Hhbg==
+  dependencies:
+    axios "^0.18.0"
+    form-data "^2.5.1"
 
 trampa@^1.0.0:
   version "1.0.0"
