@@ -18,7 +18,6 @@ describe('media link:', () => {
     await page.waitForSelector(`a:first-of-type`);
     await page.hover(`a:first-of-type`);
     page.waitFor(1000);
-    await page.waitForSelector('.code-block');
     await snapshot(page);
   });
 });
