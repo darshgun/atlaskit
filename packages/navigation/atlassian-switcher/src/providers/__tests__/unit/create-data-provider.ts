@@ -10,7 +10,7 @@ describe('create-data-provider', () => {
   test('should return a fetch method and a provider component', () => {
     const provider = createProvider('my-provider', '/gateway/api/content');
     expect(provider).toHaveProperty('fetchMethod');
-    expect(provider).toHaveProperty('providerComponent');
+    expect(provider).toHaveProperty('ProviderComponent');
   });
 
   test('should request data from the endpoint provided when the provider was created', () => {
