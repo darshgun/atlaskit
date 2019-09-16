@@ -85,8 +85,8 @@ function pushCommand(options) {
       title: 'Pushing to Smartling',
       skip: () => dry,
       task: async context => {
-        const smartling = require('../utils/smartling-lite');
         try {
+          const smartling = require('@atlassian/traduki-lite');
           context.smartlingData = await smartling.pushSource(
             project,
             resource,
