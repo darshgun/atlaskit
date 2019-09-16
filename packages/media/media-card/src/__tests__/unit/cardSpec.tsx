@@ -1000,7 +1000,7 @@ describe('Card', () => {
           },
           context: [
             {
-              componentName: 'MediaCard',
+              componentName: 'mediaCard',
               packageName: '@atlaskit/media-card',
               packageVersion: '999.9.9',
             },
