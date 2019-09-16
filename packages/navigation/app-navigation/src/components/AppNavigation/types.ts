@@ -9,8 +9,9 @@ export type AppNavigationProps = {
   renderHelp?: React.ComponentType<{}>;
   renderNotifications?: React.ComponentType<{}>;
   renderProductHome: React.ComponentType<{}>;
-  renderProfile: React.ComponentType<{}>;
+  renderProfile?: React.ComponentType<{}>;
   renderSearch?: React.ComponentType<{}>;
+  renderSignIn?: React.ComponentType<{}>;
   renderSettings?: React.ComponentType<{}>;
   moreLabel?: ReactNode;
   theme?: AppNavigationTheme;

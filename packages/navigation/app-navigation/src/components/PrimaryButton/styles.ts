@@ -8,11 +8,6 @@ import { AppNavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-export const chevronCSS = {
-  margin: `0 -${gridSize}px`,
-  visibility: 'hidden' as const,
-};
-
 export const buttonHeight = gridSize * 4;
 
 export const margin = {
@@ -38,14 +33,10 @@ export const getPrimaryButtonTheme = ({
       fontWeight: 'bold',
       height: buttonHeight,
       padding: padding.all,
-      textTransform: 'uppercase',
       ...primaryButton.default,
       ':hover': primaryButton.hover,
       ':focus': primaryButton.focus,
       ':active': primaryButton.active,
-      ':hover .chevron, :focus .chevron': {
-        visibility: 'visible',
-      },
     },
     spinnerStyles,
   };
