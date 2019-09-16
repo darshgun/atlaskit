@@ -1,5 +1,6 @@
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { WithTheme } from './theme/types';
+import { AvailableProductsDataProvider } from './providers/products-data-provider';
 
 export interface TriggerXFlowCallback {
   (
@@ -199,4 +200,6 @@ export type AtlassianSwitcherProps = WithTheme & {
   onDiscoverMoreClicked?: DiscoverMoreCallback;
   // A map of feature flags used by the XFlow recommendations engine.
   recommendationsFeatureFlags?: RecommendationsFeatureFlags;
+  // Optional custom provider for available products
+  availableProductsDataProvider?: AvailableProductsDataProvider;
 } & FeatureFlagProps;
