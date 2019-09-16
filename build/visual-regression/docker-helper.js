@@ -37,7 +37,7 @@ async function isLatestVersion(localVersion /*: string */) {
   console.info('Latest docker image version:', prodVersion);
   console.info('Local docker image version:', localVersion);
 
-  return localVersion && prodVersion === localVersion;
+  return localVersion && prodVersion === localVersion ? true : false;
 }
 
 async function deleteOldDockerImage() {
