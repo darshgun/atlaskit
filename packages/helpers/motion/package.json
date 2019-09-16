@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/motion",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Atlassian motion variables, components and more.",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
