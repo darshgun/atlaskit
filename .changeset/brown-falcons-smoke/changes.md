@@ -1,1 +1,0 @@
-ED-7698 Disabled table resize dragging state when the cell does not exist anymore
