@@ -3,8 +3,8 @@ import { Observable, ReplaySubject } from 'rxjs';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import { FabricChannel } from '@atlaskit/analytics-listeners';
 import { AnalyticsContext, AnalyticsListener } from '@atlaskit/analytics-next';
+
 import {
   MediaClient,
   FileState,
@@ -42,6 +42,13 @@ describe('Card', () => {
     collectionName: 'some-collection-name',
     occurrenceKey: 'some-occurrence-key',
   };
+  const actionSubjectId = identifier.id;
+  const analyticsBasePayload = {
+    eventType: 'operational',
+    actionSubject: 'mediaCardRender',
+  };
+  const MEDIA_CHANNEL = 'media';
+
   const setup = (
     mediaClient: MediaClient = createMediaClientWithGetFile(),
     props?: Partial<CardProps>,
@@ -314,7 +321,11 @@ describe('Card', () => {
   it('should use "crop" as default resizeMode', () => {
     const mediaClient = createMediaClientWithGetFile();
     const card = mount(
-      <Card mediaClient={mediaClient} identifier={identifier} isLazy={false} />,
+      <CardBase
+        mediaClient={mediaClient}
+        identifier={identifier}
+        isLazy={false}
+      />,
     );
 
     expect(card.find(CardView).prop('resizeMode')).toBe('crop');
@@ -324,7 +335,7 @@ describe('Card', () => {
     const mediaClient = createMediaClientWithGetFile();
 
     const card = mount(
-      <Card
+      <CardBase
         mediaClient={mediaClient}
         identifier={identifier}
         isLazy={false}
@@ -896,10 +907,10 @@ describe('Card', () => {
       await nextTick(); // copy handler is not awaited and fired in the next tick
     };
 
-    it('should attach UI Analytics Context', () => {
-      const mediaClient = fakeMediaClient() as any;
+    it('should attach UI Analytics Context', async () => {
+      const mediaClient = fakeMediaClient();
       const metadata: FileDetails = {
-        id: 'some-id',
+        id: await identifier.id,
         mediaType: 'video',
         size: 12345,
         processingStatus: 'succeeded',
@@ -910,11 +921,16 @@ describe('Card', () => {
       );
       card.setState({ metadata });
       card.update();
+      await nextTick();
+
       const contextData = card
         .find(AnalyticsContext)
         .at(0)
         .props().data;
-      expect(contextData).toMatchObject(getUIAnalyticsContext(metadata));
+
+      expect(contextData).toMatchObject(
+        getUIAnalyticsContext(metadata.id, metadata),
+      );
     });
 
     it('should attach Base Analytics Context', () => {
@@ -966,7 +982,7 @@ describe('Card', () => {
         containsNode: () => true,
       });
       mount<CardProps, CardState>(
-        <AnalyticsListener channel={'media'} onEvent={onEvent}>
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={onEvent}>
           <Card mediaClient={mediaClient} identifier={identifier} />
         </AnalyticsListener>,
       );
@@ -990,7 +1006,7 @@ describe('Card', () => {
             },
           ],
         }),
-        FabricChannel.media,
+        MEDIA_CHANNEL,
       );
     });
 
@@ -1001,7 +1017,7 @@ describe('Card', () => {
         containsNode: () => false,
       });
       mount<CardProps, CardState>(
-        <AnalyticsListener channel={'media'} onEvent={onEvent}>
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={onEvent}>
           <Card mediaClient={mediaClient} identifier={identifier} />
         </AnalyticsListener>,
       );
@@ -1016,13 +1032,352 @@ describe('Card', () => {
         containsNode: () => true,
       });
       const handler = mount<CardProps, CardState>(
-        <AnalyticsListener channel={'media'} onEvent={onEvent}>
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={onEvent}>
           <Card mediaClient={mediaClient} identifier={identifier} />
         </AnalyticsListener>,
       );
+
       handler.unmount();
       await callCopy();
       expect(onEvent).not.toBeCalled();
+    });
+
+    it('should fire Analytics Event on file load start with static file Id', async () => {
+      const mediaClient = fakeMediaClient();
+      const analyticsHandler = jest.fn();
+
+      await mount(
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+          <Card
+            mediaClient={mediaClient}
+            identifier={identifier}
+            isLazy={false}
+          />
+        </AnalyticsListener>,
+      );
+
+      await nextTick();
+
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            eventType: 'operational',
+            action: 'commenced',
+            actionSubject: 'mediaCardRender',
+            actionSubjectId: identifier.id,
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+    });
+
+    it('should fire Analytics Event on file load start with async file Id', async () => {
+      const mediaClient = fakeMediaClient() as any;
+      const analyticsHandler = jest.fn();
+      const asyncIdentifier = {
+        ...identifier,
+        id: Promise.resolve('some-async-id'),
+      };
+      mount(
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+          <Card
+            mediaClient={mediaClient}
+            identifier={asyncIdentifier}
+            isLazy={false}
+          />
+          ,
+        </AnalyticsListener>,
+      );
+      await nextTick();
+      expect(analyticsHandler).toBeCalledWith(
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            eventType: 'operational',
+            action: 'commenced',
+            actionSubject: 'mediaCardRender',
+            actionSubjectId: 'some-async-id',
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+    });
+
+    it('should fire Analytics Event on file load start with external file Id', async () => {
+      const mediaClient = fakeMediaClient();
+      const analyticsHandler = jest.fn();
+      const externalIdentifier: ExternalImageIdentifier = {
+        mediaItemType: 'external-image',
+        dataURI: 'bla',
+        name: 'some external image',
+      };
+      mount(
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+          <Card
+            mediaClient={mediaClient}
+            identifier={externalIdentifier}
+            isLazy={false}
+          />
+          ,
+        </AnalyticsListener>,
+      );
+      await nextTick();
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            eventType: 'operational',
+            action: 'commenced',
+            actionSubject: 'mediaCardRender',
+            actionSubjectId: externalIdentifier.dataURI,
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+    });
+
+    it('should fire Analytics Event on load commence and failure if an error happened during the file loading', async () => {
+      const baseState: FileState = {
+        id: '123',
+        mediaType: 'image',
+        status: 'processing',
+        mimeType: 'image/png',
+        name: 'file-name',
+        size: 10,
+        representations: {
+          image: {},
+        },
+      };
+      const commencedFileState: FileState = {
+        ...baseState,
+        status: 'uploading',
+        progress: 1,
+      };
+      const errorFileState: FileState = {
+        ...baseState,
+        status: 'error',
+      };
+
+      const subject = new ReplaySubject<FileState>(1);
+      const mediaClient = fakeMediaClient();
+      asMockReturnValue(mediaClient.file.getFileState, subject);
+      const analyticsHandler = jest.fn();
+
+      mount(
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+          <Card
+            mediaClient={mediaClient}
+            identifier={identifier}
+            isLazy={false}
+          />
+          ,
+        </AnalyticsListener>,
+      );
+
+      subject.next(commencedFileState);
+      subject.next(errorFileState);
+
+      await nextTick();
+
+      expect(analyticsHandler).toBeCalledTimes(2);
+
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            ...analyticsBasePayload,
+            actionSubjectId,
+            action: 'commenced',
+            attributes: {
+              fileAttributes: {
+                fileId: identifier.id,
+                fileMediatype: 'file',
+                fileSource: 'mediaCard',
+              },
+              packageName: '@atlaskit/media-card',
+            },
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            ...analyticsBasePayload,
+            actionSubjectId,
+            action: 'failed',
+            attributes: expect.objectContaining({
+              failReason: 'file-status-error',
+              error: 'unknown error',
+            }),
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+    });
+
+    it('should NOT fire same consecutive file states', async () => {
+      const baseState: FileState = {
+        id: '123',
+        mediaType: 'image',
+        status: 'processing',
+        mimeType: 'image/png',
+        name: 'file-name',
+        size: 10,
+        representations: {
+          image: {},
+        },
+      };
+      const commencedFileState: FileState = {
+        ...baseState,
+        status: 'uploading',
+        progress: 1,
+      };
+      const errorFileState: FileState = {
+        ...baseState,
+        status: 'error',
+      };
+
+      const subject = new ReplaySubject<FileState>(1);
+      const mediaClient = fakeMediaClient();
+      asMockReturnValue(mediaClient.file.getFileState, subject);
+      const analyticsHandler = jest.fn();
+
+      mount(
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+          <Card
+            mediaClient={mediaClient}
+            identifier={identifier}
+            isLazy={false}
+          />
+          ,
+        </AnalyticsListener>,
+      );
+
+      subject.next(commencedFileState);
+      subject.next(errorFileState);
+      subject.next(errorFileState);
+      subject.next(errorFileState);
+
+      await nextTick();
+
+      expect(analyticsHandler).toBeCalledTimes(2);
+
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            ...analyticsBasePayload,
+            actionSubjectId,
+            action: 'commenced',
+            attributes: {
+              fileAttributes: {
+                fileId: identifier.id,
+                fileMediatype: 'file',
+                fileSource: 'mediaCard',
+              },
+              packageName: '@atlaskit/media-card',
+            },
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            ...analyticsBasePayload,
+            action: 'failed',
+            attributes: expect.objectContaining({
+              failReason: 'file-status-error',
+              error: 'unknown error',
+            }),
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+    });
+
+    it('should fire commenced and success events if the file loads with success', async () => {
+      (getDataURIFromFileState as any).mockReturnValue(emptyPreview);
+
+      const commencedFileState: FileState = {
+        status: 'processed',
+        id: 'some-random-id',
+        name: 'file-name',
+        artifacts: {},
+        mediaType: 'doc',
+        size: 1,
+        mimeType: 'application/pdf',
+        preview: {
+          value: new File([], 'filename', { type: 'text/plain' }),
+        },
+        representations: {},
+      };
+
+      const subject = new ReplaySubject<FileState>(1);
+      const mediaClient = fakeMediaClient();
+      asMockReturnValue(mediaClient.file.getFileState, subject);
+      const analyticsHandler = jest.fn();
+
+      mount(
+        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+          <Card
+            mediaClient={mediaClient}
+            identifier={identifier}
+            isLazy={false}
+          />
+        </AnalyticsListener>,
+      );
+
+      subject.next(commencedFileState);
+      await nextTick();
+
+      expect(analyticsHandler).toHaveBeenCalledTimes(2);
+
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            ...analyticsBasePayload,
+            actionSubjectId,
+            action: 'commenced',
+            attributes: {
+              fileAttributes: {
+                fileId: identifier.id,
+                fileMediatype: 'file',
+                fileSource: 'mediaCard',
+              },
+              packageName: '@atlaskit/media-card',
+            },
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
+
+      expect(analyticsHandler).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            eventType: 'operational',
+            action: 'succeeded',
+            actionSubject: 'mediaCardRender',
+            attributes: {
+              packageName: '@atlaskit/media-card',
+              fileAttributes: {
+                fileSource: 'mediaCard',
+                fileMediatype: 'doc',
+                fileSize: '1 B',
+                fileStatus: 'complete',
+              },
+            },
+          }),
+        }),
+        MEDIA_CHANNEL,
+      );
     });
   });
 });
