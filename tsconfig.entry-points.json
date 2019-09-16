@@ -1815,6 +1815,10 @@
         "../../media/media-card/src/",
         "./packages/media/media-card/src/"
       ],
+      "@atlaskit/media-client/constants": [
+        "../../media/media-client/src/constants",
+        "./packages/media/media-client/src/constants"
+      ],
       "@atlaskit/media-client/file-streams-cache": [
         "../../media/media-client/src/file-streams-cache",
         "./packages/media/media-client/src/file-streams-cache"

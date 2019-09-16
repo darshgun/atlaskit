@@ -131,4 +131,4 @@ export {
 
 export { globalMediaEventEmitter } from './globalMediaEventEmitter';
 
-export { RECENTS_COLLECTION } from './utils/constants';
+export { RECENTS_COLLECTION } from './constants';

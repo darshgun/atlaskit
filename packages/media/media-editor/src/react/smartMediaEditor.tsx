@@ -12,8 +12,9 @@ import {
   MediaClient,
   UploadableFile,
   FileIdentifier,
-  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
+// Importing from own entry-point, since we dont' want to bring whole media-client at this point
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { messages, Shortcut } from '@atlaskit/media-ui';
 import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
