@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
-import { Schema } from 'prosemirror-model';
+import { Schema, Node as PMNode } from 'prosemirror-model';
 import * as PropTypes from 'prop-types';
 import { EditorPlugin, EditorAppearanceComponentProps } from '../../types';
 import EditorContext from '../../ui/EditorContext';
@@ -26,17 +26,13 @@ import {
   WidthProvider,
   Transformer,
 } from '@atlaskit/editor-common';
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorActions } from '../../index';
 import { processRawValue } from '../../utils';
 import {
-  basePlugin,
-  placeholderPlugin,
-  editorDisabledPlugin,
-  typeAheadPlugin,
-  floatingToolbarPlugin,
-  gapCursorPlugin,
-} from '../../plugins';
+  findChangedNodesFromTransaction,
+  validateNodes,
+} from '../../utils/nodes';
 
 export type EditorProps = {
   plugins?: Array<EditorPlugin>;
@@ -52,6 +48,15 @@ export type EditorProps = {
 
   disabled?: boolean;
   placeholder?: string;
+
+  // Set for an on change callback.
+  onChange?: (value: any) => void;
+
+  // Set for an on save callback.
+  onSave?: (value: any) => void;
+
+  // Set for an on cancel callback.
+  onCancel?: (value: any) => void;
 };
 
 export type EditorPropsExtended = EditorProps & {
@@ -64,21 +69,6 @@ const {
 } = React.createContext<Array<EditorPlugin>>([]);
 
 export { PresetProvider };
-
-export function corePlugins(props: EditorProps) {
-  return [
-    basePlugin({
-      allowInlineCursorTarget: true,
-      allowScrollGutter: () =>
-        document.querySelector('.fabric-editor-popup-scroll-parent'),
-    }),
-    placeholderPlugin({ placeholder: props.placeholder }),
-    editorDisabledPlugin(),
-    typeAheadPlugin(),
-    floatingToolbarPlugin(),
-    gapCursorPlugin(),
-  ];
-}
 
 export interface EditorSharedConfig {
   editorView: EditorView;
@@ -107,10 +97,7 @@ export class Editor extends React.Component<EditorProps> {
                 <>
                   <EditorInternal
                     {...this.props}
-                    plugins={corePlugins(this.props).concat(
-                      this.props.plugins || [],
-                      plugins,
-                    )}
+                    plugins={plugins}
                     portalProviderAPI={portalProviderAPI}
                   />
                   <PortalRenderer portalProviderAPI={portalProviderAPI} />
@@ -166,7 +153,17 @@ export class EditorInternal extends React.Component<
       plugins: pmPlugins,
       doc: processRawValue(schema, this.props.defaultValue),
     });
-    const editorView = new EditorView({ mount: ref }, { state });
+
+    const editorView = new EditorView(
+      { mount: ref },
+      {
+        state,
+        dispatchTransaction: this.dispatchTransaction,
+        // Disables the contentEditable attribute of the editor if the editor is disabled
+        editable: _state => true,
+        attributes: { 'data-gramm': 'false' },
+      },
+    );
 
     // Editor Shared Config
     this.setState({
@@ -202,6 +199,50 @@ export class EditorInternal extends React.Component<
       </WidthProvider>
     );
   }
+
+  private dispatchTransaction = (transaction: Transaction) => {
+    const { editorView } = this.state;
+    if (!editorView) {
+      return;
+    }
+
+    const nodes: PMNode[] = findChangedNodesFromTransaction(transaction);
+    if (validateNodes(nodes)) {
+      // go ahead and update the state now we know the transaction is good
+
+      const editorState = editorView.state.apply(transaction);
+      editorView.updateState(editorState);
+      const onChange = this.props.onChange;
+      if (onChange && transaction.docChanged && this.editorActions) {
+        // TODO we should re-visit this, this should NOT be async. Waiting for media pending tasks
+        // should happen in teardown, not when getting the editors value.
+        this.editorActions.getValue().then(value => {
+          onChange(value);
+        });
+      }
+    } else {
+      // TODO pipe analytics
+      // const documents = {
+      //   new: getDocStructure(transaction.doc),
+      //   prev: getDocStructure(transaction.docs[0]),
+      // };
+      // analyticsService.trackEvent(
+      //   'atlaskit.fabric.editor.invalidtransaction',
+      //   { documents: JSON.stringify(documents) }, // V2 events don't support object properties
+      // );
+      // this.dispatchAnalyticsEvent({
+      //   action: ACTION.DISPATCHED_INVALID_TRANSACTION,
+      //   actionSubject: ACTION_SUBJECT.EDITOR,
+      //   eventType: EVENT_TYPE.OPERATIONAL,
+      //   attributes: {
+      //     analyticsEventPayloads: transaction.getMeta(
+      //       analyticsPluginKey,
+      //     ) as AnalyticsEventPayloadWithChannel[],
+      //     documents,
+      //   },
+      // });
+    }
+  };
 }
 
 const { Provider, Consumer } = React.createContext<EditorSharedConfig | null>(

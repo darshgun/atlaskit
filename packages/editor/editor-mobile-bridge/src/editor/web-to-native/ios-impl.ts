@@ -132,6 +132,16 @@ export default class IosBridge implements NativeBridge {
     }
   }
 
+  stateChanged(canUndo: boolean, canRedo: boolean) {
+    if (window.webkit && window.webkit.messageHandlers.undoRedoBridge) {
+      window.webkit.messageHandlers.undoRedoBridge.postMessage({
+        name: 'stateChanged',
+        canUndo,
+        canRedo,
+      });
+    }
+  }
+
   call<T extends EditorPluginBridges>(
     bridge: T,
     event: keyof Exclude<EditorBridges[T], undefined>,

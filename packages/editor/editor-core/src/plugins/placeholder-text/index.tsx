@@ -125,6 +125,8 @@ export function createPlugin(
 const placeholderTextPlugin = (
   options: PlaceholderTextOptions,
 ): EditorPlugin => ({
+  name: 'placeholderText',
+
   nodes() {
     return [{ name: 'placeholder', node: placeholder }];
   },
