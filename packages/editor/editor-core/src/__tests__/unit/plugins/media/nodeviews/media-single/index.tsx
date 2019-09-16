@@ -232,7 +232,8 @@ describe('nodeviews/mediaSingle', () => {
     });
   });
 
-  it('calls upload media external', async () => {
+  // TODO [MS-2373]
+  it.skip('calls upload media external', async () => {
     const mediaNodeAttrs = {
       id: 'foo',
       type: 'external',
