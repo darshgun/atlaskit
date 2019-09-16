@@ -6,6 +6,7 @@ import {
   getFileStreamsCache,
   MediaClient,
   globalMediaEventEmitter,
+  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
 import {
   MediaStore,
@@ -20,7 +21,6 @@ import {
 import { EventEmitter2 } from 'eventemitter2';
 import { MediaFile } from '../domain/file';
 
-import { RECENTS_COLLECTION } from '../popup/config';
 import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
 import { getPreviewFromImage } from '../util/getPreviewFromImage';
 import { UploadParams } from '..';
