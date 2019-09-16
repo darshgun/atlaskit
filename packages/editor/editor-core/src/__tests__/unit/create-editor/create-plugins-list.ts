@@ -27,8 +27,10 @@ const mockPlugins: { [name: string]: jest.Mock } = {
   floatingToolbarPlugin: jest.fn(),
   quickInsertPlugin: jest.fn(),
   historyPlugin: jest.fn(),
+  sharedContextPlugin: jest.fn(),
 };
 jest.mock('../../../plugins', () => mockPlugins);
+
 
 import {
   analyticsPlugin,
