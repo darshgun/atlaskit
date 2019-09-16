@@ -1,4 +1,4 @@
-import { FileDetails } from '@atlaskit/media-client';
+import { FileDetails, FileState } from '@atlaskit/media-client';
 import { CardState, CardProps, CardStatus } from '../../';
 
 // we don't want to show complete status for empty files, ideally there should be no such file on the media api,
@@ -30,3 +30,73 @@ export const getCardStatus = (
 
   return status;
 };
+
+export const getCardStatusFromFileState = (
+  fileState: FileState,
+  dataURI?: string,
+): CardStatus => {
+  switch (fileState.status) {
+    case 'uploading':
+    case 'failed-processing':
+    case 'error':
+      return fileState.status;
+    case 'processed':
+      return 'complete';
+    case 'processing':
+      if (dataURI) {
+        return 'complete';
+      } else {
+        return 'processing';
+      }
+    default:
+      return 'loading';
+  }
+};
+
+export const getCardProgressFromFileState = (
+  fileState: FileState,
+  dataURI?: string,
+) => {
+  switch (fileState.status) {
+    case 'uploading':
+      return fileState.progress;
+    case 'processing':
+      if (dataURI) {
+        return 1;
+      }
+  }
+};
+
+export type AnalyticsLoadingAction = 'succeeded' | 'failed';
+export const getAnalyticsStatusFromCardStatus = (
+  cardStatus: CardStatus,
+): AnalyticsLoadingAction | void => {
+  switch (cardStatus) {
+    case 'error':
+    case 'failed-processing':
+      return 'failed';
+    default:
+      return;
+  }
+};
+
+export type AnalyticsErrorStateAttributes = {
+  failReason?: 'media-client-error' | 'file-status-error';
+  error?: string;
+};
+
+export const getAnalyticsErrorStateAttributes = (
+  fileState?: FileState,
+  error?: Error,
+): AnalyticsErrorStateAttributes =>
+  !fileState
+    ? {
+        failReason: 'media-client-error',
+        error: (error && error.message) || 'unknown error',
+      }
+    : ['error', 'failed-processing'].includes(fileState.status)
+    ? {
+        failReason: 'file-status-error',
+        error: ('message' in fileState && fileState.message) || 'unknown error',
+      }
+    : {};

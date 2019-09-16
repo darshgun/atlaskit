@@ -105,6 +105,7 @@ describe('Media Analytics', () => {
     };
 
     const expectedContextData = {
+      actionSubjectId: 'a-file-id',
       attributes: {
         packageVersion,
         packageName,
@@ -119,7 +120,7 @@ describe('Media Analytics', () => {
       },
     };
 
-    const contextData = getUIAnalyticsContext(metadata);
+    const contextData = getUIAnalyticsContext('a-file-id', metadata);
     expect(contextData).toMatchObject(expectedContextData);
   });
 

@@ -15,7 +15,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 
-const FabricChannel = { media: 'media' }; // Hardcodes FabricChannel.media to avoid import of the whole @atlaskit/analytics-listeners package
+import { ANALYTICS_MEDIA_CHANNEL } from '../root/media-card-analytics-error-boundary';
 
 export interface MediaCardAnalyticsFileAttributes {
   fileSource: string;
@@ -46,7 +46,7 @@ export function getBaseAnalyticsContext(): GasCorePayload['attributes'] {
   };
 }
 
-const getFileAttributes = (
+export const getFileAttributes = (
   metadata?: FileDetails,
 ): MediaCardAnalyticsFileAttributes => ({
   fileSource: 'mediaCard',
@@ -57,11 +57,15 @@ const getFileAttributes = (
 });
 
 export function getUIAnalyticsContext(
+  actionSubjectId: string,
   metadata?: FileDetails,
 ): MediaCardAnalyticsPayolad {
   const fileAttributes = getFileAttributes(metadata);
 
+  const currentActionSujectId =
+    metadata && metadata.id ? metadata.id : actionSubjectId;
   return {
+    actionSubjectId: currentActionSujectId,
     attributes: {
       packageName,
       ...getBaseAnalyticsContext(),
@@ -91,7 +95,7 @@ export function createAndFireCustomMediaEvent(
   const payload = attachPackageName(basePayload);
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent(payload);
-    event.fire(FabricChannel.media);
+    event.fire(ANALYTICS_MEDIA_CHANNEL);
   }
 }
 
@@ -101,5 +105,5 @@ type CreateAndFireMediaEvent = (
 
 export const createAndFireMediaEvent: CreateAndFireMediaEvent = basePayload => {
   const payload = attachPackageName(basePayload);
-  return createAndFireEvent(FabricChannel.media)(payload);
+  return createAndFireEvent(ANALYTICS_MEDIA_CHANNEL)(payload);
 };
