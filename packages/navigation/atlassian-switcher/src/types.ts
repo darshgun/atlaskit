@@ -126,6 +126,7 @@ export enum WorklensProductType {
   OPSGENIE = 'OPSGENIE',
   BITBUCKET = 'BITBUCKET',
   STATUSPAGE = 'STATUSPAGE',
+  TRELLO = 'TRELLO',
 }
 
 export type AvailableProduct =
@@ -141,7 +142,11 @@ export type AvailableProduct =
 
 interface AvailableProductWithUrl {
   activityCount: number;
-  productType: WorklensProductType.BITBUCKET | WorklensProductType.OPSGENIE;
+  productType:
+    | WorklensProductType.BITBUCKET
+    | WorklensProductType.OPSGENIE
+    | WorklensProductType.STATUSPAGE // assuming that the URL is provided by TCS (same as Opsgenie)
+    | WorklensProductType.TRELLO;
   url: string;
 }
 
