@@ -6,7 +6,7 @@ const ROWS = 50;
 const shadow = () => {
   const str = [];
   for (let i = 0; i < ROWS; i++) {
-    str.push(`0 ${32 * i}px 0 0 #000`);
+    str.push(`0 ${32 * i}px 0 0 rgba(0, 0, 0, 0.1)`);
   }
   return str.join(',');
 };
@@ -23,8 +23,7 @@ export const DummySkeletonContent = () => {
           height: '20px',
           display: 'block',
           width: '100%',
-          opacity: '0.1',
-          boxShadow: `0 0 0 20px #000 inset,${shadow()}`,
+          boxShadow: `0 0 0 20px rgba(0, 0, 0, 0.1) inset,${shadow()}`,
         },
       }}
     />
