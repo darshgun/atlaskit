@@ -1,5 +1,39 @@
 # @atlaskit/media-card
 
+## 65.1.1
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
+## 65.1.0
+
+### Minor Changes
+
+- [minor][b95f6ba701](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b95f6ba701):
+
+  Added Analytics events for Media Card Action, Dropdown Menu and Retry buttons
+
+## 65.0.1
+
+### Patch Changes
+
+- [patch][8e2cb88526](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e2cb88526):
+
+  Adding Error boundary in Media Card
+
+## 65.0.0
+
+### Major Changes
+
+- [major][af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+
+  Media card now emit analytics events which payload and context stuctures reflect GASv3 payload specification.
+  Media Analytics Listener merges Payload and Context data before sending it to the backend. The merge is based on attributes.packageName equality
+  Media Analytics Listener adds packageHierarchy attribute to merged payload, the same way Atlaskit Listener does.
+
 ## 64.2.1
 
 ### Patch Changes

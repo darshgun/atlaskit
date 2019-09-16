@@ -13,6 +13,7 @@ import {
   RecommendationsFeatureFlags,
   DiscoverMoreCallback,
   TriggerXFlowCallback,
+  Product,
 } from '../types';
 import { AvailableProductsProvider } from '../providers/products-data-provider';
 import { ProviderResult } from '../providers/as-data-provider';
@@ -49,6 +50,7 @@ export default (props: JiraSwitcherProps) => (
                 { customLinks, ...providerResults },
                 props.features,
                 availableProducts,
+                Product.JIRA,
               );
 
               return (

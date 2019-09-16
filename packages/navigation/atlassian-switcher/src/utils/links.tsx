@@ -4,6 +4,7 @@ import { FormattedMessage as FormattedMessageNamespace } from 'react-intl';
 import DiscoverFilledGlyph from '@atlaskit/icon/glyph/discover-filled';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import SettingsGlyph from '@atlaskit/icon/glyph/settings';
+import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 
 import {
   BitbucketIcon,
@@ -14,6 +15,7 @@ import {
   JiraCoreIcon,
   OpsGenieIcon,
   StatuspageIcon,
+  TrelloIcon,
 } from '@atlaskit/logo';
 import FormattedMessage from '../primitives/formatted-message';
 import {
@@ -25,6 +27,7 @@ import {
   WorklensProductType,
   ProductKey,
   RecommendationsEngineResponse,
+  Product,
   ProductTopItemVariation,
 } from '../types';
 import messages from './messages';
@@ -182,7 +185,12 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
   [WorklensProductType.STATUSPAGE]: {
     label: 'Statuspage',
     Icon: createIcon(StatuspageIcon, { size: 'small' }),
-    href: '#',
+    href: 'https://statuspage.io',
+  },
+  [WorklensProductType.TRELLO]: {
+    label: 'Trello',
+    Icon: createIcon(TrelloIcon, { size: 'small' }),
+    href: 'https://trello.com',
   },
 };
 
@@ -194,7 +202,19 @@ const PRODUCT_ORDER = [
   WorklensProductType.OPSGENIE,
   WorklensProductType.BITBUCKET,
   WorklensProductType.STATUSPAGE,
+  WorklensProductType.TRELLO,
 ];
+
+type JiraConfluenceProduct = Exclude<
+  Product,
+  Product.HOME | Product.PEOPLE | Product.SITE_ADMIN | Product.TRUSTED_ADMIN
+>;
+
+const BROWSE_APPS_URL: { [Key in JiraConfluenceProduct]: string } = {
+  [Product.JIRA]: '/plugins/servlet/ac/com.atlassian.jira.emcee/discover',
+  [Product.CONFLUENCE]:
+    '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
+};
 
 interface ConnectedSite {
   avatar: string | null;
@@ -209,7 +229,9 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
 
   if (
     product.productType === WorklensProductType.OPSGENIE ||
-    product.productType === WorklensProductType.BITBUCKET
+    product.productType === WorklensProductType.BITBUCKET ||
+    product.productType === WorklensProductType.STATUSPAGE ||
+    product.productType === WorklensProductType.TRELLO
   ) {
     return product.url;
   }
@@ -349,6 +371,8 @@ export const getLicensedProductLinks = (
 export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product.JIRA | Product.CONFLUENCE,
 ): SwitcherItemType[] => {
   const adminBaseUrl = isAdmin ? `/admin` : '/trusted-admin';
   const adminLinks = [
@@ -359,6 +383,14 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
+  if (product && isEmceeLinkEnabled) {
+    adminLinks.unshift({
+      key: 'browse-apps',
+      label: <FormattedMessage {...messages.browseApps} />,
+      Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
+      href: BROWSE_APPS_URL[product],
+    });
+  }
   if (!isDiscoverMoreForEveryoneEnabled) {
     adminLinks.unshift({
       key: 'discover-applications',

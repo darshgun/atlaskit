@@ -1,5 +1,54 @@
 # @atlaskit/navigation-next
 
+## 6.7.3
+
+- Updated dependencies [c5939cb73d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5939cb73d):
+  - @atlaskit/app-navigation@0.4.0
+
+## 6.7.2
+
+### Patch Changes
+
+- [patch][197aa4ed2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/197aa4ed2c):
+
+  Use context hooks in favour of emotion-theming
+
+## 6.7.1
+
+- Updated dependencies [382273ee49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/382273ee49):
+  - @atlaskit/app-navigation@0.3.0
+
+## 6.7.0
+
+### Minor Changes
+
+- [minor][becd9e83bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/becd9e83bd):
+
+  Support experimental_horizontalGlobalNav
+
+## 6.6.3
+
+- Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
+  - @atlaskit/global-navigation@8.0.0
+
+## 6.6.2
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/drawer@5.0.10
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/global-navigation@7.7.1
+  - @atlaskit/modal-dialog@10.2.1
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 6.6.1
+
+### Patch Changes
+
+- [patch][6410edd029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6410edd029):
+
+  Deprecated props, `value` and `onValueUpdated` have been removed from the Badge component. Please use the children prop instead.
+
 ## 6.6.0
 
 ### Minor Changes

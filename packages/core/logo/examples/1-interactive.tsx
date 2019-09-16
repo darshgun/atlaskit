@@ -149,6 +149,7 @@ export default class InteractiveLogo extends Component<Props, State> {
         {sizeRange(logos.OpsGenieLogo, colorPreset, sizePreset, useProps)}
         {sizeRange(logos.StatuspageLogo, colorPreset, sizePreset, useProps)}
         {sizeRange(logos.StrideLogo, colorPreset, sizePreset, useProps)}
+        {sizeRange(logos.TrelloLogo, colorPreset, sizePreset, useProps)}
       </div>
     );
   }

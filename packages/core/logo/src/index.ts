@@ -33,6 +33,7 @@ import {
   StatuspageWordmark,
 } from './StatuspageLogo';
 import { StrideLogo, StrideIcon, StrideWordmark } from './StrideLogo';
+import { TrelloLogo, TrelloIcon, TrelloWordmark } from './TrelloLogo';
 
 export {
   AtlassianLogo,
@@ -68,4 +69,7 @@ export {
   StrideLogo,
   StrideIcon,
   StrideWordmark,
+  TrelloLogo,
+  TrelloIcon,
+  TrelloWordmark,
 };

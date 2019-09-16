@@ -1,67 +1,66 @@
 /** @jsx jsx */
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import { B50 } from '@atlaskit/theme/colors';
-import { jsx, SerializedStyles } from '@emotion/core';
+import { jsx } from '@emotion/core';
 import { Fragment } from 'react';
 
+import { useTheme } from '../../theme';
 import { IconButton } from '../IconButton';
-import { TriggerManager } from '../TriggerManager';
 
-import { SearchInput, SearchWrapper, IconWrapper } from './styled';
-import { searchIconStyles, searchInputStyles } from './styles';
+import {
+  searchInputContainerCSS,
+  searchIconCSS,
+  searchInputCSS,
+  searchInputIconCSS,
+} from './styles';
 import { SearchProps } from './types';
 
 type SearchComponentProps = {
-  css: SerializedStyles;
   onClick: SearchProps['onClick'];
   text: SearchProps['text'];
 };
 
 const SearchComponent = (props: SearchComponentProps) => {
-  const { onClick, text, ...searchProps } = props;
+  const { onClick, text } = props;
+  const theme = useTheme();
 
   const onChange = (...args: any[]) => {
     // @ts-ignore
     onClick && onClick(...args);
   };
 
+  const onInputClick = (...args: any[]) => {
+    // @ts-ignore
+    onClick && onClick(...args);
+  };
+
   return (
-    <SearchWrapper {...searchProps}>
-      <IconWrapper>
-        <SearchIcon label={text} primaryColor={B50} />
-      </IconWrapper>
-      <SearchInput
+    <div css={searchInputContainerCSS}>
+      <div css={searchInputIconCSS}>
+        <SearchIcon label={text} />
+      </div>
+      <input
+        css={searchInputCSS(theme)}
         placeholder={text}
         onChange={onChange}
-        onClick={onClick}
+        onClick={onInputClick}
         value=""
       />
-    </SearchWrapper>
+    </div>
   );
 };
 
 export const Search = (props: SearchProps) => {
-  const { text, tooltip, ...triggerManagerProps } = props;
+  const { text, tooltip, ...iconButtonProps } = props;
 
   return (
-    <TriggerManager {...triggerManagerProps}>
-      {({ onTriggerClick }) => (
-        <Fragment>
-          <SearchComponent
-            css={searchInputStyles}
-            onClick={onTriggerClick}
-            text={text}
-          />
-          <IconButton
-            css={searchIconStyles}
-            icon={<SearchIcon label={tooltip} />}
-            onClick={onTriggerClick}
-            tooltip={tooltip}
-          />
-        </Fragment>
-      )}
-    </TriggerManager>
+    <Fragment>
+      <SearchComponent onClick={iconButtonProps.onClick} text={text} />
+      <IconButton
+        css={searchIconCSS}
+        icon={<SearchIcon label={tooltip} />}
+        tooltip={tooltip}
+        {...iconButtonProps}
+      />
+    </Fragment>
   );
 };
-
-export { SearchSkeleton } from './skeleton';

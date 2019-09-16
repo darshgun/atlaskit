@@ -1,8 +1,10 @@
 /** @jsx jsx */
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { jsx } from '@emotion/core';
-import { PrimaryButton } from '../PrimaryButton';
-import getStyles from './styles';
+
+import { AppNavigationTheme, ThemeProvider, defaultTheme } from '../../theme';
+import { containerCSS, leftCSS, rightCSS } from './styles';
+import { PrimaryItemsContainer } from '../PrimaryItemsContainer';
 import { AppNavigationProps } from './types';
 
 const analyticsData = {
@@ -10,46 +12,50 @@ const analyticsData = {
   componentName: 'appNavigation',
 };
 
-const styles = getStyles();
-
-export const AppNavigation = (props: AppNavigationProps) => {
+export const AppNavigation = (
+  props: AppNavigationProps & { theme: AppNavigationTheme },
+) => {
   const {
     primaryItems,
     renderAppSwitcher: AppSwitcher,
     renderCreate: Create,
     renderHelp: Help,
+    renderNotifications: Notifications,
     renderProductHome: ProductHome,
     renderProfile: Profile,
-    renderNotifications: Notifications,
     renderSearch: Search,
+    renderSignIn: SignIn,
     renderSettings: Settings,
+    moreLabel,
+    theme,
   } = props;
 
   return (
-    <NavigationAnalyticsContext data={analyticsData}>
-      <div css={styles.outer}>
-        <div css={styles.left}>
-          {ProductHome && <ProductHome />}
-          {primaryItems.map(props => (
-            <PrimaryButton key={props.id} {...props} />
-          ))}
+    <ThemeProvider value={theme}>
+      <NavigationAnalyticsContext data={analyticsData}>
+        <div css={containerCSS(theme)}>
+          <div css={leftCSS}>
+            {ProductHome && <ProductHome />}
+            <PrimaryItemsContainer moreLabel={moreLabel} items={primaryItems} />
+          </div>
+          <div css={rightCSS}>
+            {Create && <Create />}
+            {Search && <Search />}
+            {AppSwitcher && <AppSwitcher />}
+            {Notifications && <Notifications />}
+            {Settings && <Settings />}
+            {Help && <Help />}
+            {SignIn && <SignIn />}
+            {Profile && <Profile />}
+          </div>
         </div>
-        <div css={styles.right}>
-          {Create && <Create />}
-          {Search && <Search />}
-          {AppSwitcher && <AppSwitcher />}
-          {Notifications && <Notifications />}
-          {Settings && <Settings />}
-          {Help && <Help />}
-          <Profile />
-        </div>
-      </div>
-    </NavigationAnalyticsContext>
+      </NavigationAnalyticsContext>
+    </ThemeProvider>
   );
 };
 
 AppNavigation.defaultProps = {
   primaryItems: [],
+  moreLabel: '…',
+  theme: defaultTheme,
 };
-
-export { AppNavigationSkeleton } from './skeleton';

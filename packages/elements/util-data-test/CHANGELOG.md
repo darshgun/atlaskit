@@ -1,5 +1,13 @@
 # @atlaskit/util-data-test
 
+## 12.10.0
+
+### Minor Changes
+
+- [minor][c9fbef651f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9fbef651f):
+
+  Add Group as a new Option
+
 ## 12.9.6
 
 ### Patch Changes

@@ -5,6 +5,10 @@ import Select, {
   components,
   mergeStyles,
 } from '@atlaskit/select';
+import {
+  createLocalizationProvider,
+  type LocalizationProvider,
+} from '@atlaskit/locale';
 import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
@@ -14,7 +18,6 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
-
 import {
   name as packageName,
   version as packageVersion,
@@ -25,6 +28,7 @@ import {
   defaultTimes,
   DropdownIndicator,
   defaultTimeFormat,
+  placeholderDatetime,
 } from '../internal';
 import parseTime from '../internal/parseTime';
 import FixedLayer from '../internal/FixedLayer';
@@ -46,8 +50,8 @@ type Props = {
   defaultIsOpen: boolean,
   /** Default for `value`. */
   defaultValue: string,
-  /** Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
-  formatDisplayLabel: (time: string, timeFormat: string) => string,
+  /** DEPRECATED - Use locale instead. Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
+  formatDisplayLabel?: (time: string, timeFormat: string) => string,
   /** The icon to show in the field. */
   icon?: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -62,7 +66,7 @@ type Props = {
   name: string,
   /** Called when the field is blurred. */
   onBlur: () => void,
-  /** Called when the value changes. The only argument is an ISO time. */
+  /** Called when the value changes. The only argument is an ISO time or empty string. */
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
@@ -81,25 +85,19 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
-  /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
-  timeFormat: string,
+  /** DEPRECATED - Use locale instead. Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
+  timeFormat?: string,
   /** Placeholder text displayed in input */
   placeholder?: string,
+  locale: string,
 };
 
 type State = {
   isOpen: boolean,
   value: string,
   isFocused: boolean,
+  l10n: LocalizationProvider,
 };
-/** Returns a formatted DT string if valid or empty string if not valid */
-function formatTime(time: string, timeFormat: string): string {
-  const date = parseTime(time);
-  if (date instanceof Date) {
-    return isValid(date) ? format(date, timeFormat) : time;
-  }
-  return '';
-}
 
 const menuStyles = {
   /* Need to remove default absolute positioning as that causes issues with position fixed */
@@ -125,7 +123,6 @@ class TimePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     hideIcon: false,
-    formatDisplayLabel: formatTime,
     id: '',
     innerProps: {},
     isDisabled: false,
@@ -134,20 +131,26 @@ class TimePicker extends Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    placeholder: 'e.g. 8:00am',
     parseInputValue: (time: string, timeFormat: string) => parseTime(time), // eslint-disable-line no-unused-vars
     selectProps: {},
     spacing: 'default',
     times: defaultTimes,
     timeIsEditable: false,
-    timeFormat: defaultTimeFormat,
+    locale: 'en-US',
   };
 
   state = {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
     isFocused: false,
+    l10n: createLocalizationProvider(this.props.locale),
   };
+
+  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+    if (this.props.locale !== nextProps.locale) {
+      this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
+    }
+  }
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
@@ -162,7 +165,7 @@ class TimePicker extends Component<Props, State> {
     return this.props.times.map(
       (time: string): Option => {
         return {
-          label: formatTime(time, this.props.timeFormat),
+          label: this.formatTime(time),
           value: time,
         };
       },
@@ -181,7 +184,10 @@ class TimePicker extends Component<Props, State> {
       const { parseInputValue, timeFormat } = this.props;
       // TODO parseInputValue doesn't accept `timeFormat` as an function arg yet...
       const value =
-        format(parseInputValue(inputValue, timeFormat), 'HH:mm') || '';
+        format(
+          parseInputValue(inputValue, timeFormat || defaultTimeFormat),
+          'HH:mm',
+        ) || '';
       this.setState({ value });
       this.props.onChange(value);
     } else {
@@ -228,18 +234,56 @@ class TimePicker extends Component<Props, State> {
     };
   };
 
+  /**
+   * There are multiple props that can change how the time is formatted.
+   * The priority of props used is:
+   *   1. formatDisplayLabel
+   *   2. timeFormat
+   *   3. locale
+   */
+  formatTime = (time: string): string => {
+    const { formatDisplayLabel, timeFormat } = this.props;
+    const { l10n } = this.getState();
+
+    if (formatDisplayLabel) {
+      return formatDisplayLabel(time, timeFormat || defaultTimeFormat);
+    }
+
+    const date = parseTime(time);
+    if (!(date instanceof Date)) {
+      return '';
+    }
+
+    if (!isValid(date)) {
+      return time;
+    }
+
+    if (timeFormat) {
+      return format(date, timeFormat);
+    }
+
+    return l10n.formatTime(date);
+  };
+
+  getPlaceholder = () => {
+    const { placeholder } = this.props;
+    if (placeholder) {
+      return placeholder;
+    }
+
+    const { l10n } = this.getState();
+    return l10n.formatTime(placeholderDatetime);
+  };
+
   render() {
     const {
       autoFocus,
-      formatDisplayLabel,
       id,
       innerProps,
       isDisabled,
       name,
-      placeholder,
       selectProps,
       spacing,
-      timeFormat,
     } = this.props;
     const { value = '', isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -258,7 +302,7 @@ class TimePicker extends Component<Props, State> {
       : Select;
 
     const labelAndValue = value && {
-      label: formatDisplayLabel(value, timeFormat),
+      label: this.formatTime(value),
       value,
     };
 
@@ -273,6 +317,7 @@ class TimePicker extends Component<Props, State> {
             Menu: FixedLayerMenu,
           }}
           instanceId={id}
+          isClearable
           isDisabled={isDisabled}
           menuIsOpen={isOpen && !isDisabled}
           menuPlacement="auto"
@@ -284,7 +329,7 @@ class TimePicker extends Component<Props, State> {
           onFocus={this.onFocus}
           onMenuOpen={this.onMenuOpen}
           onMenuClose={this.onMenuClose}
-          placeholder={placeholder}
+          placeholder={this.getPlaceholder()}
           styles={mergeStyles(selectStyles, {
             control: base => ({
               ...base,

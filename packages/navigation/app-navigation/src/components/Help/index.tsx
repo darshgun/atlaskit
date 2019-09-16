@@ -1,22 +1,27 @@
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
-import { B300 } from '@atlaskit/theme/colors';
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
+
+import { useTheme } from '../../theme';
 import { IconButton } from '../IconButton';
 import { HelpProps } from './types';
-import { TriggerManager } from '../TriggerManager';
 
-export const Help = (props: HelpProps) => {
-  const { tooltip, ...triggerManagerProps } = props;
+export const Help = forwardRef((props: HelpProps, ref: Ref<any>) => {
+  const { tooltip, ...iconButtonProps } = props;
+  const {
+    mode: { navigation },
+  } = useTheme();
 
   return (
-    <TriggerManager {...triggerManagerProps}>
-      {({ onTriggerClick }) => (
-        <IconButton
-          icon={<QuestionCircleIcon label={tooltip} secondaryColor={B300} />}
-          onClick={onTriggerClick}
-          tooltip={tooltip}
+    <IconButton
+      icon={
+        <QuestionCircleIcon
+          label={tooltip}
+          secondaryColor={navigation.backgroundColor}
         />
-      )}
-    </TriggerManager>
+      }
+      ref={ref}
+      tooltip={tooltip}
+      {...iconButtonProps}
+    />
   );
-};
+});

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/right-side-panel",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "A cross-product right-side-panel component",
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
@@ -36,7 +36,6 @@
   "devDependencies": {
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/i18n-tools": "^0.5.2",
     "@atlaskit/navigation": "^35.1.21",
     "@atlaskit/page": "^11.0.8",
     "@atlaskit/section-message": "^4.0.12",

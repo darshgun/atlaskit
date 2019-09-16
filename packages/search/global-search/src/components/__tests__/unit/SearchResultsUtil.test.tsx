@@ -52,20 +52,38 @@ describe('handlePromiseError', () => {
   });
 });
 
-describe('JiraIssueAdvancedSearchUrl for issue', () => {
+describe('JiraIssueAdvancedSearchUrl method', () => {
   it('should return quick search url', () => {
-    const issueUrl = getJiraAdvancedSearchUrl(JiraEntityTypes.Issues, '');
+    const issueUrl = getJiraAdvancedSearchUrl({
+      entityType: JiraEntityTypes.Issues,
+      query: '',
+    });
     expect(issueUrl).toBe('/secure/QuickSearch.jspa?searchString=');
   });
 
   it('should return quick search url', () => {
-    const issueUrl = getJiraAdvancedSearchUrl(JiraEntityTypes.Issues, 'abc');
+    const issueUrl = getJiraAdvancedSearchUrl({
+      entityType: JiraEntityTypes.Issues,
+      query: 'abc',
+    });
     expect(issueUrl).toBe('/secure/QuickSearch.jspa?searchString=abc');
+  });
+
+  it('should return correct people search url', () => {
+    const url = getJiraAdvancedSearchUrl({
+      entityType: JiraEntityTypes.People,
+      query: 'PK',
+      isJiraPeopleProfilesEnabled: true,
+    });
+    expect(url).toBe('/jira/people/search?q=PK');
   });
 
   ['12', ' 33 '].forEach(query => {
     it('should return GIN url with numeric queries', () => {
-      const issueUrl = getJiraAdvancedSearchUrl(JiraEntityTypes.Issues, query);
+      const issueUrl = getJiraAdvancedSearchUrl({
+        entityType: JiraEntityTypes.Issues,
+        query,
+      });
       expect(issueUrl).toBe('/issues/?jql=order+by+created+DESC');
     });
   });

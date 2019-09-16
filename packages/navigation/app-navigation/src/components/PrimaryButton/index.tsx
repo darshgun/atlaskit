@@ -1,63 +1,28 @@
-/** @jsx jsx */
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
-import { jsx } from '@emotion/core';
-import { chevronStyles, primaryButtonTheme } from './styles';
+import React, { forwardRef, Ref } from 'react';
+
+import { useTheme } from '../../theme';
+import { getPrimaryButtonTheme } from './styles';
 import { PrimaryButtonProps } from './types';
-import { TriggerManager } from '../TriggerManager';
-import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 
-export const PrimaryButton = (props: PrimaryButtonProps) => {
-  const {
-    component,
-    dropdownContent,
-    href,
-    isSelected,
-    target,
-    testId,
-    text,
-    tooltip,
-    ...triggerManagerProps
-  } = props;
+export const PrimaryButton = forwardRef(
+  (props: PrimaryButtonProps, ref: Ref<any>) => {
+    const { children, testId, tooltip, ...buttonProps } = props;
+    const theme = useTheme();
 
-  return (
-    <Tooltip content={tooltip}>
-      <TriggerManager
-        position="top left"
-        dropdownContent={dropdownContent}
-        {...triggerManagerProps}
-      >
-        {({ onTriggerClick }) => (
-          <Button
-            appearance="primary"
-            component={component}
-            data-test-id={testId}
-            href={href}
-            iconAfter={
-              dropdownContent ? (
-                <span className="chevron" css={chevronStyles}>
-                  <ChevronDownIcon label="" />
-                </span>
-              ) : (
-                undefined
-              )
-            }
-            isSelected={isSelected}
-            onClick={onTriggerClick}
-            target={target}
-            theme={primaryButtonTheme}
-          >
-            {text}
-          </Button>
-        )}
-      </TriggerManager>
-    </Tooltip>
-  );
-};
-
-PrimaryButton.defaultProps = {
-  isSelected: false,
-  testId: 'NavigationItem',
-};
-
-export { PrimaryButtonSkeleton } from './skeleton';
+    return (
+      <Tooltip content={tooltip} hideTooltipOnClick>
+        <Button
+          appearance="primary"
+          data-testid={testId}
+          ref={ref}
+          theme={getPrimaryButtonTheme(theme)}
+          {...buttonProps}
+        >
+          {children}
+        </Button>
+      </Tooltip>
+    );
+  },
+);

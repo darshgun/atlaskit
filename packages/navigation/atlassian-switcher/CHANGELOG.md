@@ -1,5 +1,61 @@
 # @atlaskit/atlassian-switcher
 
+## 3.30.0
+
+### Minor Changes
+
+- [minor][45cba7159a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45cba7159a):
+
+  Allow consumers to specify a custom provider for available products"
+
+## 3.29.0
+
+### Minor Changes
+
+- [minor][84c5898593](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84c5898593):
+
+  Add FE support for Trello and Statuspage
+
+## 3.28.2
+
+### Patch Changes
+
+- [patch][7c4b42ed6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c4b42ed6b):
+
+  yUpdate siwtcher documentation
+
+## 3.28.1
+
+### Patch Changes
+
+- [patch][a9bf2f8d31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9bf2f8d31):
+
+  Adding vanilla wrapper for Atlassian switcher
+
+## 3.28.0
+
+### Minor Changes
+
+- [minor][9397a40abf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9397a40abf):
+
+  Added isEmceeLinkEnabled prop to enable Embedded Marketplace link with in the product
+
+## 3.27.1
+
+### Patch Changes
+
+- [patch][5129434a9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5129434a9b):
+
+  Fix examples when Grid was used without Page
+
+## 3.27.0
+
+### Minor Changes
+
+- [minor][f1b05c87ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1b05c87ab):
+
+  Lazy load underlying switcher component to avoid loading unnecessary code
+
 ## 3.26.0
 
 ### Minor Changes

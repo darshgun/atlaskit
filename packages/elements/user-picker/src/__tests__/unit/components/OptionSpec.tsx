@@ -5,7 +5,8 @@ import { EmailOption } from '../../../components/EmailOption';
 import { Option, OptionProps } from '../../../components/Option';
 import { TeamOption } from '../../../components/TeamOption';
 import { UserOption } from '../../../components/UserOption';
-import { Email, Team, User } from '../../../types';
+import { GroupOption } from '../../../components/GroupOption';
+import { Email, Team, User, Group } from '../../../types';
 
 describe('Option', () => {
   const selectProps: any = {};
@@ -104,6 +105,36 @@ describe('Option', () => {
       expect(teamOption).toHaveLength(1);
       expect(teamOption.props()).toMatchObject({
         team,
+        isSelected: true,
+      });
+    });
+  });
+
+  describe('GroupOption', () => {
+    const group: Group = {
+      id: 'group-123',
+      name: 'group-that-groups-groups',
+      type: 'group',
+    };
+
+    it('should render option with GroupOption', () => {
+      const component = shallowOption({
+        data: { data: group, label: group.name, value: group.id },
+        isSelected: true,
+        selectProps,
+      });
+
+      const option = component.find(components.Option);
+      expect(option).toHaveLength(1);
+      expect(option.props()).toMatchObject({
+        data: { data: group },
+        isSelected: true,
+      });
+
+      const groupOption = component.find(GroupOption);
+      expect(groupOption).toHaveLength(1);
+      expect(groupOption.props()).toMatchObject({
+        group,
         isSelected: true,
       });
     });

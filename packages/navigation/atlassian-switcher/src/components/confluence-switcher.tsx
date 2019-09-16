@@ -13,6 +13,7 @@ import {
   RecommendationsFeatureFlags,
   DiscoverMoreCallback,
   TriggerXFlowCallback,
+  Product,
 } from '../types';
 import { ProviderResult } from '../providers/as-data-provider';
 import { AvailableProductsProvider } from '../providers/products-data-provider';
@@ -48,6 +49,7 @@ export default (props: ConfluenceSwitcherProps) => (
                 { customLinks, ...providerResults },
                 props.features,
                 availableProducts,
+                Product.CONFLUENCE,
               );
 
               return (

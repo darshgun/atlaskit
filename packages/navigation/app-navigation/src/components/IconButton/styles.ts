@@ -1,50 +1,53 @@
-import { B400, B50 } from '@atlaskit/theme/colors';
+import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
-import styled from '@emotion/styled';
-import { globalSkeletonStyles } from '../../common/styles';
+
+import { skeletonCSS } from '../../common/styles';
+import { AppNavigationTheme } from '../../theme';
 import { IconButtonSkeletonProps } from './types';
 
 const gridSize = gridSizeFn();
 
-const buttonHeight = gridSize * 4;
-const margin = {
+export const margin = {
   left: gridSize / 2,
 };
-const padding = {
+
+export const padding = {
   all: gridSize / 2,
 };
 
-export const iconButtonTheme: any = (
-  currentTheme: Function,
-  themeProps: { appearance: string },
-) => {
-  const { buttonStyles, spinnerStyles } = currentTheme(themeProps);
+export const getIconButtonTheme = ({
+  mode: { iconButton },
+}: AppNavigationTheme) => (
+  current: (props: ThemeProps) => ThemeTokens,
+  props: ThemeProps,
+): ThemeTokens => {
+  const { buttonStyles, spinnerStyles } = current(props);
   return {
     buttonStyles: {
       ...buttonStyles,
-      backgroundColor: 'transparent',
-      color: B50,
-      display: 'inline-flex',
-      height: buttonHeight,
+      display: 'flex',
+      height: 'auto',
       marginLeft: margin.left,
       padding: padding.all,
-      ':hover, :focus': {
-        backgroundColor: B400,
-      },
+      ...iconButton.default,
+      ':hover': iconButton.hover,
+      ':focus': iconButton.focus,
+      ':active': iconButton.active,
     },
     spinnerStyles,
   };
 };
 
-export const SecondaryButtonSkeleton = styled.div<IconButtonSkeletonProps>`
-  width: ${({ dimension }) =>
-    typeof dimension === 'number' ? dimension : buttonHeight}px;
-  height: ${({ dimension }) =>
-    typeof dimension === 'number' ? dimension : buttonHeight}px;
-  border-radius: 50%;
-  margin-left: ${({ marginLeft }) =>
-    typeof marginLeft === 'number' ? marginLeft : margin.left}px;
-  margin-right: ${({ marginRight }) =>
-    typeof marginRight === 'number' ? marginRight : 0}px;
-  ${globalSkeletonStyles};
-`;
+const buttonHeight = gridSize * 4;
+
+export const iconButtonSkeletonCSS = (
+  theme: AppNavigationTheme,
+  { marginLeft, marginRight, size }: IconButtonSkeletonProps,
+) => ({
+  borderRadius: '50%',
+  marginLeft: typeof marginLeft === 'number' ? marginLeft : `${margin.left}px`,
+  marginRight: typeof marginRight === 'number' ? marginRight : 0,
+  width: typeof size === 'number' ? size : `${buttonHeight}px}`,
+  height: typeof size === 'number' ? size : `${buttonHeight}px`,
+  ...skeletonCSS(theme),
+});

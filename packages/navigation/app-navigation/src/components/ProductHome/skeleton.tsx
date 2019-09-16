@@ -1,20 +1,19 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import { useTheme } from '../../theme';
 import {
-  containerSkeletonStyles,
-  productIconStyles,
-  productLogoStyles,
-  LogoSkeleton,
-  IconSkeleton,
+  containerSkeletonCSS,
+  productIconSkeletonCSS,
+  productLogoSkeletonCSS,
 } from './styles';
 
-export const ProductHomeSkeleton = () => (
-  <div css={containerSkeletonStyles}>
-    <div css={productLogoStyles}>
-      <LogoSkeleton />
+export const ProductHomeSkeleton = () => {
+  const theme = useTheme();
+
+  return (
+    <div css={containerSkeletonCSS}>
+      <div css={productLogoSkeletonCSS(theme)} />
+      <div css={productIconSkeletonCSS(theme)} />
     </div>
-    <div css={productIconStyles}>
-      <IconSkeleton />
-    </div>
-  </div>
-);
+  );
+};
