@@ -59,21 +59,20 @@ function validateEntryPoints(srcContents, rootContents) {
   return missingEntries;
 }
 
-async function validateAllPackages(packageDirs) {
-  const results = await Promise.all(
-    packageDirs.map(dir => validatePackage(dir)),
-  );
+async function validateAllPackages(packages) {
+  const results = await Promise.all(packages.map(pkg => validatePackage(pkg)));
   const errors = [].concat(...results);
   return errors;
 }
 
-async function validatePackage(packageDir) {
+async function validatePackage(pkg) {
   const errors = [];
   const dirs = await pSettle(
     ['src', '', 'dist/cjs', 'dist/esm'].map(async f => {
-      const dir = `${packageDir}/${f}`;
+      const dir = `${pkg.dir}/${f}`;
       return {
         dir,
+        relativeDir: `${pkg.relativeDir}/${f}`,
         contents: await fse.readdir(dir, {
           withFileTypes: true,
         }),
@@ -90,7 +89,7 @@ async function validatePackage(packageDir) {
 
   errors.push(
     ...validateEntryPoints(src.contents, root.contents).map(
-      f => `Missing entry point directory for "${src.dir}/${f.name}"`,
+      f => `Missing entry point directory for "${src.relativeDir}/${f.name}"`,
     ),
   );
   for (const dist of dists) {
@@ -103,7 +102,10 @@ async function validatePackage(packageDir) {
 function validateDistContents(src, dist) {
   const errors = [];
   for (const srcFile of src.contents) {
-    if (excludedSrcFiles.includes(srcFile.name)) {
+    if (
+      excludedSrcFiles.includes(srcFile.name) ||
+      !srcFile.name.match(fileRegex)
+    ) {
       continue;
     }
     if (srcFile.isDirectory()) {
@@ -112,7 +114,9 @@ function validateDistContents(src, dist) {
       );
       if (!correspondingDir) {
         errors.push(
-          `Directory "${src.dir}/${srcFile.name}" is missing in "${dist.dir}"`,
+          `Directory "${dist.relativeDir}" is missing from "${
+            src.relativeDir
+          }/${srcFile.name}"`,
         );
       }
     } else if (srcFile.isFile()) {
@@ -122,9 +126,9 @@ function validateDistContents(src, dist) {
       );
       if (!compiledFile) {
         errors.push(
-          `File "${srcFile.name}" is missing as "${
-            dist.dir
-          }/${compiledFilename}"`,
+          `File "${dist.relativeDir}/${compiledFilename}" is missing from "${
+            src.relativeDir
+          }/${srcFile.name}"`,
         );
       }
       if (srcFile.name.match(/\.tsx?$/)) {
@@ -135,14 +139,20 @@ function validateDistContents(src, dist) {
         );
         if (!declarationFile) {
           errors.push(
-            `Declaration file for "${srcFile.name}" is missing as "${
-              dist.dir
-            }/${declarationFilename}"`,
+            `Declaration file "${
+              dist.relativeDir
+            }/${declarationFilename}" is missing for "${srcFile.relativeDir}/${
+              srcFile.name
+            }"`,
           );
         }
       }
     } else {
-      throw Error(`Invalid file "${srcFile}", must be directory or file.`);
+      throw Error(
+        `Invalid file "${srcFile.relativeDir}/${
+          srcFile.name
+        }", must be directory or file.`,
+      );
     }
   }
   return errors;
@@ -180,9 +190,7 @@ async function main(opts = {}) {
       Either fix their main/module field or add them to the exception list at "${__filename}"`);
   }
 
-  const standardPackages = browserPackages
-    .filter(pkg => hasCjsEsmBuild(pkg))
-    .map(pkg => pkg.dir);
+  const standardPackages = browserPackages.filter(pkg => hasCjsEsmBuild(pkg));
 
   const packageDistErrors = await validateAllPackages(standardPackages);
   return {
