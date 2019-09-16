@@ -1,4 +1,4 @@
-import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 
 import { SmartMediaProgress } from '../../domain/progress';
 import { Action, Dispatch, Store } from 'redux';

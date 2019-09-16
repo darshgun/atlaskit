@@ -1,4 +1,4 @@
-import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { mockStore, mockFetcher } from '@atlaskit/media-test-helpers';
 import {
   getFilesInRecentsFullfilled,

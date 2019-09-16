@@ -1,4 +1,4 @@
-import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { mockStore } from '@atlaskit/media-test-helpers';
 import { UploadProcessingEvent } from '../../../../domain/uploadEvent';
 import { proxyUploadEvents } from '../../proxyUploadEvents';

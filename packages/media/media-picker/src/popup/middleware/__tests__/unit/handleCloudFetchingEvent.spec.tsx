@@ -1,5 +1,5 @@
 import { mockStore } from '@atlaskit/media-test-helpers';
-import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { handleCloudFetchingEvent } from '../../handleCloudFetchingEvent';
 import {
   HANDLE_CLOUD_FETCHING_EVENT,

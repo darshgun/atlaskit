@@ -1,7 +1,7 @@
 import { MockURL } from 'xhr-mock/lib/MockURL';
 import { MockHeaders } from 'xhr-mock/lib/types';
 import { ClientBasedAuth } from '@atlaskit/media-store';
-import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 
 export * from './matchers';
 export * from './utils';

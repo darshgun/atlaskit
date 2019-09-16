@@ -4,7 +4,8 @@ import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 import { IntlShape } from 'react-intl';
 import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
-import { MediaClient, RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { MediaClient } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { UIAnalyticsEventHandler } from '@atlaskit/analytics-next';
 
 import { ServiceName, State } from '../domain';
