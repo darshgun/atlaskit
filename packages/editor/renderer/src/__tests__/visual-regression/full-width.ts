@@ -31,6 +31,7 @@ describe('Snapshot Test: Full Width', () => {
     viewport => {
       it(`should correctly render ${viewport.width}`, async () => {
         await initRenderer(page, viewport, mixedAdf);
+        await page.waitFor('.code-block');
       });
 
       it('should correctly size images', async () => {
