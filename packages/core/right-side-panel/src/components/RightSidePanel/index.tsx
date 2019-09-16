@@ -80,10 +80,6 @@ export class RightSidePanel extends Component<Props, State> {
       onCloseAnimationFinished,
     } = this.props;
 
-    const onEntered = onOpenAnimationFinished;
-
-    const onExited = onCloseAnimationFinished;
-
     return createPortal(
       <Transition
         in={isOpen}
@@ -91,8 +87,8 @@ export class RightSidePanel extends Component<Props, State> {
         mountOnEnter
         unmountOnExit
         appear
-        onEntered={onEntered}
-        onExited={onExited}
+        onEntered={onOpenAnimationFinished}
+        onExited={onCloseAnimationFinished}
       >
         {(state: TransitionStatus) => (
           <RightSidePanelDrawer
