@@ -20,8 +20,8 @@ import {
   FileState,
   UploadableFile,
   FileIdentifier,
-  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import uuidV4 from 'uuid/v4';
 import { TouchedFiles, UploadableFileUpfrontIds } from '@atlaskit/media-store';
 import {

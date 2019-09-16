@@ -138,4 +138,4 @@ export {
   objectToQueryString,
 } from './utils/url';
 
-export { RECENTS_COLLECTION } from './utils/constants';
+export { RECENTS_COLLECTION } from './constants';
