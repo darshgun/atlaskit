@@ -31,7 +31,7 @@ async function writeEntryPointsPathInPkgJson(
 }
 
 async function createEntryPointsDirWithPkgJson(opts = {}) {
-  const { cwd = process.cwd(), packageName, warnOnExistingDirs = true } = opts;
+  const { cwd = process.cwd(), packageName, errorOnExistingDirs = true } = opts;
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const packages = await getPackagesInfo(cwd);
   const pkgContents = packages
@@ -66,7 +66,7 @@ async function createEntryPointsDirWithPkgJson(opts = {}) {
         fs.mkdirSync(entryPointDirName);
       }
       const dirContents = fs.readdirSync(entryPointDirName);
-      if (dirContents.length > 1 || dirContents[0] === 'package.json') {
+      if (dirContents.length > 1 || dirContents[0] !== 'package.json') {
         // Existing directories outside of src won't break anything since the package.json entry point will still be added there
         // and uploaded to npm. Problems would arise if the directory was already npmignored though
         existingDirs.push({
@@ -82,11 +82,12 @@ async function createEntryPointsDirWithPkgJson(opts = {}) {
       );
     }
   }
-  if (warnOnExistingDirs && existingDirs.length > 0) {
-    console.warn(
-      '\tThe following entry point directories already exist. If the project is in a clean build state, this indicates a name clash between entry point files directly underneath src/ and non-src directories with the same name. This may cause issues if the directory is npm-ignored.\nIf this is a rebuild, you can ignore these warnings.',
+  if (errorOnExistingDirs && existingDirs.length > 0) {
+    throw new Error(
+      `\tThe following directories clash with generated entry point directories:\n\tClashing dirs: ${existingDirs
+        .map(p => p.dir)
+        .join(', ')}`,
     );
-    console.warn(`\tClashing dirs: ${existingDirs.map(p => p.dir).join(', ')}`);
   }
 }
 
