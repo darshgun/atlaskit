@@ -61,6 +61,7 @@ import { selectors } from '../panel/_utils';
           allowMediaGroup: true,
         },
         allowPanel: true,
+        allowNewInsertionBehaviour: true,
       });
 
       await page.click(editable);

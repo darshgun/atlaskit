@@ -175,6 +175,12 @@ export interface EditorProps {
   // Enable indentation support for `heading` and `paragraph`
   allowIndentation?: boolean;
 
+  /**
+   * Refer to https://product-fabric.atlassian.net/browse/ED-7503
+   * This enables new insertion behaviour only for horizontal rule and media single in certain conditions.
+   **/
+  allowNewInsertionBehaviour?: boolean;
+
   // Set to enable the quick insert menu i.e. '/' key trigger.
   // You can also provide your own insert menu options that will be shown in addition to the enabled
   // editor features e.g. Confluence uses this to provide its macros.

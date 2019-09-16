@@ -52,6 +52,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     appearance: 'comment',
     disabled: false,
     extensionHandlers: {},
+    allowNewInsertionBehaviour: true,
   };
 
   static contextTypes = {

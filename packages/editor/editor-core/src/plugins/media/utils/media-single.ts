@@ -4,13 +4,15 @@ import {
   safeInsert as pmSafeInsert,
   hasParentNodeOfType,
 } from 'prosemirror-utils';
-import { EditorState, Selection } from 'prosemirror-state';
+import { EditorState, Selection, Transaction } from 'prosemirror-state';
 import { MediaSingleLayout, MediaSingleAttributes } from '@atlaskit/adf-schema';
 import {
   calcPxFromPct,
   breakoutWideScaleRatio,
   akEditorBreakoutPadding,
 } from '@atlaskit/editor-common';
+
+import { getEditorProps } from '../../shared-context';
 
 import {
   isImage,
@@ -173,7 +175,11 @@ export const insertMediaSingleNode = (
       dispatch,
     );
   } else {
-    let tr = safeInsert(node, state.selection.from)(state.tr);
+    const { allowNewInsertionBehaviour } = getEditorProps(view.state);
+    let tr: Transaction<any> | null = null;
+    if (allowNewInsertionBehaviour) {
+      tr = safeInsert(node, state.selection.from)(state.tr);
+    }
 
     if (!tr) {
       const content = shouldAddParagraph(view.state)
