@@ -1,24 +1,21 @@
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import React from 'react';
 
-import { withAppNavigationTheme } from '../../theme';
-import { ThemedIconButton } from '../IconButton';
+import { useTheme } from '../../theme';
+import { IconButton } from '../IconButton';
 import { TriggerManager } from '../TriggerManager';
 import { HelpProps } from './types';
 
 export const Help = (props: HelpProps) => {
+  const { tooltip, ...triggerManagerProps } = props;
   const {
-    theme: {
-      mode: { navigation },
-    },
-    tooltip,
-    ...triggerManagerProps
-  } = props;
+    mode: { navigation },
+  } = useTheme();
 
   return (
     <TriggerManager {...triggerManagerProps}>
       {({ onTriggerClick }) => (
-        <ThemedIconButton
+        <IconButton
           icon={
             <QuestionCircleIcon
               label={tooltip}
@@ -32,5 +29,3 @@ export const Help = (props: HelpProps) => {
     </TriggerManager>
   );
 };
-
-export const ThemedHelp = withAppNavigationTheme(Help);

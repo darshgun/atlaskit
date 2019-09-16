@@ -26,25 +26,25 @@ const getDockerImageProdVersion = () =>
 
 const getDockerImageLocalVersion = async () => {
   const cmd = `docker images| grep atlassianlabs/atlaskit-mk-2-vr| awk '{print $2}'| head -n 1`;
-  return await exec(cmd).toString();
+  return await exec(cmd)
+    .toString()
+    .trim();
 };
 
 async function isLatestVersion(localVersion /*: string */) {
-  let result = false;
   const prodVersion = getDockerImageProdVersion();
 
   console.info('Latest docker image version:', prodVersion);
   console.info('Local docker image version:', localVersion);
 
-  if (localVersion && prodVersion !== localVersion) result = true;
-
-  return result;
+  return localVersion && prodVersion === localVersion;
 }
 
 async function deleteOldDockerImage() {
   const localVersion = await getDockerImageLocalVersion();
+  const isLatest = await isLatestVersion(localVersion);
 
-  if (!isLatestVersion(localVersion)) {
+  if (!isLatest) {
     console.info(
       'Old version of docker image found, updating docker image .....',
     );
@@ -59,4 +59,11 @@ async function deleteOldDockerImage() {
   }
 }
 
-module.exports = { startDocker, stopDocker, deleteOldDockerImage };
+module.exports = {
+  startDocker,
+  stopDocker,
+  deleteOldDockerImage,
+  isLatestVersion,
+  getDockerImageProdVersion,
+  getDockerImageLocalVersion,
+};

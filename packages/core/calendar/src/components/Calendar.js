@@ -1,5 +1,9 @@
 // @flow
 
+import {
+  createLocalizationProvider,
+  LocalizationProvider,
+} from '@atlaskit/locale';
 import { Calendar as CalendarBase } from 'calendar-base';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
@@ -13,7 +17,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-import { dateToString, getShortDayName, makeArrayFromNumber } from '../util';
+import { dateToString } from '../util';
 import DateComponent from './Date';
 import Heading from './Heading';
 import {
@@ -81,6 +85,7 @@ type Props = {
   today?: string,
   /** Year to display the calendar for. */
   year?: number,
+  locale: string,
 };
 
 type State = {
@@ -91,6 +96,7 @@ type State = {
   selected: Array<string>,
   today: string,
   year: number,
+  l10n: LocalizationProvider,
 };
 
 function getUniqueId(prefix: string) {
@@ -116,6 +122,7 @@ class Calendar extends Component<Props, State> {
     defaultDisabled: [],
     defaultSelected: [],
     defaultPreviouslySelected: [],
+    locale: 'en-US',
   };
 
   constructor(props: Props) {
@@ -134,11 +141,18 @@ class Calendar extends Component<Props, State> {
       today:
         this.props.today ||
         `${thisYear}-${padToTwo(thisMonth)}-${padToTwo(thisDay)}`,
+      l10n: createLocalizationProvider(this.props.locale),
     };
     this.calendar = new CalendarBase({
       siblingMonths: true,
       weekNumbers: true,
     });
+  }
+
+  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+    if (this.props.locale !== nextProps.locale) {
+      this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
+    }
   }
 
   // All state needs to be accessed via this function so that the state is mapped from props
@@ -412,6 +426,7 @@ class Calendar extends Component<Props, State> {
 
   render() {
     const mappedState = this.getState();
+    const { l10n } = mappedState;
     const { innerProps } = this.props;
 
     const announceId = getUniqueId('announce');
@@ -439,7 +454,9 @@ class Calendar extends Component<Props, State> {
           tabIndex={0}
         >
           <Heading
-            month={mappedState.month}
+            // The month number needs to be translated to index in the month
+            // name array e.g. 1 (January) -> 0
+            monthLongTitle={l10n.getMonthsLong()[mappedState.month - 1]}
             year={mappedState.year}
             handleClickNext={this.handleClickNext}
             handleClickPrev={this.handleClickPrev}
@@ -447,8 +464,8 @@ class Calendar extends Component<Props, State> {
           <CalendarTable role="presentation">
             <CalendarThead>
               <tr>
-                {makeArrayFromNumber(daysPerWeek).map(i => (
-                  <CalendarTh key={i}>{getShortDayName(i)}</CalendarTh>
+                {l10n.getDaysShort().map(shortDay => (
+                  <CalendarTh key={shortDay}>{shortDay}</CalendarTh>
                 ))}
               </tr>
             </CalendarThead>

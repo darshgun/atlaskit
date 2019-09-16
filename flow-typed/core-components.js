@@ -13,7 +13,15 @@ declare module '@atlaskit/atlassian-switcher' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/app-navigation' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/avatar' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/avatar-group' {
   declare module.exports: any;
 }
 
@@ -81,11 +89,19 @@ declare module '@atlaskit/inline-message' {
   declare module.exports: any;
 }
 
-declare module '@atlaskit/lozenge' {
+declare module '@atlaskit/locale' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/locale/LocaleSelect' {
   declare module.exports: any;
 }
 
 declare module '@atlaskit/logo' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/lozenge' {
   declare module.exports: any;
 }
 

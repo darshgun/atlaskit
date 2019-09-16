@@ -4,9 +4,9 @@ import {
   gridSize as gridSizeFn,
 } from '@atlaskit/theme/constants';
 import {
-  actionSectionDesktopStyles,
-  actionSectionMobileStyles,
-  skeletonStyles,
+  actionSectionDesktopCSS,
+  actionSectionMobileCSS,
+  skeletonCSS,
 } from '../../common/styles';
 import { AppNavigationTheme } from '../../theme';
 
@@ -14,18 +14,18 @@ const gridSize = gridSizeFn();
 
 const buttonHeight = gridSize * 4;
 
-export const createButtonStyles = actionSectionDesktopStyles;
+export const createButtonCSS = actionSectionDesktopCSS;
 
-export const createButtonSkeletonStyles = (theme: AppNavigationTheme) => ({
+export const createButtonSkeletonCSS = (theme: AppNavigationTheme) => ({
   height: `${buttonHeight}px`,
   width: '68px',
   borderRadius: '3px',
-  ...skeletonStyles(theme),
-  ...createButtonStyles,
+  ...createButtonCSS,
+  ...skeletonCSS(theme),
 });
 
-export const createIconStyles = actionSectionMobileStyles;
-export const createIconSkeletonStyles = createIconStyles;
+export const createIconCSS = actionSectionMobileCSS;
+export const createIconSkeletonCSS = createIconCSS;
 
 export const getCreateButtonTheme = ({
   mode: { create },

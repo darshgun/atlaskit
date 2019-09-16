@@ -1,55 +1,91 @@
 import React, { Fragment } from 'react';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
+import { PrimaryButton, PrimaryButtonProps } from '../../src';
+import { useOverflowStatus } from '../../src/controllers/overflow';
+
+const NavigationButton = (props: PrimaryButtonProps) => {
+  const { isVisible } = useOverflowStatus();
+  if (isVisible) {
+    return <PrimaryButton {...props} />;
+  } else {
+    if (props.dropdownContent) {
+      return (
+        <DropdownItemGroup title={props.text}>
+          <props.dropdownContent />
+        </DropdownItemGroup>
+      );
+    } else {
+      return <DropdownItem onClick={props.onClick}>{props.text}</DropdownItem>;
+    }
+  }
+};
+
+const DropdownContent = ({ sections }: { sections: typeof projectsData }) => {
+  const { isVisible } = useOverflowStatus();
+  if (isVisible) {
+    return (
+      <Fragment>
+        {sections.map(section => (
+          <DropdownItemGroup key={section.title} title={section.title}>
+            {section.items.map(item => (
+              <DropdownItem key={item}>{item}</DropdownItem>
+            ))}
+          </DropdownItemGroup>
+        ))}
+      </Fragment>
+    );
+  } else {
+    return (
+      <Fragment>
+        {sections.map(section => (
+          <DropdownItemGroup key={section.title}>
+            {section.items.map(item => (
+              <DropdownItem key={item}>{item}</DropdownItem>
+            ))}
+          </DropdownItemGroup>
+        ))}
+      </Fragment>
+    );
+  }
+};
 
 export const bitbucketPrimaryItems = [
-  {
-    id: 'work',
-    href: '#',
-    onClick: (...args: any[]) => {
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Your work click', ...args);
-    },
-    text: 'Your work',
-  },
-  {
-    id: 'workspaces',
-    href: '#',
-    onClick: (...args: any[]) => {
+    }}
+    text="Your work"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Workspaces click', ...args);
-    },
-    text: 'Workspaces',
-  },
-  {
-    id: 'repositories',
-    href: '#',
-    onClick: (...args: any[]) => {
+    }}
+    text="Workspaces"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Repositories click', ...args);
-    },
-    text: 'Repositories',
-  },
-  {
-    id: 'projects',
-    href: '#',
-    onClick: (...args: any[]) => {
+    }}
+    text="Repositories"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Projects click', ...args);
-    },
-    text: 'Projects',
-  },
-  {
-    id: 'pullrequests',
-    href: '#',
-    onClick: (...args: any[]) => {
+    }}
+    text="Projects"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Pull requests click', ...args);
-    },
-    text: 'Pull requests',
-  },
-  {
-    id: 'issues',
-    href: '#',
-    onClick: (...args: any[]) => {
+    }}
+    text="Pull requests"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Issues click', ...args);
-    },
-    text: 'Issues',
-  },
+    }}
+    text="Issues"
+  />,
 ];
 
 const ConfluenceAppsContent = () => (
@@ -73,170 +109,153 @@ const SpacesContent = () => (
 );
 
 export const confluencePrimaryItems = [
-  {
-    id: 'activity',
-    href: '#',
-    onClick: (...args: any[]) => {
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Activity click', ...args);
-    },
-    text: 'Activity',
-  },
-  {
-    id: 'work',
-    href: '#',
-    onClick: (...args: any[]) => {
+    }}
+    text="Activity"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Your work click', ...args);
-    },
-    text: 'Your work',
-  },
-  {
-    dropdownContent: SpacesContent,
-    id: 'spaces',
-    onClick: (...args: any[]) => {
+    }}
+    text="Your work"
+  />,
+  <NavigationButton
+    dropdownContent={SpacesContent}
+    onClick={(...args: any[]) => {
       console.log('Spaces click', ...args);
-    },
-    text: 'Spaces',
-  },
-  {
-    id: 'people',
-    onClick: (...args: any[]) => {
+    }}
+    text="Spaces"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('People click', ...args);
-    },
-    text: 'People',
+    }}
+    text="People"
+  />,
+  <NavigationButton
+    dropdownContent={ConfluenceAppsContent}
+    onClick={(...args: any[]) => {
+      console.log('Apps click', ...args);
+    }}
+    text="Apps"
+  />,
+];
+
+const projectsData = [
+  {
+    title: 'Favourite Projects',
+    items: ['Mobile Research', 'IT Services'],
   },
   {
-    dropdownContent: ConfluenceAppsContent,
-    id: 'apps',
-    onClick: (...args: any[]) => {
-      console.log('Apps click', ...args);
-    },
-    text: 'Apps',
+    title: 'Recent Projects',
+    items: [
+      'Engineering Leadership',
+      'BAU',
+      'Hardware Support',
+      'New Features',
+      'SAS',
+    ],
   },
 ];
 
-const ProjectsContent = () => (
-  <Fragment>
-    <DropdownItemGroup title="Favourite Projects">
-      <DropdownItem>Mobile Research</DropdownItem>
-      <DropdownItem>IT Services</DropdownItem>
-    </DropdownItemGroup>
-    <DropdownItemGroup title="Recent Projects">
-      <DropdownItem>Engineering Leadership</DropdownItem>
-      <DropdownItem>BAU</DropdownItem>
-      <DropdownItem>Hardware Support</DropdownItem>
-      <DropdownItem>New Features</DropdownItem>
-      <DropdownItem>SAS</DropdownItem>
-    </DropdownItemGroup>
-  </Fragment>
-);
+const ProjectsContent = () => <DropdownContent sections={projectsData} />;
 
-const IssuesContent = () => (
-  <Fragment>
-    <DropdownItemGroup title="Recent Issues">
-      <DropdownItem>Issue One</DropdownItem>
-      <DropdownItem>Issue Two</DropdownItem>
-    </DropdownItemGroup>
-    <DropdownItemGroup>
-      <DropdownItem>View all recent issues</DropdownItem>
-    </DropdownItemGroup>
-    <DropdownItemGroup title="Filters">
-      <DropdownItem>Filter One</DropdownItem>
-      <DropdownItem>Filter Two</DropdownItem>
-    </DropdownItemGroup>
-  </Fragment>
-);
+const issuesData = [
+  {
+    title: 'Recent Issues',
+    items: ['Issue One', 'Issue Two'],
+  },
+  {
+    title: '',
+    items: ['View all recent issues'],
+  },
+  {
+    title: 'Recent Filters',
+    items: ['Filter One', 'Filter Two', 'Filter Three'],
+  },
+];
 
-const DashboardsContent = () => (
-  <Fragment>
-    <DropdownItemGroup>
-      <DropdownItem>System Dashboard</DropdownItem>
-    </DropdownItemGroup>
-    <DropdownItemGroup>
-      <DropdownItem>View all dashboards</DropdownItem>
-    </DropdownItemGroup>
-  </Fragment>
-);
+const IssuesContent = () => <DropdownContent sections={issuesData} />;
+
+const dashboardsData = [
+  {
+    title: '',
+    items: ['System Dashboard', 'View all dashboards'],
+  },
+];
+
+const DashboardsContent = () => <DropdownContent sections={dashboardsData} />;
 
 export const jiraPrimaryItems = [
-  {
-    id: 'home',
-    href: '#',
-    onClick: (...args: any[]) => {
+  <NavigationButton
+    href="#"
+    onClick={(...args: any[]) => {
       console.log('Home click...', ...args);
-    },
-    text: 'Home',
-  },
-  {
-    dropdownContent: ProjectsContent,
-    id: 'projects',
-    onClick: (...args: any[]) => {
+    }}
+    text="Home"
+  />,
+  <NavigationButton
+    dropdownContent={ProjectsContent}
+    onClick={(...args: any[]) => {
       console.log('Projects click', ...args);
-    },
-    text: 'Projects',
-  },
-  {
-    dropdownContent: IssuesContent,
-    id: 'issues',
-    onClick: (...args: any[]) => {
+    }}
+    text="Projects"
+  />,
+  <NavigationButton
+    dropdownContent={IssuesContent}
+    onClick={(...args: any[]) => {
       console.log('Issues click', ...args);
-    },
-    text: 'Issues & Filters',
-  },
-  {
-    dropdownContent: DashboardsContent,
-    id: 'dashboards',
-    onClick: (...args: any[]) => {
+    }}
+    text="Issues & Filters"
+  />,
+  <NavigationButton
+    dropdownContent={DashboardsContent}
+    onClick={(...args: any[]) => {
       console.log('Dashboards click', ...args);
-    },
-    text: 'Dashboards',
-  },
+    }}
+    text="Dashboards"
+  />,
 ];
 
 export const opsGeniePrimaryItems = [
-  {
-    id: 'alerts',
-    href: '#',
-    onClick: (...args: any[]) => {
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Alerts click', ...args);
-    },
-    text: 'Alerts',
-  },
-  {
-    id: 'incidents',
-    href: '#',
-    onClick: (...args: any[]) => {
+    }}
+    text="Alerts"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Incidents click', ...args);
-    },
-    text: 'Incidents',
-  },
-  {
-    id: 'oncall',
-    onClick: (...args: any[]) => {
+    }}
+    text="Incidents"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Who is on-call click', ...args);
-    },
-    text: 'Who is on-call',
-  },
-  {
-    id: 'teams',
-    onClick: (...args: any[]) => {
+    }}
+    text="Who is on-call"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Teams click', ...args);
-    },
-    text: 'Teams',
-  },
-  {
-    id: 'services',
-    onClick: (...args: any[]) => {
+    }}
+    text="Teams"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Services click', ...args);
-    },
-    text: 'Services',
-  },
-  {
-    id: 'analytics',
-    onClick: (...args: any[]) => {
+    }}
+    text="Services"
+  />,
+  <NavigationButton
+    onClick={(...args: any[]) => {
       console.log('Analytics click', ...args);
-    },
-    text: 'Analytics',
-  },
+    }}
+    text="Analytics"
+  />,
 ];
 
 export const defaultPrimaryItems = jiraPrimaryItems;

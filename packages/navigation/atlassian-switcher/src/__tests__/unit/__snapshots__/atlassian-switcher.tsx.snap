@@ -12,6 +12,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "disableRecentContainers": false,
             "enableUserCentricProducts": false,
             "isDiscoverMoreForEveryoneEnabled": false,
+            "isEmceeLinkEnabled": false,
             "productTopItemVariation": undefined,
             "xflow": true,
           },
@@ -30,6 +31,11 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "defaultMessage": "Administration",
             "description": "The text of a link redirecting the user to the site administration",
             "id": "fabric.atlassianSwitcher.administration",
+          },
+          "browseApps": Object {
+            "defaultMessage": "Browse apps",
+            "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product",
+            "id": "fabric.atlassianSwitcher.browseApps",
           },
           "confluenceSpace": Object {
             "defaultMessage": "Confluence space",
@@ -128,6 +134,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "disableRecentContainers": false,
             "enableUserCentricProducts": false,
             "isDiscoverMoreForEveryoneEnabled": false,
+            "isEmceeLinkEnabled": false,
             "productTopItemVariation": undefined,
             "xflow": true,
           }
@@ -138,6 +145,11 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "defaultMessage": "Administration",
               "description": "The text of a link redirecting the user to the site administration",
               "id": "fabric.atlassianSwitcher.administration",
+            },
+            "browseApps": Object {
+              "defaultMessage": "Browse apps",
+              "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product",
+              "id": "fabric.atlassianSwitcher.browseApps",
             },
             "confluenceSpace": Object {
               "defaultMessage": "Confluence space",

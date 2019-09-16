@@ -24,6 +24,7 @@ export const SearchFieldBaseOuter = styled.div`
 
 export const SearchFieldBaseInner = styled.div`
   position: relative;
+  align-items: center;
   padding-right: ${inputRightPadding}px; /* pad search text from FieldBase's isLoading spinner */
   display: flex;
   flex-grow: 1;

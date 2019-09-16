@@ -1,5 +1,6 @@
 import * as React from 'react';
-import FieldBase from '@atlaskit/field-base';
+import Spinner from '@atlaskit/spinner';
+import styled from 'styled-components';
 import {
   SearchBox,
   SearchFieldBaseInner,
@@ -17,6 +18,12 @@ export const controlKeys = [
   'Tab',
   'ArrowRight',
 ];
+
+const SpinnerParent = styled.div`
+  height: 20px;
+  margin-left: 10px;
+  margin-top: 10px;
+`;
 
 type Props = {
   /** The elements to render as options to search from. */
@@ -86,36 +93,34 @@ export default class Search extends React.PureComponent<Props> {
       <SearchInner>
         <SearchBox>
           <SearchFieldBaseOuter>
-            <FieldBase
-              appearance="none"
-              isFitContainerWidthEnabled
-              isPaddingDisabled
-              isLoading={isLoading}
-            >
-              <SearchFieldBaseInner>
-                {autocomplete && (
-                  <SearchInputTypeAhead
-                    spellCheck={false}
-                    type="text"
-                    value={`${autocomplete}`}
-                    readOnly
-                    tabIndex={-1}
-                  />
-                )}
-                <SearchInput
-                  autoFocus
-                  innerRef={this.setInputRef}
-                  onBlur={onBlur}
-                  onInput={onInput}
-                  placeholder={placeholder}
+            <SearchFieldBaseInner>
+              {autocomplete && (
+                <SearchInputTypeAhead
                   spellCheck={false}
                   type="text"
-                  value={value}
-                  onChange={() => {}} // Suppresses the console warning, we handle onChange by using onKeyDown instead.
-                  onKeyDown={this.onInputKeyDown}
+                  value={`${autocomplete}`}
+                  readOnly
+                  tabIndex={-1}
                 />
-              </SearchFieldBaseInner>
-            </FieldBase>
+              )}
+              <SearchInput
+                autoFocus
+                innerRef={this.setInputRef}
+                onBlur={onBlur}
+                onInput={onInput}
+                placeholder={placeholder}
+                spellCheck={false}
+                type="text"
+                value={value}
+                onChange={() => {}} // Suppresses the console warning, we handle onChange by using onKeyDown instead.
+                onKeyDown={this.onInputKeyDown}
+              />
+              {isLoading && (
+                <SpinnerParent>
+                  <Spinner size="small" />
+                </SpinnerParent>
+              )}
+            </SearchFieldBaseInner>
           </SearchFieldBaseOuter>
           {this.renderInputControls()}
         </SearchBox>

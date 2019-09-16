@@ -12,6 +12,7 @@ import {
   OpsGenieIcon,
   StrideIcon,
   StatuspageIcon,
+  TrelloIcon,
 } from '../src';
 
 const logoOptions = [
@@ -24,6 +25,7 @@ const logoOptions = [
   OpsGenieIcon,
   StrideIcon,
   StatuspageIcon,
+  TrelloIcon,
 ];
 
 const iconVariants = [

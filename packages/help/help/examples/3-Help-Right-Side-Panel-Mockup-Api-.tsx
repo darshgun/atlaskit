@@ -10,7 +10,7 @@ import {
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 import { getArticle, searchArticle } from './utils/mockData';
-import { ButtonsWrapper } from './utils/styled';
+import { ButtonsWrapper, FooterContent } from './utils/styled';
 
 import Help, { ArticleFeedback } from '../src';
 
@@ -40,12 +40,6 @@ export default class extends React.Component {
   };
 
   openDrawer = async (articleId: string = '') => {
-    if (articleId === this.state.articleId) {
-      await this.setState({
-        articleId: '',
-      });
-    }
-
     await this.setState({
       isOpen: true,
       articleId,
@@ -91,6 +85,12 @@ export default class extends React.Component {
     );
   };
 
+  articleIdSetter = (id: string): void => {
+    this.setState({
+      articleId: id,
+    });
+  };
+
   render() {
     const { isOpen, articleId } = this.state;
     return (
@@ -124,6 +124,7 @@ export default class extends React.Component {
               <RightSidePanel isOpen={isOpen} attachPanelTo="helpExample">
                 <LocaleIntlProvider locale={'en'}>
                   <Help
+                    articleIdSetter={this.articleIdSetter}
                     onButtonCloseClick={this.closeDrawer}
                     onWasHelpfulSubmit={this.onWasHelpfulSubmit}
                     articleId={articleId}
@@ -134,7 +135,14 @@ export default class extends React.Component {
                     onWasHelpfulNoButtonClick={
                       this.articleWasHelpfulNoButtonClick
                     }
-                  />
+                    footer={
+                      <FooterContent>
+                        <span>Footer</span>
+                      </FooterContent>
+                    }
+                  >
+                    Default Content
+                  </Help>
                 </LocaleIntlProvider>
               </RightSidePanel>
             </Page>

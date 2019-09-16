@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/user-picker",
-  "version": "4.0.23",
+  "version": "4.1.0",
   "config": {
     "access": "public"
   },
@@ -50,7 +50,7 @@
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/elements-test-helpers": "^0.6.4",
     "@atlaskit/i18n-tools": "^0.5.2",
-    "@atlaskit/util-data-test": "^12.9.6",
+    "@atlaskit/util-data-test": "^12.10.0",
     "@types/lodash.debounce": "^4.0.4",
     "@types/uuid": "^3.4.4",
     "enzyme": "^3.7.0",

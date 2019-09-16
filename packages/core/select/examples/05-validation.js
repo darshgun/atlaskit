@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Fragment } from 'react';
-import Form, { Field, ErrorMessage } from '@atlaskit/form';
+import Form, { Field, ErrorMessage, HelperMessage } from '@atlaskit/form';
 import { cities } from './common/data';
 import Select from '../src';
 
@@ -29,7 +29,7 @@ const ValidationExample = () => (
   <Form onSubmit={data => console.log(data)}>
     {({ formProps }) => (
       <form {...formProps}>
-        <Field label="Failed Select" name="fail-city" validate={validate}>
+        <Field label="City" name="fail-city" validate={validate}>
           {({ fieldProps, error, meta: { valid } }) => (
             <Fragment>
               <Select
@@ -38,13 +38,17 @@ const ValidationExample = () => (
                 placeholder="Choose a City"
                 validationState={getValidationState(error, valid)}
               />
+              <HelperMessage>
+                Trigger a validation error by focusing on this field and
+                pressing tab.
+              </HelperMessage>
               {error === 'EMPTY' && <ErrorMessage>{errorMsg}</ErrorMessage>}
             </Fragment>
           )}
         </Field>
         <hr style={{ border: 0, margin: '1em 0' }} />
         <Field
-          label="Successful Select"
+          label="City"
           helperText="This select is successful"
           id="success"
           name="success-city"

@@ -6,12 +6,12 @@ import { ThemeProvider, defaultTheme } from '../../theme';
 
 import { CreateSkeleton } from '../Create/skeleton';
 import { IconButtonSkeleton } from '../IconButton/skeleton';
-import { PrimaryButtonSkeleton } from '../PrimaryButton/skeleton';
+import { PrimaryItemsContainerSkeleton } from '../PrimaryItemsContainer/skeleton';
 import { ProductHomeSkeleton } from '../ProductHome/skeleton';
 import { ProfileSkeleton } from '../Profile/skeleton';
 import { SearchSkeleton } from '../Search/skeleton';
 
-import { styles } from './styles';
+import { containerCSS, leftCSS, rightCSS } from './styles';
 import { AppNavigationSkeletonProps } from './types';
 
 export const AppNavigationSkeleton = ({
@@ -20,23 +20,21 @@ export const AppNavigationSkeleton = ({
   theme = defaultTheme,
 }: AppNavigationSkeletonProps) => {
   return (
-    <ThemeProvider theme={theme}>
-      <div css={styles.outer}>
-        <div css={styles.left}>
+    <ThemeProvider value={theme}>
+      <div css={containerCSS(theme)}>
+        <div css={leftCSS}>
           <ProductHomeSkeleton />
-          {Array.from({ length: primaryItemsCount }, (_, index) => (
-            <PrimaryButtonSkeleton key={index} />
-          ))}
+          <PrimaryItemsContainerSkeleton count={primaryItemsCount} />
         </div>
-        <div css={styles.right}>
+        <div css={rightCSS}>
           <CreateSkeleton />
           <SearchSkeleton />
           {Array.from({ length: secondaryItemsCount }, (_, index) => (
             <IconButtonSkeleton
               key={index}
-              dimension={gridSize() * 3.25}
               marginLeft={0}
               marginRight={5}
+              size={gridSize() * 3.25}
             />
           ))}
           <ProfileSkeleton />

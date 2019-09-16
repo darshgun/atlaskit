@@ -1,5 +1,29 @@
 # @atlaskit/media-card
 
+## 65.1.1
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
+## 65.1.0
+
+### Minor Changes
+
+- [minor][b95f6ba701](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b95f6ba701):
+
+  Added Analytics events for Media Card Action, Dropdown Menu and Retry buttons
+
+## 65.0.1
+
+### Patch Changes
+
+- [patch][8e2cb88526](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e2cb88526):
+
+  Adding Error boundary in Media Card
+
 ## 65.0.0
 
 ### Major Changes

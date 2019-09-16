@@ -10,6 +10,7 @@ import { JiraEntityTypes } from '../SearchResultsUtil';
 export interface Props {
   query: string;
   onAdvancedSearch?: (e: CancelableEvent, entity: JiraEntityTypes) => void;
+  isJiraPeopleProfilesEnabled?: boolean;
 }
 
 const Container = styled.div`
@@ -20,7 +21,7 @@ const Container = styled.div`
 
 export default class NoResultsState extends React.Component<Props> {
   render() {
-    const { query, onAdvancedSearch } = this.props;
+    const { query, onAdvancedSearch, isJiraPeopleProfilesEnabled } = this.props;
 
     return (
       <>
@@ -35,6 +36,7 @@ export default class NoResultsState extends React.Component<Props> {
               query={query}
               analyticsData={{ resultsCount: 0, wasOnNoResultsScreen: true }}
               onClick={onAdvancedSearch}
+              isJiraPeopleProfilesEnabled={isJiraPeopleProfilesEnabled}
             />
           </Container>
         </ResultItemGroup>

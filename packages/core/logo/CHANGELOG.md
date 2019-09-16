@@ -1,5 +1,13 @@
 # @atlaskit/logo
 
+## 12.2.0
+
+### Minor Changes
+
+- [minor][9e3b4ffeb1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e3b4ffeb1):
+
+  Add Trello logo
+
 ## 12.1.8
 
 ### Patch Changes
