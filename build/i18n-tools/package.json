@@ -23,6 +23,6 @@
     "mkdirp": "^0.5.1",
     "prettier": "^1.14.3",
     "transifex": "^1.5.0",
-    "@atlassian/traduki-lite": "^1.0.0"
+    "@atlassian/traduki-lite": "^1.0.1"
   }
 }

@@ -5,6 +5,7 @@ const { msg2pot } = require('babel-plugin-react-intl-pot');
 
 const { extractMessagesFromFile, isTypeScript } = require('../utils');
 const { pushTranslations } = require('../utils/transifex');
+const smartling = require('@atlassian/traduki-lite');
 
 const getExtensions = type => (isTypeScript(type) ? '.ts{,x}' : '.js{,x}');
 
@@ -86,7 +87,6 @@ function pushCommand(options) {
       skip: () => dry,
       task: async context => {
         try {
-          const smartling = require('@atlassian/traduki-lite');
           context.smartlingData = await smartling.pushSource(
             project,
             resource,
@@ -94,7 +94,6 @@ function pushCommand(options) {
           );
         } catch (e) {
           //For now don't let this kill the build
-          console.log(`Could not push due to Smartling, ${e}`);
           context.smartlingData = {
             error: e,
           };
