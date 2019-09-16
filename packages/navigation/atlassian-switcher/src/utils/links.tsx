@@ -15,6 +15,7 @@ import {
   JiraCoreIcon,
   OpsGenieIcon,
   StatuspageIcon,
+  TrelloIcon,
 } from '@atlaskit/logo';
 import FormattedMessage from '../primitives/formatted-message';
 import {
@@ -188,7 +189,7 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
   },
   [WorklensProductType.TRELLO]: {
     label: 'Trello',
-    Icon: createIcon(StatuspageIcon, { size: 'small' }),
+    Icon: createIcon(TrelloIcon, { size: 'small' }),
     href: 'https://trello.com',
   },
 };

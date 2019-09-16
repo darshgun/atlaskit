@@ -15,6 +15,14 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
+"@atlaskit/logo@^12.2.0":
+  version "12.2.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/logo/-/logo-12.2.0.tgz#113dcf6eec9b100f0c571d1f100c58aaaa9a00f5"
+  integrity sha512-PmqEUh0oTZtHRv24gYfj2j0aafi8bwvUxITE//SbguCyqzg66hwkEUGfbUUmokXo8pv5yNUKIX1EvAapxtAS8Q==
+  dependencies:
+    react-uid "^2.2.0"
+    tslib "^1.9.3"
+
 "@atlaskit/util-common-test@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-common-test/-/util-common-test-2.4.2.tgz#d564fdb9969fff819402d94dc58fee5e9570731c"
