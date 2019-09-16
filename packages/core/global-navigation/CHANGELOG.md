@@ -1,5 +1,13 @@
 # @atlaskit/global-navigation
 
+## 8.0.0
+
+### Major Changes
+
+- [major][f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
+
+  Major breaking change. atlassian-switcher has been unbundled from global-nav. Users of global-nav will have to explicitly pass their own rendering of atlassian-switcher into global-nav via appSwitcherComponent props
+
 ## 7.7.1
 
 - Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):

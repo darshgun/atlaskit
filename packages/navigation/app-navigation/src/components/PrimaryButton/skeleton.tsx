@@ -1,14 +1,11 @@
-import { gridSize } from '@atlaskit/theme/constants';
-import { skeletonStyles } from '../../common/styles';
-import { styled } from '../../theme';
-import { buttonHeight, margin, padding } from './styles';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import { useTheme } from '../../theme';
+import { primaryButtonSkeletonCSS } from './styles';
+import { PrimaryButtonSkeletonProps } from './types';
 
-export const PrimaryButtonSkeleton = styled.div`
-  display: inline-flex;
-  width: 68px;
-  height: ${buttonHeight - padding.all * 2.5}px;
-  border-radius: ${gridSize() / 2}px;
-  margin-left: ${margin.left + padding.all * 2}px;
-  margin-right: 12px;
-  ${({ theme }) => skeletonStyles(theme)};
-`;
+export const PrimaryButtonSkeleton = (props: PrimaryButtonSkeletonProps) => {
+  const theme = useTheme();
+
+  return <div {...props} css={primaryButtonSkeletonCSS(theme)} />;
+};

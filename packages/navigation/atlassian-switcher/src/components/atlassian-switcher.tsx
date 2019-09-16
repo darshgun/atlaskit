@@ -1,12 +1,6 @@
 import * as React from 'react';
 import ErrorBoundary from './error-boundary';
-import {
-  TriggerXFlowCallback,
-  DiscoverMoreCallback,
-  FeatureFlagProps,
-  Product,
-  RecommendationsFeatureFlags,
-} from '../types';
+import { Product, AtlassianSwitcherProps } from '../types';
 import IntlProvider from './intl-provider';
 import messages from '../utils/messages';
 import {
@@ -17,21 +11,12 @@ import {
 } from '../utils/analytics';
 import packageContext from '../utils/package-context';
 import mapPropsToFeatures from '../utils/map-props-to-features';
-import { WithTheme } from '../theme/types';
 
 import {
   JiraSwitcherLoader,
   ConfluenceSwitcherLoader,
   GenericSwitcherLoader,
-} from '../loaders';
-
-type AtlassianSwitcherProps = WithTheme & {
-  product: string;
-  cloudId?: string;
-  triggerXFlow?: TriggerXFlowCallback;
-  onDiscoverMoreClicked?: DiscoverMoreCallback;
-  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
-} & Partial<FeatureFlagProps>;
+} from './loaders';
 
 const getAnalyticsContext = (attributes: object) => ({
   source: SWITCHER_SOURCE,

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/app-navigation",
-  "version": "0.2.1",
+  "version": "0.3.2",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@atlaskit/analytics-namespaced-context": "^4.1.0",
+    "@atlaskit/analytics-next": "^6.2.0",
     "@atlaskit/avatar": "^17.0.0",
     "@atlaskit/badge": "^13.0.0",
     "@atlaskit/button": "^13.0.2",
@@ -34,7 +35,7 @@
     "@emotion/css": "^10.0.14",
     "@emotion/styled": "^10.0.7",
     "chromatism": "^2.6.0",
-    "emotion-theming": "^10.0.7",
+    "lodash.throttle": "^4.1.1",
     "url-parse": "^1.4.3"
   },
   "devDependencies": {

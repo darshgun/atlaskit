@@ -83,6 +83,10 @@
         "../../core/analytics-next/src/AnalyticsListener",
         "./packages/core/analytics-next/src/AnalyticsListener"
       ],
+      "@atlaskit/analytics-next/AnalyticsReactContext": [
+        "../../core/analytics-next/src/AnalyticsReactContext",
+        "./packages/core/analytics-next/src/AnalyticsReactContext"
+      ],
       "@atlaskit/analytics-next/cleanProps": [
         "../../core/analytics-next/src/cleanProps",
         "./packages/core/analytics-next/src/cleanProps"
@@ -103,6 +107,14 @@
         "../../core/analytics-next/src/UIAnalyticsEvent",
         "./packages/core/analytics-next/src/UIAnalyticsEvent"
       ],
+      "@atlaskit/analytics-next/useAnalyticsEvents": [
+        "../../core/analytics-next/src/useAnalyticsEvents",
+        "./packages/core/analytics-next/src/useAnalyticsEvents"
+      ],
+      "@atlaskit/analytics-next/usePatchedProps": [
+        "../../core/analytics-next/src/usePatchedProps",
+        "./packages/core/analytics-next/src/usePatchedProps"
+      ],
       "@atlaskit/analytics-next/withAnalyticsContext": [
         "../../core/analytics-next/src/withAnalyticsContext",
         "./packages/core/analytics-next/src/withAnalyticsContext"
@@ -110,6 +122,10 @@
       "@atlaskit/analytics-next/withAnalyticsEvents": [
         "../../core/analytics-next/src/withAnalyticsEvents",
         "./packages/core/analytics-next/src/withAnalyticsEvents"
+      ],
+      "@atlaskit/analytics-next/withAnalyticsHook": [
+        "../../core/analytics-next/src/withAnalyticsHook",
+        "./packages/core/analytics-next/src/withAnalyticsHook"
       ],
       "@atlaskit/avatar": [
         "../../core/avatar/src/",
@@ -646,6 +662,26 @@
       "@atlaskit/popper/types": [
         "../../core/popper/src/types",
         "./packages/core/popper/src/types"
+      ],
+      "@atlaskit/popup": [
+        "../../core/popup/src/",
+        "./packages/core/popup/src/"
+      ],
+      "@atlaskit/popup/Popup": [
+        "../../core/popup/src/Popup",
+        "./packages/core/popup/src/Popup"
+      ],
+      "@atlaskit/popup/styled": [
+        "../../core/popup/src/styled",
+        "./packages/core/popup/src/styled"
+      ],
+      "@atlaskit/popup/types": [
+        "../../core/popup/src/types",
+        "./packages/core/popup/src/types"
+      ],
+      "@atlaskit/popup/useFocusManager": [
+        "../../core/popup/src/useFocusManager",
+        "./packages/core/popup/src/useFocusManager"
       ],
       "@atlaskit/portal": [
         "../../core/portal/src/",
@@ -1711,6 +1747,18 @@
         "../../help/help-article/src/",
         "./packages/help/help-article/src/"
       ],
+      "@atlaskit/locale": [
+        "../../helpers/locale/src/",
+        "./packages/helpers/locale/src/"
+      ],
+      "@atlaskit/locale/LocaleSelect": [
+        "../../helpers/locale/src/LocaleSelect",
+        "./packages/helpers/locale/src/LocaleSelect"
+      ],
+      "@atlaskit/motion": [
+        "../../helpers/motion/src/",
+        "./packages/helpers/motion/src/"
+      ],
       "@atlaskit/notification-indicator": [
         "../../home/notification-indicator/src/",
         "./packages/home/notification-indicator/src/"
@@ -2035,6 +2083,10 @@
         "../../media/smart-card/src/",
         "./packages/media/smart-card/src/"
       ],
+      "@atlaskit/branch-deploy-product-integrator": [
+        "../../monorepo-tooling/branch-deploy-product-integrator/src/",
+        "./packages/monorepo-tooling/branch-deploy-product-integrator/src/"
+      ],
       "@atlaskit/code-insights": [
         "../../monorepo-tooling/code-insights/src/",
         "./packages/monorepo-tooling/code-insights/src/"
@@ -2055,13 +2107,25 @@
         "../../monorepo-tooling/dependency-version-analytics/src/types",
         "./packages/monorepo-tooling/dependency-version-analytics/src/types"
       ],
+      "@atlaskit/app-navigation": [
+        "../../navigation/app-navigation/src/",
+        "./packages/navigation/app-navigation/src/"
+      ],
       "@atlaskit/atlassian-switcher": [
         "../../navigation/atlassian-switcher/src/",
         "./packages/navigation/atlassian-switcher/src/"
       ],
+      "@atlaskit/atlassian-switcher/prefetch": [
+        "../../navigation/atlassian-switcher/src/prefetch",
+        "./packages/navigation/atlassian-switcher/src/prefetch"
+      ],
       "@atlaskit/atlassian-switcher/types": [
         "../../navigation/atlassian-switcher/src/types",
         "./packages/navigation/atlassian-switcher/src/types"
+      ],
+      "@atlaskit/atlassian-switcher-vanilla": [
+        "../../navigation/atlassian-switcher-vanilla/src/",
+        "./packages/navigation/atlassian-switcher-vanilla/src/"
       ],
       "@atlaskit/focused-task-close-account": [
         "../../people-and-teams/focused-task-close-account/src/",

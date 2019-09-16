@@ -1,5 +1,21 @@
 # @atlaskit/smart-card
 
+## 12.5.5
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
+## 12.5.4
+
+### Patch Changes
+
+- [patch][b8fd0f0847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8fd0f0847):
+
+  hot-88372: fix css props breaking in layoutNG.
+
 ## 12.5.3
 
 ### Patch Changes

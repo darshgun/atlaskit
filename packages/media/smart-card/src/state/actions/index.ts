@@ -89,16 +89,17 @@ export function useSmartCardActions(
          */
         return connections.client.fetchData(resourceUrl).then(
           response => {
+            isCompleted = true;
             handleResolvedLinkResponse(resourceUrl, response);
           },
           error => {
+            isCompleted = true;
             handleResolvedLinkError(resourceUrl, error);
           },
         );
       } catch (error) {
-        handleResolvedLinkError(resourceUrl, error);
-      } finally {
         isCompleted = true;
+        handleResolvedLinkError(resourceUrl, error);
       }
     } else {
       dispatchAnalytics(resolvedEvent(definitionId));

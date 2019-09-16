@@ -2,8 +2,8 @@ import {
   getExampleUrl,
   takeScreenShot,
 } from '@atlaskit/visual-regression/helper';
-
-describe('Snapshot Test', () => {
+// TODO: https://product-fabric.atlassian.net/browse/FS-4265
+describe.skip('Snapshot Test', () => {
   let page: any;
   const url = getExampleUrl(
     'elements',
