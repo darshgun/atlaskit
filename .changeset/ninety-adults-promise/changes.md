@@ -1,0 +1,1 @@
+Added props onOpenAnimationFinished and onCloseAnimationFinished to execute function once the open/close animation finished
