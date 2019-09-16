@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { withNavigationViewController } from '../../src';
 
+import { DummySkeletonContent } from './components/DummySkeletonContent';
 import ShortcutsPlugin from './shortcuts-plugin';
 
 class SetActiveViewBase extends Component<{
@@ -34,6 +35,7 @@ export const DashboardsView = () => (
     <SetActiveView id="root/index" />
     <h1>Dashboards</h1>
     <p>Hello here are your dashboards.</p>
+    <DummySkeletonContent />
   </Fragment>
 );
 

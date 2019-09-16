@@ -28,6 +28,7 @@ export const HorizontalNavigationContainer = ({
     css={{
       position: 'fixed',
       top: topOffset,
+      width: '100%',
       zIndex: layers.navigation() + 1,
     }}
   >
