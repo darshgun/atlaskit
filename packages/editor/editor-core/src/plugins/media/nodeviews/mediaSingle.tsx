@@ -101,15 +101,9 @@ export default class MediaSingleNode extends Component<
     }
 
     if (node.attrs.type === 'external') {
-      // if possible, we try to copy the image using the encoded metadata, otherwise we upload the external reference
       if (mediaNodeUpdater.isMediaBlobUrl()) {
-        try {
-          await mediaNodeUpdater.copyNodeFromBlobUrl(this.props.getPos());
-        } catch (e) {
-          await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
-        }
-      } else {
-        await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+        // we try to copy the image using the encoded metadata, otherwise we keep it as external
+        await mediaNodeUpdater.copyNodeFromBlobUrl(this.props.getPos());
       }
       return;
     }
