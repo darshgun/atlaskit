@@ -3,6 +3,10 @@
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
+import {
+  createLocalizationProvider,
+  type LocalizationProvider,
+} from '@atlaskit/locale';
 import { borderRadius, layers } from '@atlaskit/theme/constants';
 import { N20, B100 } from '@atlaskit/theme/colors';
 import { e200 } from '@atlaskit/theme/elevation';
@@ -21,7 +25,12 @@ import {
   version as packageVersion,
 } from '../version.json';
 
-import { ClearIndicator, defaultDateFormat, padToTwo } from '../internal';
+import {
+  ClearIndicator,
+  defaultDateFormat,
+  padToTwo,
+  placeholderDatetime,
+} from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -52,14 +61,14 @@ type Props = {
   name: string,
   /** Called when the field is blurred. */
   onBlur: (e: SyntheticFocusEvent<>) => void,
-  /** Called when the value changes. The only argument is an ISO time. */
+  /** Called when the value changes. The only argument is an ISO time or empty string. */
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
-  /* A function for parsing input characters and transforming them into a Date object. By default uses [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) */
-  parseInputValue: (date: string, dateFormat: string) => Date,
-  /* A function for formatting the date displayed in the input. By default composes together [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) and [date-fn's format method](https://date-fns.org/v1.29.0/docs/format) to return a correctly formatted date string*/
-  formatDisplayLabel: (value: string, dateFormat: string) => string,
+  /** A function for parsing input characters and transforming them into a Date object. By default parses the date string based off the locale */
+  parseInputValue?: (date: string, dateFormat: string) => Date,
+  /** DEPRECATED - Use locale instead. A function for formatting the date displayed in the input. By default composes together [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) and [date-fn's format method](https://date-fns.org/v1.29.0/docs/format) to return a correctly formatted date string*/
+  formatDisplayLabel?: (value: string, dateFormat: string) => string,
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
@@ -71,10 +80,12 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
-  /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
-  dateFormat: string,
+  /** DEPRECATED - Use locale instead. Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
+  dateFormat?: string,
   /** Placeholder text displayed in input */
   placeholder?: string,
+  /** Locale used to format the the date and calendar. See [DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) */
+  locale: string,
 };
 
 type State = {
@@ -84,6 +95,7 @@ type State = {
   selectedValue: string,
   view: string,
   inputValue: string,
+  l10n: LocalizationProvider,
 };
 
 function getDateObj(date: Date) {
@@ -122,6 +134,7 @@ const Menu = ({ selectProps, innerProps }: Object) => (
           ref={selectProps.calendarRef}
           selected={[selectProps.calendarValue]}
           innerProps={innerProps}
+          locale={selectProps.calendarLocale}
         />
       </StyledMenu>
     }
@@ -136,12 +149,9 @@ class DatePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
-    dateFormat: defaultDateFormat,
     defaultIsOpen: false,
     defaultValue: '',
     disabled: [],
-    formatDisplayLabel: (value: string, dateFormat: string): string =>
-      format(parse(value), dateFormat),
     hideIcon: false,
     icon: CalendarIcon,
     id: '',
@@ -152,10 +162,9 @@ class DatePicker extends Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    parseInputValue: parse,
-    placeholder: 'e.g. 2018/01/01',
     selectProps: {},
     spacing: 'default',
+    locale: 'en-US',
   };
 
   constructor(props: any) {
@@ -172,7 +181,16 @@ class DatePicker extends Component<Props, State> {
         this.props.value ||
         this.props.defaultValue ||
         `${year}-${padToTwo(month)}-${padToTwo(day)}`,
+      l10n: createLocalizationProvider(this.props.locale),
     };
+  }
+
+  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+    if (this.props.locale !== nextProps.locale) {
+      this.setState({
+        l10n: createLocalizationProvider(nextProps.locale),
+      });
+    }
   }
 
   // All state needs to be accessed via this function so that the state is mapped from props
@@ -251,10 +269,9 @@ class DatePicker extends Component<Props, State> {
 
   onSelectInput = (e: SyntheticInputEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const { dateFormat, parseInputValue } = this.props;
 
     if (value) {
-      const parsed = parseInputValue(value, dateFormat);
+      const parsed = this.parseDate(value);
       // Only try to set the date if we have month & day
       if (isValid(parsed)) {
         // We format the parsed date to YYYY-MM-DD here because
@@ -271,7 +288,6 @@ class DatePicker extends Component<Props, State> {
     const { view, selectedValue } = this.getState();
 
     const keyPressed = key.toLowerCase();
-
     switch (keyPressed) {
       case 'arrowup':
       case 'arrowdown':
@@ -293,6 +309,7 @@ class DatePicker extends Component<Props, State> {
         this.setState({ isOpen: false });
         break;
       case 'backspace':
+      case 'delete':
         if (
           selectedValue &&
           target instanceof HTMLInputElement &&
@@ -349,13 +366,62 @@ class DatePicker extends Component<Props, State> {
     padding: '1px',
   });
 
+  /**
+   * There are two props that can change how the date is parsed.
+   * The priority of props used is:
+   *   1. parseInputValue
+   *   2. locale
+   */
+  parseDate = (date: string): Date | null => {
+    const { parseInputValue, dateFormat } = this.props;
+
+    if (parseInputValue) {
+      return parseInputValue(date, dateFormat || defaultDateFormat);
+    }
+
+    const { l10n } = this.getState();
+
+    return l10n.parseDate(date);
+  };
+
+  /**
+   * There are multiple props that can change how the date is formatted.
+   * The priority of props used is:
+   *   1. formatDisplayLabel
+   *   2. dateFormat
+   *   3. locale
+   */
+  formatDate = (value: string): string => {
+    const { formatDisplayLabel, dateFormat } = this.props;
+    const { l10n } = this.getState();
+
+    if (formatDisplayLabel) {
+      return formatDisplayLabel(value, dateFormat || defaultDateFormat);
+    }
+
+    const date = parse(value);
+    if (dateFormat) {
+      return format(date, dateFormat);
+    }
+
+    return l10n.formatDate(date);
+  };
+
+  getPlaceholder = () => {
+    const { placeholder } = this.props;
+    if (placeholder) {
+      return placeholder;
+    }
+
+    const { l10n } = this.getState();
+    return l10n.formatDate(placeholderDatetime);
+  };
+
   render() {
     const {
       appearance,
       autoFocus,
-      dateFormat,
       disabled,
-      formatDisplayLabel,
       hideIcon,
       icon,
       id,
@@ -363,9 +429,9 @@ class DatePicker extends Component<Props, State> {
       isDisabled,
       isInvalid,
       name,
-      placeholder,
       selectProps,
       spacing,
+      locale,
     } = this.props;
     const { value, view, isOpen, inputValue } = this.getState();
     const dropDownIcon = appearance === 'subtle' || hideIcon ? null : icon;
@@ -382,6 +448,7 @@ class DatePicker extends Component<Props, State> {
       calendarView: view,
       onCalendarChange: this.onCalendarChange,
       onCalendarSelect: this.onCalendarSelect,
+      calendarLocale: locale,
     };
 
     return (
@@ -417,10 +484,10 @@ class DatePicker extends Component<Props, State> {
               ...disabledStyle,
             }),
           })}
-          placeholder={placeholder}
+          placeholder={this.getPlaceholder()}
           value={
             value && {
-              label: formatDisplayLabel(value, dateFormat),
+              label: this.formatDate(value),
               value,
             }
           }

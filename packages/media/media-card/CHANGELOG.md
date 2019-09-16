@@ -1,5 +1,13 @@
 # @atlaskit/media-card
 
+## 65.1.1
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
 ## 65.1.0
 
 ### Minor Changes

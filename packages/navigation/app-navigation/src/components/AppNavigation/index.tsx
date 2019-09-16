@@ -3,8 +3,8 @@ import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-conte
 import { jsx } from '@emotion/core';
 
 import { AppNavigationTheme, ThemeProvider, defaultTheme } from '../../theme';
-import { ThemedPrimaryButton } from '../PrimaryButton';
 import { containerCSS, leftCSS, rightCSS } from './styles';
+import { PrimaryItemsContainer } from '../PrimaryItemsContainer';
 import { AppNavigationProps } from './types';
 
 const analyticsData = {
@@ -25,18 +25,17 @@ export const AppNavigation = (
     renderNotifications: Notifications,
     renderSearch: Search,
     renderSettings: Settings,
+    moreLabel,
     theme,
   } = props;
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider value={theme}>
       <NavigationAnalyticsContext data={analyticsData}>
-        <div css={containerCSS}>
+        <div css={containerCSS(theme)}>
           <div css={leftCSS}>
             {ProductHome && <ProductHome />}
-            {primaryItems.map(props => (
-              <ThemedPrimaryButton key={props.id} {...props} />
-            ))}
+            <PrimaryItemsContainer moreLabel={moreLabel} items={primaryItems} />
           </div>
           <div css={rightCSS}>
             {Create && <Create />}
@@ -55,5 +54,6 @@ export const AppNavigation = (
 
 AppNavigation.defaultProps = {
   primaryItems: [],
+  moreLabel: '…',
   theme: defaultTheme,
 };

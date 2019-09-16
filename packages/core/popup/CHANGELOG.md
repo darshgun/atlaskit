@@ -1,5 +1,13 @@
 # @atlaskit/popup
 
+## 0.1.1
+
+### Patch Changes
+
+- [patch][583a9873ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583a9873ef):
+
+  Provided better description for popup types
+
 ## 0.1.0
 
 ### Minor Changes

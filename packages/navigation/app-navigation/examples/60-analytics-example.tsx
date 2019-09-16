@@ -17,12 +17,12 @@ import { DefaultProductHome } from './shared/ProductHome';
 import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
-import { AppNavigation } from '../src';
+import { AppNavigation, PrimaryButton } from '../src';
 
 mockEndpoints('jira');
 mockBuiltInNotifications();
 
-const AuthenticatedExample = () => {
+const AnalyticsExample = () => {
   const { createAnalyticsEvent } = useAnalyticsEvents_experimental();
   const AnalyticsEventGenerator = (target: string, element?: string) =>
     createAnalyticsEvent({
@@ -35,7 +35,9 @@ const AuthenticatedExample = () => {
       <DropdownItemGroup>
         <DropdownItem
           onClick={() => {
-            AnalyticsEventGenerator('projects', 'Dropdown').fire('atlaskit');
+            AnalyticsEventGenerator('system_dashboard', 'Dropdown').fire(
+              'atlaskit',
+            );
           }}
         >
           System Dashboard
@@ -44,7 +46,9 @@ const AuthenticatedExample = () => {
       <DropdownItemGroup>
         <DropdownItem
           onClick={() => {
-            AnalyticsEventGenerator('projects', 'Dropdown').fire('atlaskit');
+            AnalyticsEventGenerator('view_all_dashboards', 'Dropdown').fire(
+              'atlaskit',
+            );
           }}
         >
           View all dashboards
@@ -54,46 +58,40 @@ const AuthenticatedExample = () => {
   );
 
   const PrimaryItems = [
-    {
-      id: 'home',
-      href: '#',
-      onClick: (...args: any[]) => {
+    <PrimaryButton
+      onClick={(...args: any[]) => {
         AnalyticsEventGenerator('home').fire('atlaskit');
-      },
-      text: 'Home',
-    },
-    {
-      id: 'projects',
-      href: '#',
-      onClick: (...args: any[]) => {
+      }}
+      text="Home"
+    />,
+    <PrimaryButton
+      onClick={(...args: any[]) => {
         AnalyticsEventGenerator('projects').fire('atlaskit');
-      },
-      text: 'Projects',
-    },
-    {
-      id: 'issues',
-      href: '#',
-      onClick: (...args: any[]) => {
+      }}
+      text="Projects"
+    />,
+    <PrimaryButton
+      onClick={(...args: any[]) => {
         const IssuesAnalyticsEvent = createAnalyticsEvent({
           action: 'click issues',
         });
         IssuesAnalyticsEvent.fire('atlaskit');
-      },
-      text: 'Issues & Filters',
-    },
-    {
-      dropdownContent: DashboardsContent,
-      id: 'dashboards',
-      onClick: (...args: any[]) => {
+      }}
+      text="Issues & Filters"
+    />,
+    <PrimaryButton
+      dropdownContent={DashboardsContent}
+      onClick={(...args: any[]) => {
         const DashboardAnalyticsEvent = createAnalyticsEvent({
           action: 'click dashboards',
         });
         DashboardAnalyticsEvent.fire('atlaskit');
         console.log('Dashboards click', ...args);
-      },
-      text: 'Dashboards',
-    },
+      }}
+      text="Dashboards"
+    />,
   ];
+
   return (
     <AnalyticsListener
       channel="atlaskit"
@@ -116,4 +114,4 @@ const AuthenticatedExample = () => {
   );
 };
 
-export default AuthenticatedExample;
+export default AnalyticsExample;

@@ -6,7 +6,7 @@ import { ThemeProvider, defaultTheme } from '../../theme';
 
 import { CreateSkeleton } from '../Create/skeleton';
 import { IconButtonSkeleton } from '../IconButton/skeleton';
-import { PrimaryButtonSkeleton } from '../PrimaryButton/skeleton';
+import { PrimaryItemsContainerSkeleton } from '../PrimaryItemsContainer/skeleton';
 import { ProductHomeSkeleton } from '../ProductHome/skeleton';
 import { ProfileSkeleton } from '../Profile/skeleton';
 import { SearchSkeleton } from '../Search/skeleton';
@@ -20,13 +20,11 @@ export const AppNavigationSkeleton = ({
   theme = defaultTheme,
 }: AppNavigationSkeletonProps) => {
   return (
-    <ThemeProvider theme={theme}>
-      <div css={containerCSS}>
+    <ThemeProvider value={theme}>
+      <div css={containerCSS(theme)}>
         <div css={leftCSS}>
           <ProductHomeSkeleton />
-          {Array.from({ length: primaryItemsCount }, (_, index) => (
-            <PrimaryButtonSkeleton key={index} />
-          ))}
+          <PrimaryItemsContainerSkeleton count={primaryItemsCount} />
         </div>
         <div css={rightCSS}>
           <CreateSkeleton />
