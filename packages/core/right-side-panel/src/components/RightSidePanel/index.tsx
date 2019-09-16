@@ -72,7 +72,7 @@ export class RightSidePanel extends Component<Props, State> {
     });
   }
 
-  renderDrawer = (Container: HTMLElement) => {
+  renderDrawer(Container: HTMLElement): ReactNode {
     const {
       children,
       isOpen,
@@ -105,7 +105,7 @@ export class RightSidePanel extends Component<Props, State> {
       </Transition>,
       Container,
     );
-  };
+  }
 
   render() {
     const { container } = this.state;
