@@ -8,7 +8,7 @@ interface President {
   id: number;
   nm: string;
   pp: string;
-  num: number;
+  num: number | string;
 }
 
 function createKey(input: string) {

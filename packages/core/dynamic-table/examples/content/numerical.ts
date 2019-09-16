@@ -1,4 +1,4 @@
-export const numericals = [
+export const presidents = [
   {
     id: 1,
     nm: 'George Washington',
