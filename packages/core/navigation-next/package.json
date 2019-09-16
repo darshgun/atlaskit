@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "6.7.2",
+  "version": "6.7.3",
   "description": "The Atlassian navigation component.",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^6.1.7",
-    "@atlaskit/app-navigation": "^0.3.1",
+    "@atlaskit/app-navigation": "^0.4.0",
     "@atlaskit/badge": "^13.0.0",
     "@atlaskit/banner": "^10.0.12",
     "@atlaskit/build-utils": "^2.2.5",

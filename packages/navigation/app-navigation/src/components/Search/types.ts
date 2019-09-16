@@ -1,6 +1,6 @@
-import { TriggerManagerProps } from '../TriggerManager/types';
+import { IconButtonProps } from '../IconButton/types';
 
-export type SearchProps = Omit<TriggerManagerProps, 'children'> & {
+export type SearchProps = Omit<IconButtonProps, 'icon'> & {
   text: string;
   tooltip: string;
 };

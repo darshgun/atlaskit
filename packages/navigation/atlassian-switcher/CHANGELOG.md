@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher
 
+## 3.30.0
+
+### Minor Changes
+
+- [minor][45cba7159a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45cba7159a):
+
+  Allow consumers to specify a custom provider for available products"
+
+## 3.29.0
+
+### Minor Changes
+
+- [minor][84c5898593](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84c5898593):
+
+  Add FE support for Trello and Statuspage
+
 ## 3.28.2
 
 ### Patch Changes

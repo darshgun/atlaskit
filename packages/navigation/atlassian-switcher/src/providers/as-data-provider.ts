@@ -84,7 +84,7 @@ export default function<P, D>(
     };
   };
 
-  const DataProvider = class extends React.Component<
+  class DataProvider extends React.Component<
     P & DataProviderProps<D> & WithAnalyticsEventsProps
   > {
     acceptResults = true;
@@ -161,7 +161,7 @@ export default function<P, D>(
       // @ts-ignore https://product-fabric.atlassian.net/browse/FIND-269 - Ignoring issue with children's return type
       return this.props.children(this.state);
     }
-  };
+  }
 
   return withAnalyticsEvents()(DataProvider);
 }

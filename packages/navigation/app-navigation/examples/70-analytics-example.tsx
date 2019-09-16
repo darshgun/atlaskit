@@ -1,26 +1,29 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   AnalyticsListener,
   AnalyticsContext,
   useAnalyticsEvents_experimental,
 } from '@atlaskit/analytics-next';
-import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import { DefaultAppSwitcher } from './shared/AppSwitcher';
 import { DefaultCreate } from './shared/Create';
 import { DefaultHelp } from './shared/Help';
-import { mockEndpoints } from './shared/mock-atlassian-switcher-endpoints';
-import {
-  mockBuiltInNotifications,
-  BuiltInNotifications,
-} from './shared/Notifications';
+import { DefaultNotifications } from './shared/Notifications';
 import { DefaultProductHome } from './shared/ProductHome';
 import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
-import { AppNavigation, PrimaryButton } from '../src';
+import { AppNavigation, PrimaryButton, PrimaryButtonProps } from '../src';
+import { useOverflowStatus } from '../src/controllers/overflow';
+import { DropdownItem } from '@atlaskit/dropdown-menu';
 
-mockEndpoints('jira');
-mockBuiltInNotifications();
+const NavigationButton = (props: PrimaryButtonProps) => {
+  const { isVisible } = useOverflowStatus();
+  if (isVisible) {
+    return <PrimaryButton {...props} />;
+  } else {
+    return <DropdownItem>{props.children}</DropdownItem>;
+  }
+};
 
 const AnalyticsExample = () => {
   const { createAnalyticsEvent } = useAnalyticsEvents_experimental();
@@ -30,57 +33,25 @@ const AnalyticsExample = () => {
       actionSubject: `Navigation ${target} ${element ? element : 'button'}`,
     });
 
-  const DashboardsContent = () => (
-    <Fragment>
-      <DropdownItemGroup>
-        <DropdownItem
-          onClick={() => {
-            AnalyticsEventGenerator('system_dashboard', 'Dropdown').fire(
-              'atlaskit',
-            );
-          }}
-        >
-          System Dashboard
-        </DropdownItem>
-      </DropdownItemGroup>
-      <DropdownItemGroup>
-        <DropdownItem
-          onClick={() => {
-            AnalyticsEventGenerator('view_all_dashboards', 'Dropdown').fire(
-              'atlaskit',
-            );
-          }}
-        >
-          View all dashboards
-        </DropdownItem>
-      </DropdownItemGroup>
-    </Fragment>
-  );
-
-  const PrimaryItems = [
-    <PrimaryButton
-      onClick={(...args: any[]) => {
-        AnalyticsEventGenerator('home').fire('atlaskit');
-      }}
-      text="Home"
-    />,
-    <PrimaryButton
+  const primaryItems = [
+    <NavigationButton
       onClick={(...args: any[]) => {
         AnalyticsEventGenerator('projects').fire('atlaskit');
       }}
-      text="Projects"
-    />,
-    <PrimaryButton
+    >
+      Projects
+    </NavigationButton>,
+    <NavigationButton
       onClick={(...args: any[]) => {
         const IssuesAnalyticsEvent = createAnalyticsEvent({
           action: 'click issues',
         });
         IssuesAnalyticsEvent.fire('atlaskit');
       }}
-      text="Issues & Filters"
-    />,
-    <PrimaryButton
-      dropdownContent={DashboardsContent}
+    >
+      Filters
+    </NavigationButton>,
+    <NavigationButton
       onClick={(...args: any[]) => {
         const DashboardAnalyticsEvent = createAnalyticsEvent({
           action: 'click dashboards',
@@ -88,8 +59,16 @@ const AnalyticsExample = () => {
         DashboardAnalyticsEvent.fire('atlaskit');
         console.log('Dashboards click', ...args);
       }}
-      text="Dashboards"
-    />,
+    >
+      Dashboards
+    </NavigationButton>,
+    <NavigationButton
+      onClick={(...args: any[]) => {
+        AnalyticsEventGenerator('apps').fire('atlaskit');
+      }}
+    >
+      Apps
+    </NavigationButton>,
   ];
 
   return (
@@ -99,11 +78,11 @@ const AnalyticsExample = () => {
     >
       <AnalyticsContext data={{ panel: 'app-navigation' }}>
         <AppNavigation
-          primaryItems={PrimaryItems}
+          primaryItems={primaryItems}
           renderAppSwitcher={DefaultAppSwitcher}
           renderCreate={DefaultCreate}
           renderHelp={DefaultHelp}
-          renderNotifications={BuiltInNotifications}
+          renderNotifications={DefaultNotifications}
           renderProductHome={DefaultProductHome}
           renderProfile={DefaultProfile}
           renderSearch={DefaultSearch}

@@ -1,5 +1,6 @@
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { WithTheme } from './theme/types';
+import { AvailableProductsDataProvider } from './providers/products-data-provider';
 
 export interface TriggerXFlowCallback {
   (
@@ -126,6 +127,7 @@ export enum WorklensProductType {
   OPSGENIE = 'OPSGENIE',
   BITBUCKET = 'BITBUCKET',
   STATUSPAGE = 'STATUSPAGE',
+  TRELLO = 'TRELLO',
 }
 
 export type AvailableProduct =
@@ -141,7 +143,11 @@ export type AvailableProduct =
 
 interface AvailableProductWithUrl {
   activityCount: number;
-  productType: WorklensProductType.BITBUCKET | WorklensProductType.OPSGENIE;
+  productType:
+    | WorklensProductType.BITBUCKET
+    | WorklensProductType.OPSGENIE
+    | WorklensProductType.STATUSPAGE // assuming that the URL is provided by TCS (same as Opsgenie)
+    | WorklensProductType.TRELLO;
   url: string;
 }
 
@@ -194,4 +200,6 @@ export type AtlassianSwitcherProps = WithTheme & {
   onDiscoverMoreClicked?: DiscoverMoreCallback;
   // A map of feature flags used by the XFlow recommendations engine.
   recommendationsFeatureFlags?: RecommendationsFeatureFlags;
+  // Optional custom provider for available products
+  availableProductsDataProvider?: AvailableProductsDataProvider;
 } & FeatureFlagProps;

@@ -3,14 +3,14 @@ import { Placement } from '@atlaskit/popper';
 
 export type ReactRef = React.Ref<HTMLElement> | HTMLElement | null;
 
-type TriggerProps = {
+export type TriggerProps = {
   ref: any;
   'aria-controls'?: string;
   'aria-expanded': boolean;
   'aria-haspopup': boolean;
 };
 
-type ContentProps = {
+export type ContentProps = {
   scheduleUpdate(): void;
   isOpen: boolean;
   onClose: (() => void) | undefined;

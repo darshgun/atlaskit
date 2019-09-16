@@ -1,5 +1,13 @@
 # @atlaskit/app-navigation
 
+## 0.4.0
+
+### Minor Changes
+
+- [minor][c5939cb73d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5939cb73d):
+
+  Integrate popup component
+
 ## 0.3.2
 
 ### Patch Changes

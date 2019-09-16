@@ -178,7 +178,7 @@ const ORIGINAL_MOCK_DATA: MockData = {
         adminAccess: false,
         availableProducts: [
           {
-            activityCount: 25, // This will be 0 in practice. Just setting it to show up in the example.
+            activityCount: 0,
             productType: 'BITBUCKET',
             url: 'https://bitbucket.org',
           },
@@ -186,6 +186,34 @@ const ORIGINAL_MOCK_DATA: MockData = {
         cloudId: 'bitbucket',
         displayName: 'Bitbucket',
         url: 'https://bitbucket.org',
+        avatar: null,
+      },
+      {
+        adminAccess: false,
+        availableProducts: [
+          {
+            activityCount: 25,
+            productType: 'STATUSPAGE',
+            url: 'https://atlassianinternal.statuspage.io',
+          },
+        ],
+        cloudId: '497ea592-beb4-43c3-9137-a6e5fa301000',
+        displayName: 'Statuspage instance',
+        url: 'https://statuspage.io',
+        avatar: null,
+      },
+      {
+        adminAccess: false,
+        availableProducts: [
+          {
+            activityCount: 0,
+            productType: 'TRELLO',
+            url: 'https://trello.com',
+          },
+        ],
+        cloudId: 'trello',
+        displayName: 'Trello',
+        url: 'https://trello.com',
         avatar: null,
       },
     ],

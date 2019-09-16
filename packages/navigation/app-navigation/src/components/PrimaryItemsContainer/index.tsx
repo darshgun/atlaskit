@@ -1,11 +1,16 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import Popup from '@atlaskit/popup';
+import { TriggerProps } from '@atlaskit/popup/types';
 import WidthDetector from '@atlaskit/width-detector';
+import { useCallback, useState } from 'react';
+
 import {
   useOverflowController,
   OverflowProvider,
 } from '../../controllers/overflow';
-import { PrimaryButton } from '../PrimaryButton';
+import { PrimaryDropdownButton } from '../PrimaryDropdownButton';
+
 import { containerCSS, widthDetectorContainerStyle } from './styles';
 import { PrimaryItemsContainerProps } from './types';
 
@@ -13,21 +18,50 @@ export const PrimaryItemsContainer = ({
   moreLabel,
   items,
 }: PrimaryItemsContainerProps) => {
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
   const { updateWidth, visibleItems, overflowItems } = useOverflowController(
     items,
+  );
+
+  const content = useCallback(
+    () => (
+      <OverflowProvider isVisible={false}>{overflowItems}</OverflowProvider>
+    ),
+    [overflowItems],
+  );
+
+  const onMoreClick = useCallback(
+    () => {
+      setIsMoreOpen(!isMoreOpen);
+    },
+    [isMoreOpen, setIsMoreOpen],
+  );
+
+  const onMoreClose = useCallback(
+    () => {
+      setIsMoreOpen(false);
+    },
+    [setIsMoreOpen],
+  );
+
+  const trigger = useCallback(
+    (triggerProps: TriggerProps) => (
+      <PrimaryDropdownButton onClick={onMoreClick} {...triggerProps}>
+        {moreLabel}
+      </PrimaryDropdownButton>
+    ),
+    [moreLabel, onMoreClick],
   );
 
   return (
     <div css={containerCSS}>
       <OverflowProvider isVisible>{visibleItems}</OverflowProvider>
       {overflowItems.length > 0 && (
-        <PrimaryButton
-          text={moreLabel}
-          dropdownContent={() => (
-            <OverflowProvider isVisible={false}>
-              {overflowItems}
-            </OverflowProvider>
-          )}
+        <Popup
+          content={content}
+          isOpen={isMoreOpen}
+          onClose={onMoreClose}
+          trigger={trigger}
         />
       )}
       <WidthDetector
