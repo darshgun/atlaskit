@@ -3,15 +3,17 @@ import * as React from 'react';
 import { ProviderResult, ResultLoading, Status } from './as-data-provider';
 import { AvailableProductsResponse } from '../types';
 import { createAvailableProductsProvider } from './default-available-products-provider';
+import { ExportedDataProvider, DataProvider } from './create-data-provider';
+
+export type AvailableProductsDataProvider = ExportedDataProvider<
+  AvailableProductsResponse
+>;
+type RealProvider = DataProvider<AvailableProductsResponse>;
 
 const {
   fetchMethod: fetchAvailableProducts,
-  providerComponent: DefaultDataProviderComponent,
-} = createAvailableProductsProvider();
-
-export type AvailableProductsDataProvider = ReturnType<
-  typeof createAvailableProductsProvider
->;
+  ProviderComponent: DefaultDataProviderComponent,
+} = createAvailableProductsProvider() as RealProvider;
 
 const unresolvedAvailableProducts: ResultLoading = {
   status: Status.LOADING,
@@ -32,11 +34,12 @@ export const AvailableProductsProvider = ({
   if (isUserCentric) {
     const CustomDataProviderComponent =
       availableProductsDataProvider &&
-      availableProductsDataProvider.providerComponent;
-    const DataProvider =
+      availableProductsDataProvider.ProviderComponent;
+
+    const DataProviderComponent =
       CustomDataProviderComponent || DefaultDataProviderComponent;
 
-    return <DataProvider>{children}</DataProvider>;
+    return <DataProviderComponent>{children}</DataProviderComponent>;
   }
   // We should never be reading from this provider in non-user-centric mode, so here I model it as a provider that never resolves.
   return (
@@ -48,7 +51,7 @@ export const prefetchAvailableProducts = (
   customProvider?: AvailableProductsDataProvider,
 ) => {
   if (customProvider) {
-    customProvider.fetchMethod({});
+    (customProvider as RealProvider).fetchMethod({});
     return;
   }
 
@@ -59,7 +62,7 @@ export const resetAvailableProducts = (
   customProvider?: AvailableProductsDataProvider,
 ) => {
   if (customProvider) {
-    customProvider.fetchMethod.reset();
+    (customProvider as RealProvider).fetchMethod.reset();
     return;
   }
 

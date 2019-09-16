@@ -1,4 +1,4 @@
-import { createProvider } from './create-data-provider';
+import { createProvider, ExportedDataProvider } from './create-data-provider';
 import { AvailableProductsResponse } from '../types';
 
 const DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT =
@@ -6,6 +6,6 @@ const DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT =
 
 export const createAvailableProductsProvider = (
   url: string = DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT,
-) => {
+): ExportedDataProvider<AvailableProductsResponse> => {
   return createProvider<AvailableProductsResponse>('availableProducts', url);
 };
