@@ -29,9 +29,9 @@ export interface Props {
   // Right Hand Side panel content
   children?: ReactNode;
   // Function to be executed when the open animation finishes
-  onOpenAnimationFinished?: void;
+  onOpenAnimationFinished: () => void;
   // Function to be executed when the close animation finishes
-  onCloseAnimationFinished?: void;
+  onCloseAnimationFinished: () => void;
 }
 
 export interface State {
@@ -59,6 +59,11 @@ export class RightSidePanel extends Component<Props, State> {
     container: undefined,
   };
 
+  static defaultProps: {
+    onOpenAnimationFinished: () => void;
+    onCloseAnimationFinished: () => void;
+  };
+
   componentDidMount() {
     this.setState({
       container: canUseDOM
@@ -75,13 +80,9 @@ export class RightSidePanel extends Component<Props, State> {
       onCloseAnimationFinished,
     } = this.props;
 
-    const onEntered = onOpenAnimationFinished
-      ? onOpenAnimationFinished
-      : () => {};
+    const onEntered = onOpenAnimationFinished;
 
-    const onExited = onCloseAnimationFinished
-      ? onCloseAnimationFinished
-      : () => {};
+    const onExited = onCloseAnimationFinished;
 
     return createPortal(
       <Transition
