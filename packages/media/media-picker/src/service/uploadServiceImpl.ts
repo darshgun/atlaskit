@@ -6,8 +6,8 @@ import {
   getFileStreamsCache,
   MediaClient,
   globalMediaEventEmitter,
-  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import {
   MediaStore,
   MediaStoreCopyFileWithTokenBody,

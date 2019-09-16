@@ -1,6 +1,6 @@
 import { Store, Dispatch, Action } from 'redux';
 
-import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { UploadEvent } from '../../domain/uploadEvent';
 import { uploadHasProxy } from '../tools/uploadHasProxy';
 import { finalizeUpload } from '../actions/finalizeUpload';

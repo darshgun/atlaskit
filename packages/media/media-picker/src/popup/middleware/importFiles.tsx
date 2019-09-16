@@ -12,8 +12,8 @@ import {
   globalMediaEventEmitter,
   observableToPromise,
   isErrorFileState,
-  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 
 import { State, SelectedItem, LocalUpload, ServiceName } from '../domain';
 import { isStartImportAction } from '../actions/startImport';

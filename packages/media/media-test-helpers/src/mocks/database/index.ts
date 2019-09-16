@@ -11,7 +11,7 @@ import { Chunk } from './chunk';
 import { defaultBaseUrl } from '../../mediaClientProvider';
 import { MockCollections } from '../media-mock';
 import { defaultCollectionName } from '../../collectionNames';
-import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 
 export * from './collection';
 export * from './collection-item';
