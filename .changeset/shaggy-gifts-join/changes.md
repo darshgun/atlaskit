@@ -1,0 +1,1 @@
+dont upload external images to media
