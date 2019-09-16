@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/modal-dialog",
-  "version": "10.2.1",
+  "version": "10.3.0",
   "description": "A React component that displays content in a layer blocking the interaction with the page.",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
@@ -24,7 +24,7 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^6.1.0",
     "@atlaskit/blanket": "^10.0.12",
-    "@atlaskit/button": "^13.1.6",
+    "@atlaskit/button": "^13.3.0",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/portal": "^3.0.12",
     "@atlaskit/theme": "^9.2.2",
