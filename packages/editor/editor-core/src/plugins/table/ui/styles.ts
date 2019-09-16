@@ -12,6 +12,7 @@ import {
   akEditorTableNumberColumnWidth,
   akEditorTableBorder,
   tableCellBorderWidth,
+  tableResizeHandleWidth
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
 import { TableCssClassName as ClassName } from '../types';
@@ -385,6 +386,31 @@ const columnControlsDecoration = `
       ${columnHeaderButtonSelected};
     }
   }
+
+  table .${ClassName.RESIZE_HANDLE} {
+    position: absolute;
+    top: ${columnControlsDecorationHeight - tableToolbarSize}px;
+    right: -${tableResizeHandleWidth/2 + 2}px;
+    width: ${tableResizeHandleWidth * 2}px;
+    cursor: col-resize;
+    z-index: ${1000};
+
+    :after {
+      background: ${tableBorderSelectedColor};
+      display: none;
+      content: '';
+      height: 100%;
+      width: 2px;
+      position: absolute;
+      left: 50%;
+    }
+
+    :hover {
+      :after {
+        display: block;
+      }
+    }
+  }
 `;
 
 const hoveredDeleteButton = `
@@ -721,15 +747,6 @@ export const tableStyles = css`
       position: relative;
     }
   }
-  /* =============== TABLE COLUMN RESIZING ================== */
-  .${ClassName.COLUMN_RESIZE_HANDLE} {
-    position: absolute;
-    top: 0;
-    width: 2px;
-    pointer-events: none;
-    background-color: ${tableBorderSelectedColor};
-    z-index: ${columnResizeHandleZIndex};
-  }
 
   .ProseMirror.${ClassName.IS_RESIZING} {
     .${ClassName.TABLE_NODE_WRAPPER} {
@@ -741,6 +758,7 @@ export const tableStyles = css`
   .ProseMirror.${ClassName.RESIZE_CURSOR} {
     cursor: col-resize;
   }
+
 `;
 
 export const tableFloatingCellButtonStyles = css`

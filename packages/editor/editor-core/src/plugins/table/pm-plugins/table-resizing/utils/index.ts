@@ -31,12 +31,6 @@ export {
   pointsAtCell,
   currentColWidth,
   domCellAround,
-  edgeCell,
 } from './misc';
-export {
-  updateControls,
-  isClickNear,
-  updateResizeHandle,
-  createResizeHandle,
-} from './dom';
+export { updateControls, isClickNear, getResizeCellPos } from './dom';
 export { ScaleOptions, scale, scaleWithParent } from './scale-table';
