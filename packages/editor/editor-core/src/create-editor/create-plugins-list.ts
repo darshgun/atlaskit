@@ -50,6 +50,7 @@ import {
   customAutoformatPlugin,
   feedbackDialogPlugin,
   historyPlugin,
+  sharedContextPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { EditorView } from 'prosemirror-view';
@@ -82,6 +83,7 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
     submitEditorPlugin(),
     fakeTextCursorPlugin(),
     floatingToolbarPlugin(),
+    sharedContextPlugin(),
   ];
 }
 

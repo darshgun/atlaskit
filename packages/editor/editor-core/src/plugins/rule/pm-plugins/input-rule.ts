@@ -15,6 +15,7 @@ import {
   EVENT_TYPE,
 } from '../../analytics';
 import { safeInsert } from '../../../utils/insert';
+import { getEditorProps } from '../../shared-context';
 
 export const createHorizontalRule = (
   state: EditorState,
@@ -31,21 +32,20 @@ export const createHorizontalRule = (
     return null;
   }
 
-  /**
-   * This is a workaround to get rid of the typeahead text when using quick insert
-   * Once we insert *nothing*, we get a new transaction, so we can use the new selection
-   * without considering the extra text after the `/` command.
-   **/
-  let tr: Transaction<any> | null = state.tr.replaceWith(
-    start,
-    end,
-    Fragment.empty,
-  );
+  let tr: Transaction<any> | null = null;
+  const { allowNewInsertionBehaviour } = getEditorProps(state);
+  if (allowNewInsertionBehaviour) {
+    /**
+     * This is a workaround to get rid of the typeahead text when using quick insert
+     * Once we insert *nothing*, we get a new transaction, so we can use the new selection
+     * without considering the extra text after the `/` command.
+     **/
+    tr = state.tr.replaceWith(start, end, Fragment.empty);
 
-  // let tr: Transaction<any> | null = insert(Fragment.empty);
-  tr = safeInsert(state.schema.nodes.rule.createChecked(), tr.selection.from)(
-    tr,
-  );
+    tr = safeInsert(state.schema.nodes.rule.createChecked(), tr.selection.from)(
+      tr,
+    );
+  }
 
   if (!tr) {
     /**

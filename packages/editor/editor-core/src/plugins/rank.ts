@@ -1,5 +1,6 @@
 export default {
   plugins: [
+    'sharedContextPlugin',
     'compositionPlugin',
     'inlineCursorTargetPlugin',
     'focusHandlerPlugin',
