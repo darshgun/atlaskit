@@ -32,6 +32,9 @@ export class MediaNodeUpdater {
       jest.fn().mockResolvedValue(undefined);
     this.isMediaBlobUrl =
       mockOverrides['isMediaBlobUrl'] || jest.fn().mockResolvedValue(undefined);
+    this.copyNodeFromBlobUrl =
+      mockOverrides['copyNodeFromBlobUrl'] ||
+      jest.fn().mockResolvedValue(undefined);
   }
 
   static setMock(thisKey: string, value: any) {
@@ -49,4 +52,5 @@ export class MediaNodeUpdater {
   async updateFileAttrs() {}
   async uploadExternalMedia() {}
   isMediaBlobUrl() {}
+  copyNodeFromBlobUrl() {}
 }
