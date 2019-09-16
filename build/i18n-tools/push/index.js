@@ -93,7 +93,9 @@ function pushCommand(options) {
             context.messages,
           );
         } catch (e) {
-          //For now don't let this kill the build
+          // For now don't let this kill the build
+          // After we are no longer using Transifex, we should remove the catch
+          // and let it fail the process
           context.smartlingData = {
             error: e,
           };
