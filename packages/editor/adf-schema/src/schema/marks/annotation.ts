@@ -55,7 +55,10 @@ export const annotation: MarkSpec = {
     return [
       'span',
       {
-        class: 'fabric-editor-annotation',
+        // Prettier will remove the quotes around class. This would cause some browsers
+        // to not add this attribute properly, as its a reserved word.
+        // prettier-ignore
+        'class': 'fabric-editor-annotation',
         'data-mark-type': 'annotation',
         'data-mark-annotation-type': node.attrs.annotationType,
         'data-id': node.attrs.id,
