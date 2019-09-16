@@ -62,6 +62,8 @@ interface TablePluginOptions {
 }
 
 const tablesPlugin = (options?: TablePluginOptions): EditorPlugin => ({
+  name: 'table',
+
   nodes() {
     return [
       { name: 'table', node: table },

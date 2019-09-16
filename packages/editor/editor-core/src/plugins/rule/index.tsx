@@ -20,6 +20,8 @@ import { Fragment } from 'prosemirror-model';
 import { getEditorProps } from '../shared-context';
 
 const rulePlugin = (): EditorPlugin => ({
+  name: 'rule',
+
   nodes() {
     return [{ name: 'rule', node: rule }];
   },

@@ -1,4 +1,4 @@
-jest.mock('../../../plugins', () => ({
+const mockPlugins: { [name: string]: jest.Mock } = {
   basePlugin: jest.fn(),
   analyticsPlugin: jest.fn(),
   mediaPlugin: jest.fn(),
@@ -27,10 +27,12 @@ jest.mock('../../../plugins', () => ({
   floatingToolbarPlugin: jest.fn(),
   quickInsertPlugin: jest.fn(),
   sharedContextPlugin: jest.fn(),
-}));
+  historyPlugin: jest.fn(),
+};
+
+jest.mock('../../../plugins', () => mockPlugins);
 
 import {
-  basePlugin,
   analyticsPlugin,
   tablesPlugin,
   mediaPlugin,
@@ -42,17 +44,16 @@ import {
   placeholderTextPlugin,
   layoutPlugin,
   statusPlugin,
+  historyPlugin,
 } from '../../../plugins';
 
 import createPluginsList from '../../../create-editor/create-plugins-list';
 
 describe('createPluginsList', () => {
-  beforeEach(() => {
-    (basePlugin as any).mockReset();
-    (analyticsPlugin as any).mockReset();
-    (insertBlockPlugin as any).mockReset();
-    (placeholderTextPlugin as any).mockReset();
-    (statusPlugin as any).mockReset();
+  afterEach(() => {
+    for (const name in mockPlugins) {
+      mockPlugins[name].mockReset();
+    }
   });
 
   it('should add helpDialogPlugin if allowHelpDialog is true', () => {
@@ -215,5 +216,15 @@ describe('createPluginsList', () => {
     createPluginsList(props);
     expect(insertBlockPlugin).toHaveBeenCalledTimes(1);
     expect(insertBlockPlugin).toHaveBeenCalledWith(props);
+  });
+
+  it('should add historyPlugin to mobile editor', () => {
+    createPluginsList({ appearance: 'mobile' });
+    expect(historyPlugin).toHaveBeenCalled();
+  });
+
+  it('should not add historyPlugin to non-mobile editor', () => {
+    createPluginsList({ appearance: 'full-page' });
+    expect(historyPlugin).not.toHaveBeenCalled();
   });
 });

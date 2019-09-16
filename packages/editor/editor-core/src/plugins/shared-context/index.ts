@@ -6,6 +6,7 @@ export type PropsFlagsPluginState = { allowNewInsertionBehaviour?: boolean };
 export const pluginKey = new PluginKey('sharedContextPlugin');
 
 const sharedContextPlugin = (): EditorPlugin => ({
+  name: 'sharedContext',
   pmPlugins() {
     return [
       {

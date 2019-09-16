@@ -50,3 +50,4 @@ export { default as analyticsPlugin } from './analytics';
 export { default as customAutoformatPlugin } from './custom-autoformat';
 export { default as feedbackDialogPlugin } from './feedback-dialog';
 export { default as sharedContextPlugin } from './shared-context';
+export { default as historyPlugin } from './history';
