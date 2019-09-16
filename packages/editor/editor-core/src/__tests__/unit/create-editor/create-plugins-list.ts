@@ -26,6 +26,7 @@ jest.mock('../../../plugins', () => ({
   layoutPlugin: jest.fn(),
   floatingToolbarPlugin: jest.fn(),
   quickInsertPlugin: jest.fn(),
+  sharedContextPlugin: jest.fn(),
 }));
 
 import {
