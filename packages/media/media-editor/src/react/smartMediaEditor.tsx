@@ -12,6 +12,7 @@ import {
   MediaClient,
   UploadableFile,
   FileIdentifier,
+  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
 import { messages, Shortcut } from '@atlaskit/media-ui';
 import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
@@ -167,7 +168,7 @@ export class SmartMediaEditor extends React.Component<
         authProvider,
       };
       const destination = {
-        collection: 'recents',
+        collection: RECENTS_COLLECTION,
         authProvider: userAuthProvider,
         occurrenceKey: uuidV4(),
       };

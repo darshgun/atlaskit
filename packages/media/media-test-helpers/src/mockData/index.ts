@@ -1,6 +1,7 @@
 import { MockURL } from 'xhr-mock/lib/MockURL';
 import { MockHeaders } from 'xhr-mock/lib/types';
 import { ClientBasedAuth } from '@atlaskit/media-store';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client';
 
 export * from './matchers';
 export * from './utils';
@@ -34,7 +35,7 @@ export class MockContext {
       baseUrl: '',
     },
     collection: [],
-    collectionName: 'recents',
+    collectionName: RECENTS_COLLECTION,
   };
   tenantContext: MockContextItem = {
     auth: {

@@ -4,7 +4,7 @@ import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 import { IntlShape } from 'react-intl';
 import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
-import { MediaClient } from '@atlaskit/media-client';
+import { MediaClient, RECENTS_COLLECTION } from '@atlaskit/media-client';
 import { UIAnalyticsEventHandler } from '@atlaskit/analytics-next';
 
 import { ServiceName, State } from '../domain';
@@ -18,9 +18,6 @@ import GiphyView from './views/giphy/giphyView';
 import Browser from './views/browser/browser';
 import { Dropzone as DropzonePlaceholder } from './dropzone/dropzone';
 import MainEditorView from './views/editor/mainEditorView';
-
-/* Configs */
-import { RECENTS_COLLECTION } from '../config';
 
 /* actions */
 import { startApp, StartAppActionPayload } from '../actions/startApp';

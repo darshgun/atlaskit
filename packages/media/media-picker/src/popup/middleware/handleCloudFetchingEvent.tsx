@@ -1,3 +1,5 @@
+import { RECENTS_COLLECTION } from '@atlaskit/media-client';
+
 import { SmartMediaProgress } from '../../domain/progress';
 import { Action, Dispatch, Store } from 'redux';
 import { finalizeUpload } from '../actions/finalizeUpload';
@@ -7,7 +9,6 @@ import {
 } from '../actions/handleCloudFetchingEvent';
 
 import { State } from '../domain';
-import { RECENTS_COLLECTION } from '../config';
 
 import {
   WsUploadEvents,

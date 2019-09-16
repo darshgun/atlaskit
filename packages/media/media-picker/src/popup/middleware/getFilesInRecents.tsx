@@ -1,10 +1,10 @@
 import { Action, Dispatch, Store } from 'redux';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client';
 import { getFilesInRecentsFullfilled } from '../actions/getFilesInRecents';
 import { getFilesInRecentsFailed } from '../actions/getFilesInRecents';
 import { saveCollectionItemsSubscription } from '../actions/saveCollectionItemsSubscription';
 import { State } from '../domain';
 import { isGetFilesInRecentsAction } from '../actions/getFilesInRecents';
-import { RECENTS_COLLECTION } from '../config';
 
 export const getFilesInRecents = () => (store: Store<State>) => (
   next: Dispatch<Action>,

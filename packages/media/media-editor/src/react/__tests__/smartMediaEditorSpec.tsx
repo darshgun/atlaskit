@@ -20,6 +20,7 @@ import {
   FileState,
   UploadableFile,
   FileIdentifier,
+  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
 import uuidV4 from 'uuid/v4';
 import { TouchedFiles, UploadableFileUpfrontIds } from '@atlaskit/media-store';
@@ -236,7 +237,7 @@ describe('Smart Media Editor', () => {
             authProvider: mediaClient.config.authProvider,
           },
           {
-            collection: 'recents',
+            collection: RECENTS_COLLECTION,
             authProvider: userAuthProvider,
             occurrenceKey: 'uuid3',
           },

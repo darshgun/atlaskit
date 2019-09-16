@@ -1,8 +1,8 @@
-import { UploadProcessingEvent } from '../../../../domain/uploadEvent';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client';
 import { mockStore } from '@atlaskit/media-test-helpers';
+import { UploadProcessingEvent } from '../../../../domain/uploadEvent';
 import { proxyUploadEvents } from '../../proxyUploadEvents';
 import { FINALIZE_UPLOAD } from '../../../actions/finalizeUpload';
-import { RECENTS_COLLECTION } from '../../../config';
 
 describe('proxyUploadEvents middleware', () => {
   const client: any = { id: 'some-client-id' };

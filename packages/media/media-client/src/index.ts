@@ -130,3 +130,5 @@ export {
 } from './utils/with-media-client-hoc';
 
 export { globalMediaEventEmitter } from './globalMediaEventEmitter';
+
+export { RECENTS_COLLECTION } from './utils/constants';
