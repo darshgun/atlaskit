@@ -65,6 +65,8 @@ const analyticsPayload = (
 });
 
 const submitEditorPlugin = (): EditorPlugin => ({
+  name: 'submitEditor',
+
   pmPlugins() {
     return [
       {

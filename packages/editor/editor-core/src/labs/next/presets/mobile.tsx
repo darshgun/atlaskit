@@ -9,23 +9,20 @@ import {
   textFormattingPlugin,
   widthPlugin,
   unsupportedContentPlugin,
-  quickInsertPlugin,
   tablesPlugin,
   codeBlockPlugin,
   panelPlugin,
   listsPlugin,
   textColorPlugin,
-  breakoutPlugin,
-  jiraIssuePlugin,
   extensionPlugin,
   rulePlugin,
   datePlugin,
   layoutPlugin,
-  indentationPlugin,
   cardPlugin,
   statusPlugin,
   mediaPlugin,
   mentionsPlugin,
+  emojiPlugin,
   tasksAndDecisionsPlugin,
   insertBlockPlugin,
   basePlugin,
@@ -34,30 +31,37 @@ import {
   typeAheadPlugin,
   floatingToolbarPlugin,
   gapCursorPlugin,
+  annotationPlugin,
 } from '../../../plugins';
 import { MentionProvider } from '@atlaskit/mention/resource';
-import { MediaProvider } from '../../../plugins/media';
+import { MediaProvider, CustomMediaPicker } from '../../../plugins/media';
+import { EmojiProvider } from '@atlaskit/emoji';
 import {
   removeExcludes,
   enableExperimental,
   ExperimentalPluginMap,
 } from './utils';
 
-interface EditorPresetCXHTMLProps {
+interface EditorPresetMobileProps {
   children?: React.ReactNode;
   placeholder?: string;
   mentionProvider?: Promise<MentionProvider>;
-  mediaProvider?: Promise<MediaProvider>;
+  emojiProvider?: Promise<EmojiProvider>;
+  media?: {
+    provider?: Promise<MediaProvider>;
+    picker?: CustomMediaPicker;
+  };
 }
 
-export function EditorPresetCXHTML({
+export function EditorPresetMobile({
   children,
   mentionProvider,
-  mediaProvider,
+  emojiProvider,
+  media,
   placeholder,
   excludes,
   experimental,
-}: EditorPresetCXHTMLProps & EditorPresetProps) {
+}: EditorPresetMobileProps & EditorPresetProps) {
   let plugins = [
     pastePlugin(),
     blockTypePlugin(),
@@ -65,23 +69,18 @@ export function EditorPresetCXHTML({
     hyperlinkPlugin(),
     textFormattingPlugin({}),
     widthPlugin(),
-    quickInsertPlugin(),
     tablesPlugin({
-      tableOptions: { advanced: true },
+      tableOptions: { allowControls: false },
     }),
     codeBlockPlugin(),
     panelPlugin(),
     listsPlugin(),
     textColorPlugin(),
-    breakoutPlugin(),
-    jiraIssuePlugin(),
     extensionPlugin(),
     rulePlugin(),
     datePlugin(),
     layoutPlugin(),
-    indentationPlugin(),
-    cardPlugin(),
-    statusPlugin({ menuDisabled: false }),
+    statusPlugin({ menuDisabled: false, useInlineWrapper: true }),
     tasksAndDecisionsPlugin(),
     insertBlockPlugin({}),
     placeholderPlugin({ placeholder }),
@@ -89,21 +88,38 @@ export function EditorPresetCXHTML({
     typeAheadPlugin(),
     floatingToolbarPlugin(),
     gapCursorPlugin(),
+    annotationPlugin(),
+    cardPlugin(),
   ];
 
   if (mentionProvider) {
-    plugins.push(mentionsPlugin());
+    plugins.push(
+      mentionsPlugin({
+        useInlineWrapper: true,
+      }),
+    );
   }
 
-  if (mediaProvider) {
+  if (emojiProvider) {
     plugins.push(
-      mediaPlugin({
-        provider: mediaProvider,
-        allowMediaSingle: true,
-        allowMediaGroup: true,
-        allowAnnotation: true,
-        allowResizing: true,
+      emojiPlugin({
+        useInlineWrapper: true,
       }),
+    );
+  }
+
+  if (media) {
+    plugins.push(
+      mediaPlugin(
+        {
+          provider: media.provider,
+          customMediaPicker: media.picker,
+          allowMediaSingle: true,
+        },
+        {
+          allowMarkingUploadsAsIncomplete: true,
+        },
+      ),
     );
   }
 
@@ -115,9 +131,7 @@ export function EditorPresetCXHTML({
   plugins.push(
     unsupportedContentPlugin(),
     basePlugin({
-      allowInlineCursorTarget: true,
-      allowScrollGutter: () =>
-        document.querySelector('.fabric-editor-popup-scroll-parent'),
+      allowScrollGutter: () => document.body,
     }),
   );
 

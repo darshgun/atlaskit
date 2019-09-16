@@ -15,6 +15,8 @@ import {
 import { IconDivider } from '../quick-insert/assets';
 
 const rulePlugin = (): EditorPlugin => ({
+  name: 'rule',
+
   nodes() {
     return [{ name: 'rule', node: rule }];
   },
