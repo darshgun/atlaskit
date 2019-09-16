@@ -613,6 +613,6 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --frozen-lockfile
             - yarn build
-            - yarn build:editor-mobile-bridge
+            # - yarn build:editor-mobile-bridge
             # Run validation in quiet mode as well to easily check file differences
-            - cd build/build-validator && yarn validate-packages || yarn validate-packages --quiet
+            - cd build/build-validator && (yarn validate-packages || yarn validate-packages --quiet)
