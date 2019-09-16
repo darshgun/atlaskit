@@ -69,6 +69,11 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
   });
 
   useLayoutEffect(() => {
+    // We want to only run this code when we are in "responsive" mode.
+    // It is assumed we are in responsive mode if `columns` is "responsive",
+    // we have children element refs ready to be read (i.e. if there are no children this won't run as well)
+    // and finally that `actualColumns` is `0` - this is because for the first render cycle `actualColumns` will be `0` (set above)
+    // and then after this layout effect runs the value for `actualColumns` will then be calculated and set.
     if (
       columns === 'responsive' &&
       elementRefs.current.length &&
@@ -77,19 +82,22 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
       let currentTop: number = 0;
       let numberColumns: number = 0;
 
-      if (elementRefs.current.length === 1) {
+      if (elementRefs.current.length <= 1) {
         setActualColumns(1);
         return;
       }
+
+      // We set the current top to the first elements.
+      // We will be comparing this and incrementing the column count
+      // until we hit an element that has a different offset top (or we run out of elements).
+      currentTop = elementRefs.current[0]
+        ? elementRefs.current[0].offsetTop
+        : 0;
 
       for (let i = 0; i < elementRefs.current.length; i++) {
         const child = elementRefs.current[i];
         if (!child) {
           break;
-        }
-
-        if (!currentTop) {
-          currentTop = child.offsetTop;
         }
 
         if (currentTop === child.offsetTop) {
@@ -113,14 +121,17 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
   return Children.toArray(children).map((child, index) => {
     const currentColumn = column || index % actualColumns;
     const currentRow = Math.floor(index / actualColumns);
-    const delayMultiplier = Math.log(currentRow + currentColumn) * 5;
+    const distanceFromTopLeftElement = currentRow + currentColumn;
+    // We don't want loads of elements to have the same staggered delay as it ends up looking slow for users.
+    // To get around that we calculate the logarithm using `distanceFromTopLeftElement` which ends making
+    // elements appear faster the further away from the top left element.
+    const delay = Math.ceil(
+      Math.log(distanceFromTopLeftElement + 1) * delayStep * 1.5,
+    );
 
     return cloneElement(child as JSX.Element, {
+      delay,
       isPaused: actualColumns === 0,
-      delay:
-        Math.abs(
-          Math.ceil(Math.log((delayMultiplier + 1) / 2) * delayStep * 2),
-        ) || 0,
       ref: (element: HTMLElement | null) =>
         (elementRefs.current[index] = element),
     });
