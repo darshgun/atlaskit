@@ -102,10 +102,7 @@ async function validatePackage(pkg) {
 function validateDistContents(src, dist) {
   const errors = [];
   for (const srcFile of src.contents) {
-    if (
-      excludedSrcFiles.includes(srcFile.name) ||
-      !srcFile.name.match(fileRegex)
-    ) {
+    if (excludedSrcFiles.includes(srcFile.name)) {
       continue;
     }
     if (srcFile.isDirectory()) {
@@ -114,19 +111,21 @@ function validateDistContents(src, dist) {
       );
       if (!correspondingDir) {
         errors.push(
-          `Directory "${dist.relativeDir}" is missing from "${
-            src.relativeDir
-          }/${srcFile.name}"`,
+          `Directory "${dist.relativeDir}/${
+            srcFile.name
+          }" is missing - sourced from "${src.relativeDir}/${srcFile.name}"`,
         );
       }
-    } else if (srcFile.isFile()) {
+    } else if (srcFile.isFile() && srcFile.name.match(fileRegex)) {
       const compiledFilename = srcFile.name.replace(fileRegex, '.js');
       const compiledFile = dist.contents.find(
         distFile => distFile.name === compiledFilename && distFile.isFile(),
       );
       if (!compiledFile) {
         errors.push(
-          `File "${dist.relativeDir}/${compiledFilename}" is missing from "${
+          `File "${
+            dist.relativeDir
+          }/${compiledFilename}" is missing - sourced from "${
             src.relativeDir
           }/${srcFile.name}"`,
         );
@@ -141,18 +140,12 @@ function validateDistContents(src, dist) {
           errors.push(
             `Declaration file "${
               dist.relativeDir
-            }/${declarationFilename}" is missing for "${srcFile.relativeDir}/${
+            }/${declarationFilename}" is missing for "${src.relativeDir}/${
               srcFile.name
             }"`,
           );
         }
       }
-    } else {
-      throw Error(
-        `Invalid file "${srcFile.relativeDir}/${
-          srcFile.name
-        }", must be directory or file.`,
-      );
     }
   }
   return errors;
