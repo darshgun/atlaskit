@@ -1,0 +1,1 @@
+Add linting rule to prevent unsafe usage of setTimeout within React components.

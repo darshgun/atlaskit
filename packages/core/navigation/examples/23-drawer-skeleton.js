@@ -93,6 +93,12 @@ export default class ConfluenceHome extends Component<*, *> {
     width: this.props.width,
   };
 
+  menuTimeoutId: TimeoutID;
+
+  componentWillUnmount() {
+    clearTimeout(this.menuTimeoutId);
+  }
+
   getStarCustomDrawer = () => (
     <AkCustomDrawer
       backIcon={BackIcon}
@@ -168,7 +174,10 @@ export default class ConfluenceHome extends Component<*, *> {
   };
 
   timerMenu = () => {
-    setTimeout(() => this.setState({ menuLoading: false }), 2000);
+    this.menuTimeoutId = setTimeout(
+      () => this.setState({ menuLoading: false }),
+      2000,
+    );
   };
 
   render() {
