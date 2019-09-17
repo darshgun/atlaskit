@@ -18,7 +18,6 @@ export const padding = {
   all: gridSize / 2,
 };
 
-// TODO marginRight
 export const getPrimaryButtonTheme = ({
   mode: { primaryButton },
 }: AppNavigationTheme) => (

@@ -1,61 +1,79 @@
 import chromatism, { ColourModes } from 'chromatism';
 
-import { AppNavigationTheme, ModeContext } from './types';
+import { AppNavigationTheme, ButtonCSSContext } from './types';
 
-type Modifier = Omit<ColourModes.HSL, 'h'>;
+const getBoxShadow = (color: string) => `0 0 0 2px ${color}`;
 
-type Modifiers = {
-  active: Modifier;
-  focus: Modifier;
-  hover: Modifier;
+/**
+ * Mixes color2 with color1 by the specified weight. This is effectively a simple rgba to rgb conversion.
+ */
+const mix = (
+  color1: ColourModes.RGB,
+  color2: ColourModes.RGB,
+  weight: number,
+): ColourModes.CSSRGB => {
+  const weightDistance = 1 - weight;
+  const normalize = ({ r, g, b }: ColourModes.RGB) => ({
+    r: r / 255,
+    g: g / 255,
+    b: b / 255,
+  });
+  const normalizedBackground = normalize(color1);
+  const normalizedColor = normalize(color2);
+
+  const red = Math.round(
+    (weightDistance * normalizedBackground.r + weight * normalizedColor.r) *
+      255,
+  );
+  const green = Math.round(
+    (weightDistance * normalizedBackground.g + weight * normalizedColor.g) *
+      255,
+  );
+  const blue = Math.round(
+    (weightDistance * normalizedBackground.b + weight * normalizedColor.b) *
+      255,
+  );
+
+  return `rgb(${red}, ${green}, ${blue})`;
 };
 
-type ColorMatrix = Modifiers & {
-  when: (color: ColourModes.HSL) => boolean;
-};
+const generateCSSStates = (colors: Colors): ButtonCSSContext => {
+  const { backgroundColor, color } = colors;
+  const backgroundColorRgb = chromatism.convert(backgroundColor).rgb;
+  const contrastBackgroundColorRgb = chromatism.contrastRatio(backgroundColor)
+    .rgb;
+  const colorRgb = chromatism.convert(color).rgb;
 
-const colorMatrix: ColorMatrix[] = [
-  {
-    // Dark
-    when: ({ l }) => l <= 20,
-    active: { s: -4, l: 8 },
-    focus: { s: -8, l: 12 },
-    hover: { s: 0, l: 16 },
-  },
-  {
-    // Bright and saturated
-    when: ({ s, l }) => s > 65 && l > 30,
-    active: { s: -16, l: 8 },
-    focus: { s: 0, l: -8 },
-    hover: { s: -16, l: 12 },
-  },
-  {
-    // Bright and dull
-    when: ({ s, l }) => s <= 20 && l > 90,
-    active: { s: 0, l: -4 },
-    focus: { s: 0, l: -6 },
-    hover: { s: 0, l: -2 },
-  },
-  {
-    // Pastel
-    when: ({ s, l }) => s > 20 && s < 50 && l > 50,
-    active: { s: 8, l: -4 },
-    focus: { s: 8, l: -12 },
-    hover: { s: 24, l: 2 },
-  },
-  {
-    // Dull
-    when: ({ s, l }) => s <= 20 && l <= 90,
-    active: { s: 0, l: -4 },
-    focus: { s: 0, l: -8 },
-    hover: { s: 0, l: 4 },
-  },
-];
-
-const defaultModifiers: Modifiers = {
-  active: { s: 0, l: 4 },
-  focus: { s: 8, l: -6 },
-  hover: { s: 0, l: 8 },
+  return {
+    active: {
+      backgroundColor: mix(
+        backgroundColorRgb,
+        contrastBackgroundColorRgb,
+        0.13,
+      ),
+      boxShadow: getBoxShadow('transparent'),
+      color,
+    },
+    default: {
+      backgroundColor,
+      boxShadow: getBoxShadow('transparent'),
+      color,
+    },
+    focus: {
+      backgroundColor: 'inherit',
+      boxShadow: getBoxShadow(mix(backgroundColorRgb, colorRgb, 0.5)),
+      color,
+    },
+    hover: {
+      backgroundColor: mix(
+        backgroundColorRgb,
+        contrastBackgroundColorRgb,
+        0.08,
+      ),
+      boxShadow: getBoxShadow('transparent'),
+      color,
+    },
+  };
 };
 
 export type Colors = {
@@ -63,63 +81,46 @@ export type Colors = {
   color: string;
 };
 
-const getColor = (baseColor: ColourModes.HSL, modifier: Modifier) =>
-  chromatism.convert({
-    ...baseColor,
-    s: Math.max(0, Math.min(100, baseColor.s + modifier.s)),
-    l: Math.max(0, Math.min(100, baseColor.l + modifier.l)),
-  }).hex;
-
-const getModifierStates = ({ backgroundColor, color }: Colors) => {
-  const baseBackgroundColor = chromatism.convert(backgroundColor).hsl;
-
-  const getState = (modifier: Modifier) => {
-    const stateBackgroundColor = getColor(baseBackgroundColor, modifier);
-    return {
-      backgroundColor: stateBackgroundColor,
-      color,
-    };
-  };
-
-  const backgroundColorModifiers =
-    colorMatrix.find(cm => cm.when(baseBackgroundColor)) || defaultModifiers;
-
-  return {
-    active: getState(backgroundColorModifiers.active),
-    focus: getState(backgroundColorModifiers.focus),
-    hover: getState(backgroundColorModifiers.hover),
-  };
-};
-
-const generateModeContext = (colors: Colors): ModeContext => {
-  return {
-    default: colors,
-    ...getModifierStates(colors),
-  };
-};
-
 export type GenerateThemeArgs = {
+  name?: string;
   primary: Colors;
   secondary?: Colors;
 };
 
 export const generateTheme = (args: GenerateThemeArgs): AppNavigationTheme => {
-  const primary = generateModeContext(args.primary);
-  const secondary = args.secondary
-    ? generateModeContext(args.secondary)
-    : generateModeContext(primary.focus);
+  const { primary: primaryColors, secondary: secondaryColors } = args;
+  const primary = generateCSSStates(primaryColors);
+  const { active: primaryActive, default: primaryDefault } = primary;
+  const backgroundColorRgb = chromatism.convert(primaryColors.backgroundColor)
+    .rgb;
+  const contrastBackgroundColor = chromatism.contrastRatio(backgroundColorRgb);
+
+  const secondary = secondaryColors
+    ? generateCSSStates(secondaryColors)
+    : generateCSSStates({
+        backgroundColor: mix(
+          backgroundColorRgb,
+          contrastBackgroundColor.rgb,
+          0.13,
+        ),
+        color: primaryColors.color,
+      });
 
   return {
     mode: {
       create: secondary,
       iconButton: primary,
-      navigation: primary.default,
+      navigation: {
+        backgroundColor: primaryDefault.backgroundColor,
+        color: primaryDefault.color,
+      },
       primaryButton: primary,
-      search: primary.active,
+      search: {
+        backgroundColor: primaryActive.backgroundColor,
+        color: primaryActive.color,
+      },
       skeleton: {
-        backgroundColor: chromatism.contrastRatio(
-          primary.default.backgroundColor,
-        ).hex,
+        backgroundColor: contrastBackgroundColor.hex,
       },
     },
   };

@@ -1,62 +1,84 @@
-import { darkTheme, generateTheme, lightTheme } from '../../src';
+import {
+  B400,
+  G300,
+  N0,
+  N800,
+  P300,
+  R300,
+  T300,
+  Y300,
+} from '@atlaskit/theme/colors';
+import { generateTheme } from '../../src';
 
-const customThemes = [
-  // White
+export const themes = [
   generateTheme({
+    name: 'atlassian',
     primary: {
-      backgroundColor: '#ffffff',
-      color: '#000000',
+      backgroundColor: B400,
+      color: N0,
     },
   }),
-  // Red
   generateTheme({
+    name: 'settings',
     primary: {
-      backgroundColor: '#ff3e15',
-      color: '#ffffff',
+      backgroundColor: N800,
+      color: N0,
     },
   }),
-  // Orange
   generateTheme({
+    name: 'white',
     primary: {
-      backgroundColor: '#ff8c19',
-      color: '#ffffff',
+      backgroundColor: N0,
+      color: N800,
     },
   }),
-  // Yellow
   generateTheme({
+    name: 'red',
+    primary: {
+      backgroundColor: R300,
+      color: N0,
+    },
+  }),
+  generateTheme({
+    name: 'orange',
+    primary: {
+      backgroundColor: Y300,
+      color: N800,
+    },
+  }),
+  generateTheme({
+    name: 'yellow',
     primary: {
       backgroundColor: '#ffff00',
-      color: '#000000',
+      color: N800,
     },
   }),
-  // Green
   generateTheme({
+    name: 'green',
     primary: {
-      backgroundColor: '#0fdc60',
-      color: '#ffffff',
+      backgroundColor: G300,
+      color: N800,
     },
   }),
-  // Blue
   generateTheme({
+    name: 'blue',
     primary: {
-      backgroundColor: '#3babfd',
-      color: '#ffffff',
+      backgroundColor: T300,
+      color: N800,
     },
   }),
-  // Violet
   generateTheme({
+    name: 'violet',
     primary: {
-      backgroundColor: '#4f1c82',
-      color: '#ffffff',
+      backgroundColor: P300,
+      color: N0,
     },
   }),
-  // Pink
   generateTheme({
+    name: 'pink',
     primary: {
       backgroundColor: '#fec8d8',
-      color: '#000000',
+      color: N800,
     },
   }),
 ];
-
-export const themes = [lightTheme, darkTheme, ...customThemes];
