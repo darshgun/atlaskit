@@ -1,5 +1,13 @@
 # @atlaskit/refinement-bar
 
+## 1.1.8
+
+### Patch Changes
+
+- [patch][2b158873d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b158873d1):
+
+  Add linting rule to prevent unsafe usage of setTimeout within React components.
+
 ## 1.1.7
 
 - Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):

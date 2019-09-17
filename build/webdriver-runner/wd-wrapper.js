@@ -183,6 +183,9 @@ export default class Page {
     const elem = await this.browser.$(selector);
     return elem.getLocation(selector, property);
   }
+  getAlertText() {
+    return this.browser.getAlertText();
+  }
 
   url() {
     return this.browser.getUrl();
@@ -191,6 +194,10 @@ export default class Page {
   // Protocol
   goBack() {
     return this.browser.back();
+  }
+
+  acceptAlert() {
+    return this.browser.acceptAlert();
   }
 
   close() {

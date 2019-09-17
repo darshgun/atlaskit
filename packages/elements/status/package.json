@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/status",
-  "version": "0.9.11",
+  "version": "0.9.12",
   "config": {
     "access": "public"
   },
   "description": "Fabric Status React Components",
   "main": "dist/cjs/index.js",
-  "modules": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/cjs/types.d.ts",
   "atlaskit:src": "src/index.ts",
   "repository": {

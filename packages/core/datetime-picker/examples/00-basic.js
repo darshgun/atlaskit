@@ -25,12 +25,18 @@ class Controlled extends Component<Props, State> {
 
   recentlySelected: boolean = false;
 
+  recSelTimeoutId: TimeoutID;
+
   constructor(props: Props) {
     super(props);
     this.state = {
       value: props.initialValue || '',
       isOpen: props.initialIsOpen || false,
     };
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.recSelTimeoutId);
   }
 
   handleClick = () => {
@@ -48,7 +54,7 @@ class Controlled extends Component<Props, State> {
         isOpen: false,
       },
       () => {
-        setTimeout(() => {
+        this.recSelTimeoutId = setTimeout(() => {
           this.recentlySelected = false;
         }, 200);
       },

@@ -33,6 +33,9 @@ import {
   StrideLogo,
   StrideIcon,
   StrideWordmark,
+  TrelloLogo,
+  TrelloIcon,
+  TrelloWordmark,
 } from '../src';
 
 export default () => (
@@ -165,6 +168,17 @@ export default () => (
           </td>
           <td>
             <StrideIcon />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <TrelloLogo />
+          </td>
+          <td>
+            <TrelloWordmark />
+          </td>
+          <td>
+            <TrelloIcon />
           </td>
         </tr>
       </tbody>

@@ -1,5 +1,13 @@
 # @atlaskit/modal-dialog
 
+## 10.3.0
+
+### Minor Changes
+
+- [minor][66e147e6a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66e147e6a1):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 10.2.1
 
 - Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):

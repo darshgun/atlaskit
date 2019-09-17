@@ -1,5 +1,31 @@
 # @atlaskit/navigation-next
 
+## 6.7.4
+
+### Patch Changes
+
+- [patch][f7eb0a4886](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7eb0a4886):
+
+  Ensuring new horizontal nav allows for scrollbar width. Using 'vw' units prevents this.
+
+## 6.7.3
+
+- Updated dependencies [c5939cb73d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5939cb73d):
+  - @atlaskit/app-navigation@0.4.0
+
+## 6.7.2
+
+### Patch Changes
+
+- [patch][197aa4ed2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/197aa4ed2c):
+
+  Use context hooks in favour of emotion-theming
+
+## 6.7.1
+
+- Updated dependencies [382273ee49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/382273ee49):
+  - @atlaskit/app-navigation@0.3.0
+
 ## 6.7.0
 
 ### Minor Changes

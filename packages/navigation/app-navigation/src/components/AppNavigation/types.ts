@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { ReactNodeArray, ReactNode } from 'react';
 
 import { AppNavigationTheme } from '../../theme';
-import { ThemedPrimaryButtonProps } from '../PrimaryButton/types';
 
 export type AppNavigationProps = {
-  primaryItems: ThemedPrimaryButtonProps[];
+  primaryItems: ReactNodeArray;
   renderAppSwitcher?: React.ComponentType<{}>;
   renderCreate?: React.ComponentType<{}>;
   renderHelp?: React.ComponentType<{}>;
   renderNotifications?: React.ComponentType<{}>;
   renderProductHome: React.ComponentType<{}>;
-  renderProfile: React.ComponentType<{}>;
+  renderProfile?: React.ComponentType<{}>;
   renderSearch?: React.ComponentType<{}>;
+  renderSignIn?: React.ComponentType<{}>;
   renderSettings?: React.ComponentType<{}>;
+  moreLabel?: ReactNode;
   theme?: AppNavigationTheme;
 };
 

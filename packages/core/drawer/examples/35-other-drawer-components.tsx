@@ -23,12 +23,18 @@ export default class DrawersExample extends Component<{}, State> {
     isSkeletonVisible: true,
   };
 
+  private visibilityTimeoutId: number | undefined;
+
   componentDidMount() {
-    setTimeout(() => {
+    this.visibilityTimeoutId = window.setTimeout(() => {
       this.setState({
         isSkeletonVisible: false,
       });
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.visibilityTimeoutId);
   }
 
   toggleSkeleton = () =>

@@ -58,7 +58,7 @@ To develop on this locally, you'll need to first install the peer dependency tem
 
 ```sh
 $ npm i @atlassiansox/analytics-node-client --no-save
-$ yarn copy:version
+$ bolt build @atlaskit/dependency-version-analytics
 ```
 
 You then have two options:
@@ -80,6 +80,6 @@ This will run the built version of the tool that will be published to npm. It wi
 
 After each dev change,
 
-1. Run `yarn build:typescript:cli` outside the package
+1. Run `bolt build @atlaskit/dependency-version-analytics` outside the package
 2. Run `yalc publish` inside the package
 3. Run `yalc add '@atlaskit/dependency-version-analytics'` inside the product repo of your choosing

@@ -30,7 +30,7 @@ export const initSwitcher = () => {
   const container = document.getElementById('switcher-container');
 
   let hasRendered = false;
-  let destroySwitcherHandler: any = null;
+  let renderedSwitcher: any = null;
 
   const triggerBtn = document.getElementById('switcher-trigger');
   const destroyBtn = document.getElementById('switcher-destroy');
@@ -58,7 +58,7 @@ export const initSwitcher = () => {
     }
 
     // save the returned value so you can destroy it later.
-    destroySwitcherHandler = switcher.renderAt(container);
+    renderedSwitcher = switcher.renderAt(container);
     hasRendered = true;
 
     // show the fake inline dialog
@@ -66,13 +66,13 @@ export const initSwitcher = () => {
   };
 
   destroyBtn.onclick = function() {
-    if (!destroySwitcherHandler) {
+    if (!renderedSwitcher) {
       return;
     }
 
     // destroy the switcher using the previously saved handler
-    destroySwitcherHandler();
-    destroySwitcherHandler = null;
+    renderedSwitcher.destroy();
+    renderedSwitcher = null;
     hasRendered = false;
 
     // hide the fake inline dialog
