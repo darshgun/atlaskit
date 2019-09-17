@@ -1,4 +1,4 @@
-import { MarkdownTransformer } from '../../index';
+import { MarkdownTransformer } from '../index';
 
 import {
   doc,
@@ -99,7 +99,7 @@ ${CODE_FENCE}`;
   describe('Code block', () => {
     it('should trim whitespaces around language definition', () => {
       const CODE_FENCE = '```';
-      const md = `${CODE_FENCE}   java   
+      const md = `${CODE_FENCE}   java
 int a = 3;
 ${CODE_FENCE}`;
 
@@ -110,7 +110,7 @@ ${CODE_FENCE}`;
 
     it('should work without language definition', () => {
       const CODE_FENCE = '```';
-      const md = `${CODE_FENCE}    
+      const md = `${CODE_FENCE}
 int a = 3;
 ${CODE_FENCE}`;
 

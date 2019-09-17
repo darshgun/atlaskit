@@ -4,9 +4,9 @@ import { MentionResource, MentionProvider } from '@atlaskit/editor-core';
 import { mention, emoji } from '@atlaskit/util-data-test';
 import { ActivityProvider } from '@atlaskit/activity';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { BitbucketTransformer } from '../src';
 import { Content } from './styles';
-import { EmojiProvider } from '../../../elements/emoji';
 
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),

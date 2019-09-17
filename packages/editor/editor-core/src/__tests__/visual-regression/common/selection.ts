@@ -6,7 +6,7 @@ import {
   clickFirstCell,
 } from '../../__helpers/page-objects/_table';
 import { animationFrame } from '../../__helpers/page-objects/_editor';
-import { EditorTestCardProvider } from '../../../../../editor-test-helpers';
+import { EditorTestCardProvider } from '@atlaskit/editor-test-helpers';
 // TODO: https://product-fabric.atlassian.net/browse/ED-7721
 describe.skip('Danger for nested elements', () => {
   let page: any;

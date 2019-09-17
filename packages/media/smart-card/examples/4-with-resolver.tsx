@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { Provider, Card, Client, ResolveResponse } from '..';
+import { Provider, Card, Client, ResolveResponse } from '../src';
 import '../examples-helpers';
 
 class CustomClient extends Client {
