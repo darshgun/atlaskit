@@ -12,7 +12,6 @@ import {
 } from '../../__helpers/testing-example-helpers';
 import { selectors } from '../panel/_utils';
 
-// TODO: try this approach
 [
   {
     skipBrowsers: ['edge', 'ie', 'safari', 'chrome'],

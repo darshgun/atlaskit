@@ -1,3 +1,5 @@
+import { NodeType } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
 import {
   doc,
   p,
@@ -13,11 +15,10 @@ import {
   insertText,
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
+
 import { safeInsert } from '../../../utils/insert';
 import { insertMediaSingleNode } from '../../../plugins/media/utils/media-single';
 import { INPUT_METHOD } from '../../../plugins/analytics';
-import { NodeType } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
 import {
   temporaryMediaWithDimensions,
   temporaryFileId,

@@ -1,8 +1,6 @@
 import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
 import { EditorPlugin, EditorProps } from '../../types';
 
-export type PropsFlagsPluginState = { allowNewInsertionBehaviour?: boolean };
-
 export const pluginKey = new PluginKey('sharedContextPlugin');
 
 const sharedContextPlugin = (): EditorPlugin => ({
@@ -14,7 +12,7 @@ const sharedContextPlugin = (): EditorPlugin => ({
           new Plugin({
             key: pluginKey,
             state: {
-              init: (): EditorProps => props,
+              init: (): { props: EditorProps } => ({ props }),
               apply: (_, pluginState) => pluginState,
             },
           }),
@@ -24,6 +22,6 @@ const sharedContextPlugin = (): EditorPlugin => ({
 });
 
 export const getEditorProps = (state: EditorState): EditorProps =>
-  pluginKey.getState(state);
+  pluginKey.getState(state).props;
 
 export default sharedContextPlugin;
