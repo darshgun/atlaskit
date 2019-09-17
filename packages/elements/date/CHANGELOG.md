@@ -1,5 +1,13 @@
 # @atlaskit/date
 
+## 0.7.6
+
+### Patch Changes
+
+- [patch][c8bb1c7896](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8bb1c7896):
+
+  Fix some packages having a 'modules' field in package.json rather than 'module'
+
 ## 0.7.5
 
 ### Patch Changes

@@ -66,7 +66,7 @@ async function downloadFromS3ForLocal(downloadToFolder, branch, package) {
       process.exit(0);
     } else {
       console.error(chalk.red(`${err}`));
-      process.exit(0);
+      process.exit(1);
     }
   }
 }
@@ -81,7 +81,7 @@ function downloadFromS3(downloadToFolder, branch, package) {
 
   console.log('bucket', bucketPath);
   try {
-    npmRun.sync(
+    const response = npmRun.sync(
       `s3-cli --region="${BUCKET_REGION}" get ${bucketPath} ${downloadToFolder}/${ratchetFile}`,
     );
   } catch (err) {
@@ -93,7 +93,7 @@ function downloadFromS3(downloadToFolder, branch, package) {
       process.exit(0);
     } else {
       console.error(chalk.red(`${err}`));
-      process.exit(0);
+      process.exit(1);
     }
   }
 }

@@ -1,5 +1,13 @@
 # @atlaskit/app-navigation
 
+## 0.4.1
+
+### Patch Changes
+
+- [patch][f7eb0a4886](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7eb0a4886):
+
+  Ensuring new horizontal nav allows for scrollbar width. Using 'vw' units prevents this.
+
 ## 0.4.0
 
 ### Minor Changes

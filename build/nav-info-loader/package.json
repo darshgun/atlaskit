@@ -4,8 +4,8 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
-    "bolt": "^0.23.6",
-    "loader-utils": "^1.1.0",
-    "globby": "^6.1.0"
+    "bolt": "^0.24.0",
+    "globby": "^6.1.0",
+    "loader-utils": "^1.1.0"
   }
 }

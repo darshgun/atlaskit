@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/share",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "config": {
     "access": "private"
   },
   "description": "Fabric Share Element",
   "main": "dist/cjs/index.js",
-  "modules": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/cjs/types.d.ts",
   "atlaskit:src": "src/index.ts",
   "repository": {

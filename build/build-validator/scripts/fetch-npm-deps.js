@@ -49,10 +49,10 @@ async function fetchDistFromNpm(pkgName, pkgVersion, forceRefetch) {
   const lockFilePath = path.join(distPath, lockFileName);
   fse.closeSync(fse.openSync(lockFilePath, 'w'));
   const { stdout } = await limit(() =>
-    exec(`npm pack ${pkgName}@${pkgVersion}`),
+    exec(`npm pack ${pkgName}@${pkgVersion} --silent`),
   );
   const distTarballPath = stdout.split('\n')[0];
-  await exec(`tar -C ${distPath} -xvf ${distTarballPath}`);
+  await exec(`tar -C ${distPath} -xf ${distTarballPath}`);
 
   await fse.move(distTarballPath, path.join(distPath, distTarballPath));
   fse.unlinkSync(lockFilePath);
@@ -85,11 +85,11 @@ async function main(pkgName, opts) {
         `Dependency ${pkgName} is not a public package in the atlaskit repo.`,
       );
     }
-    return fetchDistFromNpm(pkgName, resolvedPkg.version, opts.force);
+    return fetchDistFromNpm(pkgName, resolvedPkg.version, opts.refetch);
   } else {
     const resolvedPromises = await Promise.all(
       allPackages.map(({ name, version }) => {
-        return fetchDistFromNpm(name, version, opts.force);
+        return fetchDistFromNpm(name, version, opts.refetch);
       }),
     );
 
@@ -104,7 +104,7 @@ if (require.main === module) {
   const flags = args.filter(a => a.startsWith('--'));
   const pkgName = requiredArgs[0];
   const opts = {
-    force: flags.includes('--refetch'),
+    refetch: flags.includes('--refetch'),
   };
   main(pkgName, opts).catch(e => {
     console.error(e);
