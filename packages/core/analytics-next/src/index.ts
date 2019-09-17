@@ -43,9 +43,9 @@ export {
 } from './useAnalyticsEvents';
 
 export {
-  useAnalyticsWithCallback,
-  UseAnalyticsWithCallbackHook,
-} from './useAnalyticsWithCallback';
+  useCallbackWithAnalytics,
+  UseCallbackWithAnalyticsHook,
+} from './useCallbackWithAnalytics';
 
 // Helper functions
 export { default as createAndFireEvent } from './createAndFireEvent';

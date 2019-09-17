@@ -14,6 +14,7 @@ export default md`
   * [AnalyticsEvent](#AnalyticsEvent)
   * [createAndFireEvent](#createAndFireEvent)
   * [useAnalyticsEvents](#useAnalyticsEvents)
+  * [useCallbackWithAnalytics](#useCallbackWithAnalytics)
 
 
   <a name="UIAnalyticsEvent"></a>
@@ -269,6 +270,25 @@ const onClick = event => {
 
   // onClick logic
 }
+`}
+
+<a name="useCallbackWithAnalytics"></a>
+### useCallbackWithAnalytics
+
+This custom React hook takes a callback function and an event payload, and returns a callback to fire the event and call the provided function. The hooks stores the input and memoizes the return value to optimize performance.
+
+Usage:
+
+${code`
+const handleClick = useCallbackWithAnalytics(
+  event => {
+    // onClick logic
+  }, {
+    action: 'click',
+  }
+);
+
+return <Button onClick={handleClick}>Click Me<Button>
 `}
 
 `;

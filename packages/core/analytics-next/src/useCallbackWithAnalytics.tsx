@@ -1,14 +1,16 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import { useAnalyticsEvents } from './useAnalyticsEvents';
 
-export type UseAnalyticsWithCallbackHook = (
+export type UseCallbackWithAnalyticsHook = (
   method: any,
   payload: any,
+  channel?: string,
 ) => (...args: any[]) => void;
 
-export const useAnalyticsWithCallback: UseAnalyticsWithCallbackHook = (
+export const useCallbackWithAnalytics: UseCallbackWithAnalyticsHook = (
   method,
   payload,
+  channel,
 ) => {
   const { createAnalyticsEvent } = useAnalyticsEvents();
 
@@ -18,13 +20,21 @@ export const useAnalyticsWithCallback: UseAnalyticsWithCallbackHook = (
   const methodRef = useRef(method);
   const payloadRef = useRef(payload);
 
+  useEffect(
+    () => {
+      methodRef.current = method;
+      payloadRef.current = payload;
+    },
+    [method, payload],
+  );
+
   return useCallback(
     (...args) => {
       const pload =
         typeof payloadRef.current === 'function'
           ? payloadRef.current(...args)
           : payloadRef.current;
-      createAnalyticsEvent(pload).fire();
+      createAnalyticsEvent(pload).fire(channel);
       methodRef.current(...args);
     },
     [createAnalyticsEvent, methodRef, payloadRef],
