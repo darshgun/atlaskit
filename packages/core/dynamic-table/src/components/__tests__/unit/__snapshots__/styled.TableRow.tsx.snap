@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableRow on rendering with highlighted prop should render with required background color 1`] = `
+.c0 {
+  background: #DEEBFF;
+}
+
+.c0:hover {
+  background: #FAFBFC;
+}
+
+<tr
+  className="c0"
+/>
+`;
+
+exports[`TableRow on rendering without highlighted prop should render with required background color 1`] = `
+.c0 {
+  background: inherit;
+}
+
+.c0:hover {
+  background: #FAFBFC;
+}
+
+<tr
+  className="c0"
+/>
+`;
