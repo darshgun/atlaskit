@@ -1,4 +1,0 @@
-{
-  "releases": [{ "name": "@atlaskit/build-validator", "type": "patch" }],
-  "dependents": []
-}

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/color-picker",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "description": "Jira Color Picker Component",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
