@@ -1,1 +1,0 @@
-Bug fix for using the hook with nested contexts, performance improvements, new `useAnalyticsEventsCallback` hook to provide a performance enhanced-abstraction for firing events with a callback.
