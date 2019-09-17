@@ -16,6 +16,6 @@ describe('Snapshot Test', () => {
     // @ts-ignore - Property 'page' does not exist on type 'Global'.
     const image = await takeScreenShot(global.page, url);
     // @ts-ignore - Expected 0 arguments, but got 1.
-    expect(image).toMatchProdImageSnapshot(0.01);
+    expect(image).toMatchProdImageSnapshot(0.02);
   });
 });
