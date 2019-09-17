@@ -34,7 +34,8 @@ async function copyVersionJson(pkg, project) {
 
 async function main(pkgName) {
   const project = await bolt.getProject();
-  const filterOpts = pkgName ? { only: pkgName } : { onlyFs: 'packages/*/*' };
+  // We always use `onlyFs` to restrict execution to the packages dir regardless of whether packageName is present
+  const filterOpts = { only: pkgName || undefined, onlyFs: 'packages/*/*' };
   await bolt.runWorkspaceTasks(pkg => copyVersionJson(pkg, project), {
     filterOpts,
   });
