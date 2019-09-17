@@ -24,8 +24,8 @@ const editors: { appearance: Appearance; snapshotSelector?: string }[] = [
     snapshotSelector: editorCommentContentSelector,
   },
 ];
-
-describe('Snapshot Test: Media', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: Media', () => {
   let page: Page;
   beforeAll(async () => {
     // @ts-ignore
