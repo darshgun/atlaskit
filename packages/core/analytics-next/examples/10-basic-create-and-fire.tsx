@@ -4,7 +4,8 @@ import {
   UIAnalyticsEvent,
   withAnalyticsEvents,
   WithAnalyticsEventsProps,
-  useAnalyticsEvents_experimental,
+  useAnalyticsEvents,
+  useCallbackWithAnalytics,
 } from '../src';
 
 interface Props extends WithAnalyticsEventsProps {
@@ -37,7 +38,7 @@ const Button = withAnalyticsEvents()(ButtonBase);
 
 const FunctionalButton: FC<Props> = ({ onClick, ...props }) => {
   // Decompose function from the hook
-  const { createAnalyticsEvent } = useAnalyticsEvents_experimental();
+  const { createAnalyticsEvent } = useAnalyticsEvents();
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     // Create our analytics event
@@ -54,22 +55,39 @@ const FunctionalButton: FC<Props> = ({ onClick, ...props }) => {
   return <button {...props} onClick={handleClick} />;
 };
 
-export default class App extends Component<void> {
-  handleEvent = (analyticsEvent: UIAnalyticsEvent) => {
+const FunctionalButtonWithCallback: FC<Props> = ({ onClick, ...props }) => {
+  const handleClick = useCallbackWithAnalytics(
+    onClick,
+    { action: 'click' },
+    'atlaskit',
+  );
+
+  return <button {...props} onClick={handleClick} />;
+};
+
+const App: FC = () => {
+  const handleEvent = (analyticsEvent: UIAnalyticsEvent) => {
     const { payload, context } = analyticsEvent;
     console.log('Received event:', { payload, context });
   };
 
-  render() {
-    return (
-      <AnalyticsListener channel="atlaskit" onEvent={this.handleEvent}>
-        <Button onClick={() => console.log('onClick callback')}>
-          Click me (HOC)
-        </Button>
-        <FunctionalButton onClick={() => console.log('onClick callback')}>
-          Click me (Hook)
-        </FunctionalButton>
-      </AnalyticsListener>
-    );
-  }
-}
+  return (
+    <AnalyticsListener channel="atlaskit" onEvent={handleEvent}>
+      <Button onClick={() => console.log('onClick callback')}>
+        Click me (withAnalyticsEvents)
+      </Button>
+      <br />
+      <FunctionalButton onClick={() => console.log('onClick callback')}>
+        Click me (useAnalyticsEvents)
+      </FunctionalButton>
+      <br />
+      <FunctionalButtonWithCallback
+        onClick={() => console.log('onClick callback')}
+      >
+        Click me (useCallbackWithAnalytics)
+      </FunctionalButtonWithCallback>
+    </AnalyticsListener>
+  );
+};
+
+export default App;

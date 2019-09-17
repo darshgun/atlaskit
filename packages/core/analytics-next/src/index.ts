@@ -38,9 +38,14 @@ export {
 
 // Hook for creating and firing analytics events
 export {
-  useAnalyticsEvents_experimental,
+  useAnalyticsEvents,
   UseAnalyticsEventsHook,
 } from './useAnalyticsEvents';
+
+export {
+  useCallbackWithAnalytics,
+  UseCallbackWithAnalyticsHook,
+} from './useCallbackWithAnalytics';
 
 // Helper functions
 export { default as createAndFireEvent } from './createAndFireEvent';
