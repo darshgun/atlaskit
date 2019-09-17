@@ -118,6 +118,7 @@ export class RankableBody extends React.Component<Props, {}> {
                   rowIndex={rowIndex}
                   row={row}
                   isRankingDisabled={isRankingDisabled}
+                  isHighlighted={highlightedRowIndex === rowIndex}
                 />
               ))}
               {provided.placeholder}

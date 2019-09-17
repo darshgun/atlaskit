@@ -23,6 +23,7 @@ class Body extends React.Component<Props, {}> {
             isFixedSize={isFixedSize}
             key={rowIndex} // eslint-disable-line react/no-array-index-key
             row={row}
+            isHighlighted={highlightedRowIndex === rowIndex}
           />
         ))}
       </tbody>
