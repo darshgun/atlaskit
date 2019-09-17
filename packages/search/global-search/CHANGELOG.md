@@ -1,5 +1,13 @@
 # @atlaskit/global-search
 
+## 12.1.1
+
+### Patch Changes
+
+- [patch][9447579b2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9447579b2e):
+
+  Fixed withFeedbackButton warning message
+
 ## 12.1.0
 
 ### Minor Changes
