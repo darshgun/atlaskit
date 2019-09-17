@@ -42,6 +42,11 @@ export {
   UseAnalyticsEventsHook,
 } from './useAnalyticsEvents';
 
+export {
+  useAnalyticsWithCallback,
+  UseAnalyticsWithCallbackHook,
+} from './useAnalyticsWithCallback';
+
 // Helper functions
 export { default as createAndFireEvent } from './createAndFireEvent';
 export { default as cleanProps } from './cleanProps';

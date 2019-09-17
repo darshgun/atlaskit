@@ -1,7 +1,15 @@
 import { useCallback, useRef } from 'react';
 import { useAnalyticsEvents } from './useAnalyticsEvents';
 
-export const useAnalyticsWithCallback = (method, payload) => {
+export type UseAnalyticsWithCallbackHook = (
+  method: any,
+  payload: any,
+) => (...args: any[]) => void;
+
+export const useAnalyticsWithCallback: UseAnalyticsWithCallbackHook = (
+  method,
+  payload,
+) => {
   const { createAnalyticsEvent } = useAnalyticsEvents();
 
   // given input might be new function/object each render
