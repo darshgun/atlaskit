@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Textfield from '@atlaskit/textfield';
-import nachosTFTheme from './theme';
-import { TextFieldProps } from './types';
+import nachosTFTheme from '../theme';
+import { TextFieldProps } from '../types';
 
 export function TextField(
   textFieldProps: TextFieldProps & React.HTMLProps<HTMLButtonElement>,
