@@ -20,6 +20,7 @@ export function useAnalyticsEvents(): UseAnalyticsEventsHook {
       getAtlaskitAnalyticsContext === null) &&
     process.env.NODE_ENV !== 'production'
   ) {
+    /* eslint-disable-next-line no-console */
     console.warn(
       `No compatible AnalyticsListener is listening to this event fire. Use of this hook requires the firing component/hook to be wrapped in an AnalyticsListener from @atlaskit/analytics-next@^6.3.0 or above.`,
     );

@@ -37,6 +37,6 @@ export const useCallbackWithAnalytics: UseCallbackWithAnalyticsHook = (
       createAnalyticsEvent(pload).fire(channel);
       methodRef.current(...args);
     },
-    [createAnalyticsEvent, methodRef, payloadRef],
+    [createAnalyticsEvent, methodRef, payloadRef, channel],
   );
 };
