@@ -349,10 +349,13 @@ export const handleCut = (
 export const whenTableInFocus = (
   eventHandler: (view: EditorView, mouseEvent: Event) => boolean,
 ) => (view: EditorView, mouseEvent: Event): boolean => {
-  if (
-    !getPluginState(view.state).tableNode ||
-    !!getResizePluginState(view.state).dragging
-  ) {
+  const tableResizePluginState = getResizePluginState(view.state);
+  const tablePluginState = getPluginState(view.state);
+  const isDragging =
+    tableResizePluginState && !!tableResizePluginState.dragging;
+  const hasTableNode = tablePluginState && tablePluginState.tableNode;
+
+  if (!hasTableNode || isDragging) {
     return false;
   }
 
