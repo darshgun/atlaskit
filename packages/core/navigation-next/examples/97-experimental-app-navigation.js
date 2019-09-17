@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
+import { DummySkeletonContent } from './shared/components/DummySkeletonContent';
 import { LinkItem, ProjectSwitcher } from './shared/components';
 import RootViews from './shared/views/root';
 import ContainerViews from './shared/views/container';
@@ -42,6 +43,7 @@ const HorizontalNavigationApp = () => {
                 <Route key={path} component={component} path={path} />
               ))}
             </Switch>
+            <DummySkeletonContent />
           </div>
         </LayoutManagerWithViewController>
       </NavigationProvider>

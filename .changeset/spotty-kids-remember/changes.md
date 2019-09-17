@@ -1,0 +1,1 @@
+Ensuring new horizontal nav allows for scrollbar width. Using 'vw' units prevents this.
