@@ -205,21 +205,12 @@ export class CardBase extends Component<
     const { dataURI, name } = identifier;
     this.resolvedId = dataURI;
 
-    const fileAttributes = {
-      fileId: this.resolvedId,
-      fileSource: 'mediaCard',
-      fileMediatype: 'image',
-    };
-
     createAndFireCustomMediaEvent(
       {
         eventType: 'operational',
         action: 'commenced',
         actionSubject: 'mediaCardRender',
         actionSubjectId: dataURI,
-        attributes: {
-          fileAttributes,
-        },
       },
       createAnalyticsEvent,
     );
@@ -239,15 +230,9 @@ export class CardBase extends Component<
     identifier: FileIdentifier,
     mediaClient: MediaClient,
   ) {
-    const { id, mediaItemType, collectionName, occurrenceKey } = identifier;
+    const { id, collectionName, occurrenceKey } = identifier;
     const { createAnalyticsEvent } = this.props;
     this.resolvedId = await id;
-
-    const fileAttributes = {
-      fileId: this.resolvedId,
-      fileSource: 'mediaCard',
-      fileMediatype: mediaItemType || 'unknown',
-    };
 
     createAndFireCustomMediaEvent(
       {
@@ -255,9 +240,6 @@ export class CardBase extends Component<
         action: 'commenced',
         actionSubject: 'mediaCardRender',
         actionSubjectId: this.resolvedId,
-        attributes: {
-          fileAttributes,
-        },
       },
       createAnalyticsEvent,
     );
