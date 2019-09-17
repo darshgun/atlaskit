@@ -65,6 +65,7 @@ const createPlugin = (dispatch: Dispatch) =>
   });
 
 const historyPlugin = (): EditorPlugin => ({
+  name: 'history',
   pmPlugins() {
     return [
       { name: 'history', plugin: ({ dispatch }) => createPlugin(dispatch) },

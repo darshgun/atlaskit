@@ -1,4 +1,3 @@
-/* sample-data.js */
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import DropdownMenu, {
@@ -6,8 +5,8 @@ import DropdownMenu, {
   DropdownItem,
 } from '@atlaskit/dropdown-menu';
 import styled from 'styled-components';
-import presidents from './presidents.json';
-import lorem from './lorem.json';
+import { presidents } from './presidents';
+import { lorem } from './lorem';
 
 interface President {
   id: number;

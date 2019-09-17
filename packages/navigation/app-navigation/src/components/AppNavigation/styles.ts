@@ -5,27 +5,23 @@ import { AppNavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-export const containerCSS = (theme: AppNavigationTheme) => {
-  const {
-    mode: { navigation },
-  } = theme;
-  return {
-    alignItems: 'center',
-    boxSizing: 'border-box' as const,
-    display: 'flex',
-    flexShrink: 0,
-    justifyContent: 'space-between',
-    paddingLeft: gridSize * 2,
-    paddingRight: gridSize * 2,
-    height: HORIZONTAL_GLOBAL_NAV_HEIGHT,
-    width: '100vw',
-    ...navigation,
-  };
-};
+export const containerCSS = ({ mode: { navigation } }: AppNavigationTheme) => ({
+  alignItems: 'center',
+  boxSizing: 'border-box' as const,
+  display: 'flex',
+  flexShrink: 0,
+  justifyContent: 'space-between',
+  paddingLeft: gridSize * 2,
+  paddingRight: gridSize * 2,
+  height: HORIZONTAL_GLOBAL_NAV_HEIGHT,
+  width: '100vw',
+  ...navigation,
+});
 
 export const leftCSS = {
   alignItems: 'center',
   display: 'flex',
+  flexGrow: 1,
   height: 'inherit',
 };
 

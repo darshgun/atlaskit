@@ -1,11 +1,11 @@
 import { ButtonProps } from '@atlaskit/button';
-import { AppNavigationTheme } from '../../theme';
 
-export type IconButtonProps = Pick<ButtonProps, 'onClick'> & {
-  className?: string;
+export type IconButtonProps = Omit<
+  ButtonProps,
+  'children' | 'iconBefore' | 'iconAfter'
+> & {
   icon: ButtonProps['iconBefore'];
   testId?: string;
-  theme: AppNavigationTheme;
   tooltip: string;
 };
 

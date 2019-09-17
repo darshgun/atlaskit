@@ -1,5 +1,13 @@
 # @atlaskit/media-ui
 
+## 11.6.5
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
 ## 11.6.4
 
 ### Patch Changes

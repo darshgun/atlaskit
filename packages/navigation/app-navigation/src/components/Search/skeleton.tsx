@@ -3,6 +3,7 @@ import { gridSize } from '@atlaskit/theme/constants';
 import { jsx } from '@emotion/core';
 import { Fragment } from 'react';
 
+import { useTheme } from '../../theme';
 import { IconButtonSkeleton } from '../IconButton/skeleton';
 import {
   searchIconSkeletonCSS,
@@ -11,10 +12,12 @@ import {
 } from './styles';
 
 export const SearchSkeleton = () => {
+  const theme = useTheme();
+
   return (
     <Fragment>
       <div css={searchInputContainerCSS}>
-        <div css={searchInputSkeletonCSS} />
+        <div css={searchInputSkeletonCSS(theme)} />
       </div>
       <IconButtonSkeleton
         css={searchIconSkeletonCSS}

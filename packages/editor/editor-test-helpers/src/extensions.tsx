@@ -35,6 +35,8 @@ class InlineAsyncExtension extends React.Component<{
     width: 85,
   };
 
+  private widthTimeoutId: number | undefined;
+
   render() {
     const { node } = this.props;
     const { width } = this.state;
@@ -46,9 +48,13 @@ class InlineAsyncExtension extends React.Component<{
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.widthTimeoutId = window.setTimeout(() => {
       this.setState({ width: 285 });
     }, 2000);
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.widthTimeoutId);
   }
 }
 

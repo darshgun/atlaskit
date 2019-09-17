@@ -2,13 +2,13 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import styled from 'styled-components';
-import presidents from './numerical.json';
+import { presidents } from './numerical';
 
 interface President {
   id: number;
   nm: string;
   pp: string;
-  num: number;
+  num: number | string;
 }
 
 function createKey(input: string) {

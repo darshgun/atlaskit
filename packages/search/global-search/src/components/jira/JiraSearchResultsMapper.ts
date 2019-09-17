@@ -133,7 +133,10 @@ export const mapSearchResultsToUIGroups = (
                 resultType: ResultType.JiraIssueAdvancedSearch,
                 resultId: 'search-jira',
                 name: 'jira',
-                href: getJiraAdvancedSearchUrl(JiraEntityTypes.Issues, query),
+                href: getJiraAdvancedSearchUrl({
+                  entityType: JiraEntityTypes.Issues,
+                  query,
+                }),
                 analyticsType: AnalyticsType.LinkPostQueryAdvancedSearchJira,
                 contentType: ContentType.JiraIssue,
               },
