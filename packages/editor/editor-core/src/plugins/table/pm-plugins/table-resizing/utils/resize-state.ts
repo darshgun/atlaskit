@@ -1,6 +1,5 @@
 import { Node as PMNode } from 'prosemirror-model';
 import {
-  tableCellMinWidth,
   tableNewColumnMinWidth,
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
@@ -11,6 +10,7 @@ import {
   getColumnStateFromDOM,
 } from './column-state';
 import { insertColgroupFromNode, hasTableBeenResized } from './colgroup';
+import { updateResizeHandles } from '../../../utils';
 
 export interface ResizeState {
   cols: ColumnState[];
@@ -70,6 +70,7 @@ export const resizeColumn = (
       : resizeState;
 
   updateColgroup(newState, tableRef);
+  updateResizeHandles(tableRef, newState, colIndex);
 
   return newState;
 };
@@ -99,7 +100,7 @@ export const adjustColumnsWidths = (
 ): ResizeState => {
   const totalWidth = getTotalWidth(resizeState);
   const diff = maxSize - totalWidth;
-  if (diff > 0 || (diff < 0 && Math.abs(diff) < tableCellMinWidth)) {
+  if (diff !== 0) {
     let updated = false;
     return {
       ...resizeState,

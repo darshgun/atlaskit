@@ -25,12 +25,14 @@ export function getLayoutSize(
   containerWidth: number = 0,
   options: TableOptions,
 ): number {
-  const { dynamicTextSizing, isFullWidthModeEnabled } = options;
+  const { isDynamicTextSizingEnabled, isFullWidthModeEnabled } = options;
 
   if (isFullWidthModeEnabled) {
     return containerWidth
       ? Math.min(
-          containerWidth - akEditorGutterPadding * 2,
+          containerWidth -
+            akEditorGutterPadding * 2 -
+            (isDynamicTextSizingEnabled ? 0 : 4),
           akEditorFullWidthLayoutWidth,
         )
       : akEditorFullWidthLayoutWidth;
@@ -45,7 +47,7 @@ export function getLayoutSize(
     return parseInt(calculatedTableWidth, 10);
   }
 
-  if (dynamicTextSizing && tableLayout === 'default') {
+  if (isDynamicTextSizingEnabled && tableLayout === 'default') {
     return getDefaultLayoutMaxWidth(containerWidth);
   }
 
