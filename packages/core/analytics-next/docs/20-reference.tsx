@@ -13,7 +13,7 @@ export default md`
   * [withAnalyticsContext](#withAnalyticsContext)
   * [AnalyticsEvent](#AnalyticsEvent)
   * [createAndFireEvent](#createAndFireEvent)
-  * [useAnalyticsEvents_experimental](#useAnalyticsEvents_experimental)
+  * [useAnalyticsEvents](#useAnalyticsEvents)
 
 
   <a name="UIAnalyticsEvent"></a>
@@ -251,8 +251,8 @@ const ButtonWithAnalytics = withAnalyticsEvents({
 This will create an event with the payload, fire it on the \`'atlaskit'\`
 channel and return a clone of the event.
 
-<a name="useAnalyticsEvents_experimental"></a>
-### useAnalyticsEvents_experimental
+<a name="useAnalyticsEvents"></a>
+### useAnalyticsEvents
 
 This custom React hook provides a method \`createAnalyticsEvent\` for creating \`UIAnalyticsEvent\`s. This hook can be used as a replacement for the \`withAnalyticsEvents\` HOC. See the section on [creating your own events](/packages/core/analytics-next/docs/concepts#creating-your-own-events)
 in the Concepts page for a thorough explanation of how to use this hook.
@@ -260,7 +260,7 @@ in the Concepts page for a thorough explanation of how to use this hook.
 Usage:
 
 ${code`
-const { createAnalyticsEvent } = useAnalyticsEvents_experimental();
+const { createAnalyticsEvent } = useAnalyticsEvents();
 
 const onClick = event => {
   createAnalyticsEvent({
