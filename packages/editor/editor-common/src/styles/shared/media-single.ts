@@ -22,8 +22,9 @@ const mediaSingleSharedStyle = css`
   }
 
   table .${mediaSingleClassName} {
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    clear: both;
   }
 
   .${mediaSingleClassName}.image-wrap-left
