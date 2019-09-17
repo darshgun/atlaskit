@@ -1,0 +1,1 @@
+Fix some packages having a 'modules' field in package.json rather than 'module'
