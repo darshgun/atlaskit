@@ -70,11 +70,9 @@ import {
   EVENT_TYPE,
   ACTION_SUBJECT_ID,
   DispatchAnalyticsEvent,
-  addAnalytics,
 } from '../../../analytics';
 import { insertEmoji } from '../../../emoji/commands/insert-emoji';
 import { DropdownItem } from '../../../block-type/ui/ToolbarBlockType';
-import { safeInsert } from '../../../../../src/utils/insert';
 
 export const messages = defineMessages({
   action: {
@@ -804,27 +802,12 @@ class ToolbarInsertBlock extends React.PureComponent<
     (inputMethod: TOOLBAR_MENU_TYPE): boolean => {
       const { editorView } = this.props;
 
-      let tr = safeInsert(
-        editorView.state.schema.nodes.rule.createChecked(),
+      const tr = createHorizontalRule(
+        editorView.state,
         editorView.state.selection.from,
-      )(editorView.state.tr);
-
-      if (!tr) {
-        tr = createHorizontalRule(
-          editorView.state,
-          editorView.state.selection.from,
-          editorView.state.selection.to,
-          inputMethod,
-        );
-      } else {
-        tr = addAnalytics(tr, {
-          action: ACTION.INSERTED,
-          actionSubject: ACTION_SUBJECT.DOCUMENT,
-          actionSubjectId: ACTION_SUBJECT_ID.DIVIDER,
-          attributes: { inputMethod },
-          eventType: EVENT_TYPE.TRACK,
-        });
-      }
+        editorView.state.selection.to,
+        inputMethod,
+      );
 
       if (tr) {
         editorView.dispatch(tr);
