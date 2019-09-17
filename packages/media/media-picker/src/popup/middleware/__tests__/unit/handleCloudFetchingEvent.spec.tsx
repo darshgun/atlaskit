@@ -1,11 +1,11 @@
-import { handleCloudFetchingEvent } from '../../handleCloudFetchingEvent';
 import { mockStore } from '@atlaskit/media-test-helpers';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
+import { handleCloudFetchingEvent } from '../../handleCloudFetchingEvent';
 import {
   HANDLE_CLOUD_FETCHING_EVENT,
   HandleCloudFetchingEventAction,
 } from '../../../actions/handleCloudFetchingEvent';
 import { FINALIZE_UPLOAD } from '../../../actions/finalizeUpload';
-import { RECENTS_COLLECTION } from '../../../config';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
 
 describe('handleCloudFetchingEvent', () => {

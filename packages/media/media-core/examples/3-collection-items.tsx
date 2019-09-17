@@ -4,12 +4,13 @@ import { Subscription } from 'rxjs/Subscription';
 import { FileIdentifier } from '..';
 import { Card } from '@atlaskit/media-card';
 import Button from '@atlaskit/button';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { createUserMediaClient } from '@atlaskit/media-test-helpers';
 import { CardsWrapper, Header } from '../example-helpers/styled';
 
 const mediaClient = createUserMediaClient();
 const mediaClientConfig = mediaClient.config;
-const collectionName = 'recents';
+const collectionName = RECENTS_COLLECTION;
 export interface ExampleState {
   fileIds: string[];
 }
