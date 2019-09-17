@@ -42,19 +42,13 @@ export function Nav({
   );
 }
 
-export default function MobileNav({
-  appRouteDetails,
-}: {
-  appRouteDetails: RouteComponentProps;
-}) {
+export default function MobileNav({ props }: { props: RouteComponentProps }) {
   const [drawerState, setDrawerState] = React.useState<string>('none');
 
   return (
     <MobileHeader
       navigation={(isOpen: boolean) =>
-        isOpen && (
-          <Nav closeNav={() => setDrawerState('none')} {...appRouteDetails} />
-        )
+        isOpen && <Nav closeNav={() => setDrawerState('none')} {...props} />
       }
       menuIconLabel="Open navigation"
       drawerState={drawerState}
