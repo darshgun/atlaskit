@@ -3,6 +3,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
+import { FabricChannel } from '@atlaskit/analytics-listeners';
 import { AnalyticsContext, AnalyticsListener } from '@atlaskit/analytics-next';
 
 import {
@@ -47,7 +48,6 @@ describe('Card', () => {
     eventType: 'operational',
     actionSubject: 'mediaCardRender',
   };
-  const MEDIA_CHANNEL = 'media';
 
   const setup = (
     mediaClient: MediaClient = createMediaClientWithGetFile(),
@@ -235,7 +235,12 @@ describe('Card', () => {
 
   it('should fire onClick when passed in as a prop and CardView fires onClick', () => {
     const clickHandler = jest.fn();
-    const { component } = setup(fakeMediaClient(), { onClick: clickHandler });
+
+    const subject = new ReplaySubject<FileState>(1);
+    const mediaClient = fakeMediaClient();
+    asMockReturnValue(mediaClient.file.getFileState, subject);
+
+    const { component } = setup(mediaClient, { onClick: clickHandler });
 
     const cardViewOnClick = component.find(CardView).props().onClick;
 
@@ -251,7 +256,12 @@ describe('Card', () => {
   it('should fire onClick and onMouseEnter events triggered from MediaCard', () => {
     const clickHandler = jest.fn();
     const hoverHandler = jest.fn();
-    const { component } = setup(fakeMediaClient(), {
+
+    const subject = new ReplaySubject<FileState>(1);
+    const mediaClient = fakeMediaClient();
+    asMockReturnValue(mediaClient.file.getFileState, subject);
+
+    const { component } = setup(mediaClient, {
       onMouseEnter: hoverHandler,
       onClick: clickHandler,
     });
@@ -296,7 +306,11 @@ describe('Card', () => {
   });
 
   it('should pass properties down to CardView', () => {
-    const { component } = setup(fakeMediaClient(), {
+    const subject = new ReplaySubject<FileState>(1);
+    const mediaClient = fakeMediaClient();
+    asMockReturnValue(mediaClient.file.getFileState, subject);
+
+    const { component } = setup(mediaClient, {
       dimensions: { width: 100, height: 50 },
     });
 
@@ -982,7 +996,7 @@ describe('Card', () => {
         containsNode: () => true,
       });
       mount<CardProps, CardState>(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={onEvent}>
+        <AnalyticsListener channel={FabricChannel.media} onEvent={onEvent}>
           <Card mediaClient={mediaClient} identifier={identifier} />
         </AnalyticsListener>,
       );
@@ -1006,7 +1020,7 @@ describe('Card', () => {
             },
           ],
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
     });
 
@@ -1017,7 +1031,7 @@ describe('Card', () => {
         containsNode: () => false,
       });
       mount<CardProps, CardState>(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={onEvent}>
+        <AnalyticsListener channel={FabricChannel.media} onEvent={onEvent}>
           <Card mediaClient={mediaClient} identifier={identifier} />
         </AnalyticsListener>,
       );
@@ -1032,7 +1046,7 @@ describe('Card', () => {
         containsNode: () => true,
       });
       const handler = mount<CardProps, CardState>(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={onEvent}>
+        <AnalyticsListener channel={FabricChannel.media} onEvent={onEvent}>
           <Card mediaClient={mediaClient} identifier={identifier} />
         </AnalyticsListener>,
       );
@@ -1043,11 +1057,16 @@ describe('Card', () => {
     });
 
     it('should fire Analytics Event on file load start with static file Id', async () => {
+      const subject = new ReplaySubject<FileState>(1);
       const mediaClient = fakeMediaClient();
+      asMockReturnValue(mediaClient.file.getFileState, subject);
       const analyticsHandler = jest.fn();
 
       await mount(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+        <AnalyticsListener
+          channel={FabricChannel.media}
+          onEvent={analyticsHandler}
+        >
           <Card
             mediaClient={mediaClient}
             identifier={identifier}
@@ -1068,19 +1087,24 @@ describe('Card', () => {
             actionSubjectId: identifier.id,
           }),
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
     });
 
     it('should fire Analytics Event on file load start with async file Id', async () => {
-      const mediaClient = fakeMediaClient() as any;
+      const subject = new ReplaySubject<FileState>(1);
+      const mediaClient = fakeMediaClient();
+      asMockReturnValue(mediaClient.file.getFileState, subject);
       const analyticsHandler = jest.fn();
       const asyncIdentifier = {
         ...identifier,
         id: Promise.resolve('some-async-id'),
       };
       mount(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+        <AnalyticsListener
+          channel={FabricChannel.media}
+          onEvent={analyticsHandler}
+        >
           <Card
             mediaClient={mediaClient}
             identifier={asyncIdentifier}
@@ -1099,7 +1123,7 @@ describe('Card', () => {
             actionSubjectId: 'some-async-id',
           }),
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
     });
 
@@ -1112,7 +1136,10 @@ describe('Card', () => {
         name: 'some external image',
       };
       mount(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+        <AnalyticsListener
+          channel={FabricChannel.media}
+          onEvent={analyticsHandler}
+        >
           <Card
             mediaClient={mediaClient}
             identifier={externalIdentifier}
@@ -1132,7 +1159,7 @@ describe('Card', () => {
             actionSubjectId: externalIdentifier.dataURI,
           }),
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
     });
 
@@ -1164,7 +1191,10 @@ describe('Card', () => {
       const analyticsHandler = jest.fn();
 
       mount(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+        <AnalyticsListener
+          channel={FabricChannel.media}
+          onEvent={analyticsHandler}
+        >
           <Card
             mediaClient={mediaClient}
             identifier={identifier}
@@ -1193,7 +1223,7 @@ describe('Card', () => {
             },
           }),
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
 
       expect(analyticsHandler).toHaveBeenNthCalledWith(
@@ -1216,7 +1246,7 @@ describe('Card', () => {
             },
           ],
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
     });
 
@@ -1248,7 +1278,10 @@ describe('Card', () => {
       const analyticsHandler = jest.fn();
 
       mount(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+        <AnalyticsListener
+          channel={FabricChannel.media}
+          onEvent={analyticsHandler}
+        >
           <Card
             mediaClient={mediaClient}
             identifier={identifier}
@@ -1279,7 +1312,7 @@ describe('Card', () => {
             },
           }),
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
 
       expect(analyticsHandler).toHaveBeenNthCalledWith(
@@ -1301,7 +1334,7 @@ describe('Card', () => {
             },
           ],
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
     });
 
@@ -1328,7 +1361,10 @@ describe('Card', () => {
       const analyticsHandler = jest.fn();
 
       mount(
-        <AnalyticsListener channel={MEDIA_CHANNEL} onEvent={analyticsHandler}>
+        <AnalyticsListener
+          channel={FabricChannel.media}
+          onEvent={analyticsHandler}
+        >
           <Card
             mediaClient={mediaClient}
             identifier={identifier}
@@ -1354,7 +1390,7 @@ describe('Card', () => {
             },
           }),
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
 
       expect(analyticsHandler).toHaveBeenNthCalledWith(
@@ -1390,7 +1426,7 @@ describe('Card', () => {
             },
           ],
         }),
-        MEDIA_CHANNEL,
+        FabricChannel.media,
       );
     });
   });
