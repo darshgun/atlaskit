@@ -48,11 +48,6 @@ export const createHorizontalRule = (
   }
 
   if (!tr) {
-    /**
-     * This piece of code `might` be deprecated and never used.
-     * Because `---` command is only triggered at the start of a paragraph, which will covered by `saveInsert`.
-     * TODO: evaluate if we can get rid of this piece of code.
-     */
     const { $from } = state.selection;
     const $afterRule = state.doc.resolve($from.after());
     const { paragraph } = state.schema.nodes;
