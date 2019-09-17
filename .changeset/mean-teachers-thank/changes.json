@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/emoji", "type": "minor" },
+    { "name": "@atlaskit/util-data-test", "type": "minor" }
+  ],
+  "dependents": []
+}

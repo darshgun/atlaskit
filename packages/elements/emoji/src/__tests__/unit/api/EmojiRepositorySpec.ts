@@ -33,7 +33,7 @@ const cowboy: EmojiDescription = {
   representation: {
     sprite: {
       url:
-        'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
+        'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
       row: 23,
       column: 25,
       height: 782,
@@ -58,7 +58,7 @@ const siteTest: EmojiDescription = {
   representation: {
     sprite: {
       url:
-        'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
+        'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
       row: 23,
       column: 25,
       height: 782,
@@ -83,7 +83,7 @@ const atlassianTest: EmojiDescription = {
   representation: {
     sprite: {
       url:
-        'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
+        'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
       row: 23,
       column: 25,
       height: 782,
@@ -108,7 +108,7 @@ const standardTest: EmojiDescription = {
   representation: {
     sprite: {
       url:
-        'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
+        'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
       row: 23,
       column: 25,
       height: 782,
@@ -133,7 +133,7 @@ const allNumberTest: EmojiDescription = {
   representation: {
     sprite: {
       url:
-        'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png',
+        'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png',
       row: 23,
       column: 25,
       height: 782,
@@ -158,7 +158,7 @@ const frequentTest: EmojiDescription = {
   representation: {
     sprite: {
       url:
-        'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png',
+        'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/standard/551c9814-1d37-4573-819d-afab3afeaf32/32x32/nature.png',
       row: 23,
       column: 25,
       height: 782,
@@ -188,7 +188,7 @@ export const siteEmojiChinese1 = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
@@ -207,7 +207,7 @@ export const siteEmojiChinese2 = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
@@ -226,7 +226,7 @@ export const siteEmojiChinese3 = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
@@ -245,7 +245,7 @@ export const siteEmojiGreek1 = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
@@ -264,7 +264,7 @@ export const siteEmojiGreek2 = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
@@ -283,7 +283,7 @@ export const siteEmojiGreek3 = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
