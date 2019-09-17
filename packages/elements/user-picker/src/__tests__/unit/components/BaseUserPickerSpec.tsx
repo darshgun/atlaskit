@@ -16,6 +16,7 @@ import {
   OptionData,
   Team,
   User,
+  Group,
   UserPickerProps,
   UserType,
 } from '../../../types';
@@ -778,7 +779,7 @@ describe('BaseUserPicker', () => {
     expect(preventDefault).toHaveBeenCalledTimes(0);
   });
 
-  describe('teams', () => {
+  describe('groups and teams', () => {
     const teamOptions: Team[] = [
       {
         id: 'team-123',
@@ -794,13 +795,22 @@ describe('BaseUserPicker', () => {
       },
     ];
 
+    const groupOptions: Group[] = [
+      { id: 'group-90210', name: 'the-bae-goals-group', type: 'group' },
+      { id: 'group-111', name: 'groups-that-group-groups', type: 'group' },
+    ];
+
     const selectableTeamOptions: Option[] = optionToSelectableOptions(
       teamOptions,
     );
-
-    const mixedOptions: OptionData[] = (options as OptionData[]).concat(
-      teamOptions,
+    const selectableGroupOptions: Option[] = optionToSelectableOptions(
+      groupOptions,
     );
+
+    const mixedOptions: OptionData[] = (options as OptionData[])
+      .concat(teamOptions)
+      .concat(groupOptions);
+
     const selectableMixedOptions: Option[] = optionToSelectableOptions(
       mixedOptions,
     );
@@ -811,13 +821,19 @@ describe('BaseUserPicker', () => {
       expect(select.prop('options')).toEqual(selectableTeamOptions);
     });
 
-    it('should render select with both teams and users', () => {
+    it('should render select with only groups', () => {
+      const component = shallowUserPicker({ options: groupOptions });
+      const select = component.find(Select);
+      expect(select.prop('options')).toEqual(selectableGroupOptions);
+    });
+
+    it('should render select with teams, groups, and users', () => {
       const component = shallowUserPicker({ options: mixedOptions });
       const select = component.find(Select);
       expect(select.prop('options')).toEqual(selectableMixedOptions);
     });
 
-    it('should be able to multi-select a mix of users and teams', () => {
+    it('should be able to multi-select a mix of teams, groups, and users', () => {
       const onChange = jest.fn();
       const component = shallowUserPicker({
         options: mixedOptions,
@@ -830,7 +846,7 @@ describe('BaseUserPicker', () => {
       });
 
       expect(onChange).toHaveBeenCalledWith(
-        [mixedOptions[0], mixedOptions[1], mixedOptions[2], mixedOptions[3]],
+        mixedOptions.slice(0, 6),
         'select-option',
       );
     });

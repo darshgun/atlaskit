@@ -4,7 +4,8 @@ import { Option as OptionType } from '../types';
 import { EmailOption } from './EmailOption';
 import { TeamOption } from './TeamOption';
 import { UserOption } from './UserOption';
-import { isEmail, isTeam, isUser } from './utils';
+import { GroupOption } from './GroupOption';
+import { isEmail, isTeam, isUser, isGroup } from './utils';
 import { isValidEmail } from './emailValidation';
 
 export type OptionProps = {
@@ -25,6 +26,7 @@ const dataOption = ({
   if (isUser(data)) {
     return <UserOption user={data} status={status} isSelected={isSelected} />;
   }
+
   if (isEmail(data)) {
     return (
       <EmailOption
@@ -35,9 +37,15 @@ const dataOption = ({
       />
     );
   }
+
   if (isTeam(data)) {
     return <TeamOption team={data} isSelected={isSelected} />;
   }
+
+  if (isGroup(data)) {
+    return <GroupOption group={data} isSelected={isSelected} />;
+  }
+
   return null;
 };
 

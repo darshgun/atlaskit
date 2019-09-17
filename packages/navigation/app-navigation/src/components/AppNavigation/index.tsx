@@ -20,19 +20,20 @@ export const AppNavigation = (
     renderAppSwitcher: AppSwitcher,
     renderCreate: Create,
     renderHelp: Help,
+    renderNotifications: Notifications,
     renderProductHome: ProductHome,
     renderProfile: Profile,
-    renderNotifications: Notifications,
     renderSearch: Search,
+    renderSignIn: SignIn,
     renderSettings: Settings,
     moreLabel,
     theme,
   } = props;
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider value={theme}>
       <NavigationAnalyticsContext data={analyticsData}>
-        <div css={containerCSS}>
+        <div css={containerCSS(theme)}>
           <div css={leftCSS}>
             {ProductHome && <ProductHome />}
             <PrimaryItemsContainer moreLabel={moreLabel} items={primaryItems} />
@@ -44,7 +45,8 @@ export const AppNavigation = (
             {Notifications && <Notifications />}
             {Settings && <Settings />}
             {Help && <Help />}
-            <Profile />
+            {SignIn && <SignIn />}
+            {Profile && <Profile />}
           </div>
         </div>
       </NavigationAnalyticsContext>

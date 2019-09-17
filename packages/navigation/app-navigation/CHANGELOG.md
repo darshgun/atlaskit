@@ -1,5 +1,29 @@
 # @atlaskit/app-navigation
 
+## 0.4.0
+
+### Minor Changes
+
+- [minor][c5939cb73d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5939cb73d):
+
+  Integrate popup component
+
+## 0.3.2
+
+### Patch Changes
+
+- [patch][9a59c6e93b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a59c6e93b):
+
+  Fix badge and primary items container styles
+
+## 0.3.1
+
+### Patch Changes
+
+- [patch][197aa4ed2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/197aa4ed2c):
+
+  Use context hooks in favour of emotion-theming
+
 ## 0.3.0
 
 ### Minor Changes

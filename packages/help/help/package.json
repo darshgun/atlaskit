@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/help",
-  "version": "0.16.1",
+  "version": "0.17.1",
   "description": "A cross-product help component",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -48,7 +48,7 @@
     "@atlaskit/navigation": "^35.1.21",
     "@atlaskit/page": "^11.0.8",
     "@atlaskit/section-message": "^4.0.12",
-    "@atlaskit/right-side-panel": "^0.1.8",
+    "@atlaskit/right-side-panel": "^0.2.0",
     "algoliasearch": "^3.33.0",
     "enzyme": "^3.7.0",
     "react-test-renderer": "^16.8.0"

@@ -1,7 +1,5 @@
-import { AppNavigationTheme } from '../../theme';
-import { TriggerManagerProps } from '../TriggerManager/types';
+import { IconButtonProps } from '../IconButton/types';
 
-export type HelpProps = Omit<TriggerManagerProps, 'children'> & {
+export type HelpProps = Omit<IconButtonProps, 'icon' | 'tooltip'> & {
   tooltip: string;
-  theme: AppNavigationTheme;
 };

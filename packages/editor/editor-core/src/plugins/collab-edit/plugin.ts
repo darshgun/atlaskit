@@ -63,7 +63,7 @@ export const createPlugin = (
   sanitizePrivateContent?: boolean,
 ) => {
   let collabEditProvider: CollabEditProvider | null;
-
+  let messageTimeoutId: number = 0;
   return new Plugin({
     key: pluginKey,
     state: {
@@ -93,16 +93,23 @@ export const createPlugin = (
             (sessionId && participantsChanged)
           ) {
             const selection = getSendableSelection(newState.selection);
+
+            const message: TelepointerData = {
+              type: 'telepointer',
+              selection,
+              sessionId,
+            };
+            const sendMessage = collabEditProvider.sendMessage.bind(
+              collabEditProvider,
+            );
+
             // Delay sending selection till next tick so that participants info
-            // can go before it
-            window.setTimeout(
-              collabEditProvider.sendMessage.bind(collabEditProvider),
+            // can go before it.
+            clearTimeout(messageTimeoutId);
+            messageTimeoutId = window.setTimeout(
+              (data: TelepointerData) => sendMessage(data),
               0,
-              {
-                type: 'telepointer',
-                selection,
-                sessionId,
-              },
+              message,
             );
           }
         }
@@ -191,6 +198,9 @@ export const createPlugin = (
             unsubscribeAllEvents(collabEditProvider);
           }
           collabEditProvider = null;
+
+          // Prevent potential async updates once destroyed.
+          clearTimeout(messageTimeoutId);
         },
       };
     },

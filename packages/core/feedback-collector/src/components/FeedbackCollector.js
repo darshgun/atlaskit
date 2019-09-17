@@ -115,6 +115,12 @@ export default class FeedbackCollector extends Component<Props> {
 
   props: Props;
 
+  submissionTimeoutId: TimeoutID;
+
+  componentWillUnmount() {
+    window.clearTimeout(this.submissionTimeoutId);
+  }
+
   getTypeFieldValue(type: SelectValue) {
     switch (type) {
       case 'bug':
@@ -213,7 +219,10 @@ export default class FeedbackCollector extends Component<Props> {
 
     this.props.onClose();
     // slightly delay confirming submit since we don't wait for the REST call to succeed
-    setTimeout(this.props.onSubmit, this.props.timeoutOnSubmit);
+    this.submissionTimeoutId = setTimeout(
+      this.props.onSubmit,
+      this.props.timeoutOnSubmit,
+    );
   };
 
   render() {
