@@ -1,1 +1,0 @@
-Adding Smartlings to i18n tools.
