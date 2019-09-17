@@ -19,11 +19,11 @@
     "ui",
     "date",
     "fabric",
-    "elements"
+    "editor"
   ],
   "atlaskit": {
     "name": "Status",
-    "team": "elements"
+    "team": "editor"
   },
   "dependencies": {
     "@atlaskit/analytics-gas-types": "^4.0.10",

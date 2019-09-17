@@ -38,17 +38,10 @@
     "rxjs": "^5.5.0"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    {
-      "name": "Craig P"
-    },
-    {
-      "name": "Julien H"
-    }
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "Emoji",
-    "team": "elements"
+    "team": "teams"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -86,6 +79,7 @@
   },
   "keywords": [
     "fabric",
-    "ui"
+    "ui",
+    "teams"
   ]
 }

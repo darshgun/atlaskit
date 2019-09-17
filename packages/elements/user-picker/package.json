@@ -31,17 +31,10 @@
     "styled-components": "^3.2.6"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    {
-      "name": "Tara T"
-    },
-    {
-      "name": "Luiz P"
-    }
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "User Picker",
-    "team": "elements"
+    "team": "teams"
   },
   "license": "Apache-2.0",
   "devDependencies": {
