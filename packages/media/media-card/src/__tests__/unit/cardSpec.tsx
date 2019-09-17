@@ -1191,7 +1191,7 @@ describe('Card', () => {
             attributes: {
               fileAttributes: {
                 fileId: identifier.id,
-                fileMediatype: 'file',
+                fileMediatype: 'unknown',
                 fileSource: 'mediaCard',
               },
               packageName: '@atlaskit/media-card',
@@ -1275,7 +1275,7 @@ describe('Card', () => {
             attributes: {
               fileAttributes: {
                 fileId: identifier.id,
-                fileMediatype: 'file',
+                fileMediatype: 'unknown',
                 fileSource: 'mediaCard',
               },
               packageName: '@atlaskit/media-card',
@@ -1348,7 +1348,7 @@ describe('Card', () => {
             attributes: {
               fileAttributes: {
                 fileId: identifier.id,
-                fileMediatype: 'file',
+                fileMediatype: 'unknown',
                 fileSource: 'mediaCard',
               },
               packageName: '@atlaskit/media-card',

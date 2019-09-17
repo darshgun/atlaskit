@@ -204,17 +204,10 @@ export class FileCardImageViewBase extends Component<
     !this.lastAnalyticsAction || this.lastAnalyticsAction !== action;
 
   fireLoadingStatusAnalyticsEvent = (action: AnalyticsLoadingAction) => {
-    const { createAnalyticsEvent, mediaType, fileSize, status } = this.props;
+    const { createAnalyticsEvent } = this.props;
 
     if (this.shouldFireLoadingStatusAnalyticsEvent(action)) {
       this.lastAnalyticsAction = action;
-
-      const fileAttributes = {
-        fileSource: 'mediaCard',
-        fileMediatype: mediaType,
-        fileSize: fileSize,
-        fileStatus: status,
-      };
 
       createAndFireCustomMediaEvent(
         {
@@ -228,11 +221,7 @@ export class FileCardImageViewBase extends Component<
                   error: 'unknown error',
                 },
               }
-            : {
-                attributes: {
-                  fileAttributes,
-                },
-              }),
+            : {}),
         },
         createAnalyticsEvent,
       );
