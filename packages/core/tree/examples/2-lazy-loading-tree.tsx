@@ -46,6 +46,8 @@ export default class LazyTree extends Component<void, State> {
     tree: mutateTree(treeWithTwoBranches, '1-1', { isExpanded: false }),
   };
 
+  private expandTimeoutId: number | undefined;
+
   static getIcon(
     item: TreeItem,
     onExpand: (itemId: ItemId) => void,
@@ -80,6 +82,10 @@ export default class LazyTree extends Component<void, State> {
     return <Dot>&bull;</Dot>;
   }
 
+  componentWillUnmount() {
+    window.clearTimeout(this.expandTimeoutId);
+  }
+
   renderItem = ({ item, onExpand, onCollapse, provided }: RenderItemParams) => (
     <div ref={provided.innerRef} {...provided.draggableProps}>
       <AkNavigationItem
@@ -100,7 +106,7 @@ export default class LazyTree extends Component<void, State> {
     });
 
     // 2. Setting up a timeout to emulate an async server request
-    setTimeout(() => {
+    this.expandTimeoutId = window.setTimeout(() => {
       // 3. When the request comes back we can mutate the tree.
       //    It's important to get a fresh reference from the state.
       const freshTree = this.state.tree;

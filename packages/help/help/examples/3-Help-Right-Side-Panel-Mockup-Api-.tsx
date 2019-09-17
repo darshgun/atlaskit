@@ -26,26 +26,31 @@ export default class extends React.Component {
     articleId: undefined,
   };
 
+  private helpTimeoutId: number | undefined;
+  private getArticleTimeoutId: number | undefined;
+  private searchArticleTimeoutId: number | undefined;
+
+  componentWillUnmount() {
+    window.clearTimeout(this.helpTimeoutId);
+    window.clearTimeout(this.getArticleTimeoutId);
+    window.clearTimeout(this.searchArticleTimeoutId);
+  }
+
   onWasHelpfulSubmit = (
     articleFeedback: ArticleFeedback,
     analyticsEvent: UIAnalyticsEvent,
   ): Promise<boolean> => {
-    return new Promise(resolve =>
-      setTimeout(() => {
-        analyticsEvent.fire('help');
-        console.log(articleFeedback);
-        resolve(true);
-      }, 1000),
+    return new Promise(
+      resolve =>
+        (this.helpTimeoutId = window.setTimeout(() => {
+          analyticsEvent.fire('help');
+          console.log(articleFeedback);
+          resolve(true);
+        }, 1000)),
     );
   };
 
   openDrawer = async (articleId: string = '') => {
-    if (articleId === this.state.articleId) {
-      await this.setState({
-        articleId: '',
-      });
-    }
-
     await this.setState({
       isOpen: true,
       articleId,
@@ -80,15 +85,27 @@ export default class extends React.Component {
   };
 
   onGetArticle = (articleId: string): Promise<any> => {
-    return new Promise(resolve =>
-      setTimeout(() => resolve(getArticle(articleId)), 100),
-    );
+    return new Promise(resolve => {
+      this.getArticleTimeoutId = window.setTimeout(
+        () => resolve(getArticle(articleId)),
+        100,
+      );
+    });
   };
 
   onSearch = (value: string): Promise<any> => {
-    return new Promise(resolve =>
-      setTimeout(() => resolve(searchArticle(value)), 1000),
-    );
+    return new Promise(resolve => {
+      this.searchArticleTimeoutId = window.setTimeout(
+        () => resolve(searchArticle(value)),
+        1000,
+      );
+    });
+  };
+
+  articleIdSetter = (id: string): void => {
+    this.setState({
+      articleId: id,
+    });
   };
 
   render() {
@@ -124,6 +141,7 @@ export default class extends React.Component {
               <RightSidePanel isOpen={isOpen} attachPanelTo="helpExample">
                 <LocaleIntlProvider locale={'en'}>
                   <Help
+                    articleIdSetter={this.articleIdSetter}
                     onButtonCloseClick={this.closeDrawer}
                     onWasHelpfulSubmit={this.onWasHelpfulSubmit}
                     articleId={articleId}

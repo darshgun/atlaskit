@@ -65,12 +65,18 @@ class SpotlightDialog extends Component<SpotlightDialogProps, State> {
     focusLockDisabled: true,
   };
 
+  private focusLockTimeoutId: number | undefined;
+
   componentDidMount() {
-    setTimeout(() => {
+    this.focusLockTimeoutId = window.setTimeout(() => {
       // we delay the enabling of the focus lock to avoid the scroll position
       // jumping around in some situations
       this.setState({ focusLockDisabled: false });
     }, 200);
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.focusLockTimeoutId);
   }
 
   render() {

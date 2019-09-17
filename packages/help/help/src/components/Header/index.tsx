@@ -39,18 +39,10 @@ export const HelpContent = (
     intl: { formatMessage },
   } = props;
 
-  const isBackButtonVisible: () => boolean = () => {
-    if (help.history.length === 1 && !help.isDefaultContent()) {
-      return false;
-    }
-
-    return help.isArticleVisible();
-  };
-
   return (
     <HeaderContainer>
       <Transition
-        in={isBackButtonVisible()}
+        in={help.isBackbuttonVisible()}
         timeout={TRANSITION_DURATION_MS}
         mountOnEnter
         unmountOnExit

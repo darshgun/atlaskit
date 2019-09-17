@@ -6,7 +6,7 @@ const prettierTsRules = require('eslint-config-prettier/@typescript-eslint')
 module.exports = {
   extends: ['airbnb', 'prettier', 'prettier/react'],
   parser: 'babel-eslint',
-  plugins: ['flowtype', 'jest', 'prettier', 'react-hooks'],
+  plugins: ['flowtype', 'jest', 'prettier', 'react-hooks', '@wordpress'],
   rules: {
     'import/no-extraneous-dependencies': [
       'error',
@@ -43,6 +43,8 @@ module.exports = {
 
     'no-mixed-operators': 'off',
     'no-plusplus': 'off',
+
+    '@wordpress/react-no-unsafe-timeout': 'error',
 
     'react/sort-comp': 'off',
     'react/jsx-filename-extension': 'off',

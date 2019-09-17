@@ -20,4 +20,10 @@ describe('Delete old docker image', () => {
     const isLatest = await isLatestVersion(prodVersion);
     expect(isLatest).toBe(true);
   });
+  test('should not be called when the localVersion is undefined', async () => {
+    const localVersion = undefined;
+    const prodVersion = getDockerImageProdVersion();
+    const isLatest = await isLatestVersion(localVersion);
+    expect(isLatest).toBe(false);
+  });
 });

@@ -278,6 +278,8 @@ const renderAsImage = (props: Props) => {
       key={src}
       alt={emoji.shortName}
       data-emoji-short-name={emoji.shortName}
+      data-emoji-id={emoji.id}
+      data-emoji-text={emoji.fallback || emoji.shortName}
       className="emoji"
       style={{ visibility: 'visible' }}
       onError={onError}

@@ -3,14 +3,14 @@ import { Placement } from '@atlaskit/popper';
 
 export type ReactRef = React.Ref<HTMLElement> | HTMLElement | null;
 
-type TriggerProps = {
+export type TriggerProps = {
   ref: any;
   'aria-controls'?: string;
   'aria-expanded': boolean;
   'aria-haspopup': boolean;
 };
 
-type ContentProps = {
+export type ContentProps = {
   scheduleUpdate(): void;
   isOpen: boolean;
   onClose: (() => void) | undefined;
@@ -35,15 +35,15 @@ export type PopupProps = {
   onOpen?(): void;
   /** Callback function when the Popup is closed */
   onClose?(): void;
-
+  /** Open State of the Dialog */
   isOpen: boolean;
-
+  /** Component used to anchor the popup to your content. Usually a button used to open the popup */
   trigger: FC<TriggerProps>;
-
+  /** Whether to lock the scrolling behavior of the page while the popup is open */
   lockBodyScroll?: boolean;
-
-  popupComponent?: FC;
-
+  /** The container displayed in the portal that wrapps the content. Use to override the default white background with rounded corners */
+  popupComponent?: FC<WrapperContainerProps>;
+  /** Optional override for the z-index for the react portal */
   zIndex?: number;
 };
 
@@ -56,4 +56,13 @@ export type FocusManagerHook = {
 
 export type RepositionOnUpdateProps = {
   scheduleUpdate(): void;
+};
+
+export type WrapperContainerProps = {
+  id?: string;
+  'data-testid'?: string;
+  ref: any;
+  style?: object;
+  'data-placement': Placement;
+  tabIndex: number;
 };

@@ -3,12 +3,12 @@
 import {
   AppNavigation,
   AppSwitcher,
+  Create,
+  Help,
   Notifications,
   ProductHome,
   Profile,
   Search,
-  ThemedCreate,
-  ThemedHelp,
 } from '@atlaskit/app-navigation';
 import Avatar from '@atlaskit/avatar';
 import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
@@ -170,9 +170,7 @@ const onCreateClick = () => {
   console.log('Create click');
 };
 
-const CreateExample = () => (
-  <ThemedCreate text="Create" onClick={onCreateClick} />
-);
+const CreateExample = () => <Create text="Create" onClick={onCreateClick} />;
 
 const HelpContent = () => (
   <Fragment>
@@ -200,7 +198,7 @@ const onHelpClose = (...args: any[]) => {
 };
 
 const HelpExample = () => (
-  <ThemedHelp
+  <Help
     dropdownContent={HelpContent}
     onClick={onHelpClick}
     onClose={onHelpClose}

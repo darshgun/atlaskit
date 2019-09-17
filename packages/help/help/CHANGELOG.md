@@ -1,5 +1,26 @@
 ## 0.1.0
 
+## 0.17.1
+
+- Updated dependencies [617591dd61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617591dd61):
+  - @atlaskit/right-side-panel@0.2.0
+
+## 0.17.0
+
+### Minor Changes
+
+- [minor][67bb0eb7da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67bb0eb7da):
+
+  Added articleIdSetter prop and updated the article navigation logic
+
+## 0.16.1
+
+### Patch Changes
+
+- [patch][dbd5ab6c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd5ab6c91):
+
+  Added href prop to ArticleListComponent
+
 ## 0.16.0
 
 ### Minor Changes

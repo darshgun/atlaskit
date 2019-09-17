@@ -91,12 +91,12 @@ export interface EditorViewProps {
   ) => void;
 }
 
-function handleEditorFocus(view: EditorView) {
+function handleEditorFocus(view: EditorView): number | undefined {
   if (view.hasFocus()) {
     return;
   }
 
-  window.setTimeout(() => {
+  return window.setTimeout(() => {
     view.focus();
   }, 0);
 }
@@ -122,6 +122,8 @@ export default class ReactEditorView<T = {}> extends React.Component<
     getAtlaskitAnalyticsEventHandlers: PropTypes.func,
     intl: intlShape,
   };
+
+  private focusTimeoutId: number | undefined;
 
   constructor(props: EditorViewProps & T) {
     super(props);
@@ -174,7 +176,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
         !nextProps.editorProps.disabled &&
         nextProps.editorProps.shouldFocus
       ) {
-        handleEditorFocus(this.view);
+        this.focusTimeoutId = handleEditorFocus(this.view);
       }
     }
 
@@ -293,6 +295,8 @@ export default class ReactEditorView<T = {}> extends React.Component<
    */
   componentWillUnmount() {
     this.eventDispatcher.destroy();
+
+    clearTimeout(this.focusTimeoutId);
 
     if (this.view) {
       // Destroy the state if the Editor is being unmounted
@@ -481,7 +485,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
         this.props.editorProps.shouldFocus &&
         (view.props.editable && view.props.editable(view.state))
       ) {
-        handleEditorFocus(view);
+        this.focusTimeoutId = handleEditorFocus(view);
       }
 
       // Set the state of the EditorDisabled plugin to the current value

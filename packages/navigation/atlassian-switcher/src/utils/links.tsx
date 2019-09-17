@@ -15,6 +15,7 @@ import {
   JiraCoreIcon,
   OpsGenieIcon,
   StatuspageIcon,
+  TrelloIcon,
 } from '@atlaskit/logo';
 import FormattedMessage from '../primitives/formatted-message';
 import {
@@ -184,7 +185,12 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
   [WorklensProductType.STATUSPAGE]: {
     label: 'Statuspage',
     Icon: createIcon(StatuspageIcon, { size: 'small' }),
-    href: '#',
+    href: 'https://statuspage.io',
+  },
+  [WorklensProductType.TRELLO]: {
+    label: 'Trello',
+    Icon: createIcon(TrelloIcon, { size: 'small' }),
+    href: 'https://trello.com',
   },
 };
 
@@ -196,6 +202,7 @@ const PRODUCT_ORDER = [
   WorklensProductType.OPSGENIE,
   WorklensProductType.BITBUCKET,
   WorklensProductType.STATUSPAGE,
+  WorklensProductType.TRELLO,
 ];
 
 type JiraConfluenceProduct = Exclude<
@@ -222,7 +229,9 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
 
   if (
     product.productType === WorklensProductType.OPSGENIE ||
-    product.productType === WorklensProductType.BITBUCKET
+    product.productType === WorklensProductType.BITBUCKET ||
+    product.productType === WorklensProductType.STATUSPAGE ||
+    product.productType === WorklensProductType.TRELLO
   ) {
     return product.url;
   }

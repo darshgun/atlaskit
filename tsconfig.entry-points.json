@@ -1755,6 +1755,10 @@
         "../../helpers/locale/src/LocaleSelect",
         "./packages/helpers/locale/src/LocaleSelect"
       ],
+      "@atlaskit/motion": [
+        "../../helpers/motion/src/",
+        "./packages/helpers/motion/src/"
+      ],
       "@atlaskit/notification-indicator": [
         "../../home/notification-indicator/src/",
         "./packages/home/notification-indicator/src/"
@@ -2106,6 +2110,10 @@
       "@atlaskit/app-navigation": [
         "../../navigation/app-navigation/src/",
         "./packages/navigation/app-navigation/src/"
+      ],
+      "@atlaskit/atlassian-switcher/create-custom-provider": [
+        "../../navigation/atlassian-switcher/src/create-custom-provider",
+        "./packages/navigation/atlassian-switcher/src/create-custom-provider"
       ],
       "@atlaskit/atlassian-switcher": [
         "../../navigation/atlassian-switcher/src/",
