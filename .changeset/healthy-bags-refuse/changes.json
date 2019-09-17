@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/i18n-tools", "type": "patch" }],
+  "dependents": []
+}
