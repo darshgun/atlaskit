@@ -1189,11 +1189,6 @@ describe('Card', () => {
             actionSubjectId,
             action: 'commenced',
             attributes: {
-              fileAttributes: {
-                fileId: identifier.id,
-                fileMediatype: 'unknown',
-                fileSource: 'mediaCard',
-              },
               packageName: '@atlaskit/media-card',
             },
           }),
@@ -1213,6 +1208,13 @@ describe('Card', () => {
               error: 'unknown error',
             }),
           }),
+          context: [
+            {
+              packageVersion: '999.9.9',
+              packageName: '@atlaskit/media-card',
+              componentName: 'mediaCard',
+            },
+          ],
         }),
         MEDIA_CHANNEL,
       );
@@ -1273,11 +1275,6 @@ describe('Card', () => {
             actionSubjectId,
             action: 'commenced',
             attributes: {
-              fileAttributes: {
-                fileId: identifier.id,
-                fileMediatype: 'unknown',
-                fileSource: 'mediaCard',
-              },
               packageName: '@atlaskit/media-card',
             },
           }),
@@ -1296,12 +1293,19 @@ describe('Card', () => {
               error: 'unknown error',
             }),
           }),
+          context: [
+            {
+              packageVersion: '999.9.9',
+              packageName: '@atlaskit/media-card',
+              componentName: 'mediaCard',
+            },
+          ],
         }),
         MEDIA_CHANNEL,
       );
     });
 
-    it('should fire commenced and success events if the file loads with success', async () => {
+    it('should fire commenced and success events with context info if the file loads with success', async () => {
       (getDataURIFromFileState as any).mockReturnValue(emptyPreview);
 
       const commencedFileState: FileState = {
@@ -1346,11 +1350,6 @@ describe('Card', () => {
             actionSubjectId,
             action: 'commenced',
             attributes: {
-              fileAttributes: {
-                fileId: identifier.id,
-                fileMediatype: 'unknown',
-                fileSource: 'mediaCard',
-              },
               packageName: '@atlaskit/media-card',
             },
           }),
@@ -1367,12 +1366,6 @@ describe('Card', () => {
             actionSubject: 'mediaCardRender',
             attributes: {
               packageName: '@atlaskit/media-card',
-              fileAttributes: {
-                fileSource: 'mediaCard',
-                fileMediatype: 'doc',
-                fileSize: '1 B',
-                fileStatus: 'complete',
-              },
             },
           }),
           context: [
