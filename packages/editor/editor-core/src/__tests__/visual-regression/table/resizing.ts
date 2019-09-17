@@ -21,8 +21,8 @@ import { Page } from '../../__helpers/page-objects/_types';
 import mergedColsAdf from './__fixtures__/table-with-merged-columns-in-first-row.adf.json';
 import mergedAllColsAdf from './__fixtures__/table-with-all-merged-columns-in-first-row.adf.json';
 import mergedRandomColsAdf from './__fixtures__/table-with-randomly-merged-columns.adf.json';
-
-describe('Snapshot Test: table resizing', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: table resizing', () => {
   describe('Re-sizing', () => {
     let page: Page;
 

@@ -21,7 +21,7 @@ describe('Snapshot Test: Cards', () => {
     await snapshot(page);
   });
 
-  // TODO: Fix flaky test
+  // TODO: https://product-fabric.atlassian.net/browse/ED-7721
   it.skip('should render unknown content for cards with invalid urls', async () => {
     await initRenderer(page, cardXSSADF);
   });

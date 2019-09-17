@@ -9,8 +9,8 @@ import {
 } from '../../__helpers/page-objects/_table';
 import { animationFrame } from '../../__helpers/page-objects/_editor';
 import { Page } from '../../__helpers/page-objects/_types';
-
-describe('Snapshot Test: table resizing', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: table resizing', () => {
   describe('Re-sizing', () => {
     let page: Page;
     beforeEach(async () => {

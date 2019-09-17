@@ -14,7 +14,7 @@ describe('Cards:', () => {
     });
   });
 
-  // TODO: Fix flaky test
+  // TODO: https://product-fabric.atlassian.net/browse/ED-7721
   it.skip('should render invalid urls as invalid content', async () => {
     await snapshot(page);
   });

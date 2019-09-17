@@ -15,8 +15,8 @@ const initRenderer = async (
     adf,
   });
 };
-
-describe('Snapshot Test: Full Width', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: Full Width', () => {
   let page: Page;
   beforeAll(() => {
     // @ts-ignore

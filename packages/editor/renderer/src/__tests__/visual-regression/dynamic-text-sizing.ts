@@ -13,8 +13,8 @@ const initRenderer = async (
     adf: document,
   });
 };
-
-describe('Snapshot Test: Dynamic Text Sizing', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: Dynamic Text Sizing', () => {
   let page: Page;
   beforeAll(() => {
     // @ts-ignore
