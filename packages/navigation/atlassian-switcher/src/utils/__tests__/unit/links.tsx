@@ -11,6 +11,7 @@ import {
   ProductLicenseInformation,
   LicenseInformationResponse,
   ProductKey,
+  Product,
 } from '../../../types';
 
 import { resolveRecommendations } from '../../../providers/recommendations';
@@ -46,10 +47,19 @@ const generateOpsgenieLicenseInformation = (
 });
 
 describe('utils/links', () => {
-  it('Fixed product list should have People', () => {
-    const expectedProducts = ['people'];
-    const fixedLinks = getFixedProductLinks();
-    expect(fixedLinks.map(({ key }) => key)).toMatchObject(expectedProducts);
+  describe('fixed product links', () => {
+    it('should have link for People', () => {
+      const isDiscoverMoreForEveryoneEnabled = false;
+      const expectedProducts = ['people'];
+      const fixedLinks = getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+      expect(fixedLinks.map(({ key }) => key)).toMatchObject(expectedProducts);
+    });
+    it('should have discover more button if enabled', () => {
+      const isDiscoverMoreForEveryoneEnabled = true;
+      const expectedProducts = ['people', 'discover-more'];
+      const fixedLinks = getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+      expect(fixedLinks.map(({ key }) => key)).toMatchObject(expectedProducts);
+    });
   });
 
   it('getProductLink should create a correct link config', () => {
@@ -155,20 +165,72 @@ describe('utils/links', () => {
   });
 
   describe('getAdministrationLinks', () => {
+    let isEmceeLinkEnabled = false;
     it('should assemble admin links for site admins', () => {
       const isAdmin = true;
-      const result = getAdministrationLinks(isAdmin);
+      const isDiscoverMoreForEveryoneEnabled = false;
+      const result = getAdministrationLinks(
+        isAdmin,
+        isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+      );
       const expectedResult = [`/admin/billing/addapplication`, `/admin`];
       expect(result.map(({ href }) => href)).toMatchObject(expectedResult);
     });
     it('should assemble admin links for site trusted users', () => {
       const isAdmin = false;
-      const result = getAdministrationLinks(isAdmin);
+      const isDiscoverMoreForEveryoneEnabled = false;
+      const result = getAdministrationLinks(
+        isAdmin,
+        isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+      );
       const expectedResult = [
         `/trusted-admin/billing/addapplication`,
         `/trusted-admin`,
       ];
       expect(result.map(({ href }) => href)).toMatchObject(expectedResult);
+    });
+    it('should not include discover admin link if more if discover more button is enabled for all users', () => {
+      const isDiscoverMoreForEveryoneEnabled = true;
+      const result = getAdministrationLinks(
+        true,
+        isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+      );
+
+      const expectedResult = [`administration`];
+      expect(result.map(({ key }) => key)).toMatchObject(expectedResult);
+    });
+    it('When product is Jira & Emcee enabled, should include Jira Emcee link', () => {
+      const product = Product.JIRA;
+      isEmceeLinkEnabled = true;
+      const isDiscoverMoreForEveryoneEnabled = false;
+      const result = getAdministrationLinks(
+        true,
+        isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+        product,
+      );
+
+      const expectedResult =
+        '/plugins/servlet/ac/com.atlassian.jira.emcee/discover';
+      expect(result.map(({ href }) => href)).toContain(expectedResult);
+    });
+    it('When product is Confluence & Emcee enabled, should include Confluence Emcee link', () => {
+      const product = Product.CONFLUENCE;
+      isEmceeLinkEnabled = true;
+      const isDiscoverMoreForEveryoneEnabled = false;
+      const result = getAdministrationLinks(
+        true,
+        isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+        product,
+      );
+
+      const expectedResult =
+        '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover';
+      expect(result.map(({ href }) => href)).toContain(expectedResult);
     });
   });
 

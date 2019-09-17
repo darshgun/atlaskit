@@ -17,6 +17,7 @@ export class BrowserLoader extends React.PureComponent<
   BrowserWithMediaClientConfigProps,
   State
 > {
+  private mounted: boolean = false;
   static displayName = 'AsyncBrowser';
   static Browser?: BrowserWithMediaClientConfigComponent;
 
@@ -24,7 +25,15 @@ export class BrowserLoader extends React.PureComponent<
     Browser: BrowserLoader.Browser,
   };
 
-  async componentWillMount() {
+  componentDidMount() {
+    this.mounted = true;
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
+  async UNSAFE_componentWillMount() {
     if (!this.state.Browser) {
       const [mediaClient, browserModule] = await Promise.all([
         import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
@@ -35,9 +44,11 @@ export class BrowserLoader extends React.PureComponent<
         browserModule.Browser,
       );
 
-      this.setState({
-        Browser: BrowserLoader.Browser,
-      });
+      if (this.mounted) {
+        this.setState({
+          Browser: BrowserLoader.Browser,
+        });
+      }
     }
   }
 

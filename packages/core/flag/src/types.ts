@@ -1,11 +1,5 @@
-/* eslint-disable import/prefer-default-export */
-
-import {
-  ReactElement,
-  ReactNode,
-  MouseEventHandler,
-  FocusEventHandler,
-} from 'react';
+import { ReactNode, MouseEventHandler, FocusEventHandler } from 'react';
+import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 
 export type ChildrenType = any;
 export type ElementType = any;
@@ -51,7 +45,7 @@ export type AutoDismissFlagProps = {
    * Your icon will receive the appropriate default color, which you can override by wrapping the
    * icon in a containing element with CSS `color` set to your preferred icon color.
    */
-  icon: ReactElement;
+  icon: ReactNode;
   /** A unique identifier used for rendering and onDismissed callbacks. */
   id: number | string;
   /** Private, do not use. */
@@ -59,7 +53,7 @@ export type AutoDismissFlagProps = {
   /** Private, do not use. Use the FlagGroup onDismissed handler. */
   onDismissed?: FunctionType;
   /** The bold text shown at the top of the flag. */
-  title: React.ReactNode;
+  title: ReactNode;
   /** A link component that is passed down to the `@atlaskit/button` used by actions,
   to allow custom routers to be used. See the
   [button with router](https://atlaskit.atlassian.com/packages/core/button/example/ButtonWithRouter)
@@ -67,7 +61,9 @@ export type AutoDismissFlagProps = {
   linkComponent?: ElementType;
 };
 
-export type FlagProps = AutoDismissFlagProps & {
+export interface FlagProps
+  extends AutoDismissFlagProps,
+    WithAnalyticsEventsProps {
   /** Standard onBlur event, applied to Flag by AutoDismissFlag */
   onBlur?: FocusEventHandler;
   /** Standard onFocus event, applied to Flag by AutoDismissFlag */
@@ -76,4 +72,4 @@ export type FlagProps = AutoDismissFlagProps & {
   onMouseOut?: MouseEventHandler;
   /** Standard onMouseOver event, applied to Flag by AutoDismissFlag */
   onMouseOver?: MouseEventHandler;
-};
+}

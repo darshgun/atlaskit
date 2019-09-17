@@ -1,12 +1,26 @@
-import { Auth, AuthProvider } from '@atlaskit/media-core';
-import { ResponseFileItem } from '../..';
+import { Auth, AuthProvider, getFileStreamsCache } from '@atlaskit/media-core';
+import { ResponseFileItem, MediaFile } from '../..';
 import * as MediaClientModule from '../..';
 import uuid from 'uuid';
 import { FileFetcherImpl, getItemsFromKeys } from '../../client/file-fetcher';
 import {
   expectFunctionToHaveBeenCalledWith,
   asMock,
+  fakeMediaClient,
 } from '@atlaskit/media-test-helpers';
+import { observableToPromise } from '../../utils/observableToPromise';
+jest.mock('../../utils/getDimensionsFromBlob', () => {
+  return {
+    getDimensionsFromBlob: () => {
+      return { width: 1, height: 1 };
+    },
+  };
+});
+jest.mock('../../utils/getMediaTypeFromMimeType', () => {
+  return {
+    getMediaTypeFromMimeType: () => 'image',
+  };
+});
 
 describe('FileFetcher', () => {
   const fileId = 'some-file-id';
@@ -15,6 +29,8 @@ describe('FileFetcher', () => {
   const binaryUrl = 'some-binary-url';
 
   const setup = () => {
+    getFileStreamsCache().removeAll();
+
     const items = [
       {
         id: uuid(),
@@ -43,19 +59,27 @@ describe('FileFetcher', () => {
         items,
       },
     });
+    const mediaClient = fakeMediaClient();
     const mediaStore = {
+      ...mediaClient.mediaStore,
       getFileBinaryURL: jest.fn(),
-      copyFileWithToken: jest.fn(),
       getItems: jest.fn().mockReturnValue(itemsResponse),
     } as any;
     const fileFetcher = new FileFetcherImpl(mediaStore);
 
+    (fileFetcher as any).generateUploadableFileUpfrontIds = jest
+      .fn()
+      .mockReturnValue({
+        id: 'upfront-id',
+        occurrenceKey: 'upfront-occurrence-key',
+      });
     asMock(mediaStore.getFileBinaryURL).mockReturnValue(binaryUrl);
 
     return { fileFetcher, mediaStore, items, itemsResponse };
   };
 
   afterEach(() => {
+    getFileStreamsCache().removeAll();
     jest.restoreAllMocks();
   });
 
@@ -218,6 +242,139 @@ describe('FileFetcher', () => {
       expect(MediaStoreSpy).toHaveBeenCalledWith({
         authProvider: destination.authProvider,
       });
+    });
+
+    it('should populate cache with the copied file', async () => {
+      const MediaStoreSpy = jest.spyOn(MediaClientModule, 'MediaStore');
+      const copiedFile: MediaFile = {
+        id: 'copied-file-id',
+        name: 'copied-file-name',
+        artifacts: {},
+        mediaType: 'audio',
+        mimeType: '',
+        representations: {},
+        size: 1,
+      };
+      const { items, fileFetcher } = setup();
+      const copyFileWithTokenMock = jest
+        .fn()
+        .mockResolvedValue({ data: copiedFile });
+      MediaStoreSpy.mockImplementation(
+        () =>
+          ({
+            copyFileWithToken: copyFileWithTokenMock,
+          } as any),
+      );
+
+      const owner: Auth = {
+        asapIssuer: 'asapIssuer',
+        token: 'sometoken',
+        baseUrl: 'somebaseurl',
+      };
+      const authProvider: AuthProvider = () => Promise.resolve(owner);
+      const userAuthProvider = jest.fn();
+
+      const source = {
+        id: items[0].id,
+        collection: 'someCollectionName',
+        authProvider,
+      };
+      const destination = {
+        collection: 'recents',
+        authProvider: userAuthProvider,
+      };
+      await fileFetcher.copyFile(source, destination);
+      const copiedFileObservable = getFileStreamsCache().get('copied-file-id');
+      const copiedFileState = await observableToPromise(copiedFileObservable!);
+
+      expect(copiedFileState).toEqual({
+        ...copiedFile,
+        status: 'processing',
+      });
+    });
+  });
+
+  describe('uploadExternal()', () => {
+    const url = 'https://atlassian/logo.png';
+
+    it('should populate cache before upload finishes', async () => {
+      const { fileFetcher } = setup();
+
+      fileFetcher.uploadExternal(url);
+
+      const fileObservable = getFileStreamsCache().get('upfront-id');
+      const fileState = await observableToPromise(fileObservable!);
+
+      expect(fileState).toEqual(
+        expect.objectContaining({
+          status: 'processing',
+          name: 'logo.png',
+          size: 0,
+          mediaType: 'unknown',
+          mimeType: '',
+          id: 'upfront-id',
+          occurrenceKey: 'upfront-occurrence-key',
+        }),
+      );
+    });
+
+    it('should set preview on cache for that file', async () => {
+      const { fileFetcher } = setup();
+
+      await fileFetcher.uploadExternal(url);
+
+      const fileObservable = getFileStreamsCache().get('upfront-id');
+      const fileState = await observableToPromise(fileObservable!);
+
+      if (fileState.status === 'error') {
+        throw new Error();
+      }
+
+      expect((await fileState.preview!).value).toBeInstanceOf(Blob);
+    });
+
+    it('should use collection name', async () => {
+      const { fileFetcher } = setup();
+      const uploadSpy = jest.spyOn(fileFetcher, 'upload');
+      const collection = 'destination-collection';
+      await fileFetcher.uploadExternal(url, collection);
+
+      expect(
+        (fileFetcher as any).generateUploadableFileUpfrontIds,
+      ).toBeCalledWith(collection);
+      expect(uploadSpy.mock.calls[0][0]).toEqual(
+        expect.objectContaining({ collection }),
+      );
+    });
+
+    it('should extract the name from the url', async () => {
+      const { fileFetcher } = setup();
+
+      fileFetcher.uploadExternal('domain.com/path/file_name.mov');
+
+      const fileObservable = getFileStreamsCache().get('upfront-id');
+      const fileState = await observableToPromise(fileObservable!);
+
+      expect(fileState).toEqual(
+        expect.objectContaining({
+          name: 'file_name.mov',
+        }),
+      );
+    });
+
+    it('should set the right mediaType', async () => {
+      const { fileFetcher } = setup();
+      const collection = 'destination-collection';
+      await fileFetcher.uploadExternal(url, collection);
+
+      const fileObservable = getFileStreamsCache().get('upfront-id');
+      const fileState = await observableToPromise(fileObservable!);
+
+      expect(fileState).toEqual(
+        expect.objectContaining({
+          mediaType: 'image',
+        }),
+      );
     });
   });
 });

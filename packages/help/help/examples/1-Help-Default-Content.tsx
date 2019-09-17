@@ -4,8 +4,7 @@ import Page from '@atlaskit/page';
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 import { getArticle, searchArticle } from './utils/mockData';
-import { ExampleWrapper, HelpWrapper } from './utils/styled';
-
+import { ExampleWrapper, HelpWrapper, FooterContent } from './utils/styled';
 import Help, { ArticleFeedback } from '../src';
 
 const handleEvent = (analyticsEvent: { payload: any; context: any }) => {
@@ -54,7 +53,13 @@ export default class extends React.Component {
           <HelpWrapper>
             <AnalyticsListener channel="atlaskit" onEvent={handleEvent}>
               <LocaleIntlProvider locale={'en'}>
-                <Help>
+                <Help
+                  footer={
+                    <FooterContent>
+                      <span>Footer</span>
+                    </FooterContent>
+                  }
+                >
                   <span>Default content</span>
                 </Help>
               </LocaleIntlProvider>

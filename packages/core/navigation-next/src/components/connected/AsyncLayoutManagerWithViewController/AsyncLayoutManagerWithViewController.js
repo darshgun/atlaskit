@@ -25,10 +25,11 @@ class AsyncLayoutManagerWithViewControllerBase extends Component<
   AsyncLayoutManagerWithViewControllerState,
 > {
   static defaultProps = {
-    experimental_flyoutOnHover: false,
     experimental_alternateFlyoutBehaviour: false,
+    experimental_flyoutOnHover: false,
     experimental_fullWidthFlyout: false,
     experimental_hideNavVisuallyOnCollapse: false,
+    experimental_horizontalGlobalNav: false,
   };
 
   state = {
@@ -147,10 +148,12 @@ class AsyncLayoutManagerWithViewControllerBase extends Component<
   render() {
     const {
       children,
-      experimental_flyoutOnHover,
+      datasets,
       experimental_alternateFlyoutBehaviour,
+      experimental_flyoutOnHover,
       experimental_fullWidthFlyout,
       experimental_hideNavVisuallyOnCollapse,
+      experimental_horizontalGlobalNav,
       firstSkeletonToRender,
       onExpandStart,
       onExpandEnd,
@@ -182,14 +185,15 @@ class AsyncLayoutManagerWithViewControllerBase extends Component<
               ? this.renderContainerNavigation
               : null
           }
-          experimental_flyoutOnHover={experimental_flyoutOnHover}
           experimental_alternateFlyoutBehaviour={
             experimental_alternateFlyoutBehaviour
           }
+          experimental_flyoutOnHover={experimental_flyoutOnHover}
           experimental_fullWidthFlyout={experimental_fullWidthFlyout}
           experimental_hideNavVisuallyOnCollapse={
             experimental_hideNavVisuallyOnCollapse
           }
+          experimental_horizontalGlobalNav={experimental_horizontalGlobalNav}
           productNavigation={this.renderProductNavigation}
           onExpandStart={onExpandStart}
           onExpandEnd={onExpandEnd}
@@ -198,6 +202,7 @@ class AsyncLayoutManagerWithViewControllerBase extends Component<
           getRefs={getRefs}
           topOffset={topOffset}
           shouldHideGlobalNavShadow={shouldHideGlobalNavShadow}
+          datasets={datasets}
           view={view}
         >
           {children}

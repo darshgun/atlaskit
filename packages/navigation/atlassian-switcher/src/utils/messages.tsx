@@ -71,6 +71,12 @@ const messages = defineMessages({
     description:
       'The text of a link redirecting the user to Discover More Atlassian products',
   },
+  browseApps: {
+    id: 'fabric.atlassianSwitcher.browseApps',
+    defaultMessage: 'Browse apps',
+    description:
+      'The text of a link redirecting the user to Discover Embedded Marketplace within in the product',
+  },
   errorHeading: {
     id: 'fabric.atlassianSwitcher.errorHeading',
     defaultMessage: 'Something’s gone wrong',
@@ -106,11 +112,10 @@ const messages = defineMessages({
     defaultMessage: 'Log in',
     description: 'Text in log in button.',
   },
-  expand: {
-    id: 'fabric.atlassianSwitcher.expand',
-    defaultMessage: 'Expand',
-    description:
-      'The text of a link redirecting the user to the Atlassian start page',
+  showMoreSites: {
+    id: 'fabric.atlassianSwitcher.show.more.sites',
+    defaultMessage: 'Show more sites',
+    description: 'The text of a toggle showing more site options',
   },
 });
 

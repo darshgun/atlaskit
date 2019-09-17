@@ -4,7 +4,11 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { publishReplay } from 'rxjs/operators/publishReplay';
 import uuid from 'uuid/v4';
 import Dataloader from 'dataloader';
-import { AuthProvider, authToOwner } from '@atlaskit/media-core';
+import {
+  AuthProvider,
+  authToOwner,
+  ProcessingFileState,
+} from '@atlaskit/media-core';
 import {
   MediaStore,
   UploadableFile,
@@ -24,10 +28,17 @@ import {
   MediaFile,
   MediaStoreCopyFileWithTokenBody,
   MediaStoreCopyFileWithTokenParams,
+  mapMediaFileToFileState,
 } from '..';
 import isValidId from 'uuid-validate';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 import { convertBase64ToBlob } from '../utils/convertBase64ToBlob';
+import { observableToPromise } from '../utils/observableToPromise';
+import {
+  getDimensionsFromBlob,
+  Dimensions,
+} from '../utils/getDimensionsFromBlob';
+import { getMediaTypeFromMimeType } from '../utils/getMediaTypeFromMimeType';
 
 const POLLING_INTERVAL = 1000;
 const maxNumberOfItemsPerCall = 100;
@@ -76,6 +87,11 @@ export interface CopyDestination extends MediaStoreCopyFileWithTokenParams {
 
 type DataloaderResult = MediaCollectionItemFullDetails | undefined;
 
+export type ExternalUploadPayload = {
+  uploadableFileUpfrontIds: UploadableFileUpfrontIds;
+  dimensions: Dimensions;
+};
+
 export interface FileFetcher {
   getFileState(id: string, options?: GetFileOptions): Observable<FileState>;
   getArtifactURL(
@@ -92,12 +108,16 @@ export interface FileFetcher {
     controller?: UploadController,
     uploadableFileUpfrontIds?: UploadableFileUpfrontIds,
   ): Observable<FileState>;
+  uploadExternal(
+    url: string,
+    collection?: string,
+  ): Promise<ExternalUploadPayload>;
   downloadBinary(
     id: string,
     name?: string,
     collectionName?: string,
   ): Promise<void>;
-  getCurrentState(id: string): Promise<FileState>;
+  getCurrentState(id: string, options?: GetFileOptions): Promise<FileState>;
   copyFile(
     source: SourceFile,
     destination: CopyDestination,
@@ -175,8 +195,8 @@ export class FileFetcherImpl implements FileFetcher {
     });
   }
 
-  getCurrentState(id: string): Promise<FileState> {
-    return getFileStreamsCache().getCurrentState(id);
+  getCurrentState(id: string, options?: GetFileOptions): Promise<FileState> {
+    return observableToPromise(this.getFileState(id, options));
   }
 
   public getArtifactURL(
@@ -261,6 +281,78 @@ export class FileFetcherImpl implements FileFetcher {
       occurrenceKey,
       deferredUploadId,
     };
+  }
+
+  async uploadExternal(
+    url: string,
+    collection?: string,
+  ): Promise<ExternalUploadPayload> {
+    const uploadableFileUpfrontIds = this.generateUploadableFileUpfrontIds(
+      collection,
+    );
+    const { id, occurrenceKey } = uploadableFileUpfrontIds;
+    const subject = new ReplaySubject<FileState>(1);
+    const deferredBlob = fetch(url)
+      .then(response => response.blob())
+      .catch(() => undefined);
+    const preview = new Promise<FilePreview>(async (resolve, reject) => {
+      const blob = await deferredBlob;
+      if (!blob) {
+        reject('Could not fetch the blob');
+      }
+
+      resolve({ value: blob as Blob });
+    });
+    const name = url.split('/').pop() || '';
+    // we create a initial fileState with the minimum info that we have at this point
+    const fileState: ProcessingFileState = {
+      status: 'processing',
+      name,
+      size: 0,
+      mediaType: 'unknown',
+      mimeType: '',
+      id,
+      occurrenceKey,
+      preview,
+    };
+    subject.next(fileState);
+    // we save it into the cache as soon as possible, in case someone subscribes
+    getFileStreamsCache().set(id, subject);
+
+    return new Promise<ExternalUploadPayload>(async (resolve, reject) => {
+      const blob = await deferredBlob;
+      if (!blob) {
+        return reject('Could not download remote file');
+      }
+
+      const { type, size } = blob;
+      const file: UploadableFile = {
+        content: blob,
+        mimeType: type,
+        collection,
+        name,
+      };
+      const mediaType = getMediaTypeFromMimeType(type);
+
+      // we emit a richer state after the blob is fetched
+      subject.next({
+        status: 'processing',
+        name,
+        size,
+        mediaType,
+        mimeType: type,
+        id,
+        occurrenceKey,
+        preview,
+      });
+      // we don't want to wait for the file to be upload
+      this.upload(file, undefined, uploadableFileUpfrontIds);
+      const dimensions = await getDimensionsFromBlob(blob);
+      resolve({
+        dimensions,
+        uploadableFileUpfrontIds,
+      });
+    });
   }
 
   public upload(
@@ -399,11 +491,9 @@ export class FileFetcherImpl implements FileFetcher {
       replaceFileId,
       occurrenceKey,
     } = destination;
-
     const mediaStore = new MediaStore({
       authProvider: destinationAuthProvider,
     });
-
     const owner = authToOwner(
       await authProvider({ collectionName: sourceCollection }),
     );
@@ -422,6 +512,15 @@ export class FileFetcherImpl implements FileFetcher {
       occurrenceKey,
     };
 
-    return (await mediaStore.copyFileWithToken(body, params)).data;
+    const copiedFile = (await mediaStore.copyFileWithToken(body, params)).data;
+    const copiedFileObservable = new ReplaySubject<FileState>(1);
+    const copiedFileState: FileState = mapMediaFileToFileState({
+      data: copiedFile,
+    });
+
+    copiedFileObservable.next(copiedFileState);
+    getFileStreamsCache().set(copiedFile.id, copiedFileObservable);
+
+    return copiedFile;
   }
 }

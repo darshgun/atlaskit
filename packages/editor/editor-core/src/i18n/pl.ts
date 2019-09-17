@@ -97,6 +97,9 @@ export default {
   'fabric.editor.decision': 'Decyzja',
   'fabric.editor.decision.description':
     'Obserwuj decyzje, aby łatwo je śledzić',
+  'fabric.editor.feedbackDialog': 'Prześlij opinię',
+  'fabric.editor.feedbackDialog.description':
+    'Opowiedz nam o swoich doświadczeniach w korzystaniu z nowego edytora.',
   'fabric.editor.horizontalRule': 'Rozdzielacz',
   'fabric.editor.horizontalRule.description': 'Oddziel treści linią poziomą',
   'fabric.editor.date': 'Data',

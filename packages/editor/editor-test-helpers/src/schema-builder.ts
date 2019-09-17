@@ -111,7 +111,7 @@ export function text(value: string, schema: Schema): RefsContentItem {
   const isEven = (n: number) => n % 2 === 0;
   for (const match of matches(
     value,
-    /([\\]+)?{(\w+|<|>|<>|<cell|cell>|<node>)}/g,
+    /([\\]+)?{(\w+|<|>|<>|<cell|cell>|<node>|<\|gap>|<gap\|>)}/g,
   )) {
     const [refToken, skipChars, refName] = match;
     let { index } = match;
@@ -425,7 +425,6 @@ export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
 export const a = (attrs: LinkAttributes) =>
   markFactory(sampleSchema.marks.link, attrs);
-export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
 export const typeAheadQuery = (
   attrs: { trigger: string; query?: string } = { trigger: '', query: '' },
 ) => markFactory(sampleSchema.marks.typeAheadQuery, attrs);

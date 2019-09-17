@@ -1,5 +1,45 @@
 # @atlaskit/profilecard
 
+## 12.0.9
+
+### Patch Changes
+
+- [patch][8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+
+  @atlaskit/avatar has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 12.0.8
+
+### Patch Changes
+
+- [patch][02f8d986b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02f8d986b5):
+
+  ProfileCardResourced should trigger analytics event when having error
+
+## 12.0.7
+
+### Patch Changes
+
+- [patch][875282da30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/875282da30):
+
+  Fix a bug which causes ProfileCard triggers viewed analytics event twice
+
+## 12.0.6
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 12.0.5
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
 ## 12.0.4
 
 - Updated dependencies [ebfeb03eb7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebfeb03eb7):

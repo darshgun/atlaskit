@@ -101,6 +101,9 @@ export default {
   'fabric.editor.decision': 'Decizie',
   'fabric.editor.decision.description':
     'Capturați deciziile pentru a fi ușor de urmărit',
+  'fabric.editor.feedbackDialog': 'Oferă feedback',
+  'fabric.editor.feedbackDialog.description':
+    'Spune-ne despre experiența ta în folosirea noului editor',
   'fabric.editor.horizontalRule': 'Divizor',
   'fabric.editor.horizontalRule.description':
     'Separați conținutul cu o linie orizontală',

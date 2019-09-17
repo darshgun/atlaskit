@@ -47,7 +47,7 @@ export default {
     'Utilisez ceci pour définir un sous-titre',
   'fabric.editor.blockquote': 'Citation',
   'fabric.editor.blockquote.description': 'Insérer une citation',
-  'fabric.editor.codeblock': 'Extrait de code',
+  'fabric.editor.codeblock': 'Extrait de code (snippet)',
   'fabric.editor.codeblock.description':
     'Insérer du code avec coloration syntaxique',
   'fabric.editor.infoPanel': "Volet d'informations",
@@ -105,6 +105,9 @@ export default {
   'fabric.editor.decision': 'Décision',
   'fabric.editor.decision.description':
     'Enregistrer des décisions pour les suivre plus facilement',
+  'fabric.editor.feedbackDialog': 'Donner votre avis',
+  'fabric.editor.feedbackDialog.description':
+    'Dites-nous ce que vous pensez du nouvel éditeur',
   'fabric.editor.horizontalRule': 'Séparateur',
   'fabric.editor.horizontalRule.description':
     'Séparer du contenu avec une ligne horizontale',

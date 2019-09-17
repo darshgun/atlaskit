@@ -1,0 +1,284 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Atlassian Switcher - ItemWithDropdown renders Bitbucket snapshot correctly 1`] = `
+<SwitcherItemWithDropDown
+  childIcon={
+    <Unknown
+      theme="subtle"
+    />
+  }
+  childItems={Array []}
+  createAnalyticsEvent={[Function]}
+  description={null}
+  href="https://bitbucket.org"
+  icon={
+    <Unknown
+      theme="product"
+    />
+  }
+  onChildItemClick={[Function]}
+  onExpandClick={[Function]}
+  onItemClick={[Function]}
+  tooltipContent={
+    <span>
+      Show more sites
+    </span>
+  }
+>
+  Bitbucket
+</SwitcherItemWithDropDown>
+`;
+
+exports[`Atlassian Switcher - ItemWithDropdown renders an item with multiple sites correctly and clicking expand shows children sites 1`] = `
+<styled.div>
+  <styled.div
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <Component
+      isParentHovered={false}
+    >
+      <Component
+        createAnalyticsEvent={[Function]}
+        description="some-instance"
+        href="https://app.opsgenie.com"
+        icon={
+          <Unknown
+            theme="product"
+          />
+        }
+        onClick={[Function]}
+        onExpandClick={[Function]}
+        tooltipContent={
+          <span>
+            Show more sites
+          </span>
+        }
+      >
+        Jira Software
+      </Component>
+    </Component>
+    <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+      content={
+        <span>
+          Show more sites
+        </span>
+      }
+      hideTooltipOnMouseDown={true}
+      position="top"
+    >
+      <Component
+        isParentHovered={false}
+      >
+        <Component
+          data-test-id="switcher-expand-toggle"
+          icon={
+            <styled.div>
+              <ChevronDownIcon
+                label="Expand"
+              />
+            </styled.div>
+          }
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        />
+      </Component>
+    </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+  </styled.div>
+</styled.div>
+`;
+
+exports[`Atlassian Switcher - ItemWithDropdown renders an item with multiple sites correctly and clicking expand shows children sites 2`] = `
+<styled.div>
+  <styled.div
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <Component
+      isParentHovered={false}
+    >
+      <Component
+        createAnalyticsEvent={[Function]}
+        description="some-instance"
+        href="https://app.opsgenie.com"
+        icon={
+          <Unknown
+            theme="product"
+          />
+        }
+        onClick={[Function]}
+        onExpandClick={[Function]}
+        tooltipContent={
+          <span>
+            Show more sites
+          </span>
+        }
+      >
+        Jira Software
+      </Component>
+    </Component>
+    <Component
+      isParentHovered={false}
+    >
+      <Component
+        data-test-id="switcher-expand-toggle"
+        icon={
+          <styled.div>
+            <ChevronUpIcon
+              label="Collapse"
+            />
+          </styled.div>
+        }
+        onClick={[Function]}
+        onKeyDown={[Function]}
+      />
+    </Component>
+  </styled.div>
+  <styled.div>
+    <Component
+      data-test-id="switcher-child-item"
+      href="https://site00.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software"
+      icon={
+        <Avatar
+          avatarUrl="https://site-admin-avatar-cdn.staging.public.atl-paas.net/avatars/240/rocket.png"
+          fallbackComponent={
+            <Unknown
+              theme="subtle"
+            />
+          }
+        />
+      }
+      key="site00"
+      onClick={[Function]}
+    >
+      site00
+    </Component>
+    <Component
+      data-test-id="switcher-child-item"
+      href="https://site10.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software"
+      icon={
+        <Avatar
+          avatarUrl="https://site-admin-avatar-cdn.stg.public.atl-paas.net/avatars/240/rocket.png"
+          fallbackComponent={
+            <Unknown
+              theme="subtle"
+            />
+          }
+        />
+      }
+      key="site10"
+      onClick={[Function]}
+    >
+      site10
+    </Component>
+    <Component
+      data-test-id="switcher-child-item"
+      href="https://site30.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software"
+      icon={
+        <Avatar
+          avatarUrl={null}
+          fallbackComponent={
+            <Unknown
+              theme="subtle"
+            />
+          }
+        />
+      }
+      key="site30"
+      onClick={[Function]}
+    >
+      site30
+    </Component>
+  </styled.div>
+</styled.div>
+`;
+
+exports[`Atlassian Switcher - ItemWithDropdown renders an item with multiple sites correctly and clicking expand shows children sites 3`] = `
+<styled.div>
+  <styled.div
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <Component
+      isParentHovered={false}
+    >
+      <Component
+        createAnalyticsEvent={[Function]}
+        description="some-instance"
+        href="https://app.opsgenie.com"
+        icon={
+          <Unknown
+            theme="product"
+          />
+        }
+        onClick={[Function]}
+        onExpandClick={[Function]}
+        tooltipContent={
+          <span>
+            Show more sites
+          </span>
+        }
+      >
+        Jira Software
+      </Component>
+    </Component>
+    <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+      content={
+        <span>
+          Show more sites
+        </span>
+      }
+      hideTooltipOnMouseDown={true}
+      position="top"
+    >
+      <Component
+        isParentHovered={false}
+      >
+        <Component
+          data-test-id="switcher-expand-toggle"
+          icon={
+            <styled.div>
+              <ChevronDownIcon
+                label="Expand"
+              />
+            </styled.div>
+          }
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        />
+      </Component>
+    </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+  </styled.div>
+</styled.div>
+`;
+
+exports[`Atlassian Switcher - ItemWithDropdown renders single site item correctly 1`] = `
+<AnalyticsContextConsumer
+  createEventMap={
+    Object {
+      "onChildItemClick": [Function],
+      "onExpandClick": [Function],
+      "onItemClick": [Function],
+    }
+  }
+  wrappedComponentProps={
+    Object {
+      "childIcon": <Unknown
+        theme="subtle"
+      />,
+      "childItems": Array [],
+      "children": "Opsgenie",
+      "description": "some-instance",
+      "href": "https://app.opsgenie.com",
+      "icon": <Unknown
+        theme="product"
+      />,
+      "tooltipContent": <span>
+        Show more sites
+      </span>,
+    }
+  }
+>
+  <Component />
+</AnalyticsContextConsumer>
+`;

@@ -98,6 +98,9 @@ export default {
   'fabric.editor.decision': 'Beslut',
   'fabric.editor.decision.description':
     'Fånga beslut så att de är enklare att spåra',
+  'fabric.editor.feedbackDialog': 'Ge feedback',
+  'fabric.editor.feedbackDialog.description':
+    'Berätta för oss om din upplevelse av den nya redigeraren',
   'fabric.editor.horizontalRule': 'Avgränsare',
   'fabric.editor.horizontalRule.description':
     'Separera innehåll med en horisontell linje',

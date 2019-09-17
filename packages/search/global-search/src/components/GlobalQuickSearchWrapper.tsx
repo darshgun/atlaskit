@@ -20,7 +20,8 @@ import {
 } from '../util/features';
 import { ABTest } from '../api/CrossProductSearchClient';
 import { ABTestProvider } from './AbTestProvider';
-import withFeedbackButton, {
+import {
+  withFeedbackButton,
   FeedbackCollectorProps,
 } from './feedback/withFeedbackButton';
 import FeaturesProvider from './FeaturesProvider';
@@ -146,6 +147,11 @@ export interface Props {
   isAutocompleteEnabled?: boolean;
 
   /**
+   * Indicates whether or not navautocompletion features is enabled
+   */
+  isNavAutocompleteEnabled?: boolean;
+
+  /**
    * Indicates whether to disable Jira people search on the pre-query screen
    */
   disableJiraPreQueryPeopleSearch?: boolean;
@@ -177,12 +183,6 @@ export interface Props {
   appPermission?: JiraApplicationPermission;
 
   /**
-   * Determine whether to enable faster search for control (aka 'default').
-   * This is used for Confluence only.
-   */
-  fasterSearchFFEnabled?: boolean;
-
-  /**
    * Determine whether to enable urs for bootstrapping people search.
    */
   useUrsForBootstrapping?: boolean;
@@ -201,6 +201,16 @@ export interface Props {
    * Props to pass down to the feedback collector
    */
   feedbackCollectorProps?: FeedbackCollectorProps;
+
+  /**
+   * The user's account id. null if the user is anonymous.
+   */
+  userId: string | null;
+
+  /**
+   * Check if Jira's people profile's page is enabled.
+   */
+  isJiraPeopleProfilesEnabled?: boolean;
 }
 
 const ConfluenceContainerWithFeedback = withFeedbackButton(
@@ -274,7 +284,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
         spaces,
       });
 
-      if (preventEventDefault) {
+      if (preventEventDefault && e) {
         e.preventDefault();
         e.stopPropagation();
       }
@@ -285,18 +295,18 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     const {
       disableJiraPreQueryPeopleSearch,
       enablePreQueryFromAggregator,
-      fasterSearchFFEnabled,
       useUrsForBootstrapping,
       isAutocompleteEnabled,
+      isNavAutocompleteEnabled,
     } = this.props;
 
     return createFeatures({
       abTest,
-      fasterSearchFFEnabled: !!fasterSearchFFEnabled,
       useUrsForBootstrapping: !!useUrsForBootstrapping,
       disableJiraPreQueryPeopleSearch: !!disableJiraPreQueryPeopleSearch,
       enablePreQueryFromAggregator: !!enablePreQueryFromAggregator,
       isAutocompleteEnabled: !!isAutocompleteEnabled,
+      isNavAutocompleteEnabled: !!isNavAutocompleteEnabled,
     });
   }
 
@@ -311,6 +321,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       showFeedbackCollector,
       feedbackCollectorProps,
       confluenceUrl,
+      isJiraPeopleProfilesEnabled,
     } = this.props;
 
     const commonProps = {
@@ -348,6 +359,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
         <JiraQuickSearchContainer
           {...commonProps}
           appPermission={appPermission}
+          isJiraPeopleProfilesEnabled={isJiraPeopleProfilesEnabled}
         />
       );
     } else {
@@ -371,6 +383,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
             const searchClients = configureSearchClients(
               this.props.cloudId,
               this.makeConfig(),
+              this.props.userId === null,
               prefetchedResults,
             );
 

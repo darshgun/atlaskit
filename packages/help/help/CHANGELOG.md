@@ -1,5 +1,125 @@
 ## 0.1.0
 
+## 0.17.1
+
+- Updated dependencies [617591dd61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617591dd61):
+  - @atlaskit/right-side-panel@0.2.0
+
+## 0.17.0
+
+### Minor Changes
+
+- [minor][67bb0eb7da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67bb0eb7da):
+
+  Added articleIdSetter prop and updated the article navigation logic
+
+## 0.16.1
+
+### Patch Changes
+
+- [patch][dbd5ab6c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd5ab6c91):
+
+  Added href prop to ArticleListComponent
+
+## 0.16.0
+
+### Minor Changes
+
+- [minor][23349602c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23349602c7):
+
+  Added Footer and fixed CSS issues
+
+## 0.15.0
+
+### Minor Changes
+
+- [minor][eb130ee556](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb130ee556):
+
+  Added analytics event to onclick event in ArticleListItem
+
+## 0.14.5
+
+### Patch Changes
+
+- [patch][9c28ef71fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c28ef71fe):
+
+  Add missing peerDependency in package.json
+
+## 0.14.4
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 0.14.3
+
+### Patch Changes
+
+- [patch][9e23c34ccb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e23c34ccb):
+
+  Use generic types instead of type annotations for styles-components
+
+## 0.14.2
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 0.14.1
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 0.14.0
+
+### Minor Changes
+
+- [minor][30d333543b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30d333543b):
+
+  Fixed articles navigation
+
+## 0.13.1
+
+### Patch Changes
+
+- [patch][95cbef78d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95cbef78d5):
+
+  Updated ArticleListItem Title color
+
+## 0.13.0
+
+### Minor Changes
+
+- [minor][5141af87be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5141af87be):
+
+  Updated design and expose ArticleListItem
+
 ## 0.12.0
 
 ### Minor Changes

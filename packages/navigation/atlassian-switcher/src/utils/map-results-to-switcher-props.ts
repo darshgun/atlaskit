@@ -7,14 +7,13 @@ import {
   getSuggestedProductLink,
   SwitcherItemType,
   getAvailableProductLinks,
-  MAX_PRODUCT_COUNT,
 } from './links';
 import {
   isComplete,
   isError,
-  isLoading,
   ProviderResult,
   Status,
+  hasLoaded,
 } from '../providers/as-data-provider';
 import {
   CustomLinksResponse,
@@ -26,38 +25,25 @@ import {
   WorklensProductType,
   ProductKey,
   RecommendationsEngineResponse,
+  Product,
 } from '../types';
 import { createCollector } from './create-collector';
 
-function getExpandLink(
-  availableProducts: ProviderResult<AvailableProductsResponse>,
-) {
-  if (availableProducts === undefined || isError(availableProducts)) {
-    return 'https://start.atlassian.com?utm_source=switcher';
-  }
-  if (
-    isComplete(availableProducts) &&
-    availableProducts.data.sites.length > MAX_PRODUCT_COUNT
-  ) {
-    const isStagingInstance = availableProducts.data.sites.some(
-      site => site.url.indexOf('.jira-dev.com') !== -1,
-    );
-    return `https://start.${
-      isStagingInstance ? 'stg.' : ''
-    }atlassian.com?utm_source=switcher`;
-  }
-}
-
 function collectAvailableProductLinks(
-  cloudId: string,
+  cloudId: string | null | undefined,
   availableProducts?: ProviderResult<AvailableProductsResponse>,
+  productTopItemVariation?: string,
 ): SwitcherItemType[] | undefined {
   if (availableProducts) {
     if (isError(availableProducts)) {
       return [];
     }
     if (isComplete(availableProducts)) {
-      return getAvailableProductLinks(availableProducts.data);
+      return getAvailableProductLinks(
+        availableProducts.data,
+        cloudId,
+        productTopItemVariation,
+      );
     }
     return;
   }
@@ -65,7 +51,6 @@ function collectAvailableProductLinks(
 }
 
 function collectProductLinks(
-  cloudId: string,
   licenseInformation: ProviderResults['licenseInformation'],
 ): SwitcherItemType[] | undefined {
   if (isError(licenseInformation)) {
@@ -108,9 +93,11 @@ function collectCanManageLinks(
 }
 
 function collectAdminLinks(
-  cloudId: string,
   managePermission: ProviderResults['managePermission'],
   addProductsPermission: ProviderResults['addProductsPermission'],
+  isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product.JIRA | Product.CONFLUENCE,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
     return [];
@@ -118,15 +105,22 @@ function collectAdminLinks(
 
   if (isComplete(managePermission) && isComplete(addProductsPermission)) {
     if (managePermission.data || addProductsPermission.data) {
-      return getAdministrationLinks(managePermission.data);
+      return getAdministrationLinks(
+        managePermission.data,
+        isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+        product,
+      );
     }
 
     return [];
   }
 }
 
-export function collectFixedProductLinks(): SwitcherItemType[] {
-  return getFixedProductLinks();
+export function collectFixedProductLinks(
+  isDiscoverMoreForEveryoneEnabled: boolean,
+): SwitcherItemType[] {
+  return getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
 }
 
 function collectRecentLinks(
@@ -235,10 +229,11 @@ function asLicenseInformationProviderResult(
 }
 
 export function mapResultsToSwitcherProps(
-  cloudId: string,
+  cloudId: string | null | undefined,
   results: ProviderResults,
   features: FeatureMap,
   availableProducts: ProviderResult<AvailableProductsResponse>,
+  product?: Product.JIRA | Product.CONFLUENCE,
 ) {
   const collect = createCollector();
 
@@ -254,20 +249,32 @@ export function mapResultsToSwitcherProps(
   if (isError(licenseInformation)) {
     throw licenseInformation.error;
   }
-  const resolvedLicenseInformation: ProviderResult<
-    LicenseInformationResponse
-  > = features.enableUserCentricProducts
-    ? asLicenseInformationProviderResult(availableProducts, cloudId)
-    : licenseInformation;
+  const resolvedLicenseInformation: ProviderResult<LicenseInformationResponse> =
+    features.enableUserCentricProducts && cloudId
+      ? asLicenseInformationProviderResult(availableProducts, cloudId)
+      : licenseInformation;
+
+  const hasLoadedSiteCentricProducts = hasLoaded(licenseInformation);
+  const hasLoadedAccountCentricProducts = hasLoaded(availableProducts);
+
+  const hasLoadedLicenseInformation = features.enableUserCentricProducts
+    ? hasLoadedAccountCentricProducts
+    : hasLoadedSiteCentricProducts;
+  const hasLoadedAdminLinks =
+    hasLoaded(managePermission) && hasLoaded(addProductsPermission);
+  const hasLoadedSuggestedProducts = features.xflow
+    ? hasLoaded(productRecommendations) && hasLoaded(isXFlowEnabled)
+    : true;
 
   return {
-    expandLink: features.enableUserCentricProducts
-      ? getExpandLink(availableProducts)
-      : '',
     licensedProductLinks: collect(
       features.enableUserCentricProducts
-        ? collectAvailableProductLinks(cloudId, availableProducts)
-        : collectProductLinks(cloudId, licenseInformation),
+        ? collectAvailableProductLinks(
+            cloudId,
+            availableProducts,
+            features.productTopItemVariation,
+          )
+        : collectProductLinks(licenseInformation),
       [],
     ),
     suggestedProductLinks: features.xflow
@@ -280,9 +287,18 @@ export function mapResultsToSwitcherProps(
           [],
         )
       : [],
-    fixedLinks: collect(collectFixedProductLinks(), []),
+    fixedLinks: collect(
+      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+      [],
+    ),
     adminLinks: collect(
-      collectAdminLinks(cloudId, managePermission, addProductsPermission),
+      collectAdminLinks(
+        managePermission,
+        addProductsPermission,
+        features.isDiscoverMoreForEveryoneEnabled,
+        features.isEmceeLinkEnabled,
+        product,
+      ),
       [],
     ),
     recentLinks: collect(
@@ -295,6 +311,10 @@ export function mapResultsToSwitcherProps(
     ),
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),
-    isLoading: isLoading(resolvedLicenseInformation),
+    hasLoaded:
+      hasLoadedLicenseInformation &&
+      hasLoadedAdminLinks &&
+      hasLoadedSuggestedProducts,
+    hasLoadedCritical: hasLoadedLicenseInformation,
   };
 }

@@ -1,5 +1,7 @@
 import { defaultSchema } from '@atlaskit/adf-schema';
 import { Fragment, Node as PMNode, Schema } from 'prosemirror-model';
+// TODO: Import individual lodash functions that are specified in package.json
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as _ from 'lodash';
 import {
   SerializeFragmentWithAttachmentsResult,
@@ -143,7 +145,7 @@ export class EmailSerializer implements SerializerWithImages<string> {
   serializeFragmentWithImages = (
     fragment: Fragment,
     context?: MetaDataContext,
-  ) => {
+  ): SerializeFragmentWithAttachmentsResult => {
     return _.flow(
       (fragment: Fragment) => fragment.toJSON(),
       JSON.stringify,

@@ -1,22 +1,34 @@
 import * as React from 'react';
 import { Messages } from 'react-intl';
-import Switcher from './switcher';
+import Switcher from '../primitives/themed-switcher';
 import CommonDataProvider from '../providers/common-data-provider';
-import { Product, FeatureMap } from '../types';
+import {
+  Product,
+  FeatureMap,
+  DiscoverMoreCallback,
+  TriggerXFlowCallback,
+} from '../types';
 import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-props';
-import { AvailableProductsProvider } from '../providers/products-data-provider';
+import {
+  AvailableProductsProvider,
+  AvailableProductsDataProvider,
+} from '../providers/products-data-provider';
+import { WithTheme } from '../theme/types';
 
-type GenericSwitcherProps = {
-  cloudId: string;
+type GenericSwitcherProps = WithTheme & {
+  cloudId?: string;
   messages: Messages;
   features: FeatureMap;
-  triggerXFlow: (productKey: string, sourceComponent: string) => void;
+  triggerXFlow: TriggerXFlowCallback;
+  onDiscoverMoreClicked: DiscoverMoreCallback;
   product: Exclude<Product, Product.JIRA | Product.CONFLUENCE>;
+  availableProductsDataProvider?: AvailableProductsDataProvider;
 };
 
 export default (props: GenericSwitcherProps) => (
   <AvailableProductsProvider
     isUserCentric={props.features.enableUserCentricProducts}
+    availableProductsDataProvider={props.availableProductsDataProvider}
   >
     {availableProducts => (
       <CommonDataProvider

@@ -1,8 +1,6 @@
 {
-  "extends": "../tsconfig.base.json",
-  "moduleResolution": "node",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "noImplicitAny": true,
     "baseUrl": "./",
   },
   "include": [

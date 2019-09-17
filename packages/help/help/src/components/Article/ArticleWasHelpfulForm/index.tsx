@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import {
-  CreateUIAnalyticsEventSignature,
+  CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 
@@ -31,7 +31,7 @@ import {
 } from '../styled';
 
 interface Props {
-  createAnalyticsEvent?: CreateUIAnalyticsEventSignature;
+  createAnalyticsEvent?: CreateUIAnalyticsEvent;
 }
 interface State {
   wasHelpful: boolean | null;
@@ -111,11 +111,11 @@ export class ArticleWasHelpfulForm extends React.Component<
         <ButtonGroup>
           <ArticleWasHelpfulYesButton
             onClick={() => this.onWasHelpfulOptionClicked(true)}
-            appearance={wasHelpful === true ? 'primary' : 'default'}
+            isSelected={wasHelpful === true}
           />
           <ArticleWasHelpfulNoButton
             onClick={() => this.onWasHelpfulOptionClicked(false)}
-            appearance={wasHelpful === false ? 'primary' : 'default'}
+            isSelected={wasHelpful === false}
           />
         </ButtonGroup>
 
@@ -171,8 +171,8 @@ export class ArticleWasHelpfulForm extends React.Component<
   }
 }
 
-export default withAnalyticsContext<Props>({
+export default withAnalyticsContext({
   componentName: 'ArticleWasHelpfulForm',
   packageName,
   packageVersion,
-})(withAnalyticsEvents<Props>()(withHelp(injectIntl(ArticleWasHelpfulForm))));
+})(withAnalyticsEvents()(withHelp(injectIntl(ArticleWasHelpfulForm))));

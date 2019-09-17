@@ -3,6 +3,7 @@ import { PureComponent } from 'react';
 import TaskItem from './TaskItem';
 import {
   Appearance,
+  BaseItem,
   ContentRef,
   TaskDecisionProvider,
   TaskState,
@@ -57,7 +58,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     );
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (
       nextProps.taskDecisionProvider !== this.props.taskDecisionProvider ||
       nextProps.containerAri !== this.props.containerAri ||
@@ -87,10 +88,18 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         if (!this.mounted) {
           return;
         }
-        const { taskId } = this.props;
+        const { taskId, isDone } = this.props;
+        const objectKey = { localId: taskId, objectAri, containerAri };
+        const item: BaseItem<TaskState> = {
+          ...objectKey,
+          state: isDone ? 'DONE' : 'TODO',
+          lastUpdateDate: new Date(),
+          type: 'TASK',
+        };
         provider.subscribe(
           { localId: taskId, objectAri, containerAri },
           this.onUpdate,
+          item,
         );
       });
     }

@@ -12,7 +12,7 @@ const defaultNavGroups = [
       {
         to: '/',
         title: 'Welcome',
-        icon: <HomeFilledIcon label="Welcome icon" />,
+        icon: <HomeIcon label="Welcome icon" />,
       },
     ],
   },

@@ -1,14 +1,6 @@
 import * as React from 'react';
-import JiraSwitcher from './jira-switcher';
-import ConfluenceSwitcher from './confluence-switcher';
-import GenericSwitcher from './generic-switcher';
 import ErrorBoundary from './error-boundary';
-import {
-  TriggerXFlowCallback,
-  FeatureFlagProps,
-  Product,
-  RecommendationsFeatureFlags,
-} from '../types';
+import { Product, AtlassianSwitcherProps } from '../types';
 import IntlProvider from './intl-provider';
 import messages from '../utils/messages';
 import {
@@ -20,12 +12,11 @@ import {
 import packageContext from '../utils/package-context';
 import mapPropsToFeatures from '../utils/map-props-to-features';
 
-type AtlassianSwitcherProps = {
-  product: string;
-  cloudId: string;
-  triggerXFlow?: TriggerXFlowCallback;
-  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
-} & Partial<FeatureFlagProps>;
+import {
+  JiraSwitcherLoader,
+  ConfluenceSwitcherLoader,
+  GenericSwitcherLoader,
+} from './loaders';
 
 const getAnalyticsContext = (attributes: object) => ({
   source: SWITCHER_SOURCE,
@@ -40,13 +31,13 @@ const AtlassianSwitcher = (props: AtlassianSwitcherProps) => {
   let Switcher: React.ElementType;
   switch (product) {
     case Product.JIRA:
-      Switcher = JiraSwitcher;
+      Switcher = JiraSwitcherLoader;
       break;
     case Product.CONFLUENCE:
-      Switcher = ConfluenceSwitcher;
+      Switcher = ConfluenceSwitcherLoader;
       break;
     default:
-      Switcher = GenericSwitcher;
+      Switcher = GenericSwitcherLoader;
   }
 
   const features = mapPropsToFeatures(props);

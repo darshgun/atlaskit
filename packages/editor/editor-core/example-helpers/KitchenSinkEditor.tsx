@@ -93,8 +93,8 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
           allowStatus={true}
           {...providers}
           mentionProvider={Promise.resolve(
-            mention.storyData.resourceProviderWithSpotlight,
-          )} // enable spotlight only for kitchen sink example
+            mention.storyData.resourceProviderWithTeamMentionHighlight,
+          )} // enable highlight only for kitchen sink example
           media={{
             provider: mediaProvider,
             allowMediaSingle: true,
@@ -122,7 +122,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
     this.validateDocument();
   }
 
-  componentWillReceiveProps(newProps: Props) {
+  UNSAFE_componentWillReceiveProps(newProps: Props) {
     if (this.props.actions !== newProps.actions) {
       this.editorView = newProps.actions._privateGetEditorView();
     }

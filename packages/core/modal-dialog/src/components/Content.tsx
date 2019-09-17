@@ -94,6 +94,8 @@ interface Props {
    * If false and heading is longer than one line overflow will be not displayed.
    */
   isHeadingMultiline?: boolean;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 interface State {
@@ -162,7 +164,7 @@ export default class Content extends React.Component<Props, State> {
     /* eslint-enable no-console */
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const { stackIndex } = this.props;
 
     // update focus scope and let consumer know when stack index has changed
@@ -247,6 +249,7 @@ export default class Content extends React.Component<Props, State> {
       isHeadingMultiline,
       onClose,
       shouldScroll,
+      testId,
     } = this.props;
 
     const { showFooterKeyline, showHeaderKeyline } = this.state;
@@ -255,7 +258,7 @@ export default class Content extends React.Component<Props, State> {
     const Body = CustomBody || DeprecatedBody || DefaultBody;
 
     return (
-      <Container css={wrapperStyles}>
+      <Container css={wrapperStyles} data-testid={testId}>
         {isChromeless ? (
           children
         ) : (

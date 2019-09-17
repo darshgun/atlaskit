@@ -102,6 +102,9 @@ export default {
   'fabric.editor.decision': 'Päätös',
   'fabric.editor.decision.description':
     'Taltioi päätökset, jotta niitä on helppo seurata',
+  'fabric.editor.feedbackDialog': 'Anna palautetta',
+  'fabric.editor.feedbackDialog.description':
+    'Kerro meille uuden muokkaajan käyttökokemuksestasi',
   'fabric.editor.horizontalRule': 'Jakaja',
   'fabric.editor.horizontalRule.description': 'Erota sisältö vaakaviivalla',
   'fabric.editor.date': 'Päivämäärä',

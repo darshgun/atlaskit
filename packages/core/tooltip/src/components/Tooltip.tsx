@@ -3,14 +3,15 @@
 import React from 'react';
 import NodeResolver from 'react-node-resolver';
 import flushable from 'flushable';
-import { Popper } from '@atlaskit/popper';
+import { Popper, Placement } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
-import { layers } from '@atlaskit/theme';
+import { layers } from '@atlaskit/theme/constants';
 
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -52,10 +53,10 @@ function getMousePosition(
   };
 }
 
-interface Props {
+export interface TooltipProps extends WithAnalyticsEventsProps {
   /** The content of the tooltip */
   content: React.ReactNode;
-  /** Extend `TooltipPrimitive` to create your own tooptip and pass it as component */
+  /** Extend `TooltipPrimitive` to create your own tooltip and pass it as component */
   component?: StyledComponentClass<
     { truncate?: boolean; style?: any; className?: any },
     any
@@ -64,13 +65,13 @@ interface Props {
   delay?: number;
   /**
     Hide the tooltip when the click event is triggered. This should be
-    used when tooltip should be hiden if `onClick` react synthetic event
+    used when tooltip should be hidden if `onClick` react synthetic event
     is triggered, which happens after `onMouseDown` event
   */
   hideTooltipOnClick?: boolean;
   /**
     Hide the tooltip when the mousedown event is triggered. This should be
-    used when tooltip should be hiden if `onMouseDown` react synthetic event
+    used when tooltip should be hidden if `onMouseDown` react synthetic event
     is triggered, which happens before `onClick` event
   */
   hideTooltipOnMouseDown?: boolean;
@@ -101,6 +102,8 @@ interface Props {
   tag?: React.ElementType;
   /** Show only one line of text, and truncate when too long */
   truncate?: boolean;
+  /** Elements to be wrapped by the tooltip */
+  children: React.ReactNode;
 }
 
 interface State {
@@ -132,9 +135,9 @@ const hideTooltip = (fn: (flushed: boolean) => void, defaultDelay: number) => {
   return pendingHide.cancel;
 };
 
-class Tooltip extends React.Component<Props, State> {
+class Tooltip extends React.Component<TooltipProps, State> {
   static defaultProps: Pick<
-    Props,
+    TooltipProps,
     'component' | 'delay' | 'mousePosition' | 'position' | 'tag'
   > = {
     component: StyledTooltip,
@@ -165,7 +168,7 @@ class Tooltip extends React.Component<Props, State> {
     this.removeScrollListener();
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
+  componentDidUpdate(_prevProps: TooltipProps, prevState: State) {
     if (!prevState.isVisible && this.state.isVisible) {
       if (this.props.onShow) this.props.onShow();
 
@@ -298,6 +301,7 @@ class Tooltip extends React.Component<Props, State> {
         {renderTooltip && this.targetRef && this.fakeMouseElement ? (
           <Portal zIndex={layers.tooltip()}>
             <Popper
+              // @ts-ignore
               referenceElement={
                 // https://github.com/FezVrasta/react-popper#usage-without-a-reference-htmlelement
                 // We are using a popper technique to pass in a faked element when we use mouse.
@@ -313,7 +317,7 @@ class Tooltip extends React.Component<Props, State> {
               }: {
                 ref: (elm: HTMLElement) => void;
                 style: Object;
-                placement: PositionTypeBase;
+                placement: Placement;
               }) =>
                 TooltipContainer && (
                   <Animation
@@ -327,7 +331,7 @@ class Tooltip extends React.Component<Props, State> {
                         innerRef={ref}
                         className="Tooltip"
                         style={{
-                          ...getAnimationStyles(placement),
+                          ...getAnimationStyles(placement as PositionTypeBase),
                           ...style,
                         }}
                         truncate={truncate || false}
@@ -352,12 +356,12 @@ const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export type TooltipType = Tooltip;
 
-export default withAnalyticsContext<Props>({
+export default withAnalyticsContext({
   componentName: 'tooltip',
   packageName,
   packageVersion,
 })(
-  withAnalyticsEvents<Props>({
+  withAnalyticsEvents({
     onHide: unhoveredPayload,
     onShow: createAndFireEventOnAtlaskit({ ...hoveredPayload }),
   })(Tooltip),

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import throttle from 'lodash.throttle';
+import { prefetch } from '../prefetch';
 import now from '../utils/performance-now';
-import { prefetchAll } from '../providers/instance-data-providers';
-import { prefetchAvailableProducts } from '../providers/products-data-provider';
 import {
   NAVIGATION_CHANNEL,
   NavigationAnalyticsContext,
@@ -13,10 +12,11 @@ import {
 } from '../utils/analytics';
 import {
   AnalyticsEventPayload,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import packageContext from '../utils/package-context';
 import { FeatureFlagProps } from '../types';
+import { AvailableProductsDataProvider } from '../providers/products-data-provider';
 
 const THROTTLE_EXPIRES = 60 * 1000; // 60 seconds
 const THROTTLE_OPTIONS = {
@@ -30,13 +30,15 @@ const TRIGGER_CONTEXT = {
 };
 
 type PrefetchTriggerProps = {
+  product?: string;
   children: React.ReactNode;
-  cloudId: string;
+  cloudId?: string;
   Container?: React.ReactType;
+  availableProductsDataProvider?: AvailableProductsDataProvider;
 } & Partial<FeatureFlagProps>;
 
 class PrefetchTrigger extends React.Component<
-  PrefetchTriggerProps & WithAnalyticsEventProps
+  PrefetchTriggerProps & WithAnalyticsEventsProps
 > {
   private lastEnteredAt?: number;
 
@@ -52,12 +54,10 @@ class PrefetchTrigger extends React.Component<
     }
   };
 
-  private triggerPrefetch: typeof prefetchAll = throttle(
-    (params: any) => {
-      prefetchAll(params);
-      if (this.props.enableUserCentricProducts) {
-        prefetchAvailableProducts();
-      }
+  private triggerPrefetch = throttle(
+    () => {
+      prefetch(this.props);
+
       this.fireOperationalEvent({
         action: 'triggered',
       });
@@ -67,7 +67,7 @@ class PrefetchTrigger extends React.Component<
   );
 
   private handleMouseEnter = () => {
-    this.triggerPrefetch({ cloudId: this.props.cloudId });
+    this.triggerPrefetch();
     this.lastEnteredAt = now();
   };
 
@@ -96,9 +96,7 @@ class PrefetchTrigger extends React.Component<
   }
 }
 
-const PrefetchTriggerWithEvents = withAnalyticsEvents<PrefetchTriggerProps>()(
-  PrefetchTrigger,
-);
+const PrefetchTriggerWithEvents = withAnalyticsEvents()(PrefetchTrigger);
 
 export default (props: PrefetchTriggerProps) => (
   <NavigationAnalyticsContext data={TRIGGER_CONTEXT}>

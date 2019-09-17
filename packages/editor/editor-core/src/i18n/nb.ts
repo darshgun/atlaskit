@@ -98,6 +98,9 @@ export default {
   'fabric.editor.decision': 'Beslutning',
   'fabric.editor.decision.description':
     'Registrer beslutninger slik at det er lett å spore dem',
+  'fabric.editor.feedbackDialog': 'Gi en tilbakemelding',
+  'fabric.editor.feedbackDialog.description':
+    'Fortell oss hvordan du opplevde det nye redigeringsprogrammet',
   'fabric.editor.horizontalRule': 'Deler',
   'fabric.editor.horizontalRule.description':
     'Atskill innhold med en horisontal linje',

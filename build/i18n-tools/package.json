@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/i18n-tools",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A tool for extracting, pushing and pulling translation strings from react components",
   "main": "index.js",
   "bin": {
@@ -22,6 +22,7 @@
     "meow": "^5.0.0",
     "mkdirp": "^0.5.1",
     "prettier": "^1.14.3",
-    "transifex": "^1.5.0"
+    "transifex": "^1.5.0",
+    "traduki-lite": "^1.0.1"
   }
 }

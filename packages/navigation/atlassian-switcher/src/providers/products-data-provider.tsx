@@ -1,27 +1,19 @@
 import * as React from 'react';
 
-import { fetchJson } from '../utils/fetch';
-import asDataProvider, {
-  ProviderResult,
-  ResultLoading,
-  Status,
-} from './as-data-provider';
+import { ProviderResult, ResultLoading, Status } from './as-data-provider';
 import { AvailableProductsResponse } from '../types';
-import { withCached } from '../utils/with-cached';
+import { createAvailableProductsProvider } from './default-available-products-provider';
+import { ExportedDataProvider, DataProvider } from './create-data-provider';
 
-export const MANAGE_HREF = '/plugins/servlet/customize-application-navigator';
+export type AvailableProductsDataProvider = ExportedDataProvider<
+  AvailableProductsResponse
+>;
+type RealProvider = DataProvider<AvailableProductsResponse>;
 
-const fetchAvailableProducts = withCached((param: object) =>
-  fetchJson<AvailableProductsResponse>(
-    `/gateway/api/worklens/api/available-products`,
-  ),
-);
-
-const RealDataProvider = asDataProvider(
-  'availableProducts',
-  fetchAvailableProducts,
-  fetchAvailableProducts.cached,
-);
+const {
+  fetchMethod: fetchAvailableProducts,
+  ProviderComponent: DefaultDataProviderComponent,
+} = createAvailableProductsProvider() as RealProvider;
 
 const unresolvedAvailableProducts: ResultLoading = {
   status: Status.LOADING,
@@ -31,14 +23,23 @@ const unresolvedAvailableProducts: ResultLoading = {
 export const AvailableProductsProvider = ({
   isUserCentric,
   children,
+  availableProductsDataProvider,
 }: {
   isUserCentric: boolean;
   children: (
     availableProducts: ProviderResult<AvailableProductsResponse>,
   ) => React.ReactNode;
+  availableProductsDataProvider?: AvailableProductsDataProvider;
 }) => {
   if (isUserCentric) {
-    return <RealDataProvider>{children}</RealDataProvider>;
+    const CustomDataProviderComponent =
+      availableProductsDataProvider &&
+      availableProductsDataProvider.ProviderComponent;
+
+    const DataProviderComponent =
+      CustomDataProviderComponent || DefaultDataProviderComponent;
+
+    return <DataProviderComponent>{children}</DataProviderComponent>;
   }
   // We should never be reading from this provider in non-user-centric mode, so here I model it as a provider that never resolves.
   return (
@@ -46,10 +47,24 @@ export const AvailableProductsProvider = ({
   );
 };
 
-export const prefetchAvailableProducts = () => {
+export const prefetchAvailableProducts = (
+  customProvider?: AvailableProductsDataProvider,
+) => {
+  if (customProvider) {
+    (customProvider as RealProvider).fetchMethod({});
+    return;
+  }
+
   fetchAvailableProducts({});
 };
 
-export const resetAvailableProducts = () => {
+export const resetAvailableProducts = (
+  customProvider?: AvailableProductsDataProvider,
+) => {
+  if (customProvider) {
+    (customProvider as RealProvider).fetchMethod.reset();
+    return;
+  }
+
   fetchAvailableProducts.reset();
 };

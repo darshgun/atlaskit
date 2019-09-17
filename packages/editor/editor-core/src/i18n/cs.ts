@@ -95,6 +95,9 @@ export default {
   'fabric.editor.decision': 'Rozhodnutí',
   'fabric.editor.decision.description':
     'Zaznamenávejte rozhodnutí, aby se snadněji sledovala',
+  'fabric.editor.feedbackDialog': 'Poskytnout zpětnou vazbu',
+  'fabric.editor.feedbackDialog.description':
+    'Podělte se s námi o pocity z práce v novém editoru',
   'fabric.editor.horizontalRule': 'Dílčí příčka',
   'fabric.editor.horizontalRule.description':
     'Rozdělit obsah horizontální čárou',

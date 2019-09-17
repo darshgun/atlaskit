@@ -1,12 +1,15 @@
-import Tag from '@atlaskit/tag';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Option, UserPickerProps } from '../types';
-import { AddOptionAvatar } from './AddOptionAvatar';
-import { messages } from './i18n';
-import { SizeableAvatar } from './SizeableAvatar';
-import { getAvatarUrl, isEmail } from './utils';
 import styled from 'styled-components';
+
+import { AddOptionAvatar } from './AddOptionAvatar';
+import { SizeableAvatar } from './SizeableAvatar';
+import { messages } from './i18n';
+import { getAvatarUrl, isEmail, isGroup } from './utils';
+import { Option, UserPickerProps } from '../types';
+
+import Tag from '@atlaskit/tag';
+import PeopleIcon from '@atlaskit/icon/glyph/people';
 import { colors } from '@atlaskit/theme';
 
 export const scrollToValue = (
@@ -29,6 +32,10 @@ const TagContainer = styled.div`
       box-shadow: 0 0 0 2px ${colors.B100};
     }
   }
+`;
+
+const GroupTagContainer = styled.div`
+  padding-left: 2px;
 `;
 
 type Props = {
@@ -98,6 +105,15 @@ export class MultiValue extends React.Component<Props> {
         </FormattedMessage>
       );
     }
+
+    if (isGroup(data)) {
+      return (
+        <GroupTagContainer>
+          <PeopleIcon label="group-icon" size="small" />
+        </GroupTagContainer>
+      );
+    }
+
     return (
       <SizeableAvatar
         appearance="multi"

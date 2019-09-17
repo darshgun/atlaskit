@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type ElementRef } from 'react';
+import React, { Component, Fragment, type ElementRef } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import {
@@ -10,7 +10,11 @@ import {
 import PageContent from '../PageContent';
 import ResizeTransition from '../ResizeTransition';
 import ResizeControl from './ResizeControl';
-import { LayoutContainer, NavigationContainer } from './primitives';
+import {
+  HorizontalNavigationContainer,
+  LayoutContainer,
+  NavigationContainer,
+} from './primitives';
 import type { LayoutManagerProps } from './types';
 import { ContainerNavigationMask } from '../ContentNavigation/primitives';
 import {
@@ -19,10 +23,12 @@ import {
 } from './nav-components';
 
 import {
+  ALTERNATE_FLYOUT_DELAY,
   CONTENT_NAV_WIDTH_COLLAPSED,
   CONTENT_NAV_WIDTH_FLYOUT,
   FLYOUT_DELAY,
-  ALTERNATE_FLYOUT_DELAY,
+  GLOBAL_NAV_WIDTH,
+  HORIZONTAL_GLOBAL_NAV_HEIGHT,
 } from '../../../common/constants';
 import RenderBlocker from '../../common/RenderBlocker';
 import { LayoutEventListener } from './LayoutEvent';
@@ -63,22 +69,23 @@ export default class LayoutManager extends Component<
     collapseToggleTooltipContent: defaultTooltipContent,
     datasets: {
       contextualNavigation: {
-        'data-test-id': 'ContextualNavigation',
+        'data-testid': 'ContextualNavigation',
       },
       globalNavigation: {
-        'data-test-id': 'GlobalNavigation',
+        'data-testid': 'GlobalNavigation',
       },
       navigation: {
-        'data-test-id': 'Navigation',
+        'data-testid': 'Navigation',
       },
     },
     topOffset: 0,
     shouldHideGlobalNavShadow: false,
     // eslint-disable-next-line camelcase
-    experimental_flyoutOnHover: false,
     experimental_alternateFlyoutBehaviour: false,
+    experimental_flyoutOnHover: false,
     experimental_fullWidthFlyout: false,
     experimental_hideNavVisuallyOnCollapse: false,
+    experimental_horizontalGlobalNav: false,
   };
 
   static getDerivedStateFromProps(props: LayoutManagerProps, state: State) {
@@ -175,13 +182,15 @@ export default class LayoutManager extends Component<
       datasets,
       navigationUIController,
       // eslint-disable-next-line camelcase
-      experimental_flyoutOnHover: EXPERIMENTAL_FLYOUT_ON_HOVER,
-      // eslint-disable-next-line camelcase
       experimental_alternateFlyoutBehaviour: EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR,
+      // eslint-disable-next-line camelcase
+      experimental_flyoutOnHover: EXPERIMENTAL_FLYOUT_ON_HOVER,
       // eslint-disable-next-line camelcase
       experimental_fullWidthFlyout: EXPERIMENTAL_FULL_WIDTH_FLYOUT,
       // eslint-disable-next-line camelcase
       experimental_hideNavVisuallyOnCollapse: EXPERIMENTAL_HIDE_NAV_VISUALLY_ON_COLLAPSE,
+      // eslint-disable-next-line camelcase
+      experimental_horizontalGlobalNav: EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV,
       collapseToggleTooltipContent,
       topOffset,
       shouldHideGlobalNavShadow,
@@ -204,6 +213,11 @@ export default class LayoutManager extends Component<
 
     const dataset = datasets ? datasets.navigation : {};
 
+    const GlobalNavigation = globalNavigation;
+    const navContainerTopOffset = EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV
+      ? HORIZONTAL_GLOBAL_NAV_HEIGHT + topOffset
+      : topOffset;
+
     return (
       <LayoutEventListener
         onItemDragStart={this.onItemDragStart}
@@ -222,123 +236,138 @@ export default class LayoutManager extends Component<
             packageVersion,
           }}
         >
-          <ResizeTransition
-            from={[CONTENT_NAV_WIDTH_COLLAPSED]}
-            in={!isCollapsed || flyoutIsOpen}
-            properties={['width']}
-            to={[flyoutIsOpen ? flyoutWidth : productNavWidth]}
-            userIsDragging={isResizing}
-            // only apply listeners to the NAV resize transition
-            productNavWidth={productNavWidth}
-          >
-            {({ transitionStyle, transitionState }) => {
-              const onMouseOut =
-                isCollapsed && EXPERIMENTAL_FLYOUT_ON_HOVER && flyoutIsOpen
-                  ? this.mouseOutFlyoutArea
-                  : null;
-              const onMouseOver =
-                isCollapsed && EXPERIMENTAL_FLYOUT_ON_HOVER && !flyoutIsOpen
-                  ? this.mouseOverFlyoutArea
-                  : null;
-              return (
-                <NavigationContainer
-                  {...dataset}
-                  topOffset={topOffset}
-                  innerRef={this.getContainerRef}
-                  onMouseEnter={this.mouseEnter}
-                  onMouseOver={
-                    EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR ? onMouseOver : null
-                  }
-                  onMouseOut={onMouseOut}
-                  onMouseLeave={this.mouseLeave}
-                >
-                  <ResizeControl
-                    collapseToggleTooltipContent={collapseToggleTooltipContent}
-                    expandCollapseAffordanceRef={
-                      this.nodeRefs.expandCollapseAffordance
-                    }
-                    // eslint-disable-next-line camelcase
-                    experimental_flyoutOnHover={EXPERIMENTAL_FLYOUT_ON_HOVER}
-                    isDisabled={isResizeDisabled}
-                    flyoutIsOpen={flyoutIsOpen}
-                    isGrabAreaDisabled={itemIsDragging}
-                    mouseIsOverNavigation={mouseIsOverNavigation}
-                    onMouseOverButtonBuffer={
+          <Fragment>
+            {EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV && (
+              <RenderBlocker>
+                <HorizontalNavigationContainer topOffset={topOffset}>
+                  <GlobalNavigation />
+                </HorizontalNavigationContainer>
+              </RenderBlocker>
+            )}
+            <ResizeTransition
+              from={[CONTENT_NAV_WIDTH_COLLAPSED]}
+              in={!isCollapsed || flyoutIsOpen}
+              properties={['width']}
+              to={[flyoutIsOpen ? flyoutWidth : productNavWidth]}
+              userIsDragging={isResizing}
+              // only apply listeners to the NAV resize transition
+              productNavWidth={productNavWidth}
+            >
+              {({ transitionStyle, transitionState }) => {
+                const onMouseOut =
+                  isCollapsed && EXPERIMENTAL_FLYOUT_ON_HOVER && flyoutIsOpen
+                    ? this.mouseOutFlyoutArea
+                    : null;
+                const onMouseOver =
+                  isCollapsed && EXPERIMENTAL_FLYOUT_ON_HOVER && !flyoutIsOpen
+                    ? this.mouseOverFlyoutArea
+                    : null;
+                return (
+                  <NavigationContainer
+                    {...dataset}
+                    topOffset={navContainerTopOffset}
+                    innerRef={this.getContainerRef}
+                    onMouseEnter={this.mouseEnter}
+                    onMouseOver={
                       EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR
-                        ? this.closeFlyout
+                        ? onMouseOver
                         : null
                     }
-                    mutationRefs={[
-                      { ref: this.pageRef, property: 'padding-left' },
-                      { ref: this.productNavRef, property: 'width' },
-                    ]}
-                    navigation={navigationUIController}
+                    onMouseOut={onMouseOut}
+                    onMouseLeave={this.mouseLeave}
                   >
-                    {({ width, mouseIsOverGrabArea, mouseIsDown }) => {
-                      return (
-                        <ContainerNavigationMask
-                          disableInteraction={itemIsDragging}
-                          onMouseOver={
-                            EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR
-                              ? null
-                              : onMouseOver
-                          }
-                        >
-                          <RenderBlocker
-                            blockOnChange
-                            itemIsDragging={itemIsDragging}
+                    <ResizeControl
+                      collapseToggleTooltipContent={
+                        collapseToggleTooltipContent
+                      }
+                      expandCollapseAffordanceRef={
+                        this.nodeRefs.expandCollapseAffordance
+                      }
+                      // eslint-disable-next-line camelcase
+                      experimental_flyoutOnHover={EXPERIMENTAL_FLYOUT_ON_HOVER}
+                      isDisabled={isResizeDisabled}
+                      flyoutIsOpen={flyoutIsOpen}
+                      isGrabAreaDisabled={itemIsDragging}
+                      mouseIsOverNavigation={mouseIsOverNavigation}
+                      onMouseOverButtonBuffer={
+                        EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR
+                          ? this.closeFlyout
+                          : null
+                      }
+                      mutationRefs={[
+                        { ref: this.pageRef, property: 'padding-left' },
+                        { ref: this.productNavRef, property: 'width' },
+                      ]}
+                      navigation={navigationUIController}
+                    >
+                      {({ width, mouseIsOverGrabArea, mouseIsDown }) => {
+                        return (
+                          <ContainerNavigationMask
+                            disableInteraction={itemIsDragging}
+                            onMouseOver={
+                              EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR
+                                ? null
+                                : onMouseOver
+                            }
                           >
-                            <ComposedGlobalNavigation
-                              containerNavigation={containerNavigation}
-                              datasets={datasets}
-                              globalNavigation={globalNavigation}
-                              topOffset={topOffset}
-                              shouldHideGlobalNavShadow={
-                                shouldHideGlobalNavShadow
-                              }
-                              experimental_alternateFlyoutBehaviour={
-                                EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR
-                              }
-                              closeFlyout={this.closeFlyout}
-                              mouseIsOverGrabArea={mouseIsOverGrabArea}
-                              mouseIsOverNavigation={mouseIsOverNavigation}
-                              width={width}
-                              transitionState={transitionState}
-                              isResizing={isResizing}
-                              isCollapsed={isCollapsed}
-                              mouseIsDown={mouseIsDown}
-                              flyoutIsOpen={flyoutIsOpen}
-                              view={view}
-                            />
+                            <RenderBlocker
+                              blockOnChange
+                              itemIsDragging={itemIsDragging}
+                            >
+                              {!EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV && (
+                                <ComposedGlobalNavigation
+                                  containerNavigation={containerNavigation}
+                                  datasets={datasets}
+                                  globalNavigation={globalNavigation}
+                                  topOffset={topOffset}
+                                  shouldHideGlobalNavShadow={
+                                    shouldHideGlobalNavShadow
+                                  }
+                                  experimental_alternateFlyoutBehaviour={
+                                    EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR
+                                  }
+                                  closeFlyout={this.closeFlyout}
+                                  mouseIsOverGrabArea={mouseIsOverGrabArea}
+                                  mouseIsOverNavigation={mouseIsOverNavigation}
+                                  width={width}
+                                  transitionState={transitionState}
+                                  isResizing={isResizing}
+                                  isCollapsed={isCollapsed}
+                                  mouseIsDown={mouseIsDown}
+                                  flyoutIsOpen={flyoutIsOpen}
+                                  view={view}
+                                />
+                              )}
 
-                            <ComposedContainerNavigation
-                              containerNavigation={containerNavigation}
-                              datasets={datasets}
-                              experimental_flyoutOnHover={
-                                EXPERIMENTAL_FLYOUT_ON_HOVER
-                              }
-                              experimental_hideNavVisuallyOnCollapse={
-                                !!EXPERIMENTAL_HIDE_NAV_VISUALLY_ON_COLLAPSE
-                              }
-                              expand={navigationUIController.expand}
-                              productNavigation={productNavigation}
-                              transitionState={transitionState}
-                              transitionStyle={transitionStyle}
-                              isCollapsed={isCollapsed}
-                              isResizing={isResizing}
-                              getNavRef={this.getNavRef}
-                              width={width}
-                              view={view}
-                            />
-                          </RenderBlocker>
-                        </ContainerNavigationMask>
-                      );
-                    }}
-                  </ResizeControl>
-                </NavigationContainer>
-              );
-            }}
-          </ResizeTransition>
+                              <ComposedContainerNavigation
+                                containerNavigation={containerNavigation}
+                                datasets={datasets}
+                                experimental_flyoutOnHover={
+                                  EXPERIMENTAL_FLYOUT_ON_HOVER
+                                }
+                                experimental_hideNavVisuallyOnCollapse={
+                                  !!EXPERIMENTAL_HIDE_NAV_VISUALLY_ON_COLLAPSE
+                                }
+                                expand={navigationUIController.expand}
+                                productNavigation={productNavigation}
+                                transitionState={transitionState}
+                                transitionStyle={transitionStyle}
+                                isCollapsed={isCollapsed}
+                                isResizing={isResizing}
+                                getNavRef={this.getNavRef}
+                                width={width}
+                                view={view}
+                              />
+                            </RenderBlocker>
+                          </ContainerNavigationMask>
+                        );
+                      }}
+                    </ResizeControl>
+                  </NavigationContainer>
+                );
+              }}
+            </ResizeTransition>
+          </Fragment>
         </NavigationAnalyticsContext>
       </LayoutEventListener>
     );
@@ -346,6 +375,8 @@ export default class LayoutManager extends Component<
 
   renderPageContent = () => {
     const {
+      // eslint-disable-next-line camelcase
+      experimental_horizontalGlobalNav: EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV,
       navigationUIController,
       onExpandStart,
       onExpandEnd,
@@ -360,17 +391,28 @@ export default class LayoutManager extends Component<
       productNavWidth,
     } = navigationUIController.state;
 
+    const leftOffset = EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV
+      ? 0
+      : GLOBAL_NAV_WIDTH;
+    // This offset should just be the global nav height, as the topOffset prop has already been applied
+    // to layout manager content via a margin
+    const topOffset = EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV
+      ? HORIZONTAL_GLOBAL_NAV_HEIGHT
+      : 0;
+
     return (
       <PageContent
         flyoutIsOpen={flyoutIsOpen}
         innerRef={this.getPageRef}
-        isResizing={isResizing}
         isCollapsed={isCollapsed}
-        productNavWidth={productNavWidth}
+        isResizing={isResizing}
+        leftOffset={leftOffset}
         onExpandStart={onExpandStart}
         onExpandEnd={onExpandEnd}
         onCollapseStart={onCollapseStart}
         onCollapseEnd={onCollapseEnd}
+        productNavWidth={productNavWidth}
+        topOffset={topOffset}
       >
         {children}
       </PageContent>
