@@ -1,1 +1,0 @@
-ED-7700: prevent collab plugin from sending fixTable appended transaction
