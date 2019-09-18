@@ -141,7 +141,7 @@ export const siteEmojiWtf = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };

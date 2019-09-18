@@ -8,7 +8,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/disapproval@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/disapproval@4x.png",
         "height": 72,
         "width": 92
       },
@@ -23,7 +23,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/feels_good_man@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/feels_good_man@4x.png",
         "height": 96,
         "width": 120
       },
@@ -38,7 +38,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/skyrim@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/skyrim@4x.png",
         "height": 120,
         "width": 68
       },
@@ -53,7 +53,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/branch@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/branch@4x.png",
         "height": 64,
         "width": 64
       },
@@ -68,7 +68,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/upvote@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/upvote@4x.png",
         "height": 120,
         "width": 116
       },
@@ -83,7 +83,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/ban.jpg",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/ban.jpg",
         "height": 30,
         "width": 30
       },
@@ -98,7 +98,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/ftfy@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/ftfy@4x.png",
         "height": 120,
         "width": 120
       },
@@ -113,7 +113,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/ftfy@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/ftfy@4x.png",
         "height": 120,
         "width": 120
       },
@@ -128,7 +128,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/ftfy@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/ftfy@4x.png",
         "height": 120,
         "width": 120
       },
@@ -143,7 +143,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/twss@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/twss@4x.png",
         "height": 100,
         "width": 80
       },
@@ -158,7 +158,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/evilburns@4x.png",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/evilburns@4x.png",
         "height": 120,
         "width": 96
       },
@@ -173,7 +173,7 @@
       "category": "ATLASSIAN",
       "order": -1000,
       "representation": {
-        "imagePath": "https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/boom.gif",
+        "imagePath": "https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/boom.gif",
         "height": 30,
         "width": 30
       },
