@@ -20,7 +20,7 @@ describe('TableRow', () => {
       shallowWrapper = shallow(<TableBodyRow isHighlighted={false} />);
     });
 
-    it('should render with required background color', () => {
+    it('should render without background color', () => {
       expect(shallowWrapper).toMatchSnapshot();
     });
   });

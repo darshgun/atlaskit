@@ -12,21 +12,21 @@ export default class extends React.Component<{}, State> {
     highlightedRow: 3,
   };
 
+  setHighlightedRow = (rowNumber: number) =>
+    this.setState({
+      highlightedRow: rowNumber,
+    });
+
   render() {
-    const setHighlightedRow = (rowNumber: number) =>
-      this.setState({
-        highlightedRow: rowNumber,
-      });
     return (
       <>
         <div> Click on the buttons to highlight the corresponding row</div>
         <ButtonGroup>
-          <Button onClick={() => setHighlightedRow(0)}>0</Button>
-          <Button onClick={() => setHighlightedRow(2)}>2</Button>
-          <Button onClick={() => setHighlightedRow(5)}>5</Button>
-          <Button onClick={() => setHighlightedRow(6)}>6</Button>
-          <Button onClick={() => setHighlightedRow(8)}>8</Button>
-          <Button onClick={() => setHighlightedRow(9)}>9</Button>
+          {[0, 2, 5, 6, 8, 9].map(nos => (
+            <Button onClick={() => this.setHighlightedRow(nos)} key={nos}>
+              {nos}
+            </Button>
+          ))}
         </ButtonGroup>
 
         <DynamicTableStateless
