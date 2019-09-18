@@ -176,8 +176,8 @@ export default class Page {
       const logs = await this.browser.getLogs('browser');
       if (logs.length) {
         logs.forEach(log => {
-          console.log(exceptions.some(v => log.message.includes(v)));
-          if (exceptions.some(v => log.message.includes(v))) {
+          console.log(exceptions.filter(v => log.message.includes(v)));
+          if (exceptions.filter(v => log.message.includes(v))) {
             assert.notStrictEqual(
               log.level,
               'SEVERE',
