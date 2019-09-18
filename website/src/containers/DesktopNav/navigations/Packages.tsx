@@ -121,7 +121,6 @@ const standardGroups = (dirs: Array<Directory>, pathname: string): NavGroup[] =>
 export default function PackagesNav(props: PackagesNavProps) {
   const { packages, pathname } = props;
   const dirs = fs.getDirectories(packages.children);
-  console.log('dirs', dirs);
   return (
     <div>
       {renderNav(
