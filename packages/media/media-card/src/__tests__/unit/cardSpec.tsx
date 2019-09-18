@@ -16,6 +16,7 @@ import {
   globalMediaEventEmitter,
   isFileIdentifier,
   MediaViewedEventPayload,
+  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
 import { MediaViewer } from '@atlaskit/media-viewer';
 import {
@@ -887,7 +888,7 @@ describe('Card', () => {
     it('should trigger "media-viewed" in globalMediaEventEmitter when collection is recents', async () => {
       identifier = {
         ...fileIdentifier,
-        collectionName: 'recents',
+        collectionName: RECENTS_COLLECTION,
       };
       await expectMediaViewedEvent({
         fileId: 'some-random-id',

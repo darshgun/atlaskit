@@ -24,6 +24,7 @@ import {
   ExternalImageIdentifier,
   globalMediaEventEmitter,
   MediaViewedEventPayload,
+  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
 import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
 
@@ -533,7 +534,7 @@ export class CardBase extends Component<
     if (isFileIdentifier(identifier)) {
       payloadPart = {
         fileId: await identifier.id,
-        isUserCollection: identifier.collectionName === 'recents',
+        isUserCollection: identifier.collectionName === RECENTS_COLLECTION,
       };
     } else {
       payloadPart = {

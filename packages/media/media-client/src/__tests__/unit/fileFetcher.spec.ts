@@ -103,7 +103,7 @@ describe('FileFetcher', () => {
 
       it('should trigger media-viewed in globalMediaEventEmitter for recents collection', async () => {
         const { fileFetcher } = setup();
-        await fileFetcher.downloadBinary(fileId, fileName, 'recents');
+        await fileFetcher.downloadBinary(fileId, fileName, RECENTS_COLLECTION);
 
         expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
         expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
