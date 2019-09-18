@@ -1,5 +1,67 @@
 # @atlaskit/editor-common
 
+## 41.0.0
+
+### Major Changes
+
+- [major][80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+
+  Remove applicationCard node and action mark
+
+### Minor Changes
+
+- [minor][5276c19a41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5276c19a41):
+
+  ED-5996: support viewing inline comments within editor
+
+  You can do this with the `annotationProvider` prop. Passing a truthy value to this (e.g. the empty object `{}`) will:
+
+  - enable support for working with the `annotation` ADF mark
+  - will render highlights around any annotations, and
+  - allow copying and pasting of annotations within the same document, or between documents
+
+  You can also optionally pass a React component to the `component`, so you can render custom components on top of or around the editor when the user's text cursor is inside an annotation.
+
+  Please see [the package documentation](https://atlaskit.atlassian.com/packages/editor/editor-core/docs/annotations) for more information.
+
+  There is an example component called `ExampleInlineCommentComponent` within the `@atlaskit/editor-test-helpers` package. It is currently featured in the full page examples on the Atlaskit website.
+
+  Annotations are styled within the editor using the `fabric-editor-annotation` CSS class.
+
+  Other changes:
+
+  - `Popup` now supports an optional `rect` parameter to direct placement, rather than calculating the bounding client rect around a DOM node.- [minor][520db7fe02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/520db7fe02):
+
+  ED-6359 Enable image resize and alignment within tables
+
+  This feature needs to be enabled with the new optional prop `media.allowResizingInTables`. By default, this is set to `false`, but will likely be promoted to default `true` in future, and then removed as an option. _Resizing_ and _alignment_ of media within tables are both tied to this prop.
+
+### Patch Changes
+
+- [patch][9cddedc62f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cddedc62f):
+
+  ED-7244 exported class name for media single.- [patch][b60b6fa41e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b60b6fa41e):
+
+  ED-7734 Fix layout rendering of adjacent lists on browsers which don't support `flow-root` (iOS)- [patch][7d57dc2ffa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d57dc2ffa):
+
+  ED-6940 fixed an issue where text is copied partly when there is some elements inside
+
+- [patch][43e6f89e70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43e6f89e70):
+
+  ED-7706 Prevent media from overlapping itself within tables
+
+  Additionally, brought media margins inline with wrap and aligned media modes.
+
+- [patch][3f1c7dd26a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f1c7dd26a):
+
+  [ED-7392] Add sort table by column on renderer behind allowColumnSorting feature flag
+  [ED-7392] Extract common methods to sort table
+
+- Updated dependencies [1194ad5eb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1194ad5eb3):
+  - @atlaskit/editor-json-transformer@6.3.3
+  - @atlaskit/editor-test-helpers@10.0.0
+  - @atlaskit/adf-schema@4.0.0
+
 ## 40.0.1
 
 - Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):

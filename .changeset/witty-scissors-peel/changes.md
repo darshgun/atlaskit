@@ -1,1 +1,0 @@
-Move objectToQueryString to media-client and use it from there

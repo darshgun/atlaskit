@@ -1,5 +1,15 @@
 # @atlaskit/theme
 
+## 9.2.3
+
+### Patch Changes
+
+- [patch][decd6fceea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/decd6fceea):
+
+  ED-5137 added heading anchor link
+
+  Values for heading sizes(h100 - h900) are exported as part of typography. Places need to calculate heights for heading can use those values to calculate.
+
 ## 9.2.2
 
 ### Patch Changes

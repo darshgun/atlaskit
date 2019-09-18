@@ -1,1 +1,0 @@
-Add new "contextId?: string"  property to Card, to retrieve auth from a given context

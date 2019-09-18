@@ -1,1 +1,0 @@
-ED-7600: fix forEach in IE11

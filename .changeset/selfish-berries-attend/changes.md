@@ -1,1 +1,0 @@
-ED-7501: fix firing transactions on mouseover during resizing

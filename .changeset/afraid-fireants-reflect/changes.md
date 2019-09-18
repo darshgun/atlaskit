@@ -1,1 +1,0 @@
-FM-2383 Enable Emoji Picker in native UI on iOS. Supports system and custom emojis via the type ahead flow when type a semicolon ':' 

@@ -1,1 +1,0 @@
-ED-7734 Fix layout rendering of adjacent lists on browsers which don't support `flow-root` (iOS)

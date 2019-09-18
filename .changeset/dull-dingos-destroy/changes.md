@@ -1,1 +1,0 @@
-MS-2080 Fix inserting same file twice by removing observable piping as it makes a client's file observable emit new tenant's observable's events.

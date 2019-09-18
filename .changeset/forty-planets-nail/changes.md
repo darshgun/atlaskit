@@ -1,1 +1,0 @@
-New fetchMaxRes parameter for getImage method allows to set default download params (4096 width and height and 'fit' mode)

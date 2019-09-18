@@ -1,1 +1,0 @@
-ED-7244 exported class name for media single.

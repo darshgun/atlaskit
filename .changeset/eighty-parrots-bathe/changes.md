@@ -1,1 +1,0 @@
-Bump prosemirror-tables from 0.9.1 to 0.9.2

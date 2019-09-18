@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "62.5.0",
+  "version": "62.5.1",
   "config": {
     "access": "public"
   },
@@ -15,9 +15,9 @@
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/field-base": "^13.0.13",
     "@atlaskit/icon": "^19.0.6",
-    "@atlaskit/media-client": "^2.0.5",
+    "@atlaskit/media-client": "^2.2.0",
     "@atlaskit/spinner": "^12.0.9",
-    "@atlaskit/theme": "^9.2.0",
+    "@atlaskit/theme": "^9.2.3",
     "@atlaskit/tooltip": "^15.0.14",
     "@atlaskit/util-service-support": "^4.0.7",
     "@babel/runtime": "^7.0.0",
@@ -53,7 +53,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/editor-test-helpers": "^9.11.11",
+    "@atlaskit/editor-test-helpers": "^10.0.0",
     "@atlaskit/elements-test-helpers": "^0.6.4",
     "@atlaskit/i18n-tools": "^0.5.2",
     "@atlaskit/layer": "^7.1.0",

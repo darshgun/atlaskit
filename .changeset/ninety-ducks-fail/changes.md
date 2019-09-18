@@ -1,1 +1,0 @@
-[ED-7722] Fix frozen selection when there is a broken table on ADF

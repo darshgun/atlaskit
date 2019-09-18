@@ -1,1 +1,0 @@
-Remove applicationCard node and action mark

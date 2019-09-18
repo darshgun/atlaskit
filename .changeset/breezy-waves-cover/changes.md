@@ -1,1 +1,0 @@
-[ED-7475] Fix rows controls height after sorting table by column

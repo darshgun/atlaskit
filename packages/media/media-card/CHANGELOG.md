@@ -1,5 +1,19 @@
 # @atlaskit/media-card
 
+## 65.2.0
+
+### Minor Changes
+
+- [minor][b709292a5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b709292a5c):
+
+  Add new "contextId?: string" property to Card, to retrieve auth from a given context
+
+### Patch Changes
+
+- [patch][ace05e438f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ace05e438f):
+
+  Dont release file preview from Card when an external file is passed
+
 ## 65.1.1
 
 ### Patch Changes

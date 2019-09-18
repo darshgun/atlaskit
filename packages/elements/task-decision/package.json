@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "15.3.3",
+  "version": "15.3.4",
   "config": {
     "access": "public"
   },
@@ -17,7 +17,7 @@
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/spinner": "^12.0.9",
-    "@atlaskit/theme": "^9.2.2",
+    "@atlaskit/theme": "^9.2.3",
     "@atlaskit/util-service-support": "^4.0.7",
     "date-fns": "^1.30.1",
     "lodash.debounce": "^4.0.8",
@@ -46,9 +46,9 @@
     "@atlaskit/analytics-listeners": "^6.1.7",
     "@atlaskit/avatar": "^17.0.1",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/editor-common": "^40.0.0",
+    "@atlaskit/editor-common": "^41.0.0",
     "@atlaskit/elements-test-helpers": "^0.6.4",
-    "@atlaskit/renderer": "^50.0.2",
+    "@atlaskit/renderer": "^51.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^12.9.6",
     "@types/react-loadable": "^5.4.1",

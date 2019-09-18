@@ -1,1 +1,0 @@
-ED-7244 updated hover animation style

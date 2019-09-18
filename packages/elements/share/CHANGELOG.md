@@ -1,5 +1,10 @@
 # @atlaskit/share
 
+## 0.6.8
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-test-helpers@10.0.0
+
 ## 0.6.7
 
 ### Patch Changes

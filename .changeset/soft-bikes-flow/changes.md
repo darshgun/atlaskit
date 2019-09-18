@@ -1,1 +1,0 @@
-ED-6898 Fix regression where I cannot split a merged cell with media single
