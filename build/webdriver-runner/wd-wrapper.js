@@ -6,6 +6,11 @@ const assert = require('assert').strict;
 
 const WAIT_TIMEOUT = 5000;
 
+// List of console.errors that are expected in the browser for various reasons.
+const exceptions = [
+  "http://localhost:9000/ - Refused to apply style from 'http://localhost:9000/public/css/charlie-display-font.css",
+];
+
 export class JSHandle {
   constructor(client, selector) {
     this.browser = client;
@@ -170,8 +175,14 @@ export default class Page {
     if (this.isBrowser('chrome')) {
       const logs = await this.browser.getLogs('browser');
       if (logs.length) {
-        logs.forEach(val => {
-          assert.notStrictEqual(val.level, 'SEVERE', `Error : ${val.message}`);
+        logs.forEach(log => {
+          if (exceptions.some(v => log.includes(v))) {
+            assert.notStrictEqual(
+              val.level,
+              'SEVERE',
+              `Error : ${val.message}`,
+            );
+          }
         });
       }
     }
@@ -193,7 +204,7 @@ export default class Page {
   //will need to have wrapper for these once moved to puppeteer
   async getText(selector) {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
-    // for puppteer
+    // for puppeteer
     const elem = await this.browser.$(selector);
     return elem.getText();
   }
