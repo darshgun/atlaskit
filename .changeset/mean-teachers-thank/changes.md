@@ -1,1 +1,0 @@
-fixed emoji CDN urls to ddev and re-enabled VR tests

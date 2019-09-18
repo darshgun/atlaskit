@@ -1,5 +1,13 @@
 # @atlaskit/emoji
 
+## 62.5.0
+
+### Minor Changes
+
+- [minor][8b73f10071](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b73f10071):
+
+  fixed emoji CDN urls to ddev and re-enabled VR tests
+
 ## 62.4.1
 
 ### Patch Changes
