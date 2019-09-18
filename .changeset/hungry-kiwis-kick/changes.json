@@ -1,4 +1,0 @@
-{
-  "releases": [{ "name": "@atlaskit/portal", "type": "minor" }],
-  "dependents": []
-}
