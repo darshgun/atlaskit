@@ -67,3 +67,5 @@
       - https://product-fabric.atlassian.net/browse/ED-7513
     - Content inside of a table cell no longer overflows if table looses focus
       - https://product-fabric.atlassian.net/browse/ED-7529
+    - Fixed an issue when adding rows and cols at the same time start adding infinite columns
+      - https://product-fabric.atlassian.net/browse/ED-7700
