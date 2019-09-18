@@ -73,7 +73,11 @@ class Form extends React.Component<Props, State> {
 
   formRef = React.createRef();
 
-  form = createFinalForm(this.props.onSubmit, this.formRef);
+  onSubmitProxy = (...args) => this.props.onSubmit(...args);
+
+  form = createFinalForm(this.onSubmitProxy, this.formRef);
+
+  // form = createFinalForm(this.props.onSubmit, this.formRef);
 
   state = {
     dirty: false,
