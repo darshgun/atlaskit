@@ -11,6 +11,8 @@ import {
   Device,
 } from '../_utils';
 import adf from './__fixtures__/table-with-merged-cells-on-first-column.adf.json';
+import defaultTableAdf from './__fixtures__/default-table.adf.json';
+
 // TODO: https://product-fabric.atlassian.net/browse/ED-7721
 describe.skip('Snapshot Test: hover rows controlls', () => {
   let page: Page;
