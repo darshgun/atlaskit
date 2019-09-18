@@ -13,7 +13,8 @@ export default md`
   * [withAnalyticsContext](#withAnalyticsContext)
   * [AnalyticsEvent](#AnalyticsEvent)
   * [createAndFireEvent](#createAndFireEvent)
-  * [useAnalyticsEvents_experimental](#useAnalyticsEvents_experimental)
+  * [useAnalyticsEvents](#useAnalyticsEvents)
+  * [useCallbackWithAnalytics](#useCallbackWithAnalytics)
 
 
   <a name="UIAnalyticsEvent"></a>
@@ -251,8 +252,8 @@ const ButtonWithAnalytics = withAnalyticsEvents({
 This will create an event with the payload, fire it on the \`'atlaskit'\`
 channel and return a clone of the event.
 
-<a name="useAnalyticsEvents_experimental"></a>
-### useAnalyticsEvents_experimental
+<a name="useAnalyticsEvents"></a>
+### useAnalyticsEvents
 
 This custom React hook provides a method \`createAnalyticsEvent\` for creating \`UIAnalyticsEvent\`s. This hook can be used as a replacement for the \`withAnalyticsEvents\` HOC. See the section on [creating your own events](/packages/core/analytics-next/docs/concepts#creating-your-own-events)
 in the Concepts page for a thorough explanation of how to use this hook.
@@ -260,7 +261,7 @@ in the Concepts page for a thorough explanation of how to use this hook.
 Usage:
 
 ${code`
-const { createAnalyticsEvent } = useAnalyticsEvents_experimental();
+const { createAnalyticsEvent } = useAnalyticsEvents();
 
 const onClick = event => {
   createAnalyticsEvent({
@@ -269,6 +270,25 @@ const onClick = event => {
 
   // onClick logic
 }
+`}
+
+<a name="useCallbackWithAnalytics"></a>
+### useCallbackWithAnalytics
+
+This custom React hook takes a callback function and an event payload, and returns a callback to fire the event and call the provided function. The hooks stores the input and memoizes the return value to optimize performance.
+
+Usage:
+
+${code`
+const handleClick = useCallbackWithAnalytics(
+  event => {
+    // onClick logic
+  }, {
+    action: 'click',
+  }
+);
+
+return <Button onClick={handleClick}>Click Me<Button>
 `}
 
 `;

@@ -1,5 +1,13 @@
 # @atlaskit/analytics-next
 
+## 6.3.0
+
+### Minor Changes
+
+- [minor][2252a7a999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2252a7a999):
+
+  Bug fix for using the hook with nested contexts, performance improvements, new `useAnalyticsEventsCallback` hook to provide a performance enhanced-abstraction for firing events with a callback.
+
 ## 6.2.0
 
 ### Minor Changes
