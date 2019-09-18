@@ -343,7 +343,13 @@ pipelines:
                 # don't worry about deploying, this build will always be run alongside a branch build
                 - yarn build
               after-script:
-                - yarn send:buildEvents
+                - yarn send:stepFailureEvents
+      - step:
+          name: Sending Build Events
+          script:
+            - echo 'Sending Build Events...'
+          after-script:
+            - yarn send:buildEvents
 
     # This will build all the packages and run bundle-analysis.
     run-bundle-analysis:
