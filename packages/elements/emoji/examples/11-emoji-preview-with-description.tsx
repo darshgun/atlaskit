@@ -4,17 +4,17 @@ import { emojiPickerWidth } from '../src/util/constants';
 
 const emoji = {
   id: '118608',
-  name: 'Zoidberg',
-  shortName: ':zoidberg:',
+  name: 'red star',
+  shortName: ':red_star:',
   type: 'ATLASSIAN',
   category: 'ATLASSIAN',
   order: 2147483647,
   skinVariations: [],
   representation: {
     imagePath:
-      'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/zoidberg-1417754444.png',
-    height: 24,
-    width: 30,
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/red_star_64.png',
+    height: 64,
+    width: 64,
   },
   hasSkinVariations: false,
   searchable: true,
