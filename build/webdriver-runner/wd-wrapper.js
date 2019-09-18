@@ -176,11 +176,12 @@ export default class Page {
       const logs = await this.browser.getLogs('browser');
       if (logs.length) {
         logs.forEach(log => {
-          if (exceptions.some(v => log.includes(v))) {
+          console.log(exceptions.some(v => log.message.includes(v)));
+          if (exceptions.some(v => log.message.includes(v))) {
             assert.notStrictEqual(
-              val.level,
+              log.level,
               'SEVERE',
-              `Error : ${val.message}`,
+              `Error : ${log.message}`,
             );
           }
         });
