@@ -1,4 +1,5 @@
 // @flow
+// $FlowFixMe
 import React, { useCallback, useState } from 'react';
 import { mount } from 'enzyme';
 import TextField from '@atlaskit/textfield';
