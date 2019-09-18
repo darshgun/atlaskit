@@ -1,0 +1,1 @@
+Fix handling stale onSubmit prop in Form component
