@@ -1,0 +1,1 @@
+prioritize media metadata from external files and copy them on the backend, instead of re upload them

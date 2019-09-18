@@ -20,7 +20,6 @@ import {
 } from './code-block';
 import { MediaGroupDefinition as MediaGroup } from './media-group';
 import { MediaSingleDefinition as MediaSingle } from './media-single';
-import { ApplicationCardDefinition as ApplicationCard } from './applicationCard';
 import { DecisionListDefinition as DecisionList } from './decision-list';
 import { TaskListDefinition as TaskList } from './task-list';
 import { TableDefinition as Table } from './tableNodes';
@@ -48,7 +47,6 @@ import { CodeDefinition as Code } from '../marks/code';
 import { SubSupDefinition as SubSup } from '../marks/subsup';
 import { UnderlineDefinition as Underline } from '../marks/underline';
 import { TextColorDefinition as TextColor } from '../marks/text-color';
-import { ActionDefinition as Action } from '../marks/action';
 import { AnnotationMarkDefinition as Annotation } from '../marks/annotation';
 
 // NOTE: BlockContent is only being used by layoutColumn now.
@@ -68,7 +66,6 @@ export type BlockContent =
   | CodeBlock
   | MediaGroup
   | MediaSingle
-  | ApplicationCard
   | DecisionList
   | TaskList
   | Table
@@ -94,7 +91,6 @@ export type TableCellContent = Array<
   | CodeBlock
   | MediaGroup
   | MediaSingle
-  | ApplicationCard
   | DecisionList
   | TaskList
   | Extension
@@ -118,7 +114,6 @@ export type ExtensionContent = Array<
   | CodeBlock
   | MediaGroup
   | MediaSingle
-  | ApplicationCard
   | DecisionList
   | TaskList
   | Table
@@ -148,15 +143,7 @@ export interface NoMark {
  */
 export type InlineFormattedText = Text &
   MarksObject<
-    | Link
-    | Em
-    | Strong
-    | Strike
-    | SubSup
-    | Underline
-    | TextColor
-    | Action
-    | Annotation
+    Link | Em | Strong | Strike | SubSup | Underline | TextColor | Annotation
   >;
 
 /**

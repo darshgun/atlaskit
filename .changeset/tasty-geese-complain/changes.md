@@ -1,0 +1,1 @@
+ED-7710: Only show annotation highlight if we have a provider

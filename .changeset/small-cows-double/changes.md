@@ -1,0 +1,1 @@
+Fixes initialisation of annatation mark

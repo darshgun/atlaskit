@@ -2,10 +2,9 @@
 import postis from 'postis';
 import uuidV4 from 'uuid/v4';
 import { AuthProvider } from '@atlaskit/media-core';
-
+import { objectToQueryString } from '@atlaskit/media-client';
 import { ServiceName } from '../domain';
 import { mapAuthToQueryParameters } from '../domain/auth';
-import { objectToQueryString } from '../tools/objectToQueryString';
 import { pickerUrl } from '../tools/fetcher/fetcher';
 
 export class CloudService {

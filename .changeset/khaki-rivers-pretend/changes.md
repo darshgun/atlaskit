@@ -1,0 +1,1 @@
+[ED-7720] Fix tables exceptions when allowColumnResizing is false
