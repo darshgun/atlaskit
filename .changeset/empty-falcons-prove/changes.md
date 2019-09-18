@@ -1,0 +1,1 @@
+Ensure smartlinks client handles errors batched with JsonLd
