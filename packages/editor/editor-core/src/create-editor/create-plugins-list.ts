@@ -49,6 +49,7 @@ import {
   analyticsPlugin,
   customAutoformatPlugin,
   feedbackDialogPlugin,
+  sharedContextPlugin,
   historyPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
@@ -82,6 +83,7 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
     submitEditorPlugin(),
     fakeTextCursorPlugin(),
     floatingToolbarPlugin(),
+    sharedContextPlugin(),
   ];
 }
 
