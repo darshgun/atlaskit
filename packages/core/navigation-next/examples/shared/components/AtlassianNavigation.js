@@ -9,7 +9,7 @@ import {
   ProductHome,
   Profile,
   Search,
-} from '@atlaskit/app-atlassian';
+} from '@atlaskit/atlassian-navigation';
 import Avatar from '@atlaskit/avatar';
 import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import Bug16Icon from '@atlaskit/icon-object/glyph/bug/16';
