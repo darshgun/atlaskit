@@ -1,5 +1,13 @@
 # @atlaskit/app-navigation
 
+## 0.4.2
+
+### Patch Changes
+
+- [patch][c810632671](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c810632671):
+
+  Update theme generation
+
 ## 0.4.1
 
 ### Patch Changes
