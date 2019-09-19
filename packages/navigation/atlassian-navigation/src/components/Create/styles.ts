@@ -27,9 +27,7 @@ export const createButtonSkeletonCSS = (theme: NavigationTheme) => ({
 export const createIconCSS = actionSectionMobileCSS;
 export const createIconSkeletonCSS = createIconCSS;
 
-export const getCreateButtonTheme = ({
-  mode: { create },
-}: NavigationTheme) => (
+export const getCreateButtonTheme = ({ mode: { create } }: NavigationTheme) => (
   current: (props: ThemeProps) => ThemeTokens,
   props: ThemeProps,
 ) => {
