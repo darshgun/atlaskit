@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Groups from '../../DesktopNav/Groups';
 import DesktopNav from '../../DesktopNav';
 import MobileNav from '../../MobileNav';
 // TODO: There is a caveat here, an unhandled promise rejection is thrown because items for getDirectories is returning undefined. It is really difficult to mock a full navigation with items.
