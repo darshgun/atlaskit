@@ -1,5 +1,13 @@
 # @atlaskit/form
 
+## 6.2.1
+
+### Patch Changes
+
+- [patch][5ccdfaeef2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ccdfaeef2):
+
+  Fixes bug where onSubmit function in Form may not be called if reference changes
+
 ## 6.2.0
 
 ### Minor Changes
