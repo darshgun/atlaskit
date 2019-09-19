@@ -1,1 +1,1 @@
-Fix handling stale onSubmit prop in Form component
+Fixes bug where onSubmit function in Form may not be called if reference changes
