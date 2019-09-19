@@ -146,8 +146,7 @@ describe('GlobalQuickSearch', () => {
       const wrapper = render({});
 
       const onSearchInput: Function = wrapper
-        .children()
-        .first()
+        .find('QuickSearch')
         .prop('onSearchInput');
       onSearchInput({ target: { value: 'au' } });
       expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
@@ -170,8 +169,7 @@ describe('GlobalQuickSearch', () => {
       });
 
       const onSearchInput: Function = wrapper
-        .children()
-        .first()
+        .find('QuickSearch')
         .prop('onSearchInput');
 
       onSearchInput({ target: { value: 'au' } });
@@ -205,9 +203,9 @@ describe('GlobalQuickSearch', () => {
       const wrapper = render({});
 
       const onSearchInput: Function = wrapper
-        .children()
-        .first()
+        .find('QuickSearch')
         .prop('onSearchInput');
+
       onSearchInput({ target: { value: 'au' } });
 
       wrapper.setProps({ autocompleteSuggestions: ['auto', 'australia'] });
@@ -221,9 +219,9 @@ describe('GlobalQuickSearch', () => {
       const wrapper = render({});
 
       const onSearchInput: Function = wrapper
-        .children()
-        .first()
+        .find('QuickSearch')
         .prop('onSearchInput');
+
       onSearchInput({ target: { value: 'au' } });
 
       const latency = 100;
@@ -251,8 +249,7 @@ describe('GlobalQuickSearch', () => {
       });
 
       const onSearchInput: Function = wrapper
-        .children()
-        .first()
+        .find('QuickSearch')
         .prop('onSearchInput');
 
       onSearchInput({ target: { value: 'au' } });
