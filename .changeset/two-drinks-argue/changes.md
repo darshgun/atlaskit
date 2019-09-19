@@ -1,1 +1,0 @@
-Bump bolt to 0.24.1
