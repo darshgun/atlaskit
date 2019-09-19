@@ -10,8 +10,8 @@ const SkeletonNav = ({ location }: RouteComponentProps) => {
 };
 
 const DesktopNav = React.lazy(() => import('./DesktopNav'));
-// TODO: type it later
-export default (props: any) => (
+
+export default (props: RouteComponentProps) => (
   <React.Suspense fallback={<SkeletonNav {...props} />}>
     <DesktopNav {...props} />
   </React.Suspense>

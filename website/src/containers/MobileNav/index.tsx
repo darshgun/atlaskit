@@ -1,9 +1,10 @@
 import React from 'react';
 import MobileHeader from '@atlaskit/mobile-header';
+import { MobileNavProps } from './../../types';
 
 const MobileNav = React.lazy(() => import('./MobileNav'));
-// TODO: type it later
-export default (props: any) => (
+
+export default (props?: MobileNavProps) => (
   <React.Suspense fallback={<MobileHeader />}>
     <MobileNav {...props} />
   </React.Suspense>

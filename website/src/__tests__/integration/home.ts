@@ -17,7 +17,7 @@ BrowserTestCase(
     await homeTest.goto(urlHome);
     // Windows is adding scrollbar due to which the width is wrecked
     // catering for the scroll bar width
-    await homeTest.setWindowSize(DESKTOP_BREAKPOINT_MIN + 30, 2000);
+    await homeTest.setWindowSize(DESKTOP_BREAKPOINT_MIN + 40, 2000);
     await homeTest.waitForSelector(app);
     const titleIsVisible = await homeTest.isVisible(atlaskitTitle);
     const titleText = await homeTest.getText(atlaskitTitle);
@@ -36,7 +36,7 @@ BrowserTestCase(
   async (client: any) => {
     const homeTest = new Page(client);
     await homeTest.goto(urlHome);
-    await homeTest.setWindowSize(DESKTOP_BREAKPOINT_MIN - 1, 2000);
+    await homeTest.setWindowSize(DESKTOP_BREAKPOINT_MIN - 10, 2000);
     await homeTest.waitForSelector(app);
     await homeTest.waitForSelector(openNavigationButton);
     const navigationButton = await homeTest.isVisible(openNavigationButton);
@@ -69,7 +69,7 @@ BrowserTestCase(
     await homeTest.goto(urlHome);
     // Windows is adding scrollbar due to which the width is wrecked
     // catering for the scroll bar width
-    await homeTest.setWindowSize(DESKTOP_BREAKPOINT_MIN + 30, 2000);
+    await homeTest.setWindowSize(DESKTOP_BREAKPOINT_MIN + 40, 2000);
 
     const titleIsVisible = await homeTest.isVisible(atlaskitTitle);
     const titleText = await homeTest.getText(atlaskitTitle);
