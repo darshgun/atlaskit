@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^6.1.7",
-    "@atlaskit/atlassian-navigation": "^0.4.1",
+    "@atlaskit/atlassian-navigation": "^0.4.2",
     "@atlaskit/badge": "^13.0.0",
     "@atlaskit/banner": "^10.0.12",
     "@atlaskit/build-utils": "^2.2.5",
