@@ -137,6 +137,7 @@ async function runDevServer() {
 
     overlay: true,
     stats,
+    contentBase: './public',
   });
 
   return new Promise((resolve, reject) => {
