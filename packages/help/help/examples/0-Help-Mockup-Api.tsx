@@ -4,7 +4,12 @@ import Page from '@atlaskit/page';
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 import { getArticle, searchArticle } from './utils/mockData';
-import { ExampleWrapper, HelpWrapper, FooterContent } from './utils/styled';
+import {
+  ExampleWrapper,
+  HelpWrapper,
+  FooterContent,
+  ExampleDefaultContent,
+} from './utils/styled';
 
 import Help, { ArticleFeedback } from '../src';
 
@@ -83,7 +88,9 @@ export default class extends React.Component {
                     </FooterContent>
                   }
                 >
-                  <span>Default content</span>
+                  <ExampleDefaultContent>
+                    <span>Default content</span>
+                  </ExampleDefaultContent>
                 </Help>
               </LocaleIntlProvider>
             </AnalyticsListener>

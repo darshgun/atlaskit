@@ -8,7 +8,8 @@ export const articleExamples = [
       {
         id: '01',
         title: 'Article 01',
-        description: 'Description of Article 01',
+        description: 'Description of Article 01 tata',
+        href: 'http://www.google.com',
       },
       {
         id: '02',
