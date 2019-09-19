@@ -1,5 +1,5 @@
-export { NavigationContainer } from './components/NavigationContainer';
-export { NavigationSkeleton } from './components/NavigationContainer/skeleton';
+export { AtlassianNavigation } from './components/AtlassianNavigation';
+export { NavigationSkeleton } from './components/AtlassianNavigation/skeleton';
 export { AppSwitcher } from './components/AppSwitcher';
 export { Create } from './components/Create';
 export { Help } from './components/Help';

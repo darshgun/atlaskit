@@ -9,10 +9,10 @@ import { DefaultProductHome } from './shared/ProductHome';
 import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
-import { NavigationContainer } from '../src';
+import { AtlassianNavigation } from '../src';
 
 const AuthenticatedExample = () => (
-  <NavigationContainer
+  <AtlassianNavigation
     primaryItems={defaultPrimaryItems}
     renderAppSwitcher={DefaultAppSwitcher}
     renderCreate={DefaultCreate}

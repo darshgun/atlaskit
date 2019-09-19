@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  NavigationContainer,
+  AtlassianNavigation,
   AppSwitcher,
   Create,
   Help,
@@ -307,7 +307,7 @@ const SearchExample = () => (
 
 const AppNavigationComponent = () => {
   return (
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={primaryItems}
       renderAppSwitcher={AppSwitcherExample}
       renderCreate={CreateExample}

@@ -10,13 +10,13 @@ import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
 import { themes } from './shared/themes';
-import { NavigationContainer } from '../src';
+import { AtlassianNavigation } from '../src';
 
 const ThemingExample = () => (
   <div>
     {themes.map((theme, i) => (
       <Fragment key={i}>
-        <NavigationContainer
+        <AtlassianNavigation
           primaryItems={defaultPrimaryItems}
           renderAppSwitcher={DefaultAppSwitcher}
           renderCreate={DefaultCreate}

@@ -11,7 +11,7 @@ import { Fragment, KeyboardEvent, useState } from 'react';
 
 import { DefaultCreate } from './shared/Create';
 import {
-  NavigationContainer,
+  AtlassianNavigation,
   AppSwitcher,
   Help,
   Notifications,
@@ -333,7 +333,7 @@ const primaryItems = [
 ];
 
 const JiraIntegrationExample = () => (
-  <NavigationContainer
+  <AtlassianNavigation
     primaryItems={primaryItems}
     renderAppSwitcher={AppSwitcherDrawer}
     renderCreate={DefaultCreate}

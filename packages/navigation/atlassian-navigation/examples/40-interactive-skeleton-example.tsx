@@ -2,7 +2,7 @@
 import Button from '@atlaskit/button';
 import { jsx } from '@emotion/core';
 import { Fragment, useState, ChangeEvent } from 'react';
-import { NavigationContainer, NavigationSkeleton } from '../src';
+import { AtlassianNavigation, NavigationSkeleton } from '../src';
 
 import { DefaultAppSwitcher } from './shared/AppSwitcher';
 import { DefaultCreate } from './shared/Create';
@@ -49,7 +49,7 @@ const InteractiveSkeletonExample = () => {
           secondaryItemsCount={secondary}
         />
       ) : (
-        <NavigationContainer
+        <AtlassianNavigation
           primaryItems={defaultPrimaryItems}
           renderAppSwitcher={DefaultAppSwitcher}
           renderCreate={DefaultCreate}

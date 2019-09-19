@@ -22,11 +22,11 @@ import {
 import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
-import { NavigationContainer } from '../src';
+import { AtlassianNavigation } from '../src';
 
 const CustomProductHomeExample = () => (
   <div>
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={bitbucketPrimaryItems}
       renderAppSwitcher={DefaultAppSwitcher}
       renderCreate={DefaultCreate}
@@ -38,7 +38,7 @@ const CustomProductHomeExample = () => (
       renderSettings={DefaultSettings}
     />
     <br />
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={confluencePrimaryItems}
       renderAppSwitcher={DefaultAppSwitcher}
       renderCreate={DefaultCreate}
@@ -50,7 +50,7 @@ const CustomProductHomeExample = () => (
       renderSettings={DefaultSettings}
     />
     <br />
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={jiraPrimaryItems}
       renderAppSwitcher={DefaultAppSwitcher}
       renderCreate={DefaultCreate}
@@ -62,7 +62,7 @@ const CustomProductHomeExample = () => (
       renderSettings={DefaultSettings}
     />
     <br />
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={jiraPrimaryItems}
       renderAppSwitcher={DefaultAppSwitcher}
       renderCreate={DefaultCreate}
@@ -74,7 +74,7 @@ const CustomProductHomeExample = () => (
       renderSettings={DefaultSettings}
     />
     <br />
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={jiraPrimaryItems}
       renderAppSwitcher={DefaultAppSwitcher}
       renderCreate={DefaultCreate}
@@ -86,7 +86,7 @@ const CustomProductHomeExample = () => (
       renderSettings={DefaultSettings}
     />
     <br />
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={opsGeniePrimaryItems}
       renderAppSwitcher={DefaultAppSwitcher}
       renderCreate={DefaultCreate}
@@ -98,7 +98,7 @@ const CustomProductHomeExample = () => (
       renderSettings={DefaultSettings}
     />
     <br />
-    <NavigationContainer
+    <AtlassianNavigation
       primaryItems={jiraPrimaryItems}
       renderAppSwitcher={DefaultAppSwitcher}
       renderCreate={DefaultCreate}

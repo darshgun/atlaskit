@@ -2,7 +2,7 @@ import React, { ReactNodeArray, ReactNode } from 'react';
 
 import { NavigationTheme } from '../../theme';
 
-export type NavigationContainerProps = {
+export type AtlassianNavigationProps = {
   primaryItems: ReactNodeArray;
   renderAppSwitcher?: React.ComponentType<{}>;
   renderCreate?: React.ComponentType<{}>;

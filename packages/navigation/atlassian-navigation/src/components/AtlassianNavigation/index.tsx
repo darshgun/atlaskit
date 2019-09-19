@@ -5,15 +5,15 @@ import { jsx } from '@emotion/core';
 import { NavigationTheme, ThemeProvider, defaultTheme } from '../../theme';
 import { containerCSS, leftCSS, rightCSS } from './styles';
 import { PrimaryItemsContainer } from '../PrimaryItemsContainer';
-import { NavigationContainerProps } from './types';
+import { AtlassianNavigationProps } from './types';
 
 const analyticsData = {
   attributes: { navigationLayer: 'global' },
   componentName: 'atlassianNavigation',
 };
 
-export const NavigationContainer = (
-  props: NavigationContainerProps & { theme: NavigationTheme },
+export const AtlassianNavigation = (
+  props: AtlassianNavigationProps & { theme: NavigationTheme },
 ) => {
   const {
     primaryItems,
@@ -54,7 +54,7 @@ export const NavigationContainer = (
   );
 };
 
-NavigationContainer.defaultProps = {
+AtlassianNavigation.defaultProps = {
   primaryItems: [],
   moreLabel: '…',
   theme: defaultTheme,
