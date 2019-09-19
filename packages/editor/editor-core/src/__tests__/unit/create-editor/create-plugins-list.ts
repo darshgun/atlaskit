@@ -31,7 +31,6 @@ const mockPlugins: { [name: string]: jest.Mock } = {
 };
 jest.mock('../../../plugins', () => mockPlugins);
 
-
 import {
   analyticsPlugin,
   tablesPlugin,
