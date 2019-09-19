@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.17.3
+
+### Patch Changes
+
+- [patch][c0c49e4c2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0c49e4c2b):
+
+  CSS fixes + added link icon to ArticleListItem
+
 ## 0.17.2
 
 ### Patch Changes
