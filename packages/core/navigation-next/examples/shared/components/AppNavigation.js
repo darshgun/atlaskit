@@ -1,7 +1,7 @@
 // @flow
 
 import {
-  AppNavigation,
+  NavigationContainer,
   AppSwitcher,
   Create,
   Help,
@@ -9,7 +9,7 @@ import {
   ProductHome,
   Profile,
   Search,
-} from '@atlaskit/app-navigation';
+} from '@atlaskit/app-atlassian';
 import Avatar from '@atlaskit/avatar';
 import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import Bug16Icon from '@atlaskit/icon-object/glyph/bug/16';
@@ -307,7 +307,7 @@ const SearchExample = () => (
 
 const AppNavigationComponent = () => {
   return (
-    <AppNavigation
+    <NavigationContainer
       primaryItems={primaryItems}
       renderAppSwitcher={AppSwitcherExample}
       renderCreate={CreateExample}
