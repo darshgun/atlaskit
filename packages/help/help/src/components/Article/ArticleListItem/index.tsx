@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as colors from '@atlaskit/theme/colors';
 import {
   CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
@@ -65,7 +66,12 @@ const ArticlesListItem = (props: Props & Analytics) => {
         <ArticlesListItemTitleText>{title}</ArticlesListItemTitleText>
         {href && (
           <ArticlesListItemLinkIcon>
-            <ShortcutIcon size="small" label={title} />
+            <ShortcutIcon
+              size="small"
+              label={title}
+              primaryColor={colors.N90}
+              secondaryColor={colors.N90}
+            />
           </ArticlesListItemLinkIcon>
         )}
       </ArticlesListItemTitle>
