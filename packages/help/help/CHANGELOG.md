@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.17.4
+
+### Patch Changes
+
+- [patch][22d5dbc2bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22d5dbc2bb):
+
+  fixed CSS issue of the ArticleListItem icons
+
 ## 0.17.3
 
 ### Patch Changes
