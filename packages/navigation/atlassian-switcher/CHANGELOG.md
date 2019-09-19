@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 3.30.1
+
+### Patch Changes
+
+- [patch][712fe8c503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/712fe8c503):
+
+  Only show people link in Jira and Confluence because it's not supported elsewhere
+
 ## 3.30.0
 
 ### Minor Changes

@@ -1,1 +1,0 @@
-Only show people link in Jira and Confluence because it's not supported elsewhere
