@@ -1,8 +1,10 @@
 /** @jsx jsx */
 import Button from '@atlaskit/button';
 import { jsx } from '@emotion/core';
-import { Fragment, useState, ChangeEvent } from 'react';
-import { AtlassianNavigation, NavigationSkeleton } from '../src';
+import { ChangeEvent, Fragment, useState } from 'react';
+
+import { AtlassianNavigation } from '../src';
+import { NavigationSkeleton } from '../src/skeleton';
 
 import { DefaultAppSwitcher } from './shared/AppSwitcher';
 import { DefaultCreate } from './shared/Create';

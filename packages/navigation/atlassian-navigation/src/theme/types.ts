@@ -38,9 +38,9 @@ export type Mode = {
   create: CreateCSS;
   iconButton: IconButtonCSS;
   navigation: NavigationCSS;
+  primaryButton: PrimaryButtonCSS;
   search: SearchCSS;
   skeleton: SkeletonCSS;
-  primaryButton: PrimaryButtonCSS;
 };
 
 export type NavigationTheme = {

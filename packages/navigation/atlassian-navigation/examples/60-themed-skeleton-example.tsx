@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 import { themes } from './shared/themes';
-import { NavigationSkeleton } from '../src';
+import { NavigationSkeleton } from '../src/skeleton';
 
 const primary = 4;
 const secondary = 4;
