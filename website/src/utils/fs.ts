@@ -6,13 +6,11 @@ export function getDirectories(
   items: Array<Directory | File>,
 ): Array<Directory> {
   const dirs: Array<Directory> = [];
-
   for (const item of items) {
     if (item.type === 'dir') {
       dirs.push(item);
     }
   }
-
   return dirs;
 }
 

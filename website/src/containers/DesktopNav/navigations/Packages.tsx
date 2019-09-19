@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import PackageIcon from '@atlaskit/icon/glyph/chevron-right';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import styled from 'styled-components';
@@ -121,7 +121,6 @@ const standardGroups = (dirs: Array<Directory>, pathname: string): NavGroup[] =>
 export default function PackagesNav(props: PackagesNavProps) {
   const { packages, pathname } = props;
   const dirs = fs.getDirectories(packages.children);
-
   return (
     <div>
       {renderNav(
