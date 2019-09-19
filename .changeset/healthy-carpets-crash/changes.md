@@ -1,0 +1,1 @@
+Fixes bug where onSubmit function in Form may not be called if reference changes
