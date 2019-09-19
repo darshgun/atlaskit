@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox } from '../src';
-import { ComponentTokens, ThemeTokens } from '../src/types';
+import { ComponentTokens, ThemeFn } from '../src/types';
 import merge from 'lodash.merge';
 
 const newThemeTokens: ComponentTokens = {
@@ -15,10 +15,7 @@ const newThemeTokens: ComponentTokens = {
   },
 };
 
-const customTheme = (
-  current: (props: { tokens: ComponentTokens; mode: string }) => ThemeTokens,
-  props: { tokens: ComponentTokens; mode: string },
-) => {
+const customTheme: ThemeFn = (current, props) => {
   const themeTokens = current(props);
   return merge({}, themeTokens, newThemeTokens);
 };

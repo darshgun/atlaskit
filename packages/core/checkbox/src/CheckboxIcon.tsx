@@ -1,10 +1,28 @@
 import React, { Component } from 'react';
+import memoize from 'memoize-one';
 import Icon from '@atlaskit/icon/glyph/checkbox';
 import GlobalTheme from '@atlaskit/theme/components';
-import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
+import IconIndeterminate from '@atlaskit/icon/glyph/checkbox-indeterminate';
 import Theme, { componentTokens } from './theme';
-import { IconWrapper } from './elements';
-import { CheckboxIconProps, ThemeProps, ThemeTokens } from './types';
+import { createExtender, ExtenderType } from './utils';
+import { IconWrapperOverrides } from './elements';
+import {
+  CheckboxIconProps,
+  ThemeProps,
+  ThemeTokens,
+  CheckboxIconDefaults,
+  CheckboxIconOverrides,
+} from './types';
+
+const defaults: CheckboxIconDefaults = {
+  IconWrapper: IconWrapperOverrides,
+  IconIndeterminate: {
+    component: IconIndeterminate,
+  },
+  Icon: {
+    component: Icon,
+  },
+};
 
 export default class CheckboxIcon extends Component<CheckboxIconProps, {}> {
   static defaultProps = {
@@ -17,6 +35,13 @@ export default class CheckboxIcon extends Component<CheckboxIconProps, {}> {
     ): ThemeTokens => current(props),
   };
 
+  createExtender?: ExtenderType;
+
+  constructor(props: CheckboxIconProps) {
+    super(props);
+    this.createExtender = memoize(createExtender).bind(this) as ExtenderType;
+  }
+
   render() {
     const {
       isChecked,
@@ -26,10 +51,21 @@ export default class CheckboxIcon extends Component<CheckboxIconProps, {}> {
       isFocused,
       isHovered,
       isIndeterminate,
+      overrides,
       primaryColor,
       secondaryColor,
       theme,
     } = this.props;
+    // @ts-ignore
+    const getOverrides = this.createExtender<
+      CheckboxIconDefaults,
+      CheckboxIconOverrides
+    >(defaults, overrides);
+    const { component: IconWrapper, ...iconWrapperOverrides } = getOverrides(
+      'IconWrapper',
+    );
+    const { component: IconIndeterminate } = getOverrides('IconIndeterminate');
+    const { component: Icon } = getOverrides('Icon');
     return (
       <Theme.Provider value={theme}>
         <GlobalTheme.Consumer>
@@ -37,6 +73,7 @@ export default class CheckboxIcon extends Component<CheckboxIconProps, {}> {
             <Theme.Consumer mode={mode} tokens={componentTokens}>
               {tokens => (
                 <IconWrapper
+                  {...iconWrapperOverrides}
                   tokens={tokens}
                   isChecked={isChecked}
                   isDisabled={isDisabled}
@@ -46,7 +83,7 @@ export default class CheckboxIcon extends Component<CheckboxIconProps, {}> {
                   isInvalid={isInvalid}
                 >
                   {isIndeterminate ? (
-                    <CheckboxIndeterminateIcon
+                    <IconIndeterminate
                       primaryColor={primaryColor}
                       secondaryColor={secondaryColor}
                       size={tokens.icon.size}

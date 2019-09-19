@@ -24,6 +24,7 @@ export const componentTokens: ComponentTokens = {
       invalid: { light: colors.R300, dark: colors.R300 },
       focused: { light: colors.B100, dark: colors.B75 },
       hovered: { light: colors.N40, dark: colors.DN200 },
+      hoveredAndChecked: { light: 'currentColor', dark: 'currentColor' },
     },
     boxColor: {
       rest: { light: colors.N10, dark: colors.DN10 },
@@ -74,5 +75,4 @@ const evaluateMode = function<TargetType, ResultType>(
 const defaultThemeFn = ({ tokens, mode }: ThemeProps): ThemeTokens => {
   return evaluateMode<ComponentTokens, ThemeTokens>(tokens, mode);
 };
-
 export default createTheme<ThemeTokens, ThemeProps>(defaultThemeFn);

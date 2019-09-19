@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import memoize from 'memoize-one';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -6,17 +7,27 @@ import {
 } from '@atlaskit/analytics-next';
 import GlobalTheme from '@atlaskit/theme/components';
 import Theme, { componentTokens } from './theme';
+import { createExtender, ExtenderType } from './utils';
 import CheckboxIcon from './CheckboxIcon';
 
 import { name as packageName, version as packageVersion } from './version.json';
+
 import {
-  LabelText,
-  Label,
+  LabelTextOverrides,
+  LabelOverrides,
   CheckboxWrapper,
   RequiredIndicator,
   HiddenCheckbox,
 } from './elements';
-import { CheckboxProps } from './types';
+import { CheckboxProps, CheckboxDefaults, CheckboxOverrides } from './types';
+
+const defaults: CheckboxDefaults = {
+  Label: LabelOverrides,
+  LabelText: LabelTextOverrides,
+  HiddenCheckbox: {
+    attributesFn: () => ({}),
+  },
+};
 
 interface State {
   isActive: boolean;
@@ -45,8 +56,14 @@ class Checkbox extends Component<CheckboxProps, State> {
         ? this.props.isChecked
         : this.props.defaultChecked,
   };
+  createExtender?: ExtenderType;
   checkbox?: HTMLInputElement | null = undefined;
   actionKeys = [' '];
+
+  constructor(props: CheckboxProps) {
+    super(props);
+    this.createExtender = memoize(createExtender);
+  }
 
   componentDidMount() {
     const { isIndeterminate } = this.props;
@@ -132,16 +149,12 @@ class Checkbox extends Component<CheckboxProps, State> {
       isIndeterminate,
       label,
       name,
+      overrides,
       value,
       isRequired,
       //props not passed into HiddenCheckbox
-      defaultChecked,
-      inputRef,
       isChecked: propsIsChecked,
-      isFullWidth,
-      onChange,
       theme,
-      ...rest
     } = this.props;
 
     const isChecked =
@@ -149,6 +162,17 @@ class Checkbox extends Component<CheckboxProps, State> {
         ? this.state.isChecked
         : propsIsChecked;
     const { isFocused, isActive, isHovered } = this.state;
+    const getOverrides = createExtender<CheckboxDefaults, CheckboxOverrides>(
+      defaults,
+      overrides,
+    );
+    const { component: Label, ...labelOverrides } = getOverrides('Label');
+    const { component: LabelText, ...labelTextOverrides } = getOverrides(
+      'LabelText',
+    );
+    const { attributesFn: hiddenCheckboxAttributesFn } = getOverrides(
+      'HiddenCheckbox',
+    );
 
     return (
       <Theme.Provider value={theme}>
@@ -157,6 +181,7 @@ class Checkbox extends Component<CheckboxProps, State> {
             <Theme.Consumer mode={mode} tokens={componentTokens}>
               {tokens => (
                 <Label
+                  {...labelOverrides}
                   isDisabled={isDisabled}
                   onMouseDown={this.onMouseDown}
                   onMouseEnter={this.onMouseEnter}
@@ -178,10 +203,16 @@ class Checkbox extends Component<CheckboxProps, State> {
                       name={name}
                       ref={r => (this.checkbox = r)}
                       required={isRequired}
-                      {...rest}
+                      attributesFn={hiddenCheckboxAttributesFn}
                     />
                     <CheckboxIcon
                       theme={theme}
+                      overrides={{
+                        IconWrapper: overrides && overrides.IconWrapper,
+                        Icon: overrides && overrides.Icon,
+                        IconIndeterminate:
+                          overrides && overrides.IconIndeterminate,
+                      }}
                       isChecked={isChecked}
                       isDisabled={isDisabled}
                       isFocused={isFocused}
@@ -194,7 +225,7 @@ class Checkbox extends Component<CheckboxProps, State> {
                       label=""
                     />
                   </CheckboxWrapper>
-                  <LabelText tokens={tokens}>
+                  <LabelText {...labelTextOverrides} tokens={tokens}>
                     {label}
                     {isRequired && (
                       <RequiredIndicator tokens={tokens} aria-hidden="true">

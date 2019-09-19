@@ -1,18 +1,11 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
-import { ThemeTokens, ThemeIconTokens } from '../types';
-import React from 'react';
-
-interface Props {
-  isActive?: boolean;
-  isChecked?: boolean | unknown;
-  isDisabled?: boolean;
-  isFocused?: boolean;
-  isInvalid?: boolean;
-  isHovered?: boolean;
-  rest?: any;
-  tokens: ThemeTokens;
-}
+import { jsx, CSSObject } from '@emotion/core';
+import { defaultAttributesFn } from '../utils';
+import {
+  IconWrapperProps,
+  ThemeIconTokens,
+  IconWrapperCSSProps,
+} from '../types';
 
 const disabledBorder = (iconTokens: ThemeIconTokens) => ({
   stroke: iconTokens.borderColor.disabled,
@@ -21,6 +14,16 @@ const disabledBorder = (iconTokens: ThemeIconTokens) => ({
 
 const activeBorder = (iconTokens: ThemeIconTokens) => ({
   stroke: iconTokens.borderColor.active,
+  strokeWidth: iconTokens.borderWidth,
+});
+
+const hoveredAndCheckedBorder = (iconTokens: ThemeIconTokens) => ({
+  stroke: iconTokens.borderColor.hoveredAndChecked,
+  strokeWidth: iconTokens.borderWidth,
+});
+
+const hoveredBorder = (iconTokens: ThemeIconTokens) => ({
+  stroke: iconTokens.borderColor.hovered,
   strokeWidth: iconTokens.borderWidth,
 });
 
@@ -39,17 +42,18 @@ const invalidBorder = (iconTokens: ThemeIconTokens) => ({
   strokeWidth: iconTokens.borderWidth,
 });
 
-const border = ({ isHovered, tokens: { icon } }: Props) => ({
-  stroke: isHovered ? icon.borderColor.hovered : icon.borderColor.rest,
-  strokeWidth: icon.borderWidth,
-});
-
-const getBorderColor = ({ tokens, ...props }: Props) => {
+const getBorderColor = ({ tokens, ...props }: IconWrapperCSSProps) => {
   if (props.isDisabled) {
     return disabledBorder(tokens.icon);
   }
   if (props.isActive) {
     return activeBorder(tokens.icon);
+  }
+  if (props.isHovered && props.isChecked) {
+    return hoveredAndCheckedBorder(tokens.icon);
+  }
+  if (props.isHovered) {
+    return hoveredBorder(tokens.icon);
   }
   if (props.isChecked) {
     return checkedBorder(tokens.icon);
@@ -60,10 +64,14 @@ const getBorderColor = ({ tokens, ...props }: Props) => {
   if (props.isInvalid) {
     return invalidBorder(tokens.icon);
   }
-  return border({ tokens, ...props });
+
+  return {
+    stroke: tokens.icon.borderColor.rest,
+    strokeWidth: tokens.icon.borderWidth,
+  };
 };
 
-const getTickColor = (props: Props) => {
+const getTickColor = (props: IconWrapperCSSProps) => {
   const {
     isChecked,
     isDisabled,
@@ -83,7 +91,7 @@ const getTickColor = (props: Props) => {
   return color;
 };
 
-const getBoxColor = (props: Props) => {
+const getBoxColor = (props: IconWrapperCSSProps) => {
   const {
     isChecked,
     isDisabled,
@@ -108,40 +116,40 @@ const getBoxColor = (props: Props) => {
   return color;
 };
 
-export interface IconProps extends React.HTMLProps<HTMLLabelElement> {
-  tokens: ThemeTokens;
-  isChecked?: boolean;
-  isDisabled?: boolean;
-  isActive?: boolean;
-  isHovered?: boolean;
-  isFocused?: boolean;
-  isInvalid?: boolean;
+export const iconWrapperCSS = (props: IconWrapperProps): CSSObject => ({
+  lineHeight: 0,
+  flexShrink: 0,
+  color: getBoxColor(props),
+  fill: getTickColor(props),
+  transition: 'all 0.2s ease-in-out;',
+
+  /* This is adding a property to the inner svg, to add a border to the checkbox */
+  '& rect:first-of-type': {
+    transition: 'stroke 0.2s ease-in-out;',
+    ...getBorderColor(props),
+  },
+
+  /**
+   * Need to set the Icon component wrapper to flex to avoid a scrollbar bug which
+   * happens when checkboxes are flex items in a parent with overflow.
+   * See AK-6321 for more details.
+   **/
+  '> span': {
+    display: 'flex',
+  },
+});
+
+export function IconWrapper({
+  attributesFn,
+  cssFn,
+  children,
+  ...props
+}: IconWrapperProps) {
+  return <span css={cssFn(props)} {...attributesFn({})} children={children} />;
 }
 
-export default ({ children, ...props }: IconProps) => (
-  <span
-    css={{
-      lineHeight: 0,
-      flexShrink: 0,
-      color: getBoxColor(props),
-      fill: getTickColor(props),
-      transition: 'all 0.2s ease-in-out;',
-
-      /* This is adding a property to the inner svg, to add a border to the checkbox */
-      '& rect:first-of-type': {
-        transition: 'stroke 0.2s ease-in-out;',
-        ...getBorderColor(props),
-      },
-
-      /**
-       * Need to set the Icon component wrapper to flex to avoid a scrollbar bug which
-       * happens when checkboxes are flex items in a parent with overflow.
-       * See AK-6321 for more details.
-       **/
-      '> span': {
-        display: 'flex',
-      },
-    }}
-    children={children}
-  />
-);
+export default {
+  component: IconWrapper,
+  cssFn: iconWrapperCSS,
+  attributesFn: defaultAttributesFn,
+};
