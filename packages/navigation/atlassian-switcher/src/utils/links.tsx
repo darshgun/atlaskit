@@ -120,13 +120,13 @@ export const getObjectTypeLabel = (type: string): React.ReactNode => {
   );
 };
 
-export const getFixedProductLinks = (
-  isPeopleLinkEnabled: boolean,
-  isDiscoverMoreForEveryoneEnabled: boolean,
-): SwitcherItemType[] => {
+export const getFixedProductLinks = (params: {
+  canShowPeopleLink: boolean;
+  isDiscoverMoreForEveryoneEnabled: boolean;
+}): SwitcherItemType[] => {
   const fixedLinks = [];
 
-  if (isPeopleLinkEnabled) {
+  if (params.canShowPeopleLink) {
     fixedLinks.push({
       key: 'people',
       label: <FormattedMessage {...messages.people} />,
@@ -135,7 +135,7 @@ export const getFixedProductLinks = (
     });
   }
 
-  if (isDiscoverMoreForEveryoneEnabled) {
+  if (params.isDiscoverMoreForEveryoneEnabled) {
     // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
     fixedLinks.push({
       key: 'discover-more',

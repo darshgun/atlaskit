@@ -117,17 +117,17 @@ function collectAdminLinks(
   }
 }
 
-export function collectFixedProductLinks(
+function collectFixedProductLinks(
   product: Product | undefined,
   isDiscoverMoreForEveryoneEnabled: boolean,
 ): SwitcherItemType[] {
   // People link is only available in Jira / Confluence
-  const shouldEnablePeopleLink =
+  const canShowPeopleLink =
     product === Product.CONFLUENCE || product === Product.JIRA;
-  return getFixedProductLinks(
-    shouldEnablePeopleLink,
+  return getFixedProductLinks({
+    canShowPeopleLink,
     isDiscoverMoreForEveryoneEnabled,
-  );
+  });
 }
 
 function collectRecentLinks(
