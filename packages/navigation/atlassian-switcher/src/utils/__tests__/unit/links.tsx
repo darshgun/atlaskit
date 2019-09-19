@@ -51,13 +51,19 @@ describe('utils/links', () => {
     it('should have link for People', () => {
       const isDiscoverMoreForEveryoneEnabled = false;
       const expectedProducts = ['people'];
-      const fixedLinks = getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+      const fixedLinks = getFixedProductLinks(
+        true,
+        isDiscoverMoreForEveryoneEnabled,
+      );
       expect(fixedLinks.map(({ key }) => key)).toMatchObject(expectedProducts);
     });
     it('should have discover more button if enabled', () => {
       const isDiscoverMoreForEveryoneEnabled = true;
       const expectedProducts = ['people', 'discover-more'];
-      const fixedLinks = getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+      const fixedLinks = getFixedProductLinks(
+        true,
+        isDiscoverMoreForEveryoneEnabled,
+      );
       expect(fixedLinks.map(({ key }) => key)).toMatchObject(expectedProducts);
     });
   });
