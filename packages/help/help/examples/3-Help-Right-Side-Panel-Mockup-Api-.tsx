@@ -10,7 +10,11 @@ import {
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 import { getArticle, searchArticle } from './utils/mockData';
-import { ButtonsWrapper, FooterContent } from './utils/styled';
+import {
+  ButtonsWrapper,
+  FooterContent,
+  ExampleDefaultContent,
+} from './utils/styled';
 
 import Help, { ArticleFeedback } from '../src';
 
@@ -158,7 +162,9 @@ export default class extends React.Component {
                       </FooterContent>
                     }
                   >
-                    Default Content
+                    <ExampleDefaultContent>
+                      <span>Default content</span>
+                    </ExampleDefaultContent>
                   </Help>
                 </LocaleIntlProvider>
               </RightSidePanel>

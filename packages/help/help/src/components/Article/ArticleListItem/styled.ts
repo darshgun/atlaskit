@@ -4,6 +4,7 @@ import { fontSize, gridSize } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
 
 export const ArticlesListItemWrapper = styled.a`
+  position: relative;
   box-sizing: border-box;
   padding: ${gridSize() * 2}px ${gridSize() * 2}px ${gridSize() * 2}px
     ${gridSize() * 1.5}px;
@@ -42,6 +43,13 @@ export const ArticlesListItemTitle = styled.div`
 
 export const ArticlesListItemTitleIcon = styled.div`
   align-self: auto;
+  padding-left: ${gridSize()}px;
+  display: inline-block;
+  vertical-align: top;
+`;
+
+export const ArticlesListItemLinkIcon = styled.div`
+  align-self: auto;
   padding-right: ${gridSize()}px;
   display: inline-block;
   vertical-align: top;
@@ -56,6 +64,8 @@ export const ArticlesListItemTitleText = styled.span`
   vertical-align: top;
   line-height: ${gridSize() * 3}px;
   white-space: normal;
+  width: calc(100% - ${gridSize() * 7}px);
+  overflow-x: hidden;
 `;
 
 export const ArticlesListItemDescription = styled.p`
