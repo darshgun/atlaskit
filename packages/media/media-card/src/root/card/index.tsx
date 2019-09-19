@@ -266,7 +266,7 @@ export class CardBase extends Component<
             dataURI = src;
             if (dataURI && contextId) {
               dataURI = addFileAttrsToUrl(dataURI, {
-                id: resolvedId,
+                id: this.resolvedId,
                 collection: collectionName,
                 contextId,
                 mimeType: metadata.mimeType,
@@ -303,7 +303,7 @@ export class CardBase extends Component<
               dataURI = URL.createObjectURL(blob);
               if (contextId) {
                 dataURI = addFileAttrsToUrl(dataURI, {
-                  id: resolvedId,
+                  id: this.resolvedId,
                   collection: collectionName,
                   contextId,
                   mimeType: metadata.mimeType,
