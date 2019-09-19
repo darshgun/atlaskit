@@ -51,6 +51,8 @@ describe('Snapshot Test', () => {
       });
     });
     it('Home page title should match production', async () => {
+      // As we are lazy loading, we need to wait for the actual font to be applied.
+      await page.waitFor(2000);
       const image = await takeElementScreenShot(page, atlaskitTitle);
       expect(image).toMatchProdImageSnapshot();
     });
