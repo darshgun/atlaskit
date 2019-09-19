@@ -7,7 +7,7 @@ import { Route, Switch } from 'react-router';
 import { MemoryRouter } from 'react-router-dom';
 
 // $FlowFixMe - ts module and relative import?
-import AppNavigation from '@atlaskit/app-navigation/examples/10-authenticated-example';
+import AppNavigation from '@atlaskit/atlassian-navigation/examples/10-authenticated-example';
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
