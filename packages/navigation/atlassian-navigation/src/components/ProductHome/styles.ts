@@ -1,7 +1,7 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { PRODUCT_HOME_BREAKPOINT } from '../../common/constants';
 import { skeletonCSS } from '../../common/styles';
-import { AppNavigationTheme } from '../../theme';
+import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
@@ -32,7 +32,7 @@ export const productIconCSS = {
 
 const iconHeight = 28;
 
-export const productIconSkeletonCSS = (theme: AppNavigationTheme) => ({
+export const productIconSkeletonCSS = (theme: NavigationTheme) => ({
   borderRadius: '50%',
   width: `${iconHeight}px`,
   height: `${iconHeight}px`,
@@ -51,7 +51,7 @@ export const productLogoCSS = {
   },
 };
 
-export const productLogoSkeletonCSS = (theme: AppNavigationTheme) => ({
+export const productLogoSkeletonCSS = (theme: NavigationTheme) => ({
   borderRadius: `${height / 2}px`,
   width: '120px',
   ...heightCSS,

@@ -1,8 +1,8 @@
 import { B200, B500, N0 } from '@atlaskit/theme/colors';
 import { generateTheme } from './themeGenerator';
-import { AppNavigationTheme } from './types';
+import { NavigationTheme } from './types';
 
-export const atlassianTheme: AppNavigationTheme = generateTheme({
+export const atlassianTheme: NavigationTheme = generateTheme({
   name: 'atlassian',
   primary: {
     backgroundColor: B500,
@@ -14,4 +14,4 @@ export const atlassianTheme: AppNavigationTheme = generateTheme({
   },
 });
 
-export const defaultTheme: AppNavigationTheme = atlassianTheme;
+export const defaultTheme: NavigationTheme = atlassianTheme;

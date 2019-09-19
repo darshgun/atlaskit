@@ -12,13 +12,13 @@ import { ProfileSkeleton } from '../Profile/skeleton';
 import { SearchSkeleton } from '../Search/skeleton';
 
 import { containerCSS, leftCSS, rightCSS } from './styles';
-import { AppNavigationSkeletonProps } from './types';
+import { NavigationSkeletonProps } from './types';
 
-export const AppNavigationSkeleton = ({
+export const NavigationSkeleton = ({
   primaryItemsCount = 4,
   secondaryItemsCount = 4,
   theme = defaultTheme,
-}: AppNavigationSkeletonProps) => {
+}: NavigationSkeletonProps) => {
   return (
     <ThemeProvider value={theme}>
       <div css={containerCSS(theme)}>

@@ -1,11 +1,11 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
-import { AppNavigationTheme } from '../../theme';
+import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-export const containerCSS = ({ mode: { navigation } }: AppNavigationTheme) => ({
+export const containerCSS = ({ mode: { navigation } }: NavigationTheme) => ({
   alignItems: 'center',
   boxSizing: 'border-box' as const,
   display: 'flex',

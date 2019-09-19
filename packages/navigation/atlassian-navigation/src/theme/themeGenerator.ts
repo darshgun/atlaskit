@@ -1,6 +1,6 @@
 import chromatism, { ColourModes } from 'chromatism';
 
-import { AppNavigationTheme, ButtonCSSContext } from './types';
+import { NavigationTheme, ButtonCSSContext } from './types';
 
 const getBoxShadow = (color: string) => `0 0 0 2px ${color}`;
 
@@ -87,7 +87,7 @@ export type GenerateThemeArgs = {
   secondary?: Colors;
 };
 
-export const generateTheme = (args: GenerateThemeArgs): AppNavigationTheme => {
+export const generateTheme = (args: GenerateThemeArgs): NavigationTheme => {
   const { primary: primaryColors, secondary: secondaryColors } = args;
   const primary = generateCSSStates(primaryColors);
   const { active: primaryActive, default: primaryDefault } = primary;

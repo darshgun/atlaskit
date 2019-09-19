@@ -1,4 +1,4 @@
-# @atlaskit/app-navigation
+# @atlaskit/atlassian-navigation
 
 ## 0.4.2
 

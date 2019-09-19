@@ -2,18 +2,18 @@
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { jsx } from '@emotion/core';
 
-import { AppNavigationTheme, ThemeProvider, defaultTheme } from '../../theme';
+import { NavigationTheme, ThemeProvider, defaultTheme } from '../../theme';
 import { containerCSS, leftCSS, rightCSS } from './styles';
 import { PrimaryItemsContainer } from '../PrimaryItemsContainer';
-import { AppNavigationProps } from './types';
+import { NavigationContainerProps } from './types';
 
 const analyticsData = {
   attributes: { navigationLayer: 'global' },
-  componentName: 'appNavigation',
+  componentName: 'atlassianNavigation',
 };
 
-export const AppNavigation = (
-  props: AppNavigationProps & { theme: AppNavigationTheme },
+export const NavigationContainer = (
+  props: NavigationContainerProps & { theme: NavigationTheme },
 ) => {
   const {
     primaryItems,
@@ -54,7 +54,7 @@ export const AppNavigation = (
   );
 };
 
-AppNavigation.defaultProps = {
+NavigationContainer.defaultProps = {
   primaryItems: [],
   moreLabel: '…',
   theme: defaultTheme,

@@ -2,7 +2,7 @@
 import Button from '@atlaskit/button';
 import { jsx } from '@emotion/core';
 import { Fragment, useState, ChangeEvent } from 'react';
-import { AppNavigation, AppNavigationSkeleton } from '../src';
+import { NavigationContainer, NavigationSkeleton } from '../src';
 
 import { DefaultAppSwitcher } from './shared/AppSwitcher';
 import { DefaultCreate } from './shared/Create';
@@ -44,12 +44,12 @@ const InteractiveSkeletonExample = () => {
   return (
     <Fragment>
       {isSkeleton ? (
-        <AppNavigationSkeleton
+        <NavigationSkeleton
           primaryItemsCount={primary}
           secondaryItemsCount={secondary}
         />
       ) : (
-        <AppNavigation
+        <NavigationContainer
           primaryItems={defaultPrimaryItems}
           renderAppSwitcher={DefaultAppSwitcher}
           renderCreate={DefaultCreate}

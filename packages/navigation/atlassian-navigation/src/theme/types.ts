@@ -38,6 +38,6 @@ export type Mode = {
   primaryButton: PrimaryButtonCSS;
 };
 
-export type AppNavigationTheme = {
+export type NavigationTheme = {
   mode: Mode;
 };

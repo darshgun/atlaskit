@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 import { themes } from './shared/themes';
-import { AppNavigationSkeleton } from '../src';
+import { NavigationSkeleton } from '../src';
 
 const primary = 4;
 const secondary = 4;
@@ -10,7 +10,7 @@ const ThemedSkeletonExample = () => (
   <div>
     {themes.map((theme, i) => (
       <Fragment key={i}>
-        <AppNavigationSkeleton
+        <NavigationSkeleton
           primaryItemsCount={primary}
           secondaryItemsCount={secondary}
           theme={theme}

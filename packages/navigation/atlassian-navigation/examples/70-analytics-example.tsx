@@ -12,7 +12,7 @@ import { DefaultProductHome } from './shared/ProductHome';
 import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
-import { AppNavigation, PrimaryButton, PrimaryButtonProps } from '../src';
+import { NavigationContainer, PrimaryButton, PrimaryButtonProps } from '../src';
 import { useOverflowStatus } from '../src/controllers/overflow';
 import { DropdownItem } from '@atlaskit/dropdown-menu';
 
@@ -76,8 +76,8 @@ const AnalyticsExample = () => {
       channel="atlaskit"
       onEvent={({ context }) => console.log('Event context:', context)}
     >
-      <AnalyticsContext data={{ panel: 'app-navigation' }}>
-        <AppNavigation
+      <AnalyticsContext data={{ panel: 'atlassian-navigation' }}>
+        <NavigationContainer
           primaryItems={primaryItems}
           renderAppSwitcher={DefaultAppSwitcher}
           renderCreate={DefaultCreate}

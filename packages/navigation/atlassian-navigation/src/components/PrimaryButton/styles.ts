@@ -4,7 +4,7 @@ import {
   gridSize as gridSizeFn,
 } from '@atlaskit/theme/constants';
 import { skeletonCSS } from '../../common/styles';
-import { AppNavigationTheme } from '../../theme';
+import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
@@ -20,7 +20,7 @@ export const padding = {
 
 export const getPrimaryButtonTheme = ({
   mode: { primaryButton },
-}: AppNavigationTheme) => (
+}: NavigationTheme) => (
   current: (props: ThemeProps) => ThemeTokens,
   props: ThemeProps,
 ) => {
@@ -41,7 +41,7 @@ export const getPrimaryButtonTheme = ({
   };
 };
 
-export const primaryButtonSkeletonCSS = (theme: AppNavigationTheme) => ({
+export const primaryButtonSkeletonCSS = (theme: NavigationTheme) => ({
   borderRadius: `${gridSize / 2}px`,
   display: 'inline-flex',
   height: `${buttonHeight - padding.all * 2.5}px`,

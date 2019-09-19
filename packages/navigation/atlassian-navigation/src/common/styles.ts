@@ -1,4 +1,4 @@
-import { AppNavigationTheme } from '../theme';
+import { NavigationTheme } from '../theme';
 import { CREATE_BREAKPOINT } from './constants';
 
 export const actionSectionDesktopCSS = {
@@ -13,7 +13,7 @@ export const actionSectionMobileCSS = {
   },
 };
 
-export const skeletonCSS = ({ mode: { skeleton } }: AppNavigationTheme) => ({
+export const skeletonCSS = ({ mode: { skeleton } }: NavigationTheme) => ({
   opacity: 0.15,
   ...skeleton,
 });

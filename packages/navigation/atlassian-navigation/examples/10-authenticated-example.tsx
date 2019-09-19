@@ -9,10 +9,10 @@ import { DefaultProductHome } from './shared/ProductHome';
 import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
-import { AppNavigation } from '../src';
+import { NavigationContainer } from '../src';
 
 const AuthenticatedExample = () => (
-  <AppNavigation
+  <NavigationContainer
     primaryItems={defaultPrimaryItems}
     renderAppSwitcher={DefaultAppSwitcher}
     renderCreate={DefaultCreate}

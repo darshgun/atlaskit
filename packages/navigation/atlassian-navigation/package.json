@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/app-navigation",
+  "name": "@atlaskit/atlassian-navigation",
   "version": "0.4.2",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -8,11 +8,11 @@
   "types": "dist/cjs/index.d.ts",
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
-  "description": "The new app navigation",
+  "description": "Common navigation component for Atlassian products",
   "maintainers": [],
   "atlaskit": {
     "internal": true,
-    "name": "App navigation",
+    "name": "Atlassian navigation",
     "team": "navigation"
   },
   "dependencies": {

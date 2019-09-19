@@ -18,7 +18,7 @@ ${(
   <Warning>
     <p>
       <strong>
-        Note: @atlaskit/app-navigation is currently a developer preview.
+        Note: @atlaskit/atlassian-navigation is currently a developer preview.
       </strong>
     </p>
     <p>

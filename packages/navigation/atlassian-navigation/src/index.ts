@@ -1,5 +1,5 @@
-export { AppNavigation } from './components/AppNavigation';
-export { AppNavigationSkeleton } from './components/AppNavigation/skeleton';
+export { NavigationContainer } from './components/NavigationContainer';
+export { NavigationSkeleton } from './components/NavigationContainer/skeleton';
 export { AppSwitcher } from './components/AppSwitcher';
 export { Create } from './components/Create';
 export { Help } from './components/Help';

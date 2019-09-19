@@ -8,7 +8,7 @@ import {
   actionSectionMobileCSS,
   skeletonCSS,
 } from '../../common/styles';
-import { AppNavigationTheme } from '../../theme';
+import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
@@ -16,7 +16,7 @@ const buttonHeight = gridSize * 4;
 
 export const createButtonCSS = actionSectionDesktopCSS;
 
-export const createButtonSkeletonCSS = (theme: AppNavigationTheme) => ({
+export const createButtonSkeletonCSS = (theme: NavigationTheme) => ({
   height: `${buttonHeight}px`,
   width: '68px',
   borderRadius: '3px',
@@ -29,7 +29,7 @@ export const createIconSkeletonCSS = createIconCSS;
 
 export const getCreateButtonTheme = ({
   mode: { create },
-}: AppNavigationTheme) => (
+}: NavigationTheme) => (
   current: (props: ThemeProps) => ThemeTokens,
   props: ThemeProps,
 ) => {

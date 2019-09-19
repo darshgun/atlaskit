@@ -2,7 +2,7 @@ import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 
 import { skeletonCSS } from '../../common/styles';
-import { AppNavigationTheme } from '../../theme';
+import { NavigationTheme } from '../../theme';
 import { IconButtonSkeletonProps } from './types';
 
 const gridSize = gridSizeFn();
@@ -17,7 +17,7 @@ export const padding = {
 
 export const getIconButtonTheme = ({
   mode: { iconButton },
-}: AppNavigationTheme) => (
+}: NavigationTheme) => (
   current: (props: ThemeProps) => ThemeTokens,
   props: ThemeProps,
 ): ThemeTokens => {
@@ -41,7 +41,7 @@ export const getIconButtonTheme = ({
 const buttonHeight = gridSize * 4;
 
 export const iconButtonSkeletonCSS = (
-  theme: AppNavigationTheme,
+  theme: NavigationTheme,
   { marginLeft, marginRight, size }: IconButtonSkeletonProps,
 ) => ({
   borderRadius: '50%',

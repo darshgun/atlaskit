@@ -4,7 +4,7 @@ import {
   actionSectionMobileCSS,
   skeletonCSS,
 } from '../../common/styles';
-import { AppNavigationTheme } from '../../theme';
+import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
@@ -26,7 +26,7 @@ export const searchInputContainerCSS = {
   ...actionSectionDesktopCSS,
 };
 
-export const searchInputCSS = ({ mode: { search } }: AppNavigationTheme) => ({
+export const searchInputCSS = ({ mode: { search } }: NavigationTheme) => ({
   ...searchCommonCSS,
   border: 'none',
   fontSize: `${fontSize()}px`,
@@ -46,7 +46,7 @@ export const searchInputIconCSS = {
   width: '20px',
 };
 
-export const searchInputSkeletonCSS = (theme: AppNavigationTheme) => ({
+export const searchInputSkeletonCSS = (theme: NavigationTheme) => ({
   ...searchCommonCSS,
   ...skeletonCSS(theme),
 });

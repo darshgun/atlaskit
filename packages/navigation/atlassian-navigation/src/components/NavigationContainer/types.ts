@@ -1,8 +1,8 @@
 import React, { ReactNodeArray, ReactNode } from 'react';
 
-import { AppNavigationTheme } from '../../theme';
+import { NavigationTheme } from '../../theme';
 
-export type AppNavigationProps = {
+export type NavigationContainerProps = {
   primaryItems: ReactNodeArray;
   renderAppSwitcher?: React.ComponentType<{}>;
   renderCreate?: React.ComponentType<{}>;
@@ -14,11 +14,11 @@ export type AppNavigationProps = {
   renderSignIn?: React.ComponentType<{}>;
   renderSettings?: React.ComponentType<{}>;
   moreLabel?: ReactNode;
-  theme?: AppNavigationTheme;
+  theme?: NavigationTheme;
 };
 
-export type AppNavigationSkeletonProps = {
+export type NavigationSkeletonProps = {
   primaryItemsCount?: number;
   secondaryItemsCount?: number;
-  theme?: AppNavigationTheme;
+  theme?: NavigationTheme;
 };

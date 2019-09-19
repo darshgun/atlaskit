@@ -6,12 +6,12 @@ import { DefaultHelp } from './shared/Help';
 import { defaultPrimaryItems } from './shared/PrimaryItems';
 import { DefaultProductHome } from './shared/ProductHome';
 import { DefaultSearch } from './shared/Search';
-import { AppNavigation, SignIn } from '../src';
+import { NavigationContainer, SignIn } from '../src';
 
 const SignInExample = () => <SignIn tooltip="Sign in" />;
 
 const AnonymousExample = () => (
-  <AppNavigation
+  <NavigationContainer
     primaryItems={defaultPrimaryItems}
     renderAppSwitcher={DefaultAppSwitcher}
     renderCreate={DefaultCreate}
