@@ -43,14 +43,14 @@ export const ArticlesListItemTitle = styled.div`
 
 export const ArticlesListItemTitleIcon = styled.div`
   align-self: auto;
-  padding-left: ${gridSize()}px;
+  padding-right: ${gridSize()}px;
   display: inline-block;
   vertical-align: top;
 `;
 
 export const ArticlesListItemLinkIcon = styled.div`
   align-self: auto;
-  padding-right: ${gridSize()}px;
+  padding-left: ${gridSize()}px;
   display: inline-block;
   vertical-align: top;
 `;

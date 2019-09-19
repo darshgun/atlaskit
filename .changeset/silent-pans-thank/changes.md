@@ -1,0 +1,1 @@
+fixed CSS issue of the ArticleListItem icons
