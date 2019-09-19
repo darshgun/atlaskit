@@ -56,7 +56,7 @@ export type OverridesType = {
   };
   IconWrapper?: {
     component?: React.ComponentType<IconWrapperProps>;
-    cssFn?: (defaultStyles: CSSObject, props: IconWrapperProps) => CSSObject;
+    cssFn?: (defaultStyles: CSSObject, props: IconWrapperCSSProps) => CSSObject;
     attributesFn?: (props: Record<string, any>) => Record<string, any>;
   };
   Icon?: {
