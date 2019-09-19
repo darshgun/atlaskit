@@ -13,7 +13,7 @@ const knownExceptions = [
 ];
 
 function isLogUnknownException(loggedMessage) {
-  return knownExceptions.some(knownException =>
+  return !knownExceptions.some(knownException =>
     knownException.test(`${loggedMessage}`),
   );
 }
