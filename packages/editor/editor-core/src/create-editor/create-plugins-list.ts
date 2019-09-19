@@ -192,11 +192,10 @@ export default function createPluginsList(
     plugins.push(
       tablesPlugin({
         tableOptions,
-        breakoutEnabled: props.appearance === 'full-page',
+        isDynamicTextSizingEnabled: props.allowDynamicTextSizing,
+        isBreakoutEnabled: props.appearance === 'full-page',
         allowContextualMenu: !isMobile,
-        fullWidthEnabled: props.appearance === 'full-width',
-        wasFullWidthEnabled: prevProps && prevProps.appearance === 'full-width',
-        dynamicSizingEnabled: props.allowDynamicTextSizing,
+        isFullWidthModeEnabled: props.appearance === 'full-width',
       }),
     );
   }

@@ -21,14 +21,16 @@ export function createPlugin(
   dispatch: Dispatch<ColumnResizingPluginState>,
   {
     lastColumnResizable = true,
-    dynamicTextSizing = false,
+    isDynamicTextSizingEnabled = false,
+    isFullWidthModeEnabled = false,
   }: ColumnResizingPluginState,
 ) {
   return new Plugin({
     key: pluginKey,
     state: createPluginState(dispatch, {
       lastColumnResizable,
-      dynamicTextSizing,
+      isDynamicTextSizingEnabled,
+      isFullWidthModeEnabled,
       resizeHandlePos: null,
       dragging: null,
       lastClick: null,
@@ -60,7 +62,8 @@ export function createPlugin(
               view,
               event as MouseEvent,
               resizeHandlePos,
-              dynamicTextSizing,
+              isDynamicTextSizingEnabled,
+              isFullWidthModeEnabled,
             );
           }
 

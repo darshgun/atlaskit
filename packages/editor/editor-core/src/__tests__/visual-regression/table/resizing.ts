@@ -20,6 +20,10 @@ import {
 import { animationFrame } from '../../__helpers/page-objects/_editor';
 import { Page } from '../../__helpers/page-objects/_types';
 import { TableCssClassName as ClassName } from '../../../plugins/table/types';
+import mergedColsAdf from './__fixtures__/table-with-merged-columns-in-first-row.adf.json';
+import mergedAllColsAdf from './__fixtures__/table-with-all-merged-columns-in-first-row.adf.json';
+import mergedRandomColsAdf from './__fixtures__/table-with-randomly-merged-columns.adf.json';
+
 // TODO: https://product-fabric.atlassian.net/browse/ED-7721
 describe.skip('Snapshot Test: table resizing', () => {
   describe('Re-sizing', () => {
@@ -150,5 +154,59 @@ describe('Snapshot Test: table scale', () => {
   it(`should not overflow the table with dynamic text sizing enabled`, async () => {
     await toggleBreakout(page, 1);
     await snapshot(page);
+  });
+});
+
+describe('Snapshot Test: table with merged columns in the first row', () => {
+  let page: Page;
+  beforeEach(async () => {
+    // @ts-ignore
+    page = global.page;
+  });
+
+  it('should render resize handle', async () => {
+    await initEditorWithAdf(page, {
+      appearance: Appearance.fullPage,
+      adf: mergedColsAdf,
+      viewport: { width: 1280, height: 500 },
+      editorProps: {
+        allowDynamicTextSizing: true,
+      },
+    });
+    await clickFirstCell(page);
+    await grabResizeHandle(page, { colIdx: 1, row: 2 });
+    await snapshot(page);
+  });
+
+  describe('when table all columns merged in the first row', () => {
+    it('should render resize handle', async () => {
+      await initEditorWithAdf(page, {
+        appearance: Appearance.fullPage,
+        adf: mergedAllColsAdf,
+        viewport: { width: 1280, height: 500 },
+        editorProps: {
+          allowDynamicTextSizing: true,
+        },
+      });
+      await clickFirstCell(page);
+      await grabResizeHandle(page, { colIdx: 1, row: 2 });
+      await snapshot(page);
+    });
+  });
+
+  describe('when table columns are randomly merged in the first row', () => {
+    it('should resize columns', async () => {
+      await initEditorWithAdf(page, {
+        appearance: Appearance.fullPage,
+        adf: mergedRandomColsAdf,
+        viewport: { width: 1280, height: 500 },
+        editorProps: {
+          allowDynamicTextSizing: true,
+        },
+      });
+      await clickFirstCell(page);
+      await resizeColumn(page, { colIdx: 3, amount: 100, row: 2 });
+      await snapshot(page);
+    });
   });
 });
