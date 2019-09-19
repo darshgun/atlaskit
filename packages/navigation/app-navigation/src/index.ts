@@ -14,10 +14,9 @@ export { Settings } from './components/Settings';
 export { SignIn } from './components/SignIn';
 
 export {
+  atlassianTheme,
   Colors,
   generateTheme,
   GenerateThemeArgs,
-  darkTheme,
-  lightTheme,
   ThemeProvider,
 } from './theme';
