@@ -6,18 +6,6 @@ const assert = require('assert').strict;
 
 const WAIT_TIMEOUT = 5000;
 
-// List of console.errors that are expected in the browser for various reasons.
-// it is in format (Error) (file) (reason).
-const knownExceptions = [
-  /(Refused to apply style from).*(\/public\/css\/charlie-display-font.css).*(is not a supported stylesheet MIME type, and strict MIME checking is enabled.)/,
-];
-
-function isLogUnknownException(loggedMessage) {
-  return !knownExceptions.some(knownException =>
-    knownException.test(`${loggedMessage}`),
-  );
-}
-
 export class JSHandle {
   constructor(client, selector) {
     this.browser = client;
@@ -222,13 +210,7 @@ export default class Page {
       const logs = await this.browser.getLogs('browser');
       if (logs.length) {
         logs.forEach(log => {
-          if (isLogUnknownException(log.message)) {
-            assert.notStrictEqual(
-              log.level,
-              'SEVERE',
-              `Error : ${log.message}`,
-            );
-          }
+          assert.notStrictEqual(log.level, 'SEVERE', `Error : ${log.message}`);
         });
       }
     }
