@@ -3,6 +3,7 @@ import {
   waitForNoTooltip,
 } from '@atlaskit/visual-regression/helper';
 import {
+  hoverElementWithText,
   clickElementWithText,
   getBoundingRect,
   scrollToElement,
@@ -43,7 +44,10 @@ export const tableSelectors = {
   cornerButton: `.${ClassName.CONTROLS_CORNER_BUTTON}`,
   breakoutButton: `.${ClassName.LAYOUT_BUTTON}`,
   mergeCellsText: `Merge cells`,
+  sortColumnASC: `Sort column A → Z`,
+  sortColumnDESC: `Sort column Z → A`,
   splitCellText: `Split cell`,
+  tableWrapper: '.ProseMirror .pm-table-wrapper',
   tableOptionsText: `Table options`,
   removeRowButton: `button[title="Remove row"]`,
   removeColumnButton: `button[title="Remove column"]`,
@@ -105,6 +109,12 @@ export const selectCellOption = async (page: any, option: string) => {
   await clickElementWithText({ page, tag: 'span', text: option });
 };
 
+export const hoverCellOption = async (page: any, option: string) => {
+  await page.waitForSelector(tableSelectors.contextualMenu);
+  await page.click(tableSelectors.contextualMenu);
+  await hoverElementWithText({ page, tag: 'span', text: option });
+};
+
 // colorIndex - index of the color button DOM node, values from 1 to 8
 export const selectCellBackground = async ({
   page,
@@ -137,7 +147,7 @@ export const selectCellBackground = async ({
 
   const colorButtonSelector =
     tableSelectors.cellBackgroundSubmenuSelector +
-    ` span:nth-child(${colorIndex}) button`;
+    ` div:nth-child(${colorIndex}) button`;
 
   await selectCellOption(page, tableSelectors.cellBackgroundText);
   await page.waitForSelector(colorButtonSelector);
@@ -185,8 +195,7 @@ export const insertRow = async (page: any, atIndex: number) => {
 
     await page.mouse.move(x, y);
   } else {
-    const y = atIndex % 2 === 0 ? 1 : Math.ceil(bounds.height * 0.51);
-    await page.moveTo(tableSelectors.nthColumnControl(atIndex), 1, y);
+    await page.hover(tableSelectors.nthRowControl(atIndex + 1));
   }
 
   await page.waitForSelector(tableSelectors.insertButton);

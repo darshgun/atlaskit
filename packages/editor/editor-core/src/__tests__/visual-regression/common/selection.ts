@@ -1,5 +1,5 @@
 import { waitForTooltip } from '@atlaskit/visual-regression/helper';
-import { snapshot, Device, initEditorWithAdf, Appearance } from '../_utils';
+import { snapshot, initEditorWithAdf, Appearance } from '../_utils';
 import adf from './__fixtures__/nested-elements.adf.json';
 import {
   tableSelectors,
@@ -7,8 +7,8 @@ import {
 } from '../../__helpers/page-objects/_table';
 import { animationFrame } from '../../__helpers/page-objects/_editor';
 import { EditorTestCardProvider } from '../../../../../editor-test-helpers';
-
-describe('Danger for nested elements', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Danger for nested elements', () => {
   let page: any;
   const cardProvider = new EditorTestCardProvider();
 
@@ -22,7 +22,7 @@ describe('Danger for nested elements', () => {
       await initEditorWithAdf(page, {
         appearance: Appearance.fullPage,
         adf,
-        device: Device.LaptopHiDPI,
+        viewport: { width: 1280, height: 550 },
         editorProps: {
           UNSAFE_cards: { provider: Promise.resolve(cardProvider) },
         },

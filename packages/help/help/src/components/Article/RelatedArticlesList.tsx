@@ -32,6 +32,7 @@ const RelatedArticlesList: React.SFC<Props & HelpContextInterface> = (
             title={relatedArticle.title}
             description={relatedArticle.description}
             key={relatedArticle.id}
+            href={relatedArticle.href}
             icon={
               <DocumentFilledIcon
                 primaryColor={colors.P300}

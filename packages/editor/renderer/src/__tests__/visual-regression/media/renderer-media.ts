@@ -16,7 +16,7 @@ const devices = [
 const initRenderer = async (page: Page, adf: any, device: Device) =>
   await initRendererWithADF(page, {
     appearance: 'full-page',
-    rendererProps: { allowDynamicTextSizing: true },
+    rendererProps: { allowDynamicTextSizing: true, disableHeadingIDs: true },
     adf,
     device,
   });
@@ -37,7 +37,8 @@ describe('Snapshot Test: Media', () => {
 
   describe('resize', () => {
     devices.forEach(device => {
-      it(`should correctly render for ${device}`, async () => {
+      // TODO: ED-7455
+      it.skip(`should correctly render for ${device}`, async () => {
         await initRenderer(page, resizeAdf, device);
       });
     });

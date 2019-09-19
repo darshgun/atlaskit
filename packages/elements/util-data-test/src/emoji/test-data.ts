@@ -141,7 +141,7 @@ export const siteEmojiWtf = {
     height: 120,
     width: 100,
     imagePath:
-      'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
+      'https://pf-emoji-service--cdn.ap-southeast-2.dev.public.atl-paas.net/atlassian/wtf@4x.png',
   },
   skinVariations: [],
 };
@@ -162,8 +162,8 @@ declare var require: {
   <T>(path: string): T;
 };
 
-export const standardServiceEmojis = require('../../json-data/test-emoji-standard.json') as any; // EmojiServiceResponse
-export const atlassianServiceEmojis = require('../../json-data/test-emoji-atlassian.json') as any; // EmojiServiceResponse
+export const standardServiceEmojis = require('../json-data/test-emoji-standard.json') as any; // EmojiServiceResponse
+export const atlassianServiceEmojis = require('../json-data/test-emoji-atlassian.json') as any; // EmojiServiceResponse
 
 export const siteServiceEmojis = () => ({
   emojis: [mediaServiceEmoji],

@@ -10,7 +10,11 @@ import {
 } from '@atlaskit/right-side-panel';
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
-import { ButtonsWrapper } from './utils/styled';
+import {
+  ButtonsWrapper,
+  FooterContent,
+  ExampleDefaultContent,
+} from './utils/styled';
 
 import Help from '../src';
 
@@ -30,12 +34,6 @@ export default class extends React.Component {
   };
 
   openDrawer = async (articleId: string = '') => {
-    if (articleId === this.state.articleId) {
-      await this.setState({
-        articleId: '',
-      });
-    }
-
     await this.setState({
       isOpen: true,
       articleId,
@@ -82,6 +80,12 @@ export default class extends React.Component {
     });
   };
 
+  articleIdSetter = (id: string): void => {
+    this.setState({
+      articleId: id,
+    });
+  };
+
   render() {
     const { isOpen, articleId } = this.state;
     return (
@@ -124,6 +128,7 @@ export default class extends React.Component {
               <RightSidePanel isOpen={isOpen} attachPanelTo="helpExample">
                 <LocaleIntlProvider locale={'en'}>
                   <Help
+                    articleIdSetter={this.articleIdSetter}
                     onButtonCloseClick={this.closeDrawer}
                     articleId={articleId}
                     onGetArticle={this.onGetArticle}
@@ -133,8 +138,15 @@ export default class extends React.Component {
                     onWasHelpfulNoButtonClick={
                       this.articleWasHelpfulNoButtonClick
                     }
+                    footer={
+                      <FooterContent>
+                        <span>Footer</span>
+                      </FooterContent>
+                    }
                   >
-                    <span>Default content</span>
+                    <ExampleDefaultContent>
+                      <span>Default content</span>
+                    </ExampleDefaultContent>
                   </Help>
                 </LocaleIntlProvider>
               </RightSidePanel>

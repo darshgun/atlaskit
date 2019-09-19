@@ -1,5 +1,66 @@
 # @atlaskit/theme
 
+## 9.2.3
+
+### Patch Changes
+
+- [patch][decd6fceea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/decd6fceea):
+
+  ED-5137 added heading anchor link
+
+  Values for heading sizes(h100 - h900) are exported as part of typography. Places need to calculate heights for heading can use those values to calculate.
+
+## 9.2.2
+
+### Patch Changes
+
+- [patch][8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+
+  @atlaskit/avatar has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 9.2.1
+
+### Patch Changes
+
+- [patch][94620ae46a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/94620ae46a):
+
+  Updating the temporary ts definition file for Theme.
+
+## 9.2.0
+
+### Minor Changes
+
+- [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
+
+  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+
+  More information about the deprecation of lifecycles methods can be found here:
+  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+
+## 9.1.6
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 9.1.5
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 9.1.4
+
+### Patch Changes
+
+- [patch][9eceb8379f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9eceb8379f):
+
+  Moves typescript declaration files to the root of theme
+
 ## 9.1.3
 
 ### Patch Changes

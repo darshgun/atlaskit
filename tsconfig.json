@@ -78,6 +78,7 @@
     "./typings/uuid.d.ts",
     "./typings/webpack.d.ts",
     "./typings/yarn-deduplicate.d.ts",
-    "./typings/css-color-names/index.d.ts"
+    "./typings/css-color-names/index.d.ts",
+    "./typings/pubnub.d.ts"
   ]
 }

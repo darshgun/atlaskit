@@ -1,30 +1,31 @@
 import {
   getAdministrationLinks,
+  getAvailableProductLinks,
   getCustomLinkItems,
   getFixedProductLinks,
   getLicensedProductLinks,
   getRecentLinkItems,
   getSuggestedProductLink,
   SwitcherItemType,
-  getAvailableProductLinks,
 } from './links';
 import {
+  hasLoaded,
   isComplete,
   isError,
   ProviderResult,
   Status,
-  hasLoaded,
 } from '../providers/as-data-provider';
 import {
+  AvailableProductsResponse,
   CustomLinksResponse,
   FeatureMap,
   LicenseInformationResponse,
-  RecentContainersResponse,
-  AvailableProductsResponse,
-  ProductLicenseInformation,
-  WorklensProductType,
+  Product,
   ProductKey,
+  ProductLicenseInformation,
+  RecentContainersResponse,
   RecommendationsEngineResponse,
+  WorklensProductType,
 } from '../types';
 import { createCollector } from './create-collector';
 
@@ -95,6 +96,8 @@ function collectAdminLinks(
   managePermission: ProviderResults['managePermission'],
   addProductsPermission: ProviderResults['addProductsPermission'],
   isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
     return [];
@@ -105,6 +108,8 @@ function collectAdminLinks(
       return getAdministrationLinks(
         managePermission.data,
         isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+        product,
       );
     }
 
@@ -112,10 +117,17 @@ function collectAdminLinks(
   }
 }
 
-export function collectFixedProductLinks(
+function collectFixedProductLinks(
+  product: Product | undefined,
   isDiscoverMoreForEveryoneEnabled: boolean,
 ): SwitcherItemType[] {
-  return getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+  // People link is only available in Jira / Confluence
+  const canShowPeopleLink =
+    product === Product.CONFLUENCE || product === Product.JIRA;
+  return getFixedProductLinks({
+    canShowPeopleLink,
+    isDiscoverMoreForEveryoneEnabled,
+  });
 }
 
 function collectRecentLinks(
@@ -228,6 +240,7 @@ export function mapResultsToSwitcherProps(
   results: ProviderResults,
   features: FeatureMap,
   availableProducts: ProviderResult<AvailableProductsResponse>,
+  product?: Product,
 ) {
   const collect = createCollector();
 
@@ -248,7 +261,12 @@ export function mapResultsToSwitcherProps(
       ? asLicenseInformationProviderResult(availableProducts, cloudId)
       : licenseInformation;
 
-  const hasLoadedLicenseInformation = hasLoaded(resolvedLicenseInformation);
+  const hasLoadedSiteCentricProducts = hasLoaded(licenseInformation);
+  const hasLoadedAccountCentricProducts = hasLoaded(availableProducts);
+
+  const hasLoadedLicenseInformation = features.enableUserCentricProducts
+    ? hasLoadedAccountCentricProducts
+    : hasLoadedSiteCentricProducts;
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);
   const hasLoadedSuggestedProducts = features.xflow
@@ -277,7 +295,10 @@ export function mapResultsToSwitcherProps(
         )
       : [],
     fixedLinks: collect(
-      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+      collectFixedProductLinks(
+        product,
+        features.isDiscoverMoreForEveryoneEnabled,
+      ),
       [],
     ),
     adminLinks: collect(
@@ -285,6 +306,8 @@ export function mapResultsToSwitcherProps(
         managePermission,
         addProductsPermission,
         features.isDiscoverMoreForEveryoneEnabled,
+        features.isEmceeLinkEnabled,
+        product,
       ),
       [],
     ),

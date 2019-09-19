@@ -17,4 +17,5 @@ require(path.join('..', dev ? 'src' : 'dist'))
       process.exit(error);
     }
     console.error(error);
+    process.exit(1);
   });

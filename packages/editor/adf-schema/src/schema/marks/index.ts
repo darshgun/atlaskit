@@ -9,7 +9,6 @@ export {
   LinkDefinition,
   toJSON as linkToJSON,
 } from './link';
-export { emojiQuery } from './emoji-query';
 export { typeAheadQuery } from './type-ahead-query';
 export { subsup, SubSupDefinition, SubSupAttributes } from './subsup';
 export {
@@ -20,12 +19,6 @@ export {
   TextColorAttributes,
 } from './text-color';
 export { confluenceInlineComment } from './confluence-inline-comment';
-export {
-  action,
-  Action as ActionMarkAction,
-  ActionMarkAttributes,
-  ActionDefinition,
-} from './action';
 export {
   breakout,
   BreakoutMarkAttrs,
@@ -46,4 +39,6 @@ export {
   annotation,
   AnnotationMarkDefinition,
   AnnotationMarkAttributes,
+  INLINE_COMMENT,
+  AnnotationType,
 } from './annotation';

@@ -39,9 +39,9 @@ interface State {
 }
 
 /** This means that InlineDialog is only loaded if necessary */
+// @ts-ignore
 const InlineDialog = Loadable({
-  loader: () =>
-    import('@atlaskit/inline-dialog').then(module => module.default),
+  loader: () => import('@atlaskit/inline-dialog'),
   loading: () => null,
 });
 
@@ -70,6 +70,8 @@ class InlineEditUncontrolled extends React.Component<
     preventFocusOnEditButton: false,
   };
 
+  private confirmationTimeoutId: number | undefined;
+
   componentDidUpdate(prevProps: InlineEditUncontrolledProps) {
     /**
      * This logic puts the focus on the edit button after confirming using
@@ -83,6 +85,10 @@ class InlineEditUncontrolled extends React.Component<
         this.editButtonRef.focus();
       }
     }
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.confirmationTimeoutId);
   }
 
   onCancelClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -123,7 +129,9 @@ class InlineEditUncontrolled extends React.Component<
        * This ensures that clicking on one of the action buttons will call
        * onWrapperFocus before confirmIfUnfocused is called
        */
-      setTimeout(() => this.confirmIfUnfocused(isInvalid, onSubmit, formRef));
+      this.confirmationTimeoutId = window.setTimeout(() =>
+        this.confirmIfUnfocused(isInvalid, onSubmit, formRef),
+      );
     }
   };
 

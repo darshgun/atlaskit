@@ -89,7 +89,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     this.handleProviders(this.props);
   }
 
-  componentWillReceiveProps(nextProps: EditorProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: EditorProps) {
     this.handleProviders(nextProps);
   }
 
@@ -127,10 +127,9 @@ export default class Editor extends React.Component<EditorProps, {}> {
       allowPlaceholderCursor: {
         type: 'removed',
       },
-      allowInlineAction: {
-        type: 'removed',
-      },
       allowConfluenceInlineComment: {
+        message:
+          'To integrate inline comments use experimental annotationProvider – <Editor annotationProvider={{ provider }} />',
         type: 'removed',
       },
       addonToolbarComponents: {
@@ -390,6 +389,9 @@ export default class Editor extends React.Component<EditorProps, {}> {
                                     this.props.addonToolbarComponents
                                   }
                                   collabEdit={this.props.collabEdit}
+                                  allowAnnotation={
+                                    !!this.props.annotationProvider
+                                  }
                                 />
                               </BaseTheme>
                             )}

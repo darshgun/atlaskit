@@ -36,7 +36,7 @@ import { linkStyles } from '../../plugins/hyperlink/styles';
 import { extensionStyles } from '../../plugins/extension/ui/styles';
 
 const ContentStyles: ComponentClass<
-  HTMLAttributes<{}> & { theme: any }
+  HTMLAttributes<{}> & { theme: any; allowAnnotation?: boolean }
 > = styled.div`
   /* Hack for ie11 that is being used in code block.
    * https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
@@ -78,6 +78,7 @@ const ContentStyles: ComponentClass<
     max-width: calc(100% - 20px);
     vertical-align: top;
     word-break: break-all;
+    user-select: none;
   }
 
   .inlineCardView-content-wrap .card {
@@ -87,6 +88,7 @@ const ContentStyles: ComponentClass<
 
   .blockCardView-content-wrap {
     display: inline-block;
+    user-select: none;
   }
 
   /* fix cursor alignment */
@@ -144,6 +146,13 @@ const ContentStyles: ComponentClass<
   }
 
   /** Needed to override any cleared floats, e.g. image wrapping */
+
+  span.fabric-editor-annotation {
+    /* Y200 with 40% opacity */
+    background-color: ${({ allowAnnotation }: any) =>
+      allowAnnotation ? 'rgba(255, 196, 0, 0.4)' : 'transparent'};
+  }
+
   div.fabric-editor-block-mark[class^='fabric-editor-align'] {
     clear: none !important;
   }

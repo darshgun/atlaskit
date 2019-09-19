@@ -9,6 +9,10 @@ export {
   ExtensionContent,
   NoMark,
   MarksObject,
+  InlineFormattedText,
+  InlineLinkText,
+  InlineAtomic,
+  InlineCode,
 } from './doc';
 export { blockquote, BlockQuoteDefinition } from './blockquote';
 export {
@@ -21,16 +25,32 @@ export {
   toJSON as codeBlockToJSON,
   CodeBlockDefinition,
   CodeBlockAttrs,
+  CodeBlockBaseDefinition,
+  CodeBlockWithMarksDefinition,
 } from './code-block';
 export { hardBreak, HardBreakDefinition } from './hard-break';
-export { heading, HeadingDefinition } from './heading';
+export {
+  heading,
+  HeadingDefinition,
+  HeadingBaseDefinition,
+  HeadingWithAlignmentDefinition,
+  HeadingWithIndentationDefinition,
+  HeadingWithMarksDefinition,
+} from './heading';
 export { rule, RuleDefinition } from './rule';
 export {
   orderedList,
   OrderedListDefinition,
   orderedListSelector,
 } from './ordered-list';
-export { paragraph, ParagraphDefinition } from './paragraph';
+export {
+  paragraph,
+  ParagraphDefinition,
+  ParagraphBaseDefinition,
+  ParagraphWithAlignmentDefinition,
+  ParagraphWithIndentationDefinition,
+  ParagraphWithMarksDefinition,
+} from './paragraph';
 export { emoji, EmojiAttributes, EmojiDefinition } from './emoji';
 export { image } from './image';
 export {
@@ -73,7 +93,7 @@ export {
   toJSONTableHeader,
   tableRow,
   tableBackgroundColorPalette,
-  tableBackgroundBorderColors,
+  tableBackgroundBorderColor,
   tableBackgroundColorNames,
   CellAttributes,
   Layout as TableLayout,
@@ -88,12 +108,6 @@ export {
   tableCellContentWrapperSelector,
   tableCellContentDomSelector,
 } from './tableNodes';
-export {
-  applicationCard,
-  ApplicationCardAttributes,
-  AppCardAction,
-  ApplicationCardDefinition,
-} from './applicationCard';
 export {
   decisionList,
   DecisionListDefinition,

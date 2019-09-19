@@ -145,6 +145,7 @@ export interface Props {
       ) => void);
   appPermission: JiraApplicationPermission | undefined;
   features: JiraFeatures;
+  isJiraPeopleProfilesEnabled?: boolean;
 }
 
 const SCOPES = [Scope.JiraIssue, Scope.JiraBoardProjectFilter];
@@ -307,6 +308,7 @@ export class JiraQuickSearchContainer extends React.Component<
       onAdvancedSearch = () => {},
       appPermission,
       features,
+      isJiraPeopleProfilesEnabled,
     } = this.props;
 
     return (
@@ -343,6 +345,7 @@ export class JiraQuickSearchContainer extends React.Component<
                     isLoading,
                   )
                 }
+                isJiraPeopleProfilesEnabled={isJiraPeopleProfilesEnabled}
               />
             </NoResultsAdvancedSearchContainer>
           </>
@@ -363,6 +366,7 @@ export class JiraQuickSearchContainer extends React.Component<
                   isLoading,
                 )
               }
+              isJiraPeopleProfilesEnabled={isJiraPeopleProfilesEnabled}
             />
           </StickyFooter>
         )}
@@ -405,6 +409,7 @@ export class JiraQuickSearchContainer extends React.Component<
                 isLoading,
               )
             }
+            isJiraPeopleProfilesEnabled={isJiraPeopleProfilesEnabled}
           />
         )}
       />
@@ -616,10 +621,12 @@ export class JiraQuickSearchContainer extends React.Component<
       logger,
       features,
       referralContextIdentifiers,
+      isJiraPeopleProfilesEnabled,
     } = this.props;
     const { selectedResultId } = this.state;
 
     return (
+      // @ts-ignore
       <BaseJiraQuickSearchContainerJira
         placeholder={this.props.intl.formatMessage(
           messages.jira_search_placeholder,
@@ -634,7 +641,6 @@ export class JiraQuickSearchContainer extends React.Component<
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
-        // @ts-ignore this prop should not be accessed by consumers
         createAnalyticsEvent={createAnalyticsEvent}
         logger={logger}
         selectedResultId={selectedResultId}
@@ -645,6 +651,7 @@ export class JiraQuickSearchContainer extends React.Component<
         product="jira"
         features={features}
         advancedSearchId={ADVANCED_JIRA_SEARCH_RESULT_ID}
+        isJiraPeopleProfilesEnabled={isJiraPeopleProfilesEnabled}
       />
     );
   }

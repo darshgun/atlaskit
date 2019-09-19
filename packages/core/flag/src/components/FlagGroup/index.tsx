@@ -1,7 +1,7 @@
 import React, { Children, cloneElement, Component } from 'react';
 import { Transition } from 'react-transition-group';
 import Portal from '@atlaskit/portal';
-import { layers } from '@atlaskit/theme';
+import { layers } from '@atlaskit/theme/constants';
 
 import Wrapper, { flagAnimationTime } from '../../styled/Wrapper';
 import Group, { SROnly, Inner } from './styledFlagGroup';
@@ -17,6 +17,12 @@ type Props = {
 };
 
 export default class FlagGroup extends Component<Props, {}> {
+  private animationTimeoutId: number | undefined;
+
+  componentWillUnmount() {
+    window.clearTimeout(this.animationTimeoutId);
+  }
+
   renderChildren = () => {
     const { children, onDismissed } = this.props;
 
@@ -34,7 +40,10 @@ export default class FlagGroup extends Component<Props, {}> {
               return;
             }
             node.addEventListener('animationstart', (...args) => {
-              setTimeout(() => done(...args), flagAnimationTime);
+              this.animationTimeoutId = window.setTimeout(
+                () => done(...args),
+                flagAnimationTime,
+              );
             });
             node.addEventListener('animationend', done);
           }}

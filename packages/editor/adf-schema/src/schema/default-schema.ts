@@ -3,7 +3,6 @@ import { Schema } from 'prosemirror-model';
 
 export const defaultSchema: Schema = createSchema({
   nodes: [
-    'applicationCard',
     'doc',
     'paragraph',
     'text',
@@ -48,7 +47,6 @@ export const defaultSchema: Schema = createSchema({
     'unsupportedInline',
   ],
   marks: [
-    'action',
     'link',
     'em',
     'strong',
@@ -56,8 +54,6 @@ export const defaultSchema: Schema = createSchema({
     'subsup',
     'underline',
     'code',
-    'mentionQuery',
-    'emojiQuery',
     'textColor',
     'confluenceInlineComment',
     'breakout',

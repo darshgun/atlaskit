@@ -3,13 +3,6 @@ const path = require('path');
 
 const parseChangesetCommit = require('@atlaskit/build-releases/changeset/parseChangesetCommit');
 
-// Parses lines that are in the form 'HASH message goes here'
-const parseCommitLine = line => {
-  // ignore first result, it is the whole pattern match
-  const [_, hash, message] = line.match(/([^ ]+) (.+)/);
-  return { commit: hash, message };
-};
-
 async function getCommitsSince(ref) {
   const gitCmd = await spawn('git', [
     'rev-list',
@@ -35,7 +28,6 @@ async function getChangedChangesetFilesSinceMaster(fullPath = false) {
   let ref = await getMasterRef();
   // First we need to find the commit where we diverged from `ref` at using `git merge-base`
   let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
-  const divergedAt = cmd.stdout.trim();
   // Now we can find which files we added
   cmd = await spawn('git', [
     'diff',

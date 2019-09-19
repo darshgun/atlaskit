@@ -20,6 +20,8 @@ export interface HistoryItem {
 export interface Props {
   // Id of the article to display. This prop is optional, if is not defined the default content will be displayed
   articleId?: string;
+  // Setter for the articleId. This prop is optional, if is not defined, the back button will not be visible
+  articleIdSetter?(id: string): void;
   // Function used to get an article content. This prop is optional, if is not defined the default content will be displayed
   onGetArticle?(id: string): Promise<Article>;
   // Function used to search an article.  This prop is optional, if is not defined search input will be hidden
@@ -46,10 +48,15 @@ export interface Props {
   ): void;
   // Default content. This prop is optional
   defaultContent?: React.ReactNode;
+  // Footer content. This prop is optional
+  footer?: React.ReactNode;
+  // Wrapped content
+  children?: React.ReactNode;
 }
 
 export interface State {
   view: VIEW;
+  footer?: React.ReactNode;
   defaultContent?: React.ReactNode;
   // Article
   articleId: string;
@@ -64,11 +71,14 @@ export interface State {
 export interface HelpContextInterface {
   help: {
     view: VIEW;
+    isBackbuttonVisible(): boolean;
     isDefaultContent(): boolean;
+    isFooter(): boolean;
     isSearchVisible(): boolean;
     loadArticle(id?: string): void;
     isArticleVisible(): boolean;
     getCurrentArticle(): HistoryItem | undefined;
+    articleIdSetter?(id: string): void;
     onButtonCloseClick?(
       event?: React.MouseEvent<HTMLElement, MouseEvent>,
       analyticsEvent?: UIAnalyticsEvent,
@@ -82,6 +92,7 @@ export interface HelpContextInterface {
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
     history: HistoryItem[]; // holds all the articles ID the user has navigated
+    footer?: React.ReactNode;
     defaultContent?: React.ReactNode;
     navigateBack(): void;
     onWasHelpfulSubmit?(
@@ -98,6 +109,7 @@ export interface HelpContextInterface {
 
 const defaultValues = {
   view: VIEW.DEFAULT_CONTENT,
+  footer: undefined,
   defaultContent: undefined,
   // Article
   articleId: '',
@@ -127,6 +139,7 @@ class HelpContextProviderImplementation extends React.Component<
     this.state = initialiseHelpData({
       ...defaultValues,
       articleId: this.props.articleId ? this.props.articleId : '',
+      footer: this.props.footer,
       defaultContent: this.props.defaultContent,
     });
   }
@@ -150,9 +163,14 @@ class HelpContextProviderImplementation extends React.Component<
       });
     }
 
+    const lastArticleId =
+      this.state.history.length > 0
+        ? this.state.history[this.state.history.length - 1].id
+        : '';
     if (
       this.state.articleId !== prevState.articleId &&
-      this.state.view !== VIEW.ARTICLE_NAVIGATION
+      this.state.view !== VIEW.ARTICLE_NAVIGATION &&
+      this.state.articleId !== lastArticleId
     ) {
       this.loadArticle();
     }
@@ -198,7 +216,16 @@ class HelpContextProviderImplementation extends React.Component<
     // If articleId isn't empty, try lo load the article with ID = articleId
     // otherwise display the default content
     if (articleId) {
-      this.setState({ view: VIEW.ARTICLE });
+      if (this.state.hasNavigatedToDefaultContent) {
+        await this.setState({
+          hasNavigatedToDefaultContent: false,
+          history: [],
+        });
+      }
+
+      await this.setState({
+        view: VIEW.ARTICLE,
+      });
       this.getArticle(articleId);
     } else {
       this.setState({
@@ -298,25 +325,40 @@ class HelpContextProviderImplementation extends React.Component<
 
   navigateBack = async () => {
     const { history } = this.state;
+    const { articleIdSetter } = this.props;
 
-    // If the history isn't empty, navigate back through the history
-    if (history.length > 1) {
-      await this.setState(prevState => {
-        const newHistory = [...prevState.history.slice(0, -1)];
-        return {
-          articleId: newHistory[newHistory.length - 1].id,
-          history: newHistory,
+    if (articleIdSetter) {
+      // If the history isn't empty, navigate back through the history
+      if (history.length > 1) {
+        await this.setState(prevState => {
+          const newHistory = [...prevState.history.slice(0, -1)];
+          articleIdSetter(`${newHistory[newHistory.length - 1].id}`);
+          return {
+            // articleId: newHistory[newHistory.length - 1].id,
+            history: newHistory,
+            view: VIEW.ARTICLE_NAVIGATION,
+          };
+        });
+      } else if (history.length === 1) {
+        articleIdSetter('');
+        await this.setState({
+          // articleId: '',
           view: VIEW.ARTICLE_NAVIGATION,
-        };
-      });
-    } else if (history.length === 1) {
-      await this.setState({
-        articleId: '',
-        history: [],
-        view: VIEW.ARTICLE_NAVIGATION,
-        hasNavigatedToDefaultContent: true,
-      });
+          hasNavigatedToDefaultContent: true,
+        });
+      }
     }
+  };
+
+  isBackbuttonVisible = (): boolean => {
+    if (
+      (this.state.history.length === 1 && !this.isDefaultContent()) ||
+      !this.props.articleIdSetter
+    ) {
+      return false;
+    }
+
+    return this.isArticleVisible();
   };
 
   isSearchVisible = (): boolean => {
@@ -335,9 +377,13 @@ class HelpContextProviderImplementation extends React.Component<
     return (
       (this.state.view === VIEW.ARTICLE ||
         this.state.view === VIEW.ARTICLE_NAVIGATION) &&
-      this.state.history.length > 0 &&
+      !this.state.hasNavigatedToDefaultContent &&
       this.state.searchValue.length <= MIN_CHARACTERS_FOR_SEARCH
     );
+  };
+
+  isFooter = (): boolean => {
+    return this.state.footer !== undefined;
   };
 
   isDefaultContent = (): boolean => {
@@ -359,6 +405,8 @@ class HelpContextProviderImplementation extends React.Component<
           help: {
             ...restState,
             loadArticle: this.loadArticle,
+            isBackbuttonVisible: this.isBackbuttonVisible,
+            isFooter: this.isFooter,
             isDefaultContent: this.isDefaultContent,
             isSearchVisible: this.isSearchVisible,
             isArticleVisible: this.isArticleVisible,
@@ -369,6 +417,7 @@ class HelpContextProviderImplementation extends React.Component<
             onWasHelpfulSubmit: this.props.onWasHelpfulSubmit,
             onWasHelpfulYesButtonClick: this.props.onWasHelpfulYesButtonClick,
             onWasHelpfulNoButtonClick: this.props.onWasHelpfulNoButtonClick,
+            footer: this.props.footer,
             defaultContent: this.props.defaultContent,
             articleId: this.state.articleId,
           },

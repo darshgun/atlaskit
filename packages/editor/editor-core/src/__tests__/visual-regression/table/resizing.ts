@@ -1,4 +1,10 @@
-import { snapshot, initFullPageEditorWithAdf, Device } from '../_utils';
+import { waitForTooltip } from '@atlaskit/visual-regression/helper';
+import {
+  snapshot,
+  initFullPageEditorWithAdf,
+  initEditorWithAdf,
+  Appearance,
+} from '../_utils';
 import adf from '../common/__fixtures__/noData-adf.json';
 import {
   deleteColumn,
@@ -9,16 +15,23 @@ import {
   toggleBreakout,
   scrollTable,
   unselectTable,
+  tableSelectors,
 } from '../../__helpers/page-objects/_table';
 import { animationFrame } from '../../__helpers/page-objects/_editor';
-
-describe('Snapshot Test: table resizing', () => {
+import { Page } from '../../__helpers/page-objects/_types';
+import { TableCssClassName as ClassName } from '../../../plugins/table/types';
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: table resizing', () => {
   describe('Re-sizing', () => {
-    let page: any;
-    beforeEach(async () => {
+    let page: Page;
+
+    beforeAll(() => {
       // @ts-ignore
       page = global.page;
-      await initFullPageEditorWithAdf(page, adf, Device.LaptopHiDPI);
+    });
+
+    beforeEach(async () => {
+      await initFullPageEditorWithAdf(page, adf);
       await insertTable(page);
     });
 
@@ -35,7 +48,8 @@ describe('Snapshot Test: table resizing', () => {
 
     it(`snaps back to layout width after column removal`, async () => {
       await deleteColumn(page, 1);
-      await animationFrame(page);
+      // after deleting the middle column the cursor will land exactly on an insert col btn
+      await waitForTooltip(page);
       await snapshot(page);
     });
 
@@ -80,15 +94,31 @@ describe('Snapshot Test: table resizing', () => {
         });
       });
     });
+
+    it('should preserve the selection after resizing', async () => {
+      await clickFirstCell(page);
+
+      const controlSelector = `.${
+        ClassName.COLUMN_CONTROLS_DECORATIONS
+      }[data-start-index="0"]`;
+
+      await page.waitForSelector(controlSelector);
+      await page.click(controlSelector);
+      await page.waitForSelector(tableSelectors.selectedCell);
+      await resizeColumn(page, { colIdx: 1, amount: -100, row: 2 });
+      await animationFrame(page);
+      await animationFrame(page);
+      await snapshot(page);
+    });
   });
 });
 
 describe('Snapshot Test: table resize handle', () => {
-  let page: any;
+  let page: Page;
   beforeEach(async () => {
     // @ts-ignore
     page = global.page;
-    await initFullPageEditorWithAdf(page, adf, Device.LaptopMDPI);
+    await initFullPageEditorWithAdf(page, adf);
     await insertTable(page);
   });
 
@@ -101,12 +131,17 @@ describe('Snapshot Test: table resize handle', () => {
 });
 
 describe('Snapshot Test: table scale', () => {
-  let page: any;
+  let page: Page;
   beforeEach(async () => {
     // @ts-ignore
     page = global.page;
-    await initFullPageEditorWithAdf(page, adf, Device.LaptopHiDPI, undefined, {
-      allowDynamicTextSizing: true,
+    await initEditorWithAdf(page, {
+      appearance: Appearance.fullPage,
+      adf,
+      viewport: { width: 1280, height: 500 },
+      editorProps: {
+        allowDynamicTextSizing: true,
+      },
     });
     await insertTable(page);
     await clickFirstCell(page);

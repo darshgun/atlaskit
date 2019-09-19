@@ -4,9 +4,9 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
 import {
-  ProviderFactory,
   ImageLoaderProps,
   withImageLoader,
+  ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 
 import {
@@ -25,7 +25,6 @@ import {
 } from '../pm-plugins/main';
 
 import { ProsemirrorGetPosHandler, ReactNodeProps } from '../../../nodeviews';
-import { EditorAppearance } from '../../../types';
 
 // This is being used by DropPlaceholder now
 export const MEDIA_HEIGHT = 125;
@@ -37,14 +36,14 @@ export interface MediaNodeProps extends ReactNodeProps, ImageLoaderProps {
   view: EditorView;
   node: PMNode;
   getPos: ProsemirrorGetPosHandler;
-  providerFactory?: ProviderFactory;
+  contextIdentifierProvider?: ContextIdentifierProvider;
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
   onClick?: CardOnClickCallback;
   onExternalImageLoaded?: (
     dimensions: { width: number; height: number },
   ) => void;
-  editorAppearance: EditorAppearance;
+  allowLazyLoading?: boolean;
   mediaProvider?: Promise<MediaProvider>;
   viewMediaClientConfig?: MediaClientConfig;
   uploadComplete?: boolean;
@@ -67,7 +66,9 @@ class MediaNode extends Component<MediaNodeProps> {
       this.props.node.attrs.id !== nextProps.node.attrs.id ||
       this.props.node.attrs.collection !== nextProps.node.attrs.collection ||
       this.props.cardDimensions.height !== nextProps.cardDimensions.height ||
-      this.props.cardDimensions.width !== nextProps.cardDimensions.width
+      this.props.cardDimensions.width !== nextProps.cardDimensions.width ||
+      this.props.contextIdentifierProvider !==
+        nextProps.contextIdentifierProvider
     ) {
       return true;
     }
@@ -97,13 +98,13 @@ class MediaNode extends Component<MediaNodeProps> {
       selected,
       cardDimensions,
       onClick,
-      editorAppearance,
+      allowLazyLoading,
       viewMediaClientConfig,
       uploadComplete,
+      contextIdentifierProvider,
     } = this.props;
 
     const { id, type, collection, url } = node.attrs;
-    const isMobile = editorAppearance === 'mobile';
 
     if (
       type !== 'external' &&
@@ -125,6 +126,8 @@ class MediaNode extends Component<MediaNodeProps> {
             mediaItemType: 'file',
             collectionName: collection!,
           };
+    const contextId =
+      contextIdentifierProvider && contextIdentifierProvider.objectId;
 
     return (
       <Card
@@ -139,8 +142,9 @@ class MediaNode extends Component<MediaNodeProps> {
         selected={selected}
         disableOverlay={true}
         onClick={onClick}
-        useInlinePlayer={!isMobile}
-        isLazy={!isMobile}
+        useInlinePlayer={allowLazyLoading}
+        isLazy={allowLazyLoading}
+        contextId={contextId}
       />
     );
   }

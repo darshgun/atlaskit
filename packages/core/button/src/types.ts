@@ -78,11 +78,14 @@ export type OnlyButtonProps = {
   ) => ThemeTokens;
 
   children?: React.ReactNode;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 };
 
-export type ButtonProps = HtmlAttributes &
-  OnlyButtonProps &
-  WithAnalyticsEventsProps;
+export interface ButtonProps
+  extends HtmlAttributes,
+    OnlyButtonProps,
+    WithAnalyticsEventsProps {}
 
 export type Spacing = 'compact' | 'default' | 'none';
 

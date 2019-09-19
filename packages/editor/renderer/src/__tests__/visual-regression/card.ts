@@ -1,11 +1,11 @@
 import { Page } from 'puppeteer';
-import { snapshot, initRendererWithADF, Device } from './_utils';
+import { snapshot, initRendererWithADF } from './_utils';
 import * as cardXSSADF from '../__fixtures__/card-xss.adf.json';
 
 const initRenderer = async (page: Page, adf: any) => {
   await initRendererWithADF(page, {
     appearance: 'full-page',
-    device: Device.LaptopMDPI,
+    viewport: { width: 500, height: 200 },
     adf,
   });
 };
@@ -21,7 +21,8 @@ describe('Snapshot Test: Cards', () => {
     await snapshot(page);
   });
 
-  it('should render unknown content for cards with invalid urls', async () => {
+  // TODO: https://product-fabric.atlassian.net/browse/ED-7721
+  it.skip('should render unknown content for cards with invalid urls', async () => {
     await initRenderer(page, cardXSSADF);
   });
 });

@@ -335,7 +335,7 @@ export const insertMenuItem = async (browser: any, title: string) => {
 };
 
 export const currentSelectedEmoji = '.emoji-typeahead-selected';
-export const typeahead = '.ak-emoji-typeahead-list';
+export const typeahead = 'span[data-type-ahead-query]';
 
 export const insertEmoji = async (browser: any, query: string) => {
   await browser.type(editable, ':');
@@ -408,6 +408,13 @@ export const setProseMirrorTextSelection = async (
     pos.anchor,
     pos.head || pos.anchor,
   );
+};
+
+export const getProseMirrorPos = async (page: any): Promise<number> => {
+  return await page.browser.execute(() => {
+    var view = (window as any).__editorView;
+    return view.state.selection.from;
+  });
 };
 
 export const resizeColumn = async (page: any, resizeOptions: ResizeOptions) => {

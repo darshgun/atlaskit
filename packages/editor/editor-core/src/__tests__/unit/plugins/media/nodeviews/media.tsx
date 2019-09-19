@@ -39,10 +39,8 @@ describe('nodeviews/media', () => {
         node={mediaNode()(defaultSchema)}
         getPos={getPos}
         view={view}
-        providerFactory={providerFactory}
         cardDimensions={cardDimensions}
         selected={false}
-        editorAppearance="full-page"
       />,
     );
 

@@ -4,6 +4,7 @@ import { FormattedMessage as FormattedMessageNamespace } from 'react-intl';
 import DiscoverFilledGlyph from '@atlaskit/icon/glyph/discover-filled';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import SettingsGlyph from '@atlaskit/icon/glyph/settings';
+import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 
 import {
   BitbucketIcon,
@@ -14,6 +15,7 @@ import {
   JiraCoreIcon,
   OpsGenieIcon,
   StatuspageIcon,
+  TrelloIcon,
 } from '@atlaskit/logo';
 import FormattedMessage from '../primitives/formatted-message';
 import {
@@ -25,6 +27,7 @@ import {
   WorklensProductType,
   ProductKey,
   RecommendationsEngineResponse,
+  Product,
   ProductTopItemVariation,
 } from '../types';
 import messages from './messages';
@@ -117,18 +120,22 @@ export const getObjectTypeLabel = (type: string): React.ReactNode => {
   );
 };
 
-export const getFixedProductLinks = (
-  isDiscoverMoreForEveryoneEnabled: boolean,
-): SwitcherItemType[] => {
-  const fixedLinks = [
-    {
+export const getFixedProductLinks = (params: {
+  canShowPeopleLink: boolean;
+  isDiscoverMoreForEveryoneEnabled: boolean;
+}): SwitcherItemType[] => {
+  const fixedLinks = [];
+
+  if (params.canShowPeopleLink) {
+    fixedLinks.push({
       key: 'people',
       label: <FormattedMessage {...messages.people} />,
       Icon: createIcon(PeopleLogo, { size: 'small' }),
       href: `/people`,
-    },
-  ];
-  if (isDiscoverMoreForEveryoneEnabled) {
+    });
+  }
+
+  if (params.isDiscoverMoreForEveryoneEnabled) {
     // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
     fixedLinks.push({
       key: 'discover-more',
@@ -182,7 +189,12 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
   [WorklensProductType.STATUSPAGE]: {
     label: 'Statuspage',
     Icon: createIcon(StatuspageIcon, { size: 'small' }),
-    href: '#',
+    href: 'https://statuspage.io',
+  },
+  [WorklensProductType.TRELLO]: {
+    label: 'Trello',
+    Icon: createIcon(TrelloIcon, { size: 'small' }),
+    href: 'https://trello.com',
   },
 };
 
@@ -194,9 +206,17 @@ const PRODUCT_ORDER = [
   WorklensProductType.OPSGENIE,
   WorklensProductType.BITBUCKET,
   WorklensProductType.STATUSPAGE,
+  WorklensProductType.TRELLO,
 ];
 
+const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
+  [Product.JIRA]: '/plugins/servlet/ac/com.atlassian.jira.emcee/discover',
+  [Product.CONFLUENCE]:
+    '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
+};
+
 interface ConnectedSite {
+  avatar: string | null;
   product: AvailableProduct;
   isCurrentSite: boolean;
   siteName: string;
@@ -208,7 +228,9 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
 
   if (
     product.productType === WorklensProductType.OPSGENIE ||
-    product.productType === WorklensProductType.BITBUCKET
+    product.productType === WorklensProductType.BITBUCKET ||
+    product.productType === WorklensProductType.STATUSPAGE ||
+    product.productType === WorklensProductType.TRELLO
   ) {
     return product.url;
   }
@@ -245,6 +267,7 @@ const getAvailableProductLinkFromSiteProduct = (
             .map(site => ({
               href: getProductSiteUrl(site),
               label: site.siteName,
+              avatar: site.avatar,
             }))
             .sort((a, b) => a.label.localeCompare(b.label))
         : [],
@@ -259,7 +282,7 @@ export const getAvailableProductLinks = (
   const productsMap: { [key: string]: ConnectedSite[] } = {};
 
   availableProducts.sites.forEach(site => {
-    const { availableProducts, displayName, url } = site;
+    const { availableProducts, avatar, displayName, url } = site;
     availableProducts.forEach(product => {
       const { productType } = product;
 
@@ -272,6 +295,7 @@ export const getAvailableProductLinks = (
         isCurrentSite: Boolean(cloudId) && site.cloudId === cloudId,
         siteName: displayName,
         siteUrl: url,
+        avatar,
       });
     });
   });
@@ -346,6 +370,8 @@ export const getLicensedProductLinks = (
 export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product,
 ): SwitcherItemType[] => {
   const adminBaseUrl = isAdmin ? `/admin` : '/trusted-admin';
   const adminLinks = [
@@ -356,6 +382,15 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
+  const emceeLink = product && BROWSE_APPS_URL[product];
+  if (isEmceeLinkEnabled && emceeLink) {
+    adminLinks.unshift({
+      key: 'browse-apps',
+      label: <FormattedMessage {...messages.browseApps} />,
+      Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
+      href: emceeLink,
+    });
+  }
   if (!isDiscoverMoreForEveryoneEnabled) {
     adminLinks.unshift({
       key: 'discover-applications',

@@ -11,11 +11,12 @@ import {
   akEditorSmallZIndex,
   akEditorTableNumberColumnWidth,
   akEditorTableBorder,
-  tableCellPadding,
   tableCellBorderWidth,
+  tableResizeHandleWidth
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
 import { TableCssClassName as ClassName } from '../types';
+import { tableBackgroundBorderColor } from '@atlaskit/adf-schema';
 
 const {
   N40A,
@@ -30,11 +31,12 @@ const {
   R75,
   N20A,
   N60A,
-  N30,
   N90,
   N200,
   N0,
   R500,
+  Y50,
+  Y200,
 } = colors;
 
 export const tableToolbarColor = N20;
@@ -321,9 +323,9 @@ const columnControlsDecoration = `
     display: none;
     cursor: pointer;
     position: absolute;
-    width: calc(100% + ${(tableCellPadding + tableCellBorderWidth) * 2}px);
-    left: -${tableCellPadding + tableCellBorderWidth}px;
-    top: -${columnControlsDecorationHeight + tableCellPadding + tableCellBorderWidth}px;
+    width: calc(100% + ${tableCellBorderWidth * 2}px);
+    left: -1px;
+    top: -${columnControlsDecorationHeight + tableCellBorderWidth}px;
     height: ${columnControlsDecorationHeight}px;
 
     &::after {
@@ -342,12 +344,26 @@ const columnControlsDecoration = `
     }
   }
 
+
+  .${ClassName.TABLE_CONTAINER} {
+    td, th {
+      overflow: hidden;
+    }
+
+    &.${ClassName.WITH_CONTROLS} tr:first-child {
+      td, th {
+        overflow: visible;
+      }
+    }
+  }
+
+
   .${ClassName.WITH_CONTROLS} .${ClassName.COLUMN_CONTROLS_DECORATIONS} {
     display: block;
   }
 
-  table tr:first-child td.${ClassName.TABLE_CELL_NODE_WRAPPER},
-  table tr:first-child th.${ClassName.TABLE_HEADER_NODE_WRAPPER} {
+  table tr:first-child td.${ClassName.TABLE_CELL},
+  table tr:first-child th.${ClassName.TABLE_HEADER_CELL} {
     &.${ClassName.COLUMN_SELECTED},
     &.${ClassName.HOVERED_COLUMN},
     &.${ClassName.HOVERED_TABLE} {
@@ -364,10 +380,35 @@ const columnControlsDecoration = `
     }
   }
 
-  .${ClassName.TABLE_SELECTED} table tr:first-child td.${ClassName.TABLE_CELL_NODE_WRAPPER},
-  .${ClassName.TABLE_SELECTED} table tr:first-child th.${ClassName.TABLE_HEADER_NODE_WRAPPER} {
+  .${ClassName.TABLE_SELECTED} table tr:first-child td.${ClassName.TABLE_CELL},
+  .${ClassName.TABLE_SELECTED} table tr:first-child th.${ClassName.TABLE_HEADER_CELL} {
     .${ClassName.COLUMN_CONTROLS_DECORATIONS}::after {
       ${columnHeaderButtonSelected};
+    }
+  }
+
+  table .${ClassName.RESIZE_HANDLE} {
+    position: absolute;
+    top: ${columnControlsDecorationHeight - tableToolbarSize}px;
+    right: -${tableResizeHandleWidth/2 + 2}px;
+    width: ${tableResizeHandleWidth * 2}px;
+    cursor: col-resize;
+    z-index: ${1000};
+
+    :after {
+      background: ${tableBorderSelectedColor};
+      display: none;
+      content: '';
+      height: 100%;
+      width: 2px;
+      position: absolute;
+      left: 50%;
+    }
+
+    :hover {
+      :after {
+        display: block;
+      }
     }
   }
 `;
@@ -378,7 +419,6 @@ const hoveredDeleteButton = `
     .${ClassName.COLUMN_SELECTED},
     .${ClassName.HOVERED_CELL} {
       border: 1px solid ${tableBorderDeleteColor};
-      background: ${tableCellDeleteColor};
     }
     .${ClassName.SELECTED_CELL}::after {
       background: ${tableCellDeleteColor};
@@ -391,6 +431,15 @@ const hoveredCell = `
     .${ClassName.HOVERED_CELL} {
       position: relative;
       border: 1px solid ${tableBorderSelectedColor};
+    }
+  }
+`
+
+const hoveredWarningCell = `
+  :not(.${ClassName.IS_RESIZING}) .${ClassName.TABLE_CONTAINER}:not(.${ClassName.HOVERED_DELETE_BUTTON}) {
+    td.${ClassName.HOVERED_CELL_WARNING} {
+      background-color: ${Y50} !important; // We need to override the background-color added to the cell
+      border: 1px solid ${Y200};
     }
   }
 `
@@ -414,6 +463,7 @@ export const tableStyles = css`
     ${columnControlsLineMarker};
     ${hoveredDeleteButton};
     ${hoveredCell};
+    ${hoveredWarningCell};
 
     .${ClassName.CONTROLS_FLOATING_BUTTON_COLUMN} {
       ${insertColumnButtonWrapper}
@@ -643,21 +693,17 @@ export const tableStyles = css`
       overflow: hidden visible;
       table-layout: fixed;
 
-      .${ClassName.CELL_NODEVIEW_WRAPPER},
-      .${ClassName.TABLE_CELL_NODEVIEW_CONTENT_DOM} {
-        position: relative;
-      }
-
       .${ClassName.COLUMN_CONTROLS_DECORATIONS} + * {
         margin-top: 0;
       }
 
-      .${ClassName.SELECTED_CELL} {
+      .${ClassName.SELECTED_CELL},
+      .${ClassName.HOVERED_CELL_IN_DANGER} {
         position: relative;
-        border: 1px solid ${tableBorderSelectedColor};
       }
       /* Give selected cells a blue overlay */
-      .${ClassName.SELECTED_CELL}::after {
+      .${ClassName.SELECTED_CELL}::after,
+      .${ClassName.HOVERED_CELL_IN_DANGER}::after {
         z-index: ${akEditorSmallZIndex};
         position: absolute;
         content: '';
@@ -665,9 +711,17 @@ export const tableStyles = css`
         right: 0;
         top: 0;
         bottom: 0;
-        background: ${tableCellSelectedColor};
         opacity: 0.3;
         pointer-events: none;
+      }
+      .${ClassName.SELECTED_CELL} {
+        border: 1px solid ${tableBorderSelectedColor};
+      }
+      .${ClassName.SELECTED_CELL}::after {
+        background: ${tableCellSelectedColor};
+      }
+      th.${ClassName.HOVERED_CELL_IN_DANGER}::after, td.${ClassName.HOVERED_CELL_IN_DANGER}::after {
+        background: ${tableCellDeleteColor};
       }
     }
     .${ClassName.ROW_CONTROLS_WRAPPER} {
@@ -692,15 +746,6 @@ export const tableStyles = css`
       overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
     }
-    /* =============== TABLE COLUMN RESIZING ================== */
-    .${ClassName.COLUMN_RESIZE_HANDLE} {
-      position: absolute;
-      top: 0;
-      width: 2px;
-      pointer-events: none;
-      background-color: ${tableBorderSelectedColor};
-      z-index: ${columnResizeHandleZIndex};
-    }
   }
 
   .ProseMirror.${ClassName.IS_RESIZING} {
@@ -712,30 +757,6 @@ export const tableStyles = css`
 
   .ProseMirror.${ClassName.RESIZE_CURSOR} {
     cursor: col-resize;
-  }
-
-
-  .ProseMirror.${ClassName.RESIZING_PLUGIN} {
-    .${ClassName.CELL_NODEVIEW_WRAPPER}:before,
-    .${ClassName.CELL_NODEVIEW_WRAPPER}:after {
-      content: '';
-      display: block;
-      width: ${tableCellPadding}px;
-      height: calc(100% + ${tableCellPadding * 2}px);
-      cursor: col-resize;
-      position: absolute;
-      top: -${tableCellPadding}px;
-    }
-    .${ClassName.CELL_NODEVIEW_WRAPPER}:before{
-      left: -${tableCellPadding + 1}px;
-    }
-    .${ClassName.CELL_NODEVIEW_WRAPPER}:after{
-      right: -${tableCellPadding + 1}px;
-    }
-    td:first-child .${ClassName.CELL_NODEVIEW_WRAPPER}:before,
-    th:first-child .${ClassName.CELL_NODEVIEW_WRAPPER}:before {
-      width: 0;
-    }
   }
 
 `;
@@ -777,6 +798,9 @@ export const tableCommentEditorStyles = css`
   }
 `;
 
+const colorsButtonPerLine = 7;
+const colorsButtonRows = 3;
+const colorButtonSizeWithPadding = 32;
 export const tablePopupStyles = css`
   .${ClassName.CONTEXTUAL_SUBMENU} {
     border-radius: ${borderRadius()}px;
@@ -784,11 +808,11 @@ export const tablePopupStyles = css`
     box-shadow: 0 4px 8px -2px ${N60A}, 0 0 1px ${N60A};
     display: block;
     position: absolute;
-    width: 130px;
-    height: 64px;
+    width: ${colorButtonSizeWithPadding * colorsButtonPerLine}px;
+    height: ${colorButtonSizeWithPadding * colorsButtonRows}px;
     top: 0;
     left: ${contextualMenuDropdownWidth}px;
-    padding: 5px;
+    padding: 8px;
 
     > div {
       padding: 0;
@@ -796,7 +820,7 @@ export const tablePopupStyles = css`
   }
 
   .${ClassName.CONTEXTUAL_MENU_ICON} {
-    border: 1px solid ${N30};
+    border: 1px solid ${tableBackgroundBorderColor};
     border-radius: ${borderRadius()}px;
     display: block;
     width: 20px;

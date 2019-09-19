@@ -6,9 +6,6 @@ export {
 } from './clear-marks-on-change-to-empty-document';
 export { default as codeBlockPlugin } from './code-block';
 export { default as collabEditPlugin, CollabEditProvider } from './collab-edit';
-export {
-  default as confluenceInlineComment,
-} from './confluence-inline-comment';
 export { default as datePlugin } from './date';
 export { default as emojiPlugin } from './emoji';
 export { default as extensionPlugin } from './extension';
@@ -40,7 +37,6 @@ export { default as typeAheadPlugin } from './type-ahead';
 export { default as unsupportedContentPlugin } from './unsupported-content';
 export { default as widthPlugin } from './width';
 export { default as gapCursorPlugin } from './gap-cursor';
-export { default as inlineActionPlugin } from './inline-action';
 export { default as cardPlugin } from './card';
 export { default as floatingToolbarPlugin } from './floating-toolbar';
 export { default as statusPlugin } from './status';

@@ -1,5 +1,147 @@
 # @atlaskit/global-search
 
+## 12.1.1
+
+### Patch Changes
+
+- [patch][9447579b2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9447579b2e):
+
+  Fixed withFeedbackButton warning message
+
+## 12.1.0
+
+### Minor Changes
+
+- [minor][7289e02eaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7289e02eaa):
+
+  Adds a new boolean parameter to show the new people profile url
+
+## 12.0.3
+
+### Patch Changes
+
+- [patch][14e5462b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14e5462b37):
+
+  remove use of deprecated field text area component
+
+## 12.0.2
+
+### Patch Changes
+
+- [patch][6aa50ae773](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6aa50ae773):
+
+  remove use of deprecated FieldBase component in quick search
+
+## 12.0.1
+
+- Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
+  - @atlaskit/feedback-collector@4.0.14
+  - @atlaskit/navigation-next@6.6.3
+  - @atlaskit/global-navigation@8.0.0
+
+## 12.0.0
+
+### Major Changes
+
+- [major][d20d909c2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d20d909c2e):
+
+  required user id so that the recents api is not called for anonymous users
+
+## 11.4.4
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/drawer@5.0.10
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/global-navigation@7.7.1
+  - @atlaskit/item@10.1.5
+  - @atlaskit/modal-dialog@10.2.1
+  - @atlaskit/navigation-next@6.6.2
+  - @atlaskit/quick-search@7.7.1
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 11.4.3
+
+- Updated dependencies [6410edd029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6410edd029):
+  - @atlaskit/badge@13.0.0
+  - @atlaskit/global-navigation@7.6.5
+  - @atlaskit/navigation-next@6.6.1
+
+## 11.4.2
+
+### Patch Changes
+
+- [patch][a05133283c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a05133283c):
+
+  Add missing dependency in package.json
+
+## 11.4.1
+
+### Patch Changes
+
+- [patch][4638a2e06a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4638a2e06a):
+
+  Fixed QuickSearchContainer so it doesn't end up with a new session id on update if not a child of SearchSessionProvider
+
+## 11.4.0
+
+### Minor Changes
+
+- [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
+
+  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+
+  More information about the deprecation of lifecycles methods can be found here:
+  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+
+## 11.3.4
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 11.3.3
+
+### Patch Changes
+
+- [patch][0d7d459f1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7d459f1a):
+
+  Fixes type errors which were incompatible with TS 3.6
+
+## 11.3.2
+
+### Patch Changes
+
+- [patch][c0a65fcf70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0a65fcf70):
+
+  Create spaceballs experiment
+
+## 11.3.1
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 11.3.0
+
+### Minor Changes
+
+- [minor][2ebd907504](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ebd907504):
+
+  Simple experiment with faster search is now default behaviour and can no longer be toggled
+
+## 11.2.5
+
+### Patch Changes
+
+- [patch][abee1a5f4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abee1a5f4f):
+
+  Bumping internal dependency (memoize-one) to latest version (5.1.0). memoize-one@5.1.0 has full typescript support so it is recommended that typescript consumers use it also.
+
 ## 11.2.4
 
 ### Patch Changes

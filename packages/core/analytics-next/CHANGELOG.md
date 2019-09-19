@@ -1,5 +1,48 @@
 # @atlaskit/analytics-next
 
+## 6.3.0
+
+### Minor Changes
+
+- [minor][2252a7a999](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2252a7a999):
+
+  Bug fix for using the hook with nested contexts, performance improvements, new `useAnalyticsEventsCallback` hook to provide a performance enhanced-abstraction for firing events with a callback.
+
+## 6.2.0
+
+### Minor Changes
+
+- [minor][42fd897e16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42fd897e16):
+
+  - Introduces a new custom React hook, `useAnalyticsEvents_experimental`, for creating analytics events within functional components. This hook replaces the need for the `withAnalyticsEvents` HOC. See the [Reference documentation](https://atlaskit.atlassian.com/packages/core/analytics-next/docs/reference) for details on how to use this new hook.
+
+## 6.1.0
+
+### Minor Changes
+
+- [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
+
+  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+
+  More information about the deprecation of lifecycles methods can be found here:
+  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+
+## 6.0.3
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 6.0.2
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
 ## 6.0.1
 
 ### Patch Changes

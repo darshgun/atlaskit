@@ -3,6 +3,7 @@ export default {
     'compositionPlugin',
     'inlineCursorTargetPlugin',
     'focusHandlerPlugin',
+    'frozenEditor',
     'submitEditor',
     'customAutoformatting',
     'newlinePreserveMarksPlugin',
@@ -134,17 +135,14 @@ export default {
   marks: [
     // Inline marks
     'link',
-    'confluenceInlineComment',
     'em',
     'strong',
     'textColor',
     'strike',
-    'action',
     'subsup',
     'underline',
     'code',
     'typeAheadQuery',
-    'emojiQuery',
 
     // Block marks
     'alignment',

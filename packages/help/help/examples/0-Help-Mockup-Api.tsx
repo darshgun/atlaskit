@@ -4,7 +4,12 @@ import Page from '@atlaskit/page';
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 import { getArticle, searchArticle } from './utils/mockData';
-import { ExampleWrapper, HelpWrapper } from './utils/styled';
+import {
+  ExampleWrapper,
+  HelpWrapper,
+  FooterContent,
+  ExampleDefaultContent,
+} from './utils/styled';
 
 import Help, { ArticleFeedback } from '../src';
 
@@ -18,16 +23,27 @@ export default class extends React.Component {
     searchText: 'test',
   };
 
+  private helpTimeoutId: number | undefined;
+  private getArticleTimeoutId: number | undefined;
+  private searchArticleTimeoutId: number | undefined;
+
+  componentWillUnmount() {
+    window.clearTimeout(this.helpTimeoutId);
+    window.clearTimeout(this.getArticleTimeoutId);
+    window.clearTimeout(this.searchArticleTimeoutId);
+  }
+
   onWasHelpfulSubmit = (
     articleFeedback: ArticleFeedback,
     analyticsEvent: UIAnalyticsEvent,
   ): Promise<boolean> => {
-    return new Promise(resolve =>
-      setTimeout(() => {
-        analyticsEvent.fire('help');
-        console.log(articleFeedback);
-        resolve(true);
-      }, 1000),
+    return new Promise(
+      resolve =>
+        (this.helpTimeoutId = window.setTimeout(() => {
+          analyticsEvent.fire('help');
+          console.log(articleFeedback);
+          resolve(true);
+        }, 1000)),
     );
   };
 
@@ -36,14 +52,22 @@ export default class extends React.Component {
   };
 
   onGetArticle = (articleId: string): Promise<any> => {
-    return new Promise(resolve =>
-      setTimeout(() => resolve(getArticle(articleId)), 100),
+    return new Promise(
+      resolve =>
+        (this.getArticleTimeoutId = window.setTimeout(
+          () => resolve(getArticle(articleId)),
+          100,
+        )),
     );
   };
 
   onSearch = (value: string): Promise<any> => {
-    return new Promise(resolve =>
-      setTimeout(() => resolve(searchArticle(value)), 1000),
+    return new Promise(
+      resolve =>
+        (this.searchArticleTimeoutId = window.setTimeout(
+          () => resolve(searchArticle(value)),
+          1000,
+        )),
     );
   };
 
@@ -58,8 +82,15 @@ export default class extends React.Component {
                   onWasHelpfulSubmit={this.onWasHelpfulSubmit}
                   articleId="00"
                   onGetArticle={this.onGetArticle}
+                  footer={
+                    <FooterContent>
+                      <span>Footer</span>
+                    </FooterContent>
+                  }
                 >
-                  <span>Default content</span>
+                  <ExampleDefaultContent>
+                    <span>Default content</span>
+                  </ExampleDefaultContent>
                 </Help>
               </LocaleIntlProvider>
             </AnalyticsListener>

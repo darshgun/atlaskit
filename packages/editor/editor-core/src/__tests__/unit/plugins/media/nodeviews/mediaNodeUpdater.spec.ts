@@ -1,29 +1,36 @@
-jest.mock('@atlaskit/media-client');
-
 import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
-import { getMediaClient } from '@atlaskit/media-client';
+import * as MediaClientModule from '@atlaskit/media-client';
+import { getMediaClient, FileState } from '@atlaskit/media-client';
 import {
   getDefaultMediaClientConfig,
   asMockReturnValue,
   fakeMediaClient,
+  asMock,
 } from '@atlaskit/media-test-helpers';
 import { MediaClientConfig } from '@atlaskit/media-core';
 import * as commands from '../../../../../plugins/media/commands';
-import { MediaNodeUpdater } from '../../../../../plugins/media/nodeviews/mediaNodeUpdater';
-import { EventDispatcher } from '../../../../../event-dispatcher';
 import {
-  MediaPluginState,
-  MediaProvider,
-} from '../../../../../plugins/media/pm-plugins/main';
+  MediaNodeUpdater,
+  MediaNodeUpdaterProps,
+} from '../../../../../plugins/media/nodeviews/mediaNodeUpdater';
+import * as mediaCommon from '../../../../../plugins/media/utils/media-common';
+import { MediaProvider } from '../../../../../plugins/media/pm-plugins/main';
 
 describe('MediaNodeUpdater', () => {
-  const setup = () => {
-    jest.resetAllMocks();
-    jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => {});
+  afterEach(() => jest.resetAllMocks());
 
+  const setup = (props?: Partial<MediaNodeUpdaterProps>) => {
     const mediaClient = fakeMediaClient();
-    asMockReturnValue(getMediaClient, mediaClient);
+    jest
+      .spyOn(MediaClientModule, 'getMediaClient')
+      .mockReturnValue(mediaClient);
+    jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => {});
+    jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => {});
+    jest
+      .spyOn(mediaCommon, 'getViewMediaClientConfigFromMediaProvider')
+      .mockReturnValue(getDefaultMediaClientConfig());
+
     const contextIdentifierProvider: Promise<
       ContextIdentifierProvider
     > = Promise.resolve({
@@ -48,27 +55,20 @@ describe('MediaNodeUpdater', () => {
       },
     });
     const node: any = {
-      firstChild: {
-        attrs: {
-          id: 'source-file-id',
-          collection: 'source-collection',
-          __contextId: 'source-context-id',
-        },
-      } as any,
+      attrs: {
+        id: 'source-file-id',
+        collection: 'source-collection',
+        __contextId: 'source-context-id',
+        type: 'file',
+      },
     };
     const mediaNodeUpdater = new MediaNodeUpdater({
-      contextIdentifierProvider,
-      editorAppearance: 'full-page',
-      eventDispatcher: new EventDispatcher(),
-      getPos: () => 1,
-      lineLength: 1,
-      mediaOptions: {},
-      mediaPluginState: {} as MediaPluginState,
-      node,
-      selected() {},
       view: {} as EditorView,
-      width: 1,
+      node,
+      contextIdentifierProvider,
       mediaProvider,
+      isMediaSingle: true,
+      ...props,
     });
 
     return {
@@ -90,7 +90,91 @@ describe('MediaNodeUpdater', () => {
         'source-file-id',
         {
           __contextId: 'object-id',
-          contextId: 'object-id',
+        },
+        true,
+      );
+    });
+  });
+
+  describe('updateFileAttrs()', () => {
+    it('should update node attrs with file attributes', async () => {
+      const { mediaNodeUpdater } = setup();
+
+      const mediaClient = fakeMediaClient();
+
+      const fileState: Partial<FileState> = {
+        size: 10,
+        name: 'some-file',
+        mimeType: 'image/jpeg',
+      };
+
+      asMock(mediaClient.file.getCurrentState).mockReturnValue(
+        Promise.resolve(fileState),
+      );
+
+      asMockReturnValue(getMediaClient, mediaClient);
+
+      await mediaNodeUpdater.updateFileAttrs();
+
+      expect(mediaClient.file.getCurrentState).toBeCalledWith(
+        'source-file-id',
+        {
+          collectionName: 'source-collection',
+        },
+      );
+      expect(commands.updateMediaNodeAttrs).toBeCalledTimes(1);
+      expect(commands.updateMediaNodeAttrs).toBeCalledWith(
+        'source-file-id',
+        {
+          __fileName: 'some-file',
+          __fileMimeType: 'image/jpeg',
+          __fileSize: 10,
+          __contextId: 'source-context-id',
+        },
+        true,
+      );
+    });
+
+    it('should update contextId if its not defined', async () => {
+      const node: any = {
+        attrs: {
+          id: 'source-file-id',
+          collection: 'source-collection',
+          type: 'file',
+        },
+      };
+      const { mediaNodeUpdater } = setup({
+        node,
+      });
+      const mediaClient = fakeMediaClient();
+      const fileState: Partial<FileState> = {
+        size: 10,
+        name: 'some-file',
+        mimeType: 'image/jpeg',
+      };
+
+      asMock(mediaClient.file.getCurrentState).mockReturnValue(
+        Promise.resolve(fileState),
+      );
+
+      asMockReturnValue(getMediaClient, mediaClient);
+
+      await mediaNodeUpdater.updateFileAttrs();
+
+      expect(mediaClient.file.getCurrentState).toBeCalledWith(
+        'source-file-id',
+        {
+          collectionName: 'source-collection',
+        },
+      );
+      expect(commands.updateMediaNodeAttrs).toBeCalledTimes(1);
+      expect(commands.updateMediaNodeAttrs).toBeCalledWith(
+        'source-file-id',
+        {
+          __fileName: 'some-file',
+          __fileMimeType: 'image/jpeg',
+          __fileSize: 10,
+          __contextId: 'object-id',
         },
         true,
       );
@@ -144,7 +228,7 @@ describe('MediaNodeUpdater', () => {
     });
 
     it('should update media node attrs with the new id', async () => {
-      const { mediaNodeUpdater } = setup();
+      const { mediaNodeUpdater } = setup({ isMediaSingle: false });
 
       await mediaNodeUpdater.copyNode();
 
@@ -155,8 +239,36 @@ describe('MediaNodeUpdater', () => {
           id: 'copied-file-id',
           collection: 'destination-collection',
         },
-        true,
+        false,
       );
+    });
+  });
+
+  describe('copyNodeFromBlobUrl()', () => {
+    it('should use url params to copy file', async () => {
+      const externalNode: any = {
+        attrs: {
+          url:
+            'blob:http://localhost/blob_id#media-blob-url=true&id=file_id&collection=collection_name&contextId=context_id&width=10&height=20&mimeType=image%2Fjpeg&size=10&name=file_name',
+          type: 'external',
+        },
+      };
+      const { mediaNodeUpdater } = setup({
+        node: externalNode,
+      });
+
+      await mediaNodeUpdater.copyNodeFromBlobUrl(1);
+
+      expect(commands.replaceExternalMedia).toBeCalledTimes(1);
+      expect(commands.replaceExternalMedia).toBeCalledWith(2, {
+        id: 'copied-file-id',
+        collection: 'destination-collection',
+        width: 10,
+        height: 20,
+        __fileName: 'file_name',
+        __fileMimeType: 'image/jpeg',
+        __fileSize: 10,
+      });
     });
   });
 });

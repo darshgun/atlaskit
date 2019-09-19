@@ -17,6 +17,7 @@ type KeyboardKey =
   | 'Enter'
   | 'End'
   | 'Control'
+  | 'KeyZ'
   | 'Backspace';
 
 // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#keyboardpresskey-options

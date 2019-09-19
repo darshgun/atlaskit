@@ -1,27 +1,28 @@
 import styled from 'styled-components';
-
 import * as React from 'react';
+import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
-import Editor, { EditorProps, EditorAppearance } from './../src/editor';
-import EditorContext from './../src/ui/EditorContext';
-import WithEditorActions from './../src/ui/WithEditorActions';
 import {
   cardProvider,
+  customInsertMenuItems,
+  extensionHandlers,
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
   macroProvider,
   autoformattingProvider,
 } from '@atlaskit/editor-test-helpers';
-import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
-import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
-import { EmojiProvider } from '@atlaskit/emoji/resource';
-import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
 
+import { EmojiProvider } from '@atlaskit/emoji/resource';
 import {
-  customInsertMenuItems,
-  extensionHandlers,
-} from '@atlaskit/editor-test-helpers';
+  Provider as SmartCardProvider,
+  Client as SmartCardClient,
+} from '@atlaskit/smart-card';
+import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
+
+import Editor, { EditorProps, EditorAppearance } from './../src/editor';
+import EditorContext from './../src/ui/EditorContext';
+import WithEditorActions from './../src/ui/WithEditorActions';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
 import { TitleInput } from '../example-helpers/PageElements';
@@ -32,6 +33,7 @@ import {
   DEFAULT_MODE,
   LOCALSTORAGE_defaultMode,
 } from '../example-helpers/example-constants';
+import { ExampleInlineCommentComponent } from '@atlaskit/editor-test-helpers';
 
 /**
  * +-------------------------------+
@@ -45,7 +47,7 @@ import {
  */
 export const Wrapper: any = styled.div`
   box-sizing: border-box;
-  height: calc(100vh - 32px);
+  height: 100vh;
 `;
 Wrapper.displayName = 'Wrapper';
 
@@ -147,7 +149,7 @@ export interface ExampleProps {
   onTitleChange?: (title: string) => void;
 }
 
-class ExampleEditorComponent extends React.Component<
+export class ExampleEditorComponent extends React.Component<
   EditorProps & ExampleProps,
   State
 > {
@@ -178,7 +180,7 @@ class ExampleEditorComponent extends React.Component<
     return (
       <Wrapper>
         <Content>
-          <SmartCardProvider>
+          <SmartCardProvider client={new SmartCardClient('prod')}>
             <Editor
               analyticsHandler={analyticsHandler}
               allowAnalyticsGASV3={true}
@@ -188,6 +190,7 @@ class ExampleEditorComponent extends React.Component<
               allowTextColor={true}
               allowTables={{
                 advanced: true,
+                allowColumnSorting: true,
               }}
               allowBreakout={true}
               allowJiraIssue={true}
@@ -209,6 +212,9 @@ class ExampleEditorComponent extends React.Component<
               UNSAFE_cards={{
                 provider: Promise.resolve(cardProvider),
               }}
+              annotationProvider={{
+                component: ExampleInlineCommentComponent,
+              }}
               allowStatus={true}
               {...providers}
               media={{
@@ -217,6 +223,7 @@ class ExampleEditorComponent extends React.Component<
                 allowResizing: true,
                 allowAnnotation: true,
                 allowLinking: true,
+                allowResizingInTables: true,
               }}
               allowHelpDialog
               placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule."

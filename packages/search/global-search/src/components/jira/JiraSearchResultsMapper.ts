@@ -78,7 +78,7 @@ export const mapRecentResultsToUIGroups = (
       key: 'issues',
       title: messages.jira_recent_issues_heading,
       totalSize: objectsToDisplay.length,
-      showTotalSize: features.searchExtensionsEnabled,
+      showTotalSize: false, // Jira doesn't support search extensions yet
     },
     {
       items: containersToDisplay,
@@ -122,7 +122,7 @@ export const mapSearchResultsToUIGroups = (
       items: objectsToDisplay,
       key: 'issues',
       title: messages.jira_search_result_issues_heading,
-      showTotalSize: features.searchExtensionsEnabled,
+      showTotalSize: false, // Jira doesn't support search extensions yet
       totalSize: objectsToDisplay.length,
     },
     ...(!hasNoResults(objectsToDisplay, peopleToDisplay, containersToDisplay)
@@ -133,7 +133,10 @@ export const mapSearchResultsToUIGroups = (
                 resultType: ResultType.JiraIssueAdvancedSearch,
                 resultId: 'search-jira',
                 name: 'jira',
-                href: getJiraAdvancedSearchUrl(JiraEntityTypes.Issues, query),
+                href: getJiraAdvancedSearchUrl({
+                  entityType: JiraEntityTypes.Issues,
+                  query,
+                }),
                 analyticsType: AnalyticsType.LinkPostQueryAdvancedSearchJira,
                 contentType: ContentType.JiraIssue,
               },

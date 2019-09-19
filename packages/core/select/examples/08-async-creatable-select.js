@@ -22,6 +22,12 @@ export default class AsyncCreatableExample extends Component<*, State> {
     options: cities,
   };
 
+  loadTimeoutId = undefined;
+
+  componentWillUnmount() {
+    clearTimeout(this.loadTimeoutId);
+  }
+
   handleCreateOption = (inputValue: string) => {
     console.log('handleCreateOption here');
     this.setState({
@@ -38,7 +44,7 @@ export default class AsyncCreatableExample extends Component<*, State> {
 
   // async load function using callback (promises also supported)
   loadOptions = (inputValue: string, callback: (?Array<*>) => void) => {
-    setTimeout(() => {
+    this.loadTimeoutId = setTimeout(() => {
       callback(this.filterOptions(inputValue));
     }, 1000);
   };

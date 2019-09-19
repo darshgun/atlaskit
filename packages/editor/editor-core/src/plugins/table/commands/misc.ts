@@ -5,6 +5,7 @@ import {
   selectionCell,
   TableMap,
   CellSelection,
+  splitCellWithType,
 } from 'prosemirror-tables';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import { Node as PMNode, Slice, Schema } from 'prosemirror-model';
@@ -42,7 +43,12 @@ import {
 import { fixAutoSizedTable } from '../transforms';
 import { INPUT_METHOD } from '../../analytics';
 import { insertRowWithAnalytics } from '../commands-with-analytics';
-import { TableCssClassName as ClassName, TableDecorations } from '../types';
+import {
+  TableCssClassName as ClassName,
+  TableDecorations,
+  TablePluginState,
+} from '../types';
+import { CellAttributes } from '@atlaskit/adf-schema';
 // #endregion
 
 // #region Constants
@@ -162,6 +168,25 @@ export const triggerUnlessTableHeader = (command: Command): Command => (
   return false;
 };
 
+export const transformSliceRemoveCellBackgroundColor = (
+  slice: Slice,
+  schema: Schema,
+): Slice => {
+  const { tableCell, tableHeader } = schema.nodes;
+  return mapSlice(slice, maybeCell => {
+    if (maybeCell.type === tableCell || maybeCell.type === tableHeader) {
+      const cellAttrs: CellAttributes = { ...maybeCell.attrs };
+      cellAttrs.background = undefined;
+      return maybeCell.type.createChecked(
+        cellAttrs,
+        maybeCell.content,
+        maybeCell.marks,
+      );
+    }
+    return maybeCell;
+  });
+};
+
 export const transformSliceToAddTableHeaders = (
   slice: Slice,
   schema: Schema,
@@ -191,6 +216,27 @@ export const transformSliceToAddTableHeaders = (
       }
     }
     return maybeTable;
+  });
+};
+
+export const transformSliceToRemoveColumnsWidths = (
+  slice: Slice,
+  schema: Schema,
+): Slice => {
+  const { tableHeader, tableCell } = schema.nodes;
+
+  return mapSlice(slice, maybeCell => {
+    if (maybeCell.type === tableCell || maybeCell.type === tableHeader) {
+      if (!maybeCell.attrs.colwidth) {
+        return maybeCell;
+      }
+      return maybeCell.type.createChecked(
+        { ...maybeCell.attrs, colwidth: undefined },
+        maybeCell.content,
+        maybeCell.marks,
+      );
+    }
+    return maybeCell;
   });
 };
 
@@ -446,3 +492,22 @@ export const addBoldInEmptyHeaderCells = (
   return false;
 };
 // #endregion
+
+/**
+ * We need to split cell keeping the right type of cell given current table configuration.
+ * We are using prosemirror-tables splitCellWithType that allows you to choose what cell type should be.
+ */
+export const splitCell: Command = (state, dispatch) => {
+  const tableState: TablePluginState = getPluginState(state);
+  const { tableHeader, tableCell } = state.schema.nodes;
+  return splitCellWithType(({ row, col }: { row: number; col: number }) => {
+    if (
+      (row === 0 && tableState.isHeaderRowEnabled) ||
+      (col === 0 && tableState.isHeaderColumnEnabled)
+    ) {
+      return tableHeader;
+    }
+
+    return tableCell;
+  })(state, dispatch);
+};
