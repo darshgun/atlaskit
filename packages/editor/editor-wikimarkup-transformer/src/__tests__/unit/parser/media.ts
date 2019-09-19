@@ -25,6 +25,22 @@ yep`,
       '[CS-216] should parse media filename with "(" and ")"',
       '!Screen Shot (9db1eca8-8257-4763-92fb-e6417f9e34c9).jpeg|thumbnail!',
     ],
+    [
+      '[CS-1404] should parse list of linked filenames as media group',
+      '[^a-doc (jadsjdasjadsjkdasjk).pdf][^not-empty (askjsajnkjknads).txt]',
+    ],
+    [
+      '[CS-1404] should parse list of linked filenames separated by one new line as one media group',
+      '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]',
+    ],
+    [
+      '[CS-1404] should parse list of linked filenames separated by multiple new lines as multiple media groups',
+      '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n\r\n[^not-empty (askjsajnkjknads).txt]',
+    ],
+    [
+      '[CS-1404] should parse a group of linked filenames separated by multiple new lines as multiple media groups each with multiple media-singles',
+      '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]\r\n\r\n[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]',
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

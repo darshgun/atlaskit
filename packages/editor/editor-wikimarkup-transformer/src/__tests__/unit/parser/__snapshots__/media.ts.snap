@@ -34,6 +34,238 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Images and attachments [CS-1404] should parse a group of linked filenames separated by multiple new lines as multiple media groups each with multiple media-singles 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "a-doc (jadsjdasjadsjkdasjk).pdf",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "not-empty (askjsajnkjknads).txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "a-doc (jadsjdasjadsjkdasjk).pdf",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "not-empty (askjsajnkjknads).txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Images and attachments [CS-1404] should parse list of linked filenames as media group 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "a-doc (jadsjdasjadsjkdasjk).pdf",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "not-empty (askjsajnkjknads).txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Images and attachments [CS-1404] should parse list of linked filenames separated by multiple new lines as multiple media groups 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "a-doc (jadsjdasjadsjkdasjk).pdf",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "not-empty (askjsajnkjknads).txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Images and attachments [CS-1404] should parse list of linked filenames separated by one new line as one media group 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "a-doc (jadsjdasjadsjkdasjk).pdf",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "not-empty (askjsajnkjknads).txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Images and attachments should find absolute URL images and convert it to external media item 1`] = `
 Object {
   "content": Array [
