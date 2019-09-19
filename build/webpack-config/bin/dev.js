@@ -138,7 +138,8 @@ async function runDevServer() {
 
     overlay: true,
     stats,
-    contentBase: './public',
+    // We should use public as content based.
+    contentBase: path.join(__dirname, '../../..', 'website/public'),
   });
 
   return new Promise((resolve, reject) => {
