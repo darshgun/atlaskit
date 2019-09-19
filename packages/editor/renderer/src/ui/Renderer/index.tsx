@@ -30,7 +30,7 @@ import { ACTION, ACTION_SUBJECT, EVENT_TYPE } from '../../analytics/enums';
 import { AnalyticsEventPayload, PLATFORM, MODE } from '../../analytics/events';
 import AnalyticsContext from '../../analytics/analyticsContext';
 import { CopyTextProvider } from '../../react/nodes/copy-text-provider';
-
+import { Provider as SmartCardStorageProvider } from '../SmartCardStorage';
 export interface Extension<T> {
   extensionKey: string;
   parameters?: T;
@@ -205,12 +205,14 @@ export class Renderer extends PureComponent<Props, {}> {
                   this.fireAnalyticsEvent(event),
               }}
             >
-              <RendererWrapper
-                appearance={appearance}
-                dynamicTextSizing={!!allowDynamicTextSizing}
-              >
-                {result}
-              </RendererWrapper>
+              <SmartCardStorageProvider>
+                <RendererWrapper
+                  appearance={appearance}
+                  dynamicTextSizing={!!allowDynamicTextSizing}
+                >
+                  {result}
+                </RendererWrapper>
+              </SmartCardStorageProvider>
             </AnalyticsContext.Provider>
           </IntlProvider>
         </CopyTextProvider>
