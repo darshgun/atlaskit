@@ -34,6 +34,14 @@ yep`,
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]',
     ],
     [
+      '[CS-1404] should parse list of linked filenames separated by any number of spaces as one media group',
+      '[^a-doc (jadsjdasjadsjkdasjk).pdf]   [^not-empty (askjsajnkjknads).txt]',
+    ],
+    [
+      '[CS-1404] should parse list of linked filenames separated by non-space character as separate media groups',
+      '[^a-doc (jadsjdasjadsjkdasjk).pdf]a[^not-empty (askjsajnkjknads).txt]',
+    ],
+    [
       '[CS-1404] should parse list of linked filenames separated by multiple new lines as multiple media groups',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n\r\n[^not-empty (askjsajnkjknads).txt]',
     ],
