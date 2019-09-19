@@ -10,9 +10,9 @@ import {
   DEFAULT_IMAGE_WIDTH,
   browser,
   ProviderFactory,
+  ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 import { CardEvent } from '@atlaskit/media-card';
-import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
 import { NodeSelection } from 'prosemirror-state';
 import { MediaClientConfig } from '@atlaskit/media-core';
 
@@ -32,11 +32,13 @@ import { MediaSingleNodeProps, MediaSingleNodeViewProps } from './types';
 import { MediaNodeUpdater } from './mediaNodeUpdater';
 import { getViewMediaClientConfigFromMediaProvider } from '../utils/media-common';
 import { DispatchAnalyticsEvent } from '../../analytics';
+import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
 
 export interface MediaSingleNodeState {
   width?: number;
   height?: number;
   viewMediaClientConfig?: MediaClientConfig;
+  contextIdentifierProvider?: ContextIdentifierProvider;
 }
 
 export default class MediaSingleNode extends Component<
@@ -47,7 +49,7 @@ export default class MediaSingleNode extends Component<
     mediaOptions: {},
   };
 
-  state = {
+  state: MediaSingleNodeState = {
     width: undefined,
     height: undefined,
     viewMediaClientConfig: undefined,
@@ -89,7 +91,6 @@ export default class MediaSingleNode extends Component<
 
     // we want the first child of MediaSingle (type "media")
     const node = this.props.node.firstChild;
-
     if (!node) {
       return;
     }
@@ -100,7 +101,10 @@ export default class MediaSingleNode extends Component<
     }
 
     if (node.attrs.type === 'external') {
-      await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+      if (mediaNodeUpdater.isMediaBlobUrl()) {
+        // we try to copy the image using the encoded metadata, otherwise we keep it as external
+        await mediaNodeUpdater.copyNodeFromBlobUrl(this.props.getPos());
+      }
       return;
     }
 
@@ -117,10 +121,16 @@ export default class MediaSingleNode extends Component<
   };
 
   async componentDidMount() {
+    const { contextIdentifierProvider } = this.props;
+
     await Promise.all([
       this.setViewMediaClientConfig(this.props),
       this.updateMediaNodeAttributes(this.props),
     ]);
+
+    this.setState({
+      contextIdentifierProvider: await contextIdentifierProvider,
+    });
   }
 
   private onExternalImageLoaded = ({
@@ -168,10 +178,11 @@ export default class MediaSingleNode extends Component<
       selected,
       getPos,
       node,
-      view: { state },
       mediaPluginOptions,
       fullWidthMode,
+      view: { state },
     } = this.props;
+    const { contextIdentifierProvider } = this.state;
 
     const { layout, width: mediaSingleWidth } = node.attrs;
     const childNode = node.firstChild!;
@@ -190,16 +201,6 @@ export default class MediaSingleNode extends Component<
       }
     }
 
-    let canResize = !!this.props.mediaOptions.allowResizing;
-
-    const pos = getPos();
-    if (pos) {
-      const $pos = state.doc.resolve(pos);
-      const { table } = state.schema.nodes;
-      const disabledNode = !!findParentNodeOfTypeClosestToPos($pos, [table]);
-      canResize = canResize && !disabledNode;
-    }
-
     if (width === null || height === null) {
       width = DEFAULT_IMAGE_WIDTH;
       height = DEFAULT_IMAGE_HEIGHT;
@@ -216,7 +217,6 @@ export default class MediaSingleNode extends Component<
       layout,
       width,
       height,
-
       containerWidth: this.props.width,
       lineLength: this.props.lineLength,
       pctWidth: mediaSingleWidth,
@@ -244,8 +244,22 @@ export default class MediaSingleNode extends Component<
         }
         uploadComplete={uploadComplete}
         url={childNode.attrs.url}
+        contextIdentifierProvider={contextIdentifierProvider}
       />
     );
+
+    let canResize = !!this.props.mediaOptions.allowResizing;
+
+    if (!this.props.mediaOptions.allowResizingInTables) {
+      // If resizing not allowed in tables, check parents for tables
+      const pos = getPos();
+      if (pos) {
+        const $pos = state.doc.resolve(pos);
+        const { table } = state.schema.nodes;
+        const disabledNode = !!findParentNodeOfTypeClosestToPos($pos, [table]);
+        canResize = canResize && !disabledNode;
+      }
+    }
 
     return canResize ? (
       <ResizableMediaSingle

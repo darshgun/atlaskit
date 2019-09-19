@@ -11,6 +11,7 @@ import AppNavigation from '@atlaskit/app-navigation/examples/10-authenticated-ex
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
+import { DummySkeletonContent } from './shared/components/DummySkeletonContent';
 import { LinkItem, ProjectSwitcher } from './shared/components';
 import { routes } from './shared/routes';
 import RootViews from './shared/views/root';
@@ -70,6 +71,7 @@ const HorizontalNavigationWithBanner = () => {
                   <Route key={path} component={component} path={path} />
                 ))}
               </Switch>
+              <DummySkeletonContent />
             </div>
           </LayoutManagerWithViewController>
         </Fragment>

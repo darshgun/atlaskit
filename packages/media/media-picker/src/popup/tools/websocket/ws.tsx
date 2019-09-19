@@ -1,10 +1,9 @@
 import * as url from 'url';
 import { Auth } from '@atlaskit/media-core';
-
+import { objectToQueryString } from '@atlaskit/media-client';
 import { randomInt } from '../randomInt';
 import { WsMessageData } from './wsMessageData';
 import { mapAuthToQueryParameters } from '../../domain/auth';
-import { objectToQueryString } from '../objectToQueryString';
 
 export type ConnectionLostHandler = () => void;
 export type WebsocketDataReceivedHandler = (data: WsMessageData) => void;

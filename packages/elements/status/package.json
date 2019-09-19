@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/status",
-  "version": "0.9.11",
+  "version": "0.9.13",
   "config": {
     "access": "public"
   },
   "description": "Fabric Status React Components",
   "main": "dist/cjs/index.js",
-  "modules": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/cjs/types.d.ts",
   "atlaskit:src": "src/index.ts",
   "repository": {
@@ -31,7 +31,7 @@
     "@atlaskit/field-text": "^9.0.11",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/lozenge": "^9.0.7",
-    "@atlaskit/theme": "^9.1.6",
+    "@atlaskit/theme": "^9.2.3",
     "styled-components": "^3.2.6"
   },
   "peerDependencies": {
@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/editor-test-helpers": "^9.11.11",
+    "@atlaskit/editor-test-helpers": "^10.0.0",
     "@atlaskit/elements-test-helpers": "^0.6.4",
     "@atlaskit/i18n-tools": "^0.5.2",
     "enzyme": "^3.7.0",

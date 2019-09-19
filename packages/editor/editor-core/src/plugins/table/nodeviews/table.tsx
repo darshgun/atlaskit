@@ -21,7 +21,7 @@ import { contentWidth } from '../pm-plugins/table-resizing/utils';
 import { handleBreakoutContent } from '../pm-plugins/table-resizing/commands';
 import { pluginConfig as getPluginConfig } from '../index';
 import { TableCssClassName as ClassName } from '../types';
-import { closestElement } from '../../../utils';
+import { closestElement, containsClassName } from '../../../utils';
 
 export type TableOptions = {
   dynamicTextSizing?: boolean;
@@ -215,7 +215,7 @@ export default class TableView extends ReactNodeView<Props> {
       // ED-7344: ignore mutations that happen inside anything other than DIV or SPAN elements
       if (
         ['DIV', 'SPAN'].indexOf(target.tagName) === -1 ||
-        target.classList.contains(ClassName.RESIZE_HANDLE)
+        containsClassName(target, ClassName.RESIZE_HANDLE)
       ) {
         return;
       }

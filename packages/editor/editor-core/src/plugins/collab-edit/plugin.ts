@@ -1,6 +1,7 @@
 import { Plugin, PluginKey, Transaction, Selection } from 'prosemirror-state';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import { Step, ReplaceStep } from 'prosemirror-transform';
+import { fixTablesKey } from 'prosemirror-tables';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import memoizeOne from 'memoize-one';
 
@@ -63,7 +64,7 @@ export const createPlugin = (
   sanitizePrivateContent?: boolean,
 ) => {
   let collabEditProvider: CollabEditProvider | null;
-
+  let messageTimeoutId: number = 0;
   return new Plugin({
     key: pluginKey,
     state: {
@@ -72,11 +73,13 @@ export const createPlugin = (
       },
       apply(tr, prevPluginState: PluginState, oldState, newState) {
         const pluginState = prevPluginState.apply(tr);
-
-        if (tr.getMeta('isRemote') !== true) {
-          if (collabEditProvider) {
-            collabEditProvider.send(tr, oldState, newState);
-          }
+        const pmTablesMeta = tr.getMeta(fixTablesKey);
+        if (
+          collabEditProvider &&
+          tr.getMeta('isRemote') !== true &&
+          !(pmTablesMeta && pmTablesMeta.fixTables)
+        ) {
+          collabEditProvider.send(tr, oldState, newState);
         }
 
         const { activeParticipants: prevActiveParticipants } = prevPluginState;
@@ -93,16 +96,23 @@ export const createPlugin = (
             (sessionId && participantsChanged)
           ) {
             const selection = getSendableSelection(newState.selection);
+
+            const message: TelepointerData = {
+              type: 'telepointer',
+              selection,
+              sessionId,
+            };
+            const sendMessage = collabEditProvider.sendMessage.bind(
+              collabEditProvider,
+            );
+
             // Delay sending selection till next tick so that participants info
-            // can go before it
-            window.setTimeout(
-              collabEditProvider.sendMessage.bind(collabEditProvider),
+            // can go before it.
+            clearTimeout(messageTimeoutId);
+            messageTimeoutId = window.setTimeout(
+              (data: TelepointerData) => sendMessage(data),
               0,
-              {
-                type: 'telepointer',
-                selection,
-                sessionId,
-              },
+              message,
             );
           }
         }
@@ -191,6 +201,9 @@ export const createPlugin = (
             unsubscribeAllEvents(collabEditProvider);
           }
           collabEditProvider = null;
+
+          // Prevent potential async updates once destroyed.
+          clearTimeout(messageTimeoutId);
         },
       };
     },

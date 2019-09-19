@@ -1,55 +1,40 @@
-import { tableResizeHandleWidth } from '@atlaskit/editor-common';
 import { TableCssClassName as ClassName } from '../types';
-import { closestElement } from '../../../utils';
+import { closestElement, containsClassName } from '../../../utils';
 import { tableToolbarSize } from '../ui/styles';
-import { ResizeState } from '../pm-plugins/table-resizing/utils';
 
 export const isCell = (node: HTMLElement): boolean => {
-  return node && ['TH', 'TD'].indexOf(node.tagName) > -1;
-};
-
-export const isCornerButton = (node: HTMLElement): boolean => {
-  const cl = node.classList;
-  return cl.contains(ClassName.CONTROLS_CORNER_BUTTON);
-};
-
-export const isInsertRowButton = (node: HTMLElement) => {
-  const cl = node.classList;
   return (
-    cl.contains(ClassName.CONTROLS_INSERT_ROW) ||
-    closestElement(node, `.${ClassName.CONTROLS_INSERT_ROW}`) ||
-    (cl.contains(ClassName.CONTROLS_BUTTON_OVERLAY) &&
-      closestElement(node, `.${ClassName.ROW_CONTROLS}`))
+    node &&
+    (['TH', 'TD'].indexOf(node.tagName) > -1 ||
+      !!closestElement(node, `.${ClassName.TABLE_HEADER_CELL}`) ||
+      !!closestElement(node, `.${ClassName.TABLE_CELL}`))
   );
 };
+
+export const isCornerButton = (node: HTMLElement): boolean =>
+  containsClassName(node, ClassName.CONTROLS_CORNER_BUTTON);
+
+export const isInsertRowButton = (node: HTMLElement) =>
+  containsClassName(node, ClassName.CONTROLS_INSERT_ROW) ||
+  closestElement(node, `.${ClassName.CONTROLS_INSERT_ROW}`) ||
+  (containsClassName(node, ClassName.CONTROLS_BUTTON_OVERLAY) &&
+    closestElement(node, `.${ClassName.ROW_CONTROLS}`));
 
 export const getColumnOrRowIndex = (target: HTMLElement): [number, number] => [
   parseInt(target.getAttribute('data-start-index') || '-1', 10),
   parseInt(target.getAttribute('data-end-index') || '-1', 10),
 ];
 
-export const isColumnControlsDecorations = (node: HTMLElement): boolean => {
-  const cl = node.classList;
-  return cl.contains(ClassName.COLUMN_CONTROLS_DECORATIONS);
-};
+export const isColumnControlsDecorations = (node: HTMLElement): boolean =>
+  containsClassName(node, ClassName.COLUMN_CONTROLS_DECORATIONS);
 
-export const isRowControlsButton = (node: HTMLElement): boolean => {
-  const cl = node.classList;
+export const isRowControlsButton = (node: HTMLElement): boolean =>
+  containsClassName(node, ClassName.ROW_CONTROLS_BUTTON) ||
+  containsClassName(node, ClassName.NUMBERED_COLUMN_BUTTON);
 
-  return (
-    cl.contains(ClassName.ROW_CONTROLS_BUTTON) ||
-    cl.contains(ClassName.NUMBERED_COLUMN_BUTTON)
-  );
-};
-
-export const isTableControlsButton = (node: HTMLElement): boolean => {
-  const cl = node.classList;
-
-  return (
-    cl.contains(ClassName.CONTROLS_BUTTON) ||
-    cl.contains(ClassName.ROW_CONTROLS_BUTTON_WRAP)
-  );
-};
+export const isTableControlsButton = (node: HTMLElement): boolean =>
+  containsClassName(node, ClassName.CONTROLS_BUTTON) ||
+  containsClassName(node, ClassName.ROW_CONTROLS_BUTTON_WRAP);
 
 export const getMousePositionHorizontalRelativeByElement = (
   mouseEvent: MouseEvent,
@@ -87,44 +72,20 @@ export const getMousePositionVerticalRelativeByElement = (
 
 export const updateResizeHandles = (
   tableRef: HTMLElement | null | undefined,
-  resizeState?: ResizeState,
-  index?: number,
 ) => {
   if (!tableRef) {
     return;
   }
   const height = tableRef.offsetHeight + tableToolbarSize;
   // see ED-7600
-  const nodes = Array.from(
-    tableRef.querySelectorAll(`.${ClassName.RESIZE_HANDLE}`),
-  ) as Array<HTMLElement>;
+  const nodes = Array.from(tableRef.querySelectorAll(
+    `.${ClassName.RESIZE_HANDLE}`,
+  ) as NodeListOf<HTMLElement>);
   if (!nodes || !nodes.length) {
     return;
   }
 
-  if (resizeState && typeof index === 'number' && nodes[index]) {
-    nodes.forEach((node, idx) => {
-      if (index !== idx) {
-        node.style.display = `none`;
-      }
-    });
-    const colSpanIndex = parseInt(
-      nodes[index].getAttribute('data-colspan-index') || '-1',
-      10,
-    );
-    const left =
-      colSpanIndex > 0
-        ? resizeState.cols
-            .slice(index - colSpanIndex, index + 1)
-            .reduce((acc, col) => acc + col.width, 0)
-        : resizeState.cols[index].width;
-    const offset = tableResizeHandleWidth / 2 + 4;
-    nodes[index].style.left = `${left - offset}px`;
-    nodes[index].style.height = `${height}px`;
-  } else {
-    nodes.forEach(node => {
-      node.style.height = `${height}px`;
-      node.style.display = `block`;
-    });
-  }
+  nodes.forEach(node => {
+    node.style.height = `${height}px`;
+  });
 };

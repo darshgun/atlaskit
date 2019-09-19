@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.17.2
+
+### Patch Changes
+
+- [patch][a171dec505](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a171dec505):
+
+  fix onWasHelpfulNoButtonClick prop
+
 ## 0.17.1
 
 - Updated dependencies [617591dd61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617591dd61):

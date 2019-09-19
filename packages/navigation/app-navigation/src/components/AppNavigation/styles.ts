@@ -14,7 +14,6 @@ export const containerCSS = ({ mode: { navigation } }: AppNavigationTheme) => ({
   paddingLeft: gridSize * 2,
   paddingRight: gridSize * 2,
   height: HORIZONTAL_GLOBAL_NAV_HEIGHT,
-  width: '100vw',
   ...navigation,
 });
 

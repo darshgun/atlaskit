@@ -1,7 +1,6 @@
-jest.mock('@atlaskit/media-client');
-
 import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
+import * as MediaClientModule from '@atlaskit/media-client';
 import { getMediaClient, FileState } from '@atlaskit/media-client';
 import {
   getDefaultMediaClientConfig,
@@ -19,15 +18,19 @@ import * as mediaCommon from '../../../../../plugins/media/utils/media-common';
 import { MediaProvider } from '../../../../../plugins/media/pm-plugins/main';
 
 describe('MediaNodeUpdater', () => {
+  afterEach(() => jest.resetAllMocks());
+
   const setup = (props?: Partial<MediaNodeUpdaterProps>) => {
-    jest.resetAllMocks();
+    const mediaClient = fakeMediaClient();
+    jest
+      .spyOn(MediaClientModule, 'getMediaClient')
+      .mockReturnValue(mediaClient);
     jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => {});
+    jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => {});
     jest
       .spyOn(mediaCommon, 'getViewMediaClientConfigFromMediaProvider')
       .mockReturnValue(getDefaultMediaClientConfig());
 
-    const mediaClient = fakeMediaClient();
-    asMockReturnValue(getMediaClient, mediaClient);
     const contextIdentifierProvider: Promise<
       ContextIdentifierProvider
     > = Promise.resolve({
@@ -56,6 +59,7 @@ describe('MediaNodeUpdater', () => {
         id: 'source-file-id',
         collection: 'source-collection',
         __contextId: 'source-context-id',
+        type: 'file',
       },
     };
     const mediaNodeUpdater = new MediaNodeUpdater({
@@ -86,7 +90,6 @@ describe('MediaNodeUpdater', () => {
         'source-file-id',
         {
           __contextId: 'object-id',
-          contextId: 'object-id',
         },
         true,
       );
@@ -126,6 +129,52 @@ describe('MediaNodeUpdater', () => {
           __fileName: 'some-file',
           __fileMimeType: 'image/jpeg',
           __fileSize: 10,
+          __contextId: 'source-context-id',
+        },
+        true,
+      );
+    });
+
+    it('should update contextId if its not defined', async () => {
+      const node: any = {
+        attrs: {
+          id: 'source-file-id',
+          collection: 'source-collection',
+          type: 'file',
+        },
+      };
+      const { mediaNodeUpdater } = setup({
+        node,
+      });
+      const mediaClient = fakeMediaClient();
+      const fileState: Partial<FileState> = {
+        size: 10,
+        name: 'some-file',
+        mimeType: 'image/jpeg',
+      };
+
+      asMock(mediaClient.file.getCurrentState).mockReturnValue(
+        Promise.resolve(fileState),
+      );
+
+      asMockReturnValue(getMediaClient, mediaClient);
+
+      await mediaNodeUpdater.updateFileAttrs();
+
+      expect(mediaClient.file.getCurrentState).toBeCalledWith(
+        'source-file-id',
+        {
+          collectionName: 'source-collection',
+        },
+      );
+      expect(commands.updateMediaNodeAttrs).toBeCalledTimes(1);
+      expect(commands.updateMediaNodeAttrs).toBeCalledWith(
+        'source-file-id',
+        {
+          __fileName: 'some-file',
+          __fileMimeType: 'image/jpeg',
+          __fileSize: 10,
+          __contextId: 'object-id',
         },
         true,
       );
@@ -192,6 +241,34 @@ describe('MediaNodeUpdater', () => {
         },
         false,
       );
+    });
+  });
+
+  describe('copyNodeFromBlobUrl()', () => {
+    it('should use url params to copy file', async () => {
+      const externalNode: any = {
+        attrs: {
+          url:
+            'blob:http://localhost/blob_id#media-blob-url=true&id=file_id&collection=collection_name&contextId=context_id&width=10&height=20&mimeType=image%2Fjpeg&size=10&name=file_name',
+          type: 'external',
+        },
+      };
+      const { mediaNodeUpdater } = setup({
+        node: externalNode,
+      });
+
+      await mediaNodeUpdater.copyNodeFromBlobUrl(1);
+
+      expect(commands.replaceExternalMedia).toBeCalledTimes(1);
+      expect(commands.replaceExternalMedia).toBeCalledWith(2, {
+        id: 'copied-file-id',
+        collection: 'destination-collection',
+        width: 10,
+        height: 20,
+        __fileName: 'file_name',
+        __fileMimeType: 'image/jpeg',
+        __fileSize: 10,
+      });
     });
   });
 });

@@ -4,10 +4,17 @@ import {
   tableSelectors,
 } from '../../__helpers/page-objects/_table';
 import { Page } from '../../__helpers/page-objects/_types';
-import { initFullPageEditorWithAdf, snapshot } from '../_utils';
+import {
+  initFullPageEditorWithAdf,
+  initCommentEditorWithAdf,
+  snapshot,
+  Device,
+} from '../_utils';
 import adf from './__fixtures__/table-with-merged-cells-on-first-column.adf.json';
+import defaultTableAdf from './__fixtures__/default-table.adf.json';
 
-describe('Snapshot Test: hover rows controlls', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: hover rows controlls', () => {
   let page: Page;
 
   beforeAll(async () => {
@@ -53,5 +60,21 @@ describe('Snapshot Test: hover rows controlls', () => {
         await snapshot(page);
       },
     );
+  });
+
+  describe('comment editor', () => {
+    it('should render insert button without cutting it off', async () => {
+      await initCommentEditorWithAdf(page, defaultTableAdf, Device.LaptopMDPI);
+      await clickFirstCell(page);
+      const bounds = await getBoundingRect(
+        page,
+        tableSelectors.nthRowControl(2),
+      );
+      const x = bounds.left;
+      const y = bounds.top + bounds.height - 5;
+
+      await page.mouse.move(x, y);
+      await snapshot(page);
+    });
   });
 });

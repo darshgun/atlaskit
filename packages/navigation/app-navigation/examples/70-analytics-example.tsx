@@ -2,7 +2,7 @@ import React from 'react';
 import {
   AnalyticsListener,
   AnalyticsContext,
-  useAnalyticsEvents_experimental,
+  useAnalyticsEvents,
 } from '@atlaskit/analytics-next';
 import { DefaultAppSwitcher } from './shared/AppSwitcher';
 import { DefaultCreate } from './shared/Create';
@@ -26,7 +26,7 @@ const NavigationButton = (props: PrimaryButtonProps) => {
 };
 
 const AnalyticsExample = () => {
-  const { createAnalyticsEvent } = useAnalyticsEvents_experimental();
+  const { createAnalyticsEvent } = useAnalyticsEvents();
   const AnalyticsEventGenerator = (target: string, element?: string) =>
     createAnalyticsEvent({
       action: `click ${target}`,

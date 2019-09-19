@@ -41,11 +41,7 @@ export default class FormExample extends Component<{}, { isChecked: boolean }> {
                   isRequired
                 >
                   {({ fieldProps }: { fieldProps: object }) => (
-                    <RadioGroup
-                      {...fieldProps}
-                      onChange={() => {}}
-                      options={colorItems}
-                    />
+                    <RadioGroup {...fieldProps} options={colorItems} />
                   )}
                 </Field>
                 <Field
@@ -54,11 +50,7 @@ export default class FormExample extends Component<{}, { isChecked: boolean }> {
                   defaultValue="peach"
                 >
                   {({ fieldProps }: { fieldProps: object }) => (
-                    <RadioGroup
-                      {...fieldProps}
-                      onChange={() => {}}
-                      options={fruitItems}
-                    />
+                    <RadioGroup {...fieldProps} options={fruitItems} />
                   )}
                 </Field>
                 <FormFooter>

@@ -35,8 +35,8 @@ import {
   scrollToBottom,
 } from '../../__helpers/page-objects/_editor';
 import { EditorTestCardProvider } from '../../../../../editor-test-helpers';
-
-describe('Lists', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Lists', () => {
   let page: Page;
   const cardProvider = new EditorTestCardProvider();
 

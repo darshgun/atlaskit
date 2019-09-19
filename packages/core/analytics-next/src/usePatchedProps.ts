@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { useAnalyticsEvents_experimental } from './useAnalyticsEvents';
+import { useAnalyticsEvents } from './useAnalyticsEvents';
 import { CreateEventMap, AnalyticsEventCreator } from './types';
 
 export type PatchedPropsHook = {
@@ -15,7 +15,7 @@ export function usePatchedProps<Props extends Record<string, any>>(
   createEventMap: CreateEventMap = {},
   wrappedComponentProps: Props,
 ): PatchedPropsHook {
-  const { createAnalyticsEvent } = useAnalyticsEvents_experimental();
+  const { createAnalyticsEvent } = useAnalyticsEvents();
 
   const mapCreateEventsToProps = (changedPropNames: string[], props: Props) =>
     changedPropNames.reduce((modified, propCallbackName) => {

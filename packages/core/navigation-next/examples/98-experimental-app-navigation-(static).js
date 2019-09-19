@@ -10,6 +10,7 @@ import AuthenticatedAppNavigationExample from '@atlaskit/app-navigation/examples
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
+import { DummySkeletonContent } from './shared/components/DummySkeletonContent';
 import { LinkItem, ProjectSwitcher } from './shared/components';
 import { routes } from './shared/routes';
 import ContainerViews from './shared/views/container';
@@ -42,6 +43,7 @@ const StaticHorizontalNavigationApp = () => (
               <Route key={path} component={component} path={path} />
             ))}
           </Switch>
+          <DummySkeletonContent />
         </div>
       </LayoutManagerWithViewController>
     </NavigationProvider>

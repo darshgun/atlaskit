@@ -149,7 +149,18 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
 
   describe('Analytics', () => {
     it('should fire analytics event on renderer started', () => {
+      jest.useFakeTimers();
+      jest
+        .spyOn(window, 'requestAnimationFrame')
+        .mockImplementation((fn: Function) => fn());
+
       const client = analyticsClient();
+      const oldHash = window.location.hash;
+      window.location.hash = '#test';
+      jest.spyOn(document, 'getElementById').mockImplementation(() => ({
+        scrollIntoView: jest.fn(),
+      }));
+
       mount(
         <FabricAnalyticsListeners client={client}>
           <Renderer document={validDoc} />
@@ -163,6 +174,24 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
           attributes: expect.objectContaining({ platform: 'web' }),
         }),
       );
+
+      jest.runAllTimers();
+
+      expect(client.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'viewed',
+          actionSubject: 'anchorLink',
+          attributes: expect.objectContaining({
+            platform: 'web',
+            mode: 'renderer',
+          }),
+        }),
+      );
+
+      window.location.hash = oldHash;
+      (document.getElementById as jest.Mock).mockRestore();
+      (window.requestAnimationFrame as jest.Mock).mockRestore();
+      jest.useRealTimers();
     });
 
     const appearances: {

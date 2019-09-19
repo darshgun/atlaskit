@@ -1,5 +1,13 @@
 # @atlaskit/navigation-next
 
+## 6.7.4
+
+### Patch Changes
+
+- [patch][f7eb0a4886](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7eb0a4886):
+
+  Ensuring new horizontal nav allows for scrollbar width. Using 'vw' units prevents this.
+
 ## 6.7.3
 
 - Updated dependencies [c5939cb73d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5939cb73d):

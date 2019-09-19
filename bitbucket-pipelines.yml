@@ -23,10 +23,10 @@ pipelines:
             # We push the bumped packages to master now as it's much better to fail whilst BB is
             # ahead of npm, than the other way round.
             - git push
-            # We run the copy:version script again, because the versions in our package.jsons may have changed
+            # We run the copy.version script again, because the versions in our package.jsons may have changed
             # after the bump. We've kept it running in both places, just to limit the scope of this change
             # so that we don't break anything that was working previously.
-            - yarn copy:version
+            - ./build/ci-scripts/copy.version.js
             # Because we distribute precompiled code for mobile, for version accuracy, it needs to be built after the bump.
             # Unfortunately, we can't rely on `run.if.package.changed.js` here because it runs against the last commit,
             # which contains our changeset bump rather than the actual changes.
@@ -53,7 +53,7 @@ pipelines:
               # Change into a glob pattern (removing brackets, spaces and quotes).
               - export CHANGED_PACKAGES_GLOB=$(echo "$CHANGED_PACKAGES" | sed 's/[][" ]//g')
               - node build/ci-scripts/branch-deploys/update.changed.packages.deps.to.cdn.js
-              # We add in the exta brances and a trailing comma in case we only have one package
+              # We add in the extra braces and a trailing comma in case we only have one package
               - bolt ws exec --only-fs="{$CHANGED_PACKAGES_GLOB,}" -- npm pack
               - mkdir -p dists/
               - node build/ci-scripts/branch-deploys/copy.built.tgzs.to.dists.dir.js
@@ -343,7 +343,13 @@ pipelines:
                 # don't worry about deploying, this build will always be run alongside a branch build
                 - yarn build
               after-script:
-                - yarn send:buildEvents
+                - yarn send:stepFailureEvents
+      - step:
+          name: Sending Build Events
+          script:
+            - echo 'Sending Build Events...'
+          after-script:
+            - yarn send:buildEvents
 
     # This will build all the packages and run bundle-analysis.
     run-bundle-analysis:
@@ -496,7 +502,7 @@ pipelines:
             # Change into a glob pattern (removing brackets, spaces and quotes).
             - export CHANGED_PACKAGES_GLOB=$(echo "$CHANGED_PACKAGES" | sed 's/[][" ]//g')
             - node build/ci-scripts/branch-deploys/update.changed.packages.deps.to.cdn.js
-            # We add in the exta brances and a trailing comma in case we only have one package
+            # We add in the extra braces and a trailing comma in case we only have one package
             - bolt ws exec --only-fs="{$CHANGED_PACKAGES_GLOB,}" -- npm pack
             - mkdir -p dists/
             - node build/ci-scripts/branch-deploys/copy.built.tgzs.to.dists.dir.js
@@ -613,5 +619,6 @@ pipelines:
             - source ./build-setup.sh
             - bolt install --frozen-lockfile
             - yarn build
-            - yarn build:editor-mobile-bridge
-            - cd build/build-validator && yarn validate-packages
+            # - yarn build:editor-mobile-bridge
+            # Run validation in quiet mode as well to easily check file differences
+            - cd build/build-validator && (yarn validate-packages || yarn validate-packages --quiet) || true
