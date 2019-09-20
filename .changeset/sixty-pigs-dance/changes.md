@@ -1,0 +1,1 @@
+ED-7679 Fix bug where pasting table with picture from External document, paste image outside the table
