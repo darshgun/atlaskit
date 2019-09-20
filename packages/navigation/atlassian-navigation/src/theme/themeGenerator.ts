@@ -60,7 +60,6 @@ const generateCSSStates = (colors: Colors): ButtonCSSContext => {
       color,
     },
     focus: {
-      backgroundColor: 'inherit',
       boxShadow: getBoxShadow(mix(backgroundColorRgb, colorRgb, 0.5)),
       color,
     },
