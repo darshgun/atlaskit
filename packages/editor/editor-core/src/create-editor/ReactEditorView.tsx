@@ -123,7 +123,10 @@ export default class ReactEditorView<T = {}> extends React.Component<
     intl: intlShape,
   };
 
-  private canDispatchTransactions: boolean = false;
+  // ProseMirror is instantiated prior to the initial React render cycle,
+  // so we allow transactions by default, to avoid discarding the initial one.
+  private canDispatchTransactions = true;
+
   private focusTimeoutId: number | undefined;
 
   constructor(props: EditorViewProps & T) {
@@ -292,9 +295,13 @@ export default class ReactEditorView<T = {}> extends React.Component<
   }
 
   componentDidMount() {
+    // Transaction dispatching is already enabled by default prior to
+    // mounting, but we reset it here, just in case the editor view
+    // instance is ever recycled (mounted again after unmounting) with
+    // the same key.
     // Although storing mounted state is an anti-pattern in React,
     // we do so here so that we can intercept and abort asynchronous
-    // transactions from ProseMirror when a dismount is imminent.
+    // ProseMirror transactions when a dismount is imminent.
     this.canDispatchTransactions = true;
   }
 
@@ -416,46 +423,52 @@ export default class ReactEditorView<T = {}> extends React.Component<
     });
   };
 
+  private dispatchTransaction = (transaction: Transaction) => {
+    if (!this.view) {
+      return;
+    }
+
+    const nodes: PMNode[] = findChangedNodesFromTransaction(transaction);
+    if (validateNodes(nodes)) {
+      // go ahead and update the state now we know the transaction is good
+      const editorState = this.view.state.apply(transaction);
+      this.view.updateState(editorState);
+      if (this.props.editorProps.onChange && transaction.docChanged) {
+        this.props.editorProps.onChange(this.view);
+      }
+      this.editorState = editorState;
+    } else {
+      const documents = {
+        new: getDocStructure(transaction.doc),
+        prev: getDocStructure(transaction.docs[0]),
+      };
+      analyticsService.trackEvent(
+        'atlaskit.fabric.editor.invalidtransaction',
+        { documents: JSON.stringify(documents) }, // V2 events don't support object properties
+      );
+      this.dispatchAnalyticsEvent({
+        action: ACTION.DISPATCHED_INVALID_TRANSACTION,
+        actionSubject: ACTION_SUBJECT.EDITOR,
+        eventType: EVENT_TYPE.OPERATIONAL,
+        attributes: {
+          analyticsEventPayloads: transaction.getMeta(
+            analyticsPluginKey,
+          ) as AnalyticsEventPayloadWithChannel[],
+          documents,
+        },
+      });
+    }
+  };
+
   getDirectEditorProps = (state?: EditorState): DirectEditorProps => {
     return {
       state: state || this.editorState,
-      dispatchTransaction: (transaction: Transaction) => {
+      dispatchTransaction: (tr: Transaction) => {
         // Block stale transactions:
         // Prevent runtime exeptions from async transactions that would attempt to
         // update the DOM after React has unmounted the Editor.
-        if (!this.view || !this.canDispatchTransactions) {
-          return;
-        }
-
-        const nodes: PMNode[] = findChangedNodesFromTransaction(transaction);
-        if (validateNodes(nodes)) {
-          // go ahead and update the state now we know the transaction is good
-          const editorState = this.view.state.apply(transaction);
-          this.view.updateState(editorState);
-          if (this.props.editorProps.onChange && transaction.docChanged) {
-            this.props.editorProps.onChange(this.view);
-          }
-          this.editorState = editorState;
-        } else {
-          const documents = {
-            new: getDocStructure(transaction.doc),
-            prev: getDocStructure(transaction.docs[0]),
-          };
-          analyticsService.trackEvent(
-            'atlaskit.fabric.editor.invalidtransaction',
-            { documents: JSON.stringify(documents) }, // V2 events don't support object properties
-          );
-          this.dispatchAnalyticsEvent({
-            action: ACTION.DISPATCHED_INVALID_TRANSACTION,
-            actionSubject: ACTION_SUBJECT.EDITOR,
-            eventType: EVENT_TYPE.OPERATIONAL,
-            attributes: {
-              analyticsEventPayloads: transaction.getMeta(
-                analyticsPluginKey,
-              ) as AnalyticsEventPayloadWithChannel[],
-              documents,
-            },
-          });
+        if (this.canDispatchTransactions) {
+          this.dispatchTransaction(tr);
         }
       },
       // Disables the contentEditable attribute of the editor if the editor is disabled
