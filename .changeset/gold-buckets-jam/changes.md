@@ -1,0 +1,1 @@
+FM-2472 Fix issue where Android Recycled View height would grow indefinitely
