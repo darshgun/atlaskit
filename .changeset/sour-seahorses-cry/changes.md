@@ -1,0 +1,1 @@
+change white color to N0 import from theme
