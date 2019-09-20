@@ -1,0 +1,1 @@
+[ED-7727] Improve not allowed sorting message when the table has merged cells. Now the message will show up only on the sorting icon avoiding conflicts with confluence comments

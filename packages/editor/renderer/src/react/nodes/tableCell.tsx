@@ -2,7 +2,6 @@ import * as React from 'react';
 import { CSSProperties } from 'react';
 import { CellAttributes } from '@atlaskit/adf-schema';
 import { SortOrder, compose } from '@atlaskit/editor-common';
-import Tooltip from '@atlaskit/tooltip';
 import SortingIcon from '../../ui/SortingIcon';
 import { AnalyticsEventPayload, MODE, PLATFORM } from '../../analytics/events';
 import { ACTION, ACTION_SUBJECT, EVENT_TYPE } from '../../analytics/enums';
@@ -122,28 +121,19 @@ export const withSortableColumn = (WrapperComponent: React.ElementType) => {
           className={className}
           onClick={this.onClick}
         >
-          {onSorting && (
-            <>
-              {children}
-              <figure
-                className={`${
-                  RendererCssClassName.SORTABLE_COLUMN_ICON
-                } ${sortOrderedClassName}`}
-              >
-                <SortingIcon sortOrdered={sortOrdered} />
-              </figure>
-            </>
-          )}
-
-          {!onSorting && (
-            <Tooltip
-              content="⚠️ You can't sort a table with merged cell"
-              position="top"
-              delay={100}
+          <>
+            {children}
+            <figure
+              className={`${
+                RendererCssClassName.SORTABLE_COLUMN_ICON
+              } ${sortOrderedClassName}`}
             >
-              <>{children}</>
-            </Tooltip>
-          )}
+              <SortingIcon
+                isSortingAllowed={!!onSorting}
+                sortOrdered={sortOrdered}
+              />
+            </figure>
+          </>
         </WrapperComponent>
       );
     }
