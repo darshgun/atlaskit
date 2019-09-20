@@ -9,7 +9,7 @@ import {
   removePanel,
   changePanelType,
 } from '../../../../plugins/panel/actions';
-import { PanelType } from '../../../../../../adf-schema';
+import { PanelType } from '@atlaskit/adf-schema';
 
 describe('panel actions', () => {
   const createEditor = createEditorFactory();

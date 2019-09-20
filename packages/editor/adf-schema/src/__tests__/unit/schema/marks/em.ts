@@ -1,5 +1,5 @@
 import { name } from '../../../../version.json';
-import { createSchema } from '../../../../..';
+import { createSchema } from '../../../../schema/create-schema';
 import { fromHTML, toHTML, textWithMarks } from '../../../../../test-helpers';
 
 describe(`${name}/schema em mark`, () => {

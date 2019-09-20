@@ -1,4 +1,4 @@
-import { IndentationMarkAttributes } from '../../../../../adf-schema';
+import { IndentationMarkAttributes } from '@atlaskit/adf-schema';
 import {
   addAnalytics,
   INDENT_TYPE,

@@ -1,6 +1,7 @@
 import { name } from '../../../../version.json';
 import { toDOM, fromHTML } from '../../../../../test-helpers';
-import { createSchema, blockCard } from '../../../../..';
+import { createSchema } from '../../../../schema/create-schema';
+import { blockCard } from '../../../../schema/nodes/block-card';
 
 describe(`${name}/schema blockCard node`, () => {
   const schema = createSchema({

@@ -1,6 +1,7 @@
 import { name } from '../../../../version.json';
 import { toDOM, fromHTML } from '../../../../../test-helpers';
-import { createSchema, inlineCard } from '../../../../..';
+import { createSchema } from '../../../../schema/create-schema';
+import { inlineCard } from '../../../../schema/nodes/inline-card';
 
 describe(`${name}/schema inlineCard node`, () => {
   const schema = createSchema({

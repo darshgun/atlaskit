@@ -1,0 +1,1 @@
+Fix main entry point not containing all exports
