@@ -1,5 +1,13 @@
 # @atlaskit/navigation-next
 
+## 6.7.5
+
+### Patch Changes
+
+- [patch][83b9b5e4d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83b9b5e4d0):
+
+  Bumping devDeps for new atlassian-nav component
+
 ## 6.7.4
 
 ### Patch Changes
