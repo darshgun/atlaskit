@@ -71,6 +71,8 @@ export default class MediaSingleNode extends Component<
       this.setViewMediaClientConfig(nextProps);
     }
 
+    // We need to call this method on any prop change since attrs can get removed with collab editing
+    // the method internally checks if we already have all attrs
     this.createMediaNodeUpdater(nextProps).updateFileAttrs();
   }
 
