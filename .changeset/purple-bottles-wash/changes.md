@@ -1,0 +1,1 @@
+Add ability to highlight a row in the table based on the index (0 based index) of the current visible page.
