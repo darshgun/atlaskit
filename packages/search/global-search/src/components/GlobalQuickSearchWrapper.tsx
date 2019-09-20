@@ -201,6 +201,16 @@ export interface Props {
    * Props to pass down to the feedback collector
    */
   feedbackCollectorProps?: FeedbackCollectorProps;
+
+  /**
+   * The user's account id. null if the user is anonymous.
+   */
+  userId: string | null;
+
+  /**
+   * Check if Jira's people profile's page is enabled.
+   */
+  isJiraPeopleProfilesEnabled?: boolean;
 }
 
 const ConfluenceContainerWithFeedback = withFeedbackButton(
@@ -311,6 +321,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       showFeedbackCollector,
       feedbackCollectorProps,
       confluenceUrl,
+      isJiraPeopleProfilesEnabled,
     } = this.props;
 
     const commonProps = {
@@ -348,6 +359,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
         <JiraQuickSearchContainer
           {...commonProps}
           appPermission={appPermission}
+          isJiraPeopleProfilesEnabled={isJiraPeopleProfilesEnabled}
         />
       );
     } else {
@@ -371,6 +383,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
             const searchClients = configureSearchClients(
               this.props.cloudId,
               this.makeConfig(),
+              this.props.userId === null,
               prefetchedResults,
             );
 

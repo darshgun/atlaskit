@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-editor",
-  "version": "36.3.0",
+  "version": "36.3.3",
   "description": "Media component for image annotations",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.tsx",
@@ -10,13 +10,20 @@
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Sasha M",
-    "Vadim K",
-    "Michael J"
+    "Ali C",
+    "Hector Z",
+    "Wilson MN",
+    "Vladimir V",
+    "Aleksandr M"
   ],
   "atlaskit": {
     "name": "Media Editor",
     "team": "media"
+  },
+  "scripts": {
+    "check-dist": "cd dist/esm/engine/core/binaries && cd - && cd dist/cjs/engine/core/binaries",
+    "copy-binaries": "cp -r src/engine/core/binaries dist/esm/engine/core && cp -r src/engine/core/binaries dist/cjs/engine/core",
+    "ak-postbuild": "yarn copy-binaries && yarn check-dist"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -24,9 +31,9 @@
     "@atlaskit/field-range": "^7.1.0",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/inline-dialog": "^12.0.15",
-    "@atlaskit/media-card": "^64.2.0",
-    "@atlaskit/media-client": "^2.0.5",
-    "@atlaskit/media-ui": "^11.6.0",
+    "@atlaskit/media-card": "^65.1.1",
+    "@atlaskit/media-client": "^2.1.2",
+    "@atlaskit/media-ui": "^11.6.5",
     "@atlaskit/modal-dialog": "^10.2.0",
     "@atlaskit/spinner": "^12.0.9",
     "@atlaskit/theme": "^9.2.0",
@@ -44,8 +51,8 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.2.5",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/media-store": "^12.0.11",
-    "@atlaskit/media-test-helpers": "^25.0.4",
+    "@atlaskit/media-store": "^12.0.12",
+    "@atlaskit/media-test-helpers": "^25.1.1",
     "@atlaskit/ssr": "^0.1.1",
     "enzyme": "^3.7.0",
     "react-dom": "^16.8.0",

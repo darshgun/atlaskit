@@ -1,12 +1,10 @@
-// @flow
 const {
   getPackagesInfo,
   TOOL_NAME_TO_FILTERS,
 } = require('@atlaskit/build-utils/tools');
 
-(async () => {
-  let cwd = process.cwd();
-  let toolNames = process.argv.slice(2);
+async function main(toolNames, opts = {}) {
+  const { cwd = process.cwd() } = opts;
 
   if (!toolNames.length) {
     console.error(
@@ -14,7 +12,7 @@ const {
         TOOL_NAME_TO_FILTERS,
       ).join(', ')})`,
     );
-    throw process.exit(1);
+    throw Error();
   }
 
   let filters = toolNames.map(toolName => {
@@ -26,7 +24,7 @@ const {
           TOOL_NAME_TO_FILTERS,
         ).join(', ')})`,
       );
-      throw process.exit(1);
+      throw Error();
     }
 
     return filterFn;
@@ -37,7 +35,21 @@ const {
     .filter(pkg => filters.every(filter => filter(pkg)))
     .map(pkg => pkg.relativeDir);
 
-  console.log(
-    relativePaths.length > 1 ? `{${relativePaths.join()}}` : relativePaths[0],
-  );
-})();
+  return relativePaths.length > 1
+    ? `{${relativePaths.join()}}`
+    : relativePaths[0];
+}
+
+if (require.main === module) {
+  let toolNames = process.argv.slice(2);
+  main(toolNames)
+    .then(glob => {
+      console.log(glob);
+    })
+    .catch(e => {
+      console.error(e);
+      process.exit(1);
+    });
+}
+
+module.exports = main;

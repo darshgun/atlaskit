@@ -3,7 +3,12 @@ import algoliasearch from 'algoliasearch';
 import Page from '@atlaskit/page';
 
 import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
-import { ExampleWrapper, HelpWrapper } from './utils/styled';
+import {
+  ExampleWrapper,
+  HelpWrapper,
+  FooterContent,
+  ExampleDefaultContent,
+} from './utils/styled';
 
 import Help from '../src';
 
@@ -37,8 +42,15 @@ export default class extends React.Component {
               <Help
                 articleId="nbgju45fddcNAvvH9lhHc"
                 onGetArticle={this.onGetArticle}
+                footer={
+                  <FooterContent>
+                    <span>Footer</span>
+                  </FooterContent>
+                }
               >
-                <span>Default content</span>
+                <ExampleDefaultContent>
+                  <span>Default content</span>
+                </ExampleDefaultContent>
               </Help>
             </LocaleIntlProvider>
           </HelpWrapper>

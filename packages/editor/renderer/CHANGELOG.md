@@ -1,5 +1,140 @@
 # @atlaskit/renderer
 
+## 51.0.0
+
+### Major Changes
+
+- [major][166eb02474](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166eb02474):
+
+  **Editor Bombazine Release**
+
+  **BREAKING CHANGES**
+
+  ​ **Renderer**
+
+  - Change in contract for `eventHandlers.smartCard.onClick` prop:
+        Old: onClick(url): void
+  New: onClick(event, url): void
+
+  ​ **ADF Schema**
+
+      - Remove applicationCard node and action mark
+      - Remove exposed `tableBackgroundBorderColors` in favour of `tableBackgroundBorderColor`
+
+
+    **Affected editor components:**
+
+    Tables, Media, Headings, Copy and Paste, Mobile
+
+    **Anchor Links**
+
+      - Headings in the renderer now show an anchor link on hover
+        - Feature Flag:
+          - allowHeadingAnchorLinks - [default: false]
+        - https://product-fabric.atlassian.net/browse/ED-5137
+
+    **Copy and Paste**
+
+      - Fixed a bug where right click for copy image failed the second time that is pasted
+        - https://product-fabric.atlassian.net/browse/MS-2324
+
+    **Media**
+
+      - Resizing/Aligning media inside Table
+        - Feature Flag:
+          - allowResizingInTables - [default: false]
+        - https://product-fabric.atlassian.net/browse/ED-6359
+      - You can now insert same file from MediaPicker twice
+        - https://product-fabric.atlassian.net/browse/MS-2080
+      - Implement media link in renderer
+        - https://product-fabric.atlassian.net/browse/ED-7244
+
+    **Tables**
+
+      - Implement table sorting in renderer - [NEW BIG FEATURE][not enabled]
+        - Feature Flag:
+          - allowColumnSorting – [default: false]
+        - https://product-fabric.atlassian.net/browse/ED-7392
+      - Expanded table cell background color palette
+        - https://product-fabric.atlassian.net/browse/ED-7201
+
+    **Mobile**
+
+      - Provide method for scrolling to actions, decisions and mentions
+        - https://product-fabric.atlassian.net/browse/FM-2261
+        - https://product-fabric.atlassian.net/browse/FM-2055
+      - Improve Hybrid Editor Scrolling
+        - https://product-fabric.atlassian.net/browse/FM-2212
+
+    **Notable Bug fixes**
+
+      - Fixed an issue where you couldn't split merged cells when a cell contained a media item
+        - https://product-fabric.atlassian.net/browse/ED-6898
+      - Pasting content with an emoji no longer duplicates the emoji as an image
+        - https://product-fabric.atlassian.net/browse/ED-7513
+      - Content inside of a table cell no longer overflows if table looses focus
+        - https://product-fabric.atlassian.net/browse/ED-7529
+      - Fixed an issue when adding rows and cols at the same time start adding infinite columns
+        - https://product-fabric.atlassian.net/browse/ED-7700- [major] [40ead387ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40ead387ef):
+
+ED-7532 Expose ability to cancel default browser behavior when clicking Smart Links- [major][80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+
+Remove applicationCard node and action mark
+
+### Minor Changes
+
+- [minor][9cddedc62f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cddedc62f):
+
+  ED-7244 added hover effects for media link in renderer- [minor][3f1c7dd26a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f1c7dd26a):
+
+  [ED-7392] Add sort table by column on renderer behind allowColumnSorting feature flag
+  [ED-7392] Extract common methods to sort table
+
+- [minor][decd6fceea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/decd6fceea):
+
+  ED-5137 added heading anchor link
+
+  You can now use the `allowHeadingAnchorLinks` prop to display heading anchor links in renderer, next to all top level headings.
+  There is also an existing property called `disableHeadingIDs`, when you set both `disableHeadingIDs` and `allowHeadingAnchorLinks` to false, the anchor link button will not display, however the heading anchor id will still be in the DOM.
+
+  Note: This feature is only enabled for top level headings(e.g. not nested in other blocks like table).
+
+### Patch Changes
+
+- [patch][f9584ff209](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9584ff209):
+
+  ED-7244 updated hover animation style- [patch][030e778af9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/030e778af9):
+
+  pass contextId to media card
+
+- Updated dependencies [1194ad5eb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1194ad5eb3):
+  - @atlaskit/adf-utils@7.0.0
+  - @atlaskit/editor-common@41.0.0
+  - @atlaskit/editor-json-transformer@6.3.3
+  - @atlaskit/editor-test-helpers@10.0.0
+  - @atlaskit/adf-schema@4.0.0
+
+## 50.0.2
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/navigation-next@6.6.2
+  - @atlaskit/mention@18.15.1
+  - @atlaskit/task-decision@15.3.2
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+  - @atlaskit/profilecard@12.0.9
+
+## 50.0.1
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/editor-common@40.0.1
+  - @atlaskit/media-client@2.1.2
+  - @atlaskit/media-core@30.0.14
+  - @atlaskit/media-filmstrip@34.3.6
+  - @atlaskit/media-test-helpers@25.1.1
+  - @atlaskit/media-card@65.0.0
+  - @atlaskit/analytics-listeners@6.2.0
+
 ## 50.0.0
 
 ### Major Changes

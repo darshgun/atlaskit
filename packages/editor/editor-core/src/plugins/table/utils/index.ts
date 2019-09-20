@@ -1,4 +1,3 @@
-export { compareNodes } from './compareNodes';
 export {
   getSelectedColumnIndexes,
   getSelectedRowIndexes,
@@ -63,3 +62,4 @@ export {
 } from './row-controls';
 export { getSelectedTableInfo, getSelectedCellInfo } from './analytics';
 export { getMergedCellsPositions } from './table';
+export { TableSortStep } from './sort-step';

@@ -1,5 +1,29 @@
 # @atlaskit/media-editor
 
+## 36.3.3
+
+### Patch Changes
+
+- [patch][2b158873d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b158873d1):
+
+  Add linting rule to prevent unsafe usage of setTimeout within React components.
+
+## 36.3.2
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
+## 36.3.1
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/media-client@2.1.2
+  - @atlaskit/media-store@12.0.12
+  - @atlaskit/media-test-helpers@25.1.1
+  - @atlaskit/media-card@65.0.0
+
 ## 36.3.0
 
 ### Minor Changes

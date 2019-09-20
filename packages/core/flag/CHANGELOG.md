@@ -1,5 +1,13 @@
 # @atlaskit/flag
 
+## 12.2.2
+
+### Patch Changes
+
+- [patch][2b158873d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b158873d1):
+
+  Add linting rule to prevent unsafe usage of setTimeout within React components.
+
 ## 12.2.1
 
 ### Patch Changes

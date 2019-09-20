@@ -26,8 +26,14 @@ class TextView extends React.Component<Props, State> {
 
   nextInputRef = React.createRef();
 
+  focusTimeoutId = undefined;
+
   componentDidMount() {
     this.focusNextInput();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.focusTimeoutId);
   }
 
   handleSubmit = (e: *) => {
@@ -58,7 +64,7 @@ class TextView extends React.Component<Props, State> {
     if (target) {
       // wait for the focus trap (Popup) to grab the node that envoked the
       // dialog, before assigning focus within
-      setTimeout(() => {
+      this.focusTimeoutId = setTimeout(() => {
         target.focus();
       }, 10);
     }

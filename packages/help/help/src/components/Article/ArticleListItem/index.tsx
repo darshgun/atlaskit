@@ -1,8 +1,10 @@
 import * as React from 'react';
+import * as colors from '@atlaskit/theme/colors';
 import {
   CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
+import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 
 import {
   name as packageName,
@@ -17,6 +19,7 @@ import {
   ArticlesListItemTitle,
   ArticlesListItemTitleText,
   ArticlesListItemDescription,
+  ArticlesListItemLinkIcon,
 } from './styled';
 
 interface Props {
@@ -25,11 +28,20 @@ interface Props {
   title: string;
   description: string;
   icon: React.ReactNode;
+  href?: string;
   id: string;
 }
 
 const ArticlesListItem = (props: Props & Analytics) => {
-  const { id, title, description, icon, onClick, createAnalyticsEvent } = props;
+  const {
+    id,
+    title,
+    description,
+    icon,
+    onClick,
+    href,
+    createAnalyticsEvent,
+  } = props;
 
   const handleOnClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -46,12 +58,22 @@ const ArticlesListItem = (props: Props & Analytics) => {
     <ArticlesListItemWrapper
       aria-disabled="false"
       role="button"
-      href=""
+      href={href}
       onClick={handleOnClick}
     >
       <ArticlesListItemTitle>
         <ArticlesListItemTitleIcon>{icon}</ArticlesListItemTitleIcon>
         <ArticlesListItemTitleText>{title}</ArticlesListItemTitleText>
+        {href && (
+          <ArticlesListItemLinkIcon>
+            <ShortcutIcon
+              size="small"
+              label={title}
+              primaryColor={colors.N90}
+              secondaryColor={colors.N90}
+            />
+          </ArticlesListItemLinkIcon>
+        )}
       </ArticlesListItemTitle>
       <ArticlesListItemDescription>{description}</ArticlesListItemDescription>
     </ArticlesListItemWrapper>

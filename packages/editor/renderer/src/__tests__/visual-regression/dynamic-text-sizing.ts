@@ -9,12 +9,12 @@ const initRenderer = async (
   await initRendererWithADF(page, {
     appearance: 'full-page',
     viewport,
-    rendererProps: { allowDynamicTextSizing: true },
+    rendererProps: { allowDynamicTextSizing: true, disableHeadingIDs: true },
     adf: document,
   });
 };
-
-describe('Snapshot Test: Dynamic Text Sizing', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: Dynamic Text Sizing', () => {
   let page: Page;
   beforeAll(() => {
     // @ts-ignore

@@ -7,7 +7,6 @@ import {
   clearMarksOnChangeToEmptyDocumentPlugin,
   codeBlockPlugin,
   collabEditPlugin,
-  confluenceInlineComment,
   datePlugin,
   emojiPlugin,
   extensionPlugin,
@@ -39,7 +38,6 @@ import {
   typeAheadPlugin,
   quickInsertPlugin,
   gapCursorPlugin,
-  inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
   statusPlugin,
@@ -125,10 +123,6 @@ export default function createPluginsList(
 
   if (props.allowTextAlignment) {
     plugins.push(alignmentPlugin());
-  }
-
-  if (props.allowInlineAction) {
-    plugins.push(inlineActionPlugin());
   }
 
   if (props.allowTextColor) {
@@ -261,8 +255,8 @@ export default function createPluginsList(
     plugins.push(macroPlugin());
   }
 
-  if (props.allowConfluenceInlineComment) {
-    plugins.push(confluenceInlineComment(), annotationPlugin());
+  if (props.annotationProvider || props.allowConfluenceInlineComment) {
+    plugins.push(annotationPlugin(props.annotationProvider));
   }
 
   if (props.allowDate) {

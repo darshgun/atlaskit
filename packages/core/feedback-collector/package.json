@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/feedback-collector",
-  "version": "4.0.13",
+  "version": "4.0.15",
   "config": {
     "access": "public"
   },
@@ -12,7 +12,7 @@
   "dependencies": {
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/checkbox": "^9.0.9",
-    "@atlaskit/flag": "^12.0.20",
+    "@atlaskit/flag": "^12.2.2",
     "@atlaskit/form": "^6.1.12",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/modal-dialog": "^10.1.9",
@@ -25,9 +25,9 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.2.5",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/global-navigation": "^7.6.3",
+    "@atlaskit/global-navigation": "^8.0.0",
     "@atlaskit/logo": "^12.1.8",
-    "@atlaskit/navigation-next": "^6.5.6",
+    "@atlaskit/navigation-next": "^6.6.3",
     "@atlaskit/ssr": "^0.1.1",
     "axios": "^0.18.0",
     "enzyme": "^3.7.0",

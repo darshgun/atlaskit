@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { getCellsInRow } from 'prosemirror-utils';
 import { TableCssClassName as ClassName } from '../../../types';
 import { getPluginState as getMainPluginState } from '../../main';
-import { closestElement } from '../../../../../utils';
+import { closestElement, containsClassName } from '../../../../../utils';
 import { updateOverflowShadows } from '../../../nodeviews/TableComponent';
 
 function getHeights(
@@ -89,7 +89,7 @@ export const getResizeCellPos = (
   const { state } = view;
   const target = event.target as HTMLElement;
 
-  if (!target.classList.contains(ClassName.RESIZE_HANDLE)) {
+  if (!containsClassName(target, ClassName.RESIZE_HANDLE)) {
     return null;
   }
   const parent = closestElement(target, '[data-start-index]');

@@ -11,6 +11,7 @@ import {
   akEditorGutterPadding,
 } from '@atlaskit/editor-common';
 import { TableOptions } from '../../../nodeviews/table';
+import { containsClassName } from '../../../../../utils';
 
 export const tableLayoutToSize: Record<string, number> = {
   default: akEditorDefaultLayoutWidth,
@@ -91,7 +92,7 @@ export function currentColWidth(
 // Attempts to find a parent TD/TH depending on target element.
 export function domCellAround(target: HTMLElement | null): HTMLElement | null {
   while (target && target.nodeName !== 'TD' && target.nodeName !== 'TH') {
-    target = target.classList.contains('ProseMirror')
+    target = containsClassName(target, 'ProseMirror')
       ? null
       : (target.parentNode as HTMLElement | null);
   }

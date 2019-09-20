@@ -1,5 +1,45 @@
 # @atlaskit/editor-mobile-bridge
 
+## 8.10.0
+
+### Minor Changes
+
+- [minor][3458937c4c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3458937c4c):
+
+  FM-2383 Enable Emoji Picker in native UI on iOS. Supports system and custom emojis via the type ahead flow when type a semicolon ':'- [minor][e171e3f38e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e171e3f38e):
+
+  FM-2055, FM-2261: Expose mobile bridge API methods for scrolling to a mention, action, or decision item by ID. Add localId value into rendered action/decision list elements within the existing custom data attribute to allow scroll targetting.
+
+### Patch Changes
+
+- [patch][9fb705e807](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fb705e807):
+
+  FM-2212: Refactor Mobile Bridge CSS to improve body scrolling. FM-2024: Improve Mobile Editing UX when tapping beneath Tables, Layouts, Columns.- [patch][40ead387ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40ead387ef):
+
+  ED-7532 Expose ability to cancel default browser behavior when clicking Smart Links- [patch][45ae9e1cc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45ae9e1cc2):
+
+  ED-7201 Add new background cell colors and improve text color
+
+- Updated dependencies [166eb02474](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166eb02474):
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-json-transformer@6.3.3
+  - @atlaskit/editor-test-helpers@10.0.0
+  - @atlaskit/task-decision@15.3.4
+  - @atlaskit/editor-core@113.0.0
+  - @atlaskit/renderer@51.0.0
+  - @atlaskit/emoji@62.5.1
+  - @atlaskit/mention@18.15.2
+  - @atlaskit/status@0.9.13
+  - @atlaskit/editor-common@41.0.0
+
+## 8.9.3
+
+### Patch Changes
+
+- [patch][07dd73fa12](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07dd73fa12):
+
+  FM-2240 Fix issue where smart links would cause hybrid renderer to crash in Android
+
 ## 8.9.2
 
 ### Patch Changes

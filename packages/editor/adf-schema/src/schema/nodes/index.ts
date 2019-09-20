@@ -93,7 +93,7 @@ export {
   toJSONTableHeader,
   tableRow,
   tableBackgroundColorPalette,
-  tableBackgroundBorderColors,
+  tableBackgroundBorderColor,
   tableBackgroundColorNames,
   CellAttributes,
   Layout as TableLayout,
@@ -108,12 +108,6 @@ export {
   tableCellContentWrapperSelector,
   tableCellContentDomSelector,
 } from './tableNodes';
-export {
-  applicationCard,
-  ApplicationCardAttributes,
-  AppCardAction,
-  ApplicationCardDefinition,
-} from './applicationCard';
 export {
   decisionList,
   DecisionListDefinition,

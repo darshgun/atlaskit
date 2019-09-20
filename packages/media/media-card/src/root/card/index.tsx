@@ -8,32 +8,28 @@ import {
   FileIdentifier,
   isPreviewableType,
   isFileIdentifier,
-  isExternalImageIdentifier,
   isDifferentIdentifier,
   isImageRepresentationReady,
+  addFileAttrsToUrl,
 } from '@atlaskit/media-client';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { AnalyticsContext, UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { Subscription } from 'rxjs/Subscription';
 import { IntlProvider } from 'react-intl';
 import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
-import {
-  CardAnalyticsContext,
-  CardAction,
-  CardDimensions,
-  CardProps,
-  CardState,
-} from '../..';
+import { CardAction, CardDimensions, CardProps, CardState } from '../..';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
-import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { extendMetadata } from '../../utils/metadata';
 import { isBigger } from '../../utils/dimensionComparer';
 import { getCardStatus } from './getCardStatus';
 import { InlinePlayer } from '../inlinePlayer';
-import { WithCardViewAnalyticsContext } from '../withCardViewAnalyticsContext';
+import {
+  getUIAnalyticsContext,
+  getBaseAnalyticsContext,
+} from '../../utils/analytics';
 
 export class Card extends Component<CardProps, CardState> {
   private hasBeenMounted: boolean = false;
@@ -98,8 +94,10 @@ export class Card extends Component<CardProps, CardState> {
   }
 
   releaseDataURI = () => {
+    const { identifier } = this.props;
     const { dataURI } = this.state;
-    if (dataURI) {
+    // we don't want to release external previews, since it might be reused later on
+    if (dataURI && identifier.mediaItemType !== 'external-image') {
       URL.revokeObjectURL(dataURI);
     }
   };
@@ -151,6 +149,7 @@ export class Card extends Component<CardProps, CardState> {
             dataURI,
             previewOrientation = 1,
           } = this.state;
+          const { contextId } = this.props;
           const metadata = extendMetadata(fileState, this.state.metadata);
 
           if (!dataURI) {
@@ -159,6 +158,16 @@ export class Card extends Component<CardProps, CardState> {
             );
             previewOrientation = orientation || 1;
             dataURI = src;
+            if (dataURI && contextId) {
+              dataURI = addFileAttrsToUrl(dataURI, {
+                id: resolvedId,
+                collection: collectionName,
+                contextId,
+                mimeType: metadata.mimeType,
+                name: metadata.name,
+                size: metadata.size,
+              });
+            }
           }
 
           switch (fileState.status) {
@@ -209,6 +218,18 @@ export class Card extends Component<CardProps, CardState> {
                 allowAnimated: true,
               });
               dataURI = URL.createObjectURL(blob);
+              if (contextId) {
+                dataURI = addFileAttrsToUrl(dataURI, {
+                  id: resolvedId,
+                  collection: collectionName,
+                  contextId,
+                  mimeType: metadata.mimeType,
+                  name: metadata.name,
+                  size: metadata.size,
+                  width,
+                  height,
+                });
+              }
               this.releaseDataURI();
             } catch (e) {
               // We don't want to set status=error if the preview fails, we still want to display the metadata
@@ -254,15 +275,6 @@ export class Card extends Component<CardProps, CardState> {
 
     this.subscribe(identifier, mediaClient);
   };
-
-  get analyticsContext(): CardAnalyticsContext {
-    const { identifier } = this.props;
-    const id = isExternalImageIdentifier(identifier)
-      ? 'external-image'
-      : identifier.id;
-
-    return getBaseAnalyticsContext('Card', id);
-  }
 
   get actions(): CardAction[] {
     const { actions = [], identifier } = this.props;
@@ -379,40 +391,6 @@ export class Card extends Component<CardProps, CardState> {
     );
   };
 
-  // Temporal method to mimic the Context generated inside of CardView. This will be removed in further PR's
-  getRenderCardProps = () => {
-    const {
-      appearance,
-      resizeMode,
-      dimensions,
-      selectable,
-      selected,
-      onSelectChange,
-      disableOverlay,
-    } = this.props;
-    const { progress, metadata, dataURI, previewOrientation } = this.state;
-    const { onRetry, onCardViewClick, actions, onMouseEnter } = this;
-    const status = getCardStatus(this.state, this.props);
-    return {
-      status,
-      metadata,
-      dataURI,
-      appearance,
-      resizeMode,
-      dimensions,
-      actions,
-      selectable,
-      selected,
-      onClick: onCardViewClick,
-      onMouseEnter,
-      onSelectChange,
-      disableOverlay,
-      progress,
-      onRetry,
-      previewOrientation,
-    };
-  };
-
   renderCard = () => {
     const {
       isLazy,
@@ -425,35 +403,27 @@ export class Card extends Component<CardProps, CardState> {
       disableOverlay,
     } = this.props;
     const { progress, metadata, dataURI, previewOrientation } = this.state;
-    const {
-      analyticsContext,
-      onRetry,
-      onCardViewClick,
-      actions,
-      onMouseEnter,
-    } = this;
+    const { onRetry, onCardViewClick, actions, onMouseEnter } = this;
     const status = getCardStatus(this.state, this.props);
     const card = (
-      <AnalyticsContext data={analyticsContext}>
-        <CardView
-          status={status}
-          metadata={metadata}
-          dataURI={dataURI}
-          appearance={appearance}
-          resizeMode={resizeMode}
-          dimensions={dimensions}
-          actions={actions}
-          selectable={selectable}
-          selected={selected}
-          onClick={onCardViewClick}
-          onMouseEnter={onMouseEnter}
-          onSelectChange={onSelectChange}
-          disableOverlay={disableOverlay}
-          progress={progress}
-          onRetry={onRetry}
-          previewOrientation={previewOrientation}
-        />
-      </AnalyticsContext>
+      <CardView
+        status={status}
+        metadata={metadata}
+        dataURI={dataURI}
+        appearance={appearance}
+        resizeMode={resizeMode}
+        dimensions={dimensions}
+        actions={actions}
+        selectable={selectable}
+        selected={selected}
+        onClick={onCardViewClick}
+        onMouseEnter={onMouseEnter}
+        onSelectChange={onSelectChange}
+        disableOverlay={disableOverlay}
+        progress={progress}
+        onRetry={onRetry}
+        previewOrientation={previewOrientation}
+      />
     );
 
     return isLazy ? (
@@ -465,13 +435,13 @@ export class Card extends Component<CardProps, CardState> {
     );
   };
 
-  render() {
+  renderContent() {
     const { isPlayingFile, mediaViewerSelectedItem } = this.state;
     const innerContent = isPlayingFile
       ? this.renderInlinePlayer()
       : this.renderCard();
 
-    const content = this.context.intl ? (
+    return this.context.intl ? (
       innerContent
     ) : (
       <IntlProvider locale="en">
@@ -481,11 +451,24 @@ export class Card extends Component<CardProps, CardState> {
         </>
       </IntlProvider>
     );
+  }
 
+  render() {
+    const { metadata } = this.state;
     return (
-      <WithCardViewAnalyticsContext {...this.getRenderCardProps()}>
-        {content}
-      </WithCardViewAnalyticsContext>
+      /* 
+        First Context provides data needed to build packageHierarchy in Atlaskit Analytics Listener and Media Analytics Listener.
+        This data is not added to the final GASv3 payload 
+      */
+      <AnalyticsContext data={getBaseAnalyticsContext()}>
+        {/* 
+          Second context provides data to be merged with any other context down in the tree and the event's payload.
+          This data is usually not available at the time of firing the event, though it is needed to be sent to the backend.
+       */}
+        <AnalyticsContext data={getUIAnalyticsContext(metadata)}>
+          {this.renderContent()}
+        </AnalyticsContext>
+      </AnalyticsContext>
     );
   }
 

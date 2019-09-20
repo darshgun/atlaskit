@@ -1,5 +1,16 @@
 # @atlaskit/adf-utils
 
+## 7.0.0
+
+### Major Changes
+
+- [major][80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+
+  Remove applicationCard node and action mark
+
+- Updated dependencies [1194ad5eb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1194ad5eb3):
+  - @atlaskit/adf-schema@4.0.0
+
 ## 6.1.7
 
 ### Patch Changes

@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/analytics-viewer",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "config": {
     "access": "private"
   },
   "description": "Analytics viewer for the examples",
   "main": "dist/cjs/index.js",
-  "modules": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/cjs/types.d.ts",
   "atlaskit:src": "src/index.ts",
   "repository": {

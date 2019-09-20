@@ -2,6 +2,9 @@ import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
 import { canUseDOM } from 'exenv';
+import { layers } from '@atlaskit/theme';
+
+import { PORTAL_MOUNT_EVENT, PORTAL_UNMOUNT_EVENT } from '../constants';
 
 type Props = {
   /* Children to render in the React Portal. */
@@ -13,6 +16,15 @@ type Props = {
 type State = {
   container?: HTMLElement;
   portalIsMounted: boolean;
+};
+
+type LayerKey = keyof typeof layers;
+
+export type PortalEvent = Event & {
+  detail: {
+    layer: LayerKey | null;
+    zIndex: number;
+  };
 };
 
 const createContainer = (zIndex: number | string) => {
@@ -39,6 +51,30 @@ const portalParent = () => {
     return parent;
   }
   return parentElement;
+};
+
+const zIndexToName = Object.keys(layers).reduce(
+  (acc: Record<number, string>, name: string) => {
+    const value: number = layers[name]();
+    acc[value] = name;
+    return acc;
+  },
+  {},
+);
+
+const getLayerName = (zIndex: number): LayerKey | null => {
+  return Object.prototype.hasOwnProperty.call(zIndexToName, zIndex)
+    ? zIndexToName[zIndex]
+    : null;
+};
+
+const fireMountUnmountEvent = (eventName: string, zIndex: number) => {
+  const event = new Event(eventName);
+  (event as PortalEvent).detail = {
+    layer: getLayerName(Number(zIndex)),
+    zIndex,
+  };
+  window.dispatchEvent(event);
 };
 
 // This is a generic component does two things:
@@ -86,10 +122,13 @@ class Portal extends React.Component<Props, State> {
     this.setState({
       portalIsMounted: true,
     });
+
+    fireMountUnmountEvent(PORTAL_MOUNT_EVENT, Number(zIndex));
   }
 
   componentWillUnmount() {
     const { container } = this.state;
+    const { zIndex } = this.props;
     if (container) {
       portalParent().removeChild(container);
       // clean up parent element if there are no more portals
@@ -100,6 +139,8 @@ class Portal extends React.Component<Props, State> {
         body().removeChild(portalParent());
       }
     }
+
+    fireMountUnmountEvent(PORTAL_UNMOUNT_EVENT, Number(zIndex));
   }
 
   render() {

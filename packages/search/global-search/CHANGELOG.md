@@ -1,5 +1,72 @@
 # @atlaskit/global-search
 
+## 12.1.1
+
+### Patch Changes
+
+- [patch][9447579b2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9447579b2e):
+
+  Fixed withFeedbackButton warning message
+
+## 12.1.0
+
+### Minor Changes
+
+- [minor][7289e02eaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7289e02eaa):
+
+  Adds a new boolean parameter to show the new people profile url
+
+## 12.0.3
+
+### Patch Changes
+
+- [patch][14e5462b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14e5462b37):
+
+  remove use of deprecated field text area component
+
+## 12.0.2
+
+### Patch Changes
+
+- [patch][6aa50ae773](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6aa50ae773):
+
+  remove use of deprecated FieldBase component in quick search
+
+## 12.0.1
+
+- Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
+  - @atlaskit/feedback-collector@4.0.14
+  - @atlaskit/navigation-next@6.6.3
+  - @atlaskit/global-navigation@8.0.0
+
+## 12.0.0
+
+### Major Changes
+
+- [major][d20d909c2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d20d909c2e):
+
+  required user id so that the recents api is not called for anonymous users
+
+## 11.4.4
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/drawer@5.0.10
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/global-navigation@7.7.1
+  - @atlaskit/item@10.1.5
+  - @atlaskit/modal-dialog@10.2.1
+  - @atlaskit/navigation-next@6.6.2
+  - @atlaskit/quick-search@7.7.1
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 11.4.3
+
+- Updated dependencies [6410edd029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6410edd029):
+  - @atlaskit/badge@13.0.0
+  - @atlaskit/global-navigation@7.6.5
+  - @atlaskit/navigation-next@6.6.1
+
 ## 11.4.2
 
 ### Patch Changes

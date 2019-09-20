@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "12.5.2",
+  "version": "12.5.5",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -9,7 +9,9 @@
   "types": "dist/cjs/index.d.ts",
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "James N"
+    "Abhi K",
+    "Callum O",
+    "Artur B"
   ],
   "atlaskit": {
     "name": "Smart Card",
@@ -22,7 +24,7 @@
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/icon-file-type": "^4.0.9",
     "@atlaskit/icon-object": "^4.0.9",
-    "@atlaskit/media-ui": "^11.5.5",
+    "@atlaskit/media-ui": "^11.6.5",
     "@atlaskit/outbound-auth-flow-client": "^2.0.7",
     "@atlaskit/theme": "^9.1.6",
     "dataloader": "^1.4.0",

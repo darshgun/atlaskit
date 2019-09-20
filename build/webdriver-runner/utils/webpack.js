@@ -194,6 +194,8 @@ async function startDevServer() {
   server = new WebpackDevServer(compiler, {
     // Enable gzip compression of generated files.
     compress: true,
+    // We should use public as content based.
+    contentBase: path.join(__dirname, '../../..', 'website/public'),
     historyApiFallback: true,
 
     //silence webpack logs

@@ -9,6 +9,25 @@ export default md`
   to appear over the top of other components. Examples of these components are
   \`@atlaskit/modal-dialog\`, \`@atlaskit/flag\` and \`@atlaskit/tooltip\`.
 
+  Mount and unmount events will be fired when portal elements are added or removed. These 
+  events contain the type of element and its z-index. The events will be one of 
+  \`akPortalMount\` or \`akPortalUnmount\`. These constants (\`PORTAL_MOUNT_EVENT\` and 
+  \`PORTAL_UNMOUNT_EVENT\`) are exported from this package. The type of the event itself, 
+  \`PortalEvent\` is also exported from the package. Due to custom events not being entirely 
+  supported in IE11, we create a normal event and add a detail object manually to the event.
+
+  Example PortalEvent:
+  \`\`\`
+  {
+    type: "akPortalMount",
+    detail: {
+      layer: "modal"
+      zIndex: 510
+    }
+    ...(Normal event properties)
+  }
+  \`\`\`
+
   ## Usage
 
   This example renders a \`<div />\` and \`<h2 />\` into a Portal.

@@ -20,6 +20,7 @@ export interface Props {
   analyticsData?: object;
   onClick?: onAdvancedSearchClick;
   appPermission?: JiraApplicationPermission;
+  isJiraPeopleProfilesEnabled?: boolean;
 }
 
 interface State {
@@ -78,7 +79,12 @@ export default class JiraAdvancedSearch extends React.Component<Props, State> {
             spacing="compact"
             onMouseEnter={(e: React.MouseEvent) => e.stopPropagation()}
             onClick={e => this.props.onClick && this.props.onClick(e, item)}
-            href={getJiraAdvancedSearchUrl(item, this.props.query)}
+            href={getJiraAdvancedSearchUrl({
+              entityType: item,
+              query: this.props.query,
+              isJiraPeopleProfilesEnabled: this.props
+                .isJiraPeopleProfilesEnabled,
+            })}
           >
             {getI18nItemName(item)}
           </Button>

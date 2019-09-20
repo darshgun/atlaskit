@@ -1,5 +1,21 @@
 # @atlaskit/user-picker
 
+## 4.1.0
+
+### Minor Changes
+
+- [minor][c9fbef651f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9fbef651f):
+
+  Add Group as a new Option
+
+## 4.0.23
+
+### Patch Changes
+
+- [patch][8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+
+  @atlaskit/avatar has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 4.0.22
 
 ### Patch Changes

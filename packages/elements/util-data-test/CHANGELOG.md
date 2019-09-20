@@ -1,5 +1,21 @@
 # @atlaskit/util-data-test
 
+## 12.11.0
+
+### Minor Changes
+
+- [minor][8b73f10071](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b73f10071):
+
+  fixed emoji CDN urls to ddev and re-enabled VR tests
+
+## 12.10.0
+
+### Minor Changes
+
+- [minor][c9fbef651f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9fbef651f):
+
+  Add Group as a new Option
+
 ## 12.9.6
 
 ### Patch Changes

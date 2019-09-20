@@ -30,6 +30,23 @@ export {
   WithAnalyticsEventsProps,
 } from './withAnalyticsEvents';
 
+// React context
+export {
+  AnalyticsReactContext,
+  AnalyticsReactContextInterface,
+} from './AnalyticsReactContext';
+
+// Hook for creating and firing analytics events
+export {
+  useAnalyticsEvents,
+  UseAnalyticsEventsHook,
+} from './useAnalyticsEvents';
+
+export {
+  useCallbackWithAnalytics,
+  UseCallbackWithAnalyticsHook,
+} from './useCallbackWithAnalytics';
+
 // Helper functions
 export { default as createAndFireEvent } from './createAndFireEvent';
 export { default as cleanProps } from './cleanProps';

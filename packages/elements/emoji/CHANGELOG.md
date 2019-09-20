@@ -1,5 +1,26 @@
 # @atlaskit/emoji
 
+## 62.5.1
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-test-helpers@10.0.0
+
+## 62.5.0
+
+### Minor Changes
+
+- [minor][8b73f10071](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8b73f10071):
+
+  fixed emoji CDN urls to ddev and re-enabled VR tests
+
+## 62.4.1
+
+### Patch Changes
+
+- [patch][c2ffd0a09a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2ffd0a09a):
+
+  ED-7682: Fixes copy and pasting a media based emoji from renderer to editor, provide an ID on the image tag.
+
 ## 62.4.0
 
 ### Minor Changes

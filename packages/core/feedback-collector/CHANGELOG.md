@@ -1,5 +1,19 @@
 # @atlaskit/feedback-collector
 
+## 4.0.15
+
+### Patch Changes
+
+- [patch][2b158873d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b158873d1):
+
+  Add linting rule to prevent unsafe usage of setTimeout within React components.
+
+## 4.0.14
+
+- Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
+  - @atlaskit/navigation-next@6.6.3
+  - @atlaskit/global-navigation@8.0.0
+
 ## 4.0.13
 
 ### Patch Changes

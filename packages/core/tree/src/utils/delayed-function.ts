@@ -1,7 +1,7 @@
 export default class DelayedFunction {
   delay: number;
 
-  timeoutId: number | null = null;
+  timeoutId: number | undefined;
 
   fn?: Function;
 
@@ -11,13 +11,13 @@ export default class DelayedFunction {
 
   start(fn: Function) {
     this.stop();
-    this.timeoutId = setTimeout(fn, this.delay);
+    this.timeoutId = window.setTimeout(fn, this.delay);
   }
 
   stop() {
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
-      this.timeoutId = null;
+      this.timeoutId = undefined;
     }
   }
 }

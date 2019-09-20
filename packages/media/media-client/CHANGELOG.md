@@ -1,5 +1,22 @@
 # @atlaskit/media-client
 
+## 2.2.0
+
+### Minor Changes
+
+- [minor][8e6bce4da8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e6bce4da8):
+
+  New fetchMaxRes parameter for getImage method allows to set default download params (4096 width and height and 'fit' mode)- [minor][d9abdd3030](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9abdd3030):
+
+  Expose url helpers for copy&paste and stringify params
+
+## 2.1.2
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/media-core@30.0.14
+  - @atlaskit/media-test-helpers@25.1.1
+  - @atlaskit/media-card@65.0.0
+
 ## 2.1.1
 
 ### Patch Changes

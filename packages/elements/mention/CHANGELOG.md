@@ -1,5 +1,16 @@
 # @atlaskit/mention
 
+## 18.15.2
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-test-helpers@10.0.0
+
+## 18.15.1
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
 ## 18.15.0
 
 ### Minor Changes

@@ -1,5 +1,29 @@
 # @atlaskit/datetime-picker
 
+## 8.1.0
+
+### Minor Changes
+
+- [minor][e3d466543f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d466543f):
+
+  Add locale support for Calendar/DateTimePicker/DatePicker/TimePicker:
+
+  - New prop `locale` enables localization for date/time format in `DatePicker`, `TimePicker` and
+    `DateTimePicker`, and months/days in `Calendar`.
+  - Deprecated `dateFormat`, `timeFormat` and `formatDisplayLabel` props. Please use `locale` instead. If provided, these
+    props will override `locale`.
+  - Default date/time placeholders now use `locale` to format the date.
+  - The default date parser for `DatePicker` has been changed from `date-fns.parse` to one based on the `locale` prop and
+    accept text in a format that matches the placeholder.
+
+## 8.0.17
+
+### Patch Changes
+
+- [patch][8784191ef6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8784191ef6):
+
+  Date, Time, and DateTime pickers now correctly clear their value when the Backspace or Delete key is pressed
+
 ## 8.0.16
 
 ### Patch Changes

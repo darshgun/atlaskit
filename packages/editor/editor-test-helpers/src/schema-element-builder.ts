@@ -29,7 +29,6 @@ import {
   media,
   mediaSingle,
   mediaGroup,
-  applicationCard,
   em,
   strong,
   code,
@@ -169,10 +168,6 @@ export const pmNodeBuilder: object = {
       collection: 'fakeMediaGroupCol',
     })(),
   ),
-  applicationCard: applicationCard({
-    text: 'fake card',
-    title: { text: 'fake card title' },
-  })(),
   inlineCard: inlineCard({
     url: 'https://product-fabric.atlassian.net/browse/ED-1',
   }),

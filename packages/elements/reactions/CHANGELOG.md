@@ -1,5 +1,11 @@
 # @atlaskit/reactions
 
+## 17.2.1
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/emoji@62.5.1
+  - @atlaskit/editor-test-helpers@10.0.0
+
 ## 17.2.0
 
 ### Minor Changes

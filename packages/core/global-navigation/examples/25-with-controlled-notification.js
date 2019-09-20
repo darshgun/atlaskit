@@ -22,8 +22,18 @@ type GlobalState = {
 class Global extends Component<GlobalProps, GlobalState> {
   state = { isNotificationDrawerOpen: false };
 
+  openTimeoutId: TimeoutID;
+
+  closeTimeoutId: TimeoutID;
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyboardShortcut);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.openTimeoutId);
+    clearTimeout(this.closeTimeoutId);
+    window.removeEventListener('keydown', this.handleKeyboardShortcut);
   }
 
   handleKeyboardShortcut = e => {
@@ -48,15 +58,15 @@ class Global extends Component<GlobalProps, GlobalState> {
   };
 
   openNotificationDrawer = () => {
-    this.setState({ isNotificationDrawerOpen: true }, () =>
-      setTimeout(this.updateIframeUrl, 350),
-    );
+    this.setState({ isNotificationDrawerOpen: true }, () => {
+      this.openTimeoutId = setTimeout(this.updateIframeUrl, 350);
+    });
   };
 
   closeNotificationDrawer = () => {
-    this.setState({ isNotificationDrawerOpen: false }, () =>
-      setTimeout(this.props.resetNotificationCount, 350),
-    );
+    this.setState({ isNotificationDrawerOpen: false }, () => {
+      this.closeTimeoutId = setTimeout(this.props.resetNotificationCount, 350);
+    });
   };
 
   render() {

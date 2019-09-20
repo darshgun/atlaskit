@@ -1,5 +1,58 @@
 ## 0.1.0
 
+## 0.17.4
+
+### Patch Changes
+
+- [patch][22d5dbc2bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22d5dbc2bb):
+
+  fixed CSS issue of the ArticleListItem icons
+
+## 0.17.3
+
+### Patch Changes
+
+- [patch][c0c49e4c2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0c49e4c2b):
+
+  CSS fixes + added link icon to ArticleListItem
+
+## 0.17.2
+
+### Patch Changes
+
+- [patch][a171dec505](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a171dec505):
+
+  fix onWasHelpfulNoButtonClick prop
+
+## 0.17.1
+
+- Updated dependencies [617591dd61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617591dd61):
+  - @atlaskit/right-side-panel@0.2.0
+
+## 0.17.0
+
+### Minor Changes
+
+- [minor][67bb0eb7da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67bb0eb7da):
+
+  Added articleIdSetter prop and updated the article navigation logic
+
+## 0.16.1
+
+### Patch Changes
+
+- [patch][dbd5ab6c91](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd5ab6c91):
+
+  Added href prop to ArticleListComponent
+
+## 0.16.0
+
+### Minor Changes
+
+- [minor][23349602c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23349602c7):
+
+  Added Footer and fixed CSS issues
+
 ## 0.15.0
 
 ### Minor Changes

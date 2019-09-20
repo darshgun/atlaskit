@@ -3,7 +3,7 @@ import { XMLHttpRequest } from 'xmlhttprequest';
 import 'jest-styled-components';
 import { toMatchSnapshot } from 'jest-snapshot';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
-import { createSerializer } from 'jest-emotion';
+import { createSerializer, matchers } from 'jest-emotion';
 import 'jest-localstorage-mock';
 import ScreenshotReporter from './build/visual-regression/utils/screenshotReporter';
 import { cleanup } from '@testing-library/react';
@@ -178,6 +178,13 @@ const removeIdsFromDoc = transformDoc(node => {
       replacedNode.attrs.__key = node.attrs.__key.replace(
         /(temporary:)?([a-z0-9\-]+)(:.*)?$/,
         '$11234-5678-abcd-efgh$3',
+      );
+    }
+
+    if (node.attrs.occurrenceKey) {
+      replacedNode.attrs.occurrenceKey = node.attrs.occurrenceKey.replace(
+        /([a-z0-9\-]+)(:.*)?$/,
+        '12345678-9abc-def0-1234-56789abcdef0$2',
       );
     }
 
@@ -409,6 +416,7 @@ expect.extend({
     this.currentTestName = oldTestName;
     return ret;
   },
+  toHaveStyleDeclaration: matchers.toHaveStyleRule,
 });
 
 // Copied from react-beautiful-dnd/test/setup.js
@@ -450,7 +458,6 @@ if (process.env.CI) {
     console.warn = jest.fn();
     console.log = jest.fn();
   });
-
   afterEach(() => {
     console.error = consoleError;
     console.warn = consoleWarn;
