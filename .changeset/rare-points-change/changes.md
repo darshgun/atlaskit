@@ -1,1 +1,0 @@
-Updated placeholder and error text for groups
