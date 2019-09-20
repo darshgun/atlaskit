@@ -9,11 +9,15 @@ declare module '@atlaskit/analytics-next' {
   declare module.exports: any;
 }
 
-declare module '@atlaskit/atlassian-switcher' {
+declare module '@atlaskit/atlassian-navigation' {
   declare module.exports: any;
 }
 
-declare module '@atlaskit/atlassian-navigation' {
+declare module '@atlaskit/atlassian-navigation/skeleton' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/atlassian-switcher' {
   declare module.exports: any;
 }
 
