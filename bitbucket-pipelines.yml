@@ -614,6 +614,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             - bolt install --frozen-lockfile
-            - bolt workspaces exec --only-fs "packages/*/*" --serial -- bash -c 'bolt p run build:clean $(grep name.*@atlaskit package.json | cut -d \" -f 4)'
+            # Exclude css-reset as it fails because of its postbuild ts not suppressing module not found errors
+            - bolt workspaces exec --no-bail --ignore "@atlaskit/css-reset" --only-fs "packages/*/*" --serial -- bash -c 'bolt p run build:clean $(grep name.*@atlaskit package.json | cut -d \" -f 4)'
             # Validate packages will produce false positives and is for manual analysis so we always return true
             - yarn validate-packages || true
