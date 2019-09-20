@@ -69,11 +69,8 @@ export default class MediaSingleNode extends Component<
   UNSAFE_componentWillReceiveProps(nextProps: MediaSingleNodeProps) {
     if (nextProps.mediaProvider !== this.props.mediaProvider) {
       this.setViewMediaClientConfig(nextProps);
+      this.createMediaNodeUpdater(nextProps).updateFileAttrs();
     }
-
-    // We need to call this method on any prop change since attrs can get removed with collab editing
-    // the method internally checks if we already have all attrs
-    this.createMediaNodeUpdater(nextProps).updateFileAttrs();
   }
 
   setViewMediaClientConfig = async (props: MediaSingleNodeProps) => {
