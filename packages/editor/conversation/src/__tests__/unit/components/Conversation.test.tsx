@@ -7,7 +7,7 @@ import {
 import Conversation from '../../../components/Conversation';
 import Editor from '../../../components/Editor';
 import CommentContainer from '../../../containers/Comment';
-import { AnalyticsEvent } from '../../../internal/analytics';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 const objectId = 'ari:cloud:platform::conversation/demo';
 const { comments } = mockConversation;
@@ -15,7 +15,7 @@ const [user] = MOCK_USERS;
 
 describe('Conversation', () => {
   const defaultProps = {
-    createAnalyticsEvent: (): AnalyticsEvent => ({
+    createAnalyticsEvent: (): UIAnalyticsEvent => ({
       update: () => {},
       fire: () => {},
       attributes: { foo: 'bar' },

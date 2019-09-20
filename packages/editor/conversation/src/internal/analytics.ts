@@ -1,6 +1,8 @@
+import { UIAnalyticsEvent } from '../../../../core/analytics-next/src';
+
 export const ANALYTICS_CHANNEL = 'editor';
 
-export type createAnalyticsEvent = (event: object) => AnalyticsEvent;
+export type createAnalyticsEvent = (event: object) => UIAnalyticsEvent;
 
 export enum trackEventActions {
   created = 'created',
@@ -47,14 +49,14 @@ export type EventData = {
 };
 
 export function fireEvent(
-  analyticsEvent: AnalyticsEvent,
+  analyticsEvent: UIAnalyticsEvent,
   eventData: EventData,
 ) {
   analyticsEvent.update({
     ...eventData,
     eventType: eventData.eventType || eventTypes.UI,
     attributes: {
-      ...analyticsEvent.attributes,
+      ...analyticsEvent,
       ...eventData.attributes,
     },
   });
