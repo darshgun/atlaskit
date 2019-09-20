@@ -35,6 +35,7 @@ import {
 } from '@atlaskit/editor-core';
 
 import WebBridgeImpl from '../../../../editor/native-to-web';
+import { defaultPadding } from '../../../../web-bridge';
 
 describe('general', () => {
   const bridge: any = new WebBridgeImpl();
@@ -331,5 +332,33 @@ describe('content should work', () => {
   it('should clear content', () => {
     bridge.clearContent();
     expect(clearEditorContent).toHaveBeenCalled();
+  });
+});
+
+describe('styling', () => {
+  let bridge: any;
+  let mockRootEl: { style: Partial<CSSStyleDeclaration> };
+
+  beforeEach(() => {
+    bridge = new WebBridgeImpl();
+    mockRootEl = {
+      style: {
+        padding: 'auto',
+        margin: 'auto',
+      },
+    };
+    jest.spyOn(bridge, 'getRootElement').mockReturnValue(mockRootEl);
+    bridge.setPadding(...defaultPadding);
+  });
+
+  it('sets padding', () => {
+    const expectedPadding = defaultPadding.map(p => `${p}px`).join(' ');
+    expect(mockRootEl.style.padding).toBe(expectedPadding);
+  });
+
+  // Setting margin causes a bug in Android Recycled View where the height grows
+  // indefinitely https://product-fabric.atlassian.net/browse/FM-2472
+  it('does not set margin', () => {
+    expect(mockRootEl.style.margin).toBe('auto');
   });
 });
