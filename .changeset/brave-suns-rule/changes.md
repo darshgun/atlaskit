@@ -1,0 +1,1 @@
+Bumping devDeps for new atlassian-nav component
