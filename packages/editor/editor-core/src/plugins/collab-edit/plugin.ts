@@ -77,7 +77,8 @@ export const createPlugin = (
         if (
           collabEditProvider &&
           tr.getMeta('isRemote') !== true &&
-          !(pmTablesMeta && pmTablesMeta.fixTables)
+          !(pmTablesMeta && pmTablesMeta.fixTables) &&
+          pluginState.isReady
         ) {
           collabEditProvider.send(tr, oldState, newState);
         }
