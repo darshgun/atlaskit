@@ -1,1 +1,0 @@
-Fixes the title size of the Atlaskit documentation messages.

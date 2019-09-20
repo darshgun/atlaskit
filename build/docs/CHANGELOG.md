@@ -1,5 +1,13 @@
 # @atlaskit/docs
 
+## 8.1.6
+
+### Patch Changes
+
+- [patch][556c413643](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/556c413643):
+
+  Fixes the title size of the Atlaskit documentation messages.
+
 ## 8.1.5
 
 ### Patch Changes
