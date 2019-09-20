@@ -1,0 +1,1 @@
+Add a fully instrumented example of atlassian-navigation using @atlaskit/analytics-next
