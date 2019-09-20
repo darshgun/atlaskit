@@ -9,10 +9,15 @@ export type ButtonCSSProperties = CSSProperties & {
   boxShadow: string;
 };
 
+export type ButtonFocusCSSProperties = {
+  boxShadow: string;
+  color: string;
+};
+
 export type ButtonCSSContext = {
   default: ButtonCSSProperties;
   hover: ButtonCSSProperties;
-  focus: ButtonCSSProperties;
+  focus: ButtonFocusCSSProperties;
   active: ButtonCSSProperties;
 };
 
