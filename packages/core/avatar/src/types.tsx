@@ -87,4 +87,5 @@ export interface AvatarPropTypes
   label?: string;
   className?: string;
   groupAppearance?: string;
+  testId?: string;
 }

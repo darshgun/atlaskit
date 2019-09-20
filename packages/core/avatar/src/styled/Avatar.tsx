@@ -4,6 +4,7 @@ import { Theme } from '../theme';
 import { SizeType, AppearanceType } from '../types';
 
 interface AvatarProps {
+  testId?: string;
   size: SizeType;
   children: ReactNode;
   stackIndex?: number;
@@ -14,6 +15,7 @@ const Avatar: FC<AvatarProps> = props => (
     {({ dimensions }) => {
       return (
         <div
+          data-testid={props.testId}
           style={{
             display: 'inline-block',
             position: 'relative',
