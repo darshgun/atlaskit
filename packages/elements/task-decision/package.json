@@ -26,13 +26,10 @@
     "uuid": "^3.1.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [
-    "Craig P",
-    "Oscar W"
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "Task Decision",
-    "team": "elements"
+    "team": "editor"
   },
   "license": "Apache-2.0",
   "peerDependencies": {

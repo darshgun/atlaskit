@@ -19,11 +19,11 @@
     "ui",
     "share",
     "fabric",
-    "elements"
+    "teams"
   ],
   "atlaskit": {
     "name": "Share",
-    "team": "elements"
+    "team": "teams"
   },
   "dependencies": {
     "@atlaskit/analytics-next": "^6.0.3",
