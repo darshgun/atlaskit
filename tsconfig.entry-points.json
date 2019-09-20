@@ -111,6 +111,10 @@
         "../../core/analytics-next/src/useAnalyticsEvents",
         "./packages/core/analytics-next/src/useAnalyticsEvents"
       ],
+      "@atlaskit/analytics-next/useCallbackWithAnalytics": [
+        "../../core/analytics-next/src/useCallbackWithAnalytics",
+        "./packages/core/analytics-next/src/useCallbackWithAnalytics"
+      ],
       "@atlaskit/analytics-next/usePatchedProps": [
         "../../core/analytics-next/src/usePatchedProps",
         "./packages/core/analytics-next/src/usePatchedProps"
@@ -682,6 +686,10 @@
       "@atlaskit/popup/useFocusManager": [
         "../../core/popup/src/useFocusManager",
         "./packages/core/popup/src/useFocusManager"
+      ],
+      "@atlaskit/portal/constants": [
+        "../../core/portal/src/constants",
+        "./packages/core/portal/src/constants"
       ],
       "@atlaskit/portal": [
         "../../core/portal/src/",
@@ -1415,6 +1423,10 @@
         "../../editor/renderer/src/",
         "./packages/editor/renderer/src/"
       ],
+      "@atlaskit/renderer/messages": [
+        "../../editor/renderer/src/messages",
+        "./packages/editor/renderer/src/messages"
+      ],
       "@atlaskit/renderer/render-document": [
         "../../editor/renderer/src/render-document",
         "./packages/editor/renderer/src/render-document"
@@ -2107,9 +2119,29 @@
         "../../monorepo-tooling/dependency-version-analytics/src/types",
         "./packages/monorepo-tooling/dependency-version-analytics/src/types"
       ],
-      "@atlaskit/app-navigation": [
-        "../../navigation/app-navigation/src/",
-        "./packages/navigation/app-navigation/src/"
+      "@atlaskit/atlassian-navigation": [
+        "../../navigation/atlassian-navigation/src/",
+        "./packages/navigation/atlassian-navigation/src/"
+      ],
+      "@atlaskit/atlassian-notifications": [
+        "../../navigation/atlassian-notifications/src/",
+        "./packages/navigation/atlassian-notifications/src/"
+      ],
+      "@atlaskit/atlassian-notifications/Notifications": [
+        "../../navigation/atlassian-notifications/src/Notifications",
+        "./packages/navigation/atlassian-notifications/src/Notifications"
+      ],
+      "@atlaskit/atlassian-notifications/styles": [
+        "../../navigation/atlassian-notifications/src/styles",
+        "./packages/navigation/atlassian-notifications/src/styles"
+      ],
+      "@atlaskit/atlassian-notifications/types": [
+        "../../navigation/atlassian-notifications/src/types",
+        "./packages/navigation/atlassian-notifications/src/types"
+      ],
+      "@atlaskit/atlassian-notifications/utils": [
+        "../../navigation/atlassian-notifications/src/utils",
+        "./packages/navigation/atlassian-notifications/src/utils"
       ],
       "@atlaskit/atlassian-switcher/create-custom-provider": [
         "../../navigation/atlassian-switcher/src/create-custom-provider",
