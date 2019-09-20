@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.4.3
+
+### Patch Changes
+
+- [patch][6a82fd06ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a82fd06ab):
+
+  Render tooltip only when supplied, and fix button focus background color
+
 ## 0.4.2
 
 ### Patch Changes
