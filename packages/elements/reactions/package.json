@@ -32,26 +32,10 @@
     "react-intl": "^2.6.0"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    {
-      "name": "Eduardo S"
-    },
-    {
-      "name": "Julien H"
-    },
-    {
-      "name": "Paul C"
-    },
-    {
-      "name": "Sylvain G"
-    },
-    {
-      "name": "Tara T"
-    }
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "Reactions",
-    "team": "elements"
+    "team": "teams"
   },
   "license": "Apache-2.0",
   "devDependencies": {

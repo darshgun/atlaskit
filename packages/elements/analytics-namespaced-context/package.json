@@ -17,9 +17,7 @@
     "react": "^16.8.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [
-    "Eduardo S"
-  ],
+  "maintainers": [],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -35,7 +33,7 @@
   "atlaskit": {
     "internal": true,
     "name": "Analytics Namespaced Context",
-    "team": "elements"
+    "team": "teams"
   },
   "keywords": [
     "fabric",

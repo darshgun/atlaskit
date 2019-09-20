@@ -1,5 +1,13 @@
 # @atlaskit/media-ui
 
+## 11.6.6
+
+### Patch Changes
+
+- [patch][a6a0cb78a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6a0cb78a6):
+
+  change white color to N0 import from theme
+
 ## 11.6.5
 
 ### Patch Changes
