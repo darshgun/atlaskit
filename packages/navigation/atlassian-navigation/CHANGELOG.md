@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.4.4
+
+### Patch Changes
+
+- [patch][c24724add6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c24724add6):
+
+  Update entry points and exports
+
 ## 0.4.3
 
 ### Patch Changes
