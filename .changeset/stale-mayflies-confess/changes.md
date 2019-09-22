@@ -1,0 +1,1 @@
+1. Change Discover more label to More Atlassian Products 2. Change Browse apps label to Browse Marketplace apps
