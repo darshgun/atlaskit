@@ -73,7 +73,7 @@ const messages = defineMessages({
   },
   browseApps: {
     id: 'fabric.atlassianSwitcher.browseApps',
-    defaultMessage: 'Browse marketplace apps',
+    defaultMessage: 'Browse Marketplace apps',
     description:
       'The text of a link redirecting the user to Discover Embedded Marketplace within in the product',
   },
