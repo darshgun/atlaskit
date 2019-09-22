@@ -1,5 +1,13 @@
 # @atlaskit/form
 
+## 6.2.2
+
+### Patch Changes
+
+- [patch][2deee10c17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2deee10c17):
+
+  Bugfix - DS-6661 - The componentWillUnmount method is not overridden properly in Form component as it has been misspelled as 'componenWillUnmount'.
+
 ## 6.2.1
 
 ### Patch Changes
