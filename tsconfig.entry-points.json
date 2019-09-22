@@ -2123,6 +2123,10 @@
         "../../navigation/atlassian-navigation/src/",
         "./packages/navigation/atlassian-navigation/src/"
       ],
+      "@atlaskit/atlassian-navigation/skeleton": [
+        "../../navigation/atlassian-navigation/src/skeleton",
+        "./packages/navigation/atlassian-navigation/src/skeleton"
+      ],
       "@atlaskit/atlassian-notifications": [
         "../../navigation/atlassian-notifications/src/",
         "./packages/navigation/atlassian-notifications/src/"
