@@ -33,7 +33,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "id": "fabric.atlassianSwitcher.administration",
           },
           "browseApps": Object {
-            "defaultMessage": "Browse apps",
+            "defaultMessage": "Browse Marketplace apps",
             "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product",
             "id": "fabric.atlassianSwitcher.browseApps",
           },
@@ -43,7 +43,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "id": "fabric.atlassianSwitcher.confluenceSpace",
           },
           "discoverMore": Object {
-            "defaultMessage": "Discover more",
+            "defaultMessage": "More Atlassian products",
             "description": "The text of a link redirecting the user to Discover More Atlassian products",
             "id": "fabric.atlassianSwitcher.discoverMore",
           },
@@ -147,7 +147,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "id": "fabric.atlassianSwitcher.administration",
             },
             "browseApps": Object {
-              "defaultMessage": "Browse apps",
+              "defaultMessage": "Browse Marketplace apps",
               "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product",
               "id": "fabric.atlassianSwitcher.browseApps",
             },
@@ -157,7 +157,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "id": "fabric.atlassianSwitcher.confluenceSpace",
             },
             "discoverMore": Object {
-              "defaultMessage": "Discover more",
+              "defaultMessage": "More Atlassian products",
               "description": "The text of a link redirecting the user to Discover More Atlassian products",
               "id": "fabric.atlassianSwitcher.discoverMore",
             },

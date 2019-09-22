@@ -67,13 +67,13 @@ const messages = defineMessages({
   },
   discoverMore: {
     id: 'fabric.atlassianSwitcher.discoverMore',
-    defaultMessage: 'Discover more',
+    defaultMessage: 'More Atlassian products',
     description:
       'The text of a link redirecting the user to Discover More Atlassian products',
   },
   browseApps: {
     id: 'fabric.atlassianSwitcher.browseApps',
-    defaultMessage: 'Browse apps',
+    defaultMessage: 'Browse marketplace apps',
     description:
       'The text of a link redirecting the user to Discover Embedded Marketplace within in the product',
   },
