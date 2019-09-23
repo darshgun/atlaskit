@@ -10,7 +10,6 @@ export default () => (
         size="xxlarge"
         testId="myAvatar"
         onClick={() => alert('Avatar has been clicked!')}
-        lick
       />
     </Block>
   </div>
