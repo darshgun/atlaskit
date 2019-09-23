@@ -15,7 +15,6 @@ import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import MenuExpandIcon from '@atlaskit/icon/glyph/menu-expand';
 import Tooltip from '@atlaskit/tooltip';
-import { layers } from '@atlaskit/theme/constants';
 
 import { navigationExpandedCollapsed } from '../../../common/analytics';
 import {
@@ -55,7 +54,7 @@ const Outer = (props: *) => (
       top: 0,
       transform: 'translateZ(0)',
       width: OUTER_WIDTH,
-      zIndex: layers.navigation() + 1,
+      zIndex: 3, // higher than the scroll hint lines
     }}
     {...props}
   />
