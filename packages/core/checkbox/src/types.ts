@@ -15,17 +15,19 @@ export type DefaultsType = {
   Label: {
     component: React.ComponentType<LabelProps>;
     cssFn: (state: LabelCSSProps) => CSSObject;
-    attributesFn: (props: Record<string, any>) => Record<string, any>;
+    attributesFn: (props: { isDisabled?: boolean }) => Record<string, any>;
   };
   LabelText: {
     component: React.ComponentType<LabelTextProps>;
     cssFn: (state: { tokens: ThemeTokens }) => CSSObject;
-    attributesFn: (props: { [key: string]: any }) => any;
+    attributesFn: () => Record<string, any>;
   };
   IconWrapper: {
     component: React.ComponentType<IconWrapperProps>;
     cssFn: (props: IconWrapperProps) => CSSObject;
-    attributesFn: (props: Record<string, any>) => Record<string, any>;
+    attributesFn: (
+      props: Partial<StripOverrides<IconWrapperProps>>,
+    ) => Record<string, any>;
   };
   Icon: {
     component: React.ComponentType<any>;
@@ -35,7 +37,7 @@ export type DefaultsType = {
   };
   HiddenCheckbox: {
     attributesFn: (
-      props: { disabled: boolean; checked: boolean; required: boolean },
+      props: { disabled?: boolean; checked?: boolean; required?: boolean },
     ) => Record<string, any>;
   };
 };
@@ -44,7 +46,7 @@ export type OverridesType = {
   Label?: {
     component?: React.ComponentType<LabelProps>;
     cssFn?: (defaultStyles: CSSObject, state: LabelCSSProps) => CSSObject;
-    attributesFn?: (props: Record<string, any>) => Record<string, any>;
+    attributesFn?: (props: { isDisabled?: boolean }) => Record<string, any>;
   };
   LabelText?: {
     component?: React.ComponentType<LabelTextProps>;
@@ -52,12 +54,14 @@ export type OverridesType = {
       defaultStyles: CSSObject,
       state: { tokens: ThemeTokens },
     ) => CSSObject;
-    attributesFn?: (props: Record<string, any>) => Record<string, any>;
+    attributesFn?: () => Record<string, any>;
   };
   IconWrapper?: {
     component?: React.ComponentType<IconWrapperProps>;
     cssFn?: (defaultStyles: CSSObject, props: IconWrapperCSSProps) => CSSObject;
-    attributesFn?: (props: Record<string, any>) => Record<string, any>;
+    attributesFn?: (
+      props: Partial<StripOverrides<IconWrapperProps>>,
+    ) => Record<string, any>;
   };
   Icon?: {
     component?: React.ComponentType<any>;
@@ -67,7 +71,7 @@ export type OverridesType = {
   };
   HiddenCheckbox?: {
     attributesFn?: (
-      props: { disabled: boolean; checked: boolean; required: boolean },
+      props: { disabled?: boolean; checked?: boolean; required?: boolean },
     ) => Record<string, any>;
   };
 };
@@ -346,7 +350,7 @@ export interface ThemeProps {
  */
 
 export interface LabelTextProps extends React.HTMLProps<HTMLSpanElement> {
-  attributesFn: (props: Record<string, any>) => Record<string, any>;
+  attributesFn: () => Record<string, any>;
   cssFn: (props: { tokens: ThemeTokens }) => CSSObject;
   tokens: ThemeTokens;
   children: React.ReactNode;
@@ -356,19 +360,26 @@ export interface LabelTextCSSProps {
   tokens: ThemeTokens;
 }
 
+type StripOverrides<P extends Record<string, any>> = Pick<
+  P,
+  Exclude<keyof P, 'cssfn' | 'attributesFn'>
+>;
+
 export interface LabelProps extends React.HTMLProps<HTMLInputElement> {
+  attributesFn: (props: { isDisabled?: boolean }) => Record<string, any>;
+  cssFn: (props: LabelCSSProps) => CSSObject;
   onMouseUp: React.MouseEventHandler;
   onMouseDown: React.MouseEventHandler;
   onMouseEnter: React.MouseEventHandler;
   onMouseLeave: React.MouseEventHandler;
-  attributesFn: (props: Record<string, any>) => Record<string, any>;
-  cssFn: (props: LabelCSSProps) => CSSObject;
   isDisabled?: boolean;
   tokens: ThemeTokens;
 }
 
 export interface IconWrapperProps extends React.HTMLProps<HTMLLabelElement> {
-  attributesFn: (props: Record<string, any>) => any;
+  attributesFn: (
+    props: Partial<StripOverrides<IconWrapperProps>>,
+  ) => Record<string, any>;
   cssFn: (
     props: Pick<IconWrapperProps, Exclude<keyof IconWrapperCSSProps, 'cssFn'>>,
   ) => CSSObject;

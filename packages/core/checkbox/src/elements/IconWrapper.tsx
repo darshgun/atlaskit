@@ -145,7 +145,9 @@ export function IconWrapper({
   children,
   ...props
 }: IconWrapperProps) {
-  return <span css={cssFn(props)} {...attributesFn({})} children={children} />;
+  return (
+    <span css={cssFn(props)} {...attributesFn(props)} children={children} />
+  );
 }
 
 export default {

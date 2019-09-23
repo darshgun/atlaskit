@@ -25,7 +25,7 @@ export function Label({
 }: LabelProps) {
   return (
     <label
-      {...attributesFn({})}
+      {...attributesFn({ isDisabled })}
       onMouseUp={onMouseUp}
       onMouseDown={onMouseDown}
       onMouseLeave={onMouseLeave}

@@ -1,5 +1,5 @@
 export const defaultAttributesFn = <T extends Record<string, any>>(
-  p: T,
+  p?: T,
 ): Record<string, any> => ({});
 
 type OverridesFunc<
