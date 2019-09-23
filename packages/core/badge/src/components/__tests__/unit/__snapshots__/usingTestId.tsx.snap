@@ -49,7 +49,7 @@ Array [
 ]
 `;
 
-exports[`Using react-test-library Button should be found by data-testid Using container snapshot 1`] = `
+exports[`Using react-test-library Badge should be found by data-testid Using container snapshot 1`] = `
 <div>
   <span
     class="sc-htpNat kZCqmS"
