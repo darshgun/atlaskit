@@ -214,8 +214,8 @@ type TokenValue = ModeValue | string;
 export interface ComponentTokens {
   label?: {
     textColor?: {
-      rest: TokenValue;
-      disabled: TokenValue;
+      rest?: TokenValue;
+      disabled?: TokenValue;
     };
     spacing?: {
       bottom?: TokenValue;

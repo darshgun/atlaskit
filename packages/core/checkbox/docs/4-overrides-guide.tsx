@@ -3,19 +3,20 @@ import { md, Example, code } from '@atlaskit/docs';
 
 export default md`
 The overrides prop is an escape hatch for more granular customisation of the checkbox component. 
-The shape of this prop is more or less 
+The prop is an object comprised of properties corresponding to specific customisable components in @atlaskit/checkbox.
+Each of these properties are an object of one or more of the following properties:
 
-${code`
-overrides = {
-  [OverrideableComponent]: {
-    component: React.ComponentType<ComponentProps>
-    cssFn: (defaultStyles, state) => CSSObject
-    attributesFn: (props) => Record<string, any> 
-  }
-}
-`}
+${code`{
+  component: React.ComponentType
+  // state here is any additional state the provided by the component
+  cssFn: (defaultStyles, { tokens, ...state }) => CSSObject
+  // props here are any dynamic values that the component passes down that might affect the returned attributes object
+  attributesFn: (props: Record<string, any>) => Record<string, any>
+}`}
 
-For a more detailed look at the shape of this prop, please see the prop documentation at the [bottom of the page]();
+For a more detailed look at the shape of this prop for \`<Checkbox/>\` and \`<CheckboxIcon/>\` please see the [prop documentation](/0-intro);
+The goal of this prop is to provide a way for users to unlock targeted customisations of key components in the @atlaskit/checkbox package,
+without having to shoulder unecessary complexity. 
 
 ## Customising components using the \`overrides\` prop
 There may be scenarios where neither \`style\` customisation, nor \`theme\` customisations will be enough 
@@ -89,5 +90,4 @@ ${(
     source={require('!!raw-loader!../examples/11-custom-styles')}
   />
 )}
-
 `;

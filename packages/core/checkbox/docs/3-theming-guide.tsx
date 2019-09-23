@@ -3,17 +3,6 @@ import { md, Example, code } from '@atlaskit/docs';
 import SectionMessage from '@atlaskit/section-message';
 
 export default md`
-${(
-  <SectionMessage title="Deprecated Component" appearance="info">
-    {md`
-      **\`Checkbox 10.0\`** introduces theming to Checkbox through two new props – \`theme\` and \`style\`.
-
-      - **\`theme\`** allows you to override the internal **component tokens** of Checkbox to make **easy appearance changes** .
-      - **\`overrides\`** provides more control, allowing you to apply **custom CSS** to certain internal components inside of Checkbox _after_ the component tokens are used to style them.
-    `}
-  </SectionMessage>
-)}
-
 ## ✨ Component Tokens ✨
 **\`Checkbox\`** now uses *component tokens* as a method of storing and applying styles to a component.
 All values used in styling the component are stored in a *single object*, split up at the top level into subcomponents.
