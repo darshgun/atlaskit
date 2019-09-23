@@ -32,6 +32,8 @@ export interface BreadcrumbsStatelessProps extends WithAnalyticsEventsProps {
   itemsBeforeCollapse?: number;
   /** If max items is exceeded, the number of items to show after the ellipsis */
   itemsAfterCollapse?: number;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 class BreadcrumbsStateless extends React.Component<
@@ -55,7 +57,7 @@ class BreadcrumbsStateless extends React.Component<
   }
 
   renderItemsBeforeAndAfter() {
-    const { itemsBeforeCollapse, itemsAfterCollapse } = this.props;
+    const { itemsBeforeCollapse, itemsAfterCollapse, testId } = this.props;
 
     // Not a chance this will trigger, but TS is complaining about items* possibly being undefined.
     if (itemsBeforeCollapse === undefined || itemsAfterCollapse === undefined) {
@@ -80,6 +82,7 @@ class BreadcrumbsStateless extends React.Component<
       <EllipsisItem
         hasSeparator={itemsAfterCollapse > 0}
         key="ellipsis"
+        testId={`${testId}--breadcrumb-ellipsis`}
         onClick={this.props.onExpand}
       />,
       ...afterItems,
