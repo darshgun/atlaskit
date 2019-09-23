@@ -17,7 +17,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             fileName: item.name,
             fileSize: item.size,
             accountId: item.accountId,
-            provider: item.serviceName || 'unknown',
+            provider: item.serviceName,
           }))
         : [];
 
@@ -28,9 +28,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
         attributes: {
           ...(selectedItems.length > 0
             ? {
-                provider:
-                  (selectedItems[0] && selectedItems[0].serviceName) ||
-                  'unknown',
+                providers: selectedItems.map(i => i.serviceName),
               }
             : {}),
           fileCount: selectedItems.length,

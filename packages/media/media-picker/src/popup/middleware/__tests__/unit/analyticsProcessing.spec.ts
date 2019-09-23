@@ -262,7 +262,7 @@ describe('analyticsProcessing middleware', () => {
         attributes: {
           fileCount: 1,
           ...attributes,
-          provider: 'upload',
+          providers: ['upload'],
           files: [
             {
               accountId: undefined,
@@ -299,7 +299,7 @@ describe('analyticsProcessing middleware', () => {
         attributes: {
           ...attributes,
           fileCount: 2,
-          provider: 'upload',
+          providers: ['upload', 'upload'],
           files: [
             {
               accountId: undefined,
