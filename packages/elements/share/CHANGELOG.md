@@ -1,5 +1,13 @@
 # @atlaskit/share
 
+## 0.6.9
+
+### Patch Changes
+
+- [patch][5277ce70fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5277ce70fd):
+
+  Updated placeholder and error text for groups
+
 ## 0.6.8
 
 - Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):

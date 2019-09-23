@@ -13,7 +13,7 @@ declare module '@atlaskit/atlassian-switcher' {
   declare module.exports: any;
 }
 
-declare module '@atlaskit/app-navigation' {
+declare module '@atlaskit/atlassian-navigation' {
   declare module.exports: any;
 }
 

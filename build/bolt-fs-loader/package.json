@@ -1,9 +1,9 @@
 {
   "name": "bolt-fs-loader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "dependencies": {
-    "bolt": "^0.24.0",
+    "bolt": "^0.24.1",
     "globby": "^6.1.0",
     "loader-utils": "^1.1.0"
   }

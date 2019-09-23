@@ -9,7 +9,7 @@ import {
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import { ResultsGroup } from '../../model/Result';
 import { Scope } from '../../api/types';
-import { CancelableEvent } from '../../../../quick-search';
+import { CancelableEvent } from '@atlaskit/quick-search';
 
 export enum ResultGroupType {
   PreQuery = 'PreQuery',

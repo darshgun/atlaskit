@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/docs",
-  "version": "8.1.5",
+  "version": "8.1.6",
   "description": "Utilities for building documentation",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",

@@ -1,5 +1,5 @@
 import { name } from '../../../../version.json';
-import { createSchema } from '../../../../..';
+import { createSchema } from '../../../../schema/create-schema';
 import { toHTML, fromHTML, textWithMarks } from '../../../../../test-helpers';
 import { Node } from 'prosemirror-model';
 

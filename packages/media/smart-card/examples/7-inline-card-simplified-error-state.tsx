@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { Card, Client, Provider, ResolveResponse } from '..';
+import { Card, Client, Provider, ResolveResponse } from '../src';
 
 class UnAuthCustomClient extends Client {
   fetchData(): Promise<ResolveResponse> {

@@ -2,7 +2,7 @@ import {
   getExampleUrl,
   pageSelector,
 } from '@atlaskit/visual-regression/helper';
-import { sleep } from '../../../../media-test-helpers';
+import { sleep } from '@atlaskit/media-test-helpers';
 
 describe('Media Viewer Navigation', () => {
   const url = getExampleUrl(

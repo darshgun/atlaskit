@@ -13,7 +13,7 @@ import {
 } from '../../../../plugins/media/pm-plugins/main';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import PickerFacade from '../../../../plugins/media/picker-facade';
-import { MediaFile } from '../../../../../../../media/media-picker';
+import { MediaFile } from '@atlaskit/media-picker';
 import {
   imagePreview,
   imageFile,

@@ -49,6 +49,8 @@ export interface StatelessProps extends WithAnalyticsEventsProps {
   onRankStart?: (rankStart: RankStart) => void;
   onRankEnd?: (rankEnd: RankEnd, uiAnalyticsEvent?: UIAnalyticsEvent) => void;
   paginationi18n?: I18nShape;
+  /** It highlights the passed row number on the current visible page. Starts with 0 */
+  highlightedRowIndex?: number;
 }
 
 export interface StatefulProps extends WithAnalyticsEventsProps {
@@ -74,6 +76,7 @@ export interface StatefulProps extends WithAnalyticsEventsProps {
   onRankStart?: (rankStart: RankStart) => void;
   onRankEnd?: (rankEnd: RankEnd) => void;
   paginationi18n?: I18nShape;
+  highlightedRowIndex?: number;
 }
 
 export type RowType = {

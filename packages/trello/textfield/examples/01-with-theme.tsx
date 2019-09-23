@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TextField, { colors, TextFieldThemeProps } from '..';
+import TextField, { colors, TextFieldThemeProps } from '../src';
 
 export default function() {
   const skyBlueTheme = (props: TextFieldThemeProps) => {

@@ -31,13 +31,24 @@ export const Section = styled.div`
   min-height: 0;
 `;
 
-export const HelpBody = styled.div`
-  padding: ${gridSize() * 2}px ${gridSize() * 3}px ${gridSize() * 2}px
-    ${gridSize() * 3}px;
+type HelpBodyProps = {
+  isArticleVisible?: boolean;
+};
+
+export const HelpBody = styled.div<HelpBodyProps>`
   flex-grow: 1;
   overflow: auto;
   min-height: 0;
   position: relative;
+`;
+
+type DefaultContentProps = {
+  isArticleVisible?: boolean;
+};
+
+export const DefaultContent = styled.div<DefaultContentProps>`
+  height: ${props => (props.isArticleVisible ? '100%' : 'auto')};
+  overflow: auto;
 `;
 
 const FOOTER_BORDER_TOP = 2;
