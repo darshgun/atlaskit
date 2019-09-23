@@ -24,7 +24,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
     const serviceNames =
       selectedItems.length > 0
         ? {
-            providers: selectedItems.map(i => i.serviceName),
+            serviceNames: selectedItems.map(i => i.serviceName),
           }
         : {};
 
