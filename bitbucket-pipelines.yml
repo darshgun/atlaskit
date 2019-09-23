@@ -58,8 +58,11 @@ pipelines:
               - mkdir -p dists/
               - node build/ci-scripts/branch-deploys/copy.built.tgzs.to.dists.dir.js
               - for file in dists/*; do node build/ci-scripts/upload.build.artefact.for.commit.js $file dists/; done
+              # CHANGESETS V2 FOR RELEASE ADDON
+              - yarn changesets status --output=OUTPUT.json
             artifacts:
               - dists/manifest.json
+              - OUTPUT.json
             after-script:
               - yarn send:stepFailureEvents
             caches:
