@@ -53,6 +53,8 @@ const {
   destinationhash,
 } = queryString.parse(window.location.search);
 
+// CHECK VERSION OF CHANGESETS
+
 // Only retrieve one type of changesets. Legacy commit changesets are only supported in repos
 // defined in config.js
 const changesetPromise =
