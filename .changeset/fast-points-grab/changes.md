@@ -1,1 +1,0 @@
-Remove the top item variation, set it to current site

@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 3.31.0
+
+### Minor Changes
+
+- [minor][33fc071f60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33fc071f60):
+
+  Remove the top item variation, set it to current site
+
 ## 3.30.1
 
 ### Patch Changes
