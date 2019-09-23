@@ -24,6 +24,8 @@
   "dependencies": {
     "@atlaskit/theme": "^9.2.0",
     "@babel/runtime": "^7.0.0",
+    "@testing-library/react": "^8.0.1",
+    "jest-in-case": "^1.0.2",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {
