@@ -45,6 +45,7 @@ export interface ConstructorParams {
   allowHeadingAnchorLinks?: boolean;
   allowColumnSorting?: boolean;
   fireAnalyticsEvent?: (event: AnalyticsEventPayload) => void;
+  shouldOpenMediaViewer?: boolean;
 }
 
 type MarkWithContent = Partial<Mark<any>> & {
@@ -89,6 +90,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private allowHeadingAnchorLinks?: boolean;
   private allowColumnSorting?: boolean;
   private fireAnalyticsEvent?: (event: AnalyticsEventPayload) => void;
+  private shouldOpenMediaViewer?: boolean;
 
   constructor({
     providers,
@@ -102,6 +104,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     allowHeadingAnchorLinks,
     allowColumnSorting,
     fireAnalyticsEvent,
+    shouldOpenMediaViewer,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
@@ -114,6 +117,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.allowHeadingAnchorLinks = allowHeadingAnchorLinks;
     this.allowColumnSorting = allowColumnSorting;
     this.fireAnalyticsEvent = fireAnalyticsEvent;
+    this.shouldOpenMediaViewer = shouldOpenMediaViewer;
   }
 
   private resetState() {
@@ -148,6 +152,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           props = this.getHeadingProps(node, parentInfo && parentInfo.path);
         } else if (['tableHeader', 'tableRow'].indexOf(node.type.name) > -1) {
           props = this.getTableChildrenProps(node);
+        } else if (node.type.name === 'media') {
+          props = this.getMediaProps(node);
         } else {
           props = this.getProps(node);
         }
@@ -263,6 +269,12 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return {
       timestamp: node.attrs && node.attrs.timestamp,
       parentIsIncompleteTask: parentInfo && parentInfo.parentIsIncompleteTask,
+    };
+  }
+  private getMediaProps(node: Node) {
+    return {
+      ...this.getProps(node),
+      shouldOpenMediaViewer: this.shouldOpenMediaViewer,
     };
   }
 
