@@ -1,0 +1,1 @@
+Added shouldOpenMediaViewer property to Renderer to override the default behaviour
