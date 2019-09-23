@@ -198,7 +198,6 @@ class Checkbox extends Component<CheckboxProps, State> {
                       onFocus={this.onFocus}
                       onKeyUp={this.onKeyUp}
                       onKeyDown={this.onKeyDown}
-                      type="checkbox"
                       value={value}
                       name={name}
                       ref={r => (this.checkbox = r)}

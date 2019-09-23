@@ -10,7 +10,6 @@ export interface HiddenCheckboxProps extends React.HTMLProps<HTMLInputElement> {
   onFocus?: React.FocusEventHandler;
   onKeyUp?: React.KeyboardEventHandler;
   onKeyDown?: React.KeyboardEventHandler;
-  type: 'checkbox';
   value?: number | string;
   name?: string;
   required?: boolean;
@@ -24,6 +23,7 @@ export default forwardRef((
   ref: React.Ref<HTMLInputElement>,
 ) => (
   <input
+    type="checkbox"
     {...attributesFn({
       disabled: props.disabled,
       checked: props.checked,

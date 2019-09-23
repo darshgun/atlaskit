@@ -6,7 +6,10 @@ export default md`
   ## 9.x -> 10.x 
 
   ${(
-    <SectionMessage title="Deprecated Component" appearance="info">
+    <SectionMessage
+      title="@ataskit/checkbox 10.x Upgrade Guide"
+      appearance="info"
+    >
       {md`
         **\`Checkbox 10.0\`** introduces theming to Checkbox through two new props – \`theme\` and \`overrides\`.
 
@@ -21,10 +24,6 @@ export default md`
     * Please read more about this implementation in the [theming guide](https://atlaskit.atlassian.com/packages/core/theme/docs/theming-guide)
   * Added overrides prop which enables targeted customisations of key components in the @atlaskit/checkbox package. 
     * Please read more about this implementation in the [overrides guide](https://atlaskit.atlassian.com/packages/core/theme/docs/overrides-guide)
-  * Added three new exports to @atlaskit/checkbox:
-    * [LabelTextOverrides](https://atlaskit.atlassian.com/packages/core/theme/docs/intro#): the default overrides object for the LabelText component in @atlaskit/checkbox
-    * [LabelOverrides](https://atlaskit.atlassian.com/packages/core/theme/docs/intro#): the default overrides for the Label component in @atlaskit/checkbox
-    * [IconWrapperOverrides](https://atlaskit.atlassian.com/packages/core/theme/docs/intro#): the default overrides for the IconWrapper component in @atlaskit/checkbox
 
   ### Breaking Changes
   *HiddenCheckbox and spread props*
