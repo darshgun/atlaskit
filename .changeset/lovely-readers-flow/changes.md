@@ -14,7 +14,7 @@
   ```js
   <Checkbox 
     ...supportedCheckboxProps
-    'data-test-id'='test-checkbox' 
+    'data-testid'='test-checkbox' 
   />
   ```
 
@@ -24,7 +24,7 @@
     ...supportedCheckboxProps
     overrides={{
       HiddenCheckbox:{
-        attributesFn: () => ({ 'data-test-id': 'test-checkbox' })
+        attributesFn: () => ({ 'data-testid': 'test-checkbox' })
       }
     }}
   />

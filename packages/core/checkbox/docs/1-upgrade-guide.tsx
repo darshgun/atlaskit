@@ -35,7 +35,7 @@ export default md`
   ${code`
   <Checkbox 
     ...supportedCheckboxProps
-    'data-test-id'='test-checkbox' 
+    'data-testid'='test-checkbox' 
   />
   `}
 
@@ -45,7 +45,7 @@ export default md`
     ...supportedCheckboxProps
     overrides={{
       HiddenCheckbox:{
-        attributesFn: () => ({ 'data-test-id': 'test-checkbox' })
+        attributesFn: () => ({ 'data-testid': 'test-checkbox' })
       }
     }}
   />

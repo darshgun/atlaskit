@@ -2,8 +2,6 @@ import React from 'react';
 import { Checkbox } from '../src';
 
 export default () => {
-  const formRef = useRef(null);
-  const [data, setData] = useState('');
   return (
     <>
       Press [tab] fam
@@ -25,7 +23,7 @@ export default () => {
           HiddenCheckbox: {
             attributesFn: () => ({
               tabIndex: 1,
-              'data-test-id': 'test-checkbox',
+              'data-testid': 'test-checkbox',
             }),
           },
         }}
