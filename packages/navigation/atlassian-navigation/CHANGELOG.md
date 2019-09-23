@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.4.5
+
+### Patch Changes
+
+- [patch][fda9024074](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fda9024074):
+
+  Add a fully instrumented example of atlassian-navigation using @atlaskit/analytics-next
+
 ## 0.4.4
 
 ### Patch Changes
