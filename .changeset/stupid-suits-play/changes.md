@@ -1,1 +1,0 @@
-Fixing focus styles for IconButtons

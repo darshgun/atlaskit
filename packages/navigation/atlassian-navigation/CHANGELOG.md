@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.4.6
+
+### Patch Changes
+
+- [patch][fcfd4db9c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fcfd4db9c0):
+
+  Fixing focus styles for IconButtons
+
 ## 0.4.5
 
 ### Patch Changes
