@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.18.0
+
+### Minor Changes
+
+- [minor][d4b481ebad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b481ebad):
+
+  Exposed RelatedArticles component and ArticleItem interface
+
 ## 0.17.4
 
 ### Patch Changes

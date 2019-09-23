@@ -1,1 +1,0 @@
-Exposed RelatedArticles component and ArticleItem interface
