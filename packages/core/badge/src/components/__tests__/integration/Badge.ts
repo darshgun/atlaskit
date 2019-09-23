@@ -22,9 +22,9 @@ BrowserTestCase(
     expect(await badgeTest.isVisible(myBadgeDefault)).toBe(true);
     expect(await badgeTest.isVisible(myBadgeImportant)).toBe(true);
     expect(await badgeTest.isVisible(myBadgePrimary)).toBe(true);
-    expect(await badgeTest.getText(myBadgeAdded)).toBe("2");
-    expect(await badgeTest.getText(myBadgeDefault)).toBe("67");
-    expect(await badgeTest.getText(myBadgeImportant)).toBe("20");
-    expect(await badgeTest.getText(myBadgePrimary)).toBe("19");
+    expect(await badgeTest.getText(myBadgeAdded)).toBe('2');
+    expect(await badgeTest.getText(myBadgeDefault)).toBe('67');
+    expect(await badgeTest.getText(myBadgeImportant)).toBe('20');
+    expect(await badgeTest.getText(myBadgePrimary)).toBe('19');
   },
 );
