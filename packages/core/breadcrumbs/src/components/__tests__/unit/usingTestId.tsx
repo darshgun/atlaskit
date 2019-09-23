@@ -20,19 +20,23 @@ describe('Using enzyme', () => {
         <BreadcrumbsItem href="/item" text="A sixth item" />
       </Breadcrumbs>,
     );
-    expect(wrapper).toBeDefined();
-    expect(wrapper.prop('data-testid')).toBeUndefined();
-    wrapper.unmount();
+
+    expect(wrapper.find(`[data-testid]`).hostNodes()).toHaveLength(0);
   });
 
   test('Breadcrumbs snapshot should be same with data-testid', () => {
+    const breadcrumbsId = 'set-of-breadcrumbs';
+    const ellipsisId = `${breadcrumbsId}--breadcrumb-ellipsis`;
+    const breadcrumbToFindId = 'breadcrumb-to-find';
+    const lastBreadcrumbId = 'last-breadcrumb';
+
     const wrapper = mount(
-      <Breadcrumbs maxItems={5} testId="set-of-breadcrumbs">
+      <Breadcrumbs maxItems={5} testId={breadcrumbsId}>
         <BreadcrumbsItem href="/item" text="Item" />
         <BreadcrumbsItem
           href="/item"
           text="Another item"
-          testId="breadcrumb-to-find"
+          testId={breadcrumbToFindId}
         />
         <BreadcrumbsItem href="/item" text="A third item" />
         <BreadcrumbsItem
@@ -40,65 +44,57 @@ describe('Using enzyme', () => {
           text="A fourth item with a very long name"
         />
         <BreadcrumbsItem href="/item" text="Item 5" />
-        <BreadcrumbsItem href="/item" text="A sixth item" />
+        <BreadcrumbsItem
+          href="/item"
+          text="A sixth item"
+          testId={lastBreadcrumbId}
+        />
       </Breadcrumbs>,
     );
-    expect(wrapper.exists('[data-testid="set-of-breadcrumbs"]')).toBeTruthy();
-    expect(wrapper.exists('[data-testid="breadcrumb-to-find"]')).toBeFalsy();
 
-    // console.log(wrapper.debug());
-    const ellipsis = wrapper.find(
-      '[data-testid="set-of-breadcrumbs--breadcrumb-ellipsis"]',
-    );
-    ellipsis.simulate('click');
+    expect(wrapper).toMatchSnapshot();
 
-    expect(wrapper.exists('[data-testid="breadcrumb-to-find"]')).toBeTruthy();
-    wrapper.unmount();
-  });
+    expect(
+      wrapper.find(`[data-testid="${breadcrumbsId}"]`).hostNodes(),
+    ).toHaveLength(1);
+    expect(
+      wrapper.find(`[data-testid="${ellipsisId}"]`).hostNodes(),
+    ).toHaveLength(1);
+    expect(
+      wrapper.find(`[data-testid="${breadcrumbToFindId}"]`).hostNodes(),
+    ).toHaveLength(0);
 
-  describe('Breadcrumbs with different data-testid', () => {
-    cases(
-      'should be generated',
-      ({ key, subkeys }: { key: string; subkeys: string[] }) => {
-        const wrapper = mount(
-          <Breadcrumbs maxItems={5} testId={key}>
-            {subkeys.map(subkey => (
-              <BreadcrumbsItem
-                key={subkey}
-                href="/item"
-                text="Another item"
-                testId={subkey}
-              />
-            ))}
-          </Breadcrumbs>,
-        );
-        expect(wrapper.find(`[data-testid='${key}']`)).toBeTruthy();
-        expect(
-          wrapper.find(`[data-testid='${key}--breadcrumb-ellipsis']`),
-        ).toBeTruthy();
-        subkeys.forEach(subkey => {
-          expect(wrapper.find(`[data-testid='${subkey}']`)).toBeTruthy();
-        });
-      },
-      [
-        { key: 'first-set-of-breadcrumbs', subkeys: ['a', 'b', 'c'] },
-        { key: 'second-set-of-breadcrumbs', subkeys: ['a', 'b'] },
-      ],
-    );
+    wrapper
+      .find(`[data-testid="${ellipsisId}"]`)
+      .hostNodes()
+      .simulate('click');
+
+    expect(
+      wrapper.find(`[data-testid="${ellipsisId}"]`).hostNodes(),
+    ).toHaveLength(0);
+    expect(
+      wrapper.find(`[data-testid="${breadcrumbToFindId}"]`).hostNodes(),
+    ).toHaveLength(1);
+
+    expect(wrapper).toMatchSnapshot();
   });
 });
 
-describe('Using react-test-library', () => {
+describe('Using react-testing-library', () => {
   describe('Breadcrumbs should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
-      const testId = 'set-of-breadcrumbs';
-      const { getByTestId } = render(
-        <Breadcrumbs maxItems={5} testId={testId}>
+      const breadcrumbsId = 'last-set-of-breadcrumbs';
+      const ellipsisId = `${breadcrumbsId}--breadcrumb-ellipsis`;
+      const breadcrumbToFindId = 'breadcrumb-to-find';
+      const lastBreadcrumbId = 'last-breadcrumb';
+
+      const { getByTestId, queryByTestId } = render(
+        <Breadcrumbs maxItems={5} testId={breadcrumbsId}>
           <BreadcrumbsItem href="/item" text="Item" />
           <BreadcrumbsItem
             href="/item"
             text="Another item"
-            testId="breadcrumb-to-find"
+            testId={breadcrumbToFindId}
           />
           <BreadcrumbsItem href="/item" text="A third item" />
           <BreadcrumbsItem
@@ -106,20 +102,24 @@ describe('Using react-test-library', () => {
             text="A fourth item with a very long name"
           />
           <BreadcrumbsItem href="/item" text="Item 5" />
-          <BreadcrumbsItem href="/item" text="A sixth item" />
+          <BreadcrumbsItem
+            href="/item"
+            text="A sixth item"
+            testId={lastBreadcrumbId}
+          />
         </Breadcrumbs>,
       );
 
-      const ellipsis = getByTestId(testId + '--breadcrumb-ellipsis');
+      const ellipsis = getByTestId(ellipsisId);
 
-      expect(getByTestId(testId)).toBeTruthy();
+      expect(getByTestId(breadcrumbsId)).toBeTruthy();
       expect(ellipsis).toBeTruthy();
-      expect(getByTestId('breadcrumb-to-find')).toBeFalsy();
+      expect(queryByTestId(breadcrumbToFindId)).toBeNull();
 
       ellipsis.click();
 
-      expect(getByTestId(testId + '--breadcrumb-ellipsis')).toBeFalsy();
-      expect(getByTestId('breadcrumb-to-find')).toBeTruthy();
+      expect(queryByTestId(ellipsisId)).toBeNull();
+      expect(getByTestId(breadcrumbToFindId)).toBeTruthy();
     });
   });
 });

@@ -82,7 +82,7 @@ class BreadcrumbsStateless extends React.Component<
       <EllipsisItem
         hasSeparator={itemsAfterCollapse > 0}
         key="ellipsis"
-        testId={`${testId}--breadcrumb-ellipsis`}
+        testId={testId && `${testId}--breadcrumb-ellipsis`}
         onClick={this.props.onExpand}
       />,
       ...afterItems,
