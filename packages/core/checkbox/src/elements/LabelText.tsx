@@ -13,10 +13,14 @@ export const labelTextCSS = ({ tokens }: LabelTextCSSProps): CSSObject => ({
 export function LabelText({
   attributesFn,
   tokens,
+  children,
   cssFn,
-  ...rest
 }: LabelTextProps) {
-  return <span {...attributesFn({})} css={cssFn({ tokens })} />;
+  return (
+    <span {...attributesFn({})} css={cssFn({ tokens })}>
+      {children}
+    </span>
+  );
 }
 
 export default {

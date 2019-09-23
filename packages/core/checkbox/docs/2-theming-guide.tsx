@@ -1,6 +1,5 @@
 import React from 'react';
 import { md, Example, code } from '@atlaskit/docs';
-import SectionMessage from '@atlaskit/section-message';
 
 export default md`
 ## ✨ Component Tokens ✨
