@@ -13,7 +13,6 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "enableUserCentricProducts": false,
             "isDiscoverMoreForEveryoneEnabled": false,
             "isEmceeLinkEnabled": false,
-            "productTopItemVariation": undefined,
             "xflow": true,
           },
         },
@@ -135,7 +134,6 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "enableUserCentricProducts": false,
             "isDiscoverMoreForEveryoneEnabled": false,
             "isEmceeLinkEnabled": false,
-            "productTopItemVariation": undefined,
             "xflow": true,
           }
         }

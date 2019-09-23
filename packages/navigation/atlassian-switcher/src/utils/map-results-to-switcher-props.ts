@@ -32,18 +32,13 @@ import { createCollector } from './create-collector';
 function collectAvailableProductLinks(
   cloudId: string | null | undefined,
   availableProducts?: ProviderResult<AvailableProductsResponse>,
-  productTopItemVariation?: string,
 ): SwitcherItemType[] | undefined {
   if (availableProducts) {
     if (isError(availableProducts)) {
       return [];
     }
     if (isComplete(availableProducts)) {
-      return getAvailableProductLinks(
-        availableProducts.data,
-        cloudId,
-        productTopItemVariation,
-      );
+      return getAvailableProductLinks(availableProducts.data, cloudId);
     }
     return;
   }
@@ -276,11 +271,7 @@ export function mapResultsToSwitcherProps(
   return {
     licensedProductLinks: collect(
       features.enableUserCentricProducts
-        ? collectAvailableProductLinks(
-            cloudId,
-            availableProducts,
-            features.productTopItemVariation,
-          )
+        ? collectAvailableProductLinks(cloudId, availableProducts)
         : collectProductLinks(licenseInformation),
       [],
     ),

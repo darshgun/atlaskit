@@ -46,7 +46,6 @@ export type SwitcherProps = {
   adminLinks: SwitcherItemType[];
   recentLinks: RecentItemType[];
   customLinks: SwitcherItemType[];
-  productTopItemVariation?: string;
   manageLink?: string;
   /**
    * Remove section headers - useful if something else is providing them. i.e: trello inline dialog
@@ -133,7 +132,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
       manageLink,
       hasLoaded,
       hasLoadedCritical,
-      productTopItemVariation,
       disableHeadings,
       appearance,
     } = this.props;
@@ -181,7 +179,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 adminLinks: adminLinks.map(item => item.key),
                 fixedLinks: fixedLinks.map(item => item.key),
                 numberOfSites,
-                productTopItemVariation,
               }}
             />
           )}
