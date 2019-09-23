@@ -5,7 +5,13 @@ import { Block } from '../examples-util/helpers';
 export default () => (
   <div>
     <Block heading="Circle">
-      <Avatar name="xxlarge" size="xxlarge" testId="the-avatar" />
+      <Avatar
+        name="xxlarge"
+        size="xxlarge"
+        testId="myAvatar"
+        onClick={() => alert('Avatar has been clicked!')}
+        lick
+      />
     </Block>
   </div>
 );

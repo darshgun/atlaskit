@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Using enzyme Avatar snapshot should be same with data-testid  1`] = `
+exports[`Using enzyme Avatar snapshot should be same with data-testid 1`] = `
 .c1 circle,
 .c1 rect {
   fill: #C1C7D0;
@@ -72,7 +72,7 @@ button .c0 {
 }
 
 <div
-  data-testid="the-avatar"
+  data-testid="myAvatar"
   style={
     Object {
       "display": "inline-block",
@@ -221,48 +221,5 @@ button .c0 {
       </styled.span>
     </Consumer>
   </Inner>
-</div>
-`;
-
-exports[`Using react-test-library Button should be found by data-testid Using container snapshot 1`] = `
-<div>
-  <div>
-    <div
-      data-testid="the-avatar"
-      style="display: inline-block; position: relative; outline: 0; height: 132px; width: 132px;"
-    >
-      <span
-        class="sc-ckVGcZ jwGGpc"
-      >
-        <svg
-          aria-label="xxlarge"
-          role="img"
-          style="background-color: transparent; border-radius: 50%; height: 100%; width: 100%;"
-          version="1.1"
-          viewBox="0 0 128 128"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g
-            class="sc-jTzLTM kRKNHV"
-            mode="light"
-          >
-            <circle
-              cx="64"
-              cy="64"
-              r="64"
-            />
-            <g>
-              <path
-                d="M103,102.1388 C93.094,111.92 79.3504,118 64.1638,118 C48.8056,118 34.9294,111.768 25,101.7892 L25,95.2 C25,86.8096 31.981,80 40.6,80 L87.4,80 C96.019,80 103,86.8096 103,95.2 L103,102.1388 Z"
-              />
-              <path
-                d="M63.9961647,24 C51.2938136,24 41,34.2938136 41,46.9961647 C41,59.7061864 51.2938136,70 63.9961647,70 C76.6985159,70 87,59.7061864 87,46.9961647 C87,34.2938136 76.6985159,24 63.9961647,24"
-              />
-            </g>
-          </g>
-        </svg>
-      </span>
-    </div>
-  </div>
 </div>
 `;

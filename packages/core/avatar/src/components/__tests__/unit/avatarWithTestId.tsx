@@ -13,9 +13,9 @@ describe('Using enzyme', () => {
 
   test('Avatar snapshot should be same with data-testid', () => {
     const wrapper = mount(
-      <Avatar name="xxlarge" size="xxlarge" testId="the-avatar" />,
+      <Avatar name="xxlarge" size="xxlarge" testId="myAvatar" />,
     );
-    expect(wrapper.find('[data-testid="the-avatar"]')).toMatchSnapshot();
+    expect(wrapper.find('[data-testid="myAvatar"]')).toMatchSnapshot();
   });
 
   describe('Avatars with different data-testid', () => {
@@ -41,19 +41,12 @@ describe('Using enzyme', () => {
 describe('Using react-test-library', () => {
   describe('Button should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
-      const testId = 'the-avatar';
+      const testId = 'myAvatar';
       const { getByTestId } = render(
         <Avatar name="xxlarge" size="xxlarge" testId={testId} />,
       );
 
       expect(getByTestId(testId)).toBeTruthy();
-    });
-
-    test('Using container snapshot', () => {
-      const { container } = render(
-        <Avatar name="xxlarge" size="xxlarge" testId="the-avatar" />,
-      );
-      expect(container).toMatchSnapshot();
     });
   });
 });
