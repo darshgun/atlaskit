@@ -68,9 +68,17 @@ const evaluateMode = function<TargetType, ResultType>(
     return Object.keys(obj).reduce(
       (acc: any, curr: string) => {
         const value = obj[curr];
-        // if the value is not an object i.e. is a primitive value,
-        // return the value immediately
-        if (typeof value !== 'object') {
+        /** Return the value immediately if the value is:
+         * not an object
+         * an array
+         * null
+         * undefined
+         */
+        if (
+          typeof value !== 'object' ||
+          typeof value == null ||
+          Array.isArray(value)
+        ) {
           acc[curr] = value;
         } else if (Object.keys(value).includes(mode)) {
           // if the object contains a member corresponding to the passed in mode argument
