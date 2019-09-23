@@ -1,5 +1,13 @@
 # @atlaskit/global-search
 
+## 12.2.0
+
+### Minor Changes
+
+- [minor][bff5be0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bff5be0d46):
+
+  Quick search autocomplete analytics instrumentation
+
 ## 12.1.2
 
 - Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):

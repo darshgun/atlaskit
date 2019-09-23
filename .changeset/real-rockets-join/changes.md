@@ -1,1 +1,0 @@
-Quick search autocomplete analytics instrumentation
