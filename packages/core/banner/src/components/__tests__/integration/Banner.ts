@@ -3,7 +3,7 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 /* Url to test the example */
-const urlBanner = getExampleUrl('core', 'badge', 'Testing');
+const urlBanner = getExampleUrl('core', 'banner', 'Testing');
 
 /* Css selectors used for the test */
 const myBannerTestId = "[data-testid='myBannerTestId']";
