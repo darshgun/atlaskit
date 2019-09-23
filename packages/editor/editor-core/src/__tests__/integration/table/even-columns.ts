@@ -19,9 +19,10 @@ import {
   mountEditor,
 } from '../../__helpers/testing-example-helpers';
 
+// There is no positionDoubleClick on firefox
 BrowserTestCase(
   'Should even columns on double click on resize handle when table is selected',
-  { skip: ['ie', 'safari'] },
+  { skip: ['ie', 'safari', 'firefox'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 
@@ -34,16 +35,17 @@ BrowserTestCase(
     });
     await clickFirstCell(page);
     await selectTable(page);
-    await doubleClickResizeHandle(page, 2);
+    await doubleClickResizeHandle(page, 2, 2);
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },
 );
 
+// There is no positionDoubleClick on firefox
 BrowserTestCase(
   'Should even columns and remain overflown on double click on resize handle when table is selected',
-  { skip: ['ie', 'safari'] },
+  { skip: ['ie', 'safari', 'firefox'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 
@@ -56,7 +58,7 @@ BrowserTestCase(
     });
     await clickFirstCell(page);
     await selectTable(page);
-    await doubleClickResizeHandle(page, 2);
+    await doubleClickResizeHandle(page, 2, 2);
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
