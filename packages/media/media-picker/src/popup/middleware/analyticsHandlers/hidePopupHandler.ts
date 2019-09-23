@@ -17,21 +17,24 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             fileName: item.name,
             fileSize: item.size,
             accountId: item.accountId,
-            provider: item.serviceName,
+            serviceName: item.serviceName,
           }))
         : [];
+
+    const serviceNames =
+      selectedItems.length > 0
+        ? {
+            providers: selectedItems.map(i => i.serviceName),
+          }
+        : {};
 
     return [
       {
         ...buttonClickPayload,
         actionSubjectId,
         attributes: {
-          ...(selectedItems.length > 0
-            ? {
-                providers: selectedItems.map(i => i.serviceName),
-              }
-            : {}),
           fileCount: selectedItems.length,
+          ...serviceNames,
           ...(actionSubjectId === 'insertFilesButton' ? { files } : {}),
         },
       },
