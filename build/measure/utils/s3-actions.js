@@ -90,7 +90,7 @@ function downloadFromS3(downloadToFolder, branch, package) {
         chalk.red(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
         Please consult the README.md in the @atlaskit/measure folder on how to add a new package on s3.`),
       );
-      process.exit(0);
+      process.exit(1);
     } else {
       console.error(chalk.red(`${err}`));
       process.exit(1);
