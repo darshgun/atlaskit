@@ -169,7 +169,7 @@ describe('Renderer - ReactSerializer', () => {
       );
       expect(headings.at(5).prop('headingId')).toEqual('start-with-a-number');
       expect(headings.at(6).prop('headingId')).toEqual(
-        'start with mixed invalid characters',
+        'start-with-mixed-invalid-characters',
       );
     });
 

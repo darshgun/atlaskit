@@ -60,7 +60,7 @@ export interface Props {
 export class Renderer extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
   private serializer?: ReactSerializer;
-  private mountTimeoutId: number | undefined;
+  private rafID: number | undefined;
 
   constructor(props: Props) {
     super(props);
@@ -69,14 +69,15 @@ export class Renderer extends PureComponent<Props, {}> {
     startMeasure('Renderer Render Time');
   }
 
-  onRenderComplete() {
+  private anchorLinkAnalytics() {
     const anchorLinkAttributeHit =
       !this.props.disableHeadingIDs &&
       window.location.hash &&
-      document.getElementById(window.location.hash.slice(1));
+      document.getElementById(
+        decodeURIComponent(window.location.hash.slice(1)),
+      );
 
     if (anchorLinkAttributeHit) {
-      anchorLinkAttributeHit.scrollIntoView();
       this.fireAnalyticsEvent({
         action: ACTION.VIEWED,
         actionSubject: ACTION_SUBJECT.ANCHOR_LINK,
@@ -87,9 +88,6 @@ export class Renderer extends PureComponent<Props, {}> {
   }
 
   componentDidMount() {
-    // add setTimeout to ensure the rendering process has completed.
-    this.mountTimeoutId = window.setTimeout(() => this.onRenderComplete());
-
     this.fireAnalyticsEvent({
       action: ACTION.STARTED,
       actionSubject: ACTION_SUBJECT.RENDERER,
@@ -97,7 +95,7 @@ export class Renderer extends PureComponent<Props, {}> {
       eventType: EVENT_TYPE.UI,
     });
 
-    requestAnimationFrame(() => {
+    this.rafID = requestAnimationFrame(() => {
       stopMeasure('Renderer Render Time', duration => {
         this.fireAnalyticsEvent({
           action: ACTION.RENDERED,
@@ -118,6 +116,7 @@ export class Renderer extends PureComponent<Props, {}> {
           eventType: EVENT_TYPE.OPERATIONAL,
         });
       });
+      this.anchorLinkAnalytics();
     });
   }
 
@@ -238,7 +237,9 @@ export class Renderer extends PureComponent<Props, {}> {
   componentWillUnmount() {
     const { dataProviders } = this.props;
 
-    window.clearTimeout(this.mountTimeoutId);
+    if (this.rafID) {
+      window.cancelAnimationFrame(this.rafID);
+    }
 
     // if this is the ProviderFactory which was created in constructor
     // it's safe to destroy it on Renderer unmount
