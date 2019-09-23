@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Using enzyme Badge snapshot should be same with data-testid 1`] = `
+Array [
+  .c0 {
+  background-color: #E3FCEF;
+  color: #006644;
+  border-radius: 2em;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1;
+  min-width: 1px;
+  padding: 0.16666666666667em 0.5em;
+  text-align: center;
+}
+
+<styled.span
+    backgroundColor="#E3FCEF"
+    data-testid="myBadge"
+    textColor="#006644"
+  >
+    <span
+      className="c0"
+      data-testid="myBadge"
+    >
+      3000
+    </span>
+  </styled.span>,
+  .c0 {
+  background-color: #E3FCEF;
+  color: #006644;
+  border-radius: 2em;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1;
+  min-width: 1px;
+  padding: 0.16666666666667em 0.5em;
+  text-align: center;
+}
+
+<span
+    className="c0"
+    data-testid="myBadge"
+  >
+    3000
+  </span>,
+]
+`;
+
+exports[`Using react-test-library Button should be found by data-testid Using container snapshot 1`] = `
+<div>
+  <span
+    class="sc-htpNat kZCqmS"
+    data-testid="the-badge"
+  >
+    3000
+  </span>
+</div>
+`;
