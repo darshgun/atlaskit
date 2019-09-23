@@ -1,40 +1,7 @@
 import { colorPalette, borderColorPalette } from '@atlaskit/adf-schema';
-import { defineMessages } from 'react-intl';
 import { PaletteColor } from './type';
 import getColorMessage from './getColorMessage';
-
-const messages = defineMessages({
-  'light-gray': {
-    id: 'fabric.theme.light-gray',
-    defaultMessage: 'Light gray',
-    description: 'Name of a color.',
-  },
-  purple: {
-    id: 'fabric.theme.purple',
-    defaultMessage: 'Purple',
-    description: 'Name of a color.',
-  },
-  teal: {
-    id: 'fabric.theme.teal',
-    defaultMessage: 'Teal',
-    description: 'Name of a color.',
-  },
-  green: {
-    id: 'fabric.theme.green',
-    defaultMessage: 'Green',
-    description: 'Name of a color.',
-  },
-  red: {
-    id: 'fabric.theme.red',
-    defaultMessage: 'Red',
-    description: 'Name of a color.',
-  },
-  orange: {
-    id: 'fabric.theme.orange',
-    defaultMessage: 'Orange',
-    description: 'Name of a color.',
-  },
-});
+import paletteMessages from './paletteMessages';
 
 const textColorPalette: Array<PaletteColor> = [];
 
@@ -43,7 +10,7 @@ colorPalette.forEach((label, color) => {
     borderColorPalette[color.toUpperCase() as keyof typeof borderColorPalette];
 
   const key = label.toLowerCase().replace(' ', '-');
-  const message = getColorMessage(messages, key);
+  const message = getColorMessage(paletteMessages, key);
 
   if (!border) {
     // eslint-disable-next-line no-console
