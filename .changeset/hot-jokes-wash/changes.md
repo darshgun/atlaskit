@@ -1,1 +1,0 @@
-Fix missing horizontal navigation re-renders

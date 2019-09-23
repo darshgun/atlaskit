@@ -1,5 +1,13 @@
 # @atlaskit/navigation-next
 
+## 6.7.6
+
+### Patch Changes
+
+- [patch][636c5850ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/636c5850ae):
+
+  Fix missing horizontal navigation re-renders
+
 ## 6.7.5
 
 ### Patch Changes
