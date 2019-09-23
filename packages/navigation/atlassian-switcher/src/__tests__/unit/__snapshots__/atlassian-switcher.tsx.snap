@@ -32,8 +32,8 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "id": "fabric.atlassianSwitcher.administration",
           },
           "browseApps": Object {
-            "defaultMessage": "Browse apps",
-            "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product",
+            "defaultMessage": "Browse Marketplace apps",
+            "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product (Marketplace is a brand name. Please dont translate it)",
             "id": "fabric.atlassianSwitcher.browseApps",
           },
           "confluenceSpace": Object {
@@ -42,7 +42,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "id": "fabric.atlassianSwitcher.confluenceSpace",
           },
           "discoverMore": Object {
-            "defaultMessage": "Discover more",
+            "defaultMessage": "More Atlassian products",
             "description": "The text of a link redirecting the user to Discover More Atlassian products",
             "id": "fabric.atlassianSwitcher.discoverMore",
           },
@@ -145,8 +145,8 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "id": "fabric.atlassianSwitcher.administration",
             },
             "browseApps": Object {
-              "defaultMessage": "Browse apps",
-              "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product",
+              "defaultMessage": "Browse Marketplace apps",
+              "description": "The text of a link redirecting the user to Discover Embedded Marketplace within in the product (Marketplace is a brand name. Please dont translate it)",
               "id": "fabric.atlassianSwitcher.browseApps",
             },
             "confluenceSpace": Object {
@@ -155,7 +155,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "id": "fabric.atlassianSwitcher.confluenceSpace",
             },
             "discoverMore": Object {
-              "defaultMessage": "Discover more",
+              "defaultMessage": "More Atlassian products",
               "description": "The text of a link redirecting the user to Discover More Atlassian products",
               "id": "fabric.atlassianSwitcher.discoverMore",
             },
