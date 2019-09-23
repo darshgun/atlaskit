@@ -8,12 +8,14 @@ import React, {
   type ElementRef,
 } from 'react';
 import raf from 'raf-schd';
+import { Global } from '@emotion/core';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import * as colors from '@atlaskit/theme/colors';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import MenuExpandIcon from '@atlaskit/icon/glyph/menu-expand';
 import Tooltip from '@atlaskit/tooltip';
+import { layers } from '@atlaskit/theme/constants';
 
 import { navigationExpandedCollapsed } from '../../../common/analytics';
 import {
@@ -23,7 +25,6 @@ import {
   GLOBAL_NAV_COLLAPSE_THRESHOLD,
 } from '../../../common/constants';
 import { Shadow } from '../../../common/primitives';
-import PropertyToggle from './PropertyToggle';
 
 import type { CollapseToggleTooltipContent } from './types';
 
@@ -35,9 +36,31 @@ const shouldResetGrabArea = (width: number) => {
   return width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH;
 };
 
-const Outer = (props: *) => (
-  <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
+const BodyDragCursor = () => (
+  <Global
+    styles={{
+      body: {
+        cursor: 'ew-resize',
+      },
+    }}
+  />
 );
+
+const Outer = (props: *) => (
+  <div
+    css={{
+      bottom: 0,
+      left: '100%',
+      position: 'absolute',
+      top: 0,
+      transform: 'translateZ(0)',
+      width: OUTER_WIDTH,
+      zIndex: layers.navigation() + 1,
+    }}
+    {...props}
+  />
+);
+
 export const GrabArea = ({ showHandle, isBold, ...props }: *) => (
   <div
     css={{
@@ -475,6 +498,7 @@ class ResizeControl extends PureComponent<Props, State> {
       <Fragment>
         {children(this.state)}
         <Outer>
+          {isDragging && <BodyDragCursor />}
           <Shadow direction={shadowDirection} isBold={mouseIsDown} />
           {!isResizeDisabled && (
             <Fragment>
@@ -506,10 +530,6 @@ class ResizeControl extends PureComponent<Props, State> {
             </Fragment>
           )}
         </Outer>
-        <PropertyToggle
-          isActive={isDragging}
-          styles={{ cursor: 'ew-resize' }}
-        />
       </Fragment>
     );
   }
