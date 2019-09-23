@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import { render } from '@testing-library/react';
 import React from 'react';
-import cases from 'jest-in-case';
 import Breadcrumbs from '../../Breadcrumbs';
 import BreadcrumbsItem from '../../BreadcrumbsItem';
 
