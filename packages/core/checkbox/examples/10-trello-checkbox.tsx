@@ -8,7 +8,7 @@ import {
 } from '../src/types';
 import merge from 'lodash.merge';
 
-import Icon from '@atlaskit/icon';
+import Icon, { IconProps } from '@atlaskit/icon';
 
 const customGlyph = () => (
   <svg
@@ -28,7 +28,7 @@ const customGlyph = () => (
   </svg>
 );
 // would be nice if we could just inline <Icon /> as `component`
-class CustomIcon extends React.Component<{}, {}> {
+class CustomIcon extends React.Component<IconProps, {}> {
   render() {
     return (
       <Icon

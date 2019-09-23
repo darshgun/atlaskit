@@ -1,5 +1,6 @@
 import React from 'react';
 import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
+import { IconProps } from '@atlaskit/icon';
 import { CSSObject } from '@emotion/core';
 
 export type ChildrenType = React.ReactChild;
@@ -30,10 +31,10 @@ export type DefaultsType = {
     ) => Record<string, any>;
   };
   Icon: {
-    component: React.ComponentType<any>;
+    component: React.ComponentType<IconProps>;
   };
   IconIndeterminate: {
-    component: React.ComponentType<any>;
+    component: React.ComponentType<IconProps>;
   };
   HiddenCheckbox: {
     attributesFn: (
@@ -64,10 +65,10 @@ export type OverridesType = {
     ) => Record<string, any>;
   };
   Icon?: {
-    component?: React.ComponentType<any>;
+    component?: React.ComponentType<Readonly<IconProps>>;
   };
   IconIndeterminate?: {
-    component?: React.ComponentType<any>;
+    component?: React.ComponentType<Readonly<IconProps>>;
   };
   HiddenCheckbox?: {
     attributesFn?: (
