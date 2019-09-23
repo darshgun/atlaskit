@@ -39,7 +39,7 @@ describe('Using enzyme', () => {
 });
 
 describe('Using react-test-library', () => {
-  describe('Button should be found by data-testid', () => {
+  describe('Avatar should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
       const testId = 'myAvatar';
       const { getByTestId } = render(
