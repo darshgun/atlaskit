@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 import { mount, render, shallow } from 'enzyme';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
@@ -24,12 +24,18 @@ import {
 import ResizeControl from '../../ResizeControl';
 import type { LayoutManagerProps } from '../../types';
 
-const GlobalNavigation = () => null;
-const ProductNavigation = () => null;
-
 describe('LayoutManager', () => {
   let defaultProps: $Shape<LayoutManagerProps>;
   let mockNavigationUIController: any;
+
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   beforeEach(() => {
     mockNavigationUIController = ({
       expand: Function.prototype,
@@ -39,8 +45,8 @@ describe('LayoutManager', () => {
     }: any);
     defaultProps = {
       navigationUIController: mockNavigationUIController,
-      globalNavigation: GlobalNavigation,
-      productNavigation: ProductNavigation,
+      globalNavigation: () => null,
+      productNavigation: () => null,
       containerNavigation: null,
       children: <div>Page content</div>,
       experimental_flyoutOnHover: false,
@@ -235,6 +241,75 @@ describe('LayoutManager', () => {
     testHorizontalNavigationLayout(layoutManager, 50);
   });
 
+  it('should correctly re-render the horizontal global navigation when the globalNavigation prop is updated', () => {
+    let GlobalNavigation = () => <div>global navigation skeleton</div>;
+    const layoutManager = mount(
+      <LayoutManager
+        {...defaultProps}
+        experimental_horizontalGlobalNav
+        globalNavigation={GlobalNavigation}
+      />,
+    );
+
+    const prevHtml = layoutManager.find(GlobalNavigation).html();
+
+    GlobalNavigation = () => <div>global navigation</div>;
+    layoutManager.setProps({ globalNavigation: GlobalNavigation });
+
+    const html = layoutManager.find(GlobalNavigation).html();
+
+    expect({ html, prevHtml }).toEqual({
+      html: '<div>global navigation</div>',
+      prevHtml: '<div>global navigation skeleton</div>',
+    });
+  });
+
+  it('should correctly re-render the horizontal global navigation when the global navigation is updated internally', () => {
+    class GlobalNavigation extends Component<{}, {| loading: boolean |}> {
+      state = {
+        loading: true,
+      };
+
+      timeoutId: TimeoutID;
+
+      componentDidMount() {
+        this.timeoutId = setTimeout(() => {
+          this.setState({ loading: false });
+        });
+      }
+
+      componentWillUnmount() {
+        clearTimeout(this.timeoutId);
+      }
+
+      render() {
+        const { loading } = this.state;
+        if (loading) {
+          return <div>global navigation skeleton</div>;
+        }
+
+        return <div>global navigation</div>;
+      }
+    }
+
+    const layoutManager = mount(
+      <LayoutManager
+        {...defaultProps}
+        experimental_horizontalGlobalNav
+        globalNavigation={GlobalNavigation}
+      />,
+    );
+
+    const prevHtml = layoutManager.find(GlobalNavigation).html();
+    jest.runAllTimers();
+    const html = layoutManager.find(GlobalNavigation).html();
+
+    expect({ html, prevHtml }).toEqual({
+      html: '<div>global navigation</div>',
+      prevHtml: '<div>global navigation skeleton</div>',
+    });
+  });
+
   describe('Flyout', () => {
     beforeEach(() => {
       defaultProps.experimental_flyoutOnHover = true;
@@ -396,7 +471,13 @@ describe('LayoutManager', () => {
         });
 
         it('should open when mousing over NavigationContainer with a delay of 200ms', () => {
-          const wrapper = mount(<LayoutManager {...defaultProps} />);
+          const ProductNavigation = () => null;
+          const wrapper = mount(
+            <LayoutManager
+              {...defaultProps}
+              productNavigation={ProductNavigation}
+            />,
+          );
           expect(wrapper.state('flyoutIsOpen')).toBe(false);
           wrapper.find(NavigationContainer).simulate('mouseover');
 
