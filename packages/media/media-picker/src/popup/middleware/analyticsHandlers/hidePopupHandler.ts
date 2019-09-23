@@ -17,6 +17,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             fileName: item.name,
             fileSize: item.size,
             accountId: item.accountId,
+            provider: item.serviceName || 'unknown',
           }))
         : [];
 
@@ -25,6 +26,13 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
         ...buttonClickPayload,
         actionSubjectId,
         attributes: {
+          ...(selectedItems.length > 0
+            ? {
+                provider:
+                  (selectedItems[0] && selectedItems[0].serviceName) ||
+                  'unknown',
+              }
+            : {}),
           fileCount: selectedItems.length,
           ...(actionSubjectId === 'insertFilesButton' ? { files } : {}),
         },
