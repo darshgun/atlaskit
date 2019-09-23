@@ -162,6 +162,35 @@ describe('Media', () => {
       ).toBeTruthy();
     });
 
+    it('should pass shouldOpenMediaViewer=true if property shouldOpenMediaViewer is set to true', () => {
+      const cardWithOnClick = mount(
+        <MediaCard
+          type="file"
+          id="1"
+          shouldOpenMediaViewer={true}
+          eventHandlers={{ media: { onClick: jest.fn() } }}
+        />,
+      );
+      const cardWithoutOnClick = mount(
+        <MediaCard type="file" id="1" shouldOpenMediaViewer={true} />,
+      );
+
+      // force media mediaClientConfig to be resolved
+      cardWithOnClick
+        .find(MediaCardInternal)
+        .setState({ mediaClientConfig: {} });
+      cardWithoutOnClick
+        .find(MediaCardInternal)
+        .setState({ mediaClientConfig: {} });
+
+      expect(
+        cardWithOnClick.find(Card).prop('shouldOpenMediaViewer'),
+      ).toBeTruthy();
+      expect(
+        cardWithoutOnClick.find(Card).prop('shouldOpenMediaViewer'),
+      ).toBeTruthy();
+    });
+
     it('should call passed onClick', () => {
       const onClick = jest.fn();
       const cardWithOnClick = mount(
