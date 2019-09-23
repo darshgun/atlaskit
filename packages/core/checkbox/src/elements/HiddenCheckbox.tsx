@@ -24,6 +24,12 @@ export default forwardRef((
   ref: React.Ref<HTMLInputElement>,
 ) => (
   <input
+    {...attributesFn({
+      disabled: props.disabled,
+      checked: props.checked,
+      required: props.required,
+    })}
+    {...props}
     ref={ref}
     css={{
       left: '50%',
@@ -34,11 +40,5 @@ export default forwardRef((
       transform: 'translate(-50%, -50%)',
       top: '50%',
     }}
-    {...props}
-    {...attributesFn({
-      disabled: props.disabled,
-      checked: props.checked,
-      required: props.required,
-    })}
   />
 ));

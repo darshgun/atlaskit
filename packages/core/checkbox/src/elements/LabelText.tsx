@@ -16,7 +16,7 @@ export function LabelText({
   cssFn,
   ...rest
 }: LabelTextProps) {
-  return <span {...attributesFn({})} css={cssFn({ tokens })} {...rest} />;
+  return <span {...attributesFn({})} css={cssFn({ tokens })} />;
 }
 
 export default {

@@ -50,7 +50,9 @@ describe('<Checkbox/>', () => {
 
     const wrapper = mount(<Checkbox theme={customTheme} />);
     const labelText = wrapper.find('LabelText');
-    expect(labelText.prop('tokens').label.spacing.top).toEqual('6px');
+    expect((labelText.prop('tokens') as ThemeTokens).label.spacing.top).toEqual(
+      '6px',
+    );
   });
 
   it('should pass custom tokens into internal CheckboxIcon component', () => {
@@ -74,7 +76,9 @@ describe('<Checkbox/>', () => {
 
     const wrapper = mount(<Checkbox theme={customTheme} />);
     const iconWrapper = wrapper.find('IconWrapper');
-    expect(iconWrapper.prop('tokens').icon.borderWidth).toEqual('2px');
+    expect(
+      (iconWrapper.prop('tokens') as ThemeTokens).icon.borderWidth,
+    ).toEqual('2px');
   });
 
   it('should not break with the inclusion of non-existent user tokens', () => {

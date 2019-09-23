@@ -13,13 +13,13 @@ export const labelCSS = ({ isDisabled, tokens }: LabelCSSProps): CSSObject => ({
 });
 
 export function Label({
+  attributesFn,
   children,
+  isDisabled,
   onMouseUp,
   onMouseDown,
   onMouseLeave,
   onMouseEnter,
-  attributesFn,
-  isDisabled,
   tokens,
   cssFn,
 }: LabelProps) {
