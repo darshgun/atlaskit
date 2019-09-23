@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 3.31.1
+
+### Patch Changes
+
+- [patch][3ea2b986e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ea2b986e1):
+
+  1. Change Discover more label to More Atlassian Products 2. Change Browse apps label to Browse Marketplace apps
+
 ## 3.31.0
 
 ### Minor Changes
