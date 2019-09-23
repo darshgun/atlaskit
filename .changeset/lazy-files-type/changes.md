@@ -1,0 +1,1 @@
+FeedbackCollector: Fix regression to ensure the network request fires. Ignore linting rule instead of clearing timeout on unmount.
