@@ -47,7 +47,7 @@ describe('Using enzyme', () => {
 });
 
 describe('Using react-test-library', () => {
-  describe('Button should be found by data-testid', () => {
+  describe('Badge should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
       const testId = 'the-badge';
       const { getByTestId } = render(
