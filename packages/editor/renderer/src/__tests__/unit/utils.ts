@@ -62,6 +62,10 @@ describe('Renderer - utils', () => {
       ['  ', ''],
       ['heading 1', 'heading-1'],
       ['@heading -1', 'heading--1'],
+      ['1heading -1', 'heading--1'],
+      [' 1heading 1', 'heading-1'],
+      ['-heading 1', 'heading-1'],
+      [' -heading 1', 'heading-1'],
       ['!test@!@#$%^&*()-1?', 'test--1'],
       [' %test$              ', 'test'], // start with a space follow by an invalid character
       [' %test$              1', 'test-1'],

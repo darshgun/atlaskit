@@ -38,13 +38,13 @@ export const getEventHandler = (
   );
 };
 
-// The IDs for html must start with a letter (a-z or A-Z)
-// All subsequent characters can be:
+// The IDs for html must start with a letter (a-z or A-Z),
+// and all subsequent characters can be:
 // letters, numbers (0-9), hyphens (-), underscores (_), colons (:), and periods (.).
 export const generateIdFromString = (str: string) =>
   str
     .trim()
-    // ^[^a-z]+ asserts position at start of the string, Match a single character not present in the list below [^a-z]+
+    // ^[^a-z]+ asserts position at start of the string, Match a single character not present in [^a-z]+
     // [^\w-:\.]+ Match a single character not present in the list below
     //   \w matches any word character (equal to [a-zA-Z0-9_])
     //   -: matches a single character in the list -: (case insensitive)
