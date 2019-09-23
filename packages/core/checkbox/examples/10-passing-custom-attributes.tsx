@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Checkbox } from '../src';
 
-export default () => (
-  <form id="lovely-form" onSubmit={e => console.log(e)}>
-    <Checkbox
-      label="Associating a form and adding a testid!"
-      overrides={{
-        Label: {
-          attributesFn: () => ({
-            form: 'lovely-form',
-            'data-test-id': 'test-checkbox',
-          }),
-        },
-      }}
-    />
-  </form>
-);
+export default () => {
+  const formRef = useRef(null);
+  const [data, setData] = useState('');
+  return (
+    <>
+      Press [tab] fam
+      <Checkbox
+        value="trivialities"
+        label="Focused second!"
+        overrides={{
+          HiddenCheckbox: {
+            attributesFn: () => ({
+              tabIndex: 2,
+            }),
+          },
+        }}
+      />
+      <Checkbox
+        value="trivialities"
+        label="Focused first!"
+        overrides={{
+          HiddenCheckbox: {
+            attributesFn: () => ({
+              tabIndex: 1,
+              'data-test-id': 'test-checkbox',
+            }),
+          },
+        }}
+      />
+    </>
+  );
+};
