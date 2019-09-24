@@ -1,1 +1,0 @@
-dont append file attrs to url in Safari
