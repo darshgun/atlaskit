@@ -51,8 +51,6 @@ describe('Using enzyme', () => {
       </Breadcrumbs>,
     );
 
-    expect(wrapper).toMatchSnapshot();
-
     expect(
       wrapper.find(`[data-testid="${breadcrumbsId}"]`).hostNodes(),
     ).toHaveLength(1);
@@ -74,8 +72,6 @@ describe('Using enzyme', () => {
     expect(
       wrapper.find(`[data-testid="${breadcrumbToFindId}"]`).hostNodes(),
     ).toHaveLength(1);
-
-    expect(wrapper).toMatchSnapshot();
   });
 });
 
