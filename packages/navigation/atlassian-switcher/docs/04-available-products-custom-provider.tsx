@@ -22,7 +22,6 @@ const customAvailableProductsDataProvider = createAvailableProductsProvider(
   ${code`
 <AtlassianSwitcher
   product="bitbucket"
-  enableUserCentricProducts
   availableProductsDataProvider={customAvailableProductsDataProvider}
   disableCustomLinks
   disableRecentContainers
@@ -30,13 +29,10 @@ const customAvailableProductsDataProvider = createAvailableProductsProvider(
 />
   `}
 
-  *Note that the custom provider only works if \`enableUserCentricProducts\` is \`true\`*
-
   ### Passing the custom provider to the prefetch trigger
 
   ${code`
   <AtlassianSwitcherPrefetchTrigger
-    enableUserCentricProducts
     availableProductsDataProvider={customAvailableProductsDataProvider}
   >
     <Button type="button" onClick={this.openDrawer}>
@@ -44,6 +40,4 @@ const customAvailableProductsDataProvider = createAvailableProductsProvider(
     </Button>
   </AtlassianSwitcherPrefetchTrigger>
   `}
-
-  *Note that the custom provider only works if \`enableUserCentricProducts\` is \`true\`*
   `;

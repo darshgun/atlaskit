@@ -144,7 +144,7 @@ export const XFlowSettingsProvider = withHandleOptionalCloudId(
 );
 
 export const prefetchAll = ({ cloudId }: WithCloudId) => {
-  fetchLicenseInformation({ cloudId });
+  //fetchLicenseInformation({ cloudId });
   fetchXflowSettings({ cloudId });
   fetchPermission({
     cloudId,

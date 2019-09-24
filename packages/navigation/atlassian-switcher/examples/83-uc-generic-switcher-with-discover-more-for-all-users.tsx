@@ -58,7 +58,6 @@ class GenericSwitcherExample extends React.Component {
             triggerXFlow={this.onTriggerXFlow}
             isDiscoverMoreForEveryoneEnabled
             onDiscoverMoreClicked={this.onDiscoverMoreClicked}
-            enableUserCentricProducts
           />
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>

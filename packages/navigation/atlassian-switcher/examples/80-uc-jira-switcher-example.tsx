@@ -51,7 +51,6 @@ class JiraSwitcherExample extends React.Component {
           <AtlassianSwitcher
             product="jira"
             cloudId="some-cloud-id"
-            enableUserCentricProducts
             triggerXFlow={this.onTriggerXFlow}
           />
         </Drawer>

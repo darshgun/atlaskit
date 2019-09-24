@@ -51,7 +51,6 @@ class ConfluenceSwitcherExample extends React.Component {
           <AtlassianSwitcher
             product="confluence"
             cloudId="some-cloud-id"
-            enableUserCentricProducts
             triggerXFlow={this.onTriggerXFlow}
           />
         </Drawer>

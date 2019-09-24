@@ -10,7 +10,6 @@ import { resetAvailableProducts } from '../src/providers/products-data-provider'
 class ConfluenceSwitcherExample extends React.Component {
   state = {
     isDrawerOpen: false,
-    enableUserCentricProducts: false,
   };
 
   componentDidMount() {
@@ -40,15 +39,8 @@ class ConfluenceSwitcherExample extends React.Component {
     );
   };
 
-  onToggleEnableUserCentricProducts = () => {
-    this.setState({
-      enableUserCentricProducts: !this.state.enableUserCentricProducts,
-    });
-  };
-
   render() {
     const CLOUD_ID = 'some-cloud-id';
-    const { enableUserCentricProducts } = this.state;
 
     return (
       <div style={{ padding: '2rem' }}>
@@ -57,14 +49,12 @@ class ConfluenceSwitcherExample extends React.Component {
             product="confluence"
             cloudId={CLOUD_ID}
             triggerXFlow={this.onTriggerXFlow}
-            enableUserCentricProducts={enableUserCentricProducts}
           />
         </Drawer>
         <div style={{ display: 'flex' }}>
           <AtlassianSwitcherPrefetchTrigger
             product="confluence"
             cloudId={CLOUD_ID}
-            enableUserCentricProducts={enableUserCentricProducts}
           >
             <Button type="button" onClick={this.openDrawer}>
               Open drawer
@@ -73,15 +63,6 @@ class ConfluenceSwitcherExample extends React.Component {
           <div style={{ width: 16 }} />
           <Button type="button" onClick={this.clearCache}>
             Clear cache
-          </Button>
-          <div style={{ width: 16 }} />
-          <Button
-            type="button"
-            onClick={this.onToggleEnableUserCentricProducts}
-          >
-            {enableUserCentricProducts
-              ? 'Disable user centric products'
-              : 'Enable user centric products'}
           </Button>
         </div>
       </div>

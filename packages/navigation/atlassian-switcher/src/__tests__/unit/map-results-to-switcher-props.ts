@@ -21,7 +21,6 @@ describe('map-results-to-switcher-props', () => {
         null,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
@@ -47,7 +46,6 @@ describe('map-results-to-switcher-props', () => {
           productRecommendations: asCompletedProvider([]),
         },
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
@@ -73,7 +71,6 @@ describe('map-results-to-switcher-props', () => {
           }),
         },
         {
-          enableUserCentricProducts: false,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
@@ -103,7 +100,6 @@ describe('map-results-to-switcher-props', () => {
           productRecommendations: asCompletedProvider([]),
         },
         {
-          enableUserCentricProducts: false,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
@@ -129,7 +125,6 @@ describe('map-results-to-switcher-props', () => {
           productRecommendations: asFailedProvider(),
         },
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
@@ -153,7 +148,6 @@ describe('map-results-to-switcher-props', () => {
           addProductsPermission: asFailedProvider(),
         },
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
@@ -175,7 +169,6 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           xflow: false,
@@ -253,7 +246,6 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           xflow: false,
@@ -307,7 +299,6 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           xflow: false,
@@ -340,7 +331,6 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           isDiscoverMoreForEveryoneEnabled: false,
           disableCustomLinks: false,
           disableRecentContainers: false,
@@ -371,7 +361,6 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           xflow: false,
@@ -416,7 +405,6 @@ describe('map-results-to-switcher-props', () => {
       cloudId,
       loadingProvidersResult,
       {
-        enableUserCentricProducts: true,
         disableCustomLinks: false,
         disableRecentContainers: false,
         xflow: false,
@@ -437,7 +425,6 @@ describe('map-results-to-switcher-props', () => {
       cloudId,
       loadingProvidersResult,
       {
-        enableUserCentricProducts: true,
         disableCustomLinks: false,
         disableRecentContainers: false,
         xflow: false,
@@ -458,7 +445,6 @@ describe('map-results-to-switcher-props', () => {
       null,
       loadingProvidersResult,
       {
-        enableUserCentricProducts: true,
         disableCustomLinks: false,
         disableRecentContainers: false,
         isDiscoverMoreForEveryoneEnabled: false,

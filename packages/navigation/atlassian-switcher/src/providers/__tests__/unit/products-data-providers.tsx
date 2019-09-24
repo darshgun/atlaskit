@@ -13,9 +13,7 @@ import { createProvider } from '../../create-data-provider';
 describe('products-data-providers', () => {
   test('should render using the default provider', () => {
     const wrapper = shallow(
-      <AvailableProductsProvider isUserCentric>
-        {items => items}
-      </AvailableProductsProvider>,
+      <AvailableProductsProvider>{items => items}</AvailableProductsProvider>,
     );
     expect(wrapper).toMatchSnapshot();
   });
@@ -26,10 +24,7 @@ describe('products-data-providers', () => {
       'my-new-endpoint',
     );
     const wrapper = shallow(
-      <AvailableProductsProvider
-        isUserCentric
-        availableProductsDataProvider={customProvider}
-      >
+      <AvailableProductsProvider availableProductsDataProvider={customProvider}>
         {items => items}
       </AvailableProductsProvider>,
     );

@@ -66,7 +66,6 @@ class SwitcherExample extends React.Component {
             triggerXFlow={this.onTriggerXFlow}
             isDiscoverMoreForEveryoneEnabled
             onDiscoverMoreClicked={this.onDiscoverMoreClicked}
-            enableUserCentricProducts
             theme={redishColorScheme}
           />
         </Drawer>

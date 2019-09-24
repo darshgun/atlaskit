@@ -48,7 +48,6 @@ class GenericSwitcherExample extends React.Component {
             product="site-admin"
             cloudId="some-cloud-id"
             triggerXFlow={this.onTriggerXFlow}
-            enableUserCentricProducts
           />
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>

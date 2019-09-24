@@ -106,7 +106,6 @@ class InlineDialogSwitcherExample extends React.Component {
           disableCustomLinks
           disableRecentContainers
           disableHeadings
-          enableUserCentricProducts
           appearance="standalone"
           theme={trelloTheme}
         />,

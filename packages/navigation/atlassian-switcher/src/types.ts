@@ -53,7 +53,6 @@ export enum Product {
 }
 
 export enum Feature {
-  enableUserCentricProducts = 'enableUserCentricProducts',
   disableCustomLinks = 'disableCustomLinks',
   disableRecentContainers = 'disableRecentContainers',
   disableHeadings = 'disableHeadings',
@@ -64,8 +63,6 @@ export enum Feature {
 }
 
 export type FeatureFlagProps = {
-  // Show user centric avaialble products as opposed to site centric product list.
-  enableUserCentricProducts?: boolean;
   // Custom links are enabled by default for Jira and Confluence, this feature flag allows to hide them. Custom links are not supported by the switcher in any other products.
   disableCustomLinks?: boolean;
   // Hide recent containers. Recent containers are enabled by default.

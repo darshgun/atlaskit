@@ -240,7 +240,6 @@ export function mapResultsToSwitcherProps(
   const collect = createCollector();
 
   const {
-    licenseInformation,
     isXFlowEnabled,
     managePermission,
     addProductsPermission,
@@ -248,20 +247,11 @@ export function mapResultsToSwitcherProps(
     recentContainers,
     productRecommendations,
   } = results;
-  if (isError(licenseInformation)) {
-    throw licenseInformation.error;
-  }
-  const resolvedLicenseInformation: ProviderResult<LicenseInformationResponse> =
-    features.enableUserCentricProducts && cloudId
-      ? asLicenseInformationProviderResult(availableProducts, cloudId)
-      : licenseInformation;
-
-  const hasLoadedSiteCentricProducts = hasLoaded(licenseInformation);
+  const resolvedLicenseInformation: ProviderResult<
+    LicenseInformationResponse
+  > = asLicenseInformationProviderResult(availableProducts, cloudId);
   const hasLoadedAccountCentricProducts = hasLoaded(availableProducts);
 
-  const hasLoadedLicenseInformation = features.enableUserCentricProducts
-    ? hasLoadedAccountCentricProducts
-    : hasLoadedSiteCentricProducts;
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);
   const hasLoadedSuggestedProducts = features.xflow
@@ -270,9 +260,7 @@ export function mapResultsToSwitcherProps(
 
   return {
     licensedProductLinks: collect(
-      features.enableUserCentricProducts
-        ? collectAvailableProductLinks(cloudId, availableProducts)
-        : collectProductLinks(licenseInformation),
+      collectAvailableProductLinks(cloudId, availableProducts),
       [],
     ),
     suggestedProductLinks: features.xflow
@@ -313,9 +301,9 @@ export function mapResultsToSwitcherProps(
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),
     hasLoaded:
-      hasLoadedLicenseInformation &&
+      hasLoadedAccountCentricProducts &&
       hasLoadedAdminLinks &&
       hasLoadedSuggestedProducts,
-    hasLoadedCritical: hasLoadedLicenseInformation,
+    hasLoadedCritical: hasLoadedAccountCentricProducts,
   };
 }

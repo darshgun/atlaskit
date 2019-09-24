@@ -76,11 +76,10 @@ class GenericSwitcherExample extends React.Component {
             disableRecentContainers
             disableHeadings
             triggerXFlow={this.onTriggerXFlow}
-            enableUserCentricProducts
           />
         </Drawer>
         <div style={{ display: 'flex' }}>
-          <AtlassianSwitcherPrefetchTrigger enableUserCentricProducts>
+          <AtlassianSwitcherPrefetchTrigger>
             <Button type="button" onClick={this.openDrawer}>
               Open drawer
             </Button>

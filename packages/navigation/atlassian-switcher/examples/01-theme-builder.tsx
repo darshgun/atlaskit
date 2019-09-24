@@ -75,7 +75,6 @@ class InlineDialogSwitcherExample extends React.Component {
                 disableRecentContainers
                 disableHeadings
                 isDiscoverMoreForEveryoneEnabled
-                enableUserCentricProducts
                 cloudId="some-cloud-id"
                 triggerXFlow={this.onTriggerXFlow}
                 appearance="standalone"
