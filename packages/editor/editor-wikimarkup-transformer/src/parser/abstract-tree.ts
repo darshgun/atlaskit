@@ -1,6 +1,6 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from './text';
-import { normalizePMNodes } from './utils/normalize';
+import { normalizePMNodes, normalizeMediaGroups } from './utils/normalize';
 import { Context } from './tokenize';
 
 export default class AbstractTree {
@@ -25,7 +25,7 @@ export default class AbstractTree {
 
     return this.schema.nodes.doc.createChecked(
       {},
-      normalizePMNodes(content, this.schema),
+      normalizePMNodes(normalizeMediaGroups(content, this.schema), this.schema),
     );
   }
 }
