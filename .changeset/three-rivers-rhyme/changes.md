@@ -1,0 +1,1 @@
+ED-7760 Prevent scroll jumping when editing near the end of the document on iOS.
