@@ -35,7 +35,7 @@ const shouldResetGrabArea = (width: number) => {
   return width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH;
 };
 
-const BodyDragCursor = () => (
+export const BodyDragCursor = () => (
   <Global
     styles={{
       body: {
