@@ -4,7 +4,6 @@ import Drawer from '@atlaskit/drawer';
 import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
-import { ProductTopItemVariation } from '@atlaskit/atlassian-switcher/types';
 
 class OptionalContainersExample extends React.Component {
   state = {
@@ -14,7 +13,6 @@ class OptionalContainersExample extends React.Component {
     disableRecentContainers: false,
     disableCloudId: false,
     disableXFlow: false,
-    productTopItemVariation: ProductTopItemVariation.mostFrequentSite,
   };
 
   openDrawer = () => {
@@ -63,7 +61,6 @@ class OptionalContainersExample extends React.Component {
       disableXFlow,
       enableUserCentricProducts,
       disableCustomLinks,
-      productTopItemVariation,
     } = this.state;
 
     return (
@@ -76,7 +73,6 @@ class OptionalContainersExample extends React.Component {
             disableCustomLinks={disableCustomLinks}
             enableUserCentricProducts={enableUserCentricProducts}
             triggerXFlow={disableXFlow ? undefined : this.onTriggerXFlow}
-            productTopItemVariation={productTopItemVariation}
           />
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>
@@ -128,9 +124,6 @@ class OptionalContainersExample extends React.Component {
           >
             Custom links
           </Button>
-          <Button type="button" onClick={this.toggleProductTopItemVariation}>
-            Product top item is {productTopItemVariation}
-          </Button>
         </div>
       </div>
     );
@@ -163,16 +156,6 @@ class OptionalContainersExample extends React.Component {
   private toggleDisableCustomLinks = () => {
     this.setState({
       disableCustomLinks: !this.state.disableCustomLinks,
-    });
-  };
-
-  private toggleProductTopItemVariation = () => {
-    const { productTopItemVariation } = this.state;
-    this.setState({
-      productTopItemVariation:
-        productTopItemVariation === ProductTopItemVariation.mostFrequentSite
-          ? ProductTopItemVariation.currentSite
-          : ProductTopItemVariation.mostFrequentSite,
     });
   };
 }

@@ -351,18 +351,6 @@ pipelines:
           after-script:
             - yarn send:buildEvents
 
-    # This will build all the packages and run bundle-analysis.
-    run-bundle-analysis:
-      - step:
-          script:
-            - source ./build-setup.sh
-            - bolt install --frozen-lockfile
-            - yarn build
-            - yarn build:bundle-analysis
-          after-script:
-            - yarn send:buildEvents
-          caches:
-            - node
     # This build is used as our `merge` build when managing concurrent PR to master.
     landkid:
       - parallel:
@@ -605,4 +593,16 @@ pipelines:
             - yarn build
             # - yarn build:editor-mobile-bridge
             # Run validation in quiet mode as well to easily check file differences
+            # Validate packages will produce false positives and is for manual analysis so we always return true
             - cd build/build-validator && (yarn validate-packages || yarn validate-packages --quiet) || true
+    # This replicates builds that would happen locally on a clean slate for a single package
+    run-build-validator-per-package:
+      - step:
+          name: Run build validator per package
+          script:
+            - source ./build-setup.sh
+            - bolt install --frozen-lockfile
+            # Exclude css-reset as it fails because of its postbuild ts not suppressing module not found errors
+            - bolt workspaces exec --no-bail --ignore "@atlaskit/css-reset" --only-fs "packages/*/*" --serial -- bash -c 'bolt p run build:clean $(grep name.*@atlaskit package.json | cut -d \" -f 4)'
+            # Validate packages will produce false positives and is for manual analysis so we always return true
+            - yarn validate-packages || true

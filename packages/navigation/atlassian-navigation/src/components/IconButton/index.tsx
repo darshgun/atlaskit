@@ -11,17 +11,25 @@ export const IconButton = forwardRef(
     const { icon, testId, tooltip, ...buttonProps } = props;
     const theme = useTheme();
 
-    return (
-      <Tooltip content={tooltip} hideTooltipOnClick>
-        <Button
-          appearance="primary"
-          data-testid={testId}
-          iconBefore={icon}
-          ref={ref}
-          theme={getIconButtonTheme(theme)}
-          {...buttonProps}
-        />
-      </Tooltip>
+    const button = (
+      <Button
+        appearance="primary"
+        data-testid={testId}
+        iconBefore={icon}
+        ref={ref}
+        theme={getIconButtonTheme(theme)}
+        {...buttonProps}
+      />
     );
+
+    if (tooltip) {
+      return (
+        <Tooltip content={tooltip} hideTooltipOnClick>
+          {button}
+        </Tooltip>
+      );
+    }
+
+    return button;
   },
 );

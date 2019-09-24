@@ -1,5 +1,5 @@
 import { name } from '../../../../version.json';
-import { createSchema } from '../../../../..';
+import { createSchema } from '../../../../schema/create-schema';
 import { fromHTML as fromHTML_, toHTML } from '../../../../../test-helpers';
 
 const schema = makeSchema();

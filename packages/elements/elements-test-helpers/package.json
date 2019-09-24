@@ -19,9 +19,7 @@
     "react-intl": "^2.6.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [
-    "Eduardo S"
-  ],
+  "maintainers": [],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -30,7 +28,7 @@
   "atlaskit": {
     "internal": true,
     "name": "Elements Test Helpers",
-    "team": "elements"
+    "team": "teams"
   },
   "devDependencies": {
     "@atlaskit/docs": "^8.1.5"

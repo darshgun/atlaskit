@@ -1,13 +1,14 @@
 // @flow
 
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Select from '@atlaskit/select';
 import { Checkbox } from '@atlaskit/checkbox';
 import { Field } from '@atlaskit/form';
 
 import FeedbackCollector from '../../components/FeedbackCollector';
 import FeedbackForm, { fieldLabel } from '../../components/FeedbackForm';
+import { type FormFields } from '../../types';
 
 describe('Feedback Collector unit tests', () => {
   describe('Feedback integration', () => {
@@ -214,6 +215,57 @@ describe('Feedback Collector unit tests', () => {
         expect(wrapper.instance().mapFormToJSD(formValues)).toEqual(
           resultValues,
         );
+      });
+    });
+
+    describe('Posting feedback', () => {
+      test('Should invoke props.onSubmit even after FeedbackCollector unmounts', async () => {
+        class TestableFeedbackCollector extends FeedbackCollector {
+          componentWillUnmount() {
+            // Empty placeholder to allow spying on this lifecycle method within a unit test,
+            // because the real component doesn't declare one, and sadly, Enzyme doesn't allow
+            // access to the inherited React lifecycle methods.
+          }
+        }
+
+        const onSubmit = jest.fn();
+        const timeoutOnSubmit = 700;
+        const unmountSpy = jest.spyOn(
+          TestableFeedbackCollector.prototype,
+          'componentWillUnmount',
+        );
+
+        const wrapper = shallow(
+          <TestableFeedbackCollector
+            onClose={() => wrapper.unmount()}
+            onSubmit={onSubmit}
+            timeoutOnSubmit={timeoutOnSubmit}
+            email="email"
+            name="name"
+            embeddableKey=""
+            requestTypeId=""
+          />,
+        );
+        const feedbackCollector = wrapper.instance();
+
+        // Emulates the user clicking the submit button within the rendered form.
+        const feedback: FormFields = {
+          type: 'empty',
+          description: `This won't actually dispatch due to missing embeddableKey & requestTypeId props`,
+          canBeContacted: false,
+          enrollInResearchGroup: false,
+        };
+        feedbackCollector.postFeedback(feedback);
+
+        // Wait for the timeout to occur. The component will unmount before this triggers.
+        await new Promise(resolve => {
+          setTimeout(() => {
+            resolve();
+          }, timeoutOnSubmit);
+        });
+
+        expect(unmountSpy).toHaveBeenCalled();
+        expect(onSubmit).toHaveBeenCalled();
       });
     });
   });

@@ -98,7 +98,7 @@ class Form extends React.Component<Props, State> {
     );
   }
 
-  componenWillUnmount() {
+  componentWillUnmount() {
     this.unsubscribe();
   }
 
