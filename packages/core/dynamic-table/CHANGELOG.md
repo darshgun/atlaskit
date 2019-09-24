@@ -1,5 +1,13 @@
 # @atlaskit/dynamic-table
 
+## 13.3.0
+
+### Minor Changes
+
+- [minor][565e5c71db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/565e5c71db):
+
+  Add ability to highlight a row in the table based on the index (0 based index) of the current visible page.
+
 ## 13.2.1
 
 - Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):

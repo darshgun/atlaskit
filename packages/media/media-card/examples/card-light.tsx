@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { CardLoading, CardError } from '../src';
-import { StoryList } from '../../media-test-helpers';
+import { StoryList } from '@atlaskit/media-test-helpers';
 
 const divStyle = {
   width: '100px',

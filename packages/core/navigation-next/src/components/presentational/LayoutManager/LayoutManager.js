@@ -238,7 +238,7 @@ export default class LayoutManager extends Component<
         >
           <Fragment>
             {EXPERIMENTAL_HORIZONTAL_GLOBAL_NAV && (
-              <RenderBlocker>
+              <RenderBlocker blockOnChange>
                 <HorizontalNavigationContainer topOffset={topOffset}>
                   <GlobalNavigation />
                 </HorizontalNavigationContainer>

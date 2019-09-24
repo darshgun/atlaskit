@@ -1,5 +1,5 @@
 import { name } from '../../../../version.json';
-import { createSchema } from '../../../../..';
+import { createSchema } from '../../../../schema/create-schema';
 import { toHTML } from '../../../../../test-helpers';
 
 describe(`${name}/schema breakout mark`, () => {

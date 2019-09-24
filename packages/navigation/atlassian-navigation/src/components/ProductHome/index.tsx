@@ -9,8 +9,12 @@ import {
 } from './styles';
 import { CustomProductHomeProps, ProductHomeProps } from './types';
 
-export const ProductHome = ({ icon: Icon, logo: Logo }: ProductHomeProps) => (
-  <div css={containerCSS}>
+export const ProductHome = ({
+  icon: Icon,
+  logo: Logo,
+  onClick = () => {},
+}: ProductHomeProps) => (
+  <div css={containerCSS} onClick={onClick}>
     <div css={productLogoCSS}>
       <Logo />
     </div>
@@ -21,10 +25,10 @@ export const ProductHome = ({ icon: Icon, logo: Logo }: ProductHomeProps) => (
 );
 
 export const CustomProductHome = (props: CustomProductHomeProps) => {
-  const { iconAlt, iconUrl, logoAlt, logoUrl } = props;
+  const { iconAlt, iconUrl, logoAlt, logoUrl, onClick } = props;
 
   return (
-    <div css={containerCSS}>
+    <div css={containerCSS} onClick={onClick}>
       <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
       <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
     </div>

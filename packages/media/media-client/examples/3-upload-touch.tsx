@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
 import { MediaStore } from '../src';
-import { createUploadMediaClient } from '../../media-test-helpers';
+import { createUploadMediaClient } from '@atlaskit/media-test-helpers';
 import uuid from 'uuid/v4';
 
 const Wrapper = styled.div`

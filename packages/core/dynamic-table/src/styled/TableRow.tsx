@@ -1,7 +1,16 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { row } from '../theme';
 
-export const TableBodyRow = styled.tr`
+export interface ITableRowProps {
+  isHighlighted?: boolean;
+}
+
+export const TableBodyRow = styled.tr<ITableRowProps>`
+  ${({ isHighlighted }) =>
+    isHighlighted &&
+    css`
+      background-color: ${row.highlightedBackground};
+    `};
   &:hover {
     background: ${row.hoverBackground};
   }

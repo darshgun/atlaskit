@@ -9,10 +9,15 @@ export type ButtonCSSProperties = CSSProperties & {
   boxShadow: string;
 };
 
+export type ButtonFocusCSSProperties = {
+  boxShadow: string;
+  color: string;
+};
+
 export type ButtonCSSContext = {
   default: ButtonCSSProperties;
   hover: ButtonCSSProperties;
-  focus: ButtonCSSProperties;
+  focus: ButtonFocusCSSProperties;
   active: ButtonCSSProperties;
 };
 
@@ -33,9 +38,9 @@ export type Mode = {
   create: CreateCSS;
   iconButton: IconButtonCSS;
   navigation: NavigationCSS;
+  primaryButton: PrimaryButtonCSS;
   search: SearchCSS;
   skeleton: SkeletonCSS;
-  primaryButton: PrimaryButtonCSS;
 };
 
 export type NavigationTheme = {

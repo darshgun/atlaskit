@@ -162,9 +162,9 @@ async function runValidateDists(opts) {
     throw new Error(
       `${
         packageDistErrors.length
-      } errors detected in package dists:\n * ${packageDistErrors.join(
-        '\n * ',
-      )}`,
+      } errors detected in package dists:\n * ${packageDistErrors.join('\n * ')}
+
+      If dist has included dependencies and changed the file structure, run yarn build:multi-entry-point-tsconfig and try again.`,
     );
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/contextual-survey",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A React component used to ask the user for feedback",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -21,9 +21,9 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^13.1.6",
-    "@atlaskit/checkbox": "^9.0.9",
-    "@atlaskit/form": "^6.1.12",
+    "@atlaskit/button": "^13.3.1",
+    "@atlaskit/checkbox": "^10.0.0",
+    "@atlaskit/form": "^6.2.3",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/textarea": "^2.1.10",
     "@atlaskit/theme": "^9.1.6",
@@ -37,8 +37,8 @@
     "react": "^16.8.0"
   },
   "devDependencies": {
-    "@atlaskit/checkbox": "^9.0.9",
-    "@atlaskit/docs": "^8.1.5",
+    "@atlaskit/checkbox": "^10.0.0",
+    "@atlaskit/docs": "^8.1.7",
     "@testing-library/react": "^8.0.1"
   },
   "keywords": [

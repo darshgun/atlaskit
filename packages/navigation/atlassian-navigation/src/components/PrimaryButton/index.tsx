@@ -11,18 +11,26 @@ export const PrimaryButton = forwardRef(
     const { children, testId, tooltip, ...buttonProps } = props;
     const theme = useTheme();
 
-    return (
-      <Tooltip content={tooltip} hideTooltipOnClick>
-        <Button
-          appearance="primary"
-          data-testid={testId}
-          ref={ref}
-          theme={getPrimaryButtonTheme(theme)}
-          {...buttonProps}
-        >
-          {children}
-        </Button>
-      </Tooltip>
+    const button = (
+      <Button
+        appearance="primary"
+        data-testid={testId}
+        ref={ref}
+        theme={getPrimaryButtonTheme(theme)}
+        {...buttonProps}
+      >
+        {children}
+      </Button>
     );
+
+    if (tooltip) {
+      return (
+        <Tooltip content={tooltip} hideTooltipOnClick>
+          {button}
+        </Tooltip>
+      );
+    }
+
+    return button;
   },
 );

@@ -1,5 +1,37 @@
 # @atlaskit/atlassian-navigation
 
+## 0.4.6
+
+### Patch Changes
+
+- [patch][fcfd4db9c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fcfd4db9c0):
+
+  Fixing focus styles for IconButtons
+
+## 0.4.5
+
+### Patch Changes
+
+- [patch][fda9024074](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fda9024074):
+
+  Add a fully instrumented example of atlassian-navigation using @atlaskit/analytics-next
+
+## 0.4.4
+
+### Patch Changes
+
+- [patch][c24724add6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c24724add6):
+
+  Update entry points and exports
+
+## 0.4.3
+
+### Patch Changes
+
+- [patch][6a82fd06ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a82fd06ab):
+
+  Render tooltip only when supplied, and fix button focus background color
+
 ## 0.4.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @atlaskit/quick-search
 
+## 7.8.0
+
+### Minor Changes
+
+- [minor][bff5be0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bff5be0d46):
+
+  Quick search autocomplete analytics instrumentation
+
 ## 7.7.2
 
 ### Patch Changes

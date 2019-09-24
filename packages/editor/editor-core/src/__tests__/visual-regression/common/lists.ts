@@ -34,7 +34,7 @@ import {
   animationFrame,
   scrollToBottom,
 } from '../../__helpers/page-objects/_editor';
-import { EditorTestCardProvider } from '../../../../../editor-test-helpers';
+import { EditorTestCardProvider } from '@atlaskit/editor-test-helpers';
 // TODO: https://product-fabric.atlassian.net/browse/ED-7721
 describe.skip('Lists', () => {
   let page: Page;

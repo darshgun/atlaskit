@@ -1,5 +1,15 @@
 # @atlaskit/smart-card
 
+## 12.5.6
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/form@6.2.3
+  - @atlaskit/radio@3.0.18
+  - @atlaskit/media-ui@11.6.7
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
 ## 12.5.5
 
 ### Patch Changes
