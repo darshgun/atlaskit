@@ -1,4 +1,5 @@
 **FABDODGEM-12 Editor Cashmere Release**
+  - [Internal post](https://go.atlassian.com/cashmere-release)
 
 **Affected editor components:**
 
