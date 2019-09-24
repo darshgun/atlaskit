@@ -111,7 +111,7 @@ async function cliTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   const pkgGlob = await getPkgGlob(['typescriptcli'], pkg, { cwd });
   const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
   return [
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} || true'`,
+    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} && echo Success || true'`,
   ];
 }
 
@@ -128,8 +128,8 @@ async function standardTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   // suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
   // We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
   const commands = {
-    cjs: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} || true'`,
-    esm: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} || true'`,
+    cjs: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`,
+    esm: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
   };
   return typeof watch === 'string'
     ? [commands[watch]]
