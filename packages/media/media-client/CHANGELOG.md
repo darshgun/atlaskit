@@ -1,5 +1,13 @@
 # @atlaskit/media-client
 
+## 2.2.1
+
+### Patch Changes
+
+- [patch][598fde647a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/598fde647a):
+
+  dont append file attrs to url in Safari
+
 ## 2.2.0
 
 ### Minor Changes
