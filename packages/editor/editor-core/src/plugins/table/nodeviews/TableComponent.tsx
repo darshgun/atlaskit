@@ -55,8 +55,6 @@ interface TableState {
   parentWidth?: number;
 }
 
-let prevIsFullWidthModeEnabled: boolean | undefined;
-
 class TableComponent extends React.Component<ComponentProps, TableState> {
   state = {
     scroll: 0,
@@ -81,19 +79,14 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
     this.containerWidth = containerWidth;
 
     // store table size using previous full-width mode so can detect if it has changed
-    const isDynamicTextSizingEnabled = options
-      ? options.isDynamicTextSizingEnabled
-      : false;
+    const dynamicTextSizing = options ? options.dynamicTextSizing : false;
     const isFullWidthModeEnabled = options
-      ? options.isFullWidthModeEnabled
+      ? options.wasFullWidthModeEnabled
       : false;
     this.layoutSize = this.tableNodeLayoutSize(node, containerWidth.width, {
-      isDynamicTextSizingEnabled,
+      dynamicTextSizing,
       isFullWidthModeEnabled,
     });
-    if (typeof prevIsFullWidthModeEnabled === 'undefined') {
-      prevIsFullWidthModeEnabled = isFullWidthModeEnabled;
-    }
 
     // Disable inline table editing and resizing controls in Firefox
     // https://github.com/ProseMirror/prosemirror/issues/432
@@ -277,16 +270,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
       options,
     );
 
-    const fullWidthModeChanged = options
-      ? options.isFullWidthModeEnabled !== prevIsFullWidthModeEnabled
-      : false;
-
-    if (fullWidthModeChanged && options) {
-      prevIsFullWidthModeEnabled = options.isFullWidthModeEnabled;
-    }
-
     if (
-      fullWidthModeChanged ||
       // Breakout mode/layout changed
       layoutChanged ||
       // We need to react if our parent changes
@@ -343,21 +327,16 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
       const { view, node, getPos, options, containerWidth } = this.props;
 
       autoSizeTable(view, node, this.table, getPos(), {
-        isDynamicTextSizingEnabled:
-          (options && options.isDynamicTextSizingEnabled) || false,
+        dynamicTextSizing: (options && options.dynamicTextSizing) || false,
         containerWidth: containerWidth.width,
       });
     }
   };
 
   private handleWindowResize = () => {
-    const { node, options, containerWidth } = this.props;
+    const { node, containerWidth } = this.props;
 
-    const layoutSize = this.tableNodeLayoutSize(
-      node,
-      containerWidth.width,
-      options,
-    );
+    const layoutSize = this.tableNodeLayoutSize(node);
 
     if (containerWidth.width > layoutSize) {
       return;
