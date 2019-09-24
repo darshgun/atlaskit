@@ -162,6 +162,22 @@ describe('Media', () => {
       ).toBeTruthy();
     });
 
+    it('should pass shouldOpenMediaViewer=true if renderer appearance is not mobile', () => {
+      const cardMobile = mount(
+        <MediaCard type="file" id="1" rendererAppearance={'mobile'} />,
+      );
+      const cardNoMobile = mount(<MediaCard type="file" id="1" />);
+
+      // force media mediaClientConfig to be resolved
+      cardMobile.find(MediaCardInternal).setState({ mediaClientConfig: {} });
+      cardNoMobile.find(MediaCardInternal).setState({ mediaClientConfig: {} });
+
+      expect(
+        cardNoMobile.find(Card).prop('shouldOpenMediaViewer'),
+      ).toBeTruthy();
+      expect(cardMobile.find(Card).prop('shouldOpenMediaViewer')).toBeFalsy();
+    });
+
     it('should pass shouldOpenMediaViewer=true if property shouldOpenMediaViewer is set to true', () => {
       const cardWithOnClick = mount(
         <MediaCard
@@ -171,6 +187,16 @@ describe('Media', () => {
           eventHandlers={{ media: { onClick: jest.fn() } }}
         />,
       );
+
+      const cardMobile = mount(
+        <MediaCard
+          type="file"
+          id="1"
+          shouldOpenMediaViewer={true}
+          rendererAppearance={'mobile'}
+        />,
+      );
+
       const cardWithoutOnClick = mount(
         <MediaCard type="file" id="1" shouldOpenMediaViewer={true} />,
       );
@@ -182,6 +208,7 @@ describe('Media', () => {
       cardWithoutOnClick
         .find(MediaCardInternal)
         .setState({ mediaClientConfig: {} });
+      cardMobile.find(MediaCardInternal).setState({ mediaClientConfig: {} });
 
       expect(
         cardWithOnClick.find(Card).prop('shouldOpenMediaViewer'),
@@ -189,6 +216,7 @@ describe('Media', () => {
       expect(
         cardWithoutOnClick.find(Card).prop('shouldOpenMediaViewer'),
       ).toBeTruthy();
+      expect(cardMobile.find(Card).prop('shouldOpenMediaViewer')).toBeTruthy();
     });
 
     it('should pass shouldOpenMediaViewer=false if property shouldOpenMediaViewer is set to false', () => {
@@ -203,6 +231,14 @@ describe('Media', () => {
       const cardWithoutOnClick = mount(
         <MediaCard type="file" id="1" shouldOpenMediaViewer={false} />,
       );
+      const cardMobile = mount(
+        <MediaCard
+          type="file"
+          id="1"
+          shouldOpenMediaViewer={false}
+          rendererAppearance={'mobile'}
+        />,
+      );
 
       // force media mediaClientConfig to be resolved
       cardWithOnClick
@@ -211,6 +247,7 @@ describe('Media', () => {
       cardWithoutOnClick
         .find(MediaCardInternal)
         .setState({ mediaClientConfig: {} });
+      cardMobile.find(MediaCardInternal).setState({ mediaClientConfig: {} });
 
       expect(
         cardWithOnClick.find(Card).prop('shouldOpenMediaViewer'),
@@ -218,6 +255,7 @@ describe('Media', () => {
       expect(
         cardWithoutOnClick.find(Card).prop('shouldOpenMediaViewer'),
       ).toBeFalsy();
+      expect(cardMobile.find(Card).prop('shouldOpenMediaViewer')).toBeFalsy();
     });
 
     it('should call passed onClick', () => {
