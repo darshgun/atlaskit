@@ -1,0 +1,13 @@
+{
+  "releases": [
+    { "name": "@atlaskit/adf-schema", "type": "minor" },
+    { "name": "@atlaskit/adf-utils", "type": "minor" },
+    { "name": "@atlaskit/editor-core", "type": "minor" },
+    { "name": "@atlaskit/editor-mobile-bridge", "type": "minor" },
+    { "name": "@atlaskit/renderer", "type": "minor" },
+    { "name": "@atlaskit/media-client", "type": "minor" },
+    { "name": "@atlaskit/code", "type": "patch" },
+    { "name": "@atlaskit/media-picker", "type": "patch" }
+  ],
+  "dependents": []
+}
