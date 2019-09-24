@@ -6,20 +6,18 @@ import BreadcrumbsItem from '../../BreadcrumbsItem';
 
 describe('Using enzyme', () => {
   test('It should not generate data-testid', () => {
+    // We need at least 3 breadcrumbs to make ellipsis appear
+    // - even if the maxItems limit is exceeded
     const wrapper = mount(
-      <Breadcrumbs maxItems={5}>
+      <Breadcrumbs maxItems={1}>
         <BreadcrumbsItem href="/item" text="Item" />
         <BreadcrumbsItem href="/item" text="Another item" />
-        <BreadcrumbsItem href="/item" text="A third item" />
-        <BreadcrumbsItem
-          href="/item"
-          text="A fourth item with a very long name"
-        />
-        <BreadcrumbsItem href="/item" text="Item 5" />
-        <BreadcrumbsItem href="/item" text="A sixth item" />
+        <BreadcrumbsItem href="/item" text="Yet another item" />
       </Breadcrumbs>,
     );
 
+    // We expect here that even the ellipsis won't have data-testid
+    // if the parent component is not provided with one.
     expect(wrapper.find(`[data-testid]`).hostNodes()).toHaveLength(0);
   });
 
@@ -30,19 +28,13 @@ describe('Using enzyme', () => {
     const lastBreadcrumbId = 'last-breadcrumb';
 
     const wrapper = mount(
-      <Breadcrumbs maxItems={5} testId={breadcrumbsId}>
+      <Breadcrumbs maxItems={2} testId={breadcrumbsId}>
         <BreadcrumbsItem href="/item" text="Item" />
         <BreadcrumbsItem
           href="/item"
           text="Another item"
           testId={breadcrumbToFindId}
         />
-        <BreadcrumbsItem href="/item" text="A third item" />
-        <BreadcrumbsItem
-          href="/item"
-          text="A fourth item with a very long name"
-        />
-        <BreadcrumbsItem href="/item" text="Item 5" />
         <BreadcrumbsItem
           href="/item"
           text="A sixth item"
