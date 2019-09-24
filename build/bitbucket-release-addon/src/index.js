@@ -1,8 +1,10 @@
 import queryString from 'query-string';
 import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
+import yaml from 'js-yaml';
 
 import getCommits from './get-commits';
-import getFSChangesets from './get-fs-changesets';
+import getFSChangesets from '././get-fs-changesets';
+import getChangesets from '././get-changesets';
 import { legacyChangesetRepos } from './config';
 
 const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
@@ -45,22 +47,27 @@ const releasedPackagesMessage = releases => {
 };
 
 const {
-  user,
-  repo,
+  // user,
+  // repo,
   pullrequestid,
   repoid,
   sourcehash,
   destinationhash,
 } = queryString.parse(window.location.search);
 
-// CHECK VERSION OF CHANGESETS
+const user = 'jackrgardner';
+const repo = 'changeset-testing';
 
 // Only retrieve one type of changesets. Legacy commit changesets are only supported in repos
 // defined in config.js
-const changesetPromise =
-  legacyChangesetRepos.indexOf(repoid) >= 0
-    ? getCommits(user, repo, pullrequestid)
-    : getFSChangesets(user, repo, sourcehash, destinationhash);
+// const changesetPromise =
+//   legacyChangesetRepos.indexOf(repoid) >= 0
+//     ? getCommits(user, repo, pullrequestid)
+//     : getFSChangesets(user, repo, sourcehash, destinationhash);
+
+const changesetPromise = getChangesets(user, repo, sourcehash, destinationhash);
+
+console.log('Promises:', changesetPromise);
 
 changesetPromise
   .then(changesets => {
@@ -68,7 +75,18 @@ changesetPromise
       document.body.innerHTML = noChangesetMessage;
       return;
     }
-    const releases = flattenChangesets(changesets);
+    console.warn('After resolved:', changesets);
+
+    // const releases = flattenChangesets(changesets);
+    // const releases = changesets
+    //   .map(changeset => {
+    //     const result = /\s*---([^]*?)\n\s*---\n([^]+)/.exec(changeset);
+    //     const [, roughReleases, ] = result;
+    //     console.warn(roughReleases);
+    //     const yamlStuff = yaml.safeLoad(roughReleases);
+    //     return Object.entries(yamlStuff).map(([name, type]) => ({ name, type }));
+    //   })
+    //   .flat();
 
     document.body.innerHTML = releasedPackagesMessage(releases);
   })
