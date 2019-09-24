@@ -3,7 +3,6 @@ import {
   createParagraphNodeFromInlineNodes,
   createEmptyParagraphNode,
 } from '../nodes/paragraph';
-import schema from '../../../../editor-test-helpers/src/schema';
 
 export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
   const output: PMNode[] = [];
