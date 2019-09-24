@@ -24,15 +24,9 @@ function fetchLastPublishedJSONSchema() {
   );
 }
 
-// function fetchMasterJSONSchema() {
-//   return fetchJSONSchema(
-//     `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/master/packages/editor/adf-schema/json-schema/v1/full.json`,
-//   );
-// }
-
-function fetchEditorNextReleaseJSONSchema() {
+function fetchMasterJSONSchema() {
   return fetchJSONSchema(
-    `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/editor-next-release/packages/editor/adf-schema/json-schema/v1/full.json`,
+    `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/master/packages/editor/adf-schema/json-schema/v1/full.json`,
   );
 }
 
