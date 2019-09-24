@@ -1,19 +1,29 @@
-#! /usr/bin/env node
 /**
  * The canonical build script for Atlaskit.
- * See CONTRIBUTING.md#building-packages for more information.
+ * See CONTRIBUTING.md#building-packages or
+ * run `bolt w @atlaskit/ci-scripts build --help` for more information.
  */
-const bolt = require('bolt');
-const concurrently = require('concurrently');
-const meow = require('meow');
+import * as bolt from 'bolt';
+import concurrently from 'concurrently';
+import meow from 'meow';
 
-const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
-const getGlobPackagesForTools = require('./get.glob.packages.for.tools');
-const createEntryPointsDirectories = require('./create.entry.points.directories');
-const copyVersion = require('./copy.version');
-const validateDists = require('./validate.dists');
+import { PackageInfo } from '@atlaskit/build-utils/types';
+import { getPackagesInfo } from '@atlaskit/build-utils/tools';
+import getGlobPackagesForTools from './get.glob.packages.for.tools';
+import createEntryPointsDirectories from './create.entry.points.directories';
+import copyVersion from './copy.version';
+import validateDists from './validate.dists';
 
-async function runCommands(commands, opts = {}) {
+type WatchFlag = boolean | 'cjs' | 'esm' | undefined;
+type StepArgs = { cwd: string | undefined; pkg: PackageInfo | undefined };
+type StepArgsWithWatch = StepArgs & {
+  watch: WatchFlag;
+};
+
+async function runCommands(
+  commands: string[],
+  opts: { sequential?: boolean; [concurrentlyOption: string]: any } = {},
+): Promise<any> {
   const defaultOpts = {
     // Will kill other processes when one fails
     killOthers: ['failure'],
@@ -27,8 +37,9 @@ async function runCommands(commands, opts = {}) {
     return;
   }
   if (commands.length === 1 || !opts.sequential) {
-    return concurrently(commands, { ...defaultOpts, ...opts }).catch(e => {
-      // Hide internal concurrently stack trace
+    return concurrently(commands, { ...defaultOpts, ...opts }).catch(() => {
+      // Hide internal concurrently stack trace as it does not provide anything useful
+      // See https://github.com/kimmobrunfeldt/concurrently/issues/181
       throw Error('Command failed');
     });
   } else {
@@ -40,11 +51,19 @@ async function runCommands(commands, opts = {}) {
   }
 }
 
-async function getPkgGlob(tools, pkg, { cwd }) {
+async function getPkgGlob(
+  tools: string[],
+  pkg: PackageInfo | undefined,
+  { cwd }: { cwd?: string },
+) {
   return pkg ? pkg.relativeDir : await getGlobPackagesForTools(tools, { cwd });
 }
 
-async function generateFlowTypeCommands({ cwd, pkg, watch }) {
+async function generateFlowTypeCommands({
+  cwd,
+  pkg,
+  watch,
+}: StepArgsWithWatch) {
   if (pkg && !(pkg.isBabel && pkg.isFlow)) {
     return [];
   }
@@ -60,7 +79,7 @@ async function generateFlowTypeCommands({ cwd, pkg, watch }) {
     : Object.values(commands);
 }
 
-async function babelCommands({ cwd, pkg, watch }) {
+async function babelCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   if (pkg && !pkg.isBabel) {
     return [];
   }
@@ -77,15 +96,14 @@ async function babelCommands({ cwd, pkg, watch }) {
     ? [commands[watch]]
     : Object.values(commands);
 }
-
-async function buildJSPackages({ cwd, pkg, watch }) {
+async function buildJSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
   return runCommands([
     ...(await babelCommands({ cwd, pkg, watch })),
     ...(await generateFlowTypeCommands({ cwd, pkg, watch })),
   ]);
 }
 
-async function cliTsCommands({ cwd, pkg, watch }) {
+async function cliTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   if (pkg && !pkg.isTypeScriptCLI) {
     return [];
   }
@@ -97,7 +115,7 @@ async function cliTsCommands({ cwd, pkg, watch }) {
   ];
 }
 
-async function standardTsCommands({ cwd, pkg, watch }) {
+async function standardTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   if (pkg && !pkg.isTypeScript) {
     return [];
   }
@@ -127,7 +145,7 @@ async function standardTsCommands({ cwd, pkg, watch }) {
  *  - The topological order factors in devDependencies when they are not required for building source -https://github.com/boltpkg/bolt/pull/244
  *  - At least one circular dependency exists between packages in the repo, which makes a pure topological sort impossible
  */
-async function buildTSPackages({ cwd, pkg, watch }) {
+async function buildTSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
   return runCommands(
     [
       ...(await standardTsCommands({ cwd, pkg, watch })),
@@ -141,7 +159,7 @@ async function buildTSPackages({ cwd, pkg, watch }) {
   );
 }
 
-async function buildExceptionPackages({ cwd, pkg }) {
+async function buildExceptionPackages({ cwd, pkg }: StepArgs) {
   await bolt.workspacesRun({
     cwd,
     filterOpts: {
@@ -154,7 +172,7 @@ async function buildExceptionPackages({ cwd, pkg }) {
   });
 }
 
-async function getPkgInfo(packageName) {
+async function getPkgInfo(packageName: string): Promise<PackageInfo> {
   const allPkgs = await getPackagesInfo(packageName, {
     only: packageName,
   });
@@ -167,7 +185,10 @@ async function getPkgInfo(packageName) {
   return allPkgs[0];
 }
 
-async function runValidateDists(opts) {
+async function runValidateDists(opts: {
+  cwd: string | undefined;
+  packageName: string | undefined;
+}) {
   const { success, packageDistErrors } = await validateDists(opts);
   if (!success) {
     throw new Error(
@@ -180,7 +201,10 @@ async function runValidateDists(opts) {
   }
 }
 
-async function main(packageName, opts = {}) {
+async function main(
+  packageName: string | undefined,
+  opts: { cwd?: string; watch?: WatchFlag } = {},
+) {
   const { cwd, watch } = opts;
   if (!packageName && watch) {
     throw 'Watch mode is only supported for single package builds only.';
@@ -209,7 +233,7 @@ async function main(packageName, opts = {}) {
   console.log('Building TS packages...');
   await buildTSPackages({ cwd, pkg, watch });
   console.log('Running post-build scripts for packages...');
-  await buildExceptionPackages({ cwd, pkg, watch });
+  await buildExceptionPackages({ cwd, pkg });
   console.log('Copying version.json...');
   await copyVersion(packageName);
   console.log('Validating dists...');
@@ -251,7 +275,7 @@ if (require.main === module) {
     cwd: process.cwd(),
     ...{
       // Support both string/boolean type
-      watch: cli.flags === '' ? true : cli.flags,
+      watch: cli.flags.watch === '' ? true : cli.flags.watch,
       ...cli.flags,
     },
   }).catch(e => {
