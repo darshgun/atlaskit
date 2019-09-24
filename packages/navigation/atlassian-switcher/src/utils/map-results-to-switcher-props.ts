@@ -238,8 +238,7 @@ export function mapResultsToSwitcherProps(
   const resolvedLicenseInformation: ProviderResult<
     LicenseInformationResponse
   > = asLicenseInformationProviderResult(availableProducts, cloudId);
-  const hasLoadedAccountCentricProducts = hasLoaded(availableProducts);
-
+  const hasLoadedAvailableProducts = hasLoaded(availableProducts);
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);
   const hasLoadedSuggestedProducts = features.xflow
@@ -289,9 +288,9 @@ export function mapResultsToSwitcherProps(
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),
     hasLoaded:
-      hasLoadedAccountCentricProducts &&
+      hasLoadedAvailableProducts &&
       hasLoadedAdminLinks &&
       hasLoadedSuggestedProducts,
-    hasLoadedCritical: hasLoadedAccountCentricProducts,
+    hasLoadedCritical: hasLoadedAvailableProducts,
   };
 }

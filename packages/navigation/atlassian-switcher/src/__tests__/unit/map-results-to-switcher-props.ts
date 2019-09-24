@@ -455,7 +455,6 @@ const loadingProviderResult: ResultLoading = {
 const loadingProvidersResult = {
   customLinks: loadingProviderResult,
   recentContainers: loadingProviderResult,
-  licenseInformation: loadingProviderResult,
   managePermission: loadingProviderResult,
   addProductsPermission: loadingProviderResult,
   isXFlowEnabled: loadingProviderResult,

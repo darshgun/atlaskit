@@ -15,18 +15,7 @@ class JiraSwitcherExample extends React.Component {
   }
 
   openDrawer = () => {
-    mockEndpoints(
-      'jira',
-      originalMockData => {
-        return {
-          ...originalMockData,
-          LICENSE_INFORMATION_DATA: {
-            notUsedInMode: 'user-centric',
-          },
-        };
-      },
-      REQUEST_FAST,
-    );
+    mockEndpoints('jira', originalMockData => originalMockData, REQUEST_FAST);
     this.setState({
       isDrawerOpen: true,
     });

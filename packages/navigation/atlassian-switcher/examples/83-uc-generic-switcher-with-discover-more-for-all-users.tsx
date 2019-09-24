@@ -15,18 +15,7 @@ class GenericSwitcherExample extends React.Component {
   }
 
   openDrawer = () => {
-    mockEndpoints(
-      'jira',
-      originalMockData => {
-        return {
-          ...originalMockData,
-          LICENSE_INFORMATION_DATA: {
-            notUsedInMode: 'user-centric',
-          },
-        };
-      },
-      REQUEST_MEDIUM,
-    );
+    mockEndpoints('jira', originalMockData => originalMockData, REQUEST_MEDIUM);
     this.setState({
       isDrawerOpen: true,
     });
