@@ -1,22 +1,15 @@
 import { mount } from 'enzyme';
 import { render } from '@testing-library/react';
 import React from 'react';
+import cases from 'jest-in-case';
 import Breadcrumbs from '../../Breadcrumbs';
 import BreadcrumbsItem from '../../BreadcrumbsItem';
 
 describe('Using enzyme', () => {
   test('It should not generate data-testid', () => {
     const wrapper = mount(
-      <Breadcrumbs maxItems={5}>
+      <Breadcrumbs maxItems={1}>
         <BreadcrumbsItem href="/item" text="Item" />
-        <BreadcrumbsItem href="/item" text="Another item" />
-        <BreadcrumbsItem href="/item" text="A third item" />
-        <BreadcrumbsItem
-          href="/item"
-          text="A fourth item with a very long name"
-        />
-        <BreadcrumbsItem href="/item" text="Item 5" />
-        <BreadcrumbsItem href="/item" text="A sixth item" />
       </Breadcrumbs>,
     );
 
@@ -76,6 +69,31 @@ describe('Using enzyme', () => {
     ).toHaveLength(1);
 
     expect(wrapper).toMatchSnapshot();
+  });
+  describe('Breadcrumbs with different data-testid', () => {
+    cases(
+      'should be generated',
+      ({ key }: { key: string }) => {
+        const wrapper = mount(
+          <Breadcrumbs maxItems={2} testId={key}>
+            <BreadcrumbsItem href="/item" text="Item" />
+
+            <BreadcrumbsItem href="/item" text="A second item" testId={key} />
+          </Breadcrumbs>,
+        );
+        expect(wrapper.find(`Breadcrumbs[data-testid='${key}']`)).toBeTruthy();
+        expect(
+          wrapper.find(`BreadcrumbsItem[data-testid='${key}']`),
+        ).toBeTruthy();
+      },
+      [
+        { key: 'josefGiTan' },
+        { key: 'ZZZZŹŽ;;;;' },
+        { key: '@3$&&&&Helooo' },
+        { key: '126^^^' },
+        { key: 123 },
+      ],
+    );
   });
 });
 

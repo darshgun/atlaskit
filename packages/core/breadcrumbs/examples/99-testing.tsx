@@ -6,12 +6,12 @@ export default () => (
   <div>
     <p>Should automatically collapse if there are more than 5 items</p>
     <div>
-      <Breadcrumbs maxItems={5} testId="set-of-breadcrumbs">
+      <Breadcrumbs maxItems={5} testId="MyBreadcrumbsTestId">
         <BreadcrumbsItem href="/item" text="Item" />
         <BreadcrumbsItem
-          href="/item"
-          text="Another item"
-          testId="breadcrumb-to-find"
+          href="/packages/core/breadcrumbs"
+          text="The item with testId"
+          testId="myBreadcrumbsItemTestId"
         />
         <BreadcrumbsItem href="/item" text="A third item" />
         <BreadcrumbsItem
