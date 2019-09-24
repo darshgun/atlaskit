@@ -43,6 +43,7 @@ export interface CardViewOwnProps extends SharedCardProps {
   readonly progress?: number;
   readonly disableOverlay?: boolean;
   readonly previewOrientation?: number;
+  readonly alt?: string;
 }
 
 export interface CardViewState {
@@ -164,6 +165,7 @@ export class CardViewBase extends React.Component<
       selected,
       disableOverlay,
       previewOrientation,
+      alt,
     } = this.props;
 
     return (
@@ -171,6 +173,7 @@ export class CardViewBase extends React.Component<
         status={status}
         details={metadata}
         dataURI={dataURI}
+        alt={alt}
         progress={progress}
         onRetry={onRetry}
         resizeMode={resizeMode}

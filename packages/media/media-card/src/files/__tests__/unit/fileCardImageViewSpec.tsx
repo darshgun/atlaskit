@@ -319,6 +319,7 @@ describe('FileCardImageView', () => {
           actions={actions}
           mediaName={mediaName}
           previewOrientation={6}
+          alt="this is a test"
         />,
       );
     });
@@ -329,6 +330,10 @@ describe('FileCardImageView', () => {
 
     it('should have dataURI', () => {
       expectToEqual(card.find(MediaImage).props().dataURI, 'some-data');
+    });
+
+    it('should have alt', () => {
+      expectToEqual(card.find(MediaImage).props().alt, 'this is a test');
     });
 
     it('should have crop and stretch props', () => {

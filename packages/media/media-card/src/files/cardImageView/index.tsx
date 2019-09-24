@@ -36,6 +36,7 @@ export interface FileCardImageViewProps {
   readonly fileSize?: string;
 
   readonly dataURI?: string;
+  readonly alt?: string;
   readonly progress?: number;
   readonly status: CardStatus;
 
@@ -182,7 +183,7 @@ export class FileCardImageViewBase extends Component<
   };
 
   private renderMediaImage = () => {
-    const { dataURI, mediaType, previewOrientation } = this.props;
+    const { dataURI, mediaType, previewOrientation, alt } = this.props;
 
     if (!shouldDisplayImageThumbnail(dataURI, mediaType)) {
       this.fireLoadingStatusAnalyticsEvent('succeeded');
@@ -192,6 +193,7 @@ export class FileCardImageViewBase extends Component<
     return (
       <MediaImage
         dataURI={dataURI}
+        alt={alt}
         crop={this.isCropped}
         stretch={this.isStretched}
         previewOrientation={previewOrientation}
