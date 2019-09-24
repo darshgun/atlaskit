@@ -1,4 +1,5 @@
-import { codeBlock, createSchema } from '../../../../..';
+import { createSchema } from '../../../../schema/create-schema';
+import { codeBlock } from '../../../../schema/nodes/code-block';
 import { DEFAULT_LANGUAGES } from '../../../../utils';
 import { fromHTML, toHTML } from '../../../../../test-helpers';
 import { name } from '../../../../version.json';

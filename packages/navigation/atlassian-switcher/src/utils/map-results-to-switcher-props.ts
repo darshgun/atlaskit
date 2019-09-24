@@ -1,49 +1,44 @@
 import {
   getAdministrationLinks,
+  getAvailableProductLinks,
   getCustomLinkItems,
   getFixedProductLinks,
   getLicensedProductLinks,
   getRecentLinkItems,
   getSuggestedProductLink,
   SwitcherItemType,
-  getAvailableProductLinks,
 } from './links';
 import {
+  hasLoaded,
   isComplete,
   isError,
   ProviderResult,
   Status,
-  hasLoaded,
 } from '../providers/as-data-provider';
 import {
+  AvailableProductsResponse,
   CustomLinksResponse,
   FeatureMap,
   LicenseInformationResponse,
-  RecentContainersResponse,
-  AvailableProductsResponse,
-  ProductLicenseInformation,
-  WorklensProductType,
-  ProductKey,
-  RecommendationsEngineResponse,
   Product,
+  ProductKey,
+  ProductLicenseInformation,
+  RecentContainersResponse,
+  RecommendationsEngineResponse,
+  WorklensProductType,
 } from '../types';
 import { createCollector } from './create-collector';
 
 function collectAvailableProductLinks(
   cloudId: string | null | undefined,
   availableProducts?: ProviderResult<AvailableProductsResponse>,
-  productTopItemVariation?: string,
 ): SwitcherItemType[] | undefined {
   if (availableProducts) {
     if (isError(availableProducts)) {
       return [];
     }
     if (isComplete(availableProducts)) {
-      return getAvailableProductLinks(
-        availableProducts.data,
-        cloudId,
-        productTopItemVariation,
-      );
+      return getAvailableProductLinks(availableProducts.data, cloudId);
     }
     return;
   }
@@ -97,7 +92,7 @@ function collectAdminLinks(
   addProductsPermission: ProviderResults['addProductsPermission'],
   isDiscoverMoreForEveryoneEnabled: boolean,
   isEmceeLinkEnabled: boolean,
-  product?: Product.JIRA | Product.CONFLUENCE,
+  product?: Product,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
     return [];
@@ -117,10 +112,17 @@ function collectAdminLinks(
   }
 }
 
-export function collectFixedProductLinks(
+function collectFixedProductLinks(
+  product: Product | undefined,
   isDiscoverMoreForEveryoneEnabled: boolean,
 ): SwitcherItemType[] {
-  return getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+  // People link is only available in Jira / Confluence
+  const canShowPeopleLink =
+    product === Product.CONFLUENCE || product === Product.JIRA;
+  return getFixedProductLinks({
+    canShowPeopleLink,
+    isDiscoverMoreForEveryoneEnabled,
+  });
 }
 
 function collectRecentLinks(
@@ -233,7 +235,7 @@ export function mapResultsToSwitcherProps(
   results: ProviderResults,
   features: FeatureMap,
   availableProducts: ProviderResult<AvailableProductsResponse>,
-  product?: Product.JIRA | Product.CONFLUENCE,
+  product?: Product,
 ) {
   const collect = createCollector();
 
@@ -269,11 +271,7 @@ export function mapResultsToSwitcherProps(
   return {
     licensedProductLinks: collect(
       features.enableUserCentricProducts
-        ? collectAvailableProductLinks(
-            cloudId,
-            availableProducts,
-            features.productTopItemVariation,
-          )
+        ? collectAvailableProductLinks(cloudId, availableProducts)
         : collectProductLinks(licenseInformation),
       [],
     ),
@@ -288,7 +286,10 @@ export function mapResultsToSwitcherProps(
         )
       : [],
     fixedLinks: collect(
-      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+      collectFixedProductLinks(
+        product,
+        features.isDiscoverMoreForEveryoneEnabled,
+      ),
       [],
     ),
     adminLinks: collect(

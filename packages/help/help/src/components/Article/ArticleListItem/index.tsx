@@ -1,8 +1,10 @@
 import * as React from 'react';
+import * as colors from '@atlaskit/theme/colors';
 import {
   CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
+import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 
 import {
   name as packageName,
@@ -17,6 +19,7 @@ import {
   ArticlesListItemTitle,
   ArticlesListItemTitleText,
   ArticlesListItemDescription,
+  ArticlesListItemLinkIcon,
 } from './styled';
 
 interface Props {
@@ -61,6 +64,16 @@ const ArticlesListItem = (props: Props & Analytics) => {
       <ArticlesListItemTitle>
         <ArticlesListItemTitleIcon>{icon}</ArticlesListItemTitleIcon>
         <ArticlesListItemTitleText>{title}</ArticlesListItemTitleText>
+        {href && (
+          <ArticlesListItemLinkIcon>
+            <ShortcutIcon
+              size="small"
+              label={title}
+              primaryColor={colors.N90}
+              secondaryColor={colors.N90}
+            />
+          </ArticlesListItemLinkIcon>
+        )}
       </ArticlesListItemTitle>
       <ArticlesListItemDescription>{description}</ArticlesListItemDescription>
     </ArticlesListItemWrapper>

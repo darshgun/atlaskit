@@ -1,0 +1,47 @@
+{
+  "name": "@atlaskit/atlassian-navigation",
+  "version": "0.4.6",
+  "license": "Apache-2.0",
+  "atlaskit:src": "src/index.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sideEffects": false,
+  "author": "Atlassian Pty Ltd",
+  "description": "Common navigation component for Atlassian products",
+  "maintainers": [],
+  "atlaskit": {
+    "internal": true,
+    "name": "Atlassian navigation",
+    "team": "navigation"
+  },
+  "dependencies": {
+    "@atlaskit/analytics-namespaced-context": "^4.1.0",
+    "@atlaskit/analytics-next": "^6.2.0",
+    "@atlaskit/avatar": "^17.0.0",
+    "@atlaskit/badge": "^13.0.0",
+    "@atlaskit/button": "^13.0.2",
+    "@atlaskit/icon": "^19.0.4",
+    "@atlaskit/popup": "^0.1.2",
+    "@atlaskit/spinner": "^12.0.9",
+    "@atlaskit/theme": "^9.2.2",
+    "@atlaskit/tooltip": "^15.0.12",
+    "@atlaskit/width-detector": "^2.0.0",
+    "@emotion/core": "^10.0.9",
+    "@emotion/css": "^10.0.14",
+    "chromatism": "^2.6.0",
+    "lodash.throttle": "^4.1.1"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^8.1.5",
+    "@atlaskit/drawer": "^5.0.10",
+    "@atlaskit/dropdown-menu": "^8.1.1",
+    "@atlaskit/logo": "^12.0.0",
+    "jest-emotion": "^10.0.10",
+    "react": "^16.8.0",
+    "react-intl": "^2.6.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0"
+  }
+}

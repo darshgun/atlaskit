@@ -25,7 +25,7 @@ export class ShowMoreArticlesButton extends React.Component<
       );
     } else {
       return (
-        <ToggleShowMoreArticles>
+        <ToggleShowMoreArticles onClick={toggleRelatedArticles}>
           {formatMessage(messages.help_panel_related_article_show_less)}
         </ToggleShowMoreArticles>
       );

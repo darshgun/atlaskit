@@ -7,12 +7,13 @@ import { HeadType } from '../types';
 
 interface Props extends WithSortedPageRowsProps {
   head?: HeadType;
+  highlightedRowIndex?: number;
   isFixedSize: boolean;
 }
 
 class Body extends React.Component<Props, {}> {
   render() {
-    const { pageRows, head, isFixedSize } = this.props;
+    const { pageRows, head, isFixedSize, highlightedRowIndex } = this.props;
 
     return (
       <tbody>
@@ -22,6 +23,7 @@ class Body extends React.Component<Props, {}> {
             isFixedSize={isFixedSize}
             key={rowIndex} // eslint-disable-line react/no-array-index-key
             row={row}
+            isHighlighted={highlightedRowIndex === rowIndex}
           />
         ))}
       </tbody>

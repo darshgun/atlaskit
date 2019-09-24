@@ -51,13 +51,19 @@ describe('utils/links', () => {
     it('should have link for People', () => {
       const isDiscoverMoreForEveryoneEnabled = false;
       const expectedProducts = ['people'];
-      const fixedLinks = getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+      const fixedLinks = getFixedProductLinks({
+        canShowPeopleLink: true,
+        isDiscoverMoreForEveryoneEnabled,
+      });
       expect(fixedLinks.map(({ key }) => key)).toMatchObject(expectedProducts);
     });
     it('should have discover more button if enabled', () => {
       const isDiscoverMoreForEveryoneEnabled = true;
       const expectedProducts = ['people', 'discover-more'];
-      const fixedLinks = getFixedProductLinks(isDiscoverMoreForEveryoneEnabled);
+      const fixedLinks = getFixedProductLinks({
+        canShowPeopleLink: true,
+        isDiscoverMoreForEveryoneEnabled,
+      });
       expect(fixedLinks.map(({ key }) => key)).toMatchObject(expectedProducts);
     });
   });
@@ -214,7 +220,7 @@ describe('utils/links', () => {
       );
 
       const expectedResult =
-        '/plugins/servlet/ac/com.atlassian.jira.emcee/discover';
+        '/plugins/servlet/ac/com.atlassian.jira.emcee/discover?source=app_switcher';
       expect(result.map(({ href }) => href)).toContain(expectedResult);
     });
     it('When product is Confluence & Emcee enabled, should include Confluence Emcee link', () => {
@@ -229,7 +235,7 @@ describe('utils/links', () => {
       );
 
       const expectedResult =
-        '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover';
+        '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover?source=app_switcher';
       expect(result.map(({ href }) => href)).toContain(expectedResult);
     });
   });

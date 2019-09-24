@@ -19,11 +19,11 @@
     "ui",
     "date",
     "fabric",
-    "elements"
+    "teams"
   ],
   "atlaskit": {
     "name": "Date",
-    "team": "elements"
+    "team": "teams"
   },
   "dependencies": {
     "@atlaskit/theme": "^9.1.6",

@@ -1,7 +1,7 @@
 import memoizeOne from 'memoize-one';
 
 export const getAutocompleteText = memoizeOne(
-  (query: string, autocompleteSuggestions?: string[]) => {
+  (query: string, autocompleteSuggestions?: string[]): string | undefined => {
     if (!autocompleteSuggestions || query.length === 0) {
       return undefined;
     }

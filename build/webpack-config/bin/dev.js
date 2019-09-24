@@ -33,6 +33,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const historyApiFallback = require('connect-history-api-fallback');
 const ora = require('ora');
 const chalk = require('chalk');
+const path = require('path');
 const createWebpackConfig = require('../config');
 const utils = require('../config/utils');
 const { print, devServerBanner, errorMsg } = require('../banner');
@@ -137,6 +138,8 @@ async function runDevServer() {
 
     overlay: true,
     stats,
+    // We should use public as content based.
+    contentBase: path.join(__dirname, '../../..', 'website/public'),
   });
 
   return new Promise((resolve, reject) => {

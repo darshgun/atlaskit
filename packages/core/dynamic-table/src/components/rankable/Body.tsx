@@ -18,6 +18,7 @@ import withSortedPageRows, {
 } from '../../hoc/withSortedPageRows';
 
 export interface Props extends WithSortedPageRowsProps {
+  highlightedRowIndex?: number;
   onRankStart: (rankStart: RankStart) => void;
   onRankEnd: (rankEnd: RankEnd) => void;
   isFixedSize: boolean;
@@ -89,6 +90,7 @@ export class RankableBody extends React.Component<Props, {}> {
 
   render() {
     const {
+      highlightedRowIndex,
       pageRows,
       head,
       isFixedSize,
@@ -116,6 +118,7 @@ export class RankableBody extends React.Component<Props, {}> {
                   rowIndex={rowIndex}
                   row={row}
                   isRankingDisabled={isRankingDisabled}
+                  isHighlighted={highlightedRowIndex === rowIndex}
                 />
               ))}
               {provided.placeholder}

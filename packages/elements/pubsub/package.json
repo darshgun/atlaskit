@@ -6,7 +6,7 @@
   },
   "atlaskit": {
     "name": "pubsub",
-    "team": "elements"
+    "team": "activity-platform"
   },
   "description": "Interacts with Atlassian Frontend PubSub service to receive pubsub events.",
   "atlaskit:src": "src/index.ts",
@@ -15,10 +15,7 @@
   "types": "dist/cjs/index.d.ts",
   "sideEffects": false,
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [
-    "Julien H",
-    "Oscar W"
-  ],
+  "maintainers": [],
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/util-service-support": "^4.0.7",

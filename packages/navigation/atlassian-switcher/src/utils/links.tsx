@@ -28,7 +28,6 @@ import {
   ProductKey,
   RecommendationsEngineResponse,
   Product,
-  ProductTopItemVariation,
 } from '../types';
 import messages from './messages';
 import JiraOpsLogo from './assets/jira-ops-logo';
@@ -120,18 +119,22 @@ export const getObjectTypeLabel = (type: string): React.ReactNode => {
   );
 };
 
-export const getFixedProductLinks = (
-  isDiscoverMoreForEveryoneEnabled: boolean,
-): SwitcherItemType[] => {
-  const fixedLinks = [
-    {
+export const getFixedProductLinks = (params: {
+  canShowPeopleLink: boolean;
+  isDiscoverMoreForEveryoneEnabled: boolean;
+}): SwitcherItemType[] => {
+  const fixedLinks = [];
+
+  if (params.canShowPeopleLink) {
+    fixedLinks.push({
       key: 'people',
       label: <FormattedMessage {...messages.people} />,
       Icon: createIcon(PeopleLogo, { size: 'small' }),
       href: `/people`,
-    },
-  ];
-  if (isDiscoverMoreForEveryoneEnabled) {
+    });
+  }
+
+  if (params.isDiscoverMoreForEveryoneEnabled) {
     // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
     fixedLinks.push({
       key: 'discover-more',
@@ -205,12 +208,7 @@ const PRODUCT_ORDER = [
   WorklensProductType.TRELLO,
 ];
 
-type JiraConfluenceProduct = Exclude<
-  Product,
-  Product.HOME | Product.PEOPLE | Product.SITE_ADMIN | Product.TRUSTED_ADMIN
->;
-
-const BROWSE_APPS_URL: { [Key in JiraConfluenceProduct]: string } = {
+const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
   [Product.JIRA]: '/plugins/servlet/ac/com.atlassian.jira.emcee/discover',
   [Product.CONFLUENCE]:
     '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
@@ -241,15 +239,9 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
 
 const getAvailableProductLinkFromSiteProduct = (
   connectedSites: ConnectedSite[],
-  productTopItemVariation?: string,
 ): SwitcherItemType => {
-  // if productTopItemVariation is 'most-frequent-site', we show most frequently visited site at the top
-  const shouldEnableMostFrequentSortForTopItem =
-    productTopItemVariation === ProductTopItemVariation.mostFrequentSite;
-
   const topSite =
-    (!shouldEnableMostFrequentSortForTopItem &&
-      connectedSites.find(site => site.isCurrentSite)) ||
+    connectedSites.find(site => site.isCurrentSite) ||
     connectedSites.sort(
       (a, b) => b.product.activityCount - a.product.activityCount,
     )[0];
@@ -278,7 +270,6 @@ const getAvailableProductLinkFromSiteProduct = (
 export const getAvailableProductLinks = (
   availableProducts: AvailableProductsResponse,
   cloudId: string | null | undefined,
-  productTopItemVariation?: string,
 ): SwitcherItemType[] => {
   const productsMap: { [key: string]: ConnectedSite[] } = {};
 
@@ -304,11 +295,7 @@ export const getAvailableProductLinks = (
   return PRODUCT_ORDER.map(productType => {
     const connectedSites = productsMap[productType];
     return (
-      connectedSites &&
-      getAvailableProductLinkFromSiteProduct(
-        connectedSites,
-        productTopItemVariation,
-      )
+      connectedSites && getAvailableProductLinkFromSiteProduct(connectedSites)
     );
   }).filter(link => !!link);
 };
@@ -372,7 +359,7 @@ export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
   isEmceeLinkEnabled: boolean,
-  product?: Product.JIRA | Product.CONFLUENCE,
+  product?: Product,
 ): SwitcherItemType[] => {
   const adminBaseUrl = isAdmin ? `/admin` : '/trusted-admin';
   const adminLinks = [
@@ -383,12 +370,13 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
-  if (product && isEmceeLinkEnabled) {
+  const emceeLink = product && BROWSE_APPS_URL[product];
+  if (isEmceeLinkEnabled && emceeLink) {
     adminLinks.unshift({
       key: 'browse-apps',
       label: <FormattedMessage {...messages.browseApps} />,
       Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
-      href: BROWSE_APPS_URL[product],
+      href: `${emceeLink}?source=app_switcher`,
     });
   }
   if (!isDiscoverMoreForEveryoneEnabled) {

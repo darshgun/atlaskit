@@ -88,6 +88,7 @@ export default class DynamicTable extends React.Component<
       caption,
       emptyView,
       head,
+      highlightedRowIndex,
       loadingSpinnerSize,
       isLoading,
       isFixedSize,
@@ -105,6 +106,7 @@ export default class DynamicTable extends React.Component<
         caption={caption}
         emptyView={emptyView}
         head={head}
+        highlightedRowIndex={highlightedRowIndex}
         loadingSpinnerSize={loadingSpinnerSize}
         isLoading={isLoading}
         isFixedSize={isFixedSize}

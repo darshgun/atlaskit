@@ -63,15 +63,6 @@ export enum Feature {
   isEmceeLinkEnabled = 'isEmceeLinkEnabled',
 }
 
-export enum MultiVariateFeature {
-  productTopItemVariation = 'productTopItemVariation',
-}
-
-export enum ProductTopItemVariation {
-  mostFrequentSite = 'most-frequent-site',
-  currentSite = 'current-site',
-}
-
 export type FeatureFlagProps = {
   // Show user centric avaialble products as opposed to site centric product list.
   enableUserCentricProducts?: boolean;
@@ -85,13 +76,9 @@ export type FeatureFlagProps = {
   isDiscoverMoreForEveryoneEnabled?: boolean;
   // Enable Embedded Marketplace within the product.
   isEmceeLinkEnabled?: boolean;
-  // Defines which site is displayed as the top item for users with multiple sites.
-  [MultiVariateFeature.productTopItemVariation]?: ProductTopItemVariation;
 };
 
-export type FeatureMap = { [key in Feature]: boolean } & {
-  [MultiVariateFeature.productTopItemVariation]: ProductTopItemVariation;
-};
+export type FeatureMap = { [key in Feature]: boolean };
 
 export type CustomLinksResponse = CustomLink[];
 

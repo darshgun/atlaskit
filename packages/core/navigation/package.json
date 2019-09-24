@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "35.2.2",
+  "version": "35.2.3",
   "description": "A React component that renders a sidebar, for navigation purposes.",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -25,7 +25,7 @@
     "@atlaskit/analytics-next": "^6.1.0",
     "@atlaskit/avatar": "^17.0.0",
     "@atlaskit/blanket": "^10.0.12",
-    "@atlaskit/checkbox": "^9.0.9",
+    "@atlaskit/checkbox": "^10.0.0",
     "@atlaskit/dropdown-menu": "^8.1.1",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/item": "^10.1.5",
@@ -49,8 +49,8 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.2.5",
-    "@atlaskit/button": "^13.1.6",
-    "@atlaskit/docs": "^8.1.5",
+    "@atlaskit/button": "^13.3.1",
+    "@atlaskit/docs": "^8.1.7",
     "@atlaskit/field-text": "^9.0.11",
     "@atlaskit/logo": "^12.1.8",
     "@atlaskit/page": "^11.0.8",

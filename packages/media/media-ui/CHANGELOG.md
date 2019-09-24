@@ -1,5 +1,20 @@
 # @atlaskit/media-ui
 
+## 11.6.7
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
+## 11.6.6
+
+### Patch Changes
+
+- [patch][a6a0cb78a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6a0cb78a6):
+
+  change white color to N0 import from theme
+
 ## 11.6.5
 
 ### Patch Changes
