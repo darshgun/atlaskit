@@ -215,9 +215,17 @@
         "../../core/checkbox/src/",
         "./packages/core/checkbox/src/"
       ],
+      "@atlaskit/checkbox/theme": [
+        "../../core/checkbox/src/theme",
+        "./packages/core/checkbox/src/theme"
+      ],
       "@atlaskit/checkbox/types": [
         "../../core/checkbox/src/types",
         "./packages/core/checkbox/src/types"
+      ],
+      "@atlaskit/checkbox/utils": [
+        "../../core/checkbox/src/utils",
+        "./packages/core/checkbox/src/utils"
       ],
       "@atlaskit/code": [
         "../../core/code/src/",
