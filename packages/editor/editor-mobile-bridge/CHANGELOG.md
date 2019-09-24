@@ -1,5 +1,13 @@
 # @atlaskit/editor-mobile-bridge
 
+## 8.10.1
+
+### Patch Changes
+
+- [patch][5463e933e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5463e933e6):
+
+  FM-2472 Fix issue where Android Recycled View height would grow indefinitely
+
 ## 8.10.0
 
 ### Minor Changes
