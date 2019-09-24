@@ -3,7 +3,6 @@ import {
   getAvailableProductLinks,
   getCustomLinkItems,
   getFixedProductLinks,
-  getLicensedProductLinks,
   getRecentLinkItems,
   getSuggestedProductLink,
   SwitcherItemType,
@@ -45,20 +44,8 @@ function collectAvailableProductLinks(
   return;
 }
 
-function collectProductLinks(
-  licenseInformation: ProviderResults['licenseInformation'],
-): SwitcherItemType[] | undefined {
-  if (isError(licenseInformation)) {
-    return [];
-  }
-
-  if (isComplete(licenseInformation)) {
-    return getLicensedProductLinks(licenseInformation.data);
-  }
-}
-
 function collectSuggestedLinks(
-  licenseInformation: ProviderResults['licenseInformation'],
+  licenseInformation: ProviderResult<LicenseInformationResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
 ) {
@@ -127,7 +114,7 @@ function collectFixedProductLinks(
 
 function collectRecentLinks(
   recentContainers: ProviderResults['recentContainers'],
-  licenseInformation: ProviderResults['licenseInformation'],
+  licenseInformation: ProviderResult<LicenseInformationResponse>,
 ) {
   if (isError(recentContainers) || isError(licenseInformation)) {
     return [];
@@ -143,7 +130,7 @@ function collectRecentLinks(
 
 function collectCustomLinks(
   customLinks: ProviderResults['customLinks'],
-  licenseInformation: ProviderResults['licenseInformation'],
+  licenseInformation: ProviderResult<LicenseInformationResponse>,
 ) {
   if (customLinks === undefined || isError(customLinks)) {
     return [];
@@ -157,7 +144,6 @@ function collectCustomLinks(
 interface ProviderResults {
   customLinks?: ProviderResult<CustomLinksResponse>;
   recentContainers: ProviderResult<RecentContainersResponse>;
-  licenseInformation: ProviderResult<LicenseInformationResponse>;
   managePermission: ProviderResult<boolean>;
   addProductsPermission: ProviderResult<boolean>;
   isXFlowEnabled: ProviderResult<boolean>;
@@ -188,16 +174,18 @@ function asLegacyProductKey(
 /** Convert the new AvailableProductsResponse to legacy LicenseInformationResponse type */
 function asLicenseInformationProviderResult(
   availableProductsProvider: ProviderResult<AvailableProductsResponse>,
-  cloudId: string,
+  cloudId: string | null | undefined,
 ): ProviderResult<LicenseInformationResponse> {
   switch (availableProductsProvider.status) {
     case Status.LOADING: // intentional fallthrough
     case Status.ERROR:
       return availableProductsProvider;
     case Status.COMPLETE:
-      const site = availableProductsProvider.data.sites.find(
-        site => site.cloudId === cloudId,
-      );
+      const site =
+        cloudId &&
+        availableProductsProvider.data.sites.find(
+          site => site.cloudId === cloudId,
+        );
       if (!site) {
         return {
           status: Status.ERROR,

@@ -43,7 +43,7 @@ export default (props: ConfluenceSwitcherProps) => (
                 ...switcherLinks
               } = mapResultsToSwitcherProps(
                 props.cloudId,
-                { customLinks, availableProducts, ...providerResults },
+                { customLinks, ...providerResults },
                 props.features,
                 availableProducts,
                 Product.CONFLUENCE,

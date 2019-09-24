@@ -1,7 +1,6 @@
 import {
   getFixedProductLinks,
   getProductLink,
-  getLicensedProductLinks,
   PRODUCT_DATA_MAP,
   getProductIsActive,
   getAdministrationLinks,
@@ -125,48 +124,6 @@ describe('utils/links', () => {
       const productKey = 'some.eol.product';
       const result = getProductIsActive(licenseInformation, productKey);
       expect(result).toBe(false);
-    });
-  });
-
-  describe('getLicensedProductLinks', () => {
-    it('should only add active products', () => {
-      const licenseInformation = generateLicenseInformation([
-        'confluence.ondemand',
-      ]);
-      const result = getLicensedProductLinks(licenseInformation);
-      expect(result.map(({ key }) => key)).toMatchObject([
-        'confluence.ondemand',
-      ]);
-    });
-    it('should return exactly what license information returns', () => {
-      const licenseInformation = generateLicenseInformation([
-        'jira-software.ondemand',
-        'jira-servicedesk.ondemand',
-        'jira-incident-manager.ondemand',
-        'jira-core.ondemand',
-      ]);
-      const result = getLicensedProductLinks(licenseInformation);
-      expect(result.map(({ key }) => key)).toMatchObject([
-        'jira-software.ondemand',
-        'jira-servicedesk.ondemand',
-        'jira-incident-manager.ondemand',
-        'jira-core.ondemand',
-      ]);
-    });
-
-    it('should return opsgenie link', () => {
-      const opsgenieLicenseInformation = generateOpsgenieLicenseInformation(
-        'https://test.app.opsgeni.us',
-      );
-
-      const result = getLicensedProductLinks(opsgenieLicenseInformation);
-
-      expect(result.map(({ key, href }) => ({ key, href }))).toMatchObject([
-        {
-          key: 'opsgenie',
-          href: 'https://test.app.opsgeni.us',
-        },
-      ]);
     });
   });
 

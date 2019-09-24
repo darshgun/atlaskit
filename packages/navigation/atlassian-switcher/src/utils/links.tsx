@@ -329,32 +329,6 @@ export const getProductIsActive = (
   products.hasOwnProperty(productKey) &&
   products[productKey].state === ProductActivationStatus.ACTIVE;
 
-// This function will determine which product links to render based
-// on license information and if we're separating the jira products or not
-export const getLicensedProductLinks = (
-  licenseInformationData: LicenseInformationResponse,
-): SwitcherItemType[] => {
-  const majorJiraProducts = [
-    ProductKey.JIRA_SOFTWARE,
-    ProductKey.JIRA_SERVICE_DESK,
-    ProductKey.JIRA_OPS,
-  ].filter(productKey =>
-    getProductIsActive(licenseInformationData, productKey),
-  );
-  const minorJiraProducts = [ProductKey.JIRA_CORE].filter(productKey =>
-    getProductIsActive(licenseInformationData, productKey),
-  );
-
-  const jiraProducts = [...majorJiraProducts, ...minorJiraProducts];
-  const otherProducts = [ProductKey.CONFLUENCE, ProductKey.OPSGENIE].filter(
-    productKey => getProductIsActive(licenseInformationData, productKey),
-  );
-
-  return [...jiraProducts, ...otherProducts].map(productKey =>
-    getProductLink(productKey, licenseInformationData.products[productKey]),
-  );
-};
-
 export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
