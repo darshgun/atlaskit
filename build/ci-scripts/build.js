@@ -50,10 +50,14 @@ async function generateFlowTypeCommands({ cwd, pkg, watch }) {
   }
   const pkgGlob = await getPkgGlob(['babel', 'flow'], pkg, { cwd });
   const watchFlag = watch ? ' -w' : '';
-  return [
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs${watchFlag}`,
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/esm${watchFlag}`,
-  ];
+  const commands = {
+    cjs: `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs${watchFlag}`,
+    esm: `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/esm${watchFlag}`,
+  };
+
+  return typeof watch === 'string'
+    ? [commands[watch]]
+    : Object.values(commands);
 }
 
 async function babelCommands({ cwd, pkg, watch }) {
@@ -64,10 +68,14 @@ async function babelCommands({ cwd, pkg, watch }) {
   // Watch mode does not output anything on recompile, so we have to use verbose to signal something has happened
   // https://github.com/babel/babel/issues/7926
   const watchFlag = watch ? ' -w --verbose' : '';
-  return [
-    `NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/cjs --root-mode upward${watchFlag}`,
-    `NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/esm --root-mode upward${watchFlag}`,
-  ];
+  const commands = {
+    cjs: `NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/cjs --root-mode upward${watchFlag}`,
+    esm: `NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/esm --root-mode upward${watchFlag}`,
+  };
+
+  return typeof watch === 'string'
+    ? [commands[watch]]
+    : Object.values(commands);
 }
 
 async function buildJSPackages({ cwd, pkg, watch }) {
@@ -101,10 +109,13 @@ async function standardTsCommands({ cwd, pkg, watch }) {
   // to suppress multi-entry point related failures, relying on the separate `typecheck` command to catch typecheck errors. Unfortunately, this also
   // suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
   // We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
-  return [
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} || true'`,
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} || true'`,
-  ];
+  const commands = {
+    cjs: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} || true'`,
+    esm: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} || true'`,
+  };
+  return typeof watch === 'string'
+    ? [commands[watch]]
+    : Object.values(commands);
 }
 
 /**
@@ -175,6 +186,9 @@ async function main(packageName, opts = {}) {
     throw 'Watch mode is only supported for single package builds only.';
   }
   if (watch) {
+    if (typeof watch === 'string' && !['esm', 'cjs'].includes(watch)) {
+      throw 'Watch must be boolean or one of "esm", "cjs"';
+    }
     // Do a full build first to ensure non-compilation build steps have built since they are not rerun
     // in watch mode
     console.log(
@@ -215,10 +229,11 @@ if (require.main === module) {
         $ bolt build [packageName]
 
       Options
-        --watch               Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
+        --watch [esm/cjs]               Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
 
       Examples
         $ bolt build @atlaskit/button --watch
+        $ bolt build @atlaskit/editor-core --watch esm
   `,
     {
       description:
@@ -226,7 +241,7 @@ if (require.main === module) {
       flags: {
         watch: {
           alias: 'w',
-          type: 'boolean',
+          type: 'string',
         },
       },
     },
@@ -234,7 +249,11 @@ if (require.main === module) {
 
   main(cli.input[0], {
     cwd: process.cwd(),
-    ...cli.flags,
+    ...{
+      // Support both string/boolean type
+      watch: cli.flags === '' ? true : cli.flags,
+      ...cli.flags,
+    },
   }).catch(e => {
     console.error(e);
     process.exit(1);
