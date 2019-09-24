@@ -45,6 +45,11 @@ export const defaultTableSelection = {
   isInDanger: false,
 };
 
+let isBreakoutEnabled: boolean | undefined;
+let isDynamicTextSizingEnabled: boolean | undefined;
+let isFullWidthModeEnabled: boolean | undefined;
+let wasFullWidthModeEnabled: boolean | undefined;
+
 const { createPluginState, createCommand, getPluginState } = pluginFactory(
   pluginKey,
   reducer,
@@ -70,10 +75,16 @@ export const createPlugin = (
   dispatch: Dispatch,
   portalProviderAPI: PortalProviderAPI,
   pluginConfig: PluginConfig,
-  isDynamicTextSizingEnabled?: boolean,
-  isBreakoutEnabled?: boolean,
-  isFullWidthModeEnabled?: boolean,
+  dynamicTextSizing?: boolean,
+  breakoutEnabled?: boolean,
+  fullWidthModeEnabled?: boolean,
+  previousFullWidthModeEnabled?: boolean,
 ) => {
+  isBreakoutEnabled = breakoutEnabled;
+  isDynamicTextSizingEnabled = dynamicTextSizing;
+  isFullWidthModeEnabled = fullWidthModeEnabled;
+  wasFullWidthModeEnabled = previousFullWidthModeEnabled;
+
   const state = createPluginState(dispatch, {
     pluginConfig,
     insertColumnButtonIndex: undefined,
@@ -174,8 +185,9 @@ export const createPlugin = (
         table: (node, view, getPos) =>
           createTableView(node, view, getPos, portalProviderAPI, {
             isBreakoutEnabled,
-            isDynamicTextSizingEnabled,
+            dynamicTextSizing: isDynamicTextSizingEnabled,
             isFullWidthModeEnabled,
+            wasFullWidthModeEnabled,
           }),
       },
 
