@@ -105,13 +105,10 @@ describe('Using react-testing-library', () => {
         </Breadcrumbs>,
       );
 
-      const ellipsis = getByTestId(ellipsisId);
-
       expect(getByTestId(breadcrumbsId)).toBeTruthy();
-      expect(ellipsis).toBeTruthy();
       expect(queryByTestId(breadcrumbToFindId)).toBeNull();
 
-      ellipsis.click();
+      getByTestId(ellipsisId).click();
 
       expect(queryByTestId(ellipsisId)).toBeNull();
       expect(getByTestId(breadcrumbToFindId)).toBeTruthy();
