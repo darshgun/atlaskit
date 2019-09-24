@@ -1,5 +1,13 @@
 # @atlaskit/editor-mobile-bridge
 
+## 8.10.2
+
+### Patch Changes
+
+- [patch][ff722f80a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ff722f80a4):
+
+  ED-7760 Prevent scroll jumping when editing near the end of the document on iOS.
+
 ## 8.10.1
 
 ### Patch Changes
