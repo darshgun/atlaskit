@@ -1,5 +1,18 @@
 # @atlaskit/status
 
+## 0.9.13
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-test-helpers@10.0.0
+
+## 0.9.12
+
+### Patch Changes
+
+- [patch][c8bb1c7896](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8bb1c7896):
+
+  Fix some packages having a 'modules' field in package.json rather than 'module'
+
 ## 0.9.11
 
 ### Patch Changes

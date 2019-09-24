@@ -10,6 +10,11 @@ export const ExampleWrapper = styled.div`
   height: 100%;
 `;
 
+export const ExampleDefaultContent = styled.div`
+  padding: ${gridSize() * 2}px ${gridSize() * 3}px ${gridSize() * 2}px
+    ${gridSize() * 3}px;
+`;
+
 export const FooterContent = styled.div`
   text-align: center;
   font-size: 11px;

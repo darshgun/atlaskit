@@ -26,7 +26,8 @@ export const handleMouseDown = (
   view: EditorView,
   event: MouseEvent,
   resizeHandlePos: number,
-  dynamicTextSizing: boolean,
+  isDynamicTextSizingEnabled: boolean,
+  isFullWidthModeEnabled: boolean,
 ): boolean => {
   const { state, dispatch } = view;
   const { editorDisabled } = editorDisabledPluginKey.getState(state);
@@ -60,7 +61,8 @@ export const handleMouseDown = (
       dom.getAttribute('data-layout') as TableLayout,
       containerWidth.width,
       {
-        dynamicTextSizing,
+        isDynamicTextSizingEnabled,
+        isFullWidthModeEnabled,
       },
     );
 

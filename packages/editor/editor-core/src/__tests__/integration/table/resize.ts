@@ -8,6 +8,7 @@ import {
   resizeColumn,
   quickInsert,
   selectColumns,
+  updateEditorProps,
 } from '../_helpers';
 
 import {
@@ -28,6 +29,11 @@ import {
   tableForBulkResize3Cols,
   tableForBulkResizeWithNumberCol,
 } from './__fixtures__/resize-documents';
+import {
+  documentWithMergedCells,
+  documentWithMergedCellsFullWidth,
+} from './__fixtures__/merged-rows-and-cols-document';
+
 import { tableWithMinWidthColumnsDocument } from './__fixtures__/table-with-min-width-columns-document';
 
 import {
@@ -348,6 +354,50 @@ BrowserTestCase(
     await clickFirstCell(page);
     await selectColumns(page, [0, 1]);
     await resizeColumn(page, { cellHandlePos: 2, resizeWidth: 52 });
+
+    const doc = await page.$eval(editable, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'Should scale table corrrectly after going from full-page mode to full width mode',
+  { skip: ['ie', 'firefox', 'safari', 'edge'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      defaultValue: JSON.stringify(documentWithMergedCells),
+      allowDynamicTextSizing: true,
+      allowTables: {
+        advanced: true,
+      },
+    });
+
+    await updateEditorProps(page, { appearance: 'full-width' });
+
+    const doc = await page.$eval(editable, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'Should scale table corrrectly after going from full width mode to full-page mode',
+  { skip: ['ie', 'firefox', 'safari', 'edge'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    await mountEditor(page, {
+      appearance: 'full-width',
+      defaultValue: JSON.stringify(documentWithMergedCellsFullWidth),
+      allowDynamicTextSizing: true,
+      allowTables: {
+        advanced: true,
+      },
+    });
+
+    await updateEditorProps(page, { appearance: 'full-page' });
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);

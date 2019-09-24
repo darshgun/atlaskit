@@ -53,12 +53,10 @@ export const pluginConfig = (config: PluginConfig = {}) => {
 
 interface TablePluginOptions {
   tableOptions: PluginConfig;
-  dynamicSizingEnabled?: boolean;
-  breakoutEnabled?: boolean;
+  isDynamicTextSizingEnabled?: boolean;
+  isBreakoutEnabled?: boolean;
   allowContextualMenu?: boolean;
-  // TODO these two need to be rethought
-  fullWidthEnabled?: boolean;
-  wasFullWidthEnabled?: boolean;
+  isFullWidthModeEnabled?: boolean;
 }
 
 const tablesPlugin = (options?: TablePluginOptions): EditorPlugin => ({
@@ -79,33 +77,36 @@ const tablesPlugin = (options?: TablePluginOptions): EditorPlugin => ({
         name: 'table',
         plugin: ({ dispatch, portalProviderAPI }) => {
           const {
-            dynamicSizingEnabled,
-            fullWidthEnabled,
-            wasFullWidthEnabled,
-            breakoutEnabled,
+            isDynamicTextSizingEnabled,
+            isFullWidthModeEnabled,
+            isBreakoutEnabled,
             tableOptions,
           } = options || ({} as TablePluginOptions);
           return createPlugin(
             dispatch,
             portalProviderAPI,
             pluginConfig(tableOptions),
-            breakoutEnabled && dynamicSizingEnabled,
-            breakoutEnabled,
-            fullWidthEnabled,
-            wasFullWidthEnabled,
+            isBreakoutEnabled && isDynamicTextSizingEnabled,
+            isBreakoutEnabled,
+            isFullWidthModeEnabled,
           );
         },
       },
       {
         name: 'tablePMColResizing',
         plugin: ({ dispatch }) => {
-          const { dynamicSizingEnabled, fullWidthEnabled, tableOptions } =
-            options || ({} as TablePluginOptions);
+          const {
+            isDynamicTextSizingEnabled,
+            isFullWidthModeEnabled,
+            tableOptions,
+          } = options || ({} as TablePluginOptions);
           const { allowColumnResizing } = pluginConfig(tableOptions);
           return allowColumnResizing
             ? createFlexiResizingPlugin(dispatch, {
-                dynamicTextSizing: dynamicSizingEnabled && !fullWidthEnabled,
-                lastColumnResizable: !fullWidthEnabled,
+                isDynamicTextSizingEnabled:
+                  isDynamicTextSizingEnabled && !isFullWidthModeEnabled,
+                lastColumnResizable: !isFullWidthModeEnabled,
+                isFullWidthModeEnabled,
               } as ColumnResizingPluginState)
             : undefined;
         },
@@ -191,7 +192,7 @@ const tablesPlugin = (options?: TablePluginOptions): EditorPlugin => ({
               )}
               {isLayoutSupported(state) &&
                 options &&
-                options.breakoutEnabled && (
+                options.isBreakoutEnabled && (
                   <LayoutButton
                     editorView={editorView}
                     mountPoint={popupsMountPoint}

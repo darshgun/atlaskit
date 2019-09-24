@@ -326,6 +326,16 @@ export default class WebBridgeImpl extends WebBridge
             });
             return insert(mention);
           }
+          if (type === 'emoji') {
+            const { id, shortName, fallback } = item;
+            const emoji = state.schema.nodes.emoji.createChecked({
+              shortName,
+              id,
+              fallback,
+              text: fallback || shortName,
+            });
+            return insert(emoji);
+          }
 
           return false;
         },

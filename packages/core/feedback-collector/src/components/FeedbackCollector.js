@@ -115,12 +115,6 @@ export default class FeedbackCollector extends Component<Props> {
 
   props: Props;
 
-  submissionTimeoutId: TimeoutID;
-
-  componentWillUnmount() {
-    window.clearTimeout(this.submissionTimeoutId);
-  }
-
   getTypeFieldValue(type: SelectValue) {
     switch (type) {
       case 'bug':
@@ -204,25 +198,32 @@ export default class FeedbackCollector extends Component<Props> {
   postFeedback = (formValues: FormFields) => {
     const body: FeedbackType = this.mapFormToJSD(formValues);
 
-    fetch(
-      `https://jsd-widget.atlassian.com/api/embeddable/${
-        this.props.embeddableKey
-      }/request?requestTypeId=${this.props.requestTypeId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    // Don't dispatch unless we have suitable props (allows tests to pass through empty strings and avoid redundant network calls)
+    if (this.props.embeddableKey && this.props.requestTypeId) {
+      fetch(
+        `https://jsd-widget.atlassian.com/api/embeddable/${
+          this.props.embeddableKey
+        }/request?requestTypeId=${this.props.requestTypeId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
         },
-        body: JSON.stringify(body),
-      },
-    );
+      );
+    }
 
     this.props.onClose();
+
     // slightly delay confirming submit since we don't wait for the REST call to succeed
-    this.submissionTimeoutId = setTimeout(
-      this.props.onSubmit,
-      this.props.timeoutOnSubmit,
-    );
+    //
+    // Because `onClose` is invoked prior to this timeout triggering, the `componentWillUnmount`
+    // may occur before the `onSubmit` is called. To prevent prematurely cancelling the
+    // network request, we deliberately don't clear this timeout inside `componentWillUnmount`.
+    //
+    // eslint-disable-next-line @wordpress/react-no-unsafe-timeout
+    setTimeout(this.props.onSubmit, this.props.timeoutOnSubmit);
   };
 
   render() {

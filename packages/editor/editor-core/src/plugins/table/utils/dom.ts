@@ -82,9 +82,9 @@ export const updateResizeHandles = (
   }
   const height = tableRef.offsetHeight + tableToolbarSize;
   // see ED-7600
-  const nodes = Array.from(
-    tableRef.querySelectorAll(`.${ClassName.RESIZE_HANDLE}`),
-  ) as Array<HTMLElement>;
+  const nodes = Array.from(tableRef.querySelectorAll(
+    `.${ClassName.RESIZE_HANDLE}`,
+  ) as NodeListOf<HTMLElement>);
   if (!nodes || !nodes.length) {
     return;
   }

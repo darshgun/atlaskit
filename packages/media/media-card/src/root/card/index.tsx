@@ -19,6 +19,7 @@ import {
   isFileIdentifier,
   isDifferentIdentifier,
   isImageRepresentationReady,
+  addFileAttrsToUrl,
   FileState,
   ExternalImageIdentifier,
 } from '@atlaskit/media-client';
@@ -254,6 +255,7 @@ export class CardBase extends Component<
             dataURI,
             previewOrientation = 1,
           } = this.state;
+          const { contextId } = this.props;
           const metadata = extendMetadata(fileState, this.state.metadata);
 
           if (!dataURI) {
@@ -262,6 +264,16 @@ export class CardBase extends Component<
             );
             previewOrientation = orientation || 1;
             dataURI = src;
+            if (dataURI && contextId) {
+              dataURI = addFileAttrsToUrl(dataURI, {
+                id: this.resolvedId,
+                collection: collectionName,
+                contextId,
+                mimeType: metadata.mimeType,
+                name: metadata.name,
+                size: metadata.size,
+              });
+            }
           }
 
           const shouldFetchRemotePreview =
@@ -289,6 +301,18 @@ export class CardBase extends Component<
                 allowAnimated: true,
               });
               dataURI = URL.createObjectURL(blob);
+              if (contextId) {
+                dataURI = addFileAttrsToUrl(dataURI, {
+                  id: this.resolvedId,
+                  collection: collectionName,
+                  contextId,
+                  mimeType: metadata.mimeType,
+                  name: metadata.name,
+                  size: metadata.size,
+                  width,
+                  height,
+                });
+              }
               this.releaseDataURI();
             } catch (e) {
               // We don't want to set status=error if the preview fails, we still want to display the metadata

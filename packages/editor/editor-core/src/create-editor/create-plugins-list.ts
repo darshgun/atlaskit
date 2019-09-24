@@ -49,8 +49,8 @@ import {
   analyticsPlugin,
   customAutoformatPlugin,
   feedbackDialogPlugin,
-  sharedContextPlugin,
   historyPlugin,
+  sharedContextPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { EditorView } from 'prosemirror-view';
@@ -192,11 +192,10 @@ export default function createPluginsList(
     plugins.push(
       tablesPlugin({
         tableOptions,
-        breakoutEnabled: props.appearance === 'full-page',
+        isDynamicTextSizingEnabled: props.allowDynamicTextSizing,
+        isBreakoutEnabled: props.appearance === 'full-page',
         allowContextualMenu: !isMobile,
-        fullWidthEnabled: props.appearance === 'full-width',
-        wasFullWidthEnabled: prevProps && prevProps.appearance === 'full-width',
-        dynamicSizingEnabled: props.allowDynamicTextSizing,
+        isFullWidthModeEnabled: props.appearance === 'full-width',
       }),
     );
   }

@@ -9,8 +9,8 @@ import {
 } from '../../__helpers/page-objects/_media';
 import { pressKey } from '../../__helpers/page-objects/_keyboard';
 import { Page } from '../../__helpers/page-objects/_types';
-
-describe('Snapshot Test: Media', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: Media', () => {
   let page: Page;
   beforeEach(async () => {
     // @ts-ignore

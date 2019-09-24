@@ -1,5 +1,21 @@
 # @nachos/textfield
 
+## 0.1.8
+
+### Patch Changes
+
+- [patch][9c45dd9e94](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c45dd9e94):
+
+  Fix main entry point not containing all exports
+
+## 0.1.7
+
+### Patch Changes
+
+- [patch][8177db353f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8177db353f):
+
+  Add missing built dists to @atlaskit/nachos-textfield
+
 ## 0.1.6
 
 ### Patch Changes

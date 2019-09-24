@@ -42,6 +42,7 @@ export default (props: GenericSwitcherProps) => (
             providerResults,
             props.features,
             availableProducts,
+            props.product,
           );
 
           return <Switcher {...props} {...switcherLinks} />;

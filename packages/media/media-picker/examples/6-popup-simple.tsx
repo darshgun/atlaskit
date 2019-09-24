@@ -9,8 +9,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import Button from '@atlaskit/button';
 
-import { MediaPicker } from '../src';
-import { Popup } from '../index';
+import { MediaPicker, Popup } from '../src';
 import { MediaClientConfig } from '@atlaskit/media-core';
 
 mediaMock.enable();

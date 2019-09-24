@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "18.15.1",
+  "version": "18.15.2",
   "config": {
     "access": "public"
   },
@@ -17,7 +17,7 @@
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/lozenge": "^9.0.7",
-    "@atlaskit/theme": "^9.2.2",
+    "@atlaskit/theme": "^9.2.3",
     "@atlaskit/tooltip": "^15.0.14",
     "@atlaskit/util-service-support": "^4.0.7",
     "@babel/runtime": "^7.0.0",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.2.5",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/editor-test-helpers": "^9.11.11",
+    "@atlaskit/editor-test-helpers": "^10.0.0",
     "@atlaskit/elements-test-helpers": "^0.6.4",
     "@atlaskit/i18n-tools": "^0.5.2",
     "@atlaskit/ssr": "^0.1.1",
@@ -48,15 +48,10 @@
     "react-intl": "^2.6.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [
-    "Julien H",
-    "Tara T",
-    "Eduardo S",
-    "Paul C"
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "Mention",
-    "team": "elements"
+    "team": "teams"
   },
   "license": "Apache-2.0",
   "peerDependencies": {
@@ -76,6 +71,7 @@
   "keywords": [
     "ui",
     "mention",
-    "fabric"
+    "fabric",
+    "teams"
   ]
 }

@@ -1,5 +1,17 @@
 # @atlaskit/media-picker
 
+## 47.1.4
+
+### Patch Changes
+
+- [patch][b3d01a57df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3d01a57df):
+
+  Download max res image and prioritise existing preview over representations- [patch][c1eba314f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1eba314f4):
+
+  MS-2080 Fix inserting same file twice by removing observable piping as it makes a client's file observable emit new tenant's observable's events.- [patch][d886971e8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d886971e8a):
+
+  Move objectToQueryString to media-client and use it from there
+
 ## 47.1.3
 
 ### Patch Changes

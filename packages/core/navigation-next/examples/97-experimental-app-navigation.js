@@ -7,10 +7,11 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
+import { DummySkeletonContent } from './shared/components/DummySkeletonContent';
 import { LinkItem, ProjectSwitcher } from './shared/components';
 import RootViews from './shared/views/root';
 import ContainerViews from './shared/views/container';
-import AppNavigation from './shared/components/AppNavigation';
+import AtlassianNavigation from './shared/components/AtlassianNavigation';
 
 import { routes } from './shared/routes';
 
@@ -32,7 +33,7 @@ const HorizontalNavigationApp = () => {
           experimental_flyoutOnHover
           experimental_alternateFlyoutBehaviour
           experimental_horizontalGlobalNav
-          globalNavigation={AppNavigation}
+          globalNavigation={AtlassianNavigation}
         >
           <div style={containerStyle}>
             <RootViews />
@@ -42,6 +43,7 @@ const HorizontalNavigationApp = () => {
                 <Route key={path} component={component} path={path} />
               ))}
             </Switch>
+            <DummySkeletonContent />
           </div>
         </LayoutManagerWithViewController>
       </NavigationProvider>

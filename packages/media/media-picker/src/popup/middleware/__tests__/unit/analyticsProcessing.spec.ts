@@ -262,6 +262,7 @@ describe('analyticsProcessing middleware', () => {
         attributes: {
           fileCount: 1,
           ...attributes,
+          serviceNames: ['upload'],
           files: [
             {
               accountId: undefined,
@@ -269,6 +270,7 @@ describe('analyticsProcessing middleware', () => {
               fileName: '1.jpg',
               fileSize: 10,
               fileMimetype: 'image/jpg',
+              serviceName: 'upload',
             },
           ],
         },
@@ -297,6 +299,7 @@ describe('analyticsProcessing middleware', () => {
         attributes: {
           ...attributes,
           fileCount: 2,
+          serviceNames: ['upload', 'upload'],
           files: [
             {
               accountId: undefined,
@@ -304,6 +307,7 @@ describe('analyticsProcessing middleware', () => {
               fileName: '1.jpg',
               fileSize: 10,
               fileMimetype: 'image/jpg',
+              serviceName: 'upload',
             },
             {
               accountId: undefined,
@@ -311,6 +315,7 @@ describe('analyticsProcessing middleware', () => {
               fileName: '1.png',
               fileSize: 20,
               fileMimetype: 'image/png',
+              serviceName: 'upload',
             },
           ],
         },

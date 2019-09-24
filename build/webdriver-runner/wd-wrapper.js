@@ -209,8 +209,8 @@ export default class Page {
     if (this.isBrowser('chrome')) {
       const logs = await this.browser.getLogs('browser');
       if (logs.length) {
-        logs.forEach(val => {
-          assert.notStrictEqual(val.level, 'SEVERE', `Error : ${val.message}`);
+        logs.forEach(log => {
+          assert.notStrictEqual(log.level, 'SEVERE', `Error : ${log.message}`);
         });
       }
     }
@@ -232,7 +232,7 @@ export default class Page {
   //will need to have wrapper for these once moved to puppeteer
   async getText(selector) {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
-    // for puppteer
+    // for puppeteer
     const elem = await this.browser.$(selector);
     return elem.getText();
   }

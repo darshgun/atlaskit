@@ -10,6 +10,7 @@ import {
   DEFAULT_IMAGE_WIDTH,
   browser,
   ProviderFactory,
+  ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 import { CardEvent } from '@atlaskit/media-card';
 import { NodeSelection } from 'prosemirror-state';
@@ -37,6 +38,7 @@ export interface MediaSingleNodeState {
   width?: number;
   height?: number;
   viewMediaClientConfig?: MediaClientConfig;
+  contextIdentifierProvider?: ContextIdentifierProvider;
 }
 
 export default class MediaSingleNode extends Component<
@@ -47,7 +49,7 @@ export default class MediaSingleNode extends Component<
     mediaOptions: {},
   };
 
-  state = {
+  state: MediaSingleNodeState = {
     width: undefined,
     height: undefined,
     viewMediaClientConfig: undefined,
@@ -67,8 +69,11 @@ export default class MediaSingleNode extends Component<
   UNSAFE_componentWillReceiveProps(nextProps: MediaSingleNodeProps) {
     if (nextProps.mediaProvider !== this.props.mediaProvider) {
       this.setViewMediaClientConfig(nextProps);
-      this.createMediaNodeUpdater(nextProps).updateFileAttrs();
     }
+
+    // We need to call this method on any prop change since attrs can get removed with collab editing
+    // the method internally checks if we already have all attrs
+    this.createMediaNodeUpdater(nextProps).updateFileAttrs();
   }
 
   setViewMediaClientConfig = async (props: MediaSingleNodeProps) => {
@@ -89,7 +94,6 @@ export default class MediaSingleNode extends Component<
 
     // we want the first child of MediaSingle (type "media")
     const node = this.props.node.firstChild;
-
     if (!node) {
       return;
     }
@@ -100,7 +104,10 @@ export default class MediaSingleNode extends Component<
     }
 
     if (node.attrs.type === 'external') {
-      await mediaNodeUpdater.uploadExternalMedia(this.props.getPos());
+      if (mediaNodeUpdater.isMediaBlobUrl()) {
+        // we try to copy the image using the encoded metadata, otherwise we keep it as external
+        await mediaNodeUpdater.copyNodeFromBlobUrl(this.props.getPos());
+      }
       return;
     }
 
@@ -117,10 +124,16 @@ export default class MediaSingleNode extends Component<
   };
 
   async componentDidMount() {
+    const { contextIdentifierProvider } = this.props;
+
     await Promise.all([
       this.setViewMediaClientConfig(this.props),
       this.updateMediaNodeAttributes(this.props),
     ]);
+
+    this.setState({
+      contextIdentifierProvider: await contextIdentifierProvider,
+    });
   }
 
   private onExternalImageLoaded = ({
@@ -172,6 +185,7 @@ export default class MediaSingleNode extends Component<
       fullWidthMode,
       view: { state },
     } = this.props;
+    const { contextIdentifierProvider } = this.state;
 
     const { layout, width: mediaSingleWidth } = node.attrs;
     const childNode = node.firstChild!;
@@ -233,6 +247,7 @@ export default class MediaSingleNode extends Component<
         }
         uploadComplete={uploadComplete}
         url={childNode.attrs.url}
+        contextIdentifierProvider={contextIdentifierProvider}
       />
     );
 

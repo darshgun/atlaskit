@@ -27,7 +27,7 @@ const ArticleWasHelpfulYesButton = (
   props: Props & HelpContextInterface & Analytics & InjectedIntlProps,
 ) => {
   const {
-    help: { onWasHelpfulNoButtonClick },
+    help: { onWasHelpfulYesButtonClick },
     intl: { formatMessage },
     createAnalyticsEvent,
     isSelected,
@@ -41,11 +41,11 @@ const ArticleWasHelpfulYesButton = (
       onClick();
     }
 
-    if (onWasHelpfulNoButtonClick) {
+    if (onWasHelpfulYesButtonClick) {
       const analyticsEvent: UIAnalyticsEvent = createAnalyticsEvent({
         action: 'click',
       });
-      onWasHelpfulNoButtonClick(event, analyticsEvent);
+      onWasHelpfulYesButtonClick(event, analyticsEvent);
     }
   };
 

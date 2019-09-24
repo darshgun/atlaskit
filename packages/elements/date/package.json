@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/date",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "config": {
     "access": "public"
   },
   "description": "Fabric Date React Components",
   "main": "dist/cjs/index.js",
-  "modules": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/cjs/types.d.ts",
   "atlaskit:src": "src/index.ts",
   "repository": {
@@ -19,11 +19,11 @@
     "ui",
     "date",
     "fabric",
-    "elements"
+    "teams"
   ],
   "atlaskit": {
     "name": "Date",
-    "team": "elements"
+    "team": "teams"
   },
   "dependencies": {
     "@atlaskit/theme": "^9.1.6",

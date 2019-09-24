@@ -1,1 +1,0 @@
-ED-7529: make sure content doesn't overflow inside table cells

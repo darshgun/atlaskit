@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useCallback } from 'react';
 
 import { AnalyticsReactContext } from './AnalyticsReactContext';
 import { CreateUIAnalyticsEvent } from './types';
@@ -9,30 +9,32 @@ export type UseAnalyticsEventsHook = {
   createAnalyticsEvent: CreateUIAnalyticsEvent;
 };
 
-export function useAnalyticsEvents_experimental(): UseAnalyticsEventsHook {
+export function useAnalyticsEvents(): UseAnalyticsEventsHook {
   const {
     getAtlaskitAnalyticsEventHandlers,
     getAtlaskitAnalyticsContext,
   } = useContext(AnalyticsReactContext);
 
-  const createAnalyticsEvent = (
-    payload: AnalyticsEventPayload,
-  ): UIAnalyticsEvent =>
-    new UIAnalyticsEvent({
-      context: getAtlaskitAnalyticsContext(),
-      handlers: getAtlaskitAnalyticsEventHandlers(),
-      payload,
-    });
+  if (
+    (getAtlaskitAnalyticsEventHandlers === null ||
+      getAtlaskitAnalyticsContext === null) &&
+    process.env.NODE_ENV !== 'production'
+  ) {
+    /* eslint-disable-next-line no-console */
+    console.warn(
+      `No compatible AnalyticsListener is listening to this event fire. Use of this hook requires the firing component/hook to be wrapped in an AnalyticsListener from @atlaskit/analytics-next@^6.3.0 or above.`,
+    );
+  }
 
-  useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `The useAnalyticsEvents_experimental hook should be used with caution.
-        It's consumers must be wrapped with the updated AnalyticsListener and AnalyticsContext components from the latest release of @atlaskit/analytics-next.`,
-      );
-    }
-  }, []);
+  const createAnalyticsEvent = useCallback(
+    (payload: AnalyticsEventPayload): UIAnalyticsEvent =>
+      new UIAnalyticsEvent({
+        context: getAtlaskitAnalyticsContext(),
+        handlers: getAtlaskitAnalyticsEventHandlers(),
+        payload,
+      }),
+    [getAtlaskitAnalyticsEventHandlers, getAtlaskitAnalyticsContext],
+  );
 
   return {
     createAnalyticsEvent,

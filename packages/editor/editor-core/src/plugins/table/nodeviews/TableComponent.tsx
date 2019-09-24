@@ -55,6 +55,8 @@ interface TableState {
   parentWidth?: number;
 }
 
+let prevIsFullWidthModeEnabled: boolean | undefined;
+
 class TableComponent extends React.Component<ComponentProps, TableState> {
   state = {
     scroll: 0,
@@ -79,14 +81,19 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
     this.containerWidth = containerWidth;
 
     // store table size using previous full-width mode so can detect if it has changed
-    const dynamicTextSizing = options ? options.dynamicTextSizing : false;
+    const isDynamicTextSizingEnabled = options
+      ? options.isDynamicTextSizingEnabled
+      : false;
     const isFullWidthModeEnabled = options
-      ? options.wasFullWidthModeEnabled
+      ? options.isFullWidthModeEnabled
       : false;
     this.layoutSize = this.tableNodeLayoutSize(node, containerWidth.width, {
-      dynamicTextSizing,
+      isDynamicTextSizingEnabled,
       isFullWidthModeEnabled,
     });
+    if (typeof prevIsFullWidthModeEnabled === 'undefined') {
+      prevIsFullWidthModeEnabled = isFullWidthModeEnabled;
+    }
 
     // Disable inline table editing and resizing controls in Firefox
     // https://github.com/ProseMirror/prosemirror/issues/432
@@ -181,7 +188,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
       !!tableResizingPluginState && !!tableResizingPluginState.dragging;
 
     const rowControls = [
-      <div key={0} className={`${ClassName.ROW_CONTROLS_WRAPPER}`}>
+      <div key={0} className={ClassName.ROW_CONTROLS_WRAPPER}>
         <TableFloatingControls
           editorView={view}
           tableRef={tableRef}
@@ -191,6 +198,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
           isResizing={isResizing}
           isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
           isHeaderRowEnabled={pluginState.isHeaderRowEnabled}
+          ordering={pluginState.ordering}
           isHeaderColumnEnabled={pluginState.isHeaderColumnEnabled}
           hasHeaderRow={containsHeaderRow(view.state, node)}
           // pass `selection` and `tableHeight` to control re-render
@@ -269,7 +277,16 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
       options,
     );
 
+    const fullWidthModeChanged = options
+      ? options.isFullWidthModeEnabled !== prevIsFullWidthModeEnabled
+      : false;
+
+    if (fullWidthModeChanged && options) {
+      prevIsFullWidthModeEnabled = options.isFullWidthModeEnabled;
+    }
+
     if (
+      fullWidthModeChanged ||
       // Breakout mode/layout changed
       layoutChanged ||
       // We need to react if our parent changes
@@ -326,16 +343,21 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
       const { view, node, getPos, options, containerWidth } = this.props;
 
       autoSizeTable(view, node, this.table, getPos(), {
-        dynamicTextSizing: (options && options.dynamicTextSizing) || false,
+        isDynamicTextSizingEnabled:
+          (options && options.isDynamicTextSizingEnabled) || false,
         containerWidth: containerWidth.width,
       });
     }
   };
 
   private handleWindowResize = () => {
-    const { node, containerWidth } = this.props;
+    const { node, options, containerWidth } = this.props;
 
-    const layoutSize = this.tableNodeLayoutSize(node);
+    const layoutSize = this.tableNodeLayoutSize(
+      node,
+      containerWidth.width,
+      options,
+    );
 
     if (containerWidth.width > layoutSize) {
       return;

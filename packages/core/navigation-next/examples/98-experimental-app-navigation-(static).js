@@ -6,10 +6,11 @@ import { Route, Switch } from 'react-router';
 import { MemoryRouter } from 'react-router-dom';
 
 // $FlowFixMe - ts module and relative import?
-import AuthenticatedAppNavigationExample from '@atlaskit/app-navigation/examples/10-authenticated-example';
+import AuthenticatedAppNavigationExample from '@atlaskit/atlassian-navigation/examples/10-authenticated-example';
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
+import { DummySkeletonContent } from './shared/components/DummySkeletonContent';
 import { LinkItem, ProjectSwitcher } from './shared/components';
 import { routes } from './shared/routes';
 import ContainerViews from './shared/views/container';
@@ -42,6 +43,7 @@ const StaticHorizontalNavigationApp = () => (
               <Route key={path} component={component} path={path} />
             ))}
           </Switch>
+          <DummySkeletonContent />
         </div>
       </LayoutManagerWithViewController>
     </NavigationProvider>

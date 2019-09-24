@@ -8,6 +8,7 @@ export const arrow = {
 };
 
 export const row = {
+  highlightedBackground: colors.backgroundActive,
   hoverBackground: themed({ light: colors.N10, dark: colors.DN40 }),
 };
 

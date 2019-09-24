@@ -1,1 +1,0 @@
-[ED-7477] Fix table looses focus on adding rows|columns when using Safari

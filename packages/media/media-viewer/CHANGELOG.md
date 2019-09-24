@@ -1,5 +1,13 @@
 # @atlaskit/media-viewer
 
+## 43.4.3
+
+### Patch Changes
+
+- [patch][b3d01a57df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3d01a57df):
+
+  Download max res image and prioritise existing preview over representations
+
 ## 43.4.2
 
 ### Patch Changes

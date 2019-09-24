@@ -84,7 +84,42 @@ describe('Snapshot Test: Media', () => {
   });
 
   describe('within a table', () => {
-    beforeAll(async () => {
+    describe('singular media', () => {
+      beforeAll(async () => {
+        // @ts-ignore
+        page = global.page;
+        await initEditorWithAdf(page, {
+          appearance: Appearance.fullPage,
+          adf: singleCellTable,
+          editorProps: {
+            media: {
+              allowMediaSingle: true,
+              allowResizing: true,
+            },
+          },
+        });
+
+        await clickEditableContent(page);
+        await insertMedia(page);
+        await waitForMediaToBeLoaded(page);
+        await clickMediaInPosition(page, 0);
+      });
+
+      for (const layout of [
+        MediaLayout.center,
+        MediaLayout.alignEnd,
+        MediaLayout.alignStart,
+        MediaLayout.wrapLeft,
+        MediaLayout.wrapRight,
+      ]) {
+        it(`using layout ${MediaLayout[layout]}`, async () => {
+          await changeMediaLayout(page, layout);
+          await snapshot(page);
+        });
+      }
+    });
+
+    it("multiple media don't overlap", async () => {
       // @ts-ignore
       page = global.page;
       await initEditorWithAdf(page, {
@@ -96,25 +131,25 @@ describe('Snapshot Test: Media', () => {
             allowResizing: true,
           },
         },
+        viewport: { width: 800, height: 1280 },
       });
 
       await clickEditableContent(page);
+
+      // Media one : left wrapped
       await insertMedia(page);
       await waitForMediaToBeLoaded(page);
       await clickMediaInPosition(page, 0);
-    });
+      await changeMediaLayout(page, MediaLayout.wrapLeft);
 
-    for (const layout of [
-      MediaLayout.center,
-      MediaLayout.alignEnd,
-      MediaLayout.alignStart,
-      MediaLayout.wrapLeft,
-      MediaLayout.wrapRight,
-    ]) {
-      it(`using layout ${MediaLayout[layout]}`, async () => {
-        await changeMediaLayout(page, layout);
-        await snapshot(page);
-      });
-    }
+      await pressKey(page, 'ArrowRight');
+
+      // Media two : center aligned
+      await insertMedia(page);
+      await waitForMediaToBeLoaded(page);
+      await clickMediaInPosition(page, 0);
+
+      await snapshot(page);
+    });
   });
 });

@@ -13,7 +13,8 @@ import {
 import adf from './__fixtures__/table-with-merged-cells-on-first-column.adf.json';
 import defaultTableAdf from './__fixtures__/default-table.adf.json';
 
-describe('Snapshot Test: hover rows controlls', () => {
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Snapshot Test: hover rows controlls', () => {
   let page: Page;
 
   beforeAll(async () => {

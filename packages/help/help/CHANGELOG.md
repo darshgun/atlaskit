@@ -1,5 +1,37 @@
 ## 0.1.0
 
+## 0.18.0
+
+### Minor Changes
+
+- [minor][d4b481ebad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4b481ebad):
+
+  Exposed RelatedArticles component and ArticleItem interface
+
+## 0.17.4
+
+### Patch Changes
+
+- [patch][22d5dbc2bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22d5dbc2bb):
+
+  fixed CSS issue of the ArticleListItem icons
+
+## 0.17.3
+
+### Patch Changes
+
+- [patch][c0c49e4c2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0c49e4c2b):
+
+  CSS fixes + added link icon to ArticleListItem
+
+## 0.17.2
+
+### Patch Changes
+
+- [patch][a171dec505](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a171dec505):
+
+  fix onWasHelpfulNoButtonClick prop
+
 ## 0.17.1
 
 - Updated dependencies [617591dd61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617591dd61):

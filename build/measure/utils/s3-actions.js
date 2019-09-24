@@ -58,7 +58,7 @@ async function downloadFromS3ForLocal(downloadToFolder, branch, package) {
     });
     fs.writeFileSync(output, JSON.stringify(response.data), 'utf-8');
   } catch (err) {
-    if (response.status === 404) {
+    if (err.response.status === 403 || err.response.status === 404) {
       console.error(
         chalk.red(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
       Please consult the README.md in the @atlaskit/measure folder on how to add a new package on s3.`),
@@ -66,7 +66,7 @@ async function downloadFromS3ForLocal(downloadToFolder, branch, package) {
       process.exit(0);
     } else {
       console.error(chalk.red(`${err}`));
-      process.exit(0);
+      process.exit(1);
     }
   }
 }
@@ -85,15 +85,15 @@ function downloadFromS3(downloadToFolder, branch, package) {
       `s3-cli --region="${BUCKET_REGION}" get ${bucketPath} ${downloadToFolder}/${ratchetFile}`,
     );
   } catch (err) {
-    if (response.status === 404) {
+    if (err.status === 1) {
       console.error(
         chalk.red(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
         Please consult the README.md in the @atlaskit/measure folder on how to add a new package on s3.`),
       );
-      process.exit(0);
+      process.exit(1);
     } else {
       console.error(chalk.red(`${err}`));
-      process.exit(0);
+      process.exit(1);
     }
   }
 }

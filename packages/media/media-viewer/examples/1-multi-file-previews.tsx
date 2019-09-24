@@ -21,9 +21,8 @@ import {
   audioItem,
   audioItemNoCover,
 } from '../example-helpers';
-import { MediaViewer } from '../src';
+import { MediaViewer, MediaViewerDataSource } from '../src';
 import { videoFileId } from '@atlaskit/media-test-helpers';
-import { MediaViewerDataSource } from '..';
 import { I18NWrapper } from '@atlaskit/media-test-helpers';
 import { Identifier, FileIdentifier, MediaStore } from '@atlaskit/media-client';
 import { Card } from '@atlaskit/media-card';

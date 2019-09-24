@@ -8,7 +8,7 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
 const CDN_URL_BASE =
-  'http://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts';
+  'https://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts';
 
 function flattenDeep(arr1) {
   return arr1.reduce(

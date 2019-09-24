@@ -390,6 +390,9 @@ export default class Editor extends React.Component<EditorProps, {}> {
                                     this.props.addonToolbarComponents
                                   }
                                   collabEdit={this.props.collabEdit}
+                                  allowAnnotation={
+                                    !!this.props.annotationProvider
+                                  }
                                 />
                               </BaseTheme>
                             )}

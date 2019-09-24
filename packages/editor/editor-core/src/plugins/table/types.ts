@@ -38,7 +38,13 @@ export interface ColumnResizingPluginState {
   dragging: { startX: number; startWidth: number } | null;
   lastClick: { x: number; y: number; time: number } | null;
   lastColumnResizable?: boolean;
-  dynamicTextSizing?: boolean;
+  isDynamicTextSizingEnabled?: boolean;
+  isFullWidthModeEnabled?: boolean;
+}
+
+export interface TableColumnOrdering {
+  columnIndex: number;
+  order: SortOrder;
 }
 
 export interface TablePluginState {
@@ -62,12 +68,14 @@ export interface TablePluginState {
   insertRowButtonIndex?: number;
   isFullWidthModeEnabled?: boolean;
   layout?: TableLayout;
+  ordering?: TableColumnOrdering;
 }
 
 export type TablePluginAction =
   | { type: 'SET_EDITOR_FOCUS'; data: { editorHasFocus: boolean } }
   | { type: 'TOGGLE_HEADER_ROW' }
   | { type: 'TOGGLE_HEADER_COLUMN' }
+  | { type: 'SORT_TABLE'; data: { ordering: TableColumnOrdering } }
   | {
       type: 'SET_TABLE_REF';
       data: {

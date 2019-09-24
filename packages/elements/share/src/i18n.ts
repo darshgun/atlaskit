@@ -23,7 +23,7 @@ export const messages = defineMessages({
   },
   userPickerGenericPlaceholder: {
     id: 'fabric.elements.share.form.user-picker.placeholder.generic',
-    defaultMessage: 'Enter name, team or email',
+    defaultMessage: 'Enter name, group, team or email',
     description: 'Generic placeholder for the user picker field in Share form.',
   },
   userPickerExistingUserOnlyPlaceholder: {
@@ -40,7 +40,7 @@ export const messages = defineMessages({
   },
   userPickerRequiredMessage: {
     id: 'fabric.elements.share.form.user-picker.validation.required',
-    defaultMessage: 'Select at least one user, team or email.',
+    defaultMessage: 'Select at least one user, group, team or email.',
     description:
       'Required error message for the user picker field in Share form.',
   },

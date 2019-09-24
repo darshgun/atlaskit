@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-editor",
-  "version": "36.3.2",
+  "version": "36.3.3",
   "description": "Media component for image annotations",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.tsx",
@@ -19,6 +19,11 @@
   "atlaskit": {
     "name": "Media Editor",
     "team": "media"
+  },
+  "scripts": {
+    "check-dist": "cd dist/esm/engine/core/binaries && cd - && cd dist/cjs/engine/core/binaries",
+    "copy-binaries": "cp -r src/engine/core/binaries dist/esm/engine/core && cp -r src/engine/core/binaries dist/cjs/engine/core",
+    "ak-postbuild": "yarn copy-binaries && yarn check-dist"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {

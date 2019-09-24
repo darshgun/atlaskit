@@ -460,7 +460,7 @@ export const autoSizeTable = (
   node: PMNode,
   table: HTMLTableElement,
   basePos: number,
-  opts: { dynamicTextSizing: boolean; containerWidth: number },
+  opts: { isDynamicTextSizingEnabled: boolean; containerWidth: number },
 ) => {
   view.dispatch(fixAutoSizedTable(view, node, table, basePos, opts));
   return true;

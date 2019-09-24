@@ -43,7 +43,7 @@
     "svg-sprite": "^1.3.6"
   },
   "scripts": {
-    "build": "mkdir -p dist && cp src/bundle.css dist/bundle.css && cp src/icons-sprite.svg dist/icons-sprite.svg",
+    "ak-postbuild": "mkdir -p dist && cp src/bundle.css dist/bundle.css && cp src/icons-sprite.svg dist/icons-sprite.svg",
     "update": "yarn build-css && yarn run sprite",
     "sprite": "node ./bin/buildSprite.js",
     "build-css": "babel-node --ignore WE_WILL_NOT_IGNORE_ANYTHING build/js-to-css.js --config-file=../../../babel.config.js --env-name=production:cjs"

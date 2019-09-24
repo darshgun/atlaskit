@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/share",
-  "version": "0.6.6",
+  "version": "0.6.9",
   "config": {
     "access": "private"
   },
   "description": "Fabric Share Element",
   "main": "dist/cjs/index.js",
-  "modules": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/cjs/types.d.ts",
   "atlaskit:src": "src/index.ts",
   "repository": {
@@ -19,11 +19,11 @@
     "ui",
     "share",
     "fabric",
-    "elements"
+    "teams"
   ],
   "atlaskit": {
     "name": "Share",
-    "team": "elements"
+    "team": "teams"
   },
   "dependencies": {
     "@atlaskit/analytics-next": "^6.0.3",
@@ -32,7 +32,7 @@
     "@atlaskit/form": "^6.1.12",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/inline-dialog": "^12.0.15",
-    "@atlaskit/theme": "^9.1.6",
+    "@atlaskit/theme": "^9.2.3",
     "@atlaskit/tooltip": "^15.0.14",
     "@atlaskit/user-picker": "^4.0.22",
     "@atlaskit/util-service-support": "^4.0.7",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/editor-test-helpers": "^9.11.11",
+    "@atlaskit/editor-test-helpers": "^10.0.0",
     "@atlaskit/flag": "^12.0.20",
     "@atlaskit/i18n-tools": "^0.5.2",
     "@atlaskit/select": "^10.0.8",

@@ -12,6 +12,7 @@ import {
   AvailableProduct,
   ProductTopItemVariation,
   LicenseInformationResponse,
+  Product,
 } from '../../types';
 
 describe('map-results-to-switcher-props', () => {
@@ -476,6 +477,71 @@ describe('map-results-to-switcher-props', () => {
         },
       ]);
     });
+  });
+
+  it('People link is shown for Jira', () => {
+    const props = mapResultsToSwitcherProps(
+      cloudId,
+      loadingProvidersResult,
+      {
+        enableUserCentricProducts: true,
+        disableCustomLinks: false,
+        disableRecentContainers: false,
+        productTopItemVariation: ProductTopItemVariation.currentSite,
+        xflow: false,
+        isDiscoverMoreForEveryoneEnabled: false,
+        disableHeadings: false,
+        isEmceeLinkEnabled: false,
+      },
+      asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
+      Product.JIRA,
+    );
+
+    expect(props.fixedLinks).toHaveLength(1);
+    expect(props.fixedLinks[0].href).toEqual('/people');
+  });
+
+  it('People link is shown for Confluence', () => {
+    const props = mapResultsToSwitcherProps(
+      cloudId,
+      loadingProvidersResult,
+      {
+        enableUserCentricProducts: true,
+        disableCustomLinks: false,
+        disableRecentContainers: false,
+        productTopItemVariation: ProductTopItemVariation.currentSite,
+        xflow: false,
+        isDiscoverMoreForEveryoneEnabled: false,
+        disableHeadings: false,
+        isEmceeLinkEnabled: false,
+      },
+      asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
+      Product.CONFLUENCE,
+    );
+
+    expect(props.fixedLinks).toHaveLength(1);
+    expect(props.fixedLinks[0].href).toEqual('/people');
+  });
+
+  it('People link is NOT shown for other products', () => {
+    const props = mapResultsToSwitcherProps(
+      null,
+      loadingProvidersResult,
+      {
+        enableUserCentricProducts: true,
+        disableCustomLinks: false,
+        disableRecentContainers: false,
+        isDiscoverMoreForEveryoneEnabled: false,
+        productTopItemVariation: ProductTopItemVariation.currentSite,
+        xflow: true,
+        disableHeadings: false,
+        isEmceeLinkEnabled: false,
+      },
+      asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
+      Product.HOME,
+    );
+
+    expect(props.fixedLinks).toHaveLength(0);
   });
 });
 

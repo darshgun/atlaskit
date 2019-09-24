@@ -1,1 +1,0 @@
-Download max res image and prioritise existing preview over representations

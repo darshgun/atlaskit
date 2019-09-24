@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reactions",
-  "version": "17.2.0",
+  "version": "17.2.1",
   "config": {
     "access": "public"
   },
@@ -15,10 +15,10 @@
     "@atlaskit/analytics-next": "^6.1.0",
     "@atlaskit/analytics-viewer": "^0.3.5",
     "@atlaskit/button": "^13.1.6",
-    "@atlaskit/emoji": "^62.4.0",
+    "@atlaskit/emoji": "^62.5.1",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/layer": "^7.1.0",
-    "@atlaskit/theme": "^9.2.0",
+    "@atlaskit/theme": "^9.2.3",
     "@atlaskit/tooltip": "^15.0.14",
     "@atlaskit/util-service-support": "^4.0.7",
     "classnames": "^2.2.5",
@@ -32,31 +32,15 @@
     "react-intl": "^2.6.0"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    {
-      "name": "Eduardo S"
-    },
-    {
-      "name": "Julien H"
-    },
-    {
-      "name": "Paul C"
-    },
-    {
-      "name": "Sylvain G"
-    },
-    {
-      "name": "Tara T"
-    }
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "Reactions",
-    "team": "elements"
+    "team": "teams"
   },
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/editor-test-helpers": "^9.11.11",
+    "@atlaskit/editor-test-helpers": "^10.0.0",
     "@atlaskit/elements-test-helpers": "^0.6.4",
     "@atlaskit/i18n-tools": "^0.5.2",
     "@atlaskit/tooltip": "^15.0.14",

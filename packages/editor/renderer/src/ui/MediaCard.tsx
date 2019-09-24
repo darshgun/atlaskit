@@ -312,6 +312,8 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
     if (!id || type !== 'file') {
       return <CardError dimensions={cardDimensions} />;
     }
+    const contextId =
+      contextIdentifierProvider && contextIdentifierProvider.objectId;
 
     const identifier: FileIdentifier = {
       id,
@@ -332,6 +334,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       >
         <Card
           identifier={identifier}
+          contextId={contextId}
           mediaClientConfig={mediaClientConfig}
           dimensions={cardDimensions}
           onClick={onCardClick}
