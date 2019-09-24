@@ -4,7 +4,6 @@ import * as React from 'react';
 import { ComponentType, Consumer, Provider } from 'react';
 import { Fragment, Mark, MarkType, Node, Schema } from 'prosemirror-model';
 import { Serializer } from '../';
-import { getText } from '../utils';
 import { RendererAppearance } from '../ui/Renderer/types';
 import { AnalyticsEventPayload } from '../analytics/events';
 
@@ -25,6 +24,7 @@ import {
   ExtensionHandlers,
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
+import { generateIdFromString } from '../utils';
 
 export interface RendererContext {
   objectAri?: string;
@@ -307,12 +307,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       return;
     }
 
-    const headingId = (node as any).content
-      .toJSON()
-      .reduce((acc: string, node: any) => acc.concat(getText(node) || ''), '')
-      .replace(/ /g, '-');
-
-    return this.getUniqueHeadingId(headingId);
+    return this.getUniqueHeadingId(generateIdFromString(node.textContent));
   }
 
   private getUniqueHeadingId(baseId: string, counter = 0): string {

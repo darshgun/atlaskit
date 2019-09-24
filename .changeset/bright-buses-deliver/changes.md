@@ -1,0 +1,1 @@
+[ED-7736] Reduce the number of crashs when resizing a table in a collab session

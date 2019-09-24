@@ -1,0 +1,1 @@
+ED-7743 special chars in heading will gets removed.

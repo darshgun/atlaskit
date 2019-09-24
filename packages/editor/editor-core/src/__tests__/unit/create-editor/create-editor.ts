@@ -99,6 +99,7 @@ describe(name, () => {
           pmPlugins: spy,
         },
         {
+          name: 'test2',
           pluginsOptions: {
             test: options,
           },

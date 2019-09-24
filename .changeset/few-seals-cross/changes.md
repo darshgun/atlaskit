@@ -1,0 +1,1 @@
+ED-7737: Fix icons import in editor core to reduce bundle size

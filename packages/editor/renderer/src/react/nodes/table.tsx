@@ -16,7 +16,7 @@ import {
   OverflowShadowProps,
   getBreakpoint,
   mapBreakpointToLayoutMaxWidth,
-  compareNodes,
+  createCompareNodes,
   SortOrder,
   convertProsemirrorTableNodeToArrayOfRows,
   hasMergedCell,
@@ -26,6 +26,11 @@ import {
 import { RendererAppearance } from '../../ui/Renderer/types';
 import { FullPagePadding } from '../../ui/Renderer/style';
 import { TableHeader } from './tableCell';
+import {
+  withSmartCardStorage,
+  WithSmartCardStorageProps,
+} from '../../ui/SmartCardStorage';
+import { UrlType } from '@atlaskit/adf-schema';
 
 type TableArrayMapped = {
   rowNodes: Array<PMNode | null>;
@@ -35,11 +40,22 @@ type TableArrayMapped = {
 const orderChildren = (
   children: React.ReactElement[],
   tableNode: PMNode,
+  smartCardStorage: WithSmartCardStorageProps['smartCardStorage'],
   tableOrderStatus?: TableOrderStatus,
 ): React.ReactElement[] => {
   if (!tableOrderStatus || tableOrderStatus.order === SortOrder.NO_ORDER) {
     return children;
   }
+  const compareNodes = createCompareNodes({
+    getInlineCardTextFromStore(attrs) {
+      const { url } = attrs as UrlType;
+      if (!url) {
+        return null;
+      }
+
+      return smartCardStorage.get(url) || null;
+    },
+  });
 
   const { order, columnIndex } = tableOrderStatus;
   const tableArray = convertProsemirrorTableNodeToArrayOfRows(tableNode);
@@ -189,7 +205,7 @@ interface TableState {
 }
 
 export class TableContainer extends React.Component<
-  TableProps & OverflowShadowProps,
+  TableProps & OverflowShadowProps & WithSmartCardStorageProps,
   TableState
 > {
   state = {
@@ -241,7 +257,7 @@ export class TableContainer extends React.Component<
   };
 
   private addSortableColumn = (childrenArray: React.ReactElement[]) => {
-    const { tableNode, allowColumnSorting } = this.props;
+    const { tableNode, allowColumnSorting, smartCardStorage } = this.props;
     const { tableOrderStatus } = this.state;
 
     if (
@@ -251,7 +267,12 @@ export class TableContainer extends React.Component<
       !hasMergedCell(tableNode)
     ) {
       return addSortableColumn(
-        orderChildren(childrenArray, tableNode, tableOrderStatus),
+        orderChildren(
+          childrenArray,
+          tableNode,
+          smartCardStorage,
+          tableOrderStatus,
+        ),
         tableOrderStatus,
         this.changeSortOrder,
       );
@@ -357,7 +378,9 @@ const TableWithShadows = overflowShadow(TableContainer, {
   overflowSelector: `.${TableSharedCssClassName.TABLE_NODE_WRAPPER}`,
 });
 
-const TableWithWidth = (props: TableProps) => (
+const TableWithWidth: React.FunctionComponent<
+  React.ComponentProps<typeof TableWithShadows>
+> = props => (
   <WidthConsumer>
     {({ width }) => {
       const renderWidth =
@@ -369,4 +392,4 @@ const TableWithWidth = (props: TableProps) => (
   </WidthConsumer>
 );
 
-export default TableWithWidth;
+export default withSmartCardStorage(TableWithWidth);

@@ -81,9 +81,11 @@ export const updateColgroup = (
 ): void => {
   const cols = tableRef.querySelectorAll('col');
   state.cols
-    .filter(column => !!column.width) // if width is 0, we dont want to apply that.
+    .filter(column => column && !!column.width) // if width is 0, we dont want to apply that.
     .forEach((column, i) => {
-      cols[i].style.width = `${column.width}px`;
+      if (cols[i]) {
+        cols[i].style.width = `${column.width}px`;
+      }
     });
 };
 

@@ -5,6 +5,7 @@ import * as tableWithMergedCells from '../__fixtures__/table-with-merged-cells.a
 import * as tableWithHeaderColumnButWithoutHeaderRow from '../__fixtures__/table-with-header-column-but-without-header-row.adf.json';
 import * as tableWithHeaderColumnButWithoutHeaderRowWithoutNumberColumn from '../__fixtures__/table-with-header-column-but-without-header-row-without-number-column.adf.json';
 import { RendererCssClassName } from '../../consts';
+import { StatusClassNames } from '../../ui/SortingIcon';
 
 const initRenderer = async (page: Page, adf: any) => {
   await initRendererWithADF(page, {
@@ -64,7 +65,11 @@ describe('Snapshot Test: Table sorting', () => {
       await initRenderer(page, tableWithMergedCells);
 
       await page.waitForSelector(`.${RendererCssClassName.SORTABLE_COLUMN}`);
-      await page.hover(getSortableColumnSelector(1));
+      await page.hover(
+        `${getSortableColumnSelector(1)} .${
+          StatusClassNames.SORTING_NOT_ALLOWED
+        }`,
+      );
 
       await page.waitFor(300); //we need to wait for the tooltip rendering the content
       await page.waitFor('body .Tooltip');

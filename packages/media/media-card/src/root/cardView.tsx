@@ -60,6 +60,7 @@ export class CardViewBase extends React.Component<
   CardViewState
 > {
   state: CardViewState = {};
+  divRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   static defaultProps: Partial<CardViewOwnProps> = {
     appearance: 'auto',
@@ -141,6 +142,7 @@ export class CardViewBase extends React.Component<
         dimensions={wrapperDimensions}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
+        innerRef={this.divRef}
       >
         {this.renderFile()}
       </Wrapper>

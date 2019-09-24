@@ -1,6 +1,5 @@
-import { EditorState, Transaction } from 'prosemirror-state';
+import { Selection, EditorState, Transaction } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
-import { Selection } from 'prosemirror-state';
 import { createCommand } from '../pm-plugins/main';
 import {
   findTable,
@@ -10,13 +9,35 @@ import {
   getSelectionRect,
   findCellRectClosestToPos,
 } from 'prosemirror-utils';
-import { compareNodes } from '@atlaskit/editor-common';
+import { createCompareNodes } from '@atlaskit/editor-common';
 
 import { TablePluginState, SortOrder } from '../types';
 import { TableSortStep } from '../utils';
 import { getPluginState } from '../pm-plugins/main';
 import { Command } from '../../../types';
 import { TableMap } from 'prosemirror-tables';
+import { pluginKey } from '../../card/pm-plugins/main';
+import { CardPluginState } from '../../card/types';
+import { CardAttributes, UrlType } from '@atlaskit/adf-schema';
+
+function createGetInlineCardTextFromStore(state: EditorState) {
+  const cardState = pluginKey.getState(state) as CardPluginState | undefined;
+  if (!cardState) {
+    // If not card state, return null always
+    return () => null;
+  }
+  return (attrs: CardAttributes): string | null => {
+    const { url: cardUrl } = attrs as UrlType;
+    if (cardUrl) {
+      const card = cardState.cards.find(({ url }) => url === cardUrl);
+      if (card && card.title) {
+        return card.title;
+      }
+    }
+
+    return null;
+  };
+}
 
 export const sortByColumn = (
   columnIndex: number,
@@ -53,6 +74,10 @@ export const sortByColumn = (
       if (tablePluginState.isHeaderRowEnabled) {
         headerRow = tableArray.shift();
       }
+      const compareNodes = createCompareNodes({
+        getInlineCardTextFromStore: createGetInlineCardTextFromStore(state),
+      });
+
       const sortedTable = tableArray.sort(
         (rowA: Array<PMNode | null>, rowB: Array<PMNode | null>) =>
           (order === SortOrder.DESC ? -1 : 1) *

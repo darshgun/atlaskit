@@ -15,7 +15,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 
-const FabricChannel = { media: 'media' }; // Hardcodes FabricChannel.media to avoid import of the whole @atlaskit/analytics-listeners package
+import { ANALYTICS_MEDIA_CHANNEL } from '../root/media-card-analytics-error-boundary';
 
 export interface MediaCardAnalyticsFileAttributes {
   fileSource: string;
@@ -25,15 +25,15 @@ export interface MediaCardAnalyticsFileAttributes {
   fileSize?: number;
 }
 
-export type MediaCardAnalyticsPayoladBase = Partial<GasCorePayload> & {
+export type MediaCardAnalyticsPayloadBase = Partial<GasCorePayload> & {
   action?: string;
   attributes?: GasCorePayload['attributes'] & {
     fileAttributes?: MediaCardAnalyticsFileAttributes;
   };
 };
 
-export type MediaCardAnalyticsPayolad = MediaCardAnalyticsPayoladBase & {
-  attributes: MediaCardAnalyticsPayoladBase['attributes'] & {
+export type MediaCardAnalyticsPayload = MediaCardAnalyticsPayloadBase & {
+  attributes: MediaCardAnalyticsPayloadBase['attributes'] & {
     packageName: string; // Mandatory attribute. It is used by Media Listener to merge this object with Context Data Object
   };
 };
@@ -42,11 +42,11 @@ export function getBaseAnalyticsContext(): GasCorePayload['attributes'] {
   return {
     packageVersion,
     packageName,
-    componentName: 'MediaCard',
+    componentName: 'mediaCard',
   };
 }
 
-const getFileAttributes = (
+export const getFileAttributes = (
   metadata?: FileDetails,
 ): MediaCardAnalyticsFileAttributes => ({
   fileSource: 'mediaCard',
@@ -57,11 +57,15 @@ const getFileAttributes = (
 });
 
 export function getUIAnalyticsContext(
+  actionSubjectId: string,
   metadata?: FileDetails,
-): MediaCardAnalyticsPayolad {
+): MediaCardAnalyticsPayload {
   const fileAttributes = getFileAttributes(metadata);
 
+  const currentActionSujectId =
+    metadata && metadata.id ? metadata.id : actionSubjectId;
   return {
+    actionSubjectId: currentActionSujectId,
     attributes: {
       packageName,
       ...getBaseAnalyticsContext(),
@@ -73,8 +77,8 @@ export function getUIAnalyticsContext(
 }
 
 function attachPackageName(
-  basePayload: MediaCardAnalyticsPayoladBase,
-): MediaCardAnalyticsPayolad {
+  basePayload: MediaCardAnalyticsPayloadBase,
+): MediaCardAnalyticsPayload {
   return {
     ...basePayload,
     attributes: {
@@ -85,21 +89,21 @@ function attachPackageName(
 }
 
 export function createAndFireCustomMediaEvent(
-  basePayload: MediaCardAnalyticsPayoladBase,
+  basePayload: MediaCardAnalyticsPayloadBase,
   createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ) {
   const payload = attachPackageName(basePayload);
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent(payload);
-    event.fire(FabricChannel.media);
+    event.fire(ANALYTICS_MEDIA_CHANNEL);
   }
 }
 
 type CreateAndFireMediaEvent = (
-  basePayload: MediaCardAnalyticsPayoladBase,
+  basePayload: MediaCardAnalyticsPayloadBase,
 ) => (createAnalyticsEvent: CreateUIAnalyticsEvent) => UIAnalyticsEvent;
 
 export const createAndFireMediaEvent: CreateAndFireMediaEvent = basePayload => {
   const payload = attachPackageName(basePayload);
-  return createAndFireEvent(FabricChannel.media)(payload);
+  return createAndFireEvent(ANALYTICS_MEDIA_CHANNEL)(payload);
 };

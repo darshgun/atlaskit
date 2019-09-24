@@ -39,6 +39,8 @@ export type DateType = {
 };
 
 const datePlugin = (): EditorPlugin => ({
+  name: 'date',
+
   nodes() {
     return [{ name: 'date', node: date }];
   },
