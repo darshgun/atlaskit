@@ -1,1 +1,0 @@
-ED-7726: Pass emojiProvider to EmojiTypeAhead item, fixes not loading emojis in typeahead

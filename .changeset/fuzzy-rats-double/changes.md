@@ -1,1 +1,0 @@
-ED-7449 Implement sorting inline cards inside tables base on resolved title

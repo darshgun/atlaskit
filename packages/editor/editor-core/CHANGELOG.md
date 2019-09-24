@@ -1,5 +1,134 @@
 # @atlaskit/editor-core
 
+## 113.1.0
+
+### Minor Changes
+
+- [minor][65ada7f318](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada7f318):
+
+  **FABDODGEM-12 Editor Cashmere Release**
+
+  - [Internal post](https://go.atlassian.com/cashmere-release)
+
+  **Affected editor components:**
+
+  tables, media, mobile, text color, emoji, copy/paste, analytics
+
+  **Performance**
+
+  - Async import for code blocks and task items on renderer
+    - https://product-fabric.atlassian.net/browse/ED-7155
+
+  **Table**
+
+  - Add support to sort tables that contains smart links
+    - https://product-fabric.atlassian.net/browse/ED-7449
+  - Scale table when changing to full width mode
+    - https://product-fabric.atlassian.net/browse/ED-7724
+
+  **Text color**
+
+  - Update text color toolbar with right color when text is inside a list, panel, etc.
+    - https://product-fabric.atlassian.net/browse/FM-1752
+
+**Mobile** - Implement undo/redo interface on Hybrid Editor - https://product-fabric.atlassian.net/browse/FM-2393
+
+**Copy and Paste**
+
+    - Support copy & paste when missing context-id attr
+      - https://product-fabric.atlassian.net/browse/MS-2344
+    - Right click + copy image fails the second time that is pasted
+      - https://product-fabric.atlassian.net/browse/MS-2324
+    - Copying a never touched image for the first time from editor fails to paste
+      - https://product-fabric.atlassian.net/browse/MS-2338
+    - Implement analytics when a file is copied
+      - https://product-fabric.atlassian.net/browse/MS-2036
+
+**Media**
+
+- Add analytics events and error reporting [NEW BIG FEATURE]
+  - https://product-fabric.atlassian.net/browse/MS-2275
+  - https://product-fabric.atlassian.net/browse/MS-2329
+  - https://product-fabric.atlassian.net/browse/MS-2330
+  - https://product-fabric.atlassian.net/browse/MS-2331
+  - https://product-fabric.atlassian.net/browse/MS-2332
+  - https://product-fabric.atlassian.net/browse/MS-2390
+- Fixed issue where we can’t insert same file from MediaPicker twice
+  - https://product-fabric.atlassian.net/browse/MS-2080
+- Disable upload of external files to media
+  - https://product-fabric.atlassian.net/browse/MS-2372
+
+**Notable Bug Fixes**
+
+    - Implement consistent behaviour for rule and mediaSingle on insertion
+      - Feature Flag:
+        - allowNewInsertionBehaviour - [default: true]
+      - https://product-fabric.atlassian.net/browse/ED-7503
+    - Fixed bug where we were showing table controls on mobile.
+      - https://product-fabric.atlassian.net/browse/ED-7690
+    - Fixed bug where editor crashes after unmounting react component.
+      - https://product-fabric.atlassian.net/browse/ED-7318
+    - Fixed bug where custom emojis are not been showed on the editor
+      - https://product-fabric.atlassian.net/browse/ED-7726
+
+- [minor][b7f541d0ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7f541d0ea):
+
+  ED-7737: Fix icons import in editor core to reduce bundle size- [minor][79c69ed5cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79c69ed5cd):
+
+  ED-7449 Implement sorting inline cards inside tables base on resolved title- [minor][380c643806](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/380c643806):
+
+  https://product-fabric.atlassian.net/browse/ED-7503
+
+  New insertion behaviour comes into place, making it consistent no matter how supported nodes are inserted (more detailed info in the ticket).
+  These changes only covers Horizontal rule and Media Single nodes, only when they are inserted at the beginning or at the end of an specific node.
+
+  Examples:
+
+  - Insert a horizontal rule when the cursor is at the begining of a paragraph, it will insert the node above the paragraph. Same with media single.
+  - Insert a horizontal rule when the cursor is at the end of a paragraph, it will insert the node bellow the paragraph. Same with media single.
+
+  All of these cases should behave consistently regardless if the node was inserted usng the toolbar, with the `/divider` command, or the `---`/`***` shortcut (for the horizontal rule case).
+
+  All this new behaviour is wrapp around a new EditorProp named `allowNewInsertionBehaviour` which is `true` by default.
+  Turning this prop to `false` will always fallback to previous behaviour.
+
+- [minor][98ad94c69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98ad94c69c):
+
+  FM-2393 Expose undo/redo methods on mobile bridge
+
+  native-to-web: undo/redo methods which will hook directly into prosemirror-history's
+  web-to-native: undoRedoBridge.stateChange which informs native whether undo and redo are currently available so they can enable/disable their buttons accordingly
+
+### Patch Changes
+
+- [patch][7345e92cc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7345e92cc2):
+
+  [ED-7736] Reduce the number of crashs when resizing a table in a collab session- [patch][0a4a4b8781](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a4a4b8781):
+
+  ED-7599: Fix sending transactions to synchrony before collab plugin is ready- [patch][f3f51ad634](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f51ad634):
+
+  ED-7680 Prevent insert row or column when selection is not over a table- [patch][c678549a36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c678549a36):
+
+  FM-1752 Fix issue where correct text colour was not selected in toolbar when user had a range selection on coloured text in a nested node eg. a paragraph inside a panel
+
+- [patch][b88a5c5716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88a5c5716):
+
+  ED-7318 - Refactor solution for discarding stale PM transactions.- [patch][47bd9ffc0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47bd9ffc0f):
+
+  ED-7726: Pass emojiProvider to EmojiTypeAhead item, fixes not loading emojis in typeahead- [patch][0545e69ee6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0545e69ee6):
+
+  call MediaNodeUpdater.updateFileAtts on any prop changes in MediaSingle- [patch][1063a8fb26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1063a8fb26):
+
+  ED-7679 Fix bug where pasting table with picture from External document, paste image outside the table- [patch][1dd58c65ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1dd58c65ca):
+
+  ED-7218: Implement excludes and experimental for CXHTML preset- [patch][dac3a85916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac3a85916):
+
+  ED-7318 Prevent manipulating the DOM after the editor has been destroyed- [patch][715cb9854e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/715cb9854e):
+
+  Improve dev feedback when logging a failed ADF document parsing. Ensure the reason is shown before the JSON to prevent truncation of the reason on large documents.- [patch][34dd8edf58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34dd8edf58):
+
+  [ED-7690] Fix controls markers on tables showing up when allowControls is false
+
 ## 113.0.0
 
 ### Major Changes
@@ -12,33 +141,32 @@
 
 **Renderer**
 
-  - Change in contract for `eventHandlers.smartCard.onClick` prop:
-    - Old: onClick(url): void
-    - New: onClick(event, url): void
+- Change in contract for `eventHandlers.smartCard.onClick` prop:
+  - Old: onClick(url): void
+  - New: onClick(event, url): void
 
 ​**ADF Schema**
 
-  - Remove applicationCard node and action mark
-  - Remove exposed `tableBackgroundBorderColors` in favour of `tableBackgroundBorderColor`
-
+- Remove applicationCard node and action mark
+- Remove exposed `tableBackgroundBorderColors` in favour of `tableBackgroundBorderColor`
 
 **Affected editor components:**
 
-  Tables, Media, Headings, Copy and Paste, Mobile
+Tables, Media, Headings, Copy and Paste, Mobile
 
-  **Anchor Links**
+**Anchor Links**
 
-  - Headings in the renderer now show an anchor link on hover
-    - Feature Flag:
-      - allowHeadingAnchorLinks - [default: false]
-    - https://product-fabric.atlassian.net/browse/ED-5137
+- Headings in the renderer now show an anchor link on hover
+  - Feature Flag:
+    - allowHeadingAnchorLinks - [default: false]
+  - https://product-fabric.atlassian.net/browse/ED-5137
 
-  **Copy and Paste**
+**Copy and Paste**
 
     - Fixed a bug where right click for copy image failed the second time that is pasted
       - https://product-fabric.atlassian.net/browse/MS-2324
 
-  **Media**
+**Media**
 
     - Resizing/Aligning media inside Table
       - Feature Flag:
@@ -49,7 +177,7 @@
     - Implement media link in renderer
       - https://product-fabric.atlassian.net/browse/ED-7244
 
-  **Tables**
+**Tables**
 
     - Implement table sorting in renderer - [NEW BIG FEATURE][not enabled]
       - Feature Flag:
@@ -58,7 +186,7 @@
     - Expanded table cell background color palette
       - https://product-fabric.atlassian.net/browse/ED-7201
 
-  **Mobile**
+**Mobile**
 
     - Provide method for scrolling to actions, decisions and mentions
       - https://product-fabric.atlassian.net/browse/FM-2261
@@ -66,7 +194,7 @@
     - Improve Hybrid Editor Scrolling
       - https://product-fabric.atlassian.net/browse/FM-2212
 
-  **Notable Bug fixes**
+**Notable Bug fixes**
 
     - Fixed an issue where you couldn't split merged cells when a cell contained a media item
       - https://product-fabric.atlassian.net/browse/ED-6898

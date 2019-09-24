@@ -1,1 +1,0 @@
-Adding provider for selected items in media-picker when inserting files

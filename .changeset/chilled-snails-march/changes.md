@@ -1,1 +1,0 @@
-Delay loading code blocks and task items

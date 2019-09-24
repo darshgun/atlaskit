@@ -1,1 +1,0 @@
-Improve dev feedback when logging a failed ADF document parsing. Ensure the reason is shown before the JSON to prevent truncation of the reason on large documents.

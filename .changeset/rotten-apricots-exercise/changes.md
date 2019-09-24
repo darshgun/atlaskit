@@ -1,1 +1,0 @@
-Add RECENTS_COLLECTION constant with the name of user's recents collection
