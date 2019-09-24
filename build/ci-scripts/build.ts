@@ -96,6 +96,7 @@ async function babelCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
     ? [commands[watch]]
     : Object.values(commands);
 }
+
 async function buildJSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
   return runCommands([
     ...(await babelCommands({ cwd, pkg, watch })),
