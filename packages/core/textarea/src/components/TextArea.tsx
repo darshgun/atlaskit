@@ -72,6 +72,11 @@ export interface Props extends WithAnalyticsEventsProps {
    * same effect.
    */
   forwardedRef?: React.Ref<HTMLTextAreaElement>;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests */
+  testId?: string;
 }
 
 type State = {
@@ -128,6 +133,7 @@ class TextAreaWithoutForwardRef extends React.Component<Props, State> {
       maxHeight,
       theme,
       forwardedRef,
+      testId,
       ...rest
     } = this.props;
 
@@ -161,6 +167,7 @@ class TextAreaWithoutForwardRef extends React.Component<Props, State> {
                     {...rest}
                     onFocus={this.handleOnFocus}
                     onBlur={this.handleOnBlur}
+                    data-testid={testId}
                   />
                 </TextAreaWrapper>
               )}
