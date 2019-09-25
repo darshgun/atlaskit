@@ -275,9 +275,9 @@ if (require.main === module) {
   main(cli.input[0], {
     cwd: process.cwd(),
     ...{
+      ...cli.flags,
       // Support both string/boolean type
       watch: cli.flags.watch === '' ? true : cli.flags.watch,
-      ...cli.flags,
     },
   }).catch(e => {
     console.error(e);
