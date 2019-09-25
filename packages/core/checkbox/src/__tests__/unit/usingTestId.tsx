@@ -13,8 +13,7 @@ describe('Using enzyme', () => {
         name="checkbox-basic"
       />,
     );
-    expect(wrapper).toBeDefined();
-    expect(wrapper.prop('data-testid')).toBeUndefined();
+    expect(wrapper.find(`[data-testid]`).hostNodes()).toHaveLength(0);
   });
 
   describe('Checkbox data-testid should be stable and predictable', () => {
