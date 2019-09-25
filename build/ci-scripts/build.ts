@@ -4,7 +4,6 @@
  * run `bolt w @atlaskit/ci-scripts build --help` for more information.
  */
 import * as bolt from 'bolt';
-import concurrently from 'concurrently';
 import meow from 'meow';
 
 import { PackageInfo } from '@atlaskit/build-utils/types';
@@ -13,43 +12,13 @@ import getGlobPackagesForTools from './get.glob.packages.for.tools';
 import createEntryPointsDirectories from './create.entry.points.directories';
 import copyVersion from './copy.version';
 import validateDists from './validate.dists';
+import runCommands, { Options } from './build-utils/runCommands';
 
 type WatchFlag = boolean | 'cjs' | 'esm' | undefined;
 type StepArgs = { cwd: string | undefined; pkg: PackageInfo | undefined };
 type StepArgsWithWatch = StepArgs & {
   watch: WatchFlag;
 };
-
-async function runCommands(
-  commands: string[],
-  opts: { sequential?: boolean; [concurrentlyOption: string]: any } = {},
-): Promise<any> {
-  const defaultOpts = {
-    // Will kill other processes when one fails
-    killOthers: ['failure'],
-    // Opt out of default logging prefix of index/name - bolt does most of this for us already
-    prefix: 'none',
-    // Raw mode will strictly output only raw output, rather than extra stuff
-    // that concurrently outputs. We enable the extra output for now.
-    raw: false,
-  };
-  if (commands.length === 0) {
-    return;
-  }
-  if (commands.length === 1 || !opts.sequential) {
-    return concurrently(commands, { ...defaultOpts, ...opts }).catch(() => {
-      // Hide internal concurrently stack trace as it does not provide anything useful
-      // See https://github.com/kimmobrunfeldt/concurrently/issues/181
-      throw Error('Command failed');
-    });
-  } else {
-    let result;
-    for (const command of commands) {
-      result = await runCommands([command]);
-    }
-    return result;
-  }
-}
 
 async function getPkgGlob(
   tools: string[],
@@ -98,10 +67,25 @@ async function babelCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
 }
 
 async function buildJSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
-  return runCommands([
-    ...(await babelCommands({ cwd, pkg, watch })),
-    ...(await generateFlowTypeCommands({ cwd, pkg, watch })),
-  ]);
+  let commandOptions: Options = {};
+  if (watch) {
+    const initialRe = /Successfully compiled \d+ files with Babel/;
+    const recompileRe = /babel/;
+    commandOptions = {
+      watchFirstSuccessCondition: (output: string) => initialRe.test(output),
+      watchSuccessCondition: (output: string) => recompileRe.test(output),
+      onWatchSuccess: () => {
+        console.log('yalc push');
+      },
+    };
+  }
+  return runCommands(
+    [
+      ...(await babelCommands({ cwd, pkg, watch })),
+      ...(await generateFlowTypeCommands({ cwd, pkg, watch })),
+    ],
+    commandOptions,
+  );
 }
 
 async function cliTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
@@ -147,6 +131,17 @@ async function standardTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
  *  - At least one circular dependency exists between packages in the repo, which makes a pure topological sort impossible
  */
 async function buildTSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
+  let commandOptions: Options = {};
+  if (watch) {
+    const re = /Watching for file changes./;
+    commandOptions = {
+      watchSuccessCondition: (output: string) => re.test(output),
+      onWatchSuccess: () => {
+        console.log('yalc push');
+      },
+    };
+  }
+
   return runCommands(
     [
       ...(await standardTsCommands({ cwd, pkg, watch })),
@@ -156,7 +151,7 @@ async function buildTSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
     // references the main index.d.ts in the cjs directory. Resulting in cjs needing to be built before esm/cli
     // so that packages can properly utilise the types of their atlaskit dependencies.
     // When building a package individually, we no longer have this requirement as we are only building a single package.
-    { sequential: !pkg },
+    { sequential: !pkg, ...commandOptions },
   );
 }
 
