@@ -31,19 +31,16 @@ describe('TaskDecisionResource', () => {
     const resource = new TaskDecisionResource({ url });
     const tasks = [
       {
-        containerAri: 'containerAri',
         objectAri: 'objectAri',
         localId: 'task-1',
         state: 'DONE',
       },
       {
-        containerAri: 'containerAri',
         objectAri: 'objectAri',
         localId: 'task-2',
         state: 'DONE',
       },
       {
-        containerAri: 'containerAri',
         objectAri: 'objectAri',
         localId: 'task-3',
         state: 'TODO',
@@ -72,7 +69,6 @@ describe('TaskDecisionResource', () => {
     const objectKey = {
       localId: 'task-1',
       objectAri: 'objectAri',
-      containerAri: 'containerAri',
     };
 
     describe('subscribe', () => {
@@ -119,12 +115,10 @@ describe('TaskDecisionResource', () => {
   describe('toggleTask', () => {
     const key1 = {
       localId: '1',
-      containerAri: 'c1',
       objectAri: 'o1',
     };
     const key2 = {
       localId: '2',
-      containerAri: 'c1',
       objectAri: 'o2',
     };
 

@@ -10,7 +10,7 @@ export const convertServiceTaskToTask = (serviceTask: ServiceTask): Task => {
   const { creationDate, lastUpdateDate, ...other } = serviceTask;
 
   return {
-    creationDate: new Date(creationDate),
+    creationDate: (creationDate && new Date(creationDate)) || undefined,
     lastUpdateDate: new Date(lastUpdateDate),
     ...other,
   };

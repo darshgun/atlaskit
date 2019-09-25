@@ -31,7 +31,6 @@ const serviceTask = (
 const objectKey = {
   localId: 'task-1',
   objectAri: 'objectAri',
-  containerAri: 'containerAri',
 };
 
 describe('RecentUpdates', () => {
@@ -76,7 +75,7 @@ describe('RecentUpdates', () => {
     it('should notify of recent updates', () => {
       const recentUpdates = new RecentUpdates(mockPubSubClient);
       const mockRecentUpdatesListener = jest.fn();
-      recentUpdates.subscribe('containerAri', {
+      recentUpdates.subscribe('objectAri', {
         id: jest.fn(),
         recentUpdates: mockRecentUpdatesListener,
       });
@@ -87,7 +86,7 @@ describe('RecentUpdates', () => {
       );
 
       expect(mockRecentUpdatesListener).toHaveBeenCalledWith({
-        containerAri: 'containerAri',
+        objectAri: 'objectAri',
       });
     });
   });

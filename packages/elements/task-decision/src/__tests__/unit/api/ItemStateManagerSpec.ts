@@ -37,7 +37,6 @@ describe('ItemStateManager', () => {
   const objectKey = {
     localId: 'task-1',
     objectAri: 'objectAri',
-    containerAri: 'containerAri',
   };
 
   beforeEach(() => {

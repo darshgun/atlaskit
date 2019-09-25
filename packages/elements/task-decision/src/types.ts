@@ -25,14 +25,14 @@ export interface BaseItem<S> extends ObjectKey {
 }
 
 export interface ServiceDecision {
-  creationDate: string;
+  creationDate?: string;
   creator?: User;
   lastUpdater?: User;
   lastUpdateDate: string;
   localId: string;
   objectAri: string;
-  participants: User[];
-  state: DecisionState;
+  participants?: User[];
+  state?: DecisionState;
   status: DecisionStatus;
   type: DecisionType;
 }
@@ -66,11 +66,11 @@ export interface ServiceTaskState {
 }
 
 export interface Decision extends BaseItem<DecisionState> {
-  creationDate: Date;
+  creationDate?: Date;
   creator?: User;
   lastUpdater?: User;
   lastUpdateDate: Date;
-  participants: User[];
+  participants?: User[];
   status: DecisionStatus;
   type: DecisionType;
 }
@@ -88,27 +88,27 @@ export interface User {
 export type Participant = User;
 
 export interface ServiceTask {
-  creationDate: string;
+  creationDate?: string;
   creator?: User;
   lastUpdater?: User;
   lastUpdateDate: string;
   localId: string;
   objectAri: string;
-  parentLocalId: string;
-  participants: User[];
+  parentLocalId?: string;
+  participants?: User[];
   position: number;
   state: TaskState;
   type: TaskType;
 }
 
 export interface Task extends BaseItem<TaskState> {
-  creationDate: Date;
+  creationDate?: Date;
   creator?: User;
   lastUpdater?: User;
   lastUpdateDate: Date;
-  parentLocalId: string;
-  participants: User[];
-  position: number;
+  parentLocalId?: string;
+  participants?: User[];
+  position?: number;
   type: TaskType;
 }
 

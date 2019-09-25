@@ -22,7 +22,10 @@ describe('TaskDecisionUtils', () => {
     expect(participants).toEqual(serviceTask.participants);
     expect(state).toEqual(serviceTask.state);
 
-    expect(creationDate).toEqual(new Date(serviceTask.creationDate));
+    expect(creationDate).toEqual(
+      (serviceTask.creationDate && new Date(serviceTask.creationDate)) ||
+        undefined,
+    );
     expect(lastUpdateDate).toEqual(new Date(serviceTask.lastUpdateDate));
   });
 });
