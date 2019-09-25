@@ -5,6 +5,10 @@ import {
 } from '../nodes/paragraph';
 
 export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
+  return normalizeInlineNodes(normalizeMediaGroups(nodes, schema), schema);
+}
+
+function normalizeInlineNodes(nodes: PMNode[], schema: Schema): PMNode[] {
   const output: PMNode[] = [];
   let inlineNodeBuffer: PMNode[] = [];
   for (const node of nodes) {
@@ -35,29 +39,27 @@ export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
 
 /**
  * Normalize the list of the given nodes for media groups.
- * The rule is: if there are consecutive media group nodes separated by
- * space(s) or a single newline, then merge them into one media group with multiple media content.
+ * The rule is: if there are consecutive media group nodes (each with a single child media
+ * node) separated by any space or a single newline, then merge them into one media group
+ * with multiple child media nodes.
  * @param nodes list of nodes to normalize. Must not be null
  * @param schema
  */
-export function normalizeMediaGroups(
-  nodes: PMNode[],
-  schema: Schema,
-): PMNode[] {
+function normalizeMediaGroups(nodes: PMNode[], schema: Schema): PMNode[] {
   const output: PMNode[] = [];
   let mediaGroupBuffer: PMNode[] = [];
   let separatorBuffer: PMNode[] = [];
   for (const n of nodes) {
-    if (n.type.name === 'mediaGroup') {
+    if (n.type.name === 'mediaGroup' && n.childCount === 1) {
       mediaGroupBuffer.push(n);
       continue;
     }
     if (mediaGroupBuffer.length > 0) {
       if (isSignificantSeparatorNode(n, separatorBuffer)) {
         output.push(createMergedMediaGroup(mediaGroupBuffer, schema));
+        output.push(n);
         mediaGroupBuffer = [];
         separatorBuffer = [];
-        output.push(n);
       } else {
         separatorBuffer.push(n);
       }
@@ -71,6 +73,11 @@ export function normalizeMediaGroups(
   return output;
 }
 
+/**
+ * Creates a single mediaGroup whose children are the single media elements from the given mediaGroupNodes.
+ * @param mediaGroupNodes list of mediaGroups that have a single child each
+ * @param schema the schema
+ */
 function createMergedMediaGroup(
   mediaGroupNodes: PMNode[],
   schema: Schema,
@@ -80,8 +87,21 @@ function createMergedMediaGroup(
   return mediaGroup.createChecked({}, mediaNodes);
 }
 
-function isSignificantSeparatorNode(n: PMNode, separatorBuffer: PMNode[]) {
-  return isHardBreak(n, separatorBuffer) || !isEmptyParagraph(n);
+function isSignificantSeparatorNode(
+  n: PMNode,
+  separatorBuffer: PMNode[],
+): boolean {
+  return (
+    isHardBreak(n, separatorBuffer) ||
+    !isEmptyTextNode(n) ||
+    isMediaGroupWithMultipleChildren(n)
+  );
+}
+/**
+ * Existing media groups with more than one child is considered as a significant separator.
+ */
+function isMediaGroupWithMultipleChildren(n: PMNode): boolean {
+  return n.type.name === 'mediaGroup' && n.childCount > 1;
 }
 
 /**
@@ -90,27 +110,15 @@ function isSignificantSeparatorNode(n: PMNode, separatorBuffer: PMNode[]) {
  * @param n the current node to examine
  * @param separatorBuffer the existing separator buffer.
  */
-function isHardBreak(n: PMNode, separatorBuffer: PMNode[]) {
+function isHardBreak(n: PMNode, separatorBuffer: PMNode[]): boolean {
   return (
     n.type.name === 'hardBreak' &&
-    separatorBuffer.map(v => v.type.name).includes('hardBreak')
+    separatorBuffer.map(v => v.type.name).indexOf('hardBreak') !== -1
   );
 }
 
-function isEmptyParagraph(n: PMNode) {
-  let isBlank: boolean = true;
-  if (n.type.name === 'paragraph') {
-    n.forEach(child => {
-      isBlank =
-        isBlank &&
-        child.type.name === 'text' &&
-        !!child.text &&
-        child.text.trim().length === 0;
-    });
-  } else if (n.type.name === 'text') {
-    isBlank = !!n.text && n.text.trim().length === 0;
-  }
-  return isBlank;
+function isEmptyTextNode(n: PMNode): boolean {
+  return n.textContent !== undefined && n.textContent.trim().length === 0;
 }
 
 /**

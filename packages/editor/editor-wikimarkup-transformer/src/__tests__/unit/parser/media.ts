@@ -26,28 +26,32 @@ yep`,
       '!Screen Shot (9db1eca8-8257-4763-92fb-e6417f9e34c9).jpeg|thumbnail!',
     ],
     [
-      '[CS-1404] should parse list of linked filenames as media group',
+      '[CS-1404] should parse attachments as one media group',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf][^not-empty (askjsajnkjknads).txt]',
     ],
     [
-      '[CS-1404] should parse list of linked filenames separated by one new line as one media group',
+      '[CS-1404] should parse attachments separated by a single new line as one media group',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]',
     ],
     [
-      '[CS-1404] should parse list of linked filenames separated by any number of spaces as one media group',
+      '[CS-1404] should parse attachments separated by any number of spaces as one media group',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]   [^not-empty (askjsajnkjknads).txt]',
     ],
     [
-      '[CS-1404] should parse list of linked filenames separated by non-space character as separate media groups',
+      '[CS-1404] should parse attachments separated by non-space character as separate media groups',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]a[^not-empty (askjsajnkjknads).txt]',
     ],
     [
-      '[CS-1404] should parse list of linked filenames separated by multiple new lines as multiple media groups',
+      '[CS-1404] should parse attachments separated by multiple new lines as separate media groups',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n\r\n[^not-empty (askjsajnkjknads).txt]',
     ],
     [
-      '[CS-1404] should parse a group of linked filenames separated by multiple new lines as multiple media groups each with multiple media-singles',
+      '[CS-1404] should parse list of multiple attachments separated by multiple new lines as separate media groups with multiple child media elements',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]\r\n\r\n[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]',
+    ],
+    [
+      '[CS-1404] should parse attachments inside tables as single media group',
+      '|colum 1 [^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]|column 2|',
     ],
   ];
 
