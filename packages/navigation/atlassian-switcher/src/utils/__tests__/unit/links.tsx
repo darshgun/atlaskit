@@ -220,7 +220,7 @@ describe('utils/links', () => {
       );
 
       const expectedResult =
-        '/plugins/servlet/ac/com.atlassian.jira.emcee/discover?source=app_switcher';
+        '/plugins/servlet/ac/com.atlassian.jira.emcee/discover#!/discover?source=app_switcher';
       expect(result.map(({ href }) => href)).toContain(expectedResult);
     });
     it('When product is Confluence & Emcee enabled, should include Confluence Emcee link', () => {
@@ -235,7 +235,7 @@ describe('utils/links', () => {
       );
 
       const expectedResult =
-        '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover?source=app_switcher';
+        '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover#!/discover?source=app_switcher';
       expect(result.map(({ href }) => href)).toContain(expectedResult);
     });
   });

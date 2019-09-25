@@ -376,7 +376,7 @@ export const getAdministrationLinks = (
       key: 'browse-apps',
       label: <FormattedMessage {...messages.browseApps} />,
       Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
-      href: `${emceeLink}?source=app_switcher`,
+      href: `${emceeLink}#!/discover?source=app_switcher`,
     });
   }
   if (!isDiscoverMoreForEveryoneEnabled) {
