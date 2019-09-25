@@ -10,13 +10,13 @@ import {
   fakeMediaClient,
   expectFunctionToHaveBeenCalledWith,
 } from '@atlaskit/media-test-helpers';
-import { AudioViewer } from '../../../../../newgen/viewers/audio';
 import Spinner from '@atlaskit/spinner';
+import { Auth } from '@atlaskit/media-core';
+import { AudioViewer } from '../../../../../newgen/viewers/audio';
+import { Props } from '../../../../../newgen/viewers/video';
 import { DefaultCoverWrapper, AudioCover } from '../../../../../newgen/styled';
 import { ErrorMessage } from '../../../../../newgen/error';
 import { CustomMediaPlayer } from '@atlaskit/media-ui';
-import { Auth } from '@atlaskit/media-core';
-import { Props } from '../../../../../newgen/viewers/video';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
