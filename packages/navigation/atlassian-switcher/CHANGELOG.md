@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 3.31.2
+
+### Patch Changes
+
+- [patch][fa1f938f76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa1f938f76):
+
+  [Bug fix] Emcee link was not able to capture source param, this release will fix that
+
 ## 3.31.1
 
 ### Patch Changes
