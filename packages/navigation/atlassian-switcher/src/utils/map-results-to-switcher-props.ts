@@ -18,13 +18,9 @@ import {
   AvailableProductsResponse,
   CustomLinksResponse,
   FeatureMap,
-  LicenseInformationResponse,
   Product,
-  ProductKey,
-  ProductLicenseInformation,
   RecentContainersResponse,
   RecommendationsEngineResponse,
-  WorklensProductType,
   CurrentSiteResponse,
 } from '../types';
 import { createCollector } from './create-collector';
@@ -112,17 +108,14 @@ function collectFixedProductLinks(
 
 function collectRecentLinks(
   recentContainers: ProviderResults['recentContainers'],
-  licenseInformation: ProviderResult<LicenseInformationResponse>,
+  currentSite: ProviderResult<CurrentSiteResponse>,
 ) {
-  if (isError(recentContainers) || isError(licenseInformation)) {
+  if (isError(recentContainers) || isError(currentSite)) {
     return [];
   }
 
-  if (isComplete(recentContainers) && isComplete(licenseInformation)) {
-    return getRecentLinkItems(
-      recentContainers.data.data,
-      licenseInformation.data,
-    );
+  if (isComplete(recentContainers) && isComplete(currentSite)) {
+    return getRecentLinkItems(recentContainers.data.data, currentSite.data);
   }
 }
 
@@ -146,74 +139,6 @@ interface ProviderResults {
   addProductsPermission: ProviderResult<boolean>;
   isXFlowEnabled: ProviderResult<boolean>;
   productRecommendations: ProviderResult<RecommendationsEngineResponse>;
-}
-
-function asLegacyProductKey(
-  worklensProductType: WorklensProductType,
-): ProductKey | undefined {
-  switch (worklensProductType) {
-    case WorklensProductType.BITBUCKET:
-      return undefined; // not used in legacy code
-    case WorklensProductType.CONFLUENCE:
-      return ProductKey.CONFLUENCE;
-    case WorklensProductType.JIRA_BUSINESS:
-      return ProductKey.JIRA_CORE;
-    case WorklensProductType.JIRA_SERVICE_DESK:
-      return ProductKey.JIRA_SERVICE_DESK;
-    case WorklensProductType.JIRA_SOFTWARE:
-      return ProductKey.JIRA_SOFTWARE;
-    case WorklensProductType.OPSGENIE:
-      return ProductKey.OPSGENIE;
-    default:
-      throw new Error(`unmapped worklensProductType ${worklensProductType}`);
-  }
-}
-
-/** Convert the new AvailableProductsResponse to legacy LicenseInformationResponse type */
-function asLicenseInformationProviderResult(
-  availableProductsProvider: ProviderResult<AvailableProductsResponse>,
-  cloudId: string | null | undefined,
-): ProviderResult<LicenseInformationResponse> {
-  switch (availableProductsProvider.status) {
-    case Status.LOADING: // intentional fallthrough
-    case Status.ERROR:
-      return availableProductsProvider;
-    case Status.COMPLETE:
-      const site =
-        cloudId &&
-        availableProductsProvider.data.sites.find(
-          site => site.cloudId === cloudId,
-        );
-      if (!site) {
-        return {
-          status: Status.ERROR,
-          data: null,
-          error: new Error(
-            `could not find site in availableProducts for cloudId ${cloudId}`,
-          ),
-        };
-      }
-      return {
-        status: Status.COMPLETE,
-        data: {
-          hostname: site.url,
-          products: site.availableProducts.reduce(
-            (acc: { [key: string]: ProductLicenseInformation }, product) => {
-              const legacyProductKey = asLegacyProductKey(product.productType);
-              if (legacyProductKey) {
-                acc[legacyProductKey] = {
-                  state: 'ACTIVE', // everything is ACTIVE
-                  // applicationUrl: '', // not required
-                  // billingPeriod: 'ANNUAL' // not required
-                };
-              }
-              return acc;
-            },
-            {},
-          ),
-        },
-      };
-  }
 }
 
 function asCurrentSiteProviderResult(
@@ -266,9 +191,6 @@ export function mapResultsToSwitcherProps(
     recentContainers,
     productRecommendations,
   } = results;
-  const resolvedLicenseInformation: ProviderResult<
-    LicenseInformationResponse
-  > = asLicenseInformationProviderResult(availableProducts, cloudId);
   const currentSite = asCurrentSiteProviderResult(availableProducts, cloudId);
   const hasLoadedAvailableProducts = hasLoaded(availableProducts);
   const hasLoadedAdminLinks =
@@ -309,13 +231,8 @@ export function mapResultsToSwitcherProps(
       ),
       [],
     ),
-    recentLinks: collect(
-      collectRecentLinks(recentContainers, resolvedLicenseInformation),
-      [],
-    ),
-    customLinks: cloudId
-      ? collect(collectCustomLinks(customLinks, currentSite), [])
-      : [],
+    recentLinks: collect(collectRecentLinks(recentContainers, currentSite), []),
+    customLinks: collect(collectCustomLinks(customLinks, currentSite), []),
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),
     hasLoaded:

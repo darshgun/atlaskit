@@ -9,7 +9,6 @@ import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 import {
   BitbucketIcon,
   ConfluenceIcon,
-  JiraIcon,
   JiraSoftwareIcon,
   JiraServiceDeskIcon,
   JiraCoreIcon,
@@ -19,12 +18,10 @@ import {
 } from '@atlaskit/logo';
 import FormattedMessage from '../primitives/formatted-message';
 import {
-  LicenseInformationResponse,
   RecentContainerType,
   AvailableProductsResponse,
   AvailableProduct,
   WorklensProductType,
-  ProductKey,
   RecommendationsEngineResponse,
   Product,
   CurrentSiteResponse,
@@ -34,11 +31,6 @@ import PeopleLogo from './assets/people';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
 import WorldIcon from '@atlaskit/icon/glyph/world';
 import { createIcon, createImageIcon, IconType } from './icon-themes';
-
-enum ProductActivationStatus {
-  ACTIVE = 'ACTIVE',
-  DEACTIVATED = 'DEACTIVATED',
-}
 
 interface MessagesDict {
   [index: string]: FormattedMessageNamespace.MessageDescriptor;
@@ -268,13 +260,6 @@ export const getAvailableProductLinks = (
   }).filter(link => !!link);
 };
 
-export const getProductIsActive = (
-  { products }: LicenseInformationResponse,
-  productKey: string,
-): boolean =>
-  products.hasOwnProperty(productKey) &&
-  products[productKey].state === ProductActivationStatus.ACTIVE;
-
 export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
@@ -355,15 +340,20 @@ export const getCustomLinkItems = (
 
 export const getRecentLinkItems = (
   list: Array<RecentContainer>,
-  licenseInformationData: LicenseInformationResponse,
+  currentSite: CurrentSiteResponse,
 ): RecentItemType[] => {
-  const isAnyJiraProductActive =
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_SOFTWARE) ||
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_SERVICE_DESK) ||
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_CORE);
-  const isConfluenceActive = getProductIsActive(
-    licenseInformationData,
-    ProductKey.CONFLUENCE,
+  const isAnyJiraProductActive = Boolean(
+    currentSite.products.find(
+      product =>
+        product.productType === WorklensProductType.JIRA_BUSINESS ||
+        product.productType === WorklensProductType.JIRA_SERVICE_DESK ||
+        product.productType === WorklensProductType.JIRA_SOFTWARE,
+    ),
+  );
+  const isConfluenceActive = Boolean(
+    currentSite.products.find(
+      product => product.productType === WorklensProductType.CONFLUENCE,
+    ),
   );
   return list
     .filter((recent: RecentContainer) => {
