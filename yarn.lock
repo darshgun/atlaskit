@@ -1682,6 +1682,13 @@
   version "0.27.1"
   resolved "https://registry.yarnpkg.com/@types/commonmark/-/commonmark-0.27.1.tgz#d40637518c557ceaa5006149b6a0a044a3dffe29"
 
+"@types/concurrently@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/concurrently/-/concurrently-4.1.0.tgz#b9de7a61310e0c95409ffb13ff2b0f0e55307927"
+  integrity sha512-b6Tboz5Tf80JRTFgFymTB5zmxBbEyYTHwUqvyVbbRrX+uWA8I+7daHDegylRX2uMM6luDAQqqq4lBcYJ8xRnKg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/date-fns@^2.6.0":
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@types/date-fns/-/date-fns-2.6.0.tgz#b062ca46562002909be0c63a6467ed173136acc1"

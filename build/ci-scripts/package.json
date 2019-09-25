@@ -29,6 +29,8 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "@types/concurrently": "^4.1.0",
+    "@types/node": "^11.11.7",
     "js-yaml": "^3.13.1"
   }
 }
