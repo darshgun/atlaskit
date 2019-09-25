@@ -19,6 +19,8 @@ import { tooltip, addLink } from '../../keymaps';
 import { IconLink } from '../quick-insert/assets';
 
 const hyperlinkPlugin = (): EditorPlugin => ({
+  name: 'hyperlink',
+
   marks() {
     return [{ name: 'link', mark: link }];
   },

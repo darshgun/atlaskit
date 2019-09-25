@@ -9,6 +9,8 @@ export { CardProvider, CardOptions } from './types';
 export const stateKey = new PluginKey('cardPlugin');
 
 const cardPlugin = (): EditorPlugin => ({
+  name: 'card',
+
   nodes() {
     return [
       { name: 'inlineCard', node: inlineCard },

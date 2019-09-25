@@ -54,6 +54,8 @@ const quickInsertItem = (
 };
 
 const tasksAndDecisionsPlugin = (): EditorPlugin => ({
+  name: 'taskDecision',
+
   nodes() {
     return [
       { name: 'decisionList', node: decisionList },

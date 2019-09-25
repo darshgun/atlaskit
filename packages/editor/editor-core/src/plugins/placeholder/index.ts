@@ -118,6 +118,8 @@ interface PlaceholderPluginOptions {
 const placeholderPlugin = (
   options?: PlaceholderPluginOptions,
 ): EditorPlugin => ({
+  name: 'placeholder',
+
   pmPlugins() {
     return [
       {

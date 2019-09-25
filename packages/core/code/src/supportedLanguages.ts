@@ -27,6 +27,7 @@ export type SupportedLanguages =
   | 'fortran'
   | 'foxpro' // → purebasic
   | 'go'
+  | 'graphql'
   | 'groovy'
   | 'haskell'
   | 'haxe'
@@ -439,6 +440,11 @@ export const SUPPORTED_LANGUAGE_ALIASES = Object.freeze([
     name: 'Yaml',
     alias: ['yaml', 'yml'],
     value: 'yaml',
+  },
+  {
+    name: 'GraphQL',
+    alias: ['graphql'],
+    value: 'graphql',
   },
 ]);
 

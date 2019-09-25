@@ -154,7 +154,11 @@ export default class EditorActions implements EditorActionsOptions {
     )(doc);
   }
 
-  replaceDocument(rawValue: any, shouldScrollToBottom = true): boolean {
+  replaceDocument(
+    rawValue: any,
+    shouldScrollToBottom = true,
+    shouldAddToHistory = true,
+  ): boolean {
     if (!this.editorView || rawValue === undefined || rawValue === null) {
       return false;
     }
@@ -181,6 +185,9 @@ export default class EditorActions implements EditorActionsOptions {
 
     if (shouldScrollToBottom) {
       tr = tr.scrollIntoView();
+    }
+    if (!shouldAddToHistory) {
+      tr.setMeta('addToHistory', false);
     }
 
     this.editorView.dispatch(tr);

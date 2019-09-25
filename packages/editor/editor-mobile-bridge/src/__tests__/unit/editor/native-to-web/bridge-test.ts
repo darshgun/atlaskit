@@ -1,5 +1,11 @@
 const mockCalls = [] as string[];
 
+const mockPmHistory = {
+  undo: jest.fn(() => () => {}),
+  redo: jest.fn(() => () => {}),
+};
+jest.mock('prosemirror-history', () => mockPmHistory);
+
 const mockEditorCore = {
   ...jest.genMockFromModule('@atlaskit/editor-core'),
   indentList: jest.fn(() => () => {}),
@@ -332,6 +338,24 @@ describe('content should work', () => {
   it('should clear content', () => {
     bridge.clearContent();
     expect(clearEditorContent).toHaveBeenCalled();
+  });
+});
+
+describe('history', () => {
+  const bridge: any = new WebBridgeImpl();
+
+  beforeEach(() => {
+    bridge.editorView = {};
+  });
+
+  it('should call undo', () => {
+    bridge.undo();
+    expect(mockPmHistory.undo).toHaveBeenCalled();
+  });
+
+  it('should call redo', () => {
+    bridge.redo();
+    expect(mockPmHistory.redo).toHaveBeenCalled();
   });
 });
 

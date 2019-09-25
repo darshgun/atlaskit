@@ -47,16 +47,6 @@ exports[`ResizeControlBase should not render GrabArea when \`isGrabAreaDisabled\
       </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
     </div>
   </Outer>
-  <LifeCycleProvider
-    attributes={Object {}}
-    isActive={false}
-    styles={
-      Object {
-        "cursor": "ew-resize",
-      }
-    }
-    target={<body />}
-  />
 </Fragment>
 `;
 
@@ -114,15 +104,5 @@ exports[`ResizeControlBase should render correctly 1`] = `
       </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
     </div>
   </Outer>
-  <LifeCycleProvider
-    attributes={Object {}}
-    isActive={false}
-    styles={
-      Object {
-        "cursor": "ew-resize",
-      }
-    }
-    target={<body />}
-  />
 </Fragment>
 `;

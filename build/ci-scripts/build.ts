@@ -1,19 +1,29 @@
-#! /usr/bin/env node
 /**
  * The canonical build script for Atlaskit.
- * See CONTRIBUTING.md#building-packages for more information.
+ * See CONTRIBUTING.md#building-packages or
+ * run `bolt w @atlaskit/ci-scripts build --help` for more information.
  */
-const bolt = require('bolt');
-const concurrently = require('concurrently');
-const meow = require('meow');
+import * as bolt from 'bolt';
+import concurrently from 'concurrently';
+import meow from 'meow';
 
-const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
-const getGlobPackagesForTools = require('./get.glob.packages.for.tools');
-const createEntryPointsDirectories = require('./create.entry.points.directories');
-const copyVersion = require('./copy.version');
-const validateDists = require('./validate.dists');
+import { PackageInfo } from '@atlaskit/build-utils/types';
+import { getPackagesInfo } from '@atlaskit/build-utils/tools';
+import getGlobPackagesForTools from './get.glob.packages.for.tools';
+import createEntryPointsDirectories from './create.entry.points.directories';
+import copyVersion from './copy.version';
+import validateDists from './validate.dists';
 
-async function runCommands(commands, opts = {}) {
+type WatchFlag = boolean | 'cjs' | 'esm' | undefined;
+type StepArgs = { cwd: string | undefined; pkg: PackageInfo | undefined };
+type StepArgsWithWatch = StepArgs & {
+  watch: WatchFlag;
+};
+
+async function runCommands(
+  commands: string[],
+  opts: { sequential?: boolean; [concurrentlyOption: string]: any } = {},
+): Promise<any> {
   const defaultOpts = {
     // Will kill other processes when one fails
     killOthers: ['failure'],
@@ -27,8 +37,9 @@ async function runCommands(commands, opts = {}) {
     return;
   }
   if (commands.length === 1 || !opts.sequential) {
-    return concurrently(commands, { ...defaultOpts, ...opts }).catch(e => {
-      // Hide internal concurrently stack trace
+    return concurrently(commands, { ...defaultOpts, ...opts }).catch(() => {
+      // Hide internal concurrently stack trace as it does not provide anything useful
+      // See https://github.com/kimmobrunfeldt/concurrently/issues/181
       throw Error('Command failed');
     });
   } else {
@@ -40,23 +51,35 @@ async function runCommands(commands, opts = {}) {
   }
 }
 
-async function getPkgGlob(tools, pkg, { cwd }) {
+async function getPkgGlob(
+  tools: string[],
+  pkg: PackageInfo | undefined,
+  { cwd }: { cwd?: string },
+) {
   return pkg ? pkg.relativeDir : await getGlobPackagesForTools(tools, { cwd });
 }
 
-async function generateFlowTypeCommands({ cwd, pkg, watch }) {
+async function generateFlowTypeCommands({
+  cwd,
+  pkg,
+  watch,
+}: StepArgsWithWatch) {
   if (pkg && !(pkg.isBabel && pkg.isFlow)) {
     return [];
   }
   const pkgGlob = await getPkgGlob(['babel', 'flow'], pkg, { cwd });
   const watchFlag = watch ? ' -w' : '';
-  return [
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs${watchFlag}`,
-    `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/esm${watchFlag}`,
-  ];
+  const commands = {
+    cjs: `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs${watchFlag}`,
+    esm: `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/esm${watchFlag}`,
+  };
+
+  return typeof watch === 'string'
+    ? [commands[watch]]
+    : Object.values(commands);
 }
 
-async function babelCommands({ cwd, pkg, watch }) {
+async function babelCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   if (pkg && !pkg.isBabel) {
     return [];
   }
@@ -64,20 +87,24 @@ async function babelCommands({ cwd, pkg, watch }) {
   // Watch mode does not output anything on recompile, so we have to use verbose to signal something has happened
   // https://github.com/babel/babel/issues/7926
   const watchFlag = watch ? ' -w --verbose' : '';
-  return [
-    `NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/cjs --root-mode upward${watchFlag}`,
-    `NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/esm --root-mode upward${watchFlag}`,
-  ];
+  const commands = {
+    cjs: `NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/cjs --root-mode upward${watchFlag}`,
+    esm: `NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "${pkgGlob}" -- babel src -d dist/esm --root-mode upward${watchFlag}`,
+  };
+
+  return typeof watch === 'string'
+    ? [commands[watch]]
+    : Object.values(commands);
 }
 
-async function buildJSPackages({ cwd, pkg, watch }) {
+async function buildJSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
   return runCommands([
     ...(await babelCommands({ cwd, pkg, watch })),
     ...(await generateFlowTypeCommands({ cwd, pkg, watch })),
   ]);
 }
 
-async function cliTsCommands({ cwd, pkg, watch }) {
+async function cliTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   if (pkg && !pkg.isTypeScriptCLI) {
     return [];
   }
@@ -85,11 +112,11 @@ async function cliTsCommands({ cwd, pkg, watch }) {
   const pkgGlob = await getPkgGlob(['typescriptcli'], pkg, { cwd });
   const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
   return [
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} || true'`,
+    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} && echo Success || true'`,
   ];
 }
 
-async function standardTsCommands({ cwd, pkg, watch }) {
+async function standardTsCommands({ cwd, pkg, watch }: StepArgsWithWatch) {
   if (pkg && !pkg.isTypeScript) {
     return [];
   }
@@ -101,10 +128,13 @@ async function standardTsCommands({ cwd, pkg, watch }) {
   // to suppress multi-entry point related failures, relying on the separate `typecheck` command to catch typecheck errors. Unfortunately, this also
   // suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
   // We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
-  return [
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} || true'`,
-    `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} || true'`,
-  ];
+  const commands = {
+    cjs: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`,
+    esm: `NODE_ENV=production bolt workspaces exec --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
+  };
+  return typeof watch === 'string'
+    ? [commands[watch]]
+    : Object.values(commands);
 }
 
 /**
@@ -116,7 +146,7 @@ async function standardTsCommands({ cwd, pkg, watch }) {
  *  - The topological order factors in devDependencies when they are not required for building source -https://github.com/boltpkg/bolt/pull/244
  *  - At least one circular dependency exists between packages in the repo, which makes a pure topological sort impossible
  */
-async function buildTSPackages({ cwd, pkg, watch }) {
+async function buildTSPackages({ cwd, pkg, watch }: StepArgsWithWatch) {
   return runCommands(
     [
       ...(await standardTsCommands({ cwd, pkg, watch })),
@@ -130,7 +160,7 @@ async function buildTSPackages({ cwd, pkg, watch }) {
   );
 }
 
-async function buildExceptionPackages({ cwd, pkg }) {
+async function buildExceptionPackages({ cwd, pkg }: StepArgs) {
   await bolt.workspacesRun({
     cwd,
     filterOpts: {
@@ -143,7 +173,7 @@ async function buildExceptionPackages({ cwd, pkg }) {
   });
 }
 
-async function getPkgInfo(packageName) {
+async function getPkgInfo(packageName: string): Promise<PackageInfo> {
   const allPkgs = await getPackagesInfo(packageName, {
     only: packageName,
   });
@@ -156,7 +186,10 @@ async function getPkgInfo(packageName) {
   return allPkgs[0];
 }
 
-async function runValidateDists(opts) {
+async function runValidateDists(opts: {
+  cwd: string | undefined;
+  packageName: string | undefined;
+}) {
   const { success, packageDistErrors } = await validateDists(opts);
   if (!success) {
     throw new Error(
@@ -169,12 +202,18 @@ async function runValidateDists(opts) {
   }
 }
 
-async function main(packageName, opts = {}) {
+async function main(
+  packageName: string | undefined,
+  opts: { cwd?: string; watch?: WatchFlag } = {},
+) {
   const { cwd, watch } = opts;
   if (!packageName && watch) {
     throw 'Watch mode is only supported for single package builds only.';
   }
   if (watch) {
+    if (typeof watch === 'string' && !['esm', 'cjs'].includes(watch)) {
+      throw 'Watch must be boolean or one of "esm", "cjs"';
+    }
     // Do a full build first to ensure non-compilation build steps have built since they are not rerun
     // in watch mode
     console.log(
@@ -195,7 +234,7 @@ async function main(packageName, opts = {}) {
   console.log('Building TS packages...');
   await buildTSPackages({ cwd, pkg, watch });
   console.log('Running post-build scripts for packages...');
-  await buildExceptionPackages({ cwd, pkg, watch });
+  await buildExceptionPackages({ cwd, pkg });
   console.log('Copying version.json...');
   await copyVersion(packageName);
   console.log('Validating dists...');
@@ -215,10 +254,11 @@ if (require.main === module) {
         $ bolt build [packageName]
 
       Options
-        --watch               Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
+        --watch [esm/cjs]               Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
 
       Examples
         $ bolt build @atlaskit/button --watch
+        $ bolt build @atlaskit/editor-core --watch esm
   `,
     {
       description:
@@ -226,7 +266,7 @@ if (require.main === module) {
       flags: {
         watch: {
           alias: 'w',
-          type: 'boolean',
+          type: 'string',
         },
       },
     },
@@ -234,7 +274,11 @@ if (require.main === module) {
 
   main(cli.input[0], {
     cwd: process.cwd(),
-    ...cli.flags,
+    ...{
+      // Support both string/boolean type
+      watch: cli.flags.watch === '' ? true : cli.flags.watch,
+      ...cli.flags,
+    },
   }).catch(e => {
     console.error(e);
     process.exit(1);

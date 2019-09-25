@@ -25,6 +25,7 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { name: 'Fortran', alias: ['fortran'] },
   { name: 'FoxPro', alias: ['foxpro', 'vfp', 'clipper', 'xbase'] },
   { name: 'Go', alias: ['go'] },
+  { name: 'GraphQL', alias: ['graphql'] },
   { name: 'Groovy', alias: ['groovy'] },
   { name: 'Haskell', alias: ['haskell', 'hs'] },
   { name: 'Haxe', alias: ['haxe', 'hx', 'hxsl'] },

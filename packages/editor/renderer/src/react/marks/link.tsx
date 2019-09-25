@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import { getEventHandler } from '../../utils';
 
+export const defaultMediaLinkOpacity = '0.8';
+
 const StyledAnchor = styled.a`
   color: ${colors.B400};
 
@@ -15,7 +17,7 @@ const StyledAnchor = styled.a`
 
   &:hover {
     & > .${mediaSingleClassName} {
-      opacity: 0.8;
+      opacity: ${defaultMediaLinkOpacity};
     }
 
     color: ${colors.B300};

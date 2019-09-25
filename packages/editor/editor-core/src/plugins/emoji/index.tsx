@@ -27,6 +27,7 @@ import emojiNodeView from './nodeviews/emoji';
 import { typeAheadPluginKey, TypeAheadPluginState } from '../type-ahead';
 import { analyticsService } from '../../analytics';
 import { TypeAheadItem } from '../type-ahead/types';
+import { EmojiContextProvider } from './ui/EmojiContextProvider';
 
 export const defaultListLimit = 50;
 const isFullShortName = (query?: string) =>
@@ -42,6 +43,8 @@ export interface EmojiPluginOptions {
 }
 
 const emojiPlugin = (options?: EmojiPluginOptions): EditorPlugin => ({
+  name: 'emoji',
+
   nodes() {
     return [{ name: 'emoji', node: emoji }];
   },
@@ -129,12 +132,15 @@ const emojiPlugin = (options?: EmojiPluginOptions): EditorPlugin => ({
           key: emoji.id || emoji.shortName,
           render({ isSelected, onClick, onHover }) {
             return (
-              <EmojiTypeAheadItem
-                emoji={emoji}
-                selected={isSelected}
-                onMouseMove={onHover}
-                onSelection={onClick}
-              />
+              // It's required to pass emojiProvider through the context for custom emojis to work
+              <EmojiContextProvider emojiProvider={pluginState.emojiProvider}>
+                <EmojiTypeAheadItem
+                  emoji={emoji}
+                  selected={isSelected}
+                  onMouseMove={onHover}
+                  onSelection={onClick}
+                />
+              </EmojiContextProvider>
             );
           },
           emoji,
