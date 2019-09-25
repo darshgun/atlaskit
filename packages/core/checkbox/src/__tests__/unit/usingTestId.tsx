@@ -29,7 +29,12 @@ describe('Using enzyme', () => {
           />,
         );
         expect(
-          wrapper.find(`[data-testid='${testId}']`).hostNodes(),
+          wrapper.find(`[data-testid='${testId}--checkbox-label']`).hostNodes(),
+        ).toHaveLength(1);
+        expect(
+          wrapper
+            .find(`[data-testid='${testId}--hidden-checkbox']`)
+            .hostNodes(),
         ).toHaveLength(1);
       },
       [
@@ -46,6 +51,9 @@ describe('Using react-test-library', () => {
   describe('Checkbox should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
       const testId = 'the-checkbox';
+      const labelTestId = `${testId}--checkbox-label`;
+      const checkboxTestId = `${testId}--hidden-checkbox`;
+
       const { getByTestId } = render(
         <Checkbox
           value="Basic checkbox"
@@ -55,9 +63,10 @@ describe('Using react-test-library', () => {
         />,
       );
 
-      const checkbox = getByTestId(testId) as HTMLInputElement;
+      const checkbox = getByTestId(checkboxTestId) as HTMLInputElement;
+      const label = getByTestId(labelTestId);
       expect(checkbox.checked).toBeFalsy();
-      checkbox.click();
+      label.click();
       expect(checkbox.checked).toBeTruthy();
     });
   });
