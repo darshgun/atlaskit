@@ -32,7 +32,9 @@ export interface BreadcrumbsStatelessProps extends WithAnalyticsEventsProps {
   itemsBeforeCollapse?: number;
   /** If max items is exceeded, the number of items to show after the ellipsis */
   itemsAfterCollapse?: number;
-  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests.
+  In case of `testId` passed through EllipsisItem, the element will be identified like this: 'testId && `${testId}--breadcrumb-ellipsis'.
+  This can be used to click the elements when they are collapsed. */
   testId?: string;
 }
 
