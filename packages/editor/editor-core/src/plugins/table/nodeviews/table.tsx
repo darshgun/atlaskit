@@ -24,9 +24,10 @@ import { TableCssClassName as ClassName } from '../types';
 import { closestElement, containsClassName } from '../../../utils';
 
 export type TableOptions = {
-  isDynamicTextSizingEnabled?: boolean;
+  dynamicTextSizing?: boolean;
   isBreakoutEnabled?: boolean;
   isFullWidthModeEnabled?: boolean;
+  wasFullWidthModeEnabled?: boolean;
 };
 
 export interface Props {

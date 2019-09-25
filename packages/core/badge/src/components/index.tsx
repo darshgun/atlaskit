@@ -23,6 +23,9 @@ export interface BadgeProps {
 
   /** The theme the component should use. */
   theme?: ThemeProp<ThemeTokens, ThemeProps>;
+
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 const Badge: FC<BadgeProps> = ({
@@ -30,6 +33,7 @@ const Badge: FC<BadgeProps> = ({
   appearance = 'default',
   children = 0,
   max = 99,
+  testId,
 }) => {
   return (
     <Theme.Provider value={theme}>
@@ -37,7 +41,7 @@ const Badge: FC<BadgeProps> = ({
         {({ mode }: GlobalThemeTokens) => (
           <Theme.Consumer appearance={appearance} mode={mode}>
             {(tokens: ThemeTokens) => (
-              <Container {...tokens}>
+              <Container {...tokens} data-testid={testId}>
                 {typeof children === 'string' ? (
                   children
                 ) : (

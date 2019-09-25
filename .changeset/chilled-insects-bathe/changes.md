@@ -1,1 +1,0 @@
-Card now sends "copied file" on card copy event in editor and renderer

@@ -1,1 +1,0 @@
-Adding operational events for media card component

@@ -24,7 +24,6 @@ const getDecorationSet = (
   tr: Transaction,
   allowControls: boolean,
   tableNode?: PmNode,
-  allowColumnResizing?: boolean,
 ): DecorationSet => {
   let decorationSet = DecorationSet.empty;
 
@@ -32,7 +31,7 @@ const getDecorationSet = (
     decorationSet = updateNodeDecorations(
       tr.doc,
       decorationSet,
-      createColumnControlsDecoration(tr.doc, tr.selection, allowColumnResizing),
+      createColumnControlsDecoration(tr.selection),
       TableDecorations.COLUMN_CONTROLS_DECORATIONS,
     );
   }
@@ -64,7 +63,7 @@ export const handleDocOrSelectionChanged = (
   }
 
   const {
-    pluginConfig: { allowControls = true, allowColumnResizing },
+    pluginConfig: { allowControls = true },
   } = pluginState;
 
   const hoverDecoration = findControlsHoverDecoration(
@@ -90,12 +89,7 @@ export const handleDocOrSelectionChanged = (
     hoverDecoration.length ||
     selectedColumnControlsDecoration.length
   ) {
-    const decorationSet = getDecorationSet(
-      tr,
-      allowControls,
-      tableNode,
-      allowColumnResizing,
-    );
+    const decorationSet = getDecorationSet(tr, allowControls, tableNode);
 
     const nextPluginState = {
       ...pluginState,

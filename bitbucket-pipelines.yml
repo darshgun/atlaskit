@@ -351,18 +351,6 @@ pipelines:
           after-script:
             - yarn send:buildEvents
 
-    # This will build all the packages and run bundle-analysis.
-    run-bundle-analysis:
-      - step:
-          script:
-            - source ./build-setup.sh
-            - bolt install --frozen-lockfile
-            - yarn build
-            - yarn build:bundle-analysis
-          after-script:
-            - yarn send:buildEvents
-          caches:
-            - node
     # This build is used as our `merge` build when managing concurrent PR to master.
     landkid:
       - parallel:

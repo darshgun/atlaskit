@@ -390,6 +390,7 @@ const columnControlsDecoration = `
   table .${ClassName.RESIZE_HANDLE} {
     position: absolute;
     top: ${columnControlsDecorationHeight - tableToolbarSize}px;
+    right: -${tableResizeHandleWidth/2 + 2}px;
     width: ${tableResizeHandleWidth * 2}px;
     cursor: col-resize;
     z-index: ${1000};

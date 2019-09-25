@@ -1,1 +1,0 @@
-ED-7599: Fix sending transactions to synchrony before collab plugin is ready

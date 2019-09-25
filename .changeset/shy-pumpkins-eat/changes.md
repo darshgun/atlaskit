@@ -1,1 +1,0 @@
-call MediaNodeUpdater.updateFileAtts on any prop changes in MediaSingle

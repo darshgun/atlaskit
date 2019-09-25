@@ -1,1 +1,0 @@
-ED-7318 Prevent manipulating the DOM after the editor has been destroyed

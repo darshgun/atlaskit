@@ -1,4 +1,4 @@
-import { Feature, FeatureMap, MultiVariateFeature } from '../types';
+import { Feature, FeatureMap } from '../types';
 
 const propToFeature = (props: any, key: string) => {
   switch (key) {
@@ -10,24 +10,11 @@ const propToFeature = (props: any, key: string) => {
 };
 
 export default function mapPropsToFeatures(props: any): FeatureMap {
-  const booleanFeatures = Object.keys(Feature).reduce(
+  return Object.keys(Feature).reduce(
     (acc, key) => ({
       ...acc,
       [key]: propToFeature(props, key),
     }),
     {},
   ) as FeatureMap;
-
-  const multivariateFeatures = Object.keys(MultiVariateFeature).reduce(
-    (acc, key) => ({
-      ...acc,
-      [key]: props[key],
-    }),
-    {},
-  ) as FeatureMap;
-
-  return {
-    ...booleanFeatures,
-    ...multivariateFeatures,
-  };
 }

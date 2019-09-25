@@ -1,1 +1,0 @@
-ED-7731: add support for GraphQL syntax highlighting
