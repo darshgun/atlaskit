@@ -24,9 +24,8 @@ export const isServiceTask = (item: ServiceItem): item is ServiceTask =>
 export const toObjectKey = (
   item: Item | ServiceDecision | ServiceTask | BaseItem<any>,
 ): ObjectKey => {
-  const { containerAri, localId, objectAri } = item;
+  const { localId, objectAri } = item;
   return {
-    containerAri,
     localId,
     objectAri,
   };
@@ -42,7 +41,8 @@ export const toRendererContext = (item: Item | ObjectKey): RendererContext => {
 
 export const objectKeyToString = (objectKey: ObjectKey) => {
   const { containerAri, objectAri, localId } = objectKey;
-  return `${containerAri}:${objectAri}:${localId}`;
+  const containerAriKey = (containerAri && `${containerAri}:`) || '';
+  return `${containerAriKey}${objectAri}:${localId}`;
 };
 
 export const toggleTaskState = (state: TaskState): TaskState =>

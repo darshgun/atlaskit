@@ -34,7 +34,7 @@ import {
 
 interface RecentUpdateByIdValue {
   listener: RecentUpdatesListener;
-  containerAri: string;
+  objectAri: string;
 }
 
 export const ACTION_CREATED_FPS_EVENT =
@@ -72,20 +72,17 @@ export class RecentUpdates {
     this.subscribeToPubSubEvents();
   }
 
-  subscribe(
-    containerAri: string,
-    recentUpdatesListener: RecentUpdatesListener,
-  ) {
+  subscribe(objectAri: string, recentUpdatesListener: RecentUpdatesListener) {
     const id = uuid();
-    let containerIds = this.idsByContainer.get(containerAri);
+    let containerIds = this.idsByContainer.get(objectAri);
     if (!containerIds) {
       containerIds = [];
-      this.idsByContainer.set(containerAri, containerIds);
+      this.idsByContainer.set(objectAri, containerIds);
     }
     containerIds.push(id);
     this.listenersById.set(id, {
       listener: recentUpdatesListener,
-      containerAri,
+      objectAri,
     });
     // Notify of id
     recentUpdatesListener.id(id);
@@ -95,11 +92,11 @@ export class RecentUpdates {
     const listenerDetail = this.listenersById.get(unsubscribeId);
     if (listenerDetail) {
       this.listenersById.delete(unsubscribeId);
-      const { containerAri } = listenerDetail;
-      const idsToFilter = this.idsByContainer.get(containerAri);
+      const { objectAri } = listenerDetail;
+      const idsToFilter = this.idsByContainer.get(objectAri);
       if (idsToFilter) {
         this.idsByContainer.set(
-          containerAri,
+          objectAri,
           idsToFilter.filter(id => id !== unsubscribeId),
         );
       }
@@ -107,8 +104,8 @@ export class RecentUpdates {
   }
 
   notify(recentUpdateContext: RecentUpdateContext) {
-    const { containerAri } = recentUpdateContext;
-    const subscriberIds = this.idsByContainer.get(containerAri);
+    const { objectAri } = recentUpdateContext;
+    const subscriberIds = this.idsByContainer.get(objectAri);
     if (subscriberIds) {
       subscriberIds.forEach(subscriberId => {
         const listenerDetail = this.listenersById.get(subscriberId);
@@ -121,8 +118,8 @@ export class RecentUpdates {
   }
 
   onPubSubEvent = (_event: string, payload: ServiceItem) => {
-    const { containerAri } = payload;
-    this.notify({ containerAri });
+    const { objectAri } = payload;
+    this.notify({ objectAri });
   };
 
   destroy() {
@@ -320,8 +317,8 @@ export class ItemStateManager {
   }
 
   onTaskUpdatedEvent = (_event: string, payload: ServiceTask) => {
-    const { containerAri, objectAri, localId } = payload;
-    const objectKey = { containerAri, objectAri, localId };
+    const { objectAri, localId } = payload;
+    const objectKey = { objectAri, localId };
 
     const cached = this.getCached(objectKey);
     if (!cached) {
@@ -404,8 +401,8 @@ export class ItemStateManager {
     this.debouncedTaskStateQuery = window.setTimeout(() => {
       this.getTaskState(Array.from(this.batchedKeys.values())).then(tasks => {
         tasks.forEach(task => {
-          const { containerAri, objectAri, localId } = task;
-          const objectKey = { containerAri, objectAri, localId };
+          const { objectAri, localId } = task;
+          const objectKey = { objectAri, localId };
           this.updateCache(convertServiceTaskStateToBaseItem(task));
           this.dequeueItem(objectKey);
           this.notifyUpdated(objectKey, task.state);

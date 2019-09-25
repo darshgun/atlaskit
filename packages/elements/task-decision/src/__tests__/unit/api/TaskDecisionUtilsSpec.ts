@@ -5,7 +5,6 @@ describe('TaskDecisionUtils', () => {
   it('convertServiceTaskToTask', () => {
     const task = convertServiceTaskToTask(serviceTask);
     const {
-      containerAri,
       creationDate,
       creator,
       lastUpdater,
@@ -16,7 +15,6 @@ describe('TaskDecisionUtils', () => {
       state,
     } = task;
 
-    expect(containerAri).toEqual(serviceTask.containerAri);
     expect(creator).toEqual(serviceTask.creator);
     expect(lastUpdater).toEqual(serviceTask.lastUpdater);
     expect(localId).toEqual(serviceTask.localId);

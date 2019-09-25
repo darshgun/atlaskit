@@ -10,8 +10,8 @@ import {
 type ToggleTaskCallback = (key: ObjectKey, state: TaskState) => void;
 
 export const objectKeyToString = (objectKey: ObjectKey) => {
-  const { containerAri, objectAri, localId } = objectKey;
-  return `${containerAri}:${objectAri}:${localId}`;
+  const { objectAri, localId } = objectKey;
+  return `${objectAri}:${localId}`;
 };
 export class TaskDecisionProviderImpl implements TaskDecisionProvider {
   _handleToggleTask: ToggleTaskCallback | undefined;

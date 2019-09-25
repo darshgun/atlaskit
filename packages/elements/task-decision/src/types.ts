@@ -14,7 +14,7 @@ export interface ContentRef {
 
 export interface ObjectKey {
   localId: string;
-  containerAri: string;
+  containerAri?: string;
   objectAri: string;
 }
 
@@ -25,7 +25,6 @@ export interface BaseItem<S> extends ObjectKey {
 }
 
 export interface ServiceDecision {
-  containerAri: string;
   creationDate: string;
   creator?: User;
   lastUpdater?: User;
@@ -60,7 +59,6 @@ export interface ServiceTaskResponse {
 }
 
 export interface ServiceTaskState {
-  containerAri: string;
   lastUpdateDate: string;
   localId: string;
   objectAri: string;
@@ -77,27 +75,7 @@ export interface Decision extends BaseItem<DecisionState> {
   type: DecisionType;
 }
 
-export interface DecisionResponse {
-  decisions: Decision[];
-  nextQuery?: Query;
-}
-
-export interface TaskResponse {
-  tasks: Task[];
-  nextQuery?: Query;
-}
-
 export type Item = Decision | Task;
-
-export interface ItemResponse {
-  items: Item[];
-  nextQuery?: Query;
-}
-export interface Query {
-  containerAri: string;
-  limit?: number;
-  cursor?: Cursor;
-}
 
 export interface User {
   id: string;
@@ -139,7 +117,7 @@ export type Handler = (state: TaskState | DecisionState) => void;
 export type RecentUpdatesId = string;
 
 export interface RecentUpdateContext {
-  containerAri: string;
+  objectAri: string;
   localId?: string;
 }
 
@@ -201,7 +179,7 @@ export interface TaskDecisionProvider {
  */
 export interface RendererContext {
   objectAri: string;
-  containerAri: string;
+  containerAri?: string;
 }
 
 export interface RenderDocument {

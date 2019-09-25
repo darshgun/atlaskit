@@ -1,17 +1,10 @@
 import {
-  Query,
   ServiceTask,
-  ServiceTaskResponse,
   Task,
-  TaskResponse,
   ServiceTaskState,
   BaseItem,
   TaskState,
 } from '../types';
-
-export interface ResponseConverter<S, C> {
-  (serviceDecisionResponse: S, query?: Query): C;
-}
 
 export const convertServiceTaskToTask = (serviceTask: ServiceTask): Task => {
   const { creationDate, lastUpdateDate, ...other } = serviceTask;
@@ -32,25 +25,6 @@ export const convertServiceTaskStateToBaseItem = (
     type: 'TASK',
     lastUpdateDate: new Date(lastUpdateDate),
     ...other,
-  };
-};
-
-export const convertServiceTaskResponseToTaskResponse = (
-  serviceResponse: ServiceTaskResponse,
-  query?: Query,
-): TaskResponse => {
-  const tasks = serviceResponse.tasks.map(convertServiceTaskToTask);
-  let nextQuery: Query | undefined;
-  if (query && serviceResponse.meta && serviceResponse.meta.cursor) {
-    nextQuery = {
-      ...query,
-      cursor: serviceResponse.meta.cursor,
-    };
-  }
-
-  return {
-    tasks,
-    nextQuery,
   };
 };
 
