@@ -20,7 +20,6 @@ import {
 import FormattedMessage from '../primitives/formatted-message';
 import {
   LicenseInformationResponse,
-  ProductLicenseInformation,
   RecentContainerType,
   AvailableProductsResponse,
   AvailableProduct,
@@ -28,9 +27,9 @@ import {
   ProductKey,
   RecommendationsEngineResponse,
   Product,
+  CurrentSiteResponse,
 } from '../types';
 import messages from './messages';
-import JiraOpsLogo from './assets/jira-ops-logo';
 import PeopleLogo from './assets/people';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
 import WorldIcon from '@atlaskit/icon/glyph/world';
@@ -40,8 +39,6 @@ enum ProductActivationStatus {
   ACTIVE = 'ACTIVE',
   DEACTIVATED = 'DEACTIVATED',
 }
-
-const SINGLE_JIRA_PRODUCT: 'jira' = 'jira';
 
 interface MessagesDict {
   [index: string]: FormattedMessageNamespace.MessageDescriptor;
@@ -65,50 +62,6 @@ export type RecentItemType = SwitcherItemType & {
 export const OBJECT_TYPE_TO_LABEL_MAP: MessagesDict = {
   'jira-project': messages.jiraProject,
   'confluence-space': messages.confluenceSpace,
-};
-
-export const PRODUCT_DATA_MAP: {
-  [productKey in ProductKey | typeof SINGLE_JIRA_PRODUCT]: {
-    label: string;
-    Icon: React.ComponentType<any>;
-    href: string;
-  }
-} = {
-  [ProductKey.CONFLUENCE]: {
-    label: 'Confluence',
-    Icon: createIcon(ConfluenceIcon, { size: 'small' }),
-    href: '/wiki',
-  },
-  [ProductKey.JIRA_CORE]: {
-    label: 'Jira Core',
-    Icon: createIcon(JiraCoreIcon, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=business',
-  },
-  [ProductKey.JIRA_SOFTWARE]: {
-    label: 'Jira Software',
-    Icon: createIcon(JiraSoftwareIcon, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=software',
-  },
-  [ProductKey.JIRA_SERVICE_DESK]: {
-    label: 'Jira Service Desk',
-    Icon: createIcon(JiraServiceDeskIcon, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=service_desk',
-  },
-  [ProductKey.JIRA_OPS]: {
-    label: 'Jira Ops',
-    Icon: createIcon(JiraOpsLogo, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=ops',
-  },
-  [SINGLE_JIRA_PRODUCT]: {
-    label: 'Jira',
-    Icon: createIcon(JiraIcon, { size: 'small' }),
-    href: '/secure/MyJiraHome.jspa',
-  },
-  [ProductKey.OPSGENIE]: {
-    label: 'Opsgenie',
-    Icon: createIcon(OpsGenieIcon, { size: 'small' }),
-    href: 'https://app.opsgenie.com',
-  },
 };
 
 export const getObjectTypeLabel = (type: string): React.ReactNode => {
@@ -214,6 +167,21 @@ const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
     '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
 };
 
+const asWorklensProductKey = (productKey: ProductKey): WorklensProductType => {
+  switch (productKey) {
+    case ProductKey.CONFLUENCE:
+      return WorklensProductType.CONFLUENCE;
+    case ProductKey.JIRA_CORE:
+      return WorklensProductType.JIRA_BUSINESS;
+    case ProductKey.JIRA_SERVICE_DESK:
+      return WorklensProductType.JIRA_SERVICE_DESK;
+    case ProductKey.JIRA_SOFTWARE:
+      return WorklensProductType.JIRA_SOFTWARE;
+    case ProductKey.OPSGENIE:
+      return WorklensProductType.OPSGENIE;
+  }
+};
+
 interface ConnectedSite {
   avatar: string | null;
   product: AvailableProduct;
@@ -300,28 +268,6 @@ export const getAvailableProductLinks = (
   }).filter(link => !!link);
 };
 
-export const getProductLink = (
-  productKey: ProductKey | typeof SINGLE_JIRA_PRODUCT,
-  productLicenseInformation?: ProductLicenseInformation,
-): SwitcherItemType => {
-  const productLinkProperties = PRODUCT_DATA_MAP[productKey];
-
-  if (productKey === ProductKey.OPSGENIE && productLicenseInformation) {
-    // Prefer applicationUrl provided by license information (TCS)
-    // Fallback to hard-coded URL
-    const href = productLicenseInformation.applicationUrl
-      ? productLicenseInformation.applicationUrl
-      : productLinkProperties.href;
-
-    return { key: productKey, ...productLinkProperties, href };
-  }
-
-  return {
-    key: productKey,
-    ...productLinkProperties,
-  };
-};
-
 export const getProductIsActive = (
   { products }: LicenseInformationResponse,
   productKey: string,
@@ -367,29 +313,30 @@ export const getAdministrationLinks = (
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
 
 export const getSuggestedProductLink = (
-  licenseInformationData: LicenseInformationResponse,
+  currentSite: CurrentSiteResponse,
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
-  const filteredProducts = productRecommendations.filter(
-    product => !getProductIsActive(licenseInformationData, product.productKey),
-  );
+  const filteredProducts = productRecommendations
+    .map(legacyProduct => asWorklensProductKey(legacyProduct.productKey))
+    .filter(
+      productKey =>
+        !currentSite.products.find(
+          product => product.productType === productKey,
+        ),
+    );
+
   return filteredProducts
     .slice(0, PRODUCT_RECOMMENDATION_LIMIT)
-    .map(product => getProductLink(product.productKey));
+    .map(productKey => ({
+      key: productKey,
+      ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
+    }));
 };
 
 export const getCustomLinkItems = (
   list: Array<CustomLink>,
-  availableProducts: AvailableProductsResponse,
-  cloudId: string,
+  currentSite: CurrentSiteResponse,
 ): SwitcherItemType[] => {
-  const currentSite = availableProducts.sites.find(
-    site => site.cloudId === cloudId,
-  );
-  if (!currentSite) {
-    return [];
-  }
-
   const defaultProductCustomLinks = [
     `${currentSite.url}/secure/MyJiraHome.jspa`,
     `${currentSite.url}/wiki/`,
@@ -413,8 +360,7 @@ export const getRecentLinkItems = (
   const isAnyJiraProductActive =
     getProductIsActive(licenseInformationData, ProductKey.JIRA_SOFTWARE) ||
     getProductIsActive(licenseInformationData, ProductKey.JIRA_SERVICE_DESK) ||
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_CORE) ||
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_OPS);
+    getProductIsActive(licenseInformationData, ProductKey.JIRA_CORE);
   const isConfluenceActive = getProductIsActive(
     licenseInformationData,
     ProductKey.CONFLUENCE,

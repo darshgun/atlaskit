@@ -25,6 +25,7 @@ import {
   RecentContainersResponse,
   RecommendationsEngineResponse,
   WorklensProductType,
+  CurrentSiteResponse,
 } from '../types';
 import { createCollector } from './create-collector';
 
@@ -45,23 +46,20 @@ function collectAvailableProductLinks(
 }
 
 function collectSuggestedLinks(
-  licenseInformation: ProviderResult<LicenseInformationResponse>,
+  currentSite: ProviderResult<CurrentSiteResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
 ) {
-  if (isError(isXFlowEnabled) || isError(licenseInformation)) {
+  if (isError(isXFlowEnabled) || isError(currentSite)) {
     return [];
   }
   if (
-    isComplete(licenseInformation) &&
+    isComplete(currentSite) &&
     isComplete(isXFlowEnabled) &&
     isComplete(productRecommendations)
   ) {
     return isXFlowEnabled.data
-      ? getSuggestedProductLink(
-          licenseInformation.data,
-          productRecommendations.data,
-        )
+      ? getSuggestedProductLink(currentSite.data, productRecommendations.data)
       : [];
   }
 }
@@ -130,19 +128,14 @@ function collectRecentLinks(
 
 function collectCustomLinks(
   customLinks: ProviderResults['customLinks'],
-  availableProducts: ProviderResult<AvailableProductsResponse>,
-  cloudId: string,
+  currentSite: ProviderResult<CurrentSiteResponse>,
 ) {
-  if (customLinks === undefined || isError(customLinks)) {
+  if (customLinks === undefined || isError(currentSite)) {
     return [];
   }
 
-  if (isComplete(customLinks) && isComplete(availableProducts)) {
-    return getCustomLinkItems(
-      customLinks.data,
-      availableProducts.data,
-      cloudId,
-    );
+  if (isComplete(customLinks) && isComplete(currentSite)) {
+    return getCustomLinkItems(customLinks.data, currentSite.data);
   }
 }
 
@@ -223,6 +216,39 @@ function asLicenseInformationProviderResult(
   }
 }
 
+function asCurrentSiteProviderResult(
+  availableProductsProvider: ProviderResult<AvailableProductsResponse>,
+  cloudId: string | null | undefined,
+): ProviderResult<CurrentSiteResponse> {
+  switch (availableProductsProvider.status) {
+    case Status.LOADING: // intentional fallthrough
+    case Status.ERROR:
+      return availableProductsProvider;
+    case Status.COMPLETE:
+      const site =
+        cloudId &&
+        availableProductsProvider.data.sites.find(
+          site => site.cloudId === cloudId,
+        );
+      if (!site) {
+        return {
+          status: Status.ERROR,
+          data: null,
+          error: new Error(
+            `could not find site in availableProducts for cloudId ${cloudId}`,
+          ),
+        };
+      }
+      return {
+        status: Status.COMPLETE,
+        data: {
+          url: site.url,
+          products: site.availableProducts,
+        },
+      };
+  }
+}
+
 export function mapResultsToSwitcherProps(
   cloudId: string | null | undefined,
   results: ProviderResults,
@@ -243,6 +269,7 @@ export function mapResultsToSwitcherProps(
   const resolvedLicenseInformation: ProviderResult<
     LicenseInformationResponse
   > = asLicenseInformationProviderResult(availableProducts, cloudId);
+  const currentSite = asCurrentSiteProviderResult(availableProducts, cloudId);
   const hasLoadedAvailableProducts = hasLoaded(availableProducts);
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);
@@ -258,7 +285,7 @@ export function mapResultsToSwitcherProps(
     suggestedProductLinks: features.xflow
       ? collect(
           collectSuggestedLinks(
-            resolvedLicenseInformation,
+            currentSite,
             productRecommendations,
             isXFlowEnabled,
           ),
@@ -287,7 +314,7 @@ export function mapResultsToSwitcherProps(
       [],
     ),
     customLinks: cloudId
-      ? collect(collectCustomLinks(customLinks, availableProducts, cloudId), [])
+      ? collect(collectCustomLinks(customLinks, currentSite), [])
       : [],
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),

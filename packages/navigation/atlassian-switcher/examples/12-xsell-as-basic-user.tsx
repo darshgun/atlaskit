@@ -20,6 +20,25 @@ class JiraSwitcherExample extends React.Component {
       originalMockData => {
         return {
           ...originalMockData,
+          AVAILABLE_PRODUCTS_DATA: {
+            sites: [
+              {
+                adminAccess: false,
+                availableProducts: [
+                  {
+                    activityCount: 0,
+                    productType: 'JIRA_SOFTWARE',
+                    url: null,
+                  },
+                ],
+                cloudId: 'some-cloud-id',
+                displayName: 'random-instance',
+                url: 'https://some-random-instance.atlassian.net',
+                avatar:
+                  'https://site-admin-avatar-cdn.staging.public.atl-paas.net/avatars/240/rings.png',
+              },
+            ],
+          },
           USER_PERMISSION_DATA: {
             manage: {
               permitted: false,

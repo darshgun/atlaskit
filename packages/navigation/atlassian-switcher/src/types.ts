@@ -91,6 +91,11 @@ export interface LicenseInformationResponse {
   };
 }
 
+export interface CurrentSiteResponse {
+  url: string;
+  products: AvailableProduct[];
+}
+
 export interface XFlowSettingsResponse {
   'product-suggestions-enabled'?: boolean;
 }
@@ -153,7 +158,6 @@ export enum ProductKey {
   JIRA_CORE = 'jira-core.ondemand',
   JIRA_SOFTWARE = 'jira-software.ondemand',
   JIRA_SERVICE_DESK = 'jira-servicedesk.ondemand',
-  JIRA_OPS = 'jira-incident-manager.ondemand',
   OPSGENIE = 'opsgenie',
 }
 
