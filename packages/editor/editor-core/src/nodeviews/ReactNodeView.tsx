@@ -294,7 +294,6 @@ export class SelectionBasedNodeView<
     to: number,
     pos?: number,
     posEnd?: number,
-    includeSelected?: boolean,
   ) => {
     pos = typeof pos !== 'number' ? this.pos : pos;
     posEnd = typeof posEnd !== 'number' ? this.posEnd : posEnd;
@@ -303,16 +302,34 @@ export class SelectionBasedNodeView<
       return false;
     }
 
-    return (pos < from && to < posEnd) || includeSelected
-      ? pos === from && to === posEnd
-      : false;
+    return pos < from && to < posEnd;
+  };
+
+  private isSelectedNode = (selection: Selection): boolean => {
+    if (selection instanceof NodeSelection) {
+      const {
+        selection: { from, to },
+      } = this.view.state;
+      return (
+        selection.node === this.node ||
+        // If nodes are not the same object, we check if they are referring to the same document node
+        (this.pos === from &&
+          this.posEnd === to &&
+          selection.node.eq(this.node))
+      );
+    }
+    return false;
   };
 
   insideSelection = () => {
     const {
       selection: { from, to },
     } = this.view.state;
-    return this.isSelectionInsideNode(from, to, this.pos, this.posEnd, true);
+
+    return (
+      this.isSelectedNode(this.view.state.selection) ||
+      this.isSelectionInsideNode(from, to)
+    );
   };
 
   viewShouldUpdate(_nextNode: PMNode) {
