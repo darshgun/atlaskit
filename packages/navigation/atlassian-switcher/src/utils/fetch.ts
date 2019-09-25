@@ -9,7 +9,7 @@ export function enrichFetchError(
   status: number,
 ): ErrorWithStatus {
   return {
-    name: error.name,
+    name: FETCH_ERROR_NAME,
     message: error.message,
     stack: error.stack,
     status,
