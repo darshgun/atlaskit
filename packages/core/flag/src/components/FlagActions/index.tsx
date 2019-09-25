@@ -11,6 +11,7 @@ type Props = {
   appearance: AppearanceTypes;
   actions: ActionsType;
   linkComponent?: ComponentType<ButtonProps>;
+  testId?: string;
 };
 
 export default class FlagActions extends Component<Props, {}> {
@@ -23,17 +24,18 @@ export default class FlagActions extends Component<Props, {}> {
   getUniqueId = (prefix: string): string => `${prefix}-${uuid()}`;
 
   render() {
-    const { actions, appearance, linkComponent } = this.props;
+    const { actions, appearance, linkComponent, testId } = this.props;
     const isBold = appearance !== DEFAULT_APPEARANCE;
 
     if (!actions.length) return null;
     return (
-      <Container appearance={appearance}>
+      <Container appearance={appearance} testId={testId}>
         {actions.map((action, index) => (
           <Action
             key={this.getUniqueId('flag-action')}
             hasDivider={!!index}
             useMidDot={!isBold}
+            data-testid={action.testId}
           >
             <Button
               onClick={action.onClick}
@@ -49,6 +51,7 @@ export default class FlagActions extends Component<Props, {}> {
               }
               component={linkComponent}
               spacing="compact"
+              data-testid={action.testId}
               theme={(adgTheme, themeProps) => {
                 const { buttonStyles, ...rest } = adgTheme(themeProps);
                 return {
