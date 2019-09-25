@@ -12,7 +12,6 @@ import {
 import ContentNavigation from '../../../ContentNavigation';
 import { ContainerNavigationMask } from '../../../ContentNavigation/primitives';
 import LayoutManager from '../../LayoutManager';
-import PageContent from '../../../PageContent';
 import ResizeTransition from '../../../ResizeTransition';
 
 import { LayoutEventListener } from '../../LayoutEvent';
@@ -27,6 +26,7 @@ import type { LayoutManagerProps } from '../../types';
 describe('LayoutManager', () => {
   let defaultProps: $Shape<LayoutManagerProps>;
   let mockNavigationUIController: any;
+  const pageContentSelector = '[data-testid="Content"]';
 
   beforeAll(() => {
     jest.useFakeTimers();
@@ -63,6 +63,16 @@ describe('LayoutManager', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should apply a default dataset to the content when datasets is not provided', () => {
+    expect(
+      render(<LayoutManager {...defaultProps} />)
+        .find('[data-testid="Content"]')
+        .data(),
+    ).toEqual({
+      testid: 'Content',
+    });
+  });
+
   it('should apply a default dataset to the navigation container when datasets is not provided', () => {
     expect(
       render(<LayoutManager {...defaultProps} />)
@@ -93,12 +103,35 @@ describe('LayoutManager', () => {
     });
   });
 
+  it('should apply a custom dataset to the content when datasets is provided', () => {
+    expect(
+      render(
+        <LayoutManager
+          {...defaultProps}
+          datasets={{
+            content: {
+              'data-content': '',
+            },
+            contextualNavigation: {},
+            globalNavigation: {},
+            navigation: {},
+          }}
+        />,
+      )
+        .find('[data-content]')
+        .data(),
+    ).toEqual({
+      content: '',
+    });
+  });
+
   it('should apply a custom dataset to the navigation container when datasets is provided', () => {
     expect(
       render(
         <LayoutManager
           {...defaultProps}
           datasets={{
+            content: {},
             contextualNavigation: {},
             globalNavigation: { 'data-navigation': '' },
             navigation: {},
@@ -118,6 +151,7 @@ describe('LayoutManager', () => {
         <LayoutManager
           {...defaultProps}
           datasets={{
+            content: {},
             contextualNavigation: {},
             globalNavigation: { 'data-global-navigation': '' },
             navigation: {},
@@ -137,6 +171,7 @@ describe('LayoutManager', () => {
         <LayoutManager
           {...defaultProps}
           datasets={{
+            content: {},
             contextualNavigation: { 'data-contextual-navigation': '' },
             globalNavigation: {},
             navigation: {},
@@ -161,7 +196,7 @@ describe('LayoutManager', () => {
       HorizontalNavigationContainer,
     );
     const navigationContainer = layoutManager.find(NavigationContainer);
-    const pageContent = layoutManager.find(PageContent);
+    const pageContent = layoutManager.find(pageContentSelector);
 
     expect(composedGlobalNavigation.exists()).toBe(false);
     expect(horizontalNavigation.exists()).toBe(true);
@@ -170,10 +205,13 @@ describe('LayoutManager', () => {
         ? topOffset + HORIZONTAL_GLOBAL_NAV_HEIGHT
         : HORIZONTAL_GLOBAL_NAV_HEIGHT,
     );
-    expect(pageContent.props()).toMatchObject({
-      leftOffset: 0,
-      topOffset: HORIZONTAL_GLOBAL_NAV_HEIGHT,
-    });
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration('margin-left', '0');
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration(
+      'margin-top',
+      `${HORIZONTAL_GLOBAL_NAV_HEIGHT}px`,
+    );
   };
 
   const testVerticalNavigationLayout = (layoutManager, topOffset?: number) => {
@@ -184,17 +222,20 @@ describe('LayoutManager', () => {
       HorizontalNavigationContainer,
     );
     const navigationContainer = layoutManager.find(NavigationContainer);
-    const pageContent = layoutManager.find(PageContent);
+    const pageContent = layoutManager.find(pageContentSelector);
 
     expect(composedGlobalNavigation.exists()).toBe(true);
     expect(horizontalNavigation.exists()).toBe(false);
     expect(navigationContainer.props().topOffset).toBe(
       Number.isInteger(topOffset) ? topOffset : 0,
     );
-    expect(pageContent.props()).toMatchObject({
-      leftOffset: GLOBAL_NAV_WIDTH,
-      topOffset: 0,
-    });
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration(
+      'margin-left',
+      `${GLOBAL_NAV_WIDTH}px`,
+    );
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration('margin-top', '0');
   };
 
   it('should render the layout correctly by default', () => {
@@ -733,8 +774,8 @@ describe('LayoutManager', () => {
       const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
       expect(
         wrapper
-          .find(PageContent)
           .find(ResizeTransition)
+          .last()
           .props(),
       ).toEqual(expect.objectContaining(handlers));
     });
@@ -940,11 +981,6 @@ describe('LayoutManager', () => {
       expect(productNav).toHaveBeenCalledTimes(1);
 
       wrapper.setState({ itemIsDragging: true });
-
-      expect(globalNav).toHaveBeenCalledTimes(1);
-      expect(productNav).toHaveBeenCalledTimes(1);
-
-      wrapper.setState({ mouseIsOverNavigation: true });
 
       expect(globalNav).toHaveBeenCalledTimes(1);
       expect(productNav).toHaveBeenCalledTimes(1);
