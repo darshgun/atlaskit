@@ -27,7 +27,10 @@
       "es2015.iterable",
       "es2015.promise",
       "es2016.array.include"
-    ]
+    ],
+    // Disable automatic inclusion of @types packages with global declarations
+    // https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#types-typeroots-and-types
+    "types": []
   },
   "files": [
     "./typings/atlaskit.d.ts",
@@ -81,6 +84,7 @@
     "./typings/css-color-names/index.d.ts",
     "./typings/bolt/index.d.ts",
     "./typings/concurrently/index.d.ts",
-    "./typings/pubnub.d.ts"
+    "./typings/pubnub.d.ts",
+    "./typings/jest.d.ts"
   ]
 }
