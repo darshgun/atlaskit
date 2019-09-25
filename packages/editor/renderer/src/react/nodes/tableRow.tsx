@@ -6,7 +6,7 @@ type Props = {
   isNumberColumnEnabled?: number;
   index?: number;
   children?: React.ReactNode;
-  onSorting?: () => void;
+  onSorting?: (columnIndex?: number, currentSortOrdered?: SortOrder) => void;
   allowColumnSorting?: boolean;
   tableOrderStatus?: {
     columnIndex: number;

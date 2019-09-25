@@ -43,6 +43,8 @@ const reorderAnnotations = (
 const annotationPlugin = (
   annotationProvider?: AnnotationProvider,
 ): EditorPlugin => ({
+  name: 'annotation',
+
   marks() {
     return [
       {

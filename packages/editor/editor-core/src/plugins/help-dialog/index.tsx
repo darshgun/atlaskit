@@ -54,6 +54,8 @@ export function createPlugin(dispatch: Function, imageEnabled: boolean) {
 }
 
 const helpDialog = (): EditorPlugin => ({
+  name: 'helpDialog',
+
   pmPlugins() {
     return [
       {

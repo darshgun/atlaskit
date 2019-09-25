@@ -113,6 +113,8 @@ function createPlugin(createAnalyticsEvent?: CreateUIAnalyticsEvent) {
 const analyticsPlugin = (
   createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ): EditorPlugin => ({
+  name: 'analytics',
+
   pmPlugins() {
     return [
       {

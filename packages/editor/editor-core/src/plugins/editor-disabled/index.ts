@@ -34,6 +34,8 @@ export function createPlugin(
 }
 
 const editorDisabledPlugin = (): EditorPlugin => ({
+  name: 'editorDisabled',
+
   pmPlugins: () => [
     {
       name: 'editorDisabled',

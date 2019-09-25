@@ -1,5 +1,13 @@
 # @atlaskit/navigation-next
 
+## 6.7.7
+
+### Patch Changes
+
+- [patch][c479e7eb8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c479e7eb8f):
+
+  Fixing nav resize button render issue.
+
 ## 6.7.6
 
 ### Patch Changes

@@ -13,6 +13,7 @@ import {
   observableToPromise,
   isErrorFileState,
 } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 
 import { State, SelectedItem, LocalUpload, ServiceName } from '../domain';
 import { isStartImportAction } from '../actions/startImport';
@@ -23,7 +24,6 @@ import { handleCloudFetchingEvent } from '../actions/handleCloudFetchingEvent';
 import { setEventProxy } from '../actions/setEventProxy';
 import { hidePopup } from '../actions/hidePopup';
 import { resetView } from '../actions/resetView';
-import { RECENTS_COLLECTION } from '../config';
 import { WsProvider } from '../tools/websocket/wsProvider';
 import { WsConnectionHolder } from '../tools/websocket/wsConnectionHolder';
 import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActivity';

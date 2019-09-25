@@ -4,6 +4,7 @@ import {
   MediaCollectionItem,
   MediaCollectionItemDetails,
   getFileStreamsCache,
+  RECENTS_COLLECTION,
 } from '../..';
 import {
   CollectionFetcher,
@@ -83,7 +84,7 @@ describe('CollectionFetcher', () => {
     it('should fetch items from the given collection', done => {
       const { collectionFetcher, contents, getCollectionItems } = setup();
 
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         next(items) {
           expect(items).toEqual(contents);
           expect(getCollectionItems).toHaveBeenCalledTimes(1);
@@ -95,7 +96,7 @@ describe('CollectionFetcher', () => {
     it('should replace items with the local ones', async done => {
       const { collectionFetcher, getCollectionItems, newItem } = setup();
 
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         next() {
           getCollectionItems.mockReturnValue(
             Promise.resolve({
@@ -108,7 +109,7 @@ describe('CollectionFetcher', () => {
         },
       });
       await nextTick();
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         next(items) {
           if (items.length === 1) {
             expect(items).toEqual([newItem]);
@@ -123,7 +124,7 @@ describe('CollectionFetcher', () => {
       const { collectionFetcher } = setup();
 
       expect(getFileStreamsCache().size).toEqual(0);
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         next() {
           expect(getFileStreamsCache().size).toEqual(2);
           expect(getFileStreamsCache().has('1')).toBeTruthy();
@@ -137,18 +138,21 @@ describe('CollectionFetcher', () => {
       const { collectionFetcher, getCollectionItems } = setup();
 
       collectionFetcher
-        .getItems('recents', {
+        .getItems(RECENTS_COLLECTION, {
           limit: 1,
           sortDirection: 'asc',
         })
         .subscribe({
           next() {
             expect(getCollectionItems).toHaveBeenCalledTimes(1);
-            expect(getCollectionItems).toHaveBeenCalledWith('recents', {
-              details: 'full',
-              limit: 1,
-              sortDirection: 'asc',
-            });
+            expect(getCollectionItems).toHaveBeenCalledWith(
+              RECENTS_COLLECTION,
+              {
+                details: 'full',
+                limit: 1,
+                sortDirection: 'asc',
+              },
+            );
             done();
           },
         });
@@ -158,7 +162,7 @@ describe('CollectionFetcher', () => {
       const { collectionFetcher, getCollectionItems, contents } = setup();
 
       expect(collectionCache.recents).toBeUndefined();
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         next() {
           getCollectionItems.mockReturnValue(
             Promise.resolve({
@@ -172,7 +176,7 @@ describe('CollectionFetcher', () => {
       });
       await nextTick();
       const next = jest.fn();
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         next,
       });
       await nextTick();
@@ -188,7 +192,7 @@ describe('CollectionFetcher', () => {
         .fn()
         .mockReturnValue(Promise.reject());
 
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         error() {
           expect(
             collectionFetcher.mediaStore.getCollectionItems,
@@ -203,7 +207,7 @@ describe('CollectionFetcher', () => {
     it('should update nextInclusiveStartKey', async done => {
       const { collectionFetcher, getCollectionItems, contents } = setup();
 
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         async next() {
           getCollectionItems.mockReturnValue(
             Promise.resolve({
@@ -214,7 +218,7 @@ describe('CollectionFetcher', () => {
             }),
           );
 
-          await collectionFetcher.loadNextPage('recents');
+          await collectionFetcher.loadNextPage(RECENTS_COLLECTION);
 
           expect(collectionCache.recents.nextInclusiveStartKey).toEqual(
             'new-key',
@@ -227,11 +231,11 @@ describe('CollectionFetcher', () => {
     it('should do nothing if the page is already being fetched', done => {
       const { collectionFetcher, getCollectionItems } = setup();
 
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         async next() {
-          collectionFetcher.loadNextPage('recents');
-          collectionFetcher.loadNextPage('recents');
-          collectionFetcher.loadNextPage('recents');
+          collectionFetcher.loadNextPage(RECENTS_COLLECTION);
+          collectionFetcher.loadNextPage(RECENTS_COLLECTION);
+          collectionFetcher.loadNextPage(RECENTS_COLLECTION);
 
           expect(getCollectionItems).toHaveBeenCalledTimes(2);
           done();
@@ -247,7 +251,7 @@ describe('CollectionFetcher', () => {
         contents,
       } = setup();
 
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         async next(items) {
           if (items.length === 3) {
             expect(items).toEqual([...contents, newItem]);
@@ -267,16 +271,16 @@ describe('CollectionFetcher', () => {
         }),
       );
 
-      await collectionFetcher.loadNextPage('recents');
+      await collectionFetcher.loadNextPage(RECENTS_COLLECTION);
     });
 
     it('should not fetch next page items if current page nextInclusiveStartKey is null', done => {
       const { collectionFetcher, getCollectionItems } = setup(null);
 
-      collectionFetcher.getItems('recents').subscribe({
+      collectionFetcher.getItems(RECENTS_COLLECTION).subscribe({
         async next() {
           expect(getCollectionItems).toHaveBeenCalledTimes(1);
-          collectionFetcher.loadNextPage('recents');
+          collectionFetcher.loadNextPage(RECENTS_COLLECTION);
           expect(getCollectionItems).toHaveBeenCalledTimes(1);
           done();
         },

@@ -25,5 +25,7 @@ export {
   calcTableColumnWidths,
   convertProsemirrorTableNodeToArrayOfRows,
 } from './table';
-export { compareNodes } from './compareNodes';
+export { createCompareNodes } from './compareNodes';
 export { compose } from './compose';
+
+export { Diff } from './types';

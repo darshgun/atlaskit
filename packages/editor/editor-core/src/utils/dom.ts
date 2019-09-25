@@ -5,14 +5,10 @@
  */
 export function walkUpTreeUntil(
   element: HTMLElement,
-  stopElement: HTMLElement,
+  shouldStop: (element: HTMLElement) => boolean,
 ) {
   let rootElement = element;
-  while (
-    rootElement &&
-    rootElement.parentElement &&
-    rootElement.parentElement !== stopElement
-  ) {
+  while (rootElement && rootElement.parentElement && !shouldStop(rootElement)) {
     rootElement = rootElement.parentElement;
   }
 

@@ -10,6 +10,7 @@ import {
   getFileStreamsCache,
   FileState,
 } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { ReplaySubject } from 'rxjs';
 const globalEmitSpy = jest.spyOn(globalMediaEventEmitter, 'emit');
 import uuidV4 from 'uuid/v4';
@@ -33,7 +34,6 @@ import {
   touchSelectedFiles,
 } from '../../importFiles';
 import { LocalUpload, LocalUploads } from '../../../domain';
-import { RECENTS_COLLECTION } from '../../../config';
 import { finalizeUpload } from '../../../actions/finalizeUpload';
 import { startImport } from '../../../actions/startImport';
 import { resetView } from '../../../actions/resetView';

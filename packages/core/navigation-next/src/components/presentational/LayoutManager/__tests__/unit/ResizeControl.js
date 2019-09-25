@@ -3,7 +3,11 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
-import { ResizeControlBase, GrabArea } from '../../ResizeControl';
+import {
+  ResizeControlBase,
+  GrabArea,
+  BodyDragCursor,
+} from '../../ResizeControl';
 import { navigationExpandedCollapsed } from '../../../../../common/analytics';
 
 jest.mock('../../../../../common/analytics', () => ({
@@ -205,6 +209,17 @@ describe('ResizeControlBase', () => {
 
         expect(wrapper.state('width')).toEqual(cachedWidth);
         expect(wrapper.state('delta')).toEqual(cachedDelta);
+      });
+
+      it('should mount the BodyDragCursor component to add the ew-resize cursor', () => {
+        const wrapper = mount(
+          <ResizeControlBase {...props}>{() => null}</ResizeControlBase>,
+        );
+        wrapper.setState({ mouseIsDown: false, isDragging: true });
+        wrapper.instance().handleResize({ pageX: 100 });
+        requestAnimationFrame.step();
+
+        expect(wrapper.find(BodyDragCursor)).toHaveLength(1);
       });
 
       it('should change width and delta when mouseIsDown is true', () => {
