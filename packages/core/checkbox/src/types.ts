@@ -197,6 +197,8 @@ export interface CheckboxProps extends WithAnalyticsEventsProps {
   theme?: ThemeFn;
   /** The value to be used in the checkbox input. This is the value that will be returned on form submission. */
   value?: number | string;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 /**
