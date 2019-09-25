@@ -1,1 +1,0 @@
-ED-7768 Fixed regression where you cannot click inside a block macro
