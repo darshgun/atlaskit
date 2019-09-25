@@ -22,6 +22,7 @@ import {
   AvailableProductsResponse,
   AvailableProduct,
   WorklensProductType,
+  ProductKey,
   RecommendationsEngineResponse,
   Product,
   CurrentSiteResponse,
