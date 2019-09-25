@@ -1,0 +1,6 @@
+{
+  "releases": [
+    { "name": "@atlaskit/media-picker", "type": "minor" }
+  ],
+  "dependents": []
+}

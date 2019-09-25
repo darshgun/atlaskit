@@ -31,6 +31,7 @@ export class ClipboardLoader extends React.PureComponent<
         import(/* webpackChunkName:"@atlaskit-internal_Clipboard" */ './clipboard'),
       ]);
 
+      // FIXME: annoying typing error here
       ClipboardLoader.Clipboard = mediaClient.withMediaClient(
         clipboardModule.Clipboard,
       );
