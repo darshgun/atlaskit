@@ -66,6 +66,7 @@ const BasicUsageExample = class extends PureComponent<void, State> {
               component: IconIndeterminate,
             },
           }}
+          testId="the-custom-checkbox"
         />
       </div>
     );
