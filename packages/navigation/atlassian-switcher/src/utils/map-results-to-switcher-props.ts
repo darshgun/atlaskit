@@ -130,14 +130,19 @@ function collectRecentLinks(
 
 function collectCustomLinks(
   customLinks: ProviderResults['customLinks'],
-  licenseInformation: ProviderResult<LicenseInformationResponse>,
+  availableProducts: ProviderResult<AvailableProductsResponse>,
+  cloudId: string,
 ) {
   if (customLinks === undefined || isError(customLinks)) {
     return [];
   }
 
-  if (isComplete(customLinks) && isComplete(licenseInformation)) {
-    return getCustomLinkItems(customLinks.data, licenseInformation.data);
+  if (isComplete(customLinks) && isComplete(availableProducts)) {
+    return getCustomLinkItems(
+      customLinks.data,
+      availableProducts.data,
+      cloudId,
+    );
   }
 }
 
@@ -281,10 +286,9 @@ export function mapResultsToSwitcherProps(
       collectRecentLinks(recentContainers, resolvedLicenseInformation),
       [],
     ),
-    customLinks: collect(
-      collectCustomLinks(customLinks, resolvedLicenseInformation),
-      [],
-    ),
+    customLinks: cloudId
+      ? collect(collectCustomLinks(customLinks, availableProducts, cloudId), [])
+      : [],
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),
     hasLoaded:

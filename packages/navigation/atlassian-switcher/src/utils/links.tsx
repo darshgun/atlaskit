@@ -380,11 +380,19 @@ export const getSuggestedProductLink = (
 
 export const getCustomLinkItems = (
   list: Array<CustomLink>,
-  licenseInformationData: LicenseInformationResponse,
+  availableProducts: AvailableProductsResponse,
+  cloudId: string,
 ): SwitcherItemType[] => {
+  const currentSite = availableProducts.sites.find(
+    site => site.cloudId === cloudId,
+  );
+  if (!currentSite) {
+    return [];
+  }
+
   const defaultProductCustomLinks = [
-    `${licenseInformationData.hostname}/secure/MyJiraHome.jspa`,
-    `${licenseInformationData.hostname}/wiki/`,
+    `${currentSite.url}/secure/MyJiraHome.jspa`,
+    `${currentSite.url}/wiki/`,
   ];
   return list
     .filter(
