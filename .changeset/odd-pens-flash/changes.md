@@ -1,1 +1,0 @@
-Fixing nav resize button render issue.
