@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import cases from 'jest-in-case';
 import Checkbox from '../../Checkbox';
