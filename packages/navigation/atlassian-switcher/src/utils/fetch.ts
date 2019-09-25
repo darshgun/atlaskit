@@ -1,11 +1,17 @@
 export const FETCH_ERROR_NAME = 'FetchError';
 
+export type ErrorWithStatus = Error & {
+  status: number;
+};
+
 export function enrichFetchError(
   error: Error,
   status: number,
-): Error & { status: number } {
+): ErrorWithStatus {
   return {
-    ...error,
+    name: error.name,
+    message: error.message,
+    stack: error.stack,
     status,
   };
 }
