@@ -2,22 +2,12 @@ import {
   MockTaskDecisionResource,
   MockTaskDecisionResourceConfig,
 } from './MockTaskDecisionResource';
-
 declare var require: {
   <T>(path: string): T;
 };
-
-// ServiceDecisionResponse
-export const getServiceDecisionsResponse = () =>
-  require('../json-data/sample-decisions.json') as any;
-
 // ServiceTaskResponse
 export const getServiceTasksResponse = () =>
   require('../json-data/sample-tasks.json') as any;
-
-// ServiceItemResponse
-export const getServiceItemsResponse = () =>
-  require('../json-data/sample-elements.json') as any;
 
 export const getMockTaskDecisionResource = (
   config?: MockTaskDecisionResourceConfig,

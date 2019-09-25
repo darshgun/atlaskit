@@ -1,36 +1,26 @@
 import uuid from 'uuid';
 import { RequestServiceOptions, utils } from '@atlaskit/util-service-support';
 
-import { defaultLimit } from '../constants';
-
 import {
-  convertServiceDecisionResponseToDecisionResponse,
-  convertServiceItemResponseToItemResponse,
-  convertServiceTaskResponseToTaskResponse,
   convertServiceTaskToTask,
   convertServiceTaskStateToBaseItem,
   findIndex,
-  ResponseConverter,
 } from './TaskDecisionUtils';
 
 import {
   BaseItem,
   ServiceTaskState,
-  DecisionResponse,
   DecisionState,
   Handler,
-  ItemResponse,
   ObjectKey,
   PubSubSpecialEventType,
   PubSubClient,
-  Query,
   RecentUpdateContext,
   RecentUpdatesId,
   RecentUpdatesListener,
   ServiceTask,
   TaskDecisionProvider,
   TaskDecisionResourceConfig,
-  TaskResponse,
   TaskState,
   User,
   ServiceItem,
@@ -436,42 +426,6 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     this.itemStateManager = new ItemStateManager(serviceConfig);
   }
 
-  getDecisions(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<DecisionResponse> {
-    return this.query(
-      query,
-      'decisions/query',
-      convertServiceDecisionResponseToDecisionResponse,
-      recentUpdatesListener,
-    );
-  }
-
-  getTasks(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<TaskResponse> {
-    return this.query(
-      query,
-      'tasks/query',
-      convertServiceTaskResponseToTaskResponse,
-      recentUpdatesListener,
-    );
-  }
-
-  getItems(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<ItemResponse> {
-    return this.query(
-      query,
-      'elements/query',
-      convertServiceItemResponseToItemResponse,
-      recentUpdatesListener,
-    );
-  }
-
   unsubscribeRecentUpdates(id: RecentUpdatesId) {
     this.recentUpdates.unsubscribe(id);
   }
@@ -479,50 +433,6 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
   notifyRecentUpdates(recentUpdateContext: RecentUpdateContext) {
     this.recentUpdates.notify(recentUpdateContext);
     this.itemStateManager.refreshAllTasks();
-  }
-
-  private query<S, R>(
-    query: Query,
-    path: string,
-    converter: ResponseConverter<S, R>,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<R> {
-    const options: RequestServiceOptions = {
-      path,
-      requestInit: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify(this.apiQueryToServiceQuery(query)),
-      },
-    };
-    if (recentUpdatesListener) {
-      this.recentUpdates.subscribe(query.containerAri, recentUpdatesListener);
-    }
-    return utils
-      .requestService<S>(this.serviceConfig, options)
-      .then(serviceResponse => {
-        return converter(serviceResponse, query);
-      });
-  }
-
-  private apiQueryToServiceQuery(query: Query) {
-    const { sortCriteria, limit, ...other } = query;
-    const serviceQuery: any = {
-      ...other,
-      limit: limit || defaultLimit,
-    };
-    switch (sortCriteria) {
-      case 'lastUpdateDate':
-        serviceQuery.sortCriteria = 'LAST_UPDATE_DATE';
-        break;
-      case 'creationDate':
-      default:
-        serviceQuery.sortCriteria = 'CREATION_DATE';
-        break;
-    }
-    return serviceQuery;
   }
 
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {

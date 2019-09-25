@@ -5,6 +5,5 @@ export default {
   },
   initialQuery: {
     containerAri: 'example',
-    sortCriteria: 'lastUpdateDate',
   },
 };

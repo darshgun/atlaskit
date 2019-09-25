@@ -22,11 +22,6 @@ describe('<ResourcedTaskItem/>', () => {
       subscribe: jest.fn(),
       unsubscribe: jest.fn(),
       toggleTask: jest.fn(() => Promise.resolve(true)),
-
-      getDecisions: jest.fn(),
-      getTasks: jest.fn(),
-      getItems: jest.fn(),
-
       unsubscribeRecentUpdates: jest.fn(),
       notifyRecentUpdates: jest.fn(),
     };

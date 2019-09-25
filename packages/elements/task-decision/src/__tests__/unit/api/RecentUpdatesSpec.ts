@@ -24,8 +24,6 @@ const serviceTask = (
   parentLocalId: '123',
   participants: [],
   position: 1,
-  rawContent: '[]',
-  contentAsFabricDocument: '[]',
   state: state || 'TODO',
   type: 'TASK',
 });

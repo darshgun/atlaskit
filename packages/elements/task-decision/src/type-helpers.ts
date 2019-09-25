@@ -7,7 +7,6 @@ import {
   ServiceDecision,
   ServiceItem,
   ServiceTask,
-  SortCriteria,
   Task,
   TaskState,
 } from './types';
@@ -21,11 +20,6 @@ export const isServiceDecision = (item: ServiceItem): item is ServiceDecision =>
   !!(item && item.type === 'DECISION');
 export const isServiceTask = (item: ServiceItem): item is ServiceTask =>
   !!(item && item.type === 'TASK');
-
-export const isDateSortCriteria = (sortCriteria?: SortCriteria) =>
-  !sortCriteria ||
-  sortCriteria === 'creationDate' ||
-  sortCriteria === 'lastUpdateDate';
 
 export const toObjectKey = (
   item: Item | ServiceDecision | ServiceTask | BaseItem<any>,

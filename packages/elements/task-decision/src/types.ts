@@ -33,9 +33,6 @@ export interface ServiceDecision {
   localId: string;
   objectAri: string;
   participants: User[];
-  // Atlassian Document fragment (json string)
-  rawContent: string;
-  contentAsFabricDocument: string;
   state: DecisionState;
   status: DecisionStatus;
   type: DecisionType;
@@ -76,8 +73,6 @@ export interface Decision extends BaseItem<DecisionState> {
   lastUpdater?: User;
   lastUpdateDate: Date;
   participants: User[];
-  // Atlassian Document fragment
-  content: any;
   status: DecisionStatus;
   type: DecisionType;
 }
@@ -98,14 +93,10 @@ export interface ItemResponse {
   items: Item[];
   nextQuery?: Query;
 }
-
-export type SortCriteria = 'lastUpdateDate' | 'creationDate';
-
 export interface Query {
   containerAri: string;
   limit?: number;
   cursor?: Cursor;
-  sortCriteria?: SortCriteria;
 }
 
 export interface User {
@@ -119,7 +110,6 @@ export interface User {
 export type Participant = User;
 
 export interface ServiceTask {
-  containerAri: string;
   creationDate: string;
   creator?: User;
   lastUpdater?: User;
@@ -129,9 +119,6 @@ export interface ServiceTask {
   parentLocalId: string;
   participants: User[];
   position: number;
-  // Atlassian Document fragment (json string)
-  rawContent: string;
-  contentAsFabricDocument: string;
   state: TaskState;
   type: TaskType;
 }
@@ -144,8 +131,6 @@ export interface Task extends BaseItem<TaskState> {
   parentLocalId: string;
   participants: User[];
   position: number;
-  // Atlassian Document fragment
-  content: any;
   type: TaskType;
 }
 
@@ -197,19 +182,6 @@ export interface TaskDecisionResourceConfig extends ServiceConfig {
 }
 
 export interface TaskDecisionProvider {
-  getDecisions(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<DecisionResponse>;
-  getTasks(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<TaskResponse>;
-  getItems(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<ItemResponse>;
-
   unsubscribeRecentUpdates(id: RecentUpdatesId): void;
   notifyRecentUpdates(updateContext: RecentUpdateContext): void;
 
