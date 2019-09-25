@@ -2,17 +2,16 @@ import * as React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import { gridSize } from '@atlaskit/theme/constants';
-
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { messages } from '../../messages';
 
-import { ArticleItem } from '../../model/Article';
+import { messages } from '../../../messages';
+import { ArticleItem } from '../../../model/Article';
+
 import RelatedArticlesList from './RelatedArticlesList';
 import ShowMoreArticlesButton from './ShowMoreArticlesButton';
-import { ItemGroupTitle } from '../styled';
-import { ArticleContentInner } from './styled';
+import { ItemGroupTitle, RelatedArticlesContainer } from './styled';
 
-const itemTheme = {
+const ITEM_THEME = {
   padding: {
     default: {
       bottom: gridSize(),
@@ -23,28 +22,33 @@ const itemTheme = {
   },
 };
 
+const MAX_ITEMS_TO_DISPLAY_TOGGLED_ON = 3;
+const MAX_ITEMS_TO_DISPLAY_TOGGLED_OFF = 5;
+
 interface Props {
   relatedArticles?: ArticleItem[];
 }
 
 interface State {
-  showMoreToggeled: boolean;
+  showMoreToggled: boolean;
 }
 
-export class RelatedArticles extends React.Component<
+export class RelatedArticlesContent extends React.Component<
   Props & InjectedIntlProps,
   State
 > {
   state = {
-    showMoreToggeled: true,
+    showMoreToggled: true,
   };
 
   getNumberOfArticlesToDisplay = (showMoreToggeled: boolean) => {
-    return showMoreToggeled ? 3 : 5;
+    return showMoreToggeled
+      ? MAX_ITEMS_TO_DISPLAY_TOGGLED_ON
+      : MAX_ITEMS_TO_DISPLAY_TOGGLED_OFF;
   };
 
   toggleRelatedArticles = () => {
-    this.setState({ showMoreToggeled: !this.state.showMoreToggeled });
+    this.setState({ showMoreToggled: !this.state.showMoreToggled });
   };
 
   render() {
@@ -57,8 +61,8 @@ export class RelatedArticles extends React.Component<
     if (relatedArticles && relatedArticles.length > 0) {
       // Display list of related articles
       return (
-        <ArticleContentInner>
-          <ThemeProvider theme={{ [itemThemeNamespace]: itemTheme }}>
+        <RelatedArticlesContainer>
+          <ThemeProvider theme={{ [itemThemeNamespace]: ITEM_THEME }}>
             <>
               <ItemGroupTitle>
                 {formatMessage(messages.help_panel_related_article_title)}
@@ -67,18 +71,18 @@ export class RelatedArticles extends React.Component<
               <RelatedArticlesList
                 relatedArticles={relatedArticles}
                 numberOfArticlesToDisplay={this.getNumberOfArticlesToDisplay(
-                  this.state.showMoreToggeled,
+                  this.state.showMoreToggled,
                 )}
               />
-              {relatedArticles.length > 3 ? (
+              {relatedArticles.length > 3 && (
                 <ShowMoreArticlesButton
                   toggleRelatedArticles={this.toggleRelatedArticles}
-                  showMoreToggeled={this.state.showMoreToggeled}
+                  showMoreToggeled={this.state.showMoreToggled}
                 />
-              ) : null}
+              )}
             </>
           </ThemeProvider>
-        </ArticleContentInner>
+        </RelatedArticlesContainer>
       );
     }
 
@@ -86,4 +90,4 @@ export class RelatedArticles extends React.Component<
   }
 }
 
-export default injectIntl(RelatedArticles);
+export default injectIntl(RelatedArticlesContent);

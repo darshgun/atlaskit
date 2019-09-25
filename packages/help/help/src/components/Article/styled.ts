@@ -1,5 +1,7 @@
 /** @jsx jsx */
+
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/core';
 import { gridSize } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
 
@@ -24,34 +26,43 @@ export const ArticleContainer = styled.div<ArticleContainerProps>`
   z-index: 1;
 `;
 
-export const SelectedIcon = styled.div`
-  margin-top: 0.3em;
+/**
+ * Loading container
+ */
+
+type LoadingRectangleProps = {
+  contentWidth?: string;
+  contentHeight?: string;
+  marginTop?: string;
+};
+
+const shimmer = keyframes`
+    0% {
+        background-position: -300px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
 `;
 
-export const ArticleContentInner = styled.div`
-  padding-bottom: ${2 * gridSize()}px;
+export const LoadingRectangle = styled.div<LoadingRectangleProps>`
   position: relative;
-`;
-
-export const ArticleContentTitle = styled.div`
-  padding-bottom: ${2 * gridSize()}px;
-`;
-
-export const ArticleRateText = styled.div`
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: ${colors.N200};
-  line-height: ${gridSize() * 2}px;
-  position: relative;
-  display: inline-block;
-`;
-
-export const ArticleRateAnswerWrapper = styled.div`
-  padding-top: ${gridSize() * 2}px;
-`;
-
-export const ToggleShowMoreArticles = styled.a`
-  padding-top: ${gridSize()}px;
-  display: inline-block;
-  cursor: pointer;
+  height: ${props => (props.contentHeight ? props.contentHeight : '1rem')};
+  margin-top: ${props =>
+    props.marginTop ? props.marginTop : gridSize() + 'px'};
+  width: ${props => (props.contentWidth ? props.contentWidth : '100%')};
+  border-radius: 2px;
+  animation-duration: 1.2s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: ${shimmer};
+  animation-timing-function: linear;
+  background-color: ${colors.N30};
+  background-image: linear-gradient(
+    to right,
+    ${colors.N30} 10%,
+    ${colors.N40} 20%,
+    ${colors.N30} 30%
+  );
+  background-repeat: no-repeat;
 `;
