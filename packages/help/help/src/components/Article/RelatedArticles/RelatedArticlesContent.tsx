@@ -74,7 +74,7 @@ export class RelatedArticlesContent extends React.Component<
                   this.state.showMoreToggled,
                 )}
               />
-              {relatedArticles.length > 3 && (
+              {relatedArticles.length > MAX_ITEMS_TO_DISPLAY_TOGGLED_ON && (
                 <ShowMoreArticlesButton
                   toggleRelatedArticles={this.toggleRelatedArticles}
                   showMoreToggeled={this.state.showMoreToggled}
