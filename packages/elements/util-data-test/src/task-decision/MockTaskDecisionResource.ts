@@ -9,7 +9,7 @@ import {
   RecentUpdatesId,
   TaskDecisionProvider,
   TaskState,
-  User,
+  UserId,
 } from '@atlaskit/task-decision';
 
 export interface MockTaskDecisionResourceConfig {
@@ -110,8 +110,8 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     debouncedTaskStateQuery = window.setTimeout(() => {
       this.getTaskState(Array.from(this.batchedKeys.values())).then(tasks => {
         tasks.forEach(task => {
-          const { containerAri, objectAri, localId } = task;
-          const objectKey = { containerAri, objectAri, localId };
+          const { objectAri, localId } = task;
+          const objectKey = { objectAri, localId };
           this.cachedItems.set(objectKeyToString(objectKey), task);
 
           this.dequeueItem(objectKey);
@@ -153,7 +153,7 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     });
   }
 
-  getCurrentUser(): User | undefined {
+  getCurrentUser(): UserId | undefined {
     // Return a random user or undefined from the participants list
     const randomParticipant = Math.floor(Math.random() * participants.length);
     return Math.random() < 0.75 ? participants[randomParticipant] : undefined;

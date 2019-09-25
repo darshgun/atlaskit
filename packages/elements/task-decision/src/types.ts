@@ -26,12 +26,12 @@ export interface BaseItem<S> extends ObjectKey {
 
 export interface ServiceDecision {
   creationDate?: string;
-  creator?: User;
-  lastUpdater?: User;
+  creatorId?: UserId;
+  lastUpdaterId?: UserId;
   lastUpdateDate: string;
   localId: string;
   objectAri: string;
-  participants?: User[];
+  participants?: UserId[];
   state?: DecisionState;
   status: DecisionStatus;
   type: DecisionType;
@@ -48,16 +48,6 @@ export interface ServiceDecisionResponse {
 
 export type ServiceItem = ServiceDecision | ServiceTask;
 
-export interface ServiceItemResponse {
-  elements: ServiceItem[];
-  meta: Meta;
-}
-
-export interface ServiceTaskResponse {
-  tasks: ServiceTask[];
-  meta: Meta;
-}
-
 export interface ServiceTaskState {
   lastUpdateDate: string;
   localId: string;
@@ -67,35 +57,27 @@ export interface ServiceTaskState {
 
 export interface Decision extends BaseItem<DecisionState> {
   creationDate?: Date;
-  creator?: User;
-  lastUpdater?: User;
+  creator?: UserId;
+  lastUpdater?: UserId;
   lastUpdateDate: Date;
-  participants?: User[];
+  participants?: UserId[];
   status: DecisionStatus;
   type: DecisionType;
 }
 
 export type Item = Decision | Task;
 
-export interface User {
-  id: string;
-  displayName: string;
-  nickname?: string;
-  avatarUrl: string;
-}
-
-// Kept for compatibility
-export type Participant = User;
+export type UserId = string;
 
 export interface ServiceTask {
   creationDate?: string;
-  creator?: User;
-  lastUpdater?: User;
+  creatorId?: UserId;
+  lastUpdaterId?: UserId;
   lastUpdateDate: string;
   localId: string;
   objectAri: string;
   parentLocalId?: string;
-  participants?: User[];
+  participants?: UserId[];
   position: number;
   state: TaskState;
   type: TaskType;
@@ -103,11 +85,11 @@ export interface ServiceTask {
 
 export interface Task extends BaseItem<TaskState> {
   creationDate?: Date;
-  creator?: User;
-  lastUpdater?: User;
+  creator?: UserId;
+  lastUpdater?: UserId;
   lastUpdateDate: Date;
   parentLocalId?: string;
-  participants?: User[];
+  participants?: UserId[];
   position?: number;
   type: TaskType;
 }
@@ -143,7 +125,7 @@ export interface RecentUpdatesListener {
 }
 
 export interface TaskDecisionResourceConfig extends ServiceConfig {
-  currentUser?: User;
+  currentUser?: UserId;
   pubSubClient?: PubSubClient;
 
   /**
@@ -171,7 +153,7 @@ export interface TaskDecisionProvider {
     item?: BaseItem<TaskState | DecisionState>,
   ): void;
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
-  getCurrentUser?(): User | undefined;
+  getCurrentUser?(): UserId | undefined;
 }
 
 /**

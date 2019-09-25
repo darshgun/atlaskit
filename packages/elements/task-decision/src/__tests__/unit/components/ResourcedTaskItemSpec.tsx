@@ -263,7 +263,7 @@ describe('<ResourcedTaskItem/>', () => {
       () => component.update() && asMock(provider.toggleTask).mock.calls.length,
     ).then(() => {
       expect(component.find(Item).prop('attribution')).toEqual(
-        `Completed by ${user.displayName}`,
+        `Completed by ${user}`,
       );
     });
   });
@@ -290,7 +290,7 @@ describe('<ResourcedTaskItem/>', () => {
     return waitUntil(() => asMock(provider.toggleTask).mock.calls.length).then(
       () => {
         expect(component.find(Item).prop('attribution')).toEqual(
-          `Added by ${creator.displayName}`,
+          `Added by ${creator}`,
         );
       },
     );
@@ -314,7 +314,7 @@ describe('<ResourcedTaskItem/>', () => {
     return waitUntil(() => asMock(provider.toggleTask).mock.calls.length).then(
       () => {
         expect(component.find(Item).prop('attribution')).toEqual(
-          `Added by ${creator.displayName}`,
+          `Added by ${creator}`,
         );
       },
     );

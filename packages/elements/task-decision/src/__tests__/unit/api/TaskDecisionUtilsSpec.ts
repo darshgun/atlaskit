@@ -15,8 +15,8 @@ describe('TaskDecisionUtils', () => {
       state,
     } = task;
 
-    expect(creator).toEqual(serviceTask.creator);
-    expect(lastUpdater).toEqual(serviceTask.lastUpdater);
+    expect(creator).toEqual(serviceTask.creatorId);
+    expect(lastUpdater).toEqual(serviceTask.lastUpdaterId);
     expect(localId).toEqual(serviceTask.localId);
     expect(objectAri).toEqual(serviceTask.objectAri);
     expect(participants).toEqual(serviceTask.participants);

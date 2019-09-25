@@ -7,8 +7,8 @@ import {
   ContentRef,
   TaskDecisionProvider,
   TaskState,
-  User,
   DecisionState,
+  UserId,
 } from '../types';
 import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
@@ -24,14 +24,14 @@ export interface Props {
   showPlaceholder?: boolean;
   placeholder?: string;
   appearance?: Appearance;
-  creator?: User;
-  lastUpdater?: User;
+  creator?: UserId;
+  lastUpdater?: UserId;
   disabled?: boolean;
 }
 
 export interface State {
   isDone?: boolean;
-  lastUpdater?: User;
+  lastUpdater?: string;
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {
@@ -53,7 +53,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     this.mounted = true;
     this.subscribe(
       this.props.taskDecisionProvider,
-      this.props.containerAri,
       this.props.objectAri,
       this.props.isDone,
     );
@@ -68,13 +67,11 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     }
     if (
       nextProps.taskDecisionProvider !== this.props.taskDecisionProvider ||
-      nextProps.containerAri !== this.props.containerAri ||
       nextProps.objectAri !== this.props.objectAri
     ) {
       this.unsubscribe();
       this.subscribe(
         nextProps.taskDecisionProvider,
-        nextProps.containerAri,
         nextProps.objectAri,
         nextProps.isDone,
       );
@@ -88,28 +85,23 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   private subscribe(
     taskDecisionProvider?: Promise<TaskDecisionProvider>,
-    containerAri?: string,
     objectAri?: string,
     isDone?: boolean,
   ) {
-    if (taskDecisionProvider && containerAri && objectAri) {
+    if (taskDecisionProvider && objectAri) {
       taskDecisionProvider.then(provider => {
         if (!this.mounted) {
           return;
         }
         const { taskId } = this.props;
-        const objectKey = { localId: taskId, objectAri, containerAri };
+        const objectKey = { localId: taskId, objectAri };
         const item: BaseItem<TaskState> = {
           ...objectKey,
           state: isDone ? 'DONE' : 'TODO',
           lastUpdateDate: new Date(),
           type: 'TASK',
         };
-        provider.subscribe(
-          { localId: taskId, objectAri, containerAri },
-          this.onUpdate,
-          item,
-        );
+        provider.subscribe({ localId: taskId, objectAri }, this.onUpdate, item);
       });
     }
   }

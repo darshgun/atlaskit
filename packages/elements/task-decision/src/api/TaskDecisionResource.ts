@@ -22,8 +22,8 @@ import {
   TaskDecisionProvider,
   TaskDecisionResourceConfig,
   TaskState,
-  User,
   ServiceItem,
+  UserId,
 } from '../types';
 
 import {
@@ -457,7 +457,7 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
     this.itemStateManager.destroy();
   }
 
-  getCurrentUser(): User | undefined {
+  getCurrentUser(): UserId | undefined {
     return this.serviceConfig.currentUser;
   }
 }

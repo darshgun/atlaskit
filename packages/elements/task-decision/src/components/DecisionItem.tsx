@@ -5,7 +5,7 @@ import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 
 import { EditorIconWrapper } from '../styled/DecisionItem';
 import Item from './Item';
-import { Appearance, ContentRef, User } from '../types';
+import { Appearance, ContentRef, UserId } from '../types';
 
 export interface Props {
   children?: any;
@@ -13,8 +13,8 @@ export interface Props {
   placeholder?: string;
   showPlaceholder?: boolean;
   appearance?: Appearance;
-  creator?: User;
-  lastUpdater?: User;
+  creator?: UserId;
+  lastUpdater?: UserId;
 }
 
 export default class DecisionItem extends PureComponent<Props, {}> {
@@ -26,11 +26,11 @@ export default class DecisionItem extends PureComponent<Props, {}> {
     const { creator, lastUpdater } = this.props;
     const user = lastUpdater || creator;
 
-    if (!user || !user.displayName) {
+    if (!user) {
       return undefined;
     }
 
-    return `Captured by ${user.displayName}`;
+    return `Captured by ${user}`;
   }
 
   render() {

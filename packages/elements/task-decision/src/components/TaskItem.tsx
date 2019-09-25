@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { CheckBoxWrapper } from '../styled/TaskItem';
 
 import Item from './Item';
-import { Appearance, ContentRef, User } from '../types';
+import { Appearance, ContentRef, UserId } from '../types';
 import {
   withAnalyticsEvents,
   WithAnalyticsEventsProps,
@@ -19,8 +19,8 @@ export interface Props {
   placeholder?: string;
   showPlaceholder?: boolean;
   appearance?: Appearance;
-  creator?: User;
-  lastUpdater?: User;
+  creator?: UserId;
+  lastUpdater?: UserId;
   disabled?: boolean;
 }
 
@@ -71,14 +71,14 @@ export class TaskItem extends PureComponent<
     const { creator, lastUpdater, isDone } = this.props;
 
     if (isDone && lastUpdater) {
-      return `Completed by ${lastUpdater.displayName}`;
+      return `Completed by ${lastUpdater}`;
     }
 
-    if (!creator || !creator.displayName) {
+    if (!creator) {
       return undefined;
     }
 
-    return `Added by ${creator.displayName}`;
+    return `Added by ${creator}`;
   }
 
   render() {

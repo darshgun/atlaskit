@@ -8,6 +8,6 @@ describe('type-helpers', () => {
       containerAri: 'container',
     };
     const key = objectKeyToString(objectKey);
-    expect(key).toEqual('container:object:task-1');
+    expect(key).toEqual('object:task-1');
   });
 });
