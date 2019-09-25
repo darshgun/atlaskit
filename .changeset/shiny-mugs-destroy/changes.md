@@ -1,0 +1,1 @@
+New optional prop `onFirstPlay` is added to Props of `CustomMediaPlayer` component
