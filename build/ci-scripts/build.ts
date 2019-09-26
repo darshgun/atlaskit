@@ -12,7 +12,7 @@ import getGlobPackagesForTools from './get.glob.packages.for.tools';
 import createEntryPointsDirectories from './create.entry.points.directories';
 import copyVersion from './copy.version';
 import validateDists from './validate.dists';
-import runCommands, { Options } from './build-utils/runCommands';
+import runCommands, { Options } from '@atlaskit/build-utils/runCommands';
 
 type WatchFlag = boolean | 'cjs' | 'esm' | undefined;
 type StepArgs = { cwd: string | undefined; pkg: PackageInfo | undefined };
