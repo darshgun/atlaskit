@@ -20,10 +20,12 @@ export interface HiddenCheckboxProps extends React.HTMLProps<HTMLInputElement> {
       required?: boolean;
     },
   ) => Record<string, any>;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 export default forwardRef((
   // @ts-ignore - createAnalyticsEvent is injected from WithAnalyticsEvents HOC
-  { createAnalyticsEvent, attributesFn, ...props }: HiddenCheckboxProps,
+  { createAnalyticsEvent, attributesFn, testId, ...props }: HiddenCheckboxProps,
   ref: React.Ref<HTMLInputElement>,
 ) => (
   <input
@@ -44,5 +46,6 @@ export default forwardRef((
       transform: 'translate(-50%, -50%)',
       top: '50%',
     }}
+    data-testid={testId}
   />
 ));

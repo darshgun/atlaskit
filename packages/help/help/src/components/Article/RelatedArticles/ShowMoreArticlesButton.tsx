@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { messages } from '../../messages';
+
+import { messages } from '../../../messages';
+
 import { ToggleShowMoreArticles } from './styled';
 
 export interface Props {
@@ -17,6 +19,7 @@ export class ShowMoreArticlesButton extends React.Component<
       showMoreToggeled,
       toggleRelatedArticles,
     } = this.props;
+
     if (showMoreToggeled) {
       return (
         <ToggleShowMoreArticles onClick={toggleRelatedArticles}>

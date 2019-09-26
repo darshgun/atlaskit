@@ -6,9 +6,7 @@
 describe('Atlassian Switcher - SSR', () => {
   it('should not break when importing AtlassianSwitcher package', () => {
     expect(() => {
-      // @ts-ignore
-      const AtlassianSwitcher = require('../../components/atlassian-switcher')
-        .default;
+      require('../../components/atlassian-switcher').default;
     }).not.toThrowError();
   });
 });
