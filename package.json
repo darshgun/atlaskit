@@ -234,7 +234,7 @@
     "svg-url-loader": "^2.3.0",
     "svgexport": "^0.3.2",
     "thread-loader": "^1.2.0",
-    "ts-jest": "24.0.2",
+    "ts-jest": "24.1.0",
     "ts-loader": "^4.4.2",
     "tty-table": "^2.6.8",
     "ttypescript": "^1.5.5",
