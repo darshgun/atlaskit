@@ -3,7 +3,7 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 /* Url to test the example */
-const urlFlag = getExampleUrl('core', 'flag', 'Testing');
+const urlFlag = getExampleUrl('core', 'flag', 'testing');
 
 /* Css selectors used for the test */
 const addFlagBtn = "[data-testid='AddFlag']";
@@ -25,7 +25,7 @@ BrowserTestCase(
     await flagTest.click(addFlagBtn);
     expect(await flagTest.isVisible(flagTestId1)).toBe(true);
     expect(await flagTest.isVisible(flagActionTestId1)).toBe(true);
-    await flagTest.click(flagActionTestId);
+    await flagTest.click(flagActionTestId1);
     const textAlert = await flagTest.getAlertText();
     expect(textAlert).toBe('Flag has been clicked!');
     await flagTest.acceptAlert();
