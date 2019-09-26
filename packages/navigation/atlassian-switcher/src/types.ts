@@ -79,7 +79,7 @@ export type FeatureMap = { [key in Feature]: boolean };
 
 export type CustomLinksResponse = CustomLink[];
 
-export type ProvisionedProducts = { [key in WorklensProductType]: boolean };
+export type ProvisionedProducts = { [key in WorklensProductType]?: boolean };
 
 export interface CurrentSite {
   url: string;

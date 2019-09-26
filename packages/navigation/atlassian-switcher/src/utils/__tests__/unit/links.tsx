@@ -19,7 +19,7 @@ const generateProvisionedProducts = (
       ...acc,
       [product]: true,
     }),
-    {} as ProvisionedProducts,
+    {},
   );
 
 describe('utils/links', () => {
