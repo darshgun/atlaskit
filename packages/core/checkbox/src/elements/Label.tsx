@@ -22,6 +22,7 @@ export function Label({
   onMouseEnter,
   tokens,
   cssFn,
+  testId,
 }: LabelProps) {
   return (
     <label
@@ -31,6 +32,7 @@ export function Label({
       onMouseLeave={onMouseLeave}
       onMouseEnter={onMouseEnter}
       css={cssFn({ isDisabled, tokens })}
+      data-testid={testId}
     >
       {children}
     </label>

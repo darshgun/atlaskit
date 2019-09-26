@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.19.1
+
+### Patch Changes
+
+- [patch][9891d2418d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9891d2418d):
+
+  Fixed exports and onClick event of RelatedArticles
+
 ## 0.19.0
 
 ### Minor Changes

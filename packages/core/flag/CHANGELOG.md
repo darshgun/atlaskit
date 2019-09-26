@@ -1,5 +1,13 @@
 # @atlaskit/flag
 
+## 12.3.0
+
+### Minor Changes
+
+- [minor][33d2e11038](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33d2e11038):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 12.2.2
 
 ### Patch Changes
