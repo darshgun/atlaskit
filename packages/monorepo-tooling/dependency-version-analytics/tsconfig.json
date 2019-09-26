@@ -25,7 +25,5 @@
     "./typings/analytics-node-client.d.ts",
     "./typings/yarnpkg-lockfile.d.ts",
     "./typings/projector-spawn.d.ts"
-
-  ],
-
+  ]
 }
