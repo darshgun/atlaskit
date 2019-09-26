@@ -1,9 +1,15 @@
 import * as React from 'react';
 import { ClipboardProps } from './clipboard';
+import { ClipboardConfig } from '../types';
 import { WithContextOrMediaClientConfigProps } from '@atlaskit/media-client';
 
 type ClipboardWithMediaClientConfigProps = WithContextOrMediaClientConfigProps<
-  ClipboardProps
+  // ClipboardBase defines config default value, which modifies final shape of ClipboardBase component.
+  // Specifically this changes one of the props - config, it makes it an optional property.
+  // We want ClipboardWithMediaClientConfigProps to match this modified props of ClipboardBase here.
+  Omit<ClipboardProps, 'config'> & {
+    config?: ClipboardConfig;
+  }
 >;
 type ClipboardWithMediaClientConfigComponent = React.ComponentType<
   ClipboardWithMediaClientConfigProps
@@ -31,7 +37,6 @@ export class ClipboardLoader extends React.PureComponent<
         import(/* webpackChunkName:"@atlaskit-internal_Clipboard" */ './clipboard'),
       ]);
 
-      // FIXME: annoying typing error here
       ClipboardLoader.Clipboard = mediaClient.withMediaClient(
         clipboardModule.Clipboard,
       );
