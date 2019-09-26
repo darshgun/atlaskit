@@ -41,13 +41,10 @@ export const NavigationContainer = ({ topOffset, innerRef, ...props }: *) => (
     ref={innerRef}
     css={{
       bottom: 0,
-      display: 'flex',
-      flexDirection: 'row',
       left: 0,
       position: 'fixed',
       top: topOffset,
       zIndex: layers.navigation(),
-      height: `calc(100vh - ${topOffset}px)`,
     }}
     {...props}
   />

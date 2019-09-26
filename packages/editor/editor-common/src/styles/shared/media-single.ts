@@ -9,10 +9,6 @@ const mediaSingleSharedStyle = css`
     margin: 0;
   }
 
-  .mediaSingleView-content-wrap {
-    user-select: none;
-  }
-
   /* Hack for chrome to fix media single position
      inside a list when media is the first child */
   &.ua-chrome li > .mediaSingleView-content-wrap::before {
