@@ -11,7 +11,7 @@ export default class extends React.Component {
     return (
       <Div>
         <p>Basic:</p>
-        <TextArea value="hello" testId="the-textarea" />
+        <TextArea value="I have a data-testid" testId="MyTextAreaTestId" />
       </Div>
     );
   }
