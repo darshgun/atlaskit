@@ -42,20 +42,23 @@ function collectAvailableProductLinks(
 }
 
 function collectSuggestedLinks(
-  currentSite: ProviderResult<CurrentSiteResponse>,
+  availableProducts: ProviderResult<AvailableProductsResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
 ) {
-  if (isError(isXFlowEnabled) || isError(currentSite)) {
+  if (isError(isXFlowEnabled) || isError(availableProducts)) {
     return [];
   }
   if (
-    isComplete(currentSite) &&
+    isComplete(availableProducts) &&
     isComplete(isXFlowEnabled) &&
     isComplete(productRecommendations)
   ) {
     return isXFlowEnabled.data
-      ? getSuggestedProductLink(currentSite.data, productRecommendations.data)
+      ? getSuggestedProductLink(
+          availableProducts.data,
+          productRecommendations.data,
+        )
       : [];
   }
 }
@@ -207,7 +210,7 @@ export function mapResultsToSwitcherProps(
     suggestedProductLinks: features.xflow
       ? collect(
           collectSuggestedLinks(
-            currentSite,
+            availableProducts,
             productRecommendations,
             isXFlowEnabled,
           ),

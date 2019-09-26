@@ -160,7 +160,7 @@ const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
     '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
 };
 
-const TO_WORKLENS_PRODUCT_KEY = {
+const TO_WORKLENS_PRODUCT_KEY: { [Key in ProductKey]: WorklensProductType } = {
   [ProductKey.CONFLUENCE]: WorklensProductType.CONFLUENCE,
   [ProductKey.JIRA_CORE]: WorklensProductType.JIRA_BUSINESS,
   [ProductKey.JIRA_SERVICE_DESK]: WorklensProductType.JIRA_SERVICE_DESK,
@@ -292,16 +292,15 @@ export const getAdministrationLinks = (
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
 
 export const getSuggestedProductLink = (
-  currentSite: CurrentSiteResponse,
+  availableProducts: AvailableProductsResponse,
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
-  const filteredProducts = productRecommendations
+  const provisionedProducts = getAllProvisionedProducts(availableProducts);
+  const filteredProducts: WorklensProductType[] = productRecommendations
     .map(legacyProduct => TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey])
     .filter(
       productKey =>
-        !currentSite.products.find(
-          product => product.productType === productKey,
-        ),
+        !provisionedProducts.find(productType => productType === productKey),
     );
 
   return filteredProducts
@@ -310,6 +309,14 @@ export const getSuggestedProductLink = (
       key: productKey,
       ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
     }));
+};
+
+export const getAllProvisionedProducts = (
+  availableProducts: AvailableProductsResponse,
+): WorklensProductType[] => {
+  return availableProducts.sites
+    .map(site => site.availableProducts.map(product => product.productType))
+    .reduce((acc, products) => acc.concat(products), []);
 };
 
 export const getCustomLinkItems = (

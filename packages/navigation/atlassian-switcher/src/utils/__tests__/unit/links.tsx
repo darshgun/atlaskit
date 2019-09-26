@@ -6,21 +6,29 @@ import {
 import {
   Product,
   WorklensProductType,
-  CurrentSiteResponse,
+  AvailableProductsResponse,
 } from '../../../types';
 
 import { resolveRecommendations } from '../../../providers/recommendations';
 
 const HOSTNAME = 'my-hostname.com';
-const generateCurrentSite = (
+const generateAvailableProducts = (
   activeProducts: WorklensProductType[],
-): CurrentSiteResponse => ({
-  url: HOSTNAME,
-  products: activeProducts.map(productType => ({
-    activityCount: 0,
-    productType,
-    url: '#',
-  })),
+): AvailableProductsResponse => ({
+  sites: [
+    {
+      adminAccess: false,
+      avatar: '',
+      cloudId: 'some-random-cloudid',
+      displayName: name,
+      url: HOSTNAME,
+      availableProducts: activeProducts.map(productType => ({
+        activityCount: 0,
+        productType,
+        url: '#',
+      })),
+    },
+  ],
 });
 
 describe('utils/links', () => {
@@ -118,7 +126,7 @@ describe('utils/links', () => {
   describe('getXSellLink', () => {
     const suggestedProducts = resolveRecommendations();
     it('should offer both JSW and Confluence if no products are active', () => {
-      const currentSite = generateCurrentSite([]);
+      const currentSite = generateAvailableProducts([]);
       const result = getSuggestedProductLink(currentSite, suggestedProducts);
       expect(result).toHaveLength(2);
       expect(result[0]).toHaveProperty(
@@ -128,8 +136,13 @@ describe('utils/links', () => {
       expect(result[1]).toHaveProperty('key', WorklensProductType.CONFLUENCE);
     });
     it('should offer both JSW and JSD if Confluence is active', () => {
-      const currentSite = generateCurrentSite([WorklensProductType.CONFLUENCE]);
-      const result = getSuggestedProductLink(currentSite, suggestedProducts);
+      const availableProducts = generateAvailableProducts([
+        WorklensProductType.CONFLUENCE,
+      ]);
+      const result = getSuggestedProductLink(
+        availableProducts,
+        suggestedProducts,
+      );
       expect(result).toHaveLength(2);
       expect(result[0]).toHaveProperty(
         'key',
@@ -141,10 +154,13 @@ describe('utils/links', () => {
       );
     });
     it('should offer both Confluence and JSD if Jira is active', () => {
-      const currentSite = generateCurrentSite([
+      const availableProducts = generateAvailableProducts([
         WorklensProductType.JIRA_SOFTWARE,
       ]);
-      const result = getSuggestedProductLink(currentSite, suggestedProducts);
+      const result = getSuggestedProductLink(
+        availableProducts,
+        suggestedProducts,
+      );
       expect(result).toHaveLength(2);
       expect(result[0]).toHaveProperty('key', WorklensProductType.CONFLUENCE);
       expect(result[1]).toHaveProperty(
@@ -153,11 +169,14 @@ describe('utils/links', () => {
       );
     });
     it('should offer Jira Service Desk if Confluence and JSW are active', () => {
-      const currentSite = generateCurrentSite([
+      const availableProducts = generateAvailableProducts([
         WorklensProductType.JIRA_SOFTWARE,
         WorklensProductType.CONFLUENCE,
       ]);
-      const result = getSuggestedProductLink(currentSite, suggestedProducts);
+      const result = getSuggestedProductLink(
+        availableProducts,
+        suggestedProducts,
+      );
       expect(result.length).toEqual(1);
       expect(result[0]).toHaveProperty(
         'key',
@@ -165,33 +184,39 @@ describe('utils/links', () => {
       );
     });
     it('should offer Confluence if JSW and JSD are active', () => {
-      const currentSite = generateCurrentSite([
+      const availableProducts = generateAvailableProducts([
         WorklensProductType.JIRA_SOFTWARE,
         WorklensProductType.JIRA_SERVICE_DESK,
       ]);
-      const result = getSuggestedProductLink(currentSite, suggestedProducts);
+      const result = getSuggestedProductLink(
+        availableProducts,
+        suggestedProducts,
+      );
       expect(result.length).toEqual(1);
       expect(result[0]).toHaveProperty('key', WorklensProductType.CONFLUENCE);
     });
     it('should return Jira if Confluence and JSD are active', () => {
-      const currentSite = generateCurrentSite([
+      const availableProducts = generateAvailableProducts([
         WorklensProductType.JIRA_SERVICE_DESK,
         WorklensProductType.CONFLUENCE,
       ]);
-      const result = getSuggestedProductLink(currentSite, suggestedProducts);
+      const result = getSuggestedProductLink(
+        availableProducts,
+        suggestedProducts,
+      );
       expect(result[0]).toHaveProperty(
         'key',
         WorklensProductType.JIRA_SOFTWARE,
       );
     });
     it('should return any empty array if Confluence, JSD and JSW are active', () => {
-      const licenseInformation = generateCurrentSite([
+      const availableProducts = generateAvailableProducts([
         WorklensProductType.JIRA_SERVICE_DESK,
         WorklensProductType.CONFLUENCE,
         WorklensProductType.JIRA_SOFTWARE,
       ]);
       const result = getSuggestedProductLink(
-        licenseInformation,
+        availableProducts,
         suggestedProducts,
       );
       expect(result).toHaveLength(0);
