@@ -16,7 +16,7 @@ import { mention as mentionDataTest } from '@atlaskit/util-data-test';
 import { sortByColumn } from '../../../../../plugins/table/commands/sort';
 import { SortOrder } from '../../../../../plugins/table/types';
 
-describe('Sort Table', () => {
+describe.skip('Sort Table', () => {
   const createEditor = createEditorFactory();
   it('should test a basic table with heading', () => {
     const { editorView } = createEditor({
@@ -85,7 +85,7 @@ describe('Sort Table', () => {
     );
   });
 
-  describe('mixed content ordering', () => {
+  describe.skip('mixed content ordering', () => {
     let editorView: EditorView;
 
     beforeEach(() => {

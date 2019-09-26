@@ -14,7 +14,11 @@ export interface HiddenCheckboxProps extends React.HTMLProps<HTMLInputElement> {
   name?: string;
   required?: boolean;
   attributesFn: (
-    props: { disabled?: boolean; checked?: boolean; required?: boolean },
+    props: {
+      disabled?: boolean;
+      checked?: boolean;
+      required?: boolean;
+    },
   ) => Record<string, any>;
 }
 export default forwardRef((
