@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 3.31.3
+
+### Patch Changes
+
+- [patch][b72b5b773c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b72b5b773c):
+
+  Removed ts-ignore from the code
+
 ## 3.31.2
 
 ### Patch Changes
