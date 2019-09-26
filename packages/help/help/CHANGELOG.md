@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.19.0
+
+### Minor Changes
+
+- [minor][7736e89a16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7736e89a16):
+
+  Added loading state for RelatedArticleList
+
 ## 0.18.1
 
 ### Patch Changes
