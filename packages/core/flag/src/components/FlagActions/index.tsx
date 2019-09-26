@@ -11,7 +11,6 @@ type Props = {
   appearance: AppearanceTypes;
   actions: ActionsType;
   linkComponent?: ComponentType<ButtonProps>;
-  testId?: string;
 };
 
 export default class FlagActions extends Component<Props, {}> {
@@ -24,12 +23,12 @@ export default class FlagActions extends Component<Props, {}> {
   getUniqueId = (prefix: string): string => `${prefix}-${uuid()}`;
 
   render() {
-    const { actions, appearance, linkComponent, testId } = this.props;
+    const { actions, appearance, linkComponent } = this.props;
     const isBold = appearance !== DEFAULT_APPEARANCE;
 
     if (!actions.length) return null;
     return (
-      <Container appearance={appearance} testId={testId}>
+      <Container appearance={appearance}>
         {actions.map((action, index) => (
           <Action
             key={this.getUniqueId('flag-action')}
