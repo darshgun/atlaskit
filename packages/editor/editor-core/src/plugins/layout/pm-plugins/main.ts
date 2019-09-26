@@ -177,7 +177,7 @@ export default (
         tr = fixColumnStructure(newState) || tr;
 
         if (tr.docChanged) {
-          tr.setSelection(selection.map(tr.doc, tr.mapping));
+          tr.setSelection(selection);
           tr.setMeta('addToHistory', false);
           return tr;
         }
