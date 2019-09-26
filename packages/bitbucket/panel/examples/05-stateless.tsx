@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { PanelStateless } from '../src';
@@ -10,7 +9,7 @@ export default class extends Component {
     isExpanded: false,
   };
 
-  handleChange = isExpanded => {
+  handleChange = (isExpanded: boolean) => {
     this.setState({ isExpanded });
   };
 

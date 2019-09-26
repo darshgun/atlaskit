@@ -1,21 +1,15 @@
-// @flow
 import React from 'react';
-import EditorFeedbackIcon from '@atlaskit/icon/glyph/editor/feedback';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import Panel from '../src';
 
-const Header = (
-  <h1>
-    Component based header <EditorFeedbackIcon size="large" />
-  </h1>
-);
+const Header = <span>Description</span>;
 
 export default () => (
   <Page>
     <Grid layout="fixed">
       <GridColumn medium={2} />
       <GridColumn medium={8}>
-        <Panel header={Header} isDefaultExpanded>
+        <Panel header={Header}>
           <p>
             Sit nulla est ex deserunt exercitation anim occaecat. Nostrud
             ullamco deserunt aute id consequat veniam incididunt duis in sint
@@ -28,8 +22,7 @@ export default () => (
             dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit officia
             eiusmod Lorem aliqua enim laboris do dolor eiusmod. Et mollit
             incididunt nisi consectetur esse laborum eiusmod pariatur proident
-            Lorem eiusmod et. Culpa deserunt nostrud ad veniam.{' '}
-            <a href="https://atlassian.design/">Test link for tabbing</a>
+            Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
           </p>
         </Panel>
       </GridColumn>

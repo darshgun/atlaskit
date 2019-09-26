@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import Panel from '../src';
@@ -10,7 +9,7 @@ export default () => (
     <Grid layout="fixed">
       <GridColumn medium={2} />
       <GridColumn medium={8}>
-        <Panel header={Header}>
+        <Panel header={Header} isDefaultExpanded>
           <p>
             Sit nulla est ex deserunt exercitation anim occaecat. Nostrud
             ullamco deserunt aute id consequat veniam incididunt duis in sint

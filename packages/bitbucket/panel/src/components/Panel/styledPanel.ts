@@ -1,4 +1,3 @@
-// @flow
 import { borderRadius, gridSize, colors } from '@atlaskit/theme';
 import { withFocusWithin } from 'react-focus-within';
 import styled, { css } from 'styled-components';
@@ -11,7 +10,7 @@ export const PanelWrapper = styled.div`
   margin: 0 auto ${gridSize() * 2}px;
 `;
 
-export const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div<{ isHidden: boolean }>`
   left: 0;
   line-height: 0;
   opacity: ${({ isHidden }) => (isHidden ? 0 : 1)};
@@ -29,7 +28,7 @@ export const ButtonWrapper = styled.div`
   }
 `;
 
-export const PanelHeader = withFocusWithin(styled.div`
+export const PanelHeader = withFocusWithin(styled.div<{ isFocused?: boolean }>`
   align-items: center;
   background-color: ${props => props.isFocused && colors.N20};
   border-radius: ${borderRadius}px;

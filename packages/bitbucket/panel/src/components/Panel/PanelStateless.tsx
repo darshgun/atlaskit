@@ -1,25 +1,23 @@
-// @flow
 import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import React, { PureComponent } from 'react';
-import type { Element, Node } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import AnimateHeight from 'react-animate-height';
 
 import * as styles from './styledPanel';
 
 export type BasePanelProps = {
   /** Content to be shown inside the panel. */
-  children?: Node,
+  children?: ReactNode;
   /** Header to render on the panel. Clicking the header expands and collapses the panel */
-  header?: Element<any>,
+  header?: ReactNode;
 };
 
 export type Props = BasePanelProps & {
   /** Defines whether the panel is expanded by default. */
-  isExpanded: boolean,
+  isExpanded: boolean;
   /** This callback is called when panel is expanded/collapsed */
-  onChange: (isExpanded: boolean) => void,
+  onChange: (isExpanded: boolean) => void;
 };
 
 export default class PanelStateless extends PureComponent<Props> {

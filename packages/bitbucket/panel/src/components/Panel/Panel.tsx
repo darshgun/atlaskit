@@ -1,16 +1,14 @@
-// @flow
 import React, { PureComponent } from 'react';
 
-import PanelStateless from './PanelStateless';
-import type { BasePanelProps } from './PanelStateless';
+import PanelStateless, { BasePanelProps } from './PanelStateless';
 
 type Props = BasePanelProps & {
   /** Defines whether the panel is expanded by default. */
-  isDefaultExpanded?: boolean,
+  isDefaultExpanded?: boolean;
 };
 
 type State = {
-  isExpanded: boolean,
+  isExpanded: boolean;
 };
 
 export default class Panel extends PureComponent<Props, State> {
