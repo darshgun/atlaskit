@@ -160,19 +160,12 @@ const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
     '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
 };
 
-const asWorklensProductKey = (productKey: ProductKey): WorklensProductType => {
-  switch (productKey) {
-    case ProductKey.CONFLUENCE:
-      return WorklensProductType.CONFLUENCE;
-    case ProductKey.JIRA_CORE:
-      return WorklensProductType.JIRA_BUSINESS;
-    case ProductKey.JIRA_SERVICE_DESK:
-      return WorklensProductType.JIRA_SERVICE_DESK;
-    case ProductKey.JIRA_SOFTWARE:
-      return WorklensProductType.JIRA_SOFTWARE;
-    case ProductKey.OPSGENIE:
-      return WorklensProductType.OPSGENIE;
-  }
+const TO_WORKLENS_PRODUCT_KEY = {
+  [ProductKey.CONFLUENCE]: WorklensProductType.CONFLUENCE,
+  [ProductKey.JIRA_CORE]: WorklensProductType.JIRA_BUSINESS,
+  [ProductKey.JIRA_SERVICE_DESK]: WorklensProductType.JIRA_SERVICE_DESK,
+  [ProductKey.JIRA_SOFTWARE]: WorklensProductType.JIRA_SOFTWARE,
+  [ProductKey.OPSGENIE]: WorklensProductType.OPSGENIE,
 };
 
 interface ConnectedSite {
@@ -303,7 +296,7 @@ export const getSuggestedProductLink = (
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
   const filteredProducts = productRecommendations
-    .map(legacyProduct => asWorklensProductKey(legacyProduct.productKey))
+    .map(legacyProduct => TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey])
     .filter(
       productKey =>
         !currentSite.products.find(
