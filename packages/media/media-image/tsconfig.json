@@ -9,6 +9,6 @@
     "./tests/**/*.ts",
     "./tests/**/*.tsx",
     "./examples/*.ts",
-    "./examples/*.tsx",
+    "./examples/*.tsx"
   ]
 }
