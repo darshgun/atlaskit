@@ -32,7 +32,9 @@ interface Props {
   id: string;
 }
 
-const ArticlesListItem = (props: Props & Analytics) => {
+const ArticlesListItem: React.SFC<Props & Analytics> = (
+  props: Props & Analytics,
+) => {
   const {
     id,
     title,
@@ -58,7 +60,7 @@ const ArticlesListItem = (props: Props & Analytics) => {
     <ArticlesListItemWrapper
       aria-disabled="false"
       role="button"
-      href={href}
+      href={href ? href : ''}
       onClick={handleOnClick}
     >
       <ArticlesListItemTitle>
