@@ -25,7 +25,8 @@ import {
   ProductKey,
   RecommendationsEngineResponse,
   Product,
-  CurrentSiteResponse,
+  ProvisionedProducts,
+  CurrentSite,
 } from '../types';
 import messages from './messages';
 import PeopleLogo from './assets/people';
@@ -292,16 +293,12 @@ export const getAdministrationLinks = (
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
 
 export const getSuggestedProductLink = (
-  availableProducts: AvailableProductsResponse,
+  provisionedProducts: ProvisionedProducts,
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
-  const provisionedProducts = getAllProvisionedProducts(availableProducts);
   const filteredProducts: WorklensProductType[] = productRecommendations
     .map(legacyProduct => TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey])
-    .filter(
-      productKey =>
-        !provisionedProducts.find(productType => productType === productKey),
-    );
+    .filter(productKey => !provisionedProducts[productKey]);
 
   return filteredProducts
     .slice(0, PRODUCT_RECOMMENDATION_LIMIT)
@@ -311,17 +308,21 @@ export const getSuggestedProductLink = (
     }));
 };
 
-export const getAllProvisionedProducts = (
+export const getProvisionedProducts = (
   availableProducts: AvailableProductsResponse,
-): WorklensProductType[] => {
-  return availableProducts.sites
-    .map(site => site.availableProducts.map(product => product.productType))
-    .reduce((acc, products) => acc.concat(products), []);
+): ProvisionedProducts => {
+  const provisionedProducts = {} as ProvisionedProducts;
+  availableProducts.sites.forEach(site =>
+    site.availableProducts.forEach(
+      product => (provisionedProducts[product.productType] = true),
+    ),
+  );
+  return provisionedProducts;
 };
 
 export const getCustomLinkItems = (
   list: Array<CustomLink>,
-  currentSite: CurrentSiteResponse,
+  currentSite: CurrentSite,
 ): SwitcherItemType[] => {
   const defaultProductCustomLinks = [
     `${currentSite.url}/secure/MyJiraHome.jspa`,
@@ -341,7 +342,7 @@ export const getCustomLinkItems = (
 
 export const getRecentLinkItems = (
   list: Array<RecentContainer>,
-  currentSite: CurrentSiteResponse,
+  currentSite: CurrentSite,
 ): RecentItemType[] => {
   const isAnyJiraProductActive = Boolean(
     currentSite.products.find(

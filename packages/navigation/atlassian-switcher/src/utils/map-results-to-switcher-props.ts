@@ -3,6 +3,7 @@ import {
   getAvailableProductLinks,
   getCustomLinkItems,
   getFixedProductLinks,
+  getProvisionedProducts,
   getRecentLinkItems,
   getSuggestedProductLink,
   SwitcherItemType,
@@ -21,7 +22,7 @@ import {
   Product,
   RecentContainersResponse,
   RecommendationsEngineResponse,
-  CurrentSiteResponse,
+  UserSiteDataResponse,
 } from '../types';
 import { createCollector } from './create-collector';
 
@@ -42,21 +43,21 @@ function collectAvailableProductLinks(
 }
 
 function collectSuggestedLinks(
-  availableProducts: ProviderResult<AvailableProductsResponse>,
+  userSiteData: ProviderResult<UserSiteDataResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
 ) {
-  if (isError(isXFlowEnabled) || isError(availableProducts)) {
+  if (isError(isXFlowEnabled) || isError(userSiteData)) {
     return [];
   }
   if (
-    isComplete(availableProducts) &&
+    isComplete(userSiteData) &&
     isComplete(isXFlowEnabled) &&
     isComplete(productRecommendations)
   ) {
     return isXFlowEnabled.data
       ? getSuggestedProductLink(
-          availableProducts.data,
+          userSiteData.data.provisionedProducts,
           productRecommendations.data,
         )
       : [];
@@ -111,27 +112,30 @@ function collectFixedProductLinks(
 
 function collectRecentLinks(
   recentContainers: ProviderResults['recentContainers'],
-  currentSite: ProviderResult<CurrentSiteResponse>,
+  userSiteData: ProviderResult<UserSiteDataResponse>,
 ) {
-  if (isError(recentContainers) || isError(currentSite)) {
+  if (isError(recentContainers) || isError(userSiteData)) {
     return [];
   }
 
-  if (isComplete(recentContainers) && isComplete(currentSite)) {
-    return getRecentLinkItems(recentContainers.data.data, currentSite.data);
+  if (isComplete(recentContainers) && isComplete(userSiteData)) {
+    return getRecentLinkItems(
+      recentContainers.data.data,
+      userSiteData.data.currentSite,
+    );
   }
 }
 
 function collectCustomLinks(
   customLinks: ProviderResults['customLinks'],
-  currentSite: ProviderResult<CurrentSiteResponse>,
+  userSiteData: ProviderResult<UserSiteDataResponse>,
 ) {
-  if (customLinks === undefined || isError(currentSite)) {
+  if (customLinks === undefined || isError(userSiteData)) {
     return [];
   }
 
-  if (isComplete(customLinks) && isComplete(currentSite)) {
-    return getCustomLinkItems(customLinks.data, currentSite.data);
+  if (isComplete(customLinks) && isComplete(userSiteData)) {
+    return getCustomLinkItems(customLinks.data, userSiteData.data.currentSite);
   }
 }
 
@@ -144,10 +148,10 @@ interface ProviderResults {
   productRecommendations: ProviderResult<RecommendationsEngineResponse>;
 }
 
-function asCurrentSiteProviderResult(
+function asUserSiteDataProviderResult(
   availableProductsProvider: ProviderResult<AvailableProductsResponse>,
   cloudId: string | null | undefined,
-): ProviderResult<CurrentSiteResponse> {
+): ProviderResult<UserSiteDataResponse> {
   switch (availableProductsProvider.status) {
     case Status.LOADING: // intentional fallthrough
     case Status.ERROR:
@@ -170,8 +174,13 @@ function asCurrentSiteProviderResult(
       return {
         status: Status.COMPLETE,
         data: {
-          url: site.url,
-          products: site.availableProducts,
+          currentSite: {
+            url: site.url,
+            products: site.availableProducts,
+          },
+          provisionedProducts: getProvisionedProducts(
+            availableProductsProvider.data,
+          ),
         },
       };
   }
@@ -194,7 +203,7 @@ export function mapResultsToSwitcherProps(
     recentContainers,
     productRecommendations,
   } = results;
-  const currentSite = asCurrentSiteProviderResult(availableProducts, cloudId);
+  const userSiteData = asUserSiteDataProviderResult(availableProducts, cloudId);
   const hasLoadedAvailableProducts = hasLoaded(availableProducts);
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);
@@ -210,7 +219,7 @@ export function mapResultsToSwitcherProps(
     suggestedProductLinks: features.xflow
       ? collect(
           collectSuggestedLinks(
-            availableProducts,
+            userSiteData,
             productRecommendations,
             isXFlowEnabled,
           ),
@@ -234,8 +243,11 @@ export function mapResultsToSwitcherProps(
       ),
       [],
     ),
-    recentLinks: collect(collectRecentLinks(recentContainers, currentSite), []),
-    customLinks: collect(collectCustomLinks(customLinks, currentSite), []),
+    recentLinks: collect(
+      collectRecentLinks(recentContainers, userSiteData),
+      [],
+    ),
+    customLinks: collect(collectCustomLinks(customLinks, userSiteData), []),
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),
     hasLoaded:
