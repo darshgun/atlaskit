@@ -53,6 +53,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     disabled: false,
     extensionHandlers: {},
     allowNewInsertionBehaviour: true,
+    UNSAFE_allowAltTextOnImages: false,
   };
 
   static contextTypes = {
