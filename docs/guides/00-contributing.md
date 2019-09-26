@@ -17,27 +17,26 @@ This project is bound by a [Code of Conduct][conduct].
 
 Although it's our job to look after all the components in our repo, we rely heavily on contributions outside of our team to make Atlaskit great. At its core, our contribution model is very much like contributing to any open source library, but because we get several contributions from within Atlassian from other teams, we have the ability to build on that model to help make inter-team contributions more efficient.
 
-Contribution is currently only *available* for Atlassian employees *only*.
+Contribution is currently **only** available for Atlassian employees.
 
 We’re temporarily unable to grant contributor access to external developers.
 
-For *Atlassians*, if you want to make a request, suggest an improvement or raise a bug about Atlaskit.
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, identify the relevant team that maintains the package by checking the [package list][https://atlaskit.atlassian.com/packages].
 
-- Identify the team that’s working on the package by checking it [here][https://atlaskit.atlassian.com/packages]
+You can add a ticket through the appropriate channel:
 
-- Add a ticket through the appropriate channel:
+- **Core**: Slack: [#atlaskit][#atlaskit] | Jira: [go/dst-sd][core]
 
-  *Core*: Slack: [#atlaskit][#atlaskit] | Jira: [go/dst-sd][core]
+- **Editor**: Slack: [#help-twp-editor][#help-twp-editor] | Jira: [go/editor-issue][editor]
 
-  *Editor*: Slack: [#help-twp-editor][#help-twp-editor] | Jira: [go/editor-issue][editor]
+- **Media**: Slack: [#help-twp-media][#help-twp-media] | Jira: - [go/mediahelp][media]
 
-  *Media*: Slack: [#help-twp-media][#help-twp-media] | Jira: - [go/mediahelp][media]
+- **Elements**: Head over Fabric Elements and reach out to the respective teams.
 
-  *Elements*: Head over Fabric Elements and reach out to the respective teams.
+- **Search & Smarts**: [#smrt-quick-search][#smrt-quick-search] | “Give feedback” button in the search panel
 
-  *Search & Smarts*: [#smrt-quick-search[#smrt-quick-search] | “Give feedback” button in the search panel
+- **Notifications**: [#notificationsplatform][#notificationsplatform]
 
-  *Notifications*: [#notificationsplatform][#notificationsplatform]
 
 # Open source contribution model
 

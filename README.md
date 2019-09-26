@@ -79,11 +79,11 @@ You can also find how each component is meant to be used from a design perspecti
 
 # Contributing
 
-Contribution is currently only *available* for Atlassian employees *only*.
+Contribution is currently **only** available for Atlassian employees.
 
 We’re temporarily unable to grant contributor access to external developers.
 
-For *Atlassians*, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, [read the contribution guide on our website][contributing_site] to get started, and our [CONTRIBUTING.md][contributing_repo] for more details.
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, [read the contribution guide on our website][contributing_site] to get started, and our [CONTRIBUTING.md][contributing_repo] for more details.
 
 ### Reporting issues
 
