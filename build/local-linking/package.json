@@ -1,0 +1,23 @@
+{
+  "name": "@atlaskit/local-linking",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Link atlaskit components into other repos",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "scripts": {
+    "portal": "ts-node portal.ts"
+  },
+  "dependencies": {
+    "@atlaskit/build-utils": "^2.2.6",
+    "bolt": "^0.24.1",
+    "fs-extra": "^4.0.2",
+    "meow": "^5.0.0",
+    "ts-node": "^6.1.1",
+    "yalc": "^1.0.0-pre.34"
+  },
+  "devDependencies": {
+    "@types/node": "^11.11.7",
+    "@types/fs-extra": "^4.0.0"
+  }
+}

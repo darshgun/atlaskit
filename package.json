@@ -13,6 +13,7 @@
     "build:editor-mobile-bridge": "          cd packages/editor/editor-mobile-bridge && yarn build",
     "build:adf-schema:checkuptodate": "      cd packages/editor/adf-schema && yarn run generate:json-schema && git diff --exit-code",
     "build:multi-entry-point-tsconfig": "    node ./build/multi-entry-tools/typescript-paths-tsconfig-builder.js > tsconfig.entry-points.json",
+    "portal": "                              bolt w @atlaskit/local-linking portal",
     "changeset": "                           changeset",
     "update:icons": "                        bolt w @atlaskit/icon update && bolt w @atlaskit/icon-object update && bolt w @atlaskit/icon-file-type update && bolt w @atlaskit/reduced-ui-pack update",
     "delete": "                              yarn delete:modules && yarn delete:build:artifacts",
@@ -255,7 +256,8 @@
     "webpack-bundle-analyzer": "^2.13.0",
     "webpack-dev-server": "^3.1.4",
     "xhr-mock": "^2.4.0",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "yalc": "^1.0.0-pre.34"
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
