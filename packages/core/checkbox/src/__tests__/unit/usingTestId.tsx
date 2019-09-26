@@ -38,10 +38,10 @@ describe('Using enzyme', () => {
         ).toHaveLength(1);
       },
       [
-        { testId: 'any' },
-        { testId: 'string' },
-        { testId: 'will' },
-        { testId: 'work' },
+        { testId: 'AnY' },
+        { testId: '$%#%#()+_' },
+        { testId: 123 },
+        { testId: '123;*&' },
       ],
     );
   });
