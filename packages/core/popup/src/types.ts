@@ -1,7 +1,12 @@
-import { Dispatch, SetStateAction, FC } from 'react';
+import {
+  CSSProperties,
+  Dispatch,
+  FC,
+  ReactNode,
+  Ref,
+  SetStateAction,
+} from 'react';
 import { Placement } from '@atlaskit/popper';
-
-export type ReactRef = React.Ref<HTMLElement> | HTMLElement | null;
 
 export type TriggerProps = {
   ref: any;
@@ -15,6 +20,18 @@ export type ContentProps = {
   isOpen: boolean;
   onClose: (() => void) | undefined;
   setInitialFocusRef: Dispatch<SetStateAction<HTMLElement | undefined>>;
+};
+
+export type PopupRef = HTMLDivElement | undefined;
+
+export type PopupComponentProps = {
+  children: ReactNode;
+  'data-placement': Placement;
+  'data-testid'?: string;
+  id?: string;
+  ref: Ref<HTMLDivElement>;
+  style: CSSProperties;
+  tabIndex: number;
 };
 
 export type PopupProps = {
@@ -39,30 +56,21 @@ export type PopupProps = {
   isOpen: boolean;
   /** Component used to anchor the popup to your content. Usually a button used to open the popup */
   trigger: FC<TriggerProps>;
-  /** Whether to lock the scrolling behavior of the page while the popup is open */
-  lockBodyScroll?: boolean;
-  /** The container displayed in the portal that wrapps the content. Use to override the default white background with rounded corners */
-  popupComponent?: FC<WrapperContainerProps>;
+  /** The container displayed in the portal that wraps the content. Use to override the default white background with rounded corners */
+  popupComponent?: FC<PopupComponentProps>;
   /** Optional override for the z-index for the react portal */
   zIndex?: number;
 };
 
+export type CloseManagerHook = Pick<PopupProps, 'isOpen' | 'onClose'> & {
+  popupRef: PopupRef;
+};
+
 export type FocusManagerHook = {
-  popupRef: HTMLDivElement | undefined;
+  popupRef: PopupRef;
   initialFocusRef: HTMLElement | undefined;
-  isOpen: boolean;
-  onClose?(): void;
 };
 
 export type RepositionOnUpdateProps = {
   scheduleUpdate(): void;
-};
-
-export type WrapperContainerProps = {
-  id?: string;
-  'data-testid'?: string;
-  ref: any;
-  style?: object;
-  'data-placement': Placement;
-  tabIndex: number;
 };

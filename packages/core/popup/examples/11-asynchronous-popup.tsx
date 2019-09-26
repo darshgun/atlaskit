@@ -1,9 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
-import styled from '@emotion/styled';
-import Popup from '../src';
-import { Placement } from '@atlaskit/popper';
+/** @jsx jsx */
+import { FC, useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
+import { Placement } from '@atlaskit/popper';
 import Spinner from '@atlaskit/spinner';
+import { jsx } from '@emotion/core';
+
+import Popup from '../src';
 
 type PopupProps = {
   loading: boolean;
@@ -14,30 +16,26 @@ type PopupProps = {
   buttonWidth: number;
 };
 
-type ExpanderProps = {
-  width: number;
+const containerCSS = {
+  margin: '250px',
 };
 
-const Spacer = styled.div`
-  margin: 250px;
-`;
+const contentCSS = {
+  alignItems: 'center',
+  textAlign: 'center',
+  verticalAlign: 'center',
+  padding: '30px',
+  maxWidth: '300px',
+} as const;
 
-const SizedContent = styled.div`
-  align-items: center;
-  text-align: center;
-  vertical-align: center;
-  padding: 30px;
-  max-width: 300px;
-`;
+const spinnerContainerCSS = {
+  margin: '40px',
+};
 
-const SpinnerSpacer = styled.div`
-  margin: 20px;
-`;
-
-const Expander = styled.span<ExpanderProps>`
-  display: inline-block;
-  width: ${props => (props.width ? props.width : 0)}px;
-`;
+const expanderCSS = ({ width }: { width: number }) => ({
+  display: 'inline-block',
+  width: width ? `${width}px` : 0,
+});
 
 const PopupContent: FC<PopupProps> = ({
   loading,
@@ -58,11 +56,11 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return loading ? (
-    <SpinnerSpacer>
+    <div css={spinnerContainerCSS}>
       <Spinner size="large" />
-    </SpinnerSpacer>
+    </div>
   ) : (
-    <SizedContent>
+    <div css={contentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
       <p>
         Current position: <strong>{position}</strong>
@@ -77,9 +75,27 @@ const PopupContent: FC<PopupProps> = ({
       <Button onClick={clearContent}>Clear Content</Button>
       <br />
       {content}
-    </SizedContent>
+    </div>
   );
 };
+
+const positions: Placement[] = [
+  'bottom-start',
+  'bottom',
+  'bottom-end',
+  'top-start',
+  'top',
+  'top-end',
+  'right-start',
+  'right',
+  'right-end',
+  'left-start',
+  'left',
+  'left-end',
+  'auto-start',
+  'auto',
+  'auto-end',
+];
 
 export default () => {
   const [idx, setIdx] = useState(0);
@@ -97,23 +113,6 @@ export default () => {
     [isOpen],
   );
 
-  const positions: Placement[] = [
-    'bottom-start',
-    'bottom',
-    'bottom-end',
-    'top-start',
-    'top',
-    'top-end',
-    'right-start',
-    'right',
-    'right-end',
-    'left-start',
-    'left',
-    'left-end',
-    'auto-start',
-    'auto',
-    'auto-end',
-  ];
   const position = positions[idx];
 
   const setPosition = () => {
@@ -125,7 +124,7 @@ export default () => {
   };
 
   return (
-    <Spacer>
+    <div css={containerCSS}>
       <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -140,11 +139,12 @@ export default () => {
         )}
         trigger={triggerProps => (
           <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? 'Close' : 'Open'} Popup <Expander width={buttonWidth} />
+            {isOpen ? 'Close' : 'Open'} Popup{' '}
+            <div css={expanderCSS({ width: buttonWidth })} />
           </Button>
         )}
         placement={position}
       />
-    </Spacer>
+    </div>
   );
 };
