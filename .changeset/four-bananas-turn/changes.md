@@ -1,1 +1,0 @@
-Fixed exports and onClick event of RelatedArticles

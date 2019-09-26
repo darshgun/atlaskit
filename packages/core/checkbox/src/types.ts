@@ -197,6 +197,13 @@ export interface CheckboxProps extends WithAnalyticsEventsProps {
   theme?: ThemeFn;
   /** The value to be used in the checkbox input. This is the value that will be returned on form submission. */
   value?: number | string;
+  /** 
+    A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+    we have 2 different testid generated based on the one you pass to the Checkbox component:
+     - `{testId}--hidden-checkbox` to check if it got changed to checked/unchecked.
+     - `{testId}--checkbox-label` to click the input, because in IE11 the input has opacity: 0 and can't be interacted.
+  */
+  testId?: string;
 }
 
 /**
@@ -375,6 +382,8 @@ export interface LabelProps extends React.HTMLProps<HTMLInputElement> {
   onMouseLeave: React.MouseEventHandler;
   isDisabled?: boolean;
   tokens: ThemeTokens;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 export interface IconWrapperProps extends React.HTMLProps<HTMLLabelElement> {
