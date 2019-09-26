@@ -185,6 +185,13 @@ function getInitialTheme(): Theme {
 }
 
 class FullPageRendererExample extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    if (history.scrollRestoration === 'auto') {
+      history.scrollRestoration = 'manual';
+    }
+  }
+
   private getJSONFromStorage = (key: string, fallback: any = undefined) => {
     const localADF = (localStorage && localStorage.getItem(key)) || undefined;
 
@@ -228,6 +235,17 @@ class FullPageRendererExample extends React.Component<Props, State> {
     if (prevState.theme !== this.state.theme) {
       window.sessionStorage.setItem('theme', this.state.theme);
     }
+  }
+
+  componentDidMount() {
+    window.requestAnimationFrame(() => {
+      const anchorElement: HTMLElement | null = document.getElementById(
+        decodeURIComponent(window.location.hash.slice(1)),
+      );
+      if (anchorElement) {
+        anchorElement.scrollIntoView();
+      }
+    });
   }
 
   showHideADF = () =>
@@ -425,6 +443,7 @@ class FullPageRendererExample extends React.Component<Props, State> {
                       >
                         <SmartCardProvider>
                           <ReactRenderer
+                            allowHeadingAnchorLinks
                             document={this.state.adf}
                             adfStage="stage0"
                             dataProviders={this.dataProviders}
