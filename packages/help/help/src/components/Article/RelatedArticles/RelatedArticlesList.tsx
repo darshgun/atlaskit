@@ -16,10 +16,6 @@ const RelatedArticlesList: React.SFC<Props & HelpContextInterface> = (
 ) => {
   const { relatedArticles, numberOfArticlesToDisplay, help } = props;
 
-  const handleOnClick = (id: string) => {
-    help.loadArticle(id);
-  };
-
   if (relatedArticles) {
     return (
       <>
@@ -29,7 +25,9 @@ const RelatedArticlesList: React.SFC<Props & HelpContextInterface> = (
             return (
               <RelatedArticlesListItem
                 id={relatedArticle.id}
-                onClick={handleOnClick}
+                onClick={() => {
+                  help.loadArticle(relatedArticle.id);
+                }}
                 title={relatedArticle.title}
                 description={relatedArticle.description}
                 key={relatedArticle.id}
