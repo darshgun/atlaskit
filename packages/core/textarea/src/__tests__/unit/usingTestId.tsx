@@ -27,12 +27,7 @@ describe('Using enzyme', () => {
           wrapper.find(`[data-testid='${testId}']`).hostNodes(),
         ).toHaveLength(1);
       },
-      [
-        { testId: 'AnY' },
-        { testId: '$%#%#()+_' },
-        { testId: 123 },
-        { testId: '123;*&' },
-      ],
+      [{ testId: 'AnY' }, { testId: '$%#%#()+_' }, { testId: '123;*&' }],
     );
   });
 });
