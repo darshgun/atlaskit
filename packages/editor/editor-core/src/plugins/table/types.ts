@@ -138,6 +138,7 @@ export type ColumnResizingPluginAction =
       type: 'SET_RESIZE_HANDLE_POSITION';
       data: { resizeHandlePos: number | null };
     }
+  | { type: 'STOP_RESIZING' }
   | {
       type: 'SET_DRAGGING';
       data: { dragging: { startX: number; startWidth: number } | null };

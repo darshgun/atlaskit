@@ -1,0 +1,1 @@
+[ED-7319] Fix table lock problem when resizing columns is happening in a collab session

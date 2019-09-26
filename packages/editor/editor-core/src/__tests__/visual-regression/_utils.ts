@@ -300,3 +300,9 @@ export const snapshot = async (
 
   return compareScreenshot(image, tolerance, { useUnsafeThreshold });
 };
+
+export const applyRemoteStep = async (page: Page, stepsAsString: string[]) => {
+  return await page.evaluate((_stepsAsString: string[]) => {
+    (window as any).__applyRemoteSteps(_stepsAsString);
+  }, stepsAsString);
+};
