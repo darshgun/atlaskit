@@ -1,0 +1,1 @@
+Removed ts-ignore from the code
