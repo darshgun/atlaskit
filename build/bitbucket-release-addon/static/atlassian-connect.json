@@ -57,7 +57,7 @@
                 "condition": "equals",
                 "target": "repository.uuid",
                 "params": {
-                  "value": "{5bd49674-290a-42d8-bab4-54bd8ad95e72}"
+                  "value": "{fe9432b2-1f81-4fc8-a1c0-51c06f452e8e}"
                 }
               }
             ],
