@@ -16,7 +16,7 @@ You can add a ticket through the appropriate channel:
 
 - **Media**: Slack: [#help-twp-media][#help-twp-media] | Jira: - [go/mediahelp][media]
 
-- **Elements**: Head over Fabric Elements and reach out to the respective teams.
+- **Elements**: Head over [Fabric Elements][fabric-elements] and reach out to the respective teams.
 
 - **Search & Smarts**: [#smrt-quick-search][#smrt-quick-search] | “Give feedback” button in the search panel
 
