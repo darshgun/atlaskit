@@ -66,10 +66,10 @@ describe('Ws', () => {
 
   beforeEach(() => {
     webSocketConstructor = jest.fn().mockImplementation(() => {
-      webSocketClose = jest.fn<WebSocketCloseFunction>();
-      webSocketSend = jest.fn<WebSocketSendFunction>();
+      webSocketClose = jest.fn<WebSocketCloseFunction, []>();
+      webSocketSend = jest.fn<WebSocketSendFunction, []>();
       webSocketAddListener = jest
-        .fn<WebSocketListenerFunction>()
+        .fn<WebSocketListenerFunction, []>()
         .mockImplementation((_: string, callback: Function) => callback());
       webSocketRemoveListener = jest.fn<WebSocketListenerFunction>();
 
@@ -90,8 +90,8 @@ describe('Ws', () => {
     });
     (window as any).WebSocket = webSocketConstructor;
 
-    onDataReceived = jest.fn<WebsocketDataReceivedHandler>();
-    onConnectionLost = jest.fn<ConnectionLostHandler>();
+    onDataReceived = jest.fn<WebsocketDataReceivedHandler, []>();
+    onConnectionLost = jest.fn<ConnectionLostHandler, []>();
 
     (randomInt as any).mockReturnValue(30 * 1000);
     ws = new Ws(auth, onDataReceived, onConnectionLost);
