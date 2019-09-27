@@ -15,11 +15,13 @@ const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; bo
 const errorLoadingChangesetMessage = `<div style="color: red; border: 2px solid; padding: 10px; border-radius: 10px; display: inline-block;">
 <p>Error loading changesets for this PR</p>
 </div>`;
+
 function releasesToHtmlList(releases) {
   return `<ul>
     ${releases.map(release => release.name).join(', ')}
   </ul>`;
 }
+
 const releasedPackagesMessage = (releases, v2) => {
   const majorReleases = releases.filter(release => release.type === 'major');
   const minorReleases = releases.filter(release => release.type === 'minor');
@@ -63,7 +65,7 @@ const yamlToReleases = changesets =>
     .flat();
 
 const {
-  // user,
+  user,
   repo,
   pullrequestid,
   repoid,
@@ -71,10 +73,8 @@ const {
   destinationhash,
 } = queryString.parse(window.location.search);
 
-const user = 'jackrgardner';
-
-// Only retrieve one type of changesets. Legacy commit changesets are only supported in repos
-// defined in config.js
+// Only retrieve one type of changesets. Legacy commit changesets and v2 changesets (md files with yaml frontmatter)
+// are only supported in repos defined in config.js
 const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
 const v2 = v2ChangesetRepos.indexOf(repoid) >= 0;
 
@@ -89,6 +89,8 @@ changesetPromise
       return;
     }
 
+    // Changesets will be in text form (from the markdown file) if V2
+    // Otherwise in the JSON format that needs to be flattened
     const releases = v2
       ? yamlToReleases(changesets)
       : flattenChangesets(changesets);

@@ -53,6 +53,8 @@ export default function getChangesetInfo(
         diff =>
           diff.new &&
           diff.new.path &&
+          // V2: .changeset/big-new-change.md
+          // V1: .changeset/big-new-change/changes.json
           diff.new.path.match(
             v2 ? /\.changeset\/[^/]+?\.md$/ : /\.changeset\/.+?\/changes.json$/,
           ),

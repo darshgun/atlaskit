@@ -7,8 +7,7 @@
     "name": "Luke Batchelor"
   },
   "scopes": [
-    "pullrequest",
-    "repository"
+    "pullrequest"
   ],
   "authentication": {
     "type": "jwt"
