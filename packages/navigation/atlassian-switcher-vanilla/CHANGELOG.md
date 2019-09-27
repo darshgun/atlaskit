@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher-vanilla
 
+## 2.0.0
+
+### Major Changes
+
+- [major][deff626951](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deff626951):
+
+  Remove enableUserCentricProducts feature flag, enable account centric switcher by default
+
 ## 1.0.0
 
 ### Major Changes
