@@ -20,7 +20,7 @@ function releasesToHtmlList(releases) {
     ${releases.map(release => release.name).join(', ')}
   </ul>`;
 }
-const releasedPackagesMessage = releases => {
+const releasedPackagesMessage = (releases, v2) => {
   const majorReleases = releases.filter(release => release.type === 'major');
   const minorReleases = releases.filter(release => release.type === 'minor');
   const patchReleases = releases.filter(release => release.type === 'patch');
@@ -38,10 +38,17 @@ const releasedPackagesMessage = releases => {
       ? `<h3>🛠 Patch Releases</h3>${releasesToHtmlList(patchReleases)}`
       : '';
 
+  const dependentsWarningSection = v2
+    ? `<p style="color: red;">Warning: Dependents can not currently be displayed by the Release Addon when using Changesets V2.<br>
+         <text style="color: gray">You can check these manually by running <strong>yarn changeset status</strong> in your terminal.</text></p>
+         <p style="color: gray">For any questions, please see the <strong>#atlaskit-build</strong> room.</p>`
+    : '';
+
   return `<div style="color: green; border: 1px solid; padding: 10px; border-radius: 10px; display: inline-block;">
     ${majorReleasesSection}
     ${minorReleasesSection}
     ${patchReleasesSection}
+    ${dependentsWarningSection}
   </div>`;
 };
 
@@ -86,7 +93,7 @@ changesetPromise
       ? yamlToReleases(changesets)
       : flattenChangesets(changesets);
 
-    document.body.innerHTML = releasedPackagesMessage(releases);
+    document.body.innerHTML = releasedPackagesMessage(releases, v2);
   })
   .catch(e => {
     console.error('error in changeset', e);
