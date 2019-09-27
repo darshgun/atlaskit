@@ -3,7 +3,6 @@ import React, { Component, Fragment, type ComponentType } from 'react';
 import deepEqual from 'react-fast-compare';
 import { N30, N40A } from '@atlaskit/theme/colors';
 
-import RenderBlocker from '../../common/RenderBlocker';
 import { ContentNavigationWrapper } from '../ContentNavigation/primitives';
 import ContentNavigation from '../ContentNavigation';
 import { isTransitioning, type TransitionState } from '../ResizeTransition';
@@ -117,14 +116,6 @@ type ComposedGlobalNavigationProps = {
   experimental_alternateFlyoutBehaviour: boolean,
   closeFlyout: () => void,
   view?: Object | null,
-  mouseIsOverGrabArea: boolean,
-  mouseIsOverNavigation: boolean,
-  isResizing: boolean,
-  isCollapsed: boolean,
-  width: number,
-  mouseIsDown: boolean,
-  flyoutIsOpen: boolean,
-  transitionState: TransitionState,
 };
 
 // Shallow comparision of props is sufficeint in this case
@@ -139,58 +130,36 @@ export class ComposedGlobalNavigation extends Component<ComposedGlobalNavigation
       // eslint-disable-next-line camelcase
       experimental_alternateFlyoutBehaviour: EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR,
       closeFlyout,
-      mouseIsOverGrabArea,
-      mouseIsOverNavigation,
-      isResizing,
-      isCollapsed,
-      width,
-      mouseIsDown,
-      flyoutIsOpen,
-      transitionState,
     } = this.props;
 
     const dataset = datasets ? datasets.globalNavigation : {};
 
     return (
-      // Prevents GlobalNavigation from re-rendering on resize, hover
-      // and flyout expand/collapse
-      <RenderBlocker
-        blockOnChange
-        mouseIsOverGrabArea={mouseIsOverGrabArea}
-        mouseIsOverNavigation={mouseIsOverNavigation}
-        isResizing={isResizing}
-        isCollapsed={isCollapsed}
-        width={width}
-        flyoutIsOpen={flyoutIsOpen}
-        mouseIsDown={mouseIsDown}
-        transitionState={transitionState}
+      <div
+        {...dataset}
+        onMouseOver={
+          EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR ? closeFlyout : null
+        }
       >
-        <div
-          {...dataset}
-          onMouseOver={
-            EXPERIMENTAL_ALTERNATE_FLYOUT_BEHAVIOUR ? closeFlyout : null
-          }
+        <ThemeProvider
+          theme={theme => ({
+            topOffset,
+            mode: light, // If no theme already exists default to light mode
+            ...theme,
+          })}
         >
-          <ThemeProvider
-            theme={theme => ({
-              topOffset,
-              mode: light, // If no theme already exists default to light mode
-              ...theme,
-            })}
-          >
-            <Fragment>
-              {!shouldHideGlobalNavShadow && (
-                <Shadow
-                  isBold={!!containerNavigation}
-                  isOverDarkBg
-                  style={{ marginLeft: GLOBAL_NAV_WIDTH }}
-                />
-              )}
-              <GlobalNavigation />
-            </Fragment>
-          </ThemeProvider>
-        </div>
-      </RenderBlocker>
+          <Fragment>
+            {!shouldHideGlobalNavShadow && (
+              <Shadow
+                isBold={!!containerNavigation}
+                isOverDarkBg
+                style={{ marginLeft: GLOBAL_NAV_WIDTH }}
+              />
+            )}
+            <GlobalNavigation />
+          </Fragment>
+        </ThemeProvider>
+      </div>
     );
   }
 }
