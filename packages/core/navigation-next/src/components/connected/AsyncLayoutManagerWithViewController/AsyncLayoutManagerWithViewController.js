@@ -163,6 +163,7 @@ class AsyncLayoutManagerWithViewControllerBase extends Component<
       view,
       topOffset,
       shouldHideGlobalNavShadow,
+      showContextualNavigation,
     } = this.props;
 
     return (
@@ -202,6 +203,7 @@ class AsyncLayoutManagerWithViewControllerBase extends Component<
           getRefs={getRefs}
           topOffset={topOffset}
           shouldHideGlobalNavShadow={shouldHideGlobalNavShadow}
+          showContextualNavigation={showContextualNavigation}
           datasets={datasets}
           view={view}
         >
