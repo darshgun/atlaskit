@@ -24,6 +24,9 @@ declare namespace jest {
       options?: StyleRuleOptions,
     ): R;
 
+    toBeInTheDocument(): R;
+    toHaveFocus(): R;
+
     /**
      * Jest Styled Components Matchers
      */
