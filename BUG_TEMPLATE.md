@@ -1,6 +1,7 @@
 ### Prerequisites
-
-Check that your bug report hasn't already being filed [here](https://ecosystem.atlassian.net/issues/?filter=61467)
+This bug template has been designed for Design System / Core components.
+If you want to check that your bug report hasn't already been raised, either contact the team on Slack or seach through their Jira projects.
+See the full list of Slack channels and Jira projects on our [Contributing](CONTRIBUTING.md) page.
 
 ### Description
 

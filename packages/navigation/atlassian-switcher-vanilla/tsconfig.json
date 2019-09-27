@@ -9,10 +9,10 @@
     "examples/**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
+    "node_modules"
   ],
   "compilerOptions": {
     "noImplicitAny": true,
-    "baseUrl": "./",
+    "baseUrl": "./"
   }
 }

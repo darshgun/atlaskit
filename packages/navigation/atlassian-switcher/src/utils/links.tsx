@@ -28,7 +28,6 @@ import {
   ProductKey,
   RecommendationsEngineResponse,
   Product,
-  ProductTopItemVariation,
 } from '../types';
 import messages from './messages';
 import JiraOpsLogo from './assets/jira-ops-logo';
@@ -240,15 +239,9 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
 
 const getAvailableProductLinkFromSiteProduct = (
   connectedSites: ConnectedSite[],
-  productTopItemVariation?: string,
 ): SwitcherItemType => {
-  // if productTopItemVariation is 'most-frequent-site', we show most frequently visited site at the top
-  const shouldEnableMostFrequentSortForTopItem =
-    productTopItemVariation === ProductTopItemVariation.mostFrequentSite;
-
   const topSite =
-    (!shouldEnableMostFrequentSortForTopItem &&
-      connectedSites.find(site => site.isCurrentSite)) ||
+    connectedSites.find(site => site.isCurrentSite) ||
     connectedSites.sort(
       (a, b) => b.product.activityCount - a.product.activityCount,
     )[0];
@@ -277,7 +270,6 @@ const getAvailableProductLinkFromSiteProduct = (
 export const getAvailableProductLinks = (
   availableProducts: AvailableProductsResponse,
   cloudId: string | null | undefined,
-  productTopItemVariation?: string,
 ): SwitcherItemType[] => {
   const productsMap: { [key: string]: ConnectedSite[] } = {};
 
@@ -303,11 +295,7 @@ export const getAvailableProductLinks = (
   return PRODUCT_ORDER.map(productType => {
     const connectedSites = productsMap[productType];
     return (
-      connectedSites &&
-      getAvailableProductLinkFromSiteProduct(
-        connectedSites,
-        productTopItemVariation,
-      )
+      connectedSites && getAvailableProductLinkFromSiteProduct(connectedSites)
     );
   }).filter(link => !!link);
 };
@@ -388,7 +376,7 @@ export const getAdministrationLinks = (
       key: 'browse-apps',
       label: <FormattedMessage {...messages.browseApps} />,
       Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
-      href: emceeLink,
+      href: `${emceeLink}#!/discover?source=app_switcher`,
     });
   }
   if (!isDiscoverMoreForEveryoneEnabled) {

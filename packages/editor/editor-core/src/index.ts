@@ -94,6 +94,7 @@ export {
   setLinkHref,
   setLinkText,
 } from './plugins/hyperlink/commands';
+export { historyPluginKey, HistoryPluginState } from './plugins/history';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';

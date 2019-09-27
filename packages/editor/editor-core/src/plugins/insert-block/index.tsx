@@ -71,6 +71,8 @@ function handleInsertBlockType(name: string) {
 }
 
 const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
+  name: 'insertBlock',
+
   primaryToolbarComponent({
     editorView,
     editorActions,

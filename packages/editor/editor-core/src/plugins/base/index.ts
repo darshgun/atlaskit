@@ -20,6 +20,8 @@ interface BasePluginOptions {
 }
 
 const basePlugin = (options?: BasePluginOptions): EditorPlugin => ({
+  name: 'base',
+
   pmPlugins() {
     const plugins: { name: string; plugin: PMPluginFactory }[] = [
       {

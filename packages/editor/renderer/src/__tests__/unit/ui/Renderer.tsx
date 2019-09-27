@@ -1,49 +1,18 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
-import { analyticsClient } from '@atlaskit/editor-test-helpers';
+import { analyticsClient } from '@atlaskit/editor-test-helpers/src/analytics-client-mock';
+import { doc, p, a, b } from '@atlaskit/adf-utils';
 import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import Renderer, { Renderer as BaseRenderer } from '../../../ui/Renderer';
 import { RendererAppearance } from '../../../ui/Renderer/types';
 
-const validDoc = {
-  version: 1,
-  type: 'doc',
-  content: [
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: 'Hello, ',
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com',
-              },
-            },
-          ],
-        },
-        {
-          type: 'text',
-          text: 'World!',
-          marks: [
-            {
-              type: 'strong',
-            },
-            {
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com',
-              },
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+const validDoc = doc(
+  p(
+    a({ href: 'https://www.atlassian.com' })('Hello, '),
+    a({ href: 'https://www.atlassian.com' })(b('World!')),
+  ),
+);
 
 describe('@atlaskit/renderer/ui/Renderer', () => {
   it('should re-render when appearance changes', () => {

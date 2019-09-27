@@ -201,6 +201,8 @@ interface GridPluginOptions {
 }
 
 const gridPlugin = (options?: GridPluginOptions): EditorPlugin => ({
+  name: 'grid',
+
   contentComponent: ({ editorView }) => {
     return (
       <WithPluginState

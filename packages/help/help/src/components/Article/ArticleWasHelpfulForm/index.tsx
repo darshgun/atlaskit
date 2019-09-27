@@ -25,10 +25,10 @@ import ArticleWasHelpfulYesButton from './WasHelpfulYesButton';
 import ArticleWasHelpfulNoButton from './WasHelpfulNoButton';
 
 import {
-  ArticleContentInner,
+  ArticleRateContainer,
   ArticleRateText,
   ArticleRateAnswerWrapper,
-} from '../styled';
+} from './styled';
 
 interface Props {
   createAnalyticsEvent?: CreateUIAnalyticsEvent;
@@ -102,7 +102,7 @@ export class ArticleWasHelpfulForm extends React.Component<
     ];
 
     return (
-      <ArticleContentInner>
+      <ArticleRateContainer>
         <ArticleRateText style={{ paddingRight: `${gridSize()}px` }}>
           {this.props.intl.formatMessage(
             messages.help_panel_article_rating_title,
@@ -166,7 +166,7 @@ export class ArticleWasHelpfulForm extends React.Component<
             </Form>
           </ArticleRateAnswerWrapper>
         )}
-      </ArticleContentInner>
+      </ArticleRateContainer>
     );
   }
 }

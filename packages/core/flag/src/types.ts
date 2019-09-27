@@ -9,6 +9,7 @@ export type ActionType = {
   onClick?: FunctionType;
   href?: string;
   target?: string;
+  testId?: string;
 };
 
 export type AppearanceTypes =
@@ -59,6 +60,8 @@ export type AutoDismissFlagProps = {
   [button with router](https://atlaskit.atlassian.com/packages/core/button/example/ButtonWithRouter)
   example of what this component should look like. */
   linkComponent?: ElementType;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 };
 
 export interface FlagProps

@@ -188,6 +188,45 @@ describe(name, () => {
         expect(renderSpy).toHaveBeenCalledTimes(0);
         wrapper.unmount();
       });
+
+      it('should discard stale transactions after componentWillUnmount is triggered', () => {
+        const unmountSpy = jest.spyOn(
+          ReactEditorView.prototype,
+          'componentWillUnmount',
+        );
+        const wrapper = mountWithIntl(<ReactEditorView {...requiredProps()} />);
+
+        const editor = wrapper.instance() as ReactEditorView;
+        patchEditorViewForJSDOM(editor.view);
+
+        const expectedTransactionCount = 1;
+
+        const dispatchTransactionSpy: jest.SpyInstance<
+          ReactEditorView['dispatchTransaction']
+        > = jest.spyOn(editor as any, 'dispatchTransaction');
+        editor.view!.dispatch(editor.view!.state.tr);
+        expect(dispatchTransactionSpy).toHaveBeenCalledTimes(
+          expectedTransactionCount,
+        );
+
+        // Manually invoke componentWillUnmount.
+        // This won't actually unmount it, but it allows us to check the logic
+        // peformed inside that lifecycle method, ahead of the actual unmounting,
+        // which allows us to dispatch from our view reference before it gets wiped out.
+        editor.componentWillUnmount();
+
+        // Simulate dispatching a stale async transaction after a dismount is triggered.
+        editor.view!.dispatch(editor.view!.state.tr);
+
+        // Because we block transactions once a dismount is imminent the surplus transaction
+        // should have been discarded and the count shouldn't have increased.
+        expect(dispatchTransactionSpy).toHaveBeenCalledTimes(
+          expectedTransactionCount,
+        );
+
+        wrapper.unmount();
+        expect(unmountSpy).toHaveBeenCalledTimes(2);
+      });
     });
 
     describe('when an invalid transaction is dispatched', () => {

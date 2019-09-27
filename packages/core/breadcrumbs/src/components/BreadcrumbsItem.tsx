@@ -36,6 +36,8 @@ interface IProps extends WithAnalyticsEventsProps {
    *  The custom component should accept a className prop so it can be styled
    *  and possibly all action handlers */
   component?: React.ClassType<any, any, any>;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 interface IState {
@@ -100,6 +102,7 @@ class BreadcrumbsItem extends React.Component<IProps, IState> {
       text,
       truncationWidth,
       component,
+      testId,
     } = this.props;
     const { hasOverflow } = this.state;
 
@@ -123,6 +126,7 @@ class BreadcrumbsItem extends React.Component<IProps, IState> {
           packageName,
           packageVersion,
         }}
+        testId={testId}
       >
         {text}
       </Button>

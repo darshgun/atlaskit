@@ -58,6 +58,8 @@ export const openFeedbackDialog = async (feedbackInfo?: FeedbackInfo) =>
 const feedbackDialog = (feedbackInfo: FeedbackInfo): EditorPlugin => {
   defaultFeedbackInfo = feedbackInfo;
   return {
+    name: 'feedbackDialog',
+
     pluginsOptions: {
       quickInsert: ({ formatMessage }) => [
         {

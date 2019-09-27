@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { SortOrder } from '@atlaskit/editor-common';
 import Tooltip from '@atlaskit/tooltip';
 
-enum StatusClassNames {
+export enum StatusClassNames {
   ASC = 'sorting-icon-svg__asc',
   DESC = 'sorting-icon-svg__desc',
+  SORTING_NOT_ALLOWED = 'sorting-icon-svg__not-allowed',
 }
 
 const Wrapper = styled.figure`
@@ -20,6 +21,10 @@ const Wrapper = styled.figure`
   position: absolute;
   right: 0;
   top: 0;
+
+  &.${StatusClassNames.SORTING_NOT_ALLOWED} {
+    cursor: not-allowed;
+  }
 
   svg {
     transition: transform 0.3s cubic-bezier(0.15, 1, 0.3, 1);
@@ -43,6 +48,7 @@ const getClassName = (status?: SortOrder) => {
 };
 
 type Props = {
+  isSortingAllowed: boolean;
   sortOrdered?: SortOrder;
 };
 
@@ -59,17 +65,24 @@ const getTooltipTitle = (status?: SortOrder): string => {
   return '';
 };
 
-const SortingIcon = ({ sortOrdered }: Props) => {
+const notAllowedTooltip = `⚠️  You can't sort a table with merged cell`;
+
+const SortingIcon = ({ isSortingAllowed, sortOrdered }: Props) => {
   const activated = sortOrdered !== SortOrder.NO_ORDER;
-  const sortingIconClassName = getClassName(sortOrdered);
+  const wrapperClassName = !isSortingAllowed
+    ? StatusClassNames.SORTING_NOT_ALLOWED
+    : '';
+  const content = isSortingAllowed
+    ? getTooltipTitle(sortOrdered)
+    : notAllowedTooltip;
 
   return (
-    <Tooltip delay={0} content={getTooltipTitle(sortOrdered)} position="top">
-      <Wrapper>
+    <Tooltip delay={0} content={content} position="top">
+      <Wrapper className={wrapperClassName}>
         <svg
           width={8}
           height={12}
-          className={sortingIconClassName}
+          className={getClassName(sortOrdered)}
           fillOpacity={activated ? 1 : 0.5}
         >
           <g fill="none" fillRule="evenodd">

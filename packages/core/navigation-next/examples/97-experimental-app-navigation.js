@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Route, Switch } from 'react-router';
+import { Route, Switch, withRouter } from 'react-router';
 import { MemoryRouter } from 'react-router-dom';
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
@@ -24,29 +24,36 @@ const customComponents = {
   ProjectSwitcher,
 };
 
+const App = withRouter(({ location: { pathname } }) => {
+  return (
+    <NavigationProvider>
+      <LayoutManagerWithViewController
+        customComponents={customComponents}
+        experimental_flyoutOnHover
+        experimental_alternateFlyoutBehaviour
+        experimental_horizontalGlobalNav
+        globalNavigation={AtlassianNavigation}
+        showContextualNavigation={pathname.startsWith('/issues')}
+      >
+        <div style={containerStyle}>
+          <RootViews />
+          <ContainerViews />
+          <Switch>
+            {routes.map(({ component, path }) => (
+              <Route key={path} component={component} path={path} />
+            ))}
+          </Switch>
+          <DummySkeletonContent />
+        </div>
+      </LayoutManagerWithViewController>
+    </NavigationProvider>
+  );
+});
+
 const HorizontalNavigationApp = () => {
   return (
     <MemoryRouter>
-      <NavigationProvider>
-        <LayoutManagerWithViewController
-          customComponents={customComponents}
-          experimental_flyoutOnHover
-          experimental_alternateFlyoutBehaviour
-          experimental_horizontalGlobalNav
-          globalNavigation={AtlassianNavigation}
-        >
-          <div style={containerStyle}>
-            <RootViews />
-            <ContainerViews />
-            <Switch>
-              {routes.map(({ component, path }) => (
-                <Route key={path} component={component} path={path} />
-              ))}
-            </Switch>
-            <DummySkeletonContent />
-          </div>
-        </LayoutManagerWithViewController>
-      </NavigationProvider>
+      <App />
     </MemoryRouter>
   );
 };

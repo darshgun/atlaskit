@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 import { mount, render, shallow } from 'enzyme';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
@@ -12,7 +12,6 @@ import {
 import ContentNavigation from '../../../ContentNavigation';
 import { ContainerNavigationMask } from '../../../ContentNavigation/primitives';
 import LayoutManager from '../../LayoutManager';
-import PageContent from '../../../PageContent';
 import ResizeTransition from '../../../ResizeTransition';
 
 import { LayoutEventListener } from '../../LayoutEvent';
@@ -24,12 +23,19 @@ import {
 import ResizeControl from '../../ResizeControl';
 import type { LayoutManagerProps } from '../../types';
 
-const GlobalNavigation = () => null;
-const ProductNavigation = () => null;
-
 describe('LayoutManager', () => {
   let defaultProps: $Shape<LayoutManagerProps>;
   let mockNavigationUIController: any;
+  const pageContentSelector = '[data-testid="Content"]';
+
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   beforeEach(() => {
     mockNavigationUIController = ({
       expand: Function.prototype,
@@ -39,8 +45,8 @@ describe('LayoutManager', () => {
     }: any);
     defaultProps = {
       navigationUIController: mockNavigationUIController,
-      globalNavigation: GlobalNavigation,
-      productNavigation: ProductNavigation,
+      globalNavigation: () => null,
+      productNavigation: () => null,
       containerNavigation: null,
       children: <div>Page content</div>,
       experimental_flyoutOnHover: false,
@@ -55,6 +61,16 @@ describe('LayoutManager', () => {
   it.skip('should render correctly', () => {
     const wrapper = shallow(<LayoutManager {...defaultProps} />);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should apply a default dataset to the content when datasets is not provided', () => {
+    expect(
+      render(<LayoutManager {...defaultProps} />)
+        .find('[data-testid="Content"]')
+        .data(),
+    ).toEqual({
+      testid: 'Content',
+    });
   });
 
   it('should apply a default dataset to the navigation container when datasets is not provided', () => {
@@ -87,12 +103,35 @@ describe('LayoutManager', () => {
     });
   });
 
+  it('should apply a custom dataset to the content when datasets is provided', () => {
+    expect(
+      render(
+        <LayoutManager
+          {...defaultProps}
+          datasets={{
+            content: {
+              'data-content': '',
+            },
+            contextualNavigation: {},
+            globalNavigation: {},
+            navigation: {},
+          }}
+        />,
+      )
+        .find('[data-content]')
+        .data(),
+    ).toEqual({
+      content: '',
+    });
+  });
+
   it('should apply a custom dataset to the navigation container when datasets is provided', () => {
     expect(
       render(
         <LayoutManager
           {...defaultProps}
           datasets={{
+            content: {},
             contextualNavigation: {},
             globalNavigation: { 'data-navigation': '' },
             navigation: {},
@@ -112,6 +151,7 @@ describe('LayoutManager', () => {
         <LayoutManager
           {...defaultProps}
           datasets={{
+            content: {},
             contextualNavigation: {},
             globalNavigation: { 'data-global-navigation': '' },
             navigation: {},
@@ -131,6 +171,7 @@ describe('LayoutManager', () => {
         <LayoutManager
           {...defaultProps}
           datasets={{
+            content: {},
             contextualNavigation: { 'data-contextual-navigation': '' },
             globalNavigation: {},
             navigation: {},
@@ -155,7 +196,7 @@ describe('LayoutManager', () => {
       HorizontalNavigationContainer,
     );
     const navigationContainer = layoutManager.find(NavigationContainer);
-    const pageContent = layoutManager.find(PageContent);
+    const pageContent = layoutManager.find(pageContentSelector);
 
     expect(composedGlobalNavigation.exists()).toBe(false);
     expect(horizontalNavigation.exists()).toBe(true);
@@ -164,10 +205,13 @@ describe('LayoutManager', () => {
         ? topOffset + HORIZONTAL_GLOBAL_NAV_HEIGHT
         : HORIZONTAL_GLOBAL_NAV_HEIGHT,
     );
-    expect(pageContent.props()).toMatchObject({
-      leftOffset: 0,
-      topOffset: HORIZONTAL_GLOBAL_NAV_HEIGHT,
-    });
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration('margin-left', '0');
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration(
+      'margin-top',
+      `${HORIZONTAL_GLOBAL_NAV_HEIGHT}px`,
+    );
   };
 
   const testVerticalNavigationLayout = (layoutManager, topOffset?: number) => {
@@ -178,17 +222,20 @@ describe('LayoutManager', () => {
       HorizontalNavigationContainer,
     );
     const navigationContainer = layoutManager.find(NavigationContainer);
-    const pageContent = layoutManager.find(PageContent);
+    const pageContent = layoutManager.find(pageContentSelector);
 
     expect(composedGlobalNavigation.exists()).toBe(true);
     expect(horizontalNavigation.exists()).toBe(false);
     expect(navigationContainer.props().topOffset).toBe(
       Number.isInteger(topOffset) ? topOffset : 0,
     );
-    expect(pageContent.props()).toMatchObject({
-      leftOffset: GLOBAL_NAV_WIDTH,
-      topOffset: 0,
-    });
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration(
+      'margin-left',
+      `${GLOBAL_NAV_WIDTH}px`,
+    );
+    // $FlowFixMe The current version of flow does not support type augmentation correctly
+    expect(pageContent).toHaveStyleDeclaration('margin-top', '0');
   };
 
   it('should render the layout correctly by default', () => {
@@ -233,6 +280,75 @@ describe('LayoutManager', () => {
       />,
     );
     testHorizontalNavigationLayout(layoutManager, 50);
+  });
+
+  it('should correctly re-render the horizontal global navigation when the globalNavigation prop is updated', () => {
+    let GlobalNavigation = () => <div>global navigation skeleton</div>;
+    const layoutManager = mount(
+      <LayoutManager
+        {...defaultProps}
+        experimental_horizontalGlobalNav
+        globalNavigation={GlobalNavigation}
+      />,
+    );
+
+    const prevHtml = layoutManager.find(GlobalNavigation).html();
+
+    GlobalNavigation = () => <div>global navigation</div>;
+    layoutManager.setProps({ globalNavigation: GlobalNavigation });
+
+    const html = layoutManager.find(GlobalNavigation).html();
+
+    expect({ html, prevHtml }).toEqual({
+      html: '<div>global navigation</div>',
+      prevHtml: '<div>global navigation skeleton</div>',
+    });
+  });
+
+  it('should correctly re-render the horizontal global navigation when the global navigation is updated internally', () => {
+    class GlobalNavigation extends Component<{}, {| loading: boolean |}> {
+      state = {
+        loading: true,
+      };
+
+      timeoutId: TimeoutID;
+
+      componentDidMount() {
+        this.timeoutId = setTimeout(() => {
+          this.setState({ loading: false });
+        });
+      }
+
+      componentWillUnmount() {
+        clearTimeout(this.timeoutId);
+      }
+
+      render() {
+        const { loading } = this.state;
+        if (loading) {
+          return <div>global navigation skeleton</div>;
+        }
+
+        return <div>global navigation</div>;
+      }
+    }
+
+    const layoutManager = mount(
+      <LayoutManager
+        {...defaultProps}
+        experimental_horizontalGlobalNav
+        globalNavigation={GlobalNavigation}
+      />,
+    );
+
+    const prevHtml = layoutManager.find(GlobalNavigation).html();
+    jest.runAllTimers();
+    const html = layoutManager.find(GlobalNavigation).html();
+
+    expect({ html, prevHtml }).toEqual({
+      html: '<div>global navigation</div>',
+      prevHtml: '<div>global navigation skeleton</div>',
+    });
   });
 
   describe('Flyout', () => {
@@ -396,7 +512,13 @@ describe('LayoutManager', () => {
         });
 
         it('should open when mousing over NavigationContainer with a delay of 200ms', () => {
-          const wrapper = mount(<LayoutManager {...defaultProps} />);
+          const ProductNavigation = () => null;
+          const wrapper = mount(
+            <LayoutManager
+              {...defaultProps}
+              productNavigation={ProductNavigation}
+            />,
+          );
           expect(wrapper.state('flyoutIsOpen')).toBe(false);
           wrapper.find(NavigationContainer).simulate('mouseover');
 
@@ -652,8 +774,8 @@ describe('LayoutManager', () => {
       const wrapper = mount(<LayoutManager {...handlers} {...defaultProps} />);
       expect(
         wrapper
-          .find(PageContent)
           .find(ResizeTransition)
+          .last()
           .props(),
       ).toEqual(expect.objectContaining(handlers));
     });
@@ -859,11 +981,6 @@ describe('LayoutManager', () => {
       expect(productNav).toHaveBeenCalledTimes(1);
 
       wrapper.setState({ itemIsDragging: true });
-
-      expect(globalNav).toHaveBeenCalledTimes(1);
-      expect(productNav).toHaveBeenCalledTimes(1);
-
-      wrapper.setState({ mouseIsOverNavigation: true });
 
       expect(globalNav).toHaveBeenCalledTimes(1);
       expect(productNav).toHaveBeenCalledTimes(1);

@@ -56,9 +56,13 @@ export const getPreferredVideoArtifact = (
   return undefined;
 };
 
-class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
+export class InlinePlayerBase extends Component<
+  InlinePlayerProps,
+  InlinePlayerState
+> {
   subscription?: Subscription;
   state: InlinePlayerState = {};
+  divRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   static defaultProps = {
     dimensions: defaultImageCardDimensions,
@@ -186,6 +190,7 @@ class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
         style={this.getStyle()}
         selected={selected}
         onClick={onClick}
+        innerRef={this.divRef}
       >
         <InactivityDetector>
           {() => (

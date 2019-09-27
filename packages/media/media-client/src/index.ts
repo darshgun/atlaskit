@@ -137,3 +137,5 @@ export {
   MediaBlobUrlAttrs,
   objectToQueryString,
 } from './utils/url';
+
+export { RECENTS_COLLECTION } from './constants';

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { EditorPresetProps } from './types';
 import { PresetProvider } from '../Editor';
 import {
   pastePlugin,
@@ -25,15 +26,26 @@ import {
   statusPlugin,
   mediaPlugin,
   mentionsPlugin,
-  emojiPlugin,
   tasksAndDecisionsPlugin,
   insertBlockPlugin,
+  basePlugin,
+  placeholderPlugin,
+  editorDisabledPlugin,
+  typeAheadPlugin,
+  floatingToolbarPlugin,
+  gapCursorPlugin,
 } from '../../../plugins';
 import { MentionProvider } from '@atlaskit/mention/resource';
 import { MediaProvider } from '../../../plugins/media';
+import {
+  removeExcludes,
+  enableExperimental,
+  ExperimentalPluginMap,
+} from './utils';
 
 interface EditorPresetCXHTMLProps {
   children?: React.ReactNode;
+  placeholder?: string;
   mentionProvider?: Promise<MentionProvider>;
   mediaProvider?: Promise<MediaProvider>;
 }
@@ -42,15 +54,17 @@ export function EditorPresetCXHTML({
   children,
   mentionProvider,
   mediaProvider,
-}: EditorPresetCXHTMLProps) {
-  const plugins = [
+  placeholder,
+  excludes,
+  experimental,
+}: EditorPresetCXHTMLProps & EditorPresetProps) {
+  let plugins = [
     pastePlugin(),
     blockTypePlugin(),
     clearMarksOnChangeToEmptyDocumentPlugin(),
     hyperlinkPlugin(),
     textFormattingPlugin({}),
     widthPlugin(),
-    unsupportedContentPlugin(),
     quickInsertPlugin(),
     tablesPlugin({
       tableOptions: { advanced: true },
@@ -66,11 +80,15 @@ export function EditorPresetCXHTML({
     datePlugin(),
     layoutPlugin(),
     indentationPlugin(),
-    cardPlugin(), // experimental
+    cardPlugin(),
     statusPlugin({ menuDisabled: false }),
     tasksAndDecisionsPlugin(),
-    emojiPlugin(),
     insertBlockPlugin({}),
+    placeholderPlugin({ placeholder }),
+    editorDisabledPlugin(),
+    typeAheadPlugin(),
+    floatingToolbarPlugin(),
+    gapCursorPlugin(),
   ];
 
   if (mentionProvider) {
@@ -88,6 +106,20 @@ export function EditorPresetCXHTML({
       }),
     );
   }
+
+  const experimentalMap: ExperimentalPluginMap = new Map();
+  plugins = removeExcludes(plugins, excludes);
+  plugins = enableExperimental(plugins, experimental, experimentalMap);
+
+  // Add plugins that cannot be excluded for this preset.
+  plugins.push(
+    unsupportedContentPlugin(),
+    basePlugin({
+      allowInlineCursorTarget: true,
+      allowScrollGutter: () =>
+        document.querySelector('.fabric-editor-popup-scroll-parent'),
+    }),
+  );
 
   return <PresetProvider value={plugins}>{children}</PresetProvider>;
 }

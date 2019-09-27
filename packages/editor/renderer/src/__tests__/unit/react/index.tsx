@@ -164,6 +164,13 @@ describe('Renderer - ReactSerializer', () => {
       expect(headings.at(1).prop('headingId')).toEqual('Heading-2');
       expect(headings.at(2).prop('headingId')).toEqual('Heading-1.1');
       expect(headings.at(3).prop('headingId')).toEqual('Heading-2.1');
+      expect(headings.at(4).prop('headingId')).toEqual(
+        'with-special-characters-1',
+      );
+      expect(headings.at(5).prop('headingId')).toEqual('start-with-a-number');
+      expect(headings.at(6).prop('headingId')).toEqual(
+        'start-with-mixed-invalid-characters',
+      );
     });
 
     it('should not render heading ids if "disableHeadingIDs" is true', () => {

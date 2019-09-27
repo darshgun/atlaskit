@@ -237,6 +237,11 @@ export default class Page {
     return elem.getText();
   }
 
+  async getValue(selector) {
+    const elem = await this.browser.$(selector);
+    return elem.getValue();
+  }
+
   async execute(func, ...args) {
     return this.browser.execute(func, ...args);
   }

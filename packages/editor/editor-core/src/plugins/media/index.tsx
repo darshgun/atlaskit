@@ -72,6 +72,8 @@ const mediaPlugin = (
   pluginOptions?: MediaPMPluginOptions,
   appearance?: EditorAppearance,
 ): EditorPlugin => ({
+  name: 'media',
+
   nodes() {
     return [
       { name: 'mediaGroup', node: mediaGroup },
