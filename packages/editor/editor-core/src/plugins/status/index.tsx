@@ -29,6 +29,8 @@ export interface StatusPluginOptions {
 }
 
 const baseStatusPlugin = (options?: StatusPluginOptions): EditorPlugin => ({
+  name: 'status',
+
   nodes() {
     return [{ name: 'status', node: status }];
   },

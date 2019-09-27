@@ -9,8 +9,10 @@ type Props = {|
   children: ViewController => Node,
 |};
 
+const to = [ViewController];
+
 const ViewControllerSubscriber = (props: Props) => (
-  <Subscribe to={[ViewController]} {...props} />
+  <Subscribe to={to} {...props} />
 );
 
 export default ViewControllerSubscriber;

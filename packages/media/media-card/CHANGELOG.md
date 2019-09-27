@@ -1,5 +1,15 @@
 # @atlaskit/media-card
 
+## 65.3.0
+
+### Minor Changes
+
+- [minor][e44b5324de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e44b5324de):
+
+  Card now sends "copied file" on card copy event in editor and renderer- [minor][ab53f33dc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab53f33dc5):
+
+  Adding operational events for media card component
+
 ## 65.2.1
 
 - Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):

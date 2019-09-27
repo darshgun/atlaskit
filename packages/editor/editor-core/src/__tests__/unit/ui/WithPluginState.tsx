@@ -23,6 +23,8 @@ describe(name, () => {
     new Promise(resolve => window.setTimeout(() => resolve(cb()), delay));
   const createPlugin = (state: any, key: PluginKey): EditorPlugin => {
     return {
+      name: 'withPluginState',
+
       pmPlugins() {
         return [
           {

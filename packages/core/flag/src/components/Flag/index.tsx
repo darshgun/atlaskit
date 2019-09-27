@@ -100,7 +100,13 @@ class Flag extends Component<FlagProps, State> {
   };
 
   renderBody = () => {
-    const { actions, appearance, description, linkComponent } = this.props;
+    const {
+      actions,
+      appearance,
+      description,
+      linkComponent,
+      testId,
+    } = this.props;
     const isExpanded = !this.isBold() || this.state.isExpanded;
 
     return (
@@ -112,6 +118,7 @@ class Flag extends Component<FlagProps, State> {
           actions={actions}
           appearance={appearance}
           linkComponent={linkComponent}
+          data-testid={testId}
         />
       </Expander>
     );
@@ -132,17 +139,18 @@ class Flag extends Component<FlagProps, State> {
       onFocus,
       onMouseOut,
       onBlur,
+      testId,
     } = this.props;
     const autoDismissProps = { onMouseOver, onFocus, onMouseOut, onBlur };
     const OptionalDismissButton = this.renderToggleOrDismissButton;
     const Body = this.renderBody;
-
     return (
       <Container
         appearance={appearance}
         role="alert"
         tabIndex={0}
         onMouseDown={this.handleMouseDown}
+        data-testid={testId}
         {...autoDismissProps}
       >
         <Header>

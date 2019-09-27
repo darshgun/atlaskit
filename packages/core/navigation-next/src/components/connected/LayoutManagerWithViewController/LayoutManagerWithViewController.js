@@ -26,6 +26,7 @@ const LayoutManagerWithViewController = ({
   getRefs,
   topOffset,
   shouldHideGlobalNavShadow,
+  showContextualNavigation,
 }: LayoutManagerWithViewControllerProps) => {
   return (
     <AsyncLayoutManagerWithViewController
@@ -54,6 +55,7 @@ const LayoutManagerWithViewController = ({
       firstSkeletonToRender={firstSkeletonToRender}
       topOffset={topOffset}
       shouldHideGlobalNavShadow={shouldHideGlobalNavShadow}
+      showContextualNavigation={showContextualNavigation}
     >
       {children}
     </AsyncLayoutManagerWithViewController>

@@ -54,7 +54,7 @@ export default function Example() {
   return (
     <Wrapper>
       <Content>
-        <EditorPresetCXHTML>
+        <EditorPresetCXHTML placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
           <FullPageEditor
             contentComponents={[
               <TitleArea key="title=placeholder" placeholder="Some text..." />,
@@ -69,7 +69,6 @@ export default function Example() {
               />,
             ]}
             allowDynamicTextSizing={true}
-            placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule."
           />
         </EditorPresetCXHTML>
       </Content>

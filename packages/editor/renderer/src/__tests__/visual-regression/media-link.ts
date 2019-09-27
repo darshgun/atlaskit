@@ -1,6 +1,8 @@
 import { snapshot, initRendererWithADF } from './_utils';
 import mediaLink from './__fixtures__/media-link.adf.json';
 import { Page } from 'puppeteer';
+import { defaultMediaLinkOpacity } from '../../react/marks/link';
+import { mediaSingleClassName } from '@atlaskit/editor-common';
 
 describe('media link:', () => {
   let page: Page;
@@ -14,10 +16,27 @@ describe('media link:', () => {
     });
   });
 
-  it(`should have opacity 0.8 when hover media link`, async () => {
-    await page.waitForSelector(`a:first-of-type`);
-    await page.hover(`a:first-of-type`);
-    page.waitFor(1000);
+  it(`should have opacity ${defaultMediaLinkOpacity} when hover media link`, async () => {
+    await page.waitForSelector('a:first-of-type');
+    await page.hover('a:first-of-type');
+
+    await page.waitForFunction(
+      (selector, opacity) => {
+        const element = document.querySelector(selector);
+        if (element instanceof Element) {
+          return (
+            window
+              .getComputedStyle(element, null)
+              .getPropertyValue('opacity') === opacity
+          );
+        }
+        return false;
+      },
+      {},
+      `a:first-of-type > .${mediaSingleClassName}`,
+      defaultMediaLinkOpacity,
+    );
+
     await snapshot(page);
   });
 });

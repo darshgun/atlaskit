@@ -42,6 +42,7 @@ export default class App extends Component<
     isAlternateFlyoutBehaviourEnabled: boolean,
     isFullWitdhFlyoutEnabled: boolean,
     isHideNavVisuallyEnabled: boolean,
+    showContextualNavigation: boolean,
   },
 > {
   state = {
@@ -50,6 +51,7 @@ export default class App extends Component<
     isAlternateFlyoutBehaviourEnabled: true,
     isFullWitdhFlyoutEnabled: false,
     isHideNavVisuallyEnabled: false,
+    showContextualNavigation: true,
   };
 
   onDebugToggle = () => {
@@ -78,6 +80,12 @@ export default class App extends Component<
     }));
   };
 
+  onToggleContextualNavigation = () => {
+    this.setState(state => ({
+      showContextualNavigation: !state.showContextualNavigation,
+    }));
+  };
+
   render() {
     const {
       isDebugEnabled,
@@ -85,6 +93,7 @@ export default class App extends Component<
       isAlternateFlyoutBehaviourEnabled,
       isFullWitdhFlyoutEnabled,
       isHideNavVisuallyEnabled,
+      showContextualNavigation,
     } = this.state;
 
     return (
@@ -99,6 +108,7 @@ export default class App extends Component<
             }
             experimental_fullWidthFlyout={isFullWitdhFlyoutEnabled}
             globalNavigation={DefaultGlobalNavigation}
+            showContextualNavigation={showContextualNavigation}
           >
             <div style={{ padding: 40 }}>
               <RootViews />
@@ -133,6 +143,11 @@ export default class App extends Component<
               <ToggleStateless
                 isChecked={isHideNavVisuallyEnabled}
                 onChange={this.onHideNavVisuallyToggle}
+              />
+              <Label label="Toggle contextual navigation" />
+              <ToggleStateless
+                isChecked={showContextualNavigation}
+                onChange={this.onToggleContextualNavigation}
               />
               <Label label="Toggle debug logger" />
               <ToggleStateless

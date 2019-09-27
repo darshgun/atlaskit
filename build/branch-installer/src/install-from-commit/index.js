@@ -183,7 +183,7 @@ async function _installFromCommit(commitHash = '', options = {}) {
       const tarUrl = `${CDN_URL_BASE}/${commitHash}/dists/${
         manifest[pkg].tarFile
       }`;
-      cmdArgs.push(`${pkg}@${tarUrl}`);
+      cmdArgs.push(`${pkg}@"${tarUrl}"`);
     }
   });
 

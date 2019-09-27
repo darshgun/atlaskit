@@ -73,6 +73,8 @@ const analyticsPayload = (
 });
 
 const saveOnEnterPlugin = (): EditorPlugin => ({
+  name: 'saveOnEnter',
+
   pmPlugins() {
     return [
       {

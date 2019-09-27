@@ -2,7 +2,7 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "noImplicitAny": true,
+    "noImplicitAny": true
   },
   "include": [
     "./src/**/*.ts",
