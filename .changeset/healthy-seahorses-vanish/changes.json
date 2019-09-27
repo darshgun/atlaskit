@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/popup", "type": "patch" }],
+  "dependents": []
+}
