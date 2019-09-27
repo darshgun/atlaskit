@@ -1,1 +1,0 @@
-Only show try links if the product is not provisioned for any of the available sites

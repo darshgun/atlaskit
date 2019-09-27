@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher-vanilla
 
+## 2.1.0
+
+### Minor Changes
+
+- [minor][42afbf2163](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42afbf2163):
+
+  Only show try links if the product is not provisioned for any of the available sites
+
 ## 2.0.0
 
 ### Major Changes
