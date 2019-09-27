@@ -19,7 +19,6 @@ describe('prepare', () => {
           disableCustomLinks: true,
           disableHeadings: true,
           disableRecentContainers: true,
-          enableUserCentricProducts: true,
           product: 'opsgenie',
         }),
       ).toThrow('Atlassian switcher: Missing analytics listener');
@@ -37,7 +36,6 @@ describe('prepare', () => {
           disableCustomLinks: true,
           disableHeadings: true,
           disableRecentContainers: true,
-          enableUserCentricProducts: true,
           product: 'opsgenie',
         },
         analyticsListener,
@@ -57,7 +55,6 @@ describe('prepare', () => {
         disableCustomLinks: true,
         disableHeadings: true,
         disableRecentContainers: true,
-        enableUserCentricProducts: true,
         product: 'opsgenie',
       };
 
@@ -76,7 +73,6 @@ describe('prepare', () => {
         disableCustomLinks: true,
         disableHeadings: true,
         disableRecentContainers: true,
-        enableUserCentricProducts: true,
         product: 'opsgenie',
       };
 
@@ -102,7 +98,6 @@ describe('prepare', () => {
         disableCustomLinks: true,
         disableHeadings: true,
         disableRecentContainers: true,
-        enableUserCentricProducts: true,
         product: 'opsgenie',
       };
 
