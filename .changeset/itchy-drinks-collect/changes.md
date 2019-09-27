@@ -1,0 +1,1 @@
+MS-2397 Fix bug where media with same ids haven't been upgrading attributes
