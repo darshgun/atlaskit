@@ -1,5 +1,13 @@
 # @atlaskit/badge
 
+## 13.1.0
+
+### Minor Changes
+
+- [minor][a97f1c5b5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a97f1c5b5e):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 13.0.0
 
 ### Major Changes

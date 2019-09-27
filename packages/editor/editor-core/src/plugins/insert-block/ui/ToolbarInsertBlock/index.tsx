@@ -801,6 +801,7 @@ class ToolbarInsertBlock extends React.PureComponent<
     'atlassian.editor.format.horizontalrule.button',
     (inputMethod: TOOLBAR_MENU_TYPE): boolean => {
       const { editorView } = this.props;
+
       const tr = createHorizontalRule(
         editorView.state,
         editorView.state.selection.from,

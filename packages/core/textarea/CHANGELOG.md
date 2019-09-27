@@ -1,5 +1,13 @@
 # @atlaskit/textarea
 
+## 2.2.0
+
+### Minor Changes
+
+- [minor][5679449552](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5679449552):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 2.1.10
 
 ### Patch Changes

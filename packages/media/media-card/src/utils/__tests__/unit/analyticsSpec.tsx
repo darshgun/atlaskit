@@ -9,8 +9,8 @@ import {
 import { FabricChannel } from '@atlaskit/analytics-listeners';
 import {
   createAndFireMediaEvent,
-  MediaCardAnalyticsPayolad,
-  MediaCardAnalyticsPayoladBase,
+  MediaCardAnalyticsPayload,
+  MediaCardAnalyticsPayloadBase,
   createAndFireCustomMediaEvent,
   getUIAnalyticsContext,
   getBaseAnalyticsContext,
@@ -21,7 +21,7 @@ import {
 } from '../../../version.json';
 import { FileDetails } from '@atlaskit/media-client';
 
-const somePayload: MediaCardAnalyticsPayoladBase = {
+const somePayload: MediaCardAnalyticsPayloadBase = {
   eventType: 'ui',
   action: 'the-action',
   actionSubject: 'the-subject',
@@ -33,7 +33,7 @@ const somePayload: MediaCardAnalyticsPayoladBase = {
   },
 };
 
-const mediaPayload: MediaCardAnalyticsPayolad = {
+const mediaPayload: MediaCardAnalyticsPayload = {
   ...somePayload,
   attributes: {
     packageName,
@@ -105,10 +105,11 @@ describe('Media Analytics', () => {
     };
 
     const expectedContextData = {
+      actionSubjectId: 'some-id',
       attributes: {
         packageVersion,
         packageName,
-        componentName: 'MediaCard',
+        componentName: 'mediaCard',
         fileAttributes: {
           fileSource: 'mediaCard',
           fileMediatype: 'video',
@@ -119,7 +120,7 @@ describe('Media Analytics', () => {
       },
     };
 
-    const contextData = getUIAnalyticsContext(metadata);
+    const contextData = getUIAnalyticsContext('some-id', metadata);
     expect(contextData).toMatchObject(expectedContextData);
   });
 
@@ -127,7 +128,7 @@ describe('Media Analytics', () => {
     const expectedContextData = {
       packageVersion,
       packageName,
-      componentName: 'MediaCard',
+      componentName: 'mediaCard',
     };
 
     const contextData = getBaseAnalyticsContext();

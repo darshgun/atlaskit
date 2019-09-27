@@ -23,6 +23,8 @@ import {
 export { pluginKey };
 
 const layoutPlugin = (): EditorPlugin => ({
+  name: 'layout',
+
   nodes() {
     return [
       { name: 'layoutSection', node: layoutSection },

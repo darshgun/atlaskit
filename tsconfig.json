@@ -79,6 +79,8 @@
     "./typings/webpack.d.ts",
     "./typings/yarn-deduplicate.d.ts",
     "./typings/css-color-names/index.d.ts",
+    "./typings/bolt/index.d.ts",
+    "./typings/concurrently/index.d.ts",
     "./typings/pubnub.d.ts"
   ]
 }

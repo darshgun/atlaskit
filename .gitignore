@@ -1,5 +1,7 @@
 # ignore dependency caches
 node_modules/
+.yalc/
+yalc.lock
 
 # ignore builds
 dist/

@@ -12,6 +12,8 @@ interface ExtensionPluginOptions {
 }
 
 const extensionPlugin = (options?: ExtensionPluginOptions): EditorPlugin => ({
+  name: 'extension',
+
   nodes() {
     return [
       { name: 'extension', node: extension },

@@ -2,6 +2,7 @@ import {
   createEditorFactory,
   date,
   p,
+  inlineCard,
   status,
   td,
   mention,
@@ -9,8 +10,15 @@ import {
   BuilderContent,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import { compareNodes } from '../../../utils/compareNodes';
+import { createCompareNodes } from '../../../utils/compareNodes';
 import { mention as mentionDataTest } from '@atlaskit/util-data-test';
+import { CardAttributes, UrlType } from '@atlaskit/adf-schema';
+
+const compareNodes = createCompareNodes({
+  getInlineCardTextFromStore() {
+    return null;
+  },
+});
 
 enum CompareResult {
   greater = 'greater',
@@ -37,6 +45,7 @@ describe('Compare Nodes', () => {
         mentionProvider: Promise.resolve(
           mentionDataTest.storyData.resourceProvider,
         ),
+        UNSAFE_cards: {},
       },
     }));
   });
@@ -178,6 +187,44 @@ describe('Compare Nodes', () => {
         );
 
         expect(compareNodes(nodeA, nodeB)).toBe(compareResultToValue[expected]);
+      },
+    );
+  });
+
+  describe('Inline card', () => {
+    const atlassianUrl = 'http://atlassian.com';
+    const trelloUrl = 'http://trello.com';
+    const bitbucketUrl = 'http://bitbucket.com';
+    const fakeStorage = new Map([
+      [trelloUrl, 'a'],
+      [atlassianUrl, 'b'],
+      [bitbucketUrl, 'c'],
+    ]);
+    const getInlineCardTextFromStore = (attrs: CardAttributes) => {
+      return fakeStorage.get((attrs as UrlType).url) || null;
+    };
+
+    test.each([
+      [trelloUrl, CompareResult.less, bitbucketUrl],
+      [atlassianUrl, CompareResult.greater, trelloUrl],
+      [atlassianUrl, CompareResult.less, bitbucketUrl],
+    ])(
+      `should node p(mention({ text: '%s' })) be %s than node p(mention({ text: '%s' }))`,
+      (urlA: string, expected: CompareResult, urlB: string) => {
+        const nodeA = td()(p(inlineCard({ url: urlA })()))(
+          editorView.state.schema,
+        );
+        const nodeB = td()(p(inlineCard({ url: urlB })()))(
+          editorView.state.schema,
+        );
+
+        const customCompareNodes = createCompareNodes({
+          getInlineCardTextFromStore,
+        });
+
+        expect(customCompareNodes(nodeA, nodeB)).toBe(
+          compareResultToValue[expected],
+        );
       },
     );
   });

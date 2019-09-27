@@ -101,7 +101,7 @@ const tableSortableColumnStyle = `
     cursor: pointer;
 
     &.${RendererCssClassName.SORTABLE_COLUMN_NOT_ALLOWED} {
-      cursor: not-allowed;
+      cursor: default;
     }
 
     .${RendererCssClassName.SORTABLE_COLUMN_ICON} {

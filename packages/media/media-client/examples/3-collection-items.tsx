@@ -5,11 +5,11 @@ import { Subscription } from 'rxjs/Subscription';
 import { Card } from '@atlaskit/media-card';
 import Button from '@atlaskit/button';
 import { CardsWrapper, Header } from '../example-helpers/styled';
-import { FileIdentifier } from '../src';
+import { FileIdentifier, RECENTS_COLLECTION } from '../src';
 
 const mediaClient = createUserMediaClient();
 
-const collectionName = 'recents';
+const collectionName = RECENTS_COLLECTION;
 export interface ExampleState {
   fileIds: string[];
 }

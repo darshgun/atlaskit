@@ -1,3 +1,4 @@
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { mockStore, mockFetcher } from '@atlaskit/media-test-helpers';
 import {
   getFilesInRecentsFullfilled,
@@ -63,7 +64,7 @@ describe('getFilesInRecents middleware', () => {
       await requestRecentFiles(store);
 
       expect(getItems).toHaveBeenCalledTimes(1);
-      expect(getItems).toBeCalledWith('recents');
+      expect(getItems).toBeCalledWith(RECENTS_COLLECTION);
       expect(store.dispatch).toHaveBeenCalledTimes(2);
       expect(store.dispatch).toHaveBeenCalledWith(
         getFilesInRecentsFullfilled([]),
