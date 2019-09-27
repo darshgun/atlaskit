@@ -5,7 +5,7 @@ import { Identifier } from '@atlaskit/media-client';
 
 import { ModalSpinner } from '@atlaskit/media-ui';
 import AsyncMediaViewer, {
-  MediaViewerWithContextMediaClientConfigProps,
+  MediaViewerWithMediaClientConfigProps,
   AsyncMediaViewerState,
 } from '../../components/media-viewer-loader';
 
@@ -38,7 +38,7 @@ describe('Async Media Viewer Loader', () => {
 
     it('should render ModalSpinner with invertSpinnerColor if the async components were NOT resolved', async () => {
       const wrapper = mount<
-        MediaViewerWithContextMediaClientConfigProps,
+        MediaViewerWithMediaClientConfigProps,
         AsyncMediaViewerState
       >(<AsyncMediaViewer {...props} />);
 
@@ -64,7 +64,7 @@ describe('Async Media Viewer Loader', () => {
 
     it('should render ModalSpinner with invertSpinnerColor if the async components were NOT resolved', async () => {
       const wrapper = mount<
-        MediaViewerWithContextMediaClientConfigProps,
+        MediaViewerWithMediaClientConfigProps,
         AsyncMediaViewerState
       >(<AsyncMediaViewer {...props} />);
 
@@ -90,7 +90,7 @@ describe('Async Media Viewer Loader', () => {
 
     it('should render MediaViewer component', async () => {
       const wrapper = await mount<
-        MediaViewerWithContextMediaClientConfigProps,
+        MediaViewerWithMediaClientConfigProps,
         AsyncMediaViewerState
       >(<AsyncMediaViewer {...props} />);
 
@@ -101,7 +101,7 @@ describe('Async Media Viewer Loader', () => {
 
     it('should render Error boundary component', async () => {
       const wrapper = await mount<
-        MediaViewerWithContextMediaClientConfigProps,
+        MediaViewerWithMediaClientConfigProps,
         AsyncMediaViewerState
       >(<AsyncMediaViewer {...props} />);
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ClipboardProps } from './clipboard';
-import { WithContextOrMediaClientConfigProps } from '@atlaskit/media-client';
+import { WithMediaClientConfigProps } from '@atlaskit/media-client';
 
-type ClipboardWithMediaClientConfigProps = WithContextOrMediaClientConfigProps<
+type ClipboardWithMediaClientConfigProps = WithMediaClientConfigProps<
   ClipboardProps
 >;
 type ClipboardWithMediaClientConfigComponent = React.ComponentType<
