@@ -25,7 +25,8 @@ import {
   ProductKey,
   RecommendationsEngineResponse,
   Product,
-  CurrentSiteResponse,
+  ProvisionedProducts,
+  CurrentSite,
 } from '../types';
 import messages from './messages';
 import PeopleLogo from './assets/people';
@@ -160,7 +161,7 @@ const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
     '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
 };
 
-const TO_WORKLENS_PRODUCT_KEY = {
+const TO_WORKLENS_PRODUCT_KEY: { [Key in ProductKey]: WorklensProductType } = {
   [ProductKey.CONFLUENCE]: WorklensProductType.CONFLUENCE,
   [ProductKey.JIRA_CORE]: WorklensProductType.JIRA_BUSINESS,
   [ProductKey.JIRA_SERVICE_DESK]: WorklensProductType.JIRA_SERVICE_DESK,
@@ -292,15 +293,13 @@ export const getAdministrationLinks = (
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
 
 export const getSuggestedProductLink = (
-  currentSite: CurrentSiteResponse,
+  provisionedProducts: ProvisionedProducts,
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
   return productRecommendations
     .filter(legacyProduct => {
       const productKey = TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey];
-      return !currentSite.products.find(
-        product => product.productType === productKey,
-      );
+      return !provisionedProducts[productKey];
     })
     .map(legacyProduct => {
       const productKey = TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey];
@@ -312,9 +311,21 @@ export const getSuggestedProductLink = (
     .slice(0, PRODUCT_RECOMMENDATION_LIMIT);
 };
 
+export const getProvisionedProducts = (
+  availableProducts: AvailableProductsResponse,
+): ProvisionedProducts => {
+  const provisionedProducts = {} as ProvisionedProducts;
+  availableProducts.sites.forEach(site =>
+    site.availableProducts.forEach(
+      product => (provisionedProducts[product.productType] = true),
+    ),
+  );
+  return provisionedProducts;
+};
+
 export const getCustomLinkItems = (
   list: Array<CustomLink>,
-  currentSite: CurrentSiteResponse,
+  currentSite: CurrentSite,
 ): SwitcherItemType[] => {
   const defaultProductCustomLinks = [
     `${currentSite.url}/secure/MyJiraHome.jspa`,
@@ -334,7 +345,7 @@ export const getCustomLinkItems = (
 
 export const getRecentLinkItems = (
   list: Array<RecentContainer>,
-  currentSite: CurrentSiteResponse,
+  currentSite: CurrentSite,
 ): RecentItemType[] => {
   const isAnyJiraProductActive = Boolean(
     currentSite.products.find(
