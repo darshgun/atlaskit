@@ -1,0 +1,1 @@
+remove deprecated context property from media components in favour of mediaClientConfig
