@@ -3,9 +3,8 @@ import flattenChangesets from '@atlaskit/build-releases/version/flattenChangeset
 import yaml from 'js-yaml';
 
 import getCommits from './get-commits';
-import getFSChangesets from '././get-fs-changesets';
 import getChangesets from '././get-changesets';
-import { legacyChangesetRepos } from './config';
+import { legacyChangesetRepos, v2ChangesetRepos } from './config';
 
 const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
   <p><strong>Warning:</strong> No packages will be released with this PR</p>
@@ -46,9 +45,19 @@ const releasedPackagesMessage = releases => {
   </div>`;
 };
 
+const yamlToReleases = changesets =>
+  changesets
+    .map(changeset => {
+      const result = /\s*---([^]*?)\n\s*---\n([^]+)/.exec(changeset);
+      const [, roughReleases] = result;
+      const yamlStuff = yaml.safeLoad(roughReleases);
+      return Object.entries(yamlStuff).map(([name, type]) => ({ name, type }));
+    })
+    .flat();
+
 const {
   // user,
-  // repo,
+  repo,
   pullrequestid,
   repoid,
   sourcehash,
@@ -56,18 +65,15 @@ const {
 } = queryString.parse(window.location.search);
 
 const user = 'jackrgardner';
-const repo = 'changeset-testing';
 
 // Only retrieve one type of changesets. Legacy commit changesets are only supported in repos
 // defined in config.js
-// const changesetPromise =
-//   legacyChangesetRepos.indexOf(repoid) >= 0
-//     ? getCommits(user, repo, pullrequestid)
-//     : getFSChangesets(user, repo, sourcehash, destinationhash);
+const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
+const v2 = v2ChangesetRepos.indexOf(repoid) >= 0;
 
-const changesetPromise = getChangesets(user, repo, sourcehash, destinationhash);
-
-console.log('Promises:', changesetPromise);
+const changesetPromise = legacy
+  ? getCommits(user, repo, pullrequestid)
+  : getChangesets(user, repo, sourcehash, destinationhash, v2);
 
 changesetPromise
   .then(changesets => {
@@ -75,18 +81,10 @@ changesetPromise
       document.body.innerHTML = noChangesetMessage;
       return;
     }
-    console.warn('After resolved:', changesets);
 
-    // const releases = flattenChangesets(changesets);
-    // const releases = changesets
-    //   .map(changeset => {
-    //     const result = /\s*---([^]*?)\n\s*---\n([^]+)/.exec(changeset);
-    //     const [, roughReleases, ] = result;
-    //     console.warn(roughReleases);
-    //     const yamlStuff = yaml.safeLoad(roughReleases);
-    //     return Object.entries(yamlStuff).map(([name, type]) => ({ name, type }));
-    //   })
-    //   .flat();
+    const releases = v2
+      ? yamlToReleases(changesets)
+      : flattenChangesets(changesets);
 
     document.body.innerHTML = releasedPackagesMessage(releases);
   })

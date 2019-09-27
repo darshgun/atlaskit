@@ -6,18 +6,16 @@ function getFileUrl(user, repo, hash, filePath) {
   return `/2.0/repositories/${user}/${repo}/src/${hash}/${filePath}`;
 }
 
-function promisifyAPRequest(url) {
-  console.log('making API req', url);
+function promisifyAPRequest(url, type = 'json') {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
       request({
         url,
+        responseType: type,
         success(response) {
-          console.log('SUCCESS:', response);
           resolve(response);
         },
         error(error) {
-          console.warn('ERROR:', error);
           reject(error);
         },
       });
@@ -31,7 +29,6 @@ function getFullDiffStat(url, allValues = []) {
     if (res.next) {
       return getFullDiffStat(res.next, values);
     }
-    // console.log('VALUES', values);
     return values;
   });
 }
@@ -46,6 +43,7 @@ export default function getChangesetInfo(
   repo,
   sourcehash,
   destinationhash,
+  v2,
 ) {
   const diffstatUrl = getDiffStatUrl(user, repo, sourcehash, destinationhash);
   return getFullDiffStat(diffstatUrl).then(allDiffStats => {
@@ -55,11 +53,12 @@ export default function getChangesetInfo(
         diff =>
           diff.new &&
           diff.new.path &&
-          diff.new.path.match(/\.changeset\/[^/]+?\.md$/),
+          diff.new.path.match(
+            v2 ? /\.changeset\/[^/]+?\.md$/ : /\.changeset\/.+?\/changes.json$/,
+          ),
       )
-      .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path));
-    console.log('file urls', relevantDiffs);
-    // .map(promisifyAPRequest);
-    return Promise.all(relevantDiffs.map(promisifyAPRequest));
+      .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
+      .map(url => promisifyAPRequest(url, v2 ? 'text' : 'json'));
+    return Promise.all(relevantDiffs);
   });
 }
