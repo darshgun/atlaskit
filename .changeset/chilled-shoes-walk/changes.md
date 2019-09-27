@@ -1,0 +1,1 @@
+Removes @atlaskit/docs package from dependencies
