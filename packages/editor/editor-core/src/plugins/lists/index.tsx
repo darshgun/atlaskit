@@ -20,6 +20,8 @@ import { tooltip, toggleBulletList, toggleOrderedList } from '../../keymaps';
 import { IconList, IconListNumber } from '../quick-insert/assets';
 
 const listPlugin = (): EditorPlugin => ({
+  name: 'list',
+
   nodes() {
     return [
       { name: 'bulletList', node: bulletList },

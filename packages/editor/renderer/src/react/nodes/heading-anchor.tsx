@@ -39,6 +39,12 @@ class HeadingAnchor extends React.PureComponent<
     tooltipMessage: this.initialTooltipMessage,
   };
 
+  private resetMsgTimeoutId: number | undefined;
+
+  componentWillUnmount() {
+    window.clearTimeout(this.resetMsgTimeoutId);
+  }
+
   copyToClipboard = async () => {
     // This is needed to reset tooltip to reposition it.
     // Might be better to fix tooltip reposition bug.
@@ -63,7 +69,7 @@ class HeadingAnchor extends React.PureComponent<
 
   resetMessage = () => {
     this.setState({ tooltipMessage: '' });
-    setTimeout(() => {
+    this.resetMsgTimeoutId = window.setTimeout(() => {
       this.setState({ tooltipMessage: this.initialTooltipMessage });
     }, 0);
   };

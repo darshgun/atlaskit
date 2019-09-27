@@ -1,5 +1,13 @@
 # @atlaskit/editor-test-helpers
 
+## 10.1.0
+
+### Minor Changes
+
+- [minor][79c69ed5cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79c69ed5cd):
+
+  ED-7449 Implement sorting inline cards inside tables base on resolved title
+
 ## 10.0.0
 
 ### Major Changes

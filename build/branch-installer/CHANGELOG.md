@@ -1,5 +1,13 @@
 # @atlaskit/branch-installer
 
+## 0.1.5
+
+### Patch Changes
+
+- [patch][bcf4d840c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcf4d840c7):
+
+  Forgotten changeset, updates cdn url to use https
+
 ## 0.1.4
 
 ### Patch Changes

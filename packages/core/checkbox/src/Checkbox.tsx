@@ -155,6 +155,7 @@ class Checkbox extends Component<CheckboxProps, State> {
       //props not passed into HiddenCheckbox
       isChecked: propsIsChecked,
       theme,
+      testId,
     } = this.props;
 
     const isChecked =
@@ -188,6 +189,7 @@ class Checkbox extends Component<CheckboxProps, State> {
                   onMouseLeave={this.onMouseLeave}
                   onMouseUp={this.onMouseUp}
                   tokens={tokens}
+                  testId={testId && `${testId}--checkbox-label`}
                 >
                   <CheckboxWrapper>
                     <HiddenCheckbox
@@ -203,6 +205,7 @@ class Checkbox extends Component<CheckboxProps, State> {
                       ref={r => (this.checkbox = r)}
                       required={isRequired}
                       attributesFn={hiddenCheckboxAttributesFn}
+                      testId={testId && `${testId}--hidden-checkbox`}
                     />
                     <CheckboxIcon
                       theme={theme}

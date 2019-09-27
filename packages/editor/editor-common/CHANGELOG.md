@@ -1,5 +1,21 @@
 # @atlaskit/editor-common
 
+## 41.1.1
+
+### Patch Changes
+
+- [patch][8af8f8ec2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af8f8ec2a):
+
+  ED-7768 Fixed regression where you cannot click inside a block macro
+
+## 41.1.0
+
+### Minor Changes
+
+- [minor][79c69ed5cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79c69ed5cd):
+
+  ED-7449 Implement sorting inline cards inside tables base on resolved title
+
 ## 41.0.0
 
 ### Major Changes

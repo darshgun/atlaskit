@@ -15,6 +15,7 @@ import {
   getMediaTypeFromMimeType,
   MediaClient,
 } from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
@@ -48,7 +49,6 @@ import {
   RecentUploadsTitle,
   CardWrapper,
 } from './styled';
-import { RECENTS_COLLECTION } from '../../../config';
 import { removeFileFromRecents } from '../../../actions/removeFileFromRecents';
 import { Browser } from '../../../../components/browser/browser';
 

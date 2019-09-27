@@ -16,7 +16,7 @@ export const defaultConfig: AlignmentPluginState = {
 };
 
 const alignmentPlugin = (): EditorPlugin => ({
-  name: 'alignmentPlugin',
+  name: 'alignment',
 
   marks() {
     return [{ name: 'alignment', mark: alignment }];

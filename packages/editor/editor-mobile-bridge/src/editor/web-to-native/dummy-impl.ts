@@ -55,6 +55,9 @@ export default class DummyBridge implements NativeBridge {
       `currentSelection(text=${text}, url=${url}, top=${top}, right=${right}, bottom=${bottom}, left=${left})`,
     );
   }
+  stateChanged(canUndo: boolean, canRedo: boolean) {
+    this.log(`stateChanged(canUndo=${canUndo}, canRedo=${canRedo})`);
+  }
 
   call<T extends EditorPluginBridges>(
     bridge: T,

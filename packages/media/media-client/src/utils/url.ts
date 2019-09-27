@@ -87,6 +87,12 @@ export const addFileAttrsToUrl = (
   url: string,
   fileAttrs: MediaBlobUrlAttrs,
 ): string => {
+  const isSafari = /^((?!chrome|android).)*safari/i.test(
+    (navigator as Navigator).userAgent,
+  );
+  if (isSafari) {
+    return url;
+  }
   const mediaIdentifierAttr = {
     [mediaBlobUrlIdentifier]: 'true',
   };

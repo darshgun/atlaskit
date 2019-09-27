@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "*.ts",
+    "typings/*.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "target": "es2018",
+    "types": ["node"],
+    "typeRoots": ["../../typings", "./node_modules/@types"]
+  }
+}

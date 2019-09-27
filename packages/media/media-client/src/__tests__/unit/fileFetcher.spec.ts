@@ -1,5 +1,5 @@
 import { Auth, AuthProvider, getFileStreamsCache } from '@atlaskit/media-core';
-import { ResponseFileItem, MediaFile } from '../..';
+import { ResponseFileItem, MediaFile, RECENTS_COLLECTION } from '../..';
 import * as MediaClientModule from '../..';
 import uuid from 'uuid';
 import { FileFetcherImpl, getItemsFromKeys } from '../../client/file-fetcher';
@@ -223,7 +223,7 @@ describe('FileFetcher', () => {
         authProvider,
       };
       const destination = {
-        collection: 'recents',
+        collection: RECENTS_COLLECTION,
         authProvider: userAuthProvider,
       };
       await fileFetcher.copyFile(source, destination);
@@ -236,7 +236,7 @@ describe('FileFetcher', () => {
           },
         },
         {
-          collection: 'recents',
+          collection: RECENTS_COLLECTION,
         },
       ]);
       expect(MediaStoreSpy).toHaveBeenCalledWith({
@@ -280,7 +280,7 @@ describe('FileFetcher', () => {
         authProvider,
       };
       const destination = {
-        collection: 'recents',
+        collection: RECENTS_COLLECTION,
         authProvider: userAuthProvider,
       };
       await fileFetcher.copyFile(source, destination);

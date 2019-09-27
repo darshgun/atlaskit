@@ -1,10 +1,19 @@
 export const FETCH_ERROR_NAME = 'FetchError';
 
-export function enrichFetchError(error: Error, status: number) {
-  error.name = FETCH_ERROR_NAME;
-  // @ts-ignore
-  error.status = status;
-  return error;
+export type ErrorWithStatus = Error & {
+  status: number;
+};
+
+export function enrichFetchError(
+  error: Error,
+  status: number,
+): ErrorWithStatus {
+  return {
+    name: FETCH_ERROR_NAME,
+    message: error.message,
+    stack: error.stack,
+    status,
+  };
 }
 
 export const fetchJsonSameOrigin = <T>(

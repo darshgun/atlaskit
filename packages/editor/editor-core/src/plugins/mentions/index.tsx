@@ -85,6 +85,8 @@ const mentionsPlugin = (options?: MentionPluginOptions): EditorPlugin => {
   };
 
   return {
+    name: 'mention',
+
     nodes() {
       return [{ name: 'mention', node: mention }];
     },

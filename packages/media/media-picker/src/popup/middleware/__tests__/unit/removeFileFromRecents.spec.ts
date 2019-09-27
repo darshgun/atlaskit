@@ -1,3 +1,4 @@
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { mockStore } from '@atlaskit/media-test-helpers';
 import { removeFileFromRecents } from '../../removeFileFromRecents';
 import { RemoveFileFromRecentsAction } from '../../../actions/removeFileFromRecents';
@@ -22,7 +23,7 @@ describe('removeFileFromRecents middleware', () => {
     removeFileFromRecents(store)(next)(action);
     expect(collectionRemoveFileMock).toHaveBeenCalledWith(
       'some-user-id',
-      'recents',
+      RECENTS_COLLECTION,
       'some-occurrence-key',
     );
   });
@@ -37,7 +38,7 @@ describe('removeFileFromRecents middleware', () => {
     removeFileFromRecents(store)(next)(action);
     expect(collectionRemoveFileMock).toHaveBeenCalledWith(
       'some-id',
-      'recents',
+      RECENTS_COLLECTION,
       'some-occurrence-key',
     );
   });

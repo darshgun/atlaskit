@@ -4,7 +4,10 @@ import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import { expectToEqual } from '@atlaskit/media-test-helpers';
 import { Ellipsify, MediaImage } from '@atlaskit/media-ui';
 
-import { FileCardImageView, FileCardImageViewProps } from '../..';
+import {
+  FileCardImageViewBase as FileCardImageView,
+  FileCardImageViewProps,
+} from '../..';
 import { CardOverlay } from '../../cardImageView/cardOverlay';
 import {
   Wrapper,
