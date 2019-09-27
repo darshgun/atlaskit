@@ -16,8 +16,8 @@ const RelatedArticlesList: React.SFC<Props & HelpContextInterface> = (
 ) => {
   const { relatedArticles, numberOfArticlesToDisplay, help } = props;
 
-  const handleOnClick = (id: string) => {
-    help.loadArticle(id);
+  const handleOnClick = (articleId: string) => {
+    help.loadArticle(articleId);
   };
 
   if (relatedArticles) {
