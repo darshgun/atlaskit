@@ -1,2 +1,11 @@
-export { default } from './Popup';
-export { StyledPopup as PopupContainer } from './styled';
+import { Popup } from './Popup';
+
+export {
+  ContentProps,
+  PopupComponentProps,
+  PopupProps,
+  TriggerProps,
+} from './types';
+
+export { Popup };
+export default Popup;
