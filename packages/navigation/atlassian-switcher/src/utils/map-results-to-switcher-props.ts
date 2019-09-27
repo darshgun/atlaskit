@@ -94,14 +94,9 @@ function collectAdminLinks(
 }
 
 function collectFixedProductLinks(
-  product: Product | undefined,
   isDiscoverMoreForEveryoneEnabled: boolean,
 ): SwitcherItemType[] {
-  // People link is only available in Jira / Confluence
-  const canShowPeopleLink =
-    product === Product.CONFLUENCE || product === Product.JIRA;
   return getFixedProductLinks({
-    canShowPeopleLink,
     isDiscoverMoreForEveryoneEnabled,
   });
 }
@@ -215,10 +210,7 @@ export function mapResultsToSwitcherProps(
         )
       : [],
     fixedLinks: collect(
-      collectFixedProductLinks(
-        product,
-        features.isDiscoverMoreForEveryoneEnabled,
-      ),
+      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
       [],
     ),
     adminLinks: collect(
