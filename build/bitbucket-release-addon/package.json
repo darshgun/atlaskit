@@ -22,6 +22,5 @@
     "@atlaskit/build-releases": "^3.0.6",
     "netlify-cli": "^2.8.3",
     "query-string": "^4.3.2",
-    "tar-stream": "^2.1.0"
   }
 }
