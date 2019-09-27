@@ -296,21 +296,19 @@ export const getSuggestedProductLink = (
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
   return productRecommendations
+    .filter(legacyProduct => {
+      const productKey = TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey];
+      return !currentSite.products.find(
+        product => product.productType === productKey,
+      );
+    })
     .map(legacyProduct => {
       const productKey = TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey];
-
-      if (
-        currentSite.products.find(product => product.productType === productKey)
-      ) {
-        return (null as unknown) as SwitcherItemType;
-      }
-
       return {
         key: legacyProduct.productKey,
         ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
       };
     })
-    .filter(suggestedLink => suggestedLink != null)
     .slice(0, PRODUCT_RECOMMENDATION_LIMIT);
 };
 
