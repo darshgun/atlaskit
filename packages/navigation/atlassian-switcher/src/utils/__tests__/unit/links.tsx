@@ -7,6 +7,7 @@ import {
   Product,
   WorklensProductType,
   ProvisionedProducts,
+  ProductKey,
 } from '../../../types';
 
 import { resolveRecommendations } from '../../../providers/recommendations';
@@ -123,11 +124,8 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result).toHaveLength(2);
-      expect(result[0]).toHaveProperty(
-        'key',
-        WorklensProductType.JIRA_SOFTWARE,
-      );
-      expect(result[1]).toHaveProperty('key', WorklensProductType.CONFLUENCE);
+      expect(result[0]).toHaveProperty('key', ProductKey.JIRA_SOFTWARE);
+      expect(result[1]).toHaveProperty('key', ProductKey.CONFLUENCE);
     });
     it('should offer both JSW and JSD if Confluence is active', () => {
       const provisionedProducts = generateProvisionedProducts([
@@ -138,14 +136,8 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result).toHaveLength(2);
-      expect(result[0]).toHaveProperty(
-        'key',
-        WorklensProductType.JIRA_SOFTWARE,
-      );
-      expect(result[1]).toHaveProperty(
-        'key',
-        WorklensProductType.JIRA_SERVICE_DESK,
-      );
+      expect(result[0]).toHaveProperty('key', ProductKey.JIRA_SOFTWARE);
+      expect(result[1]).toHaveProperty('key', ProductKey.JIRA_SERVICE_DESK);
     });
     it('should offer both Confluence and JSD if Jira is active', () => {
       const provisionedProducts = generateProvisionedProducts([
@@ -156,11 +148,8 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result).toHaveLength(2);
-      expect(result[0]).toHaveProperty('key', WorklensProductType.CONFLUENCE);
-      expect(result[1]).toHaveProperty(
-        'key',
-        WorklensProductType.JIRA_SERVICE_DESK,
-      );
+      expect(result[0]).toHaveProperty('key', ProductKey.CONFLUENCE);
+      expect(result[1]).toHaveProperty('key', ProductKey.JIRA_SERVICE_DESK);
     });
     it('should offer Jira Service Desk if Confluence and JSW are active', () => {
       const provisionedProducts = generateProvisionedProducts([
@@ -172,10 +161,7 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result.length).toEqual(1);
-      expect(result[0]).toHaveProperty(
-        'key',
-        WorklensProductType.JIRA_SERVICE_DESK,
-      );
+      expect(result[0]).toHaveProperty('key', ProductKey.JIRA_SERVICE_DESK);
     });
     it('should offer Confluence if JSW and JSD are active', () => {
       const provisionedProducts = generateProvisionedProducts([
@@ -187,7 +173,7 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result.length).toEqual(1);
-      expect(result[0]).toHaveProperty('key', WorklensProductType.CONFLUENCE);
+      expect(result[0]).toHaveProperty('key', ProductKey.CONFLUENCE);
     });
     it('should return Jira if Confluence and JSD are active', () => {
       const provisionedProducts = generateProvisionedProducts([
@@ -198,10 +184,7 @@ describe('utils/links', () => {
         provisionedProducts,
         suggestedProducts,
       );
-      expect(result[0]).toHaveProperty(
-        'key',
-        WorklensProductType.JIRA_SOFTWARE,
-      );
+      expect(result[0]).toHaveProperty('key', ProductKey.JIRA_SOFTWARE);
     });
     it('should return any empty array if Confluence, JSD and JSW are active', () => {
       const provisionedProducts = generateProvisionedProducts([

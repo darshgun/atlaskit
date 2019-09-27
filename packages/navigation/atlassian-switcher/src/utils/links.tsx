@@ -296,16 +296,21 @@ export const getSuggestedProductLink = (
   provisionedProducts: ProvisionedProducts,
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
-  const filteredProducts: WorklensProductType[] = productRecommendations
-    .map(legacyProduct => TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey])
-    .filter(productKey => !provisionedProducts[productKey]);
+  return productRecommendations
+    .map(legacyProduct => {
+      const productKey = TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey];
 
-  return filteredProducts
-    .slice(0, PRODUCT_RECOMMENDATION_LIMIT)
-    .map(productKey => ({
-      key: productKey,
-      ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
-    }));
+      if (provisionedProducts[productKey]) {
+        return (null as unknown) as SwitcherItemType;
+      }
+
+      return {
+        key: legacyProduct.productKey,
+        ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
+      };
+    })
+    .filter(suggestedLink => suggestedLink != null)
+    .slice(0, PRODUCT_RECOMMENDATION_LIMIT);
 };
 
 export const getProvisionedProducts = (
