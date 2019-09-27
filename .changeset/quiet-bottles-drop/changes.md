@@ -1,1 +1,0 @@
-Forgotten changeset, updates cdn url to use https
