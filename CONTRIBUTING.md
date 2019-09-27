@@ -1,11 +1,26 @@
 # Contributing to Atlaskit
 
-Thank you for your interest in contributing to Atlaskit!
+Thank you for your interest in contributing to Atlaskit! 
 
-Want to raise a bug, make a suggestion, or give us feedback?
-You can [add a ticket through our service desk][servicedesk].
+Contribution is currently **only** available for Atlassian employees.
 
-Want to contribute, but not sure where to start? Check our [existing issues][issuetracker] for ideas. For bigger changes, make sure you start a discussion first by creating an issue and explaining the intended change.
+We’re temporarily unable to grant contributor access to external developers.
+
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, identify the relevant team that maintains the package by checking the [package list][https://atlaskit.atlassian.com/packages].
+
+You can add a ticket through the appropriate channel:
+
+- **Core**: Slack: [#atlaskit][#atlaskit] | Jira: [go/dst-sd][core]
+
+- **Editor**: Slack: [#help-twp-editor][#help-twp-editor] | Jira: [go/editor-issue][editor]
+
+- **Media**: Slack: [#help-twp-media][#help-twp-media] | Jira: - [go/mediahelp][media]
+
+- **Elements**: Head over [Fabric Elements][fabric-elements] and reach out to the respective teams.
+
+- **Search & Smarts**: [#smrt-quick-search][#smrt-quick-search] | “Give feedback” button in the search panel
+
+- **Notifications**: [#notificationsplatform][#notificationsplatform]
 
 ## Code of Conduct
 
@@ -15,9 +30,9 @@ Lots more information about contributing to this project can also be found on ou
 
 ## Reporting Tickets
 
-The Atlaskit repository has [a service desk for reporting bugs, feature requests, or suggesting improvements][servicedesk].
+The Atlaskit repository is managed by several teams, we encouraged you check which team managed the package you want to raise the issue for and use the links above.
 
-Before submitting a ticket, we kindly ask that you [perform a cursory search of existing issues][issuetracker] to see if the problem has already been reported. If it has, add a comment to the existing issue instead of opening a new one.
+Before submitting a ticket, we kindly ask if the problem has already been reported using Slack channel or searching through the appropriate Jira project. If it has, add a comment to the existing issue instead of opening a new one.
 
 ### How do I submit a (good) bug report?
 
@@ -43,42 +58,14 @@ Include details about your configuration and environment:
 3. With the build system and auto-deployment to npm, using Atlaskit components in your projects simplifies your development stack. Treat Atlaskit as part of your codebase and make changes in it.
 4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
 
-### Becoming a contributor
-
-You need to be added to the 'atlaskit contributor' team in order to create branches and raise pull requests in the Atlaskit repo. To be added, you should:
-
-1. [Raise a ticket in our service desk][servicedesk_contributor]. Please include the following details:
-   1. Your Bitbucket username and
-   1. The reason you want to be a contributor - e.g. Reference another issue that you'd like to provide a PR for.
-1. Have signed or be ready to sign the Contributor License Agreement(CLA). See below.
-
-Atlassian requires contributors to sign a Contributor License Agreement,
-known as a CLA. This serves as a record stating that the contributor is
-entitled to contribute the code/documentation/translation to the project
-and is willing to have it used in distributions and derivative works
-(or is willing to transfer ownership).
-
-Prior to accepting your contributions, we ask that you please follow the appropriate
-link below to digitally sign the CLA. The Corporate CLA is for those who are
-contributing as a member of an organization and the individual CLA is for
-those contributing as an individual.
-
-- [CLA for corporate contributors](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=e1c17c66-ca4d-4aab-a953-2c231af4a20b)
-- [CLA for individuals](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=3f94fbdc-2fbe-46ac-b14c-5d152700ae5d)
-
 # Contributing code to Atlaskit
 
 Welcome to the Atlaskit repo!
 
-Before you jump in to the repository and start making changes, you will need to sign
-Atlassian's Contributor License Agreement. See [Becoming a contributor][#becoming-a-contributor] section for details.
-
-A more in-depth view of how we want to work with other teams and open source
-contributions can be found in the
+A more in-depth view of how we want to work with other teams contributions can be found in the
 [contributing guide on the Atlaskit website](https://atlaskit.atlassian.com/docs/guides/contributing).
 
-If you have any questions/problems with the repo or codebase,
-please [raise them through our service desk][servicedesk].
+If you have any questions/problems with the repo or codebase, please consult the links at the top of this file.
 
 With all that being said, let's dive into it!
 
@@ -486,9 +473,16 @@ Once your pull request has been reviewed and approved by an Atlaskit maintainer,
 maintainer to merge the change.
 
 [codeofconduct]: ./CODE_OF_CONDUCT.md
-[issuetracker]: https://ecosystem.atlassian.net/issues/?filter=56701
-[servicedesk]: https://ecosystem.atlassian.net/servicedesk/customer/portal/24
-[servicedesk_contributor]: https://ecosystem.atlassian.net/servicedesk/customer/portal/24/group/52/create/306
+[#atlaskit]: https://atlassian.slack.com/messages/CFHT33S4F
+[#help-twp-editor]: https://atlassian.slack.com/archives/CFG3PSQ9E
+[#help-twp-media]: https://atlassian.slack.com/archives/CFGMGT77W
+[fabric-elements]: https://product-fabric.atlassian.net/wiki/spaces/FS
+[#smrt-quick-search]: https://atlassian.slack.com/archives/CFG8QANL9
+[#notificationsplatform]: https://atlassian.slack.com/archives/CFG86D0HF
+[core]: https://ecosystem.atlassian.net/servicedesk/customer/portal/24
+[editor]: https://product-fabric.atlassian.net/projects/ED/issues/ED-4385?filter=allissues
+[media]: https://product-fabric.atlassian.net/servicedesk/customer/portal/2
+[packages]: https://atlaskit.atlassian.com/packages
 [testing]: https://atlaskit.atlassian.com/docs/guides/testing
 [releasing-packages]: https://atlaskit.atlassian.com/docs/guides/releasing-packages
 [getting-started]: https://atlaskit.atlassian.com/docs/getting-started
