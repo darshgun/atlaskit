@@ -22,7 +22,7 @@
   "dependencies": {
     "@atlaskit/adf-schema": "^4.0.0",
     "@atlaskit/analytics-namespaced-context": "^4.1.7",
-    "@atlaskit/analytics-next": "^6.1.0",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/emoji": "^62.5.1",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/media-card": "^65.2.0",

@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@atlaskit/analytics-namespaced-context": "^4.1.0",
-    "@atlaskit/analytics-next": "^6.2.0",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/avatar": "^17.0.0",
     "@atlaskit/badge": "^13.0.0",
     "@atlaskit/button": "^13.0.2",

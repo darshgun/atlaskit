@@ -20,7 +20,7 @@
   "dependencies": {
     "@atlaskit/analytics": "^6.0.6",
     "@atlaskit/analytics-gas-types": "^4.0.10",
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/form": "^6.1.12",
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/help-article": "^0.5.4",

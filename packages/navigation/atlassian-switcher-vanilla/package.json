@@ -19,7 +19,7 @@
     "team": "navigation"
   },
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.2.0",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/atlassian-switcher": "^3.28.1",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",

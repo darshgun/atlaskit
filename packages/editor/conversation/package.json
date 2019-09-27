@@ -24,7 +24,7 @@
     "styled-components": "^3.2.6"
   },
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/avatar": "^17.0.0",
     "@atlaskit/comment": "^8.0.14",
     "@atlaskit/editor-common": "^41.0.0",

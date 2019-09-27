@@ -21,7 +21,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.1.0",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/spinner": "^12.0.9",
     "@atlaskit/theme": "^9.2.0",
