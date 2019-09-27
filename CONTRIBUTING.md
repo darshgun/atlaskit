@@ -6,7 +6,7 @@ Contribution is currently **only** available for Atlassian employees.
 
 We’re temporarily unable to grant contributor access to external developers.
 
-For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, identify the relevant team that maintains the package by checking the [package list][https://atlaskit.atlassian.com/packages].
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, identify the relevant team that maintains the package by checking the [packages list][packages].
 
 You can add a ticket through the appropriate channel:
 
