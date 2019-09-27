@@ -1,5 +1,13 @@
 # @atlaskit/branch-installer
 
+## 0.1.6
+
+### Patch Changes
+
+- [patch][23675b1438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23675b1438):
+
+  Add quotes to version url of yarn upgrade command
+
 ## 0.1.5
 
 ### Patch Changes
