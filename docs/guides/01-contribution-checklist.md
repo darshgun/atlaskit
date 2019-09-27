@@ -57,7 +57,7 @@ _See the [component design](./component-design) docs for more information on how
 ## Review
 
 * Design should review the examples on the [AK website](http://atlaskit.atlassian.com/).
-* Ensure a core maintainer is added to the review. They should also approve the PR before it's merged. Core maintainers can be found in the `maintainers` field in the `package.json`.
+* Ensure a maintainer is added to the review. They should also approve the PR before it's merged. Maintainers can be found in the `maintainers` field in the `package.json`. It is possible, that the `maintainers` are not up to date, in this case, it is better to check the `team` field in package.json and requesting some help through Slack channel.
 * If changing the API, try and maintain backward compatibility, if possible.
 * Core functionalities should not regress, if they have to change, it should be explicitly part of the plan.
 
