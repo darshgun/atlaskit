@@ -3,7 +3,7 @@ import fse from 'fs-extra';
 import * as bolt from 'bolt';
 import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
-import portal from '../portal';
+import portal from '../../portal';
 
 jest.enableAutomock();
 jest.mock('fs-extra');
