@@ -269,7 +269,7 @@ const getRecentItems = (product: string) =>
             keyPress('ArrowDown');
           }
           expect(onEventSpy).toHaveBeenCalledTimes(count);
-          onEventSpy.mock.calls.forEach(([event], index) => {
+          onEventSpy.mock.calls.forEach(([event]: any, index: number) => {
             validateEvent(
               event,
               getHighlightEvent({
@@ -296,7 +296,7 @@ const getRecentItems = (product: string) =>
 
           // skip the first link which is advanced issue search link
           const callsWithoutFirstLink = onEventSpy.mock.calls.slice(1);
-          callsWithoutFirstLink.forEach(([event], index) => {
+          callsWithoutFirstLink.forEach(([event]: any, index: number) => {
             validateEvent(
               event,
               getHighlightEvent({
