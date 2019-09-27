@@ -190,10 +190,10 @@ it('should avoid duplicate result keys', () => {
 });
 
 describe('Jira Avatar default Icons', () => {
-  let spy: jest.SpyInstance<(contentType: ContentType) => JSX.Element | null>;
+  let spy: jest.SpyInstance<JSX.Element | null, [ContentType]>;
   beforeEach(() => {
     spy = jest.spyOn(JiraAvatarUtil, 'getDefaultAvatar');
-    spy.mockReturnValue(BoardIcon);
+    spy.mockReturnValue(<BoardIcon label="blah" />);
   });
 
   afterEach(() => {
