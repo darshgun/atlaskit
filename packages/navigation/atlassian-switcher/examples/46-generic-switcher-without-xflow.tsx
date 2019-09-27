@@ -37,7 +37,6 @@ class GenericSwitcherExample extends React.Component {
       {
         containers: 1000,
         xflow: 500,
-        licenseInformation: 250,
         permitted: 2000,
         appswitcher: 1500,
       },

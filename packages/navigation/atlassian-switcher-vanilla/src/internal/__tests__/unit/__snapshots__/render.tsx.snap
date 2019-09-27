@@ -13,7 +13,6 @@ exports[`render should render the switcher with analytics and intl providers 1`]
         disableCustomLinks={true}
         disableHeadings={true}
         disableRecentContainers={true}
-        enableUserCentricProducts={true}
         product="opsgenie"
       />
     </AnalyticsListener>

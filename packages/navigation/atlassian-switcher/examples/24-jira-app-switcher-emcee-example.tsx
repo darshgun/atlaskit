@@ -15,35 +15,7 @@ class JiraSwitcherExample extends React.Component {
   }
 
   openDrawer = () => {
-    mockEndpoints(
-      'jira',
-      originalMockData => {
-        return {
-          ...originalMockData,
-          LICENSE_INFORMATION_DATA: {
-            hostname: 'https://some-random-instance.atlassian.net',
-            firstActivationDate: 1492488658539,
-            maintenanceEndDate: '2017-04-24',
-            maintenanceStartDate: '2017-04-17',
-            products: {
-              'jira-software.ondemand': {
-                billingPeriod: 'ANNUAL',
-                state: 'ACTIVE',
-              },
-              'confluence.ondemand': {
-                billingPeriod: 'ANNUAL',
-                state: 'ACTIVE',
-              },
-              'jira-servicedesk.ondemand': {
-                billingPeriod: 'ANNUAL',
-                state: 'ACTIVE',
-              },
-            },
-          },
-        };
-      },
-      REQUEST_FAST,
-    );
+    mockEndpoints('jira', originalMockData => originalMockData, REQUEST_FAST);
     this.setState({
       isDrawerOpen: true,
     });
