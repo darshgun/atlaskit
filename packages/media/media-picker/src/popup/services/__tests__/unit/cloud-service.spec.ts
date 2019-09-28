@@ -35,7 +35,7 @@ describe('CloudAuthService', () => {
 
   beforeEach(() => {
     (Postis as FakePostis).channel.ready.mockImplementationOnce(
-      (callback: () => void) => callback(),
+      (...args: any) => (callback: () => void) => callback(),
     );
     (Postis as FakePostis).channel.listen.mockImplementationOnce(
       (_: string, callback: () => void) => callback(),
@@ -60,7 +60,7 @@ describe('CloudAuthService', () => {
     (Postis as FakePostis).channel.listen.mockClear();
     (Postis as FakePostis).channel.send.mockClear();
     (Postis as FakePostis).channel.destroy.mockClear();
-    (uuidV4 as jest.Mock<{}>).mockClear();
+    ((uuidV4 as unknown) as jest.Mock<{}>).mockClear();
     ((window as any).open as jest.Mock<{}>).mockClear();
     ((window as any).close as jest.Mock<{}>).mockClear();
   });

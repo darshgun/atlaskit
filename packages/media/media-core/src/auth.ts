@@ -47,7 +47,7 @@ export interface ContextConfig {
   readonly getAuthFromContext?: AuthFromContextProvider;
 }
 
-export interface MediaClientConfig extends ContextConfig {
+export interface MediaClientConfig {
   // TODO remove cacheSize
 }
 
