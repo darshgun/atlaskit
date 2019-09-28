@@ -151,9 +151,7 @@ describe('CardView', () => {
     it('should render wrapper with correct breakpoint size', () => {
       const dimensions = { width: '100%', height: '50%' };
 
-      ((breakpointSize as unknown) as jest.Mock<string>).mockReturnValue(
-        'small',
-      );
+      (breakpointSize as jest.Mock<void>).mockReturnValue('small');
       const element = shallowCardViewBaseElement(
         {
           status: 'loading',

@@ -26,11 +26,11 @@ describe('RemoteUploadActivity', () => {
   const reason = 'some-reason';
 
   beforeEach(() => {
-    dispatchEvent = jest.fn<DispatchUploadEvent<keyof WsUploadEvents>, []>();
+    dispatchEvent = jest.fn<DispatchUploadEvent<keyof WsUploadEvents>>();
     uploadActivity = new RemoteUploadActivity(uploadId, dispatchEvent);
 
-    started = jest.fn<CallbackFunction, []>();
-    completed = jest.fn<CallbackFunction, []>();
+    started = jest.fn<CallbackFunction>();
+    completed = jest.fn<CallbackFunction>();
     uploadActivity.on('Started', started);
     uploadActivity.on('Completed', completed);
   });

@@ -2,6 +2,7 @@ jest.mock('../../utils/checkWebpSupport');
 
 import fetchMock from 'fetch-mock';
 import { stringify } from 'query-string';
+import { Auth, AuthProvider } from '@atlaskit/media-core';
 import {
   CreatedTouchedFile,
   MediaStore,
@@ -47,9 +48,7 @@ describe('MediaStore', () => {
 
     beforeEach(() => {
       authProvider = jest.fn();
-      authProvider.mockReturnValue((Promise.resolve(
-        auth,
-      ) as unknown) as AuthProvider);
+      authProvider.mockReturnValue(Promise.resolve(auth));
       mediaStore = new MediaStore({
         authProvider,
       });
