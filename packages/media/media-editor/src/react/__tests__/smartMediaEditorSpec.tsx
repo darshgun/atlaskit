@@ -81,7 +81,7 @@ describe('Smart Media Editor', () => {
       />,
     );
 
-    (uuidV4 as jest.Mock<{}>)
+    ((uuidV4 as unknown) as jest.Mock<{}>)
       .mockReturnValueOnce('uuid1')
       .mockReturnValueOnce('uuid2')
       .mockReturnValueOnce('uuid3')
@@ -89,7 +89,7 @@ describe('Smart Media Editor', () => {
   });
 
   afterEach(() => {
-    (uuidV4 as jest.Mock<{}>).mockReset();
+    ((uuidV4 as unknown) as jest.Mock<{}>).mockReset();
     jest.restoreAllMocks();
   });
 

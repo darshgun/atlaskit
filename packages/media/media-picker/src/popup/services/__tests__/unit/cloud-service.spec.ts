@@ -35,7 +35,7 @@ describe('CloudAuthService', () => {
 
   beforeEach(() => {
     (Postis as FakePostis).channel.ready.mockImplementationOnce(
-      (callback: () => void) => callback(),
+      (...args: any) => (callback: () => void) => callback(),
     );
     (Postis as FakePostis).channel.listen.mockImplementationOnce(
       (_: string, callback: () => void) => callback(),

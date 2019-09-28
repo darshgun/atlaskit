@@ -48,7 +48,9 @@ describe('MediaStore', () => {
 
     beforeEach(() => {
       authProvider = jest.fn();
-      authProvider.mockReturnValue(Promise.resolve(auth));
+      authProvider.mockReturnValue((Promise.resolve(
+        auth,
+      ) as unknown) as AuthProvider);
       mediaStore = new MediaStore({
         authProvider,
       });
