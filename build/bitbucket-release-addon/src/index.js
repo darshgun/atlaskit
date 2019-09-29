@@ -42,8 +42,8 @@ const releasedPackagesMessage = (releases, v2) => {
 
   const dependentsWarningSection = v2
     ? `<p style="color: red;">Warning: Dependents can not currently be displayed by the Release Addon when using Changesets V2.<br>
-         <text style="color: gray">You can check these manually by running <strong>yarn changeset status</strong> in your terminal.</text></p>
-         <p style="color: gray">For any questions, please see the <strong>#atlaskit-build</strong> room.</p>`
+         <text style="color: rgb(80, 95, 121)">You can check these manually by running <strong>yarn changeset status</strong> in your terminal.</text></p>
+         <p style="color: rgb(80, 95, 121)">For any questions, please see the <strong>#atlaskit-build</strong> room.</p>`
     : '';
 
   return `<div style="color: green; border: 1px solid; padding: 10px; border-radius: 10px; display: inline-block;">
