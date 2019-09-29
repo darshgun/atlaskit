@@ -8,7 +8,6 @@ import AtlassianSwitcher from '../src';
 class OptionalContainersExample extends React.Component {
   state = {
     isDrawerOpen: false,
-    enableUserCentricProducts: true,
     disableCustomLinks: false,
     disableRecentContainers: false,
     disableCloudId: false,
@@ -59,7 +58,6 @@ class OptionalContainersExample extends React.Component {
       disableRecentContainers,
       disableCloudId,
       disableXFlow,
-      enableUserCentricProducts,
       disableCustomLinks,
     } = this.state;
 
@@ -71,7 +69,6 @@ class OptionalContainersExample extends React.Component {
             cloudId={disableCloudId ? undefined : 'some-cloud-id'}
             disableRecentContainers={disableRecentContainers}
             disableCustomLinks={disableCustomLinks}
-            enableUserCentricProducts={enableUserCentricProducts}
             triggerXFlow={disableXFlow ? undefined : this.onTriggerXFlow}
           />
         </Drawer>
@@ -102,13 +99,6 @@ class OptionalContainersExample extends React.Component {
             isSelected={!disableXFlow}
           >
             XFlow
-          </Button>
-          <Button
-            type="button"
-            onClick={this.toggleEnableUserCentric}
-            isSelected={enableUserCentricProducts}
-          >
-            User-centric products
           </Button>
           <Button
             type="button"
@@ -144,12 +134,6 @@ class OptionalContainersExample extends React.Component {
   private toggleDisableXFlow = () => {
     this.setState({
       disableXFlow: !this.state.disableXFlow,
-    });
-  };
-
-  private toggleEnableUserCentric = () => {
-    this.setState({
-      enableUserCentricProducts: !this.state.enableUserCentricProducts,
     });
   };
 

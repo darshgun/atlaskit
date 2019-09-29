@@ -17,14 +17,7 @@ class ConfluenceSwitcherExample extends React.Component {
   openDrawer = () => {
     mockEndpoints(
       'confluence',
-      originalMockData => {
-        return {
-          ...originalMockData,
-          LICENSE_INFORMATION_DATA: {
-            notUsedInMode: 'user-centric',
-          },
-        };
-      },
+      originalMockData => originalMockData,
       REQUEST_MEDIUM,
     );
     this.setState({
@@ -51,7 +44,6 @@ class ConfluenceSwitcherExample extends React.Component {
           <AtlassianSwitcher
             product="confluence"
             cloudId="some-cloud-id"
-            enableUserCentricProducts
             triggerXFlow={this.onTriggerXFlow}
           />
         </Drawer>

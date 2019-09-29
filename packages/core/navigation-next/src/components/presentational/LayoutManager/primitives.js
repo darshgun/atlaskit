@@ -45,6 +45,9 @@ export const NavigationContainer = ({ topOffset, innerRef, ...props }: *) => (
       position: 'fixed',
       top: topOffset,
       zIndex: layers.navigation(),
+      '&:hover .ak-navigation-resize-button': {
+        opacity: 1,
+      },
     }}
     {...props}
   />

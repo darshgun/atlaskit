@@ -18,9 +18,9 @@ class JiraSwitcherExample extends React.Component {
     mockEndpoints('jira', undefined, {
       containers: 1000,
       xflow: 500,
-      licenseInformation: 1000,
       permitted: 2000,
       appswitcher: 1500,
+      availableProducts: 1000,
     });
     this.setState({
       isDrawerOpen: true,

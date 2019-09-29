@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.19.2
+
+### Patch Changes
+
+- [patch][e1cf991123](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1cf991123):
+
+  Removed exported interfaces
+
 ## 0.19.1
 
 ### Patch Changes

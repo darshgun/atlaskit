@@ -21,7 +21,7 @@ class ErrorExample extends React.Component {
       originalMockData => {
         return {
           ...originalMockData,
-          LICENSE_INFORMATION_DATA: Promise.reject(error),
+          AVAILABLE_PRODUCTS_DATA: Promise.reject(error),
         };
       },
       REQUEST_FAST,
