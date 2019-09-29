@@ -8,14 +8,14 @@ import {
   LocalizationProvider,
 } from '@atlaskit/locale';
 import { format, isValid } from 'date-fns';
-import pick from 'lodash.pick';
-import React, { Component, Node } from 'react';
+import React, { Component, ReactNode } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
+import { Appearance, Spacing, Combine } from './types';
 import {
   name as packageName,
   version as packageVersion,
@@ -30,74 +30,75 @@ import {
 } from '../internal';
 import parseTime from '../internal/parseTime';
 import FixedLayer from '../internal/FixedLayer';
+import { CSSObject } from '@emotion/core';
 
 interface Option {
-  label: string,
-  value: string,
-};
+  label: string;
+  value: string;
+}
 
 /* eslint-disable react/no-unused-prop-types */
 interface Props {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    *  Appearance values will be ignored if styles are parsed via the selectProps.
    */
-  appearance?: 'default' | 'subtle',
+  appearance?: Appearance;
   /** Whether or not to auto-focus the field. */
-  autoFocus: boolean,
+  autoFocus: boolean;
   /** Default for `isOpen`. */
-  defaultIsOpen: boolean,
+  defaultIsOpen: boolean;
   /** Default for `value`. */
-  defaultValue: string,
+  defaultValue: string;
   /** DEPRECATED - Use locale instead. Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
-  formatDisplayLabel?: (time: string, timeFormat: string) => string,
+  formatDisplayLabel?: (time: string, timeFormat: string) => string;
   /** The icon to show in the field. */
-  icon?: Node,
+  icon?: ReactNode;
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
-  id: string,
+  id: string;
   /** Props to apply to the container. **/
-  innerProps: Object,
+  innerProps: Object;
   /** Whether or not the field is disabled. */
-  isDisabled: boolean,
+  isDisabled: boolean;
   /** Whether or not the dropdown is open. */
-  isOpen?: boolean,
+  isOpen?: boolean;
   /** The name of the field. */
-  name: string,
+  name: string;
   /** Called when the field is blurred. */
-  onBlur: () => void,
+  onBlur: () => void;
   /** Called when the value changes. The only argument is an ISO time or empty string. */
-  onChange: string => void,
+  onChange: (value: string) => void;
   /** Called when the field is focused. */
-  onFocus: () => void,
-  parseInputValue: (time: string, timeFormat: string) => string | Date,
+  onFocus: () => void;
+  parseInputValue: (time: string, timeFormat: string) => string | Date;
   /** Props to apply to the select. */
-  selectProps: Object,
+  selectProps: Object;
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
-  spacing: 'compact' | 'default',
+  spacing: Spacing;
   /** The times to show in the dropdown. */
-  times: Array<string>,
+  times: string[];
   /** Allow users to edit the input and add a time */
-  timeIsEditable?: boolean,
+  timeIsEditable?: boolean;
   /** The ISO time that should be used as the input value. */
-  value?: string,
+  value?: string;
   /** Indicates current value is invalid & changes border color. */
-  isInvalid?: boolean,
+  isInvalid?: boolean;
   /** Hides icon for dropdown indicator. */
-  hideIcon?: boolean,
+  hideIcon?: boolean;
   /** DEPRECATED - Use locale instead. Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
-  timeFormat?: string,
+  timeFormat?: string;
   /** Placeholder text displayed in input */
-  placeholder?: string,
-  locale: string,
-};
+  placeholder?: string;
+  locale: string;
+}
 
 interface State {
-  isOpen: boolean,
-  value: string,
-  isFocused: boolean,
-  l10n: LocalizationProvider,
-};
+  isOpen: boolean;
+  value: string;
+  isFocused: boolean;
+  l10n: LocalizationProvider;
+}
 
-const menuStyles = {
+const menuStyles: CSSObject = {
   /* Need to remove default absolute positioning as that causes issues with position fixed */
   position: 'static',
   /* Need to add overflow to the element with max-height, otherwise causes overflow issues in IE11 */
@@ -113,7 +114,7 @@ const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
 );
 
 class TimePicker extends Component<Props, State> {
-  containerRef: ?HTMLElement;
+  containerRef: HTMLElement | null = null;
 
   static defaultProps = {
     appearance: 'default',
@@ -144,7 +145,7 @@ class TimePicker extends Component<Props, State> {
     l10n: createLocalizationProvider(this.props.locale),
   };
 
-  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+  componentWillReceiveProps(nextProps: Props): void {
     if (this.props.locale !== nextProps.locale) {
       this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
     }
@@ -152,10 +153,14 @@ class TimePicker extends Component<Props, State> {
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
-  getState = () => {
+  getState = (): Combine<
+    State,
+    { value: string | undefined; isOpen: boolean | undefined }
+  > => {
     return {
       ...this.state,
-      ...pick(this.props, ['value', 'isOpen']),
+      value: this.props.value,
+      isOpen: this.props.isOpen,
     };
   };
 
@@ -170,7 +175,7 @@ class TimePicker extends Component<Props, State> {
     );
   }
 
-  onChange = (v: Object | null): void => {
+  onChange = (v: { value: string } | null): void => {
     const value = v ? v.value : '';
     this.setState({ value });
     this.props.onChange(value);
@@ -201,7 +206,7 @@ class TimePicker extends Component<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  getContainerRef = (ref: ?HTMLElement) => {
+  setContainerRef = (ref: HTMLElement | null) => {
     const oldRef = this.containerRef;
     this.containerRef = ref;
     // Cause a re-render if we're getting the container ref for the first time
@@ -305,8 +310,8 @@ class TimePicker extends Component<Props, State> {
     };
 
     return (
-      <div {...innerProps} ref={this.getContainerRef}>
-        <input name={name} interface="hidden" value={value} />
+      <div {...innerProps} ref={this.setContainerRef}>
+        <input name={name} type="hidden" value={value} />
         <SelectComponent
           autoFocus={autoFocus}
           components={{
@@ -329,11 +334,11 @@ class TimePicker extends Component<Props, State> {
           onMenuClose={this.onMenuClose}
           placeholder={this.getPlaceholder()}
           styles={mergeStyles(selectStyles, {
-            control: base => ({
+            control: (base: CSSObject): CSSObject => ({
               ...base,
               ...controlStyles,
             }),
-            menu: base => ({
+            menu: (base: CSSObject): CSSObject => ({
               ...base,
               ...menuStyles,
               ...{

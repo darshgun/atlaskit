@@ -1,6 +1,7 @@
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
+import styled from '@emotion/styled';
 import {
   createLocalizationProvider,
   LocalizationProvider,
@@ -14,9 +15,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { format, isValid, parse, lastDayOfMonth } from 'date-fns';
-import pick from 'lodash.pick';
-import React, { Component, Node, ElementRef } from 'react';
-import styled from 'styled-components';
+import React, { Component, ReactNode, ElementRef } from 'react';
 
 import {
   name as packageName,
@@ -44,9 +43,9 @@ interface Props {
   /** Default for `value`. */
   defaultValue: string,
   /** An array of ISO dates that should be disabled on the calendar. */
-  disabled: Array<string>,
+  disabled: string[],
   /** The icon to show in the field. */
-  icon: Node,
+  icon: ReactNode,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string,
   /** Props to apply to the container. **/
@@ -60,7 +59,7 @@ interface Props {
   /** Called when the field is blurred. */
   onBlur: (e: SyntheticFocusEvent<>) => void,
   /** Called when the value changes. The only argument is an ISO time or empty string. */
-  onChange: string => void,
+  onChange: (value: string) => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
   /** A function for parsing input characters and transforming them into a Date object. By default parses the date string based off the locale */
@@ -142,7 +141,7 @@ const Menu = ({ selectProps, innerProps }: Object) => (
 class DatePicker extends Component<Props, State> {
   calendarRef: ElementRef<Calendar>;
 
-  containerRef: ?HTMLElement;
+  containerRef: HTMLElement | null = null;
 
   static defaultProps = {
     appearance: 'default',
@@ -183,7 +182,7 @@ class DatePicker extends Component<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+  componentWillReceiveProps(nextProps: Readonly<Props>): void {
     if (this.props.locale !== nextProps.locale) {
       this.setState({
         l10n: createLocalizationProvider(nextProps.locale),
@@ -201,7 +200,7 @@ class DatePicker extends Component<Props, State> {
     };
   };
 
-  isDateDisabled = (date: String) => {
+  isDateDisabled = (date: string) => {
     return this.props.disabled.indexOf(date) > -1;
   };
 
@@ -458,7 +457,7 @@ class DatePicker extends Component<Props, State> {
         onKeyDown={this.onSelectKeyDown}
         ref={this.getContainerRef}
       >
-        <input name={name} interface="hidden" value={value} />
+        <input name={name} type="hidden" value={value} />
         <Select
           menuIsOpen={isOpen && !isDisabled}
           openMenuOnFocus
@@ -476,7 +475,7 @@ class DatePicker extends Component<Props, State> {
             Menu,
           }}
           styles={mergeStyles(selectStyles, {
-            control: base => ({
+            control: (base: any) => ({
               ...base,
               ...controlStyles,
               ...disabledStyle,

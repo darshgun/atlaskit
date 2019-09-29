@@ -1,4 +1,4 @@
-import React, { Component, Node } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { layers } from '@atlaskit/theme/constants';
 import ScrollLock from 'react-scrolllock';
 import { Popper, Manager, Reference } from '@atlaskit/popper';
@@ -7,24 +7,24 @@ interface Props {
   /** A ref to the container that the content should be layered around for height calculation
    * purposes. This must be an ancestor element as component does not attach the layered content around
    * the ref itself. */
-  containerRef: ?HTMLElement,
+  containerRef: HTMLElement | null;
   /**
    * The content to render in the layer.
    */
-  content: Node,
+  content: ReactNode;
   /**
    * input value from the menu.
    */
-  inputValue: string,
-};
+  inputValue: string;
+}
 
 /* eslint-disable react/no-unused-prop-types */
 interface PopperProps {
-  ref: (?HTMLElement) => void,
-  style: any,
-  placement: {},
-  scheduleUpdate: () => void,
-};
+  ref: (ref: HTMLElement | null) => void;
+  style: any;
+  placement: {};
+  scheduleUpdate: () => void;
+}
 
 /**
  * This component renders layered content with fixed positioning.
@@ -69,15 +69,11 @@ export default class FixedLayer extends Component<Props> {
           )}
         </Reference>
         <Popper>
-          {({ ref, style, placement, scheduleUpdate }: PopperProps) => {
+          {({ ref, style, scheduleUpdate }: PopperProps) => {
             this.scheduleUpdate = scheduleUpdate;
 
             return (
-              <div
-                ref={ref}
-                style={{ ...style, zIndex: layers.dialog() }}
-                placement={placement}
-              >
+              <div ref={ref} style={{ ...style, zIndex: layers.dialog() }}>
                 {content}
               </div>
             );

@@ -1,16 +1,16 @@
-const map24 = {
-  '12': 12,
-  '01': 13,
-  '02': 14,
-  '03': 15,
-  '04': 16,
-  '05': 17,
-  '06': 18,
-  '07': 19,
-  '08': 20,
-  '09': 21,
-  '10': 22,
-  '11': 23,
+const map24: Record<string, string> = {
+  '12': '12',
+  '01': '13',
+  '02': '14',
+  '03': '15',
+  '04': '16',
+  '05': '17',
+  '06': '18',
+  '07': '19',
+  '08': '20',
+  '09': '21',
+  '10': '22',
+  '11': '23',
 };
 
 export function isValid(timeString: string): boolean {
@@ -50,7 +50,7 @@ export function checkMinute(minute: string): string | null {
 
 export function convertTo24hrTime(
   time: string,
-): { hour: number, minute: number } | null {
+): { hour: number; minute: number } | null {
   const timeArray = time.split(/(p|a)/);
   const meridiem = timeArray[1];
 
@@ -65,7 +65,7 @@ export function convertTo24hrTime(
   };
 }
 
-export function assignToDate(time: { hour: number, minute: number }): Date {
+export function assignToDate(time: { hour: number; minute: number }): Date {
   const dateTime = new Date();
   dateTime.setHours(time.hour);
   dateTime.setMinutes(time.minute);

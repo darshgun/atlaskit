@@ -2,16 +2,16 @@ import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { mergeStyles } from '@atlaskit/select';
 import { borderRadius } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
+import styled from '@emotion/styled';
+import { CSSObject } from '@emotion/core';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import pick from 'lodash.pick';
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { parse, format, isValid } from 'date-fns';
-
+import { Appearance, Spacing } from './types';
 import {
   name as packageName,
   version as packageVersion,
@@ -24,7 +24,7 @@ import { defaultTimes, formatDateTimeZoneIntoIso } from '../internal';
 /* eslint-disable react/no-unused-prop-types */
 interface Props {
   /** Defines the appearance which can be default or subtle - no borders, background or icon. */
-  appearance?: 'default' | 'subtle',
+  appearance?: Appearance,
   /** Whether or not to auto-focus the field. */
   autoFocus: boolean,
   /** Default for `value`. */
@@ -40,7 +40,7 @@ interface Props {
   /** Called when the field is blurred. */
   onBlur: () => void,
   /** Called when the value changes and the date / time is a complete value, or empty. The only value is an ISO string or empty string. */
-  onChange: string => void,
+  onChange: (value: string) => void,
   /** Called when the field is focused. */
   onFocus: () => void,
   /** The ISO time that should be used as the input value. */
@@ -71,7 +71,7 @@ interface Props {
   /** DEPRECATED - Use locale instead. Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
   timeFormat?: string,
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
-  spacing?: 'compact' | 'default',
+  spacing?: Spacing,
   locale: string,
 };
 
@@ -84,7 +84,7 @@ interface State {
   zoneValue: string,
 };
 
-const getBorder = ({ appearance, isFocused, isInvalid }) => {
+const getBorder = ({ appearance, isFocused, isInvalid }: {appearance: Appearance, isFocused: boolean, isInvalid: boolean}) => {
   let color = colors.N20;
   if (appearance === 'subtle') color = 'transparent';
   if (isFocused) color = colors.B100;
@@ -93,21 +93,21 @@ const getBorder = ({ appearance, isFocused, isInvalid }) => {
   return `border: 2px solid ${color}`;
 };
 
-const getBorderColorHover = ({ isFocused, isInvalid, isDisabled }) => {
+const getBorderColorHover = ({ isFocused, isInvalid, isDisabled }: { isFocused: boolean, isInvalid: boolean, isDisabled: boolean }) => {
   let color = colors.N30;
   if (isFocused || isDisabled) return ``;
   if (isInvalid) color = colors.R400;
   return `border-color: ${color}`;
 };
 
-const getBackgroundColor = ({ appearance, isFocused }) => {
+const getBackgroundColor = ({ appearance, isFocused }: {appearance: Appearance, isFocused: boolean}) => {
   let color = colors.N20;
   if (isFocused) color = colors.N0;
   if (appearance === 'subtle') color = 'transparent';
   return `background-color: ${color}`;
 };
 
-const getBackgroundColorHover = ({ isFocused, isInvalid, isDisabled }) => {
+const getBackgroundColorHover = ({ isFocused, isInvalid, isDisabled }: { isFocused: boolean, isInvalid: boolean, isDisabled: boolean }) => {
   let color = colors.N30;
   if (isFocused || isDisabled) return ``;
   if (isInvalid) color = colors.N0;
@@ -134,7 +134,7 @@ const FlexItem = styled.div`
 
 // react-select overrides (via @atlaskit/select).
 const styles = {
-  control: style => ({
+  control: (style: CSSObject): CSSObject => ({
     ...style,
     backgroundColor: 'transparent',
     border: 2,
@@ -147,15 +147,18 @@ const styles = {
   }),
 };
 
+function noop() {
+}
+
 class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
     isDisabled: false,
     name: '',
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
+    onBlur: noop,
+    onChange: noop,
+    onFocus: noop,
     innerProps: {},
     id: '',
     defaultValue: '',
@@ -171,7 +174,7 @@ class DateTimePicker extends Component<Props, State> {
     locale: 'en-US',
   };
 
-  state = {
+  state: State = {
     active: 0,
     dateValue: '',
     isFocused: false,
@@ -185,7 +188,7 @@ class DateTimePicker extends Component<Props, State> {
   getState = () => {
     const mappedState = {
       ...this.state,
-      ...pick(this.props, ['value']),
+      value: this.props.value,
     };
 
     return {
@@ -318,7 +321,7 @@ class DateTimePicker extends Component<Props, State> {
         isInvalid={bothProps.isInvalid}
         appearance={bothProps.appearance}
       >
-        <input name={name} interface="hidden" value={value} />
+        <input name={name} type="hidden" value={value} />
         <FlexItem>
           <DatePicker
             {...bothProps}
