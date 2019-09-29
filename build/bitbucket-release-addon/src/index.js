@@ -3,7 +3,7 @@ import flattenChangesets from '@atlaskit/build-releases/version/flattenChangeset
 import yaml from 'js-yaml';
 
 import getCommits from './get-commits';
-import getChangesets from '././get-changesets';
+import getChangesets from './get-changesets';
 import { legacyChangesetRepos, v2ChangesetRepos } from './config';
 
 const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
