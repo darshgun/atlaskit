@@ -12,7 +12,7 @@ const spinnerTestIdLarge = "[data-testid='my-spinner-large']";
 const spinnerTestIdMedium = "[data-testid='my-spinner-medium']";
 const spinnerTestIdSmall = "[data-testid='my-spinner-small']";
 const spinnerTestIdXSmall = "[data-testid='my-spinner-xsmall']";
-const spinnerTestIdInverted = "[data-testid='my-spinner-inverted']";
+const spinnerTestIdInverted = "[data-testid='my-spinner-invert-color']";
 
 BrowserTestCase(
   'Spinner should be able to be identified by data-testid',
