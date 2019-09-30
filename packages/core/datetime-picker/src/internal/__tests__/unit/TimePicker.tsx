@@ -8,7 +8,7 @@ describe('TimePicker', () => {
     const parseInputValue = () => new Date('1970-01-02 01:15:00');
     const onChangeSpy = jest.fn();
     const expectedResult = '01:15';
-    const timePickerWrapper = mount(
+    const timePickerWrapper = mount<TimePicker>(
       <TimePicker
         timeIsEditable
         onChange={onChangeSpy}
@@ -16,7 +16,6 @@ describe('TimePicker', () => {
       />,
     );
 
-    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('asdf');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);
@@ -27,7 +26,7 @@ describe('TimePicker', () => {
     const expectedResult = 'midday';
     const formatDisplayLabel = (time: string) =>
       time === '12:00' ? 'midday' : time;
-    const timePickerWrapper = mount(
+    const timePickerWrapper = mount<TimePicker>(
       <TimePicker formatDisplayLabel={formatDisplayLabel} value={timeValue} />,
     );
     const label = timePickerWrapper.text();
@@ -38,11 +37,10 @@ describe('TimePicker', () => {
   test('default parseInputValue', () => {
     const onChangeSpy = jest.fn();
     const expectedResult = '01:30';
-    const timePickerWrapper = mount(
+    const timePickerWrapper = mount<TimePicker>(
       <TimePicker timeIsEditable onChange={onChangeSpy} />,
     );
 
-    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('01:30');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);
@@ -51,11 +49,10 @@ describe('TimePicker', () => {
   test('default parseInputValue - AM', () => {
     const onChangeSpy = jest.fn();
     const expectedResult = '01:44';
-    const timePickerWrapper = mount(
+    const timePickerWrapper = mount<TimePicker>(
       <TimePicker timeIsEditable onChange={onChangeSpy} />,
     );
 
-    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('1:44am');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);
@@ -64,11 +61,10 @@ describe('TimePicker', () => {
   test('default parseInputValue - PM', () => {
     const onChangeSpy = jest.fn();
     const expectedResult = '15:32';
-    const timePickerWrapper = mount(
+    const timePickerWrapper = mount<TimePicker>(
       <TimePicker timeIsEditable onChange={onChangeSpy} />,
     );
 
-    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('3:32pm');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);
