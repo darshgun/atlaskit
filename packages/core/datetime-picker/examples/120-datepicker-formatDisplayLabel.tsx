@@ -2,9 +2,9 @@ import React from 'react';
 import moment from 'moment';
 import { DatePicker } from '../src';
 
-const logValue = value => console.log(value);
+const logValue = (value: string) => console.log(value);
 
-const formatDisplayLabel = (value, dateFormat) => {
+const formatDisplayLabel = (value: string, dateFormat: string) => {
   moment.locale('fr');
   return moment(value).format(dateFormat);
 };

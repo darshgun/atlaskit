@@ -13,6 +13,7 @@ test('ClearIndicator', () => {
 test('DropdownIndicator', () => {
   const Icon = () => <i>V</i>;
   const wrapper = shallow(
+    // @ts-ignore
     <DropdownIndicator selectProps={{ dropdownIndicatorIcon: Icon }} />,
   ).dive();
 

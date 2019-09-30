@@ -11,6 +11,7 @@ import { N20, B100 } from '@atlaskit/theme/colors';
 import { e200 } from '@atlaskit/theme/elevation';
 import {
   withAnalyticsEvents,
+  WithAnalyticsEventsProps,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
@@ -27,12 +28,12 @@ import {
   placeholderDatetime,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
-import { SelectProps, Appearance, Spacing } from 'src/types.js';
+import { SelectProps, Appearance, Spacing } from '../types.js';
 
 type CalendarInstance = any;
 
 /* eslint-disable react/no-unused-prop-types */
-interface Props {
+interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    * Appearance values will be ignored if styles are parsed via the selectProps.
    */

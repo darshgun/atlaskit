@@ -13,6 +13,7 @@ import { CSSObject } from '@emotion/core';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  WithAnalyticsEventsProps,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
@@ -37,7 +38,7 @@ interface Option {
 }
 
 /* eslint-disable react/no-unused-prop-types */
-interface Props {
+interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    *  Appearance values will be ignored if styles are parsed via the selectProps.
    */
@@ -116,11 +117,10 @@ class TimePicker extends React.Component<Props, State> {
   containerRef: HTMLElement | null = null;
 
   static defaultProps = {
-    appearance: 'default',
+    appearance: 'default' as Appearance,
     autoFocus: false,
     defaultIsOpen: false,
     defaultValue: '',
-    value: '',
     hideIcon: false,
     id: '',
     innerProps: {},
@@ -130,12 +130,13 @@ class TimePicker extends React.Component<Props, State> {
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    parseInputValue: (time: string, timeFormat: string) => parseTime(time), // eslint-disable-line no-unused-vars
+    parseInputValue: (time: string) => parseTime(time),
     selectProps: {},
-    spacing: 'default',
+    spacing: 'default' as Spacing,
     times: defaultTimes,
     timeIsEditable: false,
     locale: 'en-US',
+    value: '',
   };
 
   state = {

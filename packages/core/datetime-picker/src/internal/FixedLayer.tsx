@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React from 'react';
 import { layers } from '@atlaskit/theme/constants';
 import ScrollLock from 'react-scrolllock';
 import { Popper, Manager, Reference } from '@atlaskit/popper';
@@ -11,7 +11,7 @@ interface Props {
   /**
    * The content to render in the layer.
    */
-  content: ReactNode;
+  content: React.ReactNode;
   /**
    * input value from the menu.
    */
@@ -31,7 +31,7 @@ interface PopperProps {
  * Scroll is locked outside the layer to prevent the layered content from detaching from the
  * container ref.
  */
-export default class FixedLayer extends Component<Props> {
+export default class FixedLayer extends React.Component<Props> {
   scheduleUpdate: () => void = () => {};
 
   componentDidUpdate(prevProps: any) {

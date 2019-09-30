@@ -41,7 +41,10 @@ type Props = {
 };
 
 export const DropdownIndicator = (props: Props): React.ReactNode => {
-  const Icon = props.selectProps.dropdownIndicatorIcon;
+  // Wanted to use React.Component<{}> but that was having issues
+  // https://github.com/basarat/typescript-book/blob/master/docs/jsx/react.md#react-jsx-tip-accept-a-component-that-can-act-on-props-and-be-rendered-using-jsx
+  const Icon: React.ComponentClass<{}> | React.StatelessComponent<{}> =
+    props.selectProps.dropdownIndicatorIcon;
   return Icon ? <Icon /> : null;
 };
 

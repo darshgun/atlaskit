@@ -33,6 +33,7 @@ test('default parseValue, does not parse the date time value into the specified 
 
   dateTimePickerWrapper.find(DatePicker).simulate('change', '2018-05-02');
 
+  // @ts-ignore
   expect(dateTimePickerWrapper.state().zoneValue).not.toEqual('+0800');
 });
 

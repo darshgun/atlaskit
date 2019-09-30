@@ -27,7 +27,7 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 // BrowserTestCase(
 //   'When the user enters a partial date and hits enter, the value should be selected from the calendar',
 //   {},
-//   async client => {
+//   async (client: any) => {
 //     const dateTimePickerTest = new Page(client);
 
 //     await dateTimePickerTest.goto(urlDateTimePicker);
@@ -46,7 +46,7 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 // BrowserTestCase(
 //   'When the user enters an invalid date and hits enter, the value should be selected from the calendar',
 //   {},
-//   async client => {
+//   async (client: any) => {
 //     const dateTimePickerTest = new Page(client);
 
 //     await dateTimePickerTest.goto(urlDateTimePicker);
@@ -68,7 +68,7 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 // BrowserTestCase(
 //   'When DatePicker is focused & backspace pressed, the input should be cleared',
 //   {},
-//   async client => {
+//   async (client: any) => {
 //     const dateTimePickerTest = new Page(client);
 
 //     await dateTimePickerTest.goto(urlDateTimePicker);
@@ -101,7 +101,7 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 BrowserTestCase(
   'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
   {},
-  async client => {
+  async (client: any) => {
     const dateTimePickerTest = new Page(client);
 
     await dateTimePickerTest.goto(urlDateTimePicker);
@@ -124,7 +124,7 @@ BrowserTestCase(
 BrowserTestCase(
   'When entering a new time in Timepicker Editable, the time should be updated to the new value',
   { skip: ['ie'] }, // IE has an issue AK-5570, AK-5492
-  async client => {
+  async (client: any) => {
     const timePicker = new Page(client);
 
     await timePicker.goto(urlDateTimePicker);
@@ -151,7 +151,7 @@ BrowserTestCase(
 BrowserTestCase(
   'Invalid times in TimePicker should be cleared',
   { skip: ['ie'] }, // IE has an issue AK-5570, AK-5492
-  async client => {
+  async (client: any) => {
     const timePicker = new Page(client);
 
     await timePicker.goto(urlDateTimePicker);
@@ -171,7 +171,7 @@ BrowserTestCase(
 BrowserTestCase(
   'When DateTimePicker is focused & backspace pressed, the date value should be cleared but the time value should not be affected',
   { skip: ['safari', 'ie'] }, // Safari and IE drivers have issues - AK-5570, AK-5492
-  async client => {
+  async (client: any) => {
     const dateTimePickerTest = new Page(client);
 
     await dateTimePickerTest.goto(urlDateTimePicker);
@@ -202,7 +202,7 @@ BrowserTestCase(
 BrowserTestCase(
   '[i18n] When entering a new time in Timepicker Editable, the time should be updated to the new value',
   { skip: ['ie'] }, // IE has an issue AK-5570, AK-5492
-  async client => {
+  async (client: any) => {
     const timePicker = new Page(client);
 
     await timePicker.goto(urlI18nDateTimePicker);
@@ -229,7 +229,7 @@ BrowserTestCase(
 BrowserTestCase(
   '[i18n] When a user types a year into the date input in DatetimePicker and subsequently hits enter, the value is correctly updated',
   { skip: ['safari', 'ie'] }, // Safari and IE drivers have issues - AK-5570, AK-5492
-  async client => {
+  async (client: any) => {
     const dateTimePickerTest = new Page(client);
 
     await dateTimePickerTest.goto(urlI18nDateTimePicker);

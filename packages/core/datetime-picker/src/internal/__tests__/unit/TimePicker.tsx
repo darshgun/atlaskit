@@ -16,6 +16,7 @@ describe('TimePicker', () => {
       />,
     );
 
+    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('asdf');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);
@@ -24,7 +25,8 @@ describe('TimePicker', () => {
   test('custom formatDisplayLabel', () => {
     const timeValue = '12:00';
     const expectedResult = 'midday';
-    const formatDisplayLabel = time => (time === '12:00' ? 'midday' : time);
+    const formatDisplayLabel = (time: string) =>
+      time === '12:00' ? 'midday' : time;
     const timePickerWrapper = mount(
       <TimePicker formatDisplayLabel={formatDisplayLabel} value={timeValue} />,
     );
@@ -40,6 +42,7 @@ describe('TimePicker', () => {
       <TimePicker timeIsEditable onChange={onChangeSpy} />,
     );
 
+    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('01:30');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);
@@ -52,6 +55,7 @@ describe('TimePicker', () => {
       <TimePicker timeIsEditable onChange={onChangeSpy} />,
     );
 
+    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('1:44am');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);
@@ -64,6 +68,7 @@ describe('TimePicker', () => {
       <TimePicker timeIsEditable onChange={onChangeSpy} />,
     );
 
+    // @ts-ignore
     timePickerWrapper.instance().onCreateOption('3:32pm');
 
     expect(onChangeSpy).toBeCalledWith(expectedResult);

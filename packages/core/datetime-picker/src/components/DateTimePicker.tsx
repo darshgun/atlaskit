@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { CSSObject } from '@emotion/core';
 import {
   withAnalyticsEvents,
+  WithAnalyticsEventsProps,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
@@ -21,7 +22,7 @@ import TimePicker from './TimePicker';
 import { defaultTimes, formatDateTimeZoneIntoIso } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
-interface Props {
+interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon. */
   appearance?: Appearance;
   /** Whether or not to auto-focus the field. */

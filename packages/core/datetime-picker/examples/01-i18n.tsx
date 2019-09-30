@@ -21,7 +21,7 @@ interface ControlledProps {
   ) => React.ReactNode;
 }
 
-class Controlled extends Component<ControlledProps, ControlledState> {
+class Controlled extends React.Component<ControlledProps, ControlledState> {
   state: ControlledState;
   recentlySelected: boolean = false;
   recSelTimeoutId: number | null = null;
@@ -35,7 +35,7 @@ class Controlled extends Component<ControlledProps, ControlledState> {
   }
 
   componentWillUnmount() {
-    if (this.recSelTimeoutId == null) {
+    if (this.recSelTimeoutId != null) {
       clearTimeout(this.recSelTimeoutId);
       this.recSelTimeoutId = null;
     }
@@ -91,7 +91,7 @@ class Controlled extends Component<ControlledProps, ControlledState> {
   }
 }
 
-const onChange = value => {
+const onChange = (value: string) => {
   console.log(value);
 };
 
@@ -99,7 +99,7 @@ interface IntlState {
   locale: string;
 }
 
-export default class extends Component<Object, IntlState> {
+export default class extends React.Component<Object, IntlState> {
   state = {
     locale: 'ja-JP',
   };
