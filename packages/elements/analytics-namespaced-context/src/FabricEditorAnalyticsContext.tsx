@@ -12,7 +12,12 @@ export enum EDITOR_APPEARANCE_CONTEXT {
 }
 
 type FabricEditorAnalyticsContextProps = Props & {
-  data: { appearance: EDITOR_APPEARANCE_CONTEXT | undefined };
+  data: {
+    appearance: EDITOR_APPEARANCE_CONTEXT | undefined;
+    packageName: string;
+    packageVersion: string;
+    componentName: 'editorCore';
+  };
 };
 
 export const FabricEditorAnalyticsContext: StatelessComponent<

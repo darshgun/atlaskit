@@ -1,0 +1,1 @@
+ED-7772 Enabled heading anchor in kitchen sink

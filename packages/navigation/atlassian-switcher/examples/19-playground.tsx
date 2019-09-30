@@ -64,7 +64,7 @@ class JiraSwitcherExample extends React.Component {
           },
         };
       },
-      { ...REQUEST_MEDIUM, licenseInformation: 2000 },
+      REQUEST_MEDIUM,
     );
   };
 
@@ -92,7 +92,7 @@ class JiraSwitcherExample extends React.Component {
           },
         };
       },
-      { ...REQUEST_MEDIUM, licenseInformation: 2000 },
+      REQUEST_MEDIUM,
     );
   };
 
@@ -143,7 +143,7 @@ class JiraSwitcherExample extends React.Component {
           LICENSE_INFORMATION_DATA: 502,
         };
       },
-      { ...REQUEST_MEDIUM, licenseInformation: 2000 },
+      REQUEST_MEDIUM,
     );
   };
 

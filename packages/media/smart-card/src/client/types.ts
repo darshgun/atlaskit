@@ -47,3 +47,13 @@ export type ClientEnvironment = {
 };
 
 export type EnvironmentsKeys = keyof typeof Environments;
+
+export interface ServerError {
+  message: string;
+  name: string;
+  resourceUrl: string;
+  status: number;
+}
+
+export const isServerError = (obj: any) =>
+  'message' in obj && 'name' in obj && 'resourceUrl' in obj && 'status' in obj;

@@ -1,9 +1,15 @@
 import * as React from 'react';
 import { ClipboardProps } from './clipboard';
+import { ClipboardConfig } from '../types';
 import { WithMediaClientConfigProps } from '@atlaskit/media-client';
 
 type ClipboardWithMediaClientConfigProps = WithMediaClientConfigProps<
-  ClipboardProps
+  // ClipboardBase defines config default value, which modifies final shape of ClipboardBase component.
+  // Specifically this changes one of the props - config, it makes it an optional property.
+  // We want ClipboardWithMediaClientConfigProps to match this modified props of ClipboardBase here.
+  Omit<ClipboardProps, 'config'> & {
+    config?: ClipboardConfig;
+  }
 >;
 type ClipboardWithMediaClientConfigComponent = React.ComponentType<
   ClipboardWithMediaClientConfigProps

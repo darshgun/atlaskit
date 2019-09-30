@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { EditorView } from 'prosemirror-view';
 import { intlShape, IntlShape, IntlProvider } from 'react-intl';
+import { name, version } from './version-wrapper';
 
 import {
   ProviderFactory,
@@ -313,7 +314,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
       <WidthProvider>
         <EditorContext editorActions={this.editorActions}>
           <FabricEditorAnalyticsContext
-            data={{ appearance: getAnalyticsAppearance(this.props.appearance) }}
+            data={{
+              packageName: name,
+              packageVersion: version,
+              componentName: 'editorCore',
+              appearance: getAnalyticsAppearance(this.props.appearance),
+            }}
           >
             <WithCreateAnalyticsEvent
               render={createAnalyticsEvent =>
