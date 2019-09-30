@@ -1,1 +1,0 @@
-changed action value 'click'  to 'clicked'
