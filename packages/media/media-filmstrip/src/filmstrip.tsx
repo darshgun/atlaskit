@@ -26,14 +26,11 @@ export interface FilmstripItem {
   readonly onLoadingChange?: OnLoadingChangeFunc;
 }
 
-interface WithMediaClientConfig {
-  mediaClientConfig?: MediaClientConfig;
-}
-
 export type FilmstripProps = {
   items: FilmstripItem[];
   shouldOpenMediaViewer?: boolean;
-} & WithMediaClientConfig;
+  mediaClientConfig?: MediaClientConfig;
+};
 
 export interface FilmstripState {
   animate: boolean;
