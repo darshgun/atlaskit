@@ -2,10 +2,14 @@
 
 We encourage adding tests to all components on **Atlaskit**.
 
-**Jest** is the testing framework across all types of tests in Atlaskit. At the moment, we use Jest version **23**, feel free to consult the [links](https://jestjs.io/docs/en/23.x/getting-started.html) for any additional commands.
+**Jest** is the testing framework across all types of tests in Atlaskit. At the moment, we use Jest version **24.8.0**, feel free to consult the [links](https://jestjs.io/docs/en/24.8/getting-started.html) for any additional commands.
 
 ## Testing support as of today includes
 ### Unit tests
+**Note**: We currently use both `Enzyme` and `@testing-library/react`. There is no preferred library but the recommendation is:
+* if testing the component details( children, state, props), use `Enzyme`.
+* if testing the end to end user perspective and for example `data-attributes`, use `@testing-library/react`.
+
 - write unit test for component using **Jest test framework**.
 - *unit tests* for packages should be structured under `<pkg>/src/__tests__/unit` folder.
 - on CI these are run against changed packages only.
@@ -23,6 +27,7 @@ We encourage adding tests to all components on **Atlaskit**.
     * `yarn test <path_to_file> -u`.
 
 ### Browser unit tests
+**Note**: Karma tests are skipped at the moment.
 - some components require unit tests which can be run against **real browser**.
 - these tests use *jest-karma runner*.
 - *browser unit tests* for packages should be structured under `<pkg>/__tests-karma__`.
