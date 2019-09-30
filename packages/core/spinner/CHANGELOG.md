@@ -1,5 +1,13 @@
 # @atlaskit/spinner
 
+## 12.1.0
+
+### Minor Changes
+
+- [minor][808d37259d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/808d37259d):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 12.0.9
 
 ### Patch Changes
