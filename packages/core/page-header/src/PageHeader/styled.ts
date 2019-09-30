@@ -1,19 +1,19 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme/constants';
 import { h700 } from '@atlaskit/theme/typography';
-
-const truncationStyles = css`
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
 
 interface StyledProps {
   truncate?: boolean;
 }
 
 const getTruncationStyles = ({ truncate }: StyledProps) =>
-  truncate ? truncationStyles : null;
+  truncate
+    ? `
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      `
+    : null;
 
 export const Outer = styled.div`
   margin: ${gridSize() * 3}px 0 ${gridSize() * 2}px 0;
@@ -46,8 +46,11 @@ export const ActionsWrapper = styled.div`
   margin-left: auto;
   max-width: 100%;
   padding-left: ${gridSize() * 4}px;
-  text-align: right;
   white-space: nowrap;
+
+  > {
+    text-align: right;
+  }
 `;
 
 export const BottomBarWrapper = styled.div`
