@@ -87,7 +87,7 @@ describe('importFiles middleware', () => {
   };
 
   const getDispatchArgs = (store: any, type: string): Action[] =>
-    (store.dispatch.mock as MockContext<Dispatch<any>>).calls
+    (store.dispatch.mock as MockContext<Dispatch<any>, any[]>).calls
       .filter(args => args[0].type === type)
       .map(args => args[0]);
 

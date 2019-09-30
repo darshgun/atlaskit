@@ -102,7 +102,7 @@ describe('UserPickerField', () => {
   });
 
   describe('validate function', () => {
-    test.each([
+    test.each<[string | undefined, { id: string }[] | null]>([
       ['REQUIRED', []],
       ['REQUIRED', null],
       [undefined, [{ id: 'some-id' }]],

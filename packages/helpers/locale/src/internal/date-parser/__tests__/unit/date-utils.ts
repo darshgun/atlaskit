@@ -1,7 +1,7 @@
-import { getDaysInMonth, isLeapYear, isValid } from '../../utils';
+import { getDaysInMonth, isLeapYear, isValid, DateObj } from '../../utils';
 
 describe('date-parser/utils', () => {
-  it.each([
+  it.each<[number, boolean]>([
     [2000, true],
     [2001, false],
     [2002, false],
@@ -37,7 +37,7 @@ describe('date-parser/utils', () => {
     expect(isLeapYear(date)).toEqual(expected);
   });
 
-  it.each([
+  it.each<[number, number, number]>([
     [2019, 1, 31],
     [2019, 2, 28],
     [2019, 3, 31],
@@ -55,7 +55,7 @@ describe('date-parser/utils', () => {
     expect(getDaysInMonth(year, month)).toEqual(expected);
   });
 
-  it.each([
+  it.each<[DateObj, boolean]>([
     [{ year: 2000, month: 2, day: 29 }, true],
     [{ year: 2001, month: 2, day: 29 }, false],
     [{ year: 2000, month: 13, day: 1 }, false],
