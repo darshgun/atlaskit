@@ -11,7 +11,7 @@ test('DatePicker, custom formatDisplayLabel', () => {
     return format(parsed, dateFormat);
   };
   const expectedResult = 'June/08';
-  const datePickerWrapper = mount(
+  const datePickerWrapper = mount<DatePicker>(
     <DatePicker
       formatDisplayLabel={formatDisplayLabel}
       dateFormat="MMMM/DD"
@@ -25,22 +25,18 @@ test('DatePicker, custom formatDisplayLabel', () => {
 test('DatePicker, onCalendarChange if the iso date is greater than the last day of the month, focus the last day of the month instead', () => {
   const date = '2018-02-31';
   const fallbackDate = '2018-02-28';
-  const datePickerWrapper = mount(<DatePicker />);
-  // @ts-ignore
+  const datePickerWrapper = mount<DatePicker>(<DatePicker />);
   datePickerWrapper.instance().onCalendarChange({ iso: date });
   datePickerWrapper.update();
-  // @ts-ignore
   expect(datePickerWrapper.instance().state.view).toEqual(fallbackDate);
 });
 
 test('DatePicker, onCalendarChange picks a correct date if it is calculated wrong and comes malformed', () => {
   const date = '2018-5-1';
   const resultDate = '2018-05-01';
-  const datePickerWrapper = mount(<DatePicker value={date} />);
-  // @ts-ignore
+  const datePickerWrapper = mount<DatePicker>(<DatePicker value={date} />);
   datePickerWrapper.instance().onCalendarChange({ iso: date });
   datePickerWrapper.update();
-  // @ts-ignore
   expect(datePickerWrapper.instance().state.view).toEqual(resultDate);
 });
 
@@ -48,7 +44,7 @@ test('DatePicker, supplying a custom parseInputValue prop, produces the expected
   const parseInputValue = () => new Date('01/01/1970');
   const onChangeSpy = jest.fn();
   const expectedResult = '1970-01-01';
-  const datePickerWrapper = mount(
+  const datePickerWrapper = mount<DatePicker>(
     <DatePicker
       id="customDatePicker-ParseInputValue"
       onChange={onChangeSpy}
@@ -56,7 +52,6 @@ test('DatePicker, supplying a custom parseInputValue prop, produces the expected
     />,
   );
 
-  // @ts-ignore
   datePickerWrapper.instance().onSelectInput({ target: { value: 'asdf' } });
   datePickerWrapper
     .find('input')
@@ -85,15 +80,18 @@ test('DatePicker, focused calendar date is reset on open', () => {
 test('DatePicker default parseInputValue parses valid dates to the expected value', () => {
   const onChangeSpy = jest.fn();
   const expectedResult = '2018-01-02';
-  const datePickerWrapper = mount(
+  const datePickerWrapper = mount<DatePicker>(
     <DatePicker
       id="defaultDatePicker-ParseInputValue"
       onChange={onChangeSpy}
     />,
   );
 
-  // @ts-ignore
-  datePickerWrapper.instance().onSelectInput({ target: { value: '01/02/18' } });
+  datePickerWrapper
+    .instance()
+    .onSelectInput({ target: { value: '01/02/18' } } as React.ChangeEvent<
+      HTMLInputElement
+    >);
   datePickerWrapper
     .find('input')
     .first()
@@ -106,7 +104,7 @@ test('DatePicker pressing the Backspace key to empty the input should clear the 
   const dateValue = new Date('06/08/2018').toUTCString();
   const onChangeSpy = jest.fn();
   const expectedResult = '';
-  const datePickerWrapper = mount(
+  const datePickerWrapper = mount<DatePicker>(
     <DatePicker value={dateValue} onChange={onChangeSpy} />,
   );
 
@@ -124,7 +122,7 @@ test('DatePicker pressing the Delete key to empty the input should clear the val
   const dateValue = new Date('06/08/2018').toUTCString();
   const onChangeSpy = jest.fn();
   const expectedResult = '';
-  const datePickerWrapper = mount(
+  const datePickerWrapper = mount<DatePicker>(
     <DatePicker value={dateValue} onChange={onChangeSpy} />,
   );
 

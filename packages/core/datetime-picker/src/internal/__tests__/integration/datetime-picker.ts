@@ -134,7 +134,7 @@ BrowserTestCase(
 
     const previousTime = await timePicker.getText(timeValue);
 
-    await timePicker.interface(timeInput, ['12:45pm']);
+    await timePicker.type(timeInput, ['12:45pm']);
     await timePicker.waitForSelector(timeOption);
     await timePicker.keys('Enter');
     await timePicker.waitForSelector(timeValue);
@@ -158,7 +158,7 @@ BrowserTestCase(
     await timePicker.waitForSelector(timepickerDefault);
     await timePicker.click(timepickerDefault);
     await timePicker.waitForSelector(timePickerMenu);
-    await timePicker.interface(timeInput, ['a', 's', 'd']);
+    await timePicker.type(timeInput, ['a', 's', 'd']);
     await timePicker.keys(['Enter']);
 
     await timePicker.waitForSelector(timeValue);
@@ -212,7 +212,7 @@ BrowserTestCase(
 
     const previousTime = await timePicker.getText(timeValue);
 
-    await timePicker.interface(timeInput, ['1:45pm']);
+    await timePicker.type(timeInput, ['1:45pm']);
     await timePicker.waitForSelector(timeOption);
     await timePicker.keys('Enter');
     await timePicker.waitForSelector(timeValue);
