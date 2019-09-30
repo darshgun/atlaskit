@@ -10,7 +10,6 @@ import {
   AvailableSite,
   WorklensProductType,
   AvailableProduct,
-  Product,
 } from '../../types';
 
 describe('map-results-to-switcher-props', () => {
