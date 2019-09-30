@@ -43,7 +43,7 @@ export async function MediaPicker(
     import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
   ]);
 
-  const mediaClient = getMediaClient({ mediaClientConfig });
+  const mediaClient = getMediaClient(mediaClientConfig);
 
   return new PopupImpl(mediaClient, pickerConfig);
 }

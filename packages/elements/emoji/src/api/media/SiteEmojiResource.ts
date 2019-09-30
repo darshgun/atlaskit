@@ -99,14 +99,12 @@ export default class SiteEmojiResource {
       return new Promise<EmojiDescription>((resolve, reject) => {
         const { url, clientId, collectionName } = uploadToken;
         const mediaClient = getMediaClient({
-          mediaClientConfig: {
-            authProvider: () =>
-              Promise.resolve({
-                clientId,
-                token: uploadToken.jwt,
-                baseUrl: url,
-              }),
-          },
+          authProvider: () =>
+            Promise.resolve({
+              clientId,
+              token: uploadToken.jwt,
+              baseUrl: url,
+            }),
         });
 
         const subscription = mediaClient.file

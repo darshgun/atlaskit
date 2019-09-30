@@ -12,8 +12,9 @@ export interface WithMediaClient {
 
 const mediaClientsMap = new Map<MediaClientConfig, MediaClient>();
 
-export const getMediaClient = (props: WithMediaClientConfig): MediaClient => {
-  const { mediaClientConfig } = props;
+export const getMediaClient = (
+  mediaClientConfig: MediaClientConfig,
+): MediaClient => {
   let mediaClient: MediaClient | undefined = mediaClientsMap.get(
     mediaClientConfig,
   );
@@ -44,7 +45,10 @@ export const withMediaClient: WithMediaClientFunction = <
     render() {
       const props = this.props;
       return (
-        <Component {...props as any} mediaClient={getMediaClient(this.props)} />
+        <Component
+          {...props as any}
+          mediaClient={getMediaClient(this.props.mediaClientConfig)}
+        />
       );
     }
   };
