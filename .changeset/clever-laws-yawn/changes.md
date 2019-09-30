@@ -1,0 +1,1 @@
+yRemove People link from switcher
