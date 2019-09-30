@@ -52,7 +52,11 @@ test('DatePicker, supplying a custom parseInputValue prop, produces the expected
     />,
   );
 
-  datePickerWrapper.instance().onSelectInput({ target: { value: 'asdf' } });
+  datePickerWrapper
+    .instance()
+    .onSelectInput({ target: { value: 'asdf' } } as React.ChangeEvent<
+      HTMLInputElement
+    >);
   datePickerWrapper
     .find('input')
     .first()
