@@ -14,7 +14,7 @@ const content = (
 
 export default class InlineDialogExample extends Component<{}, State> {
   state = {
-    dialogOpen: true,
+    dialogOpen: false,
   };
 
   toggleDialog = () => this.setState({ dialogOpen: !this.state.dialogOpen });
@@ -28,10 +28,12 @@ export default class InlineDialogExample extends Component<{}, State> {
           }}
           content={content}
           isOpen={this.state.dialogOpen}
+          testId="the-inline-dialog"
         >
           <Button
             isSelected={this.state.dialogOpen}
             onClick={this.toggleDialog}
+            testId="the-button-for-inline-dialog"
           >
             Click me!
           </Button>
