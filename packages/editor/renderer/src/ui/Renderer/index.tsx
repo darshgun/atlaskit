@@ -57,6 +57,7 @@ export interface Props {
   truncated?: boolean;
   createAnalyticsEvent?: CreateUIAnalyticsEvent;
   allowColumnSorting?: boolean;
+  shouldOpenMediaViewer?: boolean;
 }
 
 export class Renderer extends PureComponent<Props, {}> {
@@ -144,6 +145,7 @@ export class Renderer extends PureComponent<Props, {}> {
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
       allowColumnSorting,
+      shouldOpenMediaViewer,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -162,6 +164,7 @@ export class Renderer extends PureComponent<Props, {}> {
       allowHeadingAnchorLinks,
       allowColumnSorting,
       fireAnalyticsEvent: this.fireAnalyticsEvent,
+      shouldOpenMediaViewer,
     });
   }
 

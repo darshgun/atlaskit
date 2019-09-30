@@ -56,6 +56,7 @@ export interface MediaCardProps {
       onClick?: CardOnClickCallback;
     };
   };
+  shouldOpenMediaViewer?: boolean;
   type: MediaType;
   collection?: string;
   url?: string;
@@ -282,6 +283,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       rendererAppearance,
       disableOverlay,
       useInlinePlayer,
+      shouldOpenMediaViewer: forceOpenMediaViewer,
     } = this.props;
     const isMobile = rendererAppearance === 'mobile';
     const shouldPlayInline =
@@ -290,7 +292,10 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
 
     const onCardClick = this.getOnCardClickCallback(isInlinePlayer);
 
-    const shouldOpenMediaViewer = !isMobile && !onCardClick;
+    const shouldOpenMediaViewer =
+      typeof forceOpenMediaViewer === 'boolean'
+        ? forceOpenMediaViewer
+        : !isMobile && !onCardClick;
 
     if (type === 'external') {
       return this.renderExternal(shouldOpenMediaViewer);
