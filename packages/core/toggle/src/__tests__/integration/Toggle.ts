@@ -10,8 +10,8 @@ const toggleStateless = "[data-testid='my-toggle-stateless']";
 const toggleBtn = "[data-testid='my-toggle-button']";
 const toggleRegular = "[data-testid='my-regular-stateful-toggle']";
 const toggleLarge = "[data-testid='my-large-stateful-toggle']";
-const toggleStatelessInput = `${toggleStateless} > input`;
-const toggleLargeInput = `${toggleLarge} > input`;
+const toggleStatelessInput = "[data-testid='my-toggle-stateless--input']";
+const toggleLargeInput = "[data-testid='my-large-stateful-toggle--input']";
 
 BrowserTestCase(
   'Toggle should be able to be identified and checked by data-testid',

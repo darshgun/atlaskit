@@ -83,6 +83,7 @@ class ToggleStateless extends Component<StatelessProps, State> {
           onFocus={this.handleFocus}
           type="checkbox"
           value={value}
+          data-testid={testId && `${testId}--input`}
         />
         <Slide {...styledProps}>
           <Inner {...styledProps}>
