@@ -9,7 +9,9 @@ const urlToggle = getExampleUrl('core', 'toggle', 'testing');
 const toggleStateless = "[data-testid='my-toggle-stateless']";
 const toggleBtn = "[data-testid='my-toggle-button']";
 const toggleRegular = "[data-testid='my-regular-stateful-toggle']";
-const toggleLarge = "[data-testid='my-regular-stateful-toggle']";
+const toggleLarge = "[data-testid='my-large-stateful-toggle']";
+const toggleStatelessInput = `${toggleStateless} > input`;
+const toggleLargeInput = `${toggleLarge} > input`;
 
 BrowserTestCase(
   'Toggle should be able to be identified and checked by data-testid',
@@ -25,16 +27,17 @@ BrowserTestCase(
 
     // Click on the toggle button stateless.
     await toggleTest.click(toggleBtn);
-    expect(await toggleTest.isSelected(toggleStateless)).toBe(true);
+    expect(await toggleTest.isSelected(toggleStatelessInput)).toBe(true);
+
     // You can't interact with a stateless toggle so clicking should not change the state.
     await toggleTest.click(toggleStateless);
-    expect(await toggleTest.isSelected(toggleStateless)).toBe(true);
+    expect(await toggleTest.isSelected(toggleStatelessInput)).toBe(true);
 
     // You can interact with a stateful toggle.
     await toggleTest.click(toggleRegular);
     expect(await toggleTest.isSelected(toggleRegular)).toBe(false);
 
     // You can get the state.
-    expect(await toggleTest.isSelected(toggleLarge)).toBe(true);
+    expect(await toggleTest.isSelected(toggleLargeInput)).toBe(true);
   },
 );

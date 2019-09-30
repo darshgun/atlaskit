@@ -42,7 +42,7 @@ export default class StatelessExample extends Component<any, State> {
         <Toggle
           size="large"
           isDefaultChecked
-          testId="my-regular-stateful-toggle"
+          testId="my-large-stateful-toggle"
         />
       </div>
     );

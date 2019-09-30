@@ -72,7 +72,7 @@ class ToggleStateless extends Component<StatelessProps, State> {
     const id = uid({ id: this.constructor.name });
 
     return (
-      <Label htmlFor={id}>
+      <Label htmlFor={id} data-testid={testId}>
         <Input
           checked={isChecked}
           disabled={isDisabled}
@@ -83,7 +83,6 @@ class ToggleStateless extends Component<StatelessProps, State> {
           onFocus={this.handleFocus}
           type="checkbox"
           value={value}
-          data-testid={testId}
         />
         <Slide {...styledProps}>
           <Inner {...styledProps}>
