@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 113.1.2
+
+### Patch Changes
+
+- [patch][dbd86d9542](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd86d9542):
+
+  MS-2397 Fix bug where media with same ids haven't been updating attributes
+
 ## 113.1.1
 
 ### Patch Changes
