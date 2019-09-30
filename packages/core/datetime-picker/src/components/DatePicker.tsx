@@ -6,7 +6,7 @@ import {
   createLocalizationProvider,
   LocalizationProvider,
 } from '@atlaskit/locale';
-import { borderRadius, layers } from '@atlaskit/theme/constants';
+import { borderRadius, layers, gridSize } from '@atlaskit/theme/constants';
 import { N20, B100 } from '@atlaskit/theme/colors';
 import { e200 } from '@atlaskit/theme/elevation';
 import {
@@ -441,6 +441,9 @@ class DatePicker extends React.Component<Props, State> {
       spacing,
       locale,
     } = this.props;
+    const BORDER_WIDTH = 2;
+    const ICON_PADDING = 2;
+
     const { value, view, isOpen, inputValue } = this.getSafeState();
     const dropDownIcon = appearance === 'subtle' || hideIcon ? null : icon;
     const { styles: selectStyles = {} } = selectProps;
@@ -493,10 +496,10 @@ class DatePicker extends React.Component<Props, State> {
               ...controlStyles,
               ...disabledStyle,
             }),
-            indicatorsContainer: base => ({
+            indicatorsContainer: (base: CSSObject): CSSObject => ({
               ...base,
-              paddingLeft: 2,
-              paddingRight: 6,
+              paddingLeft: ICON_PADDING,
+              paddingRight: gridSize() - BORDER_WIDTH,
             }),
           })}
           placeholder={this.getPlaceholder()}

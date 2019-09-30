@@ -17,6 +17,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
+import { gridSize } from '@atlaskit/theme/constants';
 import { Appearance, Spacing, SelectProps } from '../types';
 import {
   name as packageName,
@@ -287,6 +288,9 @@ class TimePicker extends React.Component<Props, State> {
       selectProps,
       spacing,
     } = this.props;
+    const ICON_PADDING = 2;
+    const BORDER_WIDTH = 2;
+
     const { value = '', isOpen } = this.getSafeState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
@@ -348,10 +352,10 @@ class TimePicker extends React.Component<Props, State> {
                   : 'auto',
               },
             }),
-            indicatorsContainer: base => ({
+            indicatorsContainer: (base: CSSObject): CSSObject => ({
               ...base,
-              paddingLeft: icon ? 2 : 0,
-              paddingRight: icon ? 6 : 0,
+              paddingLeft: icon ? ICON_PADDING : 0,
+              paddingRight: icon ? gridSize() - BORDER_WIDTH : 0,
             }),
           })}
           value={labelAndValue}
