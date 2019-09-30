@@ -288,6 +288,11 @@ export default class Page {
     return this.waitFor(selector);
   }
 
+  async isSelected(selector) {
+    const elem = await this.browser.$(selector);
+    return this.isSelected();
+  }
+
   async hasFocus(selector) {
     const elem = await this.browser.$(selector);
     return elem.isFocused();
