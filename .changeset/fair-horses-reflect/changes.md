@@ -1,0 +1,1 @@
+HOT-88731 don't send external image URL as a part of analytics
