@@ -26,12 +26,17 @@ const scopeRegex = /@[^\/]+\//;
 async function detectRepoType(
   repoPath: string,
 ): Promise<'yarn' | 'bolt' | 'npm'> {
+  let pkgJson;
+  try {
+    pkgJson = await fse.readJson(path.join(repoPath, 'package.json'));
+  } catch (e) {
+    console.error(chalk.red('Could not detect repo type'));
+    throw e;
+  }
   const yarnLockExists = await fse.pathExists(path.join(repoPath, 'yarn.lock'));
   if (!yarnLockExists) {
     return 'npm';
   }
-
-  const pkgJson = await fse.readJson(path.join(repoPath, 'package.json'));
 
   return pkgJson.bolt ? 'bolt' : 'yarn';
 }
@@ -119,9 +124,17 @@ Provide either full name (@atlaskit/foo) or unscoped name (foo).`,
   const project = await bolt.getProject({ cwd: options.cwd });
   // Repo path is relative to the parent directory of the project (atlaskit)
   const resolvedRepoPath = path.resolve(project.dir, '..', repoPath);
+  const repoType = await detectRepoType(resolvedRepoPath);
   const packageNames = resolvedPackages.map(p => p.name);
-  await yalc.addPackages(resolvedPackages.map(p => p.name), {
+  await yalc.addPackages(packageNames, {
     workingDir: resolvedRepoPath,
+    /* We install the packages in 'pure' mode so the package.json isn't modified in the target repo
+     * since this will break the `bolt upgrade` command we need to run to upgrade all workspaces to
+     * the local install due to the 'Outdated lockfile' check.
+     * If we run `bolt` beforehand to not have an outdated lockfile, the workspace dependency version validation
+     * fails
+     */
+    pure: repoType === 'bolt',
   });
 
   restoreConsoleLog();
