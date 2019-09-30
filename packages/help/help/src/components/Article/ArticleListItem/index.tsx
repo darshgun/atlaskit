@@ -60,7 +60,7 @@ const ArticlesListItem: React.SFC<Props & Analytics> = (
     event.preventDefault();
     if (onClick) {
       const analyticsEvent: UIAnalyticsEvent = createAnalyticsEvent({
-        action: 'click',
+        action: 'clicked',
       });
 
       onClick(id, analyticsEvent);
