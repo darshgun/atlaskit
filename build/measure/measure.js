@@ -238,7 +238,27 @@ module.exports = async function main(
     }
   } else {
     if (process.env.CI) {
-      await downloadFromS3(masterStatsFolder, 'master', packageName);
+      try {
+        await downloadFromS3(masterStatsFolder, 'master', packageName);
+      } catch (err) {
+        if (`${err}`.includes('not found in s3 bucket')) {
+          // TODO: Refactor this :)
+          const missingPkg = `${err}`
+            .split('was not found in s3 bucket')
+            .shift()
+            .split('File for this')
+            .pop()
+            .trim();
+          const masterStatsFilePath = path.join(
+            masterStatsFolder,
+            `${missingPkg}-bundle-size-ratchet.json`,
+          );
+          fWriteStats(masterStatsFilePath, stats);
+          uploadToS3(masterStatsFilePath, 'master');
+        } else {
+          throw err;
+        }
+      }
     } else {
       await downloadFromS3ForLocal(masterStatsFolder, 'master', packageName);
     }

@@ -86,11 +86,11 @@ function downloadFromS3(downloadToFolder, branch, package) {
     );
   } catch (err) {
     if (err.status === 1) {
-      console.error(
-        chalk.red(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
-        Please consult the README.md in the @atlaskit/measure folder on how to add a new package on s3.`),
+      console.warn(
+        chalk.yellow(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
+       Don't worry, we will try to upload this file on s3`),
       );
-      process.exit(1);
+      throw new Error(`File for this ${package} was not found in s3 bucket`);
     } else {
       console.error(chalk.red(`${err}`));
       process.exit(1);
