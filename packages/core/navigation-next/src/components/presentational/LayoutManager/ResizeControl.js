@@ -112,6 +112,7 @@ const Button = ({
   ...props
 }: ButtonProps) => (
   <button
+    className="ak-navigation-resize-button"
     type="button"
     ref={innerRef}
     css={{
@@ -211,7 +212,6 @@ function makeTooltipNode({ text, char }: { text: string, char: string }) {
 
 type Props = {
   createAnalyticsEvent: Function,
-  children: State => any,
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
   expandCollapseAffordanceRef: Ref<'button'>,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -219,7 +219,6 @@ type Props = {
   flyoutIsOpen: boolean,
   isDisabled: boolean,
   isGrabAreaDisabled: boolean,
-  mouseIsOverNavigation: boolean,
   mutationRefs: Array<{
     ref: ElementRef<*>,
     property: 'padding-left' | 'width',
@@ -460,13 +459,11 @@ class ResizeControl extends PureComponent<Props, State> {
       showGrabArea,
     } = this.state;
     const {
-      children,
       collapseToggleTooltipContent,
       expandCollapseAffordanceRef,
       flyoutIsOpen,
       isDisabled: isResizeDisabled,
       isGrabAreaDisabled,
-      mouseIsOverNavigation,
       onMouseOverButtonBuffer,
       navigation,
     } = this.props;
@@ -482,7 +479,7 @@ class ResizeControl extends PureComponent<Props, State> {
         onClick={this.onResizerChevronClick}
         hitAreaSize={onMouseOverButtonBuffer ? 'large' : 'small'}
         // maintain styles when user is dragging
-        isVisible={isCollapsed || mouseIsDown || mouseIsOverNavigation}
+        isVisible={isCollapsed || mouseIsDown}
         hasHighlight={mouseIsDown || mouseIsOverGrabArea}
         innerRef={expandCollapseAffordanceRef}
         aria-expanded={!isCollapsed}
@@ -494,42 +491,39 @@ class ResizeControl extends PureComponent<Props, State> {
     const shadowDirection = flyoutIsOpen ? 'to right' : 'to left';
 
     return (
-      <Fragment>
-        {children(this.state)}
-        <Outer>
-          {isDragging && <BodyDragCursor />}
-          <Shadow direction={shadowDirection} isBold={mouseIsDown} />
-          {!isResizeDisabled && (
-            <Fragment>
-              {!isGrabAreaDisabled && showGrabArea && (
-                <GrabArea
-                  isBold={mouseIsDown}
-                  showHandle={mouseIsDown || mouseIsOverGrabArea}
-                  onMouseEnter={this.mouseEnterGrabArea}
-                  onMouseLeave={this.mouseLeaveGrabArea}
-                  onMouseDown={this.handleResizeStart}
-                />
+      <Outer>
+        {isDragging && <BodyDragCursor />}
+        <Shadow direction={shadowDirection} isBold={mouseIsDown} />
+        {!isResizeDisabled && (
+          <Fragment>
+            {!isGrabAreaDisabled && showGrabArea && (
+              <GrabArea
+                isBold={mouseIsDown}
+                showHandle={mouseIsDown || mouseIsOverGrabArea}
+                onMouseEnter={this.mouseEnterGrabArea}
+                onMouseLeave={this.mouseLeaveGrabArea}
+                onMouseDown={this.handleResizeStart}
+              />
+            )}
+            <div onMouseOver={!flyoutIsOpen ? onMouseOverButtonBuffer : null}>
+              {collapseToggleTooltipContent ? (
+                <Tooltip
+                  content={makeTooltipNode(
+                    collapseToggleTooltipContent(isCollapsed),
+                  )}
+                  delay={600}
+                  hideTooltipOnClick
+                  position="right"
+                >
+                  {button}
+                </Tooltip>
+              ) : (
+                button
               )}
-              <div onMouseOver={!flyoutIsOpen ? onMouseOverButtonBuffer : null}>
-                {collapseToggleTooltipContent ? (
-                  <Tooltip
-                    content={makeTooltipNode(
-                      collapseToggleTooltipContent(isCollapsed),
-                    )}
-                    delay={600}
-                    hideTooltipOnClick
-                    position="right"
-                  >
-                    {button}
-                  </Tooltip>
-                ) : (
-                  button
-                )}
-              </div>
-            </Fragment>
-          )}
-        </Outer>
-      </Fragment>
+            </div>
+          </Fragment>
+        )}
+      </Outer>
     );
   }
 }

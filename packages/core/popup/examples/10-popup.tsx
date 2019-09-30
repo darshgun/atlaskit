@@ -1,21 +1,23 @@
-import React, { FC, useState } from 'react';
-import styled from '@emotion/styled';
-import Popup from '../src';
-import { Placement } from '@atlaskit/popper';
+/** @jsx jsx */
+import { FC, useState } from 'react';
 import Button from '@atlaskit/button';
+import { Placement } from '@atlaskit/popper';
+import { jsx } from '@emotion/core';
 
-const Spacer = styled.div`
-  margin: 250px;
-`;
+import Popup from '../src';
 
-const SizedContent = styled.div`
-  align-items: center;
-  text-align: center;
-  vertical-align: center;
-  padding: 30px;
-  height: 80px;
-  overflow: auto;
-`;
+const spacerCSS = {
+  margin: '250px',
+};
+
+const sizedContentCSS = {
+  alignItems: 'center',
+  height: '80px',
+  overflow: 'auto',
+  padding: '30px',
+  textAlign: 'center',
+  verticalAlign: 'center',
+} as const;
 
 type PopupProps = {
   setPosition(): void;
@@ -24,7 +26,7 @@ type PopupProps = {
 
 const PopupContent: FC<PopupProps> = ({ setPosition, placement }) => {
   return (
-    <SizedContent>
+    <div css={sizedContentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
       <p>
         Current placement: <strong>{placement}</strong>
@@ -33,31 +35,32 @@ const PopupContent: FC<PopupProps> = ({ setPosition, placement }) => {
       <p>Scroll down.</p>
       <Button>Button 5</Button>
       <Button>Button 6</Button>
-    </SizedContent>
+    </div>
   );
 };
+
+const placements: Placement[] = [
+  'bottom-start',
+  'bottom',
+  'bottom-end',
+  'top-start',
+  'top',
+  'top-end',
+  'right-start',
+  'right',
+  'right-end',
+  'left-start',
+  'left',
+  'left-end',
+  'auto-start',
+  'auto',
+  'auto-end',
+];
 
 export default () => {
   const [idx, setIdx] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  const placements: Placement[] = [
-    'bottom-start',
-    'bottom',
-    'bottom-end',
-    'top-start',
-    'top',
-    'top-end',
-    'right-start',
-    'right',
-    'right-end',
-    'left-start',
-    'left',
-    'left-end',
-    'auto-start',
-    'auto',
-    'auto-end',
-  ];
   const placement = placements[idx];
 
   const setPlacement = () => {
@@ -69,7 +72,7 @@ export default () => {
   };
 
   return (
-    <Spacer>
+    <div css={spacerCSS}>
       <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -83,6 +86,6 @@ export default () => {
         )}
         placement={placement}
       />
-    </Spacer>
+    </div>
   );
 };

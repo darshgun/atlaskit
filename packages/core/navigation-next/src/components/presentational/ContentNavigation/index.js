@@ -26,6 +26,18 @@ const ToggleContent = ({
   return <Fragment {...rest} />;
 };
 
+const productNavigationAnalytics = {
+  attributes: {
+    navigationLayer: 'product',
+  },
+};
+
+const containerNavigationAnalytics = {
+  attributes: {
+    navigationLayer: 'container',
+  },
+};
+
 export default class ContentNavigation extends Component<
   ContentNavigationProps,
   ContentNavigationState,
@@ -79,9 +91,7 @@ export default class ContentNavigation extends Component<
             }
             isVisible={isVisible}
           >
-            <NavigationAnalyticsContext
-              data={{ attributes: { navigationLayer: 'product' } }}
-            >
+            <NavigationAnalyticsContext data={productNavigationAnalytics}>
               <Product />
             </NavigationAnalyticsContext>
           </ToggleContent>
@@ -104,9 +114,7 @@ export default class ContentNavigation extends Component<
                 }
                 isVisible={isVisible}
               >
-                <NavigationAnalyticsContext
-                  data={{ attributes: { navigationLayer: 'container' } }}
-                >
+                <NavigationAnalyticsContext data={containerNavigationAnalytics}>
                   <ContainerComponent />
                 </NavigationAnalyticsContext>
               </ToggleContent>

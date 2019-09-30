@@ -13,7 +13,6 @@ export const initSwitcher = () => {
       disableRecentContainers: true,
       disableHeadings: true,
       isDiscoverMoreForEveryoneEnabled: true,
-      enableUserCentricProducts: true,
       cloudId: 'some-cloud-id',
       appearance: 'standalone',
     },

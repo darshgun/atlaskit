@@ -1,35 +1,21 @@
-import React, {
-  FC,
-  memo,
-  useState,
-  useEffect,
-  useLayoutEffect,
-  Fragment,
-} from 'react';
-import ScrollLock from 'react-scrolllock';
+/** @jsx jsx */
+import { FC, forwardRef, memo, useState, useEffect } from 'react';
 import { layers } from '@atlaskit/theme/constants';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
-import { StyledPopup, PopupRelContainer } from './styled';
-import { PopupProps, RepositionOnUpdateProps } from './types';
+import { jsx } from '@emotion/core';
+
+import { containerCSS, popupCSS } from './styles';
+import { PopupComponentProps, PopupProps } from './types';
+import { RepositionOnUpdate } from './RepositionOnUpdate';
+import { useCloseManager } from './useCloseManager';
 import { useFocusManager } from './useFocusManager';
 
-const RepositionOnUpdate: FC<RepositionOnUpdateProps> = ({
-  children,
-  scheduleUpdate,
-}) => {
-  useLayoutEffect(
-    () => {
-      //callback function from popper that repositions pop-up on content Update
-      scheduleUpdate();
-    },
-    [children, scheduleUpdate],
-  );
-  // wrapping in fragment to make TS happy (known issue with FC returning children)
-  return <Fragment>{children}</Fragment>;
-};
+const DefaultPopupComponent = forwardRef<HTMLDivElement, PopupComponentProps>(
+  (props, ref) => <div css={popupCSS} ref={ref} {...props} />,
+);
 
-const Popup: FC<PopupProps> = memo(
+export const Popup: FC<PopupProps> = memo(
   ({
     boundariesElement,
     isOpen,
@@ -41,13 +27,14 @@ const Popup: FC<PopupProps> = memo(
     trigger,
     onOpen,
     onClose,
-    lockBodyScroll = false,
-    popupComponent: PopupWrapper = StyledPopup,
+    popupComponent: PopupContainer = DefaultPopupComponent,
     zIndex = layers.layer(),
   }: PopupProps) => {
     const [popupRef, setPopupRef] = useState<HTMLDivElement>();
     const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement>();
-    useFocusManager({ popupRef, initialFocusRef, isOpen, onClose });
+
+    useFocusManager({ initialFocusRef, popupRef });
+    useCloseManager({ isOpen, onClose, popupRef });
 
     useEffect(
       () => {
@@ -59,7 +46,7 @@ const Popup: FC<PopupProps> = memo(
     );
 
     return (
-      <PopupRelContainer>
+      <div css={containerCSS}>
         <Manager>
           <Reference>
             {({ ref }) =>
@@ -71,7 +58,7 @@ const Popup: FC<PopupProps> = memo(
               })
             }
           </Reference>
-          {isOpen ? (
+          {isOpen && (
             <Portal zIndex={zIndex}>
               <Popper
                 placement={placement || 'auto'}
@@ -84,18 +71,17 @@ const Popup: FC<PopupProps> = memo(
               >
                 {({ ref, style, placement, scheduleUpdate }) => {
                   return (
-                    <PopupWrapper
+                    <PopupContainer
                       id={id}
+                      data-placement={placement}
                       data-testid={testId}
                       ref={(node: HTMLDivElement) => {
                         ref(node);
                         setPopupRef(node);
                       }}
                       style={style}
-                      data-placement={placement}
                       tabIndex={-1}
                     >
-                      {lockBodyScroll && <ScrollLock />}
                       <RepositionOnUpdate scheduleUpdate={scheduleUpdate}>
                         {content({
                           scheduleUpdate,
@@ -104,16 +90,14 @@ const Popup: FC<PopupProps> = memo(
                           setInitialFocusRef,
                         })}
                       </RepositionOnUpdate>
-                    </PopupWrapper>
+                    </PopupContainer>
                   );
                 }}
               </Popper>
             </Portal>
-          ) : null}
+          )}
         </Manager>
-      </PopupRelContainer>
+      </div>
     );
   },
 );
-
-export default Popup;
