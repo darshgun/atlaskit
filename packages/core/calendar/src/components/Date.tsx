@@ -1,28 +1,24 @@
-// @flow
-
-import React, { Component } from 'react';
+import React, { Component, MouseEvent } from 'react';
 import { DateDiv, DateTd } from '../styled/Date';
 
-type Props = {
-  children: number,
-  disabled?: boolean,
-  focused?: boolean,
-  isToday?: boolean,
-  month: number,
-  onClick?: Function,
-  previouslySelected?: boolean,
-  selected?: boolean,
-  sibling?: boolean,
-  year: number,
-};
+interface Props {
+  children: number;
+  disabled?: boolean;
+  focused?: boolean;
+  isToday?: boolean;
+  month: number;
+  onClick?: Function;
+  previouslySelected?: boolean;
+  selected?: boolean;
+  sibling?: boolean;
+  year: number;
+}
 
-type State = {
-  isActive: boolean,
-};
+interface State {
+  isActive: boolean;
+}
 
 export default class extends Component<Props, State> {
-  props: Props;
-
   static defaultProps = {
     disabled: false,
     focused: false,
@@ -66,6 +62,7 @@ export default class extends Component<Props, State> {
       selected,
       sibling,
     } = this.props;
+
     return (
       <DateTd
         aria-selected={selected ? 'true' : 'false'}

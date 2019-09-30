@@ -1,14 +1,12 @@
-// @flow
-
 import React, { Component } from 'react';
 import LocaleSelect, { Locale } from '@atlaskit/locale/LocaleSelect';
 import Calendar from '../src';
 
-const log = msg => e => console.log(msg, e);
+const log = (msg: string) => (e: any) => console.log(msg, e);
 
-type IntlState = {
-  locale: string,
-};
+interface IntlState {
+  locale: string;
+}
 
 export default class extends Component<Object, IntlState> {
   state = {
@@ -33,10 +31,10 @@ export default class extends Component<Object, IntlState> {
               display: 'inline-block',
             },
           }}
-          onBlur={log('blur')}
-          onChange={log('change')}
-          onFocus={log('focus')}
-          onSelect={log('select')}
+          onBlur={() => log('blur')}
+          onChange={() => log('change')}
+          onFocus={() => log('focus')}
+          onSelect={() => log('select')}
           locale={locale}
         />
         <LocaleSelect onLocaleChange={this.onLocaleChange} />

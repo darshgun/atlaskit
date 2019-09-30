@@ -1,7 +1,3 @@
-// @flow
-
-/* eslint no-confusing-arrow: 0 */
-
 import styled, { css } from 'styled-components';
 import { themed } from '@atlaskit/theme/components';
 import * as colors from '@atlaskit/theme/colors';
@@ -31,23 +27,33 @@ const getBackgroundColorSelectedAfter = themed({
   dark: colors.N700,
 });
 
-const getBackgroundColorsAfter = props =>
+export interface DateProps {
+  disabled?: boolean;
+  isToday?: boolean;
+  sibling?: boolean;
+  selected?: boolean;
+  previouslySelected?: boolean;
+  isActive?: boolean;
+  focused?: boolean;
+}
+
+const getBackgroundColorsAfter = (props: DateProps) =>
   props.selected
     ? getBackgroundColorSelectedAfter(props)
     : colors.primary(props);
 
 const getBorderColorFocused = themed({ light: colors.B100, dark: colors.B75 });
 
-const getBorderColors = props =>
+const getBorderColors = (props: DateProps) =>
   props.focused ? getBorderColorFocused(props) : getTransparent(props);
 
-function getBackgroundColor(props) {
+function getBackgroundColor(props: DateProps) {
   if (props.selected) return selectedBackground(props);
   if (props.previouslySelected) return prevSelectedBackground(props);
   return getTransparent(props);
 }
 
-function getColor(props) {
+function getColor(props: DateProps) {
   if (props.disabled) return textDisabled(props);
   if (props.selected) return textSelected(props);
   if (props.previouslySelected) return textPreviouslySelected(props);
@@ -56,16 +62,14 @@ function getColor(props) {
   return colors.text(props);
 }
 
-const getCursor = ({ disabled }) => (disabled ? 'not-allowed' : 'pointer');
-
-function getHoverBackgroundColor(props) {
+function getHoverBackgroundColor(props: DateProps) {
   if (props.disabled) return getTransparent(props);
   if (props.previouslySelected) return hoverPreviouslySelectedBackground(props);
   if (props.isActive) return isActiveBackground(props);
   return hoverBackground(props);
 }
 
-const getHoverColor = props => {
+const getHoverColor = (props: DateProps) => {
   if (props.sibling) return textSibling(props);
   if (props.disabled) return textDisabled(props);
   if (props.selected || props.previouslySelected || props.isActive)
@@ -73,12 +77,12 @@ const getHoverColor = props => {
   return colors.text(props);
 };
 
-export const DateDiv = styled.div`
+export const DateDiv = styled.div<DateProps>`
   background-color: ${getBackgroundColor};
   border: 2px solid ${getBorderColors};
   border-radius: 3px;
   color: ${getColor};
-  cursor: ${getCursor};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   font-size: 14px;
   padding: 4px 9px;
   position: relative;

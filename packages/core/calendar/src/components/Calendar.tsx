@@ -1,17 +1,16 @@
-// @flow
-
 import {
   createLocalizationProvider,
   LocalizationProvider,
 } from '@atlaskit/locale';
 import { Calendar as CalendarBase } from 'calendar-base';
 import pick from 'lodash.pick';
-import React, { Component } from 'react';
+import React, { Component, KeyboardEvent } from 'react';
 import { uid } from 'react-uid';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -29,9 +28,9 @@ import {
   Wrapper,
 } from '../styled/Calendar';
 
-import type { ChangeEvent, SelectEvent, DateObj, ArrowKeys } from '../types';
+import { ChangeEvent, SelectEvent, DateObj, ArrowKeys } from '../types';
 
-const arrowKeys = {
+const arrowKeys: Record<string, ArrowKeys> = {
   ArrowDown: 'down',
   ArrowLeft: 'left',
   ArrowRight: 'right',
@@ -40,64 +39,78 @@ const arrowKeys = {
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
-type Handler = (e: any) => void;
-type Props = {
+export interface CalendarProps extends WithAnalyticsEventsProps {
   /** The number of the day currently focused. Places border around the date. 0 highlights no date. */
-  day?: number,
+  day?: number;
   /** Default for `day`. */
-  defaultDay: number,
+  defaultDay: number;
   /** Default for `disabled`. */
-  defaultDisabled: Array<string>,
+  defaultDisabled: Array<string>;
   /** Default for `month`. */
-  defaultMonth?: number,
+  defaultMonth?: number;
   /** Default for `previouslySelected`. */
-  defaultPreviouslySelected: Array<string>,
+  defaultPreviouslySelected: Array<string>;
   /** Default for `selected`. */
-  defaultSelected: Array<string>,
+  defaultSelected: Array<string>;
   /** Default for `year`. */
-  defaultYear?: number,
+  defaultYear?: number;
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates provided are greyed out.
    This does not prevent these dates being selected. */
-  disabled?: Array<string>,
+  disabled?: Array<string>;
   /** Props to apply to the container. **/
-  innerProps: Object,
+  innerProps: Object;
   /** The number of the month (from 1 to 12) which the calendar should be on. */
-  month?: number,
+  month?: number;
   /** Function which is called when the calendar is no longer focused. */
-  onBlur: Handler,
+  onBlur: React.FocusEventHandler;
   /** Called when the calendar is navigated. This can be triggered by the keyboard, or by clicking the navigational buttons.
-   The 'type' property indicates the the direction the calendar was navigated whereas the 'iso' property is a string of the format YYYY-MM-DD. */
-  onChange: ChangeEvent => void,
+   The 'interface' property indicates the the direction the calendar was navigated whereas the 'iso' property is a string of the format YYYY-MM-DD. */
+  onChange: (event: ChangeEvent) => void;
   /** Called when the calendar receives focus. This could be from a mouse event on the container by tabbing into it. */
-  onFocus: Handler,
+  onFocus: React.FocusEventHandler;
   /** Function called when a day is clicked on. Calls with an object that has
   a day, month and week property as numbers, representing the date just clicked.
   It also has an 'iso' property, which is a string of the selected date in the
   format YYYY-MM-DD. */
-  onSelect: SelectEvent => void,
+  onSelect: (event: SelectEvent) => void;
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
    provided are given a background color. */
-  previouslySelected?: Array<string>,
+  previouslySelected?: Array<string>;
   /** Takes an array of dates as string in the format 'YYYY-MM-DD'. All dates
    provided are given a background color. */
-  selected?: Array<string>,
+  selected?: Array<string>;
   /** Value of current day, as a string in the format 'YYYY-MM-DD'. */
-  today?: string,
+  today?: string;
   /** Year to display the calendar for. */
-  year?: number,
-  locale: string,
-};
+  year?: number;
+  locale: string;
+}
 
-type State = {
-  day: number,
-  disabled: Array<string>,
-  month: number,
-  previouslySelected: Array<string>,
-  selected: Array<string>,
-  today: string,
-  year: number,
-  l10n: LocalizationProvider,
-};
+interface State {
+  day: number;
+  disabled: Array<string>;
+  month: number;
+  previouslySelected: Array<string>;
+  selected: Array<string>;
+  today: string;
+  year: number;
+  l10n: LocalizationProvider;
+}
+
+interface Week {
+  key: string;
+  components: React.ReactNode[];
+}
+
+interface Date {
+  day: number;
+  month: number;
+  year: number;
+  weekDay: number;
+  selected: boolean;
+  siblingMonth: boolean;
+  weekNumber: number;
+}
 
 function getUniqueId(prefix: string) {
   return `${prefix}-${uid({ id: prefix })}`;
@@ -107,16 +120,16 @@ function padToTwo(number: number) {
   return number <= 99 ? `0${number}`.slice(-2) : `${number}`;
 }
 
-class Calendar extends Component<Props, State> {
-  calendar: Object;
+class Calendar extends Component<CalendarProps, State> {
+  calendar: any;
 
-  container: HTMLElement | null;
+  container: HTMLElement | null = null;
 
   static defaultProps = {
-    onBlur() {},
-    onChange() {},
-    onFocus() {},
-    onSelect() {},
+    onBlur: () => {},
+    onChange: () => {},
+    onFocus: () => {},
+    onSelect: () => {},
     innerProps: {},
     defaultDay: 0,
     defaultDisabled: [],
@@ -125,7 +138,7 @@ class Calendar extends Component<Props, State> {
     locale: 'en-US',
   };
 
-  constructor(props: Props) {
+  constructor(props: CalendarProps) {
     super(props);
     const now = new Date();
     const thisDay = now.getDate();
@@ -149,7 +162,7 @@ class Calendar extends Component<Props, State> {
     });
   }
 
-  componentWillReceiveProps(nextProps: $ReadOnly<Props>): void {
+  componentWillReceiveProps(nextProps: CalendarProps): void {
     if (this.props.locale !== nextProps.locale) {
       this.setState({ l10n: createLocalizationProvider(nextProps.locale) });
     }
@@ -157,7 +170,7 @@ class Calendar extends Component<Props, State> {
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
-  getState = () => {
+  getState = (): State => {
     return {
       ...this.state,
       ...pick(this.props, [
@@ -240,14 +253,14 @@ class Calendar extends Component<Props, State> {
     this.triggerOnChange({ day, month, year, type: 'prev' });
   };
 
-  handleContainerBlur = () => {
+  handleContainerBlur = (event: React.FocusEvent) => {
     this.setState({ day: 0 });
-    this.props.onBlur();
+    this.props.onBlur(event);
   };
 
-  handleContainerFocus = () => {
+  handleContainerFocus = (event: React.FocusEvent) => {
     this.setState({ day: this.getState().day || 1 });
-    this.props.onFocus();
+    this.props.onFocus(event);
   };
 
   focus() {
@@ -327,12 +340,7 @@ class Calendar extends Component<Props, State> {
     this.container = e;
   };
 
-  triggerOnChange = ({
-    year,
-    month,
-    day,
-    type,
-  }: $Diff<ChangeEvent, { iso: string }>) => {
+  triggerOnChange = ({ year, month, day, type }: ChangeEvent) => {
     const iso = dateToString({ year, month, day });
     this.props.onChange({ day, month, year, iso, type });
     this.setState({
@@ -342,11 +350,7 @@ class Calendar extends Component<Props, State> {
     });
   };
 
-  triggerOnSelect = ({
-    year,
-    month,
-    day,
-  }: $Diff<SelectEvent, { iso: string }>) => {
+  triggerOnSelect = ({ year, month, day }: Omit<SelectEvent, 'iso'>) => {
     const iso = dateToString({ year, month, day });
     this.props.onSelect({ day, month, year, iso });
     this.setState({
@@ -366,7 +370,7 @@ class Calendar extends Component<Props, State> {
       today,
     } = mappedState;
     const calendar = this.calendar.getCalendar(year, month - 1);
-    const weeks = [];
+    const weeks: Week[] = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
 
     // Some months jump between 5 and 6 weeks to display. In some cases 4 (Feb
@@ -380,14 +384,15 @@ class Calendar extends Component<Props, State> {
         ...this.calendar
           .getCalendar(year, month)
           .slice(sliceStart, sliceStart + daysPerWeek)
-          .map(e => ({ ...e, siblingMonth: true })),
+          .map((date: Date) => ({ ...date, siblingMonth: true })),
       );
     }
 
-    calendar.forEach(date => {
+    calendar.forEach((date: Date) => {
       const dateAsString = dateToString(date, { fixMonth: true });
 
       let week;
+
       if (date.weekDay === 0) {
         week = { key: dateAsString, components: [] };
         weeks.push(week);
@@ -493,18 +498,15 @@ export default withAnalyticsContext({
     onChange: createAndFireEventOnAtlaskit({
       action: 'changed',
       actionSubject: 'calendarDate',
-
       attributes: {
         componentName: 'calendar',
         packageName,
         packageVersion,
       },
     }),
-
     onSelect: createAndFireEventOnAtlaskit({
       action: 'selected',
       actionSubject: 'calendarDate',
-
       attributes: {
         componentName: 'calendar',
         packageName,

@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
@@ -10,7 +8,7 @@ import Btn from '../../Btn';
 test('children', () => {
   const wrapper = mount(
     <Btn>
-      <ArrowleftIcon />
+      <ArrowleftIcon label="left arrow" />
     </Btn>,
   );
   const props = wrapper.find(Button).props();
@@ -19,7 +17,7 @@ test('children', () => {
       appearance: 'subtle',
       spacing: 'none',
       tabIndex: -1,
-      iconBefore: <ArrowleftIcon />,
+      iconBefore: <ArrowleftIcon label="left arrow" />,
     }),
   );
 });

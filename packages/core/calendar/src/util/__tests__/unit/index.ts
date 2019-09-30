@@ -1,12 +1,16 @@
-// @flow
-
 import cases from 'jest-in-case';
 
 import { dateToString } from '../..';
+import { DateObj } from '../../../types';
+
+interface Case {
+  src: DateObj;
+  dst: string;
+}
 
 cases(
   'dateToString(date)',
-  ({ src, dst }) => {
+  ({ src, dst }: Case) => {
     expect(dateToString(src)).toBe(dst);
   },
   [
@@ -17,7 +21,7 @@ cases(
 
 cases(
   'dateToString(date, { fixMonth: true })',
-  ({ src, dst }) => {
+  ({ src, dst }: Case) => {
     expect(dateToString(src, { fixMonth: true })).toBe(dst);
   },
   [
