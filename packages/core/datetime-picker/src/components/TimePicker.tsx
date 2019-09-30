@@ -348,6 +348,11 @@ class TimePicker extends React.Component<Props, State> {
                   : 'auto',
               },
             }),
+            indicatorsContainer: base => ({
+              ...base,
+              paddingLeft: icon ? 2 : 0,
+              paddingRight: icon ? 6 : 0,
+            }),
           })}
           value={labelAndValue}
           spacing={spacing}

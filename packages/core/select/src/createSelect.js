@@ -161,14 +161,16 @@ function baseStyles(validationState, isCompact) {
     },
     valueContainer: css => ({
       ...css,
+      paddingLeft: 6,
+      paddingRight: 6,
       paddingBottom: isCompact ? 0 : 2,
       paddingTop: isCompact ? 0 : 2,
     }),
     clearIndicator: css => ({
       ...css,
       color: colors.N70,
-      paddingLeft: '2px',
-      paddingRight: '2px',
+      paddingLeft: 2,
+      paddingRight: 2,
       paddingBottom: isCompact ? 0 : 6,
       paddingTop: isCompact ? 0 : 6,
       ':hover': {
@@ -190,13 +192,17 @@ function baseStyles(validationState, isCompact) {
         color,
         paddingBottom: isCompact ? 0 : 6,
         paddingTop: isCompact ? 0 : 6,
-        paddingLeft: '2px',
-        paddingRight: '2px',
+        paddingLeft: 2,
+        paddingRight: 2,
         ':hover': {
           color: colors.N200,
         },
       };
     },
+    indicatorsContainer: css => ({
+      ...css,
+      paddingRight: 4,
+    }),
     option: (css, { isFocused, isSelected }) => {
       const color = isSelected ? colors.N0 : null;
 

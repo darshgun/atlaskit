@@ -493,6 +493,11 @@ class DatePicker extends React.Component<Props, State> {
               ...controlStyles,
               ...disabledStyle,
             }),
+            indicatorsContainer: base => ({
+              ...base,
+              paddingLeft: 2,
+              paddingRight: 6,
+            }),
           })}
           placeholder={this.getPlaceholder()}
           value={
