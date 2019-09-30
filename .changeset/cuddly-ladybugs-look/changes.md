@@ -1,1 +1,0 @@
-DynamicTable Stateful now sends analytics events via the onSort prop

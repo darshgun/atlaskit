@@ -1,5 +1,13 @@
 # @atlaskit/branch-installer
 
+## 0.1.7
+
+### Patch Changes
+
+- [patch][5d4bcea150](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d4bcea150):
+
+  Revert broken branch installer change
+
 ## 0.1.6
 
 ### Patch Changes

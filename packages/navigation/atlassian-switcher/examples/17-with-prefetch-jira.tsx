@@ -10,7 +10,6 @@ import { resetAvailableProducts } from '../src/providers/products-data-provider'
 class JiraSwitcherExample extends React.Component {
   state = {
     isDrawerOpen: false,
-    enableUserCentricProducts: false,
   };
 
   componentDidMount() {
@@ -40,15 +39,8 @@ class JiraSwitcherExample extends React.Component {
     );
   };
 
-  onToggleEnableUserCentricProducts = () => {
-    this.setState({
-      enableUserCentricProducts: !this.state.enableUserCentricProducts,
-    });
-  };
-
   render() {
     const CLOUD_ID = 'some-cloud-id';
-    const { enableUserCentricProducts } = this.state;
 
     return (
       <div style={{ padding: '2rem' }}>
@@ -57,15 +49,10 @@ class JiraSwitcherExample extends React.Component {
             product="jira"
             cloudId={CLOUD_ID}
             triggerXFlow={this.onTriggerXFlow}
-            enableUserCentricProducts={enableUserCentricProducts}
           />
         </Drawer>
         <div style={{ display: 'flex' }}>
-          <AtlassianSwitcherPrefetchTrigger
-            product="jira"
-            cloudId={CLOUD_ID}
-            enableUserCentricProducts={enableUserCentricProducts}
-          >
+          <AtlassianSwitcherPrefetchTrigger product="jira" cloudId={CLOUD_ID}>
             <Button type="button" onClick={this.openDrawer}>
               Open drawer
             </Button>
@@ -73,15 +60,6 @@ class JiraSwitcherExample extends React.Component {
           <div style={{ width: 16 }} />
           <Button type="button" onClick={this.clearCache}>
             Clear cache
-          </Button>
-          <div style={{ width: 16 }} />
-          <Button
-            type="button"
-            onClick={this.onToggleEnableUserCentricProducts}
-          >
-            {enableUserCentricProducts
-              ? 'Disable user centric products'
-              : 'Enable user centric products'}
           </Button>
         </div>
       </div>

@@ -20,17 +20,24 @@ class JiraSwitcherExample extends React.Component {
       originalMockData => {
         return {
           ...originalMockData,
-          LICENSE_INFORMATION_DATA: {
-            hostname: 'https://some-random-instance.atlassian.net',
-            firstActivationDate: 1492488658539,
-            maintenanceEndDate: '2017-04-24',
-            maintenanceStartDate: '2017-04-17',
-            products: {
-              'jira-software.ondemand': {
-                billingPeriod: 'ANNUAL',
-                state: 'ACTIVE',
+          AVAILABLE_PRODUCTS_DATA: {
+            sites: [
+              {
+                adminAccess: false,
+                availableProducts: [
+                  {
+                    activityCount: 0,
+                    productType: 'JIRA_SOFTWARE',
+                    url: null,
+                  },
+                ],
+                cloudId: 'some-cloud-id',
+                displayName: 'random-instance',
+                url: 'https://some-random-instance.atlassian.net',
+                avatar:
+                  'https://site-admin-avatar-cdn.staging.public.atl-paas.net/avatars/240/rings.png',
               },
-            },
+            ],
           },
           USER_PERMISSION_DATA: {
             manage: {

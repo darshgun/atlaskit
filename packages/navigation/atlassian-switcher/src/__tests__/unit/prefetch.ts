@@ -43,14 +43,8 @@ describe('utils/prefetch', () => {
     });
   });
 
-  it('should prefetch available products if user centric mode is turned on', () => {
+  it('should prefetch available products', () => {
     prefetch({});
-    expect(prefetchAvailableProducts).toHaveBeenCalledTimes(0);
-
-    prefetch({
-      enableUserCentricProducts: true,
-    });
-
     expect(prefetchAvailableProducts).toHaveBeenCalledTimes(1);
   });
 });
