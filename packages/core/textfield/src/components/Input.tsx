@@ -45,6 +45,12 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 
   /* returns the ref of the input */
   innerRef: (ref: HTMLInputElement | null) => void;
+
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests */
+  testId?: string;
 }
 
 export default function Input({
@@ -60,6 +66,7 @@ export default function Input({
   onFocus,
   theme,
   innerRef,
+  testId,
   ...theirInputProps
 }: Props) {
   const ourInputProps: React.InputHTMLAttributes<HTMLInputElement> = {
@@ -89,7 +96,12 @@ export default function Input({
   return (
     <div {...containerProps} css={theme.container as CSSObject}>
       {elemBeforeInput}
-      <input {...inputProps} css={theme.input as CSSObject} ref={innerRef} />
+      <input
+        {...inputProps}
+        css={theme.input as CSSObject}
+        ref={innerRef}
+        data-testid={testId}
+      />
       {elemAfterInput}
     </div>
   );

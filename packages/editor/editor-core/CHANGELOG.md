@@ -1,5 +1,18 @@
 # @atlaskit/editor-core
 
+## 113.1.3
+
+- Updated dependencies [8c725d46ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c725d46ec):
+  - @atlaskit/calendar@9.0.0
+
+## 113.1.2
+
+### Patch Changes
+
+- [patch][dbd86d9542](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd86d9542):
+
+  MS-2397 Fix bug where media with same ids haven't been updating attributes
+
 ## 113.1.1
 
 ### Patch Changes

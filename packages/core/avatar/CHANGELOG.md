@@ -1,5 +1,13 @@
 # @atlaskit/avatar
 
+## 17.1.1
+
+### Patch Changes
+
+- [patch][8dff68dffa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dff68dffa):
+
+  AvatarItems will only present a pointer cursor if onClick or href has been supplied
+
 ## 17.1.0
 
 ### Minor Changes

@@ -47,7 +47,6 @@ export enum Product {
   CONFLUENCE = 'confluence',
   HOME = 'home',
   JIRA = 'jira',
-  PEOPLE = 'people',
   SITE_ADMIN = 'site-admin',
   TRUSTED_ADMIN = 'trusted-admin',
 }

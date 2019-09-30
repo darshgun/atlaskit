@@ -46,7 +46,7 @@ const CloseButton = (
   ) => {
     if (onButtonCloseClick) {
       const analyticsEvent: UIAnalyticsEvent = createAnalyticsEvent({
-        action: 'click',
+        action: 'clicked',
       });
       onButtonCloseClick(event, analyticsEvent);
     }
