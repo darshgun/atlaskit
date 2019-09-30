@@ -23,7 +23,7 @@ test.skip('should ssr then hydrate datetime-picker correctly', async done => {
   ReactDOM.hydrate(<Example />, elem);
   // ignore warnings caused by emotion's server-side rendering approach
   // eslint-disable-next-line no-console
-  const mockCalls = console.error.mock.calls.filter(
+  const mockCalls = (console.error as jest.Mock).mock.calls.filter(
     ([f, s]) =>
       !(
         f ===

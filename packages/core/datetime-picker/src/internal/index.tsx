@@ -1,4 +1,5 @@
 import React from 'react';
+import { SelectProps } from '../types';
 
 export const ClearIndicator = null;
 
@@ -35,10 +36,14 @@ export function padToTwo(number: number) {
   return number <= 99 ? `0${number}`.slice(-2) : `${number}`;
 }
 
-export const DropdownIndicator = ({
-  selectProps: { dropdownIndicatorIcon: Icon },
-}: { selectProps: { dropdownIndicatorIcon?: any } } = {}) =>
-  Icon ? <Icon /> : null;
+type Props = {
+  selectProps: SelectProps;
+};
+
+export const DropdownIndicator = (props: Props): React.ReactNode => {
+  const Icon = props.selectProps.dropdownIndicatorIcon;
+  return Icon ? <Icon /> : null;
+};
 
 export function formatDateTimeZoneIntoIso(
   date: string,

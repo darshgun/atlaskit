@@ -15,7 +15,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
-import { Appearance, Spacing, Combine } from './types';
+import { Appearance, Spacing, Combine, SelectProps } from '../types';
 import {
   name as packageName,
   version as packageVersion,
@@ -56,7 +56,7 @@ interface Props {
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string;
   /** Props to apply to the container. **/
-  innerProps: Object;
+  innerProps: React.AllHTMLAttributes<HTMLElement>;
   /** Whether or not the field is disabled. */
   isDisabled: boolean;
   /** Whether or not the dropdown is open. */
@@ -64,14 +64,14 @@ interface Props {
   /** The name of the field. */
   name: string;
   /** Called when the field is blurred. */
-  onBlur: () => void;
+  onBlur: React.FocusEventHandler<HTMLInputElement>;
   /** Called when the value changes. The only argument is an ISO time or empty string. */
   onChange: (value: string) => void;
   /** Called when the field is focused. */
-  onFocus: () => void;
+  onFocus: React.FocusEventHandler<HTMLInputElement>;
   parseInputValue: (time: string, timeFormat: string) => string | Date;
   /** Props to apply to the select. */
-  selectProps: Object;
+  selectProps: SelectProps;
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing: Spacing;
   /** The times to show in the dropdown. */
@@ -121,6 +121,7 @@ class TimePicker extends Component<Props, State> {
     autoFocus: false,
     defaultIsOpen: false,
     defaultValue: '',
+    value: '',
     hideIcon: false,
     id: '',
     innerProps: {},
@@ -153,14 +154,12 @@ class TimePicker extends Component<Props, State> {
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
-  getState = (): Combine<
-    State,
-    { value: string | undefined; isOpen: boolean | undefined }
-  > => {
+  getSafeState = (): State => {
     return {
       ...this.state,
-      value: this.props.value,
-      isOpen: this.props.isOpen,
+      // using !suffix as there is a default prop
+      value: this.props.value!,
+      isOpen: this.props.isOpen!,
     };
   };
 
@@ -216,21 +215,21 @@ class TimePicker extends Component<Props, State> {
     }
   };
 
-  onBlur = () => {
+  onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     this.setState({ isFocused: false });
-    this.props.onBlur();
+    this.props.onBlur(event);
   };
 
-  onFocus = () => {
+  onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     this.setState({ isFocused: true });
-    this.props.onFocus();
+    this.props.onFocus(event);
   };
 
-  getSubtleControlStyles = (selectStyles: any) => {
+  getSubtleControlStyles = (selectStyles: any): CSSObject => {
     if (selectStyles.control) return {};
     return {
       border: `2px solid ${
-        this.getState().isFocused ? `${B100}` : `transparent`
+        this.getSafeState().isFocused ? `${B100}` : `transparent`
       }`,
       backgroundColor: 'transparent',
       padding: '1px',
@@ -246,7 +245,7 @@ class TimePicker extends Component<Props, State> {
    */
   formatTime = (time: string): string => {
     const { formatDisplayLabel, timeFormat } = this.props;
-    const { l10n } = this.getState();
+    const { l10n } = this.getSafeState();
 
     if (formatDisplayLabel) {
       return formatDisplayLabel(time, timeFormat || defaultTimeFormat);
@@ -274,7 +273,7 @@ class TimePicker extends Component<Props, State> {
       return placeholder;
     }
 
-    const { l10n } = this.getState();
+    const { l10n } = this.getSafeState();
     return l10n.formatTime(placeholderDatetime);
   };
 
@@ -288,7 +287,7 @@ class TimePicker extends Component<Props, State> {
       selectProps,
       spacing,
     } = this.props;
-    const { value = '', isOpen } = this.getState();
+    const { value = '', isOpen } = this.getSafeState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
       this.props.appearance === 'subtle' || this.props.hideIcon

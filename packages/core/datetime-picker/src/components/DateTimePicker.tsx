@@ -9,14 +9,13 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { parse, format, isValid } from 'date-fns';
-import { Appearance, Spacing } from './types';
+import { Appearance, Spacing, SelectProps } from '../types';
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
 import { defaultTimes, formatDateTimeZoneIntoIso } from '../internal';
@@ -24,67 +23,74 @@ import { defaultTimes, formatDateTimeZoneIntoIso } from '../internal';
 /* eslint-disable react/no-unused-prop-types */
 interface Props {
   /** Defines the appearance which can be default or subtle - no borders, background or icon. */
-  appearance?: Appearance,
+  appearance?: Appearance;
   /** Whether or not to auto-focus the field. */
-  autoFocus: boolean,
+  autoFocus: boolean;
   /** Default for `value`. */
-  defaultValue: string,
+  defaultValue: string;
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
-  id: string,
+  id: string;
   /** Props to apply to the container. **/
-  innerProps: Object,
+  innerProps: React.AllHTMLAttributes<HTMLElement>;
   /** Whether or not the field is disabled. */
-  isDisabled: boolean,
+  isDisabled: boolean;
   /** The name of the field. */
-  name: string,
+  name: string;
   /** Called when the field is blurred. */
-  onBlur: () => void,
+  onBlur: React.FocusEventHandler<HTMLInputElement>;
   /** Called when the value changes and the date / time is a complete value, or empty. The only value is an ISO string or empty string. */
-  onChange: (value: string) => void,
+  onChange: (value: string) => void;
   /** Called when the field is focused. */
-  onFocus: () => void,
+  onFocus: React.FocusEventHandler<HTMLInputElement>;
   /** The ISO time that should be used as the input value. */
-  value?: string,
+  value?: string;
   /** Allow users to edit the input and add a time. */
-  timeIsEditable?: boolean,
+  timeIsEditable?: boolean;
   /** Indicates current value is invalid & changes border color. */
-  isInvalid?: boolean,
+  isInvalid?: boolean;
   /** Hides icon for dropdown indicator. */
-  hideIcon?: boolean,
+  hideIcon?: boolean;
   /** DEPRECATED - Use locale instead. Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
-  dateFormat?: string,
-  datePickerProps: {},
-  timePickerProps: {},
+  dateFormat?: string;
+  datePickerProps: React.ComponentProps<typeof DatePicker>;
+  timePickerProps: React.ComponentProps<typeof TimePicker>;
   /** Function to parse passed in dateTimePicker value into the requisite sub values date, time and zone. **/
   parseValue?: (
     dateTimeValue: string,
     date: string,
     time: string,
     timezone: string,
-  ) => { dateValue: string, timeValue: string, zoneValue: string },
+  ) => { dateValue: string; timeValue: string; zoneValue: string };
   /** [Select props](/packages/core/select) to pass onto the DatePicker component. This can be used to set options such as placeholder text. */
-  datePickerSelectProps: {},
+  datePickerSelectProps: SelectProps;
   /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
-  timePickerSelectProps: {},
+  timePickerSelectProps: SelectProps;
   /** The times to show in the times dropdown. */
-  times?: Array<string>,
+  times?: Array<string>;
   /** DEPRECATED - Use locale instead. Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
-  timeFormat?: string,
+  timeFormat?: string;
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
-  spacing?: Spacing,
-  locale: string,
-};
+  spacing?: Spacing;
+  locale: string;
+}
 
 interface State {
-  active: 0 | 1 | 2,
-  dateValue: string,
-  isFocused: boolean,
-  timeValue: string,
-  value: string,
-  zoneValue: string,
+  active: 0 | 1 | 2;
+  dateValue: string;
+  isFocused: boolean;
+  timeValue: string;
+  value: string;
+  zoneValue: string;
+}
+
+type StyleProps = {
+  appearance: Appearance;
+  isFocused: boolean;
+  isInvalid: boolean;
+  isDisabled: boolean;
 };
 
-const getBorder = ({ appearance, isFocused, isInvalid }: {appearance: Appearance, isFocused: boolean, isInvalid: boolean}) => {
+const getBorder = ({ appearance, isFocused, isInvalid }: StyleProps) => {
   let color = colors.N20;
   if (appearance === 'subtle') color = 'transparent';
   if (isFocused) color = colors.B100;
@@ -93,28 +99,36 @@ const getBorder = ({ appearance, isFocused, isInvalid }: {appearance: Appearance
   return `border: 2px solid ${color}`;
 };
 
-const getBorderColorHover = ({ isFocused, isInvalid, isDisabled }: { isFocused: boolean, isInvalid: boolean, isDisabled: boolean }) => {
+const getBorderColorHover = ({
+  isFocused,
+  isInvalid,
+  isDisabled,
+}: StyleProps) => {
   let color = colors.N30;
   if (isFocused || isDisabled) return ``;
   if (isInvalid) color = colors.R400;
   return `border-color: ${color}`;
 };
 
-const getBackgroundColor = ({ appearance, isFocused }: {appearance: Appearance, isFocused: boolean}) => {
+const getBackgroundColor = ({ appearance, isFocused }: StyleProps) => {
   let color = colors.N20;
   if (isFocused) color = colors.N0;
   if (appearance === 'subtle') color = 'transparent';
   return `background-color: ${color}`;
 };
 
-const getBackgroundColorHover = ({ isFocused, isInvalid, isDisabled }: { isFocused: boolean, isInvalid: boolean, isDisabled: boolean }) => {
+const getBackgroundColorHover = ({
+  isFocused,
+  isInvalid,
+  isDisabled,
+}: StyleProps) => {
   let color = colors.N30;
   if (isFocused || isDisabled) return ``;
   if (isInvalid) color = colors.N0;
   return `background-color: ${color}`;
 };
 
-const Flex = styled.div`
+const Flex = styled.div<StyleProps>`
   ${getBackgroundColor}
   ${getBorder}
   border-radius: ${borderRadius()}px;
@@ -147,8 +161,7 @@ const styles = {
   }),
 };
 
-function noop() {
-}
+function noop() {}
 
 class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
@@ -172,6 +185,7 @@ class DateTimePicker extends Component<Props, State> {
     times: defaultTimes,
     spacing: 'default',
     locale: 'en-US',
+    value: '',
   };
 
   state: State = {
@@ -185,10 +199,10 @@ class DateTimePicker extends Component<Props, State> {
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
-  getState = () => {
+  getSafeState = () => {
     const mappedState = {
       ...this.state,
-      value: this.props.value,
+      value: this.props.value!,
     };
 
     return {
@@ -228,22 +242,22 @@ class DateTimePicker extends Component<Props, State> {
         };
   }
 
-  onBlur = () => {
+  onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     this.setState({ isFocused: false });
-    this.props.onBlur();
+    this.props.onBlur(event);
   };
 
-  onFocus = () => {
+  onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     this.setState({ isFocused: true });
-    this.props.onFocus();
+    this.props.onFocus(event);
   };
 
   onDateChange = (dateValue: string) => {
-    this.onValueChange({ ...this.getState(), dateValue });
+    this.onValueChange({ ...this.getSafeState(), dateValue });
   };
 
   onTimeChange = (timeValue: string) => {
-    this.onValueChange({ ...this.getState(), timeValue });
+    this.onValueChange({ ...this.getSafeState(), timeValue });
   };
 
   onValueChange({
@@ -251,9 +265,9 @@ class DateTimePicker extends Component<Props, State> {
     timeValue,
     zoneValue,
   }: {
-    dateValue: string,
-    timeValue: string,
-    zoneValue: string,
+    dateValue: string;
+    timeValue: string;
+    zoneValue: string;
   }) {
     this.setState({ dateValue, timeValue, zoneValue });
 
@@ -263,7 +277,7 @@ class DateTimePicker extends Component<Props, State> {
       this.setState({ value });
       this.props.onChange(value);
       // If the date or time value was cleared when there is an existing datetime value, then clear the value.
-    } else if (this.getState().value) {
+    } else if (this.getSafeState().value) {
       this.setState({ value: '' });
       this.props.onChange('');
     }
@@ -286,8 +300,8 @@ class DateTimePicker extends Component<Props, State> {
       timeFormat,
       locale,
     } = this.props;
-    const { isFocused, value, dateValue, timeValue } = this.getState();
-    const icon =
+    const { isFocused, value, dateValue, timeValue } = this.getSafeState();
+    const icon: React.ReactNode =
       this.props.appearance === 'subtle' || this.props.hideIcon
         ? null
         : CalendarIcon;
@@ -300,8 +314,8 @@ class DateTimePicker extends Component<Props, State> {
       spacing: this.props.spacing,
     };
 
-    const { styles: datePickerStyles = {} } = (datePickerSelectProps: any);
-    const { styles: timePickerStyles = {} } = (timePickerSelectProps: any);
+    const { styles: datePickerStyles = {} } = datePickerSelectProps;
+    const { styles: timePickerStyles = {} } = timePickerSelectProps;
 
     const mergedDatePickerSelectProps = {
       ...datePickerSelectProps,
@@ -318,8 +332,8 @@ class DateTimePicker extends Component<Props, State> {
         {...innerProps}
         isFocused={isFocused}
         isDisabled={isDisabled}
-        isInvalid={bothProps.isInvalid}
-        appearance={bothProps.appearance}
+        isInvalid={this.props.isInvalid!}
+        appearance={this.props.appearance!}
       >
         <input name={name} type="hidden" value={value} />
         <FlexItem>

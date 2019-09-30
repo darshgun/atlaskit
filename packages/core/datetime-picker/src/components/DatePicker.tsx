@@ -1,7 +1,7 @@
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
-import styled from '@emotion/styled';
+import styled, { CSSObject } from '@emotion/styled';
 import {
   createLocalizationProvider,
   LocalizationProvider,
@@ -15,13 +15,11 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { format, isValid, parse, lastDayOfMonth } from 'date-fns';
-import React, { Component, ReactNode, ElementRef } from 'react';
-
+import React, { Component, ReactNode } from 'react';
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-
 import {
   ClearIndicator,
   defaultDateFormat,
@@ -29,73 +27,82 @@ import {
   placeholderDatetime,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
+import { SelectProps, Appearance, Spacing } from 'src/types.js';
+
+type CalendarInstance = any;
 
 /* eslint-disable react/no-unused-prop-types */
 interface Props {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    * Appearance values will be ignored if styles are parsed via the selectProps.
    */
-  appearance?: 'default' | 'subtle',
+  appearance?: Appearance;
   /** Whether or not to auto-focus the field. */
-  autoFocus: boolean,
+  autoFocus: boolean;
   /** Default for `isOpen`. */
-  defaultIsOpen: boolean,
+  defaultIsOpen: boolean;
   /** Default for `value`. */
-  defaultValue: string,
+  defaultValue: string;
   /** An array of ISO dates that should be disabled on the calendar. */
-  disabled: string[],
+  disabled: string[];
   /** The icon to show in the field. */
-  icon: ReactNode,
+  icon: ReactNode;
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
-  id: string,
+  id: string;
   /** Props to apply to the container. **/
-  innerProps: Object,
+  innerProps: React.AllHTMLAttributes<HTMLElement>;
   /** Whether or not the field is disabled. */
-  isDisabled?: boolean,
+  isDisabled?: boolean;
   /** Whether or not the dropdown is open. */
-  isOpen?: boolean,
+  isOpen?: boolean;
   /** The name of the field. */
-  name: string,
+  name: string;
   /** Called when the field is blurred. */
-  onBlur: (e: SyntheticFocusEvent<>) => void,
+  onBlur: React.FocusEventHandler<HTMLInputElement>;
   /** Called when the value changes. The only argument is an ISO time or empty string. */
-  onChange: (value: string) => void,
+  onChange: (value: string) => void;
   /** Called when the field is focused. */
-  onFocus: (e: SyntheticFocusEvent<>) => void,
+  onFocus: React.FocusEventHandler<HTMLInputElement>;
   /** A function for parsing input characters and transforming them into a Date object. By default parses the date string based off the locale */
-  parseInputValue?: (date: string, dateFormat: string) => Date,
+  parseInputValue?: (date: string, dateFormat: string) => Date;
   /** DEPRECATED - Use locale instead. A function for formatting the date displayed in the input. By default composes together [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) and [date-fn's format method](https://date-fns.org/v1.29.0/docs/format) to return a correctly formatted date string*/
-  formatDisplayLabel?: (value: string, dateFormat: string) => string,
+  formatDisplayLabel?: (value: string, dateFormat: string) => string;
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
-  selectProps: Object,
+  selectProps: SelectProps;
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
-  spacing?: 'compact' | 'default',
+  spacing?: Spacing;
   /** The ISO time that should be used as the input value. */
-  value?: string,
+  value?: string;
   /** Indicates current value is invalid & changes border color */
-  isInvalid?: boolean,
+  isInvalid?: boolean;
   /** Hides icon for dropdown indicator. */
-  hideIcon?: boolean,
+  hideIcon?: boolean;
   /** DEPRECATED - Use locale instead. Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
-  dateFormat?: string,
+  dateFormat?: string;
   /** Placeholder text displayed in input */
-  placeholder?: string,
+  placeholder?: string;
   /** Locale used to format the the date and calendar. See [DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) */
-  locale: string,
-};
+  locale: string;
+}
 
 interface State {
-  isOpen: boolean,
-  value: string,
+  isOpen: boolean;
+  value: string;
   /** Value to be shown in the calendar as selected.  */
-  selectedValue: string,
-  view: string,
-  inputValue: string,
-  l10n: LocalizationProvider,
+  selectedValue: string;
+  view: string;
+  inputValue: string;
+  l10n: LocalizationProvider;
+}
+
+type DateObj = {
+  day: number;
+  month: number;
+  year: number;
 };
 
-function getDateObj(date: Date) {
+function getDateObj(date: Date): DateObj {
   return {
     day: date.getDate(),
     month: date.getMonth() + 1,
@@ -104,7 +111,7 @@ function getDateObj(date: Date) {
 }
 
 function getValidDate(iso: string) {
-  const date = parse(iso);
+  const date: Date = parse(iso);
 
   return isValid(date) ? getDateObj(date) : {};
 }
@@ -116,7 +123,13 @@ const StyledMenu = styled.div`
   ${e200};
 `;
 
-const Menu = ({ selectProps, innerProps }: Object) => (
+const Menu = ({
+  selectProps,
+  innerProps,
+}: {
+  selectProps: SelectProps;
+  innerProps: React.AllHTMLAttributes<HTMLElement>;
+}) => (
   <FixedLayer
     inputValue={selectProps.inputValue}
     containerRef={selectProps.calendarContainerRef}
@@ -139,12 +152,11 @@ const Menu = ({ selectProps, innerProps }: Object) => (
 );
 
 class DatePicker extends Component<Props, State> {
-  calendarRef: ElementRef<Calendar>;
-
+  calendarRef: CalendarInstance | null = null;
   containerRef: HTMLElement | null = null;
 
   static defaultProps = {
-    appearance: 'default',
+    appearance: 'default' as Appearance,
     autoFocus: false,
     defaultIsOpen: false,
     defaultValue: '',
@@ -160,8 +172,9 @@ class DatePicker extends Component<Props, State> {
     onChange: () => {},
     onFocus: () => {},
     selectProps: {},
-    spacing: 'default',
+    spacing: 'default' as Spacing,
     locale: 'en-US',
+    value: '',
   };
 
   constructor(props: any) {
@@ -192,11 +205,12 @@ class DatePicker extends Component<Props, State> {
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
-  getState = () => {
+  getSafeState = () => {
     return {
       ...this.state,
-      ...pick(this.props, ['value', 'isOpen']),
-      ...pick(this.props.selectProps, ['inputValue']),
+      value: this.props.value!,
+      isOpen: this.props.isOpen!,
+      inputValue: this.props.selectProps.inputValue,
     };
   };
 
@@ -219,12 +233,8 @@ class DatePicker extends Component<Props, State> {
       ),
     ).getDate();
 
-    const parsedLastDayInMonth: number = parseInt(lastDayInMonth, 10);
-
-    if (parsedLastDayInMonth < parsedDate) {
-      newIso = `${year}-${padToTwo(parsedMonth)}-${padToTwo(
-        parsedLastDayInMonth,
-      )}`;
+    if (lastDayInMonth < parsedDate) {
+      newIso = `${year}-${padToTwo(parsedMonth)}-${padToTwo(lastDayInMonth)}`;
     } else {
       newIso = `${year}-${padToTwo(parsedMonth)}-${padToTwo(parsedDate)}`;
     }
@@ -245,32 +255,32 @@ class DatePicker extends Component<Props, State> {
   };
 
   onInputClick = () => {
-    if (!this.getState().isOpen) this.setState({ isOpen: true });
+    if (!this.getSafeState().isOpen) this.setState({ isOpen: true });
   };
 
-  onSelectBlur = (e: SyntheticFocusEvent<HTMLInputElement>) => {
+  onSelectBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     this.setState({ isOpen: false });
-    this.props.onBlur(e);
+    this.props.onBlur(event);
   };
 
-  onSelectFocus = (e: SyntheticFocusEvent<HTMLInputElement>) => {
-    const { value } = this.getState();
+  onSelectFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    const { value } = this.getSafeState();
 
     this.setState({
       isOpen: true,
       view: value,
     });
 
-    this.props.onFocus(e);
+    this.props.onFocus(event);
   };
 
-  onSelectInput = (e: SyntheticInputEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+  onSelectInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value: string = event.target.value;
 
     if (value) {
-      const parsed = this.parseDate(value);
+      const parsed: Date | null = this.parseDate(value);
       // Only try to set the date if we have month & day
-      if (isValid(parsed)) {
+      if (parsed && isValid(parsed)) {
         // We format the parsed date to YYYY-MM-DD here because
         // this is the format expected by the @atlaskit/calendar component
         this.setState({ view: format(parsed, 'YYYY-MM-DD') });
@@ -280,16 +290,16 @@ class DatePicker extends Component<Props, State> {
     this.setState({ isOpen: true });
   };
 
-  onSelectKeyDown = (e: SyntheticKeyboardEvent<*>) => {
-    const { key, target } = e;
-    const { view, selectedValue } = this.getState();
+  onSelectKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const { key, target } = event;
+    const { view, selectedValue } = this.getSafeState();
 
     const keyPressed = key.toLowerCase();
     switch (keyPressed) {
       case 'arrowup':
       case 'arrowdown':
         if (this.calendarRef) {
-          e.preventDefault();
+          event.preventDefault();
           this.calendarRef.navigate(keyPressed.replace('arrow', ''));
         }
         this.setState({ isOpen: true });
@@ -297,7 +307,7 @@ class DatePicker extends Component<Props, State> {
       case 'arrowleft':
       case 'arrowright':
         if (this.calendarRef) {
-          e.preventDefault();
+          event.preventDefault();
           this.calendarRef.navigate(keyPressed.replace('arrow', ''));
         }
         break;
@@ -337,7 +347,7 @@ class DatePicker extends Component<Props, State> {
     }
   };
 
-  refCalendar = (ref: ElementRef<typeof Calendar>) => {
+  refCalendar = (ref: CalendarInstance | null) => {
     this.calendarRef = ref;
   };
 
@@ -347,7 +357,7 @@ class DatePicker extends Component<Props, State> {
     this.setState({ inputValue });
   };
 
-  getContainerRef = (ref: ?HTMLElement) => {
+  getContainerRef = (ref: HTMLElement | null) => {
     const oldRef = this.containerRef;
     this.containerRef = ref;
     // Cause a re-render if we're getting the container ref for the first time
@@ -357,7 +367,7 @@ class DatePicker extends Component<Props, State> {
     }
   };
 
-  getSubtleControlStyles = (isOpen: boolean) => ({
+  getSubtleControlStyles = (isOpen: boolean): CSSObject => ({
     border: `2px solid ${isOpen ? B100 : `transparent`}`,
     backgroundColor: 'transparent',
     padding: '1px',
@@ -376,7 +386,7 @@ class DatePicker extends Component<Props, State> {
       return parseInputValue(date, dateFormat || defaultDateFormat);
     }
 
-    const { l10n } = this.getState();
+    const { l10n } = this.getSafeState();
 
     return l10n.parseDate(date);
   };
@@ -390,7 +400,7 @@ class DatePicker extends Component<Props, State> {
    */
   formatDate = (value: string): string => {
     const { formatDisplayLabel, dateFormat } = this.props;
-    const { l10n } = this.getState();
+    const { l10n } = this.getSafeState();
 
     if (formatDisplayLabel) {
       return formatDisplayLabel(value, dateFormat || defaultDateFormat);
@@ -410,7 +420,7 @@ class DatePicker extends Component<Props, State> {
       return placeholder;
     }
 
-    const { l10n } = this.getState();
+    const { l10n } = this.getSafeState();
     return l10n.formatDate(placeholderDatetime);
   };
 
@@ -430,11 +440,13 @@ class DatePicker extends Component<Props, State> {
       spacing,
       locale,
     } = this.props;
-    const { value, view, isOpen, inputValue } = this.getState();
+    const { value, view, isOpen, inputValue } = this.getSafeState();
     const dropDownIcon = appearance === 'subtle' || hideIcon ? null : icon;
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
-      appearance === 'subtle' ? this.getSubtleControlStyles(isOpen) : {};
+      appearance === 'subtle'
+        ? this.getSubtleControlStyles(Boolean(isOpen))
+        : {};
     const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
 
     const calendarProps = {
