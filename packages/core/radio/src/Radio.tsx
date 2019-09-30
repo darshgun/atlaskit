@@ -94,6 +94,7 @@ class Radio extends Component<RadioProps, State> {
       onChange,
       onInvalid,
       value,
+      testId,
       ...rest
     } = this.props;
     const { isFocused, isHovered, isActive } = this.state;
@@ -105,6 +106,7 @@ class Radio extends Component<RadioProps, State> {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
+        data-testid={testId && `${testId}--radio-label`}
       >
         <RadioInputWrapper>
           <HiddenInput
@@ -120,6 +122,7 @@ class Radio extends Component<RadioProps, State> {
             type="radio"
             value={value}
             {...rest}
+            data-testid={testId && `${testId}--hidden-radio`}
           />
           <RadioIcon
             isActive={isActive}

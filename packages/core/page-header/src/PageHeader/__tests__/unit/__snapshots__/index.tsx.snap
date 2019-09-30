@@ -51,8 +51,11 @@ exports[`@atlaskit/page-header should render correctly 1`] = `
   margin-left: auto;
   max-width: 100%;
   padding-left: 32px;
-  text-align: right;
   white-space: nowrap;
+}
+
+.c4 > {
+  text-align: right;
 }
 
 .c5 {
@@ -133,8 +136,11 @@ exports[`@atlaskit/page-header should render correctly with disableTitleStyles p
   margin-left: auto;
   max-width: 100%;
   padding-left: 32px;
-  text-align: right;
   white-space: nowrap;
+}
+
+.c3 > {
+  text-align: right;
 }
 
 .c4 {

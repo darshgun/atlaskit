@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.20.1
+
+### Patch Changes
+
+- [patch][e1de95957a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1de95957a):
+
+  changed action value 'click' to 'clicked'
+
 ## 0.20.0
 
 ### Minor Changes

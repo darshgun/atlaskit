@@ -1,1 +1,0 @@
-AvatarItems will only present a pointer cursor if onClick or href has been supplied
