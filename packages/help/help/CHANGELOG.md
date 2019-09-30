@@ -1,5 +1,21 @@
 ## 0.1.0
 
+## 0.20.1
+
+### Patch Changes
+
+- [patch][e1de95957a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1de95957a):
+
+  changed action value 'click' to 'clicked'
+
+## 0.20.0
+
+### Minor Changes
+
+- [minor][de49038228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de49038228):
+
+  Added onRelatedArticlesListItemClick Prop to RelatedArticles and ArticleListItem
+
 ## 0.19.2
 
 ### Patch Changes

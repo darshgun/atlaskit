@@ -67,24 +67,26 @@ export default class RadioGroup extends Component<RadioGroupProps, State> {
     const value = this.getProp('value');
     if (!options.length) return [];
 
-    return options.map((option: OptionPropType, index: number) => {
-      const optionProps = { ...option };
-      if (typeof isDisabled !== 'undefined') {
-        optionProps.isDisabled = isDisabled;
-      }
-      if (value !== null && option.value === value) {
-        optionProps.isChecked = true;
-      }
-      return (
-        <Radio
-          {...optionProps}
-          key={index}
-          onChange={this.onChange}
-          onInvalid={onInvalid}
-          isRequired={isRequired}
-        />
-      );
-    });
+    return options.map(
+      ({ testId, ...optionProps }: OptionPropType, index: number) => {
+        if (typeof isDisabled !== 'undefined') {
+          optionProps.isDisabled = isDisabled;
+        }
+        if (value !== null && optionProps.value === value) {
+          optionProps.isChecked = true;
+        }
+        return (
+          <Radio
+            {...optionProps}
+            key={index}
+            onChange={this.onChange}
+            onInvalid={onInvalid}
+            isRequired={isRequired}
+            testId={testId}
+          />
+        );
+      },
+    );
   };
 
   render() {

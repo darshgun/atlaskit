@@ -776,13 +776,13 @@ describe('Card', () => {
 
       expect(component.find(CardView).prop('dataURI')).toEqual('bla');
       expect(component.find(CardView).prop('metadata')).toEqual({
-        id: 'bla',
+        id: identifier.mediaItemType,
         mediaType: 'image',
         name: 'some external image',
       });
     });
 
-    it('should use dataURI as default name', () => {
+    it('should use dataURI as default name and mediaItemType as id', () => {
       const identifier: ExternalImageIdentifier = {
         mediaItemType: 'external-image',
         dataURI: 'bla',
@@ -791,7 +791,7 @@ describe('Card', () => {
       const { component } = setup(undefined, { identifier });
 
       expect(component.find(CardView).prop('metadata')).toEqual({
-        id: 'bla',
+        id: identifier.mediaItemType,
         mediaType: 'image',
         name: 'bla',
       });
@@ -1156,7 +1156,7 @@ describe('Card', () => {
             eventType: 'operational',
             action: 'commenced',
             actionSubject: 'mediaCardRender',
-            actionSubjectId: externalIdentifier.dataURI,
+            actionSubjectId: externalIdentifier.mediaItemType,
           }),
         }),
         FabricChannel.media,

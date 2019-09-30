@@ -1,5 +1,10 @@
 # @atlaskit/datetime-picker
 
+## 8.1.1
+
+- Updated dependencies [8c725d46ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c725d46ec):
+  - @atlaskit/calendar@9.0.0
+
 ## 8.1.0
 
 ### Minor Changes

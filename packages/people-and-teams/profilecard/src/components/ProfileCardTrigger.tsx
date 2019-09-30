@@ -22,6 +22,9 @@ import {
   ProfileCardClientData,
 } from '../types';
 
+const DELAY_SHOW = 800;
+const DELAY_HIDE = 200;
+
 class ProfilecardTrigger extends React.PureComponent<
   ProfileCardTriggerProps,
   ProfileCardTriggerState
@@ -35,8 +38,8 @@ class ProfilecardTrigger extends React.PureComponent<
   targetRef?: HTMLElement;
 
   _isMounted: boolean = false;
-  showDelay: number = this.props.trigger === 'click' ? 0 : 500;
-  hideDelay: number = this.props.trigger === 'click' ? 0 : 500;
+  showDelay: number = this.props.trigger === 'click' ? 0 : DELAY_SHOW;
+  hideDelay: number = this.props.trigger === 'click' ? 0 : DELAY_HIDE;
   showTimer: number = 0;
   hideTimer: number = 0;
 
@@ -69,13 +72,10 @@ class ProfilecardTrigger extends React.PureComponent<
           onClick: this.showProfilecard,
         };
 
-  layerListeners =
-    this.props.trigger !== 'hover'
-      ? {
-          handleClickOutside: this.hideProfilecard,
-          handleEscapeKeydown: this.hideProfilecard,
-        }
-      : {};
+  layerListeners = {
+    handleClickOutside: this.hideProfilecard,
+    handleEscapeKeydown: this.hideProfilecard,
+  };
 
   state: ProfileCardTriggerState = {
     visible: false,
@@ -181,15 +181,10 @@ class ProfilecardTrigger extends React.PureComponent<
   }
 
   renderWithPopper(element: React.ReactNode) {
-    const WrapperElement =
-      this.props.trigger === 'hover'
-        ? CardElevationWrapper
-        : CardElevationWrapperWithOuter;
-
     return (
       <Popper referenceElement={this.targetRef} placement={this.props.position}>
         {({ ref, style }: { ref: any; style: any }) => (
-          <WrapperElement
+          <CardElevationWrapperWithOuter
             style={style}
             innerRef={ref}
             {...this.containerListeners}
@@ -197,7 +192,7 @@ class ProfilecardTrigger extends React.PureComponent<
             customElevation={this.props.customElevation}
           >
             {element}
-          </WrapperElement>
+          </CardElevationWrapperWithOuter>
         )}
       </Popper>
     );

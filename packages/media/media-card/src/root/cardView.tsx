@@ -191,6 +191,5 @@ export const CardView = withAnalyticsEvents({
     eventType: 'ui',
     action: 'clicked',
     actionSubject: 'mediaCard',
-    actionSubjectId: 'mediaCardCardView',
   }),
 })(CardViewBase);

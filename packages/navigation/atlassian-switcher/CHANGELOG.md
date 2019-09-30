@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher
 
+## 4.2.1
+
+### Patch Changes
+
+- [patch][8ec4a18b58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ec4a18b58):
+
+  Updating examples
+
+## 4.2.0
+
+### Minor Changes
+
+- [minor][173ada19f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/173ada19f7):
+
+  yRemove People link from switcher
+
 ## 4.1.0
 
 ### Minor Changes

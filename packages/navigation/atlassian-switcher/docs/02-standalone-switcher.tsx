@@ -10,9 +10,20 @@ export default md`
   ${(
     <Example
       packageName="@atlaskit/atlassian-switcher"
-      Component={require('../examples/01-standalone').default}
+      Component={require('../examples/11-standalone-switcher').default}
       title="Standalone switcher example"
-      source={require('!!raw-loader!../examples/01-standalone')}
+      source={require('!!raw-loader!../examples/11-standalone-switcher')}
+    />
+  )}
+
+  ${(
+    <Example
+      packageName="@atlaskit/atlassian-switcher"
+      Component={
+        require('../examples/12-standalone-switcher-in-inline-dialog').default
+      }
+      title="Standalone switcher in inline dialog"
+      source={require('!!raw-loader!../examples/12-standalone-switcher-in-inline-dialog')}
     />
   )}
   `;
