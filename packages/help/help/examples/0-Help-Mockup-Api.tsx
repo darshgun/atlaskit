@@ -11,7 +11,12 @@ import {
   ExampleDefaultContent,
 } from './utils/styled';
 
-import Help, { ArticleFeedback } from '../src';
+import Help from '../src';
+
+interface ArticleFeedback {
+  RateReasonText: string;
+  negativeRateReason?: string;
+}
 
 const handleEvent = (analyticsEvent: { payload: any; context: any }) => {
   const { payload, context } = analyticsEvent;

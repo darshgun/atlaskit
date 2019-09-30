@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 113.1.1
+
+### Patch Changes
+
+- [patch][8af8f8ec2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af8f8ec2a):
+
+  ED-7768 Fixed regression where you cannot click inside a block macro
+
 ## 113.1.0
 
 ### Minor Changes

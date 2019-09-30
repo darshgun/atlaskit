@@ -15,15 +15,12 @@ type PrefetchTriggerProps = {
 } & Partial<FeatureFlagProps>;
 
 export const prefetch = (props: PrefetchTriggerProps) => {
-  const { cloudId, enableUserCentricProducts, product } = props;
+  const { cloudId, product } = props;
 
   prefetchSwitcherBundles(product);
+  prefetchAvailableProducts(props.availableProductsDataProvider);
 
   if (cloudId) {
     prefetchAll({ cloudId });
-  }
-
-  if (enableUserCentricProducts) {
-    prefetchAvailableProducts(props.availableProductsDataProvider);
   }
 };

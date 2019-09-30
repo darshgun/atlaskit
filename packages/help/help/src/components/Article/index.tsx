@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
-import HelpArticle from '@atlaskit/help-article';
 import { Transition } from 'react-transition-group';
+
 import { REQUEST_STATE } from '../../model/Requests';
 import { withHelp, HelpContextInterface } from '../HelpContext';
 
-import RelatedArticles from './RelatedArticles';
+import ArticleContent from './ArticleContent';
 import ArticleWasHelpfulForm from './ArticleWasHelpfulForm';
-import Loading from './Loading';
+import RelatedArticles from './RelatedArticles';
 import LoadingError from './LoadingError';
 import { ArticleContainer } from './styled';
 import { TRANSITION_DURATION_MS, TRANSITION_STATUS } from '../constants';
@@ -34,6 +34,8 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     skipArticleFadeInAnimation: false, // used as a flag to skip the first fade-in animation
   };
 
+  refArticleContainer = React.createRef<HTMLDivElement>();
+
   constructor(props: Props & HelpContextInterface) {
     super(props);
 
@@ -56,6 +58,14 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     if (prevProps.help.articleId !== this.props.help.articleId) {
       this.setState({ skipArticleFadeInAnimation: false });
     }
+
+    // Scroll ArticleContainer to the top when the article changes
+    if (
+      prevProps.help.history !== this.props.help.history &&
+      this.refArticleContainer.current
+    ) {
+      this.refArticleContainer.current.scrollTo(0, 0);
+    }
   }
 
   onArticleEntered() {
@@ -69,31 +79,40 @@ export class Article extends Component<Props & HelpContextInterface, State> {
   }
 
   renderArticleContent() {
-    const article = this.props.help.getCurrentArticle();
-    if (article) {
-      if (article.state === REQUEST_STATE.done) {
+    const currentArticle = this.props.help.getCurrentArticle();
+
+    const handleOnClick = (articleId: string) => {
+      this.props.help.loadArticle(articleId);
+    };
+
+    if (currentArticle) {
+      const { article } = currentArticle;
+
+      if (currentArticle.state === REQUEST_STATE.error) {
+        return <LoadingError />;
+      } else if (article && currentArticle.state === REQUEST_STATE.done) {
         return (
-          article.article && (
-            <>
-              <HelpArticle
-                title={article.article.title}
-                body={article.article.body}
-                titleLinkUrl={article.article.productUrl}
-              />
-              <ArticleWasHelpfulForm />
-              <RelatedArticles
-                relatedArticles={article.article.relatedArticles}
-              />
-            </>
-          )
+          <>
+            <ArticleContent
+              title={article.title}
+              body={article.body}
+              titleLinkUrl={article.productUrl}
+            />
+            <ArticleWasHelpfulForm />
+            <RelatedArticles
+              relatedArticles={article.relatedArticles}
+              onRelatedArticlesListItemClick={handleOnClick}
+            />
+          </>
+        );
+      } else {
+        return (
+          <>
+            <ArticleContent isLoading />
+            <RelatedArticles isLoading />
+          </>
         );
       }
-
-      if (article.state === REQUEST_STATE.error) {
-        return <LoadingError />;
-      }
-
-      return <Loading />;
     }
 
     return null;
@@ -113,6 +132,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
       >
         {(state: TRANSITION_STATUS) => (
           <ArticleContainer
+            ref={this.refArticleContainer}
             isSearchVisible={this.props.help.isSearchVisible()}
             style={{
               ...defaultStyle,

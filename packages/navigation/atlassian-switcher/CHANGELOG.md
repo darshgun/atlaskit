@@ -1,5 +1,53 @@
 # @atlaskit/atlassian-switcher
 
+## 4.2.1
+
+### Patch Changes
+
+- [patch][8ec4a18b58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ec4a18b58):
+
+  Updating examples
+
+## 4.2.0
+
+### Minor Changes
+
+- [minor][173ada19f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/173ada19f7):
+
+  yRemove People link from switcher
+
+## 4.1.0
+
+### Minor Changes
+
+- [minor][42afbf2163](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42afbf2163):
+
+  Only show try links if the product is not provisioned for any of the available sites
+
+## 4.0.0
+
+### Major Changes
+
+- [major][deff626951](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deff626951):
+
+  Remove enableUserCentricProducts feature flag, enable account centric switcher by default
+
+## 3.31.3
+
+### Patch Changes
+
+- [patch][b72b5b773c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b72b5b773c):
+
+  Removed ts-ignore from the code
+
+## 3.31.2
+
+### Patch Changes
+
+- [patch][fa1f938f76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa1f938f76):
+
+  [Bug fix] Emcee link was not able to capture source param, this release will fix that
+
 ## 3.31.1
 
 ### Patch Changes

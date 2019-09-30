@@ -17,15 +17,28 @@ This project is bound by a [Code of Conduct][conduct].
 
 Although it's our job to look after all the components in our repo, we rely heavily on contributions outside of our team to make Atlaskit great. At its core, our contribution model is very much like contributing to any open source library, but because we get several contributions from within Atlassian from other teams, we have the ability to build on that model to help make inter-team contributions more efficient.
 
-## Prerequisites
+Contribution is currently **only** available for Atlassian employees.
 
-Before you can start making contributions to Atlaskit, you will need to be granted contributor permissions
-to the Atlaskit repo. Contributors are given permission to create branches and pull requests.
+We’re temporarily unable to grant contributor access to external developers.
 
-Follow the instructions under the 'Become a contributor' section of our [`CONTRIBUTING.md`][contributing] guide
-in order to receive these permissions to contribute to the Atlaskit repo.
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, identify the relevant team that maintains the package by checking the [packages list][packages].
 
-## Open source contribution model
+You can add a ticket through the appropriate channel:
+
+- **Core**: Slack: [#atlaskit][#atlaskit] | Jira: [go/dst-sd][core]
+
+- **Editor**: Slack: [#help-twp-editor][#help-twp-editor] | Jira: [go/editor-issue][editor]
+
+- **Media**: Slack: [#help-twp-media][#help-twp-media] | Jira: - [go/mediahelp][media]
+
+- **Elements**: Head over [Fabric Elements][fabric-elements] and reach out to the respective teams.
+
+- **Search & Smarts**: [#smrt-quick-search][#smrt-quick-search] | “Give feedback” button in the search panel
+
+- **Notifications**: [#notificationsplatform][#notificationsplatform]
+
+
+# Open source contribution model
 
 We want to keep this model very simple. At its core, we make the assumption that developers looking to contribute will look at the [`README.md`][readme] and thus be directed to the [`CONTRIBUTING.md`][contributing]. Both of these files are widely known as convention in open source projects and we think that developers will be able to direct themselves there.
 
@@ -89,7 +102,7 @@ Some examples of this are:
 - Daily stand-ups
 - Weekly catch-ups
 - Demos every other day
-- Creating a Stride room for regular communication
+- Creating a Slack channel for regular communication
 
 The people involved in these catch-ups will vary, as well. For example, it may simply be the contributor and shepherd. It may have a designer present. Other team members may be involved depending on the complexity.
 
@@ -118,10 +131,22 @@ To keep the quality bar high, we should do our best to ensure the contribution c
 
 ### Handover and maintenance
 
-In an ideal world, the contributor would be able to support the component for some time after mergin. This isn't always the case, however. Either way, we should ensure that both the shepherd and contributor - in that order - are mentioned as the `maintainers` in the `package.json`. The first person listed - the shepherd - will be the primary point of contact. The second person listed - the contributor - will be the secondary point of contact, just in case, since they were the ones that contributed it.
+In an ideal world, the contributor would be able to support the component for some time after merging. This isn't always the case, however. Either way, we should ensure that both the shepherd and contributor - in that order - are mentioned as the `maintainers` in the `package.json`. The first person listed - the shepherd - will be the primary point of contact. The second person listed - the contributor - will be the secondary point of contact, just in case, since they were the ones that contributed it.
 
 Over time, this may evolve and both the contributor and shepherd may be removed in favour of a new maintainer. This is fine and should be considered normal.
+
+So the best way is to rely on the `team` field in the `package.json` and address any maintainers questions through Slack.
 
 [conduct]: https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/CODE_OF_CONDUCT.md
 [contributing]: https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/CONTRIBUTING.md
 [readme]: https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/README.md
+[#atlaskit]: https://atlassian.slack.com/messages/CFHT33S4F
+[#help-twp-editor]: https://atlassian.slack.com/archives/CFG3PSQ9E
+[#help-twp-media]: https://atlassian.slack.com/archives/CFGMGT77W
+[fabric-elements]: https://product-fabric.atlassian.net/wiki/spaces/FS
+[#smrt-quick-search]: https://atlassian.slack.com/archives/CFG8QANL9
+[#notificationsplatform]: https://atlassian.slack.com/archives/CFG86D0HF
+[core]: https://ecosystem.atlassian.net/servicedesk/customer/portal/24
+[editor]: https://product-fabric.atlassian.net/projects/ED/issues/ED-4385?filter=allissues
+[media]: https://product-fabric.atlassian.net/servicedesk/customer/portal/2
+[packages]: https://atlaskit.atlassian.com/packages

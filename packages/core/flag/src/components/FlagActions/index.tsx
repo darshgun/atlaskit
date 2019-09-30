@@ -34,6 +34,7 @@ export default class FlagActions extends Component<Props, {}> {
             key={this.getUniqueId('flag-action')}
             hasDivider={!!index}
             useMidDot={!isBold}
+            data-testid={action.testId}
           >
             <Button
               onClick={action.onClick}
@@ -49,6 +50,7 @@ export default class FlagActions extends Component<Props, {}> {
               }
               component={linkComponent}
               spacing="compact"
+              data-testid={action.testId}
               theme={(adgTheme, themeProps) => {
                 const { buttonStyles, ...rest } = adgTheme(themeProps);
                 return {

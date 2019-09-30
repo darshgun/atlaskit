@@ -8,8 +8,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "                               ./build/ci-scripts/build.js",
-    "build:clean": "                         yarn delete:build:artifacts && ./build/ci-scripts/build.js",
+    "build": "                               bolt w @atlaskit/ci-scripts build",
+    "build:clean": "                         yarn delete:build:artifacts && yarn build",
     "build:editor-mobile-bridge": "          cd packages/editor/editor-mobile-bridge && yarn build",
     "build:adf-schema:checkuptodate": "      cd packages/editor/adf-schema && yarn run generate:json-schema && git diff --exit-code",
     "build:multi-entry-point-tsconfig": "    node ./build/multi-entry-tools/typescript-paths-tsconfig-builder.js > tsconfig.entry-points.json",
@@ -84,6 +84,7 @@
     "@changesets/cli": "^1.2.0",
     "@emotion/babel-preset-css-prop": "^10.0.7",
     "@jest/fake-timers": "^24.8.0",
+    "@testing-library/jest-dom": "^4.1.0",
     "@testing-library/react": "^8.0.1",
     "@types/chai": "^4.0.4",
     "@types/classnames": "^2.2.6",
