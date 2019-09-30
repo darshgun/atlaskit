@@ -14,6 +14,7 @@ import {
   MediaNodeUpdater,
   MediaNodeUpdaterProps,
 } from '../../../../../plugins/media/nodeviews/mediaNodeUpdater';
+import * as mediaCommon from '../../../../../plugins/media/utils/media-common';
 import { MediaProvider } from '../../../../../plugins/media/pm-plugins/main';
 
 describe('MediaNodeUpdater', () => {
@@ -24,9 +25,11 @@ describe('MediaNodeUpdater', () => {
     jest
       .spyOn(MediaClientModule, 'getMediaClient')
       .mockReturnValue(mediaClient);
-    jest.spyOn(commands, 'updateAllMediaNodesAttrs').mockReturnValue(() => {});
-    jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => {});
-    jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => {});
+    jest
+      .spyOn(commands, 'updateAllMediaNodesAttrs')
+      .mockReturnValue(() => true);
+    jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => true);
+    jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => true);
     jest
       .spyOn(mediaCommon, 'getViewMediaClientConfigFromMediaProvider')
       .mockReturnValue(getDefaultMediaClientConfig());
