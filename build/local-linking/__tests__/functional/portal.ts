@@ -58,9 +58,11 @@ describe('Portal integration', () => {
     await portal(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
     expect(fs.existsSync(installedPath)).toBe(true);
     expect(consoleLogSpy).toHaveBeenCalledWith(
+      'Yalc:',
       '@atlaskit/foo@0.0.1 published in store.',
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(
+      'Yalc:',
       expect.stringContaining('Package @atlaskit/foo@0.0.1 added'),
     );
     expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -83,9 +85,11 @@ describe('Portal integration', () => {
     await portal(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
     expect(fs.existsSync(installedPath)).toBe(true);
     expect(consoleLogSpy).toHaveBeenCalledWith(
+      'Yalc:',
       '@atlaskit/foo@0.0.1 published in store.',
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(
+      'Yalc:',
       expect.stringContaining('Package @atlaskit/foo@0.0.1 added'),
     );
     expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -108,10 +112,12 @@ describe('Portal integration', () => {
     await portal(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
     expect(fs.existsSync(installedPath)).toBe(true);
     expect(consoleLogSpy).toHaveBeenCalledWith(
+      'Yalc:',
       '@atlaskit/foo@0.0.1 published in store.',
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Package @atlaskit/foo@0.0.1 added'),
+      'Yalc:',
+      expect.stringMatching(/@atlaskit\/foo@0.0.1 added to .* purely/),
     );
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });

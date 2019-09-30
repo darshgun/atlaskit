@@ -49,7 +49,9 @@ async function installDependencies(
   const commands = {
     npm: 'npm install',
     yarn: 'yarn',
-    bolt: `bolt upgrade ${packageNames.map(pkg => `${pkg}@file:.yalc/${pkg}`)}`,
+    bolt: `bolt upgrade ${packageNames.map(
+      pkg => `${pkg}@file:.yalc/${pkg}`,
+    )} && bolt`,
   };
   const repoType = await detectRepoType(repoPath);
   let installCmd = commands[repoType];
@@ -83,8 +85,8 @@ export default async function main(
   packages: string[],
   opts: Options = {},
 ) {
-  const options = { ...defaultOptions, ...opts };
-  if (options.entry) {
+  opts = { ...defaultOptions, ...opts };
+  if (opts.entry) {
     console.warn(chalk.yellow('Entry flag not supported yet'));
   }
   if (!repoPath || !packages || packages.length === 0) {
@@ -121,7 +123,7 @@ Provide either full name (@atlaskit/foo) or unscoped name (foo).`,
     });
   }
 
-  const project = await bolt.getProject({ cwd: options.cwd });
+  const project = await bolt.getProject({ cwd: opts.cwd });
   // Repo path is relative to the parent directory of the project (atlaskit)
   const resolvedRepoPath = path.resolve(project.dir, '..', repoPath);
   const repoType = await detectRepoType(resolvedRepoPath);

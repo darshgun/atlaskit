@@ -7,7 +7,8 @@ import portal from '../../portal';
 
 jest.enableAutomock();
 jest.mock('fs-extra');
-jest.unmock('../portal');
+jest.unmock('../../portal');
+jest.unmock('../../utils');
 
 const mockedFse: any = fse;
 
@@ -46,6 +47,7 @@ describe('portal', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(['bar'], {
       workingDir: path.resolve('projects/repo-foo'),
+      pure: false,
     });
     spy.mockRestore();
   });
@@ -53,7 +55,17 @@ describe('portal', () => {
   it('should run npm to install transitive dependencies in standard repo', async () => {
     await portal('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
-    expect(runCommands).toHaveBeenCalledWith(['nvm use && npm install']);
+    expect(runCommands).toHaveBeenCalledWith(
+      [
+        expect.stringMatching(
+          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && npm install/,
+        ),
+      ],
+      {
+        linePrefix: 'Installing deps:',
+        stripAnsi: true,
+      },
+    );
   });
 
   it('should run yarn to install transitive dependencies in yarn repo', async () => {
@@ -62,19 +74,38 @@ describe('portal', () => {
     );
     await portal('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
-    expect(runCommands).toHaveBeenCalledWith(['nvm use && yarn']);
+    expect(runCommands).toHaveBeenCalledWith(
+      [
+        expect.stringMatching(
+          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && yarn/,
+        ),
+      ],
+      {
+        linePrefix: 'Installing deps:',
+        stripAnsi: true,
+      },
+    );
   });
 
   it('should run bolt to install transitive dependencies in bolt repos', async () => {
     mockedFse.pathExists.mockImplementation((p: string) =>
       p.includes('yarn.lock'),
     );
-    mockedFse.readJson.mockImplementation((p: string) => ({ bolt: {} }));
+    mockedFse.readJson.mockImplementation(() => ({ bolt: {} }));
     await portal('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
-    expect(runCommands).toHaveBeenCalledWith([
-      'nvm use && bolt upgrade bar@file:.yalc/bar',
-    ]);
+
+    expect(runCommands).toHaveBeenCalledWith(
+      [
+        expect.stringMatching(
+          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && bolt upgrade bar@file:.yalc\/bar/,
+        ),
+      ],
+      {
+        linePrefix: 'Installing deps:',
+        stripAnsi: true,
+      },
+    );
   });
 
   describe('Edge cases', () => {
@@ -94,6 +125,33 @@ describe('portal', () => {
       ]);
     });
 
+    it('should not run nvm commands when nvm option is false', async () => {
+      await portal('repo-foo', ['bar'], { nvm: false });
+      expect(runCommands).toHaveBeenCalledTimes(1);
+      expect(runCommands).toHaveBeenCalledWith(
+        [expect.stringMatching(/cd ".*\/projects\/repo-foo" && npm install/)],
+        {
+          linePrefix: 'Installing deps:',
+          stripAnsi: true,
+        },
+      );
+    });
+
+    it('should run yalc add with pure mode in bolt repos', async () => {
+      mockedFse.pathExists.mockImplementation((p: string) =>
+        p.includes('yarn.lock'),
+      );
+      mockedFse.readJson.mockImplementation(() => ({ bolt: {} }));
+      const spy = jest.spyOn(yalc, 'addPackages');
+      await portal('repo-foo', ['bar']);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(['bar'], {
+        workingDir: path.resolve('projects/repo-foo'),
+        pure: true,
+      });
+      spy.mockRestore();
+    });
+
     it('should handle both full package name and shortened package name', async () => {
       const publishSpy = jest.spyOn(yalc, 'publishPackage');
       const addSpy = jest.spyOn(yalc, 'addPackages');
@@ -108,6 +166,7 @@ describe('portal', () => {
 
         expect(addSpy).toBeCalledTimes(1);
         expect(addSpy).toHaveBeenCalledWith(['@atlaskit/foo'], {
+          pure: false,
           workingDir: path.resolve('projects/repo-foo'),
         });
       }
@@ -130,6 +189,7 @@ describe('portal', () => {
       expect(publishSpy).toHaveBeenCalledWith({ workingDir: 'packages/bar' });
       expect(addSpy).toBeCalledTimes(1);
       expect(addSpy).toHaveBeenCalledWith(['@atlaskit/foo', 'bar'], {
+        pure: false,
         workingDir: path.resolve('projects/repo-foo'),
       });
 
