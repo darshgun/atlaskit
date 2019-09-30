@@ -40,7 +40,7 @@ export default function Example() {
       <MainStage>
         <Section>
           <h4>Profilecard triggered by hover</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
               {...defaultProps}
@@ -56,11 +56,11 @@ export default function Example() {
               <strong>hover over me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
         <Section>
           <h4>Profilecard triggered by click</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
               {...defaultProps}
@@ -77,12 +77,12 @@ export default function Example() {
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
 
         <Section>
           <h4>Profilecard triggered for closed account</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
               {...defaultProps}
@@ -95,12 +95,12 @@ export default function Example() {
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
 
         <Section>
           <h4>Profilecard triggered for inactive account</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
               {...defaultProps}
@@ -111,7 +111,7 @@ export default function Example() {
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
 
         <Section>
@@ -119,7 +119,7 @@ export default function Example() {
             Profilecard triggered for closed account and custom message and not
             show status lozenge
           </h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
               {...defaultProps}
@@ -130,7 +130,7 @@ export default function Example() {
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
       </MainStage>
     </LocaleIntlProvider>
