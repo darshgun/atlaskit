@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.2.1
+
+### Patch Changes
+
+- [patch][8ec4a18b58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ec4a18b58):
+
+  Updating examples
+
 ## 4.2.0
 
 ### Minor Changes
