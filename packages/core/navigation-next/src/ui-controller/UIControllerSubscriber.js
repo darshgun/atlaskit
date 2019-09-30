@@ -6,8 +6,10 @@ import { Subscribe } from 'unstated';
 import UIController from './UIController';
 import type { UIControllerSubscriberProps } from './types';
 
+const to = [UIController];
+
 const UIControllerSubscriber = ({ children }: UIControllerSubscriberProps) => (
-  <Subscribe to={[UIController]}>{children}</Subscribe>
+  <Subscribe to={to}>{children}</Subscribe>
 );
 
 export default UIControllerSubscriber;

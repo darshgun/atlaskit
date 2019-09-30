@@ -1,4 +1,5 @@
-import { md } from '@atlaskit/docs';
+import * as React from 'react';
+import { md, Example } from '@atlaskit/docs';
 
 export default md`
   ## i18n
@@ -13,4 +14,13 @@ export default md`
   - To pull i18n changes: Run "\`bolt i18n:pull\`" with the API key
 
   If you're pulling i18n changes, ensure to commit the changes to master by raising a PR
+
+  ${(
+    <Example
+      packageName="@atlaskit/atlassian-switcher"
+      Component={require('../examples/60-internationalisation').default}
+      title="Internationalisation example"
+      source={require('!!raw-loader!../examples/60-internationalisation')}
+    />
+  )}
 `;

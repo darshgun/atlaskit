@@ -79,33 +79,15 @@ You can also find how each component is meant to be used from a design perspecti
 
 # Contributing
 
-We believe in open contributions and the power of a strong development community. Pull requests, bug reports, and comments are welcomed!
+Contribution is currently **only** available for Atlassian employees.
 
-[Read the contribution guide on our website][contributing_site] to get started, and our [CONTRIBUTING.md][contributing_repo] for more details.
+We’re temporarily unable to grant contributor access to external developers.
 
-Here are some quick tips for various contributions:
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, [read the contribution guide on our website][contributing_site] to get started, and our [CONTRIBUTING.md][contributing_repo] for more details.
 
 ### Reporting issues
 
-Our [CONTRIBUTING.md][contributing_repo] includes links for where to raise issues to Atlaskit.
-
-### Contributing code
-
-Atlassian requires contributors to sign a Contributor License Agreement,
-known as a CLA. This serves as a record stating that the contributor is
-entitled to contribute the code/documentation/translation to the project
-and is willing to have it used in distributions and derivative works
-(or is willing to transfer ownership).
-
-Please read our [CONTRIBUTING.md][contributing_repo] for details on how to become a contributor
-and for our guidelines around contributions.
-
-Some quick tips for making successful contributions to Atlaskit:
-
-- Do not raise pull requests from forks because our CI builds do not run on forks. Create a pull request from a branch instead.
-- Add tests for new features and bug fixes.
-- Follow the existing style.
-- Separate unrelated changes into multiple pull requests.
+Our [CONTRIBUTING.md][contributing_repo] includes links for where to raise issues in Atlaskit.
 
 # License
 

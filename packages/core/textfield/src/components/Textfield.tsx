@@ -127,6 +127,7 @@ class Textfield extends React.Component<InternalProps, State> {
       width,
       elemAfterInput,
       elemBeforeInput,
+      testId,
       ...otherProps
     } = this.props;
 
@@ -161,6 +162,7 @@ class Textfield extends React.Component<InternalProps, State> {
                   elemAfterInput={elemAfterInput}
                   elemBeforeInput={elemBeforeInput}
                   innerRef={this.setInputRef}
+                  testId={testId}
                 />
               )}
             </Theme.Consumer>

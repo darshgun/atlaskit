@@ -1,5 +1,29 @@
 # @atlaskit/branch-installer
 
+## 0.1.7
+
+### Patch Changes
+
+- [patch][5d4bcea150](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d4bcea150):
+
+  Revert broken branch installer change
+
+## 0.1.6
+
+### Patch Changes
+
+- [patch][23675b1438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23675b1438):
+
+  Add quotes to version url of yarn upgrade command
+
+## 0.1.5
+
+### Patch Changes
+
+- [patch][bcf4d840c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcf4d840c7):
+
+  Forgotten changeset, updates cdn url to use https
+
 ## 0.1.4
 
 ### Patch Changes
