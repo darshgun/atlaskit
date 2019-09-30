@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.20.0
+
+### Minor Changes
+
+- [minor][de49038228](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de49038228):
+
+  Added onRelatedArticlesListItemClick Prop to RelatedArticles and ArticleListItem
+
 ## 0.19.2
 
 ### Patch Changes
