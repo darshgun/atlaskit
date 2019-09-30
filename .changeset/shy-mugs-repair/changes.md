@@ -1,1 +1,0 @@
-Increased show/hide delay times for ProfileCardTrigger
