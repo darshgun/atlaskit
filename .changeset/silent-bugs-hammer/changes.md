@@ -1,0 +1,1 @@
+Text alignment of action items will now only be applied to direct children
