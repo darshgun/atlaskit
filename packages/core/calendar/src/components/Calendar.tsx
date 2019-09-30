@@ -62,12 +62,12 @@ export interface CalendarProps extends WithAnalyticsEventsProps {
   /** The number of the month (from 1 to 12) which the calendar should be on. */
   month?: number;
   /** Function which is called when the calendar is no longer focused. */
-  onBlur: () => void;
+  onBlur: React.FocusEventHandler;
   /** Called when the calendar is navigated. This can be triggered by the keyboard, or by clicking the navigational buttons.
    The 'interface' property indicates the the direction the calendar was navigated whereas the 'iso' property is a string of the format YYYY-MM-DD. */
   onChange: (event: ChangeEvent) => void;
   /** Called when the calendar receives focus. This could be from a mouse event on the container by tabbing into it. */
-  onFocus: () => void;
+  onFocus: React.FocusEventHandler;
   /** Function called when a day is clicked on. Calls with an object that has
   a day, month and week property as numbers, representing the date just clicked.
   It also has an 'iso' property, which is a string of the selected date in the
@@ -253,14 +253,14 @@ class Calendar extends Component<CalendarProps, State> {
     this.triggerOnChange({ day, month, year, type: 'prev' });
   };
 
-  handleContainerBlur = () => {
+  handleContainerBlur = (event: React.FocusEvent) => {
     this.setState({ day: 0 });
-    this.props.onBlur();
+    this.props.onBlur(event);
   };
 
-  handleContainerFocus = () => {
+  handleContainerFocus = (event: React.FocusEvent) => {
     this.setState({ day: this.getState().day || 1 });
-    this.props.onFocus();
+    this.props.onFocus(event);
   };
 
   focus() {
