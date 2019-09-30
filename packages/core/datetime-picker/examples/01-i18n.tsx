@@ -1,30 +1,30 @@
-import React, { Component, Node } from 'react';
+import React from 'react';
 import { Label } from '@atlaskit/field-base';
 import LocaleSelect, { Locale } from '@atlaskit/locale/LocaleSelect';
 import { DatePicker, DateTimePicker, TimePicker } from '../src';
 
 interface ControlledState {
-  value: string,
-  isOpen: boolean,
-};
+  value: string;
+  isOpen: boolean;
+}
 
 interface ControlledProps {
-  initialValue?: string,
-  initialIsOpen?: boolean,
-  children: ({
-    value: string,
-    onValueChange: (value: string) => void,
-    isOpen: boolean,
-    onBlur: () => void,
-  }) => Node,
-};
+  initialValue?: string;
+  initialIsOpen?: boolean;
+  children: (
+    value: {
+      value: string;
+      onValueChange: (value: string) => void;
+      isOpen: boolean;
+      onBlur: () => void;
+    },
+  ) => React.ReactNode;
+}
 
 class Controlled extends Component<ControlledProps, ControlledState> {
   state: ControlledState;
-
   recentlySelected: boolean = false;
-
-  recSelTimeoutId: TimeoutID;
+  recSelTimeoutId: number | null = null;
 
   constructor(props: ControlledProps) {
     super(props);
@@ -35,7 +35,10 @@ class Controlled extends Component<ControlledProps, ControlledState> {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.recSelTimeoutId);
+    if (this.recSelTimeoutId == null) {
+      clearTimeout(this.recSelTimeoutId);
+      this.recSelTimeoutId = null;
+    }
   }
 
   handleClick = () => {
@@ -53,7 +56,8 @@ class Controlled extends Component<ControlledProps, ControlledState> {
         isOpen: false,
       },
       () => {
-        this.recSelTimeoutId = setTimeout(() => {
+        this.recSelTimeoutId = window.setTimeout(() => {
+          this.recSelTimeoutId = null;
           this.recentlySelected = false;
         }, 200);
       },
@@ -92,8 +96,8 @@ const onChange = value => {
 };
 
 interface IntlState {
-  locale: string,
-};
+  locale: string;
+}
 
 export default class extends Component<Object, IntlState> {
   state = {

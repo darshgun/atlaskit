@@ -3,7 +3,7 @@ import React from 'react';
 import { Label } from '@atlaskit/field-base';
 import { DatePicker } from '../src';
 
-function now(day) {
+function now(day: number) {
   const date = new Date();
   date.setDate(day);
   return format(date, 'YYYY-MM-DD');

@@ -8,19 +8,19 @@ import {
   LocalizationProvider,
 } from '@atlaskit/locale';
 import { format, isValid } from 'date-fns';
-import React, { Component, ReactNode } from 'react';
+import React from 'react';
+import { CSSObject } from '@emotion/core';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
-import { Appearance, Spacing, Combine, SelectProps } from '../types';
+import { Appearance, Spacing, SelectProps } from '../types';
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-
 import {
   ClearIndicator,
   defaultTimes,
@@ -30,7 +30,6 @@ import {
 } from '../internal';
 import parseTime from '../internal/parseTime';
 import FixedLayer from '../internal/FixedLayer';
-import { CSSObject } from '@emotion/core';
 
 interface Option {
   label: string;
@@ -52,7 +51,7 @@ interface Props {
   /** DEPRECATED - Use locale instead. Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
   formatDisplayLabel?: (time: string, timeFormat: string) => string;
   /** The icon to show in the field. */
-  icon?: ReactNode;
+  icon?: React.ReactNode;
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string;
   /** Props to apply to the container. **/
@@ -113,7 +112,7 @@ const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
   />
 );
 
-class TimePicker extends Component<Props, State> {
+class TimePicker extends React.Component<Props, State> {
   containerRef: HTMLElement | null = null;
 
   static defaultProps = {

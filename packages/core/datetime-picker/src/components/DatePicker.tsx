@@ -15,7 +15,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { format, isValid, parse, lastDayOfMonth } from 'date-fns';
-import React, { Component, ReactNode } from 'react';
+import React from 'react';
 import {
   name as packageName,
   version as packageVersion,
@@ -46,7 +46,7 @@ interface Props {
   /** An array of ISO dates that should be disabled on the calendar. */
   disabled: string[];
   /** The icon to show in the field. */
-  icon: ReactNode;
+  icon: React.ReactNode;
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
   id: string;
   /** Props to apply to the container. **/
@@ -151,7 +151,7 @@ const Menu = ({
   />
 );
 
-class DatePicker extends Component<Props, State> {
+class DatePicker extends React.Component<Props, State> {
   calendarRef: CalendarInstance | null = null;
   containerRef: HTMLElement | null = null;
 

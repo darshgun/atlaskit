@@ -9,7 +9,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import React, { Component, ReactNode } from 'react';
+import React from 'react';
 import { parse, format, isValid } from 'date-fns';
 import { Appearance, Spacing, SelectProps } from '../types';
 import {
@@ -163,7 +163,7 @@ const styles = {
 
 function noop() {}
 
-class DateTimePicker extends Component<Props, State> {
+class DateTimePicker extends React.Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
