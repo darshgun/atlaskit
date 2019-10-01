@@ -162,7 +162,7 @@ async function buildExceptionPackages({ cwd, pkg }: StepArgs) {
       only: pkg && pkg.name,
     },
     spawnOpts: {
-      parallel: true,
+      orderMode: 'parallel',
     },
     script: 'ak-postbuild',
   });
