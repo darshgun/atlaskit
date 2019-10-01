@@ -23,7 +23,6 @@ import {
   TaskDecisionResourceConfig,
   TaskState,
   ServiceItem,
-  UserId,
 } from '../types';
 
 import {
@@ -413,12 +412,10 @@ export class ItemStateManager {
 }
 
 export default class TaskDecisionResource implements TaskDecisionProvider {
-  private serviceConfig: TaskDecisionResourceConfig;
   private recentUpdates: RecentUpdates;
   private itemStateManager: ItemStateManager;
 
   constructor(serviceConfig: TaskDecisionResourceConfig) {
-    this.serviceConfig = serviceConfig;
     this.recentUpdates = new RecentUpdates(serviceConfig.pubSubClient);
     this.itemStateManager = new ItemStateManager(serviceConfig);
   }
@@ -455,9 +452,5 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
   destroy() {
     this.recentUpdates.destroy();
     this.itemStateManager.destroy();
-  }
-
-  getCurrentUser(): UserId | undefined {
-    return this.serviceConfig.currentUser;
   }
 }

@@ -3,7 +3,4 @@ export default {
   serviceConfig: {
     url: 'http://example.com/',
   },
-  initialQuery: {
-    containerAri: 'example',
-  },
 };

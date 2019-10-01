@@ -1,4 +1,3 @@
-import { participants } from './story-data';
 import { findIndex, objectKeyToString, toggleTaskState } from './utils';
 import {
   BaseItem,
@@ -9,7 +8,6 @@ import {
   RecentUpdatesId,
   TaskDecisionProvider,
   TaskState,
-  UserId,
 } from '@atlaskit/task-decision';
 
 export interface MockTaskDecisionResourceConfig {
@@ -151,12 +149,6 @@ export class MockTaskDecisionResource implements TaskDecisionProvider {
     handlers.forEach(handler => {
       handler(state);
     });
-  }
-
-  getCurrentUser(): UserId | undefined {
-    // Return a random user or undefined from the participants list
-    const randomParticipant = Math.floor(Math.random() * participants.length);
-    return Math.random() < 0.75 ? participants[randomParticipant] : undefined;
   }
 
   private queueItem(objectKey: ObjectKey) {

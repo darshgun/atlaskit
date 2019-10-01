@@ -2,8 +2,6 @@ import URLSearchParams from 'url-search-params';
 import fetchMock from 'fetch-mock/src/client';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { getParticipants } from '../_test-data';
-
 import TaskDecisionResource, {
   ItemStateManager,
 } from '../../../api/TaskDecisionResource';
@@ -261,19 +259,6 @@ describe('TaskDecisionResource', () => {
           expect(latestState1).toBe('DONE');
           expect(latestState2).toBe('TODO');
         });
-    });
-  });
-
-  describe('getCurrentUser', () => {
-    it('can return the current user passed in from the service config', () => {
-      const user = getParticipants(1)[0];
-      const resource = new TaskDecisionResource({ url, currentUser: user });
-      expect(resource.getCurrentUser()).toEqual(user);
-    });
-
-    it('returns undefined when currentUser is undefined in the service config', () => {
-      const resource = new TaskDecisionResource({ url });
-      expect(resource.getCurrentUser()).toBeUndefined();
     });
   });
 });

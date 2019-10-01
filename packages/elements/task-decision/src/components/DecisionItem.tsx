@@ -5,7 +5,7 @@ import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 
 import { EditorIconWrapper } from '../styled/DecisionItem';
 import Item from './Item';
-import { Appearance, ContentRef, UserId } from '../types';
+import { Appearance, ContentRef } from '../types';
 
 export interface Props {
   children?: any;
@@ -13,25 +13,12 @@ export interface Props {
   placeholder?: string;
   showPlaceholder?: boolean;
   appearance?: Appearance;
-  creator?: UserId;
-  lastUpdater?: UserId;
 }
 
 export default class DecisionItem extends PureComponent<Props, {}> {
   public static defaultProps: Partial<Props> = {
     appearance: 'inline',
   };
-
-  getAttributionText() {
-    const { creator, lastUpdater } = this.props;
-    const user = lastUpdater || creator;
-
-    if (!user) {
-      return undefined;
-    }
-
-    return `Captured by ${user}`;
-  }
 
   render() {
     const {
@@ -55,7 +42,6 @@ export default class DecisionItem extends PureComponent<Props, {}> {
         icon={icon}
         placeholder={placeholder}
         showPlaceholder={showPlaceholder}
-        attribution={this.getAttributionText()}
       >
         {children}
       </Item>

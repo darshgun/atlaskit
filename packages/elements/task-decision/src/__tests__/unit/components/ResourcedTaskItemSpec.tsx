@@ -6,9 +6,7 @@ import FabricAnalyticsListener, {
 import { waitUntil } from '@atlaskit/util-common-test';
 import ResourcedTaskItem from '../../../components/ResourcedTaskItem';
 import TaskItem from '../../../components/TaskItem';
-import { getParticipants } from '../_test-data';
 import { Placeholder } from '../../../styled/Placeholder';
-import Item from '../../../components/Item';
 import { TaskDecisionProvider } from '../../../types';
 import { asMock } from '../_mock';
 
@@ -41,11 +39,7 @@ describe('<ResourcedTaskItem/>', () => {
 
   it('should wrap TaskItem', () => {
     component = mount(
-      <ResourcedTaskItem
-        taskId="task-1"
-        objectAri="objectAri"
-        containerAri="containerAri"
-      >
+      <ResourcedTaskItem taskId="task-1" objectAri="objectAri">
         Hello World
       </ResourcedTaskItem>,
     );
@@ -59,7 +53,6 @@ describe('<ResourcedTaskItem/>', () => {
       <ResourcedTaskItem
         taskId="task-id"
         objectAri="objectAri"
-        containerAri="containerAri"
         contentRef={handleContentRef}
       >
         Hello <b>world</b>
@@ -73,12 +66,7 @@ describe('<ResourcedTaskItem/>', () => {
   it('should call onChange prop in change handling if no provider', () => {
     const spy = jest.fn();
     component = mount(
-      <ResourcedTaskItem
-        taskId="task-id"
-        objectAri="objectAri"
-        containerAri="containerAri"
-        onChange={spy}
-      >
+      <ResourcedTaskItem taskId="task-id" objectAri="objectAri" onChange={spy}>
         Hello <b>world</b>
       </ResourcedTaskItem>,
     );
@@ -93,7 +81,6 @@ describe('<ResourcedTaskItem/>', () => {
       <ResourcedTaskItem
         taskId="task-id"
         objectAri="objectAri"
-        containerAri="containerAri"
         onChange={spy}
         taskDecisionProvider={Promise.resolve(provider)}
       >
@@ -109,7 +96,7 @@ describe('<ResourcedTaskItem/>', () => {
     );
   });
 
-  it('should still toggle isDone of TaskItem onChange without objectAri or containerAri', () => {
+  it('should still toggle isDone of TaskItem onChange without objectAri', () => {
     component = mount(
       <ResourcedTaskItem taskId="task-1" isDone={false}>
         Hello World
@@ -160,7 +147,6 @@ describe('<ResourcedTaskItem/>', () => {
       <ResourcedTaskItem
         taskId="task-1"
         objectAri="objectAri"
-        containerAri="containerAri"
         taskDecisionProvider={Promise.resolve(provider)}
       >
         Hello World
@@ -178,7 +164,6 @@ describe('<ResourcedTaskItem/>', () => {
       <ResourcedTaskItem
         taskId="task-1"
         objectAri="objectAri"
-        containerAri="containerAri"
         taskDecisionProvider={Promise.resolve(provider)}
         isDone={false}
       >
@@ -204,7 +189,6 @@ describe('<ResourcedTaskItem/>', () => {
       <ResourcedTaskItem
         taskId="task-1"
         objectAri="objectAri"
-        containerAri="containerAri"
         taskDecisionProvider={Promise.resolve(provider)}
       >
         Hello World
@@ -218,115 +202,12 @@ describe('<ResourcedTaskItem/>', () => {
     );
   });
 
-  it('should get lastUpdater name from provider if getCurrentUser is defined', () => {
-    const user = getParticipants(1)[0];
-    const provider2 = {
-      ...provider,
-      getCurrentUser: jest.fn(() => user),
-    };
-    component = mount(
-      <ResourcedTaskItem
-        taskId="task-1"
-        objectAri="objectAri"
-        containerAri="containerAri"
-        taskDecisionProvider={Promise.resolve(provider2)}
-      >
-        Hello World
-      </ResourcedTaskItem>,
-    );
-    component.find('input').simulate('change');
-    return waitUntil(
-      () => component.update() && asMock(provider.toggleTask).mock.calls.length,
-    ).then(() => {
-      expect(component.find(TaskItem).prop('lastUpdater')).toEqual(user);
-    });
-  });
-
-  it('should update attribution text if getCurrentUser returns a user', () => {
-    const user = getParticipants(1)[0];
-    const provider2 = {
-      ...provider,
-      getCurrentUser: jest.fn(() => user),
-    };
-    component = mount(
-      <ResourcedTaskItem
-        taskId="task-1"
-        objectAri="objectAri"
-        containerAri="containerAri"
-        taskDecisionProvider={Promise.resolve(provider2)}
-      >
-        Hello World
-      </ResourcedTaskItem>,
-    );
-    component.find('input').simulate('change');
-    return waitUntil(
-      () => component.update() && asMock(provider.toggleTask).mock.calls.length,
-    ).then(() => {
-      expect(component.find(Item).prop('attribution')).toEqual(
-        `Completed by ${user}`,
-      );
-    });
-  });
-
-  it('should show Added By when checked if provider.getCurrentUser returns undefined', () => {
-    const participants = getParticipants(2);
-    const creator = participants[1];
-    const provider2 = {
-      ...provider,
-      getCurrentUser: jest.fn(() => undefined),
-    };
-    component = mount(
-      <ResourcedTaskItem
-        taskId="task-1"
-        objectAri="objectAri"
-        containerAri="containerAri"
-        creator={creator}
-        taskDecisionProvider={Promise.resolve(provider2)}
-      >
-        Hello World
-      </ResourcedTaskItem>,
-    );
-    component.find('input').simulate('change');
-    return waitUntil(() => asMock(provider.toggleTask).mock.calls.length).then(
-      () => {
-        expect(component.find(Item).prop('attribution')).toEqual(
-          `Added by ${creator}`,
-        );
-      },
-    );
-  });
-
-  it('should show Added By when checked if provider.getCurrentUser is undefined', () => {
-    const participants = getParticipants(2);
-    const creator = participants[1];
-    component = mount(
-      <ResourcedTaskItem
-        taskId="task-1"
-        objectAri="objectAri"
-        containerAri="containerAri"
-        creator={creator}
-        taskDecisionProvider={Promise.resolve(provider)}
-      >
-        Hello World
-      </ResourcedTaskItem>,
-    );
-    component.find('input').simulate('change');
-    return waitUntil(() => asMock(provider.toggleTask).mock.calls.length).then(
-      () => {
-        expect(component.find(Item).prop('attribution')).toEqual(
-          `Added by ${creator}`,
-        );
-      },
-    );
-  });
-
   describe('showPlaceholder', () => {
     it('should render placeholder if task is empty', () => {
       const component = mount(
         <ResourcedTaskItem
           taskId="task-1"
           objectAri="objectAri"
-          containerAri="containerAri"
           showPlaceholder={true}
           placeholder="cheese"
           taskDecisionProvider={Promise.resolve(provider)}
@@ -340,7 +221,6 @@ describe('<ResourcedTaskItem/>', () => {
         <ResourcedTaskItem
           taskId="task-1"
           objectAri="objectAri"
-          containerAri="containerAri"
           showPlaceholder={true}
           placeholder="cheese"
           taskDecisionProvider={Promise.resolve(provider)}
@@ -356,11 +236,7 @@ describe('<ResourcedTaskItem/>', () => {
     it('check action fires an event', () => {
       const component = mount(
         <FabricAnalyticsListener client={analyticsWebClientMock}>
-          <ResourcedTaskItem
-            taskId="task-1"
-            objectAri="objectAri"
-            containerAri="containerAri"
-          >
+          <ResourcedTaskItem taskId="task-1" objectAri="objectAri">
             Hello <b>world</b>
           </ResourcedTaskItem>
         </FabricAnalyticsListener>,
@@ -374,7 +250,6 @@ describe('<ResourcedTaskItem/>', () => {
           attributes: {
             localId: 'task-1',
             objectAri: 'objectAri',
-            containerAri: 'containerAri',
           },
         }),
       );
@@ -386,7 +261,6 @@ describe('<ResourcedTaskItem/>', () => {
           <ResourcedTaskItem
             taskId="task-1"
             objectAri="objectAri"
-            containerAri="containerAri"
             isDone={true}
           >
             Hello <b>world</b>
@@ -402,7 +276,6 @@ describe('<ResourcedTaskItem/>', () => {
           attributes: {
             localId: 'task-1',
             objectAri: 'objectAri',
-            containerAri: 'containerAri',
           },
         }),
       );

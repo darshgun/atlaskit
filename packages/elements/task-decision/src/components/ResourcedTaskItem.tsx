@@ -8,7 +8,6 @@ import {
   TaskDecisionProvider,
   TaskState,
   DecisionState,
-  UserId,
 } from '../types';
 import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
@@ -20,18 +19,14 @@ export interface Props {
   children?: any;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
   objectAri?: string;
-  containerAri?: string;
   showPlaceholder?: boolean;
   placeholder?: string;
   appearance?: Appearance;
-  creator?: UserId;
-  lastUpdater?: UserId;
   disabled?: boolean;
 }
 
 export interface State {
   isDone?: boolean;
-  lastUpdater?: string;
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {
@@ -45,7 +40,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
     this.state = {
       isDone: props.isDone,
-      lastUpdater: props.lastUpdater,
     };
   }
 
@@ -107,18 +101,10 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   }
 
   private unsubscribe() {
-    const {
-      taskDecisionProvider,
-      taskId,
-      objectAri,
-      containerAri,
-    } = this.props;
-    if (taskDecisionProvider && containerAri && objectAri) {
+    const { taskDecisionProvider, taskId, objectAri } = this.props;
+    if (taskDecisionProvider && objectAri) {
       taskDecisionProvider.then(provider => {
-        provider.unsubscribe(
-          { localId: taskId, objectAri, containerAri },
-          this.onUpdate,
-        );
+        provider.unsubscribe({ localId: taskId, objectAri }, this.onUpdate);
       });
     }
   }
@@ -128,23 +114,18 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   };
 
   private handleOnChange = (taskId: string, isDone: boolean) => {
-    const {
-      taskDecisionProvider,
-      objectAri,
-      containerAri,
-      onChange,
-    } = this.props;
+    const { taskDecisionProvider, objectAri, onChange } = this.props;
     // Optimistically update the task
     this.setState({ isDone });
 
-    if (taskDecisionProvider && containerAri && objectAri) {
+    if (taskDecisionProvider && objectAri) {
       // Call provider to update task
       taskDecisionProvider.then(provider => {
         if (!this.mounted) {
           return;
         }
         provider.toggleTask(
-          { localId: taskId, objectAri, containerAri },
+          { localId: taskId, objectAri },
           isDone ? 'DONE' : 'TODO',
         );
 
@@ -152,16 +133,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         // we should only call onChange once the internal state have been modified
         if (onChange) {
           onChange(taskId, isDone);
-        }
-
-        if (isDone) {
-          // Undefined provider.getCurrentUser or currentUser shows 'Created By'
-          // ie. does not update to prevent incorrect 'Completed By' message
-          this.setState({
-            lastUpdater: provider.getCurrentUser
-              ? provider.getCurrentUser()
-              : undefined,
-          });
         }
       });
     } else {
@@ -173,13 +144,11 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   };
 
   render() {
-    const { isDone, lastUpdater } = this.state;
+    const { isDone } = this.state;
     const {
       appearance,
       children,
-      containerAri,
       contentRef,
-      creator,
       objectAri,
       showPlaceholder,
       placeholder,
@@ -190,7 +159,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     return (
       <FabricElementsAnalyticsContext
         data={{
-          containerAri,
           objectAri,
         }}
       >
@@ -202,8 +170,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           contentRef={contentRef}
           showPlaceholder={showPlaceholder}
           placeholder={placeholder}
-          creator={creator}
-          lastUpdater={lastUpdater}
           disabled={disabled}
         >
           {children}

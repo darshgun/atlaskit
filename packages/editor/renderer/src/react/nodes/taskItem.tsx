@@ -33,10 +33,8 @@ export default class TaskItem extends PureComponent<Props, {}> {
     const { taskDecisionProvider, contextIdentifierProvider } = providers;
     const { children, localId, state, rendererContext } = this.props;
     let objectAri = '';
-    let containerAri = '';
     if (rendererContext) {
       objectAri = rendererContext.objectAri || '';
-      containerAri = rendererContext.containerAri || '';
     }
 
     return (
@@ -47,7 +45,6 @@ export default class TaskItem extends PureComponent<Props, {}> {
       >
         <TaskItemWithProviders
           objectAri={objectAri}
-          containerAri={containerAri}
           taskId={localId}
           isDone={state === 'DONE'}
           taskDecisionProvider={taskDecisionProvider}

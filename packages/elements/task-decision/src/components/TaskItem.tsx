@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { CheckBoxWrapper } from '../styled/TaskItem';
 
 import Item from './Item';
-import { Appearance, ContentRef, UserId } from '../types';
+import { Appearance, ContentRef } from '../types';
 import {
   withAnalyticsEvents,
   WithAnalyticsEventsProps,
@@ -19,8 +19,6 @@ export interface Props {
   placeholder?: string;
   showPlaceholder?: boolean;
   appearance?: Appearance;
-  creator?: UserId;
-  lastUpdater?: UserId;
   disabled?: boolean;
 }
 
@@ -67,20 +65,6 @@ export class TaskItem extends PureComponent<
     }
   };
 
-  getAttributionText() {
-    const { creator, lastUpdater, isDone } = this.props;
-
-    if (isDone && lastUpdater) {
-      return `Completed by ${lastUpdater}`;
-    }
-
-    if (!creator) {
-      return undefined;
-    }
-
-    return `Added by ${creator}`;
-  }
-
   render() {
     const {
       appearance,
@@ -114,7 +98,6 @@ export class TaskItem extends PureComponent<
         icon={icon}
         placeholder={placeholder}
         showPlaceholder={showPlaceholder}
-        attribution={this.getAttributionText()}
       >
         {children}
       </Item>

@@ -125,7 +125,6 @@ export interface RecentUpdatesListener {
 }
 
 export interface TaskDecisionResourceConfig extends ServiceConfig {
-  currentUser?: UserId;
   pubSubClient?: PubSubClient;
 
   /**
@@ -153,7 +152,6 @@ export interface TaskDecisionProvider {
     item?: BaseItem<TaskState | DecisionState>,
   ): void;
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
-  getCurrentUser?(): UserId | undefined;
 }
 
 /**
