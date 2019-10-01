@@ -12,22 +12,21 @@ import {
   h5,
   h6,
   p,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
+import { browser } from '@atlaskit/editor-common';
 import {
   pluginKey as blockTypePluginKey,
   BlockTypeState,
 } from '../../../../plugins/block-type/pm-plugins/main';
 import { setTextSelection } from '../../../../utils';
-import codeBlockPlugin from '../../../../plugins/code-block';
-import panelPlugin from '../../../../plugins/panel';
-import listPlugin from '../../../../plugins/lists';
 import {
   setBlockType,
   insertBlockType,
   insertBlockTypesWithAnalytics,
 } from '../../../../plugins/block-type/commands';
 import { HEADING_1 } from '../../../../plugins/block-type/types';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   AnalyticsEventPayload,
   ACTION,
@@ -39,22 +38,24 @@ import {
 
 describe('block-type', () => {
   const createEditor = createEditorFactory<BlockTypeState>();
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   const editor = (doc: any) => {
     createAnalyticsEvent = jest.fn(() => ({ fire() {} }));
     return createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin(), panelPlugin, listPlugin],
       editorProps: {
         allowAnalyticsGASV3: true,
+        allowCodeBlocks: true,
+        allowPanel: true,
+        allowLists: true,
       },
       pluginKey: blockTypePluginKey,
       createAnalyticsEvent,
     });
   };
 
-  it('should be able to change to normal', () => {
+  it('should be able to change to normal text', () => {
     const { editorView } = editor(doc(h1('te{<>}xt')));
     const { state, dispatch } = editorView;
 
@@ -97,7 +98,10 @@ describe('block-type', () => {
       const { editorView } = editor(doc(p('te{<>}xt')));
       const { state, dispatch } = editorView;
 
-      insertBlockType('blockquote')(state, dispatch);
+      insertBlockTypesWithAnalytics('blockquote', INPUT_METHOD.TOOLBAR)(
+        state,
+        dispatch,
+      );
       expect(editorView.state.doc).toEqualDocument(doc(blockquote(p('text'))));
     });
 
@@ -118,11 +122,61 @@ describe('block-type', () => {
       const { editorView } = editor(doc(p('te{<>}xt')));
       const { state, dispatch } = editorView;
 
-      insertBlockType('codeblock')(state, dispatch);
+      insertBlockTypesWithAnalytics('codeblock', INPUT_METHOD.TOOLBAR)(
+        state,
+        dispatch,
+      );
 
       expect(editorView.state.doc).toEqualDocument(
         doc(p('te'), code_block()(), p('xt')),
       );
+    });
+
+    it('should fire analytics event', () => {
+      const { editorView } = editor(doc(p('te{<>}xt')));
+      const { state, dispatch } = editorView;
+      insertBlockTypesWithAnalytics('codeblock', INPUT_METHOD.TOOLBAR)(
+        state,
+        dispatch,
+      );
+
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        action: 'inserted',
+        actionSubject: 'document',
+        eventType: 'track',
+        actionSubjectId: 'codeBlock',
+        attributes: { inputMethod: 'toolbar' },
+      });
+    });
+  });
+
+  describe('panel', () => {
+    it('should be able to insert panel', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const { state, dispatch } = editorView;
+
+      insertBlockType('panel')(state, dispatch);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(panel({ type: 'info' })(p())),
+      );
+    });
+
+    it('should fire analytics event', () => {
+      const { editorView } = editor(doc(p('te{<>}xt')));
+      const { state, dispatch } = editorView;
+      insertBlockTypesWithAnalytics('panel', INPUT_METHOD.TOOLBAR)(
+        state,
+        dispatch,
+      );
+
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        action: 'inserted',
+        actionSubject: 'document',
+        eventType: 'track',
+        actionSubjectId: 'panel',
+        attributes: { inputMethod: 'toolbar', panelType: 'info' },
+      });
     });
   });
 
@@ -368,6 +422,74 @@ describe('block-type', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(code_block()(''), p('')),
       );
+    });
+  });
+
+  describe('handleKeyDown', () => {
+    let _mac: boolean;
+    beforeEach(() => {
+      _mac = browser.mac;
+    });
+    afterEach(() => {
+      browser.mac = _mac;
+    });
+
+    describe('on Mac', () => {
+      beforeEach(() => {
+        browser.mac = true;
+      });
+
+      it('should convert text to heading when Cmd+Opt+{heading level} hit', () => {
+        const { editorView } = editor(doc(p('hello{<>}')));
+        sendKeyToPm(editorView, 'Cmd-Alt-1');
+        expect(editorView.state.doc).toEqualDocument(doc(h1('hello')));
+      });
+
+      it('should convert heading to paragraph when Cmd+Opt+0 hit', () => {
+        const { editorView } = editor(doc(h1('hello{<>}')));
+        sendKeyToPm(editorView, 'Cmd-Alt-0');
+        expect(editorView.state.doc).toEqualDocument(doc(p('hello')));
+      });
+    });
+
+    describe('on Windows', () => {
+      beforeEach(() => {
+        browser.mac = false;
+      });
+
+      /**
+       * When keydown events come through in the browser, there is an event for each key
+       * and we store the location of the alt key from its own keydown event
+       * So in these tests we call sendKeyToPm with the alt key first so it can be stored
+       */
+
+      it('should convert text to heading when Ctrl+LeftAlt+{heading level} hit', () => {
+        const { editorView } = editor(doc(p('hello{<>}')));
+        sendKeyToPm(editorView, 'LeftAlt');
+        sendKeyToPm(editorView, 'Ctrl-LeftAlt-1');
+        expect(editorView.state.doc).toEqualDocument(doc(h1('hello')));
+      });
+
+      it('should convert heading to paragraph when Ctrl+LeftAlt+0 hit', () => {
+        const { editorView } = editor(doc(h1('hello{<>}')));
+        sendKeyToPm(editorView, 'LeftAlt');
+        sendKeyToPm(editorView, 'Ctrl-LeftAlt-0');
+        expect(editorView.state.doc).toEqualDocument(doc(p('hello')));
+      });
+
+      it('should not convert text to heading when Ctrl+RightAlt+{heading level} hit', () => {
+        const { editorView } = editor(doc(p('hello{<>}')));
+        sendKeyToPm(editorView, 'RightAlt');
+        sendKeyToPm(editorView, 'Ctrl-RightAlt-1');
+        expect(editorView.state.doc).toEqualDocument(doc(p('hello')));
+      });
+
+      it('should not convert heading to paragraph when Ctrl+RightAlt+0 hit', () => {
+        const { editorView } = editor(doc(h1('hello{<>}')));
+        sendKeyToPm(editorView, 'RightAlt');
+        sendKeyToPm(editorView, 'Ctrl-RightAlt-0');
+        expect(editorView.state.doc).toEqualDocument(doc(h1('hello')));
+      });
     });
   });
 });

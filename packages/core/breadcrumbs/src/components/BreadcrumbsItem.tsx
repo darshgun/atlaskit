@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {
   withAnalyticsEvents,
   createAndFireEvent,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import AKTooltip from '@atlaskit/tooltip';
 import {
@@ -13,7 +14,7 @@ import ItemWrapper from '../styled/BreadcrumbsItem';
 import Button from '../styled/Button';
 import Separator from '../styled/Separator';
 
-interface IProps {
+interface IProps extends WithAnalyticsEventsProps {
   /** Whether this item will be followed by a separator. */
   hasSeparator?: boolean;
   /** The url or path which the breadcrumb should act as a link to. */
@@ -35,33 +36,23 @@ interface IProps {
    *  The custom component should accept a className prop so it can be styled
    *  and possibly all action handlers */
   component?: React.ClassType<any, any, any>;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 interface IState {
   hasOverflow: boolean;
 }
 
-type DefaultProps = Pick<
-  IProps,
-  | 'component'
-  | 'hasSeparator'
-  | 'href'
-  | 'truncationWidth'
-  | 'onClick'
-  | 'target'
->;
-
 class BreadcrumbsItem extends React.Component<IProps, IState> {
   // eslint-disable-line react/sort-comp
   button: any = null;
 
-  static defaultProps: DefaultProps = {
-    component: undefined,
+  static defaultProps = {
     hasSeparator: false,
     href: '#',
     truncationWidth: 0,
     onClick: () => {},
-    target: '',
   };
 
   state = { hasOverflow: false };
@@ -70,7 +61,7 @@ class BreadcrumbsItem extends React.Component<IProps, IState> {
     this.updateOverflow();
   }
 
-  componentWillReceiveProps() {
+  UNSAFE_componentWillReceiveProps() {
     // Reset the state
     this.setState({ hasOverflow: false });
   }
@@ -111,10 +102,12 @@ class BreadcrumbsItem extends React.Component<IProps, IState> {
       text,
       truncationWidth,
       component,
+      testId,
     } = this.props;
     const { hasOverflow } = this.state;
 
     return (
+      // @ts-ignore - 31052019 VBZ - this shouldn't exist right?
       <Button
         truncationWidth={truncationWidth}
         appearance="subtle-link"
@@ -128,12 +121,12 @@ class BreadcrumbsItem extends React.Component<IProps, IState> {
           this.button = el;
         }}
         component={component}
-        // @ts-ignore - 31052019 VBZ - this shouldn't exist right?
         analyticsContext={{
           componentName: 'breadcrumbsItem',
           packageName,
           packageVersion,
         }}
+        testId={testId}
       >
         {text}
       </Button>

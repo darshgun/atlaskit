@@ -30,3 +30,15 @@ export const DefaultAdvisedAction = noPropFormatter(
 );
 export const LoginAgain = noPropFormatter(messages.loginAgain);
 export const DifferentText = noPropFormatter(messages.differentText);
+export const TeamMentionHighlightTitle = noPropFormatter(
+  messages.TeamMentionHighlightTitle,
+);
+export const TeamMentionHighlightCloseTooltip = noPropFormatter(
+  messages.TeamMentionHighlightCloseButtonToolTip,
+);
+export const TeamMentionHighlightDescription = noPropFormatter(
+  messages.TeamMentionHighlightDescription,
+);
+export const TeamMentionHighlightDescriptionLink = noPropFormatter(
+  messages.TeamMentionHighlightDescriptionLink,
+);

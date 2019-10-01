@@ -1,5 +1,4 @@
 import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
-import cardPlugin from '../../../../plugins/card';
 import { setProvider } from '../../../../plugins/card/pm-plugins/actions';
 
 import {
@@ -16,7 +15,9 @@ describe('card', () => {
   const editor = (doc: any) => {
     return createEditor({
       doc,
-      editorPlugins: [cardPlugin],
+      editorProps: {
+        UNSAFE_cards: {},
+      },
       pluginKey,
     });
   };
@@ -36,6 +37,7 @@ describe('card', () => {
         dispatchPasteEvent(editorView, { plain: text });
 
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [
             {
               url:
@@ -47,6 +49,7 @@ describe('card', () => {
             },
           ],
           provider,
+          showLinkingToolbar: false,
         });
       });
     });

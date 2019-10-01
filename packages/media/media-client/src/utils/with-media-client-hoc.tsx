@@ -22,7 +22,9 @@ export type WithContextOrMediaClientConfig = XOR<
 
 const mediaClientsMap = new Map<MediaClientConfig, MediaClient>();
 
-const getMediaClient = (props: WithContextOrMediaClientConfig): MediaClient => {
+export const getMediaClient = (
+  props: WithContextOrMediaClientConfig,
+): MediaClient => {
   const { mediaClientConfig } = props;
   if (mediaClientConfig) {
     let mediaClient: MediaClient | undefined = mediaClientsMap.get(
@@ -56,7 +58,9 @@ export const withMediaClient: WithMediaClientFunction = <
   return class extends React.Component<WithContextOrMediaClientConfigProps<P>> {
     render() {
       const props = this.props;
-      return <Component {...props} mediaClient={getMediaClient(this.props)} />;
+      return (
+        <Component {...props as any} mediaClient={getMediaClient(this.props)} />
+      );
     }
   };
 };

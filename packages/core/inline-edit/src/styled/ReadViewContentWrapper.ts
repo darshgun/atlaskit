@@ -1,21 +1,24 @@
 import styled from 'styled-components';
-import { borderRadius, colors } from '@atlaskit/theme';
+import { borderRadius } from '@atlaskit/theme/constants';
+import { N30 } from '@atlaskit/theme/colors';
 
 interface Props {
   readViewFitContainerWidth?: boolean;
 }
 
 const ReadViewContentWrapper = styled.div<Props>`
-  display: inline-block;
   box-sizing: border-box;
   border: 2px solid transparent;
   border-radius: ${borderRadius()}px;
-  &:hover {
-    background: ${colors.N30};
-  }
+  display: inline-block;
+  max-width: 100%;
+  transition: background 0.2s;
   width: ${({ readViewFitContainerWidth }) =>
     readViewFitContainerWidth ? '100%' : 'auto'};
-  transition: background 0.2s;
+
+  &:hover {
+    background: ${N30};
+  }
 `;
 
 ReadViewContentWrapper.displayName = 'ReadViewContentWrapper';

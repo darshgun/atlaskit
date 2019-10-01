@@ -3,7 +3,6 @@ import {
   MediaAttributes,
   MentionAttributes,
   MediaSingleAttributes,
-  ApplicationCardAttributes,
   CellAttributes,
   LinkAttributes,
   TableAttributes,
@@ -11,6 +10,7 @@ import {
   BreakoutMarkAttrs,
   AlignmentAttributes,
   IndentationMarkAttributes,
+  AnnotationMarkAttributes,
 } from '@atlaskit/adf-schema';
 import {
   Fragment,
@@ -109,8 +109,10 @@ export function text(value: string, schema: Schema): RefsContentItem {
 
   // Helpers
   const isEven = (n: number) => n % 2 === 0;
-
-  for (const match of matches(value, /([\\]+)?{(\w+|<|>|<>|<cell|cell>)}/g)) {
+  for (const match of matches(
+    value,
+    /([\\]+)?{(\w+|<|>|<>|<cell|cell>|<node>|<\|gap>|<gap\|>)}/g,
+  )) {
     const [refToken, skipChars, refName] = match;
     let { index } = match;
 
@@ -287,6 +289,10 @@ export const clean = (content: BuilderContentFn) => (schema: Schema) => {
     : undefined;
 };
 
+export const cleanOne = (content: BuilderContentFn) => (schema: Schema) => {
+  return (clean(content)(schema) as Node[])[0];
+};
+
 //
 // Nodes
 //
@@ -391,8 +397,6 @@ export const mediaSingle = (
 export const mediaGroup = nodeFactory(sampleSchema.nodes.mediaGroup);
 export const media = (attrs: MediaAttributes | ExternalMediaAttributes) =>
   nodeFactory(sampleSchema.nodes.media, attrs);
-export const applicationCard = (attrs: ApplicationCardAttributes) =>
-  nodeFactory(sampleSchema.nodes.applicationCard, attrs);
 export const placeholder = (attrs: { text: string }) =>
   nodeFactory(sampleSchema.nodes.placeholder, attrs)();
 export const layoutSection = nodeFactory(sampleSchema.nodes.layoutSection);
@@ -419,7 +423,6 @@ export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
 export const a = (attrs: LinkAttributes) =>
   markFactory(sampleSchema.marks.link, attrs);
-export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});
 export const typeAheadQuery = (
   attrs: { trigger: string; query?: string } = { trigger: '', query: '' },
 ) => markFactory(sampleSchema.marks.typeAheadQuery, attrs);
@@ -431,6 +434,8 @@ export const confluenceInlineComment = (attrs: { reference: string }) =>
     attrs ? attrs : {},
     true,
   );
+export const annotation = (attrs: AnnotationMarkAttributes) =>
+  markFactory(sampleSchema.marks.annotation, attrs, true);
 
 //
 // Block Marks
@@ -441,3 +446,9 @@ export const breakout = (attrs: BreakoutMarkAttrs) =>
   markFactory(sampleSchema.marks.breakout, attrs);
 export const indentation = (attrs: IndentationMarkAttributes) =>
   markFactory(sampleSchema.marks.indentation, attrs);
+
+// builderEval is used for doc-builder example, and needs scope of the above node factories
+export const builderEval = (data: string) => {
+  // eslint-disable-next-line no-eval
+  return eval(data);
+};

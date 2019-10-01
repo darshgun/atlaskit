@@ -41,6 +41,8 @@ export default class App extends Component<
     isFlyoutAvailable: boolean,
     isAlternateFlyoutBehaviourEnabled: boolean,
     isFullWitdhFlyoutEnabled: boolean,
+    isHideNavVisuallyEnabled: boolean,
+    showContextualNavigation: boolean,
   },
 > {
   state = {
@@ -48,6 +50,8 @@ export default class App extends Component<
     isFlyoutAvailable: true,
     isAlternateFlyoutBehaviourEnabled: true,
     isFullWitdhFlyoutEnabled: false,
+    isHideNavVisuallyEnabled: false,
+    showContextualNavigation: true,
   };
 
   onDebugToggle = () => {
@@ -70,12 +74,26 @@ export default class App extends Component<
     }));
   };
 
+  onHideNavVisuallyToggle = () => {
+    this.setState(state => ({
+      isHideNavVisuallyEnabled: !state.isHideNavVisuallyEnabled,
+    }));
+  };
+
+  onToggleContextualNavigation = () => {
+    this.setState(state => ({
+      showContextualNavigation: !state.showContextualNavigation,
+    }));
+  };
+
   render() {
     const {
       isDebugEnabled,
       isFlyoutAvailable,
       isAlternateFlyoutBehaviourEnabled,
       isFullWitdhFlyoutEnabled,
+      isHideNavVisuallyEnabled,
+      showContextualNavigation,
     } = this.state;
 
     return (
@@ -84,11 +102,13 @@ export default class App extends Component<
           <LayoutManagerWithViewController
             customComponents={{ LinkItem, ProjectSwitcher }}
             experimental_flyoutOnHover={isFlyoutAvailable}
+            experimental_hideNavVisuallyOnCollapse={isHideNavVisuallyEnabled}
             experimental_alternateFlyoutBehaviour={
               isAlternateFlyoutBehaviourEnabled
             }
             experimental_fullWidthFlyout={isFullWitdhFlyoutEnabled}
             globalNavigation={DefaultGlobalNavigation}
+            showContextualNavigation={showContextualNavigation}
           >
             <div style={{ padding: 40 }}>
               <RootViews />
@@ -118,6 +138,16 @@ export default class App extends Component<
               <ToggleStateless
                 isChecked={isFullWitdhFlyoutEnabled}
                 onChange={this.onFullWidthFlyoutToggle}
+              />
+              <Label label="Hide nav visually on collapse" />
+              <ToggleStateless
+                isChecked={isHideNavVisuallyEnabled}
+                onChange={this.onHideNavVisuallyToggle}
+              />
+              <Label label="Toggle contextual navigation" />
+              <ToggleStateless
+                isChecked={showContextualNavigation}
+                onChange={this.onToggleContextualNavigation}
               />
               <Label label="Toggle debug logger" />
               <ToggleStateless

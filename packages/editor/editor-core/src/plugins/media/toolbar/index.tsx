@@ -5,16 +5,22 @@ import { removeSelectedNode } from 'prosemirror-utils';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 
 import commonMessages from '../../../messages';
-import { Command, EditorAppearance } from '../../../../src/types';
+import { Command } from '../../../../src/types';
 import {
   FloatingToolbarConfig,
   FloatingToolbarItem,
 } from '../../../../src/plugins/floating-toolbar/types';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import { hoverDecoration } from '../../base/pm-plugins/decoration';
-import { isFullPage } from '../../../utils/is-full-page';
 import { renderAnnotationButton } from './annotation';
+import {
+  getLinkingToolbar,
+  buildLinkingButtons,
+  shouldShowMediaLinkToolbar,
+} from './linking';
 import buildLayoutButtons from './buildMediaLayoutButtons';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { MediaLinkingState, getMediaLinkingState } from '../pm-plugins/linking';
 
 const remove: Command = (state, dispatch) => {
   if (dispatch) {
@@ -23,47 +29,100 @@ const remove: Command = (state, dispatch) => {
   return true;
 };
 
+export type MediaFloatingToolbarOptions = {
+  providerFactory?: ProviderFactory;
+  allowResizing?: boolean;
+  allowAnnotation?: boolean;
+  allowLinking?: boolean;
+  allowAdvancedToolBarOptions?: boolean;
+  allowResizingInTables?: boolean;
+};
+
 export const floatingToolbar = (
   state: EditorState,
   intl: InjectedIntl,
-  allowResizing?: boolean,
-  allowAnnotation?: boolean,
-  appearance?: EditorAppearance,
+  options: MediaFloatingToolbarOptions = {},
 ): FloatingToolbarConfig | undefined => {
+  const {
+    providerFactory,
+    allowResizing,
+    allowAnnotation,
+    allowLinking,
+    allowAdvancedToolBarOptions,
+    allowResizingInTables,
+  } = options;
   const { mediaSingle } = state.schema.nodes;
   const pluginState: MediaPluginState | undefined = stateKey.getState(state);
+  const mediaLinkingState: MediaLinkingState = getMediaLinkingState(state);
 
   if (!mediaSingle || !pluginState) {
     return;
   }
+  const baseToolbar = {
+    title: 'Media floating controls',
+    nodeType: mediaSingle,
+    getDomRef: () => pluginState.element,
+  };
 
-  let layoutButtons: FloatingToolbarItem<Command>[] = [];
-  if (isFullPage(appearance)) {
-    layoutButtons = buildLayoutButtons(state, intl, allowResizing);
-    if (layoutButtons.length) {
+  if (
+    allowLinking &&
+    mediaLinkingState &&
+    mediaLinkingState.visible &&
+    shouldShowMediaLinkToolbar(state)
+  ) {
+    const linkingToolbar = getLinkingToolbar(
+      baseToolbar,
+      mediaLinkingState,
+      state,
+      intl,
+      providerFactory,
+    );
+    if (linkingToolbar) {
+      return linkingToolbar;
+    }
+  }
+
+  let toolbarButtons: FloatingToolbarItem<Command>[] = [];
+  if (allowAdvancedToolBarOptions) {
+    toolbarButtons = buildLayoutButtons(
+      state,
+      intl,
+      allowResizing,
+      allowResizingInTables,
+    );
+    if (toolbarButtons.length) {
       if (allowAnnotation) {
-        layoutButtons.push({
+        toolbarButtons.push({
           type: 'custom',
           render: renderAnnotationButton(pluginState, intl),
         });
       }
+    }
 
-      layoutButtons.push({ type: 'separator' });
+    if (allowLinking && shouldShowMediaLinkToolbar(state)) {
+      if (toolbarButtons.length) {
+        toolbarButtons.push({ type: 'separator' });
+      }
+
+      const linkingButtons = buildLinkingButtons(state, intl);
+      toolbarButtons.push(...linkingButtons);
+    }
+
+    if (toolbarButtons.length) {
+      toolbarButtons.push({ type: 'separator' });
     }
   }
 
   return {
-    title: 'Media floating controls',
-    nodeType: mediaSingle,
-    getDomRef: () => pluginState.element,
+    ...baseToolbar,
     items: [
-      ...layoutButtons,
+      ...toolbarButtons,
       {
         type: 'button',
         appearance: 'danger',
         icon: RemoveIcon,
-        onMouseEnter: hoverDecoration(true),
-        onMouseLeave: hoverDecoration(false),
+        onMouseEnter: hoverDecoration(mediaSingle, true),
+        onMouseLeave: hoverDecoration(mediaSingle, false),
         title: intl.formatMessage(commonMessages.remove),
         onClick: remove,
       },

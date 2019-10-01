@@ -12,7 +12,6 @@ import {
   MediaPluginState,
   MediaState,
 } from '../../../../plugins/media/pm-plugins/main';
-import mediaPlugin from '../../../../plugins/media';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
@@ -20,10 +19,10 @@ const getFreshMediaProvider = () =>
   storyMediaProviderFactory({
     collectionName: testCollectionName,
     includeUserAuthProvider: true,
-    includeUploadContext: true,
+    includeUploadMediaClientConfig: true,
   });
 
-describe('Media plugin', async () => {
+describe('Media plugin', () => {
   const createEditor = createEditorFactory<MediaPluginState>();
   const mediaProvider = getFreshMediaProvider();
   const providerFactory = ProviderFactory.create({ mediaProvider });
@@ -31,8 +30,12 @@ describe('Media plugin', async () => {
   const editor = (doc: any, editorProps = {}) =>
     createEditor({
       doc,
-      editorPlugins: [mediaPlugin({ provider: mediaProvider })],
-      editorProps: editorProps,
+      editorProps: {
+        ...editorProps,
+        media: {
+          provider: mediaProvider,
+        },
+      },
       providerFactory,
       pluginKey: mediaPluginKey,
     });
@@ -50,9 +53,7 @@ describe('Media plugin', async () => {
   describe('updateUploadState', () => {
     it('should change upload state to unfinished when uploads start', async () => {
       const { pluginState } = editor(doc(p('')));
-      const provider = await mediaProvider;
-      await provider.uploadContext;
-      await provider.viewContext;
+      await mediaProvider;
 
       pluginState.insertFile(
         {
@@ -67,9 +68,7 @@ describe('Media plugin', async () => {
 
     it('should change upload state to finished once an upload finishes', async () => {
       const { pluginState } = editor(doc(p('')));
-      const provider = await mediaProvider;
-      await provider.uploadContext;
-      await provider.viewContext;
+      await mediaProvider;
 
       const evts: Array<(state: MediaState) => void> = [];
       pluginState.insertFile(
@@ -98,9 +97,7 @@ describe('Media plugin', async () => {
 
     it('should change upload state to finished once multiple uploads have finished', async () => {
       const { pluginState } = editor(doc(p('')));
-      const provider = await mediaProvider;
-      await provider.uploadContext;
-      await provider.viewContext;
+      await mediaProvider;
 
       const fooEvents: Array<(state: MediaState) => void> = [];
       const barEvents: Array<(state: MediaState) => void> = [];

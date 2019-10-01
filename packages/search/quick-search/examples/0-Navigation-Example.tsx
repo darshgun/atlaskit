@@ -15,7 +15,7 @@ export default () => (
         onBackButton={noop}
         primaryIcon={null}
       >
-        <BasicQuickSearch />
+        <BasicQuickSearch fakeNetworkLatency={500} />
       </AkSearchDrawer>,
     ]}
   />

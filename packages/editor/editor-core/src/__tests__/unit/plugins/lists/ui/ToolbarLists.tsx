@@ -7,8 +7,6 @@ import {
   createAnalyticsEventMock,
 } from '@atlaskit/editor-test-helpers';
 import { AnalyticsHandler } from '../../../../../analytics';
-import listPlugin from '../../../../../plugins/lists';
-import tasksAndDecisionsPlugin from '../../../../../plugins/tasks-and-decisions';
 import {
   ListsPluginState,
   pluginKey,
@@ -17,14 +15,18 @@ import { messages } from '../../../../../plugins/lists/messages';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../../ui/DropdownMenu';
 import ToolbarLists from '../../../../../plugins/lists/ui/ToolbarLists';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { ReactWrapper } from 'enzyme';
-import { DispatchAnalyticsEvent } from '../../../../../plugins/analytics';
 
 function clickToolbarOption(toolbarOption: ReactWrapper, title: string) {
   toolbarOption
     .find(ToolbarButton)
-    .filterWhere(n => n.prop('title')!.indexOf(title) > -1)
+    .filterWhere(toolbarButton =>
+      toolbarButton
+        .find('Icon')
+        .prop('label')!
+        .includes(title),
+    )
     .find('button')
     .simulate('click');
 }
@@ -32,7 +34,7 @@ function clickToolbarOption(toolbarOption: ReactWrapper, title: string) {
 describe('ToolbarLists', () => {
   const createEditor = createEditorFactory<ListsPluginState>();
   let toolBarListsWrapper: ReactWrapper;
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEventInterface>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
   let analyticsHandler: AnalyticsHandler;
 
   afterEach(() => {
@@ -49,10 +51,11 @@ describe('ToolbarLists', () => {
     analyticsHandler = jest.fn();
     return createEditor({
       doc,
-      editorPlugins: [listPlugin, tasksAndDecisionsPlugin],
       editorProps: {
         analyticsHandler,
         allowAnalyticsGASV3: true,
+        allowLists: true,
+        allowTasksAndDecisions: true,
       },
       pluginKey,
       createAnalyticsEvent: createAnalyticsEvent as any,
@@ -85,11 +88,10 @@ describe('ToolbarLists', () => {
   });
 
   describe('analytics', () => {
-    let toolbarLists: ReactWrapper;
-    let dispatchAnalyticsEvent: jest.MockInstance<DispatchAnalyticsEvent>;
+    let toolbarLists: ReactWrapper<any, any, any>;
+
     beforeEach(() => {
-      dispatchAnalyticsEvent = jest.fn();
-      ({ toolbarLists } = setup({ dispatchAnalyticsEvent }));
+      ({ toolbarLists } = setup());
     });
 
     it('should trigger analyticsService.trackEvent when bulleted list button is clicked', () => {
@@ -103,7 +105,7 @@ describe('ToolbarLists', () => {
     it('should dispatch analytics event when bulleted list button is clicked', () => {
       clickToolbarOption(toolbarLists, messages.unorderedList.defaultMessage);
 
-      expect(dispatchAnalyticsEvent).toHaveBeenCalledWith({
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
         action: 'formatted',
         actionSubject: 'text',
         eventType: 'track',
@@ -125,7 +127,7 @@ describe('ToolbarLists', () => {
     it('should dispatch analytics event when numbered list button is clicked', () => {
       clickToolbarOption(toolbarLists, messages.orderedList.defaultMessage);
 
-      expect(dispatchAnalyticsEvent).toHaveBeenCalledWith({
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
         action: 'formatted',
         actionSubject: 'text',
         eventType: 'track',

@@ -1,8 +1,8 @@
 import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
-import RecentSearch from '../../../../../../plugins/hyperlink/ui/RecentSearch/LinkAddToolbar';
-import RecentItem from '../../../../../../plugins/hyperlink/ui/RecentSearch/RecentItem';
-import { MockActivityResource } from '../../utils';
+import RecentSearch from '../../../../../../plugins/hyperlink/ui/HyperlinkAddToolbar/HyperlinkAddToolbar';
+import RecentItem from '../../../../../../ui/RecentSearch/RecentItem';
+import { activityProviderMock } from '../../utils';
 import { mountWithIntl } from '@atlaskit/editor-test-helpers';
 
 const timeout = () => new Promise(resolve => window.setTimeout(resolve, 1));
@@ -26,19 +26,13 @@ function pressReturnInputField(recentSearch: ReactWrapper<any, any>) {
 }
 
 describe('@atlaskit/editor-core/ui/RecentSearch', () => {
-  let dispatchAnalyticsSpy: jest.Mock;
   let wrapper: ReactWrapper;
   let onSubmit: jest.Mock;
 
   beforeEach(async () => {
     onSubmit = jest.fn();
-    dispatchAnalyticsSpy = jest.fn();
     wrapper = mountWithIntl(
-      <RecentSearch
-        onSubmit={onSubmit}
-        provider={Promise.resolve(new MockActivityResource())}
-        dispatchAnalyticsEvent={dispatchAnalyticsSpy}
-      />,
+      <RecentSearch onSubmit={onSubmit} provider={activityProviderMock} />,
     );
     await timeout();
     wrapper.update();
@@ -117,58 +111,5 @@ describe('@atlaskit/editor-core/ui/RecentSearch', () => {
       'example.com',
       'manual',
     );
-  });
-
-  describe('analytics v3', () => {
-    describe('for typeahead', () => {
-      it('via keyboard', async () => {
-        (wrapper.instance() as any).updateInput('recent');
-        await timeout();
-        pressReturnInputField(wrapper);
-
-        expect(dispatchAnalyticsSpy).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: 'link',
-          attributes: {
-            inputMethod: 'typeAhead',
-          },
-          eventType: 'track',
-        });
-      });
-
-      it('via mouseclick', () => {
-        wrapper
-          .find(RecentItem)
-          .at(1)
-          .simulate('mousedown');
-
-        expect(dispatchAnalyticsSpy).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: 'link',
-          attributes: {
-            inputMethod: 'typeAhead',
-          },
-          eventType: 'track',
-        });
-      });
-    });
-
-    it('for manual', async () => {
-      (wrapper.instance() as any).updateInput('example.com');
-      pressReturnInputField(wrapper);
-      await timeout();
-
-      expect(dispatchAnalyticsSpy).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'link',
-        attributes: {
-          inputMethod: 'manual',
-        },
-        eventType: 'track',
-      });
-    });
   });
 });

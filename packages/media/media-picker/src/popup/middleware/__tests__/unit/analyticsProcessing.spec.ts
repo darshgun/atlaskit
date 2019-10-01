@@ -4,10 +4,13 @@ import {
   TRACK_EVENT_TYPE,
   GasCorePayload,
 } from '@atlaskit/analytics-gas-types';
+import { UIAnalyticsEventHandler } from '@atlaskit/analytics-next';
+import { mockStore } from '@atlaskit/media-test-helpers';
+
 import { Action, Dispatch } from 'redux';
+
 import { State } from '../../../domain';
 import analyticsProcessing from '../../analyticsProcessing';
-import { mockStore } from '@atlaskit/media-test-helpers';
 import { showPopup } from '../../../actions/showPopup';
 import { editorShowImage } from '../../../actions/editorShowImage';
 import { searchGiphy } from '../../../actions';
@@ -26,7 +29,6 @@ import { GET_PREVIEW } from '../../../actions/getPreview';
 import { MediaFile } from '../../../../domain/file';
 import { buttonClickPayload, Payload } from '../../analyticsHandlers';
 import { fileUploadError } from '../../../actions/fileUploadError';
-import { UIAnalyticsEventHandlerSignature } from '@atlaskit/analytics-next';
 
 type TestPayload = GasCorePayload & { action: string; attributes: {} };
 type UploadType = 'cloudMedia' | 'localMedia';
@@ -42,8 +44,6 @@ const testFile1: MediaFile = {
   size: 1,
   creationDate: 1,
   type: 'type1',
-  userUpfrontId: Promise.resolve('id1'),
-  upfrontId: Promise.resolve('id1'),
 };
 
 const testFile2: MediaFile = {
@@ -52,7 +52,6 @@ const testFile2: MediaFile = {
   size: 2,
   creationDate: 2,
   type: 'type2',
-  upfrontId: Promise.resolve('id2'),
 };
 
 const attributes = {
@@ -70,6 +69,7 @@ const makePayloadForOperationalFileUpload = (
   actionSubjectId: uploadType,
   attributes: {
     fileAttributes: {
+      fileId: file.id,
       fileSize: file.size,
       fileMimetype: file.type,
       fileSource: 'mediapicker',
@@ -90,6 +90,7 @@ const makePayloadForTrackFileConversion = (
   actionSubjectId: uploadType,
   attributes: {
     fileAttributes: {
+      fileId: file.id,
       fileSize: file.size,
       fileMimetype: file.type,
       fileSource: 'mediapicker',
@@ -104,7 +105,7 @@ const makePayloadForTrackFileConversion = (
 
 describe('analyticsProcessing middleware', () => {
   let oldDateNowFn: () => number;
-  let mockAnalyticsHandler: UIAnalyticsEventHandlerSignature;
+  let mockAnalyticsHandler: UIAnalyticsEventHandler;
   let next: Dispatch<State>;
 
   const setupStore = (state: Partial<State> = {}) =>
@@ -165,7 +166,11 @@ describe('analyticsProcessing middleware', () => {
     verifyAnalyticsCall(editorShowImage(''), {
       name: 'fileEditorModal',
       eventType: SCREEN_EVENT_TYPE,
-      attributes,
+      attributes: {
+        ...attributes,
+        imageUrl: '',
+        originalImage: undefined,
+      },
     });
   });
 
@@ -257,18 +262,28 @@ describe('analyticsProcessing middleware', () => {
         attributes: {
           fileCount: 1,
           ...attributes,
+          serviceNames: ['upload'],
+          files: [
+            {
+              accountId: undefined,
+              fileId: '789',
+              fileName: '1.jpg',
+              fileSize: 10,
+              fileMimetype: 'image/jpg',
+              serviceName: 'upload',
+            },
+          ],
         },
       },
       {
         selectedItems: [
           {
-            mimeType: '',
-            id: '',
-            name: '',
-            size: 0,
+            mimeType: 'image/jpg',
+            id: '789',
+            name: '1.jpg',
+            size: 10,
             date: 0,
             serviceName: UPLOAD,
-            upfrontId: Promise.resolve(''),
           },
         ],
       },
@@ -282,29 +297,46 @@ describe('analyticsProcessing middleware', () => {
         ...buttonClickPayload,
         actionSubjectId: 'insertFilesButton',
         attributes: {
-          fileCount: 2,
           ...attributes,
+          fileCount: 2,
+          serviceNames: ['upload', 'upload'],
+          files: [
+            {
+              accountId: undefined,
+              fileId: '123',
+              fileName: '1.jpg',
+              fileSize: 10,
+              fileMimetype: 'image/jpg',
+              serviceName: 'upload',
+            },
+            {
+              accountId: undefined,
+              fileId: '456',
+              fileName: '1.png',
+              fileSize: 20,
+              fileMimetype: 'image/png',
+              serviceName: 'upload',
+            },
+          ],
         },
       },
       {
         selectedItems: [
           {
-            mimeType: '',
-            id: '',
-            name: '',
-            size: 0,
+            mimeType: 'image/jpg',
+            id: '123',
+            name: '1.jpg',
+            size: 10,
             date: 0,
             serviceName: UPLOAD,
-            upfrontId: Promise.resolve(''),
           },
           {
-            mimeType: '',
-            id: '',
-            name: '',
-            size: 0,
+            mimeType: 'image/png',
+            id: '456',
+            name: '1.png',
+            size: 20,
             date: 0,
             serviceName: UPLOAD,
-            upfrontId: Promise.resolve(''),
           },
         ],
       },
@@ -369,7 +401,12 @@ describe('analyticsProcessing middleware', () => {
       {
         ...buttonClickPayload,
         actionSubjectId: 'annotateFileButton',
-        attributes,
+        attributes: {
+          ...attributes,
+          collectionName: '',
+          fileId: '',
+          fileName: '',
+        },
       },
     );
   });
@@ -401,6 +438,7 @@ describe('analyticsProcessing middleware', () => {
         actionSubjectId: 'localMedia',
         attributes: {
           fileAttributes: {
+            fileId: testFile1.id,
             fileSize: 1,
             fileMimetype: 'type1',
             fileSource: 'mediapicker',
@@ -476,29 +514,15 @@ describe('analyticsProcessing middleware', () => {
       'localMedia',
       'success',
     );
-    const fileAttributes = {
-      ...payload.attributes.fileAttributes,
-      fileMediatype: 'image',
-      fileState: 'succeeded',
-      fileStatus: 'converted',
-    };
     verifyAnalyticsCall(
       fileUploadEnd({
         file: testFile1,
-        public: {
-          id: 'id1',
-          name: 'file1',
-          size: 1,
-          mimeType: 'type1',
-          mediaType: 'image',
-          processingStatus: 'succeeded',
-        },
       }),
       {
         ...payload,
         attributes: {
           ...payload.attributes,
-          fileAttributes,
+          fileAttributes: payload.attributes.fileAttributes,
         },
       },
       {
@@ -510,23 +534,12 @@ describe('analyticsProcessing middleware', () => {
                 name: 'file1',
                 size: 1,
                 mimeType: 'type1',
-                upfrontId: Promise.resolve(''),
-                userUpfrontId: Promise.resolve(''),
-                userOccurrenceKey: Promise.resolve(''),
               },
             },
             events: [
               {
                 data: {
                   file: testFile1,
-                  public: {
-                    id: 'id1',
-                    name: 'file1',
-                    size: 1,
-                    mimeType: testFile1.type,
-                    mediaType: 'image',
-                    processingStatus: 'succeeded',
-                  },
                 },
                 name: 'upload-end',
               },
@@ -548,6 +561,7 @@ describe('analyticsProcessing middleware', () => {
       'foo',
     );
     delete payload.attributes.fileAttributes.fileMimetype;
+    payload.attributes.fileAttributes.fileId = testFile1.id;
     verifyAnalyticsCall(
       fileUploadError({
         file: {
@@ -568,9 +582,6 @@ describe('analyticsProcessing middleware', () => {
                 name: 'file1',
                 size: 1,
                 mimeType: 'type1',
-                upfrontId: Promise.resolve(''),
-                userUpfrontId: Promise.resolve(''),
-                userOccurrenceKey: Promise.resolve(''),
               },
             },
             events: [

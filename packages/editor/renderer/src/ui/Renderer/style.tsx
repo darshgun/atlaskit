@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   colors,
   gridSize,
@@ -7,6 +7,7 @@ import {
   fontSize,
   borderRadius,
   themed,
+  typography,
 } from '@atlaskit/theme';
 import {
   tableSharedStyle,
@@ -32,9 +33,13 @@ import {
   codeMarkSharedStyles,
   shadowSharedStyle,
   shadowClassNames,
+  dateSharedStyle,
+  akEditorFullWidthLayoutWidth,
+  mediaSingleClassName,
 } from '@atlaskit/editor-common';
 import { RendererCssClassName } from '../../consts';
 import { RendererAppearance } from './types';
+import { HeadingAnchorWrapperClassName } from '../../react/nodes/heading-anchor';
 
 export const FullPagePadding = 32;
 
@@ -42,6 +47,80 @@ export type RendererWrapperProps = {
   appearance?: RendererAppearance;
   theme?: any;
 };
+
+const getLineHeight = (fontCode: string): number =>
+  typography.headingSizes[fontCode].lineHeight /
+  typography.headingSizes[fontCode].size;
+
+export const headingSizes: { [key: string]: { [key: string]: number } } = {
+  h1: {
+    lineHeight: getLineHeight('h700'),
+  },
+  h2: {
+    lineHeight: getLineHeight('h600'),
+  },
+  h3: {
+    lineHeight: getLineHeight('h500'),
+  },
+  h4: {
+    lineHeight: getLineHeight('h400'),
+  },
+  h5: {
+    lineHeight: getLineHeight('h300'),
+  },
+  h6: {
+    lineHeight: getLineHeight('h100'),
+  },
+};
+
+const headingAnchorStyle = (headingTag: string) =>
+  css`
+    & .${HeadingAnchorWrapperClassName} {
+      position: absolute;
+      width: 0;
+      height: ${headingSizes[headingTag].lineHeight}em;
+
+      & button {
+        opacity: 0;
+        transform: translate(8px, 0px);
+        transition: opacity 0.2s ease 0s, transform 0.2s ease 0s;
+      }
+    }
+
+    &:hover {
+      & .${HeadingAnchorWrapperClassName} button {
+        opacity: 1;
+        transform: none;
+        width: unset;
+      }
+    }
+  `;
+
+const tableSortableColumnStyle = `
+  .${RendererCssClassName.SORTABLE_COLUMN} {
+    cursor: pointer;
+
+    &.${RendererCssClassName.SORTABLE_COLUMN_NOT_ALLOWED} {
+      cursor: default;
+    }
+
+    .${RendererCssClassName.SORTABLE_COLUMN_ICON} {
+      margin: 0;
+      opacity: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .${RendererCssClassName.SORTABLE_COLUMN_NO_ORDER} {
+      opacity: 0;
+    }
+
+    &:hover {
+      .${RendererCssClassName.SORTABLE_COLUMN_NO_ORDER} {
+        opacity: 1;
+      }
+    }
+  }
+`;
 
 const tableStyles = ({ appearance }: RendererWrapperProps) => {
   if (appearance === 'mobile') {
@@ -71,7 +150,8 @@ const fullWidthStyles = ({ appearance }: RendererWrapperProps) => {
   }
 
   return `
-  max-width: 1800px;
+  max-width: ${akEditorFullWidthLayoutWidth}px;
+  margin: 0 auto;
 
   .fabric-editor-breakout-mark,
   .pm-table-container,
@@ -89,6 +169,30 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
 
   ${fullPageStyles}
   ${fullWidthStyles}
+
+  & h1 {
+    ${headingAnchorStyle('h1')}
+  }
+
+  & h2 {
+    ${headingAnchorStyle('h2')}
+  }
+
+  & h3 {
+    ${headingAnchorStyle('h3')}
+  }
+
+  & h4 {
+    ${headingAnchorStyle('h4')}
+  }
+
+  & h5 {
+    ${headingAnchorStyle('h5')}
+  }
+
+  & h6 {
+    ${headingAnchorStyle('h6')}
+  }
 
   & span.akActionMark {
     color: ${colors.B400};
@@ -115,6 +219,7 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
   ${blockMarksSharedStyles};
   ${codeMarkSharedStyles};
   ${shadowSharedStyle};
+  ${dateSharedStyle};
 
   & .UnknownBlock {
     font-family: ${fontFamily()};
@@ -145,7 +250,7 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
     margin: ${gridSize() * 3}px 0;
   }
 
-  .media-single.media-wrapped + .media-single:not(.media-wrapped) {
+  .${mediaSingleClassName}.media-wrapped + .${mediaSingleClassName}:not(.media-wrapped) {
     clear: both;
   }
 
@@ -153,8 +258,8 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
   & blockquote,
   & hr,
   & > div > div:not(.media-wrapped),
-  .media-single.media-wrapped + .media-wrapped + *:not(.media-wrapped),
-  .media-single.media-wrapped + div:not(.media-wrapped) {
+  .${mediaSingleClassName}.media-wrapped + .media-wrapped + *:not(.media-wrapped),
+  .${mediaSingleClassName}.media-wrapped + div:not(.media-wrapped) {
     clear: both;
   }
 
@@ -166,6 +271,19 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
     & + h5,
     & + h6 {
       margin-top: 8px;
+    }
+  }
+
+  & .fabric-editor-block-mark[data-align='end'],
+  & .fabric-editor-block-mark[data-align='center'],
+  & .fabric-editor-block-mark[data-align='right'] {
+    & > h1,
+    & > h2,
+    & > h3,
+    & > h4,
+    & > h5,
+    & > h6 {
+      display: inline-block;
     }
   }
 
@@ -212,8 +330,14 @@ export const Wrapper = styled.div<RendererWrapperProps & HTMLAttributes<{}>>`
 
     table {
       ${tableStyles};
+      ${tableSortableColumnStyle};
       margin-left: 0;
       margin-right: 0;
+    }
+
+    table tr:first-child td,
+    table tr:first-child th {
+      position: relative;
     }
 
     table[data-number-column='true'] {

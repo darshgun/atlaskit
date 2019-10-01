@@ -122,7 +122,7 @@ class FullPageWithFF extends React.Component<
       <div>
         <div>
           <ToggleStateless
-            isChecked={this.state.resolveBeforeMacros.length}
+            isChecked={!!this.state.resolveBeforeMacros.length}
             onChange={this.toggleFF}
             label={`Resolve ${RESOLVE_BEFORE_MACROS.join(
               ',',
@@ -145,7 +145,7 @@ class FullPageWithFF extends React.Component<
   }
 }
 
-const cardClient = new ConfluenceCardClient(undefined, 'staging');
+const cardClient = new ConfluenceCardClient('staging');
 const cardProvider = new ConfluenceCardProvider('staging');
 
 // put into separate constant because prettier can't handle // in JSX

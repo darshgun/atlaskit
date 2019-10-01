@@ -1,12 +1,28 @@
+import { TableMap } from 'prosemirror-tables';
 import { EditorState } from 'prosemirror-state';
-import { findDomRefAtPos } from 'prosemirror-utils';
-import { akEditorTableToolbarSize } from '@atlaskit/editor-common';
+import { EditorView } from 'prosemirror-view';
+import { getCellsInRow } from 'prosemirror-utils';
 import { TableCssClassName as ClassName } from '../../../types';
 import { getPluginState as getMainPluginState } from '../../main';
-import { closestElement } from '../../../../../utils';
-import { updateRightShadow } from '../../../nodeviews/TableComponent';
-import { getPluginState } from '../plugin';
-import { pointsAtCell } from './misc';
+import { closestElement, containsClassName } from '../../../../../utils';
+import { updateOverflowShadows } from '../../../nodeviews/TableComponent';
+
+function getHeights(
+  children: NodeListOf<HTMLElement>,
+): Array<number | undefined> {
+  const heights: Array<number | undefined> = [];
+  for (let i = 0, count = children.length; i < count; i++) {
+    const child: HTMLElement = children[i] as HTMLElement;
+    if (child) {
+      const rect = child.getBoundingClientRect();
+      const height = rect ? rect.height : child.offsetHeight;
+      heights[i] = height;
+    } else {
+      heights[i] = undefined;
+    }
+  }
+  return heights;
+}
 
 export const updateControls = (state: EditorState) => {
   const { tableRef } = getMainPluginState(state);
@@ -17,15 +33,11 @@ export const updateControls = (state: EditorState) => {
   if (!tr) {
     return;
   }
-  const cols = tr.children;
   const wrapper = tableRef.parentElement;
   if (!(wrapper && wrapper.parentElement)) {
     return;
   }
 
-  const columnControls = wrapper.querySelectorAll<HTMLElement>(
-    `.${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}`,
-  );
   const rows = tableRef.querySelectorAll('tr');
   const rowControls = wrapper.parentElement.querySelectorAll<HTMLElement>(
     `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}`,
@@ -34,34 +46,28 @@ export const updateControls = (state: EditorState) => {
     ClassName.NUMBERED_COLUMN_BUTTON,
   );
 
-  const getWidth = (element: HTMLElement): number => {
-    const rect = element.getBoundingClientRect();
-    return rect ? rect.width : element.offsetWidth;
-  };
+  const rowHeights = getHeights(rows);
 
-  // update column controls width on resize
-  for (let i = 0, count = columnControls.length; i < count; i++) {
-    if (cols[i]) {
-      columnControls[i].style.width = `${getWidth(cols[i] as HTMLElement) +
-        1}px`;
-    }
-  }
   // update rows controls height on resize
   for (let i = 0, count = rowControls.length; i < count; i++) {
-    if (rows[i]) {
-      rowControls[i].style.height = `${getHeight(rows[i]) + 1}px`;
+    const height = rowHeights[i];
+    if (height) {
+      rowControls[i].style.height = `${height + 1}px`;
 
       if (numberedRows.length) {
-        numberedRows[i].style.height = `${getHeight(rows[i]) + 1}px`;
+        numberedRows[i].style.height = `${height + 1}px`;
       }
     }
   }
 
-  updateRightShadow(
+  updateOverflowShadows(
     wrapper,
     tableRef,
     wrapper.parentElement.querySelector<HTMLElement>(
       `.${ClassName.TABLE_RIGHT_SHADOW}`,
+    ),
+    wrapper.parentElement.querySelector<HTMLElement>(
+      `.${ClassName.TABLE_LEFT_SHADOW}`,
     ),
   );
 };
@@ -75,74 +81,37 @@ export const isClickNear = (
   return dx * dx + dy * dy < 100;
 };
 
-export const createResizeHandle = (
-  tableRef: HTMLTableElement,
-): HTMLDivElement | null => {
-  const resizeHandleRef = document.createElement('div');
-  resizeHandleRef.className = ClassName.COLUMN_RESIZE_HANDLE;
-  tableRef.parentNode!.appendChild(resizeHandleRef);
+export const getResizeCellPos = (
+  view: EditorView,
+  event: MouseEvent,
+  lastColumnResizable: boolean,
+): number | null => {
+  const { state } = view;
+  const target = event.target as HTMLElement;
 
-  const tableActive = closestElement(tableRef, `.${ClassName.WITH_CONTROLS}`);
-  const style = {
-    height: `${
-      tableActive
-        ? tableRef.offsetHeight + akEditorTableToolbarSize
-        : tableRef.offsetHeight
-    }px`,
-    top: `${
-      tableActive
-        ? tableRef.offsetTop - akEditorTableToolbarSize
-        : tableRef.offsetTop
-    }px`,
-  };
-
-  resizeHandleRef.style.top = style.top;
-  resizeHandleRef.style.height = style.height;
-
-  return resizeHandleRef;
-};
-
-export const updateResizeHandle = (
-  state: EditorState,
-  domAtPos: (pos: number) => { node: Node; offset: number },
-) => {
-  const { resizeHandlePos } = getPluginState(state);
-  if (
-    resizeHandlePos === null ||
-    !pointsAtCell(state.doc.resolve(resizeHandlePos))
-  ) {
-    return false;
+  if (!containsClassName(target, ClassName.RESIZE_HANDLE)) {
+    return null;
+  }
+  const parent = closestElement(target, '[data-start-index]');
+  if (!parent) {
+    return null;
+  }
+  const index = parseInt(parent.getAttribute('data-start-index') || '-1', 10);
+  if (index === -1) {
+    return null;
+  }
+  const cells = getCellsInRow(0)(state.selection);
+  if (!cells) {
+    return null;
+  }
+  const cellPos = cells[index].pos;
+  if (!lastColumnResizable) {
+    const $cell = state.doc.resolve(cellPos);
+    const map = TableMap.get($cell.node(-1));
+    if (map.width === index + 1) {
+      return null;
+    }
   }
 
-  const $cell = state.doc.resolve(resizeHandlePos);
-  const tablePos = $cell.start(-1) - 1;
-  const tableWrapperRef = findDomRefAtPos(tablePos, domAtPos) as HTMLDivElement;
-
-  const resizeHandleRef = tableWrapperRef.querySelector(
-    `.${ClassName.COLUMN_RESIZE_HANDLE}`,
-  ) as HTMLDivElement;
-
-  const tableRef = tableWrapperRef.querySelector(`table`) as HTMLTableElement;
-
-  if (tableRef && resizeHandleRef) {
-    const cellRef = findDomRefAtPos(
-      resizeHandlePos,
-      domAtPos,
-    ) as HTMLTableCellElement;
-    const tableActive = closestElement(tableRef, `.${ClassName.WITH_CONTROLS}`);
-    resizeHandleRef.style.height = `${
-      tableActive
-        ? tableRef.offsetHeight + akEditorTableToolbarSize
-        : tableRef.offsetHeight
-    }px`;
-
-    resizeHandleRef.style.left = `${cellRef.offsetLeft +
-      cellRef.offsetWidth}px`;
-  }
-  return;
+  return cellPos;
 };
-
-function getHeight(element: HTMLElement): number {
-  const rect = element.getBoundingClientRect();
-  return rect ? rect.height : element.offsetHeight;
-}

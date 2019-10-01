@@ -4,23 +4,33 @@ import {
   p,
   status,
 } from '@atlaskit/editor-test-helpers';
-import statusPlugin from '../../../../plugins/status';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { pluginKey } from '../../../../plugins/status/plugin';
 import {
   commitStatusPicker,
   createStatus,
   setStatusPickerAt,
   updateStatus,
+  updateStatusWithAnalytics,
 } from '../../../../plugins/status/actions';
 import { EditorView } from 'prosemirror-view';
+import { INPUT_METHOD } from '../../../../plugins/analytics';
 
 describe('status plugin: actions', () => {
   const createEditor = createEditorFactory();
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   const editor = (doc: any) => {
+    createAnalyticsEvent = jest.fn(() => ({ fire() {} }));
     return createEditor({
       doc,
-      editorPlugins: [statusPlugin({ menuDisabled: false })],
+      editorProps: {
+        allowStatus: {
+          menuDisabled: false,
+        },
+        allowAnalyticsGASV3: true,
+      },
+      createAnalyticsEvent,
     });
   };
 
@@ -46,7 +56,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'Done',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       expect(editorView.state.doc).toEqualDocument(
         doc(
@@ -86,7 +96,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'Done',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       const pluginState = pluginKey.getState(editorView.state);
       expect(pluginState.showStatusPickerAt).toEqual(selectionFrom);
@@ -112,7 +122,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'Done',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       expect(editorView.state.selection.from).toEqual(selectionFrom);
     });
@@ -124,7 +134,7 @@ describe('status plugin: actions', () => {
         color: 'blue',
         text: 'In progress',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       expect(editorView.state.tr.doc).toEqualDocument(
         doc(
@@ -139,6 +149,25 @@ describe('status plugin: actions', () => {
           ),
         ),
       );
+    });
+  });
+
+  describe('updateStatusWithAnalytics', () => {
+    it('should fire analytics event', () => {
+      const { editorView } = editor(doc(p('')));
+
+      updateStatusWithAnalytics(INPUT_METHOD.TOOLBAR, {
+        color: 'green',
+        text: 'OK',
+      })(editorView.state, editorView.dispatch);
+
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        action: 'inserted',
+        actionSubject: 'document',
+        actionSubjectId: 'status',
+        eventType: 'track',
+        attributes: { inputMethod: 'toolbar' },
+      });
     });
   });
 
@@ -176,7 +205,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'Done',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       commitStatusPicker()(editorView);
 
@@ -206,7 +235,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'Done',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       commitStatusPicker()(editorView);
 
@@ -234,7 +263,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: '',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       commitStatusPicker()(editorView);
 
@@ -261,7 +290,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'cheese',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       commitStatusPicker()(editorView);
 
@@ -305,7 +334,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'cheese',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
 
       pluginState = pluginKey.getState(editorView.state);
       expect(pluginState.isNew).toEqual(true);
@@ -335,7 +364,7 @@ describe('status plugin: actions', () => {
         color: 'green',
         text: 'cheese',
         localId: '666',
-      })(editorView);
+      })(editorView.state, editorView.dispatch);
       pluginState = pluginKey.getState(editorView.state);
       expect(pluginState.isNew).toEqual(false);
 

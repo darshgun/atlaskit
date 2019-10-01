@@ -1,4 +1,5 @@
 import * as React from 'react';
+// @ts-ignore
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import { ResultData, SelectedResultId, ResultId } from './Results/types';
 import AkSearch from './Search/Search';
@@ -90,7 +91,10 @@ export type Props = {
   /** onBlur callback for search input */
   onSearchBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   /** onInput callback for search input */
-  onSearchInput?: (event: React.FormEvent<HTMLInputElement>) => void;
+  onSearchInput?: (
+    event: React.FormEvent<HTMLInputElement>,
+    isAutocompleted?: boolean,
+  ) => void;
   /** onKeyDown callback for search input */
   onSearchKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Called when the user submits the search form without selecting a result */
@@ -104,6 +108,7 @@ export type Props = {
   /** Optional way of being notified when the selected result changes due to keyboard nav */
   onSelectedResultIdChanged?: (id: SelectedResultId) => void;
   // Internal: injected by withAnalytics(). Fire a private analytics event
+  // @ts-ignore
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   /** React component to be used for rendering links */
   linkComponent?: React.ComponentType<any>;
@@ -172,7 +177,7 @@ export class QuickSearch extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.children !== this.props.children) {
       this.setState({
         selectedResultId: nextProps.selectedResultId || null,
@@ -432,7 +437,7 @@ export class QuickSearch extends React.Component<Props, State> {
       this.inputSearchRef.value = newValue;
     }
     if (onSearchInput) {
-      onSearchInput(event);
+      onSearchInput(event, true);
     }
   };
 
@@ -483,5 +488,6 @@ export class QuickSearch extends React.Component<Props, State> {
  * @atlaskit/analytics/AnalyticsListener.
  */
 export default decorateWithAnalyticsData(
+  // @ts-ignore
   withAnalytics<typeof QuickSearch>(QuickSearch, {}, {}),
 );

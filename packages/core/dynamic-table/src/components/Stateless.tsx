@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -77,12 +77,12 @@ class DynamicTable extends React.Component<Props, State> {
     },
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     validateSortKey(this.props.sortKey, this.props.head);
     assertIsSortable(this.props.head);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (
       this.props.sortKey !== nextProps.sortKey ||
       this.props.head !== nextProps.head
@@ -167,6 +167,7 @@ class DynamicTable extends React.Component<Props, State> {
     const {
       caption,
       head,
+      highlightedRowIndex,
       isFixedSize,
       page,
       rows,
@@ -182,6 +183,7 @@ class DynamicTable extends React.Component<Props, State> {
 
     const rowsLength = rows && rows.length;
     const bodyProps = {
+      highlightedRowIndex,
       rows,
       head,
       sortKey,
@@ -266,18 +268,15 @@ export default withAnalyticsContext({
     onSort: createAndFireEventOnAtlaskit({
       action: 'sorted',
       actionSubject: 'dynamicTable',
-
       attributes: {
         componentName: 'dynamicTable',
         packageName,
         packageVersion,
       },
     }),
-
     onRankEnd: createAndFireEventOnAtlaskit({
       action: 'ranked',
       actionSubject: 'dynamicTable',
-
       attributes: {
         componentName: 'dynamicTable',
         packageName,

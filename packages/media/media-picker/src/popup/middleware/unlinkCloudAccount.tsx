@@ -3,9 +3,9 @@ import { Store, Dispatch } from 'redux';
 import {
   REQUEST_UNLINK_CLOUD_ACCOUNT,
   RequestUnlinkCloudAccountAction,
-  changeService,
-  unlinkCloudAccount,
-} from '../actions';
+} from '../actions/unlinkCloudAccount';
+import { changeService } from '../actions/changeService';
+import { unlinkCloudAccount } from '../actions/unlinkCloudAccount';
 import { State } from '../domain';
 import { Fetcher } from '../tools/fetcher/fetcher';
 
@@ -13,9 +13,9 @@ export default (fetcher: Fetcher) => (store: Store<State>) => (
   next: Dispatch<State>,
 ) => (action: RequestUnlinkCloudAccountAction) => {
   if (action.type === REQUEST_UNLINK_CLOUD_ACCOUNT) {
-    const { userContext } = store.getState();
+    const { userMediaClient } = store.getState();
 
-    userContext.config
+    userMediaClient.config
       .authProvider()
       .then(auth => fetcher.unlinkCloudAccount(auth, action.account.id))
       .then(() => {

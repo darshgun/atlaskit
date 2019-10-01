@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig.media.json",
+  "extends": "../../../tsconfig.json",
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
@@ -10,10 +10,6 @@
     "./typings/**/*.d.ts"
   ],
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@atlaskit/dropdown-menu": ["typings/@atlaskit/dropdown-menu"],
-      "@atlaskit/item": ["typings/@atlaskit/item"]
-    }
+    "baseUrl": "./"
   }
 }

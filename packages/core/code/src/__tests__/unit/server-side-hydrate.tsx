@@ -8,11 +8,15 @@ declare var console: any;
 
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
+beforeEach(() => {
+  jest.setTimeout(10000);
+});
+
 afterEach(() => {
   jest.resetAllMocks();
 });
-
-test('should ssr then hydrate code correctly', async done => {
+// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
+test.skip('should ssr then hydrate code correctly', async () => {
   const [example] = await getExamplesFor('code');
 
   const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
@@ -33,5 +37,4 @@ test('should ssr then hydrate code correctly', async done => {
   );
 
   expect(mockCalls.length).toBe(0); // eslint-disable-line no-console
-  done();
 });

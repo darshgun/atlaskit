@@ -1,5 +1,8 @@
-import * as React from 'react';
-import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import React from 'react';
+import {
+  UIAnalyticsEvent,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
 
 export interface RowCellType {
   key?: string | number;
@@ -12,7 +15,7 @@ export interface I18nShape {
   next: string;
 }
 
-export interface StatelessProps {
+export interface StatelessProps extends WithAnalyticsEventsProps {
   caption?: React.ReactNode;
   /** Object describing the column headings */
   head?: HeadType;
@@ -46,9 +49,11 @@ export interface StatelessProps {
   onRankStart?: (rankStart: RankStart) => void;
   onRankEnd?: (rankEnd: RankEnd, uiAnalyticsEvent?: UIAnalyticsEvent) => void;
   paginationi18n?: I18nShape;
+  /** It highlights the passed row number on the current visible page. Starts with 0 */
+  highlightedRowIndex?: number;
 }
 
-export interface StatefulProps {
+export interface StatefulProps extends WithAnalyticsEventsProps {
   caption?: Node | string;
   head?: HeadType;
   rows?: Array<RowType>;
@@ -71,6 +76,7 @@ export interface StatefulProps {
   onRankStart?: (rankStart: RankStart) => void;
   onRankEnd?: (rankEnd: RankEnd) => void;
   paginationi18n?: I18nShape;
+  highlightedRowIndex?: number;
 }
 
 export type RowType = {

@@ -1,11 +1,20 @@
-import { Feature, FeatureFlagProps } from '../types';
+import { Feature, FeatureMap } from '../types';
 
-export default function mapPropsToFeatures(props: any): FeatureFlagProps {
+const propToFeature = (props: any, key: string) => {
+  switch (key) {
+    case Feature.xflow:
+      return typeof props.triggerXFlow === 'function';
+    default:
+      return Boolean(props[key]);
+  }
+};
+
+export default function mapPropsToFeatures(props: any): FeatureMap {
   return Object.keys(Feature).reduce(
     (acc, key) => ({
       ...acc,
-      [key]: Boolean(props[key]),
+      [key]: propToFeature(props, key),
     }),
     {},
-  ) as FeatureFlagProps;
+  ) as FeatureMap;
 }

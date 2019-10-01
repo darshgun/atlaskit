@@ -126,4 +126,16 @@ export {
   withMediaClient,
   WithContextOrMediaClientConfig,
   WithContextOrMediaClientConfigProps,
+  getMediaClient,
 } from './utils/with-media-client-hoc';
+
+export { globalMediaEventEmitter } from './globalMediaEventEmitter';
+export {
+  isMediaBlobUrl,
+  getAttrsFromUrl,
+  addFileAttrsToUrl,
+  MediaBlobUrlAttrs,
+  objectToQueryString,
+} from './utils/url';
+
+export { RECENTS_COLLECTION } from './constants';

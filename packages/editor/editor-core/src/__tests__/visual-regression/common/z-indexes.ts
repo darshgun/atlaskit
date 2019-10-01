@@ -1,5 +1,9 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
-import { initFullPageEditorWithAdf, snapshot, Device } from '../_utils';
+import {
+  initFullPageEditorWithAdf,
+  snapshot,
+  Device,
+  editorSelector,
+} from '../_utils';
 import {
   clickToolbarMenu,
   ToolbarMenuItem,
@@ -7,16 +11,13 @@ import {
 import { selectors } from '../../__helpers/page-objects/_editor';
 import { tableSelectors } from '../../__helpers/page-objects/_table';
 import { insertTable } from '../../__helpers/page-objects/_table';
-import {
-  waitForEmojis,
-  emojiReadySelector,
-} from '../../__helpers/page-objects/_emoji';
+import { emojiReadySelector } from '../../__helpers/page-objects/_emoji';
 import { waitForLoadedBackgroundImages } from '@atlaskit/visual-regression/helper';
 import adf from './__fixtures__/noData-adf.json';
+import { Page } from '../../__helpers/page-objects/_types';
 
-// TODO - add ADF before loading stuff
 describe('z-indexes:', () => {
-  let page: any;
+  let page: Page;
 
   beforeAll(async () => {
     // @ts-ignore
@@ -29,7 +30,7 @@ describe('z-indexes:', () => {
   });
 
   afterEach(async () => {
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page, undefined, editorSelector);
   });
 
   it('should always position table trash icon below dropdowns from main menu', async () => {
@@ -42,7 +43,6 @@ describe('z-indexes:', () => {
     await page.waitForSelector(tableSelectors.removeTable);
     await clickToolbarMenu(page, ToolbarMenuItem.emoji);
     await page.waitForSelector(selectors.emojiPicker);
-    await waitForEmojis(page);
     await waitForLoadedBackgroundImages(page, emojiReadySelector, 10000);
   });
 

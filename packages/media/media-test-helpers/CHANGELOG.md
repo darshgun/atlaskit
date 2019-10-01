@@ -1,5 +1,189 @@
 # @atlaskit/media-test-helpers
 
+## 25.1.2
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 25.1.1
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/media-client@2.1.2
+  - @atlaskit/media-core@30.0.14
+  - @atlaskit/media-picker@47.1.2
+  - @atlaskit/media-store@12.0.12
+  - @atlaskit/media-card@65.0.0
+
+## 25.1.0
+
+### Minor Changes
+
+- [minor][e5c3f6ae3e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5c3f6ae3e):
+
+  ED-6216: External images will now be uploaded to media services if possible
+
+## 25.0.4
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 25.0.3
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 25.0.2
+
+- Updated dependencies [3624730f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3624730f44):
+  - @atlaskit/media-client@2.0.2
+  - @atlaskit/media-core@30.0.11
+  - @atlaskit/media-picker@47.0.2
+  - @atlaskit/media-store@12.0.9
+  - @atlaskit/media-card@64.0.0
+
+## 25.0.1
+
+- Updated dependencies [6879d7d01e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6879d7d01e):
+  - @atlaskit/media-picker@47.0.0
+
+## 25.0.0
+
+### Major Changes
+
+- [major][69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
+
+  Remove following API members: `fakeContext()`, `getDefaultContextConfig()`, `createStorybookContext()`, `createUploadContext()`. You can use new methods introduced earlier: `fakeMediaClientConfig()`, `getDefaultMediaClientConfig()`, etc
+
+## 24.3.5
+
+- Updated dependencies [ee804f3eeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee804f3eeb):
+  - @atlaskit/media-card@63.3.9
+  - @atlaskit/media-core@30.0.9
+  - @atlaskit/media-picker@46.0.3
+  - @atlaskit/media-store@12.0.6
+  - @atlaskit/media-client@2.0.0
+
+## 24.3.4
+
+### Patch Changes
+
+- [patch][4e8f6f609f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e8f6f609f):
+
+  Remove three fields from MediaFile interface: upfrontId, userUpfrontId and userOccurrenceKey.
+
+## 24.3.3
+
+### Patch Changes
+
+- [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
+
+  bugfix, fixes missing version.json file
+
+## 24.3.2
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 24.3.1
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/media-picker@45.0.1
+  - @atlaskit/select@10.0.0
+
+## 24.3.0
+
+### Minor Changes
+
+- [minor][13ca42c394](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13ca42c394):
+
+  # use getAuthFromContext from media when a file if pasted from a different collection
+
+  Now products can provide auth using **getAuthFromContext** on MediaClientConfig:
+
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core'
+  import Editor from '@atlaskit/editor-core'
+
+  const viewMediaClientConfig: MediaClientConfig = {
+    authProvider // already exists
+    getAuthFromContext(contextId: string) {
+      // here products can return auth for external pages.
+      // in case of copy & paste on Confluence, they can provide read token for
+      // files on the source collection
+    }
+  }
+  const mediaProvider: = {
+    viewMediaClientConfig
+  }
+
+  <Editor {...otherNonRelatedProps} media={{provider: mediaProvider}} />
+  ```
+
+## 24.2.0
+
+### Minor Changes
+
+- [minor][a552f93596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a552f93596):
+
+  Increase image preview max height and width to 4096px
+
+## 24.1.3
+
+- Updated dependencies [e754b5f85e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e754b5f85e):
+  - @atlaskit/media-picker@45.0.0
+
+## 24.1.2
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/dropdown-menu@8.0.8
+  - @atlaskit/select@9.1.8
+  - @atlaskit/media-card@63.3.1
+  - @atlaskit/media-picker@44.0.1
+  - @atlaskit/media-ui@11.4.1
+  - @atlaskit/icon@19.0.0
+
+## 24.1.1
+
+- Updated dependencies [5f4afa52a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f4afa52a9):
+  - @atlaskit/media-picker@44.0.0
+
+## 24.1.0
+
+### Minor Changes
+
+- [minor][10c2856bc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10c2856bc0):
+
+  include defaultMediaPickerCollectionName into collectionNames array to get auth from playgrond
+
+## 24.0.3
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/dropdown-menu@8.0.4
+  - @atlaskit/select@9.1.5
+  - @atlaskit/media-card@63.1.5
+  - @atlaskit/media-picker@43.1.1
+  - @atlaskit/media-ui@11.2.8
+  - @atlaskit/icon@18.0.0
+
 ## 24.0.2
 
 ### Patch Changes

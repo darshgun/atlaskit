@@ -1,5 +1,10 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
-import { snapshot, Device, initEditorWithAdf, Appearance } from '../_utils';
+import {
+  snapshot,
+  Device,
+  initEditorWithAdf,
+  Appearance,
+  deviceViewPorts,
+} from '../_utils';
 import { traverse } from '@atlaskit/adf-utils/traverse';
 import smartLinksAdf from './__fixtures__/smart-link-nested-in-list.adf.json';
 import extensionAdf from './__fixtures__/inline-extension-inside-lists.adf.json';
@@ -7,6 +12,7 @@ import statusAdf from './__fixtures__/status-inside-lists.adf.json';
 import dateAdf from './__fixtures__/date-inside-lists.adf.json';
 import floatsAdf from './__fixtures__/lists-adjacent-floats-adf.json';
 import floatsAdf2 from './__fixtures__/action-decision-lists-adjacent-floats-adf.json';
+import list100ItemsAdf from './__fixtures__/lists-100-items.adf';
 import {
   waitForCardToolbar,
   clickOnCard,
@@ -24,18 +30,28 @@ import {
   waitForDatePicker,
   clickOnDate,
 } from '../../__helpers/page-objects/_date';
-import { animationFrame } from '../../__helpers/page-objects/_editor';
-import { EditorTestCardProvider } from '../../../../../editor-test-helpers';
-
-describe('Lists', () => {
+import {
+  animationFrame,
+  scrollToBottom,
+} from '../../__helpers/page-objects/_editor';
+import { EditorTestCardProvider } from '@atlaskit/editor-test-helpers';
+// TODO: https://product-fabric.atlassian.net/browse/ED-7721
+describe.skip('Lists', () => {
   let page: Page;
   const cardProvider = new EditorTestCardProvider();
 
-  const initEditor = async (page: Page, adf: any, editorProps = {}) =>
+  const initEditor = async (
+    page: Page,
+    adf: any,
+    viewport: { width: number; height: number } = deviceViewPorts[
+      Device.Default
+    ],
+    editorProps = {},
+  ) =>
     await initEditorWithAdf(page, {
       appearance: Appearance.fullPage,
       adf,
-      device: Device.LaptopMDPI,
+      viewport,
       editorProps,
     });
 
@@ -46,19 +62,24 @@ describe('Lists', () => {
 
   afterEach(async () => {
     await animationFrame(page);
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
   });
 
   it('should render card toolbar on click when its nested inside lists', async () => {
-    await initEditor(page, smartLinksAdf, {
-      UNSAFE_cards: { provider: Promise.resolve(cardProvider) },
-    });
+    await initEditor(
+      page,
+      smartLinksAdf,
+      { width: 800, height: 300 },
+      {
+        UNSAFE_cards: { provider: Promise.resolve(cardProvider) },
+      },
+    );
     await clickOnCard(page);
     await waitForCardToolbar(page);
   });
 
   it('should render extension toolbar on click when its nested inside lists', async () => {
-    await initEditor(page, extensionAdf);
+    await initEditor(page, extensionAdf, { width: 800, height: 300 });
     await clickOnExtension(
       page,
       'com.atlassian.confluence.macro.core',
@@ -68,7 +89,7 @@ describe('Lists', () => {
   });
 
   it('should render status toolbar on click when its nested inside lists', async () => {
-    await initEditor(page, statusAdf);
+    await initEditor(page, statusAdf, { width: 800, height: 400 });
     await clickOnStatus(page);
     await waitForStatusToolbar(page);
   });
@@ -77,6 +98,11 @@ describe('Lists', () => {
     await initEditor(page, dateAdf);
     await clickOnDate(page);
     await waitForDatePicker(page);
+  });
+
+  it('should not cut off numbers in long ordered lists', async () => {
+    await initEditor(page, list100ItemsAdf);
+    await scrollToBottom(page);
   });
 });
 
@@ -98,7 +124,7 @@ describe('Lists adjacent floated media', () => {
 
   afterEach(async () => {
     await animationFrame(page);
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
   });
 
   it('action & decision lists should clear image', async () => {

@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
+import memoize from 'memoize-one';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { ThemeProvider } from 'styled-components';
+import GlobalTheme from '@atlaskit/theme/components';
+import Theme, { componentTokens } from './theme';
+import { createExtender, ExtenderType } from './utils';
 import CheckboxIcon from './CheckboxIcon';
 
 import { name as packageName, version as packageVersion } from './version.json';
+
 import {
-  HiddenCheckbox,
-  Label,
-  LabelText,
+  LabelTextOverrides,
+  LabelOverrides,
   CheckboxWrapper,
   RequiredIndicator,
-} from './styled/Checkbox';
-import { CheckboxProps } from './types';
+  HiddenCheckbox,
+} from './elements';
+import { CheckboxProps, CheckboxDefaults, CheckboxOverrides } from './types';
+
+const defaults: CheckboxDefaults = {
+  Label: LabelOverrides,
+  LabelText: LabelTextOverrides,
+  HiddenCheckbox: {
+    attributesFn: () => ({}),
+  },
+};
 
 interface State {
   isActive: boolean;
@@ -25,14 +37,13 @@ interface State {
   isMouseDown: boolean;
 }
 
-const emptyTheme = {};
-
 class Checkbox extends Component<CheckboxProps, State> {
-  static defaultProps = {
+  static defaultProps: CheckboxProps = {
     isDisabled: false,
     isInvalid: false,
     defaultChecked: false,
     isIndeterminate: false,
+    theme: (current, props) => current(props),
   };
 
   state: State = {
@@ -45,8 +56,14 @@ class Checkbox extends Component<CheckboxProps, State> {
         ? this.props.isChecked
         : this.props.defaultChecked,
   };
-  checkbox?: HTMLInputElement;
+  createExtender?: ExtenderType;
+  checkbox?: HTMLInputElement | null = undefined;
   actionKeys = [' '];
+
+  constructor(props: CheckboxProps) {
+    super(props);
+    this.createExtender = memoize(createExtender);
+  }
 
   componentDidMount() {
     const { isIndeterminate } = this.props;
@@ -132,64 +149,98 @@ class Checkbox extends Component<CheckboxProps, State> {
       isIndeterminate,
       label,
       name,
+      overrides,
       value,
-      onChange,
       isRequired,
-      defaultChecked,
-      ...rest
+      //props not passed into HiddenCheckbox
+      isChecked: propsIsChecked,
+      theme,
+      testId,
     } = this.props;
+
     const isChecked =
       this.props.isChecked === undefined
         ? this.state.isChecked
-        : this.props.isChecked;
+        : propsIsChecked;
     const { isFocused, isActive, isHovered } = this.state;
+    const getOverrides = createExtender<CheckboxDefaults, CheckboxOverrides>(
+      defaults,
+      overrides,
+    );
+    const { component: Label, ...labelOverrides } = getOverrides('Label');
+    const { component: LabelText, ...labelTextOverrides } = getOverrides(
+      'LabelText',
+    );
+    const { attributesFn: hiddenCheckboxAttributesFn } = getOverrides(
+      'HiddenCheckbox',
+    );
 
     return (
-      <ThemeProvider theme={emptyTheme}>
-        <Label
-          isDisabled={isDisabled}
-          onMouseDown={this.onMouseDown}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-          onMouseUp={this.onMouseUp}
-        >
-          <CheckboxWrapper>
-            <HiddenCheckbox
-              disabled={isDisabled}
-              checked={isChecked}
-              onChange={this.onChange}
-              onBlur={this.onBlur}
-              onFocus={this.onFocus}
-              onKeyUp={this.onKeyUp}
-              onKeyDown={this.onKeyDown}
-              type="checkbox"
-              value={value}
-              name={name}
-              innerRef={r => (this.checkbox = r)} // eslint-disable-line
-              required={isRequired}
-              {...rest}
-            />
-            <CheckboxIcon
-              isChecked={isChecked}
-              isDisabled={isDisabled}
-              isFocused={isFocused}
-              isActive={isActive}
-              isHovered={isHovered}
-              isInvalid={isInvalid}
-              isIndeterminate={isIndeterminate}
-              primaryColor="inherit"
-              secondaryColor="inherit"
-              label=""
-            />
-          </CheckboxWrapper>
-          <LabelText>
-            {label}
-            {isRequired && (
-              <RequiredIndicator aria-hidden="true">*</RequiredIndicator>
-            )}
-          </LabelText>
-        </Label>
-      </ThemeProvider>
+      <Theme.Provider value={theme}>
+        <GlobalTheme.Consumer>
+          {({ mode }: { mode: 'light' | 'dark' }) => (
+            <Theme.Consumer mode={mode} tokens={componentTokens}>
+              {tokens => (
+                <Label
+                  {...labelOverrides}
+                  isDisabled={isDisabled}
+                  onMouseDown={this.onMouseDown}
+                  onMouseEnter={this.onMouseEnter}
+                  onMouseLeave={this.onMouseLeave}
+                  onMouseUp={this.onMouseUp}
+                  tokens={tokens}
+                  testId={testId && `${testId}--checkbox-label`}
+                >
+                  <CheckboxWrapper>
+                    <HiddenCheckbox
+                      disabled={isDisabled}
+                      checked={isChecked}
+                      onChange={this.onChange}
+                      onBlur={this.onBlur}
+                      onFocus={this.onFocus}
+                      onKeyUp={this.onKeyUp}
+                      onKeyDown={this.onKeyDown}
+                      value={value}
+                      name={name}
+                      ref={r => (this.checkbox = r)}
+                      required={isRequired}
+                      attributesFn={hiddenCheckboxAttributesFn}
+                      testId={testId && `${testId}--hidden-checkbox`}
+                    />
+                    <CheckboxIcon
+                      theme={theme}
+                      overrides={{
+                        IconWrapper: overrides && overrides.IconWrapper,
+                        Icon: overrides && overrides.Icon,
+                        IconIndeterminate:
+                          overrides && overrides.IconIndeterminate,
+                      }}
+                      isChecked={isChecked}
+                      isDisabled={isDisabled}
+                      isFocused={isFocused}
+                      isActive={isActive}
+                      isHovered={isHovered}
+                      isInvalid={isInvalid}
+                      isIndeterminate={isIndeterminate}
+                      primaryColor="inherit"
+                      secondaryColor="inherit"
+                      label=""
+                    />
+                  </CheckboxWrapper>
+                  <LabelText {...labelTextOverrides} tokens={tokens}>
+                    {label}
+                    {isRequired && (
+                      <RequiredIndicator tokens={tokens} aria-hidden="true">
+                        *
+                      </RequiredIndicator>
+                    )}
+                  </LabelText>
+                </Label>
+              )}
+            </Theme.Consumer>
+          )}
+        </GlobalTheme.Consumer>
+      </Theme.Provider>
     );
   }
 }

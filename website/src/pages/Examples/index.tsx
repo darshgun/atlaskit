@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { match } from 'react-router';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -334,13 +334,10 @@ export default class Examples extends React.Component<Props, State> {
     title: string;
   }) => {
     const id = Date.now().toString();
-    const icon = (() => {
-      if (flagProps.appearance === 'error') {
-        return <ErrorIcon label="Error" secondaryColor={colors.R400} />;
-      }
-
-      return '';
-    })();
+    const icon = (() =>
+      flagProps.appearance === 'error' ? (
+        <ErrorIcon label="Error" secondaryColor={colors.R400} />
+      ) : null)();
     this.setState({
       flags: {
         [id]: (

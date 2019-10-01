@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as H from 'history';
 import { match } from 'react-router';
 import styled from 'styled-components';
@@ -27,7 +27,7 @@ export type ResolvedLog = {
 export default class ChangelogExplorer extends React.Component<Props, State> {
   state: State = { isInvalid: false, range: '' };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { semver } = this.props.match.params;
     if (semver)
       this.setState({

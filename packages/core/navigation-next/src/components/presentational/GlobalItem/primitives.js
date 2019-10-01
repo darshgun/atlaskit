@@ -3,6 +3,7 @@
 import React, { Fragment, Component } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
+import deepEqual from 'react-fast-compare';
 import { styleReducerNoOp, withGlobalTheme } from '../../../theme';
 import type {
   GlobalItemPresentationProps,
@@ -14,7 +15,7 @@ import type {
 class GlobalNavigationItemPrimitive extends Component<GlobalItemPrimitiveProps> {
   static defaultProps = {
     dataset: {
-      'data-test-id': 'GlobalNavigationItem',
+      'data-testid': 'GlobalNavigationItem',
     },
     isActive: false,
     isHover: false,
@@ -23,6 +24,10 @@ class GlobalNavigationItemPrimitive extends Component<GlobalItemPrimitiveProps> 
     size: 'large',
     styles: styleReducerNoOp,
   };
+
+  shouldComponentUpdate(nextProps: GlobalItemPrimitiveProps) {
+    return !deepEqual(this.props, nextProps);
+  }
 
   renderIconAndBadge = (badgeWrapper: {}) => {
     const { icon: Icon, badge: Badge, label, tooltip } = this.props;

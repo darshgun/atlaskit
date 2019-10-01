@@ -35,13 +35,17 @@ import {
   clearEditorContent,
 } from '@atlaskit/editor-core';
 import { EditorView } from 'prosemirror-view';
-import { EditorState, Selection } from 'prosemirror-state';
+import { EditorViewWithComposition } from '../../types';
+import { EditorState } from 'prosemirror-state';
+import {
+  undo as pmHistoryUndo,
+  redo as pmHistoryRedo,
+} from 'prosemirror-history';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { Color as StatusColor } from '@atlaskit/status/element';
 
 import NativeToWebBridge from './bridge';
 import WebBridge from '../../web-bridge';
-import { ProseMirrorDOMChange } from '../../types';
 import { hasValue } from '../../utils';
 import { rejectPromise, resolvePromise } from '../../cross-platform-promise';
 
@@ -54,7 +58,7 @@ export default class WebBridgeImpl extends WebBridge
   blockFormatBridgeState: BlockTypeState | null = null;
   listBridgeState: ListsState | null = null;
   mentionsPluginState: MentionPluginState | null = null;
-  editorView: EditorView & ProseMirrorDOMChange | null = null;
+  editorView: EditorView & EditorViewWithComposition | null = null;
   transformer: JSONTransformer = new JSONTransformer();
   editorActions: EditorActions = new EditorActions();
   mediaPicker: CustomMediaPicker | undefined;
@@ -118,7 +122,7 @@ export default class WebBridgeImpl extends WebBridge
         text,
         color,
         localId: uuid,
-      })(this.editorView);
+      })(this.editorView.state, this.editorView.dispatch);
     }
   }
 
@@ -129,39 +133,8 @@ export default class WebBridgeImpl extends WebBridge
   }
 
   setContent(content: string) {
-    // TODO: Re-enable (https://product-fabric.atlassian.net/browse/ED-6714)
-    // Prevent deletion of invalid marks. Temporary fix for inline comments being removed in the document.
-    // This is to prevent the validator running (which deletes invalid marks).
-    // Waiting on Confluence to change from confluenceInlineComment to annotation mark
-
-    // if (this.editorActions) {
-    //   this.editorActions.replaceDocument(content, false);
-    // }
-
-    if (this.editorView) {
-      const { state, dispatch } = this.editorView;
-      const tr = state.tr;
-      let parsedContent;
-      try {
-        parsedContent = JSON.parse(content);
-      } catch (e) {
-        return;
-      }
-
-      parsedContent = (parsedContent.content || []).map((child: any) => {
-        try {
-          return state.schema.nodeFromJSON(child);
-        } catch (e) {
-          return state.schema.nodes.unsupportedBlock.createChecked({
-            originalValue: child,
-          });
-        }
-      });
-
-      tr.setMeta('addToHistory', false);
-      tr.replaceWith(0, state.doc.nodeSize - 2, parsedContent);
-      tr.setSelection(Selection.atStart(tr.doc));
-      dispatch(tr);
+    if (this.editorActions) {
+      this.editorActions.replaceDocument(content, false, false);
     }
   }
 
@@ -353,6 +326,16 @@ export default class WebBridgeImpl extends WebBridge
             });
             return insert(mention);
           }
+          if (type === 'emoji') {
+            const { id, shortName, fallback } = item;
+            const emoji = state.schema.nodes.emoji.createChecked({
+              shortName,
+              id,
+              fallback,
+              text: fallback || shortName,
+            });
+            return insert(emoji);
+          }
 
           return false;
         },
@@ -387,20 +370,32 @@ export default class WebBridgeImpl extends WebBridge
     this.editorView.dispatch(this.editorView.state.tr.scrollIntoView());
   }
 
+  undo() {
+    if (this.editorView) {
+      pmHistoryUndo(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
+  redo() {
+    if (this.editorView) {
+      pmHistoryRedo(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
   flushDOM() {
     if (!this.editorView) {
       return false;
     }
 
     /**
-     * NOTE: `inDOMChange` is a private API, it's used as a workaround to forcefully apply current composition
+     * NOTE: `domObserver` is a private API, it's used as a workaround to forcefully apply current composition
      * when integrators request the content. It doesn't break the users current composing so they may continue
      * to compose the current item.
      * @see ED-5924
      */
-    const domChange = this.editorView.inDOMChange;
-    if (domChange && domChange.composing) {
-      domChange.finish(true);
+    const { composing, domObserver } = this.editorView;
+    if (composing && domObserver) {
+      domObserver.flush();
       return true;
     }
 

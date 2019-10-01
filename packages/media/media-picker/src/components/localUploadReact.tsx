@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Context } from '@atlaskit/media-core';
+import { MediaClient } from '@atlaskit/media-client';
 import { UploadService } from '../service/types';
 import {
   UploadEndEventPayload,
@@ -8,14 +8,15 @@ import {
   UploadProcessingEventPayload,
   UploadsStartEventPayload,
   UploadStatusUpdateEventPayload,
+  UploadEventPayloadMap,
 } from '../domain/uploadEvent';
 import { UploadComponent } from './component';
 import { UploadParams } from '../domain/config';
-import { NewUploadServiceImpl } from '../service/newUploadServiceImpl';
+import { UploadServiceImpl } from '../service/uploadServiceImpl';
 import { LocalUploadConfig } from './types';
 
 export type LocalUploadComponentBaseProps = {
-  context: Context;
+  mediaClient: MediaClient;
   config: LocalUploadConfig;
   onUploadsStart?: (payload: UploadsStartEventPayload) => void;
   onPreviewUpdate?: (payload: UploadPreviewUpdateEventPayload) => void;
@@ -26,7 +27,8 @@ export type LocalUploadComponentBaseProps = {
 };
 
 export class LocalUploadComponentReact<
-  Props extends LocalUploadComponentBaseProps
+  Props extends LocalUploadComponentBaseProps,
+  M extends UploadEventPayloadMap = UploadEventPayloadMap
 > extends Component<Props, {}> {
   protected readonly uploadService: UploadService;
   protected uploadComponent = new UploadComponent();
@@ -35,7 +37,7 @@ export class LocalUploadComponentReact<
     super(props);
 
     const {
-      context,
+      mediaClient,
       config,
       onUploadsStart,
       onPreviewUpdate,
@@ -66,8 +68,8 @@ export class LocalUploadComponentReact<
       this.uploadComponent.on('upload-error', onError!);
     }
 
-    this.uploadService = new NewUploadServiceImpl(
-      context,
+    this.uploadService = new UploadServiceImpl(
+      mediaClient,
       tenantUploadParams,
       shouldCopyFileToRecents,
     );
@@ -79,9 +81,9 @@ export class LocalUploadComponentReact<
     this.uploadService.on('file-upload-error', this.onUploadError);
   }
 
-  public cancel(uniqueIdentifier?: string): void {
+  public cancel = (uniqueIdentifier?: string): void => {
     this.uploadService.cancel(uniqueIdentifier);
-  }
+  };
 
   public setUploadParams(uploadParams: UploadParams): void {
     this.uploadService.setUploadParams(uploadParams);
@@ -110,7 +112,7 @@ export class LocalUploadComponentReact<
   };
 
   private onFileConverted = (payload: UploadEndEventPayload): void => {
-    this.uploadComponent.emitUploadEnd(payload.file, payload.public);
+    this.uploadComponent.emitUploadEnd(payload.file);
   };
 
   private onUploadError = ({ file, error }: UploadErrorEventPayload): void => {

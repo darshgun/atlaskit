@@ -2,6 +2,7 @@ import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { isTableSelected } from 'prosemirror-utils';
 import {
   browser,
   calcTableWidth,
@@ -9,12 +10,10 @@ import {
 } from '@atlaskit/editor-common';
 
 import TableFloatingControls from '../ui/TableFloatingControls';
-import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 
 import { getPluginState } from '../pm-plugins/main';
 import { scaleTable } from '../pm-plugins/table-resizing';
 import {
-  getParentNodeWidth,
   getLayoutSize,
   insertColgroupFromNode as recreateResizeColsByNode,
   updateControls,
@@ -36,6 +35,7 @@ import {
 } from '../utils';
 import { autoSizeTable } from '../commands';
 import { WidthPluginState } from '../../width';
+import { getParentNodeWidth } from '../../../utils/node-width';
 
 export interface ComponentProps extends Props {
   view: EditorView;
@@ -65,6 +65,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
   private wrapper?: HTMLDivElement | null;
   private table?: HTMLTableElement | null;
   private rightShadow?: HTMLDivElement | null;
+  private leftShadow?: HTMLDivElement | null;
   private frameId?: number;
   private node?: PmNode;
   private containerWidth?: WidthPluginState;
@@ -132,7 +133,12 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
   }
 
   componentDidUpdate(prevProps: ComponentProps) {
-    updateRightShadow(this.wrapper, this.table, this.rightShadow);
+    updateOverflowShadows(
+      this.wrapper,
+      this.table,
+      this.rightShadow,
+      this.leftShadow,
+    );
 
     if (this.props.node.attrs.__autoSize) {
       // Wait for next tick to handle auto sizing, gives the browser time to do layout calc etc.
@@ -167,27 +173,15 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
     } = pluginState;
 
     // doesn't work well with WithPluginState
-    const {
-      isInDanger,
-      hoveredColumns,
-      hoveredRows,
-      insertColumnButtonIndex,
-      insertRowButtonIndex,
-    } = getPluginState(view.state);
+    const { isInDanger, hoveredRows } = getPluginState(view.state);
 
     const tableRef = this.table || undefined;
     const tableActive = this.table === pluginState.tableRef;
     const isResizing =
       !!tableResizingPluginState && !!tableResizingPluginState.dragging;
-    const { scroll } = this.state;
 
     const rowControls = [
-      <div
-        key={0}
-        className={`${ClassName.ROW_CONTROLS_WRAPPER} ${
-          scroll > 0 ? ClassName.TABLE_LEFT_SHADOW : ''
-        }`}
-      >
+      <div key={0} className={ClassName.ROW_CONTROLS_WRAPPER}>
         <TableFloatingControls
           editorView={view}
           tableRef={tableRef}
@@ -196,30 +190,13 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
           isInDanger={isInDanger}
           isResizing={isResizing}
           isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
-          isHeaderColumnEnabled={pluginState.isHeaderColumnEnabled}
           isHeaderRowEnabled={pluginState.isHeaderRowEnabled}
+          ordering={pluginState.ordering}
+          isHeaderColumnEnabled={pluginState.isHeaderColumnEnabled}
           hasHeaderRow={containsHeaderRow(view.state, node)}
           // pass `selection` and `tableHeight` to control re-render
           selection={view.state.selection}
           tableHeight={tableRef ? tableRef.offsetHeight : undefined}
-          insertColumnButtonIndex={insertColumnButtonIndex}
-          insertRowButtonIndex={insertRowButtonIndex}
-        />
-      </div>,
-    ];
-
-    const columnControls = [
-      <div key={0} className={ClassName.COLUMN_CONTROLS_WRAPPER}>
-        <ColumnControls
-          editorView={view}
-          tableRef={tableRef}
-          hoveredColumns={hoveredColumns}
-          isInDanger={isInDanger}
-          isResizing={isResizing}
-          // pass `selection` and `numberOfColumns` to control re-render
-          selection={view.state.selection}
-          numberOfColumns={node.firstChild!.childCount}
-          insertColumnButtonIndex={insertColumnButtonIndex}
         />
       </div>,
     ];
@@ -230,13 +207,21 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
           width: this.state.tableContainerWidth,
         }}
         className={classnames(ClassName.TABLE_CONTAINER, {
-          [ClassName.WITH_CONTROLS]: tableActive,
+          [ClassName.WITH_CONTROLS]: allowControls && tableActive,
+          [ClassName.HOVERED_DELETE_BUTTON]: isInDanger,
+          [ClassName.TABLE_SELECTED]: isTableSelected(view.state.selection),
           'less-padding': width < akEditorMobileBreakoutPoint,
         })}
         data-number-column={node.attrs.isNumberColumnEnabled}
         data-layout={node.attrs.layout}
       >
         {allowControls && rowControls}
+        <div
+          ref={elem => {
+            this.leftShadow = elem;
+          }}
+          className={ClassName.TABLE_LEFT_SHADOW}
+        />
         <div
           className={classnames(ClassName.TABLE_NODE_WRAPPER)}
           ref={elem => {
@@ -246,9 +231,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
               this.table = elem.querySelector('table');
             }
           }}
-        >
-          {allowControls && columnControls}
-        </div>
+        />
         <div
           ref={elem => {
             this.rightShadow = elem;
@@ -424,15 +407,22 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
   private handleWindowResizeDebounced = rafSchedule(this.handleWindowResize);
 }
 
-export const updateRightShadow = (
+export const updateOverflowShadows = (
   wrapper?: HTMLElement | null,
   table?: HTMLElement | null,
   rightShadow?: HTMLElement | null,
+  leftShadow?: HTMLElement | null,
 ) => {
-  if (table && wrapper && rightShadow) {
-    const diff = table.offsetWidth - wrapper.offsetWidth;
-    rightShadow.style.display =
-      diff > 0 && diff > wrapper.scrollLeft ? 'block' : 'none';
+  // Right shadow
+  if (table && wrapper) {
+    if (rightShadow) {
+      const diff = table.offsetWidth - wrapper.offsetWidth;
+      rightShadow.style.display =
+        diff > 0 && diff > wrapper.scrollLeft ? 'block' : 'none';
+    }
+    if (leftShadow) {
+      leftShadow.style.display = wrapper.scrollLeft > 0 ? 'block' : 'none';
+    }
   }
   return;
 };

@@ -2,7 +2,7 @@ import { State } from './domain';
 
 // Hardcoded list of keys we want to fill in default state. These are the fields that are not filled,
 // and needs to be provided when final state is constructed:
-// 'context' | 'userContext' | 'redirectUrl' | 'config'
+// 'mediaClient' | 'userMediaClient' | 'redirectUrl' | 'config'
 export type DefaultStateKeys =
   | 'uploads'
   | 'remoteUploads'
@@ -14,13 +14,12 @@ export type DefaultStateKeys =
   | 'isCancelling'
   | 'lastUploadIndex'
   | 'giphy'
-  | 'onCancelUpload'
-  | 'deferredIdUpfronts';
+  | 'onCancelUpload';
 
 // TODO when AK moves to Typescript 3 please replace above hardcoded list with this:
 // export type DefaultStateKeys = Exclude<
 //   keyof State,
-//   'context' | 'userContext' | 'redirectUrl' | 'config'
+//   'mediaClient' | 'userMediaClient' | 'redirectUrl' | 'config'
 // >;
 
 export type DefaultState = Pick<State, DefaultStateKeys>;
@@ -55,7 +54,6 @@ const defaultState: DefaultState = {
   onCancelUpload: () => {
     throw new Error('onCancelUpload has not been set yet.');
   },
-  deferredIdUpfronts: {},
 };
 
 export default defaultState;

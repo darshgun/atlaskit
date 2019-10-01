@@ -8,11 +8,9 @@ import React, {
   type ElementRef,
 } from 'react';
 import raf from 'raf-schd';
-import {
-  withAnalyticsEvents,
-  type WithAnalyticsEventsProps,
-} from '@atlaskit/analytics-next';
-import { colors } from '@atlaskit/theme';
+import { Global } from '@emotion/core';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import * as colors from '@atlaskit/theme/colors';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import MenuExpandIcon from '@atlaskit/icon/glyph/menu-expand';
@@ -26,7 +24,6 @@ import {
   GLOBAL_NAV_COLLAPSE_THRESHOLD,
 } from '../../../common/constants';
 import { Shadow } from '../../../common/primitives';
-import PropertyToggle from './PropertyToggle';
 
 import type { CollapseToggleTooltipContent } from './types';
 
@@ -38,9 +35,31 @@ const shouldResetGrabArea = (width: number) => {
   return width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH;
 };
 
-const Outer = (props: *) => (
-  <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
+export const BodyDragCursor = () => (
+  <Global
+    styles={{
+      body: {
+        cursor: 'ew-resize',
+      },
+    }}
+  />
 );
+
+const Outer = (props: *) => (
+  <div
+    css={{
+      bottom: 0,
+      left: '100%',
+      position: 'absolute',
+      top: 0,
+      transform: 'translateZ(0)',
+      width: OUTER_WIDTH,
+      zIndex: 3, // higher than the scroll hint lines
+    }}
+    {...props}
+  />
+);
+
 export const GrabArea = ({ showHandle, isBold, ...props }: *) => (
   <div
     css={{
@@ -93,6 +112,7 @@ const Button = ({
   ...props
 }: ButtonProps) => (
   <button
+    className="ak-navigation-resize-button"
     type="button"
     ref={innerRef}
     css={{
@@ -123,6 +143,11 @@ const Button = ({
         color: 'white',
       },
       ':active': {
+        backgroundColor: colors.B200,
+        color: 'white',
+      },
+      ':focus': {
+        opacity: 1,
         backgroundColor: colors.B200,
         color: 'white',
       },
@@ -186,8 +211,7 @@ function makeTooltipNode({ text, char }: { text: string, char: string }) {
 }
 
 type Props = {
-  ...WithAnalyticsEventsProps,
-  children: State => any,
+  createAnalyticsEvent: Function,
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
   expandCollapseAffordanceRef: Ref<'button'>,
   // eslint-disable-next-line react/no-unused-prop-types
@@ -195,7 +219,6 @@ type Props = {
   flyoutIsOpen: boolean,
   isDisabled: boolean,
   isGrabAreaDisabled: boolean,
-  mouseIsOverNavigation: boolean,
   mutationRefs: Array<{
     ref: ElementRef<*>,
     property: 'padding-left' | 'width',
@@ -436,13 +459,11 @@ class ResizeControl extends PureComponent<Props, State> {
       showGrabArea,
     } = this.state;
     const {
-      children,
       collapseToggleTooltipContent,
       expandCollapseAffordanceRef,
       flyoutIsOpen,
       isDisabled: isResizeDisabled,
       isGrabAreaDisabled,
-      mouseIsOverNavigation,
       onMouseOverButtonBuffer,
       navigation,
     } = this.props;
@@ -458,9 +479,11 @@ class ResizeControl extends PureComponent<Props, State> {
         onClick={this.onResizerChevronClick}
         hitAreaSize={onMouseOverButtonBuffer ? 'large' : 'small'}
         // maintain styles when user is dragging
-        isVisible={isCollapsed || mouseIsDown || mouseIsOverNavigation}
+        isVisible={isCollapsed || mouseIsDown}
         hasHighlight={mouseIsDown || mouseIsOverGrabArea}
         innerRef={expandCollapseAffordanceRef}
+        aria-expanded={!isCollapsed}
+        aria-label="Toggle navigation"
       >
         <ButtonIcon />
       </Button>
@@ -468,45 +491,39 @@ class ResizeControl extends PureComponent<Props, State> {
     const shadowDirection = flyoutIsOpen ? 'to right' : 'to left';
 
     return (
-      <Fragment>
-        {children(this.state)}
-        <Outer>
-          <Shadow direction={shadowDirection} isBold={mouseIsDown} />
-          {!isResizeDisabled && (
-            <Fragment>
-              {!isGrabAreaDisabled && showGrabArea && (
-                <GrabArea
-                  isBold={mouseIsDown}
-                  showHandle={mouseIsDown || mouseIsOverGrabArea}
-                  onMouseEnter={this.mouseEnterGrabArea}
-                  onMouseLeave={this.mouseLeaveGrabArea}
-                  onMouseDown={this.handleResizeStart}
-                />
+      <Outer>
+        {isDragging && <BodyDragCursor />}
+        <Shadow direction={shadowDirection} isBold={mouseIsDown} />
+        {!isResizeDisabled && (
+          <Fragment>
+            {!isGrabAreaDisabled && showGrabArea && (
+              <GrabArea
+                isBold={mouseIsDown}
+                showHandle={mouseIsDown || mouseIsOverGrabArea}
+                onMouseEnter={this.mouseEnterGrabArea}
+                onMouseLeave={this.mouseLeaveGrabArea}
+                onMouseDown={this.handleResizeStart}
+              />
+            )}
+            <div onMouseOver={!flyoutIsOpen ? onMouseOverButtonBuffer : null}>
+              {collapseToggleTooltipContent ? (
+                <Tooltip
+                  content={makeTooltipNode(
+                    collapseToggleTooltipContent(isCollapsed),
+                  )}
+                  delay={600}
+                  hideTooltipOnClick
+                  position="right"
+                >
+                  {button}
+                </Tooltip>
+              ) : (
+                button
               )}
-              <div onMouseOver={!flyoutIsOpen ? onMouseOverButtonBuffer : null}>
-                {collapseToggleTooltipContent ? (
-                  <Tooltip
-                    content={makeTooltipNode(
-                      collapseToggleTooltipContent(isCollapsed),
-                    )}
-                    delay={600}
-                    hideTooltipOnClick
-                    position="right"
-                  >
-                    {button}
-                  </Tooltip>
-                ) : (
-                  button
-                )}
-              </div>
-            </Fragment>
-          )}
-        </Outer>
-        <PropertyToggle
-          isActive={isDragging}
-          styles={{ cursor: 'ew-resize' }}
-        />
-      </Fragment>
+            </div>
+          </Fragment>
+        )}
+      </Outer>
     );
   }
 }

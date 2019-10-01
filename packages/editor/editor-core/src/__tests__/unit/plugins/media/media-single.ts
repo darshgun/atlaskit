@@ -3,7 +3,9 @@ import {
   p,
   mediaSingle,
   media,
+  extension,
   createEditorFactory,
+  storyContextIdentifierProviderFactory,
 } from '@atlaskit/editor-test-helpers';
 
 import {
@@ -11,13 +13,14 @@ import {
   insertMediaAsMediaSingle,
 } from '../../../../plugins/media/utils/media-single';
 import { MediaState } from '../../../../plugins/media/pm-plugins/main';
-import mediaPlugin from '../../../../plugins/media';
 import {
   temporaryFileId,
   testCollectionName,
   temporaryMediaWithDimensions,
   temporaryMedia,
 } from './_utils';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { INPUT_METHOD } from '../../../../plugins/analytics';
 
 const createMediaState = (
   id: string,
@@ -31,11 +34,23 @@ const createMediaState = (
 
 describe('media-single', () => {
   const createEditor = createEditorFactory();
-  const editor = (doc: any) =>
-    createEditor({
-      doc,
-      editorPlugins: [mediaPlugin({ allowMediaSingle: true })],
+  const editor = (doc: any) => {
+    const contextIdentifierProvider = storyContextIdentifierProviderFactory();
+    const providerFactory = ProviderFactory.create({
+      contextIdentifierProvider,
     });
+    return createEditor({
+      doc,
+      editorProps: {
+        allowExtension: true,
+        media: {
+          allowMediaSingle: true,
+        },
+        contextIdentifierProvider,
+      },
+      providerFactory,
+    });
+  };
 
   describe('insertMediaAsMediaSingle', () => {
     describe('when inserting node that is not a media node', () => {
@@ -44,6 +59,7 @@ describe('media-single', () => {
         insertMediaAsMediaSingle(
           editorView,
           p('world')(editorView.state.schema),
+          INPUT_METHOD.PICKER_CLOUD,
         );
 
         expect(editorView.state.doc).toEqualDocument(doc(p('text')));
@@ -62,6 +78,7 @@ describe('media-single', () => {
               collection: testCollectionName,
               __fileMimeType: 'pdf',
             })()(editorView.state.schema),
+            INPUT_METHOD.PICKER_CLOUD,
           );
 
           expect(editorView.state.doc).toEqualDocument(doc(p('text')));
@@ -79,6 +96,7 @@ describe('media-single', () => {
               collection: testCollectionName,
               __fileMimeType: 'image/png',
             })()(editorView.state.schema),
+            INPUT_METHOD.PICKER_CLOUD,
           );
 
           expect(editorView.state.doc).toEqualDocument(
@@ -108,6 +126,7 @@ describe('media-single', () => {
         insertMediaSingleNode(
           editorView,
           createMediaState(temporaryFileId),
+          INPUT_METHOD.PICKER_CLOUD,
           testCollectionName,
         );
 
@@ -130,7 +149,12 @@ describe('media-single', () => {
           createMediaState(temporaryFileId + '1'),
           createMediaState(temporaryFileId + '2'),
         ] as Array<MediaState>).forEach(state =>
-          insertMediaSingleNode(editorView, state, testCollectionName),
+          insertMediaSingleNode(
+            editorView,
+            state,
+            INPUT_METHOD.PICKER_CLOUD,
+            testCollectionName,
+          ),
         );
 
         expect(editorView.state.doc).toEqualDocument(
@@ -177,6 +201,7 @@ describe('media-single', () => {
           insertMediaSingleNode(
             editorView,
             createMediaState(temporaryFileId),
+            INPUT_METHOD.PICKER_CLOUD,
             testCollectionName,
           );
 
@@ -196,6 +221,7 @@ describe('media-single', () => {
           insertMediaSingleNode(
             editorView,
             createMediaState(temporaryFileId),
+            INPUT_METHOD.PICKER_CLOUD,
             testCollectionName,
           );
 
@@ -218,6 +244,7 @@ describe('media-single', () => {
           insertMediaSingleNode(
             editorView,
             createMediaState(temporaryFileId),
+            INPUT_METHOD.PICKER_CLOUD,
             testCollectionName,
           );
 
@@ -231,6 +258,33 @@ describe('media-single', () => {
           );
         });
       });
+
+      describe('is NodeSelection', () => {
+        it('replaces the selected node', () => {
+          const { editorView } = editor(
+            doc(
+              p('hello'),
+              '{<node>}',
+              extension({ extensionKey: 'extKey', extensionType: 'extType' })(),
+            ),
+          );
+
+          insertMediaSingleNode(
+            editorView,
+            createMediaState(temporaryFileId),
+            INPUT_METHOD.PICKER_CLOUD,
+            testCollectionName,
+          );
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              p('hello'),
+              mediaSingle({ layout: 'center' })(temporaryMediaWithDimensions()),
+              p(),
+            ),
+          );
+        });
+      });
     });
 
     it('should respect scaleFactor', () => {
@@ -239,6 +293,7 @@ describe('media-single', () => {
       insertMediaSingleNode(
         editorView,
         { ...createMediaState(temporaryFileId), scaleFactor: 2 },
+        INPUT_METHOD.PICKER_CLOUD,
         testCollectionName,
       );
 
@@ -259,6 +314,7 @@ describe('media-single', () => {
       insertMediaSingleNode(
         editorView,
         { ...createMediaState(temporaryFileId), scaleFactor: 2.2 },
+        INPUT_METHOD.PICKER_CLOUD,
         testCollectionName,
       );
 
@@ -282,6 +338,7 @@ describe('media-single', () => {
           id: temporaryFileId,
           status: 'preview',
         },
+        INPUT_METHOD.PICKER_CLOUD,
         testCollectionName,
       );
 

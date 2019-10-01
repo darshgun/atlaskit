@@ -1,10 +1,9 @@
 import { MediaSingleLayout } from '@atlaskit/adf-schema';
 import { MediaSingleProps } from '@atlaskit/editor-common';
-import { EditorAppearance } from '../../../../types';
+import { MediaClientConfig } from '@atlaskit/media-core';
 import { GridType } from '../../../grid/types';
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
-import { Context } from '@atlaskit/media-core';
 
 export type EnabledHandles = { left?: boolean; right?: boolean };
 
@@ -21,8 +20,8 @@ export type Props = MediaSingleProps & {
   lineLength: number;
   gridSize: number;
   containerWidth: number;
-  appearance?: EditorAppearance;
+  allowBreakoutSnapPoints?: boolean;
   selected: boolean;
-  viewContext?: Context;
+  viewMediaClientConfig?: MediaClientConfig;
   fullWidthMode?: boolean;
 };

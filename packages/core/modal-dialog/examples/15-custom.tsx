@@ -76,7 +76,6 @@ interface FooterState {
   isOpen: boolean;
 }
 
-// eslint-disable-next-line react/no-multi-comp
 class Footer extends React.Component<FooterProps, FooterState> {
   state = { isOpen: false };
 
@@ -93,7 +92,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
         <InlineDialog
           content="Some hint text?"
           isOpen={isOpen}
-          position="top left"
+          placement="top-start"
         >
           <Hint onMouseEnter={this.open} onMouseLeave={this.close}>
             <Avatar size="small" />
@@ -111,7 +110,7 @@ class Footer extends React.Component<FooterProps, FooterState> {
 interface State {
   isOpen: string | null;
 }
-// eslint-disable-next-line react/no-multi-comp
+
 export default class ModalDemo extends React.Component<{}, State> {
   state = { isOpen: null };
 

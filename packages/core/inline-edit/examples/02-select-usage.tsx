@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Select from '@atlaskit/select';
 import Group from '@atlaskit/tag-group';
@@ -9,12 +9,11 @@ import InlineEdit from '../src';
 
 const ReadViewContainer = styled.div`
   display: flex;
-  max-width: 100%;
-  overflow: hidden;
-  padding: ${gridSize()}px ${gridSize() - 2}px;
   font-size: ${fontSize()}px;
   height: ${(gridSize() * 2.5) / fontSize()}em;
   line-height: ${(gridSize() * 2.5) / fontSize()};
+  max-width: 100%;
+  padding: ${gridSize()}px ${gridSize() - 2}px;
 `;
 
 const EditViewContainer = styled.div`

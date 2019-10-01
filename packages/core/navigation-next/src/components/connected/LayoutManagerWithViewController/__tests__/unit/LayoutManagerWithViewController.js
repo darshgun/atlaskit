@@ -20,6 +20,7 @@ describe('LayoutManagerWithViewController', () => {
       customComponents: { Foo: () => null },
       globalNavigation: GlobalNavigationComponent,
       experimental_flyoutOnHover: false,
+      experimental_hideNavVisuallyOnCollapse: false,
       firstSkeletonToRender: 'product',
       onCollapseStart: jest.fn(),
       onCollapseEnd: jest.fn(),
@@ -103,7 +104,7 @@ describe('LayoutManagerWithViewController', () => {
     expect(containerSkeletonEl.find(SkeletonContainerView)).toHaveLength(1);
     expect(containerSkeletonEl.find(SkeletonContainerView).props()).toEqual({
       dataset: {
-        'data-test-id': 'ContextualNavigationSkeleton',
+        'data-testid': 'ContextualNavigationSkeleton',
       },
       type: 'product',
     });

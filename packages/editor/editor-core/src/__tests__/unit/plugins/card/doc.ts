@@ -18,12 +18,14 @@ import {
   li,
   insertText,
   createAnalyticsEventMock,
+  defaultSchema,
+  text,
+  cleanOne,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import { Fragment, Slice } from 'prosemirror-model';
+import { Fragment, Slice, Node } from 'prosemirror-model';
 
 import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
-import cardPlugin from '../../../../plugins/card';
 import { CardProvider, CardPluginState } from '../../../../plugins/card/types';
 import {
   setProvider,
@@ -31,14 +33,12 @@ import {
 } from '../../../../plugins/card/pm-plugins/actions';
 
 import { setTextSelection } from '../../../../utils';
-import { queueCardsFromChangedTr } from '../../../../plugins/card/pm-plugins/doc';
-import { panelPlugin } from '../../../../plugins';
-import tablePlugin from '../../../../plugins/table';
-import listsPlugin from '../../../../plugins/lists';
-import tasksAndDecisionsPlugin from '../../../../plugins/tasks-and-decisions';
-import extensionPlugin from '../../../../plugins/extension';
+import {
+  queueCardsFromChangedTr,
+  shouldReplace,
+} from '../../../../plugins/card/pm-plugins/doc';
 import { INPUT_METHOD } from '../../../../plugins/analytics';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { createCardRequest, setupProvider, ProviderWrapper } from './_helpers';
 
 const inlineCardAdf = {
@@ -58,7 +58,7 @@ const googleUrl = 'http://www.google.com/';
 
 describe('card', () => {
   const createEditor = createEditorFactory();
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEventInterface>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
   const editor = (doc: any) => {
     createAnalyticsEvent = createAnalyticsEventMock();
     const editorWrapper = createEditor({
@@ -68,15 +68,12 @@ describe('card', () => {
           advanced: true,
         },
         allowAnalyticsGASV3: true,
+        allowExtension: true,
+        allowPanel: true,
+        allowLists: true,
+        allowTasksAndDecisions: true,
+        UNSAFE_cards: {},
       },
-      editorPlugins: [
-        cardPlugin,
-        panelPlugin,
-        tablePlugin(),
-        listsPlugin,
-        tasksAndDecisionsPlugin,
-        extensionPlugin,
-      ],
       createAnalyticsEvent: createAnalyticsEvent as any,
       pluginKey,
     });
@@ -87,7 +84,7 @@ describe('card', () => {
   };
 
   describe('doc', () => {
-    describe('#state.update', async () => {
+    describe('#state.update', () => {
       it('keeps positions the same for typing after the link', () => {
         const { editorView, refs } = editor(
           doc(
@@ -105,6 +102,7 @@ describe('card', () => {
 
         // should be at initial pos
         const initialState = {
+          cards: [],
           requests: [
             expect.objectContaining({
               url: atlassianUrl,
@@ -112,6 +110,7 @@ describe('card', () => {
             }),
           ],
           provider: null,
+          showLinkingToolbar: false,
         } as CardPluginState;
         expect(pluginKey.getState(editorView.state)).toEqual(initialState);
 
@@ -145,6 +144,7 @@ describe('card', () => {
         );
 
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [
             {
               url: 'http://www.atlassian.com/',
@@ -155,7 +155,8 @@ describe('card', () => {
             },
           ],
           provider: null,
-        });
+          showLinkingToolbar: false,
+        } as CardPluginState);
       });
 
       it('remaps positions for typing before the link', () => {
@@ -179,6 +180,7 @@ describe('card', () => {
 
         // nothing should have changed
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [
             expect.objectContaining({
               url: atlassianUrl,
@@ -186,6 +188,7 @@ describe('card', () => {
             }),
           ],
           provider: null,
+          showLinkingToolbar: false,
         } as CardPluginState);
       });
 
@@ -220,6 +223,7 @@ describe('card', () => {
 
         // everything should be at initial pos
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [
             expect.objectContaining({
               url: hrefs['A'],
@@ -231,13 +235,15 @@ describe('card', () => {
             }),
           ],
           provider: null,
-        });
+          showLinkingToolbar: false,
+        } as CardPluginState);
 
         // type something in between the links
         insertText(editorView, 'ok', refs['middle']);
 
         // only B should have moved 2 to the right
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [
             expect.objectContaining({
               url: hrefs['A'],
@@ -249,7 +255,8 @@ describe('card', () => {
             }),
           ],
           provider: null,
-        });
+          showLinkingToolbar: false,
+        } as CardPluginState);
       });
     });
 
@@ -272,9 +279,11 @@ describe('card', () => {
       afterEach(async () => {
         // queue should now be empty, and document should remain the same
         expect(pluginKey.getState(view.state)).toEqual({
+          cards: [],
           requests: [],
           provider: provider,
-        });
+          showLinkingToolbar: false,
+        } as CardPluginState);
 
         expect(view.state.doc).toEqualDocument(initialDoc);
       });
@@ -367,9 +376,11 @@ describe('card', () => {
 
         // queue should be empty
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [],
           provider: providerWrapper.provider,
-        });
+          showLinkingToolbar: false,
+        } as CardPluginState);
       });
 
       it('replaces anyway if compareLinkText is false', async () => {
@@ -703,6 +714,123 @@ describe('card', () => {
       ].forEach(({ initialDoc, expectedContext }) =>
         testWithContext(initialDoc, expectedContext),
       );
+    });
+
+    describe('shouldReplace', () => {
+      it('returns true for regular link, same href and text', () => {
+        const link = cleanOne(
+          a({ href: 'https://invis.io/P8OKINLRQEH' })(
+            'https://invis.io/P8OKINLRQEH',
+          ),
+        )(defaultSchema);
+
+        expect(shouldReplace(link)).toBe(true);
+      });
+
+      it('returns false for regular link, differing href and text', () => {
+        const link = cleanOne(
+          a({ href: 'https://invis.io/P8OKINLRQEH' })(
+            'https://invis.io/P8OKINLRQE',
+          ),
+        )(defaultSchema);
+
+        expect(shouldReplace(link)).toBe(false);
+      });
+
+      it('returns true for differing href and text if compare is skipped', () => {
+        const link = cleanOne(
+          a({ href: 'https://invis.io/P8OKINLRQEH' })(
+            'https://www.atlassian.com/',
+          ),
+        )(defaultSchema);
+
+        expect(shouldReplace(link, false)).toBe(true);
+      });
+
+      it('returns false for same href and text if compare url differs', () => {
+        const link = cleanOne(
+          a({
+            href: 'https://invis.io/P8OKINLRQEH',
+          })('https://invis.io/P8OKINLRQEH'),
+        )(defaultSchema);
+
+        expect(shouldReplace(link, true, 'http://www.atlassian.com/')).toBe(
+          false,
+        );
+      });
+
+      it('returns true for same href and text if compare url matches', () => {
+        const link = cleanOne(
+          a({
+            href: 'https://invis.io/P8OKINLRQEH',
+          })('https://invis.io/P8OKINLRQEH'),
+        )(defaultSchema);
+
+        expect(shouldReplace(link, true, 'https://invis.io/P8OKINLRQEH')).toBe(
+          true,
+        );
+      });
+
+      it('returns true for link with encoded spaces in url and text', () => {
+        const link = cleanOne(
+          a({
+            href:
+              'https://www.dropbox.com/s/2mh79iuglsnmbwf/Get%20Started%20with%20Dropbox.pdf?dl=0',
+          })(
+            'https://www.dropbox.com/s/2mh79iuglsnmbwf/Get%20Started%20with%20Dropbox.pdf?dl=0',
+          ),
+        )(defaultSchema);
+
+        expect(shouldReplace(link)).toBe(true);
+      });
+
+      it('returns true for link with url encoded spaces, text unencoded', () => {
+        const link = cleanOne(
+          a({
+            href:
+              'https://www.dropbox.com/s/2mh79iuglsnmbwf/Get%20Started%20with%20Dropbox.pdf?dl=0',
+          })(
+            'https://www.dropbox.com/s/2mh79iuglsnmbwf/Get Started with Dropbox.pdf?dl=0',
+          ),
+        )(defaultSchema);
+
+        expect(shouldReplace(link)).toBe(true);
+      });
+
+      it('returns true for link with text encoded spaces, url unencoded', () => {
+        const link = cleanOne(
+          a({
+            href:
+              'https://www.dropbox.com/s/2mh79iuglsnmbwf/Get Started with Dropbox.pdf?dl=0',
+          })(
+            'https://www.dropbox.com/s/2mh79iuglsnmbwf/Get%20Started%20with%20Dropbox.pdf?dl=0',
+          ),
+        )(defaultSchema);
+
+        expect(shouldReplace(link)).toBe(true);
+      });
+
+      it('returns true for link with slash', () => {
+        const link = cleanOne(
+          a({
+            href: 'https://invis.io/P8OKINLRQEH/',
+          })('https://invis.io/P8OKINLRQEH/'),
+        )(defaultSchema);
+
+        expect(shouldReplace(link, true, 'https://invis.io/P8OKINLRQEH/')).toBe(
+          true,
+        );
+      });
+
+      it('returns false for text node', () => {
+        const textRefNode = text('https://invis.io/P8OKINLRQEH', defaultSchema);
+        const textNode = Node.fromJSON(
+          defaultSchema,
+          (textRefNode as Node).toJSON(),
+        );
+
+        expect(shouldReplace(textNode)).toBe(false);
+      });
     });
   });
 });

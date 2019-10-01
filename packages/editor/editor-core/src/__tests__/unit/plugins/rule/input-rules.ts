@@ -8,23 +8,23 @@ import {
   hardBreak,
   blockquote,
 } from '@atlaskit/editor-test-helpers';
-import rulePlugin from '../../../../plugins/rule';
-import codeBlockPlugin from '../../../../plugins/code-block';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 describe('inputrules', () => {
   const createEditor = createEditorFactory();
 
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   const editor = (doc: any, trackEvent = () => {}) => {
     createAnalyticsEvent = jest.fn().mockReturnValue({ fire() {} });
     return createEditor({
       doc,
-      editorPlugins: [rulePlugin, codeBlockPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
         allowAnalyticsGASV3: true,
+        allowRule: true,
+        allowCodeBlocks: true,
+        allowNewInsertionBehaviour: true,
       },
       createAnalyticsEvent,
     });
@@ -47,7 +47,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '---', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(hr(), p()));
+      expect(editorView.state.doc).toEqualDocument(doc(hr()));
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.horizontalrule.autoformatting',
       );
@@ -111,7 +111,7 @@ describe('inputrules', () => {
 
       insertText(editorView, '***', sel);
 
-      expect(editorView.state.doc).toEqualDocument(doc(hr(), p()));
+      expect(editorView.state.doc).toEqualDocument(doc(hr()));
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.format.horizontalrule.autoformatting',
       );

@@ -10,13 +10,15 @@ import {
   CardError,
   CardOnClickCallback,
 } from '@atlaskit/media-card';
+import { Context, MediaClientConfig } from '@atlaskit/media-core';
 import {
-  Context,
   ImageResizeMode,
   FileIdentifier,
   ExternalImageIdentifier,
   Identifier,
-} from '@atlaskit/media-core';
+  getMediaClient,
+  FileState,
+} from '@atlaskit/media-client';
 import { MediaType } from '@atlaskit/adf-schema';
 import {
   withImageLoader,
@@ -25,17 +27,30 @@ import {
   ImageLoaderProps,
   // @ts-ignore
   ImageLoaderState,
+  ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './Renderer/types';
 import { RendererContext } from '../react';
+import { XOR } from '@atlaskit/type-helpers';
+import styled from 'styled-components';
 
-export interface MediaProvider {
-  viewContext?: Context;
+export interface WithViewMediaClientConfig {
+  viewMediaClientConfig: MediaClientConfig;
 }
+
+export type WithViewContext = {
+  /**
+   * @deprecated Use viewMediaClientConfig instead.
+   */
+  viewContext: Promise<Context>;
+};
+
+export type MediaProvider = XOR<WithViewMediaClientConfig, WithViewContext>;
 
 export interface MediaCardProps {
   id?: string;
-  mediaProvider?: MediaProvider;
+  mediaProvider?: Promise<MediaProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
   eventHandlers?: {
     media?: {
       onClick?: CardOnClickCallback;
@@ -56,7 +71,9 @@ export interface MediaCardProps {
 }
 
 export interface State {
-  context?: Context;
+  mediaClientConfig?: MediaClientConfig;
+  contextIdentifierProvider?: ContextIdentifierProvider;
+  fileState?: FileState;
 }
 
 const mediaIdentifierMap: Map<string, Identifier> = new Map();
@@ -96,6 +113,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
     const {
       rendererContext,
       mediaProvider,
+      contextIdentifierProvider,
       id,
       url,
       collection: collectionName,
@@ -105,8 +123,21 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       return;
     }
 
-    const provider = await mediaProvider;
-    const context = await provider.viewContext;
+    if (contextIdentifierProvider) {
+      this.setState({
+        contextIdentifierProvider: await contextIdentifierProvider,
+      });
+    }
+    const mediaProviderObject = await mediaProvider;
+    let mediaClientConfig: MediaClientConfig;
+    if (mediaProviderObject.viewMediaClientConfig) {
+      mediaClientConfig = mediaProviderObject.viewMediaClientConfig;
+    } else if (mediaProviderObject.viewContext) {
+      mediaClientConfig = (await mediaProviderObject.viewContext).config;
+    } else {
+      return;
+    }
+
     const nodeIsInCache =
       (id && mediaIdentifierMap.has(id)) ||
       (url && mediaIdentifierMap.has(url));
@@ -122,10 +153,21 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
         }
       });
     }
-
     this.setState({
-      context,
+      mediaClientConfig: mediaClientConfig,
     });
+
+    if (id) {
+      this.saveFileState(id, mediaClientConfig);
+    }
+  }
+
+  UNSAFE_componentWillReceiveProps(newProps: MediaCardProps) {
+    const { mediaClientConfig } = this.state;
+    const { id: newId } = newProps;
+    if (mediaClientConfig && newId && newId !== this.props.id) {
+      this.saveFileState(newId, mediaClientConfig);
+    }
   }
 
   componentWillUnmount() {
@@ -138,6 +180,20 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
     }
   }
 
+  saveFileState = async (id: string, mediaClientConfig: MediaClientConfig) => {
+    const { collection: collectionName } = this.props;
+    const mediaClient = getMediaClient({
+      mediaClientConfig,
+    });
+    const options = {
+      collectionName,
+    };
+    const fileState = await mediaClient.file.getCurrentState(id, options);
+    this.setState({
+      fileState,
+    });
+  };
+
   private renderLoadingCard = () => {
     const { cardDimensions } = this.props;
 
@@ -145,7 +201,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
   };
 
   private renderExternal(shouldOpenMediaViewer: boolean) {
-    const { context } = this.state;
+    const { mediaClientConfig } = this.state;
     const {
       cardDimensions,
       resizeMode,
@@ -167,7 +223,8 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
 
     return (
       <Card
-        context={context as any} // context is not really used when the type is external and we want to render the component asap
+        // context is not really used when the type is external and we want to render the component asap
+        mediaClientConfig={mediaClientConfig!}
         identifier={identifier}
         dimensions={cardDimensions}
         appearance={appearance}
@@ -210,7 +267,11 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
   };
 
   render() {
-    const { context } = this.state;
+    const {
+      contextIdentifierProvider,
+      mediaClientConfig,
+      fileState,
+    } = this.state;
     const {
       id,
       type,
@@ -239,13 +300,15 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       return null;
     }
 
-    if (!context || !id) {
+    if (!mediaClientConfig || !id) {
       return this.renderLoadingCard();
     }
 
     if (!id || type !== 'file') {
       return <CardError dimensions={cardDimensions} />;
     }
+    const contextId =
+      contextIdentifierProvider && contextIdentifierProvider.objectId;
 
     const identifier: FileIdentifier = {
       id,
@@ -255,22 +318,83 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
     };
 
     return (
-      <Card
-        identifier={identifier}
-        context={context}
-        dimensions={cardDimensions}
-        onClick={onCardClick}
-        resizeMode={resizeMode}
-        isLazy={!isMobile}
-        disableOverlay={disableOverlay}
-        useInlinePlayer={isInlinePlayer}
-        shouldOpenMediaViewer={shouldOpenMediaViewer}
-        mediaViewerDataSource={{
-          list: Array.from(mediaIdentifierMap.values()),
-        }}
-      />
+      <CardWrapper
+        {...getClipboardAttrs({
+          id,
+          collection,
+          contextIdentifierProvider,
+          cardDimensions,
+          fileState,
+        })}
+      >
+        <Card
+          identifier={identifier}
+          contextId={contextId}
+          mediaClientConfig={mediaClientConfig}
+          dimensions={cardDimensions}
+          onClick={onCardClick}
+          resizeMode={resizeMode}
+          isLazy={!isMobile}
+          disableOverlay={disableOverlay}
+          useInlinePlayer={isInlinePlayer}
+          shouldOpenMediaViewer={shouldOpenMediaViewer}
+          mediaViewerDataSource={{
+            list: Array.from(mediaIdentifierMap.values()),
+          }}
+        />
+      </CardWrapper>
     );
   }
 }
+
+export const CardWrapper = styled.div``;
+
+// Needed for copy & paste
+export const getClipboardAttrs = ({
+  id,
+  collection,
+  contextIdentifierProvider,
+  cardDimensions,
+  fileState,
+}: {
+  id: string;
+  collection?: string;
+  contextIdentifierProvider?: ContextIdentifierProvider;
+  cardDimensions?: CardDimensions;
+  fileState?: FileState;
+}): { [key: string]: string | number | undefined } => {
+  const contextId =
+    contextIdentifierProvider && contextIdentifierProvider.objectId;
+  const width =
+    cardDimensions &&
+    cardDimensions.width &&
+    parseInt(`${cardDimensions.width}`);
+  const height =
+    cardDimensions &&
+    cardDimensions.height &&
+    parseInt(`${cardDimensions.height}`);
+  let fileName = 'file'; // default name is needed for Confluence
+  let fileSize = 1;
+  let fileMimeType = '';
+
+  if (fileState && fileState.status !== 'error') {
+    fileSize = fileState.size;
+    fileName = fileState.name;
+    fileMimeType = fileState.mimeType;
+  }
+
+  return {
+    'data-context-id': contextId,
+    'data-type': 'file',
+    'data-node-type': 'media',
+    'data-width': width,
+    'data-height': height,
+    'data-id': id,
+    'data-collection': collection,
+    'data-file-name': fileName,
+    'data-file-size': fileSize,
+    'data-file-mime-type': fileMimeType,
+  };
+};
 
 export const MediaCard = withImageLoader<MediaCardProps>(MediaCardInternal);

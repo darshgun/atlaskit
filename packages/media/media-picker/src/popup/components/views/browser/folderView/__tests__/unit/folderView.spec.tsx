@@ -12,13 +12,12 @@ describe('<FolderViewer />', () => {
   let props: FolderViewerProps;
 
   beforeEach(() => {
-    date = new Date(2019, 6, 2);
+    date = new Date(2019, 5, 2);
     serviceFileItem = {
       id: 'some-id',
       mimeType: 'some-mime-type',
       name: 'some-name',
       size: 42,
-      upfrontId: Promise.resolve('id1'),
       date: date.getTime(),
     };
     props = {
@@ -33,7 +32,6 @@ describe('<FolderViewer />', () => {
       onFileClick: jest.fn(),
       onFolderClick: jest.fn(),
       onLoadMoreClick: jest.fn(),
-      setUpfrontIdDeferred: jest.fn(),
     };
   });
 
@@ -125,7 +123,7 @@ describe('<FolderViewer />', () => {
         <FolderViewer {...newProps} nextCursor="some-next-cursor" />,
       );
 
-      expect(wrapper.find(FileCreateDate).html()).toContain('2 Jul 2019');
+      expect(wrapper.find(FileCreateDate).html()).toContain('2 Jun 2019');
     });
 
     it('should format date the file adding hour, minutes and time marker string if file was created today', () => {

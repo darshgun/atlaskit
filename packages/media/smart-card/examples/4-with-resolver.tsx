@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
-import { Provider, Card, Client, ResolveResponse } from '..';
+import { Provider, Card, Client, ResolveResponse } from '../src';
 import '../examples-helpers';
 
 class CustomClient extends Client {
@@ -20,11 +20,11 @@ class CustomClient extends Client {
   }
 }
 
-const clientWithResolver = new CustomClient(undefined, 'staging');
+const clientWithResolver = new CustomClient('staging');
 
 export default () => (
   <Page>
-    <Provider client={new Client(undefined, 'staging')}>
+    <Provider client={new Client('staging')}>
       <Grid>
         <GridColumn>
           <p>

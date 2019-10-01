@@ -1,8 +1,10 @@
 export default {
   plugins: [
+    'sharedContextPlugin',
     'compositionPlugin',
     'inlineCursorTargetPlugin',
     'focusHandlerPlugin',
+    'frozenEditor',
     'submitEditor',
     'customAutoformatting',
     'newlinePreserveMarksPlugin',
@@ -89,6 +91,7 @@ export default {
     'grid',
     'scrollGutterPlugin',
     'analytics',
+    'history',
   ],
   nodes: [
     'doc',
@@ -111,9 +114,9 @@ export default {
     'hardBreak',
     'emoji',
     'placeholder',
+    'mediaSingle',
     'mediaGroup',
     'table',
-    'mediaSingle',
     'media',
     'tableHeader',
     'decisionList',
@@ -134,17 +137,14 @@ export default {
   marks: [
     // Inline marks
     'link',
-    'confluenceInlineComment',
     'em',
     'strong',
     'textColor',
     'strike',
-    'action',
     'subsup',
     'underline',
     'code',
     'typeAheadQuery',
-    'emojiQuery',
 
     // Block marks
     'alignment',

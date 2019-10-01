@@ -16,7 +16,7 @@ import { taskDecision } from '@atlaskit/util-data-test';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { uuid } from '@atlaskit/adf-schema';
 import Button from '@atlaskit/button';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 import { pluginKey as blockTypePluginKey } from '../../../../../plugins/block-type/pm-plugins/main';
 import {
@@ -40,49 +40,62 @@ import {
   INPUT_METHOD,
   DispatchAnalyticsEvent,
 } from '../../../../../plugins/analytics';
-import tablesPlugin from '../../../../../plugins/table';
 import { AnalyticsHandler } from '../../../../../analytics';
-import { ReactWrapper } from 'enzyme';
+import { ReactWrapper, mount } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
 import { InsertMenuCustomItem } from '../../../../../types';
+import { TooltipShortcut } from '../../../../../keymaps';
+import { InjectedIntlProps } from 'react-intl';
+
+type ToolbarOptionWrapper = ReactWrapper<
+  ToolbarInsertBlockProps & InjectedIntlProps
+>;
 
 const emojiProvider = emojiData.testData.getEmojiResourcePromise();
 
 const mediaProvider: Promise<MediaProvider> = Promise.resolve({
-  viewContext: Promise.resolve({} as any),
-  uploadContext: Promise.resolve({} as any),
+  viewMediaClientConfig: {} as any,
+  uploadMediaClientConfig: {} as any,
 });
 
 const providerFactory = ProviderFactory.create({ mediaProvider });
 
-const openInsertMenu = (toolbarOption: ReactWrapper) => {
+const openInsertMenu = (toolbarOption: ToolbarOptionWrapper) => {
   toolbarOption.find('button').simulate('click');
 };
 
 const getToolbarButton = (
   title: string,
-  toolbarOption: ReactWrapper,
+  toolbarOption: ToolbarOptionWrapper,
 ): ReactWrapper =>
   toolbarOption
     .find(ToolbarButton)
-    .filterWhere(n => n.prop('title')!.indexOf(title) > -1)
+    .filterWhere(
+      toolbarButton => toolbarButton.find('Icon').prop('label') === title,
+    )
     .find(Button);
 
 const getInsertMenuButton = (
   title: string,
-  toolbarOption: ReactWrapper,
-): ReactWrapper => {
+  toolbarOption: ToolbarOptionWrapper,
+) => {
   openInsertMenu(toolbarOption);
   return toolbarOption
-    .find(Item)
+    .find<any>(Item)
     .filterWhere(n => n.text().indexOf(title) > -1);
 };
 
-const clickToolbarButton = (title: string, toolbarOption: ReactWrapper) => {
+const clickToolbarButton = (
+  title: string,
+  toolbarOption: ToolbarOptionWrapper,
+) => {
   getToolbarButton(title, toolbarOption).simulate('click');
 };
 
-const clickInsertMenuOption = (title: string, toolbarOption: ReactWrapper) => {
+const clickInsertMenuOption = (
+  title: string,
+  toolbarOption: ToolbarOptionWrapper,
+) => {
   getInsertMenuButton(title, toolbarOption).simulate('click');
 };
 
@@ -105,13 +118,13 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   const createEditor = createEditorFactory();
   let editorView: EditorView;
   let pluginState: any;
-  let toolbarOption: ReactWrapper;
+  let toolbarOption: ToolbarOptionWrapper;
   let analyticsHandlerSpy: jest.Mock<AnalyticsHandler>;
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
   let dispatchAnalyticsSpy: jest.SpyInstance<DispatchAnalyticsEvent>;
   let dispatchSpy: jest.SpyInstance;
 
-  const editor = (doc: any, editorPlugins?: any[]) => {
+  const editor = (doc: any) => {
     createAnalyticsEvent = jest.fn(() => ({ fire() {} }));
     return createEditor({
       doc,
@@ -123,12 +136,13 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         allowLists: true,
         allowPanel: true,
         allowRule: true,
+        allowTables: true,
+        allowStatus: true,
         allowAnalyticsGASV3: true,
         taskDecisionProvider: Promise.resolve(
           taskDecision.getMockTaskDecisionResource(),
         ),
       },
-      editorPlugins,
       providerFactory,
       createAnalyticsEvent,
     });
@@ -141,7 +155,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       buttons: 0,
       dispatchAnalyticsEvent: dispatchAnalyticsSpy as any,
     };
-    toolbarOption = mountWithIntl(
+    toolbarOption = mountWithIntl<ToolbarInsertBlockProps, {}>(
       <ToolbarInsertBlock {...defaultProps} {...props} />,
     );
   };
@@ -170,6 +184,42 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       availableWrapperBlockTypes: pluginState.availableWrapperBlockTypes,
     });
     expect(toolbarOption.find(ToolbarButton).prop('disabled')).toEqual(true);
+  });
+
+  describe('tooltip with shortcut', () => {
+    [
+      { toolbarProps: { mentionsSupported: true }, result: '/' },
+      {
+        toolbarProps: { tableSupported: true, buttons: 2 },
+        result: 'Shift+Alt+T',
+      },
+    ].forEach(({ toolbarProps, result }) => {
+      describe('render the tooltip with shortcut', () => {
+        let tooltipContent: ReactWrapper;
+
+        beforeEach(() => {
+          buildToolbar(toolbarProps);
+          tooltipContent = mount(
+            <div>
+              {toolbarOption
+                .find(ToolbarButton)
+                .first()
+                .prop('title')}
+            </div>,
+          );
+        });
+
+        afterEach(() => {
+          if (tooltipContent) {
+            tooltipContent.unmount();
+          }
+        });
+
+        it(`the shortcut ${result} is displayed with a background`, () => {
+          expect(tooltipContent.find(TooltipShortcut).text()).toEqual(result);
+        });
+      });
+    });
   });
 
   describe('custom items', () => {
@@ -224,8 +274,8 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         beforeEach(() => {
           buildToolbarForMenu({
             emojiDisabled: false,
+            isTypeAheadAllowed: true,
             emojiProvider,
-            insertEmoji: jest.fn(),
           });
           clickEmojiOption();
         });
@@ -250,21 +300,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
             actionSubjectId: 'emojiPicker',
             attributes: { inputMethod: menu.name },
             eventType: 'ui',
-          });
-        });
-
-        it('should fire analytics event when emoji selected in picker', () => {
-          const onSelection = toolbarOption
-            .find(AkEmojiPicker)
-            .prop('onSelection');
-          onSelection!({ id: '1f603', shortName: ':smiley:' }, undefined);
-
-          expect(dispatchAnalyticsSpy).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'emoji',
-            attributes: { inputMethod: 'picker' },
-            eventType: 'track',
           });
         });
       });
@@ -383,7 +418,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
       describe('click table option', () => {
         beforeEach(() => {
-          ({ editorView } = editor(doc(p('text')), [tablesPlugin()]));
+          ({ editorView } = editor(doc(p('text'))));
           buildToolbarForMenu({ tableSupported: true });
           menu.clickButton(messages.table.defaultMessage, toolbarOption);
         });
@@ -531,30 +566,51 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
             'atlassian.editor.format.layout.button',
           );
         });
+
+        it('should fire v3 analytics event', () => {
+          expect(createAnalyticsEvent).toHaveBeenCalledWith({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: 'layout',
+            attributes: expect.objectContaining({ inputMethod: menu.name }),
+            eventType: 'track',
+          });
+        });
+      });
+
+      describe('click status option', () => {
+        beforeEach(() => {
+          buildToolbarForMenu({ nativeStatusSupported: true });
+          menu.clickButton(messages.status.defaultMessage, toolbarOption);
+        });
+
+        it('should fire v3 analytics event', () => {
+          expect(createAnalyticsEvent).toHaveBeenCalledWith({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: 'status',
+            attributes: expect.objectContaining({ inputMethod: menu.name }),
+            eventType: 'track',
+          });
+        });
       });
 
       const blockTypes = [
         {
           type: PANEL,
           title: blockTypeMessages.infoPanel.defaultMessage,
-          analyticsV3: {
-            actionSubjectId: 'panel',
-            attributes: { inputMethod: menu.name, panelType: 'info' },
-          },
         },
         {
           type: CODE_BLOCK,
           title: blockTypeMessages.codeblock.defaultMessage,
-          analyticsV3: { actionSubjectId: 'codeBlock' },
         },
         {
           type: BLOCK_QUOTE,
           title: blockTypeMessages.blockquote.defaultMessage,
-          analyticsV3: { actionSubjectId: 'blockQuote' },
         },
       ];
       blockTypes.forEach(blockType => {
-        const { type, title, analyticsV3 } = blockType;
+        const { type, title } = blockType;
         describe(`click ${type.name} option`, () => {
           let insertBlockTypeSpy: jest.Mock;
 
@@ -576,18 +632,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
             expect(analyticsHandlerSpy).toHaveBeenCalledWith(
               `atlassian.editor.format.${type.name}.button`,
             );
-          });
-
-          it('should fire v3 analytics event', () => {
-            expect(dispatchAnalyticsSpy).toHaveBeenCalledWith({
-              action: 'inserted',
-              actionSubject: 'document',
-              actionSubjectId: analyticsV3.actionSubjectId,
-              attributes: analyticsV3.attributes || {
-                inputMethod: menu.name,
-              },
-              eventType: 'track',
-            });
           });
         });
       });

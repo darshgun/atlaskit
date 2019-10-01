@@ -1,66 +1,55 @@
 // #region Imports
-import { Decoration, DecorationSet } from 'prosemirror-view';
-import { Node as PmNode } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { findTable, getCellsInColumn, getCellsInRow } from 'prosemirror-utils';
-
-import { createCommand, getPluginState } from '../pm-plugins/main';
+import { createCommand } from '../pm-plugins/main';
 import {
-  TableCssClassName as ClassName,
-  TableDecorations,
-  Cell,
-} from '../types';
-import { findControlsHoverDecoration } from '../utils';
+  updatePluginStateDecorations,
+  createCellHoverDecoration,
+  createControlsHoverDecoration,
+  getMergedCellsPositions,
+} from '../utils';
+import { TableDecorations, Cell } from '../types';
 // #endregion
 
 // #region Utils
-export const createControlsHoverDecoration = (
-  cells: Cell[],
-  danger?: boolean,
-): Decoration[] =>
-  cells.map(cell => {
-    const classes = [ClassName.HOVERED_CELL];
-    if (danger) {
-      classes.push('danger');
-    }
-
-    return Decoration.node(
-      cell.pos,
-      cell.pos + cell.node.nodeSize,
-      {
-        class: classes.join(' '),
-      },
-      { key: TableDecorations.CONTROLS_HOVER },
-    );
-  });
-
-const updateDecorations = (
-  node: PmNode,
-  decorationSet: DecorationSet,
-  newDecorations: Decoration[],
-  find: (decorationSet: DecorationSet) => Decoration[],
-): DecorationSet =>
-  newDecorations.length
-    ? decorationSet.add(node, newDecorations)
-    : decorationSet.remove(find(decorationSet));
-
-const getUpdatedDecorationSet = (
-  state: EditorState<any>,
-  cells: Cell[],
-  isInDanger?: boolean,
-) =>
-  updateDecorations(
-    state.doc,
-    getPluginState(state).decorationSet,
-    cells.length ? createControlsHoverDecoration(cells, isInDanger) : [],
-    findControlsHoverDecoration,
-  );
-
 const makeArray = (n: number) => Array.from(Array(n).keys());
 // #endregion
 
 // #region Commands
+export const hoverMergedCells = () =>
+  createCommand(
+    state => {
+      const mergedCellsPositions = getMergedCellsPositions(state.tr);
+      if (!mergedCellsPositions.length) {
+        return false;
+      }
+      const table = findTable(state.tr.selection);
+      if (!table) {
+        return false;
+      }
+
+      const mergedCells: Cell[] = mergedCellsPositions.map(pos => ({
+        pos: pos + table.start,
+        start: pos + table.start + 1,
+        node: table.node.nodeAt(pos)!,
+      }));
+
+      const decorations = createCellHoverDecoration(mergedCells, 'warning');
+
+      return {
+        type: 'HOVER_CELLS',
+        data: {
+          decorationSet: updatePluginStateDecorations(
+            state,
+            decorations,
+            TableDecorations.CELL_CONTROLS_HOVER,
+          ),
+        },
+      };
+    },
+    tr => tr.setMeta('addToHistory', false),
+  );
+
 export const hoverColumns = (hoveredColumns: number[], isInDanger?: boolean) =>
   createCommand(
     state => {
@@ -68,11 +57,20 @@ export const hoverColumns = (hoveredColumns: number[], isInDanger?: boolean) =>
       if (!cells) {
         return false;
       }
+      const decorations = createControlsHoverDecoration(
+        cells,
+        'column',
+        isInDanger,
+      );
 
       return {
         type: 'HOVER_COLUMNS',
         data: {
-          decorationSet: getUpdatedDecorationSet(state, cells, isInDanger),
+          decorationSet: updatePluginStateDecorations(
+            state,
+            decorations,
+            TableDecorations.COLUMN_CONTROLS_HOVER,
+          ),
           hoveredColumns,
           isInDanger,
         },
@@ -88,11 +86,20 @@ export const hoverRows = (hoveredRows: number[], isInDanger?: boolean) =>
       if (!cells) {
         return false;
       }
+      const decorations = createControlsHoverDecoration(
+        cells,
+        'row',
+        isInDanger,
+      );
 
       return {
         type: 'HOVER_ROWS',
         data: {
-          decorationSet: getUpdatedDecorationSet(state, cells, isInDanger),
+          decorationSet: updatePluginStateDecorations(
+            state,
+            decorations,
+            TableDecorations.ROW_CONTROLS_HOVER,
+          ),
           hoveredRows,
           isInDanger,
         },
@@ -115,11 +122,20 @@ export const hoverTable = (isInDanger?: boolean) =>
       if (!cells) {
         return false;
       }
+      const decorations = createControlsHoverDecoration(
+        cells,
+        'table',
+        isInDanger,
+      );
 
       return {
         type: 'HOVER_TABLE',
         data: {
-          decorationSet: getUpdatedDecorationSet(state, cells, isInDanger),
+          decorationSet: updatePluginStateDecorations(
+            state,
+            decorations,
+            TableDecorations.TABLE_CONTROLS_HOVER,
+          ),
           hoveredColumns,
           hoveredRows,
           isInDanger,
@@ -133,7 +149,11 @@ export const clearHoverSelection = () =>
   createCommand(state => ({
     type: 'CLEAR_HOVER_SELECTION',
     data: {
-      decorationSet: getUpdatedDecorationSet(state, []),
+      decorationSet: updatePluginStateDecorations(
+        state,
+        [],
+        TableDecorations.ALL_CONTROLS_HOVER,
+      ),
     },
   }));
 // #endregion

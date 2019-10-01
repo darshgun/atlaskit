@@ -2,7 +2,7 @@ import assert from 'assert';
 import * as sinon from 'sinon';
 import { renderDocument, Serializer } from '../../index';
 import { defaultSchema as schema } from '@atlaskit/adf-schema';
-import * as common from '@atlaskit/editor-common';
+import * as common from '@atlaskit/editor-common/validator';
 
 const doc = {
   version: 1,
@@ -76,6 +76,7 @@ describe('Renderer', () => {
 
       assert(res.result, 'Output is missing');
       assert(res.stat, 'Stat is missing');
+      expect(res.result).toBe('dummy');
     });
 
     it('should return null if document is invalid', () => {

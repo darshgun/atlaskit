@@ -170,43 +170,118 @@
       ],
       "additionalProperties": false
     },
-    "action_mark": {
+    "breakout_mark": {
       "type": "object",
       "properties": {
         "type": {
           "enum": [
-            "action"
+            "breakout"
           ]
         },
         "attrs": {
           "type": "object",
           "properties": {
-            "title": {
-              "type": "string"
-            },
-            "key": {
-              "type": "string"
-            },
-            "target": {
-              "type": "object",
-              "properties": {
-                "receiver": {
-                  "type": "string"
-                },
-                "key": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "key"
+            "mode": {
+              "enum": [
+                "wide",
+                "full-width"
               ]
-            },
-            "parameters": {}
+            }
           },
           "required": [
-            "title",
-            "target"
+            "mode"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "alignment_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "alignment"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "align": {
+              "enum": [
+                "center",
+                "end"
+              ]
+            }
+          },
+          "required": [
+            "align"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "indentation_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "indentation"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "level": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 6
+            }
+          },
+          "required": [
+            "level"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "annotation_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "annotation"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "annotationType": {
+              "enum": [
+                "inlineComment"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "annotationType"
           ],
           "additionalProperties": false
         }
@@ -251,6 +326,44 @@
             "marks": {
               "type": "array",
               "maxItems": 0
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "paragraph_with_alignment_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/paragraph_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/alignment_mark"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "paragraph_with_indentation_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/paragraph_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/indentation_mark"
+              }
             }
           },
           "additionalProperties": true
@@ -375,22 +488,27 @@
         "attrs": {
           "type": "object",
           "properties": {
+            "width": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
             "layout": {
               "enum": [
-                "wrap-right",
-                "center",
-                "wrap-left",
                 "wide",
                 "full-width",
+                "center",
+                "wrap-right",
+                "wrap-left",
                 "align-end",
                 "align-start"
               ]
             }
           },
+          "additionalProperties": false,
           "required": [
             "layout"
-          ],
-          "additionalProperties": false
+          ]
         },
         "marks": {
           "type": "array",
@@ -484,6 +602,25 @@
             "marks": {
               "type": "array",
               "maxItems": 0
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "codeBlock_with_marks_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/codeBlock_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/breakout_mark"
+              }
             }
           },
           "additionalProperties": true
@@ -633,6 +770,44 @@
         }
       ]
     },
+    "heading_with_alignment_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/heading_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/alignment_mark"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "heading_with_indentation_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/heading_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/indentation_mark"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
     "panel_node": {
       "type": "object",
       "properties": {
@@ -743,315 +918,6 @@
       "required": [
         "type",
         "content"
-      ],
-      "additionalProperties": false
-    },
-    "applicationCard_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "applicationCard"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "text": {
-              "type": "string"
-            },
-            "textUrl": {
-              "type": "string"
-            },
-            "link": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "pattern": "^https?://|^data:image/"
-                }
-              },
-              "required": [
-                "url"
-              ],
-              "additionalProperties": false
-            },
-            "background": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "pattern": "^https://|^data:image/"
-                }
-              },
-              "required": [
-                "url"
-              ],
-              "additionalProperties": false
-            },
-            "collapsible": {
-              "type": "boolean"
-            },
-            "preview": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "pattern": "^https://|^data:image/"
-                }
-              },
-              "required": [
-                "url"
-              ],
-              "additionalProperties": false
-            },
-            "title": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                },
-                "user": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "icon": {
-                      "type": "object",
-                      "properties": {
-                        "url": {
-                          "type": "string",
-                          "pattern": "^https://|^data:image/"
-                        },
-                        "label": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "url",
-                        "label"
-                      ],
-                      "additionalProperties": false
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "icon"
-                  ]
-                }
-              },
-              "required": [
-                "text"
-              ],
-              "additionalProperties": false
-            },
-            "description": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "text"
-              ],
-              "additionalProperties": false
-            },
-            "details": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "text": {
-                    "type": "string"
-                  },
-                  "icon": {
-                    "type": "object",
-                    "properties": {
-                      "url": {
-                        "type": "string",
-                        "pattern": "^https://|^data:image/"
-                      },
-                      "label": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "url",
-                      "label"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "badge": {
-                    "type": "object",
-                    "properties": {
-                      "value": {
-                        "type": "number"
-                      },
-                      "max": {
-                        "type": "number"
-                      },
-                      "theme": {
-                        "enum": [
-                          "default",
-                          "dark"
-                        ]
-                      },
-                      "appearance": {
-                        "enum": [
-                          "default",
-                          "primary",
-                          "important",
-                          "added",
-                          "removed"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "value"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "lozenge": {
-                    "type": "object",
-                    "properties": {
-                      "text": {
-                        "type": "string"
-                      },
-                      "bold": {
-                        "type": "boolean"
-                      },
-                      "appearance": {
-                        "enum": [
-                          "success",
-                          "default",
-                          "removed",
-                          "inprogress",
-                          "new",
-                          "moved"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "text"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "users": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "icon": {
-                          "type": "object",
-                          "properties": {
-                            "url": {
-                              "type": "string",
-                              "pattern": "^https://|^data:image/"
-                            },
-                            "label": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "url",
-                            "label"
-                          ],
-                          "additionalProperties": false
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "icon"
-                      ]
-                    }
-                  }
-                },
-                "additionalProperties": false
-              }
-            },
-            "actions": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "key": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "target": {
-                    "type": "object",
-                    "properties": {
-                      "receiver": {
-                        "type": "string"
-                      },
-                      "key": {
-                        "type": "string"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                      "key"
-                    ]
-                  },
-                  "parameters": {}
-                },
-                "additionalProperties": false,
-                "required": [
-                  "title",
-                  "target"
-                ]
-              }
-            },
-            "context": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                },
-                "icon": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "pattern": "^https://|^data:image/"
-                    },
-                    "label": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "url",
-                    "label"
-                  ],
-                  "additionalProperties": false
-                }
-              },
-              "required": [
-                "text"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "text",
-            "title"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
       ],
       "additionalProperties": false
     },
@@ -1755,12 +1621,148 @@
       ],
       "additionalProperties": false
     },
+    "layoutColumn_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "layoutColumn"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "width"
+          ],
+          "additionalProperties": false
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/block_content"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "type",
+        "attrs",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "layoutSection_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "layoutSection"
+          ]
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/layoutColumn_node"
+          },
+          "minItems": 2,
+          "maxItems": 3
+        },
+        "marks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/breakout_mark"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "block_content": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/paragraph_with_no_marks_node"
+        },
+        {
+          "$ref": "#/definitions/paragraph_with_alignment_node"
+        },
+        {
+          "$ref": "#/definitions/paragraph_with_indentation_node"
+        },
+        {
+          "$ref": "#/definitions/bulletList_node"
+        },
+        {
+          "$ref": "#/definitions/mediaSingle_node"
+        },
+        {
+          "$ref": "#/definitions/codeBlock_with_no_marks_node"
+        },
+        {
+          "$ref": "#/definitions/orderedList_node"
+        },
+        {
+          "$ref": "#/definitions/heading_with_no_marks_node"
+        },
+        {
+          "$ref": "#/definitions/heading_with_alignment_node"
+        },
+        {
+          "$ref": "#/definitions/heading_with_indentation_node"
+        },
+        {
+          "$ref": "#/definitions/panel_node"
+        },
+        {
+          "$ref": "#/definitions/blockquote_node"
+        },
+        {
+          "$ref": "#/definitions/rule_node"
+        },
+        {
+          "$ref": "#/definitions/mediaGroup_node"
+        },
+        {
+          "$ref": "#/definitions/decisionList_node"
+        },
+        {
+          "$ref": "#/definitions/taskList_node"
+        },
+        {
+          "$ref": "#/definitions/table_node"
+        },
+        {
+          "$ref": "#/definitions/extension_node"
+        },
+        {
+          "$ref": "#/definitions/bodiedExtension_node"
+        },
+        {
+          "$ref": "#/definitions/blockCard_node"
+        }
+      ]
+    },
     "table_cell_content": {
       "type": "array",
       "items": {
         "anyOf": [
           {
             "$ref": "#/definitions/paragraph_with_no_marks_node"
+          },
+          {
+            "$ref": "#/definitions/paragraph_with_alignment_node"
+          },
+          {
+            "$ref": "#/definitions/paragraph_with_indentation_node"
           },
           {
             "$ref": "#/definitions/bulletList_node"
@@ -1778,6 +1780,12 @@
             "$ref": "#/definitions/heading_with_no_marks_node"
           },
           {
+            "$ref": "#/definitions/heading_with_alignment_node"
+          },
+          {
+            "$ref": "#/definitions/heading_with_indentation_node"
+          },
+          {
             "$ref": "#/definitions/panel_node"
           },
           {
@@ -1788,9 +1796,6 @@
           },
           {
             "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
-            "$ref": "#/definitions/applicationCard_node"
           },
           {
             "$ref": "#/definitions/decisionList_node"
@@ -1841,9 +1846,6 @@
           },
           {
             "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
-            "$ref": "#/definitions/applicationCard_node"
           },
           {
             "$ref": "#/definitions/decisionList_node"
@@ -1898,7 +1900,7 @@
                     "$ref": "#/definitions/textColor_mark"
                   },
                   {
-                    "$ref": "#/definitions/action_mark"
+                    "$ref": "#/definitions/annotation_mark"
                   }
                 ]
               }
@@ -1925,6 +1927,9 @@
                   },
                   {
                     "$ref": "#/definitions/link_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/annotation_mark"
                   }
                 ]
               }
@@ -1989,6 +1994,12 @@
                 "$ref": "#/definitions/paragraph_with_no_marks_node"
               },
               {
+                "$ref": "#/definitions/paragraph_with_alignment_node"
+              },
+              {
+                "$ref": "#/definitions/paragraph_with_indentation_node"
+              },
+              {
                 "$ref": "#/definitions/bulletList_node"
               },
               {
@@ -1998,10 +2009,19 @@
                 "$ref": "#/definitions/codeBlock_with_no_marks_node"
               },
               {
+                "$ref": "#/definitions/codeBlock_with_marks_node"
+              },
+              {
                 "$ref": "#/definitions/orderedList_node"
               },
               {
                 "$ref": "#/definitions/heading_with_no_marks_node"
+              },
+              {
+                "$ref": "#/definitions/heading_with_alignment_node"
+              },
+              {
+                "$ref": "#/definitions/heading_with_indentation_node"
               },
               {
                 "$ref": "#/definitions/panel_node"
@@ -2014,9 +2034,6 @@
               },
               {
                 "$ref": "#/definitions/mediaGroup_node"
-              },
-              {
-                "$ref": "#/definitions/applicationCard_node"
               },
               {
                 "$ref": "#/definitions/decisionList_node"
@@ -2035,6 +2052,9 @@
               },
               {
                 "$ref": "#/definitions/blockCard_node"
+              },
+              {
+                "$ref": "#/definitions/layoutSection_node"
               }
             ]
           }

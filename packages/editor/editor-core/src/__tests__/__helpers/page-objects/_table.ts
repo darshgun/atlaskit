@@ -1,4 +1,9 @@
 import {
+  waitForTooltip,
+  waitForNoTooltip,
+} from '@atlaskit/visual-regression/helper';
+import {
+  hoverElementWithText,
   clickElementWithText,
   getBoundingRect,
   scrollToElement,
@@ -11,6 +16,8 @@ import {
   pressKeyUp,
 } from '../../__helpers/page-objects/_keyboard';
 import { animationFrame } from '../../__helpers/page-objects/_editor';
+import { isVisualRegression } from '../utils';
+import { Page } from 'puppeteer';
 
 export const tableSelectors = {
   contextualMenu: `.${ClassName.CONTEXTUAL_MENU_BUTTON}`,
@@ -18,28 +25,29 @@ export const tableSelectors = {
   nthRowControl: (n: number) =>
     `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}:nth-child(${n}) button`,
   nthColumnControl: (n: number) =>
-    `.${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}:nth-child(${n}) button`,
+    `.${ClassName.COLUMN_CONTROLS_DECORATIONS}[data-start-index='${n}']`,
+  nthNumberedColumnRowControl: (n: number) =>
+    `.${ClassName.NUMBERED_COLUMN_BUTTON}:nth-child(${n})`,
   firstRowControl: `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}:nth-child(1) button`,
   firstColumnControl: `.${
-    ClassName.COLUMN_CONTROLS_BUTTON_WRAP
-  }:nth-child(1) button`,
+    ClassName.COLUMN_CONTROLS_DECORATIONS
+  }[data-start-index='0'] `,
   lastRowControl: `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}:nth-child(3) button`,
-  lastColumnControl: `.${
-    ClassName.COLUMN_CONTROLS_BUTTON_WRAP
-  }:nth-child(3) button`,
   rowControlSelector: ClassName.ROW_CONTROLS_BUTTON_WRAP,
-  columnControlSelector: ClassName.COLUMN_CONTROLS_BUTTON_WRAP,
   deleteButtonSelector: `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP} .${
     ClassName.CONTROLS_DELETE_BUTTON
   }`,
   rowControls: ClassName.ROW_CONTROLS_WRAPPER,
-  columnControls: ClassName.COLUMN_CONTROLS_WRAPPER,
   insertColumnButton: `.${ClassName.CONTROLS_INSERT_COLUMN}`,
   insertRowButton: `.${ClassName.CONTROLS_INSERT_ROW}`,
+  insertButton: `.${ClassName.CONTROLS_INSERT_BUTTON}`,
   cornerButton: `.${ClassName.CONTROLS_CORNER_BUTTON}`,
   breakoutButton: `.${ClassName.LAYOUT_BUTTON}`,
   mergeCellsText: `Merge cells`,
+  sortColumnASC: `Sort column A → Z`,
+  sortColumnDESC: `Sort column Z → A`,
   splitCellText: `Split cell`,
+  tableWrapper: '.ProseMirror .pm-table-wrapper',
   tableOptionsText: `Table options`,
   removeRowButton: `button[title="Remove row"]`,
   removeColumnButton: `button[title="Remove column"]`,
@@ -73,7 +81,6 @@ export const insertTable = async (page: any) => {
 export const clickFirstCell = async (page: any) => {
   await page.waitForSelector(tableSelectors.topLeftCell);
   await page.click(tableSelectors.topLeftCell);
-  await page.waitForSelector(tableSelectors.removeTable);
 };
 
 export const selectTable = async (page: any) => {
@@ -100,6 +107,12 @@ export const selectCellOption = async (page: any, option: string) => {
   await page.waitForSelector(tableSelectors.contextualMenu);
   await page.click(tableSelectors.contextualMenu);
   await clickElementWithText({ page, tag: 'span', text: option });
+};
+
+export const hoverCellOption = async (page: any, option: string) => {
+  await page.waitForSelector(tableSelectors.contextualMenu);
+  await page.click(tableSelectors.contextualMenu);
+  await hoverElementWithText({ page, tag: 'span', text: option });
 };
 
 // colorIndex - index of the color button DOM node, values from 1 to 8
@@ -134,7 +147,7 @@ export const selectCellBackground = async ({
 
   const colorButtonSelector =
     tableSelectors.cellBackgroundSubmenuSelector +
-    ` span:nth-child(${colorIndex}) button`;
+    ` div:nth-child(${colorIndex}) button`;
 
   await selectCellOption(page, tableSelectors.cellBackgroundText);
   await page.waitForSelector(colorButtonSelector);
@@ -170,35 +183,80 @@ export const setTableLayout = async (page: any, layout: string) => {
 };
 
 export const insertRow = async (page: any, atIndex: number) => {
-  await insertRowOrColumn(
+  await clickFirstCell(page);
+  const bounds = await getBoundingRect(
     page,
-    tableSelectors.rowControlSelector,
-    tableSelectors.insertRowButton,
-    atIndex,
+    tableSelectors.nthRowControl(atIndex),
   );
+
+  if (isVisualRegression()) {
+    const x = bounds.left;
+    const y = bounds.top + bounds.height - 5;
+
+    await page.mouse.move(x, y);
+  } else {
+    await page.hover(tableSelectors.nthRowControl(atIndex + 1));
+  }
+
+  await page.waitForSelector(tableSelectors.insertButton);
+  await page.click(tableSelectors.insertButton);
+
+  if (isVisualRegression()) {
+    // cursor is still over insert row button so make sure tooltip renders fully
+    await waitForTooltip(page);
+  }
 };
 
-export const insertColumn = async (page: any, atIndex: number) => {
-  await insertRowOrColumn(
-    page,
-    tableSelectors.columnControlSelector,
-    tableSelectors.insertColumnButton,
-    atIndex,
-  );
-};
-
-export const insertRowOrColumn = async (
+export const hoverColumnControls = async (
   page: any,
-  buttonWrapSelector: string,
-  insertSelector: string,
   atIndex: number,
+  side: 'left' | 'right' = 'left',
+) => {
+  const bounds = await getBoundingRect(
+    page,
+    tableSelectors.nthColumnControl(atIndex),
+  );
+
+  let offset = bounds.width * (side === 'left' ? 0.5 : 0.55);
+
+  const x = bounds.left + offset;
+  const y = bounds.top + bounds.height - 5;
+  return await page.mouse.move(x, y);
+};
+
+export const insertColumn = async (
+  page: any,
+  atIndex: number,
+  side: 'left' | 'right' = 'left',
 ) => {
   await clickFirstCell(page);
-  const buttonSelector = `.${buttonWrapSelector}:nth-child(${atIndex}) ${insertSelector}`;
-  await page.waitForSelector(buttonSelector);
-  await page.hover(buttonSelector);
-  await page.waitForSelector(buttonSelector);
-  await page.click(buttonSelector);
+
+  const bounds = await getBoundingRect(
+    page,
+    tableSelectors.nthColumnControl(atIndex),
+  );
+
+  if (isVisualRegression()) {
+    let offset = bounds.width * (side === 'left' ? 0.5 : 0.55);
+
+    const x = bounds.left + offset;
+    const y = bounds.top + bounds.height - 5;
+    await page.mouse.move(x, y);
+  } else {
+    const x = side === 'left' ? 1 : Math.ceil(bounds.width * 0.55);
+    const columnDecorationSelector = tableSelectors.nthColumnControl(atIndex);
+    await page.moveTo(columnDecorationSelector, x, 1);
+  }
+
+  await page.waitForSelector(tableSelectors.insertButton);
+  await page.click(tableSelectors.insertButton);
+
+  if (isVisualRegression()) {
+    // cursor could or could not be over an insert col button so move it to 0,0
+    // and wait for tooltip to fade (if one was previously showing)
+    await page.mouse.move(0, 0);
+    await waitForNoTooltip(page);
+  }
 };
 
 export const deleteRow = async (page: any, atIndex: number) => {
@@ -209,9 +267,9 @@ export const deleteRow = async (page: any, atIndex: number) => {
 };
 
 export const deleteColumn = async (page: any, atIndex: number) => {
-  const controlSelector = `.${tableSelectors.columnControls} .${
-    ClassName.COLUMN_CONTROLS_BUTTON_WRAP
-  }:nth-child(${atIndex}) .${ClassName.CONTROLS_BUTTON}`;
+  const controlSelector = `.${
+    ClassName.COLUMN_CONTROLS_DECORATIONS
+  }[data-start-index="${atIndex}"]`;
   await deleteRowOrColumn(page, controlSelector);
 };
 
@@ -316,6 +374,23 @@ export const grabResizeHandle = async (
   await page.mouse.down();
 };
 
+export const scrollTable = async (page: any, percentage: number = 1) => {
+  await page.evaluate(
+    (selector: string, percentage: number) => {
+      const element = document.querySelector(selector) as HTMLElement;
+
+      if (element) {
+        element.scrollTo(
+          (element.scrollWidth - element.offsetWidth) * percentage,
+          0,
+        );
+      }
+    },
+    `.${ClassName.TABLE_NODE_WRAPPER}`,
+    percentage,
+  );
+};
+
 export const toggleBreakout = async (page: any, times: number) => {
   const timesArray = Array.from({ length: times });
 
@@ -329,7 +404,16 @@ export const scrollToTable = async (page: any) => {
   await scrollToElement(page, tableSelectors.tableTd, 50);
 };
 
-const select = (type: 'row' | 'column') => async (
+export const unselectTable = async (page: Page) => {
+  const rect = await getBoundingRect(page, `.${ClassName.TABLE_NODE_WRAPPER}`)!;
+
+  await page.mouse.click(
+    rect.left + rect.width * 0.5, // Middle of the table
+    rect.top - 20, // 20px outside the top of the table
+  );
+};
+
+const select = (type: 'row' | 'column' | 'numbered') => async (
   n: number,
   isShiftPressed: boolean = false,
 ) => {
@@ -338,7 +422,10 @@ const select = (type: 'row' | 'column') => async (
   const selector =
     type === 'row'
       ? tableSelectors.nthRowControl(n + 1)
-      : tableSelectors.nthColumnControl(n + 1);
+      : type === 'column'
+      ? tableSelectors.nthColumnControl(n)
+      : tableSelectors.nthNumberedColumnRowControl(n + 1);
+
   await page.waitForSelector(selector);
 
   if (isShiftPressed) {
@@ -359,3 +446,7 @@ export const selectRow = select('row');
  * @param n This has `0` based index.
  */
 export const selectColumn = select('column');
+/**
+ * @param n This has `1` based index.
+ */
+export const selectNumberedColumnRow = select('numbered');

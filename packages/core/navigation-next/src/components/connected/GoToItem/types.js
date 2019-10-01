@@ -9,10 +9,16 @@ export type ExternalGoToItemProps = {
   /** The view ID that should be transitioned to onClick. */
   goTo: string,
   /** The time in milliseconds to delay the spinner that appears when transitioning to a view that is still being loaded. */
-  spinnerDelay: number,
+  spinnerDelay?: number,
 };
 
 export type GoToItemProps = {
   ...$Exact<WithNavigationViewControllerProps>,
   ...$Exact<ExternalGoToItemProps>,
+};
+
+export type AfterComponentProps = {
+  incomingView: { id: string },
+  spinnerDelay: number,
+  afterGoTo: string,
 };

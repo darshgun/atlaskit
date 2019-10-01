@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Container, Content, Icon, Text, Visibility } from '../styled';
 
 interface Props {
@@ -12,6 +12,8 @@ interface Props {
   isOpen?: boolean;
   /** Returns the inner ref of the component. This is exposed so the height can be used in page. */
   innerRef?: (element: HTMLElement) => void;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 class Banner extends React.Component<Props, { height: number }> {
@@ -41,7 +43,7 @@ class Banner extends React.Component<Props, { height: number }> {
   };
 
   render() {
-    const { appearance, children, icon, isOpen } = this.props;
+    const { appearance, children, icon, isOpen, testId } = this.props;
 
     return (
       <Visibility bannerHeight={this.state.height} isOpen={isOpen}>
@@ -50,6 +52,7 @@ class Banner extends React.Component<Props, { height: number }> {
           appearance={appearance}
           aria-hidden={!isOpen}
           role="alert"
+          data-testid={testId}
         >
           <Content appearance={appearance}>
             <Icon>{icon}</Icon>

@@ -6,6 +6,7 @@ import * as debounce from 'lodash.debounce';
 import * as React from 'react';
 import { BaseUserPicker } from '../../../components/BaseUserPicker';
 import { getComponents } from '../../../components/components';
+import * as analytics from '../../../analytics';
 import {
   optionToSelectableOption,
   optionToSelectableOptions,
@@ -15,6 +16,7 @@ import {
   OptionData,
   Team,
   User,
+  Group,
   UserPickerProps,
   UserType,
 } from '../../../types';
@@ -97,7 +99,7 @@ describe('BaseUserPicker', () => {
     const select = component.find(Select);
     select.simulate('change', userOptions[0], { action: 'select-option' });
 
-    expect(onSelection).toHaveBeenCalledWith(options[0]);
+    expect(onSelection).toHaveBeenCalledWith(options[0], undefined);
   });
 
   it('should trigger props.onClear if onChange with clear action', () => {
@@ -384,6 +386,128 @@ describe('BaseUserPicker', () => {
         expect(debounce).toHaveBeenCalledWith(expect.any(Function), 200);
       });
     });
+
+    describe('with session id', () => {
+      let analyticsSpy: jest.SpyInstance;
+      beforeEach(() => {
+        analyticsSpy = jest.spyOn(analytics, 'startSession').mockReturnValue({
+          id: 'random-session-id',
+        });
+      });
+
+      afterEach(() => {
+        analyticsSpy.mockRestore();
+      });
+
+      it('should pass sessionId to load option', () => {
+        const loadOptions = jest.fn(() => Promise.resolve(options));
+        const component = mountWithIntl(getBasePicker({ loadOptions }));
+        const input = component.find('input');
+        input.simulate('focus');
+        expect(loadOptions).toHaveBeenCalledWith(
+          undefined,
+          'random-session-id',
+        );
+      });
+
+      const testData = [
+        {
+          callback: jest.fn(),
+          payload: ['random-session-id'],
+          prop: 'onFocus',
+          toString: () => 'onFocus',
+        },
+        {
+          callback: jest.fn(),
+          payload: ['random-session-id'],
+          prop: 'onBlur',
+          toString: () => 'onBlur',
+        },
+        {
+          callback: jest.fn(),
+          payload: ['random-session-id'],
+          prop: 'onClose',
+          toString: () => 'onClose',
+        },
+        {
+          callback: jest.fn(),
+          payload: ['search', 'random-session-id'],
+          prop: 'onInputChange',
+          propParams: ['search', { action: 'input-change' }],
+          toString: () => 'onInputChange',
+        },
+      ];
+
+      test.each(testData)(
+        'should pass session id %s',
+        ({ callback, payload, prop, propParams = [] }) => {
+          const component = mountWithIntl(
+            getBasePicker({ [prop]: callback, open: true }),
+          );
+          const input = component.find(Select);
+          input.props()[prop](...propParams);
+          expect(callback).toHaveBeenCalledWith(...payload);
+        },
+      );
+
+      it('should pass session id on select when it starts opened', () => {
+        const onSelection = jest.fn();
+        const component = mountWithIntl(
+          getBasePicker({ onSelection, open: true }),
+        );
+        const input = component.find(Select);
+        input
+          .props()
+          ['onChange']({ data: 'user-id' }, { action: 'select-option' });
+        expect(onSelection).toHaveBeenCalledWith(
+          'user-id',
+          'random-session-id',
+        );
+      });
+
+      it('should pass session id on focus before open', () => {
+        const onFocus = jest.fn();
+        const component = mountWithIntl(getBasePicker({ onFocus }));
+        const input = component.find('input');
+        input.simulate('focus');
+        expect(onFocus).toHaveBeenCalledWith('random-session-id');
+      });
+
+      it('should use the same session id on 2nd focus', async () => {
+        analyticsSpy
+          .mockReturnValueOnce({ id: 'session-first' })
+          .mockReturnValueOnce({ id: 'session-second' });
+        const onFocus = jest.fn();
+        const component = mountWithIntl(getBasePicker({ onFocus }));
+        const input = component.find('input');
+        input.simulate('focus');
+        await component.update();
+        input.simulate('focus');
+        await component.update();
+        expect(onFocus).toHaveBeenCalledTimes(2);
+        expect(onFocus).toHaveBeenCalledWith('session-first');
+      });
+
+      it('should use new session id for on focus if open is false', async () => {
+        analyticsSpy
+          .mockReturnValueOnce({ id: 'session-first' })
+          .mockReturnValueOnce({ id: 'session-second' });
+        const onFocus = jest.fn();
+        const component = mountWithIntl(
+          getBasePicker({ onFocus, open: false }),
+        );
+        const input = component.find('input');
+        input.simulate('focus');
+        await component.update();
+        input.simulate('focus');
+        await component.update();
+        expect(onFocus).toHaveBeenCalledTimes(2);
+        expect(onFocus.mock.calls).toMatchObject([
+          ['session-first'],
+          ['session-second'],
+        ]);
+      });
+    });
   });
 
   describe('with defaultOptions', () => {
@@ -497,7 +621,7 @@ describe('BaseUserPicker', () => {
         search: 'test',
       });
 
-      expect(loadOptions).toHaveBeenCalledWith('test');
+      expect(loadOptions).toHaveBeenCalledWith('test', expect.any(String));
     });
   });
 
@@ -655,7 +779,7 @@ describe('BaseUserPicker', () => {
     expect(preventDefault).toHaveBeenCalledTimes(0);
   });
 
-  describe('teams', () => {
+  describe('groups and teams', () => {
     const teamOptions: Team[] = [
       {
         id: 'team-123',
@@ -671,13 +795,22 @@ describe('BaseUserPicker', () => {
       },
     ];
 
+    const groupOptions: Group[] = [
+      { id: 'group-90210', name: 'the-bae-goals-group', type: 'group' },
+      { id: 'group-111', name: 'groups-that-group-groups', type: 'group' },
+    ];
+
     const selectableTeamOptions: Option[] = optionToSelectableOptions(
       teamOptions,
     );
-
-    const mixedOptions: OptionData[] = (options as OptionData[]).concat(
-      teamOptions,
+    const selectableGroupOptions: Option[] = optionToSelectableOptions(
+      groupOptions,
     );
+
+    const mixedOptions: OptionData[] = (options as OptionData[])
+      .concat(teamOptions)
+      .concat(groupOptions);
+
     const selectableMixedOptions: Option[] = optionToSelectableOptions(
       mixedOptions,
     );
@@ -688,13 +821,19 @@ describe('BaseUserPicker', () => {
       expect(select.prop('options')).toEqual(selectableTeamOptions);
     });
 
-    it('should render select with both teams and users', () => {
+    it('should render select with only groups', () => {
+      const component = shallowUserPicker({ options: groupOptions });
+      const select = component.find(Select);
+      expect(select.prop('options')).toEqual(selectableGroupOptions);
+    });
+
+    it('should render select with teams, groups, and users', () => {
       const component = shallowUserPicker({ options: mixedOptions });
       const select = component.find(Select);
       expect(select.prop('options')).toEqual(selectableMixedOptions);
     });
 
-    it('should be able to multi-select a mix of users and teams', () => {
+    it('should be able to multi-select a mix of teams, groups, and users', () => {
       const onChange = jest.fn();
       const component = shallowUserPicker({
         options: mixedOptions,
@@ -707,7 +846,7 @@ describe('BaseUserPicker', () => {
       });
 
       expect(onChange).toHaveBeenCalledWith(
-        [mixedOptions[0], mixedOptions[1], mixedOptions[2], mixedOptions[3]],
+        mixedOptions.slice(0, 6),
         'select-option',
       );
     });

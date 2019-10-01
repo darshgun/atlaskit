@@ -1,5 +1,369 @@
 # @atlaskit/editor-test-helpers
 
+## 10.1.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 10.1.0
+
+### Minor Changes
+
+- [minor][79c69ed5cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79c69ed5cd):
+
+  ED-7449 Implement sorting inline cards inside tables base on resolved title
+
+## 10.0.0
+
+### Major Changes
+
+- [major][80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+
+  Remove applicationCard node and action mark
+
+### Minor Changes
+
+- [minor][5276c19a41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5276c19a41):
+
+  ED-5996: support viewing inline comments within editor
+
+  You can do this with the `annotationProvider` prop. Passing a truthy value to this (e.g. the empty object `{}`) will:
+
+  - enable support for working with the `annotation` ADF mark
+  - will render highlights around any annotations, and
+  - allow copying and pasting of annotations within the same document, or between documents
+
+  You can also optionally pass a React component to the `component`, so you can render custom components on top of or around the editor when the user's text cursor is inside an annotation.
+
+  Please see [the package documentation](https://atlaskit.atlassian.com/packages/editor/editor-core/docs/annotations) for more information.
+
+  There is an example component called `ExampleInlineCommentComponent` within the `@atlaskit/editor-test-helpers` package. It is currently featured in the full page examples on the Atlaskit website.
+
+  Annotations are styled within the editor using the `fabric-editor-annotation` CSS class.
+
+  Other changes:
+
+  - `Popup` now supports an optional `rect` parameter to direct placement, rather than calculating the bounding client rect around a DOM node.
+
+### Patch Changes
+
+- [patch][9908666d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9908666d1e):
+
+  Bump prosemirror-tables from 0.9.1 to 0.9.2
+
+- Updated dependencies [1194ad5eb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1194ad5eb3):
+- Updated dependencies [166eb02474](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166eb02474):
+  - @atlaskit/editor-common@41.0.0
+  - @atlaskit/editor-core@113.0.0
+  - @atlaskit/adf-schema@4.0.0
+
+## 9.11.14
+
+### Patch Changes
+
+- [patch][2b158873d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b158873d1):
+
+  Add linting rule to prevent unsafe usage of setTimeout within React components.
+
+## 9.11.13
+
+- Updated dependencies [08ec269915](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08ec269915):
+  - @atlaskit/editor-core@112.44.2
+  - @atlaskit/editor-common@40.0.0
+
+## 9.11.12
+
+### Patch Changes
+
+- [patch][a05133283c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a05133283c):
+
+  Add missing dependency in package.json
+
+## 9.11.11
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 9.11.10
+
+### Patch Changes
+
+- [patch][0d7d459f1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7d459f1a):
+
+  Fixes type errors which were incompatible with TS 3.6
+
+## 9.11.9
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 9.11.8
+
+### Patch Changes
+
+- [patch][a82d6088e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a82d6088e2):
+
+  ED-4807 Use right cell type when spliting merged header cells
+
+## 9.11.7
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 9.11.6
+
+- Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
+  - @atlaskit/editor-core@112.41.6
+  - @atlaskit/media-core@30.0.10
+  - @atlaskit/media-test-helpers@25.0.0
+
+## 9.11.5
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 9.11.4
+
+### Patch Changes
+
+- [patch][6874801bc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6874801bc0):
+
+  ED-7314 Added test helpers for comparing selections. Includes new builders for gap cursors.
+
+## 9.11.3
+
+- Updated dependencies [6164bc2629](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6164bc2629):
+  - @atlaskit/editor-core@112.39.5
+  - @atlaskit/adf-schema@3.0.0
+  - @atlaskit/editor-common@39.17.0
+
+## 9.11.2
+
+### Patch Changes
+
+- [patch][0bb88234e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bb88234e6):
+
+  Upgrade prosemirror-view to 1.9.12
+
+## 9.11.1
+
+### Patch Changes
+
+- [patch][ec8066a555](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec8066a555):
+
+  Upgrade `@types/prosemirror-view` Typescript definitions to latest 1.9.x API
+
+## 9.11.0
+
+### Minor Changes
+
+- [minor][d53c3e989f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d53c3e989f):
+
+  Add selectCell helper
+
+## 9.10.1
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 9.10.0
+
+### Minor Changes
+
+- [minor][c0ba9ee289](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0ba9ee289):
+
+  set viewMediaClientConfig when properties change in MediaSingle node
+
+  This fixes [ED-7269] + [FEF-8938]: issue with images not loading when the page transition from view to edit mode
+
+## 9.9.4
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 9.9.3
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 9.9.2
+
+### Patch Changes
+
+- [patch][979464019f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/979464019f):
+
+  ED-7073: fixed table clear cell not working (caused by `prosemirror-utils@0.9.3`)
+
+## 9.9.1
+
+### Patch Changes
+
+- [patch][13ca42c394](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13ca42c394):
+
+  # use getAuthFromContext from media when a file if pasted from a different collection
+
+  Now products can provide auth using **getAuthFromContext** on MediaClientConfig:
+
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core'
+  import Editor from '@atlaskit/editor-core'
+
+  const viewMediaClientConfig: MediaClientConfig = {
+    authProvider // already exists
+    getAuthFromContext(contextId: string) {
+      // here products can return auth for external pages.
+      // in case of copy & paste on Confluence, they can provide read token for
+      // files on the source collection
+    }
+  }
+  const mediaProvider: = {
+    viewMediaClientConfig
+  }
+
+  <Editor {...otherNonRelatedProps} media={{provider: mediaProvider}} />
+  ```
+
+## 9.9.0
+
+### Minor Changes
+
+- [minor][f60618b0f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f60618b0f0):
+
+  ED-5844 Adding media link UI to editor
+
+## 9.8.0
+
+### Minor Changes
+
+- [minor][4a22a774a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a22a774a6):
+
+  AUX-36 Add update support for extension handler
+
+## 9.7.0
+
+### Minor Changes
+
+- [minor][d217a12e31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d217a12e31):
+
+  ED-7056: Update prosemirror-utils, this enables us to replace selected nodes while inserting
+  ED-6668: Adds a selected ring to all extensions
+
+## 9.6.0
+
+### Minor Changes
+
+- [minor][143dcb8704](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/143dcb8704):
+
+  ED-2362 Add keyboard shortcuts for headings and normal text
+
+## 9.5.2
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/editor-common@39.13.2
+  - @atlaskit/editor-core@112.25.3
+  - @atlaskit/media-test-helpers@24.1.2
+  - @atlaskit/smart-card@12.2.3
+  - @atlaskit/icon@19.0.0
+
+## 9.5.1
+
+### Patch Changes
+
+- [patch][4c0fcec857](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0fcec857):
+
+  ED-7059: fix trailing slashes for hyperlinks being removed, and smart links resolving
+
+## 9.5.0
+
+### Minor Changes
+
+- [minor][d6c31deacf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6c31deacf):
+
+  ED-6701 Upgrade prosemirror-view to 1.9.10 and prosemirror-inputrules to 1.0.4 for composition input improvements
+
+## 9.4.2
+
+### Patch Changes
+
+- [patch][bb64fcedcb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb64fcedcb):
+
+  uploadContext and viewContext fields of MediaProvider (part of Editor and Renderer props) are deprecated. New fields uploadMediaClientConfig and viewMediaClientConfig should be used from now on.
+
+## 9.4.1
+
+- Updated dependencies [393fb6acd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/393fb6acd2):
+  - @atlaskit/editor-core@112.14.0
+  - @atlaskit/smart-card@12.0.0
+
+## 9.4.0
+
+### Minor Changes
+
+- [minor][11a8112851](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11a8112851):
+
+  ED-6991 Fire analytics event for renderer started
+
+  Set up analytics v3 in renderer
+
+## 9.3.9
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/editor-common@39.7.2
+  - @atlaskit/editor-core@112.11.20
+  - @atlaskit/media-test-helpers@24.0.3
+  - @atlaskit/smart-card@11.1.6
+  - @atlaskit/icon@18.0.0
+
 ## 9.3.8
 
 ### Patch Changes

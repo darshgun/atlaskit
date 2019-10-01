@@ -8,7 +8,9 @@ export { CardProvider, CardOptions } from './types';
 
 export const stateKey = new PluginKey('cardPlugin');
 
-const cardPlugin: EditorPlugin = {
+const cardPlugin = (): EditorPlugin => ({
+  name: 'card',
+
   nodes() {
     return [
       { name: 'inlineCard', node: inlineCard },
@@ -23,6 +25,6 @@ const cardPlugin: EditorPlugin = {
   pluginsOptions: {
     floatingToolbar,
   },
-};
+});
 
 export default cardPlugin;

@@ -1,19 +1,19 @@
 {
   "name": "@atlaskit/css-reset",
-  "version": "5.0.0",
+  "version": "5.0.8",
   "description": "Base stylesheet for ADG",
   "license": "Apache-2.0",
-  "module": "index.js",
-  "types": "index.d.ts",
+  "module": "dist/bundle.css",
   "main": "dist/bundle.css",
+  "types": "dist/cjs/index.d.ts",
   "atlaskit:src": "src/index.ts",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/overview",
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Sean C",
-    "Ajay M",
-    "Daniel D",
-    "Kang C"
+    "Daniel DC",
+    "Harsha I",
+    "Alex R"
   ],
   "atlaskit": {
     "name": "Css Reset",
@@ -21,10 +21,11 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "scripts": {
-    "build": "babel --ignore WE_WILL_NOT_IGNORE_ANYTHING --presets @babel/preset-typescript build/js-to-css.ts --config-file=../../../babel.config.js --env-name=production:cjs"
+    "build-css": "ts-node --compiler-options='{ \"module\": \"CommonJS\", \"allowJs\": true }' build/js-to-css.ts",
+    "ak-postbuild": "yarn build-css"
   },
   "dependencies": {
-    "@atlaskit/theme": "^9.0.0",
+    "@atlaskit/theme": "^9.1.6",
     "fbjs": "^1.0.0",
     "mkdirp": "^0.5.1"
   },
@@ -32,9 +33,9 @@
     "react": "^16.8.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^8.1.1",
-    "@babel/node": "^7.0.0",
-    "less": "^2.7.1"
+    "@atlaskit/docs": "^8.1.5",
+    "less": "^2.7.1",
+    "ts-node": "^6.1.1"
   },
   "keywords": [
     "atlaskit",

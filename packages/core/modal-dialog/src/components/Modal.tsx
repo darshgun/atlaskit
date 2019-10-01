@@ -14,29 +14,12 @@ import {
 
 import { WIDTH_ENUM, WidthNames } from '../shared-variables';
 
-import {
-  PositionerAbsolute,
-  PositionerRelative,
-  Dialog,
-  FillScreen as StyledFillScreen,
-} from '../styled/Modal';
+import { Dialog, FillScreen as StyledFillScreen } from '../styled/Modal';
 import { Animation } from './Animation';
 import Content from './Content';
 import FocusLock from './FocusLock';
 import { WrapperProps as OuterProps } from './ModalWrapper';
-
-interface PositionerProps {
-  scrollBehavior: void | 'inside' | 'outside';
-  style: Object;
-  widthName?: WidthNames;
-  widthValue?: string | number;
-}
-export function Positioner({ scrollBehavior, ...props }: PositionerProps) {
-  const PositionComponent =
-    scrollBehavior === 'inside' ? PositionerAbsolute : PositionerRelative;
-
-  return <PositionComponent {...props} />;
-}
+import Positioner from './Positioner';
 
 function getScrollDistance() {
   return (
@@ -52,6 +35,8 @@ interface Props extends OuterProps {
     Whether or not the dialog is visible
   */
   isOpen: boolean;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 interface State {
@@ -62,13 +47,13 @@ interface State {
 class Modal extends React.Component<Props, State> {
   static defaultProps = {
     autoFocus: true,
-    scrollBehavior: 'inside',
+    scrollBehavior: 'inside' as 'inside' | 'outside',
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
     isChromeless: false,
     isOpen: true,
     stackIndex: 0,
-    width: 'medium',
+    width: 'medium' as WidthNames,
     isHeadingMultiline: true,
     onClose: () => {},
   };
@@ -130,6 +115,7 @@ class Modal extends React.Component<Props, State> {
       heading,
       width,
       scrollBehavior,
+      testId,
     } = this.props;
 
     const { scrollDistance } = this.state;
@@ -173,6 +159,7 @@ class Modal extends React.Component<Props, State> {
                   heightValue={height}
                   isChromeless={isChromeless}
                   role="dialog"
+                  data-testid={testId}
                   tabIndex={-1}
                 >
                   <Content

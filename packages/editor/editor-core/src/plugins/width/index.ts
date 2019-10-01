@@ -44,7 +44,9 @@ export function createPlugin(
   });
 }
 
-const widthPlugin: EditorPlugin = {
+const widthPlugin = (): EditorPlugin => ({
+  name: 'width',
+
   pmPlugins: () => [
     {
       name: 'width',
@@ -65,6 +67,6 @@ const widthPlugin: EditorPlugin = {
     editorView.dispatch(tr);
     return null;
   },
-};
+});
 
 export default widthPlugin;

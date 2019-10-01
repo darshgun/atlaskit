@@ -19,7 +19,9 @@ import {
 import { tooltip, toggleBulletList, toggleOrderedList } from '../../keymaps';
 import { IconList, IconListNumber } from '../quick-insert/assets';
 
-const listPlugin: EditorPlugin = {
+const listPlugin = (): EditorPlugin => ({
+  name: 'list',
+
   nodes() {
     return [
       { name: 'bulletList', node: bulletList },
@@ -106,7 +108,6 @@ const listPlugin: EditorPlugin = {
 
   primaryToolbarComponent({
     editorView,
-    dispatchAnalyticsEvent,
     popupsMountPoint,
     popupsBoundariesElement,
     popupsScrollableElement,
@@ -127,7 +128,6 @@ const listPlugin: EditorPlugin = {
             isReducedSpacing={isToolbarReducedSpacing}
             disabled={disabled}
             editorView={editorView}
-            dispatchAnalyticsEvent={dispatchAnalyticsEvent}
             popupsMountPoint={popupsMountPoint}
             popupsBoundariesElement={popupsBoundariesElement}
             popupsScrollableElement={popupsScrollableElement}
@@ -140,6 +140,6 @@ const listPlugin: EditorPlugin = {
       />
     );
   },
-};
+});
 
 export default listPlugin;

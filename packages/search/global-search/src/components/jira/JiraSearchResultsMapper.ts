@@ -1,7 +1,6 @@
 import {
   ResultsGroup,
   JiraResultsMap,
-  GenericResultMap,
   Result,
   ResultType,
   AnalyticsType,
@@ -22,10 +21,12 @@ import { JiraFeatures } from '../../util/features';
 const DEFAULT_MAX_OBJECTS = 8;
 const MAX_CONTAINERS = 6;
 const MAX_PEOPLE = 3;
+export const MAX_RECENT_RESULTS_TO_SHOW = 3;
 
-const DEFAULT_JIRA_RESULTS_MAP: GenericResultMap = {
-  objects: [] as Result[],
+const DEFAULT_JIRA_RESULTS_MAP: JiraResultsMap = {
+  objects: [],
   containers: [],
+  people: [],
 };
 
 const isEmpty = (arr: Array<any> = []) => !arr.length;
@@ -36,7 +37,7 @@ const hasNoResults = (
   containers: Array<Result> = [],
 ): boolean => isEmpty(objects) && isEmpty(poeple) && isEmpty(containers);
 
-const sliceResults = (resultsMap: GenericResultMap | null, abTest: ABTest) => {
+const sliceResults = (resultsMap: JiraResultsMap | null, abTest: ABTest) => {
   const { objects, containers, people } = resultsMap
     ? resultsMap
     : DEFAULT_JIRA_RESULTS_MAP;
@@ -55,7 +56,7 @@ const sliceResults = (resultsMap: GenericResultMap | null, abTest: ABTest) => {
 };
 
 export const mapRecentResultsToUIGroups = (
-  recentlyViewedObjects: GenericResultMap | null,
+  recentlyViewedObjects: JiraResultsMap | null,
   searchSessionId: string,
   features: JiraFeatures,
   appPermission?: JiraApplicationPermission,
@@ -77,7 +78,7 @@ export const mapRecentResultsToUIGroups = (
       key: 'issues',
       title: messages.jira_recent_issues_heading,
       totalSize: objectsToDisplay.length,
-      showTotalSize: features.searchExtensionsEnabled,
+      showTotalSize: false, // Jira doesn't support search extensions yet
     },
     {
       items: containersToDisplay,
@@ -121,7 +122,7 @@ export const mapSearchResultsToUIGroups = (
       items: objectsToDisplay,
       key: 'issues',
       title: messages.jira_search_result_issues_heading,
-      showTotalSize: features.searchExtensionsEnabled,
+      showTotalSize: false, // Jira doesn't support search extensions yet
       totalSize: objectsToDisplay.length,
     },
     ...(!hasNoResults(objectsToDisplay, peopleToDisplay, containersToDisplay)
@@ -132,7 +133,10 @@ export const mapSearchResultsToUIGroups = (
                 resultType: ResultType.JiraIssueAdvancedSearch,
                 resultId: 'search-jira',
                 name: 'jira',
-                href: getJiraAdvancedSearchUrl(JiraEntityTypes.Issues, query),
+                href: getJiraAdvancedSearchUrl({
+                  entityType: JiraEntityTypes.Issues,
+                  query,
+                }),
                 analyticsType: AnalyticsType.LinkPostQueryAdvancedSearchJira,
                 contentType: ContentType.JiraIssue,
               },

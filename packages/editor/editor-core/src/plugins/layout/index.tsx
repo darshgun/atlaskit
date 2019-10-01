@@ -11,10 +11,20 @@ import {
 import { buildToolbar } from './toolbar';
 import { createDefaultLayoutSection } from './actions';
 import { IconLayout } from '../quick-insert/assets';
+import {
+  addAnalytics,
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+  INPUT_METHOD,
+  EVENT_TYPE,
+} from '../analytics';
 
 export { pluginKey };
 
-export default {
+const layoutPlugin = (): EditorPlugin => ({
+  name: 'layout',
+
   nodes() {
     return [
       { name: 'layoutSection', node: layoutSection },
@@ -48,9 +58,20 @@ export default {
         priority: 1100,
         icon: () => <IconLayout label={formatMessage(messages.columns)} />,
         action(insert, state) {
-          return insert(createDefaultLayoutSection(state));
+          const tr = insert(createDefaultLayoutSection(state));
+          return addAnalytics(tr, {
+            action: ACTION.INSERTED,
+            actionSubject: ACTION_SUBJECT.DOCUMENT,
+            actionSubjectId: ACTION_SUBJECT_ID.LAYOUT,
+            attributes: {
+              inputMethod: INPUT_METHOD.QUICK_INSERT,
+            },
+            eventType: EVENT_TYPE.TRACK,
+          });
         },
       },
     ],
   },
-} as EditorPlugin;
+});
+
+export default layoutPlugin;

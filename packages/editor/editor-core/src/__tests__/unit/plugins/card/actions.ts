@@ -1,5 +1,4 @@
 import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
-import cardPlugin from '../../../../plugins/card';
 import {
   setProvider,
   queueCards,
@@ -16,7 +15,7 @@ import {
   blockCard,
   Refs,
 } from '@atlaskit/editor-test-helpers';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { setNodeSelection } from '../../../../utils';
 import { visitCardLink, removeCard } from '../../../../plugins/card/toolbar';
 import { EditorView } from 'prosemirror-view';
@@ -26,16 +25,15 @@ const atlassianUrl = 'http://www.atlassian.com/';
 
 describe('card', () => {
   const createEditor = createEditorFactory();
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEventInterface>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
 
   const editor = (doc: any) => {
     createAnalyticsEvent = createAnalyticsEventMock();
     const wrapper = createEditor({
       doc,
-      editorPlugins: [cardPlugin],
       pluginKey,
       createAnalyticsEvent: createAnalyticsEvent as any,
-      editorProps: { allowAnalyticsGASV3: true },
+      editorProps: { allowAnalyticsGASV3: true, UNSAFE_cards: {} },
     });
     createAnalyticsEvent.mockClear();
     return wrapper;
@@ -51,8 +49,10 @@ describe('card', () => {
         dispatch(setProvider(provider)(state.tr));
 
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [],
           provider: provider,
+          showLinkingToolbar: false,
         });
       });
     });
@@ -105,8 +105,10 @@ describe('card', () => {
         editorView.dispatch(resolveCard(atlassianUrl)(editorView.state.tr));
 
         expect(pluginKey.getState(editorView.state)).toEqual({
+          cards: [],
           requests: [],
           provider: null,
+          showLinkingToolbar: false,
         });
       });
     });

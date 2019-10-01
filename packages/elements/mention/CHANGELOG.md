@@ -1,5 +1,315 @@
 # @atlaskit/mention
 
+## 18.15.3
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 18.15.2
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-test-helpers@10.0.0
+
+## 18.15.1
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 18.15.0
+
+### Minor Changes
+
+- [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
+
+  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+
+  More information about the deprecation of lifecycles methods can be found here:
+  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+
+## 18.14.4
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 18.14.3
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 18.14.2
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 18.14.1
+
+### Patch Changes
+
+- [patch][84b795279d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84b795279d):
+
+  TEAMS-626 : Adding translations for team mention spotlight
+
+## 18.14.0
+
+### Minor Changes
+
+- [minor][a22fc8004f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a22fc8004f):
+
+  TEAMS-618 : Exporting Team mention spotlight with correct name
+
+## 18.13.0
+
+### Minor Changes
+
+- [minor][9b83fdea35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b83fdea35):
+
+  TEAMS-618 : Rename Team mention spotlight to Team Mention Highlight
+
+## 18.12.0
+
+### Minor Changes
+
+- [minor][fe1a882fbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe1a882fbb):
+
+  TEAMS-602 : Can pass the team creation link from confluence as an optional parameter to the Team Mention Spotlight
+
+## 18.11.4
+
+### Patch Changes
+
+- [patch][2f62d55150](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f62d55150):
+
+  The mention spotlight can take a context path, and fixing a bug with on-click for the create team link
+
+## 18.11.3
+
+### Patch Changes
+
+- [patch][c72cca2853](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c72cca2853):
+
+  Added analytics when user clicks the create team link
+
+## 18.11.2
+
+### Patch Changes
+
+- [patch][b4d2284e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b4d2284e01):
+
+  Added analytics on spotlight viewed.
+
+## 18.11.1
+
+### Patch Changes
+
+- [patch][23f9c8ff08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23f9c8ff08):
+
+  Added analytics on closing team mention spotlight
+
+## 18.11.0
+
+### Minor Changes
+
+- [minor][cda47d4480](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cda47d4480):
+
+  TEAMS-623 : Before this fix, when Spotlight was being rendered for the 5th time, it briefly appeared and then disappeared. This change fixes that.
+
+## 18.10.0
+
+### Minor Changes
+
+- [minor][e81d32fe9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e81d32fe9a):
+
+  TEAMS-588 : Refactors the Team Spotlight ( which is used in mention typeahead for Fabric Editor and TinyMCE editor). Now can close the spotlight from Fabric Editor by clicking on the x button.
+
+## 18.9.0
+
+### Minor Changes
+
+- [minor][06cfea0870](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06cfea0870):
+
+  TEAMS-549 : Adding capability to show a spotlight in Fabric Editor
+
+## 18.8.0
+
+### Minor Changes
+
+- [minor][2d8dd7bc30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d8dd7bc30):
+
+  Now able to take a prop that will show a feature highlight
+
+## 18.7.3
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 18.7.2
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 18.7.1
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 18.7.0
+
+### Minor Changes
+
+- [minor][64b87b4ecb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64b87b4ecb):
+
+  TEAMS-544 : Releasing the initial version of the Mention Spotlight
+
+## 18.6.3
+
+### Patch Changes
+
+- [patch][d0db01b410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0db01b410):
+
+  TypeScript users of withAnalyticsEvents and withAnalyticsContext are now required to provide props as a generic type. This is so that TypeScript can correctly calculate the props and defaultProps of the returned component.
+
+  Before:
+
+  ```typescript
+  withAnalyticsEvents()(Button) as ComponentClass<Props>;
+  ```
+
+  After:
+
+  ```typescript
+  withAnalyticsEvents<Props>()(Button);
+  ```
+
+## 18.6.2
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/avatar@16.0.6
+  - @atlaskit/tooltip@15.0.2
+  - @atlaskit/editor-test-helpers@9.5.2
+  - @atlaskit/icon@19.0.0
+
+## 18.6.1
+
+### Patch Changes
+
+- [patch][227431f9cb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/227431f9cb):
+
+  FS-4028 - Update translations for mention component
+
+## 18.6.0
+
+### Minor Changes
+
+- [minor][58dd589a04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/58dd589a04):
+
+  Update TeamMentionResource to accept teamLinkResolver option which is used to construct a team link.
+  Fix missing userId of user mentions in analytics in editor-core
+
+## 18.5.0
+
+### Minor Changes
+
+- [minor][2d1c3db523](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d1c3db523):
+
+  FS-3986 - Support analytics for mention hydration.
+
+## 18.4.2
+
+### Patch Changes
+
+- [patch][b23479c7ba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b23479c7ba):
+
+  fix i18n-tools validation error on try/catch
+
+## 18.4.1
+
+### Patch Changes
+
+- [patch][434b2688af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/434b2688af):
+
+  Update translation
+
+## 18.4.0
+
+### Minor Changes
+
+- [minor][11cb8d8626](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11cb8d8626):
+
+  - Remove @atlaskit/analytics dependency.
+
+## 18.3.3
+
+### Patch Changes
+
+- [patch][ac95568398](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac95568398):
+
+  - Some messages are never pushed to Transifex so we need to run `yarn i18n:push && yarn i18n:pull` again
+
+## 18.3.2
+
+- Updated dependencies [67f06f58dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67f06f58dd):
+  - @atlaskit/avatar@16.0.4
+  - @atlaskit/icon@18.0.1
+  - @atlaskit/tooltip@15.0.0
+
+## 18.3.1
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/avatar@16.0.3
+  - @atlaskit/tooltip@14.0.3
+  - @atlaskit/editor-test-helpers@9.3.9
+  - @atlaskit/icon@18.0.0
+
 ## 18.3.0
 
 ### Minor Changes

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
 import Spinner from '@atlaskit/spinner';
 import { SpinnerSizeType } from '../types';
@@ -37,7 +37,7 @@ export default class LoadingContainerAdvanced extends React.Component<
     }
   };
 
-  componentWillReceiveProps = (nextProps: Props) => {
+  UNSAFE_componentWillReceiveProps = (nextProps: Props) => {
     if (!nextProps.isLoading || !this.hasTargetNode(nextProps)) {
       this.detachListeners();
     } else if (!this.props.isLoading) {

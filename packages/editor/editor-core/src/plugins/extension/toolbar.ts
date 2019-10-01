@@ -59,9 +59,10 @@ const breakoutOptions = (
   state: EditorState,
   formatMessage: InjectedIntl['formatMessage'],
   extensionState: ExtensionState,
+  breakoutEnabled: boolean,
 ): Array<FloatingToolbarItem<Command>> => {
   const { layout, allowBreakout, node } = extensionState;
-  return allowBreakout && isLayoutSupported(state, node)
+  return breakoutEnabled && allowBreakout && isLayoutSupported(state, node)
     ? [
         {
           type: 'button',
@@ -88,29 +89,52 @@ const breakoutOptions = (
     : [];
 };
 
-export const getToolbarConfig: FloatingToolbarHandler = (
-  state,
-  { formatMessage },
-) => {
+const editButton = (
+  formatMessage: InjectedIntl['formatMessage'],
+  macroState: MacroState,
+  extensionState: ExtensionState,
+): Array<FloatingToolbarItem<Command>> => {
+  if (!extensionState.showEditButton) {
+    return [];
+  }
+
+  return [
+    {
+      type: 'button',
+      icon: EditIcon,
+      onClick: editExtension(
+        macroState && macroState.macroProvider,
+        extensionState.updateExtension,
+      ),
+      title: formatMessage(messages.edit),
+    },
+  ];
+};
+
+export const getToolbarConfig = (
+  breakoutEnabled: boolean = true,
+): FloatingToolbarHandler => (state, { formatMessage }) => {
   const extensionState: ExtensionState = pluginKey.getState(state);
   const macroState: MacroState = macroPluginKey.getState(state);
   if (extensionState && extensionState.element) {
+    const nodeType = [
+      state.schema.nodes.extension,
+      state.schema.nodes.inlineExtension,
+      state.schema.nodes.bodiedExtension,
+    ];
+
     return {
       title: 'Extension floating controls',
       getDomRef: () => extensionState.element!.parentElement || undefined,
-      nodeType: [
-        state.schema.nodes.extension,
-        state.schema.nodes.inlineExtension,
-        state.schema.nodes.bodiedExtension,
-      ],
+      nodeType,
       items: [
-        {
-          type: 'button',
-          icon: EditIcon,
-          onClick: editExtension(macroState && macroState.macroProvider),
-          title: formatMessage(messages.edit),
-        },
-        ...breakoutOptions(state, formatMessage, extensionState),
+        ...editButton(formatMessage, macroState, extensionState),
+        ...breakoutOptions(
+          state,
+          formatMessage,
+          extensionState,
+          breakoutEnabled,
+        ),
         {
           type: 'separator',
         },
@@ -119,8 +143,8 @@ export const getToolbarConfig: FloatingToolbarHandler = (
           icon: RemoveIcon,
           appearance: 'danger',
           onClick: removeExtension(),
-          onMouseEnter: hoverDecoration(true),
-          onMouseLeave: hoverDecoration(false),
+          onMouseEnter: hoverDecoration(nodeType, true),
+          onMouseLeave: hoverDecoration(nodeType, false),
           title: formatMessage(commonMessages.remove),
         },
       ],

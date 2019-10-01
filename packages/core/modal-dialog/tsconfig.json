@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig.core.json",
+  "extends": "../../../tsconfig.json",
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
@@ -8,10 +8,9 @@
     "./examples/**/*.ts",
     "./examples/**/*.tsx",
     "./example-helpers/**/*.ts",
-    "./example-helpers/**/*.tsx",
-    "./typings/*.d.ts",
-    ],
+    "./example-helpers/**/*.tsx"
+  ],
   "compilerOptions": {
-    "baseUrl": "./",
-  }  
+    "baseUrl": "./"
+  }
 }

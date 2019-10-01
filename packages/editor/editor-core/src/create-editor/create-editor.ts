@@ -17,7 +17,7 @@ export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
 }
 
-function sortByOrder(item: 'plugins' | 'nodes' | 'marks') {
+export function sortByOrder(item: 'plugins' | 'nodes' | 'marks') {
   return function(a: { name: string }, b: { name: string }): number {
     return Ranks[item].indexOf(a.name) - Ranks[item].indexOf(b.name);
   };
@@ -146,7 +146,6 @@ export function createPMPlugins({
   portalProviderAPI,
   reactContext,
   dispatchAnalyticsEvent,
-  oldState,
 }: PMPluginCreateConfig): Plugin[] {
   return editorConfig.pmPlugins
     .sort(sortByOrder('plugins'))
@@ -162,7 +161,6 @@ export function createPMPlugins({
         portalProviderAPI,
         reactContext,
         dispatchAnalyticsEvent,
-        oldState,
       }),
     )
     .filter(plugin => !!plugin) as Plugin[];

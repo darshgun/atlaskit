@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import cases from 'jest-in-case';
 import Spinner from '@atlaskit/spinner';
 import * as renderer from 'react-test-renderer';
@@ -167,7 +167,7 @@ describe('ak-button/default-behaviour', () => {
 
   it('should respect autofocus', () => {
     const wrapper = mount(
-      <Button id="testID123" tabIndex={0} autoFocus>
+      <Button id="testId123" tabIndex={0} autoFocus>
         button
       </Button>,
     );

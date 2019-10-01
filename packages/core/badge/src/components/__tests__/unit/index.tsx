@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import Badge from '../..';
 import Format from '../../Format';
 
@@ -11,12 +11,6 @@ function getFormatProps(badge: React.ReactElement<any>) {
 
 test('snapshot', () => {
   expect(mount(<Badge />)).toMatchSnapshot();
-});
-
-test('DEPRECATED - value', () => {
-  expect(getFormatProps(<Badge value={100} />)).toMatchObject({
-    children: 100,
-  });
 });
 
 test('children', () => {

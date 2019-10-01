@@ -13,9 +13,11 @@ const LayoutManagerWithViewController = ({
   children,
   firstSkeletonToRender,
   customComponents,
-  experimental_flyoutOnHover,
   experimental_alternateFlyoutBehaviour,
+  experimental_flyoutOnHover,
   experimental_fullWidthFlyout,
+  experimental_hideNavVisuallyOnCollapse,
+  experimental_horizontalGlobalNav,
   globalNavigation,
   onExpandStart,
   onExpandEnd,
@@ -23,6 +25,8 @@ const LayoutManagerWithViewController = ({
   onCollapseEnd,
   getRefs,
   topOffset,
+  shouldHideGlobalNavShadow,
+  showContextualNavigation,
 }: LayoutManagerWithViewControllerProps) => {
   return (
     <AsyncLayoutManagerWithViewController
@@ -36,7 +40,11 @@ const LayoutManagerWithViewController = ({
       experimental_alternateFlyoutBehaviour={
         !!experimental_alternateFlyoutBehaviour
       }
+      experimental_hideNavVisuallyOnCollapse={
+        !!experimental_hideNavVisuallyOnCollapse
+      }
       experimental_fullWidthFlyout={!!experimental_fullWidthFlyout}
+      experimental_horizontalGlobalNav={!!experimental_horizontalGlobalNav}
       globalNavigation={globalNavigation}
       containerSkeleton={() =>
         firstSkeletonToRender ? (
@@ -46,6 +54,8 @@ const LayoutManagerWithViewController = ({
       itemsRenderer={ItemsRenderer}
       firstSkeletonToRender={firstSkeletonToRender}
       topOffset={topOffset}
+      shouldHideGlobalNavShadow={shouldHideGlobalNavShadow}
+      showContextualNavigation={showContextualNavigation}
     >
       {children}
     </AsyncLayoutManagerWithViewController>

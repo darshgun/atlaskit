@@ -1,4 +1,3 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
 import { initFullPageEditorWithAdf, snapshot, Device } from '../_utils';
 import longContent from './__fixtures__/long-content-adf.json';
 import { typeInEditorAtEndOfDocument } from '../../__helpers/page-objects/_editor';
@@ -6,9 +5,10 @@ import { tableSelectors } from '../../__helpers/page-objects/_table';
 import { panelSelectors } from '../../__helpers/page-objects/_panel';
 import { decisionSelectors } from '../../__helpers/page-objects/_decision';
 import { pressKey } from '../../__helpers/page-objects/_keyboard';
+import { Page } from '../../__helpers/page-objects/_types';
 
 describe('Gutter:', () => {
-  let page: any;
+  let page: Page;
 
   beforeEach(async () => {
     // @ts-ignore
@@ -17,7 +17,7 @@ describe('Gutter:', () => {
   });
 
   afterEach(async () => {
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
   });
 
   it('should add gutter at the bottom of the page', async () => {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ReactGA from 'react-ga';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import ttiPolyfill from 'tti-polyfill';
@@ -145,7 +145,7 @@ class GoogleAnalyticsListener extends React.Component<Props> {
     }
     initializeGA();
   }
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.location !== this.props.location) {
       ReactGA.pageview(nextProps.location.pathname);
     }

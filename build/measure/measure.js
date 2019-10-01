@@ -22,6 +22,7 @@ const {
   currentStatsFolder,
   uploadToS3,
   downloadFromS3,
+  downloadFromS3ForLocal,
 } = require('./utils/s3-actions');
 
 function fWriteStats(path, content) {
@@ -219,40 +220,33 @@ module.exports = async function main(
   }
 
   // All the things for S3 flow is under this condition
-  if (s3) {
-    // Add these path to enable to upload data to S3
-    const masterStatsFilePath = path.join(
-      masterStatsFolder,
-      `${packageName}-bundle-size-ratchet.json`,
-    );
-    const currentStatsFilePath = path.join(
-      currentStatsFolder,
-      `${packageName}-bundle-size.json`,
-    );
+  const masterStatsFilePath = path.join(
+    masterStatsFolder,
+    `${packageName}-bundle-size-ratchet.json`,
+  );
+  const currentStatsFilePath = path.join(
+    currentStatsFolder,
+    `${packageName}-bundle-size.json`,
+  );
 
+  if (updateSnapshot) {
+    // Store file into folder for S3
+    fWriteStats(masterStatsFilePath, stats);
     if (process.env.CI) {
-      console.log('download from s3');
+      // upload to s3 masterStats
+      uploadToS3(masterStatsFilePath, 'master');
+    }
+  } else {
+    if (process.env.CI) {
       await downloadFromS3(masterStatsFolder, 'master', packageName);
+    } else {
+      await downloadFromS3ForLocal(masterStatsFolder, 'master', packageName);
     }
+  }
 
-    const results = getBundleCheckResult(masterStatsFilePath, stats);
-    chalk.cyan(`Writing current build stats to "${currentStatsFilePath}"`);
-    fWriteStats(currentStatsFilePath, results.statsWithDiff);
-
-    if (updateSnapshot) {
-      // Store file into folder for S3
-      fWriteStats(masterStatsFilePath, stats);
-      if (process.env.CI) {
-        // upload to s3 masterStats
-        uploadToS3(masterStatsFilePath, 'master');
-      }
-    }
-  } // closing s3
-
-  // TODO: replace after changes to flow are complete
-  const prevStatsPath = path.join(filePath, `bundle-size-ratchet.json`);
-  const results = getBundleCheckResult(prevStatsPath, stats);
-
+  const results = getBundleCheckResult(masterStatsFilePath, stats);
+  chalk.cyan(`Writing current build stats to "${currentStatsFilePath}"`);
+  fWriteStats(currentStatsFilePath, results.statsWithDiff);
   if (results.passedBundleSizeCheck) {
     spinner.succeed(
       chalk.cyan(`Module "${packageName}" passed bundle size check`),
@@ -268,13 +262,10 @@ module.exports = async function main(
     printReport(prepareForPrint(joinedStatsGroups, results.statsWithDiff));
   }
 
-  if (updateSnapshot) {
-    // TODO: remove this write once the flow is switched
-    fWriteStats(prevStatsPath, stats);
-  } else if (results.statsExceededSizeLimit.length && isLint) {
-    throw new Error(`âœ– Module "${packageName}" has exceeded size limit!`);
+  if (results.statsExceededSizeLimit.length && isLint && !s3) {
+    throw new Error(`✖ – Module "${packageName}" has exceeded size limit!`);
   }
 
-  // TODO: return success always after switching the flow
-  return results.passedBundleSizeCheck ? 1 : 0;
+  // For s3, we always pass the bundle check.;
+  return s3 ? 0 : results.passedBundleSizeCheck ? 1 : 0;
 };

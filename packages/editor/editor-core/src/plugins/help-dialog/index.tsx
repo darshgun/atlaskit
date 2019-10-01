@@ -53,7 +53,9 @@ export function createPlugin(dispatch: Function, imageEnabled: boolean) {
   });
 }
 
-const helpDialog: EditorPlugin = {
+const helpDialog = (): EditorPlugin => ({
+  name: 'helpDialog',
+
   pmPlugins() {
     return [
       {
@@ -68,7 +70,7 @@ const helpDialog: EditorPlugin = {
     ];
   },
 
-  contentComponent({ editorView, appearance }) {
+  contentComponent({ editorView }) {
     return (
       <WithPluginState
         plugins={{
@@ -77,7 +79,6 @@ const helpDialog: EditorPlugin = {
         }}
         render={({ helpDialog = {} as any, quickInsert }) => (
           <HelpDialogLoader
-            appearance={appearance}
             editorView={editorView}
             isVisible={helpDialog.isVisible}
             quickInsertEnabled={!!quickInsert}
@@ -87,7 +88,7 @@ const helpDialog: EditorPlugin = {
       />
     );
   },
-};
+});
 
 const keymapPlugin = (): Plugin => {
   const list = {};

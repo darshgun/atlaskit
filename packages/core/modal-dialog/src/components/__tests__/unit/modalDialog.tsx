@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
 import ModalDialog, { ModalTransition } from '../../..';
-import { Positioner } from '../../Modal';
+import Positioner from '../../Positioner';
 import Content from '../../Content';
 import Header from '../../Header';
 import Footer from '../../Footer';
@@ -275,6 +275,44 @@ describe('modal-dialog', () => {
 
         wrapper.find(MyContent).simulate('click');
         expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('should close the modal when Escape is pressed', () => {
+        const spy = jest.fn();
+        const wrapper = mount(
+          <ModalDialog onClose={spy}>
+            <MyContent />
+          </ModalDialog>,
+        );
+
+        // The regular escape event
+        const escapeKeyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
+          key: 'Escape',
+        });
+        document.dispatchEvent(escapeKeyDownEvent);
+        // Make TS happy about using Wrapper
+        wrapper.find(MyContent);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('should close the modal when Escape is pressed in IE11', () => {
+        const spy = jest.fn();
+        const wrapper = mount(
+          <ModalDialog onClose={spy}>
+            <MyContent />
+          </ModalDialog>,
+        );
+
+        // The IE11 escape event
+        const escKeyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
+          key: 'Esc',
+        });
+        document.dispatchEvent(escKeyDownEvent);
+        // Make TS happy about using Wrapper
+        wrapper.find(MyContent);
+
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
   });

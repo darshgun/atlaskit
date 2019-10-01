@@ -1,38 +1,37 @@
 import * as React from 'react';
-import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
-import { Context } from '@atlaskit/media-core';
+import {
+  findParentNodeOfTypeClosestToPos,
+  hasParentNodeOfType,
+} from 'prosemirror-utils';
 import { MediaSingleLayout } from '@atlaskit/adf-schema';
+import { MediaClientConfig } from '@atlaskit/media-core';
+import { getMediaClient } from '@atlaskit/media-client';
 import {
   akEditorWideLayoutWidth,
   calcPxFromColumns,
   calcPctFromPx,
-  calcPxFromPct,
   akEditorBreakoutPadding,
   calcColumnsFromPx,
-  breakoutWideScaleRatio,
 } from '@atlaskit/editor-common';
 
 import { Wrapper } from './styled';
 import { Props, EnabledHandles } from './types';
 import Resizer from './Resizer';
-import {
-  snapTo,
-  handleSides,
-  imageAlignmentMap,
-  alignmentLayouts,
-} from './utils';
-import { isFullPage } from '../../../../utils/is-full-page';
+import { snapTo, handleSides, imageAlignmentMap } from './utils';
+import { calcMediaPxWidth, wrappedLayouts } from '../../utils/media-single';
+import { getPluginState } from '../../../table/pm-plugins/table-resizing/plugin';
 
 type State = {
   offsetLeft: number;
   isVideoFile: boolean;
+  resizedPctWidth?: number;
 };
 
 export default class ResizableMediaSingle extends React.Component<
   Props,
   State
 > {
-  state = {
+  state: State = {
     offsetLeft: this.calcOffsetLeft(),
 
     // We default to true until we resolve the file type
@@ -49,37 +48,43 @@ export default class ResizableMediaSingle extends React.Component<
   }
 
   get wrappedLayout() {
-    const { layout } = this.props;
-    return (
-      layout === 'wrap-left' ||
-      layout === 'wrap-right' ||
-      layout === 'align-start' ||
-      layout === 'align-end'
-    );
+    return wrappedLayouts.indexOf(this.props.layout) > -1;
   }
 
   async componentDidMount() {
-    const { viewContext } = this.props;
-    if (viewContext) {
-      this.checkVideoFile(viewContext);
+    const { viewMediaClientConfig } = this.props;
+    if (viewMediaClientConfig) {
+      this.checkVideoFile(viewMediaClientConfig);
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.viewContext !== nextProps.viewContext) {
-      this.checkVideoFile(nextProps.viewContext);
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    if (this.props.viewMediaClientConfig !== nextProps.viewMediaClientConfig) {
+      this.checkVideoFile(nextProps.viewMediaClientConfig);
+    }
+    if (this.props.layout !== nextProps.layout) {
+      this.checkLayout(this.props.layout, nextProps.layout);
     }
   }
 
-  async checkVideoFile(viewContext?: Context) {
+  async checkVideoFile(viewMediaClientConfig?: MediaClientConfig) {
     const $pos = this.$pos;
-    if (!$pos || !viewContext) {
+
+    if (!$pos || !viewMediaClientConfig) {
       return;
     }
-    const getMediaNode = this.props.state.doc.nodeAt($pos.pos + 1);
-    const state = await viewContext.file.getCurrentState(
-      getMediaNode!.attrs.id,
-    );
+
+    const mediaNode = this.props.state.doc.nodeAt($pos.pos + 1);
+    if (!mediaNode || !mediaNode.attrs.id) {
+      return;
+    }
+
+    const mediaClient = getMediaClient({
+      mediaClientConfig: viewMediaClientConfig,
+    });
+    const state = await mediaClient.file.getCurrentState(mediaNode.attrs.id, {
+      collectionName: mediaNode.attrs.collection,
+    });
     if (state && state.status !== 'error' && state.mediaType === 'image') {
       this.setState({
         isVideoFile: false,
@@ -87,33 +92,64 @@ export default class ResizableMediaSingle extends React.Component<
     }
   }
 
+  /**
+   * When returning to center layout from a wrapped/aligned layout, it might actually
+   * be wide or full-width
+   */
+  checkLayout(oldLayout: MediaSingleLayout, newLayout: MediaSingleLayout) {
+    const { resizedPctWidth } = this.state;
+    if (
+      wrappedLayouts.indexOf(oldLayout) > -1 &&
+      newLayout === 'center' &&
+      resizedPctWidth
+    ) {
+      const layout = this.calcUnwrappedLayout(
+        resizedPctWidth,
+        this.calcPxWidth(newLayout),
+      );
+      this.props.updateSize(resizedPctWidth, layout);
+    }
+  }
+
   calcNewSize = (newWidth: number, stop: boolean) => {
-    const { layout } = this.props;
+    const { layout, state } = this.props;
 
     const newPct = calcPctFromPx(newWidth, this.props.lineLength) * 100;
+    this.setState({ resizedPctWidth: newPct });
+
+    let newLayout: MediaSingleLayout = hasParentNodeOfType(
+      state.schema.nodes.table,
+    )(state.selection)
+      ? layout
+      : this.calcUnwrappedLayout(newPct, newWidth);
 
     if (newPct <= 100) {
-      let newLayout: MediaSingleLayout;
       if (this.wrappedLayout && (stop ? newPct !== 100 : true)) {
         newLayout = layout;
-      } else {
-        newLayout = 'center';
       }
-
       return {
         width: newPct,
         layout: newLayout,
       };
     } else {
-      // wide or full-width
-      const newLayout: MediaSingleLayout =
-        newWidth <= akEditorWideLayoutWidth ? 'wide' : 'full-width';
-
       return {
         width: this.props.pctWidth || null,
         layout: newLayout,
       };
     }
+  };
+
+  calcUnwrappedLayout = (
+    pct: number,
+    width: number,
+  ): 'center' | 'wide' | 'full-width' => {
+    if (pct <= 100) {
+      return 'center';
+    }
+    if (width <= akEditorWideLayoutWidth) {
+      return 'wide';
+    }
+    return 'full-width';
   };
 
   get $pos() {
@@ -162,7 +198,7 @@ export default class ResizableMediaSingle extends React.Component<
   calcSnapPoints() {
     const { offsetLeft } = this.state;
 
-    const { containerWidth, lineLength, appearance } = this.props;
+    const { containerWidth, lineLength, allowBreakoutSnapPoints } = this.props;
     const snapTargets: number[] = [];
     for (let i = 0; i < this.gridWidth; i++) {
       snapTargets.push(
@@ -191,7 +227,7 @@ export default class ResizableMediaSingle extends React.Component<
       : snapPoints;
 
     const isTopLevel = $pos.parent.type.name === 'doc';
-    if (isTopLevel && isFullPage(appearance)) {
+    if (isTopLevel && allowBreakoutSnapPoints) {
       snapPoints.push(akEditorWideLayoutWidth);
       const fullWidthPoint = containerWidth - akEditorBreakoutPadding;
       if (fullWidthPoint > akEditorWideLayoutWidth) {
@@ -201,23 +237,50 @@ export default class ResizableMediaSingle extends React.Component<
     return snapPoints;
   }
 
+  calcPxWidth = (useLayout?: MediaSingleLayout): number => {
+    const {
+      width: origWidth,
+      height: origHeight,
+      layout,
+      pctWidth,
+      lineLength,
+      containerWidth,
+      fullWidthMode,
+      getPos,
+      state,
+    } = this.props;
+    const { resizedPctWidth } = this.state;
+
+    return calcMediaPxWidth({
+      origWidth,
+      origHeight,
+      pctWidth,
+      state,
+      containerWidth: { width: containerWidth, lineLength },
+      isFullWidthModeEnabled: fullWidthMode,
+      layout: useLayout || layout,
+      pos: getPos(),
+      resizedPctWidth,
+    });
+  };
+
   get insideInlineLike(): boolean {
     const $pos = this.$pos;
     if (!$pos) {
       return false;
     }
 
-    const { table, listItem } = this.props.view.state.schema.nodes;
-    return !!findParentNodeOfTypeClosestToPos($pos, [table, listItem]);
+    const { listItem } = this.props.view.state.schema.nodes;
+    return !!findParentNodeOfTypeClosestToPos($pos, [listItem]);
   }
 
   highlights = (newWidth: number, snapPoints: number[]) => {
     const snapWidth = snapTo(newWidth, snapPoints);
-    const { layoutColumn } = this.props.view.state.schema.nodes;
+    const { layoutColumn, table } = this.props.view.state.schema.nodes;
 
     if (
       this.$pos &&
-      !!findParentNodeOfTypeClosestToPos(this.$pos, [layoutColumn])
+      !!findParentNodeOfTypeClosestToPos(this.$pos, [layoutColumn, table])
     ) {
       return [];
     }
@@ -253,32 +316,14 @@ export default class ResizableMediaSingle extends React.Component<
       height: origHeight,
       layout,
       pctWidth,
-      lineLength,
       containerWidth,
       fullWidthMode,
+      selected,
+      state,
+      children,
     } = this.props;
 
-    let pxWidth = origWidth;
-    if (layout === 'wide') {
-      const wideWidth = lineLength * breakoutWideScaleRatio;
-      pxWidth = wideWidth > containerWidth ? lineLength : wideWidth;
-    } else if (layout === 'full-width') {
-      pxWidth = containerWidth - akEditorBreakoutPadding;
-    } else if (pctWidth && origWidth && origHeight) {
-      pxWidth = Math.ceil(
-        calcPxFromPct(pctWidth / 100, lineLength || containerWidth),
-      );
-    } else if (layout === 'center') {
-      pxWidth = Math.min(origWidth, lineLength);
-    } else if (alignmentLayouts.indexOf(layout) !== -1) {
-      const halfLineLength = Math.ceil(lineLength / 2);
-
-      if (origWidth <= halfLineLength) {
-        pxWidth = origWidth;
-      } else {
-        pxWidth = halfLineLength;
-      }
-    }
+    const pxWidth = this.calcPxWidth();
 
     // scale, keeping aspect ratio
     const height = (origHeight / origWidth) * pxWidth;
@@ -314,14 +359,24 @@ export default class ResizableMediaSingle extends React.Component<
           {...this.props}
           width={width}
           height={height}
-          selected={this.props.selected}
+          selected={selected}
           enable={enable}
           calcNewSize={this.calcNewSize}
           snapPoints={this.calcSnapPoints()}
           scaleFactor={!this.wrappedLayout && !this.insideInlineLike ? 2 : 1}
           highlights={this.highlights}
+          handleResizeStart={() => {
+            // Checks if a table drag is currently happening, if so, abort
+            if (state.doc.type.schema.nodes.table) {
+              const { dragging } = getPluginState(state);
+              if (dragging) {
+                return false;
+              }
+            }
+            return true;
+          }}
         >
-          {this.props.children}
+          {children}
         </Resizer>
       </Wrapper>
     );

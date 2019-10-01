@@ -1,6 +1,12 @@
 export type Func = () => void;
 
-type SpinnerSizes = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | number;
+export type SpinnerSizes =
+  | 'xsmall'
+  | 'small'
+  | 'medium'
+  | 'large'
+  | 'xlarge'
+  | number;
 
 export type SpinnerProps = {
   /** Time in milliseconds after component mount before spinner is visible. */
@@ -13,6 +19,8 @@ export type SpinnerProps = {
   size: SpinnerSizes;
   /** Whether the process is complete and the spinner should leave */
   isCompleting: boolean;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 };
 
 export type SpinnerPhases = 'DELAY' | 'ENTER' | 'IDLE' | 'LEAVE' | '';

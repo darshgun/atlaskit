@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Loadable from 'react-loadable';
 import { sendApdex } from './Analytics/GoogleAnalyticsListener';
 
@@ -27,8 +27,8 @@ function checkMarkAndSendAnalytics() {
     }
   }
 
-  performance.clearMarks();
-  performance.clearMeasures();
+  performance.clearMarks('loaded');
+  performance.clearMeasures('analytics-measure');
   return null;
 }
 

@@ -16,6 +16,7 @@ import {
 } from './pm-plugins/media-editor';
 import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import keymapPlugin from './pm-plugins/keymap';
+import linkingPlugin from './pm-plugins/linking';
 import ToolbarMedia from './ui/ToolbarMedia';
 import { ReactMediaGroupNode } from './nodeviews/mediaGroup';
 import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
@@ -32,9 +33,9 @@ import {
   ACTION_SUBJECT_ID,
 } from '../analytics';
 import { IconImages } from '../quick-insert/assets';
-import ClipboardMediaPickerWrapper from './ui/ClipboardMediaPickerWrapper';
 import WithPluginState from '../../ui/WithPluginState';
 import MediaEditor from './ui/MediaEditor';
+import { MediaPickerComponents } from './ui/MediaPicker';
 
 export { MediaState, MediaProvider, CustomMediaPicker };
 export { insertMediaSingleNode } from './utils/media-single';
@@ -46,17 +47,33 @@ export interface MediaOptions {
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
   allowResizing?: boolean;
+  allowResizingInTables?: boolean;
   allowAnnotation?: boolean;
+  allowLinking?: boolean;
 }
 
 export interface MediaSingleOptions {
   disableLayout?: boolean;
 }
 
+export interface MediaPMPluginOptions {
+  allowLazyLoading?: boolean;
+  allowBreakoutSnapPoints?: boolean;
+  allowAdvancedToolBarOptions?: boolean;
+  allowMediaSingleEditable?: boolean;
+  allowRemoteDimensionsFetch?: boolean;
+  allowDropzoneDropLine?: boolean;
+  allowMarkingUploadsAsIncomplete?: boolean;
+  fullWidthEnabled?: boolean;
+}
+
 const mediaPlugin = (
   options?: MediaOptions,
+  pluginOptions?: MediaPMPluginOptions,
   appearance?: EditorAppearance,
 ): EditorPlugin => ({
+  name: 'media',
+
   nodes() {
     return [
       { name: 'mediaGroup', node: mediaGroup },
@@ -79,7 +96,7 @@ const mediaPlugin = (
   },
 
   pmPlugins() {
-    return [
+    const pmPlugins = [
       {
         name: 'media',
         plugin: ({
@@ -100,6 +117,8 @@ const mediaPlugin = (
               nodeViews: {
                 mediaGroup: ReactMediaGroupNode(
                   portalProviderAPI,
+                  providerFactory,
+                  pluginOptions && pluginOptions.allowLazyLoading,
                   props.appearance,
                 ),
                 mediaSingle: ReactMediaSingleNode(
@@ -107,8 +126,9 @@ const mediaPlugin = (
                   eventDispatcher,
                   providerFactory,
                   options,
-                  props.appearance,
-                  props.appearance === 'full-width',
+                  pluginOptions,
+                  pluginOptions && pluginOptions.fullWidthEnabled,
+                  dispatchAnalyticsEvent,
                 ),
               },
               errorReporter,
@@ -117,28 +137,36 @@ const mediaPlugin = (
               customDropzoneContainer:
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
-              appearance: props.appearance,
               allowResizing: !!(options && options.allowResizing),
             },
             reactContext,
             dispatch,
-            props.appearance,
-            dispatchAnalyticsEvent,
+            pluginOptions,
           ),
       },
       { name: 'mediaKeymap', plugin: () => keymapPlugin() },
-    ].concat(
-      options && options.allowMediaSingle
-        ? {
-            name: 'mediaSingleKeymap',
-            plugin: ({ schema, props }) =>
-              keymapMediaSinglePlugin(schema, props.appearance),
-          }
-        : [],
-      options && options.allowAnnotation
-        ? { name: 'mediaEditor', plugin: createMediaEditorPlugin }
-        : [],
-    );
+    ];
+
+    if (options && options.allowMediaSingle) {
+      pmPlugins.push({
+        name: 'mediaSingleKeymap',
+        plugin: ({ schema }) => keymapMediaSinglePlugin(schema),
+      });
+    }
+
+    if (options && options.allowAnnotation) {
+      pmPlugins.push({ name: 'mediaEditor', plugin: createMediaEditorPlugin });
+    }
+
+    if (options && options.allowLinking) {
+      pmPlugins.push({
+        name: 'mediaLinking',
+        plugin: ({ dispatch }: PMPluginFactoryParams) =>
+          linkingPlugin(dispatch),
+      });
+    }
+
+    return pmPlugins;
   },
 
   contentComponent({ editorView, eventDispatcher }) {
@@ -171,9 +199,7 @@ const mediaPlugin = (
             mediaState: pluginKey,
           }}
           render={({ mediaState }) => (
-            <>
-              <ClipboardMediaPickerWrapper mediaState={mediaState} />
-            </>
+            <MediaPickerComponents mediaState={mediaState} />
           )}
         />
 
@@ -219,14 +245,17 @@ const mediaPlugin = (
       },
     ],
 
-    floatingToolbar: (state, intl) =>
-      floatingToolbar(
-        state,
-        intl,
-        options && options.allowResizing,
-        options && options.allowAnnotation,
-        appearance,
-      ),
+    floatingToolbar: (state, intl, providerFactory) =>
+      floatingToolbar(state, intl, {
+        providerFactory,
+        // appearance, // TODO: required?
+        allowResizing: options && options.allowResizing,
+        allowResizingInTables: options && options.allowResizingInTables,
+        allowAnnotation: options && options.allowAnnotation,
+        allowLinking: options && options.allowLinking,
+        allowAdvancedToolBarOptions:
+          pluginOptions && pluginOptions.allowAdvancedToolBarOptions,
+      }),
   },
 });
 

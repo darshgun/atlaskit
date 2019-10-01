@@ -23,7 +23,7 @@ export const messages = defineMessages({
   },
   userPickerGenericPlaceholder: {
     id: 'fabric.elements.share.form.user-picker.placeholder.generic',
-    defaultMessage: 'Enter name, team or email',
+    defaultMessage: 'Enter name, group, team or email',
     description: 'Generic placeholder for the user picker field in Share form.',
   },
   userPickerExistingUserOnlyPlaceholder: {
@@ -40,7 +40,7 @@ export const messages = defineMessages({
   },
   userPickerRequiredMessage: {
     id: 'fabric.elements.share.form.user-picker.validation.required',
-    defaultMessage: 'Select at least one user, team or email.',
+    defaultMessage: 'Select at least one user, group, team or email.',
     description:
       'Required error message for the user picker field in Share form.',
   },
@@ -72,6 +72,17 @@ export const messages = defineMessages({
     id: 'fabric.elements.share.trigger.button.text',
     defaultMessage: 'Share',
     description: 'Default text for the share dialog trigger button',
+  },
+  shareTriggerButtonTooltipText: {
+    id: 'fabric.elements.share.trigger.button.tooltip.text',
+    defaultMessage: 'Share',
+    description:
+      'Default text for tooltip on the icon-only share dialog trigger button',
+  },
+  inviteTriggerButtonText: {
+    id: 'fabric.elements.share.trigger.button.invite.text',
+    defaultMessage: 'Invite',
+    description: 'Button label for when the sharee action is set to "edit".',
   },
   copyLinkButtonIconLabel: {
     id: 'fabric.elements.share.copylink.button.icon.label',

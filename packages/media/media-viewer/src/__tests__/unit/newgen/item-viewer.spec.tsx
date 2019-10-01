@@ -9,7 +9,6 @@ const mockImageViewer = {
 jest.mock('../../../newgen/viewers/image', () => mockImageViewer);
 
 import * as React from 'react';
-import { ReactWrapper } from 'enzyme';
 import { Observable } from 'rxjs';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
@@ -86,10 +85,7 @@ function mountBaseComponent(
 ) {
   const createAnalyticsEventSpy = jest.fn();
   createAnalyticsEventSpy.mockReturnValue({ fire: jest.fn() });
-  const el: ReactWrapper<
-    ItemViewerBaseProps,
-    ItemViewerBaseState
-  > = mountWithIntlContext(
+  const el = mountWithIntlContext<ItemViewerBaseProps, ItemViewerBaseState>(
     <ItemViewerBase
       createAnalyticsEvent={createAnalyticsEventSpy}
       previewCount={0}

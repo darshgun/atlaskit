@@ -1,9 +1,7 @@
 {
-  "extends": "../tsconfig.base.json",
-  "moduleResolution": "node",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "noImplicitAny": true,
-    "baseUrl": "./",
+    "baseUrl": "./"
   },
   "include": [
     "scripts/**/*.ts",
@@ -11,6 +9,6 @@
     "src/**/*.tsx"
   ],
   "exclude": [
-    "node_modules",
-  ],
+    "node_modules"
+  ]
 }

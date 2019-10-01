@@ -1,4 +1,5 @@
-import { colors, themed } from '@atlaskit/theme';
+import { themed } from '@atlaskit/theme/components';
+import * as colors from '@atlaskit/theme/colors';
 
 export const arrow = {
   defaultColor: themed({ light: colors.N40, dark: colors.DN40 }),
@@ -7,6 +8,7 @@ export const arrow = {
 };
 
 export const row = {
+  highlightedBackground: colors.backgroundActive,
   hoverBackground: themed({ light: colors.N10, dark: colors.DN40 }),
 };
 

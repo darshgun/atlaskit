@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import DynamicTableStateless from './Stateless';
 import { SortOrderType, StatefulProps, RankEnd, RowType } from '../types';
 import { reorderRows } from '../internal/helpers';
@@ -32,7 +32,7 @@ export default class DynamicTable extends React.Component<
     rows: this.props.rows,
   };
 
-  componentWillReceiveProps(newProps: StatefulProps) {
+  UNSAFE_componentWillReceiveProps(newProps: StatefulProps) {
     this.setState({
       page: newProps.page,
       sortKey: newProps.defaultSortKey,
@@ -41,18 +41,21 @@ export default class DynamicTable extends React.Component<
     });
   }
 
-  onSetPage = (page: number, event?: UIAnalyticsEvent) => {
+  onSetPage = (page: number, analyticsEvent?: UIAnalyticsEvent) => {
     const { onSetPage } = this.props;
     if (onSetPage) {
-      onSetPage(page, event);
+      onSetPage(page, analyticsEvent);
       this.setState({ page });
     }
   };
 
-  onSort = ({ key, item, sortOrder }: any) => {
+  onSort = (
+    { key, item, sortOrder }: any,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => {
     const { onSort } = this.props;
     if (onSort) {
-      onSort({ key, item, sortOrder });
+      onSort({ key, item, sortOrder }, analyticsEvent);
       this.setState({ sortKey: key, sortOrder, page: 1 });
     }
   };
@@ -88,6 +91,7 @@ export default class DynamicTable extends React.Component<
       caption,
       emptyView,
       head,
+      highlightedRowIndex,
       loadingSpinnerSize,
       isLoading,
       isFixedSize,
@@ -105,6 +109,7 @@ export default class DynamicTable extends React.Component<
         caption={caption}
         emptyView={emptyView}
         head={head}
+        highlightedRowIndex={highlightedRowIndex}
         loadingSpinnerSize={loadingSpinnerSize}
         isLoading={isLoading}
         isFixedSize={isFixedSize}

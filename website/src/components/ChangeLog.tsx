@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import semver from 'semver';
 import styled, { css } from 'styled-components';
@@ -16,12 +16,10 @@ function getVersion(str: string) {
 }
 const Heading = ({
   children,
-  packageName,
   href,
 }: {
   children: React.ReactChild;
   level: number;
-  packageName: string;
   href: string;
 }) => {
   const childrenArray = React.Children.toArray(children);

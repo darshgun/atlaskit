@@ -7,22 +7,21 @@ import { MediaType } from '@atlaskit/media-client';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, VideoHTMLAttributes, AudioHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
-import { colors, layers, borderRadius } from '@atlaskit/theme';
+import { layers, borderRadius } from '@atlaskit/theme/constants';
+import { Y200, P200, B300, DN30, DN400 } from '@atlaskit/theme/colors';
 import { ellipsis } from '@atlaskit/media-ui';
 
 const overlayZindex = layers.modal() + 10;
 
 export const mediaTypeIconColors = {
-  image: colors.Y200,
-  audio: colors.P200,
+  image: Y200,
+  audio: P200,
   video: '#ff7143',
-  doc: colors.B300,
+  doc: B300,
   unknown: '#3dc7dc',
 };
 
-export const blanketColor = colors.DN30;
-
-export const hideControlsClassName = 'mvng-hide-controls';
+export const blanketColor = DN30;
 
 export const Blanket = styled.div`
   position: fixed;
@@ -108,26 +107,6 @@ export const ZoomLevelIndicator = styled.span`
   pointer-events: all;
 `;
 
-const handleControlsVisibility = ({ showControls }: ContentWrapperProps) => `
-  transition: opacity .3s;
-  opacity: ${showControls ? '1' : '0'};
-`;
-
-export const ContentWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  overflow: auto;
-  align-items: center;
-  justify-content: center;
-
-  .${hideControlsClassName} {
-    ${handleControlsVisibility};
-  }
-`;
-
-ContentWrapper.displayName = 'Content';
-
 export const ErrorMessageWrapper = styled.div`
   text-align: center;
   color: #b8c7e0;
@@ -157,7 +136,9 @@ export const PDFWrapper = styled.div`
 
 export const Arrow = styled.span`
   cursor: pointer;
-
+  button {
+    height: inherit;
+  }
   > span {
     color: rgba(27, 38, 56, 0.5);
     fill: #9fb0cc;
@@ -263,7 +244,7 @@ export const MetadataFileName = styled.div`
 `;
 
 export const MetadataSubText = styled.div`
-  color: ${colors.DN400};
+  color: ${DN400};
   ${ellipsis()};
 `;
 

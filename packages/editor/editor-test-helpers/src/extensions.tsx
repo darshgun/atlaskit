@@ -35,6 +35,8 @@ class InlineAsyncExtension extends React.Component<{
     width: 85,
   };
 
+  private widthTimeoutId: number | undefined;
+
   render() {
     const { node } = this.props;
     const { width } = this.state;
@@ -46,9 +48,13 @@ class InlineAsyncExtension extends React.Component<{
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.widthTimeoutId = window.setTimeout(() => {
       this.setState({ width: 285 });
     }, 2000);
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(this.widthTimeoutId);
   }
 }
 
@@ -125,5 +131,18 @@ export const extensionHandlers: ExtensionHandlers = {
     }
 
     return null;
+  },
+  'com.atlassian.extensions.update': {
+    render: ext => {
+      return <div>{ext.parameters.count}</div>;
+    },
+    update: async params => ({
+      count: params.count + 1,
+    }),
+  },
+  'com.atlassian.extensions.noupdate': {
+    render: () => {
+      return <button>This is a test extension</button>;
+    },
   },
 };

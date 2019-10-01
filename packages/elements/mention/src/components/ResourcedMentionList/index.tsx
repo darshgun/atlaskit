@@ -5,6 +5,8 @@ import { MentionDescription, OnMentionEvent } from '../../types';
 import uniqueId from '../../util/id';
 import debug from '../../util/logger';
 import MentionList from '../MentionList';
+import TeamMentionHighlight from '../TeamMentionHighlight';
+import TeamMentionHighlightController from '../TeamMentionHighlight/TeamMentionHighlightController';
 
 function applyPresence(mentions: MentionDescription[], presences: PresenceMap) {
   const updatedMentions: MentionDescription[] = [];
@@ -39,6 +41,8 @@ export interface Props {
   query?: string;
   onSelection?: OnMentionEvent;
   resourceError?: Error;
+  isTeamMentionHighlightEnabled?: boolean;
+  createTeamPath?: string; // link to create a team, with context for in-product directories
 }
 
 export interface State {
@@ -69,7 +73,7 @@ export default class ResourcedMentionList extends React.PureComponent<
     this.subscribePresenceProvider(this.props.presenceProvider);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.applyPropChanges(this.props, nextProps);
   }
 
@@ -219,11 +223,38 @@ export default class ResourcedMentionList extends React.PureComponent<
     this.mentionListRef = ref;
   };
 
+  private closeHighlight = () => {
+    TeamMentionHighlightController.registerClosed();
+  };
+
+  private mentionsHighlight = () => {
+    const { mentions } = this.state;
+    const { isTeamMentionHighlightEnabled, createTeamPath } = this.props;
+    const enabledViaLocalStorage = TeamMentionHighlightController.isHighlightEnabled();
+
+    const shouldShow =
+      enabledViaLocalStorage &&
+      isTeamMentionHighlightEnabled &&
+      mentions &&
+      mentions.length > 0;
+    if (!shouldShow) {
+      return null;
+    }
+
+    return (
+      <TeamMentionHighlight
+        createTeamLink={createTeamPath}
+        onClose={this.closeHighlight}
+      />
+    );
+  };
+
   render() {
     const { mentions, resourceError } = this.state;
 
     return (
       <MentionList
+        initialHighlightElement={this.mentionsHighlight()}
         mentions={mentions}
         resourceError={resourceError}
         onSelection={this.notifySelection}

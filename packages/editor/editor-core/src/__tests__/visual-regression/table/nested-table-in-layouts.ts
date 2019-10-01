@@ -1,4 +1,3 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
 import {
   initFullPageEditorWithAdf,
   snapshot,
@@ -42,7 +41,7 @@ describe('Snapshot Test: Nested table inside layouts', () => {
   });
 
   afterEach(async () => {
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
   });
 
   // want one size above and one below dynamic text sizing breakpoint (1265px)
@@ -82,7 +81,7 @@ describe('Snapshot Test: Nested table inside layouts', () => {
   });
 
   it('should display correctly when columns are stacked', async () => {
-    await initEditor(deviceViewPorts[Device.iPad]);
+    await initEditor({ width: 768, height: 600 });
     await clickFirstCell(page);
   });
 });

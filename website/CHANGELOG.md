@@ -1,5 +1,154 @@
 # @atlaskit/website
 
+## 5.2.3
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 5.2.2
+
+- Updated dependencies [6410edd029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6410edd029):
+  - @atlaskit/badge@13.0.0
+
+## 5.2.1
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/media-core@30.0.14
+  - @atlaskit/media-filmstrip@34.3.6
+  - @atlaskit/media-test-helpers@25.1.1
+  - @atlaskit/media-card@65.0.0
+  - @atlaskit/analytics-listeners@6.2.0
+
+## 5.2.0
+
+### Minor Changes
+
+- [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
+
+  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+
+  More information about the deprecation of lifecycles methods can be found here:
+  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+
+## 5.1.21
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 5.1.20
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 5.1.19
+
+- Updated dependencies [3624730f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3624730f44):
+  - @atlaskit/media-core@30.0.11
+  - @atlaskit/media-filmstrip@34.3.3
+  - @atlaskit/media-test-helpers@25.0.2
+  - @atlaskit/media-card@64.0.0
+
+## 5.1.18
+
+- Updated dependencies [cc461c0022](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc461c0022):
+  - @atlaskit/tag-group@9.0.0
+
+## 5.1.17
+
+- Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
+  - @atlaskit/media-card@63.3.11
+  - @atlaskit/media-core@30.0.10
+  - @atlaskit/media-filmstrip@34.3.2
+  - @atlaskit/media-test-helpers@25.0.0
+
+## 5.1.16
+
+### Patch Changes
+
+- [patch][a73580e138](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a73580e138):
+
+  BUILDTOOLS-260/BUILDTOOLS-261: Replace data-test-id by data-testid to be consistent with react-testing-library.
+  **Products**, you may require to update your integration and end to end tests if they are based on `data-test-id` please replace by `data-testid`.
+
+## 5.1.15
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 5.1.14
+
+- Updated dependencies [1adb8727e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1adb8727e3):
+  - @atlaskit/tag-group@8.0.2
+  - @atlaskit/tag@9.0.0
+
+## 5.1.13
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/inline-dialog@12.0.5
+  - @atlaskit/logo@12.1.1
+  - @atlaskit/modal-dialog@10.0.10
+  - @atlaskit/media-test-helpers@24.3.1
+  - @atlaskit/select@10.0.0
+
+## 5.1.12
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/mobile-header@3.1.2
+  - @atlaskit/button@13.0.9
+  - @atlaskit/flag@12.0.10
+  - @atlaskit/inline-dialog@12.0.3
+  - @atlaskit/modal-dialog@10.0.7
+  - @atlaskit/navigation@35.1.8
+  - @atlaskit/select@9.1.8
+  - @atlaskit/tag@8.0.5
+  - @atlaskit/tooltip@15.0.2
+  - @atlaskit/media-card@63.3.1
+  - @atlaskit/media-filmstrip@34.2.2
+  - @atlaskit/media-test-helpers@24.1.2
+  - @atlaskit/quick-search@7.5.1
+  - @atlaskit/icon@19.0.0
+
+## 5.1.11
+
+- Updated dependencies [67f06f58dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67f06f58dd):
+  - @atlaskit/icon@18.0.1
+  - @atlaskit/icon-object@4.0.3
+  - @atlaskit/navigation@35.1.6
+  - @atlaskit/select@9.1.6
+  - @atlaskit/tooltip@15.0.0
+
+## 5.1.10
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/button@13.0.8
+  - @atlaskit/flag@12.0.4
+  - @atlaskit/inline-dialog@12.0.1
+  - @atlaskit/modal-dialog@10.0.4
+  - @atlaskit/navigation@35.1.5
+  - @atlaskit/select@9.1.5
+  - @atlaskit/tag@8.0.3
+  - @atlaskit/tooltip@14.0.3
+  - @atlaskit/media-card@63.1.5
+  - @atlaskit/media-filmstrip@34.2.1
+  - @atlaskit/media-test-helpers@24.0.3
+  - @atlaskit/quick-search@7.4.1
+  - @atlaskit/icon@18.0.0
+
 ## 5.1.9
 
 - Updated dependencies [181209d135](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/181209d135):

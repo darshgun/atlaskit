@@ -102,13 +102,20 @@ function getContent(state: EditorState, slice: Slice): PasteContent {
       return;
     }
 
-    if (node.type === paragraph) {
-      if (node.rangeHasMark(0, node.nodeSize - 2, link)) {
-        // Check node contain link
-        nodeOrMarkName.add('url');
-        return;
-      }
+    if (node.type.name === 'text' && link.isInSet(node.marks)) {
+      nodeOrMarkName.add('url');
+      return;
     }
+
+    // Check node contain link
+    if (
+      node.type === paragraph &&
+      node.rangeHasMark(0, node.nodeSize - 2, link)
+    ) {
+      nodeOrMarkName.add('url');
+      return;
+    }
+
     nodeOrMarkName.add(node.type.name);
   });
 
@@ -194,7 +201,9 @@ export function createPasteAnalyticsPayload(
   slice: Slice,
   pasteContext: PasteContext,
 ): AnalyticsEventPayload {
-  const text = event.clipboardData.getData('text/plain');
+  const text = event.clipboardData
+    ? event.clipboardData.getData('text/plain')
+    : '';
 
   const actionSubjectId = getActionSubjectId(view);
 
@@ -299,7 +308,7 @@ export const handleMediaSingleWithAnalytics = (
   type: PasteType,
 ): Command =>
   pipe(
-    handleMediaSingle,
+    handleMediaSingle(INPUT_METHOD.CLIPBOARD),
     commandWithV2Analytics('atlassian.editor.paste', {
       source: getPasteSource(event),
     }),

@@ -2,8 +2,8 @@ import { indentation } from '@atlaskit/adf-schema';
 import { EditorPlugin } from '../../types';
 import { keymapPlugin } from './pm-plugins/keymap';
 
-const indentationPlugin: EditorPlugin = {
-  name: 'indentationPlugin',
+const indentationPlugin = (): EditorPlugin => ({
+  name: 'indentation',
 
   marks() {
     return [{ name: 'indentation', mark: indentation }];
@@ -17,6 +17,6 @@ const indentationPlugin: EditorPlugin = {
       },
     ];
   },
-};
+});
 
 export default indentationPlugin;

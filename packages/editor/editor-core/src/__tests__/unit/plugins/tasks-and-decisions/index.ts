@@ -9,10 +9,8 @@ import {
   decisionList,
   decisionItem,
 } from '@atlaskit/editor-test-helpers';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { uuid } from '@atlaskit/adf-schema';
-import tasksAndDecisionsPlugin from '../../../../plugins/tasks-and-decisions';
-import quickInsertPlugin from '../../../../plugins/quick-insert';
 import { EditorView } from 'prosemirror-view';
 
 describe('tasks and decisions', () => {
@@ -28,14 +26,13 @@ describe('tasks and decisions', () => {
     },
   ];
 
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   const editor = (doc: any) => {
     createAnalyticsEvent = jest.fn(() => ({ fire() {} }));
     return createEditor({
       doc,
-      editorPlugins: [tasksAndDecisionsPlugin, quickInsertPlugin],
-      editorProps: { allowAnalyticsGASV3: true },
+      editorProps: { allowAnalyticsGASV3: true, allowTasksAndDecisions: true },
       createAnalyticsEvent,
     });
   };

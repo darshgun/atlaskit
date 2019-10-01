@@ -1,44 +1,66 @@
 import * as React from 'react';
 import { Messages } from 'react-intl';
-import Switcher from './switcher';
+import Switcher from '../primitives/themed-switcher';
 import {
   CustomLinksProvider,
   MANAGE_HREF,
 } from '../providers/jira-data-providers';
 import CommonDataProvider from '../providers/common-data-provider';
 import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-props';
-import { FeatureFlagProps } from '../types';
+import {
+  FeatureMap,
+  AvailableProductsResponse,
+  RecommendationsFeatureFlags,
+  DiscoverMoreCallback,
+  TriggerXFlowCallback,
+  Product,
+} from '../types';
+import { AvailableProductsProvider } from '../providers/products-data-provider';
+import { ProviderResult } from '../providers/as-data-provider';
+import { WithTheme } from '../theme/types';
 
-type JiraSwitcherProps = {
+type JiraSwitcherProps = WithTheme & {
   cloudId: string;
   messages: Messages;
-  features: FeatureFlagProps;
-  triggerXFlow: (productKey: string, sourceComponent: string) => void;
+  features: FeatureMap;
+  triggerXFlow: TriggerXFlowCallback;
+  onDiscoverMoreClicked: DiscoverMoreCallback;
+  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
 };
 
 export default (props: JiraSwitcherProps) => (
-  <CustomLinksProvider>
+  <CustomLinksProvider disableCustomLinks={props.features.disableCustomLinks}>
     {customLinks => (
-      <CommonDataProvider cloudId={props.cloudId}>
-        {providerResults => {
-          const {
-            showManageLink,
-            ...switcherLinks
-          } = mapResultsToSwitcherProps(
-            props.cloudId,
-            { customLinks, ...providerResults },
-            { ...props.features, xflow: true },
-          );
+      <AvailableProductsProvider>
+        {(availableProducts: ProviderResult<AvailableProductsResponse>) => (
+          <CommonDataProvider
+            cloudId={props.cloudId}
+            disableRecentContainers={props.features.disableRecentContainers}
+            recommendationsFeatureFlags={props.recommendationsFeatureFlags}
+          >
+            {providerResults => {
+              const {
+                showManageLink,
+                ...switcherLinks
+              } = mapResultsToSwitcherProps(
+                props.cloudId,
+                { customLinks, ...providerResults },
+                props.features,
+                availableProducts,
+                Product.JIRA,
+              );
 
-          return (
-            <Switcher
-              {...props}
-              {...switcherLinks}
-              manageLink={showManageLink ? MANAGE_HREF : undefined}
-            />
-          );
-        }}
-      </CommonDataProvider>
+              return (
+                <Switcher
+                  {...props}
+                  {...switcherLinks}
+                  manageLink={showManageLink ? MANAGE_HREF : undefined}
+                />
+              );
+            }}
+          </CommonDataProvider>
+        )}
+      </AvailableProductsProvider>
     )}
   </CustomLinksProvider>
 );

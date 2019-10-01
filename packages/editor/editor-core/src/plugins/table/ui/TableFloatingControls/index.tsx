@@ -8,6 +8,7 @@ import RowControls from './RowControls';
 import NumberColumn from './NumberColumn';
 import { isSelectionUpdated } from '../../utils';
 import { hoverRows, selectRow } from '../../commands';
+import { TableColumnOrdering } from '../../types';
 
 export interface Props {
   editorView: EditorView;
@@ -16,14 +17,13 @@ export interface Props {
   tableActive?: boolean;
   isInDanger?: boolean;
   isResizing?: boolean;
-  isHeaderColumnEnabled?: boolean;
   isHeaderRowEnabled?: boolean;
+  isHeaderColumnEnabled?: boolean;
   isNumberColumnEnabled?: boolean;
   hasHeaderRow?: boolean;
   tableHeight?: number;
   hoveredRows?: number[];
-  insertColumnButtonIndex?: number;
-  insertRowButtonIndex?: number;
+  ordering?: TableColumnOrdering;
 }
 
 export default class TableFloatingControls extends Component<Props> {
@@ -33,19 +33,18 @@ export default class TableFloatingControls extends Component<Props> {
       isInDanger,
       isResizing,
       isHeaderRowEnabled,
-      isHeaderColumnEnabled,
       isNumberColumnEnabled,
       hoveredRows,
       selection,
       tableHeight,
       tableActive,
-      insertColumnButtonIndex,
-      insertRowButtonIndex,
+      isHeaderColumnEnabled,
+      ordering,
     } = this.props;
+
     return (
+      ordering !== nextProps.ordering ||
       tableRef !== nextProps.tableRef ||
-      insertColumnButtonIndex !== nextProps.insertColumnButtonIndex ||
-      insertRowButtonIndex !== nextProps.insertRowButtonIndex ||
       tableHeight !== nextProps.tableHeight ||
       tableActive !== nextProps.tableActive ||
       isInDanger !== nextProps.isInDanger ||
@@ -65,13 +64,11 @@ export default class TableFloatingControls extends Component<Props> {
       isInDanger,
       isResizing,
       isNumberColumnEnabled,
-      isHeaderColumnEnabled,
       isHeaderRowEnabled,
+      isHeaderColumnEnabled,
       tableActive,
       hasHeaderRow,
       hoveredRows,
-      insertColumnButtonIndex,
-      insertRowButtonIndex,
     } = this.props;
 
     if (!tableRef) {
@@ -98,10 +95,8 @@ export default class TableFloatingControls extends Component<Props> {
           tableRef={tableRef}
           isInDanger={isInDanger}
           isResizing={isResizing}
-          isHeaderColumnEnabled={isHeaderColumnEnabled}
           isHeaderRowEnabled={isHeaderRowEnabled}
-          insertColumnButtonIndex={insertColumnButtonIndex}
-          insertRowButtonIndex={insertRowButtonIndex}
+          isHeaderColumnEnabled={isHeaderColumnEnabled}
           hoveredRows={hoveredRows}
         />
         <RowControls
@@ -112,7 +107,6 @@ export default class TableFloatingControls extends Component<Props> {
           isInDanger={isInDanger}
           isResizing={isResizing}
           selectRow={this.selectRow}
-          insertRowButtonIndex={insertRowButtonIndex}
         />
       </div>
     );

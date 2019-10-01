@@ -1,9 +1,13 @@
 import { TextSelection, Selection } from 'prosemirror-state';
-import { hasParentNodeOfType } from 'prosemirror-utils';
+import {
+  hasParentNodeOfType,
+  findParentNodeOfType,
+  safeInsert,
+} from 'prosemirror-utils';
 
 import { taskDecisionSliceFilter } from '../../utils/filter';
 import { linkifyContent } from '../hyperlink/utils';
-import { Slice, Mark } from 'prosemirror-model';
+import { Slice, Mark, Node as PMNode, Fragment } from 'prosemirror-model';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { runMacroAutoConvert } from '../macro';
@@ -15,12 +19,28 @@ import {
   TextFormattingState,
 } from '../text-formatting/pm-plugins/main';
 import { compose, processRawValue } from '../../utils';
+import { mapSlice } from '../../utils/slice';
 import { CommandDispatch, Command } from '../../types';
 import { insertMediaAsMediaSingle } from '../media/utils/media-single';
-import { INPUT_METHOD } from '../analytics';
+import { INPUT_METHOD, InputMethodInsertMedia } from '../analytics';
 import { CardOptions } from '../card';
 import { CardAppearance } from '@atlaskit/smart-card';
-import { Node as ProsemirrorNode } from 'prosemirror-model';
+import { Node as ProsemirrorNode, Schema } from 'prosemirror-model';
+import { MentionAttributes } from '@atlaskit/adf-schema';
+import { insideTable } from '../../utils';
+import { GapCursorSelection, Side } from '../gap-cursor/';
+
+// remove text attribute from mention for copy/paste (GDPR)
+export function handleMention(slice: Slice, schema: Schema): Slice {
+  return mapSlice(slice, node => {
+    if (node.type.name === schema.nodes.mention.name) {
+      const mention = node.attrs as MentionAttributes;
+      const newMention = { ...mention, text: '' };
+      return schema.nodes.mention.create(newMention, node.content, node.marks);
+    }
+    return node;
+  });
+}
 
 export function handlePasteIntoTaskAndDecision(slice: Slice): Command {
   return (state: EditorState, dispatch?: CommandDispatch): boolean => {
@@ -54,7 +74,8 @@ export function handlePasteIntoTaskAndDecision(slice: Slice): Command {
       return false;
     }
 
-    const filters: Array<(slice: Slice) => Slice> = [
+    type Fn = (slice: Slice) => Slice;
+    const filters: [Fn, ...Array<Fn>] = [
       linkifyContent(schema),
       taskDecisionSliceFilter(schema),
     ];
@@ -326,12 +347,42 @@ function isOnlyMedia(state: EditorState, slice: Slice) {
   );
 }
 
-export function handleMediaSingle(slice: Slice): Command {
-  return (state, _dispatch, view) => {
-    if (view && isOnlyMedia(state, slice)) {
-      return insertMediaAsMediaSingle(view, slice.content.firstChild!);
-    }
-    return false;
+function isOnlyMediaSingle(state: EditorState, slice: Slice) {
+  const { mediaSingle } = state.schema.nodes;
+  return (
+    mediaSingle &&
+    slice.content.childCount === 1 &&
+    slice.content.firstChild!.type === mediaSingle
+  );
+}
+
+export function handleMediaSingle(inputMethod: InputMethodInsertMedia) {
+  return function(slice: Slice): Command {
+    return (state, dispatch, view) => {
+      if (view) {
+        if (isOnlyMedia(state, slice)) {
+          return insertMediaAsMediaSingle(
+            view,
+            slice.content.firstChild!,
+            inputMethod,
+          );
+        }
+
+        if (insideTable(state) && isOnlyMediaSingle(state, slice)) {
+          const tr = state.tr.replaceSelection(slice);
+          const nextPos = tr.doc.resolve(
+            tr.mapping.map(state.selection.$from.pos),
+          );
+          if (dispatch) {
+            dispatch(
+              tr.setSelection(new GapCursorSelection(nextPos, Side.RIGHT)),
+            );
+          }
+          return true;
+        }
+      }
+      return false;
+    };
   };
 }
 
@@ -367,18 +418,98 @@ function hasInlineCode(state: EditorState, slice: Slice) {
   );
 }
 
+function isList(schema: Schema, node: PMNode | null | undefined) {
+  const { bulletList, orderedList } = schema.nodes;
+  return node && (node.type === bulletList || node.type === orderedList);
+}
+
+function flattenList(state: EditorState, node: PMNode, nodesArr: PMNode[]) {
+  const { listItem } = state.schema.nodes;
+  node.content.forEach(child => {
+    if (
+      isList(state.schema, child) ||
+      (child.type === listItem && isList(state.schema, child.firstChild))
+    ) {
+      flattenList(state, child, nodesArr);
+    } else {
+      nodesArr.push(child);
+    }
+  });
+}
+
+function shouldFlattenList(state: EditorState, slice: Slice) {
+  const node = slice.content.firstChild;
+  return (
+    node &&
+    insideTable(state) &&
+    isList(state.schema, node) &&
+    slice.openStart > slice.openEnd
+  );
+}
+
 export function handleRichText(slice: Slice): Command {
   return (state, dispatch) => {
-    const { codeBlock } = state.schema.nodes;
+    const { codeBlock, panel } = state.schema.nodes;
     // In case user is pasting inline code,
     // any backtick ` immediately preceding it should be removed.
-    const tr = state.tr;
+    let tr = state.tr;
     if (hasInlineCode(state, slice)) {
       removePrecedingBackTick(tr);
     }
+    /**
+     * ED-6300: When a nested list is pasted in a table cell and the slice has openStart > openEnd,
+     * it splits the table. As a workaround, we flatten the list to even openStart and openEnd
+     *
+     *  Before:
+     *  ul
+     *    ┗━ li
+     *      ┗━ ul
+     *        ┗━ li
+     *          ┗━ p -> "one"
+     *    ┗━ li
+     *      ┗━ p -> "two"
+     *
+     *  After:
+     *  ul
+     *    ┗━ li
+     *      ┗━ p -> "one"
+     *    ┗━ li
+     *      ┗━p -> "two"
+     */
+    if (shouldFlattenList(state, slice) && slice.content.firstChild) {
+      const node = slice.content.firstChild;
+      const nodes: PMNode[] = [];
+      flattenList(state, node, nodes);
+      slice = new Slice(
+        Fragment.from(node.type.createChecked(node.attrs, nodes)),
+        slice.openEnd,
+        slice.openEnd,
+      );
+    }
 
     closeHistory(tr);
-    tr.replaceSelection(slice);
+
+    // if inside an empty panel, try and insert content inside it rather than replace it
+    let panelParent = findParentNodeOfType(panel)(tr.selection);
+    if (
+      tr.selection.$from === tr.selection.$to &&
+      panelParent &&
+      !panelParent.node.textContent
+    ) {
+      tr = safeInsert(slice.content, tr.selection.$to.pos)(tr);
+      // set selection to end of inserted content
+      panelParent = findParentNodeOfType(panel)(tr.selection);
+      if (panelParent) {
+        tr.setSelection(
+          TextSelection.near(
+            tr.doc.resolve(panelParent.pos + panelParent.node.nodeSize),
+          ),
+        );
+      }
+    } else {
+      tr.replaceSelection(slice);
+    }
+
     tr.setStoredMarks([]);
     if (tr.selection.empty && tr.selection.$from.parent.type === codeBlock) {
       tr.setSelection(TextSelection.near(tr.selection.$from, 1) as Selection);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Omit } from '@atlaskit/type-helpers';
 import { ASC } from '../internal/constants';
 import { getPageRows, validateSortKey } from '../internal/helpers';
@@ -157,7 +157,7 @@ export default function withSortedPageRows<
         <WrappedComponent
           pageRows={this.state.pageRows}
           head={head}
-          {...restProps}
+          {...restProps as WrappedComponentProps}
         />
       );
     }

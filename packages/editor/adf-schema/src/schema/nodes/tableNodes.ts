@@ -2,21 +2,29 @@ import { Node as PmNode } from 'prosemirror-model';
 import {
   isRgb,
   rgbToHex,
-  N20,
-  B50,
-  T50,
-  P50,
-  R50,
-  G50,
-  Y50,
   N0,
+  N20,
+  N60,
+  B50,
   B75,
-  G75,
-  R75,
-  N40,
-  P75,
+  B100,
+  T50,
   T75,
+  T100,
+  P50,
+  P75,
+  P100,
+  R50,
+  R75,
+  R100,
+  G50,
+  G75,
+  G200,
+  Y50,
   Y75,
+  Y200,
+  hexToRgba,
+  N800,
 } from '../../utils/colors';
 import { TableCellContent } from './doc';
 
@@ -27,7 +35,6 @@ export const tableHeaderSelector = `${tablePrefixSelector}-header-content-wrap`;
 export const tableCellContentWrapperSelector = `${tablePrefixSelector}-cell-nodeview-wrapper`;
 export const tableCellContentDomSelector = `${tablePrefixSelector}-cell-nodeview-content-dom`;
 
-const akEditorTableNumberColumnWidth = 42;
 const DEFAULT_TABLE_HEADER_CELL_BACKGROUND = N20.toLocaleLowerCase();
 
 const getCellAttrs = (dom: HTMLElement, defaultValues: CellAttributes = {}) => {
@@ -83,7 +90,7 @@ export const setCellAttrs = (node: PmNode, cell?: HTMLElement) => {
     // - it clears background color for <td> if its set to white
     const ignored =
       (nodeType === 'tableHeader' &&
-        background === tableBackgroundColorNames.get('gray')) ||
+        background === tableBackgroundColorNames.get('light gray')) ||
       (nodeType === 'tableCell' &&
         background === tableBackgroundColorNames.get('white'));
 
@@ -107,28 +114,33 @@ export const setCellAttrs = (node: PmNode, cell?: HTMLElement) => {
 
 export const tableBackgroundColorPalette = new Map<string, string>();
 
-/** New borders for colors in the color picker */
-export const tableBackgroundBorderColors = {
-  blue: B75,
-  teal: T75,
-  red: R75,
-  gray: N40,
-  purple: P75,
-  green: G75,
-  yellow: Y75,
-  white: N40,
-};
-
+export const tableBackgroundBorderColor = hexToRgba(N800, 0.12) || N0;
 export const tableBackgroundColorNames = new Map<string, string>();
+
 [
-  [B50, 'Blue'],
-  [T50, 'Teal'],
-  [R50, 'Red'],
-  [N20, 'Gray'],
-  [P50, 'Purple'],
-  [G50, 'Green'],
-  [Y50, 'Yellow'],
   [N0, 'White'],
+  [B50, 'Light blue'],
+  [T50, 'Light teal'],
+  [G50, 'Light green'],
+  [Y50, 'Light yellow'],
+  [R50, 'Light red'],
+  [P50, 'Light purple'],
+
+  [N20, 'Light gray'],
+  [B75, 'Blue'],
+  [T75, 'Teal'],
+  [G75, 'Green'],
+  [Y75, 'Yellow'],
+  [R75, 'Red'],
+  [P75, 'Purple'],
+
+  [N60, 'Gray'],
+  [B100, 'Dark blue'],
+  [T100, 'Dark teal'],
+  [G200, 'Dark green'],
+  [Y200, 'Dark yellow'],
+  [R100, 'Dark red'],
+  [P100, 'Dark purple'],
 ].forEach(([colorValue, colorName]) => {
   tableBackgroundColorPalette.set(colorValue.toLowerCase(), colorName);
   tableBackgroundColorNames.set(
@@ -136,32 +148,6 @@ export const tableBackgroundColorNames = new Map<string, string>();
     colorValue.toLowerCase(),
   );
 });
-
-export function calcTableColumnWidths(node: PmNode): number[] {
-  let tableColumnWidths: Array<number> = [];
-  const { isNumberColumnEnabled } = node.attrs;
-
-  node.forEach((rowNode, _) => {
-    rowNode.forEach((colNode, _, j) => {
-      let colwidth = colNode.attrs.colwidth || [0];
-
-      if (isNumberColumnEnabled && j === 0) {
-        if (!colwidth) {
-          colwidth = [akEditorTableNumberColumnWidth];
-        }
-      }
-
-      // if we have a colwidth attr for this cell, and it contains new
-      // colwidths we haven't seen for the whole table yet, add those
-      // (colwidths over the table are defined as-we-go)
-      if (colwidth && colwidth.length + j > tableColumnWidths.length) {
-        tableColumnWidths = tableColumnWidths.slice(0, j).concat(colwidth);
-      }
-    });
-  });
-
-  return tableColumnWidths;
-}
 
 export type Layout = 'default' | 'full-width' | 'wide';
 
@@ -274,19 +260,9 @@ const cellAttrs = {
   background: { default: null },
 };
 
-const createCellDOM = (cellHtmlTagType: 'th' | 'td', node: PmNode) => {
-  const cellContentDOMStructure = [
-    'div',
-    { class: tableCellContentWrapperSelector },
-    ['div', { class: tableCellContentDomSelector }, 0],
-  ];
-
-  return [cellHtmlTagType, setCellAttrs(node), cellContentDOMStructure];
-};
-
 export const tableCell = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock |  mediaGroup | mediaSingle | applicationCard | decisionList | taskList | blockCard | extension | unsupportedBlock)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaSingle |  mediaGroup | decisionList | taskList | blockCard | extension | unsupportedBlock)+',
   attrs: cellAttrs,
   tableRole: 'cell',
   marks: 'alignment',
@@ -302,7 +278,7 @@ export const tableCell = {
       getAttrs: (dom: HTMLElement) => getCellAttrs(dom),
     },
   ],
-  toDOM: (node: PmNode) => createCellDOM('td', node),
+  toDOM: (node: PmNode) => ['td', setCellAttrs(node), 0],
 };
 
 export const toJSONTableCell = (node: PmNode) => ({
@@ -319,7 +295,7 @@ export const toJSONTableCell = (node: PmNode) => ({
 
 export const tableHeader = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | blockCard | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaSingle |  mediaGroup | decisionList | taskList | blockCard | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,
@@ -332,7 +308,7 @@ export const tableHeader = {
     },
   ],
 
-  toDOM: (node: PmNode) => createCellDOM('th', node),
+  toDOM: (node: PmNode) => ['th', setCellAttrs(node), 0],
 };
 
 export const toJSONTableHeader = toJSONTableCell;

@@ -1,9 +1,11 @@
 // @flow
 import React, { Component, type ComponentType, type ElementRef } from 'react';
-import { mergeStyles, makeAnimated } from 'react-select';
+import { mergeStyles } from 'react-select';
+import makeAnimated from 'react-select/animated';
 import memoizeOne from 'memoize-one';
 import isEqual from 'react-fast-compare';
-import { colors, gridSize } from '@atlaskit/theme';
+import { gridSize } from '@atlaskit/theme/constants';
+import * as colors from '@atlaskit/theme/colors';
 
 import * as defaultComponents from './components';
 
@@ -135,7 +137,7 @@ function baseStyles(validationState, isCompact) {
         transition: `background-color ${transitionDuration} ease-in-out,
         border-color ${transitionDuration} ease-in-out`,
 
-        '-ms-overflow-style': '-ms-autohiding-scrollbar',
+        msOverflowStyle: '-ms-autohiding-scrollbar',
         '::-webkit-scrollbar': {
           height: gridSize(),
           width: gridSize(),
@@ -269,7 +271,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
       tabSelectsValue: false,
     };
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props) {
       this.cacheComponents(nextProps.components, nextProps.enableAnimation);
     }
 

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 
 export type Placement =
   | 'auto-start'
@@ -17,7 +18,7 @@ export type Placement =
   | 'left'
   | 'left-start';
 
-export interface Props {
+export interface Props extends WithAnalyticsEventsProps {
   /** The elements that the InlineDialog will be positioned relative to. */
   children: ReactNode;
   /** The elements to be displayed within the InlineDialog. */
@@ -35,4 +36,6 @@ export interface Props {
   onClose?: (obj: { isOpen: boolean; event: Event }) => void;
   /** Where the dialog should appear, relative to the contents of the children. */
   placement?: Placement;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }

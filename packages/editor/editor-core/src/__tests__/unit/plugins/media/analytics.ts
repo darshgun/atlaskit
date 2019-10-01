@@ -1,15 +1,19 @@
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { doc, createEditorFactory, p } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  createEditorFactory,
+  p,
+  storyContextIdentifierProviderFactory,
+} from '@atlaskit/editor-test-helpers';
 
 import {
   stateKey as mediaPluginKey,
   MediaPluginState,
   MediaProvider,
 } from '../../../../plugins/media/pm-plugins/main';
-import mediaPlugin from '../../../../plugins/media';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import PickerFacade from '../../../../plugins/media/picker-facade';
-import { MediaFile } from '../../../../../../../media/media-picker';
+import { MediaFile } from '@atlaskit/media-picker';
 import {
   imagePreview,
   imageFile,
@@ -21,24 +25,29 @@ describe('Media Analytics', () => {
   const createEditor = createEditorFactory<MediaPluginState>();
   let mediaProvider: Promise<MediaProvider>;
   let providerFactory: ProviderFactory;
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
   let pickers: PickerFacade[];
 
   const editor = (doc: any) => {
+    const contextIdentifierProvider = storyContextIdentifierProviderFactory();
     mediaProvider = getFreshMediaProvider();
-    providerFactory = ProviderFactory.create({ mediaProvider });
+    providerFactory = ProviderFactory.create({
+      mediaProvider,
+      contextIdentifierProvider,
+    });
     createAnalyticsEvent = jest.fn(() => ({ fire() {} }));
 
     return createEditor({
       doc,
-      editorPlugins: [
-        mediaPlugin({
-          provider: mediaProvider,
+      editorProps: {
+        allowAnalyticsGASV3: true,
+        media: {
           allowMediaSingle: true,
           customDropzoneContainer: document.body,
-        }),
-      ],
-      editorProps: { allowAnalyticsGASV3: true },
+          provider: mediaProvider,
+        },
+        contextIdentifierProvider,
+      },
       providerFactory,
       createAnalyticsEvent,
       pluginKey: mediaPluginKey,
@@ -68,10 +77,7 @@ describe('Media Analytics', () => {
       }
     };
 
-    const mediaPickers = [
-      { picker: 'popup', inputMethod: 'cloudPicker' },
-      { picker: 'dropzone', inputMethod: 'dragAndDrop' },
-    ];
+    const mediaPickers = [{ picker: 'popup', inputMethod: 'cloudPicker' }];
     mediaPickers.forEach(mediaPicker => {
       it(`should fire analytics event when inserted via ${
         mediaPicker.picker
@@ -104,7 +110,6 @@ describe('Media Analytics', () => {
       const imageFilePng: MediaFile = {
         ...imageFile,
         id: '2',
-        upfrontId: Promise.resolve('2'),
         type: 'image/png',
         name: 'bilby.png',
       };
@@ -122,8 +127,7 @@ describe('Media Analytics', () => {
       const imageNoExtension: MediaFile = {
         ...imageFile,
         id: '3',
-        upfrontId: Promise.resolve('3'),
-        type: '',
+        type: 'image/png',
         name: 'bettong',
       };
       insertMedia(imageNoExtension);

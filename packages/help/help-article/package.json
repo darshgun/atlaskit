@@ -1,10 +1,11 @@
 {
   "name": "@atlaskit/help-article",
-  "version": "0.4.5",
+  "version": "0.5.4",
   "description": "A cross-product help-article component",
   "license": "Apache-2.0",
-  "module": "index.js",
-  "types": "index.d.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "atlaskit:src": "src/index.ts",
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
@@ -16,7 +17,8 @@
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^9.0.2",
+    "@atlaskit/icon": "^19.0.6",
+    "@atlaskit/theme": "^9.1.6",
     "@emotion/core": "^10.0.9",
     "@emotion/styled": "^10.0.7",
     "exenv": "^1.2.2"
@@ -26,9 +28,9 @@
     "react-dom": "^16.8.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^8.1.1",
+    "@atlaskit/docs": "^8.1.5",
     "enzyme": "^3.7.0",
-    "react-test-renderer": "^16.3.0"
+    "react-test-renderer": "^16.8.0"
   },
   "keywords": [
     "atlaskit",

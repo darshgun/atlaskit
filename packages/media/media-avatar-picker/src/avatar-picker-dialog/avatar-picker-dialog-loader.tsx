@@ -1,16 +1,20 @@
 import * as React from 'react';
-
+import { ReactNode } from 'react';
 import { ModalSpinner } from '@atlaskit/media-ui';
 
 import { AvatarPickerDialog } from '.';
 import { AvatarPickerDialogProps } from './types';
 
-interface AsyncAvatarPickerDialogState {
+export interface AsyncAvatarPickerDialogState {
   AvatarPickerDialog?: typeof AvatarPickerDialog;
 }
 
+export type AsyncAvatarPickerDialogProps = AvatarPickerDialogProps & {
+  placeholder?: ReactNode;
+};
+
 export default class AsyncAvatarPickerDialog extends React.PureComponent<
-  AvatarPickerDialogProps & AsyncAvatarPickerDialogState,
+  AsyncAvatarPickerDialogProps,
   AsyncAvatarPickerDialogState
 > {
   static displayName = 'AsyncAvatarPickerDialog';
@@ -21,17 +25,26 @@ export default class AsyncAvatarPickerDialog extends React.PureComponent<
     AvatarPickerDialog: AsyncAvatarPickerDialog.AvatarPickerDialog,
   };
 
-  async componentWillMount() {
+  async UNSAFE_componentWillMount() {
     if (!this.state.AvatarPickerDialog) {
-      const module = await import(/* webpackChunkName:"@atlaskit-internal_media-avatar-picker" */
-      '.');
-      AsyncAvatarPickerDialog.AvatarPickerDialog = module.AvatarPickerDialog;
-      this.setState({ AvatarPickerDialog: module.AvatarPickerDialog });
+      try {
+        const module = await import(/* webpackChunkName:"@atlaskit-internal_media-avatar-picker" */
+        '.');
+        AsyncAvatarPickerDialog.AvatarPickerDialog = module.AvatarPickerDialog;
+        this.setState({ AvatarPickerDialog: module.AvatarPickerDialog });
+      } catch (error) {
+        // TODO [MS-2272]: Add operational error to catch async import error
+      }
     }
   }
 
   render() {
     if (!this.state.AvatarPickerDialog) {
+      const { placeholder } = this.props;
+      if (placeholder) {
+        return placeholder;
+      }
+
       return (
         <ModalSpinner
           blankedColor="rgba(255, 255, 255, 0.53)"

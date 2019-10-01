@@ -6,29 +6,21 @@ import {
 } from '@atlaskit/analytics-next';
 import NodeResolver from 'react-node-resolver';
 import { Manager, Reference, Popper } from '@atlaskit/popper';
-import { Props } from '../types';
+import { Props, Placement } from '../types';
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
 import { Container } from './styled';
 
-interface PopperProps {
-  ref: (node: HTMLElement | null) => void;
-  style: React.CSSProperties;
-  outOfBoundaries: boolean | null;
-}
-
 class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
-    children: null,
-    content: null,
     isOpen: false,
     onContentBlur: () => {},
     onContentClick: () => {},
     onContentFocus: () => {},
     onClose: () => {},
-    placement: 'bottom-start',
+    placement: 'bottom-start' as Placement,
   };
 
   containerRef?: HTMLElement;
@@ -86,11 +78,12 @@ class InlineDialog extends Component<Props, {}> {
       onContentBlur,
       onContentFocus,
       onContentClick,
+      testId,
     } = this.props;
 
     const popper = isOpen ? (
       <Popper placement={placement}>
-        {({ ref, style }: PopperProps) => (
+        {({ ref, style }) => (
           <Container
             onBlur={onContentBlur}
             onFocus={onContentFocus}
@@ -100,6 +93,7 @@ class InlineDialog extends Component<Props, {}> {
               ref(node);
             }}
             style={style}
+            data-testid={testId}
           >
             {content}
           </Container>
@@ -110,7 +104,7 @@ class InlineDialog extends Component<Props, {}> {
     return (
       <Manager>
         <Reference>
-          {({ ref }: PopperProps) => (
+          {({ ref }) => (
             <NodeResolver
               innerRef={(node: HTMLElement) => {
                 this.triggerRef = node;

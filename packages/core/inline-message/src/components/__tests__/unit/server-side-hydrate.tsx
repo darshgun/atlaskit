@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { getExamplesFor } from '@atlaskit/build-utils/getExamples';
 import { ssr } from '@atlaskit/ssr';
@@ -8,10 +8,10 @@ jest.spyOn(global.console, 'error').mockImplementation(() => {});
 afterEach(() => {
   jest.resetAllMocks();
 });
-
-test('should ssr then hydrate inline-message correctly', async () => {
+// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
+test.skip('should ssr then hydrate inline-message correctly', async () => {
   const [example] = await getExamplesFor('inline-message');
-  // $StringLitteral
+
   const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');

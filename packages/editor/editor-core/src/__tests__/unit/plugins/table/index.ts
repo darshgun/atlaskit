@@ -44,13 +44,9 @@ import {
   checkIfHeaderColumnEnabled,
   checkIfHeaderRowEnabled,
 } from '../../../../plugins/table/utils';
-import tablesPlugin from '../../../../plugins/table';
-import codeBlockPlugin from '../../../../plugins/code-block';
-import quickInsertPlugin from '../../../../plugins/quick-insert';
-import { mediaPlugin } from '../../../../plugins';
 import { insertMediaAsMediaSingle } from '../../../../plugins/media/utils/media-single';
-import listPlugin from '../../../../plugins/lists';
 import { AnalyticsHandler } from '../../../../analytics';
+import { INPUT_METHOD } from '../../../../plugins/analytics';
 
 describe('table plugin', () => {
   const createEditor = createEditorFactory<TablePluginState>();
@@ -65,17 +61,15 @@ describe('table plugin', () => {
 
     return createEditor({
       doc,
-      editorPlugins: [
-        listPlugin,
-        tablesPlugin(),
-        codeBlockPlugin(),
-        mediaPlugin({ allowMediaSingle: true }),
-        quickInsertPlugin,
-      ],
       editorProps: {
         analyticsHandler: trackEvent,
         allowTables: tableOptions,
         allowAnalyticsGASV3: true,
+        allowLists: true,
+        allowCodeBlocks: true,
+        media: {
+          allowMediaSingle: true,
+        },
       },
       pluginKey,
     });
@@ -118,6 +112,14 @@ describe('table plugin', () => {
   });
 
   describe('insertColumn(number)', () => {
+    it('should not insert a column if selection is not in table', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      expect(insertColumn(2)(editorView.state, editorView.dispatch)).toBe(
+        false,
+      );
+    });
+
     describe('when table has 2 columns', () => {
       describe('when it called with 0', () => {
         it("it should prepend a new column and move cursor inside it's first cell", () => {
@@ -298,6 +300,12 @@ describe('table plugin', () => {
             ),
           ),
         );
+      });
+
+      it('should not insert a row if selection is not in table', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+
+        expect(insertRow(2)(editorView.state, editorView.dispatch)).toBe(false);
       });
 
       it('copies the structure from a tableHeader', () => {
@@ -719,6 +727,7 @@ describe('table plugin', () => {
           collection: testCollectionName,
           __fileMimeType: 'image/png',
         })()(editorView.state.schema),
+        INPUT_METHOD.PICKER_CLOUD,
       );
 
       expect(editorView.state.doc).toEqualDocument(

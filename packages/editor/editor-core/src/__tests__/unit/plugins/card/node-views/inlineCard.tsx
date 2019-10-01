@@ -12,15 +12,13 @@ import { mount } from 'enzyme';
 import { inlineCard, defaultSchema } from '@atlaskit/editor-test-helpers';
 import { Card } from '@atlaskit/smart-card';
 
-import { InlineCardNode } from '../../../../../plugins/card/nodeviews/inlineCard';
+import { InlineCardComponent } from '../../../../../plugins/card/nodeviews/inlineCard';
 import { EditorView } from 'prosemirror-view';
 
 describe('inlineCard', () => {
   let mockEditorView: EditorView;
-  let mockGetPos: jest.Mock;
 
   beforeEach(() => {
-    mockGetPos = jest.fn();
     mockFindOverflowScrollParent = jest.fn();
     mockEditorView = {
       state: {
@@ -42,11 +40,11 @@ describe('inlineCard', () => {
       defaultSchema,
     );
     const mockInlineCardNode = mount(
-      <InlineCardNode
+      <InlineCardComponent
         node={mockInlinePmNode}
-        getPos={mockGetPos}
         view={mockEditorView}
         selected={false}
+        getPos={() => 0}
       />,
     );
     const wrapper = mockInlineCardNode.find(Card);
@@ -63,11 +61,11 @@ describe('inlineCard', () => {
       defaultSchema,
     );
     const mockInlineCardNode = mount(
-      <InlineCardNode
+      <InlineCardComponent
         node={mockInlinePmNode}
-        getPos={mockGetPos}
         view={mockEditorView}
         selected={false}
+        getPos={() => 0}
       />,
     );
     const wrapper = mockInlineCardNode.find(Card);

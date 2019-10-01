@@ -1,14 +1,15 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import * as React from 'react';
+import React from 'react';
 import { gridSize } from '@atlaskit/theme/constants';
 import { getLoadingStyle } from './utils';
 
 interface Props {
   followsIcon: boolean;
   spacing: string;
-  isLoading?: boolean;
   children?: React.ReactNode;
+  isLoading?: boolean;
+  testId?: string;
 }
 
 export default ({

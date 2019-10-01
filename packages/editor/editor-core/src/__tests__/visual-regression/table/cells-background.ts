@@ -1,4 +1,3 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
 import { Device, initFullPageEditorWithAdf, snapshot } from '../_utils';
 
 import {
@@ -7,9 +6,10 @@ import {
 } from '../../__helpers/page-objects/_table';
 
 import adf from './__fixtures__/default-table.adf.json';
+import { Page } from '../../__helpers/page-objects/_types';
 
 describe('Table context menu: cells background', () => {
-  let page: any;
+  let page: Page;
 
   beforeAll(async () => {
     // @ts-ignore
@@ -17,14 +17,14 @@ describe('Table context menu: cells background', () => {
   });
 
   beforeEach(async () => {
-    await initFullPageEditorWithAdf(page, adf, Device.LaptopHiDPI);
+    await initFullPageEditorWithAdf(page, adf, Device.LaptopMDPI);
     await clickFirstCell(page);
   });
 
   it(`should set background color to cells`, async () => {
     await selectCellBackground({
       page,
-      colorIndex: 2,
+      colorIndex: 3, // light blue color
       from: {
         row: 1,
         column: 1,
@@ -34,11 +34,11 @@ describe('Table context menu: cells background', () => {
         column: 3,
       },
     });
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
 
     await selectCellBackground({
       page,
-      colorIndex: 3,
+      colorIndex: 6, // light red color
       from: {
         row: 2,
         column: 1,
@@ -48,11 +48,11 @@ describe('Table context menu: cells background', () => {
         column: 3,
       },
     });
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
 
     await selectCellBackground({
       page,
-      colorIndex: 4,
+      colorIndex: 8, // light gray color
       from: {
         row: 3,
         column: 1,
@@ -62,6 +62,6 @@ describe('Table context menu: cells background', () => {
         column: 3,
       },
     });
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
   });
 });

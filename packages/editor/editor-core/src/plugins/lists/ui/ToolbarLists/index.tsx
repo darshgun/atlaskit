@@ -10,6 +10,7 @@ import {
   toggleBulletList as toggleBulletListKeymap,
   toggleOrderedList as toggleOrderedListKeymap,
   tooltip,
+  renderTooltipContent,
 } from '../../../../keymaps';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
@@ -22,18 +23,12 @@ import {
 } from '../../../../ui/styles';
 import { toggleBulletList, toggleOrderedList } from '../../commands';
 import { messages } from '../../messages';
-import {
-  ACTION,
-  ACTION_SUBJECT,
-  ACTION_SUBJECT_ID,
-  EVENT_TYPE,
-  INPUT_METHOD,
-  DispatchAnalyticsEvent,
-} from '../../../analytics';
+import { INPUT_METHOD } from '../../../analytics';
+import { TOOLBAR_MENU_TYPE } from '../../../insert-block/ui/ToolbarInsertBlock';
+import { DropdownItem } from '../../../block-type/ui/ToolbarBlockType';
 
 export interface Props {
   editorView: EditorView;
-  dispatchAnalyticsEvent?: DispatchAnalyticsEvent;
   bulletListActive?: boolean;
   bulletListDisabled?: boolean;
   orderedListActive?: boolean;
@@ -121,7 +116,10 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
             onClick={this.handleBulletListClick}
             selected={bulletListActive}
             disabled={bulletListDisabled || disabled}
-            title={tooltip(toggleBulletListKeymap, labelUnorderedList)}
+            title={renderTooltipContent(
+              labelUnorderedList,
+              toggleBulletListKeymap,
+            )}
             iconBefore={<BulletListIcon label={labelUnorderedList} />}
           />
           <ToolbarButton
@@ -129,7 +127,10 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
             onClick={this.handleOrderedListClick}
             selected={orderedListActive}
             disabled={orderedListDisabled || disabled}
-            title={tooltip(toggleOrderedListKeymap, labelOrderedList)}
+            title={renderTooltipContent(
+              labelOrderedList,
+              toggleOrderedListKeymap,
+            )}
             iconBefore={<NumberListIcon label={labelOrderedList} />}
           />
           {isSeparator && <Separator />}
@@ -183,18 +184,7 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
     'atlassian.editor.format.list.bullet.button',
     () => {
       if (!this.props.bulletListDisabled) {
-        if (toggleBulletList(this.props.editorView)) {
-          if (this.props.dispatchAnalyticsEvent) {
-            this.props.dispatchAnalyticsEvent({
-              action: ACTION.FORMATTED,
-              actionSubject: ACTION_SUBJECT.TEXT,
-              actionSubjectId: ACTION_SUBJECT_ID.FORMAT_LIST_BULLET,
-              eventType: EVENT_TYPE.TRACK,
-              attributes: {
-                inputMethod: INPUT_METHOD.TOOLBAR,
-              },
-            });
-          }
+        if (toggleBulletList(this.props.editorView, INPUT_METHOD.TOOLBAR)) {
           return true;
         }
       }
@@ -206,18 +196,7 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
     'atlassian.editor.format.list.numbered.button',
     () => {
       if (!this.props.orderedListDisabled) {
-        if (toggleOrderedList(this.props.editorView)) {
-          if (this.props.dispatchAnalyticsEvent) {
-            this.props.dispatchAnalyticsEvent({
-              action: ACTION.FORMATTED,
-              actionSubject: ACTION_SUBJECT.TEXT,
-              actionSubjectId: ACTION_SUBJECT_ID.FORMAT_LIST_NUMBER,
-              eventType: EVENT_TYPE.TRACK,
-              attributes: {
-                inputMethod: INPUT_METHOD.TOOLBAR,
-              },
-            });
-          }
+        if (toggleOrderedList(this.props.editorView, INPUT_METHOD.TOOLBAR)) {
           return true;
         }
       }
@@ -225,7 +204,12 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
     },
   );
 
-  private onItemActivated = ({ item }: { item: any }) => {
+  private onItemActivated = ({
+    item,
+  }: {
+    item: DropdownItem;
+    inputMethod: TOOLBAR_MENU_TYPE;
+  }) => {
     this.setState({ isDropdownOpen: false });
     switch (item.value.name) {
       case 'bullet_list':

@@ -1,12 +1,10 @@
 import { Action, Dispatch, Store } from 'redux';
-import {
-  getFilesInRecentsFullfilled,
-  getFilesInRecentsFailed,
-  saveCollectionItemsSubscription,
-} from '../actions';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
+import { getFilesInRecentsFullfilled } from '../actions/getFilesInRecents';
+import { getFilesInRecentsFailed } from '../actions/getFilesInRecents';
+import { saveCollectionItemsSubscription } from '../actions/saveCollectionItemsSubscription';
 import { State } from '../domain';
 import { isGetFilesInRecentsAction } from '../actions/getFilesInRecents';
-import { RECENTS_COLLECTION } from '../config';
 
 export const getFilesInRecents = () => (store: Store<State>) => (
   next: Dispatch<Action>,
@@ -19,13 +17,13 @@ export const getFilesInRecents = () => (store: Store<State>) => (
 };
 
 export const requestRecentFiles = (store: Store<State>): void => {
-  const { userContext, collectionItemsSubscription } = store.getState();
+  const { userMediaClient, collectionItemsSubscription } = store.getState();
 
   if (collectionItemsSubscription) {
     collectionItemsSubscription.unsubscribe();
   }
 
-  const subscription = userContext.collection
+  const subscription = userMediaClient.collection
     .getItems(RECENTS_COLLECTION)
     .subscribe({
       next(items) {

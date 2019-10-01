@@ -1,4 +1,5 @@
 import { ReactNode, SyntheticEvent } from 'react';
+import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 
 // Used by RadioGroupStateless
 export type OptionPropType = {
@@ -7,7 +8,7 @@ export type OptionPropType = {
   label?: ReactNode;
   name?: string;
   value?: string | number;
-};
+} & Pick<RadioProps, 'testId'>;
 
 export type OptionsPropType = Array<OptionPropType>;
 
@@ -47,7 +48,7 @@ export type RadioInputProps = RadioIconProps & {
   value?: string;
 };
 
-export type RadioProps = {
+export interface RadioProps extends WithAnalyticsEventsProps {
   /** the aria-label attribute associated with the radio element */
   ariaLabel?: string;
   /** Field disabled */
@@ -74,4 +75,11 @@ export type RadioProps = {
   onInvalid?: (e: SyntheticEvent<any>) => void;
   /** Field value */
   value?: string | number;
-};
+  /** 
+      A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+      we have 2 different testid generated based on the one you pass to the Radio component:
+      - `{testId}--hidden-radio` to check if it got changed to checked/unchecked.
+      - `{testId}--radio-label` to click the input, because in IE11 the input has opacity: 0 and can't be interacted.
+    */
+  testId?: string;
+}

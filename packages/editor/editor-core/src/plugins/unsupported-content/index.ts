@@ -47,7 +47,9 @@ const createPlugin: PMPluginFactory = ({ schema, portalProviderAPI }) => {
   });
 };
 
-const unsupportedContentPlugin: EditorPlugin = {
+const unsupportedContentPlugin = (): EditorPlugin => ({
+  name: 'unsupportedContent',
+
   nodes() {
     return [
       {
@@ -77,6 +79,6 @@ const unsupportedContentPlugin: EditorPlugin = {
       },
     ];
   },
-};
+});
 
 export default unsupportedContentPlugin;

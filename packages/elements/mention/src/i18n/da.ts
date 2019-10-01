@@ -6,6 +6,7 @@
  */
 // Danish
 export default {
+  'fabric.mention.unknow.user.error': 'Ukendt bruger {userId}',
   'fabric.mention.noAccess.warning':
     '{name} får ikke besked, da personen ikke har adgang',
   'fabric.mention.noAccess.label': 'Ingen adgang',
@@ -14,7 +15,17 @@ export default {
   'fabric.mention.error.loginAgain': 'Prøv at logge ud og derefter ind igen',
   'fabric.mention.error.differentText': 'Prøv at indtaste en anden tekst',
   'fabric.elements.mentions.team.member.count':
-    '{0, plural, one{{count} medlem{includes, select, true {, including you} andre {}}} other{{count} medlemmer{includes, select, true {, including you} andre {}}}}',
-  'fabric.elements.mentions.team.member.50plus':
-    '50+ medlemmer{includes, select, true {, including you} andre {}} ',
+    '{0, plural, one{1 medlem} other{{0} medlemmer}}',
+  'fabric.elements.mentions.team.member.count.including.you':
+    '{0, plural, one{{0} medlemmer, inklusive dig} other{{0} medlemmer, inklusive dig}}',
+  'fabric.elements.mentions.team.member.50plus': '50+ medlemmer',
+  'fabric.elements.mentions.team.member.50plus.including.you':
+    '50+ medlemmer, inklusive dig',
+  'fabric.elements.mentions.team.mention.highlight.title': 'Omtal dit team',
+  'fabric.elements.mentions.team.mention.highlight.description':
+    'Få alle med på siden med ét klik. Har du ikke et team?',
+  'fabric.elements.mentions.team.mention.highlight.description.link':
+    'Så opret et.',
+  'fabric.elements.mentions.team.meantion.highlight.close.button.tooltip':
+    'Afvis',
 };

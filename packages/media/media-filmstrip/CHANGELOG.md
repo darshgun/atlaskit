@@ -1,5 +1,150 @@
 # @atlaskit/media-filmstrip
 
+## 34.3.9
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 34.3.8
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/media-card@65.2.1
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
+## 34.3.7
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
+## 34.3.6
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/media-client@2.1.2
+  - @atlaskit/media-core@30.0.14
+  - @atlaskit/media-test-helpers@25.1.1
+  - @atlaskit/media-card@65.0.0
+
+## 34.3.5
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 34.3.4
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 34.3.3
+
+- Updated dependencies [3624730f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3624730f44):
+  - @atlaskit/media-client@2.0.2
+  - @atlaskit/media-core@30.0.11
+  - @atlaskit/media-test-helpers@25.0.2
+  - @atlaskit/media-card@64.0.0
+
+## 34.3.2
+
+- Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
+  - @atlaskit/media-card@63.3.11
+  - @atlaskit/media-client@2.0.1
+  - @atlaskit/media-core@30.0.10
+  - @atlaskit/media-test-helpers@25.0.0
+
+## 34.3.1
+
+- Updated dependencies [ee804f3eeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee804f3eeb):
+  - @atlaskit/media-card@63.3.9
+  - @atlaskit/media-core@30.0.9
+  - @atlaskit/media-test-helpers@24.3.5
+  - @atlaskit/media-client@2.0.0
+
+## 34.3.0
+
+### Minor Changes
+
+- [minor][40c6ed5a59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40c6ed5a59):
+
+  Allows consumer to enable Media Viewer on Cards
+
+  Use boolean prop `shouldOpenMediaViewer` to activate Media Viewer in media cards contained
+
+  Example:
+
+  ```
+  <Filmstrip
+    shouldOpenMediaViewer={openMediaViewer}
+    mediaClientConfig={mediaClient.config}
+    items={items}
+  />
+  ```
+
+## 34.2.5
+
+### Patch Changes
+
+- [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
+
+  bugfix, fixes missing version.json file
+
+## 34.2.4
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 34.2.3
+
+- Updated dependencies [87a2638655](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a2638655):
+  - @atlaskit/button@13.0.10
+  - @atlaskit/media-card@63.3.2
+  - @atlaskit/checkbox@9.0.0
+
+## 34.2.2
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/button@13.0.9
+  - @atlaskit/checkbox@8.0.5
+  - @atlaskit/field-radio-group@6.0.4
+  - @atlaskit/media-card@63.3.1
+  - @atlaskit/media-test-helpers@24.1.2
+  - @atlaskit/icon@19.0.0
+
+## 34.2.1
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/button@13.0.8
+  - @atlaskit/checkbox@8.0.2
+  - @atlaskit/field-radio-group@6.0.2
+  - @atlaskit/media-card@63.1.5
+  - @atlaskit/media-test-helpers@24.0.3
+  - @atlaskit/field-range@7.0.4
+  - @atlaskit/icon@18.0.0
+
 ## 34.2.0
 
 ### Minor Changes

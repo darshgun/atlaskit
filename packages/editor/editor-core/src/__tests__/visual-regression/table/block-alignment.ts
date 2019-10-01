@@ -1,23 +1,21 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
 import {
   Device,
   snapshot,
   initFullPageEditorWithAdf,
   initCommentEditorWithAdf,
+  editorCommentContentSelector,
 } from '../_utils';
 import adf from './__fixtures__/table-with-blocks.adf.json';
 import {
   setTableLayout,
   getSelectorForTableCell,
 } from '../../__helpers/page-objects/_table';
-import {
-  waitForEmojis,
-  emojiReadySelector,
-} from '../../__helpers/page-objects/_emoji';
+import { emojiReadySelector } from '../../__helpers/page-objects/_emoji';
 import { waitForLoadedBackgroundImages } from '@atlaskit/visual-regression/helper';
+import { Page } from '../../__helpers/page-objects/_types';
 
 describe('Table with block looks correct for fullpage:', () => {
-  let page: any;
+  let page: Page;
 
   beforeAll(async () => {
     // @ts-ignore
@@ -25,9 +23,8 @@ describe('Table with block looks correct for fullpage:', () => {
   });
 
   afterEach(async () => {
-    await waitForEmojis(page);
     await waitForLoadedBackgroundImages(page, emojiReadySelector, 10000);
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
   });
 
   it('default layout ', async () => {
@@ -63,7 +60,7 @@ describe('Table with block looks correct for fullpage:', () => {
 });
 
 describe('Table with block looks correct for comment:', () => {
-  let page: any;
+  let page: Page;
 
   beforeAll(async () => {
     // @ts-ignore
@@ -71,7 +68,7 @@ describe('Table with block looks correct for comment:', () => {
   });
 
   afterEach(async () => {
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page, undefined, editorCommentContentSelector);
   });
 
   it('default layout ', async () => {

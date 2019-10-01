@@ -2,7 +2,7 @@
 
 import React, { Fragment, type Node } from 'react';
 import { css, keyframes } from '@emotion/core';
-import { colors } from '@atlaskit/theme';
+import { N70A } from '@atlaskit/theme/colors';
 
 import {
   transitionDuration,
@@ -29,20 +29,30 @@ import type {
  *    - ContainerOverlay
  */
 
-const ScrollProvider = (props: any) => (
-  <div
-    css={{
-      boxSizing: 'border-box',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      overflowX: 'hidden',
-      overflowY: 'auto',
-      width: '100%',
-    }}
-    {...props}
-  />
-);
+export const ScrollProviderRef = React.createContext();
+const ScrollProvider = ({ isVisible, ...props }: any) => {
+  const scrollProviderRef = React.createRef();
+
+  return (
+    <ScrollProviderRef.Provider value={scrollProviderRef}>
+      <div
+        css={{
+          boxSizing: 'border-box',
+          display: isVisible ? 'flex' : 'none',
+          flexDirection: 'column',
+          height: '100%',
+          overflowX: 'hidden',
+          overflowY: 'auto',
+          width: '100%',
+        }}
+        tabIndex={-1}
+        role="group"
+        ref={scrollProviderRef}
+        {...props}
+      />
+    </ScrollProviderRef.Provider>
+  );
+};
 
 /**
  * ProductNavigation
@@ -50,10 +60,12 @@ const ScrollProvider = (props: any) => (
 type ProductNavigationPrimitiveBaseProps = {
   children: Node,
   theme: ProductTheme,
+  isVisible: boolean,
 };
 
 const ProductNavigationPrimitiveBase = ({
   children,
+  isVisible,
   theme = { mode: light, context: 'product' },
 }: ProductNavigationPrimitiveBaseProps) => (
   <div
@@ -67,7 +79,7 @@ const ProductNavigationPrimitiveBase = ({
       },
     }}
   >
-    <ScrollProvider>{children}</ScrollProvider>
+    <ScrollProvider isVisible={isVisible}>{children}</ScrollProvider>
   </div>
 );
 
@@ -75,7 +87,7 @@ const ProductNavigationPrimitive = withContentTheme(
   ProductNavigationPrimitiveBase,
 );
 
-type ProductNavigationProps = { children: Node };
+type ProductNavigationProps = { isVisible: boolean, children: Node };
 
 type BaseNavigationTheme = {
   children: Node,
@@ -108,6 +120,7 @@ const ContainerNavigationPrimitiveBase = ({
   isEntering,
   isExiting,
   theme,
+  isVisible,
 }: ContainerNavigationPrimitiveBaseProps) => {
   let animationName;
   if (isEntering) animationName = slideIn;
@@ -130,7 +143,7 @@ const ContainerNavigationPrimitiveBase = ({
       animation-name: ${animationName};
       `}
     >
-      <ScrollProvider>{children}</ScrollProvider>
+      <ScrollProvider isVisible={isVisible}>{children}</ScrollProvider>
     </div>
   );
 };
@@ -165,7 +178,7 @@ export const ContainerOverlay = ({
 }: ContainerOverlayProps) => (
   <div
     css={{
-      backgroundColor: colors.N70A,
+      backgroundColor: N70A,
       cursor: isVisible ? 'pointer' : 'default',
       height: '100%',
       left: 0,

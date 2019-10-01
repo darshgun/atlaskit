@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   externalImageIdentifier,
+  defaultCollectionName,
   createStorybookMediaClientConfig,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
@@ -20,17 +21,12 @@ import {
   videoLargeFileItem,
   videoProcessingFailedItem,
   wideImageItem,
-  defaultCollectionName,
+  verticalImageItem,
   videoSquareFileIdItem,
 } from '../example-helpers';
 import { MediaViewer } from '../src';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { I18NWrapper } from '@atlaskit/media-test-helpers';
 const mediaClientConfig = createStorybookMediaClientConfig();
-
-const handleEvent = (/*analyticsEvent: UIAnalyticsEventInterface*/) => {
-  // instrument here...
-};
 
 export type State = {
   selectedIdentifier?: Identifier;
@@ -70,6 +66,7 @@ export default class Example extends React.Component<{}, State> {
               <li>{this.createItem(imageItem, 'Picture')}</li>
               <li>{this.createItem(smallImageItem, 'Icon')}</li>
               <li>{this.createItem(wideImageItem, 'Wide')}</li>
+              <li>{this.createItem(verticalImageItem, 'Vertical')}</li>
               <li>{this.createItem(largeImageItem, 'Large')}</li>
             </ButtonList>
           </Group>
@@ -117,15 +114,13 @@ export default class Example extends React.Component<{}, State> {
             </ButtonList>
           </Group>
           {selectedIdentifier && (
-            <AnalyticsListener channel="media" onEvent={handleEvent}>
-              <MediaViewer
-                mediaClientConfig={mediaClientConfig}
-                selectedItem={selectedIdentifier}
-                dataSource={{ list: [selectedIdentifier] }}
-                collectionName={defaultCollectionName}
-                onClose={() => this.setState({ selectedIdentifier: undefined })}
-              />
-            </AnalyticsListener>
+            <MediaViewer
+              mediaClientConfig={mediaClientConfig}
+              selectedItem={selectedIdentifier}
+              dataSource={{ list: [selectedIdentifier] }}
+              collectionName={defaultCollectionName}
+              onClose={() => this.setState({ selectedIdentifier: undefined })}
+            />
           )}
         </Container>
       </I18NWrapper>

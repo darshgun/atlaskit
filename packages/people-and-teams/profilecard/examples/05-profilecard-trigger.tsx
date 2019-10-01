@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ProfileCardTrigger } from '../src';
-import { getMockProfileClient } from './helper/util';
+import { getMockProfileClient, analyticsHandler } from './helper/util';
 import LocaleIntlProvider from './helper/locale-intl-provider';
 
 const mockClient = getMockProfileClient(10, 0);
@@ -28,19 +28,23 @@ export const Section = styled.div`
   }
 `;
 
+const defaultProps = {
+  cloudId: 'DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048',
+  resourceClient: mockClient,
+  analytics: analyticsHandler,
+};
+
 export default function Example() {
   return (
     <LocaleIntlProvider>
       <MainStage>
         <Section>
           <h4>Profilecard triggered by hover</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
-              cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
+              {...defaultProps}
               userId="1"
-              position="bottom-start"
-              resourceClient={mockClient}
               actions={[
                 {
                   label: 'View profile',
@@ -52,17 +56,15 @@ export default function Example() {
               <strong>hover over me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
         <Section>
           <h4>Profilecard triggered by click</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
-              cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
+              {...defaultProps}
               userId="1"
-              position="bottom-start"
-              resourceClient={mockClient}
               trigger="click"
               actions={[
                 {
@@ -75,17 +77,16 @@ export default function Example() {
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
 
         <Section>
           <h4>Profilecard triggered for closed account</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
-              cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
+              {...defaultProps}
               userId="1"
-              position="bottom-start"
               resourceClient={getMockProfileClient(10, 0, {
                 status: 'closed',
               })}
@@ -94,24 +95,23 @@ export default function Example() {
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
 
         <Section>
           <h4>Profilecard triggered for inactive account</h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
-              cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
+              {...defaultProps}
               userId="1"
-              position="bottom-start"
               resourceClient={mockClientForInactiveAccount}
               trigger="click"
             >
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
 
         <Section>
@@ -119,19 +119,18 @@ export default function Example() {
             Profilecard triggered for closed account and custom message and not
             show status lozenge
           </h4>
-          <div>
+          <span>
             Lorem ipsum{' '}
             <ProfileCardTrigger
-              cloudId="DUMMY-10ae0bf3-157e-43f7-be45-f1bb13b39048"
+              {...defaultProps}
               userId="1"
-              position="bottom-start"
               resourceClient={mockClientForClosedAccountAndCustomMessage}
               trigger="click"
             >
               <strong>click me</strong>
             </ProfileCardTrigger>{' '}
             dolor sit amet
-          </div>
+          </span>
         </Section>
       </MainStage>
     </LocaleIntlProvider>

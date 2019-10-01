@@ -27,6 +27,11 @@ export {
 } from '@atlaskit/mention/resource';
 export { TeamMentionResource } from '@atlaskit/mention/team-resource';
 export {
+  AnnotationProvider,
+  AnnotationComponentProps,
+  AnnotationInfo,
+} from './plugins/annotation';
+export {
   QuickInsertProvider,
   QuickInsertItem,
 } from './plugins/quick-insert/types';
@@ -89,6 +94,7 @@ export {
   setLinkHref,
   setLinkText,
 } from './plugins/hyperlink/commands';
+export { historyPluginKey, HistoryPluginState } from './plugins/history';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';
@@ -103,3 +109,7 @@ export {
   PortalProviderAPI,
   PortalRenderer,
 } from './ui/PortalProvider';
+export {
+  GapCursorSelection,
+  Side as GapCursorSide,
+} from './plugins/gap-cursor';

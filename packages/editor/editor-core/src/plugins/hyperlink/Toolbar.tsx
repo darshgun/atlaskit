@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { defineMessages } from 'react-intl';
 import { FloatingToolbarHandler, AlignType } from '../floating-toolbar/types';
 import {
   stateKey,
@@ -15,36 +14,46 @@ import {
   hideLinkToolbar,
   setLinkHref,
   updateLink,
+  insertLinkWithAnalytics,
 } from './commands';
-import RecentList from './ui/RecentSearch';
+import RecentList from './ui/HyperlinkAddToolbar';
 import { EditorView } from 'prosemirror-view';
 import { Mark } from 'prosemirror-model';
 import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
 import OpenIcon from '@atlaskit/icon/glyph/shortcut';
-
-export const messages = defineMessages({
-  openLink: {
-    id: 'fabric.editor.openLink',
-    defaultMessage: 'Open link in a new tab',
-    description: 'Opens the link in a new tab',
-  },
-  unlink: {
-    id: 'fabric.editor.unlink',
-    defaultMessage: 'Unlink',
-    description: 'Removes the hyperlink but keeps your text.',
-  },
-  editLink: {
-    id: 'fabric.editor.editLink',
-    defaultMessage: 'Edit link',
-    description: 'Edit the link, update display text',
-  },
-});
+import { normalizeUrl } from './utils';
+import { EditorState } from 'prosemirror-state';
+import { linkToolbarMessages as linkToolbarCommonMessages } from '../../messages';
+import {
+  RECENT_SEARCH_HEIGHT_IN_PX,
+  RECENT_SEARCH_WIDTH_IN_PX,
+} from '../../ui/RecentSearch/ToolbarComponents';
 
 /* type guard for edit links */
 function isEditLink(
   linkMark: EditInsertedState | InsertState,
 ): linkMark is EditInsertedState {
   return (linkMark as EditInsertedState).pos !== undefined;
+}
+
+function getLinkText(
+  activeLinkMark: EditInsertedState,
+  state: EditorState,
+): string | undefined | null {
+  if (!activeLinkMark.node) {
+    return undefined;
+  }
+
+  const textToUrl = normalizeUrl(activeLinkMark.node.text);
+  const linkMark = activeLinkMark.node.marks.find(
+    (mark: Mark) => mark.type === state.schema.marks.link,
+  );
+  const linkHref = linkMark && linkMark.attrs.href;
+
+  if (textToUrl === linkHref) {
+    return undefined;
+  }
+  return activeLinkMark.node.text;
 }
 
 const handleBlur = (
@@ -57,7 +66,7 @@ const handleBlur = (
         return setLinkHref(
           url,
           isEditLink(activeLinkMark) ? activeLinkMark.pos : activeLinkMark.from,
-          undefined,
+          isEditLink(activeLinkMark) ? undefined : activeLinkMark.to,
           isTabPressed,
         )(view.state, view.dispatch);
       }
@@ -68,10 +77,15 @@ const handleBlur = (
     }
     case 'text': {
       if (text && url) {
-        return setLinkText(text, (activeLinkMark as EditInsertedState).pos)(
-          view.state,
-          view.dispatch,
-        );
+        return activeLinkMark.type === 'INSERT'
+          ? insertLink(activeLinkMark.from, activeLinkMark.to, url, text)(
+              view.state,
+              view.dispatch,
+            )
+          : setLinkText(text, (activeLinkMark as EditInsertedState).pos)(
+              view.state,
+              view.dispatch,
+            );
       }
       return hideLinkToolbar()(view.state, view.dispatch);
     }
@@ -114,10 +128,10 @@ export const getToolbarConfig: FloatingToolbarHandler = (
         );
         const link = linkMark[0] && linkMark[0].attrs.href;
 
-        const labelOpenLink = formatMessage(messages.openLink);
-        const labelUnlink = formatMessage(messages.unlink);
+        const labelOpenLink = formatMessage(linkToolbarCommonMessages.openLink);
+        const labelUnlink = formatMessage(linkToolbarCommonMessages.unlink);
 
-        const editLink = formatMessage(messages.editLink);
+        const editLink = formatMessage(linkToolbarCommonMessages.editLink);
 
         return {
           ...hyperLinkToolbar,
@@ -168,11 +182,14 @@ export const getToolbarConfig: FloatingToolbarHandler = (
           );
           link = linkMark[0] && linkMark[0].attrs.href;
         }
+        const displayText = isEditLink(activeLinkMark)
+          ? getLinkText(activeLinkMark, state)
+          : linkState.activeText;
 
         return {
           ...hyperLinkToolbar,
-          height: 360,
-          width: 420,
+          height: RECENT_SEARCH_HEIGHT_IN_PX,
+          width: RECENT_SEARCH_WIDTH_IN_PX,
           items: [
             {
               type: 'custom',
@@ -191,19 +208,16 @@ export const getToolbarConfig: FloatingToolbarHandler = (
                   <RecentList
                     key={idx}
                     displayUrl={link}
-                    displayText={
-                      isEditLink(activeLinkMark)
-                        ? activeLinkMark.node && activeLinkMark.node.text
-                        : linkState.activeText
-                    }
+                    displayText={displayText || ''}
                     providerFactory={providerFactory}
-                    onSubmit={(href, text) => {
+                    onSubmit={(href, text, inputMethod) => {
                       isEditLink(activeLinkMark)
                         ? updateLink(href, text, activeLinkMark.pos)(
                             view.state,
                             view.dispatch,
                           )
-                        : insertLink(
+                        : insertLinkWithAnalytics(
+                            inputMethod,
                             activeLinkMark.from,
                             activeLinkMark.to,
                             href,

@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import {
+  UIAnalyticsEvent,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
+import { InterpolationWithTheme } from '@emotion/core';
 
 export type ButtonAppearances =
   | 'default'
@@ -15,8 +19,11 @@ export type ButtonAppearances =
 // have the type defined in OnlyButtonProps.
 type HtmlAttributes = Pick<
   React.AllHTMLAttributes<HTMLElement>,
-  Exclude<keyof React.AllHTMLAttributes<HTMLElement>, keyof OnlyButtonProps>
->;
+  Exclude<
+    keyof React.AllHTMLAttributes<HTMLElement>,
+    keyof OnlyButtonProps | 'css'
+  >
+> & { css?: InterpolationWithTheme<any> };
 
 export type OnlyButtonProps = {
   /** The base styling to apply to the button */
@@ -26,7 +33,7 @@ export type OnlyButtonProps = {
   /** Add a classname to the button */
   className?: string;
   /** A custom component to use instead of the default button */
-  component?: React.ComponentType<React.AllHTMLAttributes<HTMLElement>>;
+  component?: React.ElementType<any>;
   /** Internal use only. Please use `ref` to forward refs */
   consumerRef?: React.Ref<HTMLElement>;
   /** Provides a url for buttons being used as a link */
@@ -69,9 +76,16 @@ export type OnlyButtonProps = {
     current: (props: ThemeProps) => ThemeTokens,
     props: ThemeProps,
   ) => ThemeTokens;
+
+  children?: React.ReactNode;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 };
 
-export type ButtonProps = HtmlAttributes & OnlyButtonProps;
+export interface ButtonProps
+  extends HtmlAttributes,
+    OnlyButtonProps,
+    WithAnalyticsEventsProps {}
 
 export type Spacing = 'compact' | 'default' | 'none';
 

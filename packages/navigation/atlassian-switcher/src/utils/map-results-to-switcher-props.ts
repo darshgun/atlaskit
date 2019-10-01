@@ -1,61 +1,65 @@
 import {
   getAdministrationLinks,
+  getAvailableProductLinks,
   getCustomLinkItems,
   getFixedProductLinks,
-  getLicensedProductLinks,
+  getProvisionedProducts,
   getRecentLinkItems,
   getSuggestedProductLink,
+  SwitcherItemType,
 } from './links';
 import {
+  hasLoaded,
   isComplete,
   isError,
-  isLoading,
   ProviderResult,
+  Status,
 } from '../providers/as-data-provider';
 import {
+  AvailableProductsResponse,
   CustomLinksResponse,
-  LicenseInformationResponse,
+  FeatureMap,
+  Product,
   RecentContainersResponse,
+  RecommendationsEngineResponse,
+  UserSiteDataResponse,
 } from '../types';
 import { createCollector } from './create-collector';
 
-function getExpandLink(
-  licenseInformation: ProviderResults['licenseInformation'],
-) {
-  if (licenseInformation === undefined || isError(licenseInformation)) {
-    return '//start.atlassian.com';
+function collectAvailableProductLinks(
+  cloudId: string | null | undefined,
+  availableProducts?: ProviderResult<AvailableProductsResponse>,
+): SwitcherItemType[] | undefined {
+  if (availableProducts) {
+    if (isError(availableProducts)) {
+      return [];
+    }
+    if (isComplete(availableProducts)) {
+      return getAvailableProductLinks(availableProducts.data, cloudId);
+    }
+    return;
   }
-  if (isComplete(licenseInformation)) {
-    const isStagingInstance =
-      licenseInformation.data.hostname.indexOf('.jira-dev.com') !== -1;
-    return `//start.${isStagingInstance ? 'stg.' : ''}atlassian.com`;
-  }
-}
-
-function collectProductLinks(
-  cloudId: string,
-  licenseInformation: ProviderResults['licenseInformation'],
-) {
-  if (isError(licenseInformation)) {
-    return [];
-  }
-
-  if (isComplete(licenseInformation)) {
-    return getLicensedProductLinks(licenseInformation.data);
-  }
+  return;
 }
 
 function collectSuggestedLinks(
-  licenseInformation: ProviderResults['licenseInformation'],
+  userSiteData: ProviderResult<UserSiteDataResponse>,
+  productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
 ) {
-  if (isError(isXFlowEnabled) || isError(licenseInformation)) {
+  if (isError(isXFlowEnabled) || isError(userSiteData)) {
     return [];
   }
-
-  if (isComplete(licenseInformation) && isComplete(isXFlowEnabled)) {
+  if (
+    isComplete(userSiteData) &&
+    isComplete(isXFlowEnabled) &&
+    isComplete(productRecommendations)
+  ) {
     return isXFlowEnabled.data
-      ? getSuggestedProductLink(licenseInformation.data)
+      ? getSuggestedProductLink(
+          userSiteData.data.provisionedProducts,
+          productRecommendations.data,
+        )
       : [];
   }
 }
@@ -69,9 +73,11 @@ function collectCanManageLinks(
 }
 
 function collectAdminLinks(
-  cloudId: string,
   managePermission: ProviderResults['managePermission'],
   addProductsPermission: ProviderResults['addProductsPermission'],
+  isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
     return [];
@@ -79,106 +85,167 @@ function collectAdminLinks(
 
   if (isComplete(managePermission) && isComplete(addProductsPermission)) {
     if (managePermission.data || addProductsPermission.data) {
-      return getAdministrationLinks(managePermission.data);
+      return getAdministrationLinks(
+        managePermission.data,
+        isDiscoverMoreForEveryoneEnabled,
+        isEmceeLinkEnabled,
+        product,
+      );
     }
 
     return [];
   }
 }
 
-export function collectFixedProductLinks() {
-  return getFixedProductLinks();
+function collectFixedProductLinks(
+  isDiscoverMoreForEveryoneEnabled: boolean,
+): SwitcherItemType[] {
+  return getFixedProductLinks({
+    isDiscoverMoreForEveryoneEnabled,
+  });
 }
 
 function collectRecentLinks(
   recentContainers: ProviderResults['recentContainers'],
-  licenseInformation: ProviderResults['licenseInformation'],
+  userSiteData: ProviderResult<UserSiteDataResponse>,
 ) {
-  if (isError(recentContainers) || isError(licenseInformation)) {
+  if (isError(recentContainers) || isError(userSiteData)) {
     return [];
   }
 
-  if (isComplete(recentContainers) && isComplete(licenseInformation)) {
+  if (isComplete(recentContainers) && isComplete(userSiteData)) {
     return getRecentLinkItems(
       recentContainers.data.data,
-      licenseInformation.data,
+      userSiteData.data.currentSite,
     );
   }
 }
 
 function collectCustomLinks(
   customLinks: ProviderResults['customLinks'],
-  licenseInformation: ProviderResults['licenseInformation'],
+  userSiteData: ProviderResult<UserSiteDataResponse>,
 ) {
-  if (customLinks === undefined || isError(customLinks)) {
+  if (customLinks === undefined || isError(userSiteData)) {
     return [];
   }
 
-  if (isComplete(customLinks) && isComplete(licenseInformation)) {
-    return getCustomLinkItems(customLinks.data, licenseInformation.data);
+  if (isComplete(customLinks) && isComplete(userSiteData)) {
+    return getCustomLinkItems(customLinks.data, userSiteData.data.currentSite);
   }
 }
 
 interface ProviderResults {
   customLinks?: ProviderResult<CustomLinksResponse>;
   recentContainers: ProviderResult<RecentContainersResponse>;
-  licenseInformation: ProviderResult<LicenseInformationResponse>;
   managePermission: ProviderResult<boolean>;
   addProductsPermission: ProviderResult<boolean>;
   isXFlowEnabled: ProviderResult<boolean>;
+  productRecommendations: ProviderResult<RecommendationsEngineResponse>;
 }
 
-interface SwitcherFeatures {
-  xflow: boolean;
-  enableExpandLink: boolean;
+function asUserSiteDataProviderResult(
+  availableProductsProvider: ProviderResult<AvailableProductsResponse>,
+  cloudId: string | null | undefined,
+): ProviderResult<UserSiteDataResponse> {
+  switch (availableProductsProvider.status) {
+    case Status.LOADING: // intentional fallthrough
+    case Status.ERROR:
+      return availableProductsProvider;
+    case Status.COMPLETE:
+      const site =
+        cloudId &&
+        availableProductsProvider.data.sites.find(
+          site => site.cloudId === cloudId,
+        );
+      if (!site) {
+        return {
+          status: Status.ERROR,
+          data: null,
+          error: new Error(
+            `could not find site in availableProducts for cloudId ${cloudId}`,
+          ),
+        };
+      }
+      return {
+        status: Status.COMPLETE,
+        data: {
+          currentSite: {
+            url: site.url,
+            products: site.availableProducts,
+          },
+          provisionedProducts: getProvisionedProducts(
+            availableProductsProvider.data,
+          ),
+        },
+      };
+  }
 }
 
 export function mapResultsToSwitcherProps(
-  cloudId: string,
+  cloudId: string | null | undefined,
   results: ProviderResults,
-  features: SwitcherFeatures,
+  features: FeatureMap,
+  availableProducts: ProviderResult<AvailableProductsResponse>,
+  product?: Product,
 ) {
   const collect = createCollector();
 
   const {
-    licenseInformation,
     isXFlowEnabled,
     managePermission,
     addProductsPermission,
     customLinks,
     recentContainers,
+    productRecommendations,
   } = results;
-
-  if (isError(licenseInformation)) {
-    throw licenseInformation.error;
-  }
+  const userSiteData = asUserSiteDataProviderResult(availableProducts, cloudId);
+  const hasLoadedAvailableProducts = hasLoaded(availableProducts);
+  const hasLoadedAdminLinks =
+    hasLoaded(managePermission) && hasLoaded(addProductsPermission);
+  const hasLoadedSuggestedProducts = features.xflow
+    ? hasLoaded(productRecommendations) && hasLoaded(isXFlowEnabled)
+    : true;
 
   return {
-    expandLink: features.enableExpandLink
-      ? getExpandLink(licenseInformation)
-      : '',
     licensedProductLinks: collect(
-      collectProductLinks(cloudId, licenseInformation),
+      collectAvailableProductLinks(cloudId, availableProducts),
       [],
     ),
     suggestedProductLinks: features.xflow
-      ? collect(collectSuggestedLinks(licenseInformation, isXFlowEnabled), [])
+      ? collect(
+          collectSuggestedLinks(
+            userSiteData,
+            productRecommendations,
+            isXFlowEnabled,
+          ),
+          [],
+        )
       : [],
-    fixedLinks: collect(collectFixedProductLinks(), []),
+    fixedLinks: collect(
+      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+      [],
+    ),
     adminLinks: collect(
-      collectAdminLinks(cloudId, managePermission, addProductsPermission),
+      collectAdminLinks(
+        managePermission,
+        addProductsPermission,
+        features.isDiscoverMoreForEveryoneEnabled,
+        features.isEmceeLinkEnabled,
+        product,
+      ),
       [],
     ),
     recentLinks: collect(
-      collectRecentLinks(recentContainers, licenseInformation),
+      collectRecentLinks(recentContainers, userSiteData),
       [],
     ),
-    customLinks: collect(
-      collectCustomLinks(customLinks, licenseInformation),
-      [],
-    ),
+    customLinks: collect(collectCustomLinks(customLinks, userSiteData), []),
 
     showManageLink: collect(collectCanManageLinks(managePermission), false),
-    isLoading: isLoading(licenseInformation),
+    hasLoaded:
+      hasLoadedAvailableProducts &&
+      hasLoadedAdminLinks &&
+      hasLoadedSuggestedProducts,
+    hasLoadedCritical: hasLoadedAvailableProducts,
   };
 }

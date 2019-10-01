@@ -4,15 +4,19 @@ import * as React from 'react';
 import Editor from '../../editor';
 import { EditorView } from 'prosemirror-view';
 import Button from '@atlaskit/button';
-import { insertText, sendKeyToPm } from '@atlaskit/editor-test-helpers';
+import {
+  insertText,
+  sendKeyToPm,
+  analyticsClient,
+} from '@atlaskit/editor-test-helpers';
 import FabricAnalyticsListeners, {
   AnalyticsWebClient,
 } from '@atlaskit/analytics-listeners';
 import {
   GasPurePayload,
   GasPureScreenEventPayload,
-} from '@atlaskit/analytics-gas-types/index';
-import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context/index';
+} from '@atlaskit/analytics-gas-types';
+import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import { EditorAppearance } from '../../types';
 
 describe(name, () => {
@@ -103,12 +107,7 @@ describe(name, () => {
           done();
         };
 
-        return {
-          sendUIEvent: analyticsEventHandler,
-          sendOperationalEvent: analyticsEventHandler,
-          sendTrackEvent: analyticsEventHandler,
-          sendScreenEvent: analyticsEventHandler,
-        };
+        return analyticsClient(analyticsEventHandler);
       };
 
       const appearances: {

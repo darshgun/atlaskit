@@ -10,18 +10,19 @@ import {
   ConfluencePrefetchedResults,
   GlobalSearchPrefetchedResults,
 } from './prefetchResults';
-import RecentSearchClientImpl, {
-  RecentSearchClient,
-} from './RecentSearchClient';
+import {
+  AutocompleteClientImpl,
+  AutocompleteClient,
+} from './AutocompleteClient';
 import memoizeOne from 'memoize-one';
 import deepEqual from 'deep-equal';
 
 export interface SearchClients {
-  recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   confluenceClient: ConfluenceClient;
   jiraClient: JiraClient;
+  autocompleteClient: AutocompleteClient;
 }
 
 export interface Config {
@@ -30,6 +31,7 @@ export interface Config {
   directoryServiceUrl: string;
   confluenceUrl: string;
   jiraUrl: string;
+  autocompleteUrl: string;
 }
 
 const defaultConfig: Config = {
@@ -38,11 +40,13 @@ const defaultConfig: Config = {
   directoryServiceUrl: '/gateway/api/directory',
   confluenceUrl: '/wiki',
   jiraUrl: '',
+  autocompleteUrl: '/gateway/api/ccsearch-autocomplete',
 };
 
 function configureSearchClients(
   cloudId: string,
   partialConfig: Partial<Config>,
+  isUserAnonymous: boolean,
   prefetchedResults?: GlobalSearchPrefetchedResults,
 ): SearchClients {
   const config = {
@@ -59,13 +63,10 @@ function configureSearchClients(
       : undefined;
 
   return {
-    recentSearchClient: new RecentSearchClientImpl(
-      config.activityServiceUrl,
-      cloudId,
-    ),
     crossProductSearchClient: new CachingCrossProductSearchClientImpl(
       config.searchAggregatorServiceUrl,
       cloudId,
+      isUserAnonymous,
       prefetchedResults,
     ),
     peopleSearchClient: new CachingPeopleSearchClient(
@@ -76,7 +77,11 @@ function configureSearchClients(
       config.confluenceUrl,
       confluencePrefetchedResults,
     ),
-    jiraClient: new JiraClientImpl(config.jiraUrl, cloudId),
+    autocompleteClient: new AutocompleteClientImpl(
+      config.autocompleteUrl,
+      cloudId,
+    ),
+    jiraClient: new JiraClientImpl(config.jiraUrl, cloudId, isUserAnonymous),
   };
 }
 

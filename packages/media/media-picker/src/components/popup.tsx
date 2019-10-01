@@ -1,4 +1,4 @@
-import { Context, ContextFactory } from '@atlaskit/media-core';
+import { MediaClient } from '@atlaskit/media-client';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -6,10 +6,10 @@ import * as exenv from 'exenv';
 import App, { AppProxyReactContext } from '../popup/components/app';
 import { cancelUpload } from '../popup/actions/cancelUpload';
 import { showPopup } from '../popup/actions/showPopup';
-import { resetView } from '../popup/actions/resetView';
 import { getFilesInRecents } from '../popup/actions/getFilesInRecents';
 import { State } from '../popup/domain';
 import { hidePopup } from '../popup/actions/hidePopup';
+import { failureErrorLogger } from '../popup/actions/failureErrorLogger';
 import { createStore } from '../store';
 import { UploadComponent } from './component';
 
@@ -30,7 +30,7 @@ export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
   private proxyReactContext?: AppProxyReactContext;
 
   constructor(
-    readonly tenantContext: Context,
+    readonly tenantMediaClient: MediaClient,
     {
       container = exenv.canUseDOM ? document.body : undefined,
       uploadParams, // tenant
@@ -41,14 +41,14 @@ export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
     super();
     this.proxyReactContext = proxyReactContext;
 
-    const { userAuthProvider, cacheSize } = tenantContext.config;
+    const { userAuthProvider, cacheSize } = tenantMediaClient.config;
     if (!userAuthProvider) {
       throw new Error(
         'When using Popup media picker userAuthProvider must be provided in the context',
       );
     }
 
-    const userContext = ContextFactory.create({
+    const userMediaClient = new MediaClient({
       cacheSize,
       authProvider: userAuthProvider,
     });
@@ -57,7 +57,7 @@ export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
       ...uploadParams,
     };
 
-    this.store = createStore(this, tenantContext, userContext, {
+    this.store = createStore(this, tenantMediaClient, userMediaClient, {
       proxyReactContext,
       singleSelect,
       uploadParams: tenantUploadParams,
@@ -79,7 +79,6 @@ export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
   public async show(): Promise<void> {
     const { dispatch } = this.store;
 
-    dispatch(resetView());
     dispatch(getFilesInRecents());
     dispatch(showPopup());
   }
@@ -100,8 +99,19 @@ export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
     if (!this.container) {
       return;
     }
-    unmountComponentAtNode(this.container);
-    this.container.remove();
+
+    try {
+      unmountComponentAtNode(this.container);
+      this.container.remove();
+    } catch (error) {
+      const { dispatch } = this.store;
+      dispatch(
+        failureErrorLogger({
+          error,
+          info: '`ChildNode#remove()` polyfill is not available in client',
+        }),
+      );
+    }
   }
 
   public hide(): void {

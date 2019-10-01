@@ -1,15 +1,23 @@
 /* eslint-disable */
-import 'whatwg-fetch';
+import { toBeInTheDocument, toHaveFocus } from '@testing-library/jest-dom';
 import { XMLHttpRequest } from 'xmlhttprequest';
 import 'jest-styled-components';
 import { toMatchSnapshot } from 'jest-snapshot';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
-import { createSerializer } from 'jest-emotion';
+import { createSerializer, matchers } from 'jest-emotion';
 import 'jest-localstorage-mock';
 import ScreenshotReporter from './build/visual-regression/utils/screenshotReporter';
+import { cleanup } from '@testing-library/react';
+import { NodeSelection } from 'prosemirror-state';
+import { CellSelection } from 'prosemirror-tables';
+
+// override timeout
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
 
 // https://product-fabric.atlassian.net/browse/BUILDTOOLS-176
 global.XMLHttpRequest = XMLHttpRequest;
+global.fetch = require('jest-fetch-mock');
+global.fetchMock = global.fetch;
 
 let consoleError;
 let consoleWarn;
@@ -30,6 +38,15 @@ process.on('unhandledRejection', reason => {
   console.log('REJECTION', reason);
 });
 
+// We need to ensure that each test has at least one assertion.
+// Currently, the integration tests are using a custom matcher and it is not considered as an assertion.
+// `expect.hasAssertions()` will only run for Visual Regression And Unit tests.
+if (!process.env.INTEGRATION_TESTS) {
+  beforeEach(() => {
+    expect.hasAssertions();
+  });
+}
+
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
   the `expect` object can be applied here.
@@ -37,6 +54,15 @@ process.on('unhandledRejection', reason => {
 */
 const pmModel = require('./node_modules/prosemirror-model');
 const diff = require('./node_modules/jest-diff');
+
+/**
+ * We're checking if fetch is not available in the window, in case we
+ * don't have, we need to make sure that `global` and `window`
+ * are aligned with the same mock
+ */
+if (typeof window !== 'undefined' && !('fetch' in window)) {
+  window.fetch = global.fetch;
+}
 
 /**
  * Polyfill DOMElement.innerText because JSDOM lacks support for it.
@@ -156,6 +182,13 @@ const removeIdsFromDoc = transformDoc(node => {
       );
     }
 
+    if (node.attrs.occurrenceKey) {
+      replacedNode.attrs.occurrenceKey = node.attrs.occurrenceKey.replace(
+        /([a-z0-9\-]+)(:.*)?$/,
+        '12345678-9abc-def0-1234-56789abcdef0$2',
+      );
+    }
+
     return replacedNode;
   }
   if (hasLocalId(node.type)) {
@@ -170,74 +203,140 @@ const removeIdsFromDoc = transformDoc(node => {
   return node;
 });
 
+const toEqualDocument = (equals, utils, expand) => (actual, expected) => {
+  // Because schema is created dynamically, expected value is a function (schema) => PMNode;
+  // That's why this magic is necessary. It simplifies writing assertions, so
+  // instead of expect(doc).toEqualDocument(doc(p())(schema)) we can just do:
+  // expect(doc).toEqualDocument(doc(p())).
+  //
+  // Also it fixes issues that happens sometimes when actual schema and expected schema
+  // are different objects, making this case impossible by always using actual schema to create expected node.
+  expected =
+    typeof expected === 'function' && actual.type && actual.type.schema
+      ? expected(actual.type.schema)
+      : expected;
+
+  if (
+    !(expected instanceof pmModel.Node) ||
+    !(actual instanceof pmModel.Node)
+  ) {
+    return {
+      pass: false,
+      actual,
+      expected,
+      name: 'toEqualDocument',
+      message: 'Expected both values to be instance of prosemirror-model Node.',
+    };
+  }
+
+  if (expected.type.schema !== actual.type.schema) {
+    return {
+      pass: false,
+      actual,
+      expected,
+      name: 'toEqualDocument',
+      message: 'Expected both values to be using the same schema.',
+    };
+  }
+
+  const pass = equals(actual.toJSON(), expected.toJSON());
+  const message = pass
+    ? () =>
+        `${utils.matcherHint('.not.toEqualDocument')}\n\n` +
+        `Expected JSON value of document to not equal:\n  ${utils.printExpected(
+          expected,
+        )}\n` +
+        `Actual JSON:\n  ${utils.printReceived(actual)}`
+    : () => {
+        const diffString = diff(expected, actual, {
+          expand: expand,
+        });
+        return (
+          `${utils.matcherHint('.toEqualDocument')}\n\n` +
+          `Expected JSON value of document to equal:\n${utils.printExpected(
+            expected,
+          )}\n` +
+          `Actual JSON:\n  ${utils.printReceived(actual)}` +
+          `${diffString ? `\n\nDifference:\n\n${diffString}` : ''}`
+        );
+      };
+
+  return {
+    pass,
+    actual,
+    expected,
+    message,
+    name: 'toEqualDocument',
+  };
+};
+
 /* eslint-disable no-undef */
 expect.extend({
   toEqualDocument(actual, expected) {
-    // Because schema is created dynamically, expected value is a function (schema) => PMNode;
-    // That's why this magic is necessary. It simplifies writing assertions, so
-    // instead of expect(doc).toEqualDocument(doc(p())(schema)) we can just do:
-    // expect(doc).toEqualDocument(doc(p())).
-    //
-    // Also it fixes issues that happens sometimes when actual schema and expected schema
-    // are different objects, making this case impossible by always using actual schema to create expected node.
-    expected =
-      typeof expected === 'function' && actual.type && actual.type.schema
-        ? expected(actual.type.schema)
-        : expected;
-
-    if (
-      !(expected instanceof pmModel.Node) ||
-      !(actual instanceof pmModel.Node)
-    ) {
-      return {
-        pass: false,
-        actual,
-        expected,
-        name: 'toEqualDocument',
-        message:
-          'Expected both values to be instance of prosemirror-model Node.',
-      };
-    }
-
-    if (expected.type.schema !== actual.type.schema) {
-      return {
-        pass: false,
-        actual,
-        expected,
-        name: 'toEqualDocument',
-        message: 'Expected both values to be using the same schema.',
-      };
-    }
-
-    const pass = this.equals(actual.toJSON(), expected.toJSON());
-    const message = pass
-      ? () =>
-          `${this.utils.matcherHint('.not.toEqualDocument')}\n\n` +
-          `Expected JSON value of document to not equal:\n  ${this.utils.printExpected(
-            expected,
-          )}\n` +
-          `Actual JSON:\n  ${this.utils.printReceived(actual)}`
-      : () => {
-          const diffString = diff(expected, actual, {
-            expand: this.expand,
-          });
-          return (
-            `${this.utils.matcherHint('.toEqualDocument')}\n\n` +
-            `Expected JSON value of document to equal:\n${this.utils.printExpected(
-              expected,
-            )}\n` +
-            `Actual JSON:\n  ${this.utils.printReceived(actual)}` +
-            `${diffString ? `\n\nDifference:\n\n${diffString}` : ''}`
-          );
-        };
-
-    return {
-      pass,
+    return toEqualDocument(this.equals, this.utils, this.expand)(
       actual,
       expected,
-      message,
-      name: 'toEqualDocument',
+    );
+  },
+
+  toEqualDocumentAndSelection(actual, expected) {
+    const { doc: actualDoc, selection: actualSelection } = actual;
+    const docComparison = toEqualDocument(this.equals, this.utils, this.expand)(
+      actualDoc,
+      expected,
+    );
+    if (!docComparison.pass) {
+      return docComparison;
+    }
+
+    expected =
+      typeof expected === 'function' && actualDoc.type && actualDoc.type.schema
+        ? expected(actualDoc.type.schema)
+        : expected;
+
+    const fail = {
+      pass: false,
+      actual,
+      expected,
+      name: 'toEqualDocumentAndSelection',
+      message: () => 'Expected specified selections to match in both values.',
     };
+
+    if (expected.refs) {
+      const refConditions = {
+        '<': (position, selection) => position === selection.$from.pos,
+        '>': (position, selection) => position === selection.$to.pos,
+        '<>': (position, selection) =>
+          position === selection.$from.pos && position == selection.$to.pos,
+        '<node>': (position, selection) =>
+          selection instanceof NodeSelection &&
+          position === selection.$from.pos,
+        // The | denotes the gap cursor's side, based on the node on the side of the |.
+        '<|gap>': (position, selection) =>
+          // Using literal values from constructor as unable to import type from editor-core
+          // Some tests use mock packages which will conflict with jestFrameworkSetup.js
+          selection.constructor.name === 'GapCursorSelection' &&
+          selection.side === 'right' &&
+          position === selection.$from.pos,
+        '<gap|>': (position, selection) =>
+          selection.constructor.name === 'GapCursorSelection' &&
+          selection.side === 'left' &&
+          position === selection.$from.pos,
+      };
+
+      if (
+        !Object.keys(refConditions).every(key => {
+          if (key in expected.refs) {
+            return refConditions[key](expected.refs[key], actualSelection);
+          }
+          return true;
+        })
+      ) {
+        return fail;
+      }
+    }
+
+    return docComparison;
   },
 
   /**
@@ -318,6 +417,9 @@ expect.extend({
     this.currentTestName = oldTestName;
     return ret;
   },
+  toHaveStyleDeclaration: matchers.toHaveStyleRule,
+  toBeInTheDocument,
+  toHaveFocus,
 });
 
 // Copied from react-beautiful-dnd/test/setup.js
@@ -359,7 +461,6 @@ if (process.env.CI) {
     console.warn = jest.fn();
     console.log = jest.fn();
   });
-
   afterEach(() => {
     console.error = consoleError;
     console.warn = consoleWarn;
@@ -398,3 +499,6 @@ if (process.env.VISUAL_REGRESSION) {
 
   expect.extend({ toMatchProdImageSnapshot });
 }
+
+// unmount any components mounted with react-testing-library
+afterEach(cleanup);

@@ -12,7 +12,6 @@ import {
   PluginState,
   pluginKey,
 } from '../../../../../plugins/collab-edit/plugin';
-import collabEdit from '../../../../../plugins/collab-edit';
 import { collabEditProvider } from '../../../../../../example-helpers/mock-collab-provider';
 
 import Avatars from '../../../../../plugins/collab-edit/ui/avatars';
@@ -28,7 +27,10 @@ describe('collab-edit | Avatars', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [collabEdit()],
+      editorProps: {
+        collabEdit: {},
+        mentionProvider: new Promise(() => {}),
+      },
       pluginKey,
       providerFactory,
     });

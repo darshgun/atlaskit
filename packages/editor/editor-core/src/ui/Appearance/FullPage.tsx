@@ -14,11 +14,15 @@ import PluginSlot from '../PluginSlot';
 import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
-import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
+import {
+  tableFullPageEditorStyles,
+  tableMarginFullWidthMode,
+} from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
 import WidthEmitter from '../WidthEmitter';
+import { LAYOUT_OFFSET } from '../../plugins/layout/styles';
 
 const SWOOP_ANIMATION = '0.5s cubic-bezier(.15,1,.3,1)';
 const TOTAL_PADDING = akEditorGutterPadding * 2;
@@ -45,20 +49,31 @@ ScrollContainer.displayName = 'ScrollContainer';
 
 const ContentArea = styled.div`
   line-height: 24px;
-  height: 100%;
-  width: 100%;
   padding-top: 50px;
+  padding-bottom: 55px;
+  height: calc(
+    100% - 105px
+  ); /* fill the viewport: 100% - (padding top & bottom) */
+  width: 100%;
   flex-direction: column;
   flex-grow: 1;
-  padding-bottom: 55px;
+
   max-width: ${({ theme, fullWidthMode }: any) =>
     (fullWidthMode ? akEditorFullWidthLayoutWidth : theme.layoutMaxWidth) +
     TOTAL_PADDING}px;
   transition: margin-left ${SWOOP_ANIMATION}, max-width ${SWOOP_ANIMATION};
   margin-left: ${({ theme, fullWidthMode }: any) =>
-    fullWidthMode
-      ? 0
-      : `calc(50% - ${(theme.layoutMaxWidth + TOTAL_PADDING) / 2}px)`};
+    !fullWidthMode &&
+    `calc(50% - ${(theme.layoutMaxWidth + TOTAL_PADDING) / 2}px)`};
+
+  ${({ fullWidthMode }) =>
+    fullWidthMode &&
+    `
+    @media (min-width: ${akEditorFullWidthLayoutWidth + TOTAL_PADDING}px) {
+      margin-left: ${`calc(50% - ${(akEditorFullWidthLayoutWidth +
+        TOTAL_PADDING) /
+        2}px)`};
+  }`}
 
   ${({ theme }) => `
     @media (max-width: ${theme.layoutMaxWidth + TOTAL_PADDING}px) {
@@ -105,12 +120,33 @@ const ContentArea = styled.div`
     }
 
     /* Prevent horizontal scroll on page in full width mode */
-    .pm-table-container,
-    .code-block,
-    .extension-container {
-      max-width: ${({ containerWidth }) =>
-        containerWidth ? `${containerWidth - TOTAL_PADDING}px` : 'inherit'};
-    }
+    ${({ containerWidth }) => {
+      if (!containerWidth) {
+        // initially hide until we have a containerWidth and can properly size them,
+        // otherwise they can cause the editor width to extend which is non-recoverable
+        return `
+          .pm-table-container,
+          .code-block,
+          .extension-container {
+            display: none;
+          }
+        `;
+      }
+
+      return `
+        .pm-table-container,
+        .code-block,
+        .extension-container {
+          max-width: ${containerWidth -
+            TOTAL_PADDING -
+            tableMarginFullWidthMode * 2}px;
+        }
+
+        [data-layout-section] {
+          max-width: ${containerWidth - TOTAL_PADDING + LAYOUT_OFFSET * 2}px;
+        }
+      `;
+    }}
   }
 `;
 ContentArea.displayName = 'ContentArea';
@@ -233,6 +269,15 @@ export default class Editor extends React.Component<
     window.addEventListener('resize', this.handleResize, false);
   }
 
+  componentDidUpdate() {
+    if (
+      this.scrollContainer &&
+      this.scrollContainer.clientWidth !== this.state.containerWidth
+    ) {
+      this.updateContainerWidth();
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
 
@@ -262,6 +307,7 @@ export default class Editor extends React.Component<
       disabled,
       collabEdit,
       dispatchAnalyticsEvent,
+      allowAnnotation,
     } = this.props;
 
     const { showKeyline, containerWidth } = this.state;
@@ -299,6 +345,7 @@ export default class Editor extends React.Component<
         </MainToolbar>
         <ScrollContainer
           innerRef={this.scrollContainerRef}
+          allowAnnotation={allowAnnotation}
           className="fabric-editor-popup-scroll-parent"
         >
           <ClickAreaBlock editorView={editorView}>

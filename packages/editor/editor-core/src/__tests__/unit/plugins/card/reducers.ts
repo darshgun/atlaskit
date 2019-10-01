@@ -1,5 +1,4 @@
 import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
-import cardPlugin from '../../../../plugins/card';
 import {
   doc,
   createEditorFactory,
@@ -19,7 +18,9 @@ describe('card', () => {
   const editor = (doc: any) => {
     return createEditor({
       doc,
-      editorPlugins: [cardPlugin],
+      editorProps: {
+        UNSAFE_cards: {},
+      },
       pluginKey,
     });
   };
@@ -34,9 +35,11 @@ describe('card', () => {
     describe('#state.init', () => {
       it('creates an empty state', () => {
         expect(initialState).toEqual({
+          cards: [],
           requests: [],
           provider: null,
-        });
+          showLinkingToolbar: false,
+        } as CardPluginState);
       });
     });
 
@@ -50,8 +53,10 @@ describe('card', () => {
               requests: [item],
             }),
           ).toEqual({
+            cards: [],
             requests: [item],
             provider: null,
+            showLinkingToolbar: false,
           } as CardPluginState);
         });
 
@@ -76,7 +81,7 @@ describe('card', () => {
         });
       });
 
-      it('should sets provider', () => {
+      it('should set provider', () => {
         const expectedState = expect.objectContaining({
           provider: cardProvider,
         });

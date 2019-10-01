@@ -44,6 +44,7 @@ export interface Props {
   mentions: MentionDescription[];
   resourceError?: Error;
   onSelection?: OnMentionEvent;
+  initialHighlightElement?: React.ReactElement | null;
 }
 
 export interface State {
@@ -66,7 +67,7 @@ export default class MentionList extends React.PureComponent<Props, State> {
     this.setDefaultSelectionState();
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // adjust selection
     const { mentions } = nextProps;
     const { selectedKey } = this.state;
@@ -205,6 +206,7 @@ export default class MentionList extends React.PureComponent<Props, State> {
 
       return (
         <div>
+          {this.props.initialHighlightElement}
           {mentions.map((mention, idx) => {
             const key = mention.id;
             const item = (

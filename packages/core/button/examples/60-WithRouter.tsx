@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Link, MemoryRouter } from 'react-router-dom';
 import Button from '../src';
 
@@ -12,7 +12,7 @@ const ButtonWithRouter = () => (
           HTMLElement,
           React.AllHTMLAttributes<HTMLElement>
         >(({ href = '', children, ...rest }, ref: any) => (
-          <Link {...rest} to={href} innerRef={ref}>
+          <Link {...rest as any} to={href} innerRef={ref}>
             {children}
           </Link>
         ))}

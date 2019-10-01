@@ -9,7 +9,8 @@ import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { messages } from '@atlaskit/media-ui';
-import { requestUnlinkCloudAccount, startAuth } from '../../actions';
+import { startAuth } from '../../actions/startAuth';
+import { requestUnlinkCloudAccount } from '../../actions/unlinkCloudAccount';
 import { changeCloudAccountFolder } from '../../actions/changeCloudAccountFolder';
 import { changeAccount } from '../../actions/changeAccount';
 import {
@@ -75,14 +76,23 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
     availableAccounts: [],
   };
 
+  private mounted = false;
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   async componentDidMount() {
+    this.mounted = true;
     const { accounts, service } = this.props;
     const availableAccounts = (await accounts).filter(
       account => account.type === service.name,
     );
-    this.setState({
-      availableAccounts,
-    });
+    if (this.mounted) {
+      this.setState({
+        availableAccounts,
+      });
+    }
   }
 
   async componentDidUpdate(prevProps: NavigationProps) {
@@ -93,13 +103,15 @@ export class Navigation extends Component<NavigationProps, NavigationState> {
         account => account.type === service.name,
       );
 
-      this.setState({
-        availableAccounts,
-      });
+      if (this.mounted) {
+        this.setState({
+          availableAccounts,
+        });
+      }
     }
   }
 
-  render(): JSX.Element {
+  render() {
     const { service, path } = this.props;
     const breadcrumbs = this.generateBreadcrumbs(service, path);
     const accountsDropdown = this.getAccountsDropdown();

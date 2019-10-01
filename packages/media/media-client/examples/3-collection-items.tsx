@@ -2,16 +2,14 @@ import * as React from 'react';
 import { Component } from 'react';
 import { createUserMediaClient } from '@atlaskit/media-test-helpers';
 import { Subscription } from 'rxjs/Subscription';
-import { FileIdentifier } from '..';
 import { Card } from '@atlaskit/media-card';
 import Button from '@atlaskit/button';
 import { CardsWrapper, Header } from '../example-helpers/styled';
-import { ContextFactory } from '@atlaskit/media-core';
+import { FileIdentifier, RECENTS_COLLECTION } from '../src';
 
 const mediaClient = createUserMediaClient();
-const context = ContextFactory.create(mediaClient.config);
 
-const collectionName = 'recents';
+const collectionName = RECENTS_COLLECTION;
 export interface ExampleState {
   fileIds: string[];
 }
@@ -44,7 +42,7 @@ class Example extends Component<{}, ExampleState> {
 
       return (
         <Card
-          context={context}
+          mediaClientConfig={mediaClient.config}
           key={id}
           identifier={identifier}
           dimensions={{

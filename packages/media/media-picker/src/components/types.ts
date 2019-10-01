@@ -1,10 +1,9 @@
 import { LocalUploadComponent } from './localUpload';
-import { Context } from '@atlaskit/media-core';
+import { MediaClient } from '@atlaskit/media-client';
 import { AppProxyReactContext } from '../popup/components/app';
-import { Dropzone, UploadEventPayloadMap, UploadParams } from '..';
+import { UploadEventPayloadMap, UploadParams } from '..';
 import { UploadComponent, UploadEventEmitter } from './component';
 import { EventEmitter } from '../util/eventEmitter';
-import { InjectedIntl } from 'react-intl';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams; // This is tenant upload params
@@ -23,24 +22,7 @@ export interface BrowserConfig extends LocalUploadConfig {
   readonly fileExtensions?: Array<string>;
 }
 
-export interface BrowserConstructor {
-  new (context: Context, browserConfig: BrowserConfig): Browser;
-}
-
-export interface Browser extends LocalUploadComponent {
-  browse(): void;
-  teardown(): void;
-}
-
 export interface ClipboardConfig extends LocalUploadConfig {}
-
-export interface ClipboardConstructor {
-  new (context: Context, clipboardConfig: ClipboardConfig): Clipboard;
-}
-export interface Clipboard extends LocalUploadComponent {
-  activate(): Promise<void>;
-  deactivate(): void;
-}
 
 export interface PopupConfig extends LocalUploadConfig {
   readonly container?: HTMLElement;
@@ -49,7 +31,7 @@ export interface PopupConfig extends LocalUploadConfig {
 }
 
 export interface PopupConstructor {
-  new (context: Context, config: PopupConfig): Popup;
+  new (mediaClient: MediaClient, config: PopupConfig): Popup;
 }
 
 export type PopupUploadEventPayloadMap = UploadEventPayloadMap & {
@@ -70,17 +52,9 @@ export interface Popup
   emitClosed(): void;
 }
 
-export interface DropzoneReactContext {
-  intl?: InjectedIntl;
-}
 export interface DropzoneConfig extends LocalUploadConfig {
   container?: HTMLElement;
   headless?: boolean;
-  proxyReactContext?: DropzoneReactContext;
-}
-
-export interface DropzoneConstructor {
-  new (context: Context, dropzoneConfig: DropzoneConfig): Dropzone;
 }
 
 export interface DropzoneDragEnterEventPayload {
@@ -96,9 +70,3 @@ export type DropzoneUploadEventPayloadMap = UploadEventPayloadMap & {
   readonly 'drag-enter': DropzoneDragEnterEventPayload;
   readonly 'drag-leave': DropzoneDragLeaveEventPayload;
 };
-
-export interface Dropzone
-  extends LocalUploadComponent<DropzoneUploadEventPayloadMap> {
-  activate(): Promise<void>;
-  deactivate(): void;
-}

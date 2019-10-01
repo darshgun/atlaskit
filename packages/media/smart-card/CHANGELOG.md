@@ -1,5 +1,319 @@
 # @atlaskit/smart-card
 
+## 12.5.7
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 12.5.6
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/form@6.2.3
+  - @atlaskit/radio@3.0.18
+  - @atlaskit/media-ui@11.6.7
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
+## 12.5.5
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
+## 12.5.4
+
+### Patch Changes
+
+- [patch][b8fd0f0847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8fd0f0847):
+
+  hot-88372: fix css props breaking in layoutNG.
+
+## 12.5.3
+
+### Patch Changes
+
+- [patch][07dd73fa12](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07dd73fa12):
+
+  FM-2240 Fix issue where smart links would cause hybrid renderer to crash in Android
+
+## 12.5.2
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 12.5.1
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 12.5.0
+
+### Minor Changes
+
+- [minor][bdee736f14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdee736f14):
+
+  ED-7175: unify smart link and hyperlink toolbars
+
+  Also updates the toDOM and parseDOM on ADF nodes, making `url` optional.
+
+  Smart cards can now optionally be passed an onResolve callback, of the shape:
+
+      onResolve?: (data: { url?: string; title?: string }) => void;
+
+  This gets fired when the view resolves a smart card from JSON-LD, either via the client or the `data` prop.
+
+### Patch Changes
+
+- [patch][32a88ae6b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32a88ae6b7):
+
+  SL-365: link target for smart link should come from props rather than JSON-LD
+
+  This also reduces the possibility of XSS attacks. Implementors should still verify they're not passing invalid URLs to the `smart-card` components.- [patch][7f1bab3c93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f1bab3c93):
+
+  SL-359: pass onClick props to pending and error states
+
+## 12.4.4
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 12.4.3
+
+- Updated dependencies [84887b940c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84887b940c):
+  - @atlaskit/form@6.1.7
+  - @atlaskit/icon@19.0.2
+  - @atlaskit/textfield@3.0.0
+
+## 12.4.2
+
+### Patch Changes
+
+- [patch][77b09e36eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/77b09e36eb):
+
+  fix: provide the correct url for the edge proxy to api-private.atlassian.com
+
+## 12.4.1
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 12.4.0
+
+### Minor Changes
+
+- [minor][b19bf68c22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b19bf68c22):
+
+  fix: when environment is not provided then default to using the edge proxy instead
+
+## 12.3.5
+
+### Patch Changes
+
+- [patch][6695dbd447](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6695dbd447):
+
+  fix: ensure smartlinks render a not found view when the link resource isn't found
+
+## 12.3.4
+
+### Patch Changes
+
+- [patch][19a83a0c7e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19a83a0c7e):
+
+  fixed issues with cards not updating after authentication
+
+## 12.3.3
+
+### Patch Changes
+
+- [patch][8903a232f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8903a232f7):
+
+  fix: fallback to blue links when resolve is unsupported
+
+## 12.3.2
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 12.3.1
+
+### Patch Changes
+
+- [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
+
+  bugfix, fixes missing version.json file
+
+## 12.3.0
+
+### Minor Changes
+
+- [minor][602ab89822](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/602ab89822):
+
+  SL-345 add property for disabling auth flow of Smart Links (for Mobile).
+
+## 12.2.8
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 12.2.7
+
+### Patch Changes
+
+- [patch][b346bb2963](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b346bb2963):
+
+  added support for batching of link resolve requests in Smart Card client.
+
+## 12.2.6
+
+### Patch Changes
+
+- [patch][c95713b660](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c95713b660):
+
+  fix lazy rendering offset to be more portable between devices
+
+## 12.2.5
+
+- Updated dependencies [87a2638655](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a2638655):
+  - @atlaskit/button@13.0.10
+  - @atlaskit/form@6.1.2
+  - @atlaskit/radio@3.0.7
+  - @atlaskit/media-ui@11.4.2
+  - @atlaskit/checkbox@9.0.0
+
+## 12.2.4
+
+### Patch Changes
+
+- [patch][aed5ccba18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed5ccba18):
+
+  SL-343 fix behaviour when using middle-click or clicking inside of iframes for inline Smart Links.
+
+## 12.2.3
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/button@13.0.9
+  - @atlaskit/checkbox@8.0.5
+  - @atlaskit/form@6.1.1
+  - @atlaskit/inline-message@10.0.7
+  - @atlaskit/radio@3.0.6
+  - @atlaskit/table-tree@7.0.6
+  - @atlaskit/textfield@2.0.3
+  - @atlaskit/media-ui@11.4.1
+  - @atlaskit/icon@19.0.0
+
+## 12.2.2
+
+### Patch Changes
+
+- [patch][4258086c0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4258086c0d):
+
+  fix: some smartlinks with sourcecode artifacts were being incorrectly rendered
+
+## 12.2.1
+
+### Patch Changes
+
+- [patch][b5eb352152](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5eb352152):
+
+  SL-336: fix page crash when state is undefined.
+
+## 12.2.0
+
+### Minor Changes
+
+- [minor][09f094a7a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09f094a7a2):
+
+  SL-259: bump react-lazily-render, remove react-lazily-render-scroll-parent.
+
+## 12.1.1
+
+### Patch Changes
+
+- [patch][8e50d00fc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e50d00fc6):
+
+  SL-331: fix edit handler for smart-card.
+
+## 12.1.0
+
+### Minor Changes
+
+- [minor][86bf524679](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86bf524679):
+
+  ED-7117, ED-7087: Fix copy pasting smart links out of editor. Fallback to HTML anchor tag if errors occur during rendering (e.g. no provider found).
+
+## 12.0.0
+
+### Major Changes
+
+- [major][393fb6acd2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/393fb6acd2):
+
+  refactor @atlaskit/smart-card front-end: simplification. BREAKING CHANGE: Client no longer accepts configuration options as first argument; deprecated in favour of new state management layer.
+
+## 11.1.6
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/button@13.0.8
+  - @atlaskit/checkbox@8.0.2
+  - @atlaskit/form@6.0.5
+  - @atlaskit/inline-message@10.0.3
+  - @atlaskit/radio@3.0.3
+  - @atlaskit/table-tree@7.0.4
+  - @atlaskit/textfield@2.0.1
+  - @atlaskit/media-ui@11.2.8
+  - @atlaskit/icon@18.0.0
+
 ## 11.1.5
 
 ### Patch Changes

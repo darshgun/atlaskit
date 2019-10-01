@@ -7,6 +7,8 @@ import {
   mountWithIntl,
   createAnalyticsEventMock,
 } from '@atlaskit/editor-test-helpers';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { ReactWrapper } from 'enzyme';
 
 import {
   TextColorPluginState,
@@ -17,11 +19,8 @@ import ToolbarButton from '../../../../../ui/ToolbarButton';
 import ToolbarTextColor, {
   Props as ToolbarTextColorProps,
 } from '../../../../../plugins/text-color/ui/ToolbarTextColor';
-import textColorPlugin from '../../../../../plugins/text-color';
-import codeBlockPlugin from '../../../../../plugins/code-block';
-import { ReactWrapper } from 'enzyme';
 import { AnalyticsHandler } from '../../../../../analytics';
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { PaletteColor } from '../../../../../ui/ColorPalette/Palettes/type';
 
 /**
  * Simulate a click color
@@ -52,29 +51,22 @@ function clickColor(
  * @param {number} position
  * @returns Color information
  */
-function getColorFromPalette(palette: Map<string, string>, position: number) {
-  if (palette.size === 0 || palette.size < position) {
+function getColorFromPalette(palette: PaletteColor[], position: number) {
+  if (palette.length === 0 || palette.length < position) {
     return null;
   }
 
-  const iter = palette.entries();
-  let counter = -1;
-  let color: IteratorResult<[string, string]>;
-  do {
-    color = iter.next();
-    counter = counter + 1;
-  } while (counter !== position && !color.done);
+  const { value, label } = palette[position];
 
-  const [hexCode, label] = color.value;
   return {
-    hexCode,
+    hexCode: value,
     label,
   };
 }
 
 describe('ToolbarTextColor', () => {
   const createEditor = createEditorFactory<TextColorPluginState>();
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEventInterface>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
   let analyticsHandler: jest.MockInstance<AnalyticsHandler>;
   let toolbarTextColor: ReactWrapper<ToolbarTextColorProps>;
 
@@ -83,10 +75,11 @@ describe('ToolbarTextColor', () => {
     analyticsHandler = jest.fn();
     return createEditor({
       doc,
-      editorPlugins: [textColorPlugin, codeBlockPlugin()],
       editorProps: {
         analyticsHandler: analyticsHandler as any,
         allowAnalyticsGASV3: true,
+        allowTextColor: true,
+        allowCodeBlocks: true,
       },
       pluginKey,
       createAnalyticsEvent: createAnalyticsEvent as any,
@@ -130,11 +123,21 @@ describe('ToolbarTextColor', () => {
       expect(toolbarTextColor.state('isOpen')).toBe(false);
     });
 
+    it('should make isOpen false when toolbar textColor button is clicked again', () => {
+      toolbarTextColor.find('button').simulate('click');
+      toolbarTextColor
+        .find('button')
+        .at(0)
+        .simulate('click');
+
+      expect(toolbarTextColor.state('isOpen')).toBe(false);
+    });
+
     it('should have Color components as much as size of color palette', () => {
       toolbarTextColor.find('button').simulate('click');
 
       expect(toolbarTextColor.find(Color).length).toEqual(
-        pluginState.palette.size,
+        pluginState.palette.length,
       );
     });
 

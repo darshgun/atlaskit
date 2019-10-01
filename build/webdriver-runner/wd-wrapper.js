@@ -53,10 +53,55 @@ export default class Page {
     return this.browser.url(url);
   }
 
+  async moveTo(selector, x, y) {
+    if (this.isBrowser('Safari')) {
+      const bounds = await this.getBoundingRect(selector);
+      await this.SAFARI_moveTo([{ x, y }]);
+    } else {
+      const elem = await this.browser.$(selector);
+      elem.moveTo(x, y);
+      await this.browser.pause(500);
+    }
+  }
+
   async hover(selector) {
-    const elem = await this.browser.$(selector);
-    elem.moveTo();
-    await this.browser.pause(500);
+    if (this.isBrowser('Safari')) {
+      const bounds = await this.getBoundingRect(selector);
+
+      await this.SAFARI_moveTo([{ x: bounds.left, y: bounds.top }]);
+    } else {
+      const elem = await this.browser.$(selector);
+      await elem.moveTo(1, 1);
+      return await this.browser.pause(500);
+    }
+  }
+
+  // TODO: Remove it after the fix been merged on webdriver.io:
+  // https://github.com/webdriverio/webdriverio/pull/4330
+  async SAFARI_moveTo(coords) {
+    const actions = coords.map(set => ({
+      type: 'pointerMove',
+      duration: 0,
+      x: set.x,
+      y: set.y,
+    }));
+
+    return this.browser.performActions([
+      {
+        type: 'pointer',
+        id: 'finger1',
+        parameters: { pointerType: 'mouse' },
+        actions,
+      },
+    ]);
+  }
+
+  async getBoundingRect(selector) {
+    return await this.browser.execute(selector => {
+      const element = document.querySelector(selector);
+      const { x, y, width, height } = element.getBoundingClientRect();
+      return { left: x, top: y, width, height, id: element.id };
+    }, selector);
   }
 
   async title() {
@@ -138,6 +183,9 @@ export default class Page {
     const elem = await this.browser.$(selector);
     return elem.getLocation(selector, property);
   }
+  getAlertText() {
+    return this.browser.getAlertText();
+  }
 
   url() {
     return this.browser.getUrl();
@@ -146,6 +194,10 @@ export default class Page {
   // Protocol
   goBack() {
     return this.browser.back();
+  }
+
+  acceptAlert() {
+    return this.browser.acceptAlert();
   }
 
   close() {
@@ -157,8 +209,8 @@ export default class Page {
     if (this.isBrowser('chrome')) {
       const logs = await this.browser.getLogs('browser');
       if (logs.length) {
-        logs.forEach(val => {
-          assert.notStrictEqual(val.level, 'SEVERE', `Error : ${val.message}`);
+        logs.forEach(log => {
+          assert.notStrictEqual(log.level, 'SEVERE', `Error : ${log.message}`);
         });
       }
     }
@@ -180,9 +232,14 @@ export default class Page {
   //will need to have wrapper for these once moved to puppeteer
   async getText(selector) {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
-    // for puppteer
+    // for puppeteer
     const elem = await this.browser.$(selector);
     return elem.getText();
+  }
+
+  async getValue(selector) {
+    const elem = await this.browser.$(selector);
+    return elem.getValue();
   }
 
   async execute(func, ...args) {
@@ -229,6 +286,11 @@ export default class Page {
 
   async isVisible(selector) {
     return this.waitFor(selector);
+  }
+
+  async isSelected(selector) {
+    const elem = await this.browser.$(selector);
+    return elem.isSelected();
   }
 
   async hasFocus(selector) {

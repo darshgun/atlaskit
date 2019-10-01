@@ -6,6 +6,7 @@
  */
 // Dutch
 export default {
+  'fabric.mention.unknow.user.error': 'Onbekende gebruiker ({userId})',
   'fabric.mention.noAccess.warning':
     '{name} ontvangt geen melding omdat hij/zij geen toegang heeft',
   'fabric.mention.noAccess.label': 'Geen toegang',
@@ -17,7 +18,17 @@ export default {
   'fabric.mention.error.differentText':
     'Probeer het opnieuw met een andere tekst',
   'fabric.elements.mentions.team.member.count':
-    '{0, plural, one{{count} lid{includes, select, true {, inclusief jezelf} other {}}} other{{count} leden{includes, select, true {, inclusief jezelf} other {}}}}',
-  'fabric.elements.mentions.team.member.50plus':
-    '50+ leden{includes, select, true {, inclusief jezelf} other {}}',
+    '{0, plural, one{1 lid} other{{0} leden}}',
+  'fabric.elements.mentions.team.member.count.including.you':
+    '{0, plural, one{{0} leden, inclusief jezelf} other{{0} leden, inclusief jezelf}}',
+  'fabric.elements.mentions.team.member.50plus': '50+ leden',
+  'fabric.elements.mentions.team.member.50plus.including.you':
+    '50+ leden, inclusief jezelf',
+  'fabric.elements.mentions.team.mention.highlight.title': 'Je team noemen',
+  'fabric.elements.mentions.team.mention.highlight.description':
+    'Zorg ervoor dat iedereen met één klik op de pagina terechtkomt. Heb je geen team?',
+  'fabric.elements.mentions.team.mention.highlight.description.link':
+    'Ga aan de slag.',
+  'fabric.elements.mentions.team.meantion.highlight.close.button.tooltip':
+    'Sluiten',
 };

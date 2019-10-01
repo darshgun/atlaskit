@@ -53,7 +53,9 @@ const quickInsertItem = (
   ) as Transaction;
 };
 
-const tasksAndDecisionsPlugin: EditorPlugin = {
+const tasksAndDecisionsPlugin = (): EditorPlugin => ({
+  name: 'taskDecision',
+
   nodes() {
     return [
       { name: 'decisionList', node: decisionList },
@@ -67,13 +69,8 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     return [
       {
         name: 'tasksAndDecisions',
-        plugin: ({ portalProviderAPI, providerFactory, dispatch, props }) => {
-          return createPlugin(
-            portalProviderAPI,
-            providerFactory,
-            dispatch,
-            props.appearance,
-          );
+        plugin: ({ portalProviderAPI, providerFactory, dispatch }) => {
+          return createPlugin(portalProviderAPI, providerFactory, dispatch);
         },
       },
       {
@@ -133,6 +130,6 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       },
     ],
   },
-};
+});
 
 export default tasksAndDecisionsPlugin;

@@ -170,53 +170,6 @@
       ],
       "additionalProperties": false
     },
-    "action_mark": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "action"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "key": {
-              "type": "string"
-            },
-            "target": {
-              "type": "object",
-              "properties": {
-                "receiver": {
-                  "type": "string"
-                },
-                "key": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "key"
-              ]
-            },
-            "parameters": {}
-          },
-          "required": [
-            "title",
-            "target"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
     "breakout_mark": {
       "type": "object",
       "properties": {
@@ -965,315 +918,6 @@
       "required": [
         "type",
         "content"
-      ],
-      "additionalProperties": false
-    },
-    "applicationCard_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "applicationCard"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "text": {
-              "type": "string"
-            },
-            "textUrl": {
-              "type": "string"
-            },
-            "link": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "pattern": "^https?://|^data:image/"
-                }
-              },
-              "required": [
-                "url"
-              ],
-              "additionalProperties": false
-            },
-            "background": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "pattern": "^https://|^data:image/"
-                }
-              },
-              "required": [
-                "url"
-              ],
-              "additionalProperties": false
-            },
-            "collapsible": {
-              "type": "boolean"
-            },
-            "preview": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "pattern": "^https://|^data:image/"
-                }
-              },
-              "required": [
-                "url"
-              ],
-              "additionalProperties": false
-            },
-            "title": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                },
-                "user": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "icon": {
-                      "type": "object",
-                      "properties": {
-                        "url": {
-                          "type": "string",
-                          "pattern": "^https://|^data:image/"
-                        },
-                        "label": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "url",
-                        "label"
-                      ],
-                      "additionalProperties": false
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "icon"
-                  ]
-                }
-              },
-              "required": [
-                "text"
-              ],
-              "additionalProperties": false
-            },
-            "description": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "text"
-              ],
-              "additionalProperties": false
-            },
-            "details": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "text": {
-                    "type": "string"
-                  },
-                  "icon": {
-                    "type": "object",
-                    "properties": {
-                      "url": {
-                        "type": "string",
-                        "pattern": "^https://|^data:image/"
-                      },
-                      "label": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "url",
-                      "label"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "badge": {
-                    "type": "object",
-                    "properties": {
-                      "value": {
-                        "type": "number"
-                      },
-                      "max": {
-                        "type": "number"
-                      },
-                      "theme": {
-                        "enum": [
-                          "default",
-                          "dark"
-                        ]
-                      },
-                      "appearance": {
-                        "enum": [
-                          "default",
-                          "primary",
-                          "important",
-                          "added",
-                          "removed"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "value"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "lozenge": {
-                    "type": "object",
-                    "properties": {
-                      "text": {
-                        "type": "string"
-                      },
-                      "bold": {
-                        "type": "boolean"
-                      },
-                      "appearance": {
-                        "enum": [
-                          "success",
-                          "default",
-                          "removed",
-                          "inprogress",
-                          "new",
-                          "moved"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "text"
-                    ],
-                    "additionalProperties": false
-                  },
-                  "users": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "icon": {
-                          "type": "object",
-                          "properties": {
-                            "url": {
-                              "type": "string",
-                              "pattern": "^https://|^data:image/"
-                            },
-                            "label": {
-                              "type": "string"
-                            }
-                          },
-                          "required": [
-                            "url",
-                            "label"
-                          ],
-                          "additionalProperties": false
-                        }
-                      },
-                      "additionalProperties": false,
-                      "required": [
-                        "icon"
-                      ]
-                    }
-                  }
-                },
-                "additionalProperties": false
-              }
-            },
-            "actions": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "key": {
-                    "type": "string"
-                  },
-                  "title": {
-                    "type": "string"
-                  },
-                  "target": {
-                    "type": "object",
-                    "properties": {
-                      "receiver": {
-                        "type": "string"
-                      },
-                      "key": {
-                        "type": "string"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "required": [
-                      "key"
-                    ]
-                  },
-                  "parameters": {}
-                },
-                "additionalProperties": false,
-                "required": [
-                  "title",
-                  "target"
-                ]
-              }
-            },
-            "context": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string"
-                },
-                "icon": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "pattern": "^https://|^data:image/"
-                    },
-                    "label": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "url",
-                    "label"
-                  ],
-                  "additionalProperties": false
-                }
-              },
-              "required": [
-                "text"
-              ],
-              "additionalProperties": false
-            }
-          },
-          "required": [
-            "text",
-            "title"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
       ],
       "additionalProperties": false
     },
@@ -2088,9 +1732,6 @@
           "$ref": "#/definitions/mediaGroup_node"
         },
         {
-          "$ref": "#/definitions/applicationCard_node"
-        },
-        {
           "$ref": "#/definitions/decisionList_node"
         },
         {
@@ -2157,9 +1798,6 @@
             "$ref": "#/definitions/mediaGroup_node"
           },
           {
-            "$ref": "#/definitions/applicationCard_node"
-          },
-          {
             "$ref": "#/definitions/decisionList_node"
           },
           {
@@ -2208,9 +1846,6 @@
           },
           {
             "$ref": "#/definitions/mediaGroup_node"
-          },
-          {
-            "$ref": "#/definitions/applicationCard_node"
           },
           {
             "$ref": "#/definitions/decisionList_node"
@@ -2263,9 +1898,6 @@
                   },
                   {
                     "$ref": "#/definitions/textColor_mark"
-                  },
-                  {
-                    "$ref": "#/definitions/action_mark"
                   },
                   {
                     "$ref": "#/definitions/annotation_mark"
@@ -2402,9 +2034,6 @@
               },
               {
                 "$ref": "#/definitions/mediaGroup_node"
-              },
-              {
-                "$ref": "#/definitions/applicationCard_node"
               },
               {
                 "$ref": "#/definitions/decisionList_node"

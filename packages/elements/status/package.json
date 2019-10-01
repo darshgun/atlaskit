@@ -1,13 +1,13 @@
 {
   "name": "@atlaskit/status",
-  "version": "0.9.1",
+  "version": "0.9.14",
   "config": {
     "access": "public"
   },
   "description": "Fabric Status React Components",
-  "main": "dist/es5/index.js",
-  "modules": "dist/es2015/index.js",
-  "types": "dist/es5/types.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/types.d.ts",
   "atlaskit:src": "src/index.ts",
   "repository": {
     "type": "git",
@@ -19,19 +19,19 @@
     "ui",
     "date",
     "fabric",
-    "elements"
+    "editor"
   ],
   "atlaskit": {
     "name": "Status",
-    "team": "elements"
+    "team": "editor"
   },
   "dependencies": {
-    "@atlaskit/analytics-gas-types": "^4.0.4",
-    "@atlaskit/analytics-next": "^5.0.0",
-    "@atlaskit/field-text": "^9.0.0",
-    "@atlaskit/icon": "^17.0.0",
-    "@atlaskit/lozenge": "^9.0.0",
-    "@atlaskit/theme": "^9.0.3",
+    "@atlaskit/analytics-gas-types": "^4.0.11",
+    "@atlaskit/analytics-next": "^6.3.0",
+    "@atlaskit/field-text": "^9.0.12",
+    "@atlaskit/icon": "^19.0.6",
+    "@atlaskit/lozenge": "^9.0.7",
+    "@atlaskit/theme": "^9.2.3",
     "styled-components": "^3.2.6"
   },
   "peerDependencies": {
@@ -39,10 +39,10 @@
     "react-intl": "^2.6.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^8.1.1",
-    "@atlaskit/editor-test-helpers": "^9.0.0",
-    "@atlaskit/elements-test-helpers": "^0.6.0",
-    "@atlaskit/i18n-tools": "^0.5.0",
+    "@atlaskit/docs": "^8.1.5",
+    "@atlaskit/editor-test-helpers": "^10.1.1",
+    "@atlaskit/elements-test-helpers": "^0.6.5",
+    "@atlaskit/i18n-tools": "^0.5.2",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "react": "^16.8.0",

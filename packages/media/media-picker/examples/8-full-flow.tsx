@@ -1,11 +1,16 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import {
   defaultCollectionName,
-  createUploadContext,
+  createStorybookMediaClientConfig,
+  createUploadMediaClientConfig,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
 import { MediaViewerDataSource } from '@atlaskit/media-viewer';
-import { FileIdentifier } from '@atlaskit/media-core';
+import {
+  FileIdentifier,
+  globalMediaEventEmitter,
+} from '@atlaskit/media-client';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import { SelectWrapper, OptionsWrapper } from '../example-helpers/styled';
@@ -16,7 +21,8 @@ import {
   Popup,
 } from '../src';
 
-const context = createUploadContext();
+const userMediaClientConfig = createUploadMediaClientConfig();
+const tenantMediaClientConfig = createStorybookMediaClientConfig();
 
 const dataSourceOptions = [
   { label: 'List', value: 'list' },
@@ -37,23 +43,30 @@ export interface State {
 export default class Example extends React.Component<{}, State> {
   state: State = { events: [], dataSourceType: 'list' };
 
+  static contextTypes = {
+    // Required context in order to integrate analytics in media picker
+    getAtlaskitAnalyticsEventHandlers: PropTypes.func,
+  };
+
   async componentDidMount() {
-    const popup = await MediaPicker('popup', context, {
+    const popup = await MediaPicker(userMediaClientConfig, {
       uploadParams: {
         collection: defaultCollectionName,
       },
+      container: document.body,
+      // Media picker requires `proxyReactContext` to enable analytics
+      // otherwise, analytics Gasv3 integrations won't work
+      proxyReactContext: this.context,
     });
 
-    context.on('file-added', file => {
-      console.log('on file-added', file);
+    globalMediaEventEmitter.on('file-added', file => {
+      console.log('globalMediaEventEmitter on file-added', file);
     });
 
     popup.on('uploads-start', (payload: { files: MediaFile[] }) => {
       const { events } = this.state;
       payload.files.forEach(file => {
-        file.upfrontId.then(id => {
-          console.log('PUBLIC: uploads-start', file.id, id);
-        });
+        console.log('PUBLIC: uploads-start', file.id);
       });
 
       this.setState({
@@ -76,11 +89,7 @@ export default class Example extends React.Component<{}, State> {
   private onUploadPreviewUpdate = async (
     event: UploadPreviewUpdateEventPayload,
   ) => {
-    console.log(
-      'PUBLIC: upload-preview-update',
-      event.file.id,
-      await event.file.upfrontId,
-    );
+    console.log('PUBLIC: upload-preview-update', event.file.id);
   };
 
   private getMediaViewerDataSource = (): MediaViewerDataSource => {
@@ -114,7 +123,7 @@ export default class Example extends React.Component<{}, State> {
       return (
         <div key={key} style={{ display: 'inline-block', margin: '10px' }}>
           <Card
-            context={context}
+            mediaClientConfig={tenantMediaClientConfig}
             identifier={identifier}
             dimensions={{
               width: 200,

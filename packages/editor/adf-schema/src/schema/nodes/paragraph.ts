@@ -30,14 +30,12 @@ export type ParagraphDefinition = ParagraphBaseDefinition & NoMark;
 
 /**
  * @name paragraph_with_alignment_node
- * @stage 0
  */
 export type ParagraphWithAlignmentDefinition = ParagraphBaseDefinition &
   MarksObject<AlignmentMarkDefinition>;
 
 /**
  * @name paragraph_with_indentation_node
- * @stage 0
  */
 export type ParagraphWithIndentationDefinition = ParagraphBaseDefinition &
   MarksObject<IndentationMarkDefinition>;
@@ -51,7 +49,7 @@ export const paragraph: NodeSpec = {
   content: 'inline*',
   group: 'block',
   marks:
-    'strong code em link strike subsup textColor typeAheadQuery underline mentionQuery emojiQuery confluenceInlineComment action annotation',
+    'strong code em link strike subsup textColor typeAheadQuery underline confluenceInlineComment action annotation',
   parseDOM: [{ tag: 'p' }],
   toDOM() {
     return pDOM;

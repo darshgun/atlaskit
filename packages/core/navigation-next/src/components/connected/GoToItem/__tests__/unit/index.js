@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import Spinner from '@atlaskit/spinner';
 
@@ -23,7 +23,7 @@ describe('GoToItemBase', () => {
   });
 
   it('should render a ConnectedItem', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <GoToItemBase
         {...baseProps}
         goTo="another-view"
@@ -35,14 +35,9 @@ describe('GoToItemBase', () => {
     expect(wrapper.find(ConnectedItem)).toHaveLength(1);
     expect(wrapper).toMatchSnapshot();
   });
-
-  it("should set view to the 'goTo' prop via the navigation view controller when clicked", () => {});
-
-  it("should not set view when 'goTo' prop is undefined", () => {});
-
   describe('Default After prop', () => {
     it('should be provided to ConnectedItem if one is not provided to GoTo item', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <GoToItemBase
           {...baseProps}
           goTo="another-view"
@@ -56,7 +51,7 @@ describe('GoToItemBase', () => {
     });
 
     it('should only show on hover or active or focus', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <GoToItemBase
           {...baseProps}
           goTo="another-view"
@@ -88,7 +83,7 @@ describe('GoToItemBase', () => {
       baseProps.navigationViewController.state.incomingView = {
         id: 'another-view',
       };
-      const wrapper = shallow(
+      const wrapper = mount(
         <GoToItemBase
           {...baseProps}
           goTo="another-view"
@@ -97,18 +92,15 @@ describe('GoToItemBase', () => {
         />,
       );
 
-      const AfterComp = wrapper.find(ConnectedItem).prop('after');
-
-      const afterEl = shallow(<AfterComp />);
-      expect(afterEl.find(Spinner)).toHaveLength(1);
-      expect(afterEl).toMatchSnapshot();
+      expect(wrapper.find(Spinner)).toHaveLength(1);
+      expect(wrapper.find(Spinner)).toMatchSnapshot();
     });
 
     it('should set the spinner delay to the spinnerDelay prop if it exists', () => {
       baseProps.navigationViewController.state.incomingView = {
         id: 'another-view',
       };
-      const wrapper = shallow(
+      const wrapper = mount(
         <GoToItemBase
           {...baseProps}
           goTo="another-view"
@@ -118,15 +110,12 @@ describe('GoToItemBase', () => {
         />,
       );
 
-      const AfterComp = wrapper.find(ConnectedItem).prop('after');
-
-      const afterEl = shallow(<AfterComp />);
-      expect(afterEl.find(Spinner).prop('delay')).toBe(500);
+      expect(wrapper.find(Spinner).prop('delay')).toBe(500);
     });
 
     it('should be replaced by after prop of GoToItem if passed in', () => {
       const MyAfterComp = () => <span>...</span>;
-      const wrapper = shallow(
+      const wrapper = mount(
         <GoToItemBase
           {...baseProps}
           after={MyAfterComp}

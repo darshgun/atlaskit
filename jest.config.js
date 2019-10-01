@@ -8,7 +8,6 @@ const { INTEGRATION_TESTS } = process.env;
 const { VISUAL_REGRESSION } = process.env;
 const { PARALLELIZE_TESTS } = process.env;
 const { PARALLELIZE_TESTS_FILE } = process.env;
-const { TEST_ONLY_PATTERN } = process.env;
 
 // These are set by Pipelines if you are running in a parallel steps
 const STEP_IDX = Number(process.env.STEP_IDX);
@@ -55,6 +54,10 @@ const config = {
   watchPathIgnorePatterns: [
     '\\/packages\\/core\\/navigation-next\\/[^\\/]*\\.js$',
   ],
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname',
+  ],
   modulePathIgnorePatterns: ['/__fixtures__/', './node_modules', '/dist/'],
   // don't transform any files under node_modules except @atlaskit/* and react-syntax-highlighter (it
   // uses dynamic imports which are not valid in node)
@@ -77,8 +80,8 @@ const config = {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/fileMock.js',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],
-  setupFiles: ['./build/jest-config/setup.js'],
-  setupTestFrameworkScriptFile: `${__dirname}/jestFrameworkSetup.js`,
+  setupFiles: ['./build/jest-config/setup.js', 'jest-canvas-mock'],
+  setupFilesAfterEnv: [`${__dirname}/jestFrameworkSetup.js`],
   testResultsProcessor: 'jest-junit',
   testEnvironmentOptions: {
     // Need this to have jsdom loading images.
@@ -137,26 +140,6 @@ if (INTEGRATION_TESTS || VISUAL_REGRESSION) {
   } else {
     config.testMatch = [`**/__tests__/${testPattern}/**/*.(js|tsx|ts)`];
   }
-}
-
-// The TEST_ONLY_PATTERN is added to let us restrict a set of tests that *would* have been run; to
-// only the ones that match a given pattern. This is slightly different to something like `yarn jest packages/core`
-// since we can take advantage of other parts of the jest config. `TEST_ONLY_PATTERN="packages/core" yarn run test:changed`
-if (TEST_ONLY_PATTERN) {
-  // There is a bit to unwrap here. What we are trying to achieve is a way to pass simple options like "packages/editor" and "!packages/editor"
-  // to our script and have them work as expected. Since this is going into the testPathIgnore variable, we do need to negate the negation however.
-  // So to run only non-editor tests you'd pass TEST_ONLY_PATTERN="!packages/editor". To turn that into an "ignore" regex, we can simply remove the "!".
-  // Note: it's important to use "packages/editor" and not just "editor" since editor can (and does) appear in other tests paths.
-  // Now, it's more complicated when we want to run tests that *only* match a specific part of a pattern.
-  // We can't use a simple negative lookahead (?!packages/editor/) since this match *everything* that doesn't match our pattern
-  // So we essentially have to check that all characters in the string *do not* follow our negated pattern (the . and *). We then also need
-  // to match this on the whole string, otherwise *any* character that matches would be a match, hence the ^ and $
-  let newIgnore = `(^((?!${TEST_ONLY_PATTERN}).)*$)`;
-  if (TEST_ONLY_PATTERN.startsWith('!')) {
-    newIgnore = TEST_ONLY_PATTERN.substr(1);
-  }
-
-  config.testPathIgnorePatterns.push(newIgnore);
 }
 
 /**

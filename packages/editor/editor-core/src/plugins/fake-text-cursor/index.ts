@@ -13,10 +13,12 @@ export const createPlugin = () =>
     },
   });
 
-const fakeTextCursorPlugin: EditorPlugin = {
+const fakeTextCursorPlugin = (): EditorPlugin => ({
+  name: 'fakeTextCursor',
+
   pmPlugins() {
     return [{ name: 'fakeTextCursor', plugin: () => createPlugin() }];
   },
-};
+});
 
 export default fakeTextCursorPlugin;

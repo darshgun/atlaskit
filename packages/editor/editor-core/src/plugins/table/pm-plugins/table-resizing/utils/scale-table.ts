@@ -8,7 +8,7 @@ import { DomAtPos } from '../../../../../types';
 import {
   getLayoutSize,
   ResizeState,
-  getResizeStateFromDOM,
+  getResizeState,
   getTotalWidth,
   reduceSpace,
   adjustColumnsWidths,
@@ -67,16 +67,24 @@ export const scale = (
   let newWidth = maxSize;
 
   // adjust table width if layout is updated
-  if (layoutChanged && prevTableWidth > previousMaxSize) {
-    const overflowScale = prevTableWidth / previousMaxSize;
-    newWidth = Math.floor(newWidth * overflowScale);
+  const hasOverflow = prevTableWidth > previousMaxSize;
+  if (layoutChanged && hasOverflow) {
+    // No keep overflow if the old content can be in the new size
+    const canFitInNewSize = prevTableWidth < maxSize;
+    if (canFitInNewSize) {
+      newWidth = maxSize;
+    } else {
+      // Keep the same scale.
+      const overflowScale = prevTableWidth / previousMaxSize;
+      newWidth = Math.floor(newWidth * overflowScale);
+    }
   }
 
   if (node.attrs.isNumberColumnEnabled) {
     newWidth -= akEditorTableNumberColumnWidth;
   }
 
-  const resizeState = getResizeStateFromDOM({
+  const resizeState = getResizeState({
     minWidth: tableCellMinWidth,
     maxSize,
     table: node,
@@ -95,7 +103,7 @@ export const scaleWithParent = (
   start: number,
   domAtPos: DomAtPos,
 ) => {
-  const resizeState = getResizeStateFromDOM({
+  const resizeState = getResizeState({
     minWidth: tableCellMinWidth,
     maxSize: parentWidth,
     table,

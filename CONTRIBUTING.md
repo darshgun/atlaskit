@@ -1,5 +1,27 @@
 # Contributing to Atlaskit
 
+Thank you for your interest in contributing to Atlaskit! 
+
+Contribution is currently **only** available for Atlassian employees.
+
+We’re temporarily unable to grant contributor access to external developers.
+
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, identify the relevant team that maintains the package by checking the [packages list][packages].
+
+You can add a ticket through the appropriate channel:
+
+- **Core**: Slack: [#atlaskit][#atlaskit] | Jira: [go/dst-sd][core]
+
+- **Editor**: Slack: [#help-twp-editor][#help-twp-editor] | Jira: [go/editor-issue][editor]
+
+- **Media**: Slack: [#help-twp-media][#help-twp-media] | Jira: - [go/mediahelp][media]
+
+- **Elements**: Head over [Fabric Elements][fabric-elements] and reach out to the respective teams.
+
+- **Search & Smarts**: [#smrt-quick-search][#smrt-quick-search] | “Give feedback” button in the search panel
+
+- **Notifications**: [#notificationsplatform][#notificationsplatform]
+
 ## Code of Conduct
 
 This project is bound by a [Code of Conduct][codeofconduct].
@@ -8,11 +30,9 @@ Lots more information about contributing to this project can also be found on ou
 
 ## Reporting Tickets
 
-Our service desk is now open to public, you can access it [here](https://ecosystem.atlassian.net/servicedesk/customer/portal/24).
+The Atlaskit repository is managed by several teams, we encouraged you check which team managed the package you want to raise the issue for and use the links above.
 
-### Before submitting a ticket
-
-- **Perform a [cursory search][issuetracker]** to see if the problem has already been reported. If it has, add a comment to the existing issue instead of opening a new one.
+Before submitting a ticket, we kindly ask if the problem has already been reported using Slack channel or searching through the appropriate Jira project. If it has, add a comment to the existing issue instead of opening a new one.
 
 ### How do I submit a (good) bug report?
 
@@ -29,37 +49,40 @@ Include details about your configuration and environment:
 - **Which version of the component are you using?** You can get this information by running `yarn list --pattern @atlaskit` or `npm list | grep '@atlaskit'` from the command line.
 - **What's the name and version of the browser and OS you're using**?
 
-### Code Contributions
+## Code Contributions
 
-#### Why should I contribute?
+### Why should I contribute?
 
 1. While we strive to look at new tickets as soon as we can, because of the many priorities we juggle and limited resources, tickets raised often don't get looked into soon enough.
 2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes.
 3. With the build system and auto-deployment to npm, using Atlaskit components in your projects simplifies your development stack. Treat Atlaskit as part of your codebase and make changes in it.
 4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
 
-# Contributing
+# Contributing code to Atlaskit
 
-Welcome to the Atlaskit MK2 repo. This repo works a bit differently than the
-previous one as it has an entirely new build with many new tools and workflows.
+Welcome to the Atlaskit repo!
 
-A lot of these new build tools are still being developed and won't hit 1.0 for a
-little while. So bear with us for a little while as we work out all the
-problems.
+A more in-depth view of how we want to work with other teams contributions can be found in the
+[contributing guide on the Atlaskit website](https://atlaskit.atlassian.com/docs/guides/contributing).
 
-Don't worry though, we're making it easier than ever to work on Atlaskit from
-end to end. If you have any questions/problems, feel free to contact Luke Batchelor.
+If you have any questions/problems with the repo or codebase, please consult the links at the top of this file.
 
-A more in-depth view of how we want to work with other teams and open source
-contributions can be found on the
-[website](https://atlaskit.atlassian.com/docs/guides/contributing).
+With all that being said, let's dive into it!
 
-That all being said, let's dive into it:
+For more in-depth guides to developing in Atlaskit in addition to below, see the [docs](https://atlaskit.atlassian.com/docs/getting-started) section of the website.
 
-### Getting Started
+## Development environment
 
-To clone the repository (you'll need [git](https://git-scm.com/) installed if
-you don't already), open up your terminal and run the following:
+### Requirements
+
+- [git](https://git-scm.com/) version 2 or above for version control management.
+- [node](https://nodejs.org/) version should be as listed in .nvmrc (we recommend using [nvm](https://github.com/creationix/nvm)). Run `nvm use` in the root directory to install the correct version of node.
+- [yarn](https://yarnpkg.com/) version 1 or above.
+- [bolt](https://github.com/boltpkg/bolt) version 0.20 or above.
+
+### Setting up the development environment
+
+To clone the repository, open up your terminal and run the following:
 
 ```sh
 git clone git@bitbucket.org:atlassian/atlaskit-mk-2.git
@@ -67,8 +90,9 @@ cd atlaskit-mk-2
 ```
 
 Then you'll need both [Node.js](https://nodejs.org/) and
-[Yarn](https://yarnpkg.com/) installed. If you're on a Mac and have
-[Homebrew](https://brew.sh/) you can run:
+[Yarn](https://yarnpkg.com/) installed.
+
+If you're on a Mac and have [Homebrew](https://brew.sh/) you can run:
 
 ```sh
 brew install node yarn
@@ -92,15 +116,13 @@ bolt install
 This will take a minute or two the first time, but every subsequent run should
 only take about a second.
 
-Now you can start the development server for a specific component you are working on using
-`bolt start <pkg-name>`, for example:
+Since this is a git-lfs repo, turn on lfs hooks for code push by running:
 
 ```sh
-bolt start button
+bolt enable:lfs
 ```
 
-This will start the dev server with only packages matching "button"
-pattern being served on http://localhost:9000.
+You're now ready to start developing in Atlaskit!
 
 #### Linux / Mac / Windows
 
@@ -133,10 +155,28 @@ IntelliJ and WebStorm don't handle it properly. There are tickets raised in YouT
 See the [directory structure docs](https://atlaskit.atlassian.com/docs/guides/directory-structure) for
 more information.
 
+## Getting started with a package
+
+Each component or utility lives in its own package under the `packages` directory.
+
+You can start the development server for a specific component using
+`bolt start <pkg-name>`, for example:
+
+```sh
+bolt start button
+```
+
+This will start the dev server with only packages matching the "button" pattern, served on http://localhost:9000.
+
+You can start the development server for multiple components by separating the package names by a space, for example:
+
+```sh
+bolt start button modal-dialog
+```
+
 ## Writing new code
 
-All new code should be written using either [Flow](https://flow.org) (and
-[Babel](http://babeljs.io/)) or [TypeScript](http://www.typescriptlang.org/).
+All new code should be written using [TypeScript](http://www.typescriptlang.org/), using [Flow](https://flow.org) is now deprecated.
 
 If you need to create a new package, simply create a directory for the package
 and start putting files in the correct location (most things are based on file
@@ -144,7 +184,7 @@ conventions).
 
 ## Managing dependencies
 
-If you're inside of a package directory, you can use the Bolt versions of Yarn's
+If you're inside of a package directory, you should use the Bolt versions of Yarn's
 existing add/upgrade/remove commands to modify the dependencies.
 
 ```sh
@@ -152,17 +192,6 @@ bolt add <dep>[@<version>] [--dev/peer/etc]
 bolt upgrade <dep>[@<version>] [--dev/peer/etc]
 bolt remove <dep>[@<version>] [--dev/peer/etc]
 ```
-
-> Note: The `bolt upgrade` command is not implemented yet. To bump an external
-> dep, you need to bump it in the root
->
-> ```
-> yarn upgrade depName@depRange
-> ```
-
-then manually make that change in each of the workspaces (you should be able to
-find and replace since all packages should depend on the same range). You can
-confirm this was done correctly run `bolt install`'ing at the root.
 
 You can also manage dependencies for the project package, a specific workspace
 package, or across all workspaces:
@@ -178,9 +207,9 @@ bolt workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
 
 ## Type checking your code
 
-We use both [Flow](https://flow.org/) and
-[TypeScript](http://www.typescriptlang.org/) inside of Atlaskit. Each package
-uses one or the other depending on the team that owns the package.
+We use [TypeScript](http://www.typescriptlang.org/) inside of Atlaskit, however there are some packages that still use [Flow](https://flow.org/) and
+have not been migrated to TypeScript yet.
+All new code should be TypeScript.
 
 Be sure to setup IDE integrations for both so you get the full benefits out of
 them.
@@ -213,11 +242,14 @@ later on.
 - Vim: [Syntastic](https://github.com/vim-syntastic/syntastic)
 - VS Code: [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint),
 
-If you want to run the linter on all files from the command line you can run:
+To run the linter on all files from the command line you can run:
 
 ```sh
 bolt lint
 ```
+
+To run the linter on only a subset of files, you'll need to take the contents of the relevant lint npm script, e.g. `lint:eslint` and change the
+file globs to only the subset you care about, e.g. `yarn eslint 'packages/core/button/*.{js,ts,tsx}'`
 
 ## Creating examples
 
@@ -242,28 +274,25 @@ export default function Example() {
 }
 ```
 
+## Running dev locally
+
 In order to view these examples within your browser, from the root of atlaskit-mk2 you can run:
 
-```sh
-bolt start
-```
-
-To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment variable.
+### Single package
 
 ```sh
-ATLASKIT_DEV_PORT=9001 bolt start
+bolt start <pkg>
 ```
 
-### Running only a subset
+where `<pkg>` is a package name without the `@atlaskit/` prefix.
 
-Sometimes you really only want to run a small subset of examples. Depending on what you are trying to achieve the following scripts might be useful:
+e.g.
 
 ```sh
-bolt start:core # start the website only for packages under packages/core
-bolt start:media # start the website only for packages under packages/media
-bolt start:editor # start the website only for packages under packages/editor
-# etc
+bolt start button
 ```
+
+### Multiple packages
 
 If you need to start more than one packages, you can do:
 
@@ -273,6 +302,31 @@ bolt start button toggle tabs
 
 It will start button, toggle and tabs packages on your local server.
 
+### All packages in a team
+
+Sometimes you really only want to run a small subset of examples. Depending on what you are trying to achieve the following scripts might be useful:
+
+```sh
+bolt start:core # start the website only for packages under packages/core
+bolt start:media # start the website only for packages under packages/media
+bolt start:editor # start the website only for packages under packages/editor
+# See the npm scripts in package.json
+```
+
+### Running all packages
+
+```sh
+bolt start
+```
+
+however this will take a long time so is unwise to run locally.
+
+To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment variable.
+
+```sh
+ATLASKIT_DEV_PORT=9001 bolt start
+```
+
 ## Testing your code
 
 ### Running tests
@@ -280,8 +334,10 @@ It will start button, toggle and tabs packages on your local server.
 - unit tests
 
 ```sh
- yarn jest
+ yarn jest <pkg-path>
 ```
+
+where `<pkg-path>` is a relative path/glob to the directory/file you want to test
 
 - browser unit tests
 
@@ -303,35 +359,51 @@ yarn run test:vr
 
 Please refer to [testing in atlaskit][testing] for more information about testing.
 
-### Building and linking packages
+## Building packages
 
-You should almost never have to worry about this as everything is handled automatically in CI, but if for whatever reason you need to manually build packages (e.g you are trying to link them in another project) you _can_ do this, but it can be a little tricky.
+To build all packages, run `bolt build` - although this may take quite a while. See [individual package builds](#individual-package-builds) to build single packages only.
 
-How you do this will completely depend on what _exactly_ you are trying to achieve and with which packages. A single command would never be able to handle each of these edge cases safely.
+Our build process has multiple steps, some of which are conditional based on the type of package being built. We infer the type of package
+based on rules defined in [build/utils/tools.js](./build/utils/tools.js). For example, packages still using JS + flow will be compiled using babel whereas
+TypeScript packages will be compiled using tsc.
 
-> **"Can't you just give me a command to run though?"**
->
-> Okay.
->
-> If your package is a flow package run:
->
-> bolt build:babel
->
-> **or** if you know that you are consuming the package as a module:
->
-> bolt build:typescript
->
-> If your package is written in TS:
-> NODE_ENV=production bolt workspaces exec --only "@atlaskit/pkgName" -- tsc --project ./build/es2015
->
-> **THESE WILL NOT COVER 100% OF USE CASES AND ARE PROVIDED WITHOUT WARRANTY**
->
-> In certain circumstances you'll need to have a dependency be built, in others you'll need to make sure you've run `build:pkg` to copy the package.json's into `dist/`, in others, you will need to generate certain schema files.
+Some packages require additional build steps that are unique to that package. We expose a `ak-postbuild` npm script hook that packages can use for these custom
+build steps. The script will be executed after the main build step. We recommend talking to the build team in #atlaskit-build to discuss any alternatives before
+using this approach.
+
+### Individual package builds
+
+Individual packages can be built by running `bolt build <pkg-name>`, e.g. `bolt build @atlaskit/button`.
+
+You can also rebuild them in watch mode via the `--watch` flag.
+
+One caveat with the individual package build is that typescript will emit errors whenever it encounters a transitive dependency that has not been built, saying
+
+```
+error TS2307: Cannot find module '@atlaskit/....'
+```
+
+Since we are currently suppressing errors that occur during `build` and relying on picking them up in `typecheck` (this will hopefully change soon), these errors don't cause any problems.
+
+They will, however, affect the output of the d.ts files created for the package, as any types from an uncompiled dependency will be casted to `any`.
+
+## Linking packages
+
+Linking is currently a very manual process at the moment and will be more automated in the future.
+
+To link a package we recommend using [Yalc](https://www.npmjs.com/package/yalc) after building the package locally via [individual package builds](#individual-package-builds). Using `yalc` instead of `yarn link`
+will only require building the package you want to link instead of the package and all of its transitive dependencies. It also sidesteps issues where
+multiple instances of peer dependencies exist (react, styled-components etc.).
+
+Linking a package _and_ one of its dependencies is more tedious. If you need to do this we recommend building all packages as a one-off, using `yarn link` and then rebuilding the individual packages as required.
 
 ## Documenting your code
 
 Inside of every package is a `docs/` folder which includes all of the
 documentation pages (there's generally only one).
+
+These pages are then displayed on the website and can be navigated to when viewing
+the package in question.
 
 ```
 /atlaskit-mk2/packages/core/avatar/docs/
@@ -381,8 +453,36 @@ create the changelog entry for each package being released.
 
 More information about this can be found [here][releasing-packages] and in the [faq][faq]
 
+## Submitting pull requests
+
+When you are ready to submit a change to Atlaskit, you should raise a pull request.
+
+Push your code to a branch on the Atlaskit repository itself.
+Do not raise pull requests from forks because our CI builds do not run on forks.
+
+The smaller your change, the more likely it will be accepted, and the sooner it is likely to be merged.
+
+If you are making multiple unrelated changes to Atlaskit, please submit them in multiple pull requests.
+
+Be sure that your request includes tests for new features and bug fixes.
+Consult our [testing guidelines][testing] for further details.
+
+Ensure your code follows the existing code style and conventions.
+
+Once your pull request has been reviewed and approved by an Atlaskit maintainer, you will need an Atlaskit
+maintainer to merge the change.
+
 [codeofconduct]: ./CODE_OF_CONDUCT.md
-[issuetracker]: https://ecosystem.atlassian.net/issues/?filter=56701
+[#atlaskit]: https://atlassian.slack.com/messages/CFHT33S4F
+[#help-twp-editor]: https://atlassian.slack.com/archives/CFG3PSQ9E
+[#help-twp-media]: https://atlassian.slack.com/archives/CFGMGT77W
+[fabric-elements]: https://product-fabric.atlassian.net/wiki/spaces/FS
+[#smrt-quick-search]: https://atlassian.slack.com/archives/CFG8QANL9
+[#notificationsplatform]: https://atlassian.slack.com/archives/CFG86D0HF
+[core]: https://ecosystem.atlassian.net/servicedesk/customer/portal/24
+[editor]: https://product-fabric.atlassian.net/projects/ED/issues/ED-4385?filter=allissues
+[media]: https://product-fabric.atlassian.net/servicedesk/customer/portal/2
+[packages]: https://atlaskit.atlassian.com/packages
 [testing]: https://atlaskit.atlassian.com/docs/guides/testing
 [releasing-packages]: https://atlaskit.atlassian.com/docs/guides/releasing-packages
 [getting-started]: https://atlaskit.atlassian.com/docs/getting-started

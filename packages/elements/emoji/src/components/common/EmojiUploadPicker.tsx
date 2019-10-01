@@ -99,10 +99,9 @@ class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
           <span className={styles.uploadChooseFileEmojiName}>
             <AkFieldBase
               appearance="standard"
-              isCompact={true}
-              isLabelHidden={true}
-              isFocused={true}
-              isFitContainerWidthEnabled={true}
+              isCompact
+              defaultIsFocused
+              isFitContainerWidthEnabled
             >
               <FormattedMessage {...messages.emojiPlaceholder}>
                 {message => (
@@ -116,7 +115,7 @@ class ChooseEmojiFile extends PureComponent<ChooseEmojiFileProps, {}> {
                         onKeyDown={this.onKeyDown}
                         value={name}
                         ref="name"
-                        autoFocus={true}
+                        autoFocus
                       />
                     )}
                   </FormattedMessage>
@@ -176,7 +175,7 @@ export default class EmojiUploadPicker extends PureComponent<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     const updatedState: State = {};
     if (nextProps.errorMessage) {
       updatedState.uploadStatus = UploadStatus.Error;

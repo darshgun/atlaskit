@@ -3,6 +3,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
@@ -15,29 +16,33 @@ const defaultMaxItems = 8;
 
 const { toArray } = React.Children;
 
-interface IProps {
+export interface BreadcrumbsStatelessProps extends WithAnalyticsEventsProps {
   /** Override collapsing of the nav when there are more than maxItems */
   isExpanded?: boolean;
   /** Set the maximum number of breadcrumbs to display. When there are more
   than the maximum number, only the first and last will be shown, with an
   ellipsis in between. */
   maxItems?: number;
+  /** The items to be included inside the Breadcrumbs wrapper */
+  children?: React.ReactNode;
   /** A function to be called when you are in the collapsed view and click
-   the ellpisis. */
+   the ellipsis. */
   onExpand?: (event: React.MouseEvent) => any;
   /** If max items is exceeded, the number of items to show before the ellipsis */
   itemsBeforeCollapse?: number;
   /** If max items is exceeded, the number of items to show after the ellipsis */
   itemsAfterCollapse?: number;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests.
+  In case of `testId` passed through EllipsisItem, the element will be identified like this: 'testId && `${testId}--breadcrumb-ellipsis'.
+  This can be used to click the elements when they are collapsed. */
+  testId?: string;
 }
 
-type DefaultProps = Pick<
-  IProps,
-  'isExpanded' | 'maxItems' | 'itemsBeforeCollapse' | 'itemsAfterCollapse'
->;
-
-class BreadcrumbsStateless extends React.Component<IProps, {}> {
-  static defaultProps: DefaultProps = {
+class BreadcrumbsStateless extends React.Component<
+  BreadcrumbsStatelessProps,
+  {}
+> {
+  static defaultProps = {
     isExpanded: false,
     maxItems: defaultMaxItems,
     itemsBeforeCollapse: 1,
@@ -54,9 +59,9 @@ class BreadcrumbsStateless extends React.Component<IProps, {}> {
   }
 
   renderItemsBeforeAndAfter() {
-    const { itemsBeforeCollapse, itemsAfterCollapse } = this.props;
+    const { itemsBeforeCollapse, itemsAfterCollapse, testId } = this.props;
 
-    // Not a chance this will trigger, but TS is complaining about items* possibly beign undefined.
+    // Not a chance this will trigger, but TS is complaining about items* possibly being undefined.
     if (itemsBeforeCollapse === undefined || itemsAfterCollapse === undefined) {
       return;
     }
@@ -79,6 +84,7 @@ class BreadcrumbsStateless extends React.Component<IProps, {}> {
       <EllipsisItem
         hasSeparator={itemsAfterCollapse > 0}
         key="ellipsis"
+        testId={testId && `${testId}--breadcrumb-ellipsis`}
         onClick={this.props.onExpand}
       />,
       ...afterItems,
@@ -86,10 +92,10 @@ class BreadcrumbsStateless extends React.Component<IProps, {}> {
   }
 
   render() {
-    const { children, isExpanded, maxItems } = this.props;
+    const { children, isExpanded, maxItems, testId } = this.props;
     if (!children) return <Container />;
     return (
-      <Container>
+      <Container data-testid={testId}>
         {isExpanded || (maxItems && toArray(children).length <= maxItems)
           ? this.renderAllItems()
           : this.renderItemsBeforeAndAfter()}

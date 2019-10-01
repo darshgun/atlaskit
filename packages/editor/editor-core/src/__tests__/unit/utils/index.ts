@@ -19,6 +19,7 @@ import {
   mediaGroup,
   mediaSingle,
 } from '@atlaskit/editor-test-helpers';
+import { MockMentionResource } from '@atlaskit/util-data-test';
 import { toggleMark } from 'prosemirror-commands';
 
 import {
@@ -30,13 +31,8 @@ import {
   pipe,
   closestElement,
   isSelectionInsideLastNodeInDocument,
+  shallowEqual,
 } from '../../../utils';
-import mediaPlugin from '../../../plugins/media';
-import codeBlockPlugin from '../../../plugins/code-block';
-import panelPlugin from '../../../plugins/panel';
-import listPlugin from '../../../plugins/lists';
-import mentionsPlugin from '../../../plugins/mentions';
-import tasksAndDecisionsPlugin from '../../../plugins/tasks-and-decisions';
 import { Node, Schema } from 'prosemirror-model';
 
 describe('@atlaskit/editore-core/utils', () => {
@@ -45,14 +41,16 @@ describe('@atlaskit/editore-core/utils', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [
-        mediaPlugin({ allowMediaSingle: true }),
-        codeBlockPlugin(),
-        panelPlugin,
-        listPlugin,
-        mentionsPlugin(),
-        tasksAndDecisionsPlugin,
-      ],
+      editorProps: {
+        media: {
+          allowMediaSingle: true,
+        },
+        allowCodeBlocks: true,
+        allowPanel: true,
+        allowLists: true,
+        allowTasksAndDecisions: true,
+        mentionProvider: Promise.resolve(new MockMentionResource({})),
+      },
     });
 
   describe('#closest', () => {
@@ -521,6 +519,36 @@ describe('@atlaskit/editore-core/utils', () => {
       expect(
         isSelectionInsideLastNodeInDocument(editorView.state.selection),
       ).toBe(false);
+    });
+  });
+
+  describe('#shallowEqual', () => {
+    it('should return true if all props from obj1 equals obj2', () => {
+      const objA = { test: 'ok', num: 2, prop: 'xx' };
+      const objB = { test: 'ok', num: 2, prop: 'xx' };
+
+      expect(shallowEqual(objA, objB)).toBe(true);
+    });
+
+    it('should return false if one prop from obj2 differs from obj1', () => {
+      const objA = { test: 'ok', num: 2, prop: 'xx' };
+      const objB = { test: 'ok', num: 2, prop: 'xx2' };
+
+      expect(shallowEqual(objA, objB)).toBe(false);
+    });
+
+    it('should return false if obj2 has nested properties', () => {
+      const objA = { test: 'ok', num: 2, prop: { sub: 'ok' } };
+      const objB = { test: 'ok', num: 2, prop: { sub: 'ok' } };
+
+      expect(shallowEqual(objA, objB)).toBe(false);
+    });
+
+    it('should return false if obj2 has different number of keys', () => {
+      const objA = { test: 'ok' };
+      const objB = { test: 'ok', num: 2, prop: { sub: 'ok' } };
+
+      expect(shallowEqual(objA, objB)).toBe(false);
     });
   });
 });

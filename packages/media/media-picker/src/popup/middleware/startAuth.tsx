@@ -1,6 +1,7 @@
 import { Store, Dispatch } from 'redux';
 
-import { updateServiceList, START_AUTH, StartAuthAction } from '../actions';
+import { updateServiceList } from '../actions/updateServiceList';
+import { START_AUTH, StartAuthAction } from '../actions/startAuth';
 import { changeAccount } from '../actions/changeAccount';
 import { State, ServiceAccountWithType } from '../domain';
 import { Fetcher } from '../tools/fetcher/fetcher';
@@ -13,12 +14,12 @@ export const startCloudAccountOAuthFlow = (
   action: StartAuthAction,
 ) => {
   if (action.type === START_AUTH) {
-    const { redirectUrl, userContext } = store.getState();
+    const { redirectUrl, userMediaClient } = store.getState();
     const { serviceName } = action;
 
     const accounts = cloudService
       .startAuth(redirectUrl, serviceName)
-      .then(() => userContext.config.authProvider())
+      .then(() => userMediaClient.config.authProvider())
       .then(auth => fetcher.getServiceList(auth));
 
     store.dispatch(updateServiceList(accounts));

@@ -30,6 +30,7 @@ function mapConfluenceItemToResultObject(
         : 'UNAVAILABLE',
     iconClass: item.iconCssClass,
     experimentId: experimentId,
+    friendlyLastModified: item.friendlyLastModified,
   };
 }
 
@@ -46,6 +47,7 @@ function mapConfluenceItemToResultSpace(
     resultType: ResultType.GenericContainerResult,
     contentType: ContentType.ConfluenceSpace,
     experimentId: experimentId,
+    key: spaceItem.space!.key,
   };
 }
 

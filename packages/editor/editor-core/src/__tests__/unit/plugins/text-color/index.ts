@@ -3,16 +3,17 @@ import {
   code,
   textColor,
   p,
+  hardBreak,
   createEditorFactory,
   a,
   strong,
+  panel,
 } from '@atlaskit/editor-test-helpers';
 import {
   TextColorPluginState,
   pluginKey as textColorPluginKey,
 } from '../../../../plugins/text-color/pm-plugins/main';
 import { changeColor } from '../../../../plugins/text-color/commands/change-color';
-import textColorPlugin from '../../../../plugins/text-color';
 
 describe('text-color', () => {
   const createEditor = createEditorFactory<TextColorPluginState>();
@@ -20,7 +21,7 @@ describe('text-color', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [textColorPlugin],
+      editorProps: { allowTextColor: true, allowPanel: true },
       pluginKey: textColorPluginKey,
     });
 
@@ -51,7 +52,7 @@ describe('text-color', () => {
     expect(updatedPluginState.color).toBe(testColor2);
   });
 
-  it('should expose whether textColor has any color on a text selection', () => {
+  it('should expose whether textColor has any color on a range selection', () => {
     const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
     const { dispatch, state } = editorView;
 
@@ -62,24 +63,12 @@ describe('text-color', () => {
     expect(updatedPluginState.color).toBe(testColor1);
   });
 
-  it('exposes textColor as disabled when the mark cannot be applied', () => {
-    const { pluginState } = editor(doc(p(code('te{<>}xt'))));
-
-    expect(pluginState.disabled).toBe(true);
-  });
-
-  it('exposes textColor as disabled when inside hyperlink', () => {
+  it('should expose whether textColor has any color on a range selection in a nested node', () => {
     const { pluginState } = editor(
-      doc(p(a({ href: 'http://www.atlassian.com' })('te{<>}xt'))),
+      doc(panel()(p(createTextColor(testColor1)('{<}text{>}')))),
     );
 
-    expect(pluginState.disabled).toBe(true);
-  });
-
-  it('exposes textColor as not disabled when the mark can be applied', () => {
-    const { pluginState } = editor(doc(p('te{<>}xt')));
-
-    expect(pluginState.disabled).toBe(false);
+    expect(pluginState.color).toBe(testColor1);
   });
 
   it('should expose no color when selection has multiple color marks', () => {
@@ -133,7 +122,7 @@ describe('text-color', () => {
     expect(pluginState.color).toBe(testColor1);
   });
 
-  it('should expose default color when the cursor is at the begnining of a textColor mark', () => {
+  it('should expose default color when the cursor is at the beginning of a textColor mark', () => {
     const { pluginState } = editor(
       doc(p('hello', createTextColor(testColor1)('{<>}text'))),
     );
@@ -141,7 +130,7 @@ describe('text-color', () => {
     expect(pluginState.color).toBe(pluginState.defaultColor);
   });
 
-  it('should expose color when the cursor is at begnining of doc with textColor mark', () => {
+  it('should expose color when the cursor is at beginning of doc with textColor mark', () => {
     const { pluginState } = editor(
       doc(p('', createTextColor(testColor1)('{<>}text'))),
     );
@@ -161,5 +150,43 @@ describe('text-color', () => {
     );
 
     expect(pluginState.color).toBe(testColor1);
+  });
+
+  it('exposes textColor as disabled when the mark cannot be applied', () => {
+    const { pluginState } = editor(doc(p(code('te{<>}xt'))));
+
+    expect(pluginState.disabled).toBe(true);
+  });
+
+  it('exposes textColor as disabled when inside hyperlink', () => {
+    const { pluginState } = editor(
+      doc(p(a({ href: 'http://www.atlassian.com' })('te{<>}xt'))),
+    );
+
+    expect(pluginState.disabled).toBe(true);
+  });
+
+  it('exposes textColor as not disabled when the mark can be applied', () => {
+    const { pluginState } = editor(doc(p('te{<>}xt')));
+
+    expect(pluginState.disabled).toBe(false);
+  });
+
+  it(`shouldn't apply color to a non text node`, () => {
+    const { editorView } = editor(doc(p('t{<}ext', hardBreak(), 'text{>}')));
+    const { dispatch, state } = editorView;
+
+    changeColor(testColor1)(state, dispatch);
+
+    expect(editorView.state.doc).toEqualDocument(
+      doc(
+        p(
+          't',
+          textColor({ color: testColor1 })('ext'),
+          hardBreak(),
+          textColor({ color: testColor1 })('text'),
+        ),
+      ),
+    );
   });
 });

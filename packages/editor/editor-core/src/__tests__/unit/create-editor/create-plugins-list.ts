@@ -1,17 +1,37 @@
-jest.mock('../../../plugins', () => ({
+const mockPlugins: { [name: string]: jest.Mock } = {
   basePlugin: jest.fn(),
   analyticsPlugin: jest.fn(),
   mediaPlugin: jest.fn(),
   tablesPlugin: jest.fn(),
   insertBlockPlugin: jest.fn(),
+  feedbackDialogPlugin: jest.fn(),
   placeholderTextPlugin: jest.fn(),
   textFormattingPlugin: jest.fn(),
   codeBlockPlugin: jest.fn(),
   statusPlugin: jest.fn(),
-}));
+  pastePlugin: jest.fn(),
+  blockTypePlugin: jest.fn(),
+  placeholderPlugin: jest.fn(),
+  clearMarksOnChangeToEmptyDocumentPlugin: jest.fn(),
+  hyperlinkPlugin: jest.fn(),
+  widthPlugin: jest.fn(),
+  typeAheadPlugin: jest.fn(),
+  unsupportedContentPlugin: jest.fn(),
+  editorDisabledPlugin: jest.fn(),
+  gapCursorPlugin: jest.fn(),
+  gridPlugin: jest.fn(),
+  submitEditorPlugin: jest.fn(),
+  helpDialogPlugin: jest.fn(),
+  fakeTextCursorPlugin: jest.fn(),
+  layoutPlugin: jest.fn(),
+  floatingToolbarPlugin: jest.fn(),
+  quickInsertPlugin: jest.fn(),
+  historyPlugin: jest.fn(),
+  sharedContextPlugin: jest.fn(),
+};
+jest.mock('../../../plugins', () => mockPlugins);
 
 import {
-  basePlugin,
   analyticsPlugin,
   tablesPlugin,
   mediaPlugin,
@@ -19,30 +39,30 @@ import {
   fakeTextCursorPlugin,
   submitEditorPlugin,
   insertBlockPlugin,
+  feedbackDialogPlugin,
   placeholderTextPlugin,
   layoutPlugin,
   statusPlugin,
+  historyPlugin,
 } from '../../../plugins';
 
 import createPluginsList from '../../../create-editor/create-plugins-list';
 
 describe('createPluginsList', () => {
-  beforeEach(() => {
-    (basePlugin as any).mockReset();
-    (analyticsPlugin as any).mockReset();
-    (insertBlockPlugin as any).mockReset();
-    (placeholderTextPlugin as any).mockReset();
-    (statusPlugin as any).mockReset();
+  afterEach(() => {
+    for (const name in mockPlugins) {
+      mockPlugins[name].mockReset();
+    }
   });
 
   it('should add helpDialogPlugin if allowHelpDialog is true', () => {
     const plugins = createPluginsList({ allowHelpDialog: true });
-    expect(plugins).toContain(helpDialogPlugin);
+    expect(plugins).toContain(helpDialogPlugin());
   });
 
   it('should add fakeTextCursorPlugin by default', () => {
     const plugins = createPluginsList({});
-    expect(plugins).toContain(fakeTextCursorPlugin);
+    expect(plugins).toContain(fakeTextCursorPlugin());
   });
 
   it('should add tablePlugin if allowTables is true', () => {
@@ -53,7 +73,7 @@ describe('createPluginsList', () => {
 
   it('should always add submitEditorPlugin to the editor', () => {
     const plugins = createPluginsList({});
-    expect(plugins).toContain(submitEditorPlugin);
+    expect(plugins).toContain(submitEditorPlugin());
   });
 
   it('should add mediaPlugin if media prop is provided', () => {
@@ -61,9 +81,8 @@ describe('createPluginsList', () => {
       provider: Promise.resolve() as any,
       allowMediaSingle: true,
     };
-    createPluginsList({ media, appearance: 'full-page' });
+    createPluginsList({ media });
     expect(mediaPlugin).toHaveBeenCalledTimes(1);
-    expect(mediaPlugin).toHaveBeenCalledWith(media, 'full-page');
   });
 
   it('should add placeholderText plugin if allowTemplatePlaceholders prop is provided', () => {
@@ -88,7 +107,7 @@ describe('createPluginsList', () => {
 
   it('should add layoutPlugin if allowLayout prop is provided', () => {
     const plugins = createPluginsList({ allowLayouts: true });
-    expect(plugins).toContain(layoutPlugin);
+    expect(plugins).toContain(layoutPlugin());
   });
 
   it('should not add statusPlugin if allowStatus prop is false', () => {
@@ -102,7 +121,11 @@ describe('createPluginsList', () => {
   it('should add statusPlugin if allowStatus prop is true', () => {
     createPluginsList({ allowStatus: true });
     expect(statusPlugin).toHaveBeenCalledTimes(1);
-    expect(statusPlugin).toHaveBeenCalledWith({ menuDisabled: false });
+    expect(statusPlugin).toHaveBeenCalledWith({
+      menuDisabled: false,
+      allowZeroWidthSpaceAfter: true,
+      useInlineWrapper: false,
+    });
     expect(insertBlockPlugin).toBeCalledWith(
       expect.objectContaining({ nativeStatusSupported: true }),
     );
@@ -111,7 +134,11 @@ describe('createPluginsList', () => {
   it('should add statusPlugin if allowStatus prop is provided with menuDisabled true', () => {
     createPluginsList({ allowStatus: { menuDisabled: true } });
     expect(statusPlugin).toHaveBeenCalledTimes(1);
-    expect(statusPlugin).toHaveBeenCalledWith({ menuDisabled: true });
+    expect(statusPlugin).toHaveBeenCalledWith({
+      menuDisabled: true,
+      allowZeroWidthSpaceAfter: true,
+      useInlineWrapper: false,
+    });
     expect(insertBlockPlugin).toBeCalledWith(
       expect.objectContaining({ nativeStatusSupported: false }),
     );
@@ -120,7 +147,11 @@ describe('createPluginsList', () => {
   it('should add statusPlugin if allowStatus prop is provided with menuDisabled false', () => {
     createPluginsList({ allowStatus: { menuDisabled: false } });
     expect(statusPlugin).toHaveBeenCalledTimes(1);
-    expect(statusPlugin).toHaveBeenCalledWith({ menuDisabled: false });
+    expect(statusPlugin).toHaveBeenCalledWith({
+      menuDisabled: false,
+      allowZeroWidthSpaceAfter: true,
+      useInlineWrapper: false,
+    });
     expect(insertBlockPlugin).toBeCalledWith(
       expect.objectContaining({ nativeStatusSupported: true }),
     );
@@ -128,15 +159,33 @@ describe('createPluginsList', () => {
 
   it('should add analyticsPlugin if allowAnalyticsGASV3 prop is provided', () => {
     const createAnalyticsEvent = jest.fn();
-    createPluginsList({ allowAnalyticsGASV3: true }, createAnalyticsEvent);
+    createPluginsList(
+      { allowAnalyticsGASV3: true },
+      undefined,
+      createAnalyticsEvent,
+    );
     expect(analyticsPlugin).toHaveBeenCalledTimes(1);
     expect(analyticsPlugin).toHaveBeenCalledWith(createAnalyticsEvent);
   });
 
   it('should no add analyticsPlugin if allowAnalyticsGASV3 prop is false', () => {
     const createAnalyticsEvent = jest.fn();
-    createPluginsList({ allowAnalyticsGASV3: false }, createAnalyticsEvent);
+    createPluginsList(
+      { allowAnalyticsGASV3: false },
+      undefined,
+      createAnalyticsEvent,
+    );
     expect(analyticsPlugin).not.toHaveBeenCalled();
+  });
+
+  it('should add feedbackDialogPlugin if feedbackInfo is provided for editor props', () => {
+    const feedbackInfo = {
+      product: 'bitbucket',
+      packageName: 'editor',
+      packageVersion: '1.1.1',
+    };
+    createPluginsList({ feedbackInfo });
+    expect(feedbackDialogPlugin).toBeCalledWith(feedbackInfo);
   });
 
   it('should always add insertBlockPlugin to the editor with insertMenuItems', () => {
@@ -158,6 +207,7 @@ describe('createPluginsList', () => {
     ];
 
     const props = {
+      allowTables: true,
       insertMenuItems: customItems,
       nativeStatusSupported: false,
     };
@@ -165,5 +215,15 @@ describe('createPluginsList', () => {
     createPluginsList(props);
     expect(insertBlockPlugin).toHaveBeenCalledTimes(1);
     expect(insertBlockPlugin).toHaveBeenCalledWith(props);
+  });
+
+  it('should add historyPlugin to mobile editor', () => {
+    createPluginsList({ appearance: 'mobile' });
+    expect(historyPlugin).toHaveBeenCalled();
+  });
+
+  it('should not add historyPlugin to non-mobile editor', () => {
+    createPluginsList({ appearance: 'full-page' });
+    expect(historyPlugin).not.toHaveBeenCalled();
   });
 });

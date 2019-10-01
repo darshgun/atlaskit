@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const npmRun = require('npm-run');
 const chalk = require('chalk').default;
-const { fExists } = require('./fs');
+const axios = require('axios');
 
 const masterStatsFolder = createDir('./.masterBundleSize');
 const currentStatsFolder = createDir('./.currentBundleSize');
@@ -14,8 +14,15 @@ const BUCKET_NAME = 'atlaskit-artefacts';
 const BUCKET_REGION = 'ap-southeast-2';
 
 function createDir(dir) {
-  if (!fExists(dir)) {
+  try {
     fs.mkdirSync(dir);
+  } catch (err) {
+    if ((err.code = 'EEXIST')) {
+      return dir;
+    } else {
+      console.log(err);
+      process.exit(0);
+    }
   }
   return dir;
 }
@@ -35,6 +42,35 @@ function isAWSAccessible() {
   return true;
 }
 
+/**
+ * This function downloads files from S3 and create ratchet file into a given download location.
+ * This does not use S3 commands instead uses http get to fetch ratchet file from S3.
+ * This is designed to enable local dev loop without AWS credentials to access data on S3.
+ **/
+async function downloadFromS3ForLocal(downloadToFolder, branch, package) {
+  const ratchetFile = `${package}-bundle-size-ratchet.json`;
+  const output = `${downloadToFolder}/${ratchetFile}`;
+  const rachetFileUrl = `http://s3-${BUCKET_REGION}.amazonaws.com/${BUCKET_NAME}/${branch}/bundleSize/${ratchetFile}`;
+  try {
+    const response = await axios({
+      url: rachetFileUrl,
+      method: 'get',
+    });
+    fs.writeFileSync(output, JSON.stringify(response.data), 'utf-8');
+  } catch (err) {
+    if (err.response.status === 403 || err.response.status === 404) {
+      console.error(
+        chalk.red(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
+      Please consult the README.md in the @atlaskit/measure folder on how to add a new package on s3.`),
+      );
+      process.exit(0);
+    } else {
+      console.error(chalk.red(`${err}`));
+      process.exit(1);
+    }
+  }
+}
+
 function downloadFromS3(downloadToFolder, branch, package) {
   if (!isAWSAccessible()) {
     process.exit(1);
@@ -44,10 +80,22 @@ function downloadFromS3(downloadToFolder, branch, package) {
   const bucketPath = `s3://${BUCKET_NAME}/${branch}/bundleSize/${ratchetFile}`;
 
   console.log('bucket', bucketPath);
-
-  npmRun.sync(
-    `s3-cli --region="${BUCKET_REGION}" get ${bucketPath} ${downloadToFolder}/${ratchetFile}`,
-  );
+  try {
+    npmRun.sync(
+      `s3-cli --region="${BUCKET_REGION}" get ${bucketPath} ${downloadToFolder}/${ratchetFile}`,
+    );
+  } catch (err) {
+    if (err.status === 1) {
+      console.error(
+        chalk.red(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
+        Please consult the README.md in the @atlaskit/measure folder on how to add a new package on s3.`),
+      );
+      process.exit(1);
+    } else {
+      console.error(chalk.red(`${err}`));
+      process.exit(1);
+    }
+  }
 }
 
 function uploadToS3(pathToFile, branch) {
@@ -55,7 +103,7 @@ function uploadToS3(pathToFile, branch) {
     process.exit(1);
   }
 
-  if (!fs.existsSync(path.resolve(pathToFile))) {
+  if (!fs.accessSync(path.resolve(pathToFile))) {
     console.error(
       chalk.red(`Could not find file: ${pathToFile} from ${process.cwd()}`),
     );
@@ -75,6 +123,7 @@ function uploadToS3(pathToFile, branch) {
 module.exports = {
   currentStatsFolder,
   downloadFromS3,
+  downloadFromS3ForLocal,
   masterStatsFolder,
   uploadToS3,
 };

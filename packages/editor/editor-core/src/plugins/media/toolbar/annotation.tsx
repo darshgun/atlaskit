@@ -1,6 +1,7 @@
 import * as React from 'react';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
-import { Context } from '@atlaskit/media-core';
+import { MediaClientConfig } from '@atlaskit/media-core';
+import { getMediaClient } from '@atlaskit/media-client';
 import { EditorView } from 'prosemirror-view';
 import { defineMessages, InjectedIntl } from 'react-intl';
 
@@ -62,8 +63,9 @@ export const messages = defineMessages({
 });
 
 type AnnotationToolbarProps = {
-  viewContext: Context;
+  viewMediaClientConfig: MediaClientConfig;
   id: string;
+  collection?: string;
   intl: InjectedIntl;
   view?: EditorView;
 };
@@ -78,9 +80,15 @@ export class AnnotationToolbar extends React.Component<AnnotationToolbarProps> {
   }
 
   async checkIsImage() {
-    const state = await this.props.viewContext.file.getCurrentState(
-      this.props.id,
-    );
+    const mediaClient = getMediaClient({
+      mediaClientConfig: this.props.viewMediaClientConfig,
+    });
+    if (!this.props.id) {
+      return;
+    }
+    const state = await mediaClient.file.getCurrentState(this.props.id, {
+      collectionName: this.props.collection,
+    });
 
     if (state && state.status !== 'error' && state.mediaType === 'image') {
       this.setState({
@@ -139,8 +147,9 @@ export const renderAnnotationButton = (
     return (
       <AnnotationToolbar
         key={idx}
-        viewContext={pluginState.mediaContext!}
+        viewMediaClientConfig={pluginState.mediaClientConfig!}
         id={selectedContainer.firstChild!.attrs.id}
+        collection={selectedContainer.firstChild!.attrs.collection}
         view={view}
         intl={intl}
       />

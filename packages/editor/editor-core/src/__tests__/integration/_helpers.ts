@@ -23,7 +23,10 @@ export const linkToolbar =
 export const insertMention = async (browser: any, query: string) => {
   await browser.type(editable, '@');
   await browser.waitForSelector(typeAheadPicker);
-  await browser.type(editable, query);
+  // Investigate why string based input (without an array) fails in firefox
+  // https://product-fabric.atlassian.net/browse/ED-7044
+  const q = query.split('');
+  await browser.type(editable, q);
   await browser.keys(['Return']);
 };
 
@@ -164,23 +167,15 @@ export const rerenderEditor = async (browser: any) => {
   await browser.click('.reloadEditorButton');
 };
 
-export const insertMedia = async (
+// This function assumes the media picker modal is already shown.
+export const insertMediaFromMediaPicker = async (
   browser: any,
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
-  const openMediaPopup = `[aria-label="${
-    insertBlockMessages.filesAndImages.defaultMessage
-  }"]`;
   const insertMediaButton = '.e2e-insert-button';
   const mediaCardSelector = `${editable} .img-wrapper`;
-
   const existingMediaCards = await browser.$$(mediaCardSelector);
-
-  // wait for media button in toolbar and click it
-  await browser.waitForSelector(openMediaPopup);
-  await browser.click(openMediaPopup);
-
   // wait for media item, and select it
   await browser.waitForSelector(
     '.e2e-recent-upload-card [aria-label="one.svg"]',
@@ -228,6 +223,21 @@ export const insertMedia = async (
       mediaCardCount,
     );
   }
+};
+
+export const insertMedia = async (
+  browser: any,
+  filenames = ['one.svg'],
+  fileSelector = 'div=%s',
+) => {
+  const openMediaPopup = `[aria-label="${
+    insertBlockMessages.filesAndImages.defaultMessage
+  }"]`;
+
+  // wait for media button in toolbar and click it
+  await browser.waitForSelector(openMediaPopup);
+  await browser.click(openMediaPopup);
+  await insertMediaFromMediaPicker(browser, filenames, fileSelector);
 };
 
 /**
@@ -302,7 +312,12 @@ export const toggleBreakout = async (page: any, times: number) => {
 };
 
 export const quickInsert = async (browser: any, insertTitle: string) => {
-  await browser.type(editable, `/${insertTitle.split(' ')[0]}`);
+  const firstWord = `/${insertTitle.split(' ')[0]}`;
+  // Investigate why string based input (without an array) fails in firefox
+  // https://product-fabric.atlassian.net/browse/ED-7044
+  const inputText = firstWord.split('');
+  await browser.type(editable, inputText);
+
   await browser.waitForSelector('div[aria-label="Popup"]');
   await browser.waitForSelector(
     `[aria-label="Popup"] [role="button"][aria-describedby="${insertTitle}"]`,
@@ -327,7 +342,7 @@ export const insertMenuItem = async (browser: any, title: string) => {
 };
 
 export const currentSelectedEmoji = '.emoji-typeahead-selected';
-export const typeahead = '.ak-emoji-typeahead-list';
+export const typeahead = 'span[data-type-ahead-query]';
 
 export const insertEmoji = async (browser: any, query: string) => {
   await browser.type(editable, ':');
@@ -400,6 +415,13 @@ export const setProseMirrorTextSelection = async (
     pos.anchor,
     pos.head || pos.anchor,
   );
+};
+
+export const getProseMirrorPos = async (page: any): Promise<number> => {
+  return await page.browser.execute(() => {
+    var view = (window as any).__editorView;
+    return view.state.selection.from;
+  });
 };
 
 export const resizeColumn = async (page: any, resizeOptions: ResizeOptions) => {
@@ -489,9 +511,9 @@ export const doubleClickResizeHandle = async (
 
 export const selectColumns = async (page: any, indexes: number[]) => {
   for (let i = 0, count = indexes.length; i < count; i++) {
-    const controlSelector = `.${tableSelectors.columnControls} .${
-      TableCssClassName.COLUMN_CONTROLS_BUTTON_WRAP
-    }:nth-child(${indexes[i]}) .${TableCssClassName.CONTROLS_BUTTON}`;
+    const controlSelector = `.${
+      TableCssClassName.COLUMN_CONTROLS_DECORATIONS
+    }[data-start-index="${indexes[i]}"]`;
     await page.waitForSelector(controlSelector);
     if (i > 0) {
       await page.browser.keys(['Shift']);

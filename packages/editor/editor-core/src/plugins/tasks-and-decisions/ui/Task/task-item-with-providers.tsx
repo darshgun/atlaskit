@@ -27,11 +27,23 @@ export interface State {
 export default class TaskItemWithProviders extends Component<Props, State> {
   state: State = { resolvedContextProvider: undefined };
 
-  componentWillMount() {
+  // Storing the mounted state is an anti-pattern, however the asynchronous state
+  // updates via `updateContextIdentifierProvider` means we may be dismounted before
+  // it receives a response.
+  // Since we can't cancel the Promise we store the mounted state to avoid state
+  // updates when no longer suitable.
+  private mounted = false;
+
+  UNSAFE_componentWillMount() {
+    this.mounted = true;
     this.updateContextIdentifierProvider(this.props);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (
       nextProps.contextIdentifierProvider !==
       this.props.contextIdentifierProvider
@@ -44,9 +56,9 @@ export default class TaskItemWithProviders extends Component<Props, State> {
     if (props.contextIdentifierProvider) {
       try {
         const resolvedContextProvider = await props.contextIdentifierProvider;
-        this.setState({ resolvedContextProvider });
+        if (this.mounted) this.setState({ resolvedContextProvider });
       } catch (err) {
-        this.setState({ resolvedContextProvider: undefined });
+        if (this.mounted) this.setState({ resolvedContextProvider: undefined });
       }
     } else {
       this.setState({ resolvedContextProvider: undefined });

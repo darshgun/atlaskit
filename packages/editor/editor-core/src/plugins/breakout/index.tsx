@@ -99,7 +99,13 @@ function createPlugin({
   });
 }
 
-const breakoutPlugin: EditorPlugin = {
+interface BreakoutPluginOptions {
+  allowBreakoutButton?: boolean;
+}
+
+const breakoutPlugin = (options?: BreakoutPluginOptions): EditorPlugin => ({
+  name: 'breakout',
+
   pmPlugins() {
     return [{ name: 'breakout', plugin: createPlugin }];
   },
@@ -109,32 +115,32 @@ const breakoutPlugin: EditorPlugin = {
 
   contentComponent({
     editorView,
-    appearance,
     popupsMountPoint,
     popupsBoundariesElement,
     popupsScrollableElement,
   }) {
+    // This is a bit crappy, but should be resolved once we move to a static schema.
+    if (options && !options.allowBreakoutButton) {
+      return null;
+    }
+
     return (
       <WithPluginState
         plugins={{
           pluginState: pluginKey,
         }}
         render={({ pluginState }) => (
-          <>
-            {appearance === 'full-page' && (
-              <LayoutButton
-                editorView={editorView}
-                mountPoint={popupsMountPoint}
-                boundariesElement={popupsBoundariesElement}
-                scrollableElement={popupsScrollableElement}
-                node={pluginState.breakoutNode}
-              />
-            )}
-          </>
+          <LayoutButton
+            editorView={editorView}
+            mountPoint={popupsMountPoint}
+            boundariesElement={popupsBoundariesElement}
+            scrollableElement={popupsScrollableElement}
+            node={pluginState.breakoutNode}
+          />
         )}
       />
     );
   },
-};
+});
 
 export default breakoutPlugin;

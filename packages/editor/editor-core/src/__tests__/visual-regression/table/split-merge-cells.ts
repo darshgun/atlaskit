@@ -1,5 +1,4 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
-import { Device, initFullPageEditorWithAdf, snapshot } from '../_utils';
+import { snapshot, initEditorWithAdf, Appearance } from '../_utils';
 import {
   clickCellOptions,
   getSelectorForTableCell,
@@ -12,9 +11,10 @@ import {
   pressKeyUp,
 } from '../../__helpers/page-objects/_keyboard';
 import adf from './__fixtures__/default-table.adf.json';
+import { Page } from '../../__helpers/page-objects/_types';
 
 describe('Table context menu: merge-split cells', () => {
-  let page: any;
+  let page: Page;
 
   const tableMergeAndSplitCells = async (
     firstCell: string,
@@ -26,15 +26,15 @@ describe('Table context menu: merge-split cells', () => {
     await pressKeyUp(page, 'Shift');
     await page.waitForSelector(tableSelectors.selectedCell);
     await clickCellOptions(page);
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
     await selectCellOption(page, tableSelectors.mergeCellsText);
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
     await page.waitForSelector(firstCell);
     await page.click(firstCell);
     await clickCellOptions(page);
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
     await selectCellOption(page, tableSelectors.splitCellText);
-    await snapshot(page, MINIMUM_THRESHOLD);
+    await snapshot(page);
   };
 
   beforeAll(async () => {
@@ -43,7 +43,11 @@ describe('Table context menu: merge-split cells', () => {
   });
 
   beforeEach(async () => {
-    await initFullPageEditorWithAdf(page, adf, Device.LaptopHiDPI);
+    await initEditorWithAdf(page, {
+      adf,
+      appearance: Appearance.fullPage,
+      viewport: { width: 1280, height: 600 },
+    });
     await clickFirstCell(page);
   });
 

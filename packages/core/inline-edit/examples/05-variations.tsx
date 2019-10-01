@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { gridSize } from '@atlaskit/theme';
 import { InlineEditableTextfield } from '../src';
 
@@ -21,11 +21,17 @@ export default class InlineEditExample extends React.Component<void, State> {
 
   validateValue = '';
 
+  private validateTimeoutId: number | undefined;
+
+  componentWillUnmount() {
+    window.clearTimeout(this.validateTimeoutId);
+  }
+
   validate = (value: string) => {
     this.validateValue = value;
     return new Promise<{ value: string; error: string } | undefined>(
       resolve => {
-        setTimeout(() => {
+        this.validateTimeoutId = window.setTimeout(() => {
           if (value.length <= 6) {
             resolve({ value, error: 'Enter a value longer than 6 characters' });
           }

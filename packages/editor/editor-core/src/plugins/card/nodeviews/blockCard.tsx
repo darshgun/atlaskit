@@ -1,44 +1,68 @@
 import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
-import { Card } from '@atlaskit/smart-card';
+import { Card as SmartCard } from '@atlaskit/smart-card';
 import * as PropTypes from 'prop-types';
 import { EditorView } from 'prosemirror-view';
-import wrapComponentWithClickArea from '../../../nodeviews/legacy-nodeview-factory/ui/wrapper-click-area';
-import { stateKey as ReactNodeViewState } from '../../../plugins/base/pm-plugins/react-nodeview';
+import rafSchedule from 'raf-schd';
+
+import { SmartCardProps, Card } from './genericCard';
+import UnsupportedBlockNode from '../../unsupported-content/nodeviews/unsupported-block';
+import {
+  SelectionBasedNodeView,
+  getPosHandler,
+} from '../../../nodeviews/ReactNodeView';
+import { registerCard } from '../pm-plugins/actions';
 
 export interface Props {
   children?: React.ReactNode;
   node: PMNode;
-  getPos: () => number;
   view: EditorView;
   selected?: boolean;
+  getPos: getPosHandler;
 }
-
-class BlockCardNode extends React.Component<Props, {}> {
+export class BlockCardComponent extends React.PureComponent<SmartCardProps> {
   onClick = () => {};
 
   static contextTypes = {
     contextAdapter: PropTypes.object,
   };
 
-  render() {
-    const { node, selected } = this.props;
-    const { url, data } = node.attrs;
+  onResolve = (data: { url?: string; title?: string }) => {
+    const { getPos, view } = this.props;
+    if (!getPos) {
+      return;
+    }
 
-    const cardContext = this.context.contextAdapter
-      ? this.context.contextAdapter.card
-      : undefined;
+    const { title, url } = data;
+
+    // don't dispatch immediately since we might be in the middle of
+    // rendering a nodeview
+    rafSchedule(() =>
+      view.dispatch(
+        registerCard({
+          title,
+          url,
+          pos: getPos(),
+        })(view.state.tr),
+      ),
+    );
+  };
+
+  render() {
+    const { node, selected, cardContext } = this.props;
+    const { url, data } = node.attrs;
 
     // render an empty span afterwards to get around Webkit bug
     // that puts caret in next editable text element
     const cardInner = (
       <>
-        <Card
+        <SmartCard
           url={url}
           data={data}
           appearance="block"
           isSelected={selected}
           onClick={this.onClick}
+          onResolve={this.onResolve}
         />
         <span contentEditable={true} />
       </>
@@ -58,13 +82,16 @@ class BlockCardNode extends React.Component<Props, {}> {
   }
 }
 
-const ClickableBlockCard = wrapComponentWithClickArea(BlockCardNode);
-export default class WrappedInline extends React.PureComponent<Props, {}> {
+const WrappedBlockCard = Card(BlockCardComponent, UnsupportedBlockNode);
+
+export class BlockCard extends SelectionBasedNodeView {
   render() {
     return (
-      <ClickableBlockCard
-        {...this.props}
-        pluginState={ReactNodeViewState.getState(this.props.view.state)}
+      <WrappedBlockCard
+        node={this.node}
+        selected={this.insideSelection()}
+        view={this.view}
+        getPos={this.getPos}
       />
     );
   }

@@ -4,24 +4,22 @@ import {
   panel,
   p,
 } from '@atlaskit/editor-test-helpers';
-import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   removePanel,
   changePanelType,
 } from '../../../../plugins/panel/actions';
-import { panelPlugin } from '../../../../plugins';
-import { PanelType } from '../../../../../../adf-schema';
+import { PanelType } from '@atlaskit/adf-schema';
 
 describe('panel actions', () => {
   const createEditor = createEditorFactory();
-  let createAnalyticsEvent: CreateUIAnalyticsEventSignature;
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
   const editor = (doc: any) => {
     createAnalyticsEvent = jest.fn().mockReturnValue({ fire() {} });
     return createEditor({
       doc,
-      editorProps: { allowAnalyticsGASV3: true },
-      editorPlugins: [panelPlugin],
+      editorProps: { allowAnalyticsGASV3: true, allowPanel: true },
       createAnalyticsEvent,
     });
   };

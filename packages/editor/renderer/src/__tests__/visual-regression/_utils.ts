@@ -2,6 +2,7 @@ import {
   getExampleUrl,
   navigateToUrl,
   disableAllSideEffects,
+  compareScreenshot,
 } from '@atlaskit/visual-regression/helper';
 import { Page } from 'puppeteer';
 import { Props } from '../../ui/Renderer';
@@ -9,6 +10,10 @@ import { RendererAppearance } from '../../ui/Renderer/types';
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
+
+type WindowOverride = Window & {
+  __mountRenderer: (props?: RendererPropsOverrides, adf?: Object) => void;
+};
 
 export enum Device {
   Default = 'Default',
@@ -43,6 +48,7 @@ export async function goToRendererTestingExample(page: Page) {
 export type RendererPropsOverrides = { [T in keyof Props]?: Props[T] } & {
   showSidebar?: boolean;
 };
+
 export async function mountRenderer(
   page: Page,
   props?: RendererPropsOverrides,
@@ -51,9 +57,7 @@ export async function mountRenderer(
   await page.$eval(
     '#renderer-container',
     (_e, props, adf) => {
-      (window as Window & {
-        __mountRenderer: (props?: RendererPropsOverrides, adf?: Object) => void;
-      }).__mountRenderer(props, adf);
+      ((window as unknown) as WindowOverride).__mountRenderer(props, adf);
     },
     props,
     adf,
@@ -107,9 +111,13 @@ export async function initRendererWithADF(
 
 export async function snapshot(
   page: Page,
-  tolerance?: number,
-  selector = '#RendererOutput',
+  threshold: {
+    tolerance?: number;
+    useUnsafeThreshold?: boolean;
+  } = {},
+  selector: string = '#RendererOutput',
 ) {
+  const { tolerance, useUnsafeThreshold } = threshold;
   const renderer = await page.$(selector);
 
   // Try to take a screenshot of only the renderer.
@@ -121,16 +129,7 @@ export async function snapshot(
     image = await page.screenshot();
   }
 
-  if (tolerance) {
-    // @ts-ignore
-    expect(image).toMatchProdImageSnapshot({
-      failureThreshold: `${tolerance}`,
-      failureThresholdType: 'percent',
-    });
-    return;
-  }
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
+  return compareScreenshot(image, tolerance, { useUnsafeThreshold });
 }
 
 export async function animationFrame(page: Page) {

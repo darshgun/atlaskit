@@ -21,6 +21,7 @@ import {
 } from 'prosemirror-state';
 import { liftTarget, findWrapping } from 'prosemirror-transform';
 import { LEFT } from '../keymaps';
+import { browser } from '@atlaskit/editor-common';
 import {
   JSONTransformer,
   JSONDocNode,
@@ -41,6 +42,7 @@ export {
   findFarthestParentNode,
   isSelectionEndOfParagraph,
   nodesBetweenChanged,
+  getNodesCount,
 } from './document';
 
 export * from './action';
@@ -52,6 +54,7 @@ export { JSONDocNode, JSONNode };
 
 export { filterContentByType } from './filter';
 
+export { containsClassName } from './dom';
 export const ZeroWidthSpace = '\u200b';
 
 function validateNode(_node: Node): boolean {
@@ -307,9 +310,14 @@ export function checkNodeDown(
   doc: Node,
   filter: (node: Node) => boolean,
 ): boolean {
-  const res = doc.resolve(
-    selection.$to.after(findAncestorPosition(doc, selection.$to).depth),
-  );
+  const ancestorDepth = findAncestorPosition(doc, selection.$to).depth;
+
+  // Top level node
+  if (ancestorDepth === 0) {
+    return false;
+  }
+
+  const res = doc.resolve(selection.$to.after(ancestorDepth));
   return res.nodeAfter ? filter(res.nodeAfter) : false;
 }
 
@@ -471,7 +479,7 @@ export function getGroupsInRange(
 /**
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
-export function findAncestorPosition(doc: Node, pos: any): any {
+export function findAncestorPosition(doc: Node, pos: ResolvedPos): any {
   const nestableBlocks = ['blockquote', 'bulletList', 'orderedList'];
 
   if (pos.depth === 1) {
@@ -717,9 +725,9 @@ export const isTemporary = (id: string): boolean => {
 
 // @see: https://github.com/ProseMirror/prosemirror/issues/710
 // @see: https://bugs.chromium.org/p/chromium/issues/detail?id=740085
-// Chrome >= 58
+// Chrome >= 58 (desktop only)
 export const isChromeWithSelectionBug =
-  parseInt((navigator.userAgent.match(/Chrome\/(\d{2})/) || [])[1], 10) >= 58;
+  browser.chrome && !browser.android && browser.chrome_version >= 58;
 
 export const isEmptyNode = (schema: Schema) => {
   const {
@@ -945,3 +953,17 @@ export const normaliseNestedLayout = (state: EditorState, node: Node) => {
 
   return node;
 };
+
+export function shallowEqual(obj1: any = {}, obj2: any = {}) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  return (
+    keys1.length === keys2.length &&
+    keys1.reduce((acc, key) => acc && obj1[key] === obj2[key], true)
+  );
+}
+
+export function sum<T>(arr: Array<T>, f: (val: T) => number) {
+  return arr.reduce((val, x) => val + f(x), 0);
+}

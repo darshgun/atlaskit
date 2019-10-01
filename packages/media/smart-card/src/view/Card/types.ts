@@ -1,22 +1,14 @@
-import { Client } from '../../client';
+import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 
 export type CardAppearance = 'inline' | 'block';
 
-type BaseCardProps = {
+export interface CardProps extends WithAnalyticsEventsProps {
   appearance: CardAppearance;
   isSelected?: boolean;
   onClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>;
   importer?: (target: any) => void;
   container?: HTMLElement;
-};
-
-export type CardWithData = BaseCardProps & {
-  data: any;
-};
-
-export type CardWithUrl = BaseCardProps & {
-  url: string;
-  client?: Client;
-};
-
-export type CardProps = CardWithUrl | CardWithData;
+  data?: any;
+  url?: string;
+  onResolve?: (data: { url?: string; title?: string }) => void;
+}

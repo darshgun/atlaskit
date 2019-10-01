@@ -1,9 +1,10 @@
 import { MediaPluginState, MediaNodeWithPosHandler } from '../pm-plugins/main';
+import { MediaAttributes } from '@atlaskit/adf-schema';
 
 export const findMediaSingleNode = (
   mediaPluginState: MediaPluginState,
   id: string,
-) => {
+): MediaNodeWithPosHandler | null => {
   const { mediaNodes } = mediaPluginState;
 
   // Array#find... no IE support
@@ -27,11 +28,23 @@ export const findMediaSingleNode = (
   );
 };
 
+export const findAllMediaSingleNodes = (
+  mediaPluginState: MediaPluginState,
+  id: string,
+): MediaNodeWithPosHandler[] => {
+  const { mediaNodes } = mediaPluginState;
+
+  return mediaNodes.filter(
+    nodeWithHandler =>
+      (nodeWithHandler.node.attrs as MediaAttributes).id === id,
+  );
+};
+
 export const findMediaNode = (
   mediaPluginState: MediaPluginState,
   id: string,
   isMediaSingle: boolean,
-) => {
+): MediaNodeWithPosHandler | null => {
   const mediaNodeWithPos = isMediaSingle
     ? findMediaSingleNode(mediaPluginState, id)
     : mediaPluginState.mediaGroupNodes[id];
@@ -42,7 +55,9 @@ export const isMobileUploadCompleted = (
   mediaPluginState: MediaPluginState,
   mediaId: string,
 ) =>
-  mediaPluginState.editorAppearance === 'mobile' &&
+  mediaPluginState.mediaPluginOptions &&
+  // This flag tells us that it's a 'mobile' env.
+  mediaPluginState.mediaPluginOptions.allowMarkingUploadsAsIncomplete &&
   typeof mediaPluginState.mobileUploadComplete[mediaId] === 'boolean'
     ? mediaPluginState.mobileUploadComplete[mediaId]
     : undefined;

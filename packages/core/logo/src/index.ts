@@ -26,12 +26,14 @@ import {
   JiraSoftwareIcon,
   JiraSoftwareWordmark,
 } from './JiraSoftwareLogo';
+import { OpsGenieLogo, OpsGenieIcon, OpsGenieWordmark } from './OpsGenieLogo';
 import {
   StatuspageLogo,
   StatuspageIcon,
   StatuspageWordmark,
 } from './StatuspageLogo';
 import { StrideLogo, StrideIcon, StrideWordmark } from './StrideLogo';
+import { TrelloLogo, TrelloIcon, TrelloWordmark } from './TrelloLogo';
 
 export {
   AtlassianLogo,
@@ -58,10 +60,16 @@ export {
   JiraSoftwareLogo,
   JiraSoftwareIcon,
   JiraSoftwareWordmark,
+  OpsGenieLogo,
+  OpsGenieIcon,
+  OpsGenieWordmark,
   StatuspageLogo,
   StatuspageIcon,
   StatuspageWordmark,
   StrideLogo,
   StrideIcon,
   StrideWordmark,
+  TrelloLogo,
+  TrelloIcon,
+  TrelloWordmark,
 };

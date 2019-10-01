@@ -23,10 +23,12 @@ export function createPlugin(): Plugin | undefined {
   });
 }
 
-const clearMarksOnChangeToEmptyDocumentPlugin: EditorPlugin = {
+const clearMarksOnChangeToEmptyDocumentPlugin = (): EditorPlugin => ({
+  name: 'clearMarksOnEmptyDoc',
+
   pmPlugins() {
     return [{ name: 'clearMarksOnChange', plugin: createPlugin }];
   },
-};
+});
 
 export default clearMarksOnChangeToEmptyDocumentPlugin;

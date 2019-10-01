@@ -1,5 +1,106 @@
 # @atlaskit/page-header
 
+## 9.0.13
+
+### Patch Changes
+
+- [patch][0b09089d27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b09089d27):
+
+  Text alignment of action items will now only be applied to direct children
+
+## 9.0.12
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 9.0.11
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 9.0.10
+
+### Patch Changes
+
+- [patch][708028db86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/708028db86):
+
+  Change all the imports to theme in Core to use multi entry points
+
+## 9.0.9
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 9.0.8
+
+- Updated dependencies [84887b940c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84887b940c):
+  - @atlaskit/inline-edit@10.0.13
+  - @atlaskit/textfield@3.0.0
+
+## 9.0.7
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 9.0.6
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 9.0.5
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 9.0.4
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/breadcrumbs@9.0.3
+  - @atlaskit/button@13.0.11
+  - @atlaskit/inline-edit@10.0.5
+  - @atlaskit/select@10.0.0
+
+## 9.0.3
+
+### Patch Changes
+
+- [patch][93bcf314c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93bcf314c6):
+
+  Added missing tslib dep
+
+## 9.0.2
+
+### Patch Changes
+
+- [patch][3ce8deb182](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ce8deb182):
+
+  Page-header now supports a flex parent around the actions
+
 ## 9.0.1
 
 - Updated dependencies [52b15f57d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52b15f57d3):

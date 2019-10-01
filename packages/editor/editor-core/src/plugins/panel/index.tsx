@@ -53,7 +53,9 @@ const insertPanelType = (panelType: PanelType, state: EditorState) =>
     state.schema.nodes.paragraph.createChecked(),
   );
 
-const panelPlugin: EditorPlugin = {
+const panelPlugin = (): EditorPlugin => ({
+  name: 'panel',
+
   nodes() {
     return [{ name: 'panel', node: panel }];
   },
@@ -137,6 +139,6 @@ const panelPlugin: EditorPlugin = {
     ],
     floatingToolbar: getToolbarConfig,
   },
-};
+});
 
 export default panelPlugin;

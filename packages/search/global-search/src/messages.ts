@@ -1,6 +1,27 @@
 import { defineMessages } from 'react-intl';
 
 export const messages = defineMessages({
+  confluence_no_results_in_space: {
+    id: 'global_search.confluence.no_results_in_space',
+    defaultMessage: "No results in '{spaceTitle}'",
+    description: '',
+  },
+  confluence_remove_space_filter: {
+    id: 'global_search.confluence.remove_space_filter',
+    defaultMessage: 'Remove space filter',
+    description: '',
+  },
+  confluence_space_filter: {
+    id: 'global_search.confluence.space_filter',
+    defaultMessage: 'Filter results by space',
+    description: '',
+  },
+  confluence_more_filters: {
+    id: 'global_search.confluence.more_filters',
+    defaultMessage: 'More filter options',
+    description:
+      'Text to display on button that takes the user to advanced search, which has more filtering options',
+  },
   confluence_recent_pages_heading: {
     id: 'global_search.confluence.recent_pages_heading',
     defaultMessage: 'Recent pages and blogs',
@@ -186,8 +207,7 @@ export const messages = defineMessages({
   },
   jira_no_results_body: {
     id: 'global_search.jira.no_results_body',
-    defaultMessage:
-      'Try again with a different term, or refine your results with our advanced search.',
+    defaultMessage: 'Try again with a different term.',
     description: '',
   },
   jira_no_recent_activity_body: {
@@ -229,5 +249,23 @@ export const messages = defineMessages({
     id: 'global_search.give_feedback',
     defaultMessage: 'Give feedback',
     description: '',
+  },
+  show_more_button_text: {
+    id: 'global_search.show_more_button_text',
+    defaultMessage: 'Show {itemsPerPage} more results',
+    description:
+      'Text for button that is used to load more results for a search',
+  },
+  show_more_button_advanced_search: {
+    id: 'global_search.show_more_button_advanced_search_v2',
+    defaultMessage: 'View all results',
+    description:
+      'Text for button that is used when we cannot load more results and direct user to advanced search',
+  },
+  confluence_container_subtext_with_modified_date: {
+    id: 'global_search.confluence.subtext_with_modified_date',
+    defaultMessage: '{containerName}  ·  Updated {friendlyLastModified}',
+    description:
+      'Text describing which space a given search result is from, as well as a date when it was last edited or created.',
   },
 });

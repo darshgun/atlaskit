@@ -39,6 +39,12 @@ export interface MentionResourceConfig extends ServiceConfig {
   mentionNameResolver?: MentionNameResolver;
 }
 
+export interface TeamMentionResourceConfig extends MentionResourceConfig {
+  teamLinkResolver?: (teamId: string) => string;
+  teamHighlightEnabled?: boolean;
+  createTeamPath?: string;
+}
+
 export interface ResourceProvider<Result> {
   /**
    * Subscribe to ResourceProvider results
@@ -80,6 +86,11 @@ export interface MentionProvider
   ): void;
   shouldHighlightMention(mention: MentionDescription): boolean;
   isFiltering(query: string): boolean;
+}
+
+export interface TeamMentionProvider extends MentionProvider {
+  mentionTypeaheadHighlightEnabled: () => boolean;
+  mentionTypeaheadCreateTeamPath: () => string | undefined;
 }
 
 /**
@@ -447,7 +458,7 @@ export class MentionResource extends AbstractMentionResource
     return { ...result, mentions, query: result.query || query };
   }
 
-  protected recordSelection(
+  recordSelection(
     mention: MentionDescription,
     contextIdentifier?: MentionContextIdentifier,
   ): Promise<void> {

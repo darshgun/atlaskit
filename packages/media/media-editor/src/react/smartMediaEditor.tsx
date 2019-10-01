@@ -13,6 +13,8 @@ import {
   UploadableFile,
   FileIdentifier,
 } from '@atlaskit/media-client';
+// Importing from own entry-point, since we dont' want to bring whole media-client at this point
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { messages, Shortcut } from '@atlaskit/media-ui';
 import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
@@ -71,12 +73,15 @@ export class SmartMediaEditor extends React.Component<
     intl: intlShape,
   };
 
+  private getFileUnsubscribeTimeoutId: number | undefined;
+  private uploadFileUnsubscribeTimeoutId: number | undefined;
+
   componentDidMount() {
     const { identifier } = this.props;
     this.getFile(identifier);
   }
 
-  componentWillReceiveProps(nextProps: Readonly<SmartMediaEditorProps>) {
+  UNSAFE_componentWillReceiveProps(nextProps: Readonly<SmartMediaEditorProps>) {
     const { identifier, mediaClient } = this.props;
     if (
       nextProps.identifier.id !== identifier.id ||
@@ -87,6 +92,9 @@ export class SmartMediaEditor extends React.Component<
   }
 
   componentWillUnmount() {
+    window.clearTimeout(this.getFileUnsubscribeTimeoutId);
+    window.clearTimeout(this.uploadFileUnsubscribeTimeoutId);
+
     const { getFileSubscription, uploadFileSubscription } = this;
     if (getFileSubscription) {
       getFileSubscription.unsubscribe();
@@ -106,7 +114,10 @@ export class SmartMediaEditor extends React.Component<
         next: async state => {
           if (state.status === 'error') {
             this.onError(state.message);
-            setTimeout(() => getFileSubscription.unsubscribe(), 0);
+            this.getFileUnsubscribeTimeoutId = window.setTimeout(
+              () => getFileSubscription.unsubscribe(),
+              0,
+            );
             return;
           }
 
@@ -115,7 +126,10 @@ export class SmartMediaEditor extends React.Component<
 
           if (status === 'processed') {
             this.setRemoteImageUrl(identifier);
-            setTimeout(() => getFileSubscription.unsubscribe(), 0);
+            this.getFileUnsubscribeTimeoutId = window.setTimeout(
+              () => getFileSubscription.unsubscribe(),
+              0,
+            );
           } else if (preview) {
             const { value } = await preview;
             if (value instanceof Blob) {
@@ -129,7 +143,10 @@ export class SmartMediaEditor extends React.Component<
               });
             }
 
-            setTimeout(() => getFileSubscription.unsubscribe(), 0);
+            this.getFileUnsubscribeTimeoutId = window.setTimeout(
+              () => getFileSubscription.unsubscribe(),
+              0,
+            );
           }
         },
         error: error => {
@@ -167,7 +184,7 @@ export class SmartMediaEditor extends React.Component<
         authProvider,
       };
       const destination = {
-        collection: 'recents',
+        collection: RECENTS_COLLECTION,
         authProvider: userAuthProvider,
         occurrenceKey: uuidV4(),
       };
@@ -230,14 +247,20 @@ export class SmartMediaEditor extends React.Component<
             if (onFinish) {
               onFinish(newFileIdentifier);
             }
-            setTimeout(() => uploadingFileStateSubscription.unsubscribe(), 0);
+            this.uploadFileUnsubscribeTimeoutId = window.setTimeout(
+              () => uploadingFileStateSubscription.unsubscribe(),
+              0,
+            );
           });
         } else if (
           fileState.status === 'failed-processing' ||
           fileState.status === 'error'
         ) {
           this.onError(formatMessage(messages.could_not_save_image));
-          setTimeout(() => uploadingFileStateSubscription.unsubscribe(), 0);
+          this.uploadFileUnsubscribeTimeoutId = window.setTimeout(
+            () => uploadingFileStateSubscription.unsubscribe(),
+            0,
+          );
         }
       },
     });

@@ -1,5 +1,649 @@
 # @atlaskit/global-search
 
+## 12.2.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 12.2.0
+
+### Minor Changes
+
+- [minor][bff5be0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bff5be0d46):
+
+  Quick search autocomplete analytics instrumentation
+
+## 12.1.2
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/feedback-collector@4.0.17
+  - @atlaskit/global-navigation@8.0.1
+  - @atlaskit/modal-dialog@10.3.1
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
+## 12.1.1
+
+### Patch Changes
+
+- [patch][9447579b2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9447579b2e):
+
+  Fixed withFeedbackButton warning message
+
+## 12.1.0
+
+### Minor Changes
+
+- [minor][7289e02eaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7289e02eaa):
+
+  Adds a new boolean parameter to show the new people profile url
+
+## 12.0.3
+
+### Patch Changes
+
+- [patch][14e5462b37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14e5462b37):
+
+  remove use of deprecated field text area component
+
+## 12.0.2
+
+### Patch Changes
+
+- [patch][6aa50ae773](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6aa50ae773):
+
+  remove use of deprecated FieldBase component in quick search
+
+## 12.0.1
+
+- Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
+  - @atlaskit/feedback-collector@4.0.14
+  - @atlaskit/navigation-next@6.6.3
+  - @atlaskit/global-navigation@8.0.0
+
+## 12.0.0
+
+### Major Changes
+
+- [major][d20d909c2e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d20d909c2e):
+
+  required user id so that the recents api is not called for anonymous users
+
+## 11.4.4
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/drawer@5.0.10
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/global-navigation@7.7.1
+  - @atlaskit/item@10.1.5
+  - @atlaskit/modal-dialog@10.2.1
+  - @atlaskit/navigation-next@6.6.2
+  - @atlaskit/quick-search@7.7.1
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 11.4.3
+
+- Updated dependencies [6410edd029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6410edd029):
+  - @atlaskit/badge@13.0.0
+  - @atlaskit/global-navigation@7.6.5
+  - @atlaskit/navigation-next@6.6.1
+
+## 11.4.2
+
+### Patch Changes
+
+- [patch][a05133283c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a05133283c):
+
+  Add missing dependency in package.json
+
+## 11.4.1
+
+### Patch Changes
+
+- [patch][4638a2e06a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4638a2e06a):
+
+  Fixed QuickSearchContainer so it doesn't end up with a new session id on update if not a child of SearchSessionProvider
+
+## 11.4.0
+
+### Minor Changes
+
+- [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
+
+  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+
+  More information about the deprecation of lifecycles methods can be found here:
+  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+
+## 11.3.4
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 11.3.3
+
+### Patch Changes
+
+- [patch][0d7d459f1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7d459f1a):
+
+  Fixes type errors which were incompatible with TS 3.6
+
+## 11.3.2
+
+### Patch Changes
+
+- [patch][c0a65fcf70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0a65fcf70):
+
+  Create spaceballs experiment
+
+## 11.3.1
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 11.3.0
+
+### Minor Changes
+
+- [minor][2ebd907504](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2ebd907504):
+
+  Simple experiment with faster search is now default behaviour and can no longer be toggled
+
+## 11.2.5
+
+### Patch Changes
+
+- [patch][abee1a5f4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abee1a5f4f):
+
+  Bumping internal dependency (memoize-one) to latest version (5.1.0). memoize-one@5.1.0 has full typescript support so it is recommended that typescript consumers use it also.
+
+## 11.2.4
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 11.2.3
+
+### Patch Changes
+
+- [patch][b1082f1172](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1082f1172):
+
+  include issue key matches in faster search results
+
+## 11.2.2
+
+### Patch Changes
+
+- [patch][b49435cead](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b49435cead):
+
+  Fix minor bug with faster search analytics
+
+## 11.2.1
+
+### Patch Changes
+
+- [patch][f96e55e2ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f96e55e2ec):
+
+  show project name for jira board results
+
+## 11.2.0
+
+### Minor Changes
+
+- [minor][f0887d7b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0887d7b06):
+
+  Faster search now works for Jira
+
+## 11.1.2
+
+### Patch Changes
+
+- [patch][705280759d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/705280759d):
+
+  Support pre-fetching in Jira
+
+## 11.1.1
+
+### Patch Changes
+
+- [patch][a047bbaff3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a047bbaff3):
+
+  Fixed a minor bug with Jira prefetching
+
+## 11.1.0
+
+### Minor Changes
+
+- [minor][f874437a5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f874437a5c):
+
+  Remove feature flag to get jira recent items from the aggregator
+
+## 11.0.2
+
+### Patch Changes
+
+- [patch][3aae2cb8c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3aae2cb8c7):
+
+  Move @types/seedrandom from dependencies to devDependencies.
+
+## 11.0.1
+
+### Patch Changes
+
+- [patch][a601885d40](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a601885d40):
+
+  Bump global-search to fix an issue with current master branch getting out of sync between bitbucket and npm.
+
+## 11.0.0
+
+### Major Changes
+
+- [major][5ea608f95d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ea608f95d):
+
+  Enables faster search by default. Modified date is now part of simple extensions
+
+## 10.7.0
+
+### Minor Changes
+
+- [minor][339c4517c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/339c4517c0):
+
+  Front end support for xpsearch-nav-searcher
+
+## 10.6.8
+
+### Patch Changes
+
+- [patch][3c4273bb14](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c4273bb14):
+
+  minor fix to analytics event
+
+## 10.6.7
+
+### Patch Changes
+
+- [patch][4b11eb641c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b11eb641c):
+
+  fix bugs with error state
+
+## 10.6.6
+
+### Patch Changes
+
+- [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
+
+  Fixes various TypeScript errors which were previously failing silently
+
+## 10.6.5
+
+### Patch Changes
+
+- [patch][c9fb04b37b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9fb04b37b):
+
+  Reduced the number of results we get from simple experiments
+
+## 10.6.4
+
+### Patch Changes
+
+- [patch][87510283c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87510283c3):
+
+  Include new analytics event when the space filter is shown
+
+## 10.6.3
+
+### Patch Changes
+
+- [patch][8123915fe4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8123915fe4):
+
+  Added back analytic information to request for quick search
+
+## 10.6.2
+
+- Updated dependencies [75c64ee36a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75c64ee36a):
+  - @atlaskit/quick-search@7.6.6
+  - @atlaskit/drawer@5.0.0
+
+## 10.6.1
+
+### Patch Changes
+
+- [patch][8fcbe23ec6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fcbe23ec6):
+
+  Updated types for analytics-next and buttons to make them easier to consume
+
+## 10.6.0
+
+### Minor Changes
+
+- [minor][38eb4d4da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38eb4d4da6):
+
+  Made quick search more robust against malformed Confluence responses
+
+## 10.5.1
+
+### Patch Changes
+
+- [patch][d3374c9f71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3374c9f71):
+
+  updated quick search translation string
+
+## 10.5.0
+
+### Minor Changes
+
+- [minor][dd3a518fe9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd3a518fe9):
+
+  Send filtered spaces to advanced search
+
+## 10.4.2
+
+### Patch Changes
+
+- [patch][78c4a2b655](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/78c4a2b655):
+
+  Fixed a minor dep import so its compatible with all recent versions of atlaskit/avatar
+
+## 10.4.1
+
+### Patch Changes
+
+- [patch][dd9ca0710e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd9ca0710e):
+
+  Removed incorrect jsnext:main field from package.json
+
+## 10.4.0
+
+### Minor Changes
+
+- [minor][96ff4ffc6d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96ff4ffc6d):
+
+  Fixed space filter showing on intermediate pre query screen
+
+## 10.3.4
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 10.3.3
+
+### Patch Changes
+
+- [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
+
+  bugfix, fixes missing version.json file
+
+## 10.3.2
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 10.3.1
+
+### Patch Changes
+
+- [patch][d0db01b410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0db01b410):
+
+  TypeScript users of withAnalyticsEvents and withAnalyticsContext are now required to provide props as a generic type. This is so that TypeScript can correctly calculate the props and defaultProps of the returned component.
+
+  Before:
+
+  ```typescript
+  withAnalyticsEvents()(Button) as ComponentClass<Props>;
+  ```
+
+  After:
+
+  ```typescript
+  withAnalyticsEvents<Props>()(Button);
+  ```
+
+## 10.3.0
+
+### Minor Changes
+
+- [minor][0598e7ce48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0598e7ce48):
+
+  Feedback collector with search bug fix
+
+## 10.2.4
+
+### Patch Changes
+
+- [patch][5427f7028a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5427f7028a):
+
+  Fixing problem with subtext colours not matching between pages and people in the Quick Search complex experiment.
+
+## 10.2.3
+
+### Patch Changes
+
+- [patch][554c44e342](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/554c44e342):
+
+  fix incorrect message id for i18n string
+
+## 10.2.2
+
+### Patch Changes
+
+- [patch][e80b86a298](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e80b86a298):
+
+  Adding last modified date to the simple extensions to Quick Search
+
+## 10.2.1
+
+### Patch Changes
+
+- [patch][8f711664af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8f711664af):
+
+  Added analytics for current space filter component
+
+## 10.2.0
+
+### Minor Changes
+
+- [minor][8d013cf28c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d013cf28c):
+
+  added more filters button next to confluence current space filter
+
+## 10.1.1
+
+- Updated dependencies [87a2638655](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a2638655):
+  - @atlaskit/button@13.0.10
+  - @atlaskit/feedback-collector@4.0.8
+  - @atlaskit/modal-dialog@10.0.8
+  - @atlaskit/navigation@35.1.9
+  - @atlaskit/checkbox@9.0.0
+
+## 10.1.0
+
+### Minor Changes
+
+- [minor][c11db2f5dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c11db2f5dc):
+
+  Modified caching behaviour for Confluence search so that it now has a 15 minute timeout
+
+## 10.0.1
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/avatar@16.0.6
+  - @atlaskit/button@13.0.9
+  - @atlaskit/checkbox@8.0.5
+  - @atlaskit/drawer@4.2.1
+  - @atlaskit/dropdown-menu@8.0.8
+  - @atlaskit/feedback-collector@4.0.7
+  - @atlaskit/flag@12.0.10
+  - @atlaskit/modal-dialog@10.0.7
+  - @atlaskit/navigation@35.1.8
+  - @atlaskit/quick-search@7.5.1
+  - @atlaskit/icon@19.0.0
+
+## 10.0.0
+
+### Major Changes
+
+- [major][1e1fd28bb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e1fd28bb3):
+
+  Exposed new API for consumers of global search to better control the lifecycle of the search session id
+
+## 9.2.0
+
+### Minor Changes
+
+- [minor][e6f5e7a694](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6f5e7a694):
+
+  added current space filter for confluence
+
+## 9.1.1
+
+### Patch Changes
+
+- [patch][af96d6cbb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af96d6cbb8):
+
+  Removed generic result map and replaced with jira result map
+
+## 9.1.0
+
+### Minor Changes
+
+- [minor][a0ae6daeb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0ae6daeb6):
+
+  Removed urijs dependency
+
+## 9.0.0
+
+### Major Changes
+
+- [major][e84f336455](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e84f336455):
+
+  Removed support for Atlassian Home, it is no longer a valid context or product
+
+## 8.16.0
+
+### Minor Changes
+
+- [minor][cb424f9560](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb424f9560):
+
+  - global-search is integrated with autocomplete service
+
+## 8.15.8
+
+### Patch Changes
+
+- [patch][465b8bae74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/465b8bae74):
+
+  Jira results now have project name rather than issue type
+
+## 8.15.7
+
+### Patch Changes
+
+- [patch][e7db01700d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7db01700d):
+
+  Updating empty state screen for Jira global-search
+
+## 8.15.6
+
+### Patch Changes
+
+- [patch][bf44848631](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf44848631):
+
+  fix analytics typo
+
+## 8.15.5
+
+### Patch Changes
+
+- [patch][2a32f09bc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a32f09bc6):
+
+  add analytics to show more button
+
+## 8.15.4
+
+### Patch Changes
+
+- [patch][9aa576a05d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9aa576a05d):
+
+  added show more button and the ability to extend search results
+
+## 8.15.3
+
+### Patch Changes
+
+- [patch][da0ae1c7ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da0ae1c7ca):
+
+  Do not pre-fetch users, only confluence content
+
+## 8.15.2
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/avatar@16.0.3
+  - @atlaskit/button@13.0.8
+  - @atlaskit/drawer@4.1.3
+  - @atlaskit/dropdown-menu@8.0.4
+  - @atlaskit/feedback-collector@4.0.5
+  - @atlaskit/flag@12.0.4
+  - @atlaskit/modal-dialog@10.0.4
+  - @atlaskit/navigation@35.1.5
+  - @atlaskit/quick-search@7.4.1
+  - @atlaskit/icon@18.0.0
+
+## 8.15.1
+
+### Patch Changes
+
+- [patch][76c559f29e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76c559f29e):
+
+  fix keyboard nav for confluence
+
 ## 8.15.0
 
 ### Minor Changes

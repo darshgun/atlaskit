@@ -13,11 +13,11 @@ import { TextColorPluginState } from '../../pm-plugins/main';
 import * as commands from '../../commands/change-color';
 import { EditorTextColorIcon } from './icon';
 import {
-  TriggerWrapper,
   Separator,
-  Wrapper,
+  TriggerWrapper,
+  MenuWrapper,
   ExpandIconWrapper,
-} from './styles';
+} from '../../../../ui/styles';
 
 export const messages = defineMessages({
   textColor: {
@@ -135,13 +135,14 @@ class ToolbarTextColor extends React.Component<
 
     const labelTextColor = formatMessage(messages.textColor);
     return (
-      <Wrapper>
+      <MenuWrapper>
         <Dropdown
           mountTo={popupsMountPoint}
           boundariesElement={popupsBoundariesElement}
           scrollableElement={popupsScrollableElement}
           isOpen={isOpen && !pluginState.disabled}
-          onOpenChange={this.handleOpenChange}
+          handleClickOutside={this.hide}
+          handleEscapeKeydown={this.hide}
           fitWidth={242}
           fitHeight={80}
           zIndex={akEditorMenuZIndex}
@@ -178,11 +179,10 @@ class ToolbarTextColor extends React.Component<
             palette={pluginState.palette}
             onClick={color => this.changeTextColor(color, pluginState.disabled)}
             selectedColor={pluginState.color}
-            borderColors={pluginState.borderColorPalette}
           />
         </Dropdown>
         <Separator />
-      </Wrapper>
+      </MenuWrapper>
     );
   }
 
@@ -204,6 +204,12 @@ class ToolbarTextColor extends React.Component<
 
   private handleOpenChange = ({ isOpen }: { isOpen: boolean }) => {
     this.setState({ isOpen });
+  };
+
+  private hide = () => {
+    if (this.state.isOpen === true) {
+      this.setState({ isOpen: false });
+    }
   };
 }
 

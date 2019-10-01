@@ -2,18 +2,30 @@
 /** @jsx jsx */
 
 // $FlowFixMe "there is no `forwardRef` export in `react`"
-import { createRef, forwardRef, PureComponent } from 'react';
+import { createRef, forwardRef, PureComponent, type ElementRef } from 'react';
+import { applyRefs } from 'apply-ref';
 import { jsx } from '@emotion/core';
 import { borderRadius, colors, gridSize } from '@atlaskit/theme';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
-import { ClearButton, HiddenSubmitButton } from '../../components/common';
+import {
+  ClearButton,
+  HiddenButton,
+  HiddenLabel,
+} from '../../components/common';
 
+type Props = {
+  field: Object,
+  onClear: () => void,
+  onChange: string => void,
+  innerRef: ElementRef<*>,
+  value: string,
+};
 type State = {
   isFocused: boolean,
 };
 
-export default class SearchView extends PureComponent<*, State> {
+export default class SearchView extends PureComponent<Props, State> {
   state = { isFocused: false };
 
   inputRef = createRef();
@@ -24,7 +36,7 @@ export default class SearchView extends PureComponent<*, State> {
   };
 
   handleClear = () => {
-    this.props.onChange('');
+    this.props.onClear();
     const el = this.inputRef.current;
 
     if (el && typeof el.focus === 'function') {
@@ -41,14 +53,17 @@ export default class SearchView extends PureComponent<*, State> {
   };
 
   render() {
-    const { value } = this.props;
+    const { field, innerRef, value } = this.props;
     const { isFocused } = this.state;
     const width = isFocused || (value && value.length) ? 160 : 80;
+    const id = `refinement-bar-${field.key}`;
 
     return (
       <Form onSubmit={this.handleSubmit}>
+        <HiddenLabel htmlFor={id}>{field.label}</HiddenLabel>
         <Input
-          ref={this.inputRef}
+          id={id}
+          ref={applyRefs(innerRef, this.inputRef)}
           onChange={this.handleChange}
           onBlur={this.toggleFocus(false)}
           onFocus={this.toggleFocus(true)}
@@ -62,9 +77,9 @@ export default class SearchView extends PureComponent<*, State> {
           <SearchIndicator />
         )}
 
-        <HiddenSubmitButton tabIndex="-1" type="submit">
+        <HiddenButton tabIndex="-1" type="submit">
           Submit
-        </HiddenSubmitButton>
+        </HiddenButton>
       </Form>
     );
   }
@@ -78,22 +93,22 @@ const Form = (props: *) => <form css={{ position: 'relative' }} {...props} />;
 const SearchIndicator = (props: *) => (
   <div
     css={{
+      alignItems: 'center',
       background: 0,
       border: 0,
       borderRadius: borderRadius(),
       color: colors.N400,
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      // cursor: 'pointer',
       height: '100%',
-      padding: 0,
-      width: 40,
-      position: 'absolute',
+      justifyContent: 'center',
       outline: 0,
+      padding: 0,
+      pointerEvents: 'none',
+      position: 'absolute',
       right: 0,
-      transition: 'background-color 150ms',
       top: 0,
+      transition: 'background-color 150ms',
+      width: 40,
     }}
     {...props}
   >

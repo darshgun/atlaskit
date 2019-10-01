@@ -1,24 +1,24 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "15.0.2",
+  "version": "15.3.5",
   "config": {
     "access": "public"
   },
   "description": "Tasks and decisions react components",
   "atlaskit:src": "src/index.ts",
-  "module": "index.js",
-  "types": "index.d.ts",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@atlaskit/analytics-namespaced-context": "^4.0.0",
-    "@atlaskit/analytics-next": "^5.0.0",
-    "@atlaskit/avatar-group": "^4.0.2",
-    "@atlaskit/button": "^13.0.5",
-    "@atlaskit/icon": "^17.1.3",
-    "@atlaskit/spinner": "^12.0.1",
-    "@atlaskit/theme": "^9.0.0",
-    "@atlaskit/util-service-support": "^4.0.3",
-    "@types/react-loadable": "^5.4.1",
+    "@atlaskit/analytics-namespaced-context": "^4.1.8",
+    "@atlaskit/analytics-next": "^6.3.0",
+    "@atlaskit/avatar-group": "^5.0.0",
+    "@atlaskit/button": "^13.3.2",
+    "@atlaskit/icon": "^19.0.6",
+    "@atlaskit/spinner": "^12.0.9",
+    "@atlaskit/theme": "^9.2.3",
+    "@atlaskit/util-service-support": "^4.0.8",
     "date-fns": "^1.30.1",
     "lodash.debounce": "^4.0.8",
     "react-loadable": "^5.1.0",
@@ -26,13 +26,10 @@
     "uuid": "^3.1.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [
-    "Craig P",
-    "Oscar W"
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "Task Decision",
-    "team": "elements"
+    "team": "editor"
   },
   "license": "Apache-2.0",
   "peerDependencies": {
@@ -40,27 +37,27 @@
     "react-dom": "^16.8.0",
     "rxjs": "^5.5.0",
     "styled-components": "^3.2.6",
-    "url-search-params": "^0.10.0",
-    "whatwg-fetch": "^2.0.3"
+    "url-search-params": "^0.10.0"
   },
   "devDependencies": {
-    "@atlaskit/analytics-listeners": "^6.0.0",
-    "@atlaskit/avatar": "^16.0.0",
-    "@atlaskit/docs": "^8.1.1",
-    "@atlaskit/editor-common": "^39.0.0",
-    "@atlaskit/elements-test-helpers": "^0.6.0",
-    "@atlaskit/renderer": "^48.7.1",
+    "@atlaskit/analytics-listeners": "^6.2.1",
+    "@atlaskit/avatar": "^17.1.2",
+    "@atlaskit/docs": "^8.1.5",
+    "@atlaskit/editor-common": "^41.1.2",
+    "@atlaskit/elements-test-helpers": "^0.6.5",
+    "@atlaskit/renderer": "^51.1.1",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^12.0.0",
+    "@atlaskit/util-data-test": "^12.11.1",
+    "@types/react-loadable": "^5.4.1",
     "@types/url-search-params": "^0.10.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
-    "fetch-mock": "^6.5.2",
+    "fetch-mock": "^7.3.3",
+    "jest-fetch-mock": "^2.1.2",
     "react": "^16.8.0",
     "rxjs": "^5.5.0",
     "sinon": "^2.2.0",
-    "url-search-params": "^0.10.0",
-    "whatwg-fetch": "^2.0.3"
+    "url-search-params": "^0.10.0"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }

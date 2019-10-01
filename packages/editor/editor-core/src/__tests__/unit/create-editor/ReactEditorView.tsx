@@ -8,9 +8,12 @@ import {
   p,
   mediaGroup,
   media,
+  mention,
   defaultSchema,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
+import { mention as mentionData } from '@atlaskit/util-data-test';
+import { MentionProvider } from '@atlaskit/mention/resource';
 import ReactEditorView from '../../../create-editor/ReactEditorView';
 import { toJSON } from '../../../utils';
 import {
@@ -184,6 +187,45 @@ describe(name, () => {
 
         expect(renderSpy).toHaveBeenCalledTimes(0);
         wrapper.unmount();
+      });
+
+      it('should discard stale transactions after componentWillUnmount is triggered', () => {
+        const unmountSpy = jest.spyOn(
+          ReactEditorView.prototype,
+          'componentWillUnmount',
+        );
+        const wrapper = mountWithIntl(<ReactEditorView {...requiredProps()} />);
+
+        const editor = wrapper.instance() as ReactEditorView;
+        patchEditorViewForJSDOM(editor.view);
+
+        const expectedTransactionCount = 1;
+
+        const dispatchTransactionSpy: jest.SpyInstance<
+          ReactEditorView['dispatchTransaction']
+        > = jest.spyOn(editor as any, 'dispatchTransaction');
+        editor.view!.dispatch(editor.view!.state.tr);
+        expect(dispatchTransactionSpy).toHaveBeenCalledTimes(
+          expectedTransactionCount,
+        );
+
+        // Manually invoke componentWillUnmount.
+        // This won't actually unmount it, but it allows us to check the logic
+        // peformed inside that lifecycle method, ahead of the actual unmounting,
+        // which allows us to dispatch from our view reference before it gets wiped out.
+        editor.componentWillUnmount();
+
+        // Simulate dispatching a stale async transaction after a dismount is triggered.
+        editor.view!.dispatch(editor.view!.state.tr);
+
+        // Because we block transactions once a dismount is imminent the surplus transaction
+        // should have been discarded and the count shouldn't have increased.
+        expect(dispatchTransactionSpy).toHaveBeenCalledTimes(
+          expectedTransactionCount,
+        );
+
+        wrapper.unmount();
+        expect(unmountSpy).toHaveBeenCalledTimes(2);
       });
     });
 
@@ -581,6 +623,76 @@ describe(name, () => {
         dispatch(payload);
         expect(eventDispatcher.emit).not.toHaveBeenCalled();
       });
+    });
+  });
+
+  describe('sanitize private content', () => {
+    const document = doc(
+      p('hello', mention({ id: '1', text: '@cheese' })(), '{endPos}'),
+    )(defaultSchema);
+
+    const mentionProvider: Promise<MentionProvider> = Promise.resolve(
+      mentionData.storyData.resourceProvider,
+    );
+
+    it('mentions should be sanitized when sanitizePrivateContent true', () => {
+      const wrapper = shallow(
+        <ReactEditorView
+          {...requiredProps()}
+          editorProps={{
+            defaultValue: toJSON(document),
+            mentionProvider,
+            sanitizePrivateContent: true,
+          }}
+          providerFactory={ProviderFactory.create({ mentionProvider })}
+        />,
+      );
+      const { editorState } = wrapper.instance() as ReactEditorView;
+      // Expect document changed with mention text attr empty
+      expect(editorState.doc.toJSON()).toEqual(
+        doc(p('hello', mention({ id: '1' })(), '{endPos}'))(
+          defaultSchema,
+        ).toJSON(),
+      );
+
+      wrapper.unmount();
+    });
+
+    it('mentions should not be sanitized when sanitizePrivateContent false', () => {
+      const wrapper = shallow(
+        <ReactEditorView
+          {...requiredProps()}
+          editorProps={{
+            defaultValue: toJSON(document),
+            sanitizePrivateContent: false,
+            mentionProvider,
+          }}
+          providerFactory={ProviderFactory.create({ mentionProvider })}
+        />,
+      );
+      const { editorState } = wrapper.instance() as ReactEditorView;
+      // Expect document unchanged
+      expect(editorState.doc.toJSON()).toEqual(document.toJSON());
+
+      wrapper.unmount();
+    });
+
+    it('mentions should not be sanitized when no collabEdit options', () => {
+      const wrapper = shallow(
+        <ReactEditorView
+          {...requiredProps()}
+          editorProps={{
+            defaultValue: toJSON(document),
+            mentionProvider,
+          }}
+          providerFactory={ProviderFactory.create({ mentionProvider })}
+        />,
+      );
+      const { editorState } = wrapper.instance() as ReactEditorView;
+      // Expect document unchanged
+      expect(editorState.doc.toJSON()).toEqual(document.toJSON());
+
+      wrapper.unmount();
     });
   });
 });

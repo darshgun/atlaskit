@@ -1,5 +1,111 @@
 # @atlaskit/portal
 
+## 3.1.0
+
+### Minor Changes
+
+- [minor][bf8796cffa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf8796cffa):
+
+  Add mount and unmount events to @atlaskit/portal
+
+## 3.0.13
+
+- Updated dependencies [a75dfaad67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a75dfaad67):
+  - @atlaskit/onboarding@9.0.0
+
+## 3.0.12
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 3.0.11
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 3.0.10
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 3.0.9
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 3.0.8
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 3.0.7
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/button@13.0.9
+  - @atlaskit/flag@12.0.10
+  - @atlaskit/inline-dialog@12.0.3
+  - @atlaskit/modal-dialog@10.0.7
+  - @atlaskit/onboarding@8.0.6
+  - @atlaskit/tooltip@15.0.2
+  - @atlaskit/icon@19.0.0
+
+## 3.0.6
+
+### Patch Changes
+
+- [patch][4615439434](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4615439434):
+
+  index.ts will now be ignored when publishing to npm
+
+## 3.0.5
+
+### Patch Changes
+
+- [patch][93bcf314c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93bcf314c6):
+
+  Added missing tslib dep
+
+## 3.0.4
+
+- Updated dependencies [67f06f58dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67f06f58dd):
+  - @atlaskit/icon@18.0.1
+  - @atlaskit/tooltip@15.0.0
+
+## 3.0.3
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/button@13.0.8
+  - @atlaskit/flag@12.0.4
+  - @atlaskit/inline-dialog@12.0.1
+  - @atlaskit/modal-dialog@10.0.4
+  - @atlaskit/onboarding@8.0.4
+  - @atlaskit/tooltip@14.0.3
+  - @atlaskit/icon@18.0.0
+
 ## 3.0.2
 
 - Updated dependencies [181209d135](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/181209d135):

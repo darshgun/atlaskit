@@ -1,9 +1,12 @@
 // @flow
-
-import React, { Component, type Element } from 'react';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import { Component, type Element } from 'react';
 import RadioIcon from '@atlaskit/icon/glyph/radio';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import { colors, themed, gridSize } from '@atlaskit/theme';
+import { themed } from '@atlaskit/theme/components';
+import { gridSize } from '@atlaskit/theme/constants';
+import * as colors from '@atlaskit/theme/colors';
 import type { CommonProps, fn, InnerProps } from './types';
 
 const getPrimitiveStyles = props => {

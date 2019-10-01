@@ -1,4 +1,4 @@
-import React, { Component, MouseEventHandler, MouseEvent } from 'react';
+import React, { Component, MouseEventHandler } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -22,13 +22,13 @@ import Container, {
 import Expander from '../Expander';
 import Actions from '../FlagActions';
 import { flagFocusRingColor } from '../../theme';
-import { FlagProps } from '../../types';
+import { FlagProps, AppearanceTypes } from '../../types';
 
-export const DEFAULT_APPEARANCE = 'normal';
+export const DEFAULT_APPEARANCE: AppearanceTypes = 'normal';
 
-type State = {
+interface State {
   isExpanded: boolean;
-};
+}
 
 class Flag extends Component<FlagProps, State> {
   static defaultProps = {
@@ -39,7 +39,7 @@ class Flag extends Component<FlagProps, State> {
 
   state = { isExpanded: false };
 
-  componentWillReceiveProps(nextProps: FlagProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: FlagProps) {
     const { actions, description } = nextProps;
     if (
       this.isBold() &&
@@ -100,7 +100,13 @@ class Flag extends Component<FlagProps, State> {
   };
 
   renderBody = () => {
-    const { actions, appearance, description, linkComponent } = this.props;
+    const {
+      actions,
+      appearance,
+      description,
+      linkComponent,
+      testId,
+    } = this.props;
     const isExpanded = !this.isBold() || this.state.isExpanded;
 
     return (
@@ -112,6 +118,7 @@ class Flag extends Component<FlagProps, State> {
           actions={actions}
           appearance={appearance}
           linkComponent={linkComponent}
+          data-testid={testId}
         />
       </Expander>
     );
@@ -119,7 +126,7 @@ class Flag extends Component<FlagProps, State> {
 
   // We prevent default on mouse down to avoid focus ring when the flag is clicked,
   // while still allowing it to be focused with the keyboard.
-  handleMouseDown: MouseEventHandler = (e: MouseEvent) => {
+  handleMouseDown: MouseEventHandler<HTMLElement> = e => {
     e.preventDefault();
   };
 
@@ -132,17 +139,18 @@ class Flag extends Component<FlagProps, State> {
       onFocus,
       onMouseOut,
       onBlur,
+      testId,
     } = this.props;
     const autoDismissProps = { onMouseOver, onFocus, onMouseOut, onBlur };
     const OptionalDismissButton = this.renderToggleOrDismissButton;
     const Body = this.renderBody;
-
     return (
       <Container
         appearance={appearance}
         role="alert"
         tabIndex={0}
         onMouseDown={this.handleMouseDown}
+        data-testid={testId}
         {...autoDismissProps}
       >
         <Header>

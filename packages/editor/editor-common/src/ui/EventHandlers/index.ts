@@ -1,7 +1,6 @@
-import { Identifier } from '@atlaskit/media-core';
+import { Identifier } from '@atlaskit/media-client';
 import { CardEvent } from '@atlaskit/media-card';
 import { SyntheticEvent } from 'react';
-import { ActionMarkAction } from '@atlaskit/adf-schema';
 
 export interface CardSurroundings {
   collectionName: string;
@@ -18,17 +17,19 @@ export type CardEventClickHandler = (
   surroundings?: CardSurroundings,
   analyticsEvent?: any,
 ) => void;
-export type ActionEventClickHandler = (action: ActionMarkAction) => void;
 export type LinkEventClickHandler = (
   event: SyntheticEvent<HTMLAnchorElement>,
   url?: string,
 ) => void;
-export type SmartCardEventClickHandler = (url?: string) => void;
+export type SmartCardEventClickHandler = (
+  event: SyntheticEvent<HTMLAnchorElement>,
+  url?: string,
+) => void;
 
 export interface MentionEventHandlers {
-  onClick: MentionEventHandler;
-  onMouseEnter: MentionEventHandler;
-  onMouseLeave: MentionEventHandler;
+  onClick?: MentionEventHandler;
+  onMouseEnter?: MentionEventHandler;
+  onMouseLeave?: MentionEventHandler;
 }
 
 export interface EventHandlers {
@@ -41,8 +42,5 @@ export interface EventHandlers {
   };
   smartCard?: {
     onClick?: SmartCardEventClickHandler;
-  };
-  action?: {
-    onClick?: ActionEventClickHandler;
   };
 }

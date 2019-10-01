@@ -4,7 +4,7 @@ import { MacroProvider } from './types';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { setMacroProvider } from './actions';
 import { Dispatch } from '../../event-dispatcher';
-import { PMPluginFactoryParams } from '../../types';
+import { PMPluginFactoryParams, EditorPlugin } from '../../types';
 
 export * from './types';
 export * from './actions';
@@ -37,19 +37,25 @@ export const createPlugin = (
     },
     key: pluginKey,
     view: (view: EditorView) => {
+      const handleProvider = (
+        _name: string,
+        provider?: Promise<MacroProvider>,
+      ) => provider && setMacroProvider(provider)(view);
       // make sure editable DOM node is mounted
       if (view.dom.parentNode) {
-        providerFactory.subscribe(
-          'macroProvider',
-          (_name, provider?: Promise<MacroProvider>) =>
-            provider && setMacroProvider(provider)(view),
-        );
+        providerFactory.subscribe('macroProvider', handleProvider);
       }
-      return {};
+      return {
+        destroy() {
+          providerFactory.unsubscribe('macroProvider', handleProvider);
+        },
+      };
     },
   });
 
-export default {
+const macroPlugin = (): EditorPlugin => ({
+  name: 'macro',
+
   pmPlugins() {
     return [
       {
@@ -59,4 +65,6 @@ export default {
       },
     ];
   },
-};
+});
+
+export default macroPlugin;

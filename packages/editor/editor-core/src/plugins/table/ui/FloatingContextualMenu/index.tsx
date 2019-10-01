@@ -92,6 +92,7 @@ const FloatingContextualMenu = ({
       // in table, but below floating dialogs like typeaheads, pickers, etc.
       zIndex={akEditorFloatingOverlapPanelZIndex}
       forcePlacement={true}
+      offset={[-7, 0]}
     >
       <MenuWrapper>
         <ContextualMenu
@@ -102,6 +103,7 @@ const FloatingContextualMenu = ({
           )}
           isOpen={isOpen}
           targetCellPosition={targetCellPosition}
+          allowColumnSorting={pluginConfig && pluginConfig.allowColumnSorting}
           allowMergeCells={pluginConfig!.allowMergeCells}
           allowBackgroundColor={pluginConfig!.allowBackgroundColor}
           selectionRect={selectionRect}

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {
   AnalyticsEventPayload,
   UIAnalyticsEvent,
-  WithAnalyticsEventProps,
+  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import { gridSize } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
@@ -21,7 +21,7 @@ import { FETCH_ERROR_NAME } from '../utils/fetch';
 
 const TRIGGER_SUBJECT = 'errorBoundary';
 const ACTION_SUBJECT = 'rendered';
-// This image is also used as the generic erro message in Notifications
+// This image is also used as the generic error message in Notifications
 // https://bitbucket.org/atlassian/pf-home-ui/src/61c5702523da06c9440b865939b2457322efa9f9/src/components/GenericError/error.png?at=master
 const NOT_FOUND_IMAGE =
   'https://home-static.us-east-1.prod.public.atl-paas.net/d138e521b9ef92669ae8d5c34874d91c.png';
@@ -29,10 +29,11 @@ const NOT_FOUND_IMAGE =
 const NotFoundImage = styled.img`
   height: ${gridSize() * 20}px;
 `;
-type ErrorBoundaryProps = {
+
+interface ErrorBoundaryProps {
   messages: Messages;
-} & InjectedIntlProps &
-  WithAnalyticsEventProps;
+  children: React.ReactNode;
+}
 
 type ErrorBoundaryState = {
   hasError: boolean;
@@ -40,7 +41,7 @@ type ErrorBoundaryState = {
 };
 
 class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
+  ErrorBoundaryProps & InjectedIntlProps & WithAnalyticsEventsProps,
   ErrorBoundaryState
 > {
   state: ErrorBoundaryState = { hasError: false };

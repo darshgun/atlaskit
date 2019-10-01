@@ -86,6 +86,13 @@ const FixedTarget = styled.div`
   }};
 `;
 
+if (process.env.NODE_ENV !== 'production' && !process.env.CI) {
+  // eslint-disable-next-line no-console
+  console.warn(
+    '@atlaskit/layer has been deprecated. It is an internal component and should not be used directly.',
+  );
+}
+
 export default class Layer extends Component<Props, State> {
   popper: {
     destroy: Function,
@@ -103,7 +110,7 @@ export default class Layer extends Component<Props, State> {
     boundariesElement: 'viewport',
     children: null,
     content: null,
-    offset: '0 0',
+    offset: '0, 0',
     onFlippedChange: () => {},
     position: 'right middle',
     zIndex: 400,
@@ -144,7 +151,7 @@ export default class Layer extends Component<Props, State> {
     this.calculateFixedOffset(this.props);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.applyPopper(nextProps);
     this.calculateFixedOffset(nextProps);
   }

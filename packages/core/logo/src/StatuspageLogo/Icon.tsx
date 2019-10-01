@@ -10,16 +10,16 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
   return `<canvas height="32" width="32" aria-hidden="true"></canvas>
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
     <defs>
-        <linearGradient x1="50%" x2="50%" y1="0%" y2="68.184%" id="${id}">
-            <stop stop-color="${iconGradientStart}" ${
+      <linearGradient id="${id}" x1="50%" x2="50%" y1="82.77%" y2="10.134%">
+        <stop offset="0%" stop-color="${iconGradientStop}" />
+        <stop offset="82%" stop-color="${iconGradientStart}" ${
     iconGradientStart === 'inherit' ? 'stop-opacity="0.4"' : ''
-  } offset="0%"></stop>
-            <stop stop-color="${iconGradientStop}" offset="100%"></stop>
-        </linearGradient>
+  } />
+      </linearGradient>
     </defs>
-    <g stroke="none" stroke-width="1" fill-rule="nonzero">
-      <ellipse fill="url(#${id})" cx="16.0000005" cy="19.5878182" rx="5.4000001" ry="5.39981818"></ellipse>
-      <path d="M3.15511518,12.9260684 L6.43896953,16.7678667 C6.68897511,17.0467148 7.11846411,17.078724 7.40809003,16.8400939 C12.7068784,12.1590845 19.2850452,12.1590845 24.5838335,16.8400939 C24.8734595,17.078724 25.3029485,17.0467148 25.552954,16.7678667 L28.8402944,12.9260684 C29.0719048,12.6494664 29.04914,12.2436871 28.7880038,11.9939938 C21.0838444,5.3353354 10.9080792,5.3353354 3.21786399,11.9939938 C2.9535556,12.2408944 2.92622614,12.6468478 3.15511518,12.9260684 Z" fill="currentColor"></path>
+    <g fill="none" fill-rule="evenodd">
+      <circle cx="16" cy="19.423" r="5.538" fill="url(#${id})" fill-rule="nonzero"/>
+      <path fill="currentColor" fill-rule="nonzero" d="M4.14318325,11.970217 L7.17443341,15.5164923 C7.40520779,15.7738906 7.80165918,15.8034375 8.06900618,15.5831636 C12.9601954,11.2622319 19.0323494,11.2622319 23.9235386,15.5831636 C24.1908857,15.8034375 24.5873371,15.7738906 24.8181114,15.5164923 L27.8525794,11.970217 C28.0663737,11.714892 28.04536,11.3403265 27.8043112,11.1098404 C20.6927794,4.96338652 11.2997654,4.96338652 4.20110522,11.1098404 C3.95712825,11.3377486 3.93190106,11.7124749 4.14318325,11.970217 Z"/>
     </g>
   </svg>`;
 };

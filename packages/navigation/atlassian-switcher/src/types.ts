@@ -1,12 +1,17 @@
-import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { WithTheme } from './theme/types';
+import { AvailableProductsDataProvider } from './providers/products-data-provider';
 
 export interface TriggerXFlowCallback {
   (
     productKey: string,
     sourceComponent: string,
     event: any,
-    analyticsEvent: UIAnalyticsEventInterface,
+    analyticsEvent: UIAnalyticsEvent,
   ): void;
+}
+export interface DiscoverMoreCallback {
+  (event: any, analyticsEvent: UIAnalyticsEvent): void;
 }
 
 export interface WithCloudId {
@@ -42,29 +47,47 @@ export enum Product {
   CONFLUENCE = 'confluence',
   HOME = 'home',
   JIRA = 'jira',
-  PEOPLE = 'people',
   SITE_ADMIN = 'site-admin',
   TRUSTED_ADMIN = 'trusted-admin',
 }
 
 export enum Feature {
-  enableExpandLink = 'enableExpandLink',
+  disableCustomLinks = 'disableCustomLinks',
+  disableRecentContainers = 'disableRecentContainers',
+  disableHeadings = 'disableHeadings',
+  xflow = 'xflow',
+  isDiscoverMoreForEveryoneEnabled = 'isDiscoverMoreForEveryoneEnabled',
+  // EMCEE stands for Embedded Marketplace with in the product
+  isEmceeLinkEnabled = 'isEmceeLinkEnabled',
 }
 
-export type FeatureFlagProps = { [key in Feature]: boolean };
+export type FeatureFlagProps = {
+  // Custom links are enabled by default for Jira and Confluence, this feature flag allows to hide them. Custom links are not supported by the switcher in any other products.
+  disableCustomLinks?: boolean;
+  // Hide recent containers. Recent containers are enabled by default.
+  disableRecentContainers?: boolean;
+  // Remove section headers - useful if something else is providing them. i.e: trello inline dialog.
+  disableHeadings?: boolean;
+  // Enable discover more.
+  isDiscoverMoreForEveryoneEnabled?: boolean;
+  // Enable Embedded Marketplace within the product.
+  isEmceeLinkEnabled?: boolean;
+};
+
+export type FeatureMap = { [key in Feature]: boolean };
 
 export type CustomLinksResponse = CustomLink[];
 
-export interface ProductLicenseInformation {
-  state: string;
-  applicationUrl?: string;
+export type ProvisionedProducts = { [key in WorklensProductType]?: boolean };
+
+export interface CurrentSite {
+  url: string;
+  products: AvailableProduct[];
 }
 
-export interface LicenseInformationResponse {
-  hostname: string;
-  products: {
-    [key: string]: ProductLicenseInformation;
-  };
+export interface UserSiteDataResponse {
+  currentSite: CurrentSite;
+  provisionedProducts: ProvisionedProducts;
 }
 
 export interface XFlowSettingsResponse {
@@ -78,3 +101,87 @@ export interface UserPermissionResponse {
 export interface RecentContainersResponse {
   data: Array<RecentContainer>;
 }
+
+export enum WorklensProductType {
+  JIRA_BUSINESS = 'JIRA_BUSINESS',
+  JIRA_SERVICE_DESK = 'JIRA_SERVICE_DESK',
+  JIRA_SOFTWARE = 'JIRA_SOFTWARE',
+  CONFLUENCE = 'CONFLUENCE',
+  OPSGENIE = 'OPSGENIE',
+  BITBUCKET = 'BITBUCKET',
+  STATUSPAGE = 'STATUSPAGE',
+  TRELLO = 'TRELLO',
+}
+
+export type AvailableProduct =
+  | {
+      activityCount: number;
+      productType:
+        | WorklensProductType.JIRA_BUSINESS
+        | WorklensProductType.JIRA_SERVICE_DESK
+        | WorklensProductType.JIRA_SOFTWARE
+        | WorklensProductType.CONFLUENCE;
+    }
+  | AvailableProductWithUrl;
+
+interface AvailableProductWithUrl {
+  activityCount: number;
+  productType:
+    | WorklensProductType.BITBUCKET
+    | WorklensProductType.OPSGENIE
+    | WorklensProductType.STATUSPAGE // assuming that the URL is provided by TCS (same as Opsgenie)
+    | WorklensProductType.TRELLO;
+  url: string;
+}
+
+export interface AvailableSite {
+  adminAccess: boolean;
+  availableProducts: AvailableProduct[];
+  avatar: string | null;
+  cloudId: string;
+  displayName: string;
+  url: string;
+}
+
+export interface AvailableProductsResponse {
+  sites: AvailableSite[];
+}
+
+export enum ProductKey {
+  CONFLUENCE = 'confluence.ondemand',
+  JIRA_CORE = 'jira-core.ondemand',
+  JIRA_SOFTWARE = 'jira-software.ondemand',
+  JIRA_SERVICE_DESK = 'jira-servicedesk.ondemand',
+  OPSGENIE = 'opsgenie',
+}
+
+export type RecommendationsEngineResponse = RecommendationItem[];
+
+export interface RecommendationItem {
+  productKey: ProductKey;
+}
+
+export type RecommendationsFeatureFlags = {
+  [key: string]: string | boolean;
+};
+
+export interface SwitcherChildItem {
+  href: string;
+  label: string;
+  avatar: string | null;
+}
+
+export type AtlassianSwitcherProps = WithTheme & {
+  // Product name used for analytics events
+  product: string;
+  // Optional cloudID, should be provided for tenanted applications.
+  cloudId?: string;
+  // Optional callback to be exectuted after an XFlow event is triggered.
+  triggerXFlow?: TriggerXFlowCallback;
+  // Optional callback to be exectuted after a user clicks on discover more.
+  onDiscoverMoreClicked?: DiscoverMoreCallback;
+  // A map of feature flags used by the XFlow recommendations engine.
+  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
+  // Optional custom provider for available products
+  availableProductsDataProvider?: AvailableProductsDataProvider;
+} & FeatureFlagProps;

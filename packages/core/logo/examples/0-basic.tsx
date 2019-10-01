@@ -27,9 +27,15 @@ import {
   StatuspageLogo,
   StatuspageIcon,
   StatuspageWordmark,
+  OpsGenieLogo,
+  OpsGenieIcon,
+  OpsGenieWordmark,
   StrideLogo,
   StrideIcon,
   StrideWordmark,
+  TrelloLogo,
+  TrelloIcon,
+  TrelloWordmark,
 } from '../src';
 
 export default () => (
@@ -133,6 +139,17 @@ export default () => (
         </tr>
         <tr>
           <td>
+            <OpsGenieLogo />
+          </td>
+          <td>
+            <OpsGenieWordmark />
+          </td>
+          <td>
+            <OpsGenieIcon />
+          </td>
+        </tr>
+        <tr>
+          <td>
             <StatuspageLogo />
           </td>
           <td>
@@ -151,6 +168,17 @@ export default () => (
           </td>
           <td>
             <StrideIcon />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <TrelloLogo />
+          </td>
+          <td>
+            <TrelloWordmark />
+          </td>
+          <td>
+            <TrelloIcon />
           </td>
         </tr>
       </tbody>

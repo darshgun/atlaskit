@@ -48,11 +48,11 @@ export type ResultantProps<InjectedProps, P extends InjectedProps> = Omit<
  *       Component,
  *     )})`;
  *
- *     componentWillMount() {
+ *     UNSAFE_componentWillMount() {
  *       warnIfDeprecatedAppearance(this.props.appearance);
  *     }
  *
- *     componentWillReceiveProps(newProps: AppearanceProps) {
+ *     UNSAFE_componentWillReceiveProps(newProps: AppearanceProps) {
  *       if (newProps.appearance !== this.props.appearance) {
  *         warnIfDeprecatedAppearance(newProps.appearance);
  *       }
@@ -69,18 +69,6 @@ export type PropsPasser<Extra extends object = {}> = <
 >(
   Component: C,
 ) => React.ComponentClass<PropsOf<C> & Extra>;
-
-/**
- * This type is used for HOC's that inject props into the provided component in
- * such a way that the resultant component does not accept those props any more
- */
-export type PropsInjector<InjectedProps extends object> = <
-  C extends React.ComponentType<any>
->(
-  Component: C,
-) => React.ComponentType<
-  Omit<PropsOf<C>, keyof Shared<InjectedProps, PropsOf<C>>>
->;
 
 /**
  * Sometimes we want to utilse the power of Algebraic Data Types.

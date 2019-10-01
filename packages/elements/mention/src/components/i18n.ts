@@ -1,6 +1,11 @@
 import { defineMessages } from 'react-intl';
 
 export const messages = defineMessages({
+  unknownUserError: {
+    id: 'fabric.mention.unknow.user.error',
+    defaultMessage: 'Unknown user {userId}',
+    description: 'Mention user name could not be found or look up failed',
+  },
   noAccessWarning: {
     id: 'fabric.mention.noAccess.warning',
     defaultMessage: "{name} won't be notified as they have no access",
@@ -36,14 +41,14 @@ export const messages = defineMessages({
   },
   memberCountWithoutYou: {
     id: 'fabric.elements.mentions.team.member.count',
-    defaultMessage: '{count} {count, plural, one {member} other {members}}',
+    defaultMessage: '{0, plural, one {1 member} other {{0} members}}',
     description:
       'Byline to show the number of members in the team when the current user is not a member of the team',
   },
   memberCountWithYou: {
     id: 'fabric.elements.mentions.team.member.count.including.you',
     defaultMessage:
-      '{count} {count, plural, one {member} other {members}}, including you',
+      '{0, plural, one {1 member} other {{0} members}}, including you',
     description:
       'Byline to show the number of members in the team when the current user is also a member of the team',
   },
@@ -58,5 +63,29 @@ export const messages = defineMessages({
     defaultMessage: '50+ members, including you',
     description:
       'Byline to show the number of members in the team when the number exceeds 50 and also includes the current user',
+  },
+  TeamMentionHighlightTitle: {
+    id: 'fabric.elements.mentions.team.mention.highlight.title',
+    defaultMessage: 'Mention your team',
+    description:
+      'Title of the highlight shown in the mention tpyeahead. This is related to team mentions',
+  },
+  TeamMentionHighlightDescription: {
+    id: 'fabric.elements.mentions.team.mention.highlight.description',
+    defaultMessage: 'Get everyone on the page with one click. No team?',
+    description:
+      'Description of the highlight shown in the mention tpyeahead. This is related to team mentions',
+  },
+  TeamMentionHighlightDescriptionLink: {
+    id: 'fabric.elements.mentions.team.mention.highlight.description.link',
+    defaultMessage: 'Start one.',
+    description:
+      'Team creation link in the description of the highlight shown in the mention tpyeahead. This is related to team mentions',
+  },
+  TeamMentionHighlightCloseButtonToolTip: {
+    id: 'fabric.elements.mentions.team.meantion.highlight.close.button.tooltip',
+    defaultMessage: 'Dismiss',
+    description:
+      'Closes the highlight component when this button is clicked. This text for the tooltip of that button',
   },
 });

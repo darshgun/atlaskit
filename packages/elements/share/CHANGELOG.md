@@ -1,5 +1,327 @@
 # @atlaskit/share
 
+## 0.6.10
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 0.6.9
+
+### Patch Changes
+
+- [patch][5277ce70fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5277ce70fd):
+
+  Updated placeholder and error text for groups
+
+## 0.6.8
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-test-helpers@10.0.0
+
+## 0.6.7
+
+### Patch Changes
+
+- [patch][c8bb1c7896](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8bb1c7896):
+
+  Fix some packages having a 'modules' field in package.json rather than 'module'
+
+## 0.6.6
+
+### Patch Changes
+
+- [patch][f69c99217c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f69c99217c):
+
+  The tooltip is now closed when user clicks on the share button (so it does not remains forever visible)
+
+## 0.6.5
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 0.6.4
+
+### Patch Changes
+
+- [patch][0d7d459f1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7d459f1a):
+
+  Fixes type errors which were incompatible with TS 3.6
+
+## 0.6.3
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 0.6.2
+
+### Patch Changes
+
+- [patch][abee1a5f4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/abee1a5f4f):
+
+  Bumping internal dependency (memoize-one) to latest version (5.1.0). memoize-one@5.1.0 has full typescript support so it is recommended that typescript consumers use it also.
+
+## 0.6.1
+
+### Patch Changes
+
+- [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+
+  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+
+  **Breaking changes**
+
+  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+
+  **Breaking changes to TypeScript annotations**
+
+  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+
+## 0.6.0
+
+### Minor Changes
+
+- [minor][bc0d3bf0b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bc0d3bf0b2):
+
+  added tooltip support for elements/share
+
+## 0.5.16
+
+### Patch Changes
+
+- [patch][ebfeb03eb7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ebfeb03eb7):
+
+  popper has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 0.5.15
+
+- Updated dependencies [7e9d653278](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e9d653278):
+  - @atlaskit/form@6.1.5
+  - @atlaskit/toggle@8.0.0
+
+## 0.5.14
+
+### Patch Changes
+
+- [patch][8fb78b50c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8fb78b50c8):
+
+  Error boundary added with analytics, various cleanups
+
+## 0.5.13
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 0.5.12
+
+### Patch Changes
+
+- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+
+  Fixes bug, missing version.json file
+
+## 0.5.11
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 0.5.10
+
+### Patch Changes
+
+- [patch][d0db01b410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0db01b410):
+
+  TypeScript users of withAnalyticsEvents and withAnalyticsContext are now required to provide props as a generic type. This is so that TypeScript can correctly calculate the props and defaultProps of the returned component.
+
+  Before:
+
+  ```typescript
+  withAnalyticsEvents()(Button) as ComponentClass<Props>;
+  ```
+
+  After:
+
+  ```typescript
+  withAnalyticsEvents<Props>()(Button);
+  ```
+
+## 0.5.9
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/form@6.1.4
+  - @atlaskit/inline-dialog@12.0.5
+  - @atlaskit/user-picker@4.0.13
+  - @atlaskit/select@10.0.0
+
+## 0.5.8
+
+### Patch Changes
+
+- [patch][540b9336e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/540b9336e9):
+
+  FS-4008 add shareeAction
+
+## 0.5.7
+
+### Patch Changes
+
+- [patch][adcabaf0cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adcabaf0cd):
+
+  FS-4025 add contentType attribute to copyShareLink event
+
+## 0.5.6
+
+### Patch Changes
+
+- [patch][469b504df8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/469b504df8):
+
+  feat: better short url analytics
+
+## 0.5.5
+
+### Patch Changes
+
+- [patch][d6d7086f3f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6d7086f3f):
+
+  feat: intelligently default to current page URL, even if there is a PWA navigation
+
+## 0.5.4
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/button@13.0.9
+  - @atlaskit/form@6.1.1
+  - @atlaskit/flag@12.0.10
+  - @atlaskit/inline-dialog@12.0.3
+  - @atlaskit/select@9.1.8
+  - @atlaskit/toggle@7.0.3
+  - @atlaskit/tooltip@15.0.2
+  - @atlaskit/editor-test-helpers@9.5.2
+  - @atlaskit/user-picker@4.0.12
+  - @atlaskit/icon@19.0.0
+
+## 0.5.3
+
+### Patch Changes
+
+- [patch][5212dd363e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5212dd363e):
+
+  feat: new analytics around URL shortening (+internal refactors)
+
+## 0.5.2
+
+### Patch Changes
+
+- [patch][db798d5186](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/db798d5186):
+
+  fix: handle an "is mounted" path
+
+## 0.5.1
+
+### Patch Changes
+
+- [patch][b53dd55ae8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53dd55ae8):
+
+  fix: invalid property being used in URL shortener client
+
+## 0.5.0
+
+### Minor Changes
+
+- [minor][dc965edbe6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dc965edbe6):
+
+  BREAKING new optional URL shortening feature (prop change needed)
+
+## 0.4.17
+
+### Patch Changes
+
+- [patch][86e8cc40b7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86e8cc40b7):
+
+  FS-3948 add translations
+
+## 0.4.16
+
+### Patch Changes
+
+- [patch][068e17f712](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/068e17f712):
+
+  FS-3966 add bottomMessage property
+
+## 0.4.15
+
+### Patch Changes
+
+- [patch][6fba3189dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6fba3189dd):
+
+  internal refactor: remove getDerivedStateFromProps in favor of memoization
+
+## 0.4.14
+
+- Updated dependencies [67f06f58dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67f06f58dd):
+  - @atlaskit/form@6.0.6
+  - @atlaskit/icon@18.0.1
+  - @atlaskit/select@9.1.6
+  - @atlaskit/user-picker@4.0.4
+  - @atlaskit/tooltip@15.0.0
+
+## 0.4.13
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/button@13.0.8
+  - @atlaskit/flag@12.0.4
+  - @atlaskit/form@6.0.5
+  - @atlaskit/inline-dialog@12.0.1
+  - @atlaskit/section-message@4.0.2
+  - @atlaskit/select@9.1.5
+  - @atlaskit/toggle@7.0.1
+  - @atlaskit/tooltip@14.0.3
+  - @atlaskit/editor-test-helpers@9.3.9
+  - @atlaskit/user-picker@4.0.3
+  - @atlaskit/icon@18.0.0
+
+## 0.4.12
+
+### Patch Changes
+
+- [patch][e6c0741a32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6c0741a32):
+
+  fix incorrect origin tracing in analytics + small internal cleanups
+
 ## 0.4.11
 
 - Updated dependencies [181209d135](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/181209d135):

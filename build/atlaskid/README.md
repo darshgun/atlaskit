@@ -6,7 +6,7 @@ Landkid is our new service to help merge PRs to prevent all the known issues wit
 
 This build will rebase your branch onto latest master and run what would essentially be a master build. If your build would have made master red, it will fail and the next builds will run!
 
-Access to Atlaskid is controlled by the "Fabric Build" team. You can message them in their stride room to request access. Alternatively, you may have your builds merged by someone who has permission.
+Access to Atlaskid is controlled by the "Atlaskit Build" team. You can message them in their [Slack channel](https://app.slack.com/client/TFCUTJ0G5/CFGLY49D2) to request access. Alternatively, you may have your builds merged by someone who has permission.
 
 # FAQ
 

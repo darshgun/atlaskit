@@ -15,12 +15,12 @@ import {
   UploadsStartEventPayload,
 } from '../../../domain/uploadEvent';
 
-jest.mock('../../../service/newUploadServiceImpl');
+jest.mock('../../../service/uploadServiceImpl');
 jest.mock('../../component');
 
-import { ContextFactory } from '@atlaskit/media-core';
 import { SCALE_FACTOR_DEFAULT } from '../../../util/getPreviewFromImage';
 import { UploadComponent } from '../../component';
+import { fakeMediaClient } from '@atlaskit/media-test-helpers';
 
 const imageFile: MediaFile = {
   id: 'some-id',
@@ -28,7 +28,6 @@ const imageFile: MediaFile = {
   size: 12345,
   creationDate: Date.now(),
   type: 'image/jpg',
-  upfrontId: Promise.resolve('some-public-id'),
 };
 
 class DummyLocalUploadComponent extends LocalUploadComponentReact<
@@ -50,9 +49,7 @@ describe('LocalUploadReact', () => {
   const onError = jest.fn();
   let uploadComponent: UploadComponent<UploadEventPayloadMap>;
 
-  const context = ContextFactory.create({
-    authProvider: {} as any,
-  });
+  const mediaClient = fakeMediaClient();
 
   const config = {
     uploadParams: {},
@@ -61,7 +58,7 @@ describe('LocalUploadReact', () => {
   beforeEach(() => {
     localUploadComponent = mount(
       <DummyLocalUploadComponent
-        context={context}
+        mediaClient={mediaClient}
         config={config}
         onUploadsStart={onUploadsStart}
         onPreviewUpdate={onPreviewUpdate}
@@ -138,15 +135,9 @@ describe('LocalUploadReact', () => {
   it('should call uploadComponent.emitUploadEnd with proper arguments', () => {
     const file: UploadEndEventPayload = {
       file: imageFile,
-      public: {
-        id: '123',
-      },
     };
     (localUploadComponentInstance as any).onFileConverted(file);
-    expect(uploadComponent.emitUploadEnd).toBeCalledWith(
-      file.file,
-      file.public,
-    );
+    expect(uploadComponent.emitUploadEnd).toBeCalledWith(file.file);
   });
 
   it('should call uploadComponent.emitUploadError with proper arguments', () => {

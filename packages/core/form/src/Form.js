@@ -23,8 +23,8 @@ type Props = {
     submitting: boolean,
     getValues: () => ?Object,
   }) => Node,
-  /* Called when the form is submitted without errors */
-  onSubmit: Object => any,
+  /* Called when the form is submitted without field validation errors */
+  onSubmit: Object => ?Object | Promise<?Object> | void,
   /* When set the form and all fields will be disabled */
   isDisabled: boolean,
 };
@@ -73,7 +73,9 @@ class Form extends React.Component<Props, State> {
 
   formRef = React.createRef();
 
-  form = createFinalForm(this.props.onSubmit, this.formRef);
+  onSubmitProxy = (...args: Array<any>) => this.props.onSubmit(...args);
+
+  form = createFinalForm(this.onSubmitProxy, this.formRef);
 
   state = {
     dirty: false,
@@ -86,8 +88,8 @@ class Form extends React.Component<Props, State> {
 
   componentDidMount() {
     this.unsubscribe = this.form.subscribe(
-      ({ submitting, dirty }) => {
-        this.setState({ submitting, dirty });
+      ({ dirty, submitting }) => {
+        this.setState({ dirty, submitting });
       },
       {
         dirty: true,
@@ -96,7 +98,7 @@ class Form extends React.Component<Props, State> {
     );
   }
 
-  componenWillUnmount() {
+  componentWillUnmount() {
     this.unsubscribe();
   }
 

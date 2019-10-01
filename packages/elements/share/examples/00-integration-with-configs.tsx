@@ -2,10 +2,11 @@ import Select from '@atlaskit/select';
 import { ToggleStateless as Toggle } from '@atlaskit/toggle';
 import { OptionData } from '@atlaskit/user-picker';
 import { userPickerData } from '@atlaskit/util-data-test';
-import styled from 'styled-components';
 import * as React from 'react';
 import { IntlProvider } from 'react-intl';
+import styled from 'styled-components';
 import App from '../example-helpers/AppWithFlag';
+import RestrictionMessage from '../example-helpers/RestrictionMessage';
 import { ShareDialogContainer, ShareDialogContainerProps } from '../src';
 import {
   Comment,
@@ -20,6 +21,10 @@ import {
   ShareResponse,
   User,
 } from '../src/types';
+import {
+  ShortenResponse,
+  UrlShortenerClient,
+} from '../src/clients/AtlassianUrlShortenerClient';
 
 type UserData = {
   avatarUrl?: string;
@@ -37,14 +42,19 @@ const WrapperWithMarginTop = styled.div`
   margin-top: 10px;
 `;
 
-const mockOriginTracing: OriginTracing = {
-  id: 'id',
-  addToUrl: (l: string) => `${l}&atlOrigin=mockAtlOrigin`,
-  toAnalyticsAttributes: () => ({
-    originIdGenerated: 'id',
-    originProduct: 'product',
-  }),
-};
+let factoryCount = 0;
+function originTracingFactory(): OriginTracing {
+  factoryCount++;
+  const id = `id#${factoryCount}`;
+  return {
+    id,
+    addToUrl: (l: string) => `${l}&atlOrigin=mockAtlOrigin:${id}`,
+    toAnalyticsAttributes: () => ({
+      originIdGenerated: id,
+      originProduct: 'product',
+    }),
+  };
+}
 
 const loadUserOptions = (searchText?: string): OptionData[] => {
   if (!searchText) {
@@ -75,7 +85,10 @@ const loadUserOptions = (searchText?: string): OptionData[] => {
     });
 };
 
-const dialogPlacementOptions = [
+const dialogPlacementOptions: Array<{
+  label: string;
+  value: State['dialogPlacement'];
+}> = [
   { label: 'bottom-end', value: 'bottom-end' },
   { label: 'bottom', value: 'bottom' },
   { label: 'bottom-start', value: 'bottom-start' },
@@ -90,7 +103,7 @@ const dialogPlacementOptions = [
   { label: 'left-end', value: 'left-end' },
 ];
 
-const modeOptions = [
+const modeOptions: Array<{ label: string; value: ConfigResponseMode }> = [
   { label: 'Existing users only', value: 'EXISTING_USERS_ONLY' },
   { label: 'Invite needs approval', value: 'INVITE_NEEDS_APPROVAL' },
   { label: 'Only domain based invite', value: 'ONLY_DOMAIN_BASED_INVITE' },
@@ -98,7 +111,10 @@ const modeOptions = [
   { label: 'Anyone', value: 'ANYONE' },
 ];
 
-const triggerButtonAppearanceOptions = [
+const triggerButtonAppearanceOptions: Array<{
+  label: string;
+  value: State['triggerButtonAppearance'];
+}> = [
   { label: 'default', value: 'default' },
   { label: 'danger', value: 'danger' },
   { label: 'link', value: 'link' },
@@ -106,20 +122,35 @@ const triggerButtonAppearanceOptions = [
   { label: 'subtle', value: 'subtle' },
   { label: 'subtle-link', value: 'subtle-link' },
   { label: 'warning', value: 'warning' },
-  { label: 'help', value: 'help' },
 ];
 
-const triggerButtonStyleOptions = [
+const triggerButtonStyleOptions: Array<{
+  label: string;
+  value: State['triggerButtonStyle'];
+}> = [
   { label: 'icon-only', value: 'icon-only' },
   { label: 'icon-with-text', value: 'icon-with-text' },
   { label: 'text-only', value: 'text-only' },
 ];
 
+const triggerButtonTooltipPositionOptions: Array<{
+  label: string;
+  value: State['triggerButtonTooltipPosition'];
+}> = [
+  { label: 'top', value: 'top' },
+  { label: 'left', value: 'left' },
+  { label: 'bottom', value: 'bottom' },
+  { label: 'right', value: 'right' },
+  { label: 'mouse', value: 'mouse' },
+];
+
 type ExampleState = {
   customButton: boolean;
   customTitle: boolean;
-  dialogPlacement: string;
+  customTooltipText: boolean;
   escapeOnKeyPress: boolean;
+  restrictionMessage: boolean;
+  useUrlShortener: boolean;
 };
 
 type State = ConfigResponse & Partial<ShareDialogContainerProps> & ExampleState;
@@ -128,24 +159,48 @@ const renderCustomTriggerButton: RenderCustomTriggerButton = ({ onClick }) => (
   <button onClick={onClick}>Custom Button</button>
 );
 
+class MockUrlShortenerClient implements UrlShortenerClient {
+  count = 0;
+
+  public isSupportedProduct(): boolean {
+    return true;
+  }
+
+  public shorten(): Promise<ShortenResponse> {
+    return new Promise<ShortenResponse>(resolve => {
+      this.count++;
+      // eslint-disable-next-line @wordpress/react-no-unsafe-timeout
+      setTimeout(() => {
+        resolve({
+          shortUrl: `https://foo.atlassian.net/short#${this.count}`,
+        });
+      }, 350);
+    });
+  }
+}
+
 export default class Example extends React.Component<{}, State> {
   state: State = {
     allowComment: true,
     allowedDomains: ['atlassian.com'],
     customButton: false,
     customTitle: false,
-    dialogPlacement: dialogPlacementOptions[0].value as 'bottom-end',
+    customTooltipText: false,
+    restrictionMessage: false,
+    useUrlShortener: false,
+    dialogPlacement: dialogPlacementOptions[2].value,
     escapeOnKeyPress: true,
-    mode: modeOptions[0].value as ConfigResponseMode,
-    triggerButtonAppearance: triggerButtonAppearanceOptions[0]
-      .value as 'subtle',
-    triggerButtonStyle: triggerButtonStyleOptions[0].value as 'icon-only',
+    mode: modeOptions[0].value,
+    triggerButtonAppearance: triggerButtonAppearanceOptions[0].value,
+    triggerButtonStyle: triggerButtonStyleOptions[0].value,
+    triggerButtonTooltipPosition: triggerButtonTooltipPositionOptions[0].value,
   };
 
   key: number = 0;
 
   getConfig = (product: string, cloudId: string): Promise<ConfigResponse> =>
     new Promise(resolve => {
+      // eslint-disable-next-line @wordpress/react-no-unsafe-timeout
       setTimeout(() => {
         resolve(this.state);
       }, 1000);
@@ -156,21 +211,32 @@ export default class Example extends React.Component<{}, State> {
     _users: User[],
     _metaData: MetaData,
     _comment?: Comment,
-  ) =>
-    new Promise<ShareResponse>(resolve => {
+  ) => {
+    console.info('Share', {
+      _content,
+      _users,
+      _metaData,
+      _comment,
+    });
+
+    return new Promise<ShareResponse>(resolve => {
+      // eslint-disable-next-line @wordpress/react-no-unsafe-timeout
       setTimeout(
         () =>
           resolve({
             shareRequestId: 'c41e33e5-e622-4b38-80e9-a623c6e54cdd',
           }),
-        3000,
+        2000,
       );
     });
+  };
 
-  client: ShareClient = {
+  shareClient: ShareClient = {
     getConfig: this.getConfig,
     share: this.share,
   };
+
+  urlShortenerClient: UrlShortenerClient = new MockUrlShortenerClient();
 
   render() {
     const {
@@ -178,11 +244,15 @@ export default class Example extends React.Component<{}, State> {
       allowedDomains,
       customButton,
       customTitle,
+      customTooltipText,
       dialogPlacement,
       escapeOnKeyPress,
       mode,
       triggerButtonAppearance,
       triggerButtonStyle,
+      triggerButtonTooltipPosition,
+      restrictionMessage,
+      useUrlShortener,
     } = this.state;
 
     this.key++;
@@ -195,11 +265,12 @@ export default class Example extends React.Component<{}, State> {
               <WrapperWithMarginTop>
                 <ShareDialogContainer
                   key={`key-${this.key}`}
-                  client={this.client}
+                  shareClient={this.shareClient}
+                  urlShortenerClient={this.urlShortenerClient}
                   cloudId="12345-12345-12345-12345"
                   dialogPlacement={dialogPlacement}
                   loadUserOptions={loadUserOptions}
-                  originTracingFactory={() => mockOriginTracing}
+                  originTracingFactory={originTracingFactory}
                   productId="confluence"
                   renderCustomTriggerButton={
                     customButton ? renderCustomTriggerButton : undefined
@@ -207,12 +278,19 @@ export default class Example extends React.Component<{}, State> {
                   shareAri="ari"
                   shareContentType="issue"
                   shareFormTitle={customTitle ? 'Custom Title' : undefined}
-                  shareLink={window.location.href}
                   shareTitle="My Share"
                   shouldCloseOnEscapePress={escapeOnKeyPress}
                   showFlags={showFlags}
                   triggerButtonAppearance={triggerButtonAppearance}
                   triggerButtonStyle={triggerButtonStyle}
+                  triggerButtonTooltipText={
+                    customTooltipText ? 'Custom Tooltip Text' : undefined
+                  }
+                  triggerButtonTooltipPosition={triggerButtonTooltipPosition}
+                  bottomMessage={
+                    restrictionMessage ? <RestrictionMessage /> : null
+                  }
+                  useUrlShortener={useUrlShortener}
                 />
               </WrapperWithMarginTop>
               <h4>Options</h4>
@@ -253,6 +331,33 @@ export default class Example extends React.Component<{}, State> {
                     isChecked={customTitle}
                     onChange={() =>
                       this.setState({ customTitle: !customTitle })
+                    }
+                  />
+                </WrapperWithMarginTop>
+                <WrapperWithMarginTop>
+                  Custom Trigger Button Tooltip Text
+                  <Toggle
+                    isChecked={customTooltipText}
+                    onChange={() =>
+                      this.setState({ customTooltipText: !customTooltipText })
+                    }
+                  />
+                </WrapperWithMarginTop>
+                <WrapperWithMarginTop>
+                  Show Restriction Message
+                  <Toggle
+                    isChecked={restrictionMessage}
+                    onChange={() =>
+                      this.setState({ restrictionMessage: !restrictionMessage })
+                    }
+                  />
+                </WrapperWithMarginTop>
+                <WrapperWithMarginTop>
+                  Use an URL shortener
+                  <Toggle
+                    isChecked={useUrlShortener}
+                    onChange={() =>
+                      this.setState({ useUrlShortener: !useUrlShortener })
                     }
                   />
                 </WrapperWithMarginTop>
@@ -301,6 +406,21 @@ export default class Example extends React.Component<{}, State> {
                     options={triggerButtonAppearanceOptions}
                     onChange={(option: any) =>
                       this.setState({ triggerButtonAppearance: option.value })
+                    }
+                  />
+                </WrapperWithMarginTop>
+                <WrapperWithMarginTop>
+                  Trigger Button Tooltip Position
+                  <Select
+                    value={{
+                      label: triggerButtonTooltipPosition,
+                      value: triggerButtonTooltipPosition,
+                    }}
+                    options={triggerButtonTooltipPositionOptions}
+                    onChange={(option: any) =>
+                      this.setState({
+                        triggerButtonTooltipPosition: option.value,
+                      })
                     }
                   />
                 </WrapperWithMarginTop>

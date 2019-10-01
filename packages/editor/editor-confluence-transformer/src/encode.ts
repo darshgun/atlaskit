@@ -4,9 +4,11 @@ import {
   hexToRgb,
   MediaSingleAttributes,
   tableBackgroundColorPalette,
-  calcTableColumnWidths,
 } from '@atlaskit/adf-schema';
-import { timestampToIsoFormat } from '@atlaskit/editor-common';
+import {
+  timestampToIsoFormat,
+  calcTableColumnWidths,
+} from '@atlaskit/editor-common';
 import { Fragment, Node as PMNode, Mark, Schema } from 'prosemirror-model';
 import parseCxhtml from './parse-cxhtml';
 import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
@@ -294,7 +296,6 @@ export default function encode(node: PMNode, schema: Schema) {
             elem = elem.appendChild(encodeTextColor(node, schema));
             break;
           case 'emojiQuery':
-            elem.textContent = node.text;
             break;
           default:
             throw new Error(`Unable to encode mark '${type}'`);

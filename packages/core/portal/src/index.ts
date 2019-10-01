@@ -1,1 +1,2 @@
-export { default } from './components/Portal';
+export { default, PortalEvent } from './components/Portal';
+export * from './constants';

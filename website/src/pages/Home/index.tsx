@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import Cards from './Cards';
 import { DESKTOP_BREAKPOINT_MIN } from '../../constants';
-import '../../../public/css/charlie-display-font.less';
 
 const fonts =
   '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
@@ -62,7 +61,7 @@ export default class HomePage extends React.Component {
           <title>{`${BASE_TITLE}`}</title>
         </Helmet>
         <Style />
-        <Title data-test-id="title">Atlaskit</Title>
+        <Title data-testid="title">Atlaskit</Title>
         <Intro>
           Atlassian&#39;s official UI library, built according to the
           Atlassian&nbsp;Design&nbsp;Guidelines.

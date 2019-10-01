@@ -1,49 +1,50 @@
 import * as React from 'react';
 import { Messages } from 'react-intl';
-import Switcher from './switcher';
+import Switcher from '../primitives/themed-switcher';
 import CommonDataProvider from '../providers/common-data-provider';
-import { Product, FeatureFlagProps } from '../types';
+import {
+  Product,
+  FeatureMap,
+  DiscoverMoreCallback,
+  TriggerXFlowCallback,
+} from '../types';
 import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-props';
+import {
+  AvailableProductsProvider,
+  AvailableProductsDataProvider,
+} from '../providers/products-data-provider';
+import { WithTheme } from '../theme/types';
 
-type GenericSwitcherProps = {
-  cloudId: string;
+type GenericSwitcherProps = WithTheme & {
+  cloudId?: string;
   messages: Messages;
-  features: FeatureFlagProps;
-  triggerXFlow: (productKey: string, sourceComponent: string) => void;
+  features: FeatureMap;
+  triggerXFlow: TriggerXFlowCallback;
+  onDiscoverMoreClicked: DiscoverMoreCallback;
   product: Exclude<Product, Product.JIRA | Product.CONFLUENCE>;
-};
-
-const getFeatures = (
-  product: Exclude<Product, Product.JIRA | Product.CONFLUENCE>,
-) => {
-  switch (product) {
-    case Product.SITE_ADMIN:
-    case Product.TRUSTED_ADMIN:
-    case Product.HOME:
-      return {
-        xflow: true,
-      };
-    case Product.PEOPLE:
-    default:
-      return {
-        xflow: false,
-      };
-  }
+  availableProductsDataProvider?: AvailableProductsDataProvider;
 };
 
 export default (props: GenericSwitcherProps) => (
-  <CommonDataProvider cloudId={props.cloudId}>
-    {providerResults => {
-      const switcherLinks = mapResultsToSwitcherProps(
-        props.cloudId,
-        providerResults,
-        {
-          ...props.features,
-          ...getFeatures(props.product),
-        },
-      );
-
-      return <Switcher {...props} {...switcherLinks} />;
-    }}
-  </CommonDataProvider>
+  <AvailableProductsProvider
+    availableProductsDataProvider={props.availableProductsDataProvider}
+  >
+    {availableProducts => (
+      <CommonDataProvider
+        cloudId={props.cloudId}
+        disableRecentContainers={props.features.disableRecentContainers}
+      >
+        {providerResults => {
+          const switcherLinks = mapResultsToSwitcherProps(
+            props.cloudId,
+            providerResults,
+            props.features,
+            availableProducts,
+            props.product,
+          );
+          return <Switcher {...props} {...switcherLinks} />;
+        }}
+      </CommonDataProvider>
+    )}
+  </AvailableProductsProvider>
 );

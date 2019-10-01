@@ -1,5 +1,366 @@
 # @atlaskit/navigation-next
 
+## 6.8.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 6.8.0
+
+### Minor Changes
+
+- [minor][6cc95a6c66](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6cc95a6c66):
+
+  - Support dynamic removal of contextual navigation via the `showContextualNavigation` prop
+  - Support content dataset that targets the page content element
+  - Remove re-renders occurring from the resize control hover effect
+  - Reduce re-renders occurring from the resize transition
+
+## 6.7.7
+
+### Patch Changes
+
+- [patch][c479e7eb8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c479e7eb8f):
+
+  Fixing nav resize button render issue.
+
+## 6.7.6
+
+### Patch Changes
+
+- [patch][636c5850ae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/636c5850ae):
+
+  Fix missing horizontal navigation re-renders
+
+## 6.7.5
+
+### Patch Changes
+
+- [patch][83b9b5e4d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83b9b5e4d0):
+
+  Bumping devDeps for new atlassian-nav component
+
+## 6.7.4
+
+### Patch Changes
+
+- [patch][f7eb0a4886](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7eb0a4886):
+
+  Ensuring new horizontal nav allows for scrollbar width. Using 'vw' units prevents this.
+
+## 6.7.3
+
+- Updated dependencies [c5939cb73d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c5939cb73d):
+  - @atlaskit/app-navigation@0.4.0
+
+## 6.7.2
+
+### Patch Changes
+
+- [patch][197aa4ed2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/197aa4ed2c):
+
+  Use context hooks in favour of emotion-theming
+
+## 6.7.1
+
+- Updated dependencies [382273ee49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/382273ee49):
+  - @atlaskit/app-navigation@0.3.0
+
+## 6.7.0
+
+### Minor Changes
+
+- [minor][becd9e83bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/becd9e83bd):
+
+  Support experimental_horizontalGlobalNav
+
+## 6.6.3
+
+- Updated dependencies [f0305e1b06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0305e1b06):
+  - @atlaskit/global-navigation@8.0.0
+
+## 6.6.2
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/drawer@5.0.10
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/global-navigation@7.7.1
+  - @atlaskit/modal-dialog@10.2.1
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 6.6.1
+
+### Patch Changes
+
+- [patch][6410edd029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6410edd029):
+
+  Deprecated props, `value` and `onValueUpdated` have been removed from the Badge component. Please use the children prop instead.
+
+## 6.6.0
+
+### Minor Changes
+
+- [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
+
+  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+
+  More information about the deprecation of lifecycles methods can be found here:
+  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+
+## 6.5.8
+
+- Updated dependencies [a75dfaad67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a75dfaad67):
+  - @atlaskit/global-navigation@7.6.4
+  - @atlaskit/onboarding@9.0.0
+
+## 6.5.7
+
+### Patch Changes
+
+- [patch][61ab3a5b1d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61ab3a5b1d):
+
+  Dependency 'prop-types' is unused in package.json.
+
+## 6.5.6
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 6.5.5
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 6.5.4
+
+### Patch Changes
+
+- [patch][708028db86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/708028db86):
+
+  Change all the imports to theme in Core to use multi entry points
+
+## 6.5.3
+
+### Patch Changes
+
+- [patch][a417c7e117](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a417c7e117):
+
+  Fix Item styles for IE11 and Edge
+
+## 6.5.2
+
+### Patch Changes
+
+- [patch][de35ce8c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/de35ce8c67):
+
+  Updates component maintainers
+
+## 6.5.1
+
+- Updated dependencies [926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
+  - @atlaskit/dropdown-menu@8.0.13
+  - @atlaskit/global-navigation@7.4.1
+  - @atlaskit/onboarding@8.0.12
+  - @atlaskit/select@10.0.3
+  - @atlaskit/analytics-next@6.0.0
+  - @atlaskit/avatar@16.0.10
+  - @atlaskit/button@13.1.2
+  - @atlaskit/drawer@5.0.4
+  - @atlaskit/inline-dialog@12.0.11
+  - @atlaskit/modal-dialog@10.1.3
+  - @atlaskit/toggle@8.0.1
+  - @atlaskit/tooltip@15.0.9
+  - @atlaskit/analytics-listeners@6.1.5
+  - @atlaskit/analytics-namespaced-context@4.1.5
+
+## 6.5.0
+
+### Minor Changes
+
+- [minor][4c5ceeb532](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c5ceeb532):
+
+  Remove "overflow: auto;" CSS rule from LayoutContainer. This was added earlier to resolve a problem with showing site banners.
+
+## 6.4.0
+
+### Minor Changes
+
+- [minor][570524869c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/570524869c):
+
+  Add bottom shadow on navigation scrollable Section
+
+## 6.3.10
+
+### Patch Changes
+
+- [patch][5e132b0820](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5e132b0820):
+
+  - Fixes accesibility issues with the expand/collapse affordance.
+  - Fixes keyboard tab order when navigating nested nav transistions.
+  - Passes `dataset` props correctly when using `AsyncLayoutManagerWithViewController`
+
+## 6.3.9
+
+### Patch Changes
+
+- [patch][a73580e138](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a73580e138):
+
+  BUILDTOOLS-260/BUILDTOOLS-261: Replace data-test-id by data-testid to be consistent with react-testing-library.
+  **Products**, you may require to update your integration and end to end tests if they are based on `data-test-id` please replace by `data-testid`.
+
+## 6.3.8
+
+- Updated dependencies [75c64ee36a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/75c64ee36a):
+  - @atlaskit/global-navigation@7.3.6
+  - @atlaskit/drawer@5.0.0
+
+## 6.3.7
+
+- Updated dependencies [7e9d653278](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e9d653278):
+  - @atlaskit/avatar@16.0.8
+  - @atlaskit/global-navigation@7.3.4
+  - @atlaskit/toggle@8.0.0
+
+## 6.3.6
+
+### Patch Changes
+
+- [patch][aa493c8ee5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aa493c8ee5):
+
+  - Fixes app crash issue due to too much recursion.
+  - Fixes issue where children with `postion: fixed` would flicker during nav expand/collapse.
+
+## 6.3.5
+
+### Patch Changes
+
+- [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
+
+  Consume analytics-next ts type definitions as an ambient declaration.
+
+## 6.3.4
+
+- Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
+  - @atlaskit/button@13.0.11
+  - @atlaskit/inline-dialog@12.0.5
+  - @atlaskit/logo@12.1.1
+  - @atlaskit/modal-dialog@10.0.10
+  - @atlaskit/select@10.0.0
+
+## 6.3.3
+
+### Patch Changes
+
+- [patch][ad3e77e5f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad3e77e5f9):
+
+  Fixes styling issue which happens on pages with page banner and scrollable page content
+
+## 6.3.2
+
+- Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
+  - @atlaskit/docs@8.1.3
+  - @atlaskit/avatar@16.0.6
+  - @atlaskit/button@13.0.9
+  - @atlaskit/drawer@4.2.1
+  - @atlaskit/dropdown-menu@8.0.8
+  - @atlaskit/field-base@13.0.6
+  - @atlaskit/global-navigation@7.3.1
+  - @atlaskit/inline-dialog@12.0.3
+  - @atlaskit/modal-dialog@10.0.7
+  - @atlaskit/onboarding@8.0.6
+  - @atlaskit/section-message@4.0.5
+  - @atlaskit/select@9.1.8
+  - @atlaskit/toggle@7.0.3
+  - @atlaskit/tooltip@15.0.2
+  - @atlaskit/icon@19.0.0
+
+## 6.3.1
+
+### Patch Changes
+
+- [patch][fd4008e6a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd4008e6a8):
+
+  Fixes the issue of nav unmounting on collapse correctly
+
+## 6.3.0
+
+### Minor Changes
+
+- [minor][e28067fdf9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e28067fdf9):
+
+  Visually hide nav content when collapsed, rather than unmounting it.
+
+## 6.2.1
+
+### Patch Changes
+
+- [patch][4615439434](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4615439434):
+
+  index.ts will now be ignored when publishing to npm
+
+## 6.2.0
+
+### Minor Changes
+
+- [minor][586f8033b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586f8033b0):
+
+  Add shouldHideGlobalNavShadow prop to LayoutManagerWithViewController
+
+## 6.1.0
+
+### Minor Changes
+
+- [minor][575d2fc15f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/575d2fc15f):
+
+  Adds prop `shouldHideGlobalNavShadow` to control the shadow on global navigation. Fixes an issue where GlobalNavigation didn't pass through props correctly.
+  Also includes changes from [this PR](https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/5918/harsha-fix-item-rerenders/diff), which prevents unnecessary re-render of `Item` component in navigation to imporve nav performance.
+
+## 6.0.10
+
+### Patch Changes
+
+- [patch][1d64ee9bda](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d64ee9bda):
+
+  The after and component props for Item and GlobalItem are passed as new functions in every render. This causes them to re-render the entire component heirarchy under them. This PR fixes the issue by retaining the reference to the props and passing that to prevent unnecessary re-renders.
+
+## 6.0.9
+
+- Updated dependencies [67f06f58dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/67f06f58dd):
+  - @atlaskit/avatar@16.0.4
+  - @atlaskit/dropdown-menu@8.0.5
+  - @atlaskit/icon@18.0.1
+  - @atlaskit/select@9.1.6
+  - @atlaskit/tooltip@15.0.0
+
+## 6.0.8
+
+- Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
+  - @atlaskit/docs@8.1.2
+  - @atlaskit/avatar@16.0.3
+  - @atlaskit/button@13.0.8
+  - @atlaskit/drawer@4.1.3
+  - @atlaskit/dropdown-menu@8.0.4
+  - @atlaskit/field-base@13.0.4
+  - @atlaskit/global-navigation@7.2.4
+  - @atlaskit/inline-dialog@12.0.1
+  - @atlaskit/modal-dialog@10.0.4
+  - @atlaskit/onboarding@8.0.4
+  - @atlaskit/section-message@4.0.2
+  - @atlaskit/select@9.1.5
+  - @atlaskit/toggle@7.0.1
+  - @atlaskit/tooltip@14.0.3
+  - @atlaskit/icon@18.0.0
+
 ## 6.0.7
 
 - Updated dependencies [181209d135](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/181209d135):

@@ -1,19 +1,20 @@
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { MentionStyle } from './styles';
 import { NoAccessTooltip } from '../NoAccessTooltip';
 import { isRestricted, MentionType, MentionEventHandler } from '../../types';
-import { fireAnalyticsMentionEvent, fireAnalytics } from '../../util/analytics';
-
-import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
+import { fireAnalyticsMentionEvent } from '../../util/analytics';
 
 import {
   withAnalyticsEvents,
-  WithAnalyticsEventProps,
-  CreateUIAnalyticsEventSignature,
-  UIAnalyticsEventInterface,
+  WithAnalyticsEventsProps,
+  CreateUIAnalyticsEvent,
+  UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
+import { messages } from '../i18n';
 
 export const ANALYTICS_HOVER_DELAY = 1000;
+export const UNKNOWN_USER_ID = '_|unknown|_';
 
 export type OwnProps = {
   id: string;
@@ -26,12 +27,7 @@ export type OwnProps = {
   onHover?: () => void;
 };
 
-export type OldAnalytics = {
-  fireAnalyticsEvent?: FireAnalyticsEvent;
-  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
-};
-
-export type Props = OwnProps & OldAnalytics & WithAnalyticsEventProps;
+export type Props = OwnProps & WithAnalyticsEventsProps;
 
 export class MentionInternal extends React.PureComponent<Props, {}> {
   private hoverTimeout?: number;
@@ -83,6 +79,17 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     }
   }
 
+  renderUnknownUserError(id: string) {
+    return (
+      <FormattedMessage
+        {...messages.unknownUserError}
+        values={{ userId: id.slice(-5) }}
+      >
+        {message => `@${message}`}
+      </FormattedMessage>
+    );
+  }
+
   render() {
     const {
       handleOnClick,
@@ -93,6 +100,8 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     const { text, id, accessLevel } = props;
     const mentionType: MentionType = this.getMentionType();
 
+    const failedMention = text === `@${UNKNOWN_USER_ID}`;
+
     const mentionComponent = (
       <MentionStyle
         mentionType={mentionType}
@@ -100,7 +109,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
-        {text || '@...'}
+        {failedMention ? this.renderUnknownUserError(id) : text || '@...'}
       </MentionStyle>
     );
 
@@ -120,14 +129,12 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
   }
 }
 
-const MentionWithAnalytics: React.ComponentClass<
-  OwnProps
-> = withAnalyticsEvents({
+const MentionWithAnalytics = withAnalyticsEvents({
   onClick: (
-    createEvent: CreateUIAnalyticsEventSignature,
+    createEvent: CreateUIAnalyticsEvent,
     props: Props,
-  ): UIAnalyticsEventInterface => {
-    const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
+  ): UIAnalyticsEvent => {
+    const { id, text, accessLevel } = props;
 
     const event = fireAnalyticsMentionEvent(createEvent)(
       'mention',
@@ -136,21 +143,14 @@ const MentionWithAnalytics: React.ComponentClass<
       id,
       accessLevel,
     );
-
-    // old analytics
-    fireAnalytics(firePrivateAnalyticsEvent)(
-      'lozenge.select',
-      text,
-      accessLevel,
-    );
     return event;
   },
 
   onHover: (
-    createEvent: CreateUIAnalyticsEventSignature,
+    createEvent: CreateUIAnalyticsEvent,
     props: Props,
-  ): UIAnalyticsEventInterface => {
-    const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
+  ): UIAnalyticsEvent => {
+    const { id, text, accessLevel } = props;
 
     const event = fireAnalyticsMentionEvent(createEvent)(
       'mention',
@@ -159,22 +159,11 @@ const MentionWithAnalytics: React.ComponentClass<
       id,
       accessLevel,
     );
-
-    // old analytics
-    fireAnalytics(firePrivateAnalyticsEvent)(
-      'lozenge.hover',
-      text,
-      accessLevel,
-    );
     return event;
   },
-})(MentionInternal) as React.ComponentClass<OwnProps>;
+})(MentionInternal);
 
-const Mention = withAnalytics<typeof MentionWithAnalytics>(
-  MentionWithAnalytics,
-  {},
-  {},
-);
+const Mention = MentionWithAnalytics;
 type Mention = MentionInternal;
 
 export default Mention;

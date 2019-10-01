@@ -1,3 +1,4 @@
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { mockStore, mockFetcher } from '@atlaskit/media-test-helpers';
 import {
   getFilesInRecentsFullfilled,
@@ -36,7 +37,7 @@ describe('getFilesInRecents middleware', () => {
           Observable.create((observer: Observer<any>) => observer.error('')),
         );
       const store = mockStore({
-        userContext: {
+        userMediaClient: {
           collection: {
             getItems,
           },
@@ -53,7 +54,7 @@ describe('getFilesInRecents middleware', () => {
     it('should dispatch GET_FILES_IN_RECENTS_SUCCESS when requests succeed', async () => {
       const getItems = jest.fn().mockReturnValue(of([]));
       const store = mockStore({
-        userContext: {
+        userMediaClient: {
           collection: {
             getItems,
           },
@@ -63,7 +64,7 @@ describe('getFilesInRecents middleware', () => {
       await requestRecentFiles(store);
 
       expect(getItems).toHaveBeenCalledTimes(1);
-      expect(getItems).toBeCalledWith('recents');
+      expect(getItems).toBeCalledWith(RECENTS_COLLECTION);
       expect(store.dispatch).toHaveBeenCalledTimes(2);
       expect(store.dispatch).toHaveBeenCalledWith(
         getFilesInRecentsFullfilled([]),
@@ -74,7 +75,7 @@ describe('getFilesInRecents middleware', () => {
       const collectionItemsSubscription = { unsubscribe: jest.fn() };
       const getItems = jest.fn().mockReturnValue(of([]));
       const store = mockStore({
-        userContext: {
+        userMediaClient: {
           collection: {
             getItems,
           },

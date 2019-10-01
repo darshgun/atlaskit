@@ -1,4 +1,3 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
 import {
   initFullPageEditorWithAdf,
   snapshot,
@@ -20,7 +19,13 @@ import resizedTableInExt from '../table/__fixtures__/nested-table-inside-bodied-
 import resizedTableFWM from './__fixtures__/resized-table-fwm.adf.json';
 import { pressKey } from '../../__helpers/page-objects/_keyboard';
 import { clickFirstCell } from '../../../__tests__/__helpers/page-objects/_table';
-import { waitForLoadedImageElements } from '@atlaskit/visual-regression/helper';
+
+type ToggleFullWidthOptions = {
+  // Focus is lost after toggling full width mode so if your test
+  // requires a specific element to be focused prior to snapshotting
+  // then you can rerun your focus commands via this callback.
+  postToggleCallback?: () => void;
+};
 
 describe('Snapshot Test: Toggle between full-width and default mode', () => {
   let page: Page;
@@ -61,29 +66,26 @@ describe('Snapshot Test: Toggle between full-width and default mode', () => {
     });
   };
 
-  const toggleFullWidthProp = async (
-    opts: { clickInsideTable?: boolean } = {},
-  ) => {
-    const { clickInsideTable } = opts;
+  const toggleFullWidthProp = async (opts: ToggleFullWidthOptions = {}) => {
+    const { postToggleCallback } = opts;
     fullWidthMode = !fullWidthMode;
 
     await updateEditorProps(page, {
       appearance: fullWidthMode ? 'full-width' : 'full-page',
     });
     await page.waitFor(1000); // wait for transition to complete
-    if (clickInsideTable) {
-      await clickFirstCell(page); // click inside table to see controls
+
+    if (postToggleCallback) {
+      await postToggleCallback();
     }
   };
 
-  const toggleFullWidthMode = async (
-    opts: { clickInsideTable?: boolean } = {},
-  ) => {
+  const toggleFullWidthMode = async (opts: ToggleFullWidthOptions = {}) => {
     const timesToToggle = 2;
     const numTimesToToggle = Array(timesToToggle).fill(0);
     for (const _i of numTimesToToggle) {
       await toggleFullWidthProp(opts);
-      await snapshot(page, MINIMUM_THRESHOLD);
+      await snapshot(page);
     }
   };
 
@@ -101,24 +103,35 @@ describe('Snapshot Test: Toggle between full-width and default mode', () => {
     const codeSelector = '.code-block';
     it('hides breakout buttons in full-width mode and shows them in default mode', async () => {
       await initEditor(breakoutAdf);
+      await page.waitForSelector(codeSelector);
       await page.click(codeSelector);
-      await toggleFullWidthMode();
+      await toggleFullWidthMode({
+        postToggleCallback: async () => {
+          // re-click the codeblock to see its UI controls.
+          await page.click(codeSelector);
+        },
+      });
     });
 
     it('handles breakout mode + gap cursor', async () => {
       const panelContentSelector = '.ak-editor-panel__content';
-      await initEditor(layoutWithBreakoutAdf);
+      await initEditor(layoutWithBreakoutAdf, { width: 1440, height: 500 });
       await page.click(panelContentSelector);
       await pressKey(page, ['ArrowRight']);
-      await toggleFullWidthProp();
-      await snapshot(page, MINIMUM_THRESHOLD);
+      await toggleFullWidthProp({
+        postToggleCallback: async () => {
+          // Reselect the column to see its UI controls
+          await page.click(panelContentSelector);
+          pressKey(page, ['ArrowRight']);
+        },
+      });
+      await snapshot(page);
     });
   });
 
   describe('Media', () => {
     it('resizes image correctly', async () => {
       await initEditor(mediaAdf);
-      await waitForLoadedImageElements(page);
       await toggleFullWidthMode();
     });
   });
@@ -131,7 +144,12 @@ describe('Snapshot Test: Toggle between full-width and default mode', () => {
     };
 
     const toggleFullWidthModeForTable = async () =>
-      await toggleFullWidthMode({ clickInsideTable: true });
+      await toggleFullWidthMode({
+        postToggleCallback: async () => {
+          // Re-click inside the table to see its UI controls
+          await clickFirstCell(page);
+        },
+      });
 
     it('scales columns up correctly when going default -> full-width', async () => {
       await initEditor(resizedTableAdf, tableViewport);

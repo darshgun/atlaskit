@@ -6,6 +6,7 @@ import FullScreenIconOn from '@atlaskit/icon/glyph/vid-full-screen-on';
 import FullScreenIconOff from '@atlaskit/icon/glyph/vid-full-screen-off';
 import SoundIcon from '@atlaskit/icon/glyph/hipchat/outgoing-sound';
 import HDIcon from '@atlaskit/icon/glyph/vid-hd-circle';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import MediaButton from '../MediaButton';
 import Spinner from '@atlaskit/spinner';
 import MediaPlayer, {
@@ -14,7 +15,7 @@ import MediaPlayer, {
   VideoState,
   VideoActions,
 } from 'react-video-renderer';
-import { colors } from '@atlaskit/theme';
+import { B200, DN400, N0, DN60 } from '@atlaskit/theme/colors';
 import { TimeRange } from './timeRange';
 import {
   CurrentTime,
@@ -42,18 +43,19 @@ import {
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { messages } from '../messages';
 import simultaneousPlayManager from './simultaneousPlayManager';
+import { WithShowControlMethodProp } from '../types';
 
-export interface CustomMediaPlayerProps {
+export interface CustomMediaPlayerProps extends WithShowControlMethodProp {
   readonly type: 'audio' | 'video';
   readonly src: string;
   readonly isHDActive?: boolean;
   readonly onHDToggleClick?: () => void;
   readonly isHDAvailable?: boolean;
-  readonly showControls?: () => void;
   readonly isAutoPlay: boolean;
   readonly isShortcutEnabled?: boolean;
   readonly onCanPlay?: () => void;
   readonly onError?: () => void;
+  readonly onDownloadClick?: () => void;
 }
 
 export interface CustomMediaPlayerState {
@@ -66,6 +68,8 @@ export type CustomMediaPlayerActions = {
   play: () => void;
   pause: () => void;
 };
+
+const toolbar: any = 'toolbar';
 
 export class CustomMediaPlayer extends Component<
   CustomMediaPlayerProps & InjectedIntlProps,
@@ -133,11 +137,12 @@ export class CustomMediaPlayer extends Component<
     if (type === 'audio' || !isHDAvailable) {
       return;
     }
-    const primaryColor = isHDActive ? colors.B200 : colors.DN400;
-    const secondaryColor = isHDActive ? colors.white : colors.DN60;
+    const primaryColor = isHDActive ? B200 : DN400;
+    const secondaryColor = isHDActive ? N0 : DN60;
+
     return (
       <MediaButton
-        appearance={'toolbar' as any}
+        appearance={toolbar}
         onClick={onHDToggleClick}
         iconBefore={
           <HDIcon
@@ -156,7 +161,7 @@ export class CustomMediaPlayer extends Component<
         <VolumeToggleWrapper isMuted={isMuted}>
           <MutedIndicator isMuted={isMuted} />
           <MediaButton
-            appearance={'toolbar' as any}
+            appearance={toolbar}
             onClick={actions.toggleMute}
             iconBefore={<SoundIcon label="volume" />}
           />
@@ -198,9 +203,24 @@ export class CustomMediaPlayer extends Component<
 
     return (
       <MediaButton
-        appearance={'toolbar' as any}
+        appearance={toolbar}
         onClick={this.onFullScreenClick}
         iconBefore={icon}
+      />
+    );
+  };
+
+  renderDownloadButton = () => {
+    const { onDownloadClick } = this.props;
+    if (!onDownloadClick) {
+      return;
+    }
+
+    return (
+      <MediaButton
+        appearance={toolbar}
+        onClick={onDownloadClick}
+        iconBefore={<DownloadIcon label="download" />}
       />
     );
   };
@@ -272,7 +292,7 @@ export class CustomMediaPlayer extends Component<
             const toggleButtonAction = isPlaying ? this.pause : this.play;
             const button = (
               <MediaButton
-                appearance={'toolbar' as any}
+                appearance={toolbar}
                 iconBefore={toggleButtonIcon}
                 onClick={toggleButtonAction}
               />
@@ -316,6 +336,7 @@ export class CustomMediaPlayer extends Component<
                       </CurrentTime>
                       {this.renderHDButton()}
                       {this.renderFullScreenButton()}
+                      {this.renderDownloadButton()}
                     </RightControls>
                   </TimebarWrapper>
                 </ControlsWrapper>

@@ -1,4 +1,3 @@
-import { MINIMUM_THRESHOLD } from '@atlaskit/visual-regression/helper';
 import { snapshot, Device, initRendererWithADF } from '../_utils';
 import * as resizeAdf from './__fixtures__/renderer-media.adf.json';
 import * as layoutAdf from '../../../../examples/helper/media-resize-layout.adf.json';
@@ -17,7 +16,7 @@ const devices = [
 const initRenderer = async (page: Page, adf: any, device: Device) =>
   await initRendererWithADF(page, {
     appearance: 'full-page',
-    rendererProps: { allowDynamicTextSizing: true },
+    rendererProps: { allowDynamicTextSizing: true, disableHeadingIDs: true },
     adf,
     device,
   });
@@ -33,12 +32,13 @@ describe('Snapshot Test: Media', () => {
   afterEach(async () => {
     await page.waitForSelector(mediaSelectors.errorLoading); // In test should show overlay error
     await page.waitForSelector(rendererSelectors.document);
-    await snapshot(page, MINIMUM_THRESHOLD, rendererSelectors.document);
+    await snapshot(page, {}, rendererSelectors.document);
   });
 
   describe('resize', () => {
     devices.forEach(device => {
-      it(`should correctly render for ${device}`, async () => {
+      // TODO: ED-7455
+      it.skip(`should correctly render for ${device}`, async () => {
         await initRenderer(page, resizeAdf, device);
       });
     });

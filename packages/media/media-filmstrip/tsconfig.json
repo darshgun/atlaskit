@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tsconfig.media.json",
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
     "noImplicitAny": true
@@ -10,6 +10,6 @@
     "./examples/*.ts",
     "./examples/*.tsx",
     "./example-helpers/*.ts",
-    "./example-helpers/*.tsx",
+    "./example-helpers/*.tsx"
   ]
 }

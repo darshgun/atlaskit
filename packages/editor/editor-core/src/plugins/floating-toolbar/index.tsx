@@ -1,8 +1,16 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
-import { Plugin, PluginKey, Selection } from 'prosemirror-state';
+import rafSchedule from 'raf-schd';
+import {
+  Plugin,
+  PluginKey,
+  Selection,
+  EditorState,
+  Transaction,
+} from 'prosemirror-state';
 import { findDomRefAtPos, findSelectedNodeOfType } from 'prosemirror-utils';
 import { Popup, ProviderFactory } from '@atlaskit/editor-common';
+import { Node } from 'prosemirror-model';
 
 import WithPluginState from '../../ui/WithPluginState';
 import { EditorPlugin } from '../../types';
@@ -15,17 +23,33 @@ import {
   EditorDisabledPluginState,
 } from '../editor-disabled';
 
+type ConfigWithNodeInfo = {
+  config: FloatingToolbarConfig | undefined;
+  pos: number;
+  node: Node;
+};
+
 export const getRelevantConfig = (
   selection: Selection<any>,
   configs: Array<FloatingToolbarConfig>,
-): FloatingToolbarConfig | undefined => {
+): ConfigWithNodeInfo | undefined => {
   // node selections always take precedence, see if
-  const selectedConfig = configs.find(
-    config => !!findSelectedNodeOfType(config.nodeType)(selection),
-  );
+  let configPair: ConfigWithNodeInfo | undefined;
+  configs.find(config => {
+    const node = findSelectedNodeOfType(config.nodeType)(selection);
+    if (node) {
+      configPair = {
+        node: node.node,
+        pos: node.pos,
+        config,
+      };
+    }
 
-  if (selectedConfig) {
-    return selectedConfig;
+    return !!node;
+  });
+
+  if (configPair) {
+    return configPair;
   }
 
   // create mapping of node type name to configs
@@ -47,7 +71,7 @@ export const getRelevantConfig = (
 
     const matchedConfig = configByNodeType[node.type.name];
     if (matchedConfig) {
-      return matchedConfig;
+      return { config: matchedConfig, node: node, pos: $from.pos };
     }
   }
 
@@ -60,7 +84,11 @@ const getDomRefFromSelection = (view: EditorView) =>
     view.domAtPos.bind(view),
   ) as HTMLElement;
 
-const floatingToolbarPlugin: EditorPlugin = {
+function filterUndefined<T>(x?: T): x is T {
+  return !!x;
+}
+
+const floatingToolbarPlugin = (): EditorPlugin => ({
   name: 'floatingToolbar',
 
   pmPlugins(floatingToolbarHandlers: Array<FloatingToolbarHandler> = []) {
@@ -90,68 +118,85 @@ const floatingToolbarPlugin: EditorPlugin = {
     return (
       <WithPluginState
         plugins={{
-          floatingToolbarConfig: pluginKey,
+          floatingToolbarState: pluginKey,
           editorDisabledPlugin: editorDisabledPluginKey,
         }}
         render={({
           editorDisabledPlugin,
-          floatingToolbarConfig,
+          floatingToolbarState,
         }: {
-          floatingToolbarConfig?: FloatingToolbarConfig;
+          floatingToolbarState?: ConfigWithNodeInfo;
           editorDisabledPlugin: EditorDisabledPluginState;
         }) => {
-          if (floatingToolbarConfig) {
-            const {
-              title,
-              getDomRef = getDomRefFromSelection,
-              items,
-              align = 'center',
-              className = '',
-              height,
-              width,
-              offset = [0, 12],
-            } = floatingToolbarConfig;
-            const targetRef = getDomRef(editorView);
-
-            if (targetRef && !(editorDisabledPlugin || {}).editorDisabled) {
-              return (
-                <Popup
-                  ariaLabel={title}
-                  offset={offset}
-                  target={targetRef}
-                  alignY="bottom"
-                  fitHeight={height}
-                  fitWidth={width}
-                  alignX={align}
-                  stick={true}
-                  mountTo={popupsMountPoint}
-                  boundariesElement={popupsBoundariesElement}
-                  scrollableElement={popupsScrollableElement}
-                >
-                  <ToolbarLoader
-                    items={items}
-                    dispatchCommand={(fn?: Function) =>
-                      fn && fn(editorView.state, editorView.dispatch)
-                    }
-                    editorView={editorView}
-                    className={className}
-                    focusEditor={() => editorView.focus()}
-                    providerFactory={providerFactory}
-                    popupsMountPoint={popupsMountPoint}
-                    popupsBoundariesElement={popupsBoundariesElement}
-                    popupsScrollableElement={popupsScrollableElement}
-                    dispatchAnalyticsEvent={dispatchAnalyticsEvent}
-                  />
-                </Popup>
-              );
-            }
+          if (
+            !floatingToolbarState ||
+            !floatingToolbarState.config ||
+            (typeof floatingToolbarState.config.visible !== 'undefined' &&
+              !floatingToolbarState.config.visible)
+          ) {
+            return null;
           }
-          return null;
+
+          const {
+            title,
+            getDomRef = getDomRefFromSelection,
+            items,
+            align = 'center',
+            className = '',
+            height,
+            width,
+            offset = [0, 12],
+            forcePlacement,
+          } = floatingToolbarState.config;
+          const targetRef = getDomRef(editorView);
+
+          if (
+            !targetRef ||
+            (editorDisabledPlugin && editorDisabledPlugin.editorDisabled)
+          ) {
+            return null;
+          }
+          const toolbarItems = Array.isArray(items)
+            ? items
+            : items(floatingToolbarState.node);
+          return (
+            <Popup
+              ariaLabel={title}
+              offset={offset}
+              target={targetRef}
+              alignY="bottom"
+              forcePlacement={forcePlacement}
+              fitHeight={height}
+              fitWidth={width}
+              alignX={align}
+              stick={true}
+              mountTo={popupsMountPoint}
+              boundariesElement={popupsBoundariesElement}
+              scrollableElement={popupsScrollableElement}
+            >
+              <ToolbarLoader
+                target={targetRef}
+                items={toolbarItems}
+                node={floatingToolbarState.node}
+                dispatchCommand={(fn?: Function) =>
+                  fn && fn(editorView.state, editorView.dispatch)
+                }
+                editorView={editorView}
+                className={className}
+                focusEditor={() => editorView.focus()}
+                providerFactory={providerFactory}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+                popupsScrollableElement={popupsScrollableElement}
+                dispatchAnalyticsEvent={dispatchAnalyticsEvent}
+              />
+            </Popup>
+          );
         }}
       />
     );
   },
-};
+});
 
 export default floatingToolbarPlugin;
 
@@ -161,34 +206,31 @@ export default floatingToolbarPlugin;
  *
  */
 
-export const pluginKey = new PluginKey('floatingToolbarPluginKey');
+// We throttle update of this plugin with RAF.
+// So from other plugins you will always get the previous state.
+// To prevent the confusion we are not exporting the plugin key.
+const pluginKey = new PluginKey('floatingToolbarPluginKey');
 
 /**
  * Clean up floating toolbar configs from undesired properties.
  */
 function sanitizeFloatingToolbarConfig(
-  config?: FloatingToolbarConfig,
-): FloatingToolbarConfig | undefined {
-  if (!config) {
-    return config;
-  }
-
-  const sanitizeConfig: FloatingToolbarConfig = {
-    ...config,
-  };
-
+  config: FloatingToolbarConfig,
+): FloatingToolbarConfig {
   // Cleanup from non existing node types
   if (Array.isArray(config.nodeType)) {
-    // TODO: Should I remove the configuration if no nodeType?
-    sanitizeConfig.nodeType = config.nodeType.filter(nodeType => !!nodeType); // Keep only valid nodeTypes
+    return {
+      ...config,
+      nodeType: config.nodeType.filter(filterUndefined),
+    };
   }
 
-  return sanitizeConfig;
+  return config;
 }
 
 function floatingToolbarPluginFactory(options: {
   floatingToolbarHandlers: Array<FloatingToolbarHandler>;
-  dispatch: Dispatch<FloatingToolbarConfig | undefined>;
+  dispatch: Dispatch<ConfigWithNodeInfo | undefined>;
   reactContext: () => { [key: string]: any };
   providerFactory: ProviderFactory;
 }) {
@@ -198,25 +240,40 @@ function floatingToolbarPluginFactory(options: {
     reactContext,
     providerFactory,
   } = options;
+
+  const apply = (
+    _tr: Transaction,
+    _pluginState: any,
+    _oldState: EditorState<any>,
+    newState: EditorState<any>,
+  ) => {
+    const { intl } = reactContext();
+    const activeConfigs = floatingToolbarHandlers
+      .map(handler => handler(newState, intl, providerFactory))
+      .filter(filterUndefined)
+      .map(config => sanitizeFloatingToolbarConfig(config));
+
+    const relevantConfig =
+      activeConfigs && getRelevantConfig(newState.selection, activeConfigs);
+
+    dispatch(pluginKey, relevantConfig);
+    return relevantConfig;
+  };
+
+  const rafApply = rafSchedule(apply);
+
   return new Plugin({
     key: pluginKey,
     state: {
       init: () => {
         ToolbarLoader.preload();
       },
-      apply(_tr, _pluginState, _oldState, newState) {
-        const { intl } = reactContext();
-        const activeConfigs = floatingToolbarHandlers
-          .map(handler => handler(newState, intl, providerFactory))
-          .map(config => sanitizeFloatingToolbarConfig(config)) // Clean config from bad configuration
-          .filter(Boolean) as Array<FloatingToolbarConfig>;
-
-        const relevantConfig =
-          activeConfigs && getRelevantConfig(newState.selection, activeConfigs);
-
-        dispatch(pluginKey, relevantConfig);
-        return relevantConfig;
-      },
+      apply: rafApply,
     },
+    view: () => ({
+      destroy: () => {
+        rafApply.cancel();
+      },
+    }),
   });
 }

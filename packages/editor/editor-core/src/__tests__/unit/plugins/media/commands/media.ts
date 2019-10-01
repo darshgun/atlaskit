@@ -4,17 +4,26 @@ import {
   doc,
   mediaSingle,
   media,
+  storyContextIdentifierProviderFactory,
+  testMediaFileId,
 } from '@atlaskit/editor-test-helpers';
-import mediaPlugin from '../../../../../plugins/media';
 import { MediaPluginState } from '../../../../../plugins/media/pm-plugins/main';
 import { stateKey as mediaPluginKey } from '../../../../../plugins/media/pm-plugins/main';
 import { getFreshMediaProvider, testCollectionName } from '../_utils';
-import { updateMediaNodeAttrs } from '../../../../../plugins/media/commands';
+import {
+  updateMediaNodeAttrs,
+  updateAllMediaNodesAttrs,
+} from '../../../../../plugins/media/commands';
+import { MediaAttributes } from '@atlaskit/adf-schema';
 
 describe('Media plugin commands', () => {
   const createEditor = createEditorFactory<MediaPluginState>();
+  const contextIdentifierProvider = storyContextIdentifierProviderFactory();
   const mediaProvider = getFreshMediaProvider();
-  const providerFactory = ProviderFactory.create({ mediaProvider });
+  const providerFactory = ProviderFactory.create({
+    mediaProvider,
+    contextIdentifierProvider,
+  });
 
   const mediaPluginOptions = (dropzoneContainer: HTMLElement) => ({
     provider: mediaProvider,
@@ -26,16 +35,13 @@ describe('Media plugin commands', () => {
     doc: any,
     editorProps = {},
     dropzoneContainer: HTMLElement = document.body,
-    extraPlugins: any[] = [],
   ) => {
     return createEditor({
       doc,
-      editorPlugins: [
-        mediaPlugin(mediaPluginOptions(dropzoneContainer)),
-        ...extraPlugins,
-      ],
       editorProps: {
         ...editorProps,
+        media: mediaPluginOptions(dropzoneContainer),
+        contextIdentifierProvider,
         allowAnalyticsGASV3: true,
       },
       providerFactory,
@@ -43,29 +49,66 @@ describe('Media plugin commands', () => {
     });
   };
 
-  describe('Update Media Node Attributes', async () => {
+  describe('Update Media Node Attributes', () => {
+    const createMediaNode = (attrs: Partial<MediaAttributes>) =>
+      media({
+        id: testMediaFileId,
+        type: 'file',
+        collection: testCollectionName,
+        __fileName: 'foo.jpg',
+        __fileSize: 100,
+        __fileMimeType: 'image/jpeg',
+        ...attrs,
+      })();
+    const originalDimensions = {
+      height: 100,
+      width: 100,
+    };
+
+    const newDimensions = {
+      height: 200,
+      width: 200,
+    };
     it('should update media attributes for media single', () => {
       const { editorView } = editor(
         doc(
           mediaSingle({
             layout: 'center',
-          })(
-            media({
-              id: '1',
-              type: 'file',
-              collection: testCollectionName,
-              __fileName: 'foo.jpg',
-              __fileSize: 100,
-              __fileMimeType: 'image/jpeg',
-              height: 100,
-              width: 100,
-            })(),
-          ),
+          })(createMediaNode(originalDimensions)),
         ),
       );
 
-      updateMediaNodeAttrs(
-        '1',
+      updateMediaNodeAttrs(testMediaFileId, newDimensions, true)(
+        editorView.state,
+        editorView.dispatch,
+      );
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          mediaSingle({
+            layout: 'center',
+          })(createMediaNode(newDimensions)),
+        ),
+      );
+    });
+
+    it('should update media attributes for all media single nodes in the document with the same id', () => {
+      const { editorView } = editor(
+        doc(
+          mediaSingle({
+            layout: 'center',
+          })(createMediaNode(originalDimensions)),
+          mediaSingle({
+            layout: 'center',
+          })(createMediaNode(originalDimensions)),
+          mediaSingle({
+            layout: 'center',
+          })(createMediaNode(originalDimensions)),
+        ),
+      );
+
+      updateAllMediaNodesAttrs(
+        testMediaFileId,
         {
           height: 200,
           width: 200,
@@ -77,18 +120,13 @@ describe('Media plugin commands', () => {
         doc(
           mediaSingle({
             layout: 'center',
-          })(
-            media({
-              id: '1',
-              type: 'file',
-              collection: testCollectionName,
-              __fileName: 'foo.jpg',
-              __fileSize: 100,
-              __fileMimeType: 'image/jpeg',
-              height: 200,
-              width: 200,
-            })(),
-          ),
+          })(createMediaNode(newDimensions)),
+          mediaSingle({
+            layout: 'center',
+          })(createMediaNode(newDimensions)),
+          mediaSingle({
+            layout: 'center',
+          })(createMediaNode(newDimensions)),
         ),
       );
     });

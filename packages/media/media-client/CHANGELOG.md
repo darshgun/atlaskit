@@ -1,5 +1,265 @@
 # @atlaskit/media-client
 
+## 2.3.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 2.3.0
+
+### Minor Changes
+
+- [minor][65ada7f318](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada7f318):
+
+  **FABDODGEM-12 Editor Cashmere Release**
+
+  - [Internal post](https://go.atlassian.com/cashmere-release)
+
+  **Affected editor components:**
+
+  tables, media, mobile, text color, emoji, copy/paste, analytics
+
+  **Performance**
+
+  - Async import for code blocks and task items on renderer
+    - https://product-fabric.atlassian.net/browse/ED-7155
+
+  **Table**
+
+  - Add support to sort tables that contains smart links
+    - https://product-fabric.atlassian.net/browse/ED-7449
+  - Scale table when changing to full width mode
+    - https://product-fabric.atlassian.net/browse/ED-7724
+
+  **Text color**
+
+  - Update text color toolbar with right color when text is inside a list, panel, etc.
+    - https://product-fabric.atlassian.net/browse/FM-1752
+
+**Mobile** - Implement undo/redo interface on Hybrid Editor - https://product-fabric.atlassian.net/browse/FM-2393
+
+**Copy and Paste**
+
+    - Support copy & paste when missing context-id attr
+      - https://product-fabric.atlassian.net/browse/MS-2344
+    - Right click + copy image fails the second time that is pasted
+      - https://product-fabric.atlassian.net/browse/MS-2324
+    - Copying a never touched image for the first time from editor fails to paste
+      - https://product-fabric.atlassian.net/browse/MS-2338
+    - Implement analytics when a file is copied
+      - https://product-fabric.atlassian.net/browse/MS-2036
+
+**Media**
+
+- Add analytics events and error reporting [NEW BIG FEATURE]
+  - https://product-fabric.atlassian.net/browse/MS-2275
+  - https://product-fabric.atlassian.net/browse/MS-2329
+  - https://product-fabric.atlassian.net/browse/MS-2330
+  - https://product-fabric.atlassian.net/browse/MS-2331
+  - https://product-fabric.atlassian.net/browse/MS-2332
+  - https://product-fabric.atlassian.net/browse/MS-2390
+- Fixed issue where we can’t insert same file from MediaPicker twice
+  - https://product-fabric.atlassian.net/browse/MS-2080
+- Disable upload of external files to media
+  - https://product-fabric.atlassian.net/browse/MS-2372
+
+**Notable Bug Fixes**
+
+    - Implement consistent behaviour for rule and mediaSingle on insertion
+      - Feature Flag:
+        - allowNewInsertionBehaviour - [default: true]
+      - https://product-fabric.atlassian.net/browse/ED-7503
+    - Fixed bug where we were showing table controls on mobile.
+      - https://product-fabric.atlassian.net/browse/ED-7690
+    - Fixed bug where editor crashes after unmounting react component.
+      - https://product-fabric.atlassian.net/browse/ED-7318
+    - Fixed bug where custom emojis are not been showed on the editor
+      - https://product-fabric.atlassian.net/browse/ED-7726
+
+- [minor][02dd8e6c76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02dd8e6c76):
+
+  Add RECENTS_COLLECTION constant with the name of user's recents collection
+
+## 2.2.1
+
+### Patch Changes
+
+- [patch][598fde647a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/598fde647a):
+
+  dont append file attrs to url in Safari
+
+## 2.2.0
+
+### Minor Changes
+
+- [minor][8e6bce4da8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e6bce4da8):
+
+  New fetchMaxRes parameter for getImage method allows to set default download params (4096 width and height and 'fit' mode)- [minor][d9abdd3030](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9abdd3030):
+
+  Expose url helpers for copy&paste and stringify params
+
+## 2.1.2
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/media-core@30.0.14
+  - @atlaskit/media-test-helpers@25.1.1
+  - @atlaskit/media-card@65.0.0
+
+## 2.1.1
+
+### Patch Changes
+
+- [patch][9c28ef71fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c28ef71fe):
+
+  Add missing peerDependency in package.json
+
+## 2.1.0
+
+### Minor Changes
+
+- [minor][e5c3f6ae3e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5c3f6ae3e):
+
+  ED-6216: External images will now be uploaded to media services if possible
+
+## 2.0.5
+
+### Patch Changes
+
+- [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
+
+  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+
+## 2.0.4
+
+### Patch Changes
+
+- [patch][0d7d459f1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7d459f1a):
+
+  Fixes type errors which were incompatible with TS 3.6
+
+## 2.0.3
+
+### Patch Changes
+
+- [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
+
+  Upgraded Typescript to 3.3.x
+
+## 2.0.2
+
+- Updated dependencies [3624730f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3624730f44):
+  - @atlaskit/media-core@30.0.11
+  - @atlaskit/media-test-helpers@25.0.2
+  - @atlaskit/media-card@64.0.0
+
+## 2.0.1
+
+- Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
+  - @atlaskit/media-card@63.3.11
+  - @atlaskit/media-core@30.0.10
+  - @atlaskit/media-test-helpers@25.0.0
+
+## 2.0.0
+
+### Major Changes
+
+- [major][ee804f3eeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee804f3eeb):
+
+  Remove getCurrentState method from FileStreamCache
+
+  Before you could do:
+
+  ```
+  import {getFileStreamsCache} from '@atlaskit/media-client'
+
+  const currentFileState = await getFileStreamsCache().getCurrentState('some-uuid');
+  ```
+
+  That will return the last state from that fileState in a promise rather than having to
+  use Observables to subscribe and get the last event.
+
+  Now you could just use the already existing method getCurrentState from mediaClient:
+
+  ```
+  import {getMediaClient} from '@atlaskit/media-client';
+
+  const mediaClient = getMediaClient({
+    mediaClientConfig: {} // Some MediaClientConfig
+  });
+  const state = await mediaClient.file.getCurrentState('some-uuid');
+  ```
+
+## 1.5.3
+
+### Patch Changes
+
+- [patch][13eed9b89c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/13eed9b89c):
+
+  populate media cache when using FileFetcher:copyFile
+
+## 1.5.2
+
+### Patch Changes
+
+- [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
+
+  bugfix, fixes missing version.json file
+
+## 1.5.1
+
+### Patch Changes
+
+- [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
+
+  In this PR, we are:
+
+  - Re-introducing dist build folders
+  - Adding back cjs
+  - Replacing es5 by cjs and es2015 by esm
+  - Creating folders at the root for entry-points
+  - Removing the generation of the entry-points at the root
+    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+
+## 1.5.0
+
+### Minor Changes
+
+- [minor][60af38e3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60af38e3f7):
+
+  Expose globalMediaEventEmitter to allow consumers to subscribe to global events rather than per context/mediaClient instance
+
+  ```
+  //
+  // BEFORE
+  //
+  import {ContextFactory} from '@atlaskit/media-core'
+
+  const context = ContextFactory.create();
+
+  // Events happen per instance
+  context.on('file-added', ...)
+
+  //
+  // NOW
+  //
+
+  import {globalMediaEventEmitter} from '@atlaskit/media-client';
+
+  // Context happens globally on any upload. This is needed since there might be multiple mediaClient instances at runtime
+  globalMediaEventEmitter.on('file-added', ...);
+  ```
+
+## 1.4.0
+
+### Minor Changes
+
+- [minor][02185fba43](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02185fba43):
+
+  getMediaClient is now exposed
+
 ## 1.3.0
 
 ### Minor Changes

@@ -25,6 +25,7 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { name: 'Fortran', alias: ['fortran'] },
   { name: 'FoxPro', alias: ['foxpro', 'vfp', 'clipper', 'xbase'] },
   { name: 'Go', alias: ['go'] },
+  { name: 'GraphQL', alias: ['graphql'] },
   { name: 'Groovy', alias: ['groovy'] },
   { name: 'Haskell', alias: ['haskell', 'hs'] },
   { name: 'Haxe', alias: ['haxe', 'hx', 'hxsl'] },
@@ -96,6 +97,7 @@ export const DEFAULT_LANGUAGES: Language[] = [
   { name: 'VisualBasic', alias: ['visualbasic', 'vb'] },
   { name: 'XML', alias: ['xml'] },
   { name: 'XQuery', alias: ['xquery', 'xqy', 'xq', 'xql', 'xqm'] },
+  { name: 'YAML', alias: ['yaml', 'yml'] },
 ];
 
 export function findMatchedLanguage(

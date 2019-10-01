@@ -1,15 +1,14 @@
 import { Plugin, PluginKey } from 'prosemirror-state';
 import classnames from 'classnames';
-import { updateControls, updateResizeHandle } from './utils';
+import { getResizeCellPos } from './utils';
 import {
   ColumnResizingPluginState,
   TableCssClassName as ClassName,
 } from '../../types';
 import { Dispatch } from '../../../../event-dispatcher';
-import { handleMouseMove, handleMouseDown } from './event-handlers';
+import { handleMouseDown } from './event-handlers';
 import { pluginFactory } from '../../../../utils/plugin-state-factory';
 import reducer from './reducer';
-import { setResizeHandlePos } from './commands';
 
 export const pluginKey = new PluginKey('tableFlexiColumnResizing');
 
@@ -48,34 +47,21 @@ export function createPlugin(
       },
 
       handleDOMEvents: {
-        mousemove(view, event) {
-          handleMouseMove(view, event as MouseEvent, lastColumnResizable);
-          const { state } = view;
-          if (getPluginState(state).dragging) {
-            const domAtPos = view.domAtPos.bind(view);
-            updateControls(state);
-            updateResizeHandle(state, domAtPos);
-          }
-          return false;
-        },
-        mouseleave(view) {
-          const { state, dispatch } = view;
-          const { resizeHandlePos, dragging } = getPluginState(state);
-          if (resizeHandlePos !== null && !dragging) {
-            setResizeHandlePos(null)(state, dispatch);
-            updateControls(state);
-          }
-
-          return true;
-        },
         mousedown(view, event) {
-          const { resizeHandlePos, dragging } = getPluginState(view.state);
+          const { state } = view;
+          const resizeHandlePos =
+            // we're setting `resizeHandlePos` via command in integration tests
+            getPluginState(state).resizeHandlePos ||
+            getResizeCellPos(view, event as MouseEvent, lastColumnResizable);
+
+          const { dragging } = getPluginState(state);
           if (resizeHandlePos !== null && !dragging) {
-            const domAtPos = view.domAtPos.bind(view);
-            if (handleMouseDown(view, event as MouseEvent, dynamicTextSizing)) {
-              updateResizeHandle(view.state, domAtPos);
-              return true;
-            }
+            return handleMouseDown(
+              view,
+              event as MouseEvent,
+              resizeHandlePos,
+              dynamicTextSizing,
+            );
           }
 
           return false;

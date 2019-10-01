@@ -1,7 +1,7 @@
 import { InjectedIntl } from 'react-intl';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { NodeType } from 'prosemirror-model';
+import { NodeType, Node } from 'prosemirror-model';
 
 import { Command } from '../../types';
 import { ButtonAppearance } from './ui/Button';
@@ -19,8 +19,8 @@ export type AlignType = 'left' | 'center' | 'right';
 export type FloatingToolbarButton<T> = {
   type: 'button';
   title: string;
-  showTitle?: boolean;
   onClick: T;
+  showTitle?: boolean;
   onMouseEnter?: T;
   onMouseLeave?: T;
   icon?: Icon;
@@ -98,12 +98,15 @@ export interface FloatingToolbarConfig {
 
   visible?: boolean;
   nodeType: NodeType | NodeType[];
-  items: Array<FloatingToolbarItem<Command>>;
+  items:
+    | Array<FloatingToolbarItem<Command>>
+    | ((node: Node) => Array<FloatingToolbarItem<Command>>);
   align?: AlignType;
   className?: string;
   height?: number;
   width?: number;
   offset?: [number, number];
+  forcePlacement?: boolean;
 }
 
 export type FloatingToolbarHandler = (

@@ -1,0 +1,50 @@
+{
+  "name": "@atlaskit/popup",
+  "version": "0.1.4",
+  "description": "Renders a portaled popup component in reference to a trigger.",
+  "license": "Apache-2.0",
+  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "atlaskit:src": "src/index.ts",
+  "sideEffects": false,
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Matt K",
+    "Tom M",
+    "Monica O"
+  ],
+  "atlaskit": {
+    "internal": true,
+    "name": "Popup",
+    "team": "core"
+  },
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/popper": "^3.1.1",
+    "@atlaskit/portal": "^3.0.10",
+    "@atlaskit/theme": "^9.1.3",
+    "@babel/runtime": "^7.0.0",
+    "@emotion/core": "^10.0.9",
+    "focus-trap": "^2.4.5",
+    "tslib": "^1.9.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "devDependencies": {
+    "@atlaskit/build-utils": "^2.2.3",
+    "@atlaskit/button": "^13.1.3",
+    "@atlaskit/docs": "^8.1.3",
+    "@atlaskit/radio": "^3.0.16",
+    "@atlaskit/spinner": "^12.0.9",
+    "@testing-library/react": "^8.0.1",
+    "react-dom": "^16.8.0"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}

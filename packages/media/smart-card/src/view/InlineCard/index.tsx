@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC } from 'react';
 import {
   CardLinkView,
   InlineCardResolvedView,
@@ -7,21 +8,28 @@ import {
   InlineCardForbiddenView,
   InlineCardUnauthorizedView,
 } from '@atlaskit/media-ui';
-import { ObjectState } from '../../client';
+import { InlineCardProps } from './types';
 import { extractInlinePropsFromJSONLD } from '../../extractors/inline';
 import { getCollapsedIcon } from '../../utils';
 
-export function renderInlineCard(
-  url: string,
-  state: ObjectState,
-  handleAuthorise: (() => void) | undefined,
-  handleFrameClick: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
-  isSelected?: boolean,
-): React.ReactNode {
-  switch (state.status) {
+export const InlineCard: FC<InlineCardProps> = ({
+  url,
+  cardState,
+  handleAuthorize,
+  handleFrameClick,
+  isSelected,
+  onResolve,
+}) => {
+  const { status, details } = cardState;
+  switch (status) {
     case 'pending':
-      return <CardLinkView link={url} isSelected={isSelected} />;
-
+      return (
+        <CardLinkView
+          link={url}
+          isSelected={isSelected}
+          onClick={handleFrameClick}
+        />
+      );
     case 'resolving':
       return (
         <InlineCardResolvingView
@@ -30,38 +38,46 @@ export function renderInlineCard(
           onClick={handleFrameClick}
         />
       );
-
     case 'resolved':
+      const props = extractInlinePropsFromJSONLD(
+        (details && details.data) || {},
+      );
+
+      if (onResolve) {
+        onResolve({
+          url,
+          title: props.title,
+        });
+      }
+
       return (
         <InlineCardResolvedView
-          {...extractInlinePropsFromJSONLD(state.data || {})}
+          {...props}
+          link={url}
           isSelected={isSelected}
           onClick={handleFrameClick}
         />
       );
-
     case 'unauthorized':
       return (
         <InlineCardUnauthorizedView
-          icon={getCollapsedIcon(state)}
+          icon={getCollapsedIcon(details)}
           url={url}
           isSelected={isSelected}
           onClick={handleFrameClick}
-          onAuthorise={handleAuthorise}
+          onAuthorise={handleAuthorize}
         />
       );
-
     case 'forbidden':
       return (
         <InlineCardForbiddenView
           url={url}
           isSelected={isSelected}
           onClick={handleFrameClick}
-          onAuthorise={handleAuthorise}
+          onAuthorise={handleAuthorize}
         />
       );
-
-    case 'not-found':
+    case 'not_found':
       return (
         <InlineCardErroredView
           url={url}
@@ -70,8 +86,13 @@ export function renderInlineCard(
           onClick={handleFrameClick}
         />
       );
-
     case 'errored':
-      return <CardLinkView link={url} isSelected={isSelected} />;
+      return (
+        <CardLinkView
+          link={url}
+          isSelected={isSelected}
+          onClick={handleFrameClick}
+        />
+      );
   }
-}
+};

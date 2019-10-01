@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Tooltip from '@atlaskit/tooltip';
+import Tooltip, { PositionType } from '@atlaskit/tooltip';
 import { ButtonProps } from '@atlaskit/button';
 import Button from './styles';
 
@@ -14,13 +14,14 @@ export type Props = {
   selected?: boolean;
   spacing?: 'default' | 'compact' | 'none';
   target?: string;
-  title?: string;
-  titlePosition?: string;
+  title?: React.ReactNode;
+  titlePosition?: PositionType;
 } & Pick<ButtonProps, 'theme' | 'aria-label'>;
 
 export default class ToolbarButton extends React.PureComponent<Props, {}> {
   static defaultProps = {
     className: '',
+    titlePosition: 'top' as PositionType,
   };
 
   private handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -53,14 +54,13 @@ export default class ToolbarButton extends React.PureComponent<Props, {}> {
       </Button>
     );
 
-    const position = this.props.titlePosition || 'top';
     const tooltipContent = !this.props.hideTooltip ? this.props.title : null;
 
     return this.props.title ? (
       <Tooltip
         content={tooltipContent}
         hideTooltipOnClick={true}
-        position={position}
+        position={this.props.titlePosition}
       >
         {button}
       </Tooltip>

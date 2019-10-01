@@ -64,7 +64,9 @@ const analyticsPayload = (
   },
 });
 
-const submitEditorPlugin: EditorPlugin = {
+const submitEditorPlugin = (): EditorPlugin => ({
+  name: 'submitEditor',
+
   pmPlugins() {
     return [
       {
@@ -73,6 +75,6 @@ const submitEditorPlugin: EditorPlugin = {
       },
     ];
   },
-};
+});
 
 export default submitEditorPlugin;

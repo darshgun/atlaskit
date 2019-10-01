@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { fontSize, gridSize } from '@atlaskit/theme';
+import { fontSize, gridSize } from '@atlaskit/theme/constants';
 
 interface Props {
   isCompact?: boolean;
@@ -7,13 +7,13 @@ interface Props {
 
 const ReadViewContainer = styled.div<Props>`
   display: flex;
+  font-size: ${fontSize()}px;
+  line-height: ${(gridSize() * 2.5) / fontSize()};
   max-width: 100%;
-  overflow: hidden;
+  min-height: ${(gridSize() * 2.5) / fontSize()}em;
   padding: ${props => (props.isCompact ? gridSize() / 2 : gridSize())}px
     ${gridSize() - 2}px;
-  font-size: ${fontSize()}px;
-  height: ${(gridSize() * 2.5) / fontSize()}em;
-  line-height: ${(gridSize() * 2.5) / fontSize()};
+  word-break: break-word;
 `;
 
 ReadViewContainer.displayName = 'ReadViewContainer';
