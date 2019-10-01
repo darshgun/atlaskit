@@ -65,6 +65,7 @@ export class Renderer extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
   private serializer?: ReactSerializer;
   private rafID: number | undefined;
+  private editorRef: any | undefined;
 
   constructor(props: Props) {
     super(props);
@@ -74,20 +75,24 @@ export class Renderer extends PureComponent<Props, {}> {
   }
 
   private anchorLinkAnalytics() {
-    const anchorLinkAttributeHit =
-      !this.props.disableHeadingIDs &&
-      window.location.hash &&
-      document.getElementById(
-        decodeURIComponent(window.location.hash.slice(1)),
-      );
+    const hash =
+      window.location.hash && decodeURIComponent(window.location.hash.slice(1));
 
-    if (anchorLinkAttributeHit) {
-      this.fireAnalyticsEvent({
-        action: ACTION.VIEWED,
-        actionSubject: ACTION_SUBJECT.ANCHOR_LINK,
-        attributes: { platform: PLATFORM.WEB, mode: MODE.RENDERER },
-        eventType: EVENT_TYPE.UI,
-      });
+    if (
+      !this.props.disableHeadingIDs &&
+      hash &&
+      this.editorRef &&
+      this.editorRef instanceof HTMLElement
+    ) {
+      const anchorLinkElement = this.editorRef.querySelector(`#${hash}`);
+      if (anchorLinkElement) {
+        this.fireAnalyticsEvent({
+          action: ACTION.VIEWED,
+          actionSubject: ACTION_SUBJECT.ANCHOR_LINK,
+          attributes: { platform: PLATFORM.WEB, mode: MODE.RENDERER },
+          eventType: EVENT_TYPE.UI,
+        });
+      }
     }
   }
 
@@ -215,6 +220,9 @@ export class Renderer extends PureComponent<Props, {}> {
                 <RendererWrapper
                   appearance={appearance}
                   dynamicTextSizing={!!allowDynamicTextSizing}
+                  wrapperRef={ref => {
+                    this.editorRef = ref;
+                  }}
                 >
                   {result}
                 </RendererWrapper>
@@ -281,17 +289,21 @@ export default RendererWithAnalytics;
 type RendererWrapperProps = {
   appearance: RendererAppearance;
   dynamicTextSizing: boolean;
+  wrapperRef?: (instance: any) => void;
 } & { children?: React.ReactNode };
 
 export function RendererWrapper({
   appearance,
   children,
   dynamicTextSizing,
+  wrapperRef,
 }: RendererWrapperProps) {
   return (
     <WidthProvider>
       <BaseTheme dynamicTextSizing={dynamicTextSizing}>
-        <Wrapper appearance={appearance}>{children}</Wrapper>
+        <Wrapper innerRef={wrapperRef} appearance={appearance}>
+          {children}
+        </Wrapper>
       </BaseTheme>
     </WidthProvider>
   );
