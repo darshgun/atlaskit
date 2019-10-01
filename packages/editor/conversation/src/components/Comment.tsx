@@ -14,7 +14,6 @@ import { HttpError } from '../api/HttpError';
 import CommentContainer from '../containers/Comment';
 import {
   actionSubjectIds,
-  AnalyticsEvent,
   eventTypes,
   fireEvent,
   trackEventActions,
@@ -22,6 +21,7 @@ import {
 import { Comment as CommentType, User } from '../model';
 import Editor from './Editor';
 import { SharedProps } from './types';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 export interface Props extends SharedProps {
   conversationId: string;
@@ -137,14 +137,15 @@ export default class Comment extends React.Component<Props, State> {
     }
   };
 
-  private onReply = (_value: any, analyticsEvent: AnalyticsEvent) => {
+  private onReply = (_event: any, analyticsEvent?: UIAnalyticsEvent) => {
     const { objectId, containerId } = this.props;
 
-    fireEvent(analyticsEvent, {
-      actionSubjectId: actionSubjectIds.replyButton,
-      objectId,
-      containerId,
-    });
+    analyticsEvent &&
+      fireEvent(analyticsEvent, {
+        actionSubjectId: actionSubjectIds.replyButton,
+        objectId,
+        containerId,
+      });
 
     this.setState({
       isReplying: true,
@@ -196,7 +197,7 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
-  private onDelete = (_value: any, analyticsEvent: AnalyticsEvent) => {
+  private onDelete = (_value: any, analyticsEvent?: UIAnalyticsEvent) => {
     const {
       comment: { nestedDepth, commentId },
       objectId,
@@ -205,11 +206,12 @@ export default class Comment extends React.Component<Props, State> {
       sendAnalyticsEvent,
     } = this.props;
 
-    fireEvent(analyticsEvent, {
-      actionSubjectId: actionSubjectIds.deleteButton,
-      objectId,
-      containerId,
-    });
+    analyticsEvent &&
+      fireEvent(analyticsEvent, {
+        actionSubjectId: actionSubjectIds.deleteButton,
+        objectId,
+        containerId,
+      });
 
     this.dispatch(
       'onDeleteComment',
@@ -229,14 +231,15 @@ export default class Comment extends React.Component<Props, State> {
     );
   };
 
-  private onEdit = (_value: any, analyticsEvent: AnalyticsEvent) => {
+  private onEdit = (_value: any, analyticsEvent?: UIAnalyticsEvent) => {
     const { objectId, containerId } = this.props;
 
-    fireEvent(analyticsEvent, {
-      actionSubjectId: actionSubjectIds.editButton,
-      objectId,
-      containerId,
-    });
+    analyticsEvent &&
+      fireEvent(analyticsEvent, {
+        actionSubjectId: actionSubjectIds.editButton,
+        objectId,
+        containerId,
+      });
 
     this.setState({
       isEditing: true,
@@ -289,7 +292,10 @@ export default class Comment extends React.Component<Props, State> {
     });
   };
 
-  private onRequestCancel = (_value: any, analyticsEvent: AnalyticsEvent) => {
+  private onRequestCancel = (
+    _value: any,
+    analyticsEvent?: UIAnalyticsEvent,
+  ) => {
     const { comment, onCancel, objectId, containerId } = this.props;
 
     // Invoke optional onCancel hook
@@ -297,16 +303,17 @@ export default class Comment extends React.Component<Props, State> {
       onCancel();
     }
 
-    fireEvent(analyticsEvent, {
-      actionSubjectId: actionSubjectIds.cancelFailedRequestButton,
-      objectId,
-      containerId,
-    });
+    analyticsEvent &&
+      fireEvent(analyticsEvent, {
+        actionSubjectId: actionSubjectIds.cancelFailedRequestButton,
+        objectId,
+        containerId,
+      });
 
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
 
-  private onRequestRetry = (_value: any, analyticsEvent: AnalyticsEvent) => {
+  private onRequestRetry = (_value: any, analyticsEvent?: UIAnalyticsEvent) => {
     const { lastDispatch } = this.state;
     const {
       objectId,
@@ -319,11 +326,12 @@ export default class Comment extends React.Component<Props, State> {
       return onRetry(localId);
     }
 
-    fireEvent(analyticsEvent, {
-      actionSubjectId: actionSubjectIds.retryFailedRequestButton,
-      objectId,
-      containerId,
-    });
+    analyticsEvent &&
+      fireEvent(analyticsEvent, {
+        actionSubjectId: actionSubjectIds.retryFailedRequestButton,
+        objectId,
+        containerId,
+      });
 
     if (!lastDispatch) {
       return;
