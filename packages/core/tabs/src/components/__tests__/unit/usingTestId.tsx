@@ -46,7 +46,7 @@ describe('Using react-test-library', () => {
       const tabsTestId = 'the-tabs';
       const tabTestId = 'tab-1';
       const { getByTestId } = render(
-        <Tabs tabs={tabsWithTestIds} testId={testId} />,
+        <Tabs tabs={tabsWithTestIds} testId={tabsTestId} />,
       );
 
       expect(getByTestId(tabsTestId)).toBeTruthy();
