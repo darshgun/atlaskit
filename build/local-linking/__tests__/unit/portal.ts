@@ -11,16 +11,17 @@ jest.unmock('../../portal');
 jest.unmock('../../utils');
 
 const mockedFse: any = fse;
+const mockedBolt: any = bolt;
 
 describe('portal', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    bolt.getProject.mockImplementation(() => ({
+    mockedBolt.getProject.mockImplementation(() => ({
       dir: 'projects/repo',
       name: 'project',
       config: {},
     }));
-    bolt.getWorkspaces.mockImplementation(() => [
+    mockedBolt.getWorkspaces.mockImplementation(() => [
       {
         name: 'bar',
         dir: 'packages/bar',
@@ -110,8 +111,8 @@ describe('portal', () => {
 
   describe('Edge cases', () => {
     beforeEach(() => {
-      bolt.getWorkspaces.mockReset();
-      bolt.getWorkspaces.mockImplementation(() => [
+      mockedBolt.getWorkspaces.mockReset();
+      mockedBolt.getWorkspaces.mockImplementation(() => [
         {
           name: 'bar',
           dir: 'packages/bar',

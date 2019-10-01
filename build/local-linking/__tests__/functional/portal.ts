@@ -15,8 +15,8 @@ async function copyFixtureIntoDir(dir: string, fixtureName: string) {
 describe('Portal integration', () => {
   let tempDirPath: string;
   let atlaskitPath: string;
-  let consoleErrorSpy;
-  let consoleLogSpy;
+  let consoleErrorSpy: jest.SpyInstance<Console['error']>;
+  let consoleLogSpy: jest.SpyInstance<Console['log']>;
 
   beforeAll(() => {
     // Comment out the mockImplementation to read console.logs for debugging

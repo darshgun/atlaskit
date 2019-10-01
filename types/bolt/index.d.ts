@@ -1,7 +1,7 @@
 // Type definitions for bolt 0.24.1
 // Project: https://github.com/boltpkg/bolt/#readme
 // Definitions by: Michael B. <https://github.com/Blasz>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped (soon)
 
 /// <reference types="node" />
 
@@ -60,6 +60,15 @@ export function updatePackageVersions(
 ): Promise<null>;
 
 /* Commands */
+
+export function workspacesRun(
+  opts: Cwd & {
+    script: string;
+    scriptArgs?: string[];
+    spawnOpts: SpawnOpts;
+    filterOpts: FilterOpts;
+  },
+): Promise<void>;
 
 // TODO...
 
