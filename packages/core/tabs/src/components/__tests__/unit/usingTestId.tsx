@@ -43,13 +43,14 @@ describe('Using enzyme', () => {
 describe('Using react-test-library', () => {
   describe('Tabs should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
-      const testId = 'the-tabs';
+      const tabsTestId = 'the-tabs';
+      const tabTestId = 'tab-1';
       const { getByTestId } = render(
         <Tabs tabs={tabsWithTestIds} testId={testId} />,
       );
 
-      expect(getByTestId(testId)).toBeTruthy();
-      expect(getByTestId('tab-1')).toBeTruthy();
+      expect(getByTestId(tabsTestId)).toBeTruthy();
+      expect(getByTestId(tabTestId)).toBeTruthy();
     });
   });
 });
