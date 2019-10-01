@@ -1,0 +1,1 @@
+Fix issue where popup content is rendered infinitely
