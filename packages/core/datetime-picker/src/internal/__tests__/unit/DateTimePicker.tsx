@@ -82,7 +82,7 @@ test('fires onChange with empty string when the date is cleared, and there is a 
   const onChange = jest.fn();
   const dateTimeValue = '2018-05-02T08:00:00.000+0800';
 
-  const dateTimePickerWrapper = shallow(
+  const dateTimePickerWrapper = shallow<DateTimePicker>(
     <DateTimePicker defaultValue={dateTimeValue} onChange={onChange} />,
   );
 

@@ -7,6 +7,7 @@ import {
   createLocalizationProvider,
   LocalizationProvider,
 } from '@atlaskit/locale';
+// eslint-disable-next-line no-restricted-imports
 import { format, isValid } from 'date-fns';
 import React from 'react';
 import { CSSObject } from '@emotion/core';
@@ -113,6 +114,8 @@ const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
   />
 );
 
+function noop() {}
+
 class TimePicker extends React.Component<Props, State> {
   containerRef: HTMLElement | null = null;
 
@@ -127,9 +130,9 @@ class TimePicker extends React.Component<Props, State> {
     isDisabled: false,
     isInvalid: false,
     name: '',
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
+    onBlur: noop,
+    onChange: noop,
+    onFocus: noop,
     parseInputValue: (time: string) => parseTime(time),
     selectProps: {},
     spacing: 'default' as Spacing,

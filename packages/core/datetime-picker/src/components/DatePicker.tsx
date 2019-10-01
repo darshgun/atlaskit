@@ -15,6 +15,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
+// eslint-disable-next-line no-restricted-imports
 import { format, isValid, parse, lastDayOfMonth } from 'date-fns';
 import React from 'react';
 import {
@@ -150,6 +151,8 @@ const Menu = ({
   />
 );
 
+function noop() {}
+
 class DatePicker extends React.Component<Props, State> {
   calendarRef: CalendarClassType | null = null;
   containerRef: HTMLElement | null = null;
@@ -167,9 +170,9 @@ class DatePicker extends React.Component<Props, State> {
     isDisabled: false,
     isInvalid: false,
     name: '',
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
+    onBlur: noop,
+    onChange: noop,
+    onFocus: noop,
     selectProps: {},
     spacing: 'default' as Spacing,
     locale: 'en-US',

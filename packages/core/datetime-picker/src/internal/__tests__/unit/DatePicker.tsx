@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+// eslint-disable-next-line no-restricted-imports
 import { parse, format } from 'date-fns';
 import Select from '@atlaskit/select';
 import { DatePickerWithoutAnalytics as DatePicker } from '../../../components/DatePicker';

@@ -11,6 +11,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { parse, format, isValid } from 'date-fns';
 import { Appearance, Spacing, SelectProps } from '../types';
 import {
