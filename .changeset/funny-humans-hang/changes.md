@@ -1,1 +1,0 @@
-Updated version of analytics-next to fix potential incompatibilities with TS 3.6

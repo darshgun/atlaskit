@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/atlassian-switcher-vanilla",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@atlaskit/analytics-next": "^6.3.0",
-    "@atlaskit/atlassian-switcher": "^4.2.1",
+    "@atlaskit/atlassian-switcher": "^4.2.2",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-intl": "^2.6.0",
