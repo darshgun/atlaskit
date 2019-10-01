@@ -540,7 +540,7 @@ export class CardBase extends Component<
       <MediaViewer
         collectionName={collectionName}
         dataSource={dataSource}
-        context={mediaClient}
+        mediaClientConfig={mediaClient.config}
         selectedItem={mediaViewerSelectedItem}
         onClose={this.onMediaViewerClose}
       />,
