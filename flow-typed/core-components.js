@@ -61,6 +61,10 @@ declare module '@atlaskit/code' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/comment' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/drawer' {
   declare module.exports: any;
 }
