@@ -18,6 +18,7 @@ import {
   FileState,
   Identifier,
   MediaClient,
+  MediaType,
 } from '@atlaskit/media-client';
 import {
   mountWithIntlContext,
@@ -510,9 +511,9 @@ describe('<ItemViewer />', () => {
       });
     });
 
-    test.each(['audio', 'video'])(
+    test.each<[MediaType, MediaType]>([['audio', 'video']])(
       'should trigger analytics when %s can play',
-      async (type: 'audio' | 'video') => {
+      async type => {
         const state: ProcessedFileState = {
           id: await identifier.id,
           mediaType: type,
@@ -550,9 +551,9 @@ describe('<ItemViewer />', () => {
       },
     );
 
-    test.each(['audio', 'video'])(
+    test.each<[MediaType, MediaType]>([['audio', 'video']])(
       'should trigger analytics when %s errors',
-      async (type: 'audio' | 'video') => {
+      async type => {
         const state: ProcessedFileState = {
           id: await identifier.id,
           mediaType: type,
