@@ -10,7 +10,6 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "disableCustomLinks": false,
             "disableHeadings": false,
             "disableRecentContainers": false,
-            "enableUserCentricProducts": false,
             "isDiscoverMoreForEveryoneEnabled": false,
             "isEmceeLinkEnabled": false,
             "xflow": true,
@@ -91,11 +90,6 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "description": "In a context in which users are able to view predefined custom links, this text is the title of the section displaying all existing custom links.",
             "id": "fabric.atlassianSwitcher.more",
           },
-          "people": Object {
-            "defaultMessage": "People",
-            "description": "The text of a link redirecting the user to the People directory",
-            "id": "fabric.atlassianSwitcher.people",
-          },
           "recent": Object {
             "defaultMessage": "Recent",
             "description": "In a context in which users are able to view recent projects or spaces they've viewed, this text is the title of the section displaying all the recent projects or spaces.",
@@ -131,7 +125,6 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "disableCustomLinks": false,
             "disableHeadings": false,
             "disableRecentContainers": false,
-            "enableUserCentricProducts": false,
             "isDiscoverMoreForEveryoneEnabled": false,
             "isEmceeLinkEnabled": false,
             "xflow": true,
@@ -203,11 +196,6 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "defaultMessage": "More",
               "description": "In a context in which users are able to view predefined custom links, this text is the title of the section displaying all existing custom links.",
               "id": "fabric.atlassianSwitcher.more",
-            },
-            "people": Object {
-              "defaultMessage": "People",
-              "description": "The text of a link redirecting the user to the People directory",
-              "id": "fabric.atlassianSwitcher.people",
             },
             "recent": Object {
               "defaultMessage": "Recent",

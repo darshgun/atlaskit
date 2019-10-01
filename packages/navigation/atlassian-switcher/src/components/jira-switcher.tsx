@@ -31,14 +31,11 @@ type JiraSwitcherProps = WithTheme & {
 export default (props: JiraSwitcherProps) => (
   <CustomLinksProvider disableCustomLinks={props.features.disableCustomLinks}>
     {customLinks => (
-      <AvailableProductsProvider
-        isUserCentric={props.features.enableUserCentricProducts}
-      >
+      <AvailableProductsProvider>
         {(availableProducts: ProviderResult<AvailableProductsResponse>) => (
           <CommonDataProvider
             cloudId={props.cloudId}
             disableRecentContainers={props.features.disableRecentContainers}
-            isUserCentric={props.features.enableUserCentricProducts}
             recommendationsFeatureFlags={props.recommendationsFeatureFlags}
           >
             {providerResults => {

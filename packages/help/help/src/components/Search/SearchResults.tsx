@@ -16,17 +16,18 @@ export const SearchResults = (props: Props) => {
   return (
     <SearchResultsList>
       {searchResult.map(searchResultItem => {
+        const { id, title = '', description = '' } = searchResultItem;
         return (
           <ObjectResult
-            resultId={searchResultItem.id}
-            name={searchResultItem.title}
-            key={searchResultItem.id}
-            containerName={searchResultItem.description}
+            resultId={id}
+            name={title}
+            key={id}
+            containerName={description}
             avatar={
               <DocumentFilledIcon
                 primaryColor={colors.P500}
                 size="medium"
-                label={searchResultItem.title}
+                label={title}
               />
             }
           />

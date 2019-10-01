@@ -1,4 +1,5 @@
-import { md, code } from '@atlaskit/docs';
+import * as React from 'react';
+import { md, code, Example } from '@atlaskit/docs';
 
 export default md`
 
@@ -22,7 +23,6 @@ const customAvailableProductsDataProvider = createAvailableProductsProvider(
   ${code`
 <AtlassianSwitcher
   product="bitbucket"
-  enableUserCentricProducts
   availableProductsDataProvider={customAvailableProductsDataProvider}
   disableCustomLinks
   disableRecentContainers
@@ -30,13 +30,10 @@ const customAvailableProductsDataProvider = createAvailableProductsProvider(
 />
   `}
 
-  *Note that the custom provider only works if \`enableUserCentricProducts\` is \`true\`*
-
   ### Passing the custom provider to the prefetch trigger
 
   ${code`
   <AtlassianSwitcherPrefetchTrigger
-    enableUserCentricProducts
     availableProductsDataProvider={customAvailableProductsDataProvider}
   >
     <Button type="button" onClick={this.openDrawer}>
@@ -45,5 +42,17 @@ const customAvailableProductsDataProvider = createAvailableProductsProvider(
   </AtlassianSwitcherPrefetchTrigger>
   `}
 
-  *Note that the custom provider only works if \`enableUserCentricProducts\` is \`true\`*
+  ### Example
+
+  ${(
+    <Example
+      packageName="@atlaskit/atlassian-switcher"
+      Component={
+        require('../examples/42-with-prefetch-and-custom-provider').default
+      }
+      title="Switcher with prefetch and custom provider"
+      source={require('!!raw-loader!../examples/42-with-prefetch-and-custom-provider')}
+    />
+  )}
+
   `;

@@ -1,5 +1,13 @@
 # @atlaskit/media-card
 
+## 65.3.1
+
+### Patch Changes
+
+- [patch][9bac6fd58e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9bac6fd58e):
+
+  HOT-88731 don't send external image URL as a part of analytics
+
 ## 65.3.0
 
 ### Minor Changes

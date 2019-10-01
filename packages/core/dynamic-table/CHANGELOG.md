@@ -1,5 +1,13 @@
 # @atlaskit/dynamic-table
 
+## 13.3.1
+
+### Patch Changes
+
+- [patch][8a244b1dfd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a244b1dfd):
+
+  DynamicTable Stateful now sends analytics events via the onSort prop
+
 ## 13.3.0
 
 ### Minor Changes

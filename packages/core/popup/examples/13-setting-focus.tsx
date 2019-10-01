@@ -1,7 +1,9 @@
-import React, { FC, useState } from 'react';
-import styled from '@emotion/styled';
+/** @jsx jsx */
+import { FC, useState } from 'react';
 import Button from '@atlaskit/button';
 import { RadioGroup } from '@atlaskit/radio';
+import { jsx } from '@emotion/core';
+
 import Popup from '../src';
 
 const radioValues = [
@@ -11,16 +13,16 @@ const radioValues = [
   { name: 'Button 2', value: '2', label: 'Button 2' },
 ];
 
-const Spacer = styled.div`
-  margin: 20px;
-`;
+const spacerCSS = {
+  margin: '20px',
+};
 
-const SizedContent = styled.div`
-  align-items: center;
-  text-align: center;
-  vertical-align: center;
-  padding: 30px;
-`;
+const sizedContentCSS = {
+  alignItems: 'center',
+  padding: '30px',
+  textAlign: 'center',
+  verticalAlign: 'center',
+} as const;
 
 type PopupProps = {
   buttonToFocus: string;
@@ -40,13 +42,13 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return (
-    <SizedContent>
+    <div css={sizedContentCSS}>
       {Array.from({ length: 3 }, (_, index) => (
         <Button key={index} ref={getRef(index)}>
           Button {index}
         </Button>
       ))}
-    </SizedContent>
+    </div>
   );
 };
 
@@ -55,7 +57,7 @@ export default () => {
   const [buttonToFocus, setButtonToFocus] = useState('-1');
 
   return (
-    <Spacer>
+    <div css={spacerCSS}>
       <p>
         <strong>Choose a button to focus initially:</strong>
       </p>
@@ -80,6 +82,6 @@ export default () => {
         )}
         placement="bottom-start"
       />
-    </Spacer>
+    </div>
   );
 };

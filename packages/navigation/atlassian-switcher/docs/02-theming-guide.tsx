@@ -9,10 +9,10 @@ export default md`
   - primaryHoverBackgroundColor: background color used on hover state for top level and child items
   - secondaryTextColor: background color used on passive hover state for top level and default background for child items
 
-  ### Spec:
+  ### Spec
   ${<img src={details} />}
 
-  ### Usage:
+  ### Usage
   ${code`
   // MyComponent.js
   import React from 'react';
@@ -35,24 +35,46 @@ export default md`
   }
   `}
 
-  ### Examples:
+  ### Examples
 
   ${(
     <Example
       packageName="@atlaskit/atlassian-switcher"
-      Component={require('../examples/01-standalone-themed-green').default}
+      Component={require('../examples/22-themed-switcher-standalone').default}
       title="Standalone switcher with green theme"
-      source={require('!!raw-loader!../examples/01-standalone-themed-green')}
+      source={require('!!raw-loader!../examples/22-themed-switcher-standalone')}
     />
   )}
 
   ${(
     <Example
       packageName="@atlaskit/atlassian-switcher"
-      Component={require('../examples/01-standalone-themed-red').default}
-      title="Standalone switcher with red theme"
-      source={require('!!raw-loader!../examples/01-standalone-themed-red')}
+      Component={
+        require('../examples/23-themed-switcher-in-inline-dialog').default
+      }
+      title="Themed standalone switcher in inline dialog"
+      source={require('!!raw-loader!../examples/23-themed-switcher-in-inline-dialog')}
     />
   )}
 
+  ${(
+    <Example
+      packageName="@atlaskit/atlassian-switcher"
+      Component={require('../examples/21-themed-switcher').default}
+      title="Generic themed switcher"
+      source={require('!!raw-loader!../examples/21-themed-switcher')}
+    />
+  )}
+
+  ### Theme builder (optimised for full screen use)
+
+  ${(
+    <Example
+      packageName="@atlaskit/atlassian-switcher"
+      Component={require('../examples/20-theme-builder').default}
+      title="Generic themed switcher"
+      source={require('!!raw-loader!../examples/20-theme-builder')}
+    />
+  )}
+  
 `;

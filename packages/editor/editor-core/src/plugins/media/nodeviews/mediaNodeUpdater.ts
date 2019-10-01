@@ -1,5 +1,9 @@
 import uuidV4 from 'uuid/v4';
-import { updateMediaNodeAttrs, replaceExternalMedia } from '../commands';
+import {
+  updateMediaNodeAttrs,
+  replaceExternalMedia,
+  updateAllMediaNodesAttrs,
+} from '../commands';
 import { MediaAttributes, ExternalMediaAttributes } from '@atlaskit/adf-schema';
 import {
   DEFAULT_IMAGE_HEIGHT,
@@ -62,7 +66,7 @@ export class MediaNodeUpdater {
     const { id } = attrs;
     const objectId = await this.getObjectId();
 
-    updateMediaNodeAttrs(
+    updateAllMediaNodesAttrs(
       id,
       {
         __contextId: objectId,
@@ -124,7 +128,7 @@ export class MediaNodeUpdater {
     };
 
     // TODO [MS-2258]: we should pass this.props.isMediaSingle and remove hardcoded "true"
-    updateMediaNodeAttrs(attrs.id, newAttrs, true)(
+    updateAllMediaNodesAttrs(attrs.id, newAttrs, true)(
       this.props.view.state,
       this.props.view.dispatch,
     );
@@ -201,7 +205,7 @@ export class MediaNodeUpdater {
   };
 
   updateDimensions = (dimensions: RemoteDimensions) => {
-    updateMediaNodeAttrs(
+    updateAllMediaNodesAttrs(
       dimensions.id,
       {
         height: dimensions.height,
