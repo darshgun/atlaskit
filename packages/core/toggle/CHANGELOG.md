@@ -1,5 +1,13 @@
 # @atlaskit/toggle
 
+## 8.1.0
+
+### Minor Changes
+
+- [minor][decb366d7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/decb366d7a):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 8.0.5
 
 ### Patch Changes
