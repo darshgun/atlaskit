@@ -1,1 +1,0 @@
-Fix bug where yarn upgrade would not upgrade anything in Jira
