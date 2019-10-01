@@ -191,7 +191,7 @@ export class ItemStateManager {
         stringKey,
         window.setTimeout(() => {
           const options: RequestServiceOptions = {
-            path: 'tasks',
+            path: 'tasks/state',
             requestInit: {
               method: 'PUT',
               headers: {
