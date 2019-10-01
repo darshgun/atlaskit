@@ -3,10 +3,10 @@ import Tabs from '../src';
 import { Content } from './shared';
 
 const tabs = [
-  { label: 'Tab 1', content: <Content>One</Content> },
-  { label: 'Tab 2', content: <Content>Two</Content> },
-  { label: 'Tab 3', content: <Content>Three</Content> },
-  { label: 'Tab 4', content: <Content>Four</Content> },
+  { label: 'Tab 1', content: <Content>One</Content>, testId: 'tab-1' },
+  { label: 'Tab 2', content: <Content>Two</Content>, testId: 'tab-2' },
+  { label: 'Tab 3', content: <Content>Three</Content>, testId: 'tab-3' },
+  { label: 'Tab 4', content: <Content>Four</Content>, testId: 'tab-4' },
 ];
 
 export default () => (

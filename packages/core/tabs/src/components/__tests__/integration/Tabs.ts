@@ -9,7 +9,7 @@ const url = getExampleUrl('core', 'tabs', 'testing');
 const query = "[data-testid='the-tabs']";
 
 BrowserTestCase(
-  'TextArea should be able to be clicked by data-testid',
+  'Tabs should be able to be clicked by data-testid',
   {} as any,
   async (client: any) => {
     const page = new Page(client);
