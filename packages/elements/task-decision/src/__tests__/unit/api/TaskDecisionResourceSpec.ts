@@ -144,7 +144,7 @@ describe('TaskDecisionResource', () => {
     it('optimistic update', () => {
       fetchMock
         .mock({
-          matcher: 'end:tasks',
+          matcher: 'end:tasks/state',
           method: 'PUT',
           name: 'set-task',
           response: serviceTask(key1, 'DONE'),
@@ -208,7 +208,7 @@ describe('TaskDecisionResource', () => {
     it('two at same time update', () => {
       fetchMock
         .mock({
-          matcher: 'end:tasks',
+          matcher: 'end:tasks/state',
           method: 'PUT',
           name: 'set-task',
           response: (_url: any, options: any) => {

@@ -1,0 +1,1 @@
+fixed code to build headers to run in Chrome in serviceUtils.requestService
