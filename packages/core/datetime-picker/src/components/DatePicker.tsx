@@ -1,4 +1,4 @@
-import Calendar from '@atlaskit/calendar';
+import Calendar, { CalendarClassType, ArrowKeys } from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
 import styled, { CSSObject } from '@emotion/styled';
@@ -29,8 +29,6 @@ import {
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 import { SelectProps, Appearance, Spacing } from '../types.js';
-
-type CalendarInstance = any;
 
 /* eslint-disable react/no-unused-prop-types */
 interface Props extends WithAnalyticsEventsProps {
@@ -153,7 +151,7 @@ const Menu = ({
 );
 
 class DatePicker extends React.Component<Props, State> {
-  calendarRef: CalendarInstance | null = null;
+  calendarRef: CalendarClassType | null = null;
   containerRef: HTMLElement | null = null;
 
   static defaultProps = {
@@ -301,7 +299,8 @@ class DatePicker extends React.Component<Props, State> {
       case 'arrowdown':
         if (this.calendarRef) {
           event.preventDefault();
-          this.calendarRef.navigate(keyPressed.replace('arrow', ''));
+          const key: ArrowKeys = keyPressed === 'arrowup' ? 'up' : 'down';
+          this.calendarRef.navigate(key);
         }
         this.setState({ isOpen: true });
         break;
@@ -309,7 +308,8 @@ class DatePicker extends React.Component<Props, State> {
       case 'arrowright':
         if (this.calendarRef) {
           event.preventDefault();
-          this.calendarRef.navigate(keyPressed.replace('arrow', ''));
+          const key: ArrowKeys = keyPressed === 'arrowleft' ? 'left' : 'right';
+          this.calendarRef.navigate(key);
         }
         break;
       case 'escape':
@@ -348,7 +348,7 @@ class DatePicker extends React.Component<Props, State> {
     }
   };
 
-  refCalendar = (ref: CalendarInstance | null) => {
+  refCalendar = (ref: CalendarClassType | null) => {
     this.calendarRef = ref;
   };
 
