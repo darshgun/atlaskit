@@ -1,1 +1,1 @@
-Update src pointing to index.tsx instead of index.tsx.
+Update src pointing to index.tsx instead of index.ts.
