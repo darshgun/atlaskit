@@ -7,6 +7,7 @@ const url = getExampleUrl('core', 'tabs', 'testing');
 
 /* Css selectors used for the test */
 const query = "[data-testid='the-tabs']";
+const firstTabQuery = "[data-testid='tab-1']";
 
 BrowserTestCase(
   'Tabs should be able to be clicked by data-testid',
@@ -16,11 +17,6 @@ BrowserTestCase(
     await page.goto(url);
     await page.waitFor(query, 5000);
     expect(await page.isVisible(query)).toBe(true);
-    const selectedTabQuery = `[data-testid="tab-1"]`;
-    await page.waitFor(selectedTabQuery, 5000);
-    expect(await page.isVisible(selectedTabQuery)).toBe(true);
-    expect(await page.getProperty(selectedTabQuery, 'aria-selected')).toBe(
-      'true',
-    );
+    expect(await page.isVisible(firstTabQuery)).toBe(true);
   },
 );
