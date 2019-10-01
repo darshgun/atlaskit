@@ -1,0 +1,1 @@
+Export show and hide delay times of profile card trigger
