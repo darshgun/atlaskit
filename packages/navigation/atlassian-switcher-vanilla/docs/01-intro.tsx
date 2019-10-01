@@ -19,7 +19,6 @@ const switcher = prepareSwitcher({
   disableCustomLinks: true,
   disableRecentContainers: true,
   disableHeadings: true,
-  enableUserCentricProducts: true,
   cloudId: 'some-cloud-id',
   appearance: 'standalone',
 },

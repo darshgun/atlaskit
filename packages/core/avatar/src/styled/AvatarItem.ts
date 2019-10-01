@@ -45,23 +45,19 @@ export function getBackgroundColor({
 }
 
 type getStylesType = {
-  href?: string;
+  isInteractive?: boolean;
   isActive?: boolean;
   isDisabled?: boolean;
   isFocus?: boolean;
   mode: 'dark' | 'light';
-  onClick?: AvatarClickType;
 };
 
 export function getStyles({
-  href,
+  isInteractive,
   isActive,
   isDisabled,
   isFocus,
-  onClick,
 }: getStylesType) {
-  const isInteractive = href || onClick;
-
   let borderColor = 'transparent';
   let cursor = 'auto';
   let opacity = 1;
@@ -85,6 +81,7 @@ export function getStyles({
   if (isInteractive) {
     cursor = 'pointer';
   }
+
   return css`
     align-items: center;
     background-color: ${getBackgroundColor};

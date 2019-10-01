@@ -113,7 +113,7 @@ export class CardBase extends Component<
         actionSubjectId:
           identifier.mediaItemType === 'file'
             ? await identifier.id
-            : 'external-image',
+            : identifier.mediaItemType,
       },
       createAnalyticsEvent,
     );
@@ -202,15 +202,15 @@ export class CardBase extends Component<
 
   subscribeExternalFile(identifier: ExternalImageIdentifier) {
     const { createAnalyticsEvent } = this.props;
-    const { dataURI, name } = identifier;
-    this.resolvedId = dataURI;
+    const { dataURI, name, mediaItemType } = identifier;
+    this.resolvedId = mediaItemType;
 
     createAndFireCustomMediaEvent(
       {
         eventType: 'operational',
         action: 'commenced',
         actionSubject: 'mediaCardRender',
-        actionSubjectId: dataURI,
+        actionSubjectId: mediaItemType,
       },
       createAnalyticsEvent,
     );
@@ -219,7 +219,7 @@ export class CardBase extends Component<
       status: 'complete',
       dataURI,
       metadata: {
-        id: dataURI,
+        id: mediaItemType,
         name: name || dataURI,
         mediaType: 'image',
       },

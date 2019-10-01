@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/branch-installer",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Installs the Atlaskit dependency versions from the given commit.",
   "main": "src/index.js",
   "bin": {

@@ -34,11 +34,9 @@ export default md`
   ${(
     <Example
       packageName="@atlaskit/atlassian-switcher"
-      Component={
-        require('../examples/82-uc-generic-switcher-with-xflow').default
-      }
+      Component={require('../examples/35-xsell-in-generic-switcher').default}
       title="Basic switcher example"
-      source={require('!!raw-loader!../examples/82-uc-generic-switcher-with-xflow')}
+      source={require('!!raw-loader!../examples/35-xsell-in-generic-switcher')}
     />
   )}
 

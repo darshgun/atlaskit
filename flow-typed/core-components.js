@@ -49,6 +49,10 @@ declare module '@atlaskit/button' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/calendar' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/checkbox' {
   declare module.exports: any;
 }

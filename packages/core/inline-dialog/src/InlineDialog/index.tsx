@@ -78,6 +78,7 @@ class InlineDialog extends Component<Props, {}> {
       onContentBlur,
       onContentFocus,
       onContentClick,
+      testId,
     } = this.props;
 
     const popper = isOpen ? (
@@ -92,6 +93,7 @@ class InlineDialog extends Component<Props, {}> {
               ref(node);
             }}
             style={style}
+            data-testid={testId}
           >
             {content}
           </Container>

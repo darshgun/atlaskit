@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { ThemeProvider } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import { gridSize } from '@atlaskit/theme/constants';
@@ -26,7 +27,13 @@ const MAX_ITEMS_TO_DISPLAY_TOGGLED_ON = 3;
 const MAX_ITEMS_TO_DISPLAY_TOGGLED_OFF = 5;
 
 interface Props {
+  /* List of related articles. This prop is optional */
   relatedArticles?: ArticleItem[];
+  /* Function executed when the user clicks one of the related articles */
+  onRelatedArticlesListItemClick?: (
+    id: string,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => void;
 }
 
 interface State {
@@ -55,12 +62,13 @@ export class RelatedArticlesContent extends React.Component<
     const {
       intl: { formatMessage },
       relatedArticles,
+      onRelatedArticlesListItemClick,
     } = this.props;
 
-    // if there are related articles
-    if (relatedArticles && relatedArticles.length > 0) {
-      // Display list of related articles
-      return (
+    // if there are related articles, display list of related articles
+    return (
+      relatedArticles &&
+      relatedArticles.length > 0 && (
         <RelatedArticlesContainer>
           <ThemeProvider theme={{ [itemThemeNamespace]: ITEM_THEME }}>
             <>
@@ -69,6 +77,7 @@ export class RelatedArticlesContent extends React.Component<
               </ItemGroupTitle>
 
               <RelatedArticlesList
+                onRelatedArticlesListItemClick={onRelatedArticlesListItemClick}
                 relatedArticles={relatedArticles}
                 numberOfArticlesToDisplay={this.getNumberOfArticlesToDisplay(
                   this.state.showMoreToggled,
@@ -83,10 +92,8 @@ export class RelatedArticlesContent extends React.Component<
             </>
           </ThemeProvider>
         </RelatedArticlesContainer>
-      );
-    }
-
-    return null;
+      )
+    );
   }
 }
 

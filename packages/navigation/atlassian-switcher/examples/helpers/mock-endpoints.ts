@@ -9,7 +9,6 @@ interface DataTransformer {
 interface LoadTimes {
   containers?: number;
   xflow?: number;
-  licenseInformation?: number;
   permitted?: number;
   appswitcher?: number;
   availableProducts?: number;
@@ -18,25 +17,25 @@ interface LoadTimes {
 export const REQUEST_SLOW = {
   containers: 2000,
   xflow: 1200,
-  licenseInformation: 1000,
   permitted: 500,
   appswitcher: 1500,
+  availableProducts: 1000,
 };
 
 export const REQUEST_MEDIUM = {
   containers: 1000,
   xflow: 600,
-  licenseInformation: 400,
   permitted: 250,
   appswitcher: 750,
+  availableProducts: 400,
 };
 
 export const REQUEST_FAST = {
   containers: 500,
   xflow: 300,
-  licenseInformation: 200,
   permitted: 125,
   appswitcher: 375,
+  availableProducts: 200,
 };
 
 export const getMockData = memoizeOne((transformer?: DataTransformer) => {
@@ -53,7 +52,6 @@ export const mockEndpoints = (
   const {
     RECENT_CONTAINERS_DATA,
     CUSTOM_LINKS_DATA,
-    LICENSE_INFORMATION_DATA,
     USER_PERMISSION_DATA,
     XFLOW_SETTINGS,
   } = mockData;
@@ -82,17 +80,6 @@ export const mockEndpoints = (
         setTimeout(
           () => res(CUSTOM_LINKS_DATA),
           loadTimes && loadTimes.appswitcher,
-        ),
-      ),
-    { method: 'GET', overwriteRoutes: true },
-  );
-  fetchMock.get(
-    '/gateway/api/xflow/some-cloud-id/license-information',
-    () =>
-      new Promise(res =>
-        setTimeout(
-          () => res(LICENSE_INFORMATION_DATA),
-          loadTimes && loadTimes.licenseInformation,
         ),
       ),
     { method: 'GET', overwriteRoutes: true },
