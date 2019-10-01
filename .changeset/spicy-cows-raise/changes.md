@@ -1,0 +1,1 @@
+Add onOpen and re-render unit tests
