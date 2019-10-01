@@ -10,5 +10,5 @@ export const FormFooterWrapper = styled.footer`
   margin-top: ${multiply(gridSize, 3)}px;
   display: flex;
   justify-content: ${props =>
-    props.align === 'left' ? 'flex-start' : 'flex-end'};
+    props.align === 'start' ? 'flex-start' : 'flex-end'};
 `;

@@ -19,7 +19,7 @@ export default () => (
           <Field name="firstname" defaultValue="" label="First name" isRequired>
             {({ fieldProps }) => <TextField {...fieldProps} />}
           </Field>
-          <FormFooter align="left">
+          <FormFooter align="start">
             <Button type="submit" appearance="primary">
               Submit
             </Button>
