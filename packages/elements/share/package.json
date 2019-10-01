@@ -26,7 +26,7 @@
     "team": "teams"
   },
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/field-text-area": "^6.0.11",
     "@atlaskit/form": "^6.1.12",

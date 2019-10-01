@@ -20,7 +20,7 @@
   "atlaskit:src": "src/index.ts",
   "sideEffects": false,
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/avatar": "^17.0.0",
     "@atlaskit/blanket": "^10.0.12",
     "@atlaskit/icon": "^19.0.6",

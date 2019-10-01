@@ -13,7 +13,7 @@
     "ak-postbuild": "cp -r src/json-data dist/esm/json-data && cp -r src/json-data dist/cjs/json-data"
   },
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/emoji": "^62.5.0",
     "@atlaskit/mention": "^18.14.4",
     "@atlaskit/task-decision": "^15.2.4",
