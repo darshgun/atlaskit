@@ -1,5 +1,10 @@
 # @atlaskit/conversation
 
+## 15.2.13
+
+- Updated dependencies [2376ada634](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2376ada634):
+  - @atlaskit/comment@9.0.0
+
 ## 15.2.12
 
 ### Patch Changes

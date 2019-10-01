@@ -1,5 +1,13 @@
 # @atlaskit/comment
 
+## 9.0.0
+
+### Major Changes
+
+- [major][2376ada634](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2376ada634):
+
+  Comment has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 8.0.15
 
 ### Patch Changes
