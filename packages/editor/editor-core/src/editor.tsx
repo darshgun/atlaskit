@@ -35,6 +35,7 @@ import {
   ACTION_SUBJECT,
   ACTION,
 } from './plugins/analytics';
+import ErrorBoundary from './create-editor/ErrorBoundary';
 
 export * from './types';
 
@@ -48,7 +49,7 @@ const ContextAdapter = createContextAdapter({
   card: CardContext,
 });
 
-export default class Editor extends React.Component<EditorProps, {}> {
+export class Editor extends React.Component<EditorProps, {}> {
   static defaultProps: EditorProps = {
     appearance: 'comment',
     disabled: false,
@@ -425,3 +426,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
     );
   }
 }
+
+export default (props: EditorProps) => {
+  const { contextIdentifierProvider } = props;
+  return (
+    <ErrorBoundary contextIdentifierProvider={contextIdentifierProvider}>
+      <Editor {...props} />
+    </ErrorBoundary>
+  );
+};
