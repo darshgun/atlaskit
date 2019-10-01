@@ -19,7 +19,7 @@ BrowserTestCase(
     const selectedTabQuery = `[data-testid="tab-1"]`;
     await page.waitFor(selectedTabQuery, 5000);
     expect(await page.isVisible(selectedTabQuery)).toBe(true);
-    expect(await page.getAttribute(selectedTabQuery, 'aria-selected')).toBe(
+    expect(await page.getProperty(selectedTabQuery, 'aria-selected')).toBe(
       'true',
     );
   },
