@@ -24,7 +24,7 @@ test('custom parseValue is used when accessing state', () => {
 });
 
 test('default parseValue, does not parse the date time value into the specified timezone', () => {
-  const dateTimePickerWrapper = shallow(
+  const dateTimePickerWrapper = shallow<DateTimePicker>(
     <DateTimePicker
       id="datetimepicker-1"
       value="2018-05-02T08:00:00.000+0800"
@@ -33,7 +33,6 @@ test('default parseValue, does not parse the date time value into the specified 
 
   dateTimePickerWrapper.find(DatePicker).simulate('change', '2018-05-02');
 
-  // @ts-ignore
   expect(dateTimePickerWrapper.state().zoneValue).not.toEqual('+0800');
 });
 
