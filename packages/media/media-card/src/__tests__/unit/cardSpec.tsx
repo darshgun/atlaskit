@@ -49,7 +49,7 @@ describe('Card', () => {
     collectionName: 'some-collection-name',
     occurrenceKey: 'some-occurrence-key',
   };
-  const actionSubjectId = identifier.id;
+  const actionSubjectId = fileIdentifier.id;
   const analyticsBasePayload = {
     eventType: 'operational',
     actionSubject: 'mediaCardRender',
@@ -993,7 +993,7 @@ describe('Card', () => {
     it('should attach UI Analytics Context', async () => {
       const mediaClient = fakeMediaClient();
       const metadata: FileDetails = {
-        id: await identifier.id,
+        id: await fileIdentifier.id,
         mediaType: 'video',
         size: 12345,
         processingStatus: 'succeeded',
@@ -1153,7 +1153,7 @@ describe('Card', () => {
             eventType: 'operational',
             action: 'commenced',
             actionSubject: 'mediaCardRender',
-            actionSubjectId: identifier.id,
+            actionSubjectId: fileIdentifier.id,
           }),
         }),
         FabricChannel.media,
