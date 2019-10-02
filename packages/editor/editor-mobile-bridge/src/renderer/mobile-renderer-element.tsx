@@ -45,9 +45,13 @@ export default class MobileRenderer extends React.Component<
   constructor(props: MobileRendererProps) {
     super(props);
 
-    this.state = {
-      document: props.document || null,
-    };
+    let document: any = null;
+    if (props.document) {
+      try {
+        document = JSON.parse(props.document);
+      } catch (e) {}
+    }
+    this.state = { document };
 
     const taskDecisionProvider = TaskDecisionProvider(this.handleToggleTask);
 
@@ -64,6 +68,18 @@ export default class MobileRenderer extends React.Component<
     rendererBridge.containerAri = this.containerAri;
     rendererBridge.objectAri = this.objectAri;
     rendererBridge.taskDecisionProvider = taskDecisionProvider;
+  }
+
+  private handleRendererContentLoaded() {
+    if (
+      window &&
+      !window.webkit && // don't fire on iOS
+      window.requestAnimationFrame
+    ) {
+      window.requestAnimationFrame(() =>
+        toNativeBridge.call('renderBridge', 'onContentRendered'),
+      );
+    }
   }
 
   private handleToggleTask = (key: ObjectKey, state: TaskState) => {
@@ -107,17 +123,8 @@ export default class MobileRenderer extends React.Component<
       return (
         <SmartCardProvider client={smartCardClient} authFlow={authFlow}>
           <ReactRenderer
-            onComplete={() => {
-              if (
-                window &&
-                !window.webkit && // don't fire on iOS
-                window.requestAnimationFrame
-              ) {
-                window.requestAnimationFrame(() =>
-                  toNativeBridge.call('renderBridge', 'onContentRendered'),
-                );
-              }
-            }}
+            onComplete={this.handleRendererContentLoaded}
+            onError={this.handleRendererContentLoaded}
             dataProviders={this.providerFactory}
             appearance="mobile"
             document={this.state.document}

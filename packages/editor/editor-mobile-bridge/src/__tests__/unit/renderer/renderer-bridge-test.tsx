@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import MobileRenderer from '../../../renderer/mobile-renderer-element';
 
@@ -18,17 +18,46 @@ const initialDocument = JSON.stringify({
   ],
 });
 
+const invalidDocument = JSON.stringify({
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'mention',
+      content: [
+        {
+          type: 'paragraph',
+          text: 'This is invalid adf',
+        },
+      ],
+    },
+  ],
+});
+
 describe('renderer bridge', () => {
+  let onContentRendered: jest.Mock;
+  let mobileRenderer: ReactWrapper<MobileRenderer>;
+
+  const initRenderer = (adf: string): ReactWrapper<MobileRenderer> =>
+    mount(<MobileRenderer document={adf} />);
+
   beforeEach(() => {
     jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
+    onContentRendered = jest.fn();
+    window.renderBridge = { onContentRendered };
+  });
+
+  afterEach(() => {
+    mobileRenderer.unmount();
   });
 
   it('should call renderBridge.onContentRendered() once rendered', () => {
-    const onContentRendered = jest.fn();
-    window.renderBridge = { onContentRendered };
-
-    const mobileRenderer = mount(<MobileRenderer document={initialDocument} />);
+    mobileRenderer = initRenderer(initialDocument);
     expect(onContentRendered).toHaveBeenCalled();
-    mobileRenderer.unmount();
+  });
+
+  it('should still call renderBridge.onContentRendered() when given invalid adf', () => {
+    mobileRenderer = initRenderer(invalidDocument);
+    expect(onContentRendered).toHaveBeenCalled();
   });
 });
