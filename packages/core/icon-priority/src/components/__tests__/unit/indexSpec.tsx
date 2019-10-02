@@ -1,12 +1,11 @@
-// @flow
-import React, { Component } from 'react';
+import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 import path from 'path';
 import fs from 'fs';
 import { name } from '../../../version.json';
 import PriorityCritical from '../../../../glyph/priority-critical';
-import DefaultIcon, { metadata } from '../../..';
+import { metadata } from '../../..';
 
 // List all files in a directory in Node.js recursively in a synchronous fashion
 const walkSync = (dir: string, filelist: string[]) => {
@@ -78,20 +77,14 @@ describe(name, () => {
       // If we were to auto-generate this list, then renaming, adding or removing would NOT
       // break any tests and thus not hint the developer at what kind of change they are making
     });
-
-    describe('bundle', () => {
-      it('exports the Icon component', () => {
-        expect(new DefaultIcon({ label: 'My icon' })).toBeInstanceOf(Component);
-      });
-    });
   });
 
   describe('component structure', () => {
     it('should be possible to create the components', async () => {
       const components = await Promise.all(
-        Object.keys(metadata).map(async (
-          key, // $ExpectError - we are fine with this being dynamic
-        ) => import(`../../../../glyph/${key}`)),
+        Object.keys(metadata).map(async key =>
+          import(`../../../../glyph/${key}`),
+        ),
       );
 
       for (const icon of components) {
