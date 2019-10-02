@@ -4,6 +4,10 @@ import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 export interface TabData {
   label?: string;
   content?: ReactNode;
+  /** A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests */
+  testId?: string;
   [key: string]: any;
 }
 
@@ -84,6 +88,10 @@ export interface TabsProps extends WithAnalyticsEventsProps {
    * must include 'label' and 'content' properties, but if used in conjunction
    * with the components prop this object can have any shape you choose. */
   tabs: Array<TabData>;
+  /** A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests */
+  testId?: string;
 }
 
 export interface TabsState {

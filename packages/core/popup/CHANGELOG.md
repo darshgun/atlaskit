@@ -1,5 +1,13 @@
 # @atlaskit/popup
 
+## 0.1.5
+
+### Patch Changes
+
+- [patch][93fe1d6f0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/93fe1d6f0d):
+
+  Fix issue where popup content is rendered infinitely
+
 ## 0.1.4
 
 ### Patch Changes

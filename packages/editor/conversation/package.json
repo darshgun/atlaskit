@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "15.2.13",
+  "version": "15.2.14",
   "config": {
     "access": "public"
   },
@@ -9,7 +9,7 @@
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
-  "src": "src/index.ts",
+  "atlaskit:src": "src/index.ts",
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Oscar W"

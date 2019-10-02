@@ -98,7 +98,7 @@ class Tabs extends Component<TabsProps, TabsState> {
   };
 
   render() {
-    const { components, tabs } = this.props;
+    const { components, tabs, testId } = this.props;
     const { selected } = this.state;
 
     const { Content, Item } = { ...defaultComponents, ...components };
@@ -110,7 +110,7 @@ class Tabs extends Component<TabsProps, TabsState> {
     };
 
     return (
-      <StyledTabs>
+      <StyledTabs data-testid={testId}>
         <TabsNavigation
           component={Item}
           onSelect={this.onSelect}
