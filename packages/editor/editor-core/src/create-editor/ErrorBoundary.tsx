@@ -31,7 +31,6 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
         },
       ],
     });
-    return false;
   }
 
   render() {
