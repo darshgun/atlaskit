@@ -73,6 +73,7 @@ export default class FixedLayer extends React.Component<Props> {
             this.scheduleUpdate = scheduleUpdate;
 
             return (
+              // @ts-ignore: need to add `placement` onto div for popper
               <div
                 ref={ref}
                 placement={placement}
