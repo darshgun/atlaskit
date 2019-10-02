@@ -9,5 +9,4 @@ import { CalendarWithoutAnalytics } from './components/Calendar';
 // consumers can ensure that they are calling the instance methods correctly.
 // This sucks as it is making the internal shape of the class public API
 // Currently @atlaskit/datetime-picker is using the instance directly
-type GetTypeFrom<T> = T;
-export type CalendarClassType = GetTypeFrom<CalendarWithoutAnalytics>;
+export type CalendarClassType = CalendarWithoutAnalytics;

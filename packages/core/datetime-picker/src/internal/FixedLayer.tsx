@@ -69,11 +69,15 @@ export default class FixedLayer extends React.Component<Props> {
           )}
         </Reference>
         <Popper>
-          {({ ref, style, scheduleUpdate }: PopperProps) => {
+          {({ ref, style, placement, scheduleUpdate }: PopperProps) => {
             this.scheduleUpdate = scheduleUpdate;
 
             return (
-              <div ref={ref} style={{ ...style, zIndex: layers.dialog() }}>
+              <div
+                ref={ref}
+                placement={placement}
+                style={{ ...style, zIndex: layers.dialog() }}
+              >
                 {content}
               </div>
             );

@@ -140,7 +140,8 @@ class TimePicker extends React.Component<Props, State> {
     times: defaultTimes,
     timeIsEditable: false,
     locale: 'en-US',
-    // value: '',
+    // Not including a default prop for value as it will
+    // Make the component a controlled component
   };
 
   state = {

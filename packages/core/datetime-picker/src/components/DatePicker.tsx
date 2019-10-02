@@ -177,7 +177,8 @@ class DatePicker extends React.Component<Props, State> {
     selectProps: {},
     spacing: 'default' as Spacing,
     locale: 'en-US',
-    // value: '',
+    // Not including a default prop for value as it will
+    // Make the component a controlled component
   };
 
   constructor(props: any) {
@@ -449,7 +450,7 @@ class DatePicker extends React.Component<Props, State> {
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
       appearance === 'subtle'
-        ? this.getSubtleControlStyles(Boolean(isOpen))
+        ? this.getSubtleControlStyles(isOpen)
         : {};
     const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
 

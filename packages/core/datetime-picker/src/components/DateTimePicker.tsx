@@ -188,7 +188,8 @@ class DateTimePicker extends React.Component<Props, State> {
     times: defaultTimes,
     spacing: 'default',
     locale: 'en-US',
-    // value: '',
+    // Not including a default prop for value as it will
+    // Make the component a controlled component
   };
 
   state: State = {
