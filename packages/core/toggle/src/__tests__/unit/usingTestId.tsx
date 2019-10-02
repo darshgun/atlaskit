@@ -14,7 +14,7 @@ describe('Using enzyme', () => {
     expect(wrapper.find(Input).prop('data-testid')).toBeUndefined();
   });
   test('Toggle should be same with data-testid', () => {
-    const wrapper = mount(<Toggle testId="my-spinner" />);
+    const wrapper = mount(<Toggle testId="the-toggle" />);
     expect(wrapper).toBeDefined();
     expect(wrapper.find(Label).prop('data-testid')).toBeDefined();
     expect(wrapper.find(Input).prop('data-testid')).toBeDefined();
