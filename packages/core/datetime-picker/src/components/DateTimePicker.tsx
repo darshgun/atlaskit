@@ -4,6 +4,7 @@ import { borderRadius } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
 import styled from '@emotion/styled';
 import { CSSObject } from '@emotion/core';
+import pick from 'lodash.pick';
 import {
   withAnalyticsEvents,
   WithAnalyticsEventsProps,
@@ -187,7 +188,7 @@ class DateTimePicker extends React.Component<Props, State> {
     times: defaultTimes,
     spacing: 'default',
     locale: 'en-US',
-    value: '',
+    // value: '',
   };
 
   state: State = {
@@ -204,7 +205,7 @@ class DateTimePicker extends React.Component<Props, State> {
   getSafeState = () => {
     const mappedState = {
       ...this.state,
-      value: this.props.value!,
+      ...pick(this.props, ['value']),
     };
 
     return {

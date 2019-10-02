@@ -7,6 +7,7 @@ import {
   createLocalizationProvider,
   LocalizationProvider,
 } from '@atlaskit/locale';
+import pick from 'lodash.pick';
 // eslint-disable-next-line no-restricted-imports
 import { format, isValid } from 'date-fns';
 import React from 'react';
@@ -139,7 +140,7 @@ class TimePicker extends React.Component<Props, State> {
     times: defaultTimes,
     timeIsEditable: false,
     locale: 'en-US',
-    value: '',
+    // value: '',
   };
 
   state = {
@@ -160,9 +161,7 @@ class TimePicker extends React.Component<Props, State> {
   getSafeState = (): State => {
     return {
       ...this.state,
-      // using !suffix as there is a default prop
-      value: this.props.value!,
-      isOpen: this.props.isOpen!,
+      ...pick(this.props, ['value', 'isOpen']),
     };
   };
 

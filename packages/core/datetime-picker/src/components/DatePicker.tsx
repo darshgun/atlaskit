@@ -1,4 +1,5 @@
 import Calendar, { CalendarClassType, ArrowKeys } from '@atlaskit/calendar';
+import pick from 'lodash.pick';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
 import styled, { CSSObject } from '@emotion/styled';
@@ -176,7 +177,7 @@ class DatePicker extends React.Component<Props, State> {
     selectProps: {},
     spacing: 'default' as Spacing,
     locale: 'en-US',
-    value: '',
+    // value: '',
   };
 
   constructor(props: any) {
@@ -210,9 +211,8 @@ class DatePicker extends React.Component<Props, State> {
   getSafeState = () => {
     return {
       ...this.state,
-      value: this.props.value!,
-      isOpen: this.props.isOpen!,
-      inputValue: this.props.selectProps.inputValue,
+      ...pick(this.props, ['value', 'isOpen']),
+      ...pick(this.props.selectProps, ['inputValue']),
     };
   };
 
@@ -491,7 +491,7 @@ class DatePicker extends React.Component<Props, State> {
             Menu,
           }}
           styles={mergeStyles(selectStyles, {
-            control: (base: any) => ({
+            control: (base: CSSObject) => ({
               ...base,
               ...controlStyles,
               ...disabledStyle,
