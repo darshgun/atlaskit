@@ -1,5 +1,13 @@
 # @atlaskit/tooltip
 
+## 15.1.0
+
+### Minor Changes
+
+- [minor][ca1d742875](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca1d742875):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 15.0.15
 
 ### Patch Changes
