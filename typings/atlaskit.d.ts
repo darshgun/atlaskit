@@ -4,6 +4,7 @@
 declare module '@atlaskit/analytics';
 declare module '@atlaskit/codemod-util-shared-styles-to-theme';
 declare module '@atlaskit/comment';
+declare module '@atlaskit/datetime-picker';
 declare module '@atlaskit/dropdown-menu';
 declare module '@atlaskit/droplist';
 declare module '@atlaskit/feedback-collector';

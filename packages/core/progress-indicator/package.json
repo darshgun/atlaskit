@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/progress-indicator",
-  "version": "7.0.8",
+  "version": "7.0.9",
   "description": "A set of UI elements for indicating progress through a user journey",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
@@ -21,7 +21,7 @@
     "team": "core"
   },
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/theme": "^9.1.6",
     "tslib": "^1.9.3"
   },
@@ -30,8 +30,8 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^2.2.5",
-    "@atlaskit/button": "^13.1.6",
+    "@atlaskit/build-utils": "^2.2.7",
+    "@atlaskit/button": "^13.3.2",
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/visual-regression": "^0.1.3",

@@ -82,7 +82,10 @@ export const Popup: FC<PopupProps> = memo(
                       style={style}
                       tabIndex={-1}
                     >
-                      <RepositionOnUpdate scheduleUpdate={scheduleUpdate}>
+                      <RepositionOnUpdate
+                        content={content}
+                        scheduleUpdate={scheduleUpdate}
+                      >
                         {content({
                           scheduleUpdate,
                           isOpen,

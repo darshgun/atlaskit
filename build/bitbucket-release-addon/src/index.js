@@ -1,9 +1,10 @@
 import queryString from 'query-string';
 import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
+import yaml from 'js-yaml';
 
 import getCommits from './get-commits';
-import getFSChangesets from './get-fs-changesets';
-import { legacyChangesetRepos } from './config';
+import getChangesets from './get-changesets';
+import { legacyChangesetRepos, v2ChangesetRepos } from './config';
 
 const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
   <p><strong>Warning:</strong> No packages will be released with this PR</p>
@@ -14,12 +15,14 @@ const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; bo
 const errorLoadingChangesetMessage = `<div style="color: red; border: 2px solid; padding: 10px; border-radius: 10px; display: inline-block;">
 <p>Error loading changesets for this PR</p>
 </div>`;
+
 function releasesToHtmlList(releases) {
   return `<ul>
     ${releases.map(release => release.name).join(', ')}
   </ul>`;
 }
-const releasedPackagesMessage = releases => {
+
+const releasedPackagesMessage = (releases, v2) => {
   const majorReleases = releases.filter(release => release.type === 'major');
   const minorReleases = releases.filter(release => release.type === 'minor');
   const patchReleases = releases.filter(release => release.type === 'patch');
@@ -37,12 +40,29 @@ const releasedPackagesMessage = releases => {
       ? `<h3>🛠 Patch Releases</h3>${releasesToHtmlList(patchReleases)}`
       : '';
 
+  const dependentsWarningSection = v2
+    ? `<p style="color: red;">Warning: Dependents can not currently be displayed by the Release Addon when using Changesets V2.<br>
+         <text style="color: rgb(80, 95, 121)">You can check these manually by running <strong>yarn changeset status</strong> in your terminal.</text></p>
+         <p style="color: rgb(80, 95, 121)">For any questions, please see the <strong>#atlaskit-build</strong> room.</p>`
+    : '';
+
   return `<div style="color: green; border: 1px solid; padding: 10px; border-radius: 10px; display: inline-block;">
     ${majorReleasesSection}
     ${minorReleasesSection}
     ${patchReleasesSection}
+    ${dependentsWarningSection}
   </div>`;
 };
+
+const yamlToReleases = changesets =>
+  changesets
+    .map(changeset => {
+      const result = /\s*---([^]*?)\n\s*---\n([^]+)/.exec(changeset);
+      const [, roughReleases] = result;
+      const yamlStuff = yaml.safeLoad(roughReleases);
+      return Object.entries(yamlStuff).map(([name, type]) => ({ name, type }));
+    })
+    .flat();
 
 const {
   user,
@@ -53,12 +73,14 @@ const {
   destinationhash,
 } = queryString.parse(window.location.search);
 
-// Only retrieve one type of changesets. Legacy commit changesets are only supported in repos
-// defined in config.js
-const changesetPromise =
-  legacyChangesetRepos.indexOf(repoid) >= 0
-    ? getCommits(user, repo, pullrequestid)
-    : getFSChangesets(user, repo, sourcehash, destinationhash);
+// Only retrieve one type of changesets. Legacy commit changesets and v2 changesets (md files with yaml frontmatter)
+// are only supported in repos defined in config.js
+const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
+const v2 = v2ChangesetRepos.indexOf(repoid) >= 0;
+
+const changesetPromise = legacy
+  ? getCommits(user, repo, pullrequestid)
+  : getChangesets(user, repo, sourcehash, destinationhash, v2);
 
 changesetPromise
   .then(changesets => {
@@ -66,9 +88,14 @@ changesetPromise
       document.body.innerHTML = noChangesetMessage;
       return;
     }
-    const releases = flattenChangesets(changesets);
 
-    document.body.innerHTML = releasedPackagesMessage(releases);
+    // Changesets will be in text form (from the markdown file) if V2
+    // Otherwise in the JSON format that needs to be flattened
+    const releases = v2
+      ? yamlToReleases(changesets)
+      : flattenChangesets(changesets);
+
+    document.body.innerHTML = releasedPackagesMessage(releases, v2);
   })
   .catch(e => {
     console.error('error in changeset', e);

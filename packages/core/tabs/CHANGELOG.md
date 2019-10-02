@@ -1,5 +1,21 @@
 # @atlaskit/tabs
 
+## 11.2.0
+
+### Minor Changes
+
+- [minor][99957d4a20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99957d4a20):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 11.1.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
 ## 11.1.0
 
 ### Minor Changes

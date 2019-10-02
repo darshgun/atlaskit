@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/code",
-  "version": "11.0.12",
+  "version": "11.0.13",
   "config": {
     "access": "public"
   },
@@ -18,7 +18,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^2.2.5",
+    "@atlaskit/build-utils": "^2.2.7",
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/visual-regression": "^0.1.3",
