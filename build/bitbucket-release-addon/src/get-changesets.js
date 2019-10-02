@@ -6,11 +6,12 @@ function getFileUrl(user, repo, hash, filePath) {
   return `/2.0/repositories/${user}/${repo}/src/${hash}/${filePath}`;
 }
 
-function promisifyAPRequest(url) {
+function promisifyAPRequest(url, type = 'json') {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
       request({
         url,
+        responseType: type,
         success(response) {
           resolve(response);
         },
@@ -42,6 +43,7 @@ export default function getChangesetInfo(
   repo,
   sourcehash,
   destinationhash,
+  v2,
 ) {
   const diffstatUrl = getDiffStatUrl(user, repo, sourcehash, destinationhash);
   return getFullDiffStat(diffstatUrl).then(allDiffStats => {
@@ -51,10 +53,14 @@ export default function getChangesetInfo(
         diff =>
           diff.new &&
           diff.new.path &&
-          diff.new.path.match(/\.changeset\/.+?\/changes.json$/),
+          // V2: .changeset/big-new-change.md
+          // V1: .changeset/big-new-change/changes.json
+          diff.new.path.match(
+            v2 ? /\.changeset\/[^/]+?\.md$/ : /\.changeset\/.+?\/changes.json$/,
+          ),
       )
       .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
-      .map(promisifyAPRequest);
+      .map(url => promisifyAPRequest(url, v2 ? 'text' : 'json'));
     return Promise.all(relevantDiffs);
   });
 }
