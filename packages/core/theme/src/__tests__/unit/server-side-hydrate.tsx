@@ -1,4 +1,3 @@
-// @flow
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { getExamplesFor } from '@atlaskit/build-utils/getExamples';
@@ -17,7 +16,6 @@ afterEach(() => {
 // https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
 test.skip('should ssr then hydrate theme correctly', async () => {
   const [example] = await getExamplesFor('theme');
-  // $StringLitteral
   const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');
@@ -28,9 +26,10 @@ test.skip('should ssr then hydrate theme correctly', async () => {
   // @ts-ignore - no mock on error prop
   await waitForExpect(() => {
     // ignore warnings caused by emotion's server-side rendering approach
+    // @ts-ignore
     // eslint-disable-next-line no-console
     const mockCalls = console.error.mock.calls.filter(
-      ([f, s] : [string, string]) =>
+      ([f, s]: [string, string]) =>
         !(
           f ===
             'Warning: Did not expect server HTML to contain a <%s> in <%s>.' &&
