@@ -1,10 +1,7 @@
 import { createTheme } from '../utils/createTheme';
+import { GlobalThemeTokens } from '../types';
 
-export type GlobalThemeProps = any;
-export interface GlobalThemeTokens {
-  mode: 'dark' | 'light';
-}
-
-export default createTheme<GlobalThemeTokens, GlobalThemeProps>(() => ({
+// Create default global light theme
+export default createTheme<GlobalThemeTokens, any>(() => ({
   mode: 'light',
 }));
