@@ -200,7 +200,7 @@ describe('Compare Nodes', () => {
       return fakeStorage.get((attrs as UrlType).url) || null;
     };
 
-    test.each([
+    test.each<[string, CompareResult, string]>([
       [trelloUrl, CompareResult.less, bitbucketUrl],
       [atlassianUrl, CompareResult.greater, trelloUrl],
       [atlassianUrl, CompareResult.less, bitbucketUrl],

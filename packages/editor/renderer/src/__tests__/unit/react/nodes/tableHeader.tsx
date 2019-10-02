@@ -137,7 +137,7 @@ describe('Renderer - React/Nodes/TableHeader', () => {
           onSorting = jest.fn();
         });
 
-        it.each([
+        it.each<{ from: SortOrder | null; to: SortOrder }>([
           { from: SortOrder.NO_ORDER, to: SortOrder.ASC },
           { from: SortOrder.ASC, to: SortOrder.DESC },
           { from: SortOrder.DESC, to: SortOrder.NO_ORDER },
