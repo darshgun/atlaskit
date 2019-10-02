@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon-priority",
-  "version": "4.0.9",
+  "version": "5.0.0",
   "description": "A React package that contains priority icons",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "SEE LICENSE IN LICENSE",
