@@ -1,5 +1,13 @@
 # @atlaskit/datetime-picker
 
+## 9.0.0
+
+### Major Changes
+
+- [major][d1444cc6ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1444cc6ef):
+
+  Converting datetime-picker to typescript. Dropping support for flow
+
 ## 8.1.2
 
 ### Patch Changes
