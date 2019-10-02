@@ -683,13 +683,21 @@
         "../../core/popup/src/Popup",
         "./packages/core/popup/src/Popup"
       ],
-      "@atlaskit/popup/styled": [
-        "../../core/popup/src/styled",
-        "./packages/core/popup/src/styled"
+      "@atlaskit/popup/RepositionOnUpdate": [
+        "../../core/popup/src/RepositionOnUpdate",
+        "./packages/core/popup/src/RepositionOnUpdate"
+      ],
+      "@atlaskit/popup/styles": [
+        "../../core/popup/src/styles",
+        "./packages/core/popup/src/styles"
       ],
       "@atlaskit/popup/types": [
         "../../core/popup/src/types",
         "./packages/core/popup/src/types"
+      ],
+      "@atlaskit/popup/useCloseManager": [
+        "../../core/popup/src/useCloseManager",
+        "./packages/core/popup/src/useCloseManager"
       ],
       "@atlaskit/popup/useFocusManager": [
         "../../core/popup/src/useFocusManager",

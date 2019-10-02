@@ -197,3 +197,39 @@ declare module '@atlaskit/tree' {
 declare module '@atlaskit/theme' {
   declare module.exports: any;
 }
+
+declare module '@atlaskit/theme/colors' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/constants' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/components' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/elevation' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/getTheme' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/math' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/themed' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/typography' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/AtlaskitThemeProvider' {
+  declare module.exports: any;
+}
