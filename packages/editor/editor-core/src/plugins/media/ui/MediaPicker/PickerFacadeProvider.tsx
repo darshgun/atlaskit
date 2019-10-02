@@ -10,10 +10,6 @@ import { MediaClientConfig } from '@atlaskit/media-core';
 import { ErrorReporter } from '@atlaskit/editor-common';
 import PickerFacade from '../../picker-facade';
 import { CustomMediaPicker } from '../../types';
-import {
-  getUploadMediaClientConfigFromMediaProvider,
-  getViewMediaClientConfigFromMediaProvider,
-} from '../../utils/media-common';
 
 export interface ChildrenProps {
   config: ClipboardConfig | BrowserConfig | DropzoneConfig;
@@ -59,8 +55,8 @@ export default class PickerFacadeProvider extends React.Component<
     }
 
     const resolvedMediaClientConfig =
-      (await getUploadMediaClientConfigFromMediaProvider(mediaProvider)) ||
-      (await getViewMediaClientConfigFromMediaProvider(mediaProvider));
+      (await mediaProvider.uploadMediaClientConfig) ||
+      (await mediaProvider.viewMediaClientConfig);
 
     if (!resolvedMediaClientConfig) {
       return;
