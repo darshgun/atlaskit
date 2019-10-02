@@ -33,7 +33,7 @@ import FixedLayer from '../internal/FixedLayer';
 import { SelectProps, Appearance, Spacing } from '../types.js';
 
 /* eslint-disable react/no-unused-prop-types */
-interface Props extends WithAnalyticsEventsProps {
+export interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    * Appearance values will be ignored if styles are parsed via the selectProps.
    */
@@ -449,9 +449,7 @@ class DatePicker extends React.Component<Props, State> {
     const dropDownIcon = appearance === 'subtle' || hideIcon ? null : icon;
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
-      appearance === 'subtle'
-        ? this.getSubtleControlStyles(isOpen)
-        : {};
+      appearance === 'subtle' ? this.getSubtleControlStyles(isOpen) : {};
     const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
 
     const calendarProps = {

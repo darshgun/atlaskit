@@ -40,7 +40,7 @@ interface Option {
 }
 
 /* eslint-disable react/no-unused-prop-types */
-interface Props extends WithAnalyticsEventsProps {
+export interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    *  Appearance values will be ignored if styles are parsed via the selectProps.
    */
