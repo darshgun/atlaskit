@@ -7,19 +7,22 @@ import {
 import Conversation from '../../../components/Conversation';
 import Editor from '../../../components/Editor';
 import CommentContainer from '../../../containers/Comment';
-import { AnalyticsEvent } from '../../../internal/analytics';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 const objectId = 'ari:cloud:platform::conversation/demo';
 const { comments } = mockConversation;
 const [user] = MOCK_USERS;
 
 describe('Conversation', () => {
-  const defaultProps = {
-    createAnalyticsEvent: (): AnalyticsEvent => ({
+  const createAnalyticsEvent: CreateUIAnalyticsEvent = jest
+    .fn()
+    .mockReturnValue({
       update: () => {},
-      fire: () => {},
+      fire() {},
       attributes: { foo: 'bar' },
-    }),
+    });
+  const defaultProps = {
+    createAnalyticsEvent,
     sendAnalyticsEvent: () => {},
   };
 

@@ -22,8 +22,8 @@ import {
   ProfileCardClientData,
 } from '../types';
 
-const DELAY_SHOW = 800;
-const DELAY_HIDE = 200;
+export const DELAY_MS_SHOW = 800;
+export const DELAY_MS_HIDE = 200;
 
 class ProfilecardTrigger extends React.PureComponent<
   ProfileCardTriggerProps,
@@ -38,8 +38,8 @@ class ProfilecardTrigger extends React.PureComponent<
   targetRef?: HTMLElement;
 
   _isMounted: boolean = false;
-  showDelay: number = this.props.trigger === 'click' ? 0 : DELAY_SHOW;
-  hideDelay: number = this.props.trigger === 'click' ? 0 : DELAY_HIDE;
+  showDelay: number = this.props.trigger === 'click' ? 0 : DELAY_MS_SHOW;
+  hideDelay: number = this.props.trigger === 'click' ? 0 : DELAY_MS_HIDE;
   showTimer: number = 0;
   hideTimer: number = 0;
 

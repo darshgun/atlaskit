@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/color-picker",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": "Jira Color Picker Component",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -24,9 +24,9 @@
     "palette"
   ],
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/icon": "^19.0.6",
-    "@atlaskit/select": "^10.0.8",
+    "@atlaskit/select": "^10.1.2",
     "@atlaskit/theme": "^9.1.6",
     "memoize-one": "^5.1.0",
     "styled-components": "^3.2.6"
