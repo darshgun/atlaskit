@@ -1,11 +1,12 @@
+// TODO: TS no index signature for Props['theme']
 interface Props {
   children: Function;
-  props: {} | string;
-  theme: {};
+  props: Record<string, any> | string;
+  theme: Record<string, any>;
 }
 
-// TODO: no idea what this is for, or where it is used
-export default function Appearance({ children, props, theme }: Props) {
+// TODO no idea what this is for
+export default ({ children, props, theme }: Props) => {
   const appearance = typeof props === 'object' ? 'default' : props;
   const merged = typeof props === 'object' ? { ...props } : {};
   Object.keys(theme).forEach(key => {
@@ -14,4 +15,4 @@ export default function Appearance({ children, props, theme }: Props) {
     }
   });
   return children(merged);
-}
+};

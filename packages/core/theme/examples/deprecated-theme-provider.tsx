@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import { AtlaskitThemeProvider } from '../src';
 
-interface Props {};
+interface Props {}
 type State = { themeMode: 'light' | 'dark' };
 
 export default class extends Component<Props, State> {
-  state = { themeMode: 'light' };
+  state: State = { themeMode: 'light' };
 
   switchTheme = () => {
     const { themeMode } = this.state;

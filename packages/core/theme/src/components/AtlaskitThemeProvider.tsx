@@ -18,7 +18,7 @@ function getStylesheetResetCSS(state: ThemeProps) {
 }
 
 interface Props {
-  children: Node;
+  children: React.ReactNode;
   mode: ThemeModes;
 }
 
@@ -131,10 +131,10 @@ export default class AtlaskitThemeProvider extends Component<
       allows us to use components converted to use the new API with consumers
       using the old provider along side components that may still be using the
       old theming API. */
+      // TODO: TS LegacyReset expects `theme`?
       <Theme.Provider value={() => ({ mode: theme[CHANNEL].mode })}>
         <ThemeProvider theme={theme}>
-          {/* TODO: no idea why I needed to pass theme to this */}
-          <LegacyReset theme={theme}>{children}</LegacyReset>
+          <LegacyReset theme={undefined}>{children}</LegacyReset>
         </ThemeProvider>
       </Theme.Provider>
     );

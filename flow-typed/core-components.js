@@ -1,3 +1,4 @@
+// @flow
 // This file is used to create flow definitions for core packages that
 // have been converted to typescript. This is a temporary solution
 // while we are converting all core packages to typescript.
@@ -194,5 +195,45 @@ declare module '@atlaskit/tooltip' {
 }
 
 declare module '@atlaskit/tree' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/colors' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/constants' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/components' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/elevation' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/getTheme' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/math' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/themed' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/typography' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/theme/AtlaskitThemeProvider' {
   declare module.exports: any;
 }

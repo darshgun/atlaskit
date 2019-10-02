@@ -22,11 +22,14 @@ test.skip('should ssr then hydrate theme correctly', async () => {
   elem.innerHTML = await ssr(example.filePath);
 
   ReactDOM.hydrate(<Example />, elem);
+  // ignore warnings caused by emotion's server-side rendering approach
+  // @ts-ignore - no mock on error prop
   await waitForExpect(() => {
     // ignore warnings caused by emotion's server-side rendering approach
+    // @ts-ignore
     // eslint-disable-next-line no-console
     const mockCalls = console.error.mock.calls.filter(
-      ([f, s]) =>
+      ([f, s]: [string, string]) =>
         !(
           f ===
             'Warning: Did not expect server HTML to contain a <%s> in <%s>.' &&

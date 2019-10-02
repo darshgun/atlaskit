@@ -2,21 +2,21 @@ import React from 'react';
 import color from 'color';
 import { createTheme } from '../src';
 
-type ThemeProps = *;
+type ThemeProps = any;
 interface ThemeTokens {
-  backgroundColor?: string,
-  textColor?: string,
-};
+  backgroundColor?: string;
+  textColor?: string;
+}
 
 const DisplayThemeColors = () => (
   <Theme.Consumer>
-    {tokens =>
+    {(tokens: Record<string, keyof ThemeTokens>) =>
       Object.keys(tokens).map(k => (
         <div
           key={k}
           style={{
-            backgroundColor: tokens[k],
-            color: color(tokens[k]).negate(),
+            backgroundColor: `${tokens[k]}`,
+            color: `${color(tokens[k]).negate()}`,
             display: 'inline-block',
             marginBottom: 10,
             marginRight: 10,
@@ -38,7 +38,9 @@ const Theme = createTheme<ThemeTokens, ThemeProps>(() => ({
 export default () => (
   <React.Fragment>
     <DisplayThemeColors />
-    <Theme.Provider value={t => ({ ...t(), backgroundColor: 'palevioletred' })}>
+    <Theme.Provider
+      value={t => ({ ...t({}), backgroundColor: 'palevioletred' })}
+    >
       <DisplayThemeColors />
     </Theme.Provider>
   </React.Fragment>

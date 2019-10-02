@@ -1,40 +1,45 @@
-import React, { Component, Fragment, Node } from 'react';
+import React, { Component, Fragment } from 'react';
 import { createTheme, ThemeProp } from '../src';
+import { ThemeProps, ThemedValue } from '../src/types';
 
-interface ThemeProps {
-  hover: boolean,
-};
+interface LocalThemeProps {
+  hover: boolean;
+}
+
 interface ThemeTokens {
-  backgroundColor: string,
-  textColor: string,
-};
+  backgroundColor: string;
+  textColor: string;
+}
 
-const defaultButtonTheme = props => ({
+const defaultButtonTheme = (props: LocalThemeProps) => ({
   backgroundColor: props.hover ? '#ddd' : '#eee',
   textColor: '#333',
 });
 
-const contextButtonTheme = (theme, props) => ({
-  ...theme(props),
-  backgroundColor: props.hover ? 'rebeccapurple' : 'palevioletred',
-  textColor: props.hover ? '#fff' : 'papayawhip',
-});
+// TODO look into whether ThemedValue should be used here
+const contextButtonTheme = (theme: ThemedValue, props: LocalThemeProps) => {
+  return {
+    ...(theme(props) as Object),
+    backgroundColor: props.hover ? 'rebeccapurple' : 'palevioletred',
+    textColor: props.hover ? '#fff' : 'papayawhip',
+  };
+};
 
-const propButtonTheme = (theme, props) => ({
-  ...theme(props),
+const propButtonTheme = (theme: ThemedValue, props: LocalThemeProps) => ({
+  ...(theme(props) as Object),
   backgroundColor: props.hover ? 'palevioletred' : 'rebeccapurple',
 });
 
-const Theme = createTheme<ThemeTokens, ThemeProps>(defaultButtonTheme);
+const Theme = createTheme<ThemeTokens, LocalThemeProps>(defaultButtonTheme);
 
 interface Props {
-  children?: Node,
-  theme?: ThemeProp<ThemeTokens, ThemeProps>,
-};
+  children?: Node;
+  theme?: ThemeProp<ThemeTokens, ThemeProps>;
+}
 
 interface State {
-  hover: boolean,
-};
+  hover: boolean;
+}
 
 class Button extends Component<Props, State> {
   state = {
@@ -77,6 +82,7 @@ class Button extends Component<Props, State> {
   }
 }
 
+// TODO fix children issue and replace fragment
 export default () => (
   <Fragment>
     <Button>Default</Button>

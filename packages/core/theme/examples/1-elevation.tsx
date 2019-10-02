@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import {
@@ -6,10 +6,13 @@ import {
   elevation as AkElevations,
   themed,
 } from '../src';
+import { Elevation } from '../src/types';
+
+const elevations = { ...AkElevations };
 
 // the below adaptation may be written statically like ${akElevationMixins.e100}
-const Box = styled.div`
-  ${({ elevation }) => AkElevations[elevation]}
+const Box = styled.div<{ elevation: Elevation }>`
+  ${({ elevation }) => elevations[elevation]}
   background-color: ${() => themed({ light: 'white', dark: '#283447' })};
   border-radius: 3px;
   margin-bottom: 2em;
@@ -25,11 +28,11 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-interface Props {};
+interface Props {}
 type State = { themeMode: 'light' | 'dark' };
 
-export default class extends Component<Props, State> {
-  state = { themeMode: 'light' };
+export default class extends React.Component<Props, State> {
+  state: State = { themeMode: 'light' };
 
   switchTheme = () => {
     const { themeMode } = this.state;

@@ -39,7 +39,6 @@ declare module '@atlaskit/single-select';
 declare module '@atlaskit/size-detector';
 declare module '@atlaskit/table-tree';
 declare module '@atlaskit/textfield';
-declare module '@atlaskit/theme/colors';
 
 // Build
 declare module '@atlaskit/ssr';

@@ -1,18 +1,22 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import color from 'color';
 import { colors } from '../src';
 
+// TODO check out these 'ts-ignore's
 export default () => (
-  <Fragment>
-    {Object.keys(colors)
+  <>
+    {Object.keys(colors as Record<string, any>)
+      // @ts-ignore colors has no index signature
       .filter(c => typeof colors[c] === 'string')
       .map(c => (
         <span
           key={c}
           style={{
-            backgroundColor: colors[c],
+            // @ts-ignore colors has no index signature
+            backgroundColor: `${colors[c]}`,
             borderRadius: 3,
-            color: color(colors[c]).negate(),
+            // @ts-ignore colors has no index signature
+            color: `${color(colors[c]).negate()}`,
             display: 'inline-block',
             marginBottom: 10,
             marginRight: 10,
@@ -22,5 +26,5 @@ export default () => (
           {c}
         </span>
       ))}
-  </Fragment>
+  </>
 );
