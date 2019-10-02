@@ -11,18 +11,57 @@ const Example = () => (
     <Padding>
       <SectionMessage
         appearance="info"
-        title="More"
+        title="Atlassian"
         testId="info-section-message"
+        actions={[
+          {
+            key: 'bitbucket',
+            href: 'https://www.atlassian.com/software/bitbucket',
+            text: 'Bitbucket',
+            testId: 'bitbucket',
+          },
+          {
+            key: 'jira',
+            href: 'https://www.atlassian.com/software/jira',
+            text: 'Jira',
+            testId: 'jira',
+          },
+        ]}
       >
-        <p>I count the steps from one end of my island to the other</p>
-        <p>It{"'"}s a hundred steps from where I sleep to the sea</p>
+        <p>
+          Atlassian provides the tools to help every team unleash their full
+          potential.
+        </p>
+        <p />
+        <b>Bitbucket:</b>
+        <p>
+          Bitbucket is more than just Git code management. Bitbucket gives teams
+          one place to plan projects, collaborate on code, test, and deploy.
+        </p>
+        <p />
+        <b>Jira:</b>
+        <p>The #1 software development tool used by agile teams.</p>
       </SectionMessage>
     </Padding>
     <Padding>
-      <SectionMessage appearance="error" testId="error-section-message">
-        <p>I know where I am from the scent of the breeze</p>
-        <p>The ascent of the climb</p>
-        <p>From the tangle of the trees</p>
+      <SectionMessage
+        appearance="error"
+        testId="error-section-message"
+        actions={[
+          {
+            key: 'google',
+            href: 'https://about.google/',
+            text: 'Google',
+            testId: 'google',
+          },
+        ]}
+      >
+        <p />
+        <b>Google:</b>
+        <p>
+          Our mission is to organise the world’s information and make it
+          universally accessible and useful.
+        </p>
       </SectionMessage>
     </Padding>
   </Fragment>

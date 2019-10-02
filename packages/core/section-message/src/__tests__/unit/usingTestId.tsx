@@ -1,140 +1,104 @@
 import { mount, shallow } from 'enzyme';
 import { render } from '@testing-library/react';
-import { colors } from '@atlaskit/theme';
-import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import React from 'react';
 import cases from 'jest-in-case';
-import Flag from '../../Flag';
+
+import SectionMessage from '../..';
+
+const sectionMessageInfoId = 'info-section-message';
+const sectionMessageInfoBBId = 'jira';
+const sectionMessageInfoJiraId = 'bitbucket';
+
+const sectionMessageWrapperWithTestIds = (
+  <SectionMessage
+    appearance="info"
+    title="Atlassian"
+    testId={sectionMessageInfoId}
+    actions={[
+      {
+        key: 'bitbucket',
+        href: 'https://www.atlassian.com/software/bitbucket',
+        text: 'Bitbucket',
+        testId: sectionMessageInfoBBId,
+      },
+      {
+        key: 'jira',
+        href: 'https://www.atlassian.com/software/jira',
+        text: 'Jira',
+        testId: sectionMessageInfoJiraId,
+      },
+    ]}
+  >
+    <p>
+      Atlassian provides the tools to help every team unleash their full
+      potential.
+    </p>
+    <p />
+    <b>Bitbucket:</b>
+    <p>
+      Bitbucket is more than just Git code management. Bitbucket gives teams one
+      place to plan projects, collaborate on code, test, and deploy.
+    </p>
+    <p />
+    <b>Jira:</b>
+    <p>The #1 software development tool used by agile teams.</p>
+  </SectionMessage>
+);
 
 describe('Using enzyme', () => {
-  test('Flag > it should not generate data-testid', () => {
-    const wrapper = mount(
-      <Flag
-        actions={[
-          { content: 'Show me', onClick: () => {} },
-          { content: 'No thanks', onClick: () => {} },
-        ]}
-        icon={<SuccessIcon primaryColor={colors.G300} label="Info" />}
-        description="We got fun an games. We got everything you want honey, we know the names."
-        id="1"
-        key="1"
-        title="Welcome to the jungle"
-      />,
-    );
+  test('Section messahge > it should not generate data-testid', () => {
+    const wrapper = mount(<SectionMessage>boo</SectionMessage>);
     expect(wrapper).toBeDefined();
-    expect(wrapper.text()).toContain(
-      'We got fun an games. We got everything you want honey, we know the names.',
-    );
     expect(wrapper.prop('data-testid')).toBeUndefined();
   });
-  test('Flag > it should have data-testid ', () => {
-    const wrapper = shallow(
-      <Flag
-        actions={[
-          { content: 'Show me', onClick: () => {} },
-          { content: 'No thanks', onClick: () => {} },
-        ]}
-        icon={<SuccessIcon primaryColor={colors.G300} label="Info" />}
-        description="We got fun an games. We got everything you want honey, we know the names."
-        id="1"
-        key="1"
-        title="Welcome to the jungle"
-        testId="MyFlagTestId"
-      />,
-    );
-    expect(wrapper.find('[data-testid="MyFlagTestId"]')).toBeDefined();
+
+  test('Section Message > it should have data-testid ', () => {
+    const wrapper = shallow(sectionMessageWrapperWithTestIds);
+    expect(
+      wrapper.find(`[data-testid='${sectionMessageInfoId}']`),
+    ).toBeDefined();
   });
-  test('Flag actions should have data-testid ', () => {
-    const wrapper = shallow(
-      <Flag
-        actions={[
-          {
-            content: 'Show me',
-            onClick: () => {},
-            testId: 'MyFlagActionTestId',
-          },
-          { content: 'No thanks', onClick: () => {} },
-        ]}
-        icon={<SuccessIcon primaryColor={colors.G300} label="Info" />}
-        description="We got fun an games. We got everything you want honey, we know the names."
-        id="1"
-        key="1"
-        title="Welcome to the jungle"
-      />,
-    );
-    expect(wrapper.find('[data-testid="MyFlagActionTestId"]')).toBeDefined();
+
+  test('Section message actions should have data-testid ', () => {
+    const wrapper = shallow(sectionMessageWrapperWithTestIds);
+    expect(
+      wrapper.find(`[data-testid='${sectionMessageInfoBBId}']`),
+    ).toBeDefined();
+    expect(
+      wrapper.find(`[data-testid='${sectionMessageInfoJiraId}']`),
+    ).toBeDefined();
   });
-  describe('Flag with different data-testid', () => {
+
+  describe('Section Message with different data-testid', () => {
     cases(
       'should be generated',
-      ({ key }: { key: string }) => {
-        const wrapper = shallow(
-          <Flag
-            actions={[
-              { content: 'Show me', onClick: () => {} },
-              { content: 'No thanks', onClick: () => {} },
-            ]}
-            icon={<SuccessIcon primaryColor={colors.G300} label="Info" />}
-            description="We got fun an games. We got everything you want honey, we know the names."
-            id="1"
-            key="1"
-            title="Welcome to the jungle"
-            testId="MyFlagTestId"
-          />,
-        );
-        expect(wrapper.find(`[data-testid='${key}']`)).toBeTruthy();
+      ({ testId }: { testId: string }) => {
+        const wrapper = shallow(sectionMessageWrapperWithTestIds);
+        expect(wrapper.find(`[data-testid='${testId}']`)).toBeTruthy();
       },
       [
-        { key: 'josefGiTan' },
-        { key: 'ZZZZŹŽ;;;;' },
-        { key: '@3$&&&&Helooo' },
-        { key: '126^^^' },
-        { key: 123 },
+        { testId: 'josefGiTan' },
+        { testId: 'ZZZZŹŽ;;;;' },
+        { testId: '@3$&&&&Helooo' },
+        { testId: '126^^^' },
+        { testId: 123 },
       ],
     );
   });
 });
 
 describe('Using react-test-library', () => {
-  describe('Flag should be found by data-testid', () => {
+  describe('Section Message should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
-      const { getByTestId } = render(
-        <Flag
-          actions={[
-            { content: 'Show me', onClick: () => {} },
-            { content: 'No thanks', onClick: () => {} },
-          ]}
-          icon={<SuccessIcon primaryColor={colors.G300} label="Info" />}
-          description="We got fun an games. We got everything you want honey, we know the names."
-          id="1"
-          key="1"
-          title="Welcome to the jungle"
-          testId="MyFlagTestId"
-        />,
-      );
-      expect(getByTestId('MyFlagTestId')).toBeTruthy();
+      const { getByTestId } = render(sectionMessageWrapperWithTestIds);
+      expect(getByTestId(sectionMessageInfoId)).toBeTruthy();
     });
   });
   describe('Flag actions should be found by data-testid', () => {
     test('Using getByTestId()', async () => {
-      const { getByTestId } = render(
-        <Flag
-          actions={[
-            {
-              content: 'Show me',
-              onClick: () => {},
-              testId: 'MyFlagActionTestId',
-            },
-            { content: 'No thanks', onClick: () => {} },
-          ]}
-          icon={<SuccessIcon primaryColor={colors.G300} label="Info" />}
-          description="We got fun an games. We got everything you want honey, we know the names."
-          id="1"
-          key="1"
-          title="Welcome to the jungle"
-        />,
-      );
-      expect(getByTestId('MyFlagActionTestId')).toBeTruthy();
+      const { getByTestId } = render(sectionMessageWrapperWithTestIds);
+      expect(getByTestId(sectionMessageInfoBBId)).toBeTruthy();
+      expect(getByTestId(sectionMessageInfoJiraId)).toBeTruthy();
     });
   });
 });
