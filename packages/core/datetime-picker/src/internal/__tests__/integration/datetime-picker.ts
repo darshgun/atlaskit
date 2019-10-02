@@ -100,7 +100,7 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 
 BrowserTestCase(
   'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
-  {},
+  { skip: [] },
   async (client: any) => {
     const dateTimePickerTest = new Page(client);
 
