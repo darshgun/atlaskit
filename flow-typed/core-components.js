@@ -85,6 +85,10 @@ declare module '@atlaskit/icon' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/icon-priority' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/icon/*' {
   declare module.exports: any;
 }

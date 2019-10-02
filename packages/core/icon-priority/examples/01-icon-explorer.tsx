@@ -1,5 +1,4 @@
-// @flow
-import React, { Component } from 'react';
+import React, { Component, ElementType } from 'react';
 import styled from 'styled-components';
 
 import Button from '@atlaskit/button';
@@ -9,8 +8,7 @@ import { metadata } from '../src';
 import IconExplorerCell from './utils/IconExplorerCell';
 
 const allIcons = Promise.all(
-  Object.keys(metadata).map(async (name: $Keys<typeof metadata>) => {
-    // $ExpectError
+  Object.keys(metadata).map(async (name: string) => {
     const icon = await import(`../glyph/${name}.js`);
     return { name, icon: icon.default };
   }),
@@ -39,34 +37,35 @@ const NoIcons = styled.div`
   padding: 10px;
 `;
 
-type iconType = {
-  keywords: string[],
-  component: Class<Component<*>>,
-  componentName: string,
-  package: string,
-};
+interface Icon {
+  keywords: string[];
+  component: ElementType;
+  componentName: string;
+  package: string;
+}
 
-const filterIcons = (icons, query) => {
+const filterIcons = (icons: Record<string, Icon>, query: string) => {
   const regex = new RegExp(query);
   return Object.keys(icons)
     .map(index => icons[index])
     .filter(icon =>
       icon.keywords
         .map(keyword => (regex.test(keyword) ? 1 : 0))
-        .reduce((allMatches, match) => allMatches + match, 0),
+        .reduce<number>((allMatches, match) => allMatches + match, 0),
     );
 };
 
-type State = {
-  query: string,
-  showIcons: boolean,
-  allIcons?: { [string]: iconType },
-};
+interface State {
+  query: string;
+  showIcons: boolean;
+  allIcons: Record<string, Icon>;
+}
 
 class IconAllExample extends Component<{}, State> {
   state = {
     query: '',
     showIcons: true,
+    allIcons: {},
   };
 
   componentDidMount() {
@@ -81,10 +80,7 @@ class IconAllExample extends Component<{}, State> {
     if (!this.state.allIcons) {
       return <div>Loading Icons...</div>;
     }
-    const icons: iconType[] = filterIcons(
-      this.state.allIcons,
-      this.state.query,
-    );
+    const icons: Icon[] = filterIcons(this.state.allIcons, this.state.query);
 
     return icons.length ? (
       <IconExplorerGrid>
@@ -106,7 +102,7 @@ class IconAllExample extends Component<{}, State> {
           isLabelHidden
           key="Icon search"
           label=""
-          onChange={(event: SyntheticEvent<HTMLInputElement>) =>
+          onChange={(event: React.FormEvent<HTMLInputElement>) =>
             this.updateQuery(event.currentTarget.value)
           }
           placeholder="Search for an icon..."

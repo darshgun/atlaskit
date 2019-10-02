@@ -1,7 +1,6 @@
-// @flow
-import React, { Component, type Element } from 'react';
+import React, { Component, ReactNode } from 'react';
 import styled from 'styled-components';
-import Btn, { ButtonGroup } from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 
 import PriorityTrivial from '../glyph/priority-trivial';
 import PriorityLowest from '../glyph/priority-lowest';
@@ -35,32 +34,27 @@ const demoIcons = [
   PriorityBlocker,
 ];
 
-const Button = props => (
-  <div style={{ marginRight: 4 }}>
-    <Btn {...props} />
-  </div>
-);
+const sizes: Sizes[] = ['small', 'medium', 'large', 'xlarge'];
 
-const sizes = ['small', 'medium', 'large', 'xlarge'];
+type Sizes = 'small' | 'medium' | 'large' | 'xlarge';
 
-type sizeOpts = 'small' | 'medium' | 'large' | 'xlarge';
-
-class IconSizeExample extends Component<{}, { size: sizeOpts }> {
+class IconSizeExample extends Component<{}, { size: Sizes }> {
   state = {
-    size: 'medium',
+    size: 'medium' as Sizes,
   };
 
-  updateSize = (s: sizeOpts) => this.setState({ size: s });
+  updateSize = (s: Sizes) => this.setState({ size: s });
 
-  renderButtons = (): Array<Element<typeof Button>> =>
+  renderButtons = (): ReactNode =>
     sizes.map(s => (
-      <Button
-        isSelected={s === this.state.size}
-        key={s}
-        onClick={() => this.updateSize(s)}
-      >
+      <div style={{ marginRight: 4 }}>
+        <Button
+          isSelected={s === this.state.size}
+          key={s}
+          onClick={() => this.updateSize(s)}
+        />
         {s}
-      </Button>
+      </div>
     ));
 
   render() {
@@ -69,7 +63,6 @@ class IconSizeExample extends Component<{}, { size: sizeOpts }> {
         <ButtonGroup>{this.renderButtons()}</ButtonGroup>
         <IconRow>
           {demoIcons.map((Icon, i) => (
-            // eslint-disable-next-line react/no-array-index-key
             <IconWrapper key={i}>
               <Icon label={`Icon ${i}`} size={this.state.size} />
             </IconWrapper>

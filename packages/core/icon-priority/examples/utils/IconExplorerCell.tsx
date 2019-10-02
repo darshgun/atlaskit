@@ -1,8 +1,7 @@
-// @flow
-import React, { Component, type ElementRef } from 'react';
+import React, { Component, ElementType } from 'react';
 import styled from 'styled-components';
 
-import { FieldTextStateless } from '@atlaskit/field-text';
+import Textfield from '@atlaskit/textfield';
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Tooltip from '@atlaskit/tooltip';
 import { colors, gridSize } from '@atlaskit/theme';
@@ -33,32 +32,30 @@ const IconModalHeader = styled.h3`
   padding: 20px;
 `;
 
-type Props = {
-  keywords: string[],
-  component: Class<Component<*>>,
-  componentName: string,
-  package: string,
-};
+interface Props {
+  keywords: string[];
+  component: ElementType;
+  componentName: string;
+  package: string;
+}
 
-class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
-  props: Props;
+interface State {
+  isModalOpen: boolean;
+}
 
+class IconExplorerCell extends Component<Props, State> {
   state = {
     isModalOpen: false,
   };
 
-  ref: ?ElementRef<typeof FieldTextStateless>;
+  ref: HTMLElement | null = null;
+  input: HTMLInputElement | null = null;
+  importCodeField: HTMLElement | null = null;
 
-  input: ?HTMLInputElement;
-
-  importCodeField: ?HTMLElement;
-
-  setInputRef = (ref: ?ElementRef<typeof FieldTextStateless>) => {
+  setInputRef = (ref: React.RefObject<HTMLInputElement>) => {
     const isSet = Boolean(this.ref);
 
-    console.log(ref);
-
-    this.input = ref ? ref.input : null;
+    this.input = ref ? ref.current : null;
 
     if (this.input && !isSet) {
       this.input.select();
@@ -115,7 +112,6 @@ class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
               },
             ]}
           >
-            {/* eslint-disable jsx-a11y/no-static-element-interactions */}
             <div
               onClick={() => this.input && this.input.select()}
               ref={ref => {
@@ -123,17 +119,12 @@ class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
               }}
               role="presentation"
             >
-              <FieldTextStateless
-                isLabelHidden
+              <Textfield
                 isReadOnly
-                label=""
-                onChange={() => {}}
-                shouldFitContainer
                 value={`import ${props.componentName} from '${props.package}';`}
                 ref={this.setInputRef}
               />
             </div>
-            {/* eslint-enable jsx-a11y/no-static-element-interactions */}
           </Modal>
         ) : null}
       </ModalTransition>
