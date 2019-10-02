@@ -43,7 +43,6 @@ export interface CardViewOwnProps extends SharedCardProps {
   readonly progress?: number;
   readonly disableOverlay?: boolean;
   readonly previewOrientation?: number;
-  readonly alt?: string;
 }
 
 export interface CardViewState {

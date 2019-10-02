@@ -17,7 +17,6 @@ export interface FileCardProps extends SharedCardProps {
   readonly resizeMode?: ImageResizeMode;
   readonly disableOverlay?: boolean;
   readonly previewOrientation?: number;
-  readonly alt?: string;
 }
 
 export class FileCard extends Component<FileCardProps, {}> {

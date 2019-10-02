@@ -66,6 +66,7 @@ export interface SharedCardProps {
   readonly actions?: Array<CardAction>;
   readonly selectable?: boolean;
   readonly selected?: boolean;
+  readonly alt?: string;
 }
 
 export interface CardOnClickCallback {
@@ -91,7 +92,6 @@ export interface CardProps extends SharedCardProps, CardEventProps {
   readonly shouldOpenMediaViewer?: boolean;
   readonly mediaViewerDataSource?: MediaViewerDataSource;
   readonly contextId?: string;
-  readonly alt?: string;
 }
 
 export interface CardState {
