@@ -1,5 +1,30 @@
 # @atlaskit/quick-search
 
+## 7.8.0
+
+### Minor Changes
+
+- [minor][bff5be0d46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bff5be0d46):
+
+  Quick search autocomplete analytics instrumentation
+
+## 7.7.2
+
+### Patch Changes
+
+- [patch][6aa50ae773](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6aa50ae773):
+
+  remove use of deprecated FieldBase component in quick search
+
+## 7.7.1
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/drawer@5.0.10
+  - @atlaskit/item@10.1.5
+  - @atlaskit/navigation@35.2.2
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
 ## 7.7.0
 
 ### Minor Changes

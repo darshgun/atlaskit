@@ -1,5 +1,38 @@
 # @atlaskit/navigation
 
+## 35.2.4
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 35.2.3
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
+## 35.2.2
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/item@10.1.5
+  - @atlaskit/single-select@8.0.13
+  - @atlaskit/quick-search@7.7.1
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 35.2.1
+
+### Patch Changes
+
+- [patch][49abf6d42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49abf6d42c):
+
+  Updates broken icon import path
+
 ## 35.2.0
 
 ### Minor Changes

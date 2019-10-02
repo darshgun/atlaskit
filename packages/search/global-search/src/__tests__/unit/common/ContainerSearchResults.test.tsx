@@ -395,8 +395,12 @@ const getPreQueryResults = (sessionId: string, product: QuickSearchContext) =>
       let searchResultsComponent: React.ReactNode;
       let getAdvancedSearchUrlSpy: jest.SpyInstance<
         (
-          entityType: SearchResultUtils.JiraEntityTypes,
-          query?: string | undefined,
+          {
+            entityType,
+          }: {
+            entityType: SearchResultUtils.JiraEntityTypes;
+            query?: string | undefined;
+          },
         ) => string
       >;
       const wrapper = renderComponent(product);

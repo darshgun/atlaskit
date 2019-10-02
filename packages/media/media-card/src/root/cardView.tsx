@@ -3,7 +3,6 @@ import { MouseEvent } from 'react';
 import { FileDetails, ImageResizeMode } from '@atlaskit/media-client';
 import {
   withAnalyticsEvents,
-  createAndFireEvent,
   WithAnalyticsEventsProps,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
@@ -24,6 +23,7 @@ import { isValidPercentageUnit } from '../utils/isValidPercentageUnit';
 import { getCSSUnitValue } from '../utils/getCSSUnitValue';
 import { getElementDimension } from '../utils/getElementDimension';
 import { Wrapper } from './styled';
+import { createAndFireMediaEvent } from '../utils/analytics';
 
 export interface CardViewOwnProps extends SharedCardProps {
   readonly status: CardStatus;
@@ -60,6 +60,7 @@ export class CardViewBase extends React.Component<
   CardViewState
 > {
   state: CardViewState = {};
+  divRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   static defaultProps: Partial<CardViewOwnProps> = {
     appearance: 'auto',
@@ -141,6 +142,7 @@ export class CardViewBase extends React.Component<
         dimensions={wrapperDimensions}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
+        innerRef={this.divRef}
       >
         {this.renderFile()}
       </Wrapper>
@@ -184,8 +186,10 @@ export class CardViewBase extends React.Component<
   };
 }
 
-const createAndFireEventOnMedia = createAndFireEvent('media');
-
 export const CardView = withAnalyticsEvents({
-  onClick: createAndFireEventOnMedia({ action: 'clicked' }),
+  onClick: createAndFireMediaEvent({
+    eventType: 'ui',
+    action: 'clicked',
+    actionSubject: 'mediaCard',
+  }),
 })(CardViewBase);

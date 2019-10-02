@@ -167,6 +167,7 @@ class DynamicTable extends React.Component<Props, State> {
     const {
       caption,
       head,
+      highlightedRowIndex,
       isFixedSize,
       page,
       rows,
@@ -182,6 +183,7 @@ class DynamicTable extends React.Component<Props, State> {
 
     const rowsLength = rows && rows.length;
     const bodyProps = {
+      highlightedRowIndex,
       rows,
       head,
       sortKey,
@@ -266,18 +268,15 @@ export default withAnalyticsContext({
     onSort: createAndFireEventOnAtlaskit({
       action: 'sorted',
       actionSubject: 'dynamicTable',
-
       attributes: {
         componentName: 'dynamicTable',
         packageName,
         packageVersion,
       },
     }),
-
     onRankEnd: createAndFireEventOnAtlaskit({
       action: 'ranked',
       actionSubject: 'dynamicTable',
-
       attributes: {
         componentName: 'dynamicTable',
         packageName,

@@ -1,5 +1,13 @@
 # @atlaskit/portal
 
+## 3.1.0
+
+### Minor Changes
+
+- [minor][bf8796cffa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf8796cffa):
+
+  Add mount and unmount events to @atlaskit/portal
+
 ## 3.0.13
 
 - Updated dependencies [a75dfaad67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a75dfaad67):

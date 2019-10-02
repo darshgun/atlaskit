@@ -58,8 +58,9 @@ interface PropsToValueMapper<P, D> {
   (props: P): D;
 }
 
+type ProviderRenderer<D> = (props: ProviderResult<D>) => React.ReactNode;
 export interface DataProviderProps<D> {
-  children: (props: ProviderResult<D>) => React.ReactNode;
+  children: ProviderRenderer<D>;
 }
 
 export default function<P, D>(
@@ -84,9 +85,10 @@ export default function<P, D>(
     };
   };
 
-  const DataProvider = class extends React.Component<
-    P & DataProviderProps<D> & WithAnalyticsEventsProps
-  > {
+  type Props = P & DataProviderProps<D> & WithAnalyticsEventsProps;
+  type States = ProviderResult<D>;
+
+  class DataProvider extends React.Component<Props, States> {
     acceptResults = true;
     state = getInitialState(this.props);
 
@@ -147,6 +149,7 @@ export default function<P, D>(
         this.setState({
           error,
           status: Status.ERROR,
+          data: null,
         });
       }
 
@@ -158,10 +161,9 @@ export default function<P, D>(
     }
 
     render() {
-      // @ts-ignore https://product-fabric.atlassian.net/browse/FIND-269 - Ignoring issue with children's return type
-      return this.props.children(this.state);
+      return (this.props.children as ProviderRenderer<D>)(this.state);
     }
-  };
+  }
 
   return withAnalyticsEvents()(DataProvider);
 }

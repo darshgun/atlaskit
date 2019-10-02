@@ -6,7 +6,6 @@ import BodiedExtension, {
   Props as BodiedExtensionProps,
 } from './bodiedExtension';
 import BulletList from './bulletList';
-import CodeBlock from './codeBlock';
 import DecisionList from './decisionList';
 import Doc from './doc';
 import Extension, { Props as ExtensionProps } from './extension';
@@ -25,14 +24,26 @@ import Panel from './panel';
 import Paragraph from './paragraph';
 import Placeholder from './placeholder';
 import Rule from './rule';
-import TaskItem from './taskItem';
 import TaskList from './taskList';
 import Table from './table';
-import TableCell from './tableCell';
-import TableHeader from './tableHeader';
+import { TableCell, TableHeader } from './tableCell';
 import TableRow from './tableRow';
 import UnknownBlock from './unknownBlock';
 import Loadable from 'react-loadable';
+
+const CodeBlock = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_CodeBlock" */
+    './codeBlock'),
+  loading: () => null,
+});
+
+const TaskItem = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_TaskItem" */
+    './taskItem'),
+  loading: () => null,
+});
 
 const DecisionItem = Loadable({
   loader: () =>
@@ -312,7 +323,6 @@ export {
   TaskList,
   Table,
   TableCell,
-  TableHeader,
   TableRow,
   UnknownBlock,
 };

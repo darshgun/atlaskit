@@ -7,7 +7,6 @@ import {
   clearMarksOnChangeToEmptyDocumentPlugin,
   codeBlockPlugin,
   collabEditPlugin,
-  confluenceInlineComment,
   datePlugin,
   emojiPlugin,
   extensionPlugin,
@@ -39,7 +38,6 @@ import {
   typeAheadPlugin,
   quickInsertPlugin,
   gapCursorPlugin,
-  inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
   statusPlugin,
@@ -51,6 +49,8 @@ import {
   analyticsPlugin,
   customAutoformatPlugin,
   feedbackDialogPlugin,
+  historyPlugin,
+  sharedContextPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { EditorView } from 'prosemirror-view';
@@ -83,6 +83,7 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
     submitEditorPlugin(),
     fakeTextCursorPlugin(),
     floatingToolbarPlugin(),
+    sharedContextPlugin(),
   ];
 }
 
@@ -125,10 +126,6 @@ export default function createPluginsList(
 
   if (props.allowTextAlignment) {
     plugins.push(alignmentPlugin());
-  }
-
-  if (props.allowInlineAction) {
-    plugins.push(inlineActionPlugin());
   }
 
   if (props.allowTextColor) {
@@ -261,8 +258,8 @@ export default function createPluginsList(
     plugins.push(macroPlugin());
   }
 
-  if (props.allowConfluenceInlineComment) {
-    plugins.push(confluenceInlineComment(), annotationPlugin());
+  if (props.annotationProvider || props.allowConfluenceInlineComment) {
+    plugins.push(annotationPlugin(props.annotationProvider));
   }
 
   if (props.allowDate) {
@@ -320,6 +317,10 @@ export default function createPluginsList(
 
   if (!isMobile) {
     plugins.push(quickInsertPlugin());
+  }
+
+  if (isMobile) {
+    plugins.push(historyPlugin());
   }
 
   return plugins;

@@ -5,6 +5,7 @@ const { msg2pot } = require('babel-plugin-react-intl-pot');
 
 const { extractMessagesFromFile, isTypeScript } = require('../utils');
 const { pushTranslations } = require('../utils/transifex');
+const smartling = require('traduki-lite');
 
 const getExtensions = type => (isTypeScript(type) ? '.ts{,x}' : '.js{,x}');
 
@@ -81,16 +82,39 @@ function pushCommand(options) {
         context.data = await pushTranslations(project, resource, context.pot);
       },
     },
+    {
+      title: 'Pushing to Smartling',
+      skip: () => dry,
+      task: async context => {
+        try {
+          context.smartlingData = await smartling.pushSource(
+            project,
+            resource,
+            context.messages,
+          );
+        } catch (e) {
+          // For now don't let this kill the build
+          // After we are no longer using Transifex, we should remove the catch
+          // and let it fail the process
+          context.smartlingData = {
+            error: e,
+          };
+        }
+      },
+    },
   ])
     .run()
-    .then(({ pot, data }) => {
+    .then(({ pot, data, smartlingData }) => {
       if (dry) {
         console.log('\n' + pot);
       } else {
         console.log(
           `\nSuccess:\nAdded: ${data.strings_added}\nUpdated: ${
             data.strings_updated
-          }\nDeleted: ${data.strings_delete}`,
+          }\nDeleted: ${
+            data.strings_delete
+          }\nSmartling : ${smartlingData.error || smartlingData.stringCount}
+          `,
         );
       }
     });

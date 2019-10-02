@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/user-picker",
-  "version": "4.0.22",
+  "version": "4.1.1",
   "config": {
     "access": "public"
   },
@@ -11,15 +11,15 @@
   "atlaskit:src": "src/index.ts",
   "sideEffects": false,
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
-    "@atlaskit/avatar": "^16.0.14",
+    "@atlaskit/analytics-next": "^6.3.0",
+    "@atlaskit/avatar": "^17.1.2",
     "@atlaskit/field-base": "^13.0.13",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/lozenge": "^9.0.7",
-    "@atlaskit/select": "^10.0.8",
-    "@atlaskit/tag": "^9.0.6",
-    "@atlaskit/theme": "^9.1.6",
-    "@atlaskit/tooltip": "^15.0.14",
+    "@atlaskit/select": "^10.1.2",
+    "@atlaskit/tag": "^9.0.8",
+    "@atlaskit/theme": "^9.2.2",
+    "@atlaskit/tooltip": "^15.0.15",
     "lodash.debounce": "^4.0.8",
     "memoize-one": "^5.1.0",
     "uuid": "^3.1.0"
@@ -31,26 +31,19 @@
     "styled-components": "^3.2.6"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [
-    {
-      "name": "Tara T"
-    },
-    {
-      "name": "Luiz P"
-    }
-  ],
+  "maintainers": [],
   "atlaskit": {
     "name": "User Picker",
-    "team": "elements"
+    "team": "teams"
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/analytics-viewer": "^0.3.5",
-    "@atlaskit/button": "^13.1.6",
+    "@atlaskit/analytics-viewer": "^0.3.7",
+    "@atlaskit/button": "^13.3.2",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/elements-test-helpers": "^0.6.4",
+    "@atlaskit/elements-test-helpers": "^0.6.5",
     "@atlaskit/i18n-tools": "^0.5.2",
-    "@atlaskit/util-data-test": "^12.9.6",
+    "@atlaskit/util-data-test": "^12.11.1",
     "@types/lodash.debounce": "^4.0.4",
     "@types/uuid": "^3.4.4",
     "enzyme": "^3.7.0",

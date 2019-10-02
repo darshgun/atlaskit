@@ -8,7 +8,7 @@ import messages from '../../utils/messages';
 import { IntlProvider } from 'react-intl';
 import createStream, { Stream } from '../../../test-helpers/stream';
 import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { ProductTopItemVariation, WorklensProductType } from '../../types';
+import { WorklensProductType } from '../../types';
 
 const DefaultAtlassianSwitcher = (props: any = {}) => {
   const stubIcon = () => <span />;
@@ -40,14 +40,7 @@ const DefaultAtlassianSwitcher = (props: any = {}) => {
         href: '/wiki',
       },
     ],
-    fixedLinks: [
-      {
-        key: 'people',
-        label: 'People',
-        Icon: stubIcon,
-        href: '/people',
-      },
-    ],
+    fixedLinks: [],
     adminLinks: [
       {
         key: 'discoverMore',
@@ -87,7 +80,6 @@ const DefaultAtlassianSwitcher = (props: any = {}) => {
           messages={messages}
           hasLoaded
           hasLoadedCritical
-          productTopItemVariation={ProductTopItemVariation.mostFrequentSite}
           {...switcherLinks}
           {...props}
         />
@@ -126,8 +118,7 @@ describe('Atlassian Switcher - Component Analytics', () => {
         suggestedProducts: ['confluence.ondemand'],
         licensedProducts: ['jira'],
         adminLinks: ['discoverMore'],
-        fixedLinks: ['people'],
-        productTopItemVariation: ProductTopItemVariation.mostFrequentSite,
+        fixedLinks: [],
         numberOfSites: 2,
       },
     });
@@ -160,7 +151,6 @@ describe('Atlassian Switcher - Component Analytics', () => {
     wrapper = mount(
       <DefaultAtlassianSwitcher
         onEventFired={eventStream}
-        productTopItemVariation={ProductTopItemVariation.currentSite}
         overrideSwitcherLinks={overrideSwitcherLinks}
       />,
     );
@@ -175,8 +165,7 @@ describe('Atlassian Switcher - Component Analytics', () => {
         suggestedProducts: ['confluence.ondemand'],
         licensedProducts: ['jira'],
         adminLinks: ['discoverMore'],
-        fixedLinks: ['people'],
-        productTopItemVariation: ProductTopItemVariation.currentSite,
+        fixedLinks: [],
         numberOfSites: 1,
       },
     });
@@ -189,9 +178,9 @@ describe('Atlassian Switcher - Component Analytics', () => {
         data: {
           itemType: 'product',
           itemId: 'jira',
-          itemsCount: 6,
+          itemsCount: 5,
           groupItemIndex: 0,
-          groupItemsCount: 4,
+          groupItemsCount: 3,
           domain: 'invalid',
         },
       },
@@ -200,9 +189,9 @@ describe('Atlassian Switcher - Component Analytics', () => {
         data: {
           itemType: 'product',
           itemId: 'jira',
-          itemsCount: 6,
+          itemsCount: 5,
           groupItemIndex: 0,
-          groupItemsCount: 4,
+          groupItemsCount: 3,
           domain: 'invalid',
         },
         subject: 'atlassianSwitcherItemExpand',
@@ -212,20 +201,9 @@ describe('Atlassian Switcher - Component Analytics', () => {
         data: {
           itemType: 'try',
           itemId: 'confluence.ondemand',
-          itemsCount: 6,
+          itemsCount: 5,
           groupItemIndex: 1,
-          groupItemsCount: 4,
-          domain: 'invalid',
-        },
-      },
-      {
-        name: 'for fixedLinks',
-        data: {
-          itemType: 'product',
-          itemId: 'people',
-          itemsCount: 6,
-          groupItemIndex: 2,
-          groupItemsCount: 4,
+          groupItemsCount: 3,
           domain: 'invalid',
         },
       },
@@ -234,9 +212,9 @@ describe('Atlassian Switcher - Component Analytics', () => {
         data: {
           itemType: 'admin',
           itemId: 'discoverMore',
-          itemsCount: 6,
-          groupItemIndex: 3,
-          groupItemsCount: 4,
+          itemsCount: 5,
+          groupItemIndex: 2,
+          groupItemsCount: 3,
           domain: 'invalid',
         },
       },
@@ -246,7 +224,7 @@ describe('Atlassian Switcher - Component Analytics', () => {
           group: 'recent',
           itemType: 'recent',
           itemId: 'container-type',
-          itemsCount: 6,
+          itemsCount: 5,
           groupItemIndex: 0,
           groupItemsCount: 1,
           domain: 'invalid',
@@ -258,7 +236,7 @@ describe('Atlassian Switcher - Component Analytics', () => {
           group: 'customLinks',
           itemType: 'customLink',
           itemId: null,
-          itemsCount: 6,
+          itemsCount: 5,
           groupItemIndex: 0,
           groupItemsCount: 1,
           domain: 'example.com',
@@ -292,9 +270,9 @@ describe('Atlassian Switcher - Component Analytics', () => {
     const analyticsData = {
       itemType: 'product',
       itemId: 'jira',
-      itemsCount: 6,
+      itemsCount: 5,
       groupItemIndex: 0,
-      groupItemsCount: 4,
+      groupItemsCount: 3,
       domain: 'invalid',
       productType: WorklensProductType.JIRA_BUSINESS,
     };
@@ -359,7 +337,7 @@ describe('Atlassian Switcher - Component Analytics', () => {
       actionSubject: 'button',
     });
     expect(flattenContext(context)).toMatchObject({
-      itemsCount: 6,
+      itemsCount: 5,
     });
   });
 });

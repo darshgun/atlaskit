@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/branch-deploy-product-integrator",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "TODO",
   "license": "Apache-2.0",
   "sideEffects": false,
@@ -17,7 +17,7 @@
     "team": "AFP"
   },
   "dependencies": {
-    "@atlaskit/branch-installer": "^0.1.4",
+    "@atlaskit/branch-installer": "^0.2.0",
     "@types/node": "^11.11.7",
     "@types/node-fetch": "^2.1.4",
     "@types/url-parse": "^1.4.3",
@@ -26,7 +26,8 @@
     "isomorphic-fetch": "^2.2.1",
     "meow": "^5.0.0",
     "simple-git": "^1.115.0",
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "yarn-deduplicate": "^1.0.5"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",

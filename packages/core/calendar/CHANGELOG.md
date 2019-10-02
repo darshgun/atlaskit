@@ -1,5 +1,37 @@
 # @atlaskit/calendar
 
+## 9.0.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 9.0.0
+
+### Major Changes
+
+- [major][8c725d46ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c725d46ec):
+
+  @atlaskit/calendar has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 8.1.0
+
+### Minor Changes
+
+- [minor][e3d466543f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3d466543f):
+
+  Add locale support for Calendar/DateTimePicker/DatePicker/TimePicker:
+
+  - New prop `locale` enables localization for date/time format in `DatePicker`, `TimePicker` and
+    `DateTimePicker`, and months/days in `Calendar`.
+  - Deprecated `dateFormat`, `timeFormat` and `formatDisplayLabel` props. Please use `locale` instead. If provided, these
+    props will override `locale`.
+  - Default date/time placeholders now use `locale` to format the date.
+  - The default date parser for `DatePicker` has been changed from `date-fns.parse` to one based on the `locale` prop and
+    accept text in a format that matches the placeholder.
+
 ## 8.0.10
 
 ### Patch Changes

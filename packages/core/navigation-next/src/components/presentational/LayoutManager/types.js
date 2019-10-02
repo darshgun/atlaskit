@@ -59,6 +59,12 @@ export type ExperimentalFeatureFlags = {|
     when nav is collapsed.
   */
   experimental_hideNavVisuallyOnCollapse: boolean,
+  /**
+    NOTE: This property is experimental and may be removed in a minor release.
+
+    Changes layout manager to accomodate horizontal global navigation across the top of the page.
+  */
+  experimental_horizontalGlobalNav: boolean,
 |};
 
 export type GetRefs = ({
@@ -72,9 +78,10 @@ export type ConnectedLayoutManagerProps = {
   children: Node,
   /** A component which will render the container navigation layer. */
   containerNavigation: ?ComponentType<{}>,
-  /** A map of data attributes applied to the global and contextual navigation elements. */
+  /** A map of data attributes applied to the page, global and contextual navigation elements. */
   datasets?: {|
     globalNavigation: Dataset,
+    content: Dataset,
     contextualNavigation: Dataset,
     navigation: Dataset,
   |},
@@ -90,10 +97,12 @@ export type ConnectedLayoutManagerProps = {
   ...$Exact<CollapseListeners>,
   ...$Exact<ExperimentalFeatureFlags>,
   /** The top offset value to be used in navigation */
-  topOffset?: number,
+  topOffset: number,
 
   /** Boolean value to control the shadow on GlobalNavigation */
   shouldHideGlobalNavShadow?: boolean,
+  /** Determines whether the contextual navigation is displayed */
+  showContextualNavigation?: boolean,
   /** Internal prop which decides which view is active */
   view?: Object | null,
 };

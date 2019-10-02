@@ -20,4 +20,12 @@ export {
 export { getResponseEndTime } from './performance/navigation';
 export { getExtensionRenderer } from './extension-handler';
 
-export { calcTableColumnWidths } from './table';
+export {
+  hasMergedCell,
+  calcTableColumnWidths,
+  convertProsemirrorTableNodeToArrayOfRows,
+} from './table';
+export { createCompareNodes } from './compareNodes';
+export { compose } from './compose';
+
+export { Diff } from './types';

@@ -1,5 +1,149 @@
 # @atlaskit/atlassian-switcher
 
+## 4.2.2
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 4.2.1
+
+### Patch Changes
+
+- [patch][8ec4a18b58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8ec4a18b58):
+
+  Updating examples
+
+## 4.2.0
+
+### Minor Changes
+
+- [minor][173ada19f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/173ada19f7):
+
+  yRemove People link from switcher
+
+## 4.1.0
+
+### Minor Changes
+
+- [minor][42afbf2163](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42afbf2163):
+
+  Only show try links if the product is not provisioned for any of the available sites
+
+## 4.0.0
+
+### Major Changes
+
+- [major][deff626951](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deff626951):
+
+  Remove enableUserCentricProducts feature flag, enable account centric switcher by default
+
+## 3.31.3
+
+### Patch Changes
+
+- [patch][b72b5b773c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b72b5b773c):
+
+  Removed ts-ignore from the code
+
+## 3.31.2
+
+### Patch Changes
+
+- [patch][fa1f938f76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa1f938f76):
+
+  [Bug fix] Emcee link was not able to capture source param, this release will fix that
+
+## 3.31.1
+
+### Patch Changes
+
+- [patch][3ea2b986e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3ea2b986e1):
+
+  1. Change Discover more label to More Atlassian Products 2. Change Browse apps label to Browse Marketplace apps
+
+## 3.31.0
+
+### Minor Changes
+
+- [minor][33fc071f60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33fc071f60):
+
+  Remove the top item variation, set it to current site
+
+## 3.30.1
+
+### Patch Changes
+
+- [patch][712fe8c503](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/712fe8c503):
+
+  Only show people link in Jira and Confluence because it's not supported elsewhere
+
+## 3.30.0
+
+### Minor Changes
+
+- [minor][45cba7159a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45cba7159a):
+
+  Allow consumers to specify a custom provider for available products"
+
+## 3.29.0
+
+### Minor Changes
+
+- [minor][84c5898593](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84c5898593):
+
+  Add FE support for Trello and Statuspage
+
+## 3.28.2
+
+### Patch Changes
+
+- [patch][7c4b42ed6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c4b42ed6b):
+
+  yUpdate siwtcher documentation
+
+## 3.28.1
+
+### Patch Changes
+
+- [patch][a9bf2f8d31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9bf2f8d31):
+
+  Adding vanilla wrapper for Atlassian switcher
+
+## 3.28.0
+
+### Minor Changes
+
+- [minor][9397a40abf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9397a40abf):
+
+  Added isEmceeLinkEnabled prop to enable Embedded Marketplace link with in the product
+
+## 3.27.1
+
+### Patch Changes
+
+- [patch][5129434a9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5129434a9b):
+
+  Fix examples when Grid was used without Page
+
+## 3.27.0
+
+### Minor Changes
+
+- [minor][f1b05c87ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1b05c87ab):
+
+  Lazy load underlying switcher component to avoid loading unnecessary code
+
+## 3.26.0
+
+### Minor Changes
+
+- [minor][d1997bfbc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1997bfbc2):
+
+  Fixed an edge case where viewed events will be emitted prematurely because we're using the incorrect provider to check for hasLoaded flag
+
 ## 3.25.1
 
 ### Patch Changes

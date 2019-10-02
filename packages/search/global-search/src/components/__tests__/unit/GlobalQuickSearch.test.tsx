@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import GlobalQuickSearchWithAnalytics, {
   GlobalQuickSearch,
   Props,
@@ -22,6 +22,7 @@ const DEFAULT_PROPS = {
   children: [],
   advancedSearchId: 'product_advanced_search',
 };
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 function render(partialProps: Partial<Props>) {
   const props: Props = {
@@ -29,7 +30,7 @@ function render(partialProps: Partial<Props>) {
     ...partialProps,
   };
 
-  return shallow(<GlobalQuickSearch {...props} />);
+  return mount(<GlobalQuickSearch {...props} />);
 }
 
 describe('GlobalQuickSearch', () => {
@@ -55,8 +56,7 @@ describe('GlobalQuickSearch', () => {
     const wrapper = render({ onSearch: searchMock });
 
     const onSearchInput: Function = wrapper
-      .children()
-      .first()
+      .find('QuickSearch')
       .prop('onSearchInput');
     onSearchInput({ target: { value: 'foo' } });
 
@@ -71,8 +71,7 @@ describe('GlobalQuickSearch', () => {
     const wrapper = render({ onSearch: searchMock, filters });
 
     const onSearchInput: Function = wrapper
-      .children()
-      .first()
+      .find('QuickSearch')
       .prop('onSearchInput');
     onSearchInput({ target: { value: 'foo' } });
 
@@ -84,8 +83,7 @@ describe('GlobalQuickSearch', () => {
     const wrapper = render({ onSearch: searchMock });
 
     const onSearchInput: Function = wrapper
-      .children()
-      .first()
+      .find('QuickSearch')
       .prop('onSearchInput');
 
     onSearchInput({ target: { value: 'foo' } });
@@ -100,12 +98,169 @@ describe('GlobalQuickSearch', () => {
     const wrapper = render({ onSearch: searchMock });
 
     const onSearchInput: Function = wrapper
-      .children()
-      .first()
+      .find('QuickSearch')
       .prop('onSearchInput');
     onSearchInput({ target: { value: '  pattio   ' } });
 
     expect(searchMock).toHaveBeenCalledWith('pattio', 0, undefined);
+  });
+
+  describe('Autocomplete', () => {
+    let fireAutocompleteRenderedEventSpy: jest.SpyInstance<
+      (
+        duration: number,
+        searchSessionId: string,
+        query: string,
+        autocompleteText: string,
+        queryVersion: number,
+        fromCache: boolean,
+        createAnalyticsEvent?: CreateAnalyticsEventFn,
+      ) => void
+    >;
+
+    let fireAutocompleteCompletedEventSpy: jest.SpyInstance<
+      (
+        searchSessionId: string,
+        query: string,
+        completedText: string,
+        createAnalyticsEvent?: CreateAnalyticsEventFn,
+      ) => void
+    >;
+
+    beforeEach(() => {
+      fireAutocompleteRenderedEventSpy = jest.spyOn(
+        AnalyticsHelper,
+        'fireAutocompleteRenderedEvent',
+      );
+      fireAutocompleteCompletedEventSpy = jest.spyOn(
+        AnalyticsHelper,
+        'fireAutocompleteCompletedEvent',
+      );
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should fire fireAutocompleteRenderedEvent when autocomplete suggestions rendered', () => {
+      const wrapper = render({});
+
+      const onSearchInput: Function = wrapper
+        .find('QuickSearch')
+        .prop('onSearchInput');
+      onSearchInput({ target: { value: 'au' } });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
+
+      wrapper.setProps({ autocompleteSuggestions: ['auto', 'autocomplete'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(1);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][0]).toBeGreaterThan(
+        -1,
+      );
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][1]).toBe('abc');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][2]).toBe('au');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][3]).toBe('auto');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][4]).toBe(0);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][5]).toBe(false);
+    });
+
+    it('should fire fireAutocompleteRenderedEvent when autocomplete suggestions rendered from cache', () => {
+      const wrapper = render({
+        autocompleteSuggestions: ['auto', 'autocomplete'],
+      });
+
+      const onSearchInput: Function = wrapper
+        .find('QuickSearch')
+        .prop('onSearchInput');
+
+      onSearchInput({ target: { value: 'au' } });
+      expect(wrapper.state('query')).toBe('au');
+      // Emulating getDerivedStateFromProps as it's not called by enzyme :(
+      wrapper.setState(
+        GlobalQuickSearch.getDerivedStateFromProps(
+          {
+            ...DEFAULT_PROPS,
+            autocompleteSuggestions: ['auto', 'autocomplete'],
+          },
+          {
+            query: 'au',
+            autocompleteText: undefined,
+          },
+        ),
+      );
+
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(1);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][0]).toBeGreaterThan(
+        -1,
+      );
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][1]).toBe('abc');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][2]).toBe('au');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][3]).toBe('auto');
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][4]).toBe(0);
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][5]).toBe(true);
+    });
+
+    it('should increase version when user autosuggestion updates', () => {
+      const wrapper = render({});
+
+      const onSearchInput: Function = wrapper
+        .find('QuickSearch')
+        .prop('onSearchInput');
+
+      onSearchInput({ target: { value: 'au' } });
+
+      wrapper.setProps({ autocompleteSuggestions: ['auto', 'australia'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[0][4]).toBe(0);
+      onSearchInput({ target: { value: 'aus' } });
+      wrapper.setProps({ autocompleteSuggestions: ['australia'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls[1][4]).toBe(1);
+    });
+
+    it('should measure duration between autocomplete renders', async () => {
+      const wrapper = render({});
+
+      const onSearchInput: Function = wrapper
+        .find('QuickSearch')
+        .prop('onSearchInput');
+
+      onSearchInput({ target: { value: 'au' } });
+
+      const latency = 100;
+      await sleep(latency);
+
+      wrapper.setProps({ autocompleteSuggestions: ['auto', 'australia'] });
+      expect(
+        fireAutocompleteRenderedEventSpy.mock.calls[0][0],
+      ).toBeGreaterThanOrEqual(latency);
+    });
+
+    it('should not fire fireAutocompleteRenderedEvent on initial render', () => {
+      render({});
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
+    });
+
+    it('should not fire fireAutocompleteRenderedEvent if query is empty', () => {
+      render({ autocompleteSuggestions: ['auto', 'complete'] });
+      expect(fireAutocompleteRenderedEventSpy.mock.calls.length).toBe(0);
+    });
+
+    it('should fire fireAutocompleteCompletedEvent when user accepts autcomplete suggestion', () => {
+      const wrapper = render({
+        autocompleteSuggestions: ['auto', 'autocomplete'],
+      });
+
+      const onSearchInput: Function = wrapper
+        .find('QuickSearch')
+        .prop('onSearchInput');
+
+      onSearchInput({ target: { value: 'au' } });
+
+      expect(fireAutocompleteCompletedEventSpy.mock.calls.length).toBe(0);
+      onSearchInput({ target: { value: 'auto ' } }, true);
+      expect(fireAutocompleteCompletedEventSpy.mock.calls.length).toBe(1);
+      expect(fireAutocompleteCompletedEventSpy.mock.calls[0][0]).toBe('abc');
+      expect(fireAutocompleteCompletedEventSpy.mock.calls[0][1]).toBe('au');
+      expect(fireAutocompleteCompletedEventSpy.mock.calls[0][2]).toBe('auto ');
+    });
   });
 
   describe('Search result events', () => {
@@ -155,7 +310,7 @@ describe('GlobalQuickSearch', () => {
 
     const deepRender = (): Function =>
       render({ searchSessionId })
-        .dive()
+        .find('QuickSearch')
         .prop('firePrivateAnalyticsEvent');
 
     ['ArrowUp', 'ArrowDown'].forEach(key => {

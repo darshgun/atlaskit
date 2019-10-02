@@ -1,5 +1,29 @@
 # @atlaskit/flag
 
+## 12.3.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 12.3.0
+
+### Minor Changes
+
+- [minor][33d2e11038](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/33d2e11038):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 12.2.2
+
+### Patch Changes
+
+- [patch][2b158873d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b158873d1):
+
+  Add linting rule to prevent unsafe usage of setTimeout within React components.
+
 ## 12.2.1
 
 ### Patch Changes

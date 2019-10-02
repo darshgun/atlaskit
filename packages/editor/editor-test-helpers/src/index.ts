@@ -91,8 +91,10 @@ export {
   status,
   alignment,
   indentation,
+  annotation,
   unsupportedBlock,
   unsupportedInline,
+  builderEval,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
 export * from './html-helpers';
@@ -113,7 +115,11 @@ export {
   bodiedExtensionData,
 } from './mock-extension-data';
 export * from './schema-element-builder';
-export { cardProvider, EditorTestCardProvider } from './card-provider';
+export {
+  cardProvider,
+  cardProviderStaging,
+  EditorTestCardProvider,
+} from './card-provider';
 export * from './enzyme';
 export { compareSelection } from './selection';
 export * from './table';
@@ -121,4 +127,8 @@ export * from './constants';
 export { autoformattingProvider } from './autoformatting-provider';
 export { extensionHandlers } from './extensions';
 export { analyticsClient } from './analytics-client-mock';
+export {
+  default as ExampleInlineCommentComponent,
+} from './ExampleInlineCommentComponent';
+
 export const testMediaFileId = 'a559980d-cd47-43e2-8377-27359fcb905f';

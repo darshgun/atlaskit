@@ -1,5 +1,12 @@
 # @atlaskit/nps
 
+## 6.0.10
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
 ## 6.0.9
 
 ### Patch Changes

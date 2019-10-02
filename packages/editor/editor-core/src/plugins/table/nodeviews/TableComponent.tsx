@@ -181,7 +181,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
       !!tableResizingPluginState && !!tableResizingPluginState.dragging;
 
     const rowControls = [
-      <div key={0} className={`${ClassName.ROW_CONTROLS_WRAPPER}`}>
+      <div key={0} className={ClassName.ROW_CONTROLS_WRAPPER}>
         <TableFloatingControls
           editorView={view}
           tableRef={tableRef}
@@ -191,6 +191,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
           isResizing={isResizing}
           isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
           isHeaderRowEnabled={pluginState.isHeaderRowEnabled}
+          ordering={pluginState.ordering}
           isHeaderColumnEnabled={pluginState.isHeaderColumnEnabled}
           hasHeaderRow={containsHeaderRow(view.state, node)}
           // pass `selection` and `tableHeight` to control re-render
@@ -206,7 +207,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
           width: this.state.tableContainerWidth,
         }}
         className={classnames(ClassName.TABLE_CONTAINER, {
-          [ClassName.WITH_CONTROLS]: tableActive,
+          [ClassName.WITH_CONTROLS]: allowControls && tableActive,
           [ClassName.HOVERED_DELETE_BUTTON]: isInDanger,
           [ClassName.TABLE_SELECTED]: isTableSelected(view.state.selection),
           'less-padding': width < akEditorMobileBreakoutPoint,

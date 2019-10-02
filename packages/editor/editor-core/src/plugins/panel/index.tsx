@@ -54,6 +54,8 @@ const insertPanelType = (panelType: PanelType, state: EditorState) =>
   );
 
 const panelPlugin = (): EditorPlugin => ({
+  name: 'panel',
+
   nodes() {
     return [{ name: 'panel', node: panel }];
   },

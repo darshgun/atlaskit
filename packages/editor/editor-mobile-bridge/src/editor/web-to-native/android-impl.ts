@@ -9,6 +9,7 @@ import {
   ListBridge,
   StatusBridge,
   LinkBridge,
+  UndoRedoBridge,
 } from './bridge';
 
 import { sendToBridge } from '../../bridge-utils';
@@ -21,6 +22,7 @@ export default class AndroidBridge implements NativeBridge {
   listBridge: ListBridge;
   statusBridge: StatusBridge;
   linkBridge: LinkBridge;
+  undoRedoBridge: UndoRedoBridge;
 
   constructor() {
     this.mentionBridge = window.mentionsBridge as MentionBridge;
@@ -30,6 +32,7 @@ export default class AndroidBridge implements NativeBridge {
     this.listBridge = window.listBridge as ListBridge;
     this.statusBridge = window.statusBridge as StatusBridge;
     this.linkBridge = window.linkBridge as LinkBridge;
+    this.undoRedoBridge = window.undoRedoBridge as UndoRedoBridge;
   }
 
   showMentions(query: String) {
@@ -92,6 +95,12 @@ export default class AndroidBridge implements NativeBridge {
     left: number,
   ) {
     this.linkBridge.currentSelection(text, url, top, right, bottom, left);
+  }
+
+  stateChanged(canUndo: boolean, canRedo: boolean) {
+    if (this.undoRedoBridge) {
+      this.undoRedoBridge.stateChanged(canUndo, canRedo);
+    }
   }
 
   call<T extends EditorPluginBridges>(

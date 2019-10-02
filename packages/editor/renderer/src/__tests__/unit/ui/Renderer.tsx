@@ -1,49 +1,18 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
-import { analyticsClient } from '@atlaskit/editor-test-helpers';
+import { analyticsClient } from '@atlaskit/editor-test-helpers/src/analytics-client-mock';
+import { doc, p, a, b } from '@atlaskit/adf-utils';
 import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import Renderer, { Renderer as BaseRenderer } from '../../../ui/Renderer';
 import { RendererAppearance } from '../../../ui/Renderer/types';
 
-const validDoc = {
-  version: 1,
-  type: 'doc',
-  content: [
-    {
-      type: 'paragraph',
-      content: [
-        {
-          type: 'text',
-          text: 'Hello, ',
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com',
-              },
-            },
-          ],
-        },
-        {
-          type: 'text',
-          text: 'World!',
-          marks: [
-            {
-              type: 'strong',
-            },
-            {
-              type: 'link',
-              attrs: {
-                href: 'https://www.atlassian.com',
-              },
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
+const validDoc = doc(
+  p(
+    a({ href: 'https://www.atlassian.com' })('Hello, '),
+    a({ href: 'https://www.atlassian.com' })(b('World!')),
+  ),
+);
 
 describe('@atlaskit/renderer/ui/Renderer', () => {
   it('should re-render when appearance changes', () => {
@@ -149,7 +118,18 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
 
   describe('Analytics', () => {
     it('should fire analytics event on renderer started', () => {
+      jest.useFakeTimers();
+      jest
+        .spyOn(window, 'requestAnimationFrame')
+        .mockImplementation((fn: Function) => fn());
+
       const client = analyticsClient();
+      const oldHash = window.location.hash;
+      window.location.hash = '#test';
+      jest.spyOn(document, 'getElementById').mockImplementation(() => ({
+        scrollIntoView: jest.fn(),
+      }));
+
       mount(
         <FabricAnalyticsListeners client={client}>
           <Renderer document={validDoc} />
@@ -163,6 +143,24 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
           attributes: expect.objectContaining({ platform: 'web' }),
         }),
       );
+
+      jest.runAllTimers();
+
+      expect(client.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'viewed',
+          actionSubject: 'anchorLink',
+          attributes: expect.objectContaining({
+            platform: 'web',
+            mode: 'renderer',
+          }),
+        }),
+      );
+
+      window.location.hash = oldHash;
+      (document.getElementById as jest.Mock).mockRestore();
+      (window.requestAnimationFrame as jest.Mock).mockRestore();
+      jest.useRealTimers();
     });
 
     const appearances: {

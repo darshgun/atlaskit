@@ -45,6 +45,7 @@ import {
   clearHoverSelection,
 } from './commands';
 import { getPluginState } from './pm-plugins/main';
+import { getPluginState as getResizePluginState } from './pm-plugins/table-resizing/plugin';
 import { getSelectedCellInfo } from './utils';
 import { deleteColumns, deleteRows } from './transforms';
 
@@ -124,6 +125,9 @@ export const handleMouseOver = (
 ): boolean => {
   const { state, dispatch } = view;
   const target = mouseEvent.target as HTMLElement;
+  const { insertColumnButtonIndex, insertRowButtonIndex } = getPluginState(
+    state,
+  );
 
   if (isInsertRowButton(target)) {
     const [startIndex, endIndex] = getColumnOrRowIndex(target);
@@ -136,15 +140,19 @@ export const handleMouseOver = (
     return showInsertRowButton(positionRow)(state, dispatch);
   }
 
-  if (isCell(target) || isCornerButton(target)) {
-    return hideInsertColumnOrRowButton()(state, dispatch);
-  }
-
   if (isColumnControlsDecorations(target)) {
     const [startIndex] = getColumnOrRowIndex(target);
     const { state, dispatch } = view;
 
     return hoverColumns([startIndex], false)(state, dispatch);
+  }
+
+  if (
+    (isCell(target) || isCornerButton(target)) &&
+    (typeof insertColumnButtonIndex === 'number' ||
+      typeof insertRowButtonIndex === 'number')
+  ) {
+    return hideInsertColumnOrRowButton()(state, dispatch);
   }
 
   return false;
@@ -341,7 +349,13 @@ export const handleCut = (
 export const whenTableInFocus = (
   eventHandler: (view: EditorView, mouseEvent: Event) => boolean,
 ) => (view: EditorView, mouseEvent: Event): boolean => {
-  if (!getPluginState(view.state).tableNode) {
+  const tableResizePluginState = getResizePluginState(view.state);
+  const tablePluginState = getPluginState(view.state);
+  const isDragging =
+    tableResizePluginState && !!tableResizePluginState.dragging;
+  const hasTableNode = tablePluginState && tablePluginState.tableNode;
+
+  if (!hasTableNode || isDragging) {
     return false;
   }
 

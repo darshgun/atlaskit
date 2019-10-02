@@ -1,5 +1,35 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.1
+
+- Updated dependencies [1194ad5eb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1194ad5eb3):
+- Updated dependencies [166eb02474](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166eb02474):
+- Updated dependencies [40ead387ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40ead387ef):
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-common@41.0.0
+  - @atlaskit/editor-core@113.0.0
+  - @atlaskit/editor-json-transformer@6.3.3
+  - @atlaskit/editor-test-helpers@10.0.0
+  - @atlaskit/renderer@51.0.0
+  - @atlaskit/adf-schema@4.0.0
+
+## 4.5.0
+
+### Minor Changes
+
+- [minor][7b58498bbf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b58498bbf):
+
+  CS-916 ADF->wiki conversion renders empty cells
+
+## 4.4.9
+
+- Updated dependencies [08ec269915](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08ec269915):
+  - @atlaskit/editor-core@112.44.2
+  - @atlaskit/editor-json-transformer@6.3.2
+  - @atlaskit/editor-test-helpers@9.11.13
+  - @atlaskit/editor-common@40.0.0
+  - @atlaskit/renderer@50.0.0
+
 ## 4.4.8
 
 ### Patch Changes

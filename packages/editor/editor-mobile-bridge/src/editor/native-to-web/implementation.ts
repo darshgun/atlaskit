@@ -37,6 +37,10 @@ import {
 import { EditorView } from 'prosemirror-view';
 import { EditorViewWithComposition } from '../../types';
 import { EditorState } from 'prosemirror-state';
+import {
+  undo as pmHistoryUndo,
+  redo as pmHistoryRedo,
+} from 'prosemirror-history';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { Color as StatusColor } from '@atlaskit/status/element';
 
@@ -130,7 +134,7 @@ export default class WebBridgeImpl extends WebBridge
 
   setContent(content: string) {
     if (this.editorActions) {
-      this.editorActions.replaceDocument(content, false);
+      this.editorActions.replaceDocument(content, false, false);
     }
   }
 
@@ -322,6 +326,16 @@ export default class WebBridgeImpl extends WebBridge
             });
             return insert(mention);
           }
+          if (type === 'emoji') {
+            const { id, shortName, fallback } = item;
+            const emoji = state.schema.nodes.emoji.createChecked({
+              shortName,
+              id,
+              fallback,
+              text: fallback || shortName,
+            });
+            return insert(emoji);
+          }
 
           return false;
         },
@@ -354,6 +368,18 @@ export default class WebBridgeImpl extends WebBridge
     }
 
     this.editorView.dispatch(this.editorView.state.tr.scrollIntoView());
+  }
+
+  undo() {
+    if (this.editorView) {
+      pmHistoryUndo(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
+  redo() {
+    if (this.editorView) {
+      pmHistoryRedo(this.editorView.state, this.editorView.dispatch);
+    }
   }
 
   flushDOM() {

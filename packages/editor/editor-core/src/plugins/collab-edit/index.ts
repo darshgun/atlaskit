@@ -10,6 +10,8 @@ const collabEditPlugin = (
   options?: CollabEditOptions,
   sanitizePrivateContent?: boolean,
 ): EditorPlugin => ({
+  name: 'collabEdit',
+
   pmPlugins() {
     const { useNativePlugin = false, userId = null } = options || {};
 

@@ -1,5 +1,58 @@
 # @atlaskit/media-ui
 
+## 11.6.7
+
+- Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+  - @atlaskit/button@13.3.1
+  - @atlaskit/checkbox@10.0.0
+  - @atlaskit/docs@8.1.7
+
+## 11.6.6
+
+### Patch Changes
+
+- [patch][a6a0cb78a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a6a0cb78a6):
+
+  change white color to N0 import from theme
+
+## 11.6.5
+
+### Patch Changes
+
+- [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
+
+  Update all the theme imports in media to use multi entry points
+
+## 11.6.4
+
+### Patch Changes
+
+- [patch][b8fd0f0847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8fd0f0847):
+
+  hot-88372: fix css props breaking in layoutNG.
+
+## 11.6.3
+
+- Updated dependencies [40bda8f796](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40bda8f796):
+  - @atlaskit/avatar-group@5.0.0
+  - @atlaskit/avatar@17.0.1
+
+## 11.6.2
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/avatar-group@4.0.13
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+
+## 11.6.1
+
+### Patch Changes
+
+- [patch][6410edd029](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6410edd029):
+
+  Deprecated props, `value` and `onValueUpdated` have been removed from the Badge component. Please use the children prop instead.
+
 ## 11.6.0
 
 ### Minor Changes

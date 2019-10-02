@@ -1,5 +1,23 @@
 # @atlaskit/analytics-listeners
 
+## 6.2.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 6.2.0
+
+### Minor Changes
+
+- [minor][af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+
+  Media card now emit analytics events which payload and context stuctures reflect GASv3 payload specification.
+  Media Analytics Listener merges Payload and Context data before sending it to the backend. The merge is based on attributes.packageName equality
+  Media Analytics Listener adds packageHierarchy attribute to merged payload, the same way Atlaskit Listener does.
+
 ## 6.1.7
 
 ### Patch Changes

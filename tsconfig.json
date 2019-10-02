@@ -32,6 +32,7 @@
   "files": [
     "./typings/atlaskit.d.ts",
     "./typings/blueimp-load-image.d.ts",
+    "./typings/calendar-base.d.ts",
     "./typings/deep-equal.d.ts",
     "./typings/deepcopy.d.ts",
     "./typings/diff.d.ts",
@@ -78,6 +79,9 @@
     "./typings/uuid.d.ts",
     "./typings/webpack.d.ts",
     "./typings/yarn-deduplicate.d.ts",
-    "./typings/css-color-names/index.d.ts"
+    "./typings/css-color-names/index.d.ts",
+    "./typings/bolt/index.d.ts",
+    "./typings/concurrently/index.d.ts",
+    "./typings/pubnub.d.ts"
   ]
 }

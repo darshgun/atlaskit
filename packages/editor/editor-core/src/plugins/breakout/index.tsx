@@ -104,6 +104,8 @@ interface BreakoutPluginOptions {
 }
 
 const breakoutPlugin = (options?: BreakoutPluginOptions): EditorPlugin => ({
+  name: 'breakout',
+
   pmPlugins() {
     return [{ name: 'breakout', plugin: createPlugin }];
   },

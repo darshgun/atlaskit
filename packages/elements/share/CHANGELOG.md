@@ -1,5 +1,42 @@
 # @atlaskit/share
 
+## 0.6.10
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 0.6.9
+
+### Patch Changes
+
+- [patch][5277ce70fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5277ce70fd):
+
+  Updated placeholder and error text for groups
+
+## 0.6.8
+
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/editor-test-helpers@10.0.0
+
+## 0.6.7
+
+### Patch Changes
+
+- [patch][c8bb1c7896](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8bb1c7896):
+
+  Fix some packages having a 'modules' field in package.json rather than 'module'
+
+## 0.6.6
+
+### Patch Changes
+
+- [patch][f69c99217c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f69c99217c):
+
+  The tooltip is now closed when user clicks on the share button (so it does not remains forever visible)
+
 ## 0.6.5
 
 ### Patch Changes

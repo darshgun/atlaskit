@@ -21,6 +21,8 @@ export interface CodeBlockOptions {
 }
 
 const codeBlockPlugin = (options: CodeBlockOptions = {}): EditorPlugin => ({
+  name: 'codeBlock',
+
   nodes() {
     return [{ name: 'codeBlock', node: codeBlock }];
   },

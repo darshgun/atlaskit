@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-namespaced-context",
-  "version": "4.1.7",
+  "version": "4.1.8",
   "description": "Provides a namespace for AnalyticsContext data (@atlaskit/analytics-next)",
   "config": {
     "access": "public"
@@ -10,23 +10,21 @@
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
+    "@atlaskit/analytics-next": "^6.3.0",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {
     "react": "^16.8.0"
   },
   "author": "Atlassian Pty. Ltd",
-  "maintainers": [
-    "Eduardo S"
-  ],
+  "maintainers": [],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
   },
   "devDependencies": {
-    "@atlaskit/analytics-listeners": "^6.1.7",
+    "@atlaskit/analytics-listeners": "^6.2.1",
     "@atlaskit/docs": "^8.1.5",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
@@ -35,7 +33,7 @@
   "atlaskit": {
     "internal": true,
     "name": "Analytics Namespaced Context",
-    "team": "elements"
+    "team": "teams"
   },
   "keywords": [
     "fabric",

@@ -1,3 +1,5 @@
+import { RouteComponentProps } from 'react-router-dom';
+
 export type NavGroupItem = {
   external?: boolean;
   to: string | Record<string, string | Location>;
@@ -61,3 +63,8 @@ export type Window = {
   unmountApp?: () => void;
   location: { pathname: string; search?: string };
 };
+
+export type MobileNavProps =
+  | RouteComponentProps & { closeNav: () => void }
+  | {}
+  | any;

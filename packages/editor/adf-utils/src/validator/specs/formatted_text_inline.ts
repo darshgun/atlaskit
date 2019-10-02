@@ -13,7 +13,6 @@ export default [
             'link',
             'subsup',
             'textColor',
-            'action',
             'annotation',
           ],
         ],

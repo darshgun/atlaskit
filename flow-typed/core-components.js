@@ -9,7 +9,23 @@ declare module '@atlaskit/analytics-next' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/atlassian-navigation' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/atlassian-navigation/skeleton' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/atlassian-switcher' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/avatar' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/avatar-group' {
   declare module.exports: any;
 }
 
@@ -33,11 +49,19 @@ declare module '@atlaskit/button' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/calendar' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/checkbox' {
   declare module.exports: any;
 }
 
 declare module '@atlaskit/code' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/comment' {
   declare module.exports: any;
 }
 
@@ -61,6 +85,10 @@ declare module '@atlaskit/icon' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/icon/*' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/inline-dialog' {
   declare module.exports: any;
 }
@@ -70,6 +98,18 @@ declare module '@atlaskit/inline-edit' {
 }
 
 declare module '@atlaskit/inline-message' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/locale' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/locale/LocaleSelect' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/logo' {
   declare module.exports: any;
 }
 

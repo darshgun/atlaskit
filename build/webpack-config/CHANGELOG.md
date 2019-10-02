@@ -1,5 +1,18 @@
 # @atlaskit/webpack-config
 
+## 2.0.15
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 2.0.14
+
+- Updated dependencies [164a927070](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/164a927070):
+  - bolt-fs-loader@0.0.3
+
 ## 2.0.13
 
 ### Patch Changes

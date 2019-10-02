@@ -18,6 +18,8 @@ import {
   hyperlinkStateKey,
   HyperlinkState,
   HyperlinkInsertStatus,
+  historyPluginKey,
+  HistoryPluginState,
 } from '@atlaskit/editor-core';
 
 import { valueOf as valueOfListState } from '../web-to-native/listState';
@@ -127,13 +129,17 @@ const configs: Array<BridgePluginListener<any>> = [
 
       if (initialPass) {
         let palette = Object.create(null);
-        for (let [k, v] of pluginState.palette) {
-          palette[v] = k;
+        let borderColorPalette = Object.create(null);
+
+        for (let { value, label, border } of pluginState.palette) {
+          borderColorPalette[label.toLowerCase().replace(' ', '-')] = border;
+          palette[label] = value;
         }
 
         serialisedState = {
           ...pluginState,
           color,
+          borderColorPalette,
           palette,
         };
       }
@@ -203,6 +209,16 @@ const configs: Array<BridgePluginListener<any>> = [
       }
 
       toNativeBridge.call('linkBridge', 'currentSelection', message);
+    },
+  }),
+  createListenerConfig<HistoryPluginState>({
+    bridge: 'undoRedoBridge',
+    pluginKey: historyPluginKey,
+    updater: (pluginState, view) => {
+      toNativeBridge.call('undoRedoBridge', 'stateChanged', {
+        canUndo: pluginState.canUndo,
+        canRedo: pluginState.canRedo,
+      });
     },
   }),
 ];

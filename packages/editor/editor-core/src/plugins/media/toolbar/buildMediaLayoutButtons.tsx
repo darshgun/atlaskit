@@ -6,10 +6,7 @@ import {
   FloatingToolbarSeparator,
   FloatingToolbarItem,
 } from '../../floating-toolbar/types';
-import {
-  MediaSingleLayout,
-  MediaSingleAttributes,
-} from '../../../../../adf-schema';
+import { MediaSingleLayout, MediaSingleAttributes } from '@atlaskit/adf-schema';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import { Command } from '../../../types';
 import commonMessages from '../../../messages';
@@ -106,18 +103,24 @@ const mapIconsToToolbarItem = (
     };
   });
 
-const shouldHideLayoutToolbar = (selection: NodeSelection, { nodes }: Schema) =>
-  hasParentNodeOfType([
+const shouldHideLayoutToolbar = (
+  selection: NodeSelection,
+  { nodes }: Schema,
+  allowResizingInTables?: boolean,
+) => {
+  return hasParentNodeOfType([
     nodes.bodiedExtension,
     nodes.layoutSection,
     nodes.listItem,
-    nodes.table,
+    ...(allowResizingInTables ? [] : [nodes.table]),
   ])(selection);
+};
 
 const buildLayoutButtons = (
   state: EditorState,
   intl: InjectedIntl,
   allowResizing?: boolean,
+  allowResizingInTables?: boolean,
 ) => {
   const { selection } = state;
   const { mediaSingle } = state.schema.nodes;
@@ -126,7 +129,7 @@ const buildLayoutButtons = (
     !(selection instanceof NodeSelection) ||
     !selection.node ||
     !mediaSingle ||
-    shouldHideLayoutToolbar(selection, state.schema)
+    shouldHideLayoutToolbar(selection, state.schema, allowResizingInTables)
   ) {
     return [];
   }

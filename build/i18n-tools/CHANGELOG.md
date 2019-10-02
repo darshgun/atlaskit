@@ -1,5 +1,13 @@
 # @atlaskit/i18n-tools
 
+## 0.5.3
+
+### Patch Changes
+
+- [patch][375ebefdb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/375ebefdb9):
+
+  Adding Smartlings to i18n tools.
+
 ## 0.5.2
 
 ### Patch Changes

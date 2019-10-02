@@ -15,7 +15,7 @@ import MediaPlayer, {
   VideoState,
   VideoActions,
 } from 'react-video-renderer';
-import { colors } from '@atlaskit/theme';
+import { B200, DN400, N0, DN60 } from '@atlaskit/theme/colors';
 import { TimeRange } from './timeRange';
 import {
   CurrentTime,
@@ -137,8 +137,9 @@ export class CustomMediaPlayer extends Component<
     if (type === 'audio' || !isHDAvailable) {
       return;
     }
-    const primaryColor = isHDActive ? colors.B200 : colors.DN400;
-    const secondaryColor = isHDActive ? colors.white : colors.DN60;
+    const primaryColor = isHDActive ? B200 : DN400;
+    const secondaryColor = isHDActive ? N0 : DN60;
+
     return (
       <MediaButton
         appearance={toolbar}

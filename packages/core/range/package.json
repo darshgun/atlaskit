@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/range",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "A styled version of the native input[range] element.",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.2.5",
-    "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/checkbox": "^9.0.9",
+    "@atlaskit/docs": "^8.1.7",
+    "@atlaskit/checkbox": "^10.0.0",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/tooltip": "^15.0.14",
     "@atlaskit/visual-regression": "^0.1.3",

@@ -1,5 +1,439 @@
 # @atlaskit/editor-core
 
+## 113.1.4
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 113.1.3
+
+- Updated dependencies [8c725d46ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c725d46ec):
+  - @atlaskit/calendar@9.0.0
+
+## 113.1.2
+
+### Patch Changes
+
+- [patch][dbd86d9542](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dbd86d9542):
+
+  MS-2397 Fix bug where media with same ids haven't been updating attributes
+
+## 113.1.1
+
+### Patch Changes
+
+- [patch][8af8f8ec2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8af8f8ec2a):
+
+  ED-7768 Fixed regression where you cannot click inside a block macro
+
+## 113.1.0
+
+### Minor Changes
+
+- [minor][65ada7f318](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada7f318):
+
+  **FABDODGEM-12 Editor Cashmere Release**
+
+  - [Internal post](https://go.atlassian.com/cashmere-release)
+
+  **Affected editor components:**
+
+  tables, media, mobile, text color, emoji, copy/paste, analytics
+
+  **Performance**
+
+  - Async import for code blocks and task items on renderer
+    - https://product-fabric.atlassian.net/browse/ED-7155
+
+  **Table**
+
+  - Add support to sort tables that contains smart links
+    - https://product-fabric.atlassian.net/browse/ED-7449
+  - Scale table when changing to full width mode
+    - https://product-fabric.atlassian.net/browse/ED-7724
+
+  **Text color**
+
+  - Update text color toolbar with right color when text is inside a list, panel, etc.
+    - https://product-fabric.atlassian.net/browse/FM-1752
+
+**Mobile** - Implement undo/redo interface on Hybrid Editor - https://product-fabric.atlassian.net/browse/FM-2393
+
+**Copy and Paste**
+
+    - Support copy & paste when missing context-id attr
+      - https://product-fabric.atlassian.net/browse/MS-2344
+    - Right click + copy image fails the second time that is pasted
+      - https://product-fabric.atlassian.net/browse/MS-2324
+    - Copying a never touched image for the first time from editor fails to paste
+      - https://product-fabric.atlassian.net/browse/MS-2338
+    - Implement analytics when a file is copied
+      - https://product-fabric.atlassian.net/browse/MS-2036
+
+**Media**
+
+- Add analytics events and error reporting [NEW BIG FEATURE]
+  - https://product-fabric.atlassian.net/browse/MS-2275
+  - https://product-fabric.atlassian.net/browse/MS-2329
+  - https://product-fabric.atlassian.net/browse/MS-2330
+  - https://product-fabric.atlassian.net/browse/MS-2331
+  - https://product-fabric.atlassian.net/browse/MS-2332
+  - https://product-fabric.atlassian.net/browse/MS-2390
+- Fixed issue where we can’t insert same file from MediaPicker twice
+  - https://product-fabric.atlassian.net/browse/MS-2080
+- Disable upload of external files to media
+  - https://product-fabric.atlassian.net/browse/MS-2372
+
+**Notable Bug Fixes**
+
+    - Implement consistent behaviour for rule and mediaSingle on insertion
+      - Feature Flag:
+        - allowNewInsertionBehaviour - [default: true]
+      - https://product-fabric.atlassian.net/browse/ED-7503
+    - Fixed bug where we were showing table controls on mobile.
+      - https://product-fabric.atlassian.net/browse/ED-7690
+    - Fixed bug where editor crashes after unmounting react component.
+      - https://product-fabric.atlassian.net/browse/ED-7318
+    - Fixed bug where custom emojis are not been showed on the editor
+      - https://product-fabric.atlassian.net/browse/ED-7726
+
+- [minor][b7f541d0ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7f541d0ea):
+
+  ED-7737: Fix icons import in editor core to reduce bundle size- [minor][79c69ed5cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79c69ed5cd):
+
+  ED-7449 Implement sorting inline cards inside tables base on resolved title- [minor][380c643806](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/380c643806):
+
+  https://product-fabric.atlassian.net/browse/ED-7503
+
+  New insertion behaviour comes into place, making it consistent no matter how supported nodes are inserted (more detailed info in the ticket).
+  These changes only covers Horizontal rule and Media Single nodes, only when they are inserted at the beginning or at the end of an specific node.
+
+  Examples:
+
+  - Insert a horizontal rule when the cursor is at the begining of a paragraph, it will insert the node above the paragraph. Same with media single.
+  - Insert a horizontal rule when the cursor is at the end of a paragraph, it will insert the node bellow the paragraph. Same with media single.
+
+  All of these cases should behave consistently regardless if the node was inserted usng the toolbar, with the `/divider` command, or the `---`/`***` shortcut (for the horizontal rule case).
+
+  All this new behaviour is wrapp around a new EditorProp named `allowNewInsertionBehaviour` which is `true` by default.
+  Turning this prop to `false` will always fallback to previous behaviour.
+
+- [minor][98ad94c69c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98ad94c69c):
+
+  FM-2393 Expose undo/redo methods on mobile bridge
+
+  native-to-web: undo/redo methods which will hook directly into prosemirror-history's
+  web-to-native: undoRedoBridge.stateChange which informs native whether undo and redo are currently available so they can enable/disable their buttons accordingly
+
+### Patch Changes
+
+- [patch][7345e92cc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7345e92cc2):
+
+  [ED-7736] Reduce the number of crashs when resizing a table in a collab session- [patch][0a4a4b8781](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a4a4b8781):
+
+  ED-7599: Fix sending transactions to synchrony before collab plugin is ready- [patch][f3f51ad634](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f3f51ad634):
+
+  ED-7680 Prevent insert row or column when selection is not over a table- [patch][c678549a36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c678549a36):
+
+  FM-1752 Fix issue where correct text colour was not selected in toolbar when user had a range selection on coloured text in a nested node eg. a paragraph inside a panel
+
+- [patch][b88a5c5716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b88a5c5716):
+
+  ED-7318 - Refactor solution for discarding stale PM transactions.- [patch][47bd9ffc0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47bd9ffc0f):
+
+  ED-7726: Pass emojiProvider to EmojiTypeAhead item, fixes not loading emojis in typeahead- [patch][0545e69ee6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0545e69ee6):
+
+  call MediaNodeUpdater.updateFileAtts on any prop changes in MediaSingle- [patch][1063a8fb26](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1063a8fb26):
+
+  ED-7679 Fix bug where pasting table with picture from External document, paste image outside the table- [patch][1dd58c65ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1dd58c65ca):
+
+  ED-7218: Implement excludes and experimental for CXHTML preset- [patch][dac3a85916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac3a85916):
+
+  ED-7318 Prevent manipulating the DOM after the editor has been destroyed- [patch][715cb9854e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/715cb9854e):
+
+  Improve dev feedback when logging a failed ADF document parsing. Ensure the reason is shown before the JSON to prevent truncation of the reason on large documents.- [patch][34dd8edf58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34dd8edf58):
+
+  [ED-7690] Fix controls markers on tables showing up when allowControls is false
+
+## 113.0.0
+
+### Major Changes
+
+- [major][166eb02474](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166eb02474):
+
+**Editor Bombazine Release**
+
+**BREAKING CHANGES**
+
+**Renderer**
+
+- Change in contract for `eventHandlers.smartCard.onClick` prop:
+  - Old: onClick(url): void
+  - New: onClick(event, url): void
+
+​**ADF Schema**
+
+- Remove applicationCard node and action mark
+- Remove exposed `tableBackgroundBorderColors` in favour of `tableBackgroundBorderColor`
+
+**Affected editor components:**
+
+Tables, Media, Headings, Copy and Paste, Mobile
+
+**Anchor Links**
+
+- Headings in the renderer now show an anchor link on hover
+  - Feature Flag:
+    - allowHeadingAnchorLinks - [default: false]
+  - https://product-fabric.atlassian.net/browse/ED-5137
+
+**Copy and Paste**
+
+    - Fixed a bug where right click for copy image failed the second time that is pasted
+      - https://product-fabric.atlassian.net/browse/MS-2324
+
+**Media**
+
+    - Resizing/Aligning media inside Table
+      - Feature Flag:
+        - allowResizingInTables - [default: false]
+      - https://product-fabric.atlassian.net/browse/ED-6359
+    - You can now insert same file from MediaPicker twice
+      - https://product-fabric.atlassian.net/browse/MS-2080
+    - Implement media link in renderer
+      - https://product-fabric.atlassian.net/browse/ED-7244
+
+**Tables**
+
+    - Implement table sorting in renderer - [NEW BIG FEATURE][not enabled]
+      - Feature Flag:
+        - allowColumnSorting – [default: false]
+      - https://product-fabric.atlassian.net/browse/ED-7392
+    - Expanded table cell background color palette
+      - https://product-fabric.atlassian.net/browse/ED-7201
+
+**Mobile**
+
+    - Provide method for scrolling to actions, decisions and mentions
+      - https://product-fabric.atlassian.net/browse/FM-2261
+      - https://product-fabric.atlassian.net/browse/FM-2055
+    - Improve Hybrid Editor Scrolling
+      - https://product-fabric.atlassian.net/browse/FM-2212
+
+**Notable Bug fixes**
+
+    - Fixed an issue where you couldn't split merged cells when a cell contained a media item
+      - https://product-fabric.atlassian.net/browse/ED-6898
+    - Pasting content with an emoji no longer duplicates the emoji as an image
+      - https://product-fabric.atlassian.net/browse/ED-7513
+    - Content inside of a table cell no longer overflows if table looses focus
+      - https://product-fabric.atlassian.net/browse/ED-7529
+    - Fixed an issue when adding rows and cols at the same time start adding infinite columns
+      - https://product-fabric.atlassian.net/browse/ED-7700- [major] [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+
+Remove applicationCard node and action mark
+
+### Minor Changes
+
+- [minor][5276c19a41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5276c19a41):
+
+  ED-5996: support viewing inline comments within editor
+
+  You can do this with the `annotationProvider` prop. Passing a truthy value to this (e.g. the empty object `{}`) will:
+
+  - enable support for working with the `annotation` ADF mark
+  - will render highlights around any annotations, and
+  - allow copying and pasting of annotations within the same document, or between documents
+
+  You can also optionally pass a React component to the `component`, so you can render custom components on top of or around the editor when the user's text cursor is inside an annotation.
+
+  Please see [the package documentation](https://atlaskit.atlassian.com/packages/editor/editor-core/docs/annotations) for more information.
+
+  There is an example component called `ExampleInlineCommentComponent` within the `@atlaskit/editor-test-helpers` package. It is currently featured in the full page examples on the Atlaskit website.
+
+  Annotations are styled within the editor using the `fabric-editor-annotation` CSS class.
+
+  Other changes:
+
+  - `Popup` now supports an optional `rect` parameter to direct placement, rather than calculating the bounding client rect around a DOM node.- [minor][45ae9e1cc2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/45ae9e1cc2):
+
+  ED-7201 Add new background cell colors and improve text color- [minor][520db7fe02](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/520db7fe02):
+
+  ED-6359 Enable image resize and alignment within tables
+
+  This feature needs to be enabled with the new optional prop `media.allowResizingInTables`. By default, this is set to `false`, but will likely be promoted to default `true` in future, and then removed as an option. _Resizing_ and _alignment_ of media within tables are both tied to this prop.
+
+### Patch Changes
+
+- [patch][1739779ad2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1739779ad2):
+
+  [ED-7475] Fix rows controls height after sorting table by column- [patch][9908666d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9908666d1e):
+
+  Bump prosemirror-tables from 0.9.1 to 0.9.2- [patch][c7dd52d435](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7dd52d435):
+
+  pass occurenceKey when uploading external media- [patch][9fb705e807](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fb705e807):
+
+  FM-2212: Refactor Mobile Bridge CSS to improve body scrolling. FM-2024: Improve Mobile Editing UX when tapping beneath Tables, Layouts, Columns.- [patch][0e537cf0fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e537cf0fe):
+
+  ED-7700: prevent collab plugin from sending fixTable appended transaction- [patch][799d72f043](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/799d72f043):
+
+  ED-7347 Fix paste col widths when we allowColumnResizig is disabled- [patch][367e6d2cf4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/367e6d2cf4):
+
+  [ED-7720] Fix tables exceptions when allowColumnResizing is false- [patch][7321d0a95f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7321d0a95f):
+
+  ED-7600: fix forEach in IE11- [patch][7d57dc2ffa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d57dc2ffa):
+
+  ED-6940 fixed an issue where text is copied partly when there is some elements inside
+
+- [patch][dea143f9cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dea143f9cd):
+
+  prioritize media metadata from external files and copy them on the backend, instead of re upload them- [patch][bbb4f9463d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbb4f9463d):
+
+  CEMS-234 Prioritize media single over media group
+
+  This solves issue where pasting images with text from third party applications into a table ends adding an error image.- [patch][1976df2d1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1976df2d1f):
+
+  [ED-7722] Fix frozen selection when there is a broken table on ADF- [patch][477d8d8017](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/477d8d8017):
+
+  [ED-7477] Fix table looses focus on adding rows|columns when using Safari- [patch][90a6171e9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90a6171e9e):
+
+  ED-7501: fix firing transactions on mouseover during resizing- [patch][d4081fed44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d4081fed44):
+
+  ED-7335: fix table controls being cut off in comment editor- [patch][6a65910fb2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a65910fb2):
+
+  dont upload external images to media- [patch][9a521ca2e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a521ca2e0):
+
+  ED-7694 ReplaceDocument should restore text selection (and scroll position on some browsers/platforms) to start of the document, instead of the end.- [patch][229a888884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/229a888884):
+
+  ED-7513: added unit tests for emoji paste from renderer (as sprite and as image)
+
+- [patch][fea463dee9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fea463dee9):
+
+  Fixes initialisation of annatation mark- [patch][d80580866b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d80580866b):
+
+  pass contextId to MediaNodeUpdater.updateFileAttrs to make sure is available on paste event- [patch][113a08075f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/113a08075f):
+
+  ED-6898 Fix regression where I cannot split a merged cell with media single- [patch][4b2afcc09d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b2afcc09d):
+
+  ED-7533: Fixes issue where in certain scenarios selecting text wouldnt populate the hyperlink toolbar- [patch][7b794e7cea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b794e7cea):
+
+  ED-2774 Fix pasting of superscript and subscript from google docs by allowing sup/sub script to be described with `vertical-align`
+
+- [patch][a8cedf4f6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a8cedf4f6a):
+
+  [ED-7651] Fix request for classList on SVGElements when trying to add new row or column on tables (IE11 patch)- [patch][922ec81fe7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/922ec81fe7):
+
+  ED-7710: Only show annotation highlight if we have a provider- [patch][3f1c7dd26a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f1c7dd26a):
+
+  [ED-7392] Add sort table by column on renderer behind allowColumnSorting feature flag
+  [ED-7392] Extract common methods to sort table
+
+- [patch][468be2920e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/468be2920e):
+
+  ED-7447: Fixes issue in Firefox where navigating lists would cause you to immediately jump outside the list on first keystroke.- [patch][79f23a5035](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f23a5035):
+
+  ED-7385: Update container width on update in FullPage appearance
+
+  This prevents certain nodes from disappearing when transitioning from preview mode to edit mode.- [patch][3c0009a38c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c0009a38c):
+
+  ED-7345 Fix bug where allow paste cell with background when is disable- [patch][07796abde3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07796abde3):
+
+  ED-7529: make sure content doesn't overflow inside table cells- [patch][9cddedc62f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cddedc62f):
+
+  ED-7244 refactor hardcoded media single class name using a constant- [patch][eba491e793](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eba491e793):
+
+  Fix bug where resize handler is been shown when column resizing is disabled
+
+- Updated dependencies [1194ad5eb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1194ad5eb3):
+- Updated dependencies [40ead387ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40ead387ef):
+  - @atlaskit/adf-utils@7.0.0
+  - @atlaskit/editor-common@41.0.0
+  - @atlaskit/editor-bitbucket-transformer@6.2.4
+  - @atlaskit/editor-json-transformer@6.3.3
+  - @atlaskit/editor-test-helpers@10.0.0
+  - @atlaskit/editor-markdown-transformer@3.1.6
+  - @atlaskit/renderer@51.0.0
+  - @atlaskit/adf-schema@4.0.0
+  - @atlaskit/task-decision@15.3.4
+
+## 112.44.8
+
+### Patch Changes
+
+- [patch][2b158873d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b158873d1):
+
+  Add linting rule to prevent unsafe usage of setTimeout within React components.
+
+## 112.44.7
+
+### Patch Changes
+
+- [patch][40bda8f796](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40bda8f796):
+
+  @atlaskit/avatar-group has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 112.44.6
+
+### Patch Changes
+
+- [patch][3bc91f34b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3bc91f34b0):
+
+  ED-7573: fix resizing merged columns in the first row- [patch][35e541a607](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35e541a607):
+
+  Fix bug where resize handler is been shown when column resizing is disabled
+
+## 112.44.5
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/avatar-group@4.0.13
+  - @atlaskit/dropdown-menu@8.1.1
+  - @atlaskit/item@10.1.5
+  - @atlaskit/modal-dialog@10.2.1
+  - @atlaskit/renderer@50.0.2
+  - @atlaskit/mention@18.15.1
+  - @atlaskit/task-decision@15.3.2
+  - @atlaskit/avatar@17.0.0
+  - @atlaskit/theme@9.2.2
+  - @atlaskit/user-picker@4.0.23
+
+## 112.44.4
+
+### Patch Changes
+
+- [patch][c19165aec0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c19165aec0):
+
+  Fix non-critical exception when updating media nodes
+
+  `contextIdentifierProvider` is an optional provider for consumers of the Editor. Some code assumed that this was always provided. Some tests, for example, did not pass this, so they would blow up.
+
+## 112.44.3
+
+- Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
+  - @atlaskit/editor-common@40.0.1
+  - @atlaskit/renderer@50.0.1
+  - @atlaskit/media-client@2.1.2
+  - @atlaskit/media-core@30.0.14
+  - @atlaskit/media-filmstrip@34.3.6
+  - @atlaskit/media-editor@36.3.1
+  - @atlaskit/media-picker@47.1.2
+  - @atlaskit/media-test-helpers@25.1.1
+  - @atlaskit/media-card@65.0.0
+  - @atlaskit/analytics-listeners@6.2.0
+
+## 112.44.2
+
+- Updated dependencies [08ec269915](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08ec269915):
+  - @atlaskit/editor-bitbucket-transformer@6.2.3
+  - @atlaskit/editor-json-transformer@6.3.2
+  - @atlaskit/editor-markdown-transformer@3.1.5
+  - @atlaskit/editor-test-helpers@9.11.13
+  - @atlaskit/task-decision@15.3.1
+  - @atlaskit/editor-common@40.0.0
+  - @atlaskit/renderer@50.0.0
+
 ## 112.44.1
 
 ### Patch Changes

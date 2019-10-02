@@ -20,7 +20,6 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
           "fixedLinks": Array [],
           "licensedProducts": Array [],
           "numberOfSites": 0,
-          "productTopItemVariation": undefined,
           "suggestedProducts": Array [],
         }
       }
@@ -62,7 +61,6 @@ exports[`Switcher should render sections with headers by default 1`] = `
           "fixedLinks": Array [],
           "licensedProducts": Array [],
           "numberOfSites": 0,
-          "productTopItemVariation": undefined,
           "suggestedProducts": Array [],
         }
       }

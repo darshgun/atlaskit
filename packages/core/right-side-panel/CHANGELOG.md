@@ -1,5 +1,21 @@
 # @atlaskit/right-side-panel
 
+## 0.2.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 0.2.0
+
+### Minor Changes
+
+- [minor][617591dd61](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617591dd61):
+
+  Added props onOpenAnimationFinished and onCloseAnimationFinished to execute function once the open/close animation finished
+
 ## 0.1.8
 
 ### Patch Changes

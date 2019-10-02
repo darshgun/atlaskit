@@ -52,6 +52,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     appearance: 'comment',
     disabled: false,
     extensionHandlers: {},
+    allowNewInsertionBehaviour: true,
   };
 
   static contextTypes = {
@@ -127,10 +128,9 @@ export default class Editor extends React.Component<EditorProps, {}> {
       allowPlaceholderCursor: {
         type: 'removed',
       },
-      allowInlineAction: {
-        type: 'removed',
-      },
       allowConfluenceInlineComment: {
+        message:
+          'To integrate inline comments use experimental annotationProvider – <Editor annotationProvider={{ provider }} />',
         type: 'removed',
       },
       addonToolbarComponents: {
@@ -390,6 +390,9 @@ export default class Editor extends React.Component<EditorProps, {}> {
                                     this.props.addonToolbarComponents
                                   }
                                   collabEdit={this.props.collabEdit}
+                                  allowAnnotation={
+                                    !!this.props.annotationProvider
+                                  }
                                 />
                               </BaseTheme>
                             )}

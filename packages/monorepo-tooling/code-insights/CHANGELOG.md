@@ -1,5 +1,21 @@
 # @atlaskit/code-insights
 
+## 1.1.10
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 1.1.9
+
+### Patch Changes
+
+- [patch][f5a3c7e7b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5a3c7e7b9):
+
+  CLI's should return a non-zero return code when a error was thrown
+
 ## 1.1.8
 
 ### Patch Changes

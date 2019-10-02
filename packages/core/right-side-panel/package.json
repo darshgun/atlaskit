@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/right-side-panel",
-  "version": "0.1.8",
+  "version": "0.2.1",
   "description": "A cross-product right-side-panel component",
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
@@ -34,10 +34,9 @@
     "react-intl": "^2.6.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^13.1.6",
+    "@atlaskit/button": "^13.3.2",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/i18n-tools": "^0.5.2",
-    "@atlaskit/navigation": "^35.1.21",
+    "@atlaskit/navigation": "^35.2.4",
     "@atlaskit/page": "^11.0.8",
     "@atlaskit/section-message": "^4.0.12",
     "enzyme": "^3.7.0",

@@ -167,23 +167,15 @@ export const rerenderEditor = async (browser: any) => {
   await browser.click('.reloadEditorButton');
 };
 
-export const insertMedia = async (
+// This function assumes the media picker modal is already shown.
+export const insertMediaFromMediaPicker = async (
   browser: any,
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
-  const openMediaPopup = `[aria-label="${
-    insertBlockMessages.filesAndImages.defaultMessage
-  }"]`;
   const insertMediaButton = '.e2e-insert-button';
   const mediaCardSelector = `${editable} .img-wrapper`;
-
   const existingMediaCards = await browser.$$(mediaCardSelector);
-
-  // wait for media button in toolbar and click it
-  await browser.waitForSelector(openMediaPopup);
-  await browser.click(openMediaPopup);
-
   // wait for media item, and select it
   await browser.waitForSelector(
     '.e2e-recent-upload-card [aria-label="one.svg"]',
@@ -231,6 +223,21 @@ export const insertMedia = async (
       mediaCardCount,
     );
   }
+};
+
+export const insertMedia = async (
+  browser: any,
+  filenames = ['one.svg'],
+  fileSelector = 'div=%s',
+) => {
+  const openMediaPopup = `[aria-label="${
+    insertBlockMessages.filesAndImages.defaultMessage
+  }"]`;
+
+  // wait for media button in toolbar and click it
+  await browser.waitForSelector(openMediaPopup);
+  await browser.click(openMediaPopup);
+  await insertMediaFromMediaPicker(browser, filenames, fileSelector);
 };
 
 /**
@@ -408,6 +415,13 @@ export const setProseMirrorTextSelection = async (
     pos.anchor,
     pos.head || pos.anchor,
   );
+};
+
+export const getProseMirrorPos = async (page: any): Promise<number> => {
+  return await page.browser.execute(() => {
+    var view = (window as any).__editorView;
+    return view.state.selection.from;
+  });
 };
 
 export const resizeColumn = async (page: any, resizeOptions: ResizeOptions) => {

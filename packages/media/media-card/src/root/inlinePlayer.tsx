@@ -14,10 +14,10 @@ import { CardLoading } from '../utils/lightCards/cardLoading';
 
 import {
   withAnalyticsEvents,
-  createAndFireEvent,
   WithAnalyticsEventsProps,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
+import { createAndFireMediaEvent } from '../utils/analytics';
 
 export interface InlinePlayerOwnProps {
   identifier: FileIdentifier;
@@ -56,9 +56,13 @@ export const getPreferredVideoArtifact = (
   return undefined;
 };
 
-class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
+export class InlinePlayerBase extends Component<
+  InlinePlayerProps,
+  InlinePlayerState
+> {
   subscription?: Subscription;
   state: InlinePlayerState = {};
+  divRef: React.RefObject<HTMLDivElement> = React.createRef();
 
   static defaultProps = {
     dimensions: defaultImageCardDimensions,
@@ -186,6 +190,7 @@ class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
         style={this.getStyle()}
         selected={selected}
         onClick={onClick}
+        innerRef={this.divRef}
       >
         <InactivityDetector>
           {() => (
@@ -203,8 +208,11 @@ class InlinePlayerBase extends Component<InlinePlayerProps, InlinePlayerState> {
   }
 }
 
-const createAndFireEventOnMedia = createAndFireEvent('media');
-
 export const InlinePlayer = withAnalyticsEvents({
-  onClick: createAndFireEventOnMedia({ action: 'clicked' }),
+  onClick: createAndFireMediaEvent({
+    eventType: 'ui',
+    action: 'clicked',
+    actionSubject: 'mediaCard',
+    actionSubjectId: 'mediaCardInlinePlayer',
+  }),
 })(InlinePlayerBase);

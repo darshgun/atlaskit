@@ -1,5 +1,63 @@
 # @atlaskit/checkbox
 
+## 10.1.1
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 10.1.0
+
+### Minor Changes
+
+- [minor][f22f6e1e4f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f22f6e1e4f):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 10.0.0
+
+### Major Changes
+
+- [major][97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
+
+  `@atlaskit/checkbox` **10.x** includes the following changes:
+
+  - Replaced previous theme implementation with new `@atlaskit/theme` v2 implementation
+    - Please read more about this implementation in the [theming guide](https://atlaskit.atlassian.com/packages/core/theme/docs/theming-guide)
+  - Added `overrides` prop which enables targeted customisations of key components in the @atlaskit/checkbox package.
+    - Please read more about this implementation in the [overrides guide](https://atlaskit.atlassian.com/packages/core/theme/docs/overrides-guide)
+
+  ### Breaking Changes
+
+  **HiddenCheckbox and spread props**
+
+  Passing props to the `<Checkbox/>` component for them to be spread onto the underlying `<HiddenCheckbox/>` component is now **no longer possible**.
+  `@atlaskit/checkbox` still supports passing props down to the `<HiddenCheckbox/>` component, however we've opted to make this behaviour more explicit.
+
+  Whereas previously you would do this:
+
+  ```js
+  <Checkbox
+    ...supportedCheckboxProps
+    'data-testid'='test-checkbox'
+  />
+  ```
+
+  Now you would leverage the overrides prop to pass these props down to the `<HiddenCheckbox/>` component like so:
+
+  ```js
+  <Checkbox
+    ...supportedCheckboxProps
+    overrides={{
+      HiddenCheckbox:{
+        attributesFn: () => ({ 'data-testid': 'test-checkbox' })
+      }
+    }}
+  />
+  ```
+
 ## 9.0.9
 
 ### Patch Changes

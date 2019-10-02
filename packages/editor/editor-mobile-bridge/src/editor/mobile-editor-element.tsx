@@ -20,7 +20,7 @@ import {
   MediaProvider,
   MentionProvider,
   TaskDecisionProvider,
-  MockEmojiProvider,
+  EmojiProvider,
 } from '../providers';
 import { parseLocationSearch } from '../bridge-utils';
 import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
@@ -83,7 +83,7 @@ export default function mobileEditor(props: Props) {
         <EditorWithState
           appearance="mobile"
           mentionProvider={Promise.resolve(MentionProvider)}
-          emojiProvider={Promise.resolve(MockEmojiProvider)}
+          emojiProvider={Promise.resolve(EmojiProvider)}
           media={{
             customMediaPicker: new MobilePicker(),
             provider: props.mediaProvider || MediaProvider,

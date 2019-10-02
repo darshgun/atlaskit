@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/util-data-test",
   "description": "Shared test and story data",
-  "version": "12.9.6",
+  "version": "12.11.1",
   "config": {
     "access": "public"
   },
@@ -9,12 +9,15 @@
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
+  "scripts": {
+    "ak-postbuild": "cp -r src/json-data dist/esm/json-data && cp -r src/json-data dist/cjs/json-data"
+  },
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.0.3",
-    "@atlaskit/emoji": "^62.3.3",
-    "@atlaskit/mention": "^18.14.4",
-    "@atlaskit/task-decision": "^15.2.4",
-    "@atlaskit/util-service-support": "^4.0.7",
+    "@atlaskit/analytics-next": "^6.3.0",
+    "@atlaskit/emoji": "^62.5.2",
+    "@atlaskit/mention": "^18.15.3",
+    "@atlaskit/task-decision": "^15.3.5",
+    "@atlaskit/util-service-support": "^4.0.8",
     "date-fns": "^1.30.1",
     "lodash.sample": "^4.2.1",
     "tslib": "^1.9.3",
@@ -33,7 +36,7 @@
   "atlaskit": {
     "internal": true,
     "name": "Util Data Test",
-    "team": "elements"
+    "team": "teams"
   },
   "license": "Apache-2.0",
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",

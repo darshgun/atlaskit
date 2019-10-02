@@ -1,5 +1,53 @@
 # @atlaskit/conversation
 
+## 15.2.14
+
+### Patch Changes
+
+- [patch][848999c42e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/848999c42e):
+
+  Update src pointing to index.tsx instead of index.ts.
+
+## 15.2.13
+
+- Updated dependencies [2376ada634](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2376ada634):
+  - @atlaskit/comment@9.0.0
+
+## 15.2.12
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 15.2.11
+
+- Updated dependencies [166eb02474](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166eb02474):
+- Updated dependencies [40ead387ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40ead387ef):
+- Updated dependencies [80adfefba2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80adfefba2):
+  - @atlaskit/comment@8.0.14
+  - @atlaskit/editor-core@113.0.0
+  - @atlaskit/renderer@51.0.0
+  - @atlaskit/reactions@17.2.1
+  - @atlaskit/editor-common@41.0.0
+
+## 15.2.10
+
+- Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+  - @atlaskit/comment@8.0.13
+  - @atlaskit/single-select@8.0.13
+  - @atlaskit/editor-core@112.44.5
+  - @atlaskit/renderer@50.0.2
+  - @atlaskit/avatar@17.0.0
+
+## 15.2.9
+
+- Updated dependencies [08ec269915](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08ec269915):
+  - @atlaskit/editor-core@112.44.2
+  - @atlaskit/editor-common@40.0.0
+  - @atlaskit/renderer@50.0.0
+
 ## 15.2.8
 
 ### Patch Changes

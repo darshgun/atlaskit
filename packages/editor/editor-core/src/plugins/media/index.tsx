@@ -47,6 +47,7 @@ export interface MediaOptions {
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
   allowResizing?: boolean;
+  allowResizingInTables?: boolean;
   allowAnnotation?: boolean;
   allowLinking?: boolean;
 }
@@ -71,6 +72,8 @@ const mediaPlugin = (
   pluginOptions?: MediaPMPluginOptions,
   appearance?: EditorAppearance,
 ): EditorPlugin => ({
+  name: 'media',
+
   nodes() {
     return [
       { name: 'mediaGroup', node: mediaGroup },
@@ -247,6 +250,7 @@ const mediaPlugin = (
         providerFactory,
         // appearance, // TODO: required?
         allowResizing: options && options.allowResizing,
+        allowResizingInTables: options && options.allowResizingInTables,
         allowAnnotation: options && options.allowAnnotation,
         allowLinking: options && options.allowLinking,
         allowAdvancedToolBarOptions:

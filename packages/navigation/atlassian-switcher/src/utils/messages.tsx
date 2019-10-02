@@ -53,12 +53,6 @@ const messages = defineMessages({
     description:
       'In a context in which several items are listed , this text describes that the specific type of a given item is a Confluence space',
   },
-  people: {
-    id: 'fabric.atlassianSwitcher.people',
-    defaultMessage: 'People',
-    description:
-      'The text of a link redirecting the user to the People directory',
-  },
   administration: {
     id: 'fabric.atlassianSwitcher.administration',
     defaultMessage: 'Administration',
@@ -67,9 +61,15 @@ const messages = defineMessages({
   },
   discoverMore: {
     id: 'fabric.atlassianSwitcher.discoverMore',
-    defaultMessage: 'Discover more',
+    defaultMessage: 'More Atlassian products',
     description:
       'The text of a link redirecting the user to Discover More Atlassian products',
+  },
+  browseApps: {
+    id: 'fabric.atlassianSwitcher.browseApps',
+    defaultMessage: 'Browse Marketplace apps',
+    description:
+      'The text of a link redirecting the user to Discover Embedded Marketplace within in the product (Marketplace is a brand name. Please dont translate it)',
   },
   errorHeading: {
     id: 'fabric.atlassianSwitcher.errorHeading',

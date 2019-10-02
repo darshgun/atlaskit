@@ -1,5 +1,6 @@
 import fetchMock from 'fetch-mock';
 import ORIGINAL_MOCK_DATA, { MockData } from './mock-data';
+import memoizeOne from 'memoize-one';
 
 interface DataTransformer {
   (originalMockData: MockData): MockData;
@@ -8,7 +9,6 @@ interface DataTransformer {
 interface LoadTimes {
   containers?: number;
   xflow?: number;
-  licenseInformation?: number;
   permitted?: number;
   appswitcher?: number;
   availableProducts?: number;
@@ -17,55 +17,51 @@ interface LoadTimes {
 export const REQUEST_SLOW = {
   containers: 2000,
   xflow: 1200,
-  licenseInformation: 1000,
   permitted: 500,
   appswitcher: 1500,
+  availableProducts: 1000,
 };
 
 export const REQUEST_MEDIUM = {
   containers: 1000,
   xflow: 600,
-  licenseInformation: 400,
   permitted: 250,
   appswitcher: 750,
+  availableProducts: 400,
 };
 
 export const REQUEST_FAST = {
   containers: 500,
   xflow: 300,
-  licenseInformation: 200,
   permitted: 125,
   appswitcher: 375,
+  availableProducts: 200,
 };
+
+export const getMockData = memoizeOne((transformer?: DataTransformer) => {
+  return transformer ? transformer(ORIGINAL_MOCK_DATA) : ORIGINAL_MOCK_DATA;
+});
 
 export const mockEndpoints = (
   product: string,
   transformer?: DataTransformer,
   loadTimes: LoadTimes = {},
 ) => {
-  const mockData = transformer
-    ? transformer(ORIGINAL_MOCK_DATA)
-    : ORIGINAL_MOCK_DATA;
+  const mockData = getMockData(transformer);
 
   const {
-    AVAILABLE_PRODUCTS_DATA,
     RECENT_CONTAINERS_DATA,
     CUSTOM_LINKS_DATA,
-    LICENSE_INFORMATION_DATA,
     USER_PERMISSION_DATA,
     XFLOW_SETTINGS,
   } = mockData;
-  fetchMock.get(
+
+  mockAvailableProductsEndpoint(
     '/gateway/api/worklens/api/available-products',
-    () =>
-      new Promise(res =>
-        setTimeout(
-          () => res(AVAILABLE_PRODUCTS_DATA),
-          loadTimes && loadTimes.availableProducts,
-        ),
-      ),
-    { overwriteRoutes: true },
+    transformer,
+    loadTimes,
   );
+
   fetchMock.get(
     '/gateway/api/activity/api/client/recent/containers?cloudId=some-cloud-id',
     () =>
@@ -84,17 +80,6 @@ export const mockEndpoints = (
         setTimeout(
           () => res(CUSTOM_LINKS_DATA),
           loadTimes && loadTimes.appswitcher,
-        ),
-      ),
-    { method: 'GET', overwriteRoutes: true },
-  );
-  fetchMock.get(
-    '/gateway/api/xflow/some-cloud-id/license-information',
-    () =>
-      new Promise(res =>
-        setTimeout(
-          () => res(LICENSE_INFORMATION_DATA),
-          loadTimes && loadTimes.licenseInformation,
         ),
       ),
     { method: 'GET', overwriteRoutes: true },
@@ -124,5 +109,26 @@ export const mockEndpoints = (
         setTimeout(() => res(XFLOW_SETTINGS), loadTimes && loadTimes.xflow),
       ),
     { method: 'GET', overwriteRoutes: true },
+  );
+};
+
+export const mockAvailableProductsEndpoint = (
+  endpoint: string,
+  transformer?: DataTransformer,
+  loadTimes: LoadTimes = {},
+) => {
+  const mockData = getMockData(transformer);
+
+  const { AVAILABLE_PRODUCTS_DATA } = mockData;
+  fetchMock.get(
+    endpoint,
+    () =>
+      new Promise(res =>
+        setTimeout(
+          () => res(AVAILABLE_PRODUCTS_DATA),
+          loadTimes && loadTimes.availableProducts,
+        ),
+      ),
+    { overwriteRoutes: true },
   );
 };

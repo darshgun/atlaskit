@@ -10,23 +10,21 @@ import {
   AvailableSite,
   WorklensProductType,
   AvailableProduct,
-  ProductTopItemVariation,
 } from '../../types';
 
 describe('map-results-to-switcher-props', () => {
   describe('hasLoaded flags', () => {
-    it('hasLoadedCritical is set when license information has been loaded', () => {
+    it('account-centric hasLoadedCritical is set when license information has been loaded', () => {
       const props = mapResultsToSwitcherProps(
-        cloudId,
+        null,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: true,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -35,9 +33,9 @@ describe('map-results-to-switcher-props', () => {
       expect(props.hasLoaded).toEqual(false);
     });
 
-    it('hasLoaded is set when license information + permissions + product recommendations have been loaded', () => {
+    it('account-centric hasLoaded is set when license information + permissions + product recommendations have been loaded', () => {
       const props = mapResultsToSwitcherProps(
-        cloudId,
+        null,
         {
           ...loadingProvidersResult,
           isXFlowEnabled: asCompletedProvider(true),
@@ -46,13 +44,12 @@ describe('map-results-to-switcher-props', () => {
           productRecommendations: asCompletedProvider([]),
         },
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
           xflow: true,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -72,13 +69,12 @@ describe('map-results-to-switcher-props', () => {
           productRecommendations: asFailedProvider(),
         },
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: true,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -96,13 +92,12 @@ describe('map-results-to-switcher-props', () => {
           addProductsPermission: asFailedProvider(),
         },
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           isDiscoverMoreForEveryoneEnabled: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: false,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -118,13 +113,12 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: false,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -191,73 +185,17 @@ describe('map-results-to-switcher-props', () => {
         },
       ]);
     });
-
-    it('shows the most frequently used site at the top of the product if the variation is enabled', () => {
-      const props = mapResultsToSwitcherProps(
-        cloudId,
-        loadingProvidersResult,
-        {
-          enableUserCentricProducts: true,
-          disableCustomLinks: false,
-          disableRecentContainers: false,
-          productTopItemVariation: ProductTopItemVariation.mostFrequentSite,
-          xflow: false,
-          isDiscoverMoreForEveryoneEnabled: false,
-          disableHeadings: false,
-        },
-        asCompletedProvider<AvailableProductsResponse>({
-          sites: [
-            generateSite('site60', [WorklensProductType.JIRA_SOFTWARE, 60]),
-            generateSite('site30', [WorklensProductType.JIRA_SOFTWARE, 30]),
-            generateSite('site10', [WorklensProductType.JIRA_SOFTWARE, 10]),
-            generateSite(cloudId, [WorklensProductType.JIRA_SOFTWARE, 0]),
-          ],
-        }),
-      );
-
-      expect(props.licensedProductLinks).toMatchObject([
-        {
-          description: 'site60',
-          label: 'Jira Software',
-          href: `https://site60.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software`,
-          childItems: [
-            {
-              label: 'site10',
-              href:
-                'https://site10.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software',
-            },
-
-            {
-              label: 'site30',
-              href:
-                'https://site30.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software',
-            },
-            {
-              label: 'site60',
-              href:
-                'https://site60.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software',
-            },
-            {
-              label: cloudId,
-              href: `https://${cloudId}.atlassian.net/secure/BrowseProjects.jspa?selectedProjectType=software`,
-            },
-          ],
-        },
-      ]);
-    });
-
     it('shows the current site at the top of the product by default', () => {
       const props = mapResultsToSwitcherProps(
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: false,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -305,13 +243,12 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: false,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -338,13 +275,12 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           isDiscoverMoreForEveryoneEnabled: false,
           disableCustomLinks: false,
           disableRecentContainers: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           xflow: false,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -369,13 +305,12 @@ describe('map-results-to-switcher-props', () => {
         cloudId,
         loadingProvidersResult,
         {
-          enableUserCentricProducts: true,
           disableCustomLinks: false,
           disableRecentContainers: false,
           xflow: false,
-          productTopItemVariation: ProductTopItemVariation.currentSite,
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
+          isEmceeLinkEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -460,7 +395,6 @@ const loadingProviderResult: ResultLoading = {
 const loadingProvidersResult = {
   customLinks: loadingProviderResult,
   recentContainers: loadingProviderResult,
-  licenseInformation: loadingProviderResult,
   managePermission: loadingProviderResult,
   addProductsPermission: loadingProviderResult,
   isXFlowEnabled: loadingProviderResult,

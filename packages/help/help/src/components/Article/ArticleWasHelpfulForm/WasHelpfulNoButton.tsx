@@ -43,7 +43,7 @@ const ArticleWasHelpfulNoButton = (
 
     if (onWasHelpfulNoButtonClick) {
       const analyticsEvent: UIAnalyticsEvent = createAnalyticsEvent({
-        action: 'click',
+        action: 'clicked',
       });
       onWasHelpfulNoButtonClick(event, analyticsEvent);
     }

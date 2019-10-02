@@ -1,5 +1,6 @@
 export default {
   plugins: [
+    'sharedContextPlugin',
     'compositionPlugin',
     'inlineCursorTargetPlugin',
     'focusHandlerPlugin',
@@ -90,6 +91,7 @@ export default {
     'grid',
     'scrollGutterPlugin',
     'analytics',
+    'history',
   ],
   nodes: [
     'doc',
@@ -135,12 +137,10 @@ export default {
   marks: [
     // Inline marks
     'link',
-    'confluenceInlineComment',
     'em',
     'strong',
     'textColor',
     'strike',
-    'action',
     'subsup',
     'underline',
     'code',

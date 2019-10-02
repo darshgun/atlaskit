@@ -1,5 +1,37 @@
 # @atlaskit/profilecard
 
+## 12.2.0
+
+### Minor Changes
+
+- [minor][8a3c534ec6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a3c534ec6):
+
+  Export show and hide delay times of profile card trigger
+
+## 12.1.0
+
+### Minor Changes
+
+- [minor][16bf116576](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16bf116576):
+
+  Increased show/hide delay times for ProfileCardTrigger
+
+## 12.0.9
+
+### Patch Changes
+
+- [patch][8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+
+  @atlaskit/avatar has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 12.0.8
+
+### Patch Changes
+
+- [patch][02f8d986b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02f8d986b5):
+
+  ProfileCardResourced should trigger analytics event when having error
+
 ## 12.0.7
 
 ### Patch Changes

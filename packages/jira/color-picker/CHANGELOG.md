@@ -1,5 +1,21 @@
 # @atlaskit/color-picker
 
+## 0.5.14
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 0.5.13
+
+### Patch Changes
+
+- [patch][c8bb1c7896](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8bb1c7896):
+
+  Fix some packages having a 'modules' field in package.json rather than 'module'
+
 ## 0.5.12
 
 ### Patch Changes

@@ -19,6 +19,10 @@ const externalIdentifier: ExternalImageIdentifier = {
   mediaItemType: 'external-image',
   dataURI: atlassianLogoUrl,
 };
+const brokenIdentifierWithName: ExternalImageIdentifier = {
+  mediaItemType: 'external-image',
+  dataURI: 'https://something.com/this-is-a-broken-uri',
+};
 
 class Example extends Component {
   render() {
@@ -43,6 +47,13 @@ class Example extends Component {
           <Card
             mediaClientConfig={mediaClientConfig}
             identifier={imageFileId}
+          />
+        </div>
+        <div>
+          <h2>Broken File identifier</h2>
+          <Card
+            mediaClientConfig={mediaClientConfig}
+            identifier={brokenIdentifierWithName}
           />
         </div>
       </ExternalIdentifierWrapper>

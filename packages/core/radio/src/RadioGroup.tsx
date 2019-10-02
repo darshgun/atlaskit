@@ -23,7 +23,7 @@ export interface RadioGroupProps {
   /** Function that gets fired after each invalid event */
   onInvalid?: (event: SyntheticEvent<any>) => void;
   /** Function that gets after each change event */
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   [key: string]: any;
 }
 
@@ -58,9 +58,8 @@ export default class RadioGroup extends Component<RadioGroupProps, State> {
     this.setState({
       value: event.currentTarget.value,
     });
-    if (typeof this.props.onChange === 'function') {
-      this.props.onChange(event);
-    }
+
+    this.props.onChange!(event);
   };
 
   buildOptions = (): RadioElementArray => {
@@ -68,24 +67,26 @@ export default class RadioGroup extends Component<RadioGroupProps, State> {
     const value = this.getProp('value');
     if (!options.length) return [];
 
-    return options.map((option: OptionPropType, index: number) => {
-      const optionProps = { ...option };
-      if (typeof isDisabled !== 'undefined') {
-        optionProps.isDisabled = isDisabled;
-      }
-      if (value !== null && option.value === value) {
-        optionProps.isChecked = true;
-      }
-      return (
-        <Radio
-          {...optionProps}
-          key={index}
-          onChange={this.onChange}
-          onInvalid={onInvalid}
-          isRequired={isRequired}
-        />
-      );
-    });
+    return options.map(
+      ({ testId, ...optionProps }: OptionPropType, index: number) => {
+        if (typeof isDisabled !== 'undefined') {
+          optionProps.isDisabled = isDisabled;
+        }
+        if (value !== null && optionProps.value === value) {
+          optionProps.isChecked = true;
+        }
+        return (
+          <Radio
+            {...optionProps}
+            key={index}
+            onChange={this.onChange}
+            onInvalid={onInvalid}
+            isRequired={isRequired}
+            testId={testId}
+          />
+        );
+      },
+    );
   };
 
   render() {

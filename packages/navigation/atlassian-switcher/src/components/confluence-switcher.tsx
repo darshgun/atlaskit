@@ -13,6 +13,7 @@ import {
   RecommendationsFeatureFlags,
   DiscoverMoreCallback,
   TriggerXFlowCallback,
+  Product,
 } from '../types';
 import { ProviderResult } from '../providers/as-data-provider';
 import { AvailableProductsProvider } from '../providers/products-data-provider';
@@ -30,13 +31,10 @@ type ConfluenceSwitcherProps = WithTheme & {
 export default (props: ConfluenceSwitcherProps) => (
   <CustomLinksProvider disableCustomLinks={props.features.disableCustomLinks}>
     {customLinks => (
-      <AvailableProductsProvider
-        isUserCentric={props.features.enableUserCentricProducts}
-      >
+      <AvailableProductsProvider>
         {(availableProducts: ProviderResult<AvailableProductsResponse>) => (
           <CommonDataProvider
             cloudId={props.cloudId}
-            isUserCentric={props.features.enableUserCentricProducts}
             disableRecentContainers={props.features.disableRecentContainers}
           >
             {providerResults => {
@@ -48,6 +46,7 @@ export default (props: ConfluenceSwitcherProps) => (
                 { customLinks, ...providerResults },
                 props.features,
                 availableProducts,
+                Product.CONFLUENCE,
               );
 
               return (

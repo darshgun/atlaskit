@@ -87,9 +87,13 @@ describe(name, () => {
       cb.setProps({ isIndeterminate: true });
       expect(element.indeterminate).toBe(true);
     });
-    it('should pass all the extra props passed down to hidden checkbox', () => {
+    it('should pass props declared in overrides HiddenCheckbox attributesFn down to hidden checkbox', () => {
       const cb = mountCheckbox({
-        'data-foo': 'checkbox-bar',
+        overrides: {
+          HiddenCheckbox: {
+            attributesFn: () => ({ 'data-foo': 'checkbox-bar' }),
+          },
+        },
       });
       expect(cb.find('input').prop('data-foo')).toBe('checkbox-bar');
     });

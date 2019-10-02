@@ -16,13 +16,13 @@ export function isGetPreviewAction(action: Action): action is GetPreviewAction {
 }
 
 export function getPreview(
-  uploadId: string,
+  tenantFileId: string,
   file: MediaFile,
   collection: string,
 ): GetPreviewAction {
   return {
     type: GET_PREVIEW,
-    uploadId,
+    uploadId: tenantFileId,
     file,
     collection,
   };

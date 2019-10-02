@@ -19,6 +19,11 @@ export interface BaseProps extends WithAnalyticsEventsProps {
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   /** Defines the size of the toggle. */
   size?: Sizes;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests.
+  we have added 2 testIds:
+   - `testId` that targets the Label component to interact with the component.
+   - `{testId}--input` to check if the toggle has been checked/unchecked. */
+  testId?: string;
 }
 
 export interface StatefulProps extends BaseProps {

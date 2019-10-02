@@ -4,42 +4,34 @@ import { FormattedMessage as FormattedMessageNamespace } from 'react-intl';
 import DiscoverFilledGlyph from '@atlaskit/icon/glyph/discover-filled';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import SettingsGlyph from '@atlaskit/icon/glyph/settings';
+import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 
 import {
   BitbucketIcon,
   ConfluenceIcon,
-  JiraIcon,
   JiraSoftwareIcon,
   JiraServiceDeskIcon,
   JiraCoreIcon,
   OpsGenieIcon,
   StatuspageIcon,
+  TrelloIcon,
 } from '@atlaskit/logo';
 import FormattedMessage from '../primitives/formatted-message';
 import {
-  LicenseInformationResponse,
-  ProductLicenseInformation,
   RecentContainerType,
   AvailableProductsResponse,
   AvailableProduct,
   WorklensProductType,
   ProductKey,
   RecommendationsEngineResponse,
-  ProductTopItemVariation,
+  Product,
+  ProvisionedProducts,
+  CurrentSite,
 } from '../types';
 import messages from './messages';
-import JiraOpsLogo from './assets/jira-ops-logo';
-import PeopleLogo from './assets/people';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
 import WorldIcon from '@atlaskit/icon/glyph/world';
 import { createIcon, createImageIcon, IconType } from './icon-themes';
-
-enum ProductActivationStatus {
-  ACTIVE = 'ACTIVE',
-  DEACTIVATED = 'DEACTIVATED',
-}
-
-const SINGLE_JIRA_PRODUCT: 'jira' = 'jira';
 
 interface MessagesDict {
   [index: string]: FormattedMessageNamespace.MessageDescriptor;
@@ -65,50 +57,6 @@ export const OBJECT_TYPE_TO_LABEL_MAP: MessagesDict = {
   'confluence-space': messages.confluenceSpace,
 };
 
-export const PRODUCT_DATA_MAP: {
-  [productKey in ProductKey | typeof SINGLE_JIRA_PRODUCT]: {
-    label: string;
-    Icon: React.ComponentType<any>;
-    href: string;
-  }
-} = {
-  [ProductKey.CONFLUENCE]: {
-    label: 'Confluence',
-    Icon: createIcon(ConfluenceIcon, { size: 'small' }),
-    href: '/wiki',
-  },
-  [ProductKey.JIRA_CORE]: {
-    label: 'Jira Core',
-    Icon: createIcon(JiraCoreIcon, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=business',
-  },
-  [ProductKey.JIRA_SOFTWARE]: {
-    label: 'Jira Software',
-    Icon: createIcon(JiraSoftwareIcon, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=software',
-  },
-  [ProductKey.JIRA_SERVICE_DESK]: {
-    label: 'Jira Service Desk',
-    Icon: createIcon(JiraServiceDeskIcon, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=service_desk',
-  },
-  [ProductKey.JIRA_OPS]: {
-    label: 'Jira Ops',
-    Icon: createIcon(JiraOpsLogo, { size: 'small' }),
-    href: '/secure/BrowseProjects.jspa?selectedProjectType=ops',
-  },
-  [SINGLE_JIRA_PRODUCT]: {
-    label: 'Jira',
-    Icon: createIcon(JiraIcon, { size: 'small' }),
-    href: '/secure/MyJiraHome.jspa',
-  },
-  [ProductKey.OPSGENIE]: {
-    label: 'Opsgenie',
-    Icon: createIcon(OpsGenieIcon, { size: 'small' }),
-    href: 'https://app.opsgenie.com',
-  },
-};
-
 export const getObjectTypeLabel = (type: string): React.ReactNode => {
   return OBJECT_TYPE_TO_LABEL_MAP[type] ? (
     <FormattedMessage {...OBJECT_TYPE_TO_LABEL_MAP[type]} />
@@ -117,28 +65,20 @@ export const getObjectTypeLabel = (type: string): React.ReactNode => {
   );
 };
 
-export const getFixedProductLinks = (
-  isDiscoverMoreForEveryoneEnabled: boolean,
-): SwitcherItemType[] => {
-  const fixedLinks = [
-    {
-      key: 'people',
-      label: <FormattedMessage {...messages.people} />,
-      Icon: createIcon(PeopleLogo, { size: 'small' }),
-      href: `/people`,
-    },
-  ];
-  if (isDiscoverMoreForEveryoneEnabled) {
-    // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
-    fixedLinks.push({
-      key: 'discover-more',
-      label: <FormattedMessage {...messages.discoverMore} />,
-      Icon: createIcon(AddIcon, { size: 'medium' }),
-      href: '',
-    });
-  }
-
-  return fixedLinks;
+export const getFixedProductLinks = (params: {
+  isDiscoverMoreForEveryoneEnabled: boolean;
+}): SwitcherItemType[] => {
+  return params.isDiscoverMoreForEveryoneEnabled
+    ? [
+        {
+          // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
+          key: 'discover-more',
+          label: <FormattedMessage {...messages.discoverMore} />,
+          Icon: createIcon(AddIcon, { size: 'medium' }),
+          href: '',
+        },
+      ]
+    : [];
 };
 
 type AvailableProductDetails = Pick<
@@ -182,7 +122,12 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
   [WorklensProductType.STATUSPAGE]: {
     label: 'Statuspage',
     Icon: createIcon(StatuspageIcon, { size: 'small' }),
-    href: '#',
+    href: 'https://statuspage.io',
+  },
+  [WorklensProductType.TRELLO]: {
+    label: 'Trello',
+    Icon: createIcon(TrelloIcon, { size: 'small' }),
+    href: 'https://trello.com',
   },
 };
 
@@ -194,7 +139,22 @@ const PRODUCT_ORDER = [
   WorklensProductType.OPSGENIE,
   WorklensProductType.BITBUCKET,
   WorklensProductType.STATUSPAGE,
+  WorklensProductType.TRELLO,
 ];
+
+const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
+  [Product.JIRA]: '/plugins/servlet/ac/com.atlassian.jira.emcee/discover',
+  [Product.CONFLUENCE]:
+    '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
+};
+
+const TO_WORKLENS_PRODUCT_KEY: { [Key in ProductKey]: WorklensProductType } = {
+  [ProductKey.CONFLUENCE]: WorklensProductType.CONFLUENCE,
+  [ProductKey.JIRA_CORE]: WorklensProductType.JIRA_BUSINESS,
+  [ProductKey.JIRA_SERVICE_DESK]: WorklensProductType.JIRA_SERVICE_DESK,
+  [ProductKey.JIRA_SOFTWARE]: WorklensProductType.JIRA_SOFTWARE,
+  [ProductKey.OPSGENIE]: WorklensProductType.OPSGENIE,
+};
 
 interface ConnectedSite {
   avatar: string | null;
@@ -209,7 +169,9 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
 
   if (
     product.productType === WorklensProductType.OPSGENIE ||
-    product.productType === WorklensProductType.BITBUCKET
+    product.productType === WorklensProductType.BITBUCKET ||
+    product.productType === WorklensProductType.STATUSPAGE ||
+    product.productType === WorklensProductType.TRELLO
   ) {
     return product.url;
   }
@@ -219,15 +181,9 @@ const getProductSiteUrl = (connectedSite: ConnectedSite): string => {
 
 const getAvailableProductLinkFromSiteProduct = (
   connectedSites: ConnectedSite[],
-  productTopItemVariation?: string,
 ): SwitcherItemType => {
-  // if productTopItemVariation is 'most-frequent-site', we show most frequently visited site at the top
-  const shouldEnableMostFrequentSortForTopItem =
-    productTopItemVariation === ProductTopItemVariation.mostFrequentSite;
-
   const topSite =
-    (!shouldEnableMostFrequentSortForTopItem &&
-      connectedSites.find(site => site.isCurrentSite)) ||
+    connectedSites.find(site => site.isCurrentSite) ||
     connectedSites.sort(
       (a, b) => b.product.activityCount - a.product.activityCount,
     )[0];
@@ -256,7 +212,6 @@ const getAvailableProductLinkFromSiteProduct = (
 export const getAvailableProductLinks = (
   availableProducts: AvailableProductsResponse,
   cloudId: string | null | undefined,
-  productTopItemVariation?: string,
 ): SwitcherItemType[] => {
   const productsMap: { [key: string]: ConnectedSite[] } = {};
 
@@ -282,73 +237,16 @@ export const getAvailableProductLinks = (
   return PRODUCT_ORDER.map(productType => {
     const connectedSites = productsMap[productType];
     return (
-      connectedSites &&
-      getAvailableProductLinkFromSiteProduct(
-        connectedSites,
-        productTopItemVariation,
-      )
+      connectedSites && getAvailableProductLinkFromSiteProduct(connectedSites)
     );
   }).filter(link => !!link);
-};
-
-export const getProductLink = (
-  productKey: ProductKey | typeof SINGLE_JIRA_PRODUCT,
-  productLicenseInformation?: ProductLicenseInformation,
-): SwitcherItemType => {
-  const productLinkProperties = PRODUCT_DATA_MAP[productKey];
-
-  if (productKey === ProductKey.OPSGENIE && productLicenseInformation) {
-    // Prefer applicationUrl provided by license information (TCS)
-    // Fallback to hard-coded URL
-    const href = productLicenseInformation.applicationUrl
-      ? productLicenseInformation.applicationUrl
-      : productLinkProperties.href;
-
-    return { key: productKey, ...productLinkProperties, href };
-  }
-
-  return {
-    key: productKey,
-    ...productLinkProperties,
-  };
-};
-
-export const getProductIsActive = (
-  { products }: LicenseInformationResponse,
-  productKey: string,
-): boolean =>
-  products.hasOwnProperty(productKey) &&
-  products[productKey].state === ProductActivationStatus.ACTIVE;
-
-// This function will determine which product links to render based
-// on license information and if we're separating the jira products or not
-export const getLicensedProductLinks = (
-  licenseInformationData: LicenseInformationResponse,
-): SwitcherItemType[] => {
-  const majorJiraProducts = [
-    ProductKey.JIRA_SOFTWARE,
-    ProductKey.JIRA_SERVICE_DESK,
-    ProductKey.JIRA_OPS,
-  ].filter(productKey =>
-    getProductIsActive(licenseInformationData, productKey),
-  );
-  const minorJiraProducts = [ProductKey.JIRA_CORE].filter(productKey =>
-    getProductIsActive(licenseInformationData, productKey),
-  );
-
-  const jiraProducts = [...majorJiraProducts, ...minorJiraProducts];
-  const otherProducts = [ProductKey.CONFLUENCE, ProductKey.OPSGENIE].filter(
-    productKey => getProductIsActive(licenseInformationData, productKey),
-  );
-
-  return [...jiraProducts, ...otherProducts].map(productKey =>
-    getProductLink(productKey, licenseInformationData.products[productKey]),
-  );
 };
 
 export const getAdministrationLinks = (
   isAdmin: boolean,
   isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product,
 ): SwitcherItemType[] => {
   const adminBaseUrl = isAdmin ? `/admin` : '/trusted-admin';
   const adminLinks = [
@@ -359,6 +257,15 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
+  const emceeLink = product && BROWSE_APPS_URL[product];
+  if (isEmceeLinkEnabled && emceeLink) {
+    adminLinks.unshift({
+      key: 'browse-apps',
+      label: <FormattedMessage {...messages.browseApps} />,
+      Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
+      href: `${emceeLink}#!/discover?source=app_switcher`,
+    });
+  }
   if (!isDiscoverMoreForEveryoneEnabled) {
     adminLinks.unshift({
       key: 'discover-applications',
@@ -373,24 +280,43 @@ export const getAdministrationLinks = (
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
 
 export const getSuggestedProductLink = (
-  licenseInformationData: LicenseInformationResponse,
+  provisionedProducts: ProvisionedProducts,
   productRecommendations: RecommendationsEngineResponse,
 ): SwitcherItemType[] => {
-  const filteredProducts = productRecommendations.filter(
-    product => !getProductIsActive(licenseInformationData, product.productKey),
+  return productRecommendations
+    .filter(legacyProduct => {
+      const productKey = TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey];
+      return !provisionedProducts[productKey];
+    })
+    .map(legacyProduct => {
+      const productKey = TO_WORKLENS_PRODUCT_KEY[legacyProduct.productKey];
+      return {
+        key: legacyProduct.productKey,
+        ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
+      };
+    })
+    .slice(0, PRODUCT_RECOMMENDATION_LIMIT);
+};
+
+export const getProvisionedProducts = (
+  availableProducts: AvailableProductsResponse,
+): ProvisionedProducts => {
+  const provisionedProducts = {} as ProvisionedProducts;
+  availableProducts.sites.forEach(site =>
+    site.availableProducts.forEach(
+      product => (provisionedProducts[product.productType] = true),
+    ),
   );
-  return filteredProducts
-    .slice(0, PRODUCT_RECOMMENDATION_LIMIT)
-    .map(product => getProductLink(product.productKey));
+  return provisionedProducts;
 };
 
 export const getCustomLinkItems = (
   list: Array<CustomLink>,
-  licenseInformationData: LicenseInformationResponse,
+  currentSite: CurrentSite,
 ): SwitcherItemType[] => {
   const defaultProductCustomLinks = [
-    `${licenseInformationData.hostname}/secure/MyJiraHome.jspa`,
-    `${licenseInformationData.hostname}/wiki/`,
+    `${currentSite.url}/secure/MyJiraHome.jspa`,
+    `${currentSite.url}/wiki/`,
   ];
   return list
     .filter(
@@ -406,16 +332,20 @@ export const getCustomLinkItems = (
 
 export const getRecentLinkItems = (
   list: Array<RecentContainer>,
-  licenseInformationData: LicenseInformationResponse,
+  currentSite: CurrentSite,
 ): RecentItemType[] => {
-  const isAnyJiraProductActive =
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_SOFTWARE) ||
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_SERVICE_DESK) ||
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_CORE) ||
-    getProductIsActive(licenseInformationData, ProductKey.JIRA_OPS);
-  const isConfluenceActive = getProductIsActive(
-    licenseInformationData,
-    ProductKey.CONFLUENCE,
+  const isAnyJiraProductActive = Boolean(
+    currentSite.products.find(
+      product =>
+        product.productType === WorklensProductType.JIRA_BUSINESS ||
+        product.productType === WorklensProductType.JIRA_SERVICE_DESK ||
+        product.productType === WorklensProductType.JIRA_SOFTWARE,
+    ),
+  );
+  const isConfluenceActive = Boolean(
+    currentSite.products.find(
+      product => product.productType === WorklensProductType.CONFLUENCE,
+    ),
   );
   return list
     .filter((recent: RecentContainer) => {

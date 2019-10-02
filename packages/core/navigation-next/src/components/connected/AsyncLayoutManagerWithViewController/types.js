@@ -6,10 +6,10 @@ import type {
   CollapseListeners,
   ExperimentalFeatureFlags,
   GetRefs,
+  LayoutManagerProps,
 } from '../../presentational/LayoutManager/types';
 import type { ActiveView } from '../../../view-controller/types';
 
-type Dataset = { [name: string]: string | typeof undefined };
 export type AsyncLayoutManagerWithViewControllerProps = {|
   ...$Exact<CollapseListeners>,
   ...$Exact<ExperimentalFeatureFlags>,
@@ -17,17 +17,14 @@ export type AsyncLayoutManagerWithViewControllerProps = {|
   children: Node,
   containerSkeleton: ComponentType<{}>,
   customComponents?: { [string]: ComponentType<*> },
-  datasets?: {|
-    globalNavigation: Dataset,
-    contextualNavigation: Dataset,
-    navigation: Dataset,
-  |},
+  datasets?: $PropertyType<LayoutManagerProps, 'datasets'>,
   firstSkeletonToRender?: 'product' | 'container',
   getRefs?: GetRefs,
   globalNavigation: ComponentType<{}>,
   itemsRenderer: ComponentType<*>,
   view: ?ActiveView,
   shouldHideGlobalNavShadow?: boolean,
+  showContextualNavigation?: boolean,
   topOffset?: number,
 |};
 

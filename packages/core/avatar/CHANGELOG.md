@@ -1,5 +1,45 @@
 # @atlaskit/avatar
 
+## 17.1.2
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 17.1.1
+
+### Patch Changes
+
+- [patch][8dff68dffa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dff68dffa):
+
+  AvatarItems will only present a pointer cursor if onClick or href has been supplied
+
+## 17.1.0
+
+### Minor Changes
+
+- [minor][79689c9027](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79689c9027):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 17.0.1
+
+### Patch Changes
+
+- [patch][40bda8f796](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40bda8f796):
+
+  @atlaskit/avatar-group has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 17.0.0
+
+### Major Changes
+
+- [major][8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):
+
+  @atlaskit/avatar has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 16.1.0
 
 ### Minor Changes

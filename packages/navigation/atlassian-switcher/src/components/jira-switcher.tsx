@@ -13,6 +13,7 @@ import {
   RecommendationsFeatureFlags,
   DiscoverMoreCallback,
   TriggerXFlowCallback,
+  Product,
 } from '../types';
 import { AvailableProductsProvider } from '../providers/products-data-provider';
 import { ProviderResult } from '../providers/as-data-provider';
@@ -30,14 +31,11 @@ type JiraSwitcherProps = WithTheme & {
 export default (props: JiraSwitcherProps) => (
   <CustomLinksProvider disableCustomLinks={props.features.disableCustomLinks}>
     {customLinks => (
-      <AvailableProductsProvider
-        isUserCentric={props.features.enableUserCentricProducts}
-      >
+      <AvailableProductsProvider>
         {(availableProducts: ProviderResult<AvailableProductsResponse>) => (
           <CommonDataProvider
             cloudId={props.cloudId}
             disableRecentContainers={props.features.disableRecentContainers}
-            isUserCentric={props.features.enableUserCentricProducts}
             recommendationsFeatureFlags={props.recommendationsFeatureFlags}
           >
             {providerResults => {
@@ -49,6 +47,7 @@ export default (props: JiraSwitcherProps) => (
                 { customLinks, ...providerResults },
                 props.features,
                 availableProducts,
+                Product.JIRA,
               );
 
               return (

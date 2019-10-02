@@ -47,6 +47,7 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
               'aria-posinset': index + 1,
               'aria-selected': isSelected,
               'aria-setsize': tabs.length,
+              'data-testid': tab.testId,
               onClick: () => this.onSelect(tab, index),
               onKeyDown: this.tabKeyDownHandler,
               onMouseDown: this.tabMouseDownHandler,

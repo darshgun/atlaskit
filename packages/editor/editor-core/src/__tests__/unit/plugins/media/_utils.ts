@@ -15,10 +15,7 @@ import {
 import { EditorProps } from '../../../../types';
 import { EditorView } from 'prosemirror-view';
 import { insertMediaGroupNode } from '../../../../plugins/media/utils/media-files';
-import {
-  ImagePreview,
-  MediaFile,
-} from '../../../../../../../media/media-picker';
+import { ImagePreview, MediaFile } from '@atlaskit/media-picker';
 import { ProviderFactory } from '@atlaskit/editor-common';
 
 export const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -79,10 +76,7 @@ export const mediaEditor = (
   uploadErrorHandler?: () => void,
 ) => {
   const contextIdentifierProvider = storyContextIdentifierProviderFactory();
-  const mediaProvider = storyMediaProviderFactory({
-    collectionName: testCollectionName,
-    includeUserAuthProvider: true,
-  });
+  const mediaProvider = getFreshMediaProvider();
 
   const providerFactory = ProviderFactory.create({
     mediaProvider,
