@@ -1,5 +1,13 @@
 # @atlaskit/conversation
 
+## 15.2.14
+
+### Patch Changes
+
+- [patch][848999c42e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/848999c42e):
+
+  Update src pointing to index.tsx instead of index.ts.
+
 ## 15.2.13
 
 - Updated dependencies [2376ada634](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2376ada634):
