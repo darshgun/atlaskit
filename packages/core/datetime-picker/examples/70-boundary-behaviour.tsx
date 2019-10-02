@@ -7,13 +7,13 @@ import Lorem from 'react-lorem-component';
 import { DateTimePicker } from '../src';
 
 interface State {
-  datePickerValue: string,
-  timePickerValue: string,
-  dateTimePickerValue: string,
-  isModalOpen: boolean,
-  textAbove: number,
-  textBelow: number,
-};
+  datePickerValue: string;
+  timePickerValue: string;
+  dateTimePickerValue: string;
+  isModalOpen: boolean;
+  textAbove: number;
+  textBelow: number;
+}
 
 export default class MyComponent extends Component<{}, State> {
   state = {
