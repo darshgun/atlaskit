@@ -1,0 +1,1 @@
+BREAKING: remove viewContext and uploadContext from Editor mediaProvider api
