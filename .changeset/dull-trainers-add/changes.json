@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/icon-priority", "type": "major" },
+    { "name": "@atlaskit/icon", "type": "patch" }
+  ],
+  "dependents": []
+}
