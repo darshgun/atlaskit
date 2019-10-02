@@ -32,7 +32,7 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 
 //     await dateTimePickerTest.goto(urlDateTimePicker);
 //     await dateTimePickerTest.click(datepickerDefault);
-//     await dateTimePickerTest.interface(datepickerInput, ['2016', 'Enter']);
+//     await dateTimePickerTest.type(datepickerInput, ['2016', 'Enter']);
 //     await dateTimePickerTest.waitForSelector(dateTimeValues);
 
 //     const nextDate = await dateTimePickerTest.getText(dateValue);
@@ -52,8 +52,8 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 //     await dateTimePickerTest.goto(urlDateTimePicker);
 //     await dateTimePickerTest.click(datepickerDefault);
 //     await dateTimePickerTest.waitForSelector(datepickerMenu);
-//     await dateTimePickerTest.interface(datepickerInput, ['2016', '/abcd']);
-//     await dateTimePickerTest.interface(datepickerInput, ['Enter']);
+//     await dateTimePickerTest.type(datepickerInput, ['2016', '/abcd']);
+//     await dateTimePickerTest.type(datepickerInput, ['Enter']);
 
 //     await dateTimePickerTest.waitForSelector(dateTimeValues);
 
@@ -82,7 +82,7 @@ const dateTimeValues = `${dateTimePicker} > div > div > div > div > div`;
 
 //     if (dateTimePickerTest.isBrowser('firefox')) {
 //       // Focus on the input - `interface` will do it for you
-//       await dateTimePickerTest.interface(datepickerInput, [
+//       await dateTimePickerTest.type(datepickerInput, [
 //         'Backspace',
 //         'Backspace',
 //       ]);
@@ -234,7 +234,7 @@ BrowserTestCase(
 
     await dateTimePickerTest.goto(urlI18nDateTimePicker);
     await dateTimePickerTest.click(dateTimePicker);
-    await dateTimePickerTest.interface(dateTimePickerDateInput, [
+    await dateTimePickerTest.type(dateTimePickerDateInput, [
       '2',
       '0',
       '1',
