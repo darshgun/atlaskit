@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { Component, Fragment, ReactNode } from 'react';
+import React, { Component, Fragment, ReactNode } from 'react';
 import { createTheme, ThemeProp } from '../src';
-import { Theme, ThemeProps, ThemedValue } from '../src/types';
+import { ThemeProps, ThemedValue } from '../src/types';
 
-interface LocalThemeProps extends ThemeProps {
+interface LocalThemeProps {
   hover: boolean;
 }
 
@@ -19,15 +18,14 @@ const defaultButtonTheme = (props: LocalThemeProps) => ({
 
 const contextButtonTheme = (theme: ThemedValue, props: LocalThemeProps) => {
   return {
-    // @ts-ignore
-    ...theme(props),
+    ...(theme(props) as Object),
     backgroundColor: props.hover ? 'rebeccapurple' : 'palevioletred',
     textColor: props.hover ? '#fff' : 'papayawhip',
   };
 };
 
-const propButtonTheme = (theme, props) => ({
-  ...theme(props),
+const propButtonTheme = (theme: ThemedValue, props: LocalThemeProps) => ({
+  ...(theme(props) as Object),
   backgroundColor: props.hover ? 'palevioletred' : 'rebeccapurple',
 });
 
