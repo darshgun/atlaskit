@@ -211,8 +211,7 @@ async function _installFromCommit(commitHash = '', options = {}) {
           log(`${retryCount} retry at running command failed`);
           log(err.toString());
           retryCount++;
-          bail(err);
-          return;
+          throw err;
         }
 
         return true;
