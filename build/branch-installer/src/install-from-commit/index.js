@@ -6,6 +6,7 @@ const pWaitFor = require('p-wait-for');
 const fs = require('fs');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
+const retry = require('async-retry');
 
 const CDN_URL_BASE =
   'https://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts';
@@ -193,10 +194,35 @@ async function _installFromCommit(commitHash = '', options = {}) {
   } else {
     log('Running command:');
     log(`$ ${engine} ${cmdArgs.join(' ')}`);
-    await spawndamnit(engine, cmdArgs, {
-      stdio: 'inherit',
-      shell: process.stdout.isTTY,
-    });
+
+    let retryCount = 0;
+
+    await retry(
+      async bail => {
+        let error = null;
+
+        try {
+          await spawndamnit(engine, cmdArgs, {
+            stdio: 'inherit',
+            shell: process.stdout.isTTY,
+          });
+        } catch (err) {
+          log(`${retryCount} retry at running command failed`);
+          log(err.toString());
+          error = err;
+        }
+
+        if (error !== null) {
+          bail(error);
+          return;
+        }
+
+        return true;
+      },
+      {
+        retries: 3,
+      },
+    );
   }
 }
 
