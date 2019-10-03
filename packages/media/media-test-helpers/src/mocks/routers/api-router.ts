@@ -10,7 +10,7 @@ import {
 } from 'kakapo';
 import uuid from 'uuid/v4';
 
-import { TouchFileDescriptor } from '@atlaskit/media-store';
+import { TouchFileDescriptor } from '@atlaskit/media-client';
 
 import {
   DatabaseSchema,

@@ -21,7 +21,6 @@ import {
   mapResponseToBlob,
   MediaFileArtifacts,
   getArtifactUrl,
-  // checkWebpSupport,
 } from '..';
 
 const defaultImageOptions: MediaStoreGetFileImageParams = {

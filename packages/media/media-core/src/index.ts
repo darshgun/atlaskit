@@ -12,7 +12,6 @@ export {
   AuthContext,
   AuthProvider,
   MediaApiConfig,
-  ContextConfig,
   MediaClientConfig,
   authToOwner,
 } from './auth';

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { MediaClient, FileState } from '@atlaskit/media-client';
-import { getArtifactUrl } from '@atlaskit/media-store';
+import { getArtifactUrl, MediaClient, FileState } from '@atlaskit/media-client';
 import {
   CustomMediaPlayer,
   WithShowControlMethodProp,

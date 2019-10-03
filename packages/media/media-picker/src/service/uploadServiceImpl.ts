@@ -1,14 +1,5 @@
 import uuidV4 from 'uuid/v4';
 import {
-  UploadableFile,
-  MediaType,
-  getMediaTypeFromMimeType,
-  getFileStreamsCache,
-  MediaClient,
-  globalMediaEventEmitter,
-} from '@atlaskit/media-client';
-import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
-import {
   MediaStore,
   MediaStoreCopyFileWithTokenBody,
   UploadController,
@@ -17,7 +8,14 @@ import {
   MediaFile as MediaStoreMediaFile,
   TouchFileDescriptor,
   UploadableFileUpfrontIds,
-} from '@atlaskit/media-store';
+  UploadableFile,
+  MediaType,
+  getMediaTypeFromMimeType,
+  getFileStreamsCache,
+  MediaClient,
+  globalMediaEventEmitter,
+} from '@atlaskit/media-client';
+import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { EventEmitter2 } from 'eventemitter2';
 import { MediaFile } from '../domain/file';
 

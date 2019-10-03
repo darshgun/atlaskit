@@ -1,7 +1,7 @@
-jest.mock('@atlaskit/media-store');
-import { MediaStore } from '@atlaskit/media-store';
+// TODO: we need this? jest.mock('@atlaskit/media-client');
 import { Auth } from '@atlaskit/media-core';
 import {
+  MediaStore,
   getFileStreamsCache,
   ProcessedFileState,
   ProcessingFileState,

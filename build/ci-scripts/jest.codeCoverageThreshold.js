@@ -43,12 +43,6 @@ module.exports = {
     functions: 68,
     lines: 76,
   },
-  'packages/media/media-store/src': {
-    statements: 81,
-    branches: 69,
-    functions: 79,
-    lines: 81,
-  },
   'packages/media/media-ui/src': {
     statements: 77,
     branches: 66,

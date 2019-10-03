@@ -55,7 +55,6 @@
     "@atlaskit/field-range": "^7.1.0",
     "@atlaskit/field-text": "^9.0.12",
     "@atlaskit/item": "^10.1.4",
-    "@atlaskit/media-store": "^12.0.12",
     "@atlaskit/media-test-helpers": "^25.1.2",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/toggle": "^8.1.1",

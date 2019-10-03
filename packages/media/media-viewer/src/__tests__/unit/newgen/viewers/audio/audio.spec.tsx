@@ -10,7 +10,7 @@ import Spinner from '@atlaskit/spinner';
 import { DefaultCoverWrapper, AudioCover } from '../../../../../newgen/styled';
 import { ErrorMessage } from '../../../../../newgen/error';
 import { CustomMediaPlayer } from '@atlaskit/media-ui';
-import { Auth } from '@atlaskit/media-store';
+import { Auth } from '@atlaskit/media-core';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
