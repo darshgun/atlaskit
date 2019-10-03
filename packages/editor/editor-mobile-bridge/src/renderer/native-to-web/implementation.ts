@@ -64,7 +64,7 @@ export default class RendererBridgeImpl extends WebBridge
         success = this.scrollToElement(`span[data-mention-id='${id}']`, index);
         break;
       case 'action':
-        success = this.scrollToElement(`li[data-task-local-id="${id}"]`);
+        success = this.scrollToElement(`div[data-task-local-id="${id}"]`);
         break;
       case 'decision':
         success = this.scrollToElement(`li[data-decision-local-id="${id}"]`);
@@ -118,7 +118,9 @@ export default class RendererBridgeImpl extends WebBridge
         );
         break;
       case 'action':
-        offset = this.getElementScrollOffsetY(`li[data-task-local-id="${id}"]`);
+        offset = this.getElementScrollOffsetY(
+          `div[data-task-local-id="${id}"]`,
+        );
         break;
       case 'decision':
         offset = this.getElementScrollOffsetY(
