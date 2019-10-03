@@ -135,7 +135,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
         timeout={TRANSITION_DURATION_MS}
         enter={!skipArticleFadeInAnimation}
         onEntered={this.onArticleEntered}
-        onExited={() => console.log('animation finished')}
+        onExited={this.onArticleExited}
         mountOnEnter
         unmountOnExit
       >
