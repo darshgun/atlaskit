@@ -4293,9 +4293,10 @@ bolt@^0.22.1:
     typeable-promisify "^2.0.1"
     yarn "^1.9.4"
 
-bolt@^0.24.1:
-  version "0.24.1"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.24.1.tgz#6e6afa2e6f38cc7f2ced26d8bbad8a4094bb00a6"
+bolt@^0.24.3:
+  version "0.24.3"
+  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.24.3.tgz#425da5330aedf145b330ad1f3a779c01cd846db5"
+  integrity sha512-lvSfUBsH1Hko6tUiqmrzZGqheQKD8imCvDNuND7EjO+mhGpu1Ejbz65ur20GqpFG+BtubrgDTDFK5rewpLM1pw==
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"

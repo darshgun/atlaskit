@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "main": "index.js",
   "dependencies": {
-    "bolt": "^0.24.1",
+    "bolt": "^0.24.3",
     "globby": "^6.1.0",
     "loader-utils": "^1.1.0"
   }
