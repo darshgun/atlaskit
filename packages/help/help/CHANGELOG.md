@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.20.3
+
+### Patch Changes
+
+- [patch][acbc924e23](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acbc924e23):
+
+  Improved ArticleContent animations
+
 ## 0.20.2
 
 ### Patch Changes

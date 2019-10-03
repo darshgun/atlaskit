@@ -1,1 +1,0 @@
-Improved ArticleContent animations
