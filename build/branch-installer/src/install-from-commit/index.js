@@ -202,8 +202,6 @@ async function _installFromCommit(commitHash = '', options = {}) {
      */
     await retry(
       async bail => {
-        let error = null;
-
         try {
           await spawndamnit(engine, cmdArgs, {
             stdio: 'inherit',
@@ -212,12 +210,8 @@ async function _installFromCommit(commitHash = '', options = {}) {
         } catch (err) {
           log(`${retryCount} retry at running command failed`);
           log(err.toString());
-          error = err;
-        }
-
-        if (error !== null) {
-          bail(error);
-          return;
+          retryCount++;
+          return bail(err);
         }
 
         return true;
