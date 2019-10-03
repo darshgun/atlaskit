@@ -38,6 +38,7 @@ describe('validate', () => {
           'paragraph-with-marks.json',
           'list-with-codeBlock.json',
           'heading-with-marks.json',
+          'taskList-with-nested-taskLists.json',
         ];
         if (!ignorelist.includes(file.name)) {
           const run = () => {
