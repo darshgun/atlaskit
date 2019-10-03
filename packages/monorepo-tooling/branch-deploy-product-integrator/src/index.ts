@@ -23,6 +23,7 @@ const HELP_MSG = `
      ${chalk.yellow('--packageEngine')} The package manager to use, currently only tested with Bolt and yarn [default=yarn]
      ${chalk.yellow('--packages')} comma delimited list of packages to install branch deploy of
      ${chalk.yellow('--dedupe')} run yarn deduplicate at the end to deduplicate the lock file
+     ${chalk.yellow('--cmd')} the command to use can be add or upgrade [default=upgrade]
 `;
 
 export async function run() {
@@ -50,6 +51,10 @@ export async function run() {
         type: 'boolean',
         default: false,
       },
+      cmd: {
+        type: 'string',
+        default: 'upgrade',
+      },
     },
   });
   const {
@@ -59,6 +64,7 @@ export async function run() {
     packageEngine,
     packages,
     dedupe,
+    cmd,
   } = cli.flags;
 
   const git = simpleGit('./');
@@ -88,7 +94,7 @@ export async function run() {
 
   await installFromCommit(atlaskitCommitHash, {
     engine: packageEngine,
-    cmd: 'upgrade',
+    cmd: cmd,
     packages: packages,
     timeout: 30 * 60 * 1000, // Takes between 15 - 20 minutes to build a AK branch deploy
     interval: 30000,
