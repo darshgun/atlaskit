@@ -38,7 +38,7 @@ export type ConfigResponseMode =
   | 'INVITE_NEEDS_APPROVAL' // show warning message if email options
   | 'ONLY_DOMAIN_BASED_INVITE' // only allow emails within the allowed domains
   | 'DOMAIN_BASED_INVITE' // show warning message when emails doesn't match allowed domains
-  | 'ANYONE'; // never show warning message
+  | 'ANYONE'; // show direct inivte info message if email options
 
 export const DEFAULT_SHARE_PATH = 'share';
 export const SHARE_CONFIG_PATH = 'share/config';

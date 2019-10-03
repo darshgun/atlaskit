@@ -14,6 +14,11 @@ import {
   UserWithEmail,
 } from '../types';
 
+export enum InviteType {
+  ADMIN = 'ADMIN',
+  DIRECT = 'DIRECT',
+}
+
 const matchAllowedDomains = memoizeOne(
   (domain: string, config: ConfigResponse | undefined) => {
     return (
@@ -53,30 +58,53 @@ const checkDomains = (
 };
 
 /**
- * Decides if the warn message should be shown in the share form.
+ * Decides if the admin notified flag should be shown
  *
  * @param config share configuration object
  * @param selectedUsers selected users in the user picker
  */
-export const showInviteWarning = (
+export const showAdminNotifiedFlag = (
   config: ConfigResponse | undefined,
   selectedUsers: Value,
-): boolean => {
+): boolean => getInviteWarningType(config, selectedUsers) === InviteType.ADMIN;
+
+/**
+ * Returns the invite warning message type
+ *
+ * @param config share configuration object
+ * @param selectedUsers selected users in the user picker
+ */
+export const getInviteWarningType = (
+  config: ConfigResponse | undefined,
+  selectedUsers: Value,
+): InviteType | null => {
   if (config && selectedUsers) {
     const mode: ConfigResponseMode = config.mode;
     const selectedEmails: Email[] = Array.isArray(selectedUsers)
       ? selectedUsers.filter(isEmail)
       : [selectedUsers].filter(isEmail);
-    return (
-      selectedEmails.length > 0 &&
-      (mode === 'EXISTING_USERS_ONLY' ||
-        mode === 'INVITE_NEEDS_APPROVAL' ||
-        ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
-          mode === 'DOMAIN_BASED_INVITE') &&
-          checkDomains(config, selectedEmails)))
-    );
+
+    if (selectedEmails.length < 1) {
+      return null;
+    } else if (
+      mode === 'EXISTING_USERS_ONLY' ||
+      mode === 'INVITE_NEEDS_APPROVAL' ||
+      ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
+        mode === 'DOMAIN_BASED_INVITE') &&
+        checkDomains(config, selectedEmails))
+    ) {
+      return InviteType.ADMIN;
+    } else if (
+      mode === 'ANYONE' ||
+      ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
+        mode === 'DOMAIN_BASED_INVITE') &&
+        !checkDomains(config, selectedEmails))
+    ) {
+      return InviteType.DIRECT;
+    }
   }
-  return false;
+
+  return null;
 };
 
 export const optionDataToUsers = (optionDataArray: OptionData[]): User[] =>
