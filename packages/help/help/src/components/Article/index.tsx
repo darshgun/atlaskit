@@ -40,6 +40,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     super(props);
 
     this.onArticleEntered = this.onArticleEntered.bind(this);
+    this.onArticleExited = this.onArticleExited.bind(this);
     this.renderArticleContent = this.renderArticleContent.bind(this);
   }
 
@@ -75,6 +76,14 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     const { skipArticleFadeInAnimation } = this.state;
     if (skipArticleFadeInAnimation) {
       this.setState({ skipArticleFadeInAnimation: false });
+    }
+  }
+
+  onArticleExited() {
+    // when the user navigates back to the default content and the animation finished,
+    // set the articleId to ''
+    if (this.props.help.articleIdSetter) {
+      this.props.help.articleIdSetter('');
     }
   }
 
@@ -127,6 +136,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
         timeout={TRANSITION_DURATION_MS}
         enter={!skipArticleFadeInAnimation}
         onEntered={this.onArticleEntered}
+        onExited={this.onArticleExited}
         mountOnEnter
         unmountOnExit
       >

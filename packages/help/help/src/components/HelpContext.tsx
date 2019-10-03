@@ -408,6 +408,7 @@ class HelpContextProviderImplementation extends React.Component<
             isSearchVisible: this.isSearchVisible,
             isArticleVisible: this.isArticleVisible,
             navigateBack: this.navigateBack,
+            articleIdSetter: this.props.articleIdSetter,
             onSearch: this.onSearch,
             getCurrentArticle: this.getCurrentArticle,
             onButtonCloseClick: this.props.onButtonCloseClick,
