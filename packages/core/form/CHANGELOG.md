@@ -1,5 +1,13 @@
 # @atlaskit/form
 
+## 6.3.0
+
+### Minor Changes
+
+- [minor][32c55df1d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32c55df1d2):
+
+  Add align prop for FormFooter
+
 ## 6.2.5
 
 - Updated dependencies [d1444cc6ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1444cc6ef):
