@@ -126,9 +126,12 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
       const client = analyticsClient();
       const oldHash = window.location.hash;
       window.location.hash = '#test';
-      jest.spyOn(document, 'getElementById').mockImplementation(() => ({
-        scrollIntoView: jest.fn(),
-      }));
+      jest.spyOn(document, 'getElementById').mockImplementation(
+        () =>
+          (({
+            scrollIntoView: jest.fn(),
+          } as unknown) as HTMLElement),
+      );
 
       mount(
         <FabricAnalyticsListeners client={client}>

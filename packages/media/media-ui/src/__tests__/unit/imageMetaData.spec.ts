@@ -26,9 +26,10 @@ describe('Image Meta Data', () => {
   };
 
   beforeEach(() => {
-    loadImage = jest
-      .spyOn(util, 'loadImage')
-      .mockReturnValue({ naturalWidth: 1, naturalHeight: 2 });
+    loadImage = jest.spyOn(util, 'loadImage').mockReturnValue(({
+      naturalWidth: 1,
+      naturalHeight: 2,
+    } as unknown) as Promise<HTMLImageElement>);
     asMock(readImageMetaTags).mockReturnValue({ Orientation: 'top-right' });
   });
 
