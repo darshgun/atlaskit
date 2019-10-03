@@ -1,5 +1,5 @@
 import { Auth, AuthProvider } from '@atlaskit/media-core';
-import { getFileStreamsCache } from '@atlaskit/media-client';
+import { getFileStreamsCache } from '../..';
 import { ResponseFileItem, MediaFile, RECENTS_COLLECTION } from '../..';
 import * as MediaClientModule from '../..';
 import uuid from 'uuid';
