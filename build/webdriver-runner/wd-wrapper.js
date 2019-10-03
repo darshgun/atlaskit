@@ -183,8 +183,14 @@ export default class Page {
     const elem = await this.browser.$(selector);
     return elem.getLocation(selector, property);
   }
+
   getAlertText() {
     return this.browser.getAlertText();
+  }
+
+  async getAttribute(selector, attributeName) {
+    const elem = await this.browser.$(selector);
+    return elem.getAttribute(attributeName);
   }
 
   url() {
@@ -286,6 +292,11 @@ export default class Page {
 
   async isVisible(selector) {
     return this.waitFor(selector);
+  }
+
+  async isSelected(selector) {
+    const elem = await this.browser.$(selector);
+    return elem.isSelected();
   }
 
   async hasFocus(selector) {

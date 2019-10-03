@@ -17,6 +17,7 @@ export interface FileCardProps extends SharedCardProps {
   readonly resizeMode?: ImageResizeMode;
   readonly disableOverlay?: boolean;
   readonly previewOrientation?: number;
+  readonly onDisplayImage?: () => void;
 }
 
 export class FileCard extends Component<FileCardProps, {}> {
@@ -42,6 +43,7 @@ export class FileCard extends Component<FileCardProps, {}> {
       disableOverlay,
       previewOrientation,
       alt,
+      onDisplayImage,
     } = this.props;
     const defaultDetails: FileDetails = {
       id: '',
@@ -69,7 +71,8 @@ export class FileCard extends Component<FileCardProps, {}> {
         progress={progress}
         resizeMode={resizeMode}
         onRetry={onRetry}
-        actions={this._getActions()}
+        onDisplayImage={onDisplayImage}
+        actions={this.getActions()}
         disableOverlay={disableOverlay}
         previewOrientation={previewOrientation}
         alt={alt}
@@ -77,7 +80,7 @@ export class FileCard extends Component<FileCardProps, {}> {
     );
   }
 
-  private _getActions(): Array<CardAction> {
+  private getActions(): Array<CardAction> {
     const { details, actions = [] } = this.props;
     if (!details) {
       return [];

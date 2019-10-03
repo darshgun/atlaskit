@@ -29,6 +29,8 @@ import {
   MediaStoreCopyFileWithTokenBody,
   MediaStoreCopyFileWithTokenParams,
   mapMediaFileToFileState,
+  globalMediaEventEmitter,
+  RECENTS_COLLECTION,
 } from '..';
 import isValidId from 'uuid-validate';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
@@ -478,6 +480,12 @@ export class FileFetcherImpl implements FileFetcher {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    globalMediaEventEmitter.emit('media-viewed', {
+      fileId: id,
+      isUserCollection: collectionName === RECENTS_COLLECTION,
+      viewingLevel: 'download',
+    });
   }
 
   public async copyFile(

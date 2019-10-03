@@ -45,6 +45,7 @@ export interface Props {
   eventHandlers?: EventHandlers;
   extensionHandlers?: ExtensionHandlers;
   onComplete?: (stat: RenderOutputStat) => void;
+  onError?: (error: any) => void;
   portal?: HTMLElement;
   rendererContext?: RendererContext;
   schema?: Schema;
@@ -181,6 +182,7 @@ export class Renderer extends PureComponent<Props, {}> {
     const {
       document,
       onComplete,
+      onError,
       schema,
       appearance,
       adfStage,
@@ -227,7 +229,10 @@ export class Renderer extends PureComponent<Props, {}> {
       ) : (
         rendererOutput
       );
-    } catch (ex) {
+    } catch (e) {
+      if (onError) {
+        onError(e);
+      }
       return (
         <RendererWrapper
           appearance={appearance}

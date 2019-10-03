@@ -1,5 +1,13 @@
 # @atlaskit/icon
 
+## 19.0.7
+
+### Patch Changes
+
+- [patch][3c7bee089a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c7bee089a):
+
+  @atlaskit/icon-priority has been converted to TypeScript to provide static typing. Flow types are no longer provided. No API or bahavioural changes.
+
 ## 19.0.6
 
 ### Patch Changes

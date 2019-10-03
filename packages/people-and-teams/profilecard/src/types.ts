@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { IntlShape } from 'react-intl';
+export { WithOuterListenersProps } from './components/withOuterListeners';
 
 export type Elevation = 'e100' | 'e200' | 'e300' | 'e400' | 'e500' | 'none';
 

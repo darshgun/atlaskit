@@ -55,17 +55,17 @@ const buildUrl = (
   return `${baseUrl}${seperator}${path}${params}`;
 };
 
-const addToHeaders = (headers: Headers, keyValues?: KeyValues) => {
+const addToHeaders = (headers: KeyValues, keyValues?: KeyValues) => {
   if (keyValues) {
     for (const key in keyValues) {
       if ({}.hasOwnProperty.call(keyValues, key)) {
         const values = keyValues[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
-            headers.append(key, values[i]);
+            headers[key] = values[i];
           }
         } else {
-          headers.append(key, values);
+          headers[key] = values;
         }
       }
     }
@@ -75,8 +75,8 @@ const addToHeaders = (headers: Headers, keyValues?: KeyValues) => {
 const buildHeaders = (
   secOptions?: SecurityOptions,
   extraHeaders?: KeyValues,
-): Headers => {
-  const headers = new Headers();
+): KeyValues => {
+  const headers = {};
   addToHeaders(headers, extraHeaders);
   if (secOptions) {
     addToHeaders(headers, secOptions.headers);

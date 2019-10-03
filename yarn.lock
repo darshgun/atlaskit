@@ -1729,6 +1729,13 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/flushable/-/flushable-1.0.1.tgz#7ef22f21ee52ba6602758661cc1c1845e72c9735"
 
+"@types/fs-extra@^4.0.0":
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-4.0.9.tgz#401bea3a7cdfb671c06d0a1083a8e534e92eb97d"
+  integrity sha512-dC9Y/GTlzrFRxoX3YMztrjcVQ6B8UAvMbx8pAa2B3hINuhB0hv++ufZVauZpG1l9U0rJznB25IFPvf5XtMcIvw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/glob@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.1.tgz#aa59a1c6e3fbc421e07ccd31a944c30eba521575"
@@ -1777,6 +1784,11 @@
 "@types/json-schema@^7.0.3":
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
+
+"@types/json5@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.30.tgz#44cb52f32a809734ca562e685c6473b5754a7818"
+  integrity sha512-sqm9g7mHlPY/43fcSNrCYfOeX9zkTTK+euO5E6+CVijSMm5tTjkVdwdqRkY3ljjIAf8679vps5jKUoJBCLsMDA==
 
 "@types/linkify-it@*", "@types/linkify-it@^2.0.4":
   version "2.0.4"
@@ -11003,6 +11015,7 @@ json5@^0.5.0, json5@^0.5.1:
 json5@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/json5/-/json5-2.1.0.tgz#e7a0c62c48285c628d20a10b85c89bb807c32850"
+  integrity sha512-8Mh9h6xViijj36g7Dxi+Y4S6hNGV96vcJZr/SrlHh1LR/pEn/8j/+qIBbs44YKl69Lrfctp4QD+AdWLTMqEZAQ==
   dependencies:
     minimist "^1.2.0"
 
@@ -14045,7 +14058,7 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
-pkg-dir@^4.1.0:
+pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
   dependencies:
@@ -18036,6 +18049,7 @@ tiny-emitter@^2.0.0:
 tiny-invariant@^0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-0.0.3.tgz#4c7283c950e290889e9e94f64d3586ec9156cf44"
+  integrity sha512-SA2YwvDrCITM9fTvHTHRpq9W6L2fBsClbqm3maT5PZux4Z73SPPDYwJMtnoWh6WMgmCkJij/LaOlWiqJqFMK8g==
 
 tiny-invariant@^1.0.3:
   version "1.0.3"
@@ -18230,24 +18244,12 @@ ts-loader@^4.4.2:
     micromatch "^3.1.4"
     semver "^5.0.1"
 
-ts-node@^6.0.2:
+ts-node@^6.0.2, ts-node@^6.1.1:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-6.2.0.tgz#65a0ae2acce319ea4fd7ac8d7c9f1f90c5da6baf"
   dependencies:
     arrify "^1.0.0"
     buffer-from "^1.1.0"
-    diff "^3.1.0"
-    make-error "^1.1.1"
-    minimist "^1.2.0"
-    mkdirp "^0.5.1"
-    source-map-support "^0.5.6"
-    yn "^2.0.0"
-
-ts-node@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-6.1.1.tgz#19607140acb06150441fcdb61be11f73f7b6657e"
-  dependencies:
-    arrify "^1.0.0"
     diff "^3.1.0"
     make-error "^1.1.1"
     minimist "^1.2.0"

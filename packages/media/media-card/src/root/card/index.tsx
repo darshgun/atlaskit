@@ -22,6 +22,9 @@ import {
   addFileAttrsToUrl,
   FileState,
   ExternalImageIdentifier,
+  globalMediaEventEmitter,
+  MediaViewedEventPayload,
+  RECENTS_COLLECTION,
 } from '@atlaskit/media-client';
 import { MediaViewer, MediaViewerDataSource } from '@atlaskit/media-viewer';
 
@@ -524,6 +527,30 @@ export class CardBase extends Component<
     });
   };
 
+  private onDisplayImage = async () => {
+    const { identifier } = this.props;
+    let payloadPart: Pick<
+      MediaViewedEventPayload,
+      'fileId' | 'isUserCollection'
+    >;
+    if (isFileIdentifier(identifier)) {
+      payloadPart = {
+        fileId: await identifier.id,
+        isUserCollection: identifier.collectionName === RECENTS_COLLECTION,
+      };
+    } else {
+      payloadPart = {
+        fileId: identifier.dataURI,
+        isUserCollection: false,
+      };
+    }
+
+    globalMediaEventEmitter.emit('media-viewed', {
+      viewingLevel: 'minimal',
+      ...payloadPart,
+    });
+  };
+
   renderMediaViewer = (): React.ReactPortal | undefined => {
     const { mediaViewerSelectedItem } = this.state;
     const { mediaClient, identifier, mediaViewerDataSource } = this.props;
@@ -563,7 +590,13 @@ export class CardBase extends Component<
       alt,
     } = this.props;
     const { progress, metadata, dataURI, previewOrientation } = this.state;
-    const { onRetry, onCardViewClick, actions, onMouseEnter } = this;
+    const {
+      onRetry,
+      onCardViewClick,
+      onDisplayImage,
+      actions,
+      onMouseEnter,
+    } = this;
     const status = getCardStatus(this.state, this.props);
 
     const card = (
@@ -584,6 +617,7 @@ export class CardBase extends Component<
         disableOverlay={disableOverlay}
         progress={progress}
         onRetry={onRetry}
+        onDisplayImage={onDisplayImage}
         previewOrientation={previewOrientation}
         ref={this.cardRef}
       />

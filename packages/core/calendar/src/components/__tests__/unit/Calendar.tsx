@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+// eslint-disable-next-line no-restricted-imports
 import { parse } from 'date-fns';
 import cases from 'jest-in-case';
 

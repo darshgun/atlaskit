@@ -4,9 +4,8 @@ import FabricAnalyticsListener, {
   AnalyticsWebClient,
 } from '@atlaskit/analytics-listeners';
 import TaskItem from '../../../components/TaskItem';
-import { AttributionWrapper, ContentWrapper } from '../../../styled/Item';
+import { ContentWrapper } from '../../../styled/Item';
 import { Placeholder } from '../../../styled/Placeholder';
-import { getParticipants } from '../_test-data';
 
 describe('<TaskItem/>', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
@@ -85,26 +84,6 @@ describe('<TaskItem/>', () => {
         </TaskItem>,
       );
       expect(component.find(Placeholder).length).toEqual(0);
-    });
-  });
-
-  describe('attribution', () => {
-    const users = getParticipants(2);
-    const user1 = users[0];
-    const user2 = users[1];
-
-    it('Creator and lastUpdater, done, inline - no attribution', () => {
-      const component = mount(
-        <TaskItem
-          taskId="task-1"
-          appearance="inline"
-          creator={user1}
-          lastUpdater={user2}
-          isDone={true}
-        />,
-      );
-      const attributionWrapper = component.find(AttributionWrapper);
-      expect(attributionWrapper.length).toEqual(0);
     });
   });
 

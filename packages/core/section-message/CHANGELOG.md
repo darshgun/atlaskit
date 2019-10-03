@@ -1,5 +1,13 @@
 # @atlaskit/section-message
 
+## 4.1.0
+
+### Minor Changes
+
+- [minor][e6439fa292](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6439fa292):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 4.0.12
 
 ### Patch Changes

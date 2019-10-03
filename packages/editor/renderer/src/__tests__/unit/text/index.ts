@@ -125,6 +125,63 @@ describe('Renderer - TextSerializer', () => {
     expect(render(doc)).toEqual('@user is awesome');
   });
 
+  it('should render mention null-text attr with at-symbol-unknown', () => {
+    const doc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'mention',
+              attrs: {
+                id: '1',
+                accessLevel: 'CONTAINER',
+              },
+            },
+            { type: 'text', text: ' is awesome' },
+          ],
+        },
+      ],
+    };
+
+    expect(render(doc)).toEqual('@unknown is awesome');
+  });
+
+  it('should render mention with id-attr all or here with at-symbol here or all', () => {
+    const mentiondoc = (id: string, text?: string) => {
+      return {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'mention',
+                attrs: {
+                  id: id,
+                  accessLevel: 'CONTAINER',
+                  text: text,
+                },
+              },
+              { type: 'text', text: ' is awesome' },
+            ],
+          },
+        ],
+      };
+    };
+    expect(render(mentiondoc('here', '@abcd'))).toEqual('@here is awesome');
+    expect(render(mentiondoc('all', '@abcd'))).toEqual('@all is awesome');
+    expect(render(mentiondoc('all-here-id', '@abcd'))).toEqual(
+      '@abcd is awesome',
+    );
+    expect(render(mentiondoc('all-here-id', undefined))).toEqual(
+      '@unknown is awesome',
+    );
+  });
+
   it('should render media items prefixed with attachment unicode emoji', () => {
     const doc = {
       type: 'doc',

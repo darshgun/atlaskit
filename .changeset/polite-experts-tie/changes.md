@@ -1,0 +1,1 @@
+FM-2370 Fix issue where renderBridge.onContentRendered was not being called when renderer was given invalid adf
