@@ -6,8 +6,6 @@ import {
 
 const openModalBtn = "[type='button']";
 const modalDialog = "[role='dialog']";
-const examples = '#examples';
-const examplesContainer = `${examples} > div`;
 
 describe('Snapshot Test', () => {
   it('Modal Basic example should match production example', async () => {
