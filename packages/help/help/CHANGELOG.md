@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.20.4
+
+### Patch Changes
+
+- [patch][edd83f6f68](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edd83f6f68):
+
+  Fix ArticleContent Animation
+
 ## 0.20.3
 
 ### Patch Changes
