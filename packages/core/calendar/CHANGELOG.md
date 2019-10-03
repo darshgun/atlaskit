@@ -1,5 +1,13 @@
 # @atlaskit/calendar
 
+## 9.1.0
+
+### Minor Changes
+
+- [minor][cc42bbc6ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc42bbc6ad):
+
+  Exporting type of Calendar class and some components are relying on it
+
 ## 9.0.1
 
 ### Patch Changes

@@ -27,4 +27,32 @@ ${(
     props={require('!!extract-react-types-loader!../src/components/Calendar')}
   />
 )}
+
+## Typescript
+
+We also export a number of types that can be useful when using TypeScript:
+
+### ChangeEvent
+
+\`\`\`
+export type DateObj = {
+  day: number;
+  month: number;
+  year: number;
+};
+
+export type ChangeEvent = {
+  iso?: string;
+  type: 'left' | 'up' | 'right' | 'down' | 'prev' | 'next';
+} & DateObj;
+\`\`\`
+
+### ⚠️ CalendarClassType:
+A type of the internal Calendar class.
+Some consumers are storing a reference to the Calendar class instance and calling instance functions on it.
+This is not recommended
+
+### ⚠️ ArrowKeys
+For usage with \`CalendarClassType\`.
+Needed for interacting with \`.navigate()\`
 `;

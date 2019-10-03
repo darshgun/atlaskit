@@ -18,6 +18,7 @@ interface ActionType {
   onClick?: () => void;
   href?: string;
   key: string;
+  testId?: string;
 }
 
 interface Props {
@@ -55,6 +56,11 @@ interface Props {
     All actions provided will automatically have the linkcomponent passed to them.
   */
   linkComponent?: React.ComponentType<any>;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests */
+  testId?: string;
 }
 
 export default class SectionMessage extends React.Component<Props, any> {
@@ -66,10 +72,10 @@ export default class SectionMessage extends React.Component<Props, any> {
     action: ActionType,
     linkComponent?: React.ComponentType<any>,
   ) => {
-    const { href, key, onClick, text } = action;
+    const { href, key, onClick, text, testId } = action;
 
     return (
-      <Action key={key}>
+      <Action key={key} data-testid={testId}>
         {onClick || href ? (
           <Button
             appearance="link"
@@ -95,6 +101,7 @@ export default class SectionMessage extends React.Component<Props, any> {
       appearance,
       icon,
       linkComponent,
+      testId,
     } = this.props;
     //needs typecasting because TS is not recognising default props :(
     const appearanceObj =
@@ -102,7 +109,10 @@ export default class SectionMessage extends React.Component<Props, any> {
     const Icon = icon || appearanceObj.Icon;
 
     return (
-      <Container backgroundColor={appearanceObj.backgroundColor}>
+      <Container
+        backgroundColor={appearanceObj.backgroundColor}
+        data-testid={testId}
+      >
         <IconWrapper>
           <Icon
             primaryColor={appearanceObj.primaryIconColor}
