@@ -137,11 +137,11 @@ describe('Renderer - React/Nodes/TableHeader', () => {
           onSorting = jest.fn();
         });
 
-        it.each<{ from: SortOrder | null; to: SortOrder }>([
+        it.each<{ from?: SortOrder; to: SortOrder }>([
           { from: SortOrder.NO_ORDER, to: SortOrder.ASC },
           { from: SortOrder.ASC, to: SortOrder.DESC },
           { from: SortOrder.DESC, to: SortOrder.NO_ORDER },
-          { from: null, to: SortOrder.NO_ORDER },
+          { from: undefined, to: SortOrder.NO_ORDER },
         ])('should change %o ', ({ from, to }) => {
           const wrapper = mount(
             <WithSortableColumn

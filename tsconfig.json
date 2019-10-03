@@ -13,6 +13,7 @@
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
+    "preserveSymlinks": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "target": "es5",

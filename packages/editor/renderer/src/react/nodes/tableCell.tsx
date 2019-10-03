@@ -18,7 +18,7 @@ export type CellWithSortingProps = CellProps & {
   allowColumnSorting?: boolean;
   onSorting?: (columnIndex?: number, currentSortOrdered?: SortOrder) => void;
   columnIndex?: number;
-  sortOrdered?: SortOrder | null;
+  sortOrdered?: SortOrder;
   fireAnalyticsEvent?: (event: AnalyticsEventPayload) => void;
 };
 
