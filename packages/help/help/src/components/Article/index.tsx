@@ -78,6 +78,14 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     }
   }
 
+  onArticleExited() {
+    // when the user navigates back to the default content and the animation finished,
+    // set the articleId to ''
+    if (this.props.help.articleIdSetter) {
+      this.props.help.articleIdSetter('');
+    }
+  }
+
   renderArticleContent() {
     const currentArticle = this.props.help.getCurrentArticle();
 
@@ -127,6 +135,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
         timeout={TRANSITION_DURATION_MS}
         enter={!skipArticleFadeInAnimation}
         onEntered={this.onArticleEntered}
+        onExited={() => console.log('animation finished')}
         mountOnEnter
         unmountOnExit
       >
