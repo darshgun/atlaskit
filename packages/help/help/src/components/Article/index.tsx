@@ -40,6 +40,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     super(props);
 
     this.onArticleEntered = this.onArticleEntered.bind(this);
+    this.onArticleExited = this.onArticleExited.bind(this);
     this.renderArticleContent = this.renderArticleContent.bind(this);
   }
 
