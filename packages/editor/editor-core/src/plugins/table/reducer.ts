@@ -72,11 +72,14 @@ export default (
       }
       return pluginState;
 
+    case 'ADD_RESIZE_HANDLE_DECORATIONS':
     case 'SET_TABLE_REF':
     case 'HOVER_ROWS':
     case 'HOVER_COLUMNS':
     case 'HOVER_TABLE':
     case 'HOVER_CELLS':
+    case 'SHOW_RESIZE_HANDLE_LINE':
+    case 'HIDE_RESIZE_HANDLE_LINE':
     case 'SET_EDITOR_FOCUS':
       return { ...pluginState, ...action.data };
     default:
