@@ -286,10 +286,10 @@ class HelpContextProviderImplementation extends React.Component<
     // Execute this function only if onGetArticle was defined
     if (this.props.onGetArticle) {
       try {
-        const { view } = this.state;
-        // if the view === ARTICLE display loading state after ${LOADING_TIMEOUT}ms
+        // if is the first article we are going to display in the ArticleContent area
+        // (which means the state.history is 0) display loading state after ${LOADING_TIMEOUT}ms
         // passed after the request. Otherwise, display the loading state immediately
-        if (view === VIEW.ARTICLE) {
+        if (this.state.history.length > 0) {
           this.requestLoadingTimeout = setTimeout(() => {
             updateNewLastItem(uid, { state: REQUEST_STATE.loading });
           }, LOADING_TIMEOUT);
@@ -334,15 +334,12 @@ class HelpContextProviderImplementation extends React.Component<
           const newHistory = [...prevState.history.slice(0, -1)];
           articleIdSetter(`${newHistory[newHistory.length - 1].id}`);
           return {
-            // articleId: newHistory[newHistory.length - 1].id,
             history: newHistory,
             view: VIEW.ARTICLE_NAVIGATION,
           };
         });
       } else if (history.length === 1) {
-        articleIdSetter('');
         await this.setState({
-          // articleId: '',
           view: VIEW.ARTICLE_NAVIGATION,
           hasNavigatedToDefaultContent: true,
         });
