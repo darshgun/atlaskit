@@ -10,7 +10,7 @@ import {
   CardError,
   CardOnClickCallback,
 } from '@atlaskit/media-card';
-import { Context, MediaClientConfig } from '@atlaskit/media-core';
+import { MediaClientConfig } from '@atlaskit/media-core';
 import {
   ImageResizeMode,
   FileIdentifier,
@@ -31,21 +31,13 @@ import {
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './Renderer/types';
 import { RendererContext } from '../react';
-import { XOR } from '@atlaskit/type-helpers';
 import styled from 'styled-components';
 
 export interface WithViewMediaClientConfig {
   viewMediaClientConfig: MediaClientConfig;
 }
 
-export type WithViewContext = {
-  /**
-   * @deprecated Use viewMediaClientConfig instead.
-   */
-  viewContext: Promise<Context>;
-};
-
-export type MediaProvider = XOR<WithViewMediaClientConfig, WithViewContext>;
+export type MediaProvider = WithViewMediaClientConfig;
 
 export interface MediaCardProps {
   id?: string;
@@ -130,14 +122,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       });
     }
     const mediaProviderObject = await mediaProvider;
-    let mediaClientConfig: MediaClientConfig;
-    if (mediaProviderObject.viewMediaClientConfig) {
-      mediaClientConfig = mediaProviderObject.viewMediaClientConfig;
-    } else if (mediaProviderObject.viewContext) {
-      mediaClientConfig = (await mediaProviderObject.viewContext).config;
-    } else {
-      return;
-    }
+    const mediaClientConfig = mediaProviderObject.viewMediaClientConfig;
 
     const nodeIsInCache =
       (id && mediaIdentifierMap.has(id)) ||
