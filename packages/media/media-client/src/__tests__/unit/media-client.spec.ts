@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 import { Observable } from 'rxjs/Observable';
-import { AuthProvider, FileState } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import {
   UploadableFileUpfrontIds,
   uploadFile,
@@ -14,6 +14,7 @@ import {
   UploadingFileState,
   MediaClient,
   getFileStreamsCache,
+  FileState,
 } from '../..';
 
 const getOrInsertSpy = jest.spyOn(getFileStreamsCache(), 'getOrInsert');

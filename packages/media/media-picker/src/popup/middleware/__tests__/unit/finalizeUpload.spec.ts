@@ -1,11 +1,12 @@
 jest.mock('@atlaskit/media-store');
 import { MediaStore } from '@atlaskit/media-store';
+import { Auth } from '@atlaskit/media-core';
 import {
-  Auth,
+  getFileStreamsCache,
   ProcessedFileState,
   ProcessingFileState,
-} from '@atlaskit/media-core';
-import { getFileStreamsCache, FileState } from '@atlaskit/media-client';
+  FileState,
+} from '@atlaskit/media-client';
 import {
   mockStore,
   expectFunctionToHaveBeenCalledWith,
