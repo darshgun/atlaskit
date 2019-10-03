@@ -1,6 +1,5 @@
 import {
   getExampleUrl,
-  takeScreenShot,
   takeElementScreenShot,
 } from '@atlaskit/visual-regression/helper';
 
