@@ -339,7 +339,6 @@ class HelpContextProviderImplementation extends React.Component<
           };
         });
       } else if (history.length === 1) {
-        // articleIdSetter('');
         await this.setState({
           view: VIEW.ARTICLE_NAVIGATION,
           hasNavigatedToDefaultContent: true,
