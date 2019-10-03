@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { background } from '@atlaskit/theme/colors';
@@ -8,7 +7,7 @@ const sizes = {
   medium: { height: '24px', width: '24px' },
 };
 
-const getSize = props => {
+const getSize = (props: IconWrapperProps) => {
   if (props.size) {
     return `height: ${sizes[props.size].height}; width: ${
       sizes[props.size].width
@@ -17,7 +16,13 @@ const getSize = props => {
   return null;
 };
 
-export const IconWrapper = styled.span`
+interface IconWrapperProps {
+  size?: 'small' | 'medium';
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+export const IconWrapper = styled.span<IconWrapperProps>`
   ${getSize} color: ${p => p.primaryColor || 'currentColor'};
   display: inline-block;
   fill: ${p => p.secondaryColor || background};
@@ -40,15 +45,15 @@ export const IconWrapper = styled.span`
   }
 `;
 
-type Props = {
+interface Props {
   /** More performant than the glyph prop, but potentially dangerous if the SVG string hasn't
    been "sanitised" */
-  dangerouslySetGlyph?: string,
+  dangerouslySetGlyph?: string;
   /** String to use as the aria-label for the icon. Set to an empty string if you are rendering the icon with visible text to prevent accessibility label duplication. */
-  label: string,
+  label: string;
   /** Control the size of the icon */
-  size?: 'small' | 'medium' | 'xlarge',
-};
+  size?: 'small' | 'medium';
+}
 
 export default class Icon extends Component<Props, {}> {
   render() {
@@ -58,9 +63,13 @@ export default class Icon extends Component<Props, {}> {
       <IconWrapper
         size={size}
         aria-label={this.props.label}
-        dangerouslySetInnerHTML={{
-          __html: dangerouslySetGlyph,
-        }}
+        dangerouslySetInnerHTML={
+          dangerouslySetGlyph
+            ? {
+                __html: dangerouslySetGlyph,
+              }
+            : undefined
+        }
       />
     );
   }
