@@ -33,7 +33,7 @@ export interface MediaState {
 
 export interface FeatureFlags {}
 
-type MediaProviderBase = {
+export type MediaProvider = {
   uploadParams?: UploadParams;
 
   /**
@@ -47,16 +47,12 @@ type MediaProviderBase = {
    * (optional) For any additional feature to be enabled
    */
   featureFlags?: FeatureFlags;
-};
 
-export type WithViewMediaClientConfig = {
   /**
    * Used for displaying Media Cards and downloading files.
    */
   viewMediaClientConfig: MediaClientConfig;
 };
-
-export type MediaProvider = MediaProviderBase & WithViewMediaClientConfig;
 
 export type Listener = (data: any) => void;
 
