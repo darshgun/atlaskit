@@ -1,0 +1,1 @@
+ED-7806: Add componentDidCatch for better crash reporting
