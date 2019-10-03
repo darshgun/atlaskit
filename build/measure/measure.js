@@ -25,6 +25,8 @@ const {
   downloadFromS3ForLocal,
 } = require('./utils/s3-actions');
 
+const { returnMissingPkgBasedOn } = require('./utils/error.js');
+
 function fWriteStats(path, content) {
   fs.writeFileSync(path, JSON.stringify(clearStats(content), null, 2), 'utf8');
 }
@@ -241,14 +243,9 @@ module.exports = async function main(
       try {
         await downloadFromS3(masterStatsFolder, 'master', packageName);
       } catch (err) {
-        if (`${err}`.includes('not found in s3 bucket')) {
-          // TODO: Refactor this :)
-          const missingPkg = `${err}`
-            .split('was not found in s3 bucket')
-            .shift()
-            .split('File for this')
-            .pop()
-            .trim();
+        const errorMessage = `${err}`;
+        if (errorMessage.includes('not found in s3 bucket')) {
+          const missingPkg = returnMissingPkgBasedOn(errorMessage);
           const masterStatsFilePath = path.join(
             masterStatsFolder,
             `${missingPkg}-bundle-size-ratchet.json`,
