@@ -196,7 +196,10 @@ async function _installFromCommit(commitHash = '', options = {}) {
     log(`$ ${engine} ${cmdArgs.join(' ')}`);
 
     let retryCount = 0;
-
+    /*
+    On CI we get a weird concurrency issue when installing transitive dependencies from the Atlaskit
+    branch deploy. Re-running the upgrade fixes that problem. It's not great but it unblocks Confluence
+     */
     await retry(
       async bail => {
         let error = null;
