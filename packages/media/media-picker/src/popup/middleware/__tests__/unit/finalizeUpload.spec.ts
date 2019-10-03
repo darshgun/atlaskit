@@ -1,7 +1,6 @@
-// TODO: we need this? jest.mock('@atlaskit/media-client');
+import * as MediaClientModule from '@atlaskit/media-client';
 import { Auth } from '@atlaskit/media-core';
 import {
-  MediaStore,
   getFileStreamsCache,
   ProcessedFileState,
   ProcessingFileState,
@@ -53,7 +52,7 @@ describe('finalizeUploadMiddleware', () => {
       Promise.resolve(auth),
     );
 
-    (MediaStore as any).mockImplementation(() => ({
+    jest.spyOn(MediaClientModule, 'MediaStore').mockImplementation(() => ({
       copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
     }));
 
@@ -143,7 +142,7 @@ describe('finalizeUploadMiddleware', () => {
       message: 'some-error-message',
     };
 
-    (MediaStore as any).mockImplementation(() => ({
+    jest.spyOn(MediaClientModule, 'MediaStore').mockImplementation(() => ({
       copyFileWithToken: () => Promise.reject(error),
     }));
 
@@ -175,9 +174,9 @@ describe('finalizeUploadMiddleware', () => {
 
     const copyFileWithToken = jest.fn().mockResolvedValue({
       data: { id: 'some-id' },
-    }) as MediaStore['copyFileWithToken'];
+    }) as MediaClientModule.MediaStore['copyFileWithToken'];
 
-    asMock(MediaStore).mockImplementation(() => ({
+    asMock(MediaClientModule.MediaStore).mockImplementation(() => ({
       copyFileWithToken,
     }));
 
