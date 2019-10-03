@@ -6,21 +6,10 @@ import {
 
 const openModalBtn = "[type='button']";
 const modalDialog = "[role='dialog']";
+const examples = '#examples';
+const examplesContainer = `${examples} > div`;
 
 describe('Snapshot Test', () => {
-  it('Spotlight different-spotlights should match production example', async () => {
-    const url = getExampleUrl(
-      'core',
-      'onboarding',
-      'different-spotlights',
-      // @ts-ignore
-      global.__BASEURL__,
-    );
-    // @ts-ignore
-    const image = await takeScreenShot(global.page, url);
-    expect(image).toMatchProdImageSnapshot();
-  });
-
   it('Modal Basic example should match production example', async () => {
     const url = getExampleUrl(
       'core',
