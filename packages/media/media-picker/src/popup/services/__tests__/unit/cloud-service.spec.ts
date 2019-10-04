@@ -35,9 +35,13 @@ describe('CloudAuthService', () => {
 
   beforeEach(() => {
     (Postis as FakePostis).channel.ready.mockImplementationOnce(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       (callback: () => void) => callback(),
     );
     (Postis as FakePostis).channel.listen.mockImplementationOnce(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       (_: string, callback: () => void) => callback(),
     );
 
