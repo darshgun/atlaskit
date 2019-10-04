@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import Panel from '../src';
