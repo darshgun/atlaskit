@@ -2,11 +2,11 @@
 import { Selection } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import {
-  findTable,
   addColumnAt,
   addRowAt,
-  safeInsert,
   createTable as createTableNode,
+  findTable,
+  safeInsert,
 } from 'prosemirror-utils';
 import { getPluginState } from '../pm-plugins/main';
 import { checkIfHeaderRowEnabled, copyPreviousRow } from '../utils';
@@ -15,7 +15,8 @@ import { Command } from '../../../types';
 
 // #region Commands
 export const insertColumn = (column: number): Command => (state, dispatch) => {
-  const tr = addColumnAt(column)(state.tr);
+  const tr = state.tr;
+  addColumnAt(column)(tr);
   const table = findTable(tr.selection);
   if (!table) {
     return false;

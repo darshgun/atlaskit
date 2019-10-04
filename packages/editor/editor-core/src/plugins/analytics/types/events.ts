@@ -108,7 +108,7 @@ export type AnalyticsEventPayload =
   | HistoryEventPayload;
 
 export type AnalyticsEventPayloadWithChannel = {
-  channel: string;
+  channel?: string;
   payload: AnalyticsEventPayload;
 };
 
