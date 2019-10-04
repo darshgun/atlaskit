@@ -216,6 +216,7 @@ export class ExampleEditorComponent extends React.Component<
                 component: ExampleInlineCommentComponent,
               }}
               allowStatus={true}
+              allowNestedTasks
               {...providers}
               media={{
                 provider: mediaProvider,

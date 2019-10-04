@@ -15,7 +15,11 @@ import {
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import { InfiniteScroll } from '@atlaskit/media-ui';
-import { MediaClient, MediaCollectionItem } from '@atlaskit/media-client';
+import {
+  MediaClient,
+  MediaCollectionItem,
+  RECENTS_COLLECTION,
+} from '@atlaskit/media-client';
 import {
   State,
   SelectedItem,
@@ -513,7 +517,9 @@ describe('<UploadView />', () => {
       simulateThresholdReached(component);
 
       expect(mediaClient.collection.loadNextPage).toHaveBeenCalledTimes(1);
-      expect(mediaClient.collection.loadNextPage).toBeCalledWith('recents');
+      expect(mediaClient.collection.loadNextPage).toBeCalledWith(
+        RECENTS_COLLECTION,
+      );
     });
 
     it('should render loading next page state if next page is being loaded', async () => {

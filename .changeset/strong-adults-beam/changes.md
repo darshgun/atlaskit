@@ -1,0 +1,1 @@
+Add `addGlobalEventEmitterListeners` util to be used in examples to see `globalMediaEventEmitter` events in console.

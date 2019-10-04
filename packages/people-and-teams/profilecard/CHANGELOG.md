@@ -1,5 +1,13 @@
 # @atlaskit/profilecard
 
+## 12.3.0
+
+### Minor Changes
+
+- [minor][84bedb23c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84bedb23c4):
+
+  Export profile-cards withOuterListeners wrapper
+
 ## 12.2.0
 
 ### Minor Changes

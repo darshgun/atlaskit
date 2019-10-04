@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/icon-priority",
-  "version": "4.0.9",
+  "version": "5.0.0",
   "description": "A React package that contains priority icons",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "SEE LICENSE IN LICENSE",
-  "atlaskit:src": "src/index.js",
-  "module": "dist/esm/index.js",
-  "main": "dist/cjs/index.js",
+  "types": "cjs/index.d.ts",
+  "module": "cjs/index.js",
+  "main": "cjs/index.js",
+  "atlaskit:src": "src/index.ts",
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -20,12 +21,12 @@
     "team": "core"
   },
   "scripts": {
-    "update": "node ./build/index.js && yarn build:babel:cjs",
-    "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d cjs --root-mode=\"upward\""
+    "update": "ts-node --project build/cjs/tsconfig.json ./build/index.ts && yarn build:typescript:cjs",
+    "build:typescript:cjs": "NODE_ENV=production tsc --project build/cjs/tsconfig.json"
   },
   "dependencies": {
     "@atlaskit/theme": "^9.1.6",
-    "@babel/runtime": "^7.0.0"
+    "tslib": "^1.9.3"
   },
   "peerDependencies": {
     "react": "^16.8.0",
@@ -39,10 +40,13 @@
     "@atlaskit/icon-build-process": "^0.1.1",
     "@atlaskit/modal-dialog": "^10.1.9",
     "@atlaskit/ssr": "^0.1.1",
+    "@atlaskit/textfield": "^3.1.0",
     "@atlaskit/tooltip": "^15.0.14",
     "enzyme": "^3.7.0",
     "fs-extra": "^4.0.2",
+    "pkg-dir": "^4.2.0",
     "react-dom": "^16.8.0",
+    "ts-node": "^6.1.1",
     "wait-for-expect": "^1.2.0"
   },
   "keywords": [

@@ -179,12 +179,23 @@ export default class Page {
     return this.browser.getCssProperty(selector, cssProperty);
   }
 
+  async getCSSProperty(selector, cssProperty) {
+    const elem = await this.browser.$(selector);
+    return elem.getCSSProperty(cssProperty);
+  }
+
   async getLocation(selector, property) {
     const elem = await this.browser.$(selector);
     return elem.getLocation(selector, property);
   }
+
   getAlertText() {
     return this.browser.getAlertText();
+  }
+
+  async getAttribute(selector, attributeName) {
+    const elem = await this.browser.$(selector);
+    return elem.getAttribute(attributeName);
   }
 
   url() {

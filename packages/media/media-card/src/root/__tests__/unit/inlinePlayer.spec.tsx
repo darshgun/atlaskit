@@ -3,12 +3,15 @@ import { ReactWrapper } from 'enzyme';
 import { Observable } from 'rxjs';
 import { CustomMediaPlayer } from '@atlaskit/media-ui';
 import {
+  globalMediaEventEmitter,
+  MediaViewedEventPayload,
   FileIdentifier,
   FileState,
   MediaFileArtifacts,
 } from '@atlaskit/media-client';
 import {
   asMockReturnValue,
+  expectFunctionToHaveBeenCalledWith,
   fakeMediaClient,
   mountWithIntlContext,
   nextTick,
@@ -101,6 +104,14 @@ describe('<InlinePlayer />', () => {
     await new Promise(resolve => window.setTimeout(resolve));
     component.update();
   };
+
+  beforeEach(() => {
+    jest.spyOn(globalMediaEventEmitter, 'emit');
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   it('should render loading component when the video src is not ready', () => {
     const { component } = setup({
@@ -304,5 +315,23 @@ describe('<InlinePlayer />', () => {
     expect(actualReturnedEvent.hasFired).toEqual(false);
     expect(actualReturnedEvent.payload.action).toEqual('clicked');
     expect(actualReturnedEvent.context).toEqual(actualFiredEvent.context);
+  });
+
+  it('should trigger media-viewed when video is first played', async () => {
+    const { component } = setup();
+    await update(component);
+    const { onFirstPlay } = component.find(CustomMediaPlayer).props();
+    if (!onFirstPlay) {
+      return expect(onFirstPlay).toBeDefined();
+    }
+    onFirstPlay();
+    expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
+    expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
+      'media-viewed',
+      {
+        fileId: 'some-id',
+        viewingLevel: 'full',
+      } as MediaViewedEventPayload,
+    ]);
   });
 });

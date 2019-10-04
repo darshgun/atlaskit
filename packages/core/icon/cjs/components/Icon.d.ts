@@ -1,9 +1,9 @@
 import React, { Component, ReactElement } from 'react';
-import { sizeOptions } from '../constants';
+import { sizeOpts } from '../types';
 interface WrapperProps {
     primaryColor?: string;
     secondaryColor?: string;
-    size?: sizeOptions;
+    size?: sizeOpts;
 }
 export declare const IconWrapper: import("styled-components").StyledComponentClass<React.ClassAttributes<HTMLSpanElement> & React.HTMLAttributes<HTMLSpanElement> & WrapperProps, any, React.ClassAttributes<HTMLSpanElement> & React.HTMLAttributes<HTMLSpanElement> & WrapperProps>;
 export interface IconProps {
@@ -21,7 +21,7 @@ export interface IconProps {
     /** For secondary colour for 2-color icons. Set to inherit to control this via "fill" in CSS */
     secondaryColor?: string;
     /** Control the size of the icon */
-    size?: sizeOptions;
+    size?: sizeOpts;
 }
 export default class Icon extends Component<IconProps, {}> {
     static insertDynamicGradientID(svgStr: string): string;

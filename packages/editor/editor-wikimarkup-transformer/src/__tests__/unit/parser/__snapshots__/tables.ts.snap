@@ -1,5 +1,155 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JIRA wiki markup - Tables [CS-1404] should parse multiple attachments separated by non-whitespace characters inside tables as separate media groups 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "__autoSize": false,
+        "isNumberColumnEnabled": false,
+        "layout": "default",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": "colum 1 ",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "attrs": Object {
+                        "__contextId": null,
+                        "__displayType": null,
+                        "__fileMimeType": null,
+                        "__fileName": null,
+                        "__fileSize": null,
+                        "collection": "",
+                        "height": null,
+                        "id": "a-doc (jadsjdasjadsjkdasjk).pdf",
+                        "occurrenceKey": null,
+                        "type": "file",
+                        "url": null,
+                        "width": null,
+                      },
+                      "type": "media",
+                    },
+                    Object {
+                      "attrs": Object {
+                        "__contextId": null,
+                        "__displayType": null,
+                        "__fileMimeType": null,
+                        "__fileName": null,
+                        "__fileSize": null,
+                        "collection": "",
+                        "height": null,
+                        "id": "not-empty (askjsajnkjknads).txt",
+                        "occurrenceKey": null,
+                        "type": "file",
+                        "url": null,
+                        "width": null,
+                      },
+                      "type": "media",
+                    },
+                  ],
+                  "type": "mediaGroup",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": " abc ",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "attrs": Object {
+                        "__contextId": null,
+                        "__displayType": null,
+                        "__fileMimeType": null,
+                        "__fileName": null,
+                        "__fileSize": null,
+                        "collection": "",
+                        "height": null,
+                        "id": "a-doc (jadsjdasjadsjkdasjk).pdf",
+                        "occurrenceKey": null,
+                        "type": "file",
+                        "url": null,
+                        "width": null,
+                      },
+                      "type": "media",
+                    },
+                    Object {
+                      "attrs": Object {
+                        "__contextId": null,
+                        "__displayType": null,
+                        "__fileMimeType": null,
+                        "__fileName": null,
+                        "__fileSize": null,
+                        "collection": "",
+                        "height": null,
+                        "id": "not-empty (askjsajnkjknads).txt",
+                        "occurrenceKey": null,
+                        "type": "file",
+                        "url": null,
+                        "width": null,
+                      },
+                      "type": "media",
+                    },
+                  ],
+                  "type": "mediaGroup",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": "column 2",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableCell",
+            },
+          ],
+          "type": "tableRow",
+        },
+      ],
+      "type": "table",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Tables CS-916 should respect empty columns 1`] = `
 Object {
   "content": Array [

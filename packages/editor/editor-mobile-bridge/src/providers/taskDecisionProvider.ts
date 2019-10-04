@@ -1,9 +1,5 @@
 import {
   TaskDecisionProvider,
-  Query,
-  DecisionResponse,
-  TaskResponse,
-  ItemResponse,
   RecentUpdatesId,
   RecentUpdateContext,
   ObjectKey,
@@ -14,8 +10,8 @@ import {
 type ToggleTaskCallback = (key: ObjectKey, state: TaskState) => void;
 
 export const objectKeyToString = (objectKey: ObjectKey) => {
-  const { containerAri, objectAri, localId } = objectKey;
-  return `${containerAri}:${objectAri}:${localId}`;
+  const { objectAri, localId } = objectKey;
+  return `${objectAri}:${localId}`;
 };
 export class TaskDecisionProviderImpl implements TaskDecisionProvider {
   _handleToggleTask: ToggleTaskCallback | undefined;
@@ -25,15 +21,7 @@ export class TaskDecisionProviderImpl implements TaskDecisionProvider {
     this._handleToggleTask = toggleTask;
     this._handlers = new Map();
   }
-  getDecisions(_query: Query): Promise<DecisionResponse> {
-    return Promise.resolve({ decisions: [] });
-  }
-  getTasks(_query: Query): Promise<TaskResponse> {
-    return Promise.resolve({ tasks: [] });
-  }
-  getItems(_query: Query): Promise<ItemResponse> {
-    return Promise.resolve({ items: [] });
-  }
+
   unsubscribeRecentUpdates(_id: RecentUpdatesId) {}
   notifyRecentUpdates(_updateContext?: RecentUpdateContext) {}
   toggleTask(key: ObjectKey, state: TaskState): Promise<TaskState> {

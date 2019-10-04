@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "113.1.4",
+  "version": "113.1.5",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -135,7 +135,7 @@
     "jquery": "^3.2.1",
     "prettier": "^1.14.3",
     "prosemirror-dev-tools": "^2.1.0",
-    "puppeteer": "^1.13.0",
+    "puppeteer": "1.17.0",
     "raf-stub": "^2.0.1",
     "react": "^16.8.0",
     "react-intl": "^2.6.0",

@@ -9,5 +9,6 @@ import { multiply } from '@atlaskit/theme/math';
 export const FormFooterWrapper = styled.footer`
   margin-top: ${multiply(gridSize, 3)}px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: ${props =>
+    props.align === 'start' ? 'flex-start' : 'flex-end'};
 `;

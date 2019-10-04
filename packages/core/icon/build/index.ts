@@ -1,10 +1,14 @@
-const path = require('path');
-const buildIcons = require('@atlaskit/icon-build-process');
-const pkgDir = require('pkg-dir');
-const fs = require('fs-extra');
-const synonyms = require('../utils/synonyms');
+import path from 'path';
+import buildIcons from '@atlaskit/icon-build-process';
+import pkgDir from 'pkg-dir';
+import fs from 'fs-extra';
+import synonyms from '../utils/synonyms';
 
 const root = pkgDir.sync();
+
+if (!root) {
+  throw new Error('Root directory was not found');
+}
 
 const config = {
   srcDir: path.resolve(root, 'svgs_raw'),

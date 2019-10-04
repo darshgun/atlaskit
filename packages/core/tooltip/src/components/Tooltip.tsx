@@ -104,6 +104,11 @@ export interface TooltipProps extends WithAnalyticsEventsProps {
   truncate?: boolean;
   /** Elements to be wrapped by the tooltip */
   children: React.ReactNode;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests */
+  testId?: string;
 }
 
 interface State {
@@ -266,6 +271,7 @@ class Tooltip extends React.Component<TooltipProps, State> {
       truncate,
       component: TooltipContainer,
       tag: TargetContainer,
+      testId,
     } = this.props;
 
     const {
@@ -335,6 +341,7 @@ class Tooltip extends React.Component<TooltipProps, State> {
                           ...style,
                         }}
                         truncate={truncate || false}
+                        data-testid={testId}
                       >
                         {content}
                       </TooltipContainer>

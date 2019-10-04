@@ -22,6 +22,9 @@ import {
   UploadProcessingEventPayload,
   UploadEndEventPayload,
 } from '../src';
+import { addGlobalEventEmitterListeners } from '@atlaskit/media-test-helpers';
+
+addGlobalEventEmitterListeners();
 
 const userMediaClientConfig = createUploadMediaClientConfig();
 const tenantMediaClientConfig = createStorybookMediaClientConfig();

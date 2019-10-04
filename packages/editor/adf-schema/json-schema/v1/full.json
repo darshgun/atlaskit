@@ -1036,17 +1036,17 @@
     "taskList_node": {
       "type": "object",
       "properties": {
-        "type": {
-          "enum": [
-            "taskList"
-          ]
-        },
         "content": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/taskItem_node"
           },
           "minItems": 1
+        },
+        "type": {
+          "enum": [
+            "taskList"
+          ]
         },
         "attrs": {
           "type": "object",
@@ -1062,8 +1062,8 @@
         }
       },
       "required": [
-        "type",
         "content",
+        "type",
         "attrs"
       ],
       "additionalProperties": false

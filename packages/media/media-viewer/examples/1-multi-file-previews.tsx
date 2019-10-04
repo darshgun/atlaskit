@@ -26,6 +26,9 @@ import { videoFileId } from '@atlaskit/media-test-helpers';
 import { I18NWrapper } from '@atlaskit/media-test-helpers';
 import { Identifier, FileIdentifier, MediaStore } from '@atlaskit/media-client';
 import { Card } from '@atlaskit/media-card';
+import { addGlobalEventEmitterListeners } from '@atlaskit/media-test-helpers';
+
+addGlobalEventEmitterListeners();
 
 const mediaClient = createStorybookMediaClient();
 
