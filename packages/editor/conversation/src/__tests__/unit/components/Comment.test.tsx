@@ -14,8 +14,14 @@ import Editor from '../../../../src/components/Editor';
 import CommentContainer from '../../../../src/containers/Comment';
 import { User } from '../../../model';
 
-// @ts-ignore
-function findEditAction(comment) {}
+const findAction = (comment: ReactWrapper, key: string): ReactWrapper =>
+  comment
+    .first()
+    .find(CommentAction)
+    .findWhere(
+      (item: ReactWrapper) => item.is(CommentAction) && item.key() === key,
+    );
+
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
 // eslint-disable-next-line no-console
@@ -120,13 +126,8 @@ describe('Comment', () => {
         />,
       );
 
-      const replyLink = comment
-        .first()
-        .find(CommentAction)
-        .findWhere(item => item.is(CommentAction) && item.text() === 'Reply')
-        .first();
+      expect(findAction(comment, 'reply').length).toEqual(1);
 
-      expect(replyLink.length).toEqual(1);
       comment.unmount();
     });
 
@@ -139,13 +140,8 @@ describe('Comment', () => {
         />,
       );
 
-      const replyLink = comment
-        .first()
-        .find(CommentAction)
-        .findWhere(item => item.is(CommentAction) && item.text() === 'Reply')
-        .first();
+      expect(findAction(comment, 'reply').length).toEqual(0);
 
-      expect(replyLink.length).toEqual(0);
       comment.unmount();
     });
   });
@@ -170,14 +166,7 @@ describe('Comment', () => {
         />,
       );
 
-      editLink = comment
-        .first()
-        .find(CommentAction)
-        .findWhere(
-          (item: ReactWrapper) =>
-            item.is(CommentAction) && item.text() === 'Edit',
-        )
-        .first();
+      editLink = findAction(comment, 'edit');
     });
 
     afterEach(() => {
@@ -197,14 +186,8 @@ describe('Comment', () => {
           user={otherUser}
         />,
       );
-      const secondCommentEditLink = secondComment
-        .first()
-        .find(CommentAction)
-        // @TODO ED-3521 - Remove the hardcoded string and find by a unique identifier instead
-        .findWhere(item => item.is(CommentAction) && item.text() === 'Edit')
-        .first();
 
-      expect(secondCommentEditLink.length).toEqual(0);
+      expect(findAction(secondComment, 'edit').length).toEqual(0);
 
       secondComment.unmount();
     });
@@ -301,12 +284,7 @@ describe('Comment', () => {
         />,
       );
 
-      deleteLink = comment
-        .first()
-        .find(CommentAction)
-        // @TODO ED-3521 - Remove the hardcoded string and find by a unique identifier instead
-        .findWhere((item: ReactWrapper) => item.text() === 'Delete')
-        .first();
+      deleteLink = findAction(comment, 'delete');
     });
 
     afterEach(() => {
@@ -326,14 +304,7 @@ describe('Comment', () => {
           user={otherUser}
         />,
       );
-      const secondCommentDeleteLink = secondComment
-        .first()
-        .find(CommentAction)
-        // @TODO ED-3521 - Remove the hardcoded string and find by a unique identifier instead
-        .findWhere(item => item.text() === 'Delete')
-        .first();
-
-      expect(secondCommentDeleteLink.length).toEqual(0);
+      expect(findAction(secondComment, 'delete').length).toEqual(0);
 
       secondComment.unmount();
     });
@@ -351,14 +322,7 @@ describe('Comment', () => {
         />,
       );
 
-      const commentDeleteLink = comment
-        .first()
-        .find(CommentAction)
-        // @TODO ED-3521 - Remove the hardcoded string and find by a unique identifier instead
-        .findWhere(item => item.text() === 'Delete')
-        .first();
-
-      expect(commentDeleteLink.length).toEqual(1);
+      expect(findAction(comment, 'delete').length).toEqual(1);
     });
 
     it.skip('should delete the comment when clicked', () => {
@@ -507,6 +471,30 @@ describe('Comment', () => {
       );
 
       expect(comment.first().find(ConnectedReactionsView).length).toEqual(0);
+
+      comment.unmount();
+    });
+  });
+
+  describe('more actions', () => {
+    it('should render more comment actions when provided', () => {
+      const [user] = MOCK_USERS;
+      const comment = mount(
+        <Comment
+          {...defaultProps}
+          conversationId={mockComment.conversationId}
+          comment={mockComment}
+          user={user}
+          moreCommentActions={[
+            {
+              content: 'Create Task',
+              key: 'create-task',
+            },
+          ]}
+        />,
+      );
+
+      expect(findAction(comment, 'create-task').length).toEqual(1);
 
       comment.unmount();
     });

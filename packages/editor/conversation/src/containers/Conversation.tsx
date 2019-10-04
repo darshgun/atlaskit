@@ -3,6 +3,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
 import { Provider, connect, Dispatch } from 'react-redux';
 import Conversation, { Props as BaseProps } from '../components/Conversation';
+import { CommentActionType } from '../components/types';
 import { ResourceProvider } from '../api/ConversationResource';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
@@ -175,6 +176,7 @@ export interface ContainerProps {
   allowFeedbackAndHelpButtons?: boolean;
 
   portal?: HTMLElement;
+  moreCommentActions?: CommentActionType[];
 }
 
 class ConversationContainer extends React.Component<ContainerProps, any> {
