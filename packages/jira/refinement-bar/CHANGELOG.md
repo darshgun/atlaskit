@@ -1,5 +1,11 @@
 # @atlaskit/refinement-bar
 
+## 1.1.11
+
+- Updated dependencies [f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):
+  - @atlaskit/icon-object@5.0.0
+  - @atlaskit/icon@19.0.8
+
 ## 1.1.10
 
 ### Patch Changes

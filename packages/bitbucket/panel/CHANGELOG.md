@@ -1,5 +1,13 @@
 # @atlaskit/panel
 
+## 0.3.0
+
+### Minor Changes
+
+- [minor][178bf178a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/178bf178a6):
+
+  Added new PanelStateless component
+
 ## 0.2.6
 
 ### Patch Changes
