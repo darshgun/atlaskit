@@ -1,1 +1,0 @@
-Update translation for atlassian-switcher package
