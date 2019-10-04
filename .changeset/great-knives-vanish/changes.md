@@ -1,0 +1,1 @@
+right-side-panel:* added props skipAnimationOnMount, mountOnEnter, unmountOnExit, disableEnterAnimation, disableExitAnimation
