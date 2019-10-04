@@ -1,5 +1,12 @@
 # @atlaskit/smart-card
 
+## 12.5.9
+
+- Updated dependencies [f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):
+  - @atlaskit/icon-file-type@5.0.0
+  - @atlaskit/icon-object@5.0.0
+  - @atlaskit/icon@19.0.8
+
 ## 12.5.8
 
 ### Patch Changes

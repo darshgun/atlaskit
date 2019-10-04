@@ -30,5 +30,5 @@ buildIcons(config).then((icons: IconConfig[]) => {
     {},
     ['priority', 'icon-priority'],
   );
-  return fs.outputFile(path.resolve(root!, 'src/metadata.js'), iconDocs);
+  return fs.outputFile(path.resolve(root!, 'src/metadata.ts'), iconDocs);
 });
