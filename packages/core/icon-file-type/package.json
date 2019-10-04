@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon-file-type",
-  "version": "4.0.10",
+  "version": "5.0.0",
   "description": "A React package that contains file-type icons",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "SEE LICENSE IN LICENSE",
@@ -38,7 +38,7 @@
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/field-text": "^9.0.11",
     "@atlaskit/textfield": "^3.0.5",
-    "@atlaskit/icon-build-process": "^0.1.1",
+    "@atlaskit/icon-build-process": "^0.1.2",
     "@atlaskit/modal-dialog": "^10.1.9",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/tooltip": "^15.0.14",
