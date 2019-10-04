@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher
 
+## 4.3.0
+
+### Minor Changes
+
+- [minor][3920c7a2b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3920c7a2b9):
+
+  Update translation for atlassian-switcher package
+
+## 4.2.3
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 4.2.2
 
 ### Patch Changes

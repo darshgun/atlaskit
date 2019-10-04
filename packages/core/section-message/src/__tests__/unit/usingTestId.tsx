@@ -46,7 +46,7 @@ const sectionMessageWrapperWithTestIds = (
 );
 
 describe('Using enzyme', () => {
-  test('Section messahge > it should not generate data-testid', () => {
+  test('Section message > it should not generate data-testid', () => {
     const wrapper = mount(<SectionMessage>boo</SectionMessage>);
     expect(wrapper).toBeDefined();
     expect(wrapper.prop('data-testid')).toBeUndefined();

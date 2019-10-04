@@ -1,5 +1,21 @@
 # @atlaskit/right-side-panel
 
+## 0.3.0
+
+### Minor Changes
+
+- [minor][49c89962de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c89962de):
+
+  right-side-panel:\* added props skipAnimationOnMount, mountOnEnter, unmountOnExit, disableEnterAnimation, disableExitAnimation
+
+## 0.2.2
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 0.2.1
 
 ### Patch Changes
