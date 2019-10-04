@@ -15,12 +15,12 @@ const MessageContent = (
   </div>
 );
 
-const createWrapper = (testId?) => (
+const createWrapper = (testId?: string) => (
   <InlineMessage
     type="error"
     title="My testing Inline Message"
     secondaryText="Use data-testid to reliable testing"
-    testId={testId ? testId : null}
+    testId={testId ? testId : undefined}
   >
     {MessageContent}
   </InlineMessage>
