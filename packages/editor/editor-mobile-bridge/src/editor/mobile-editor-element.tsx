@@ -6,6 +6,9 @@ import {
   MediaProvider as MediaProviderType,
   EditorProps,
 } from '@atlaskit/editor-core';
+import FabricAnalyticsListeners, {
+  AnalyticsWebClient,
+} from '@atlaskit/analytics-listeners';
 
 // @ts-ignore
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
@@ -32,6 +35,18 @@ const params = parseLocationSearch();
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
 
 export const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl());
+
+const analyticsBridgeTrack = (type, event) => {
+  event.type = type;
+  toNativeBridge.trackEvent(JSON.stringify(event));
+};
+
+const analyticsBridgeClient: AnalyticsWebClient = {
+  sendUIEvent: event => analyticsBridgeTrack('ui', event),
+  sendOperationalEvent: event => analyticsBridgeTrack('operational', event),
+  sendTrackEvent: event => analyticsBridgeTrack('track', event),
+  sendScreenEvent: event => analyticsBridgeTrack('screen', event),
+};
 
 class EditorWithState extends Editor {
   onEditorCreated(instance: {
@@ -78,43 +93,46 @@ export default function mobileEditor(props: Props) {
   // See https://product-fabric.atlassian.net/browse/FM-2149 for details.
   const authFlow = 'disabled';
   return (
-    <SmartCardProvider client={cardClient} authFlow={authFlow}>
-      <AtlaskitThemeProvider mode={mode}>
-        <EditorWithState
-          appearance="mobile"
-          mentionProvider={Promise.resolve(MentionProvider)}
-          emojiProvider={Promise.resolve(EmojiProvider)}
-          media={{
-            customMediaPicker: new MobilePicker(),
-            provider: props.mediaProvider || MediaProvider,
-            allowMediaSingle: true,
-          }}
-          allowConfluenceInlineComment={true}
-          allowLists={true}
-          onChange={() => {
-            toNativeBridge.updateText(bridge.getContent());
-          }}
-          allowPanel={true}
-          allowCodeBlocks={true}
-          allowTables={{
-            allowControls: false,
-          }}
-          UNSAFE_cards={{
-            provider: props.cardProvider || Promise.resolve(cardProvider),
-          }}
-          allowExtension={true}
-          allowTextColor={true}
-          allowDate={true}
-          allowRule={true}
-          allowStatus={true}
-          allowLayouts={{
-            allowBreakout: true,
-          }}
-          taskDecisionProvider={Promise.resolve(TaskDecisionProvider())}
-          // eg. If the URL parameter is like ?mode=dark use that, otherwise check the prop (used in example)
-          {...props}
-        />
-      </AtlaskitThemeProvider>
-    </SmartCardProvider>
+    <FabricAnalyticsListeners client={analyticsBridgeClient}>
+      <SmartCardProvider client={cardClient} authFlow={authFlow}>
+        <AtlaskitThemeProvider mode={mode}>
+          <EditorWithState
+            appearance="mobile"
+            mentionProvider={Promise.resolve(MentionProvider)}
+            emojiProvider={Promise.resolve(EmojiProvider)}
+            media={{
+              customMediaPicker: new MobilePicker(),
+              provider: props.mediaProvider || MediaProvider,
+              allowMediaSingle: true,
+            }}
+            allowConfluenceInlineComment={true}
+            allowLists={true}
+            onChange={() => {
+              toNativeBridge.updateText(bridge.getContent());
+            }}
+            allowPanel={true}
+            allowCodeBlocks={true}
+            allowTables={{
+              allowControls: false,
+            }}
+            UNSAFE_cards={{
+              provider: props.cardProvider || Promise.resolve(cardProvider),
+            }}
+            allowExtension={true}
+            allowTextColor={true}
+            allowDate={true}
+            allowRule={true}
+            allowStatus={true}
+            allowLayouts={{
+              allowBreakout: true,
+            }}
+            allowAnalyticsGASV3={true}
+            taskDecisionProvider={Promise.resolve(TaskDecisionProvider())}
+            // eg. If the URL parameter is like ?mode=dark use that, otherwise check the prop (used in example)
+            {...props}
+          />
+        </AtlaskitThemeProvider>
+      </SmartCardProvider>
+    </FabricAnalyticsListeners>
   );
 }

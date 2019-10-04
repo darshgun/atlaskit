@@ -23,6 +23,7 @@ export default class AndroidBridge implements NativeBridge {
   statusBridge: StatusBridge;
   linkBridge: LinkBridge;
   undoRedoBridge: UndoRedoBridge;
+  analyticsBridge: AnalyticsBridge;
 
   constructor() {
     this.mentionBridge = window.mentionsBridge as MentionBridge;
@@ -33,6 +34,7 @@ export default class AndroidBridge implements NativeBridge {
     this.statusBridge = window.statusBridge as StatusBridge;
     this.linkBridge = window.linkBridge as LinkBridge;
     this.undoRedoBridge = window.undoRedoBridge as UndoRedoBridge;
+    this.analyticsBridge = window.linkBridge as AnalyticsBridge;
   }
 
   showMentions(query: String) {
@@ -101,6 +103,10 @@ export default class AndroidBridge implements NativeBridge {
     if (this.undoRedoBridge) {
       this.undoRedoBridge.stateChanged(canUndo, canRedo);
     }
+  }
+
+  trackEvent(event: String) {
+    this.analyticsBridge.trackEvent(event);
   }
 
   call<T extends EditorPluginBridges>(

@@ -58,6 +58,9 @@ export default class DummyBridge implements NativeBridge {
   stateChanged(canUndo: boolean, canRedo: boolean) {
     this.log(`stateChanged(canUndo=${canUndo}, canRedo=${canRedo})`);
   }
+  trackEvent(event: String) {
+    this.log('trackEvent', event);
+  }
 
   call<T extends EditorPluginBridges>(
     bridge: T,

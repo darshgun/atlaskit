@@ -30,6 +30,7 @@
   "license": "Apache-2.0",
   "homepage": "https://bitbucket.org/atlaskit/atlaskit-mk-2#readme",
   "dependencies": {
+    "@atlaskit/analytics-listeners": "^6.2.0",
     "@atlaskit/editor-common": "^41.1.2",
     "@atlaskit/editor-core": "^113.1.4",
     "@atlaskit/editor-json-transformer": "^6.3.3",

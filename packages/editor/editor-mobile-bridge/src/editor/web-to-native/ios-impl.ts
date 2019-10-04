@@ -142,6 +142,15 @@ export default class IosBridge implements NativeBridge {
     }
   }
 
+  trackEvent(event: String) {
+    if (window.webkit && window.webkit.messageHandlers.analyticsBridge) {
+      window.webkit.messageHandlers.analyticsBridge.postMessage({
+        name: 'trackEvent',
+        event: event,
+      });
+    }
+  }
+
   call<T extends EditorPluginBridges>(
     bridge: T,
     event: keyof Exclude<EditorBridges[T], undefined>,

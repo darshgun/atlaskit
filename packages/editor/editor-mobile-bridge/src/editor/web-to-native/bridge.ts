@@ -56,6 +56,10 @@ export interface UndoRedoBridge {
   stateChanged(canUndo: boolean, canRedo: boolean): void;
 }
 
+export interface AnalyticsBridge {
+  trackEvent(event: string): void;
+}
+
 export default interface NativeBridge
   extends MentionBridge,
     TextFormattingBridge,
@@ -63,7 +67,8 @@ export default interface NativeBridge
     ListBridge,
     StatusBridge,
     LinkBridge,
-    UndoRedoBridge {
+    UndoRedoBridge,
+    AnalyticsBridge {
   call<T extends EditorPluginBridges>(
     bridge: T,
     event: keyof Exclude<EditorBridges[T], undefined>,
