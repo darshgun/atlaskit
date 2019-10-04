@@ -48,9 +48,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     // if helpContext.articleId is defined when this component is mounted,
     // set skipArticleFadeInAnimation = true to skip the initial slide-in
     this.setState({
-      skipArticleFadeInAnimation:
-        this.props.help.articleId !== '' ||
-        this.props.help.articleId !== undefined,
+      skipArticleFadeInAnimation: this.props.help.articleId !== '',
     });
   }
 
