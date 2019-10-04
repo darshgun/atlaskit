@@ -1,5 +1,13 @@
 # @atlaskit/dropdown-menu
 
+## 8.1.4
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 8.1.3
 
 - Updated dependencies [10e0798da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10e0798da6):
