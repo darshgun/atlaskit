@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { background } from '@atlaskit/theme/colors';
@@ -9,17 +8,20 @@ const sizes = {
   xlarge: { height: '64px', width: '48px' },
 };
 
-const getSize = props => {
-  if (props.size) {
-    return `height: ${sizes[props.size].height}; width: ${
-      sizes[props.size].width
-    };`;
-  }
-  return null;
+const getSize = (props: IconWrapperProps) => {
+  return props.size
+    ? `height: ${sizes[props.size].height}; width: ${sizes[props.size].width};`
+    : null;
 };
 
-export const IconWrapper = styled.span`
-  ${getSize} color: ${p => p.primaryColor || 'currentColor'};
+interface IconWrapperProps {
+  size?: 'small' | 'medium' | 'xlarge';
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+const IconWrapper = styled.span<IconWrapperProps>`
+${getSize} color: ${p => p.primaryColor || 'currentColor'};
   display: inline-block;
   fill: ${p => p.secondaryColor || background};
   flex-shrink: 0;
@@ -41,17 +43,17 @@ export const IconWrapper = styled.span`
   }
 `;
 
-type Props = {
+interface Props {
   /** More performant than the glyph prop, but potentially dangerous if the SVG string hasn't
    been "sanitised" */
-  dangerouslySetGlyph?: string,
+  dangerouslySetGlyph?: string;
   /** String to use as the aria-label for the icon. Set to an empty string if you are rendering the icon with visible text to prevent accessibility label duplication. */
-  label: string,
+  label: string;
   /** Control the size of the icon */
-  size?: 'small' | 'medium' | 'xlarge',
-};
+  size?: 'small' | 'medium' | 'xlarge';
+}
 
-export default class Icon extends Component<Props, {}> {
+export default class Icon extends Component<Props> {
   render() {
     const { dangerouslySetGlyph, size } = this.props;
 
@@ -59,9 +61,13 @@ export default class Icon extends Component<Props, {}> {
       <IconWrapper
         size={size}
         aria-label={this.props.label}
-        dangerouslySetInnerHTML={{
-          __html: dangerouslySetGlyph,
-        }}
+        dangerouslySetInnerHTML={
+          dangerouslySetGlyph
+            ? {
+                __html: dangerouslySetGlyph,
+              }
+            : undefined
+        }
       />
     );
   }

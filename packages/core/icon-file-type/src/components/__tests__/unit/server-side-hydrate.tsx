@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { getExamplesFor } from '@atlaskit/build-utils/getExamples';
@@ -10,9 +9,8 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 // https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate icon-file-type correctly', async () => {
+test.skip('should ssr then hydrate icon-file-interface correctly', async () => {
   const [example] = await getExamplesFor('icon-file-type');
-  // $StringLitteral
   const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');
@@ -21,7 +19,7 @@ test.skip('should ssr then hydrate icon-file-type correctly', async () => {
   ReactDOM.hydrate(<Example />, elem);
   // ignore warnings caused by emotion's server-side rendering approach
   // eslint-disable-next-line no-console
-  const mockCalls = console.error.mock.calls.filter(
+  const mockCalls = (console.error as jest.Mock).mock.calls.filter(
     ([f, s]) =>
       !(
         f ===
