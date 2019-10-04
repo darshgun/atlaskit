@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "editorconfig.editorconfig",
     "formulahendry.auto-rename-tag",
     "msjsdiag.debugger-for-chrome",
     "dbaeumer.vscode-eslint",
