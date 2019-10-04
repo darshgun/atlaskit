@@ -3,7 +3,6 @@ import {
   isValidEmailUsingConfig,
   getInviteWarningType,
   showAdminNotifiedFlag,
-  InviteType,
 } from '../../../components/utils';
 import { ConfigResponse, ConfigResponseMode } from '../../../types';
 
@@ -85,13 +84,13 @@ describe('utils functions', () => {
     });
 
     describe.each`
-      mode                          | no Users | no Emails | match Domain         | do Not Match Domain
-      ${undefined}                  | ${null}  | ${null}   | ${null}              | ${null}
-      ${'EXISTING_USERS_ONLY'}      | ${null}  | ${null}   | ${InviteType.ADMIN}  | ${InviteType.ADMIN}
-      ${'INVITE_NEEDS_APPROVAL'}    | ${null}  | ${null}   | ${InviteType.ADMIN}  | ${InviteType.ADMIN}
-      ${'ONLY_DOMAIN_BASED_INVITE'} | ${null}  | ${null}   | ${InviteType.DIRECT} | ${InviteType.ADMIN}
-      ${'DOMAIN_BASED_INVITE'}      | ${null}  | ${null}   | ${InviteType.DIRECT} | ${InviteType.ADMIN}
-      ${'ANYONE'}                   | ${null}  | ${null}   | ${InviteType.DIRECT} | ${InviteType.DIRECT}
+      mode                          | no Users | no Emails | match Domain | do Not Match Domain
+      ${undefined}                  | ${null}  | ${null}   | ${null}      | ${null}
+      ${'EXISTING_USERS_ONLY'}      | ${null}  | ${null}   | ${'ADMIN'}   | ${'ADMIN'}
+      ${'INVITE_NEEDS_APPROVAL'}    | ${null}  | ${null}   | ${'ADMIN'}   | ${'ADMIN'}
+      ${'ONLY_DOMAIN_BASED_INVITE'} | ${null}  | ${null}   | ${'DIRECT'}  | ${'ADMIN'}
+      ${'DOMAIN_BASED_INVITE'}      | ${null}  | ${null}   | ${'DIRECT'}  | ${'ADMIN'}
+      ${'ANYONE'}                   | ${null}  | ${null}   | ${'DIRECT'}  | ${'DIRECT'}
     `('$mode', ({ mode, noUsers, noEmails, matchDomain, doNotMatchDomain }) => {
       it.each`
         options                      | domains              | expected

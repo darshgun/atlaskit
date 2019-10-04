@@ -19,7 +19,6 @@ import {
   allowEmails,
   isValidEmailUsingConfig,
   getInviteWarningType,
-  InviteType,
 } from './utils';
 
 export const REQUIRED = 'REQUIRED';
@@ -117,22 +116,23 @@ export class UserPickerField extends React.Component<Props> {
     const { infoMessagePendingInvite, infoMessageDirectInvite } = this.props;
     const inviteWarningType = getInviteWarningType(config, selectedUsers);
 
-    switch (inviteWarningType) {
-      case InviteType.ADMIN:
-        return (
-          infoMessagePendingInvite || (
-            <FormattedMessage {...messages.infoMessagePendingInvite} />
-          )
-        );
-      case InviteType.DIRECT:
-        return (
-          infoMessageDirectInvite || (
-            <FormattedMessage {...messages.infoMessageDirectInvite} />
-          )
-        );
-      default:
-        return null;
+    if (inviteWarningType === 'ADMIN') {
+      return (
+        infoMessagePendingInvite || (
+          <FormattedMessage {...messages.infoMessagePendingInvite} />
+        )
+      );
     }
+
+    if (inviteWarningType === 'DIRECT') {
+      return (
+        infoMessageDirectInvite || (
+          <FormattedMessage {...messages.infoMessageDirectInvite} />
+        )
+      );
+    }
+
+    return null;
   };
 
   render() {

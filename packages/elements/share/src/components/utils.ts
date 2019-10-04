@@ -14,10 +14,7 @@ import {
   UserWithEmail,
 } from '../types';
 
-export enum InviteType {
-  ADMIN = 'ADMIN',
-  DIRECT = 'DIRECT',
-}
+type InviteType = 'ADMIN' | 'DIRECT';
 
 const matchAllowedDomains = memoizeOne(
   (domain: string, config: ConfigResponse | undefined) => {
@@ -66,7 +63,7 @@ const checkDomains = (
 export const showAdminNotifiedFlag = (
   config: ConfigResponse | undefined,
   selectedUsers: Value,
-): boolean => getInviteWarningType(config, selectedUsers) === InviteType.ADMIN;
+): boolean => getInviteWarningType(config, selectedUsers) === 'ADMIN';
 
 /**
  * Returns the invite warning message type
@@ -84,23 +81,23 @@ export const getInviteWarningType = (
       ? selectedUsers.filter(isEmail)
       : [selectedUsers].filter(isEmail);
 
-    if (selectedEmails.length < 1) {
-      return null;
-    } else if (
-      mode === 'EXISTING_USERS_ONLY' ||
-      mode === 'INVITE_NEEDS_APPROVAL' ||
-      ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
-        mode === 'DOMAIN_BASED_INVITE') &&
-        checkDomains(config, selectedEmails))
+    if (
+      selectedEmails.length > 0 &&
+      (mode === 'EXISTING_USERS_ONLY' ||
+        mode === 'INVITE_NEEDS_APPROVAL' ||
+        ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
+          mode === 'DOMAIN_BASED_INVITE') &&
+          checkDomains(config, selectedEmails)))
     ) {
-      return InviteType.ADMIN;
+      return 'ADMIN';
     } else if (
-      mode === 'ANYONE' ||
-      ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
-        mode === 'DOMAIN_BASED_INVITE') &&
-        !checkDomains(config, selectedEmails))
+      selectedEmails.length > 0 &&
+      (mode === 'ANYONE' ||
+        ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
+          mode === 'DOMAIN_BASED_INVITE') &&
+          !checkDomains(config, selectedEmails)))
     ) {
-      return InviteType.DIRECT;
+      return 'DIRECT';
     }
   }
 
