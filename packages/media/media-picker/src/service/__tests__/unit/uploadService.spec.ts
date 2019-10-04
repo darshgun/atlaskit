@@ -350,7 +350,8 @@ describe('UploadService', () => {
       });
 
       jest.spyOn(mediaClient.file, 'upload').mockReturnValue({
-        //subscribe(subscription: Subscriber<FileState>) {
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         subscribe(subscription: Subscriber<FileState>) {
           subscription.next({
             status: 'uploading',
@@ -394,6 +395,8 @@ describe('UploadService', () => {
       uploadService.on('file-upload-error', fileUploadErrorCallback);
 
       jest.spyOn(mediaClient.file, 'upload').mockReturnValue({
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         subscribe(subscription: Subscriber<FileState>) {
           // window.setTimeout(() => {
           subscription.error('Some reason');
@@ -480,6 +483,8 @@ describe('UploadService', () => {
 
       return new Promise(resolve => {
         jest.spyOn(mediaClient.file, 'upload').mockReturnValue({
+          // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+          //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
           subscribe(subscription: Subscriber<FileState>) {
             subscription.error();
             expect(
