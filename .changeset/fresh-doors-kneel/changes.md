@@ -1,1 +1,0 @@
-fix animation when ArticleComponent mounts
