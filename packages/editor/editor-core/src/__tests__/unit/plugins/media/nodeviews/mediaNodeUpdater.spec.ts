@@ -32,7 +32,7 @@ describe('MediaNodeUpdater', () => {
     jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => true);
     jest
       .spyOn(mediaCommon, 'getViewMediaClientConfigFromMediaProvider')
-      .mockReturnValue(getDefaultMediaClientConfig());
+      .mockReturnValue(Promise.resolve(getDefaultMediaClientConfig()));
 
     const contextIdentifierProvider: Promise<
       ContextIdentifierProvider
