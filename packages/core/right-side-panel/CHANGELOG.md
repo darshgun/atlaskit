@@ -1,5 +1,13 @@
 # @atlaskit/right-side-panel
 
+## 0.3.0
+
+### Minor Changes
+
+- [minor][49c89962de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c89962de):
+
+  right-side-panel:\* added props skipAnimationOnMount, mountOnEnter, unmountOnExit, disableEnterAnimation, disableExitAnimation
+
 ## 0.2.2
 
 ### Patch Changes

@@ -1,5 +1,10 @@
 ## 0.1.0
 
+## 0.20.6
+
+- Updated dependencies [49c89962de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c89962de):
+  - @atlaskit/right-side-panel@0.3.0
+
 ## 0.20.5
 
 ### Patch Changes
