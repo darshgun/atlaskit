@@ -1,5 +1,21 @@
 # @atlaskit/calendar
 
+## 9.1.1
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 9.1.0
+
+### Minor Changes
+
+- [minor][cc42bbc6ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc42bbc6ad):
+
+  Exporting type of Calendar class and some components are relying on it
+
 ## 9.0.1
 
 ### Patch Changes

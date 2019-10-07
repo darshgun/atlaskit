@@ -6,6 +6,7 @@ const pWaitFor = require('p-wait-for');
 const fs = require('fs');
 const util = require('util');
 const readFile = util.promisify(fs.readFile);
+const retry = require('async-retry');
 
 const CDN_URL_BASE =
   'https://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts';
@@ -193,10 +194,32 @@ async function _installFromCommit(commitHash = '', options = {}) {
   } else {
     log('Running command:');
     log(`$ ${engine} ${cmdArgs.join(' ')}`);
-    await spawndamnit(engine, cmdArgs, {
-      stdio: 'inherit',
-      shell: process.stdout.isTTY,
-    });
+
+    let retryCount = 0;
+    /*
+    On CI we get a weird concurrency issue when installing transitive dependencies from the Atlaskit
+    branch deploy. Re-running the upgrade fixes that problem. It's not great but it unblocks Confluence
+     */
+    await retry(
+      async bail => {
+        try {
+          await spawndamnit(engine, cmdArgs, {
+            stdio: 'inherit',
+            shell: process.stdout.isTTY,
+          });
+        } catch (err) {
+          log(`${retryCount} retry at running command failed`);
+          log(err.toString());
+          retryCount++;
+          throw err;
+        }
+
+        return true;
+      },
+      {
+        retries: 3,
+      },
+    );
   }
 }
 

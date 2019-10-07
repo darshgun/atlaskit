@@ -6,7 +6,8 @@ import { selectors as rendererSelectors } from '../../__helpers/page-objects/_re
 import { Page } from 'puppeteer';
 
 const devices = [
-  Device.LaptopHiDPI,
+  // TODO: ED-7455
+  // Device.LaptopHiDPI,
   Device.LaptopMDPI,
   Device.iPad,
   Device.iPadPro,

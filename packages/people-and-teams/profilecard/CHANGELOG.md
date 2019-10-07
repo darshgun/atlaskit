@@ -1,5 +1,21 @@
 # @atlaskit/profilecard
 
+## 12.3.1
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 12.3.0
+
+### Minor Changes
+
+- [minor][84bedb23c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84bedb23c4):
+
+  Export profile-cards withOuterListeners wrapper
+
 ## 12.2.0
 
 ### Minor Changes

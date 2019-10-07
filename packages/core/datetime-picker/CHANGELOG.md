@@ -1,5 +1,21 @@
 # @atlaskit/datetime-picker
 
+## 9.0.1
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 9.0.0
+
+### Major Changes
+
+- [major][d1444cc6ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1444cc6ef):
+
+  Converting datetime-picker to typescript. Dropping support for flow
+
 ## 8.1.2
 
 ### Patch Changes
