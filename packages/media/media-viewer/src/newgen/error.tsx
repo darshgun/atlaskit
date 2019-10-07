@@ -23,7 +23,8 @@ export type ErrorName =
   | 'metadataFailed'
   | 'unsupported'
   | 'idNotFound'
-  | 'noPDFArtifactsFound';
+  | 'noPDFArtifactsFound'
+  | 'failedProcessing';
 
 export type Props = Readonly<{
   error: MediaViewerError;
@@ -98,6 +99,18 @@ const getErrorMessage = (
         </p>
       </div>
     ),
+
+    failedProcessing: (
+      <div>
+        {errorLoadingFileImage(formatMessage)}
+        <p>
+          <FormattedMessage {...i18nMessages.something_went_wrong} />
+        </p>
+        <p>
+          <FormattedMessage {...i18nMessages.might_be_a_hiccup} />
+        </p>
+      </div>
+    ),
   };
 
   return messages[errorName];
@@ -136,7 +149,8 @@ export class ErrorMessage extends React.Component<
       error: { errorName: failReason, file },
     } = this.props;
     const fileId = file ? file.id : undefined;
-    this.fireAnalytics(mediaPreviewFailedEvent(failReason, fileId));
+    const event = mediaPreviewFailedEvent(failReason, fileId);
+    this.fireAnalytics(event);
   }
 
   render() {

@@ -203,6 +203,7 @@ export class ItemViewerBase extends React.Component<Props, State> {
           case 'processing':
             return this.renderFileState(item);
           case 'failed-processing':
+            return this.renderError('failedProcessing', item);
           case 'error':
             return this.renderError('previewFailed', item);
           default:
