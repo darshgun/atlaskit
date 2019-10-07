@@ -64,10 +64,10 @@ describe('lists should work', () => {
     bridge.editorView = undefined;
     bridge.listBridgeState = undefined;
 
-    ((indentList as unknown) as jest.Mock<{}>).mockClear();
-    ((outdentList as unknown) as jest.Mock<{}>).mockClear();
-    ((toggleOrderedList as unknown) as jest.Mock<{}>).mockClear();
-    ((toggleBulletList as unknown) as jest.Mock<{}>).mockClear();
+    ((indentList as Function) as jest.Mock<{}>).mockClear();
+    ((outdentList as Function) as jest.Mock<{}>).mockClear();
+    ((toggleOrderedList as Function) as jest.Mock<{}>).mockClear();
+    ((toggleBulletList as Function) as jest.Mock<{}>).mockClear();
   });
 
   it('should call ordered list toggle', () => {
@@ -150,11 +150,11 @@ describe('links should work', () => {
   afterEach(() => {
     bridge.editorView = undefined;
 
-    ((insertLink as unknown) as jest.Mock<{}>).mockClear();
-    ((isTextAtPos as unknown) as jest.Mock<{}>).mockClear();
-    ((isLinkAtPos as unknown) as jest.Mock<{}>).mockClear();
-    ((setLinkHref as unknown) as jest.Mock<{}>).mockClear();
-    ((setLinkText as unknown) as jest.Mock<{}>).mockClear();
+    ((insertLink as Function) as jest.Mock<{}>).mockClear();
+    ((isTextAtPos as Function) as jest.Mock<{}>).mockClear();
+    ((isLinkAtPos as Function) as jest.Mock<{}>).mockClear();
+    ((setLinkHref as Function) as jest.Mock<{}>).mockClear();
+    ((setLinkText as Function) as jest.Mock<{}>).mockClear();
   });
 
   it('should call insertLink when not on text node', () => {
@@ -332,7 +332,7 @@ describe('content should work', () => {
   afterEach(() => {
     bridge.editorView = undefined;
 
-    ((clearEditorContent as unknown) as jest.Mock<{}>).mockClear();
+    ((clearEditorContent as Function) as jest.Mock<{}>).mockClear();
   });
 
   it('should clear content', () => {

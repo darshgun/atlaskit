@@ -130,7 +130,7 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
         () =>
           (({
             scrollIntoView: jest.fn(),
-          } as unknown) as HTMLElement),
+          } as ScrollIntoViewOptions) as HTMLElement),
       );
 
       mount(
