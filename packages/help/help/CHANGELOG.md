@@ -1,5 +1,26 @@
 ## 0.1.0
 
+## 0.20.7
+
+### Patch Changes
+
+- [patch][89c775c2eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89c775c2eb):
+
+  fix animation when ArticleComponent mounts
+
+## 0.20.6
+
+- Updated dependencies [49c89962de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c89962de):
+  - @atlaskit/right-side-panel@0.3.0
+
+## 0.20.5
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 0.20.4
 
 ### Patch Changes

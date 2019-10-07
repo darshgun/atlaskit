@@ -1,5 +1,21 @@
 # @atlaskit/panel
 
+## 0.3.0
+
+### Minor Changes
+
+- [minor][178bf178a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/178bf178a6):
+
+  Added new PanelStateless component
+
+## 0.2.6
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 0.2.5
 
 ### Patch Changes

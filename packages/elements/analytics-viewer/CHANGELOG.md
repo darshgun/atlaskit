@@ -1,5 +1,13 @@
 # @atlaskit/analytics-viewer
 
+## 0.3.8
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 0.3.7
 
 ### Patch Changes

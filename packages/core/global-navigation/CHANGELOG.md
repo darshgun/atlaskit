@@ -1,5 +1,13 @@
 # @atlaskit/global-navigation
 
+## 8.0.3
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 8.0.2
 
 ### Patch Changes
