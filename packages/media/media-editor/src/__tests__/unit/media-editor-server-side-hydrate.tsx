@@ -13,8 +13,8 @@ beforeAll(() => {
 afterEach(() => {
   jest.resetAllMocks();
 });
-// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate media-editor correctly', async () => {
+
+test('should ssr then hydrate media-editor correctly', async () => {
   const [example] = await getExamplesFor('media-editor');
   const Example = await require(example.filePath).default;
   const elem = document.createElement('div');

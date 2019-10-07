@@ -32,8 +32,8 @@ const App = () => (
     <p>Lorem Ipsum...</p>
   </SectionMessage>
 );
-// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate tag correctly', () => {
+
+test('should ssr then hydrate tag correctly', () => {
   const canUseDom = jest.spyOn(exenv, 'canUseDOM', 'get');
 
   // server-side

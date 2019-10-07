@@ -13,8 +13,8 @@ beforeEach(() => {
 afterEach(() => {
   jest.resetAllMocks();
 });
-// TODO: https://ecosystem.atlassian.net/browse/AK-6450// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate input correctly', async () => {
+// TODO: https://ecosystem.atlassian.net/browse/AK-6450
+test('should ssr then hydrate input correctly', async () => {
   const [example] = await getExamplesFor('input');
   // $StringLitteral
   const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require

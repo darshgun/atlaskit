@@ -1,3 +1,4 @@
+// TODO: This component will be deprecated. So there is no need to run this test.
 // @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -14,7 +15,7 @@ beforeEach(() => {
 afterEach(() => {
   jest.resetAllMocks();
 });
-// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
+
 test.skip('should ssr then hydrate analytics correctly', async () => {
   const [example] = await getExamplesFor('analytics');
   // $StringLitteral
