@@ -1,5 +1,21 @@
 # @atlaskit/global-search
 
+## 12.2.3
+
+- Updated dependencies [f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):
+  - @atlaskit/navigation-next@6.8.3
+  - @atlaskit/icon-file-type@5.0.0
+  - @atlaskit/icon-object@5.0.0
+  - @atlaskit/icon@19.0.8
+
+## 12.2.2
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 12.2.1
 
 ### Patch Changes

@@ -8,12 +8,14 @@ const BORDER_RADIUS = `${borderRadius()}px`;
 
 interface ThemeTokensWithChildren extends ThemeTokens {
   children?: ReactNode;
+  testId?: string;
 }
 
 export default ({
   backgroundColor,
   textColor,
   children,
+  testId,
 }: ThemeTokensWithChildren) => (
   <span
     css={{
@@ -30,6 +32,7 @@ export default ({
       textTransform: 'uppercase',
       verticalAlign: 'baseline',
     }}
+    data-testid={testId}
   >
     {children}
   </span>

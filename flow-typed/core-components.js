@@ -61,11 +61,11 @@ declare module '@atlaskit/code' {
   declare module.exports: any;
 }
 
-declare module '@atlaskit/datetime-picker' {
+declare module '@atlaskit/comment' {
   declare module.exports: any;
 }
 
-declare module '@atlaskit/comment' {
+declare module '@atlaskit/datetime-picker' {
   declare module.exports: any;
 }
 
@@ -86,6 +86,14 @@ declare module '@atlaskit/flag' {
 }
 
 declare module '@atlaskit/icon' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/icon-file-type' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/icon-object' {
   declare module.exports: any;
 }
 
