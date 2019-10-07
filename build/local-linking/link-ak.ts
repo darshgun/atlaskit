@@ -1,5 +1,5 @@
 /**
- * @file portal.ts
+ * @file link-ak.ts
  *
  * Links packages to another repo
  */
@@ -148,7 +148,7 @@ if (require.main === module) {
   const cli = meow(
     `
     Usage
-        $ portal <repo> <package> [package2 ...]
+        $ link-ak <repo> <package> [package2 ...]
 
       where <repo> is a path relative to the atlaskit repo's parent directory
       and packages are package names with scope optionally removed
@@ -158,8 +158,8 @@ if (require.main === module) {
         --no-nvm             Disable using nvm when installing in <repo>
 
       Examples
-        $ portal confluence-frontend editor-core
-        $ portal confluence-frontend media-card --entry editor-core
+        $ link-ak confluence-frontend editor-core
+        $ link-ak confluence-frontend media-card --entry editor-core
 `,
     {
       flags: {

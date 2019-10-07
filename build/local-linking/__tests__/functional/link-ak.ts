@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { getFixturePath, createTempDir, copyDir } from 'jest-fixtures';
-import portal from '../../portal';
+import linkAk from '../../link-ak';
 import * as yalc from 'yalc';
 
 async function copyFixtureIntoDir(dir: string, fixtureName: string) {
@@ -12,7 +12,7 @@ async function copyFixtureIntoDir(dir: string, fixtureName: string) {
   return destPath;
 }
 
-describe('Portal integration', () => {
+describe('Link AK integration', () => {
   let tempDirPath: string;
   let atlaskitPath: string;
   let consoleErrorSpy: jest.SpyInstance<Console['error']>;
@@ -55,7 +55,7 @@ describe('Portal integration', () => {
     );
 
     expect(fs.existsSync(installedPath)).toBe(false);
-    await portal(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
+    await linkAk(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
     expect(fs.existsSync(installedPath)).toBe(true);
     expect(consoleLogSpy).toHaveBeenCalledWith(
       'Yalc:',
@@ -82,7 +82,7 @@ describe('Portal integration', () => {
     );
 
     expect(fs.existsSync(installedPath)).toBe(false);
-    await portal(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
+    await linkAk(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
     expect(fs.existsSync(installedPath)).toBe(true);
     expect(consoleLogSpy).toHaveBeenCalledWith(
       'Yalc:',
@@ -109,7 +109,7 @@ describe('Portal integration', () => {
     );
 
     expect(fs.existsSync(installedPath)).toBe(false);
-    await portal(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
+    await linkAk(repoPath, ['foo'], { cwd: atlaskitPath, nvm: false });
     expect(fs.existsSync(installedPath)).toBe(true);
     expect(consoleLogSpy).toHaveBeenCalledWith(
       'Yalc:',

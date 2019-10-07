@@ -3,17 +3,17 @@ import fse from 'fs-extra';
 import * as bolt from 'bolt';
 import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
-import portal from '../../portal';
+import linkAk from '../../link-ak';
 
 jest.enableAutomock();
 jest.mock('fs-extra');
-jest.unmock('../../portal');
+jest.unmock('../../link-ak');
 jest.unmock('../../utils');
 
 const mockedFse: any = fse;
 const mockedBolt: any = bolt;
 
-describe('portal', () => {
+describe('Link AK', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     mockedBolt.getProject.mockImplementation(() => ({
@@ -34,7 +34,7 @@ describe('portal', () => {
 
   it('should run yalc publish in each package directory', async () => {
     const spy = jest.spyOn(yalc, 'publishPackage');
-    await portal('repo-foo', ['bar']);
+    await linkAk('repo-foo', ['bar']);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({
       workingDir: 'packages/bar',
@@ -44,7 +44,7 @@ describe('portal', () => {
 
   it('should run yalc add in the target repo after publishing', async () => {
     const spy = jest.spyOn(yalc, 'addPackages');
-    await portal('repo-foo', ['bar']);
+    await linkAk('repo-foo', ['bar']);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(['bar'], {
       workingDir: path.resolve('projects/repo-foo'),
@@ -54,7 +54,7 @@ describe('portal', () => {
   });
 
   it('should run npm to install transitive dependencies in standard repo', async () => {
-    await portal('repo-foo', ['bar']);
+    await linkAk('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
     expect(runCommands).toHaveBeenCalledWith(
       [
@@ -73,7 +73,7 @@ describe('portal', () => {
     mockedFse.pathExists.mockImplementation((p: string) =>
       p.includes('yarn.lock'),
     );
-    await portal('repo-foo', ['bar']);
+    await linkAk('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
     expect(runCommands).toHaveBeenCalledWith(
       [
@@ -93,7 +93,7 @@ describe('portal', () => {
       p.includes('yarn.lock'),
     );
     mockedFse.readJson.mockImplementation(() => ({ bolt: {} }));
-    await portal('repo-foo', ['bar']);
+    await linkAk('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
 
     expect(runCommands).toHaveBeenCalledWith(
@@ -127,7 +127,7 @@ describe('portal', () => {
     });
 
     it('should not run nvm commands when nvm option is false', async () => {
-      await portal('repo-foo', ['bar'], { nvm: false });
+      await linkAk('repo-foo', ['bar'], { nvm: false });
       expect(runCommands).toHaveBeenCalledTimes(1);
       expect(runCommands).toHaveBeenCalledWith(
         [expect.stringMatching(/cd ".*\/projects\/repo-foo" && npm install/)],
@@ -144,7 +144,7 @@ describe('portal', () => {
       );
       mockedFse.readJson.mockImplementation(() => ({ bolt: {} }));
       const spy = jest.spyOn(yalc, 'addPackages');
-      await portal('repo-foo', ['bar']);
+      await linkAk('repo-foo', ['bar']);
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(['bar'], {
         workingDir: path.resolve('projects/repo-foo'),
@@ -161,7 +161,7 @@ describe('portal', () => {
         publishSpy.mockClear();
         addSpy.mockClear();
 
-        await portal('repo-foo', [name]);
+        await linkAk('repo-foo', [name]);
         expect(publishSpy).toHaveBeenCalledTimes(1);
         expect(publishSpy).toHaveBeenCalledWith({ workingDir: 'packages/foo' });
 
@@ -183,7 +183,7 @@ describe('portal', () => {
       const publishSpy = jest.spyOn(yalc, 'publishPackage');
       const addSpy = jest.spyOn(yalc, 'addPackages');
 
-      await portal('repo-foo', ['foo', 'bar']);
+      await linkAk('repo-foo', ['foo', 'bar']);
 
       expect(publishSpy).toHaveBeenCalledTimes(2);
       expect(publishSpy).toHaveBeenCalledWith({ workingDir: 'packages/foo' });
@@ -202,7 +202,7 @@ describe('portal', () => {
   describe('Validation', () => {
     it('should throw if no repo arg passed', async () => {
       // @ts-ignore
-      const check = async () => await portal();
+      const check = async () => await linkAk();
 
       await expect(check()).rejects.toThrow(
         'Must specify repoPath and at least one package',
@@ -211,13 +211,13 @@ describe('portal', () => {
 
     it('should throw if no package arg passed', async () => {
       // @ts-ignore
-      const check = async () => await portal('repo-foo');
+      const check = async () => await linkAk('repo-foo');
 
       await expect(check()).rejects.toThrow(
         'Must specify repoPath and at least one package',
       );
 
-      const checkAgain = async () => await portal('repo-foo', []);
+      const checkAgain = async () => await linkAk('repo-foo', []);
 
       await expect(checkAgain()).rejects.toThrow(
         'Must specify repoPath and at least one package',
@@ -226,7 +226,7 @@ describe('portal', () => {
 
     it('should throw if invalid package name passed', async () => {
       const check = async () =>
-        await portal('repo-foo', ['package-name-does-not-exist']);
+        await linkAk('repo-foo', ['package-name-does-not-exist']);
 
       await expect(check()).rejects.toThrow(
         'Could not find the following packages: package-name-does-not-exist\nProvide either full name (@atlaskit/foo) or unscoped name (foo).',
