@@ -1,12 +1,20 @@
 # @atlaskit/editor-core
 
+## 113.1.6
+
+### Patch Changes
+
+- [patch][d17bb8cf2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d17bb8cf2d):
+
+  ED-7730: Hyperlink enchancements
+
 ## 113.1.5
 
 ### Patch Changes
 
 - [patch][ca88f616e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca88f616e4):
 
-  ED-7730: Fixes XSS attacks in hyperlink edits
+  ED-7730: Hyperlink improvements
 
 ## 113.1.4
 
