@@ -67,8 +67,12 @@ describe('WorkerHasher', () => {
     );
 
     // We mock uuid.v4() call to generate unique ids for both blobs
-    ((uuidV4 as () => string) as jest.Mock<string>).mockReturnValueOnce('my-first-id');
-    ((uuidV4 as () => string) as jest.Mock<string>).mockReturnValueOnce('my-second-id');
+    ((uuidV4 as () => string) as jest.Mock<string>).mockReturnValueOnce(
+      'my-first-id',
+    );
+    ((uuidV4 as () => string) as jest.Mock<string>).mockReturnValueOnce(
+      'my-second-id',
+    );
 
     // Execute hash for first blob and verify returned hash
     const promise1 = hasher.hash(blob1).then(hash => {
@@ -124,7 +128,9 @@ describe('WorkerHasher', () => {
 
     const hasher = new WorkerHasher(1);
 
-    ((uuidV4 as () => string) as jest.Mock<string>).mockReturnValueOnce('my-first-id');
+    ((uuidV4 as () => string) as jest.Mock<string>).mockReturnValueOnce(
+      'my-first-id',
+    );
 
     // Execute hash for first blob and verify returned hash
     const promise = hasher.hash(blob).then(
