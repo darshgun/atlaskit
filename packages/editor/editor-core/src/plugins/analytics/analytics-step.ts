@@ -106,7 +106,7 @@ export class AnalyticsStep extends Step {
 
   map(mapping: Mappable) {
     let newPos = this.pos;
-    if (newPos) {
+    if (typeof newPos === 'number') {
       newPos = mapping.map(newPos);
     }
     // Return the same events, this step will never be removed
@@ -118,7 +118,7 @@ export class AnalyticsStep extends Step {
   }
 
   getMap() {
-    if (this.pos) {
+    if (typeof this.pos === 'number') {
       return new StepMap([this.pos, 0, 0]);
     }
     return new StepMap([]);
