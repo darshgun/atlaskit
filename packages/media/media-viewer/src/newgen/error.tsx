@@ -148,8 +148,7 @@ export class ErrorMessage extends React.Component<
     const {
       error: { errorName: failReason, file },
     } = this.props;
-    const fileId = file ? file.id : undefined;
-    const event = mediaPreviewFailedEvent(failReason, fileId);
+    const event = mediaPreviewFailedEvent(failReason, file);
     this.fireAnalytics(event);
   }
 

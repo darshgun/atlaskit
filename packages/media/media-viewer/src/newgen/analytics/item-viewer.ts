@@ -66,19 +66,19 @@ export const mediaFileLoadFailedEvent = (
 
 export const mediaPreviewFailedEvent = (
   failReason: string,
-  id?: string,
   file?: FileState,
 ): GasPayload => {
+  const fileId = file ? file.id : undefined;
   const fileAttributes = file
     ? fileStateToFileGasPayload(file)
     : {
-        fileId: id,
+        fileId,
       };
   return {
     eventType: 'operational',
     actionSubject: 'mediaFile',
     action: 'previewFailed',
-    actionSubjectId: id,
+    actionSubjectId: fileId,
     attributes: {
       status: 'fail',
       ...fileAttributes,
