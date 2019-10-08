@@ -396,6 +396,10 @@ export default class Page {
     return this.browser.waitUntil(predicate, WAIT_TIMEOUT);
   }
 
+  tick() {
+    this.browser.executeAsync(window.requestAnimationFrame);
+  }
+
   // Window
   setWindowSize(width, height) {
     return this.browser.setWindowSize(width, height);

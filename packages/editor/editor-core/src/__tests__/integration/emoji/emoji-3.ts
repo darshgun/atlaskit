@@ -105,3 +105,64 @@ BrowserTestCase(
     expect(await page.isExisting(typeahead)).toBe(false);
   },
 );
+
+BrowserTestCase(
+  'emoji-3.ts: emoji picker search should be focused by default',
+  { skip: [] },
+  async (client: any) => {
+    const emojiButton = 'button span[aria-label="Emoji"]';
+    const emojiSearch = '[data-emoji-picker-container] input';
+
+    const page = await goToEditorTestingExample(client);
+    await mountEditor(page, { appearance: 'full-page' });
+
+    await page.waitFor(emojiButton);
+
+    // Equivalent with page.click(emojiButton) which
+    // which did not work for SafariDriver in this case
+    await client.execute((emojiButton: string) => {
+      const el = document.querySelector(emojiButton) as HTMLElement;
+      el.click();
+    }, emojiButton);
+
+    await page.waitFor(emojiSearch);
+    expect(await page.hasFocus(emojiSearch)).toBe(true);
+  },
+);
+
+BrowserTestCase(
+  'emoji-3.ts: emoji picker should be scrollable',
+  { skip: [] },
+  async (client: any) => {
+    const emojiButton = 'button span[aria-label="Emoji"]';
+    const emojiList = '[data-emoji-picker-container] .ReactVirtualized__List';
+
+    const page = await goToEditorTestingExample(client);
+    await mountEditor(page, { appearance: 'full-page' });
+
+    await page.waitFor(emojiButton);
+
+    // Equivalent with page.click(emojiButton) which
+    // which did not work for SafariDriver in this case
+    await client.execute((emojiButton: string) => {
+      const el = document.querySelector(emojiButton) as HTMLElement;
+      el.click();
+    }, emojiButton);
+
+    await page.waitFor(emojiList);
+
+    await client.execute((emojiList: string) => {
+      const el = document.querySelector(emojiList) as HTMLElement;
+      el.dispatchEvent(new WheelEvent('wheel', { deltaY: 100 }));
+    }, emojiList);
+
+    await page.tick();
+
+    const scrollTop = await client.execute((emojiList: string) => {
+      const el = document.querySelector(emojiList) as HTMLElement;
+      return el.scrollTop;
+    }, emojiList);
+
+    expect(scrollTop).toBe(100);
+  },
+);
