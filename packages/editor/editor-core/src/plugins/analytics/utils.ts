@@ -4,7 +4,7 @@ import {
 } from './index';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { AnalyticsEventPayload } from './types';
-import { Transaction, EditorState } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { Command } from '../../types';
 import { InputRuleWithHandler } from '../../utils/input-rules';
 import { analyticsPluginKey } from './plugin';
@@ -27,14 +27,13 @@ export function addAnalytics(
   state: EditorState,
   tr: Transaction,
   payload: AnalyticsEventPayload,
-  channel?: string,
+  channel: string = editorAnalyticsChannel,
 ): Transaction {
   const createAnalyticsEvent = getAnalyticsState(state);
 
   if (createAnalyticsEvent) {
     const { storedMarks } = tr;
     tr.step(
-      // For some reason add an step reset all storedMarks
       new AnalyticsStep(
         createAnalyticsEvent,
         [
@@ -46,6 +45,7 @@ export function addAnalytics(
         tr.selection.$from.pos, // We need to create the step based on a position, this prevent split history for relative changes.
       ),
     );
+    // When you add a new step all the storedMarks are removed it
     if (storedMarks) {
       tr.setStoredMarks(storedMarks);
     }
