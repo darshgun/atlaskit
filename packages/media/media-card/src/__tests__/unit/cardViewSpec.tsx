@@ -26,7 +26,7 @@ import {
 
 import { shouldDisplayImageThumbnail } from '../../../src/utils/shouldDisplayImageThumbnail';
 import { FabricChannel } from '@atlaskit/analytics-listeners';
-import { CardDimensionValue } from 'src';
+import { CardDimensionValue } from '../../index';
 
 describe('CardView', () => {
   const file: FileDetails = {
