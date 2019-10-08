@@ -44,7 +44,9 @@ export const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl
 const handleAnalyticsEvent = (
   event: GasPurePayload | GasPureScreenEventPayload,
 ) => {
-  toNativeBridge.call('analyticsBridge', 'trackEvent', JSON.stringify(event));
+  toNativeBridge.call('analyticsBridge', 'trackEvent', {
+    event: JSON.stringify(event),
+  });
 };
 
 class EditorWithState extends Editor {

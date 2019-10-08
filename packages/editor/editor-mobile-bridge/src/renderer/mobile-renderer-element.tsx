@@ -47,7 +47,9 @@ const rendererBridge = ((window as any).rendererBridge = new RendererBridgeImpl(
 const handleAnalyticsEvent = (
   event: GasPurePayload | GasPureScreenEventPayload,
 ) => {
-  toNativeBridge.call('analyticsBridge', 'trackEvent', JSON.stringify(event));
+  toNativeBridge.call('analyticsBridge', 'trackEvent', {
+    event: JSON.stringify(event),
+  });
 };
 
 export default class MobileRenderer extends React.Component<
