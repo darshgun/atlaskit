@@ -5,7 +5,9 @@ import {
   ReactNode,
   Ref,
   SetStateAction,
+  ComponentType,
 } from 'react';
+
 import { Placement } from '@atlaskit/popper';
 
 export type TriggerProps = {
@@ -47,7 +49,7 @@ export type PopupProps = {
   /** testId maps to data-testid for testing in your application */
   testId?: string;
   /** Content to display in the Popup */
-  content: FC<ContentProps>;
+  content: ComponentType<ContentProps>;
   /** Callback function when the Popup is opened */
   onOpen?(): void;
   /** Callback function when the Popup is closed */
@@ -72,6 +74,6 @@ export type FocusManagerHook = {
 };
 
 export type RepositionOnUpdateProps = {
-  content: FC<ContentProps>;
+  content: ComponentType<ContentProps>;
   scheduleUpdate(): void;
 };

@@ -23,7 +23,7 @@ export const Popup: FC<PopupProps> = memo(
     placement,
     shouldFlip = true,
     testId,
-    content,
+    content: Content,
     trigger,
     onOpen,
     onClose,
@@ -36,14 +36,11 @@ export const Popup: FC<PopupProps> = memo(
     useFocusManager({ initialFocusRef, popupRef });
     useCloseManager({ isOpen, onClose, popupRef });
 
-    useEffect(
-      () => {
-        if (isOpen) {
-          onOpen && onOpen();
-        }
-      },
-      [isOpen, onOpen],
-    );
+    useEffect(() => {
+      if (isOpen) {
+        onOpen && onOpen();
+      }
+    }, [isOpen, onOpen]);
 
     return (
       <div css={containerCSS}>
@@ -83,15 +80,15 @@ export const Popup: FC<PopupProps> = memo(
                       tabIndex={-1}
                     >
                       <RepositionOnUpdate
-                        content={content}
+                        content={Content}
                         scheduleUpdate={scheduleUpdate}
                       >
-                        {content({
-                          scheduleUpdate,
-                          isOpen,
-                          onClose,
-                          setInitialFocusRef,
-                        })}
+                        <Content
+                          scheduleUpdate={scheduleUpdate}
+                          isOpen={isOpen}
+                          onClose={onClose}
+                          setInitialFocusRef={setInitialFocusRef}
+                        />
                       </RepositionOnUpdate>
                     </PopupContainer>
                   );
