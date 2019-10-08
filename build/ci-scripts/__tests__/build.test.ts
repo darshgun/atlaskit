@@ -354,47 +354,212 @@ describe('Build', () => {
     });
     it.todo(
       'should trigger `yalc push` on successful recompile of a JS package',
-      async () => {},
     );
     it.todo(
       'should trigger `yalc push` on successful recompile of a TS package',
-      async () => {},
     );
   });
 
   describe('distType option', () => {
     describe('All packages', () => {
-      it.todo(
-        'should only build cjs dist types when "cjs" distType option is passed',
-        async () => {},
-      );
+      it('should only build cjs dist types when "cjs" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build(undefined, {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+        });
+        expect(runCommands).toHaveBeenCalledTimes(2);
+        expect(runCommands).toHaveBeenNthCalledWith(
+          1,
+          [
+            'NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "babel-glob" -- babel src -d dist/cjs --root-mode upward',
+            'bolt workspaces exec --only-fs "babel-flow-glob" -- flow-copy-source -i \'**/__tests__/**\' src dist/cjs',
+          ],
+          {},
+        );
+        expect(runCommands).toHaveBeenNthCalledWith(
+          2,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --only-fs "typescriptcli-glob" -- bash -c \'tsc --project ./build/cli && echo Success || true\'',
+          ],
+          {
+            sequential: true,
+          },
+        );
+      });
 
-      it.todo(
-        'should only build esm dist types when "esm" distType option is passed',
-        async () => {},
-      );
+      it('should only build esm dist types when "esm" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build(undefined, {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'esm',
+        });
+        expect(runCommands).toHaveBeenCalledTimes(2);
+        expect(runCommands).toHaveBeenNthCalledWith(
+          1,
+          [
+            'NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "babel-glob" -- babel src -d dist/esm --root-mode upward',
+            'bolt workspaces exec --only-fs "babel-flow-glob" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm',
+          ],
+          {},
+        );
+        expect(runCommands).toHaveBeenNthCalledWith(
+          2,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+          ],
+          {
+            sequential: true,
+          },
+        );
+      });
 
-      it.todo(
-        'should not build any dist types when "none" distType option is passed',
-        async () => {},
-      );
+      it('should not build any dist types when "none" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build(undefined, {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'none',
+        });
+        expect(runCommands).toHaveBeenCalledTimes(2);
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], {
+          sequential: true,
+        });
+      });
     });
 
     describe('Single package', () => {
-      it.todo(
-        'should only build cjs dist types when "cjs" distType option is passed',
-        async () => {},
-      );
+      it('should only build cjs dist types when "cjs" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+        });
+        expect(runCommands).toHaveBeenCalledTimes(2);
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(
+          2,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+          ],
+          {
+            sequential: false,
+          },
+        );
+      });
 
-      it.todo(
-        'should only build esm dist types when "esm" distType option is passed',
-        async () => {},
-      );
+      it('should only build esm dist types when "esm" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'esm',
+        });
+        expect(runCommands).toHaveBeenCalledTimes(2);
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(
+          2,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+          ],
+          {
+            sequential: false,
+          },
+        );
+      });
 
-      it.todo(
-        'should not build any dist types when "none" distType option is passed',
-        async () => {},
-      );
+      it('should not build any dist types when "none" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'none',
+        });
+        expect(runCommands).toHaveBeenCalledTimes(2);
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], {
+          sequential: false,
+        });
+      });
     });
+
+    describe('Watch mode', () => {
+      it('should only build cjs dist types when "cjs" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+          watch: true,
+        });
+        expect(runCommands).toHaveBeenCalledTimes(4);
+
+        // Initial build
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(
+          2,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+          ],
+          {
+            sequential: false,
+          },
+        );
+
+        // Watch
+        expect(runCommands).toHaveBeenNthCalledWith(3, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(
+          4,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs -w --preserveWatchOutput && echo Success || true\'',
+          ],
+          {
+            sequential: false,
+            onWatchSuccess: expect.any(Function),
+            watchSuccessCondition: expect.any(Function),
+          },
+        );
+      });
+
+      it('should only build esm dist types when "esm" distType option is passed', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'esm',
+          watch: true,
+        });
+        expect(runCommands).toHaveBeenCalledTimes(4);
+
+        // Initial Build
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(
+          2,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+          ],
+          {
+            sequential: false,
+          },
+        );
+
+        // Watch
+        expect(runCommands).toHaveBeenNthCalledWith(3, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(
+          4,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext -w --preserveWatchOutput && echo Success || true\'',
+          ],
+          {
+            sequential: false,
+            onWatchSuccess: expect.any(Function),
+            watchSuccessCondition: expect.any(Function),
+          },
+        );
+      });
+    });
+  });
+
+  describe('Args Validation', () => {
+    it.todo('should throw if watch mode is used without a package');
+    it.todo('should throw if an invalid dist type is passed');
+    it.todo('should throw if dist type "none" is used with watch mode');
   });
 });
