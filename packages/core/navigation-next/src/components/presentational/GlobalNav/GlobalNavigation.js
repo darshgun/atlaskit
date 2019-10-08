@@ -20,6 +20,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
 
   listener() {
     this.vh = window.innerHeight * 0.01;
+    // $FlowFixMe - document.documentElement will be HTMLElement, not null
     document.documentElement.style.setProperty('--vh', `${this.vh}px`);
   }
 
@@ -41,7 +42,10 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
     } = this.props;
     let wrapperStyles = theme.mode.globalNav({ topOffset: theme.topOffset });
     // Fix for mobile
-    wrapperStyles = { ...wrapperStyles, height: 'calc(var(--vh, 1vh) * 100)' };
+    wrapperStyles = {
+      ...wrapperStyles,
+      height: `calc((var(--vh, 1vh) * 100) - ${theme.topOffset}px)`,
+    };
 
     return (
       <NavigationAnalyticsContext
