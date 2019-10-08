@@ -1,6 +1,7 @@
 *.ejs
 *.json
 dist
+.yarn
 .*/packages/core/logo/src
 packages/core/icon/cjs
 packages/core/icon/glyph
