@@ -90,7 +90,9 @@ function downloadFromS3(downloadToFolder, branch, package) {
         chalk.yellow(`Could not find file ${ratchetFile} on s3, it is likely that you are adding a new package to the repository.
        Don't worry, we will create and upload ratchet file for this pkg.`),
       );
-      throw new Error(`Ratchet file for this ${package} was not found in s3 bucket`);
+      throw new Error(
+        `Ratchet file for this ${package} was not found in s3 bucket`,
+      );
     } else {
       console.error(chalk.red(`${err}`));
       process.exit(1);
