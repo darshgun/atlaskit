@@ -34,6 +34,7 @@ import {
   ACTION_SUBJECT_ID,
   addAnalytics,
   DispatchAnalyticsEvent,
+  editorAnalyticsChannel,
 } from '../../../plugins/analytics';
 import { analyticsService } from '../../../analytics';
 import { EditorAppearance } from '../../../types';
@@ -323,7 +324,7 @@ describe(name, () => {
             attributes: {
               analyticsEventPayloads: [
                 {
-                  channel: undefined,
+                  channel: editorAnalyticsChannel,
                   payload: analyticsEventPayload,
                 },
               ],
