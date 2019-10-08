@@ -72,5 +72,6 @@ export type FocusManagerHook = {
 };
 
 export type RepositionOnUpdateProps = {
+  content: FC<ContentProps>;
   scheduleUpdate(): void;
 };

@@ -19,6 +19,12 @@ interface Props {
 
   /** The theme the component should use. */
   theme?: ThemeProp<ThemeTokens, ThemeProps>;
+
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests */
+  testId?: string;
 }
 
 export default class Lozenge extends PureComponent<Props> {
@@ -29,13 +35,13 @@ export default class Lozenge extends PureComponent<Props> {
   };
 
   render() {
-    const { theme, children } = this.props;
+    const { theme, children, testId } = this.props;
     return (
       <Theme.Provider value={theme}>
         <Theme.Consumer {...this.props}>
-          {tokens => (
-            <Container {...tokens}>
-              <Content {...tokens}>{children}</Content>
+          {themeTokens => (
+            <Container testId={testId} {...themeTokens}>
+              <Content {...themeTokens}>{children}</Content>
             </Container>
           )}
         </Theme.Consumer>

@@ -1,5 +1,21 @@
 # @atlaskit/editor-core
 
+## 113.1.5
+
+### Patch Changes
+
+- [patch][ca88f616e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca88f616e4):
+
+  ED-7730: Hyperlink improvements
+
+## 113.1.4
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
 ## 113.1.3
 
 - Updated dependencies [8c725d46ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c725d46ec):

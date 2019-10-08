@@ -1,5 +1,26 @@
 # @atlaskit/form
 
+## 6.3.1
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 6.3.0
+
+### Minor Changes
+
+- [minor][32c55df1d2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/32c55df1d2):
+
+  Add align prop for FormFooter
+
+## 6.2.5
+
+- Updated dependencies [d1444cc6ef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1444cc6ef):
+  - @atlaskit/datetime-picker@9.0.0
+
 ## 6.2.4
 
 - Updated dependencies [8c725d46ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c725d46ec):

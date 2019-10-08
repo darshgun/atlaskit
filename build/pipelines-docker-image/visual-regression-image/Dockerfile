@@ -1,4 +1,4 @@
-FROM atlassianlabs/atlaskit-mk-2:1.0.14
+FROM atlassianlabs/atlaskit-mk-2:1.0.16
 
 # Install Chromium and Puppeteer
 RUN apt-get update && apt-get install -yq gconf-service libasound2  libatk-bridge2.0-0 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
@@ -9,5 +9,7 @@ RUN apt-get update && apt-get install -yq gconf-service libasound2  libatk-bridg
   wget https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64.deb && \
   dpkg -i dumb-init_*.deb && rm -f dumb-init_*.deb && \
   apt-get clean && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
-  
-RUN yarn global add puppeteer@1.13.0
+
+# Every time, Puppeteer is bumped, we need to update the chrome-revision-version `local-chromium`.
+RUN yarn global add puppeteer@1.17.0
+RUN ln -sf /usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-662092  /usr/local/local-chromium-version

@@ -81,7 +81,7 @@ describe('@atlaskit/editor-core/ui/RecentSearch', () => {
 
     expect(onSubmit).toHaveBeenCalledTimes(1);
     expect(onSubmit).toHaveBeenCalledWith(
-      'recent1-url.com',
+      'http://recent1-url.com',
       'recent item 1',
       'typeAhead',
     );
@@ -94,10 +94,18 @@ describe('@atlaskit/editor-core/ui/RecentSearch', () => {
 
     expect(onSubmit).toHaveBeenCalledTimes(1);
     expect(onSubmit).toHaveBeenCalledWith(
-      'recent2-url.com',
+      'http://recent2-url.com',
       'recent item 2',
       'typeAhead',
     );
+  });
+
+  it('should not submit when URL is invalid', async () => {
+    (wrapper.instance() as any).updateInput('javascript:alert(1)');
+    pressReturnInputField(wrapper);
+    await timeout();
+
+    expect(onSubmit).toHaveBeenCalledTimes(0);
   });
 
   it('should submit arbitrary link', async () => {
@@ -107,7 +115,7 @@ describe('@atlaskit/editor-core/ui/RecentSearch', () => {
 
     expect(onSubmit).toHaveBeenCalledTimes(1);
     expect(onSubmit).toHaveBeenCalledWith(
-      'example.com',
+      'http://example.com',
       'example.com',
       'manual',
     );

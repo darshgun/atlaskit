@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import React, { Dispatch, forwardRef, SetStateAction } from 'react';
 import { Popup } from '../../Popup';
-import { PopupComponentProps, TriggerProps } from '../../types';
+import { ContentProps, PopupComponentProps, TriggerProps } from '../../types';
 
 describe('Popup', () => {
   const defaultProps = {
@@ -10,7 +10,7 @@ describe('Popup', () => {
     trigger: (props: TriggerProps) => <button {...props}>trigger</button>,
   };
 
-  it('renders the trigger correctly when the popup is closed', () => {
+  it('renders the trigger correctly when the popup is not open', () => {
     const trigger = (props: TriggerProps) => (
       <button {...props}>trigger</button>
     );
@@ -48,7 +48,7 @@ describe('Popup', () => {
     });
   });
 
-  it('does not render the content when the popup is closed', () => {
+  it('does not render the content when the popup is not open', () => {
     const { queryByText } = render(
       <Popup
         {...defaultProps}
@@ -66,7 +66,17 @@ describe('Popup', () => {
     expect(queryByText('content')).toBeInTheDocument();
   });
 
-  it('does not render the custom popup when the popup is closed', () => {
+  it('renders the content correctly when the popup is opened', () => {
+    const content = () => <div>content</div>;
+    const { queryByText, rerender } = render(
+      <Popup {...defaultProps} content={content} isOpen={false} />,
+    );
+    rerender(<Popup {...defaultProps} content={content} isOpen />);
+
+    expect(queryByText('content')).toBeInTheDocument();
+  });
+
+  it('does not render the custom popup when the popup is not open', () => {
     const { queryByText } = render(
       <Popup
         {...defaultProps}
@@ -106,7 +116,55 @@ describe('Popup', () => {
     expect(queryByText('content')).toBeInTheDocument();
   });
 
-  it('does not call onClose after pressing escape when the popup is closed', async () => {
+  it('renders the custom popup and its content correctly when the popup is opened', () => {
+    const props = {
+      content: () => <div>content</div>,
+      popupComponent: forwardRef<HTMLDivElement, PopupComponentProps>(
+        ({ children, ...props }, ref) => (
+          <div ref={ref} {...props}>
+            popup component
+            <div>{children}</div>
+          </div>
+        ),
+      ),
+    };
+
+    const { queryByText, rerender } = render(
+      <Popup {...defaultProps} {...props} isOpen={false} />,
+    );
+
+    rerender(<Popup {...defaultProps} {...props} isOpen />);
+
+    expect(queryByText('popup component')).toBeInTheDocument();
+    expect(queryByText('content')).toBeInTheDocument();
+  });
+
+  it('does not call onOpen when the popup is not open', () => {
+    const onOpen = jest.fn();
+    render(<Popup {...defaultProps} isOpen={false} onOpen={onOpen} />);
+
+    expect(onOpen).not.toHaveBeenCalled();
+  });
+
+  it('calls onOpen when the popup is open', () => {
+    const onOpen = jest.fn();
+    render(<Popup {...defaultProps} isOpen onOpen={onOpen} />);
+
+    expect(onOpen).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onOpen when the popup is opened', () => {
+    const onOpen = jest.fn();
+    const { rerender } = render(
+      <Popup {...defaultProps} isOpen={false} onOpen={onOpen} />,
+    );
+
+    rerender(<Popup {...defaultProps} isOpen onOpen={onOpen} />);
+
+    expect(onOpen).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call onClose after pressing escape when the popup is not open', () => {
     const onClose = jest.fn();
     const { baseElement } = render(
       <Popup {...defaultProps} isOpen={false} onClose={onClose} />,
@@ -117,7 +175,7 @@ describe('Popup', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('calls onClose after pressing escape when the popup is open', async () => {
+  it('calls onClose after pressing escape when the popup is open', () => {
     const onClose = jest.fn();
     const { baseElement } = render(
       <Popup {...defaultProps} isOpen onClose={onClose} />,
@@ -128,7 +186,20 @@ describe('Popup', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it('calls onClose after clicking on the trigger when the popup is open', async () => {
+  it('calls onClose after pressing escape when the popup is opened', () => {
+    const onClose = jest.fn();
+    const { baseElement, rerender } = render(
+      <Popup {...defaultProps} isOpen={false} onClose={onClose} />,
+    );
+
+    rerender(<Popup {...defaultProps} isOpen onClose={onClose} />);
+
+    fireEvent.keyDown(baseElement, { key: 'Escape', code: 'Escape' });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onClose after clicking on the trigger when the popup is open', () => {
     const onClose = jest.fn();
     const { getByText } = render(
       <Popup
@@ -144,11 +215,44 @@ describe('Popup', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  it('calls onClose after clicking on the trigger when the popup is opened', () => {
+    const onClose = jest.fn();
+    const trigger = () => <button>trigger</button>;
+    const { getByText, rerender } = render(
+      <Popup
+        {...defaultProps}
+        isOpen={false}
+        onClose={onClose}
+        trigger={trigger}
+      />,
+    );
+
+    rerender(
+      <Popup {...defaultProps} isOpen onClose={onClose} trigger={trigger} />,
+    );
+
+    fireEvent.click(getByText('trigger'));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
   it('calls onClose after clicking outside of the popup when the popup is open', () => {
     const onClose = jest.fn();
     const { baseElement } = render(
       <Popup {...defaultProps} isOpen onClose={onClose} />,
     );
+
+    fireEvent.click(baseElement);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onClose after clicking outside of the popup when the popup is opened', () => {
+    const onClose = jest.fn();
+    const { baseElement, rerender } = render(
+      <Popup {...defaultProps} isOpen={false} onClose={onClose} />,
+    );
+    rerender(<Popup {...defaultProps} isOpen onClose={onClose} />);
 
     fireEvent.click(baseElement);
 
@@ -179,6 +283,16 @@ describe('Popup', () => {
     expect(getByText('content')).not.toHaveFocus();
   });
 
+  it('does not focus the content when the popup is opened', () => {
+    const content = () => <div>content</div>;
+    const { getByText, rerender } = render(
+      <Popup {...defaultProps} content={content} isOpen={false} />,
+    );
+    rerender(<Popup {...defaultProps} content={content} isOpen />);
+
+    expect(getByText('content')).not.toHaveFocus();
+  });
+
   it('focuses the specified element inside of the content when the popup is open', () => {
     const { getByText } = render(
       <Popup
@@ -195,6 +309,24 @@ describe('Popup', () => {
         isOpen
       />,
     );
+
+    expect(getByText('focused content')).toHaveFocus();
+  });
+
+  it('focuses the specified element inside of the content when the popup is opened', () => {
+    const content = ({ setInitialFocusRef }: ContentProps) => (
+      <button
+        ref={setInitialFocusRef as Dispatch<SetStateAction<HTMLElement | null>>}
+      >
+        focused content
+      </button>
+    );
+
+    const { getByText, rerender } = render(
+      <Popup {...defaultProps} content={content} isOpen={false} />,
+    );
+
+    rerender(<Popup {...defaultProps} content={content} isOpen />);
 
     expect(getByText('focused content')).toHaveFocus();
   });

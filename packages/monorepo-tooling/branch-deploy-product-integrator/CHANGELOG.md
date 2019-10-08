@@ -1,5 +1,26 @@
 # @atlaskit/branch-deploy-product-integrator
 
+## 1.0.5
+
+### Patch Changes
+
+- [patch][0ed6b4e90c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ed6b4e90c):
+
+  Expose cmd and add a retry to the upgrade
+
+## 1.0.4
+
+- Updated dependencies [4dc307b4f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4dc307b4f9):
+  - @atlaskit/branch-installer@0.2.0
+
+## 1.0.3
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
 ## 1.0.2
 
 ### Patch Changes
