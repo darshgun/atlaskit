@@ -78,6 +78,17 @@ export const themes: IconThemeMap = {
     backgroundColor: 'transparent',
     primaryColor: colors.text,
   },
+  recommendedProduct: {
+    backgroundColor: colors.N40,
+    primaryColor: colors.N0,
+    iconColor: colors.B300,
+    iconElevation: elevation.e100,
+  },
+  discover: {
+    backgroundColor: colors.N30,
+    primaryColor: colors.DN90,
+    iconElevation: elevation.e100,
+  },
 };
 
 interface IconProps {

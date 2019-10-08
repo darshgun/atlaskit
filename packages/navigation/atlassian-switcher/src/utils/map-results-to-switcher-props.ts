@@ -42,6 +42,33 @@ function collectAvailableProductLinks(
   return;
 }
 
+function getDiscoverSectionLinks(switcherProps: any) {
+  const { suggestedProductLinks, fixedLinks, adminLinks } = switcherProps;
+
+  const discoverMoreLink = fixedLinks.filter(
+    (link: SwitcherItemType) => link.key === 'discover-more',
+  );
+  const adminDiscoverAppsLink = adminLinks.filter(
+    (link: SwitcherItemType) => link.key === 'discover-applications',
+  );
+  const adminBrowseAppsLink = adminLinks.filter(
+    (link: SwitcherItemType) => link.key === 'browse-apps',
+  );
+
+  const discoverLinks = [
+    ...discoverMoreLink,
+    ...adminDiscoverAppsLink,
+    ...adminBrowseAppsLink,
+  ];
+
+  const sectionLinks = {
+    suggestedProductLinks: suggestedProductLinks || [],
+    discoverLinks,
+  };
+
+  return sectionLinks;
+}
+
 function collectSuggestedLinks(
   userSiteData: ProviderResult<UserSiteDataResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
@@ -99,9 +126,11 @@ function collectAdminLinks(
 
 function collectFixedProductLinks(
   isDiscoverMoreForEveryoneEnabled: boolean,
+  isDiscoverSectionEnabled?: boolean,
 ): SwitcherItemType[] {
   return getFixedProductLinks({
     isDiscoverMoreForEveryoneEnabled,
+    isDiscoverSectionEnabled,
   });
 }
 
@@ -206,7 +235,7 @@ export function mapResultsToSwitcherProps(
     ? hasLoaded(productRecommendations) && hasLoaded(isXFlowEnabled)
     : true;
 
-  return {
+  const switcherProps = {
     licensedProductLinks: collect(
       collectAvailableProductLinks(cloudId, availableProducts),
       [],
@@ -222,7 +251,10 @@ export function mapResultsToSwitcherProps(
         )
       : [],
     fixedLinks: collect(
-      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+      collectFixedProductLinks(
+        features.isDiscoverMoreForEveryoneEnabled,
+        features.isDiscoverSectionEnabled,
+      ),
       [],
     ),
     adminLinks: collect(
@@ -247,5 +279,19 @@ export function mapResultsToSwitcherProps(
       hasLoadedAdminLinks &&
       hasLoadedSuggestedProducts,
     hasLoadedCritical: hasLoadedAvailableProducts,
+    discoverSectionLinks: {},
   };
+
+  if (features.isDiscoverSectionEnabled) {
+    switcherProps.discoverSectionLinks = getDiscoverSectionLinks(switcherProps);
+    switcherProps.adminLinks = switcherProps.adminLinks.filter(
+      link => link.key === 'administration',
+    );
+    switcherProps.fixedLinks = switcherProps.fixedLinks.filter(
+      link => link.key !== 'discover-more',
+    );
+    switcherProps.suggestedProductLinks = [];
+  }
+
+  return switcherProps;
 }

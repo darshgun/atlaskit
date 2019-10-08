@@ -52,6 +52,10 @@ export type RecentItemType = SwitcherItemType & {
   description: React.ReactNode;
 };
 
+export type DiscoverSectionLinksType = {
+  [key: string]: SwitcherItemType[];
+};
+
 export const OBJECT_TYPE_TO_LABEL_MAP: MessagesDict = {
   'jira-project': messages.jiraProject,
   'confluence-space': messages.confluenceSpace,
@@ -67,14 +71,16 @@ export const getObjectTypeLabel = (type: string): React.ReactNode => {
 
 export const getFixedProductLinks = (params: {
   isDiscoverMoreForEveryoneEnabled: boolean;
+  isDiscoverSectionEnabled?: boolean;
 }): SwitcherItemType[] => {
+  const icon = params.isDiscoverSectionEnabled ? DiscoverFilledGlyph : AddIcon;
   return params.isDiscoverMoreForEveryoneEnabled
     ? [
         {
           // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
           key: 'discover-more',
           label: <FormattedMessage {...messages.discoverMore} />,
-          Icon: createIcon(AddIcon, { size: 'medium' }),
+          Icon: createIcon(icon, { size: 'medium' }),
           href: '',
         },
       ]
@@ -83,7 +89,7 @@ export const getFixedProductLinks = (params: {
 
 type AvailableProductDetails = Pick<
   SwitcherItemType,
-  'label' | 'Icon' | 'href'
+  'label' | 'Icon' | 'href' | 'description'
 >;
 
 export const AVAILABLE_PRODUCT_DATA_MAP: {
@@ -98,6 +104,9 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
     label: 'Confluence',
     Icon: createIcon(ConfluenceIcon, { size: 'small' }),
     href: '/wiki',
+    description: (
+      <FormattedMessage {...messages.productDescriptionConfluence} />
+    ),
   },
   [WorklensProductType.JIRA_BUSINESS]: {
     label: 'Jira Core',
@@ -108,16 +117,23 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
     label: 'Jira Software',
     Icon: createIcon(JiraSoftwareIcon, { size: 'small' }),
     href: '/secure/BrowseProjects.jspa?selectedProjectType=software',
+    description: (
+      <FormattedMessage {...messages.productDescriptionJiraSoftware} />
+    ),
   },
   [WorklensProductType.JIRA_SERVICE_DESK]: {
     label: 'Jira Service Desk',
     Icon: createIcon(JiraServiceDeskIcon, { size: 'small' }),
     href: '/secure/BrowseProjects.jspa?selectedProjectType=service_desk',
+    description: (
+      <FormattedMessage {...messages.productDescriptionJiraServiceDesk} />
+    ),
   },
   [WorklensProductType.OPSGENIE]: {
     label: 'Opsgenie',
     Icon: createIcon(OpsGenieIcon, { size: 'small' }),
     href: 'https://app.opsgenie.com',
+    description: <FormattedMessage {...messages.productDescriptionOpsgenie} />,
   },
   [WorklensProductType.STATUSPAGE]: {
     label: 'Statuspage',
@@ -277,6 +293,7 @@ export const getAdministrationLinks = (
   return adminLinks;
 };
 
+// PROJ: Make this a parameter
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
 
 export const getSuggestedProductLink = (
