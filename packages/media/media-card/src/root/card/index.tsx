@@ -258,7 +258,7 @@ export class CardBase extends Component<
             dataURI,
             previewOrientation = 1,
           } = this.state;
-          const { contextId } = this.props;
+          const { contextId, alt } = this.props;
           const metadata = extendMetadata(fileState, this.state.metadata);
 
           if (!dataURI) {
@@ -275,6 +275,7 @@ export class CardBase extends Component<
                 mimeType: metadata.mimeType,
                 name: metadata.name,
                 size: metadata.size,
+                alt,
               });
             }
           }
@@ -285,7 +286,7 @@ export class CardBase extends Component<
             metadata.mediaType &&
             isPreviewableType(metadata.mediaType);
           if (shouldFetchRemotePreview) {
-            const { appearance, dimensions, resizeMode } = this.props;
+            const { appearance, dimensions, resizeMode, alt } = this.props;
             const options = {
               appearance,
               dimensions,
@@ -314,6 +315,7 @@ export class CardBase extends Component<
                   size: metadata.size,
                   width,
                   height,
+                  alt,
                 });
               }
               this.releaseDataURI();
@@ -585,6 +587,7 @@ export class CardBase extends Component<
       selected,
       onSelectChange,
       disableOverlay,
+      alt,
     } = this.props;
     const { progress, metadata, dataURI, previewOrientation } = this.state;
     const {
@@ -601,6 +604,7 @@ export class CardBase extends Component<
         status={status}
         metadata={metadata}
         dataURI={dataURI}
+        alt={alt}
         appearance={appearance}
         resizeMode={resizeMode}
         dimensions={dimensions}

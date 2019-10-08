@@ -165,6 +165,7 @@ export class CardViewBase extends React.Component<
       selected,
       disableOverlay,
       previewOrientation,
+      alt,
       onDisplayImage,
     } = this.props;
 
@@ -173,6 +174,7 @@ export class CardViewBase extends React.Component<
         status={status}
         details={metadata}
         dataURI={dataURI}
+        alt={alt}
         progress={progress}
         onRetry={onRetry}
         resizeMode={resizeMode}

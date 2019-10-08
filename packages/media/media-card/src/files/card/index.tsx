@@ -42,6 +42,7 @@ export class FileCard extends Component<FileCardProps, {}> {
       onRetry,
       disableOverlay,
       previewOrientation,
+      alt,
       onDisplayImage,
     } = this.props;
     const defaultDetails: FileDetails = {
@@ -74,6 +75,7 @@ export class FileCard extends Component<FileCardProps, {}> {
         actions={this.getActions()}
         disableOverlay={disableOverlay}
         previewOrientation={previewOrientation}
+        alt={alt}
       />
     );
   }
