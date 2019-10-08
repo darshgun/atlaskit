@@ -13,6 +13,7 @@ import { mount } from 'enzyme';
 import { ErrorMessage, createError } from '../../../newgen/error';
 import Button from '@atlaskit/button';
 import { fakeIntl } from '@atlaskit/media-test-helpers';
+import { FileState } from '@atlaskit/media-client';
 
 describe('Error Message', () => {
   it('should render the right error for retrieving metadata', () => {
@@ -64,15 +65,45 @@ describe('Error Message', () => {
     expect(el.find(Button)).toHaveLength(1);
   });
 
-  it('should trigger analytics when displayed', () => {
-    mount(
-      <ErrorMessage intl={fakeIntl} error={createError('unsupported')}>
-        <Button />
-      </ErrorMessage>,
-    );
-    expect(mediaPreviewFailedEventSpy).toHaveBeenCalledWith(
-      'unsupported',
-      undefined,
-    );
+  describe('analytics', () => {
+    it('should trigger analytics when displayed', () => {
+      mount(
+        <ErrorMessage intl={fakeIntl} error={createError('unsupported')}>
+          <Button />
+        </ErrorMessage>,
+      );
+      expect(mediaPreviewFailedEventSpy).toHaveBeenCalledWith(
+        'unsupported',
+        undefined,
+      );
+    });
+
+    it('should pass fileState to the error', () => {
+      const fileState: FileState = {
+        id: '1',
+        status: 'processing',
+        mediaType: 'audio',
+        mimeType: 'audio/mp3',
+        name: 'me.mp3',
+        size: 1,
+      };
+
+      mount(
+        <ErrorMessage
+          intl={fakeIntl}
+          error={createError('unsupported', undefined, fileState)}
+        >
+          <Button />
+        </ErrorMessage>,
+      );
+      expect(mediaPreviewFailedEventSpy).toHaveBeenCalledWith('unsupported', {
+        id: '1',
+        mediaType: 'audio',
+        mimeType: 'audio/mp3',
+        name: 'me.mp3',
+        size: 1,
+        status: 'processing',
+      });
+    });
   });
 });
