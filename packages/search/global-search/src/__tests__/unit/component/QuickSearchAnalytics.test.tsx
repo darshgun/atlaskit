@@ -532,7 +532,7 @@ const getRecentItems = (product: string) =>
           await writeQuery(query);
         });
 
-        it('should trigger entered text event', () => {
+        it.skip('should trigger entered text event', () => {
           const event = findAnalyticEventWithProperties(onEventSpy, {
             actionSubject: 'text',
             action: 'entered',
@@ -544,7 +544,7 @@ const getRecentItems = (product: string) =>
           );
         });
 
-        it('should trigger postquery drawer view event', () => {
+        it.skip('should trigger postquery drawer view event', () => {
           const event = findAnalyticEventWithProperties(onEventSpy, {
             actionSubject: 'globalSearchDrawer',
             action: 'viewed',
@@ -559,7 +559,7 @@ const getRecentItems = (product: string) =>
           );
         });
 
-        it('should trigger post query search results event', () => {
+        it.skip('should trigger post query search results event', () => {
           const event = findAnalyticEventWithProperties(onEventSpy, {
             actionSubject: 'searchResults',
             actionSubjectId: 'postQuerySearchResults',
@@ -581,7 +581,7 @@ const getRecentItems = (product: string) =>
             await writeQuery('');
           });
 
-          it('should trigger entered text event', () => {
+          it.skip('should trigger entered text event', () => {
             const event = findAnalyticEventWithProperties(onEventSpy, {
               actionSubject: 'text',
               action: 'entered',
