@@ -12,7 +12,6 @@ import {
   MediaCollection,
   MediaCollectionItems,
   MediaStoreGetFileParams,
-  EmptyFile,
   ItemsPayload,
   ImageMetadata,
   MediaStoreTouchFileBody,
@@ -208,46 +207,6 @@ describe('MediaStore', () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(body),
-          });
-          expect(authProvider).toHaveBeenCalledWith({
-            collectionName: params.collection,
-          });
-        });
-      });
-    });
-
-    describe('createFileFromBinary', () => {
-      it('should POST to /file/binary endpoint with correct options', () => {
-        const body = new Blob(['Hello World!!!'], { type: 'text/plain' });
-        const params = {
-          collection: 'some-collection',
-          occurrenceKey: 'some-occurrence-key',
-          expireAfter: 123,
-          replaceFileId: 'some-replace-file-id',
-          skipConversions: true,
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/file/binary`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore.createFileFromBinary(body, params).then(response => {
-          expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(
-            `${baseUrl}/file/binary?${stringify(params)}`,
-          );
-          expect(fetchMock.lastOptions()).toEqual({
-            method: 'POST',
-            headers: {
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/json',
-              'Content-Type': 'text/plain',
-            },
-            body,
           });
           expect(authProvider).toHaveBeenCalledWith({
             collectionName: params.collection,
@@ -565,45 +524,11 @@ describe('MediaStore', () => {
             expect(result).not.toBeDefined();
           },
           async error => {
-            expect(error.message).toEqual(
-              'network error 403: {"error":"something wrong"}',
+            expect(error.message).toMatch(
+              /.*Got error code 403: {\"error\":\"something wrong\"}.*/,
             );
           },
         );
-      });
-    });
-
-    describe('createFile', () => {
-      it('should POST to /file with empty body and params', () => {
-        const data: EmptyFile = {
-          id: '1234',
-          createdAt: 999,
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/file`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore
-          .createFile({ collection: 'some-collection' })
-          .then(response => {
-            expect(response).toEqual({ data });
-            expect(fetchMock.lastUrl()).toEqual(
-              `${baseUrl}/file?collection=some-collection`,
-            );
-            expect(fetchMock.lastOptions()).toEqual({
-              method: 'POST',
-              headers: {
-                'X-Client-Id': clientId,
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-              },
-              body: undefined,
-            });
-          });
       });
     });
 
@@ -711,7 +636,7 @@ describe('MediaStore', () => {
 
         await mediaStore.getImage('123');
 
-        expect(fetchMock.lastOptions().headers).toHaveProperty(
+        expect(fetchMock.lastOptions()!.headers).toHaveProperty(
           'accept',
           'image/webp,image/*,*/*;q=0.8',
         );
@@ -728,7 +653,7 @@ describe('MediaStore', () => {
 
         await mediaStore.getImage('123');
 
-        expect(fetchMock.lastOptions().headers || {}).not.toHaveProperty(
+        expect(fetchMock.lastOptions()!.headers || {}).not.toHaveProperty(
           'accept',
         );
       });

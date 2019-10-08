@@ -98,9 +98,6 @@ describe('UploadService', () => {
     );
 
     if (mediaClient.config.userAuthProvider) {
-      jest
-        .spyOn((uploadService as any).userMediaStore, 'createFile')
-        .mockResolvedValue({ data: { id: 'some-new-user-file-id' } });
       const userMediaClient: MediaClient = (uploadService as any)[
         'userMediaClient'
       ];
