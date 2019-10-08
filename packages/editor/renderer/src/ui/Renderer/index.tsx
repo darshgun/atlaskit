@@ -64,8 +64,8 @@ export interface Props {
 export class Renderer extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
   private serializer?: ReactSerializer;
-  private rafID: number | undefined;
-  private editorRef: any | undefined;
+  private rafID?: number;
+  private editorRef?: React.RefObject<HTMLElement>;
 
   constructor(props: Props) {
     super(props);
@@ -289,7 +289,7 @@ export default RendererWithAnalytics;
 type RendererWrapperProps = {
   appearance: RendererAppearance;
   dynamicTextSizing: boolean;
-  wrapperRef?: (instance: any) => void;
+  wrapperRef?: (instance: React.RefObject<HTMLElement>) => void;
 } & { children?: React.ReactNode };
 
 export function RendererWrapper({
