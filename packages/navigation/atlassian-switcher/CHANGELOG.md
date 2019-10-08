@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.4.0
+
+### Minor Changes
+
+- [minor][a2ae055500](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2ae055500):
+
+  Update custom links to include link type (applink vs custom link) in analytics
+
 ## 4.3.0
 
 ### Minor Changes

@@ -45,6 +45,7 @@ export type SwitcherItemType = {
   href: string;
   childItems?: SwitcherChildItem[];
   productType?: WorklensProductType;
+  analyticsAttributes?: { [key: string]: string };
 };
 
 export type RecentItemType = SwitcherItemType & {
@@ -327,6 +328,9 @@ export const getCustomLinkItems = (
       label: customLink.label,
       Icon: createIcon(WorldIcon),
       href: customLink.link,
+      analyticsAttributes: {
+        linkType: customLink.local ? 'customLink' : 'applink',
+      },
     }));
 };
 

@@ -66,6 +66,7 @@ const getItemAnalyticsContext = (
   type: string,
   href: string,
   productType?: string,
+  extraAttributes?: { [key: string]: string },
 ) => ({
   ...analyticsAttributes({
     groupItemIndex: index,
@@ -73,6 +74,7 @@ const getItemAnalyticsContext = (
     itemType: type,
     domain: urlToHostname(href),
     productType,
+    ...extraAttributes,
   }),
 });
 
@@ -307,20 +309,29 @@ export default class Switcher extends React.Component<SwitcherProps> {
               disableHeadings ? null : <FormattedMessage {...messages.more} />
             }
           >
-            {customLinks.map(({ label, href, Icon }, idx) => (
-              // todo: id in SwitcherItem should be consumed from custom link resolver
-              <NavigationAnalyticsContext
-                key={idx + '.' + label}
-                data={getItemAnalyticsContext(idx, null, 'customLink', href)}
-              >
-                <SwitcherThemedItemWithEvents
-                  icon={<Icon theme="custom" />}
-                  href={href}
+            {customLinks.map(
+              ({ analyticsAttributes, label, href, Icon }, idx) => (
+                // todo: id in SwitcherItem should be consumed from custom link resolver
+                <NavigationAnalyticsContext
+                  key={idx + '.' + label}
+                  data={getItemAnalyticsContext(
+                    idx,
+                    null,
+                    'customLink',
+                    href,
+                    undefined,
+                    analyticsAttributes,
+                  )}
                 >
-                  {label}
-                </SwitcherThemedItemWithEvents>
-              </NavigationAnalyticsContext>
-            ))}
+                  <SwitcherThemedItemWithEvents
+                    icon={<Icon theme="custom" />}
+                    href={href}
+                  >
+                    {label}
+                  </SwitcherThemedItemWithEvents>
+                </NavigationAnalyticsContext>
+              ),
+            )}
           </Section>
           {!hasLoadedCritical && <Skeleton />}
           {manageLink && <ManageButton href={manageLink} />}
