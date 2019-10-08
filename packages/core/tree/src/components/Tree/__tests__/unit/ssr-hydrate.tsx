@@ -39,7 +39,7 @@ const App = () => (
 );
 
 //TODO: https://ecosystem.atlassian.net/browse/AK-6450
-test('should ssr then hydrate tree correctly', () => {
+test.skip('should ssr then hydrate tree correctly', () => {
   const canUseDom = jest.spyOn(exenv, 'canUseDOM', 'get');
 
   // server-side
