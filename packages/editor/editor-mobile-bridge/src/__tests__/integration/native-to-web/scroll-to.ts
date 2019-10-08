@@ -55,11 +55,13 @@ async function checkScrollTo(
   };
 }
 
+const temporarySkipAll = skip.concat(['chrome', 'safari']);
+
 // Tests for `scrollToContentNode`:
 
 BrowserTestCase(
   `scroll-to.ts: call scrollToContentNode() for a Mention on renderer bridge.`,
-  { skip },
+  { skip: temporarySkipAll },
   async function(client: any, testName: string) {
     const browser = await loadExampleDocument(client);
     const mentionId = '0'; // matches @Carolyn
@@ -83,7 +85,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   `scroll-to.ts: call scrollToContentNode() for an Action on renderer bridge.`,
-  { skip },
+  { skip: temporarySkipAll },
   async function(client: any, testName: string) {
     const browser = await loadExampleDocument(client);
     const {
@@ -106,7 +108,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   `scroll-to.ts: call scrollToContentNode() for a Decision on renderer bridge.`,
-  { skip },
+  { skip: temporarySkipAll },
   async function(client: any, testName: string) {
     const browser = await loadExampleDocument(client);
     const {
@@ -131,7 +133,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   `scroll-to.ts: call getContentNodeScrollOffsetY() for a Mention on renderer bridge.`,
-  { skip },
+  { skip: temporarySkipAll },
   async function(client: any, testName: string) {
     const browser = await loadExampleDocument(client);
     const mentionId = '0'; // matches @Carolyn
@@ -147,7 +149,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   `scroll-to.ts: call getContentNodeScrollOffsetY() for an Action on renderer bridge.`,
-  { skip },
+  { skip: temporarySkipAll },
   async function(client: any, testName: string) {
     const browser = await loadExampleDocument(client);
     const localId = 'b9ce6302-8e8c-45c2-a2e1-3b1d6c68e059';
@@ -163,7 +165,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   `scroll-to.ts: call getContentNodeScrollOffsetY() for a Decision on renderer bridge.`,
-  { skip },
+  { skip: temporarySkipAll },
   async function(client: any, testName: string) {
     const browser = await loadExampleDocument(client);
     const localId = '695d2be8-528a-4ec0-9eb7-351763af6f94';
