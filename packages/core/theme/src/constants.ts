@@ -34,7 +34,7 @@ export const noFocusRing = () => `
   box-shadow: none;
 `;
 
-export const layers = {
+export const layers: Record<string, () => number> = {
   card: () => 100,
   dialog: () => 300,
   navigation: () => 200,

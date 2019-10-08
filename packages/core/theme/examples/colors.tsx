@@ -2,7 +2,6 @@ import React from 'react';
 import color from 'color';
 import { colors } from '../src';
 
-// TODO check out these 'ts-ignore's
 export default () => (
   <>
     {Object.keys(colors as Record<string, any>)
