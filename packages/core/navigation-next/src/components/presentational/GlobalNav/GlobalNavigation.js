@@ -5,7 +5,7 @@
  * opinionated 'GlobalNavigation' component.
  */
 
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useEffect } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import {
@@ -16,6 +16,22 @@ import {
 import type { GlobalNavigationProps } from './types';
 
 export default class GlobalNavigation extends Component<GlobalNavigationProps> {
+  vh = window.innerHeight * 0.01;
+
+  listener() {
+    this.vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${this.vh}px`);
+  }
+
+  componentDidMount() {
+    this.listener();
+    window.addEventListener('resize', this.listener);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.listener);
+  }
+
   render() {
     const {
       itemComponent: ItemComponent,
@@ -23,7 +39,9 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
       secondaryItems,
       theme,
     } = this.props;
-    const wrapperStyles = theme.mode.globalNav({ topOffset: theme.topOffset });
+    let wrapperStyles = theme.mode.globalNav({ topOffset: theme.topOffset });
+    // Fix for mobile
+    wrapperStyles = { ...wrapperStyles, height: `calc(var(--vh, 1vh) * 100)` };
 
     return (
       <NavigationAnalyticsContext
