@@ -4,7 +4,7 @@ import NativeBridge from './bridge';
 import { sendToBridge } from '../../bridge-utils';
 
 export default class IosBridge implements NativeBridge {
-  showMentions(query: String) {
+  showMentions(query: string) {
     if (window.webkit && window.webkit.messageHandlers.mentionBridge) {
       window.webkit.messageHandlers.mentionBridge.postMessage({
         name: 'showMentions',
@@ -142,11 +142,11 @@ export default class IosBridge implements NativeBridge {
     }
   }
 
-  trackEvent(event: String) {
+  trackEvent(event: string) {
     if (window.webkit && window.webkit.messageHandlers.analyticsBridge) {
       window.webkit.messageHandlers.analyticsBridge.postMessage({
         name: 'trackEvent',
-        event: event,
+        event,
       });
     }
   }

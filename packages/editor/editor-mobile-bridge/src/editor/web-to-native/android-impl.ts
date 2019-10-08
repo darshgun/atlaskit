@@ -10,6 +10,7 @@ import {
   StatusBridge,
   LinkBridge,
   UndoRedoBridge,
+  AnalyticsBridge,
 } from './bridge';
 
 import { sendToBridge } from '../../bridge-utils';
@@ -34,10 +35,10 @@ export default class AndroidBridge implements NativeBridge {
     this.statusBridge = window.statusBridge as StatusBridge;
     this.linkBridge = window.linkBridge as LinkBridge;
     this.undoRedoBridge = window.undoRedoBridge as UndoRedoBridge;
-    this.analyticsBridge = window.linkBridge as AnalyticsBridge;
+    this.analyticsBridge = window.analyticsBridge as AnalyticsBridge;
   }
 
-  showMentions(query: String) {
+  showMentions(query: string) {
     this.mentionBridge.showMentions(query);
   }
 
@@ -105,7 +106,7 @@ export default class AndroidBridge implements NativeBridge {
     }
   }
 
-  trackEvent(event: String) {
+  trackEvent(event: string) {
     this.analyticsBridge.trackEvent(event);
   }
 

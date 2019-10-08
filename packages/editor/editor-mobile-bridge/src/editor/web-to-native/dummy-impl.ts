@@ -9,7 +9,7 @@ export default class DummyBridge implements NativeBridge {
     console.log(...args);
   };
 
-  showMentions(query: String) {
+  showMentions(query: string) {
     this.log(`showMentions(query=${query})`);
   }
   dismissMentions() {
@@ -58,8 +58,8 @@ export default class DummyBridge implements NativeBridge {
   stateChanged(canUndo: boolean, canRedo: boolean) {
     this.log(`stateChanged(canUndo=${canUndo}, canRedo=${canRedo})`);
   }
-  trackEvent(event: String) {
-    this.log('trackEvent', event);
+  trackEvent(event: string) {
+    this.log(`trackEvent(${event})`);
   }
 
   call<T extends EditorPluginBridges>(

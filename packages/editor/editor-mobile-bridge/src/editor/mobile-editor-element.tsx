@@ -9,6 +9,10 @@ import {
 import FabricAnalyticsListeners, {
   AnalyticsWebClient,
 } from '@atlaskit/analytics-listeners';
+import {
+  GasPurePayload,
+  GasPureScreenEventPayload,
+} from '@atlaskit/analytics-gas-types';
 
 // @ts-ignore
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
@@ -28,6 +32,7 @@ import {
 import { parseLocationSearch } from '../bridge-utils';
 import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
 import { cardClient, cardProvider } from '../providers/cardProvider';
+import { analyticsBridgeClient } from '../analytics-client';
 
 const params = parseLocationSearch();
 // @ts-ignore
@@ -36,16 +41,10 @@ import { AtlaskitThemeProvider } from '@atlaskit/theme';
 
 export const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl());
 
-const analyticsBridgeTrack = (type, event) => {
-  event.type = type;
-  toNativeBridge.trackEvent(JSON.stringify(event));
-};
-
-const analyticsBridgeClient: AnalyticsWebClient = {
-  sendUIEvent: event => analyticsBridgeTrack('ui', event),
-  sendOperationalEvent: event => analyticsBridgeTrack('operational', event),
-  sendTrackEvent: event => analyticsBridgeTrack('track', event),
-  sendScreenEvent: event => analyticsBridgeTrack('screen', event),
+const handleAnalyticsEvent = (
+  event: GasPurePayload | GasPureScreenEventPayload,
+) => {
+  toNativeBridge.call('analyticsBridge', 'trackEvent', JSON.stringify(event));
 };
 
 class EditorWithState extends Editor {
@@ -92,8 +91,12 @@ export default function mobileEditor(props: Props) {
   // Temporarily opting out of the default oauth2 flow for phase 1 of Smart Links
   // See https://product-fabric.atlassian.net/browse/FM-2149 for details.
   const authFlow = 'disabled';
+  const analyticsClient: AnalyticsWebClient = analyticsBridgeClient(
+    handleAnalyticsEvent,
+  );
+
   return (
-    <FabricAnalyticsListeners client={analyticsBridgeClient}>
+    <FabricAnalyticsListeners client={analyticsClient}>
       <SmartCardProvider client={cardClient} authFlow={authFlow}>
         <AtlaskitThemeProvider mode={mode}>
           <EditorWithState
