@@ -4,7 +4,7 @@ function returnMissingPkgBasedOn(err) {
   return err
     .split('was not found in s3 bucket')
     .shift()
-    .split('File for this')
+    .split('Ratchet file for this')
     .pop()
     .trim();
 }
