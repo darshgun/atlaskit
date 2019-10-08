@@ -119,7 +119,7 @@ const getErrorMessage = (
 export class MediaViewerError {
   constructor(
     readonly errorName: ErrorName,
-    readonly file?: FileState,
+    readonly fileState?: FileState,
     readonly innerError?: Error,
   ) {}
 }
@@ -127,9 +127,9 @@ export class MediaViewerError {
 export const createError = (
   name: ErrorName,
   innerError?: Error,
-  file?: FileState,
+  fileState?: FileState,
 ): MediaViewerError => {
-  return new MediaViewerError(name, file, innerError);
+  return new MediaViewerError(name, fileState, innerError);
 };
 
 export class ErrorMessage extends React.Component<
@@ -146,9 +146,9 @@ export class ErrorMessage extends React.Component<
 
   componentDidMount() {
     const {
-      error: { errorName: failReason, file },
+      error: { errorName: failReason, fileState },
     } = this.props;
-    const event = mediaPreviewFailedEvent(failReason, file);
+    const event = mediaPreviewFailedEvent(failReason, fileState);
     this.fireAnalytics(event);
   }
 
