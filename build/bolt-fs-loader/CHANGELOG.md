@@ -1,5 +1,13 @@
 # bolt-fs-loader
 
+## 0.0.4
+
+### Patch Changes
+
+- [patch][462dd21997](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/462dd21997):
+
+  Update bolt to 0.24.3
+
 ## 0.0.3
 
 ### Patch Changes

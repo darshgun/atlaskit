@@ -1,5 +1,10 @@
 # @atlaskit/webpack-config
 
+## 2.0.16
+
+- Updated dependencies [462dd21997](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/462dd21997):
+  - bolt-fs-loader@0.0.4
+
 ## 2.0.15
 
 ### Patch Changes

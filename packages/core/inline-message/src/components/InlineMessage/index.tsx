@@ -18,6 +18,18 @@ interface Props {
   /** Set the icon to be used before the title. Options are: connectivity,
    confirmation, info, warning, and error. */
   type: IconType;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests.
+   As inline message is composed of different components, we passed down the testId to the sub component you want to test:
+   - testId to identify the inline message component.
+   - testId--inline-dialog to get the content of the actual component.
+   - testId--button to click on the actual component.
+   - testId--title to get the title of the actual component.
+   - testId--text to get the text of the actual component.
+    */
+  testId?: string;
 }
 
 interface State {
@@ -52,13 +64,21 @@ export default class InlineMessage extends React.Component<Props, State> {
   };
 
   render() {
-    const { children, placement, secondaryText, title, type } = this.props;
+    const {
+      children,
+      placement,
+      secondaryText,
+      title,
+      type,
+      testId,
+    } = this.props;
     const { isHovered, isOpen } = this.state;
     return (
       <Root
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         appearance={type}
+        data-testid={testId}
       >
         <InlineDialog
           onClose={() => {
@@ -67,17 +87,31 @@ export default class InlineMessage extends React.Component<Props, State> {
           content={children}
           isOpen={isOpen}
           placement={placement}
+          testId={testId && `${testId}--inline-dialog`}
         >
           <Button
             appearance="subtle-link"
             onClick={this.toggleDialog}
             spacing="none"
+            testId={testId && `${testId}--button`}
           >
             <ButtonContents isHovered={isHovered}>
               <IconForType type={type} isHovered={isHovered} isOpen={isOpen} />
-              {title ? <Title isHovered={isHovered}>{title}</Title> : null}
+              {title ? (
+                <Title
+                  data-testid={testId && `${testId}--title`}
+                  isHovered={isHovered}
+                >
+                  {title}
+                </Title>
+              ) : null}
               {secondaryText ? (
-                <Text isHovered={isHovered}>{secondaryText}</Text>
+                <Text
+                  data-testid={testId && `${testId}--text`}
+                  isHovered={isHovered}
+                >
+                  {secondaryText}
+                </Text>
               ) : null}
             </ButtonContents>
           </Button>
