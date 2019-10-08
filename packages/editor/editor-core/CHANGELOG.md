@@ -6,7 +6,7 @@
 
 - [patch][ca88f616e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca88f616e4):
 
-  ED-7730: Fixes XSS attacks in hyperlink edits
+  ED-7730: Hyperlink improvements
 
 ## 113.1.4
 
