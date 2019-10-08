@@ -5,7 +5,7 @@
  * opinionated 'GlobalNavigation' component.
  */
 
-import React, { Component, Fragment, useEffect } from 'react';
+import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import {
@@ -41,7 +41,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
     } = this.props;
     let wrapperStyles = theme.mode.globalNav({ topOffset: theme.topOffset });
     // Fix for mobile
-    wrapperStyles = { ...wrapperStyles, height: `calc(var(--vh, 1vh) * 100)` };
+    wrapperStyles = { ...wrapperStyles, height: 'calc(var(--vh, 1vh) * 100)' };
 
     return (
       <NavigationAnalyticsContext
