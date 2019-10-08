@@ -12,6 +12,7 @@ import { extendPayload } from '../../../../plugins/analytics/plugin';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { createEditorFactory, doc, p } from '@atlaskit/editor-test-helpers';
 import { CommandDispatch } from '../../../../types';
+import { AnalyticsStep } from '../../../../plugins/analytics/analytics-step';
 
 describe('analytics', () => {
   const createEditor = createEditorFactory();
@@ -51,15 +52,24 @@ describe('analytics', () => {
       tr = editorView.state.tr.insertText('hello ');
     });
 
+    it('should add current selection position to analytics step ', () => {
+      tr = addAnalytics(state, tr, payload);
+
+      const pos = tr.selection.$from.pos;
+      const analyticsStep = tr.steps[tr.steps.length - 1] as AnalyticsStep;
+
+      expect(pos).toEqual(analyticsStep.pos);
+    });
+
     it('create analytics event with payload', () => {
-      tr = addAnalytics(tr, payload);
+      tr = addAnalytics(state, tr, payload);
       dispatch(tr);
 
       expect(createAnalyticsEvent).toHaveBeenCalledWith(payload);
     });
 
     it('fires analytics event for channel', () => {
-      tr = addAnalytics(tr, payload, 'atlassian');
+      tr = addAnalytics(state, tr, payload, 'atlassian');
       dispatch(tr);
 
       expect(fireMock).toHaveBeenCalledWith('atlassian');
@@ -77,8 +87,8 @@ describe('analytics', () => {
         eventType: EVENT_TYPE.UI,
       };
 
-      tr = addAnalytics(tr, payload);
-      tr = addAnalytics(tr, secondPayload);
+      tr = addAnalytics(state, tr, payload);
+      tr = addAnalytics(state, tr, secondPayload);
 
       dispatch(tr);
 
