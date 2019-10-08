@@ -522,7 +522,7 @@ describe('<ItemViewer />', () => {
 
       expect(el.find('ErrorMessage').prop('error')).toEqual({
         errorName: 'failedProcessing',
-        file: {
+        fileState: {
           id: 'some-id',
           mediaType: 'image',
           status: 'failed-processing',
