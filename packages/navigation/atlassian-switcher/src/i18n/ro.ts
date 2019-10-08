@@ -7,7 +7,7 @@
 // Romanian
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Comutați la',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Comutați la…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Comutare la…',
   'fabric.atlassianSwitcher.recent': 'Recente',
   'fabric.atlassianSwitcher.more': 'Mai mult',
   'fabric.atlassianSwitcher.try': 'Încercați',
@@ -22,5 +22,10 @@ export default {
     'Monitorizăm erorile de acest tip, însă ne puteți contacta dacă reîmprospătarea nu îmbunătățește lucrurile',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Un robot este defect și câțiva oameni sunt ocupați să îl repare. ',
-  'fabric.atlassianSwitcher.expand': 'Extindere',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Nu am putut încărca această listă. Reîncărcați pagina și încercați din nou.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'V-ați deconectat. Conectați-vă din nou.',
+  'fabric.atlassianSwitcher.login': 'Conectare',
+  'fabric.atlassianSwitcher.show.more.sites': 'Afișare mai multe site-uri',
 };

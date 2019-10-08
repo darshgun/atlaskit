@@ -7,7 +7,7 @@
 // Russian
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Переключиться на',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Переключиться на...',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Переключиться на…',
   'fabric.atlassianSwitcher.recent': 'Недавние',
   'fabric.atlassianSwitcher.more': 'Еще',
   'fabric.atlassianSwitcher.try': 'Новинка',
@@ -22,5 +22,10 @@ export default {
     'Мы стараемся отслеживать все ошибки. Если обновление страницы не поможет, обязательно сообщите нам об этом.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Несколько людей и один робот уже всё чинят.',
-  'fabric.atlassianSwitcher.expand': 'Открыть',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Не удалось загрузить список. Обновите страницу и повторите попытку.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Вы вышли из системы. Выполните вход еще раз.',
+  'fabric.atlassianSwitcher.login': 'Войти',
+  'fabric.atlassianSwitcher.show.more.sites': 'Больше сайтов',
 };

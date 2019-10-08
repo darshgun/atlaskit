@@ -17,10 +17,15 @@ export default {
   'fabric.atlassianSwitcher.people': 'Persone',
   'fabric.atlassianSwitcher.administration': 'Amministrazione',
   'fabric.atlassianSwitcher.discoverMore': 'Scopri altri prodotti',
-  'fabric.atlassianSwitcher.errorHeading': 'Si è verificato un problema',
+  'fabric.atlassianSwitcher.errorHeading': 'Si è verificato un errore',
   'fabric.atlassianSwitcher.errorText':
     "Teniamo traccia di questi errori, ma puoi contattarci se l'aggiornamento non risolve il problema",
   'fabric.atlassianSwitcher.errorImageAltText':
     'Problema con il robot e diverse persone sono impegnate nella sua risoluzione.',
-  'fabric.atlassianSwitcher.expand': 'Espandi',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Impossibile caricare la lista. Ricarica la pagina e riprova.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'È avvenuta una disconnessione. Esegui di nuovo l’accesso.',
+  'fabric.atlassianSwitcher.login': 'Accedi',
+  'fabric.atlassianSwitcher.show.more.sites': 'Mostra altri siti',
 };

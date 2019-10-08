@@ -7,7 +7,7 @@
 // Chinese
 export default {
   'fabric.atlassianSwitcher.switchTo': '切换到',
-  'fabric.atlassianSwitcher.switchToTooltip': '切换到…',
+  'fabric.atlassianSwitcher.switchToTooltip': '切换到...',
   'fabric.atlassianSwitcher.recent': '最近',
   'fabric.atlassianSwitcher.more': '更多',
   'fabric.atlassianSwitcher.try': '尝试',
@@ -17,10 +17,14 @@ export default {
   'fabric.atlassianSwitcher.people': '人员',
   'fabric.atlassianSwitcher.administration': '管理',
   'fabric.atlassianSwitcher.discoverMore': '发现更多',
-  'fabric.atlassianSwitcher.errorHeading': '出现问题',
+  'fabric.atlassianSwitcher.errorHeading': '出错了',
   'fabric.atlassianSwitcher.errorText':
     '我们会跟踪这些错误，但是如果刷新不能修复问题，请随时与我们联系',
   'fabric.atlassianSwitcher.errorImageAltText':
     '一个损坏的机器人和一些人员正在繁忙修理中。',
-  'fabric.atlassianSwitcher.expand': '扩展',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    '无法加载此列表。请重新加载页面，然后重试。',
+  'fabric.atlassianSwitcher.errorTextLoggedOut': '您已注销。请再次登录。',
+  'fabric.atlassianSwitcher.login': '登录',
+  'fabric.atlassianSwitcher.show.more.sites': '显示更多站点',
 };
