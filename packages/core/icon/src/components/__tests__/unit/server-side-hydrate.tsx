@@ -15,9 +15,13 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('should ssr then hydrate icon correctly', async () => {
-  const example = await getExamplesFor('icon');
-  console.log(example);
+describe('should ssr then hydrate icon correctly', () => {
+  beforeAll(async () => {
+    const examples = await getExamplesFor('icon');
+  });
+  for (const ex of examples) {
+    test(`${ex.filePath.split('/examples/').shift()}`, async () => {});
+  }
   // console.log('After example', new Date().getTime())
   // const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
   // console.log('After require path', new Date().getTime())
