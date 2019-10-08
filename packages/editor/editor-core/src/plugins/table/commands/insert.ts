@@ -15,8 +15,7 @@ import { Command } from '../../../types';
 
 // #region Commands
 export const insertColumn = (column: number): Command => (state, dispatch) => {
-  const tr = state.tr;
-  addColumnAt(column)(tr);
+  const tr = addColumnAt(column)(state.tr);
   const table = findTable(tr.selection);
   if (!table) {
     return false;
