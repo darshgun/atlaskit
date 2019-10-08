@@ -1,6 +1,7 @@
 *.ejs
 *.json
 dist
+.yarn
 .*/packages/core/logo/src
 packages/core/icon/cjs
 packages/core/icon/glyph
@@ -10,6 +11,10 @@ packages/core/icon-object/cjs
 packages/core/icon-object/glyph
 packages/core/icon-object/utils
 packages/core/icon-object/src/metadata.js
+packages/core/icon-priority/cjs
+packages/core/icon-priority/glyph
+packages/core/icon-priority/utils
+packages/core/icon-priority/src/metadata.js
 packages/core/icon-file-type/cjs
 packages/core/icon-file-type/glyph
 packages/core/icon-file-type/utils

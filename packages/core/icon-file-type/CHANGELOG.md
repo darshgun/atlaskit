@@ -1,5 +1,13 @@
 # @atlaskit/icon-file-type
 
+## 5.0.0
+
+### Major Changes
+
+- [major][f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):
+
+  @atlaskit/icon-file-type and @atlaskit/icon-object have been converted to TypeScript to provide static typing. Flow types are no longer provided. No API or bahavioural changes.
+
 ## 4.0.10
 
 ### Patch Changes

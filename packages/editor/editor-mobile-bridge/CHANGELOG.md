@@ -1,5 +1,13 @@
 # @atlaskit/editor-mobile-bridge
 
+## 8.11.2
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
 ## 8.11.1
 
 ### Patch Changes

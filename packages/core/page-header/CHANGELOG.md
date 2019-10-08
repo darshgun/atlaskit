@@ -1,5 +1,21 @@
 # @atlaskit/page-header
 
+## 9.0.14
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 9.0.13
+
+### Patch Changes
+
+- [patch][0b09089d27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b09089d27):
+
+  Text alignment of action items will now only be applied to direct children
+
 ## 9.0.12
 
 ### Patch Changes

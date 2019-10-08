@@ -1,5 +1,26 @@
 # @atlaskit/dropdown-menu
 
+## 8.1.4
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 8.1.3
+
+- Updated dependencies [10e0798da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10e0798da6):
+  - @atlaskit/lozenge@9.1.0
+
+## 8.1.2
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
 ## 8.1.1
 
 - Updated dependencies [8d0f37c23e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d0f37c23e):

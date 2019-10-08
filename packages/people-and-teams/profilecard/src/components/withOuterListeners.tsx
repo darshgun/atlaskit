@@ -1,13 +1,17 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 
-interface Props {
+export interface WithOuterListenersProps {
   handleClickOutside?: () => void;
   handleEscapeKeydown?: () => void;
 }
 
-export default function withOuterListeners(Component: any) {
-  return class WithOutsideClick extends React.PureComponent<Props> {
+export default function withOuterListeners<P>(
+  Component: React.ComponentClass<P> | React.StatelessComponent<P>,
+): React.ComponentClass<P & WithOuterListenersProps> {
+  return class WithOuterListeners extends React.PureComponent<
+    P & WithOuterListenersProps
+  > {
     componentDidMount() {
       if (this.props.handleClickOutside) {
         document.addEventListener('click', this.handleClick, false);

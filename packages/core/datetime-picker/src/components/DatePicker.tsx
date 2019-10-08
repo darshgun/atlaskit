@@ -1,4 +1,5 @@
-import Calendar from '@atlaskit/calendar';
+import Calendar, { CalendarClassType, ArrowKeys } from '@atlaskit/calendar';
+import pick from 'lodash.pick';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
 import styled, { CSSObject } from '@emotion/styled';
@@ -15,6 +16,7 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
+// eslint-disable-next-line no-restricted-imports
 import { format, isValid, parse, lastDayOfMonth } from 'date-fns';
 import React from 'react';
 import {
@@ -30,10 +32,8 @@ import {
 import FixedLayer from '../internal/FixedLayer';
 import { SelectProps, Appearance, Spacing } from '../types.js';
 
-type CalendarInstance = any;
-
 /* eslint-disable react/no-unused-prop-types */
-interface Props extends WithAnalyticsEventsProps {
+export interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    * Appearance values will be ignored if styles are parsed via the selectProps.
    */
@@ -152,8 +152,10 @@ const Menu = ({
   />
 );
 
+function noop() {}
+
 class DatePicker extends React.Component<Props, State> {
-  calendarRef: CalendarInstance | null = null;
+  calendarRef: CalendarClassType | null = null;
   containerRef: HTMLElement | null = null;
 
   static defaultProps = {
@@ -169,13 +171,14 @@ class DatePicker extends React.Component<Props, State> {
     isDisabled: false,
     isInvalid: false,
     name: '',
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
+    onBlur: noop,
+    onChange: noop,
+    onFocus: noop,
     selectProps: {},
     spacing: 'default' as Spacing,
     locale: 'en-US',
-    value: '',
+    // Not including a default prop for value as it will
+    // Make the component a controlled component
   };
 
   constructor(props: any) {
@@ -209,9 +212,8 @@ class DatePicker extends React.Component<Props, State> {
   getSafeState = () => {
     return {
       ...this.state,
-      value: this.props.value!,
-      isOpen: this.props.isOpen!,
-      inputValue: this.props.selectProps.inputValue,
+      ...pick(this.props, ['value', 'isOpen']),
+      ...pick(this.props.selectProps, ['inputValue']),
     };
   };
 
@@ -301,7 +303,8 @@ class DatePicker extends React.Component<Props, State> {
       case 'arrowdown':
         if (this.calendarRef) {
           event.preventDefault();
-          this.calendarRef.navigate(keyPressed.replace('arrow', ''));
+          const key: ArrowKeys = keyPressed === 'arrowup' ? 'up' : 'down';
+          this.calendarRef.navigate(key);
         }
         this.setState({ isOpen: true });
         break;
@@ -309,7 +312,8 @@ class DatePicker extends React.Component<Props, State> {
       case 'arrowright':
         if (this.calendarRef) {
           event.preventDefault();
-          this.calendarRef.navigate(keyPressed.replace('arrow', ''));
+          const key: ArrowKeys = keyPressed === 'arrowleft' ? 'left' : 'right';
+          this.calendarRef.navigate(key);
         }
         break;
       case 'escape':
@@ -348,7 +352,7 @@ class DatePicker extends React.Component<Props, State> {
     }
   };
 
-  refCalendar = (ref: CalendarInstance | null) => {
+  refCalendar = (ref: CalendarClassType | null) => {
     this.calendarRef = ref;
   };
 
@@ -448,9 +452,7 @@ class DatePicker extends React.Component<Props, State> {
     const dropDownIcon = appearance === 'subtle' || hideIcon ? null : icon;
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
-      appearance === 'subtle'
-        ? this.getSubtleControlStyles(Boolean(isOpen))
-        : {};
+      appearance === 'subtle' ? this.getSubtleControlStyles(isOpen) : {};
     const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
 
     const calendarProps = {
@@ -491,7 +493,7 @@ class DatePicker extends React.Component<Props, State> {
             Menu,
           }}
           styles={mergeStyles(selectStyles, {
-            control: (base: any) => ({
+            control: (base: CSSObject) => ({
               ...base,
               ...controlStyles,
               ...disabledStyle,

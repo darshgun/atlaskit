@@ -35,6 +35,9 @@ const nonCjsEsmPackages = [
   '@atlaskit/code-insights',
   '@atlaskit/branch-deploy-product-integrator',
   '@atlaskit/icon',
+  '@atlaskit/icon-file-type',
+  '@atlaskit/icon-object',
+  '@atlaskit/icon-priority',
   '@atlaskit/css-reset',
   '@atlaskit/reduced-ui-pack',
 ];

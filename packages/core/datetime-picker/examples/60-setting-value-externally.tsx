@@ -4,10 +4,10 @@ import FieldText from '@atlaskit/field-text';
 import { DatePicker, TimePicker, DateTimePicker } from '../src';
 
 interface State {
-  datePickerValue: string,
-  timePickerValue: string,
-  dateTimePickerValue: string,
-};
+  datePickerValue: string;
+  timePickerValue: string;
+  dateTimePickerValue: string;
+}
 
 export default class MyComponent extends Component<{}, State> {
   state = {

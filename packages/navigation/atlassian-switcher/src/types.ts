@@ -35,6 +35,7 @@ export interface CustomLink {
   key: string;
   label: string;
   link: string;
+  local: boolean;
 }
 
 export enum Permissions {

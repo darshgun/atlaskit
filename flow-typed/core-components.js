@@ -49,11 +49,19 @@ declare module '@atlaskit/button' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/calendar' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/checkbox' {
   declare module.exports: any;
 }
 
 declare module '@atlaskit/code' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/comment' {
   declare module.exports: any;
 }
 
@@ -78,6 +86,18 @@ declare module '@atlaskit/flag' {
 }
 
 declare module '@atlaskit/icon' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/icon-file-type' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/icon-object' {
+  declare module.exports: any;
+}
+
+declare module '@atlaskit/icon-priority' {
   declare module.exports: any;
 }
 

@@ -54,7 +54,7 @@ export class ArticleWasHelpfulForm extends React.Component<
     if (this.props.help.onWasHelpfulSubmit) {
       if (this.props.createAnalyticsEvent) {
         analyticsEvent = this.props.createAnalyticsEvent({
-          action: 'click',
+          action: 'clicked',
         });
       }
 

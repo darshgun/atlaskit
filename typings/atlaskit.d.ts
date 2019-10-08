@@ -2,9 +2,9 @@
  * Tells TypeScript to ignore flow components by declaring them as empty modules
  */
 declare module '@atlaskit/analytics';
-declare module '@atlaskit/calendar';
 declare module '@atlaskit/codemod-util-shared-styles-to-theme';
 declare module '@atlaskit/comment';
+declare module '@atlaskit/datetime-picker';
 declare module '@atlaskit/dropdown-menu';
 declare module '@atlaskit/droplist';
 declare module '@atlaskit/feedback-collector';
@@ -14,11 +14,8 @@ declare module '@atlaskit/form';
 declare module '@atlaskit/global-navigation';
 // TODO - Add icon import paths to entry-points.tsconfig.json
 declare module '@atlaskit/icon/*';
-declare module '@atlaskit/icon-file-type';
 declare module '@atlaskit/icon-file-type/*';
-declare module '@atlaskit/icon-object';
 declare module '@atlaskit/icon-object/*';
-declare module '@atlaskit/icon-priority';
 declare module '@atlaskit/icon-priority/*';
 declare module '@atlaskit/input';
 declare module '@atlaskit/item';
@@ -43,6 +40,7 @@ declare module '@atlaskit/textfield';
 declare module '@atlaskit/theme/colors';
 
 // Build
+declare module '@atlaskit/icon-build-process';
 declare module '@atlaskit/ssr';
 declare module '@atlaskit/docs';
 declare module '@atlaskit/build-utils';

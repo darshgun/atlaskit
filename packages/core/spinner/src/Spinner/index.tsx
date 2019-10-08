@@ -81,7 +81,7 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
 
   render() {
     const { phase } = this.state;
-    const { delay, invertColor, isCompleting } = this.props;
+    const { delay, invertColor, isCompleting, testId } = this.props;
     const size = this.validateSize();
 
     const strokeWidth = Math.round(size / 10);
@@ -103,7 +103,12 @@ export default class Spinner extends Component<SpinnerProps, SpinnerState> {
             this.transitionNode = node;
           }}
         >
-          <Container delay={delay / 1000} phase={phase} size={size}>
+          <Container
+            delay={delay / 1000}
+            phase={phase}
+            size={size}
+            data-testid={testId}
+          >
             <Svg
               focusable="false"
               height={size}

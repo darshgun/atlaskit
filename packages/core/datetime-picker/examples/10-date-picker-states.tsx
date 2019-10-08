@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { format } from 'date-fns';
 import React from 'react';
 import { Label } from '@atlaskit/field-base';

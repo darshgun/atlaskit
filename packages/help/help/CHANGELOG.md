@@ -1,5 +1,58 @@
 ## 0.1.0
 
+## 0.20.7
+
+### Patch Changes
+
+- [patch][89c775c2eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89c775c2eb):
+
+  fix animation when ArticleComponent mounts
+
+## 0.20.6
+
+- Updated dependencies [49c89962de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c89962de):
+  - @atlaskit/right-side-panel@0.3.0
+
+## 0.20.5
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 0.20.4
+
+### Patch Changes
+
+- [patch][edd83f6f68](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edd83f6f68):
+
+  Fix ArticleContent Animation
+
+## 0.20.3
+
+### Patch Changes
+
+- [patch][acbc924e23](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acbc924e23):
+
+  Improved ArticleContent animations
+
+## 0.20.2
+
+### Patch Changes
+
+- [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
+
+  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+
+## 0.20.1
+
+### Patch Changes
+
+- [patch][e1de95957a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e1de95957a):
+
+  changed action value 'click' to 'clicked'
+
 ## 0.20.0
 
 ### Minor Changes

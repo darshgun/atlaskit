@@ -4,6 +4,7 @@ import { borderRadius } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
 import styled from '@emotion/styled';
 import { CSSObject } from '@emotion/core';
+import pick from 'lodash.pick';
 import {
   withAnalyticsEvents,
   WithAnalyticsEventsProps,
@@ -11,18 +12,19 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import React from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { parse, format, isValid } from 'date-fns';
 import { Appearance, Spacing, SelectProps } from '../types';
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-import DatePicker from './DatePicker';
-import TimePicker from './TimePicker';
+import DatePicker, { Props as DatePickerProps } from './DatePicker';
+import TimePicker, { Props as TimePickerProps } from './TimePicker';
 import { defaultTimes, formatDateTimeZoneIntoIso } from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
-interface Props extends WithAnalyticsEventsProps {
+export interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon. */
   appearance?: Appearance;
   /** Whether or not to auto-focus the field. */
@@ -53,8 +55,8 @@ interface Props extends WithAnalyticsEventsProps {
   hideIcon?: boolean;
   /** DEPRECATED - Use locale instead. Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
   dateFormat?: string;
-  datePickerProps: React.ComponentProps<typeof DatePicker>;
-  timePickerProps: React.ComponentProps<typeof TimePicker>;
+  datePickerProps: DatePickerProps;
+  timePickerProps: TimePickerProps;
   /** Function to parse passed in dateTimePicker value into the requisite sub values date, time and zone. **/
   parseValue?: (
     dateTimeValue: string,
@@ -186,7 +188,8 @@ class DateTimePicker extends React.Component<Props, State> {
     times: defaultTimes,
     spacing: 'default',
     locale: 'en-US',
-    value: '',
+    // Not including a default prop for value as it will
+    // Make the component a controlled component
   };
 
   state: State = {
@@ -203,7 +206,7 @@ class DateTimePicker extends React.Component<Props, State> {
   getSafeState = () => {
     const mappedState = {
       ...this.state,
-      value: this.props.value!,
+      ...pick(this.props, ['value']),
     };
 
     return {

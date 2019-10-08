@@ -7,6 +7,8 @@ import {
   createLocalizationProvider,
   LocalizationProvider,
 } from '@atlaskit/locale';
+import pick from 'lodash.pick';
+// eslint-disable-next-line no-restricted-imports
 import { format, isValid } from 'date-fns';
 import React from 'react';
 import { CSSObject } from '@emotion/core';
@@ -39,7 +41,7 @@ interface Option {
 }
 
 /* eslint-disable react/no-unused-prop-types */
-interface Props extends WithAnalyticsEventsProps {
+export interface Props extends WithAnalyticsEventsProps {
   /** Defines the appearance which can be default or subtle - no borders, background or icon.
    *  Appearance values will be ignored if styles are parsed via the selectProps.
    */
@@ -114,6 +116,8 @@ const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
   />
 );
 
+function noop() {}
+
 class TimePicker extends React.Component<Props, State> {
   containerRef: HTMLElement | null = null;
 
@@ -128,16 +132,17 @@ class TimePicker extends React.Component<Props, State> {
     isDisabled: false,
     isInvalid: false,
     name: '',
-    onBlur: () => {},
-    onChange: () => {},
-    onFocus: () => {},
+    onBlur: noop,
+    onChange: noop,
+    onFocus: noop,
     parseInputValue: (time: string) => parseTime(time),
     selectProps: {},
     spacing: 'default' as Spacing,
     times: defaultTimes,
     timeIsEditable: false,
     locale: 'en-US',
-    value: '',
+    // Not including a default prop for value as it will
+    // Make the component a controlled component
   };
 
   state = {
@@ -158,9 +163,7 @@ class TimePicker extends React.Component<Props, State> {
   getSafeState = (): State => {
     return {
       ...this.state,
-      // using !suffix as there is a default prop
-      value: this.props.value!,
-      isOpen: this.props.isOpen!,
+      ...pick(this.props, ['value', 'isOpen']),
     };
   };
 
