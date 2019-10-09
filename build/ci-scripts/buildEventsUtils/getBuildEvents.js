@@ -38,11 +38,13 @@ type IPipelines = {
 }
 */
 
-/* This function strip logs from the pipeline based on the last command that did not fail. */
+/* This function strip logs from the pipeline based on the last command that did not fail.
+ ** The logs are displayed with colors and style, using stripAnsi() will clean its. */
 function stripLogs(logs /*: string */, command /*: string */) {
   if (logs.indexOf(command) >= 0) {
-    // The logs are displayed with colors and style, using stripAnsi() will clean its.
-    return stripAnsi(logs.split(command)[1]);
+    /* All the logs for testing contain `Summary of all failing tests`.*/
+    const logsToSentry = `The build failed on this command: ${command} for this reasons: ${logs}`;
+    return stripAnsi(logsToSentry);
   }
 }
 /* This function computes build time if build.duration_in_seconds returns 0, it is often applicable for 1 step build.
@@ -273,7 +275,7 @@ async function getStepEvents(buildId /*: string*/) {
         buildId,
         stepObject.uuid,
         buildStatus,
-        stepObject.script_commands[stepObject.script_commands.length - 1]
+        stepObject.script_commands[stepObject.script_commands.length - 2]
           .command,
       );
       // Build type and build name are confused for custom build.
