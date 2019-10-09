@@ -103,10 +103,6 @@ export const SaveAndCancelButtons = (props: {
       Publish
     </Button>
 
-    <Button tabIndex={-1} appearance="subtle" onClick={saveChanges(props)}>
-      Save Changes
-    </Button>
-
     <Button
       tabIndex={-1}
       appearance="subtle"
