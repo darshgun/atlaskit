@@ -36,7 +36,10 @@ export default (props: JiraSwitcherProps) => (
           <CommonDataProvider
             cloudId={props.cloudId}
             disableRecentContainers={props.features.disableRecentContainers}
-            recommendationsFeatureFlags={props.recommendationsFeatureFlags}
+            recommendationsFeatureFlags={{
+              isDiscoverSectionEnabled: props.features.isDiscoverSectionEnabled,
+              ...props.recommendationsFeatureFlags,
+            }}
           >
             {providerResults => {
               const {

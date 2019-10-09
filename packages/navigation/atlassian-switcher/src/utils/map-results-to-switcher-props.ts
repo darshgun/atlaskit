@@ -73,6 +73,7 @@ function collectSuggestedLinks(
   userSiteData: ProviderResult<UserSiteDataResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
+  isDiscoverSectionEnabled?: boolean,
 ) {
   if (isError(isXFlowEnabled) || isError(userSiteData)) {
     return [];
@@ -86,6 +87,7 @@ function collectSuggestedLinks(
       ? getSuggestedProductLink(
           userSiteData.data.provisionedProducts,
           productRecommendations.data,
+          isDiscoverSectionEnabled,
         )
       : [];
   }
@@ -246,6 +248,7 @@ export function mapResultsToSwitcherProps(
             userSiteData,
             productRecommendations,
             isXFlowEnabled,
+            features.isDiscoverSectionEnabled,
           ),
           [],
         )

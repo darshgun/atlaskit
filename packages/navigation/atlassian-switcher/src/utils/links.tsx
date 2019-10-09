@@ -293,12 +293,13 @@ export const getAdministrationLinks = (
   return adminLinks;
 };
 
-// PROJ: Make this a parameter
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
+const DISCOVER_PRODUCT_RECOMMENDATION_LIMIT = 3;
 
 export const getSuggestedProductLink = (
   provisionedProducts: ProvisionedProducts,
   productRecommendations: RecommendationsEngineResponse,
+  isDiscoverSectionEnabled?: boolean,
 ): SwitcherItemType[] => {
   return productRecommendations
     .filter(legacyProduct => {
@@ -312,7 +313,12 @@ export const getSuggestedProductLink = (
         ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
       };
     })
-    .slice(0, PRODUCT_RECOMMENDATION_LIMIT);
+    .slice(
+      0,
+      isDiscoverSectionEnabled
+        ? DISCOVER_PRODUCT_RECOMMENDATION_LIMIT
+        : PRODUCT_RECOMMENDATION_LIMIT,
+    );
 };
 
 export const getProvisionedProducts = (
