@@ -21,6 +21,7 @@ describe('Snapshot Test', () => {
     await page.waitForSelector(button);
 
     await page.click(button);
+    await page.waitFor(500);
     await page.waitForSelector(popup);
 
     const image = await page.screenshot();
@@ -71,7 +72,8 @@ describe('Snapshot Test', () => {
     const button0 = '[name="Button 0"]';
 
     await page.goto(url);
-    await page.waitForSelector(button);
+    await page.waitFor(button);
+    await page.waitFor(500);
     await page.click(button);
     await page.waitForSelector(popup);
 
@@ -82,6 +84,7 @@ describe('Snapshot Test', () => {
     await page.click(button0);
     await page.click(button);
     await page.waitForSelector(popup);
+    await page.waitFor(500);
     const imageWithFocus = await page.screenshot();
     expect(imageWithFocus).toMatchProdImageSnapshot();
   });
