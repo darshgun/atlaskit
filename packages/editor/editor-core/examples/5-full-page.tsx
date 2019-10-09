@@ -330,15 +330,6 @@ export const ExampleEditor = withSentry<EditorProps & ExampleProps>(
   ExampleEditorComponent,
 );
 
-const legacyMediaEventHandlers = () => ({
-  media: {
-    onClick: () => {
-      // eslint-disable-next-line no-console
-      console.log('legacy event handler click!');
-    },
-  },
-});
-
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 const MockProfileClient = getMockProfileClientUtil(
   ProfileClient,
@@ -415,7 +406,6 @@ const Renderer = (props: {
       adfStage="stage0"
       dataProviders={providerFactory}
       extensionHandlers={extensionHandlers}
-      eventHandlers={legacyMediaEventHandlers()}
       document={props.document && JSON.parse(props.document)}
       // @ts-ignore
       appearance="full-page"
