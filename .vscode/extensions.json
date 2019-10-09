@@ -1,13 +1,14 @@
 {
   "recommendations": [
-    "editorconfig.editorconfig",
-    "formulahendry.auto-rename-tag",
-    "msjsdiag.debugger-for-chrome",
     "dbaeumer.vscode-eslint",
     "eamodio.gitlens",
-    "ms-vscode.vscode-typescript-tslint-plugin",
-    "flowtype.flow-for-vscode",
+    "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
+    "flowtype.flow-for-vscode",
+    "formulahendry.auto-rename-tag",
+    "jpoissonnier.vscode-styled-components",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "msjsdiag.debugger-for-chrome",
     "WallabyJs.quokka-vscode"
   ]
 }
