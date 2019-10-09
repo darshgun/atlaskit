@@ -1,7 +1,12 @@
 /**
- * This script is used during branch deployss to update all the package.json's of changed packages
+ * This script is used during branch deploys to update all the package.json's of changed packages
  * so that if they have any dependencies on other changed packages, they also point to the branch
  * deployed version.
+ *
+ * It also updates the version of each package.json to a unique pre-release version to prevent a yarn resolution bug where it incorrectly resolves
+ * the actual version of the package and our branch deployed version to the same yarn.lock entry if they are both added at the same time as a result of
+ * them both being a transitive dependency.
+ * That issue seems to cause https://github.com/yarnpkg/yarn/issues/2629 & https://github.com/yarnpkg/yarn/issues/6312 as well.
  */
 
 const bolt = require('bolt');
@@ -39,8 +44,13 @@ bolt.getWorkspaces().then(workspaces => {
   changedPackagesInfo.forEach(pkg => {
     const packageJsonPath = path.join(pkg.dir, 'package.json');
     const pkgJson = JSON.parse(fs.readFileSync(packageJsonPath));
-    let pkgJsonDirty = false;
-    Object.entries(pkgJson.dependencies).forEach(([depName, depVersion]) => {
+
+    /* Update version to something different
+     */
+    pkgJson.version = `${pkg.config.version}-${commit}`;
+    console.log(`Updating version of ${pkgJson.name} to ${pkgJson.version}`);
+
+    Object.entries(pkgJson.dependencies).forEach(([depName]) => {
       let cpInfo = changedPackagesInfo.find(
         changedPkg => changedPkg.name === depName,
       );
@@ -53,14 +63,11 @@ bolt.getWorkspaces().then(workspaces => {
         console.log(
           `Updating dep of ${pkgJson.name}: ${depName} - ${expectedUrl}`,
         );
-        pkgJsonDirty = true;
       }
     });
 
-    if (pkgJsonDirty) {
-      const pkgJsonStr = JSON.stringify(pkgJson, null, 2);
-      console.log(`Updating package.json at ${packageJsonPath}`);
-      fs.writeFileSync(packageJsonPath, pkgJsonStr);
-    }
+    const pkgJsonStr = JSON.stringify(pkgJson, null, 2);
+    console.log(`Updating package.json at ${packageJsonPath}`);
+    fs.writeFileSync(packageJsonPath, pkgJsonStr);
   });
 });
