@@ -26,7 +26,7 @@ class Example extends React.Component {
 test.skip('media-client server side rendering of project examples', async () => {
   const examples = await getExamplesFor('media-client');
   for (const example of examples) {
-    const Example = await require(example.filePath).default;
+    const Example = require(example.filePath).default;
 
     expect(() => ReactDOMServer.renderToString(<Example />)).not.toThrowError();
   }

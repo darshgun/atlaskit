@@ -9,7 +9,7 @@ beforeAll(() => {
 test.skip('media-editor server side rendering', async done => {
   const examples = await getExamplesFor('media-editor');
   for (const example of examples) {
-    const Example = await require(example.filePath).default;
+    const Example = require(example.filePath).default;
 
     expect(() => ReactDOMServer.renderToString(<Example />)).not.toThrowError();
   }

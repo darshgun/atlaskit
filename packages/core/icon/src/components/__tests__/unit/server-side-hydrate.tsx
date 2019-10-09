@@ -7,7 +7,7 @@ import waitForExpect from 'wait-for-expect';
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
 beforeEach(() => {
-  jest.setTimeout(10000);
+  jest.setTimeout(15000);
 });
 
 afterEach(() => {
@@ -16,32 +16,25 @@ afterEach(() => {
 });
 
 describe('should ssr then hydrate icon correctly', () => {
-  beforeAll(async () => {
-    const examples = await getExamplesFor('icon');
+  const [example] = await getExamplesFor('icon');
+  const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
+  const elem = document.createElement('div');
+  elem.innerHTML = await ssr(example.filePath);
+  ReactDOM.hydrate(<Example />, elem);
+  await waitForExpect(() => {
+    // ignore warnings caused by emotion's server-side rendering approach
+    // @ts-ignore
+    // eslint-disable-next-line no-console
+    const mockCalls = console.error.mock.calls.filter(
+      // @ts-ignore
+      ([f, s]) =>
+        !(
+          f ===
+            'Warning: Did not expect server HTML to contain a <%s> in <%s>.' &&
+          s === 'style'
+        ),
+    );
+    expect(mockCalls.length).toBe(0);
+    console.log('test finish', new Date().getTime());
   });
-  for (const ex of examples) {
-    test(`${ex.filePath.split('/examples/').shift()}`, async () => {});
-  }
-  // console.log('After example', new Date().getTime())
-  // const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
-  // console.log('After require path', new Date().getTime())
-  // const elem = document.createElement('div');
-  // elem.innerHTML = await ssr(example.filePath);
-  // ReactDOM.hydrate(<Example />, elem);
-  // await waitForExpect(() => {
-  //   // ignore warnings caused by emotion's server-side rendering approach
-  //   // @ts-ignore
-  //   // eslint-disable-next-line no-console
-  //   const mockCalls = console.error.mock.calls.filter(
-  //     // @ts-ignore
-  //     ([f, s]) =>
-  //       !(
-  //         f ===
-  //           'Warning: Did not expect server HTML to contain a <%s> in <%s>.' &&
-  //         s === 'style'
-  //       ),
-  //   );
-  //   expect(mockCalls.length).toBe(0);
-  //   console.log('test finish', new Date().getTime())
-  // });
 });

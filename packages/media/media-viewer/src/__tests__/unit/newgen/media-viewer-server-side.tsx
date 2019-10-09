@@ -10,7 +10,7 @@ beforeAll(() => {
 test.skip('media-viewer server side rendering', async () => {
   const examples = await getExamplesFor('media-viewer');
   for (const example of examples) {
-    const Example = await require(example.filePath).default;
+    const Example = require(example.filePath).default;
     await waitForExpect(() => {
       expect(() =>
         ReactDOMServer.renderToString(<Example />),

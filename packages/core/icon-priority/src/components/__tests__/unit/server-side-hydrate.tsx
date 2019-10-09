@@ -15,7 +15,7 @@ afterEach(() => {
 
 test('should ssr then hydrate icon-priority correctly', async () => {
   const [example] = await getExamplesFor('icon-priority');
-  const Example = await require(example.filePath).default;
+  const Example = require(example.filePath).default;
 
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);

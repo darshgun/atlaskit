@@ -18,7 +18,7 @@ afterEach(() => {
 
 test('should ssr then hydrate textfield correctly', async () => {
   const [example] = await getExamplesFor('textfield');
-  const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
+  const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);

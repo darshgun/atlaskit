@@ -18,7 +18,7 @@ afterEach(() => {
 
 test('should ssr then hydrate toggle correctly', async () => {
   const [example] = await getExamplesFor('toggle');
-  const Example = await require(example.filePath).default;
+  const Example = require(example.filePath).default;
 
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);
