@@ -505,7 +505,7 @@ describe('Build', () => {
         );
 
         // Watch
-        expect(runCommands).toHaveBeenNthCalledWith(3, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(3, [], expect.any(Object));
         expect(runCommands).toHaveBeenNthCalledWith(
           4,
           [
@@ -541,7 +541,7 @@ describe('Build', () => {
         );
 
         // Watch
-        expect(runCommands).toHaveBeenNthCalledWith(3, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(3, [], expect.any(Object));
         expect(runCommands).toHaveBeenNthCalledWith(
           4,
           [
@@ -558,8 +558,21 @@ describe('Build', () => {
   });
 
   describe('Args Validation', () => {
-    it.todo('should throw if watch mode is used without a package');
-    it.todo('should throw if an invalid dist type is passed');
-    it.todo('should throw if dist type "none" is used with watch mode');
+    it('should throw if watch mode is used without a package', async () => {
+      await expect(build(undefined, { watch: true })).rejects.toBe(
+        'Watch mode is only supported for single package builds only.',
+      );
+    });
+    it('should throw if an invalid dist type is passed', async () => {
+      // @ts-ignore
+      await expect(build('editor-core', { distType: 'esnext' })).rejects.toBe(
+        'Invalid dist type, must be one of "esm", "cjs" or "none"',
+      );
+    });
+    it('should throw if dist type "none" is used with watch mode', async () => {
+      await expect(
+        build('editor-core', { distType: 'none', watch: true }),
+      ).rejects.toBe('Watch mode with distType "none" does nothing.');
+    });
   });
 });

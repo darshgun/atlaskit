@@ -232,6 +232,9 @@ function validateArgs(packageName: string | undefined, opts: Options) {
   ) {
     throw 'Invalid dist type, must be one of "esm", "cjs" or "none"';
   }
+  if (distType === 'none' && watch) {
+    throw 'Watch mode with distType "none" does nothing.';
+  }
 }
 
 export default async function main(
