@@ -87,6 +87,7 @@ const fetchPdf = (url: string): Promise<Blob> => {
 export type Props = {
   src: string;
   onClose?: () => void;
+  onSuccess?: () => void;
 };
 
 export type State = {
@@ -111,11 +112,16 @@ export class PDFRenderer extends React.Component<Props, State> {
 
   private async init() {
     try {
-      const doc = await fetchPdf(this.props.src);
+      const { src, onSuccess } = this.props;
+      const doc = await fetchPdf(src);
       this.setState({ doc: Outcome.successful(doc) }, () => {
         this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
         this.pdfViewer.setDocument(doc);
         this.pdfViewer.firstPagePromise.then(this.scaleToFit);
+
+        if (onSuccess) {
+          onSuccess();
+        }
       });
     } catch (err) {
       this.setState({

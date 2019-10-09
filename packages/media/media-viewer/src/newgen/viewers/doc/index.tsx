@@ -19,6 +19,8 @@ export type Props = {
   item: FileState;
   collectionName?: string;
   onClose?: () => void;
+  onError?: () => void;
+  onSuccess?: () => void;
 };
 
 export type State = {
@@ -38,7 +40,7 @@ export class DocViewer extends BaseViewer<string, Props> {
     if (!DocViewer.PDFComponent) {
       await this.loadDocViewer();
     }
-    const { item, mediaClient, collectionName } = this.props;
+    const { item, mediaClient, collectionName, onError } = this.props;
 
     if (item.status === 'processed') {
       try {
@@ -55,6 +57,9 @@ export class DocViewer extends BaseViewer<string, Props> {
         this.setState({
           content: Outcome.failed(createError('previewFailed', err, item)),
         });
+        if (onError) {
+          onError();
+        }
       }
     } else {
       const src = await getObjectUrlFromFileState(item);
@@ -85,12 +90,14 @@ export class DocViewer extends BaseViewer<string, Props> {
   }
 
   protected renderSuccessful(content: string) {
-    const { onClose } = this.props;
+    const { onClose, onSuccess } = this.props;
     const { PDFComponent } = DocViewer;
 
     if (!PDFComponent) {
       return <Spinner />;
     }
-    return <PDFComponent src={content} onClose={onClose} />;
+    return (
+      <PDFComponent src={content} onSuccess={onSuccess} onClose={onClose} />
+    );
   }
 }
