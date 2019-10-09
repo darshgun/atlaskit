@@ -1,4 +1,6 @@
 {
+  // Non-authorative list of recommended VSCode extensions as per go/editor-tools
+  // You are encouraged to use VSCode extensions as you see fit
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "eamodio.gitlens",
