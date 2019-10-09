@@ -25,6 +25,8 @@ const {
   downloadFromS3ForLocal,
 } = require('./utils/s3-actions');
 
+const { returnMissingPkgBasedOn } = require('./utils/error.js');
+
 function fWriteStats(path, content) {
   fs.writeFileSync(path, JSON.stringify(clearStats(content), null, 2), 'utf8');
 }
@@ -238,7 +240,22 @@ module.exports = async function main(
     }
   } else {
     if (process.env.CI) {
-      await downloadFromS3(masterStatsFolder, 'master', packageName);
+      try {
+        await downloadFromS3(masterStatsFolder, 'master', packageName);
+      } catch (err) {
+        const errorMessage = `${err}`;
+        if (errorMessage.includes('not found in s3 bucket')) {
+          const missingPkg = returnMissingPkgBasedOn(errorMessage);
+          const masterStatsFilePath = path.join(
+            masterStatsFolder,
+            `${missingPkg}-bundle-size-ratchet.json`,
+          );
+          fWriteStats(masterStatsFilePath, stats);
+          uploadToS3(masterStatsFilePath, 'master');
+        } else {
+          throw err;
+        }
+      }
     } else {
       await downloadFromS3ForLocal(masterStatsFolder, 'master', packageName);
     }
