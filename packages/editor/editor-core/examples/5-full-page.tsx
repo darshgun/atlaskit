@@ -43,7 +43,6 @@ import { ExampleInlineCommentComponent } from '@atlaskit/editor-test-helpers';
 import { ReactRenderer } from '@atlaskit/renderer';
 import { ProfileClient, modifyResponse } from '@atlaskit/profilecard';
 
-// import Renderer from '../'
 /**
  * +-------------------------------+
  * + [Editor core v] [Full page v] +  48px height
