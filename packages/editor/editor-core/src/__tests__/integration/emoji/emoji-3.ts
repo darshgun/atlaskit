@@ -132,7 +132,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'emoji-3.ts: emoji picker should be scrollable',
-  { skip: [] },
+  { skip: ['chrome', 'ie', 'firefox'] }, // { only: ['safari'] }
   async (client: any) => {
     const emojiButton = 'button span[aria-label="Emoji"]';
     const emojiList = '[data-emoji-picker-container] .ReactVirtualized__List';
