@@ -31,6 +31,7 @@
   },
   "files": [
     "./typings/atlaskit.d.ts",
+    "./typings/atlassian.d.ts",
     "./typings/blueimp-load-image.d.ts",
     "./typings/calendar-base.d.ts",
     "./typings/deep-equal.d.ts",

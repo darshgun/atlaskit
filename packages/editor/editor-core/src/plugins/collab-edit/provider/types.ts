@@ -1,46 +1,10 @@
 import { ServiceConfig } from '@atlaskit/util-service-support';
-import { Transaction, EditorState } from 'prosemirror-state';
-import { Step } from 'prosemirror-transform';
-import {
-  InitData,
-  ConnectionData,
-  RemoteData,
-  TelepointerData,
-  PresenceData,
-  Participant,
-} from '../types';
+
+import { TelepointerData, Participant } from '@atlaskit/editor-common';
+
+export { CollabEvent, CollabEventData, CollabEditProvider, } from '@atlaskit/editor-common'
 
 export { TelepointerData, Participant };
-
-export type CollabEvent =
-  | 'init'
-  | 'connected'
-  | 'data'
-  | 'telepointer'
-  | 'presence'
-  | 'error'
-  | 'local-steps'
-  | 'editor-appearance';
-
-export interface CollabEventData {
-  init: InitData;
-  connected: ConnectionData;
-  data: RemoteData;
-  telepointer: TelepointerData;
-  presensense: PresenceData;
-  error: any;
-}
-
-export interface CollabEditProvider {
-  initialize(getState: () => any, createStep: (json: object) => Step): this;
-  send(tr: Transaction, oldState: EditorState, newState: EditorState): void;
-  on(evt: CollabEvent, handler: (...args: any) => void): this;
-  off(evt: CollabEvent, handler: (...args: any) => void): this;
-  unsubscribeAll(evt: CollabEvent): this;
-  sendMessage<T extends keyof CollabEventData>(
-    data: { type: T } & CollabEventData[T],
-  ): void;
-}
 
 export interface DocumentResponse {
   version: number;

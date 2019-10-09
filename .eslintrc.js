@@ -309,6 +309,7 @@ module.exports = {
         jest: true,
       },
       globals: {
+        SYNCHRONY_URL: 'readonly',
         fail: 'readonly',
         jasmine: 'readonly',
         spyOn: 'readonly',
