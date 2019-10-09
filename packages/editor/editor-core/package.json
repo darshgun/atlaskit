@@ -51,6 +51,7 @@
     "@atlaskit/media-picker": "^47.1.6",
     "@atlaskit/mention": "^18.15.3",
     "@atlaskit/modal-dialog": "^10.3.2",
+    "@atlaskit/profilecard": "^12.3.0",
     "@atlaskit/select": "^10.1.2",
     "@atlaskit/smart-card": "^12.5.7",
     "@atlaskit/spinner": "^12.0.9",
