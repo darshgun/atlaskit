@@ -108,7 +108,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'emoji-3.ts: emoji picker search should be focused by default',
-  { skip: [] },
+  { skip: ['safari'] },
   async (client: any) => {
     const emojiButton = 'button span[aria-label="Emoji"]';
     const emojiSearch = '[data-emoji-picker-container] input';
