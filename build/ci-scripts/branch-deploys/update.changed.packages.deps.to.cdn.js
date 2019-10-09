@@ -33,7 +33,10 @@ const commit = BITBUCKET_COMMIT.substr(0, 12);
 
 const getExpectedUrl = (pkgName, pkgVersion, commit) => {
   const shortPkgName = pkgName.replace('@atlaskit/', 'atlaskit-');
-  return `https://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts/${commit}/dists/${shortPkgName}-${pkgVersion}.tgz`;
+  // pkgVersion may or may not contain the commit pre-release version at this stage, so we normalise
+  const baseVersion = pkgVersion.replace(`-${commit}`, '');
+  const normalisedVersion = `${baseVersion}-${commit}`;
+  return `https://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts/${commit}/dists/${shortPkgName}-${normalisedVersion}.tgz`;
 };
 
 bolt.getWorkspaces().then(workspaces => {
@@ -45,8 +48,6 @@ bolt.getWorkspaces().then(workspaces => {
     const packageJsonPath = path.join(pkg.dir, 'package.json');
     const pkgJson = JSON.parse(fs.readFileSync(packageJsonPath));
 
-    /* Update version to something different
-     */
     pkgJson.version = `${pkg.config.version}-${commit}`;
     console.log(`Updating version of ${pkgJson.name} to ${pkgJson.version}`);
 
