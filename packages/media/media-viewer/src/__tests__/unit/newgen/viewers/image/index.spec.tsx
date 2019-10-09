@@ -56,16 +56,27 @@ describe('ImageViewer', () => {
     expect(el.state().content.data).toBeDefined();
   });
 
-  it('does not update state when image fetch request is cancelled', async () => {
+  it('should not update state when image fetch request is cancelled', async () => {
     const response = Promise.reject(new Error(REQUEST_CANCELLED));
     const { el } = createFixture(response);
 
-    (el as any).instance()['preventRaceCondition'] = jest.fn();
+    const previousContent = el.state().content;
+    expect(previousContent).toEqual({ state: { status: 'PENDING' } });
+
     await awaitError(response, REQUEST_CANCELLED);
-    expect(response).toBeDefined();
-    expect(
-      (el as any).instance()['preventRaceCondition'].mock.calls.length === 1,
-    );
+
+    expect(el.state().content).toEqual(previousContent);
+  });
+
+  it('should not call `onLoad` callback when image fetch request is cancelled', async () => {
+    const response = Promise.reject(new Error(REQUEST_CANCELLED));
+    const { el } = createFixture(response);
+
+    expect(el.props().onLoad).not.toHaveBeenCalled();
+
+    await awaitError(response, REQUEST_CANCELLED);
+
+    expect(el.props().onLoad).not.toHaveBeenCalled();
   });
 
   it('cancels an image fetch request when unmounted', () => {
