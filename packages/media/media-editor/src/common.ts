@@ -28,9 +28,13 @@ export type Tool =
 
 export type TextDirection = 'ltr' | 'rtl';
 
+export type CancelInputType = 'esc' | 'button';
+
 export interface ExportedImage {
   isExported: boolean; // indicates whether the image export was successful
   content?: string; // base64 image if isExported is true
   error?: string; // failure reason if isExported is false
   dimensions?: Dimensions;
 }
+
+export const ANALYTICS_MEDIA_CHANNEL = 'media';

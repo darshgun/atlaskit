@@ -1,0 +1,1 @@
+make the text serializer for renderer to respect ADF mention attributes (text is not mandatory)

@@ -25,7 +25,6 @@ describe('<TaskList/>', () => {
         <TaskItem taskId="task-2">2</TaskItem>
       </TaskList>,
     );
-    expect(component.find('li').length).toEqual(2);
     expect(component.find(TaskItem).length).toEqual(2);
   });
 
@@ -35,7 +34,6 @@ describe('<TaskList/>', () => {
         <TaskItem taskId="task-1">1</TaskItem>
       </TaskList>,
     );
-    expect(component.find('li').length).toEqual(1);
     expect(component.find(TaskItem).length).toEqual(1);
   });
 
@@ -52,12 +50,15 @@ describe('<TaskList/>', () => {
         <TaskItem taskId="task-1">1</TaskItem>
       </TaskList>,
     );
-    const ol = component.find('ol');
-    expect(ol.length).toEqual(1);
-    expect(ol.prop('data-task-list-local-id')).toEqual('');
-    const li = component.find('li');
-    expect(li.length).toEqual(1);
-    expect(li.prop('data-task-local-id')).toBeDefined();
+    const divs = component.find('div');
+    expect(divs.length).toEqual(4);
+    expect(divs.first().prop('data-task-list-local-id')).toEqual('');
+
+    expect(component.find('div[data-task-local-id]').length).toEqual(1);
+
+    expect(
+      component.find('div[data-task-local-id]').prop('data-task-local-id'),
+    ).toEqual('');
   });
 
   describe('analytics', () => {

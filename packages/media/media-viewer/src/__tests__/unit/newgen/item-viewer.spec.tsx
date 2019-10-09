@@ -169,7 +169,7 @@ describe('<ItemViewer />', () => {
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
     expect(errorMessage.text()).toContain(
-      `We couldn't generate a preview for this file.Try downloading the file to view it.Download`,
+      `Something went wrong.It might just be a hiccup.Try downloading the file to view it.Download`,
     );
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
@@ -507,6 +507,27 @@ describe('<ItemViewer />', () => {
           ...analyticsBaseAttributes,
         },
         eventType: 'operational',
+      });
+    });
+
+    it('should trigger analytics when file failed processing', () => {
+      const mediaClient = makeFakeMediaClient(
+        Observable.of({
+          id: identifier.id,
+          mediaType: 'image',
+          status: 'failed-processing',
+        }),
+      );
+      const { el } = mountBaseComponent(mediaClient, identifier);
+
+      expect(el.find('ErrorMessage').prop('error')).toEqual({
+        errorName: 'failedProcessing',
+        fileState: {
+          id: 'some-id',
+          mediaType: 'image',
+          status: 'failed-processing',
+        },
+        innerError: undefined,
       });
     });
 

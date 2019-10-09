@@ -23,7 +23,8 @@ export type ErrorName =
   | 'metadataFailed'
   | 'unsupported'
   | 'idNotFound'
-  | 'noPDFArtifactsFound';
+  | 'noPDFArtifactsFound'
+  | 'failedProcessing';
 
 export type Props = Readonly<{
   error: MediaViewerError;
@@ -98,6 +99,18 @@ const getErrorMessage = (
         </p>
       </div>
     ),
+
+    failedProcessing: (
+      <div>
+        {errorLoadingFileImage(formatMessage)}
+        <p>
+          <FormattedMessage {...i18nMessages.something_went_wrong} />
+        </p>
+        <p>
+          <FormattedMessage {...i18nMessages.might_be_a_hiccup} />
+        </p>
+      </div>
+    ),
   };
 
   return messages[errorName];
@@ -106,7 +119,7 @@ const getErrorMessage = (
 export class MediaViewerError {
   constructor(
     readonly errorName: ErrorName,
-    readonly file?: FileState,
+    readonly fileState?: FileState,
     readonly innerError?: Error,
   ) {}
 }
@@ -114,9 +127,9 @@ export class MediaViewerError {
 export const createError = (
   name: ErrorName,
   innerError?: Error,
-  file?: FileState,
+  fileState?: FileState,
 ): MediaViewerError => {
-  return new MediaViewerError(name, file, innerError);
+  return new MediaViewerError(name, fileState, innerError);
 };
 
 export class ErrorMessage extends React.Component<
@@ -133,10 +146,10 @@ export class ErrorMessage extends React.Component<
 
   componentDidMount() {
     const {
-      error: { errorName: failReason, file },
+      error: { errorName: failReason, fileState },
     } = this.props;
-    const fileId = file ? file.id : undefined;
-    this.fireAnalytics(mediaPreviewFailedEvent(failReason, fileId));
+    const event = mediaPreviewFailedEvent(failReason, fileState);
+    this.fireAnalytics(event);
   }
 
   render() {

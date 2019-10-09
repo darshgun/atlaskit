@@ -1,0 +1,153 @@
+{
+  "releases": [
+    { "name": "@atlaskit/editor-mobile-bridge", "type": "major" },
+    { "name": "@atlaskit/task-decision", "type": "major" },
+    { "name": "@atlaskit/util-data-test", "type": "major" }
+  ],
+  "dependents": [
+    {
+      "name": "@atlaskit/editor-core",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/renderer",
+        "@atlaskit/editor-bitbucket-transformer",
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/editor-markdown-transformer",
+        "@atlaskit/emoji",
+        "@atlaskit/mention",
+        "@atlaskit/share",
+        "@atlaskit/user-picker",
+        "@atlaskit/task-decision",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/renderer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/mention",
+        "@atlaskit/profilecard",
+        "@atlaskit/task-decision",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/conversation",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-core",
+        "@atlaskit/renderer",
+        "@atlaskit/editor-common",
+        "@atlaskit/reactions",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-bitbucket-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-common",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-common",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/emoji",
+        "@atlaskit/mention",
+        "@atlaskit/profilecard",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-confluence-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-common",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-jira-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-json-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-common",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-markdown-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-core",
+        "@atlaskit/editor-common",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/editor-wikimarkup-transformer",
+      "type": "patch",
+      "dependencies": [
+        "@atlaskit/editor-core",
+        "@atlaskit/renderer",
+        "@atlaskit/editor-common",
+        "@atlaskit/editor-json-transformer",
+        "@atlaskit/profilecard",
+        "@atlaskit/util-data-test"
+      ]
+    },
+    {
+      "name": "@atlaskit/email-renderer",
+      "type": "patch",
+      "dependencies": ["@atlaskit/util-data-test"]
+    },
+    {
+      "name": "@atlaskit/emoji",
+      "type": "patch",
+      "dependencies": ["@atlaskit/util-data-test"]
+    },
+    {
+      "name": "@atlaskit/mention",
+      "type": "patch",
+      "dependencies": ["@atlaskit/util-data-test"]
+    },
+    {
+      "name": "@atlaskit/reactions",
+      "type": "patch",
+      "dependencies": ["@atlaskit/emoji", "@atlaskit/util-data-test"]
+    },
+    {
+      "name": "@atlaskit/share",
+      "type": "patch",
+      "dependencies": ["@atlaskit/user-picker", "@atlaskit/util-data-test"]
+    },
+    {
+      "name": "@atlaskit/user-picker",
+      "type": "patch",
+      "dependencies": ["@atlaskit/util-data-test"]
+    },
+    {
+      "name": "@atlaskit/profilecard",
+      "type": "patch",
+      "dependencies": ["@atlaskit/util-data-test"]
+    }
+  ]
+}

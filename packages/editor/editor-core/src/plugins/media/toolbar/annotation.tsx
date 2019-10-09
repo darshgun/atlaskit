@@ -80,9 +80,7 @@ export class AnnotationToolbar extends React.Component<AnnotationToolbarProps> {
   }
 
   async checkIsImage() {
-    const mediaClient = getMediaClient({
-      mediaClientConfig: this.props.viewMediaClientConfig,
-    });
+    const mediaClient = getMediaClient(this.props.viewMediaClientConfig);
     if (!this.props.id) {
       return;
     }

@@ -54,6 +54,27 @@ describe('FileCard', () => {
     expect(card.find(FileCardImageView).props().dataURI).toContain(fakeDataUri);
   });
 
+  it('should render fileCardView with alt prop when passed', () => {
+    const details: FileDetails = {
+      id: 'id',
+      mediaType: 'image',
+      mimeType: 'image/jpeg',
+      name: 'some-image.jpg',
+      processingStatus: 'succeeded',
+      size: 123456,
+      artifacts: {},
+    };
+
+    const alt = 'this is a test';
+
+    const card = shallow(
+      <FileCard status="complete" details={details} alt={alt} />,
+    );
+
+    expect(card.find(FileCardImageView).length).toEqual(1);
+    expect(card.find(FileCardImageView).props().alt).toBe(alt);
+  });
+
   it('should pass "Failed to load" copy to "image" card view', () => {
     const card = shallow(<FileCard appearance="image" status="error" />);
 

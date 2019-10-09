@@ -305,13 +305,31 @@ export class SelectionBasedNodeView<
     return pos < from && to < posEnd;
   };
 
-  insideSelection = () => {
-    const selection = this.view.state.selection;
-    const { from, to } = selection;
+  private isSelectedNode = (selection: Selection): boolean => {
     if (selection instanceof NodeSelection) {
-      return selection.node === this.node;
+      const {
+        selection: { from, to },
+      } = this.view.state;
+      return (
+        selection.node === this.node ||
+        // If nodes are not the same object, we check if they are referring to the same document node
+        (this.pos === from &&
+          this.posEnd === to &&
+          selection.node.eq(this.node))
+      );
     }
-    return this.isSelectionInsideNode(from, to);
+    return false;
+  };
+
+  insideSelection = () => {
+    const {
+      selection: { from, to },
+    } = this.view.state;
+
+    return (
+      this.isSelectedNode(this.view.state.selection) ||
+      this.isSelectionInsideNode(from, to)
+    );
   };
 
   viewShouldUpdate(_nextNode: PMNode) {

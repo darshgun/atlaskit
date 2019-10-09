@@ -1,13 +1,39 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
-import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
+import { mount, ReactWrapper } from 'enzyme';
+import FabricAnalyticsListeners, {
+  AnalyticsWebClient,
+} from '@atlaskit/analytics-listeners';
 import { analyticsClient } from '@atlaskit/editor-test-helpers/src/analytics-client-mock';
-import { doc, p, a, b } from '@atlaskit/adf-utils';
+import { doc, p, a, b, heading, text } from '@atlaskit/adf-utils';
 import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context';
-import Renderer, { Renderer as BaseRenderer } from '../../../ui/Renderer';
+import Renderer, {
+  Renderer as BaseRenderer,
+  Props,
+} from '../../../ui/Renderer';
 import { RendererAppearance } from '../../../ui/Renderer/types';
 
+const initialDoc = {
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello!',
+        },
+      ],
+    },
+  ],
+};
+
+const invalidDoc = {
+  type: 'doc',
+  content: 'foo',
+};
+
 const validDoc = doc(
+  heading({ level: 1 })(text('test')),
   p(
     a({ href: 'https://www.atlassian.com' })('Hello, '),
     a({ href: 'https://www.atlassian.com' })(b('World!')),
@@ -15,13 +41,19 @@ const validDoc = doc(
 );
 
 describe('@atlaskit/renderer/ui/Renderer', () => {
-  it('should re-render when appearance changes', () => {
-    const doc = {
-      type: 'doc',
-      content: 'foo',
-    };
+  let renderer: ReactWrapper;
 
-    const renderer = mount(<Renderer document={doc} />);
+  const initRenderer = (doc: any = initialDoc, props: Partial<Props> = {}) =>
+    mount(<Renderer document={doc} {...props} />);
+
+  afterEach(() => {
+    if (renderer && renderer.length === 1) {
+      renderer.unmount();
+    }
+  });
+
+  it('should re-render when appearance changes', () => {
+    renderer = initRenderer();
     const renderSpy = jest.spyOn(
       renderer.find(BaseRenderer).instance() as any,
       'render',
@@ -32,14 +64,14 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
   });
 
   it('should catch errors and render unsupported content text', () => {
-    const doc = {
-      type: 'doc',
-      content: 'foo',
-    };
-
-    const renderer = mount(<Renderer document={doc} />);
+    renderer = initRenderer(invalidDoc);
     expect(renderer.find('UnsupportedBlockNode')).toHaveLength(1);
-    renderer.unmount();
+  });
+
+  it('should call onError callback when catch error', () => {
+    const onError = jest.fn();
+    renderer = initRenderer(invalidDoc, { onError });
+    expect(onError).toHaveBeenCalled();
   });
 
   describe('Stage0', () => {
@@ -68,80 +100,73 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
     };
 
     it('should remove stage0 marks if flag is not explicitly set to "stage0"', () => {
-      const renderer = mount(<Renderer document={docWithStage0Mark} />);
+      renderer = initRenderer(docWithStage0Mark);
       expect(renderer.find('ConfluenceInlineComment')).toHaveLength(0);
-      renderer.unmount();
     });
 
     it('should keep stage0 marks if flag is explicitly set to "stage0"', () => {
-      const renderer = mount(
-        <Renderer document={docWithStage0Mark} adfStage="stage0" />,
-      );
+      renderer = initRenderer(docWithStage0Mark, { adfStage: 'stage0' });
       expect(renderer.find('ConfluenceInlineComment')).toHaveLength(1);
-      renderer.unmount();
     });
   });
 
   describe('Truncated Renderer', () => {
     it('should truncate to 95px when truncated prop is true and maxHeight is undefined', () => {
-      const renderer = mount(<Renderer truncated={true} document={validDoc} />);
+      renderer = initRenderer(initialDoc, { truncated: true });
 
       expect(renderer.find('TruncatedWrapper')).toHaveLength(1);
 
       const wrapper = renderer.find('TruncatedWrapper').childAt(0);
       expect(wrapper.props().height).toEqual(95);
-      renderer.unmount();
     });
 
     it('should truncate to custom height when truncated prop is true and maxHeight is defined', () => {
-      const renderer = mount(
-        <Renderer truncated={true} maxHeight={100} document={validDoc} />,
-      );
+      renderer = initRenderer(initialDoc, { truncated: true, maxHeight: 100 });
       expect(renderer.find('TruncatedWrapper')).toHaveLength(1);
       expect(renderer.find('TruncatedWrapper').props().height).toEqual(100);
-
-      renderer.unmount();
     });
 
     it("shouldn't truncate when truncated prop is undefined and maxHeight is defined", () => {
-      const renderer = mount(<Renderer maxHeight={100} document={validDoc} />);
+      renderer = initRenderer(initialDoc, { maxHeight: 100 });
       expect(renderer.find('TruncatedWrapper')).toHaveLength(0);
-      renderer.unmount();
     });
 
     it("shouldn't truncate when truncated prop is undefined and maxHeight is undefined", () => {
-      const renderer = mount(<Renderer document={validDoc} />);
+      renderer = initRenderer();
       expect(renderer.find('TruncatedWrapper')).toHaveLength(0);
-      renderer.unmount();
     });
   });
 
   describe('Analytics', () => {
-    it('should fire analytics event on renderer started', () => {
+    let client: AnalyticsWebClient;
+
+    const initRendererWithAnalytics = (props: Partial<Props> = {}) =>
+      mount(
+        <FabricAnalyticsListeners client={client}>
+          <Renderer document={initialDoc} {...props} />
+        </FabricAnalyticsListeners>,
+      );
+
+    beforeEach(() => {
+      client = analyticsClient();
+    });
+
+    it('should fire heading anchor hit analytics event', () => {
       jest.useFakeTimers();
       jest
         .spyOn(window, 'requestAnimationFrame')
         .mockImplementation((fn: Function) => fn());
 
-      const client = analyticsClient();
       const oldHash = window.location.hash;
       window.location.hash = '#test';
       jest.spyOn(document, 'getElementById').mockImplementation(() => ({
         scrollIntoView: jest.fn(),
       }));
 
-      mount(
+      renderer = mount(
         <FabricAnalyticsListeners client={client}>
           <Renderer document={validDoc} />
         </FabricAnalyticsListeners>,
-      );
-
-      expect(client.sendUIEvent).toHaveBeenCalledWith(
-        expect.objectContaining({
-          action: 'started',
-          actionSubject: 'renderer',
-          attributes: expect.objectContaining({ platform: 'web' }),
-        }),
       );
 
       jest.runAllTimers();
@@ -161,6 +186,22 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
       (document.getElementById as jest.Mock).mockRestore();
       (window.requestAnimationFrame as jest.Mock).mockRestore();
       jest.useRealTimers();
+    });
+
+    it('should fire analytics event on renderer started', () => {
+      jest
+        .spyOn(window, 'requestAnimationFrame')
+        .mockImplementation((fn: Function) => fn());
+
+      renderer = initRendererWithAnalytics();
+
+      expect(client.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'started',
+          actionSubject: 'renderer',
+          attributes: expect.objectContaining({ platform: 'web' }),
+        }),
+      );
     });
 
     const appearances: {
@@ -184,12 +225,9 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
       it(`adds appearance to analytics events for ${
         appearance.appearance
       } renderer`, () => {
-        const client = analyticsClient();
-        mount(
-          <FabricAnalyticsListeners client={client}>
-            <Renderer document={validDoc} appearance={appearance.appearance} />
-          </FabricAnalyticsListeners>,
-        );
+        renderer = initRendererWithAnalytics({
+          appearance: appearance.appearance,
+        });
 
         expect(client.sendUIEvent).toHaveBeenCalledWith(
           expect.objectContaining({

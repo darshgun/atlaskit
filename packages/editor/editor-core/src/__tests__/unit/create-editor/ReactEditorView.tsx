@@ -11,6 +11,7 @@ import {
   mention,
   defaultSchema,
   storyMediaProviderFactory,
+  createAnalyticsEventMock,
 } from '@atlaskit/editor-test-helpers';
 import { mention as mentionData } from '@atlaskit/util-data-test';
 import { MentionProvider } from '@atlaskit/mention/resource';
@@ -33,6 +34,7 @@ import {
   ACTION_SUBJECT_ID,
   addAnalytics,
   DispatchAnalyticsEvent,
+  editorAnalyticsChannel,
 } from '../../../plugins/analytics';
 import { analyticsService } from '../../../analytics';
 import { EditorAppearance } from '../../../types';
@@ -52,7 +54,7 @@ const requiredProps = () => ({
 
 const analyticsProps = () => ({
   allowAnalyticsGASV3: true,
-  createAnalyticsEvent: (() => {}) as any,
+  createAnalyticsEvent: createAnalyticsEventMock() as any,
 });
 
 const payload: AnalyticsEventPayload = {
@@ -275,6 +277,7 @@ describe(name, () => {
             editorProps={{
               allowCodeBlocks: true,
               allowDate: true,
+              ...analyticsProps(),
             }}
           />,
         );
@@ -304,9 +307,14 @@ describe(name, () => {
           eventType: EVENT_TYPE.UI,
         };
 
+        mockFire.mockClear();
         dispatchInvalidTransaction(
           // add v3 analytics meta to transaction as we want to check this info is sent on
-          addAnalytics(editor.view.state.tr, analyticsEventPayload),
+          addAnalytics(
+            editor.view.state,
+            editor.view.state.tr,
+            analyticsEventPayload,
+          ),
         );
         expect(mockFire).toHaveBeenCalledWith({
           payload: {
@@ -316,7 +324,7 @@ describe(name, () => {
             attributes: {
               analyticsEventPayloads: [
                 {
-                  channel: undefined,
+                  channel: editorAnalyticsChannel,
                   payload: analyticsEventPayload,
                 },
               ],
