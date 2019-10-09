@@ -1,0 +1,1 @@
+ED-7840: use DOMParser rather than using innerHTML to avoid executing content from clipboard
