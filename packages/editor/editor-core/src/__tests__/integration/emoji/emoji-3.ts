@@ -107,30 +107,6 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
-  'emoji-3.ts: emoji picker search should be focused by default',
-  { skip: ['safari'] },
-  async (client: any) => {
-    const emojiButton = 'button span[aria-label="Emoji"]';
-    const emojiSearch = '[data-emoji-picker-container] input';
-
-    const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page' });
-
-    await page.waitFor(emojiButton);
-
-    // Equivalent with page.click(emojiButton) which
-    // which did not work for SafariDriver in this case
-    await client.execute((emojiButton: string) => {
-      const el = document.querySelector(emojiButton) as HTMLElement;
-      el.click();
-    }, emojiButton);
-
-    await page.waitFor(emojiSearch);
-    expect(await page.hasFocus(emojiSearch)).toBe(true);
-  },
-);
-
-BrowserTestCase(
   'emoji-3.ts: emoji picker should be scrollable',
   { skip: ['chrome', 'ie', 'firefox'] }, // { only: ['safari'] }
   async (client: any) => {
