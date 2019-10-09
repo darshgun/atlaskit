@@ -1,1 +1,0 @@
-Update pretty-proptype dep fro 1.0.1 to 1.0.2 
