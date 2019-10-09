@@ -46,7 +46,7 @@ import {
   emoji as emojiData,
   mention as mentionData,
 } from '@atlaskit/util-data-test';
-import { TextSelection } from 'prosemirror-state';
+import { TextSelection, Transaction } from 'prosemirror-state';
 import { uuid } from '@atlaskit/adf-schema';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { setMacroProvider, MacroAttributes } from '../../../../plugins/macro';
@@ -517,7 +517,7 @@ describe('paste plugins', () => {
 
         const tr = dispatchSpy.mock.calls[0][0];
         expect(
-          (tr as typeof tr & { scrolledIntoView: boolean }).scrolledIntoView,
+          (tr as Transaction & { scrolledIntoView: boolean }).scrolledIntoView,
         ).toBe(true);
       });
     });
@@ -808,7 +808,7 @@ describe('paste plugins', () => {
 
         const tr = dispatchSpy.mock.calls[0][0];
         expect(
-          (tr as typeof tr & {
+          (tr as Transaction & {
             scrolledIntoView: boolean;
           }).scrolledIntoView,
         ).toBe(true);
