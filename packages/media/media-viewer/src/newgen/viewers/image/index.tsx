@@ -48,13 +48,6 @@ export class ImageViewer extends BaseViewer<
 
   private cancelImageFetch?: () => void;
 
-  // This method is spied on by some test cases, so don't rename or remove it.
-  public preventRaceCondition() {
-    // Calling setState might introduce a race condition, because the app has
-    // already transitioned to a different state. To avoid this we're not doing
-    // anything.
-  }
-
   protected async init() {
     const { item: file, mediaClient, collectionName } = this.props;
     if (file.status === 'error') {
@@ -102,9 +95,7 @@ export class ImageViewer extends BaseViewer<
         content: Outcome.successful({ objectUrl, orientation }),
       });
     } catch (err) {
-      if (err.message === REQUEST_CANCELLED) {
-        this.preventRaceCondition();
-      } else {
+      if (err.message !== REQUEST_CANCELLED) {
         this.setState({
           content: Outcome.failed(createError('previewFailed', err, file)),
         });
