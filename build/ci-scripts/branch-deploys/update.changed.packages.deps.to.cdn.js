@@ -49,6 +49,7 @@ bolt.getWorkspaces().then(workspaces => {
         const depVersion = cpInfo.config.version;
         const expectedUrl = getExpectedUrl(depName, depVersion, commit);
         pkgJson.dependencies[depName] = expectedUrl;
+        pkgJson.version = `${pkg.config.version}-${commit}`;
         console.log(
           `Updating dep of ${pkgJson.name}: ${depName} - ${expectedUrl}`,
         );
