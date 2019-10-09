@@ -24,7 +24,7 @@ describe('media editor', () => {
       (({
         state: {},
         dispatch: jest.fn(),
-      } as any) as EditorView),
+      } as { state: {}; dispatch: Function }) as EditorView),
   );
 
   const identifier: FileIdentifier = {
