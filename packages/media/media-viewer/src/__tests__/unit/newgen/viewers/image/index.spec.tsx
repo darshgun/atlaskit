@@ -9,7 +9,6 @@ import {
 
 import {
   ImageViewer,
-  REQUEST_CANCELLED,
   ImageViewerProps,
 } from '../../../../../newgen/viewers/image';
 import { BaseState } from '../../../../../newgen/viewers/base-viewer';
@@ -57,11 +56,11 @@ describe('ImageViewer', () => {
   });
 
   it('does not update state when image fetch request is cancelled', async () => {
-    const response = Promise.reject(new Error(REQUEST_CANCELLED));
+    const response = Promise.reject(new Error('request_cancelled'));
     const { el } = createFixture(response);
 
     (el as any).instance()['preventRaceCondition'] = jest.fn();
-    await awaitError(response, REQUEST_CANCELLED);
+    await awaitError(response, 'request_cancelled');
     expect(response).toBeDefined();
     expect(
       (el as any).instance()['preventRaceCondition'].mock.calls.length === 1,
