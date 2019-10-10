@@ -7,7 +7,7 @@ import waitForExpect from 'wait-for-expect';
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
 beforeEach(() => {
-  jest.setTimeout(10000);
+  jest.setTimeout(15000);
 });
 
 afterEach(() => {

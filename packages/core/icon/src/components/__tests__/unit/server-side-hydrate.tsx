@@ -15,7 +15,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-describe('should ssr then hydrate icon correctly', () => {
+test('should ssr then hydrate icon correctly', async () => {
   const [example] = await getExamplesFor('icon');
   const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
   const elem = document.createElement('div');
@@ -35,6 +35,5 @@ describe('should ssr then hydrate icon correctly', () => {
         ),
     );
     expect(mockCalls.length).toBe(0);
-    console.log('test finish', new Date().getTime());
   });
 });
