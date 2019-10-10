@@ -1,1 +1,0 @@
-Refactor codes related to experimental Discover section in Atlassian Switcher.

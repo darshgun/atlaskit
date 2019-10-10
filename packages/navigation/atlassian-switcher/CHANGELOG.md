@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.5.1
+
+### Patch Changes
+
+- [patch][165f1cd0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/165f1cd0ad):
+
+  Refactor codes related to experimental Discover section in Atlassian Switcher.
+
 ## 4.5.0
 
 ### Minor Changes
