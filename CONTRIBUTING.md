@@ -373,9 +373,11 @@ using this approach.
 
 ### Individual package builds
 
-Individual packages can be built by running `bolt build <pkg-name>`, e.g. `bolt build @atlaskit/button`.
+Individual packages can be built by running `bolt build <pkg-name>`, e.g. `bolt build @atlaskit/button` or `bolt build button`.
 
 You can also rebuild them in watch mode via the `--watch` flag.
+
+Run `bolt build --help` for a full list of options.
 
 One caveat with the individual package build is that typescript will emit errors whenever it encounters a transitive dependency that has not been built, saying
 

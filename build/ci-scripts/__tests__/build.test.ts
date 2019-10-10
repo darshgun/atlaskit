@@ -1,4 +1,5 @@
 import * as bolt from 'bolt';
+import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
 import { getPackagesInfo } from '@atlaskit/build-utils/tools';
 import createEntryPointsDirectories from '../create.entry.points.directories';
@@ -35,6 +36,7 @@ describe('Build', () => {
     (getPackagesInfo as any).mockImplementation(() => [
       {
         name: '@atlaskit/editor-core',
+        dir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
         relativeDir: 'packages/editor/editor-core',
         isTypeScript: true,
       },
@@ -210,7 +212,7 @@ describe('Build', () => {
         expect(getPackagesInfo).toHaveBeenCalledWith(
           '/Users/dev/atlaskit-mk-2',
           {
-            only: 'editor-core',
+            only: '**/editor-core',
           },
         );
         jest.clearAllMocks();
@@ -224,7 +226,7 @@ describe('Build', () => {
         expect(getPackagesInfo).toHaveBeenCalledWith(
           '/Users/dev/atlaskit-mk-2',
           {
-            only: '@atlaskit/editor-core',
+            only: '**/@atlaskit/editor-core',
           },
         );
       });
@@ -352,12 +354,85 @@ describe('Build', () => {
         },
       );
     });
-    it.todo(
-      'should trigger `yalc push` on successful recompile of a JS package',
-    );
-    it.todo(
-      'should trigger `yalc push` on successful recompile of a TS package',
-    );
+    it('should trigger `yalc push` on successful recompile of a JS package', async () => {
+      (getPackagesInfo as any).mockImplementation(() => [
+        {
+          name: '@atlaskit/navigation-next',
+          dir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
+          relativeDir: 'packages/core/navigation-next',
+          isBabel: true,
+          isFlow: true,
+        },
+      ]);
+
+      await build('navigation-next', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+        watch: true,
+      });
+
+      expect(runCommands).toHaveBeenCalled();
+
+      // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+      const runCommandOptions = (runCommands as any).mock.calls[2][1];
+      // Test watchFirstSuccessCondition
+      expect(
+        runCommandOptions.watchFirstSuccessCondition(
+          'Successfully compiled 1 files with Babel',
+        ),
+      ).toBe(true);
+      expect(
+        runCommandOptions.watchFirstSuccessCondition(
+          'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+        ),
+      ).toBe(false);
+
+      // Test watchSuccessCondition
+      expect(
+        runCommandOptions.watchSuccessCondition(
+          'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+        ),
+      ).toBe(true);
+      expect(runCommandOptions.watchSuccessCondition('error')).toBe(false);
+
+      // Test onWatchSuccess
+      expect(yalc.publishPackage).not.toHaveBeenCalled();
+      runCommandOptions.onWatchSuccess();
+      expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
+      expect(yalc.publishPackage).toHaveBeenCalledWith({
+        workingDir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
+        push: true,
+      });
+    });
+    it('should trigger `yalc push` on successful recompile of a TS package', async () => {
+      await build('editor-core', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+        watch: true,
+      });
+
+      expect(runCommands).toHaveBeenCalled();
+
+      // Fourth run of runCommands - first 2 are the initial build, 4th is TS watch
+      const runCommandOptions = (runCommands as any).mock.calls[3][1];
+
+      // Test watchSuccessCondition
+      expect(
+        runCommandOptions.watchSuccessCondition('Watching for file changes.'),
+      ).toBe(true);
+      expect(
+        runCommandOptions.watchSuccessCondition(
+          'Starting compilation in watch mode',
+        ),
+      ).toBe(false);
+
+      // Test onWatchSuccess
+      expect(yalc.publishPackage).not.toHaveBeenCalled();
+      runCommandOptions.onWatchSuccess();
+      expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
+      expect(yalc.publishPackage).toHaveBeenCalledWith({
+        workingDir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
+        push: true,
+      });
+    });
   });
 
   describe('distType option', () => {

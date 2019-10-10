@@ -1,10 +1,11 @@
 /**
  * The canonical build script for Atlaskit.
  * See CONTRIBUTING.md#building-packages or
- * run `bolt w @atlaskit/ci-scripts build --help` for more information.
+ * run `bolt build --help` for more information.
  */
 import * as bolt from 'bolt';
 import meow from 'meow';
+import * as yalc from 'yalc';
 
 import { PackageInfo } from '@atlaskit/build-utils/types';
 import { getPackagesInfo } from '@atlaskit/build-utils/tools';
@@ -94,7 +95,13 @@ async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
       watchFirstSuccessCondition: (output: string) => initialRe.test(output),
       watchSuccessCondition: (output: string) => recompileRe.test(output),
       onWatchSuccess: () => {
-        console.log('yalc push');
+        // const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
+        yalc.publishPackage({
+          // If watch mode is enabled, we have a package
+          // TODO: Add TS 3.7 assertion here
+          workingDir: (pkg as PackageInfo).dir,
+          push: true,
+        });
       },
     };
   }
@@ -158,7 +165,12 @@ async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
     commandOptions = {
       watchSuccessCondition: (output: string) => re.test(output),
       onWatchSuccess: () => {
-        console.log('yalc push');
+        yalc.publishPackage({
+          // If watch mode is enabled, we have a package
+          // TODO: Add TS 3.7 assertion here
+          workingDir: (pkg as PackageInfo).dir,
+          push: true,
+        });
       },
     };
   }
@@ -194,7 +206,7 @@ async function getPkgInfo(
   { cwd }: { cwd?: string } = {},
 ): Promise<PackageInfo> {
   const allPkgs = await getPackagesInfo(cwd, {
-    only: packageName,
+    only: `**/${packageName}`,
   });
   if (allPkgs.length === 0) {
     throw Error(`Cannot find package "${packageName}" in workspaces`);
@@ -292,13 +304,16 @@ if (require.main === module) {
       Usage
         $ bolt build [packageName]
 
+      where packageName is a long form (@atlaskit/my-pkg) or short form (my-pkg) name
+
       Options
         -d, --distType <cjs|esm|none> Run the build only for a specific distType, cjs or esm, or specify 'none' to not compile a dist type and only run other build steps
         -w, --watch                   Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
 
       Examples
         $ bolt build @atlaskit/button -w
-        $ bolt build @atlaskit/editor-core --watch --distType cjs
+        $ bolt build editor-core --watch --distType cjs
+        $ bolt build --d cjs
   `,
     {
       description:
