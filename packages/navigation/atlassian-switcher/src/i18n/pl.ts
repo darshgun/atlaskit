@@ -7,7 +7,7 @@
 // Polish
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Przełącz na',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Przełącz na…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Przełącz na...',
   'fabric.atlassianSwitcher.recent': 'Ostatnie',
   'fabric.atlassianSwitcher.more': 'Więcej',
   'fabric.atlassianSwitcher.try': 'Wypróbuj',
@@ -17,10 +17,15 @@ export default {
   'fabric.atlassianSwitcher.people': 'Użytkownicy',
   'fabric.atlassianSwitcher.administration': 'Administracja',
   'fabric.atlassianSwitcher.discoverMore': 'Odkryj więcej',
-  'fabric.atlassianSwitcher.errorHeading': 'Wystąpił błąd',
+  'fabric.atlassianSwitcher.errorHeading': 'Coś poszło nie tak',
   'fabric.atlassianSwitcher.errorText':
     'Monitorujemy te błędy, ale nie wahaj się skontaktować z nami, jeśli odświeżanie nie rozwiąże problemów',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Zepsuty robot i wiele osób pracuje, aby usunąć błąd.',
-  'fabric.atlassianSwitcher.expand': 'Rozwiń',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Nie udało się załadować tej listy. Załaduj stronę ponownie i spróbuj ponownie.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Wylogowano. Zaloguj się ponownie.',
+  'fabric.atlassianSwitcher.login': 'Zaloguj się',
+  'fabric.atlassianSwitcher.show.more.sites': 'Pokaż więcej stron',
 };

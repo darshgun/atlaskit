@@ -7,7 +7,7 @@
 // Finnish
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Vaihda kohteeseen',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Vaihda kohteeseen…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Vaihda kohteeseen...',
   'fabric.atlassianSwitcher.recent': 'Viimeaikainen',
   'fabric.atlassianSwitcher.more': 'Lisää',
   'fabric.atlassianSwitcher.try': 'Yritä',
@@ -22,5 +22,10 @@ export default {
     'Huomioimme nämä virheet, mutta ota meihin yhteyttä, jos sivun lataus ei paranna asiaa',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Rikkoutunut robotti ja monta ihmistä korjaamassa sitä.',
-  'fabric.atlassianSwitcher.expand': 'Laajenna',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Tätä luetteloa ei voitu ladata. Lataa sivu ja yritä uudelleen.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Sinut on kirjattu ulos. Kirjaudu sisään uudelleen.',
+  'fabric.atlassianSwitcher.login': 'Kirjaudu sisään',
+  'fabric.atlassianSwitcher.show.more.sites': 'Näytä lisää sivustoja',
 };

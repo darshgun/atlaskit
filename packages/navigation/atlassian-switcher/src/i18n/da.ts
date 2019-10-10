@@ -7,7 +7,7 @@
 // Danish
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Skift til',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Skift til…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Skift til ...',
   'fabric.atlassianSwitcher.recent': 'Seneste',
   'fabric.atlassianSwitcher.more': 'Mere',
   'fabric.atlassianSwitcher.try': 'Prøv',
@@ -17,10 +17,15 @@ export default {
   'fabric.atlassianSwitcher.people': 'Personer',
   'fabric.atlassianSwitcher.administration': 'Administration',
   'fabric.atlassianSwitcher.discoverMore': 'Se flere',
-  'fabric.atlassianSwitcher.errorHeading': 'Der gik noget galt',
+  'fabric.atlassianSwitcher.errorHeading': 'Something’s gone wrong',
   'fabric.atlassianSwitcher.errorText':
     'Vi registrerer disse fejl, men du er velkommen til at kontakte os, hvis problemet ikke løses, når du genindlæser',
   'fabric.atlassianSwitcher.errorImageAltText':
     'En ødelagt robot og en flok mennesker er i gang med at ordne det.',
-  'fabric.atlassianSwitcher.expand': 'Udvid',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'We couldn’t load this list. Please reload the page and try again.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'You’ve been logged out. Please log in again.',
+  'fabric.atlassianSwitcher.login': 'Log in',
+  'fabric.atlassianSwitcher.show.more.sites': 'Show more sites',
 };

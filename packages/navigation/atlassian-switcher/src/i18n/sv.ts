@@ -7,7 +7,7 @@
 // Swedish
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Byt till',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Byt till…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Växla till ...',
   'fabric.atlassianSwitcher.recent': 'Senaste',
   'fabric.atlassianSwitcher.more': 'Mer',
   'fabric.atlassianSwitcher.try': 'Prova',
@@ -22,5 +22,10 @@ export default {
     'Vi håller koll på dessa fel, men tveka inte att kontakta oss om en uppdatering inte åtgärdar problemen.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'En trasig robot och ett antal personer arbetar för att åtgärda felet.',
-  'fabric.atlassianSwitcher.expand': 'Visa',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Vi kunde inte läsa in listan. Uppdatera sidan och försök igen.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Du har loggats ut. Logga in igen.',
+  'fabric.atlassianSwitcher.login': 'Logga in',
+  'fabric.atlassianSwitcher.show.more.sites': 'Visa fler webbplatser',
 };

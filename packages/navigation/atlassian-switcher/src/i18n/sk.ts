@@ -7,7 +7,7 @@
 // Slovak
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Prepnúť na',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Prepnúť na…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Prepnúť na...',
   'fabric.atlassianSwitcher.recent': 'Nedávne',
   'fabric.atlassianSwitcher.more': 'Ďalšie',
   'fabric.atlassianSwitcher.try': 'Vyskúšať',
@@ -17,10 +17,15 @@ export default {
   'fabric.atlassianSwitcher.people': 'Ľudia',
   'fabric.atlassianSwitcher.administration': 'Správa',
   'fabric.atlassianSwitcher.discoverMore': 'Zistite viac',
-  'fabric.atlassianSwitcher.errorHeading': 'Vyskytol sa problém',
+  'fabric.atlassianSwitcher.errorHeading': 'Niekde sa stala chyba',
   'fabric.atlassianSwitcher.errorText':
     'Tieto chyby sledujeme, ale ak obnovenie neodstráni problém, neváhajte nás kontaktovať',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Pracujeme na odstránení chyby.',
-  'fabric.atlassianSwitcher.expand': 'Rozbaliť',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Nepodarilo sa načítať tento zoznam. Obnovte stránku a skúste to znova.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Boli ste odhlásený. Opätovne sa prihláste.',
+  'fabric.atlassianSwitcher.login': 'Prihlásiť sa',
+  'fabric.atlassianSwitcher.show.more.sites': 'Zobraziť ďalšie stránky',
 };

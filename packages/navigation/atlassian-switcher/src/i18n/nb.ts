@@ -7,7 +7,7 @@
 // Norwegian Bokmål
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Bytt til',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Bytt til…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Bytt til …',
   'fabric.atlassianSwitcher.recent': 'Nylige',
   'fabric.atlassianSwitcher.more': 'Mer',
   'fabric.atlassianSwitcher.try': 'Prøv',
@@ -17,10 +17,15 @@ export default {
   'fabric.atlassianSwitcher.people': 'Personer',
   'fabric.atlassianSwitcher.administration': 'Administrasjon',
   'fabric.atlassianSwitcher.discoverMore': 'Få mer informasjon',
-  'fabric.atlassianSwitcher.errorHeading': 'Det oppsto en feil',
+  'fabric.atlassianSwitcher.errorHeading': 'Noe har gått galt',
   'fabric.atlassianSwitcher.errorText':
     'Vi registrerer disse feilene, men ta gjerne kontakt hvis det ikke hjelper å oppdatere',
   'fabric.atlassianSwitcher.errorImageAltText':
     'En robot som har brutt sammen, og en rekke personer som er opptatt med å fikse den.',
-  'fabric.atlassianSwitcher.expand': 'Utvid',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Vi kunne ikke laste denne listen. Last inn siden på nytt og prøv igjen.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Du er logget av. Logg inn igjen.',
+  'fabric.atlassianSwitcher.login': 'Logg inn',
+  'fabric.atlassianSwitcher.show.more.sites': 'Vis flere sider',
 };
