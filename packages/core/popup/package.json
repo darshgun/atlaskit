@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/popup",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Renders a portaled popup component in reference to a trigger.",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
