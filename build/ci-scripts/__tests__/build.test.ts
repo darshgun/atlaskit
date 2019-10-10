@@ -156,7 +156,7 @@ describe('Build', () => {
         {},
       );
       // Does not try to build TS
-      expect(runCommands).toHaveBeenNthCalledWith(2, [], { sequential: false });
+      expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
     });
     it('should build TS package if it is TS', async () => {
       expect(runCommands).not.toHaveBeenCalled();
@@ -292,16 +292,8 @@ describe('Build', () => {
         cwd: '/Users/dev/atlaskit-mk-2',
         watch: true,
       });
-      expect(runCommands).toHaveBeenNthCalledWith(
-        1,
-        [
-          'NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "packages/core/navigation-next" -- babel src -d dist/cjs --root-mode upward',
-          'NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "packages/core/navigation-next" -- babel src -d dist/esm --root-mode upward',
-          'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/cjs',
-          'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm',
-        ],
-        {},
-      );
+      // Does not build JS on initial build
+      expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
       // Does not try to build TS
       expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
@@ -328,16 +320,9 @@ describe('Build', () => {
         cwd: '/Users/dev/atlaskit-mk-2',
         watch: true,
       });
-      // Initial build
+      // Does not build anything on initial build
       expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
-      expect(runCommands).toHaveBeenNthCalledWith(
-        2,
-        [
-          'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
-          'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
-        ],
-        { sequential: false },
-      );
+      expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
       // Watch mode
       expect(runCommands).toHaveBeenNthCalledWith(3, [], expect.any(Object));
@@ -498,9 +483,7 @@ describe('Build', () => {
         });
         expect(runCommands).toHaveBeenCalledTimes(2);
         expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
-        expect(runCommands).toHaveBeenNthCalledWith(2, [], {
-          sequential: true,
-        });
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
       });
     });
 
@@ -569,15 +552,7 @@ describe('Build', () => {
 
         // Initial build
         expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
-        expect(runCommands).toHaveBeenNthCalledWith(
-          2,
-          [
-            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
-          ],
-          {
-            sequential: false,
-          },
-        );
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
         // Watch
         expect(runCommands).toHaveBeenNthCalledWith(3, [], expect.any(Object));
@@ -605,15 +580,7 @@ describe('Build', () => {
 
         // Initial Build
         expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
-        expect(runCommands).toHaveBeenNthCalledWith(
-          2,
-          [
-            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
-          ],
-          {
-            sequential: false,
-          },
-        );
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
         // Watch
         expect(runCommands).toHaveBeenNthCalledWith(3, [], expect.any(Object));

@@ -263,11 +263,12 @@ export default async function main(
   validateArgs(packageName, options);
   if (watch) {
     // Do a full build first to ensure non-compilation build steps have built since they are not rerun
-    // in watch mode
+    // in watch mode. Set dist type to none so we don't unnecessarily build dists since that will happen on the
+    // initial watch execution.
     console.log(
       'Running initial build for watch mode to cover non-compilation build steps...',
     );
-    await main(packageName, { ...options, watch: false });
+    await main(packageName, { ...options, watch: false, distType: 'none' });
   }
 
   let fullPackageName;
