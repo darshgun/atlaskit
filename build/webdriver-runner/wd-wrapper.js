@@ -54,6 +54,10 @@ export default class Page {
     return this.browser.url(url);
   }
 
+  refresh() {
+    return this.browser.refresh();
+  }
+
   async moveTo(selector, x, y) {
     if (this.isBrowser('Safari')) {
       const bounds = await this.getBoundingRect(selector);
