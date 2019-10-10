@@ -7,8 +7,14 @@ const commit = process.env.BITBUCKET_COMMIT
   ? process.env.USER + uniqIdentifierStamp
   : uniqIdentifierStamp;
 
+let BUILD_BRANCH_NAME = process.env.BITBUCKET_BRANCH;
+
 if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-  process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
+  BUILD_BRANCH_NAME = process.env.USER + '_local_run';
+}
+
+if (process.env.LANDKID) {
+  BUILD_BRANCH_NAME = 'Landkid';
 }
 
 function setBrowserStackClients() /*: Array<?Object>*/ {
@@ -56,7 +62,6 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
     delete launchers.ie;
     delete launchers.firefox;
     // delete launchers.edge;
-    process.env.BITBUCKET_BRANCH = 'Landkid';
   }
   const launchKeys = Object.keys(launchers);
   const clients = launchKeys.map(launchKey => {
@@ -67,7 +72,7 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
         browserName: launchers[launchKey].browserName,
         browserVersion: launchers[launchKey].browser_version,
         project: 'Atlaskit Webdriver Tests',
-        build: process.env.BITBUCKET_BRANCH,
+        build: BUILD_BRANCH_NAME,
         'browserstack.local': true,
         'browserstack.debug': true,
         'browserstack.idleTimeout': 300,
