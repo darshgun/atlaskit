@@ -109,7 +109,6 @@ export default () => {
       setIsLoaded(false);
     }
   }, [isOpen]);
-
   const position = positions[idx];
 
   const setPosition = () => {
