@@ -63,7 +63,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
       prevProps.help.history !== this.props.help.history &&
       this.refArticleContainer.current
     ) {
-      this.refArticleContainer.current.scrollTo(0, 0);
+      this.refArticleContainer.current.scrollTop = 0;
     }
   }
 
