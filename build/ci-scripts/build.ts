@@ -95,6 +95,11 @@ async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
       watchFirstSuccessCondition: (output: string) => initialRe.test(output),
       watchSuccessCondition: (output: string) => recompileRe.test(output),
       onWatchSuccess: () => {
+        runValidateDists({
+          cwd,
+          distType,
+          packageName: (pkg as PackageInfo).name,
+        });
         // const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
         yalc.publishPackage({
           // If watch mode is enabled, we have a package
@@ -165,6 +170,11 @@ async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
     commandOptions = {
       watchSuccessCondition: (output: string) => re.test(output),
       onWatchSuccess: () => {
+        runValidateDists({
+          cwd,
+          distType,
+          packageName: (pkg as PackageInfo).name,
+        });
         yalc.publishPackage({
           // If watch mode is enabled, we have a package
           // TODO: Add TS 3.7 assertion here
@@ -219,6 +229,7 @@ async function getPkgInfo(
 
 async function runValidateDists(opts: {
   cwd: string | undefined;
+  distType: DistType | undefined;
   packageName: string | undefined;
 }) {
   const { success, packageDistErrors } = await validateDists(opts);
@@ -251,7 +262,7 @@ function validateArgs(packageName: string | undefined, opts: Options) {
 
 export default async function main(
   packageName: string | undefined,
-  opts: Partial<Options> = {},
+  opts: Partial<Options> & { indent?: number } = {},
 ) {
   // Ensure we have all option keys set for our internal functions
   const options: Options = {
@@ -268,7 +279,7 @@ export default async function main(
     console.log(
       'Running initial build for watch mode to cover non-compilation build steps...',
     );
-    await main(packageName, { ...options, watch: false, distType: 'none' });
+    await main(packageName, { ...options, distType: 'none', watch: false });
   }
 
   let fullPackageName;
@@ -290,7 +301,11 @@ export default async function main(
   console.log('Copying version.json...');
   await copyVersion(fullPackageName);
   console.log('Validating dists...');
-  await runValidateDists({ cwd, packageName: fullPackageName });
+  await runValidateDists({
+    cwd,
+    distType: options.distType,
+    packageName: fullPackageName,
+  });
 
   console.log('Success');
 }

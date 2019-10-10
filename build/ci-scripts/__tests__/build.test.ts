@@ -277,6 +277,21 @@ describe('Build', () => {
       expect(copyVersion).toHaveBeenCalled();
       expect(validateDists).toHaveBeenCalled();
     });
+    it('should not compile JS/TS in the initial build before commencing watch', async () => {
+      expect(runCommands).not.toHaveBeenCalled();
+      await build('editor-core', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+        watch: true,
+      });
+      expect(runCommands).toHaveBeenCalledTimes(4);
+      expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
+      expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
+      expect(validateDists).toHaveBeenCalledWith({
+        cwd: '/Users/dev/atlaskit-mk-2',
+        distType: 'none',
+        packageName: '@atlaskit/editor-core',
+      });
+    });
     it('should run the JS compilation in watch mode for a JS package', async () => {
       (getPackagesInfo as any).mockImplementation(() => [
         {
@@ -338,6 +353,66 @@ describe('Build', () => {
           watchSuccessCondition: expect.any(Function),
         },
       );
+    });
+    it('should validate dists on successful recompile of a JS package', async () => {
+      (getPackagesInfo as any).mockImplementation(() => [
+        {
+          name: '@atlaskit/navigation-next',
+          dir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
+          relativeDir: 'packages/core/navigation-next',
+          isBabel: true,
+          isFlow: true,
+        },
+      ]);
+
+      await build('navigation-next', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+        watch: true,
+      });
+
+      // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+      const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+      expect(validateDists).toHaveBeenCalled();
+      expect(validateDists).toHaveBeenCalledWith({
+        cwd: '/Users/dev/atlaskit-mk-2',
+        distType: 'none',
+        packageName: '@atlaskit/navigation-next',
+      });
+
+      jest.clearAllMocks();
+      runCommandOptions.onWatchSuccess();
+      expect(validateDists).toHaveBeenCalledTimes(1);
+      expect(validateDists).toHaveBeenLastCalledWith({
+        cwd: '/Users/dev/atlaskit-mk-2',
+        distType: undefined,
+        packageName: '@atlaskit/navigation-next',
+      });
+    });
+    it('should validate dists on successful recompile of a TS package', async () => {
+      await build('editor-core', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+        watch: true,
+      });
+
+      // Third run of runCommands - first 2 are the initial build, 4th is TS in watch
+      const runCommandOptions = (runCommands as any).mock.calls[3][1];
+
+      expect(validateDists).toHaveBeenCalled();
+      expect(validateDists).toHaveBeenCalledWith({
+        cwd: '/Users/dev/atlaskit-mk-2',
+        distType: 'none',
+        packageName: '@atlaskit/editor-core',
+      });
+
+      jest.clearAllMocks();
+      runCommandOptions.onWatchSuccess();
+      expect(validateDists).toHaveBeenCalledTimes(1);
+      expect(validateDists).toHaveBeenLastCalledWith({
+        cwd: '/Users/dev/atlaskit-mk-2',
+        distType: undefined,
+        packageName: '@atlaskit/editor-core',
+      });
     });
     it('should trigger `yalc push` on successful recompile of a JS package', async () => {
       (getPackagesInfo as any).mockImplementation(() => [
@@ -485,6 +560,19 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
         expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
       });
+      it('should only validate dists for the specific distType', async () => {
+        expect(validateDists).not.toHaveBeenCalled();
+        await build(undefined, {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+        });
+        expect(validateDists).toHaveBeenCalledTimes(1);
+        expect(validateDists).toHaveBeenCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          packageName: undefined,
+          distType: 'cjs',
+        });
+      });
     });
 
     describe('Single package', () => {
@@ -595,6 +683,33 @@ describe('Build', () => {
             watchSuccessCondition: expect.any(Function),
           },
         );
+      });
+
+      it('should only validate a specific dist type when distType option is passed', async () => {
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+          watch: true,
+        });
+
+        // Third run of runCommands - first 2 are the initial build, 4th is TS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[3][1];
+
+        expect(validateDists).toHaveBeenCalled();
+        expect(validateDists).toHaveBeenCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'none',
+          packageName: '@atlaskit/editor-core',
+        });
+
+        jest.clearAllMocks();
+        runCommandOptions.onWatchSuccess();
+        expect(validateDists).toHaveBeenCalledTimes(1);
+        expect(validateDists).toHaveBeenLastCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+          packageName: '@atlaskit/editor-core',
+        });
       });
     });
   });
