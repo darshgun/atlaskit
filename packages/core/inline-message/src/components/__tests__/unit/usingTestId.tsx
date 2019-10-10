@@ -1,7 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
 import { render, fireEvent } from '@testing-library/react';
-import cases from 'jest-in-case';
+
 import InlineMessage from '../../..';
 
 const MessageContent = (
@@ -25,29 +24,6 @@ const createWrapper = (testId?: string) => (
     {MessageContent}
   </InlineMessage>
 );
-
-describe('Using enzyme', () => {
-  test('It should not generate data-testid', () => {
-    const wrapper = mount(createWrapper());
-    expect(wrapper).toBeDefined();
-    expect(wrapper.prop('data-testid')).toBeUndefined();
-  });
-  test('Inline message should be same with data-testid', () => {
-    const wrapper = mount(createWrapper('the-inline-message'));
-    expect(wrapper).toBeDefined();
-    expect(wrapper.find('data-testid')).toBeTruthy();
-  });
-  describe('Inline message data-testid should be stable and predictable', () => {
-    cases(
-      'should be generated',
-      ({ testId }: { testId: string }) => {
-        const wrapper = mount(createWrapper(testId));
-        expect(wrapper.find('data-testid')).toBeTruthy();
-      },
-      [{ testId: 'AnY' }, { testId: '$%#%#()+_' }, { testId: '123;*&' }],
-    );
-  });
-});
 
 describe('Using react-test-library', () => {
   describe('Inline message should be found by data-testid', () => {
