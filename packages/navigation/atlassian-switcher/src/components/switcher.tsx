@@ -67,7 +67,6 @@ const getAnalyticsContext = (itemsCount: number) => ({
 });
 
 const getItemAnalyticsContext = (
-  index: number,
   id: string | null,
   type: string,
   href: string,
@@ -75,7 +74,6 @@ const getItemAnalyticsContext = (
   extraAttributes?: { [key: string]: string },
 ) => ({
   ...analyticsAttributes({
-    groupItemIndex: index,
     itemId: id,
     itemType: type,
     domain: urlToHostname(href),
@@ -206,7 +204,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
               <NavigationAnalyticsContext
                 key={item.key}
                 data={getItemAnalyticsContext(
-                  switchToLinks.indexOf(item),
                   item.key,
                   'product',
                   item.href,
@@ -231,12 +228,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
               suggestedProductLinks.map(item => (
                 <NavigationAnalyticsContext
                   key={item.key}
-                  data={getItemAnalyticsContext(
-                    switchToLinks.indexOf(item),
-                    item.key,
-                    'try',
-                    item.href,
-                  )}
+                  data={getItemAnalyticsContext(item.key, 'try', item.href)}
                 >
                   <SwitcherThemedItemWithEvents
                     icon={<item.Icon theme="product" />}
@@ -252,12 +244,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
             {fixedLinks.map(item => (
               <NavigationAnalyticsContext
                 key={item.key}
-                data={getItemAnalyticsContext(
-                  switchToLinks.indexOf(item),
-                  item.key,
-                  'product',
-                  item.href,
-                )}
+                data={getItemAnalyticsContext(item.key, 'product', item.href)}
               >
                 <SwitcherThemedItemWithEvents
                   icon={<item.Icon theme="product" />}
@@ -275,12 +262,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
             {adminLinks.map(item => (
               <NavigationAnalyticsContext
                 key={item.key}
-                data={getItemAnalyticsContext(
-                  switchToLinks.indexOf(item),
-                  item.key,
-                  'admin',
-                  item.href,
-                )}
+                data={getItemAnalyticsContext(item.key, 'admin', item.href)}
               >
                 <SwitcherThemedItemWithEvents
                   icon={<item.Icon theme="admin" />}
@@ -301,11 +283,10 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 )
               }
             >
-              {suggestedProductLinks.map((item, idx) => (
+              {suggestedProductLinks.map(item => (
                 <NavigationAnalyticsContext
                   key={item.key}
                   data={getItemAnalyticsContext(
-                    idx,
                     item.key,
                     'discover',
                     item.href,
@@ -320,15 +301,10 @@ export default class Switcher extends React.Component<SwitcherProps> {
                   </SwitcherThemedItemWithEvents>
                 </NavigationAnalyticsContext>
               ))}
-              {discoverSectionLinks.map((item, idx) => (
+              {discoverSectionLinks.map(item => (
                 <NavigationAnalyticsContext
                   key={item.key}
-                  data={getItemAnalyticsContext(
-                    idx,
-                    item.key,
-                    'admin',
-                    item.href,
-                  )}
+                  data={getItemAnalyticsContext(item.key, 'admin', item.href)}
                 >
                   <SwitcherThemedItemWithEvents
                     icon={<item.Icon theme="discover" />}
@@ -352,10 +328,10 @@ export default class Switcher extends React.Component<SwitcherProps> {
             }
           >
             {recentLinks.map(
-              ({ key, label, href, type, description, Icon }, idx) => (
+              ({ key, label, href, type, description, Icon }) => (
                 <NavigationAnalyticsContext
                   key={key}
-                  data={getItemAnalyticsContext(idx, type, 'recent', href)}
+                  data={getItemAnalyticsContext(type, 'recent', href)}
                 >
                   <SwitcherThemedItemWithEvents
                     icon={<Icon theme="recent" />}
@@ -380,7 +356,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 <NavigationAnalyticsContext
                   key={idx + '.' + label}
                   data={getItemAnalyticsContext(
-                    idx,
                     null,
                     'customLink',
                     href,
