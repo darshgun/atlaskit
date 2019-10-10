@@ -8,7 +8,7 @@ exports[`ADF => WikiMarkup - List should convert bulletList node 1`] = `
 exports[`ADF => WikiMarkup - List should convert codeblock node 1`] = `
 "* item 1
 * item 2
-{code}const i = 0;{code}"
+{code:javascript}const i = 0;{code}"
 `;
 
 exports[`ADF => WikiMarkup - List should convert listItem with multiple paragraph 1`] = `
