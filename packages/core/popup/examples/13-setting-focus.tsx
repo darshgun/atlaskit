@@ -42,7 +42,7 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return (
-    <div css={sizedContentCSS}>
+    <div id="popup-content" css={sizedContentCSS}>
       {Array.from({ length: 3 }, (_, index) => (
         <Button key={index} ref={getRef(index)}>
           Button {index}
@@ -76,7 +76,11 @@ export default () => {
           />
         )}
         trigger={({ ...triggerProps }) => (
-          <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            id="popup-trigger"
+            {...triggerProps}
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {isOpen ? 'Close' : 'Open'} Popup
           </Button>
         )}

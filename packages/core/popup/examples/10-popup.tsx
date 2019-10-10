@@ -26,7 +26,7 @@ type PopupProps = {
 
 const PopupContent: FC<PopupProps> = ({ setPosition, placement }) => {
   return (
-    <div css={sizedContentCSS}>
+    <div id="popup-content" css={sizedContentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
       <p>
         Current placement: <strong>{placement}</strong>
@@ -80,7 +80,11 @@ export default () => {
           <PopupContent setPosition={setPlacement} placement={placement} />
         )}
         trigger={triggerProps => (
-          <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            id="popup-trigger"
+            {...triggerProps}
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {isOpen ? 'Close' : 'Open'} Popup
           </Button>
         )}

@@ -45,13 +45,15 @@ The excluded packages are:
 ## Adding a new package or a new team folder in Atlaskit
 
 Now that the ratchet are stored on s3, if you have to add a new package or a new team folder, you need to follow the below steps:
+- If you are adding a new package under an existing team folder, the current workflow should handle it. If any issues, please jump on [#bundle-size-addon](https://app.slack.com/client/TFCUTJ0G5/CJETTKT63/details/pins).
+
 - If your adding a new team folder, 
   ** Find the custom build `push-bundle-size-to-s3` in the `bitbucket-pipelines.yml`.
   ** In the step name `Bundle size update for all other packages`, add your team folder name to the list `export input=`
-- Rebase your branch on top of latest master.
-- In Bitbucket, find your [branch](https://bitbucket.org/atlassian/atlaskit-mk-2/branches/).
-- Click on the `...` and select from `Run pipeline for a branch` the custom build `push-bundle-size-to-s3`.
-- Run the build
+  ** Rebase your branch on top of latest master.
+  ** In Bitbucket, find your [branch](https://bitbucket.org/atlassian/atlaskit-mk-2/branches/).
+  ** Click on the `...` and select from `Run pipeline for a branch` the custom build `push-bundle-size-to-s3`.
+  ** Run the build
 
 ## A note on this package
 

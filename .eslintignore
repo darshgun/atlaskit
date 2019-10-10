@@ -5,6 +5,7 @@ node_modules
 coverage
 dist
 flow-typed
+.yarn
 
 # the docs template
 docs/templates/**

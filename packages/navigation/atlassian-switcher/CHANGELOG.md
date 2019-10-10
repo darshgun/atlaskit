@@ -1,5 +1,29 @@
 # @atlaskit/atlassian-switcher
 
+## 4.5.1
+
+### Patch Changes
+
+- [patch][165f1cd0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/165f1cd0ad):
+
+  Refactor codes related to experimental Discover section in Atlassian Switcher.
+
+## 4.5.0
+
+### Minor Changes
+
+- [minor][331053f02c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/331053f02c):
+
+  Add experimental discover section to Atlassian Switcher.
+
+## 4.4.0
+
+### Minor Changes
+
+- [minor][a2ae055500](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2ae055500):
+
+  Update custom links to include link type (applink vs custom link) in analytics
+
 ## 4.3.0
 
 ### Minor Changes

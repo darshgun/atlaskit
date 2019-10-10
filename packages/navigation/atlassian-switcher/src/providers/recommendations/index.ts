@@ -4,7 +4,10 @@ import {
   RecommendationsFeatureFlags,
 } from '../../types';
 
-import { jswOgExpandsExperiment } from './experiments';
+import {
+  jswOgExpandsExperiment,
+  productStoreRecommendation,
+} from './experiments';
 
 function baseRecommendation(): RecommendationItem[] {
   return [
@@ -27,6 +30,10 @@ export function resolveRecommendations(
     )
   ) {
     return jswOgExpandsExperiment.recommendations();
+  }
+
+  if (featureFlags.isDiscoverSectionEnabled) {
+    return productStoreRecommendation();
   }
 
   return baseRecommendation();
