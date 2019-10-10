@@ -26,11 +26,29 @@ const markEncoderMapping = new Map([
   ['code', code],
 ]);
 
+/**
+ * Checks if the node's content needs to be escaped before continuing processing.
+ * Currently, code that handle their own escaping exists, and so some node types
+ * should not have their text content escaped before continuing processing.
+ *
+ * @param node the current node to encode
+ * @param parent the parent node, if exist
+ */
+const isEscapeNeeded = (node: PMNode, parent?: PMNode) => {
+  return (
+    (parent && parent.type.name === 'codeBlock') ||
+    node.marks.find(m => m.type.name === 'code') !== undefined
+  );
+};
+
+function escapingWikiFormatter(text: string) {
+  return text.replace(/[{\\![]/g, '\\$&');
+}
+
 export const text: NodeEncoder = (node: PMNode, parent?: PMNode): string => {
-  let result =
-    parent && parent.type.name === 'codeBlock'
-      ? node.text!
-      : escapingWikiFormatter(node.text!);
+  let result = isEscapeNeeded(node, parent)
+    ? node.text!
+    : escapingWikiFormatter(node.text!);
   markEncoderMapping.forEach((encoder, markName) => {
     const mark = node.marks.find(m => m.type.name === markName);
     if (mark) {
@@ -40,7 +58,3 @@ export const text: NodeEncoder = (node: PMNode, parent?: PMNode): string => {
 
   return result;
 };
-
-function escapingWikiFormatter(text: string) {
-  return text.replace(/[{\\![]/g, '\\$&');
-}
