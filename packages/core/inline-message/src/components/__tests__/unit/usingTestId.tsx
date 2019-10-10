@@ -25,23 +25,21 @@ const createWrapper = (testId?: string) => (
   </InlineMessage>
 );
 
-describe('Using react-test-library', () => {
-  describe('Inline message should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const inlineMessageBtn = 'the-inline-message--button';
-      const inlineMessageComponent = 'the-inline-message';
-      const inlineMessageTitle = 'the-inline-message--title';
-      const inlineMessageText = 'the-inline-message--text';
-      const inlineMessageContent = 'the-inline-message--inline-dialog';
+describe('Inline message should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const inlineMessageBtn = 'the-inline-message--button';
+    const inlineMessageComponent = 'the-inline-message';
+    const inlineMessageTitle = 'the-inline-message--title';
+    const inlineMessageText = 'the-inline-message--text';
+    const inlineMessageContent = 'the-inline-message--inline-dialog';
 
-      const { getByTestId } = render(createWrapper('the-inline-message'));
-      expect(getByTestId(inlineMessageBtn)).toBeTruthy();
-      expect(getByTestId(inlineMessageComponent)).toBeTruthy();
-      expect(getByTestId(inlineMessageTitle)).toBeTruthy();
-      expect(getByTestId(inlineMessageText)).toBeTruthy();
-      // the content is only displayed when it is clicked on the inline-message.
-      fireEvent.click(getByTestId(inlineMessageBtn));
-      expect(getByTestId(inlineMessageContent)).toBeTruthy();
-    });
+    const { getByTestId } = render(createWrapper('the-inline-message'));
+    expect(getByTestId(inlineMessageBtn)).toBeTruthy();
+    expect(getByTestId(inlineMessageComponent)).toBeTruthy();
+    expect(getByTestId(inlineMessageTitle)).toBeTruthy();
+    expect(getByTestId(inlineMessageText)).toBeTruthy();
+    // the content is only displayed when it is clicked on the inline-message.
+    fireEvent.click(getByTestId(inlineMessageBtn));
+    expect(getByTestId(inlineMessageContent)).toBeTruthy();
   });
 });

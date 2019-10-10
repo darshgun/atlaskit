@@ -15,17 +15,15 @@ const wrapperWithTestId = (
   </ModalTransition>
 );
 
-describe('Using react-test-library', () => {
-  describe('Modal should be found by data-testid', () => {
-    beforeEach(() => cleanup());
-    test('Using getByTestId()', async () => {
-      const { getByTestId } = render(wrapperWithTestId);
-      expect(getByTestId('iamTheDataTestId')).toBeTruthy();
-    });
+describe('Modal should be found by data-testid', () => {
+  beforeEach(() => cleanup());
+  test('Using getByTestId()', async () => {
+    const { getByTestId } = render(wrapperWithTestId);
+    expect(getByTestId('iamTheDataTestId')).toBeTruthy();
+  });
 
-    test('Using container snapshot', () => {
-      const { container } = render(wrapperWithTestId);
-      expect(container).toMatchSnapshot();
-    });
+  test('Using container snapshot', () => {
+    const { container } = render(wrapperWithTestId);
+    expect(container).toMatchSnapshot();
   });
 });

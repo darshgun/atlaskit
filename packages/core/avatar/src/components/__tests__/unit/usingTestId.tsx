@@ -3,15 +3,13 @@ import React from 'react';
 
 import Avatar from '../../Avatar';
 
-describe('Using react-test-library', () => {
-  describe('Avatar should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const testId = 'myAvatar';
-      const { getByTestId } = render(
-        <Avatar name="xxlarge" size="xxlarge" testId={testId} />,
-      );
+describe('Avatar should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const testId = 'myAvatar';
+    const { getByTestId } = render(
+      <Avatar name="xxlarge" size="xxlarge" testId={testId} />,
+    );
 
-      expect(getByTestId(testId)).toBeTruthy();
-    });
+    expect(getByTestId(testId)).toBeTruthy();
   });
 });

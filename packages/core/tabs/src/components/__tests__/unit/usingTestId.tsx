@@ -15,17 +15,15 @@ const tabsWithTestIds = tabs.map((tab, index) => ({
   testId: `tab-${index + 1}`,
 }));
 
-describe('Using react-test-library', () => {
-  describe('Tabs should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const tabsTestId = 'the-tabs';
-      const tabTestId = 'tab-1';
-      const { getByTestId } = render(
-        <Tabs tabs={tabsWithTestIds} testId={tabsTestId} />,
-      );
+describe('Tabs should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const tabsTestId = 'the-tabs';
+    const tabTestId = 'tab-1';
+    const { getByTestId } = render(
+      <Tabs tabs={tabsWithTestIds} testId={tabsTestId} />,
+    );
 
-      expect(getByTestId(tabsTestId)).toBeTruthy();
-      expect(getByTestId(tabTestId)).toBeTruthy();
-    });
+    expect(getByTestId(tabsTestId)).toBeTruthy();
+    expect(getByTestId(tabTestId)).toBeTruthy();
   });
 });

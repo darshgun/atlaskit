@@ -43,18 +43,16 @@ const sectionMessageWrapperWithTestIds = (
   </SectionMessage>
 );
 
-describe('Using react-test-library', () => {
-  describe('Section Message should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const { getByTestId } = render(sectionMessageWrapperWithTestIds);
-      expect(getByTestId(sectionMessageInfoId)).toBeTruthy();
-    });
+describe('Section Message should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const { getByTestId } = render(sectionMessageWrapperWithTestIds);
+    expect(getByTestId(sectionMessageInfoId)).toBeTruthy();
   });
-  describe('Flag actions should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const { getByTestId } = render(sectionMessageWrapperWithTestIds);
-      expect(getByTestId(sectionMessageInfoBBId)).toBeTruthy();
-      expect(getByTestId(sectionMessageInfoJiraId)).toBeTruthy();
-    });
+});
+describe('Flag actions should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const { getByTestId } = render(sectionMessageWrapperWithTestIds);
+    expect(getByTestId(sectionMessageInfoBBId)).toBeTruthy();
+    expect(getByTestId(sectionMessageInfoJiraId)).toBeTruthy();
   });
 });

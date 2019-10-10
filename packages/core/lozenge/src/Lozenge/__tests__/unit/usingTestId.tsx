@@ -3,12 +3,10 @@ import React from 'react';
 
 import Lozenge from '../../..';
 
-describe('Using react-test-library', () => {
-  describe('Lozenge should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const lozengeTestId = 'the-lozenge';
-      const { getByTestId } = render(<Lozenge testId={lozengeTestId} />);
-      expect(getByTestId(lozengeTestId)).toBeTruthy();
-    });
+describe('Lozenge should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const lozengeTestId = 'the-lozenge';
+    const { getByTestId } = render(<Lozenge testId={lozengeTestId} />);
+    expect(getByTestId(lozengeTestId)).toBeTruthy();
   });
 });

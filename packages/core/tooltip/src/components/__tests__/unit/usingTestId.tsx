@@ -49,16 +49,14 @@ describe('Using enzyme', () => {
   });
 });
 
-describe('Using react-test-library', () => {
-  describe('Tooltip should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const testId = 'the-tooltip';
-      const { getByTestId } = render(
-        <Tooltip content="Tooltip content" testId={testId}>
-          <Target>foo</Target>
-        </Tooltip>,
-      );
-      expect(getByTestId(testId)).toBeTruthy();
-    });
+describe('Tooltip should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const testId = 'the-tooltip';
+    const { getByTestId } = render(
+      <Tooltip content="Tooltip content" testId={testId}>
+        <Target>foo</Target>
+      </Tooltip>,
+    );
+    expect(getByTestId(testId)).toBeTruthy();
   });
 });

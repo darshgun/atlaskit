@@ -18,16 +18,14 @@ jest.mock('popper.js', () => {
   };
 });
 
-describe('Using react-test-library', () => {
-  describe('Inline dialog should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const testId = 'the-inline-dialog';
-      const { getByTestId } = render(
-        <InlineDialog content={() => null} testId={testId} isOpen>
-          <div id="children" />
-        </InlineDialog>,
-      );
-      expect(getByTestId(testId)).toBeTruthy();
-    });
+describe('Inline dialog should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const testId = 'the-inline-dialog';
+    const { getByTestId } = render(
+      <InlineDialog content={() => null} testId={testId} isOpen>
+        <div id="children" />
+      </InlineDialog>,
+    );
+    expect(getByTestId(testId)).toBeTruthy();
   });
 });
