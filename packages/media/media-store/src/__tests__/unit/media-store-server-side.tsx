@@ -2,11 +2,7 @@ import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { getExamplesFor } from '@atlaskit/build-utils/getExamples';
 
-beforeAll(() => {
-  jest.setTimeout(30000);
-});
-
-test.skip('media-store server side rendering', async done => {
+test('media-store server side rendering', async done => {
   const examples = await getExamplesFor('media-store');
   for (const example of examples) {
     const Example = require(example.filePath).default;

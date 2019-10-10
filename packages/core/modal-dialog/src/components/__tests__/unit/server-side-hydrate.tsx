@@ -8,10 +8,6 @@ declare var global: any;
 
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
-beforeEach(() => {
-  jest.setTimeout(20000);
-});
-
 afterEach(() => {
   jest.resetAllMocks();
 });

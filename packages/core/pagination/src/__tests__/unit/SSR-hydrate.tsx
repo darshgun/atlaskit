@@ -12,10 +12,6 @@ jest.mock('exenv', () => ({
   },
 }));
 
-beforeEach(() => {
-  jest.setTimeout(10000);
-});
-
 jest.spyOn(global.console, 'error');
 
 afterEach(() => {

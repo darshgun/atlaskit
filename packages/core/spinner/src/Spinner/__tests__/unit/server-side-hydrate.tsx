@@ -7,10 +7,6 @@ import waitForExpect from 'wait-for-expect';
 // @ts-ignore
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
-beforeEach(() => {
-  jest.setTimeout(10000);
-});
-
 afterEach(() => {
   jest.resetAllMocks();
 });

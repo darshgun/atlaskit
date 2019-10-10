@@ -7,7 +7,6 @@ import waitForExpect from 'wait-for-expect';
 let getConsoleMockCalls: any;
 
 beforeAll(() => {
-  jest.setTimeout(10000);
   getConsoleMockCalls = mockConsole(console);
 });
 

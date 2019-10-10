@@ -8,10 +8,6 @@ declare var global: any;
 
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
-beforeEach(() => {
-  jest.setTimeout(10000);
-});
-
 jest.mock('popper.js', () => {
   // @ts-ignore requireActual property is missing from jest
   const PopperJS = jest.requireActual('popper.js');

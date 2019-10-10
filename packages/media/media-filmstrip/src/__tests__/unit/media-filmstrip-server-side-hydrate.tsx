@@ -6,10 +6,6 @@ import waitForExpect from 'wait-for-expect';
 
 const getConsoleMockCalls = mockConsole(console);
 
-beforeAll(() => {
-  jest.setTimeout(20000);
-});
-
 afterEach(() => {
   jest.resetAllMocks();
 });

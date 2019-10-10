@@ -4,10 +4,6 @@ import { getExamplesFor } from '@atlaskit/build-utils/getExamples';
 import { ssr } from '@atlaskit/ssr';
 import waitForExpect from 'wait-for-expect';
 
-beforeEach(() => {
-  jest.setTimeout(10000);
-});
-
 jest.mock('popper.js', () => {
   const PopperJS = require.requireActual('popper.js');
 
