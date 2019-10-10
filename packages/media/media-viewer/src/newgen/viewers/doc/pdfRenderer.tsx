@@ -88,6 +88,7 @@ export type Props = {
   src: string;
   onClose?: () => void;
   onSuccess?: () => void;
+  onError?: (error: Error) => void;
 };
 
 export type State = {
@@ -111,8 +112,9 @@ export class PDFRenderer extends React.Component<Props, State> {
   }
 
   private async init() {
+    const { src, onSuccess, onError } = this.props;
+
     try {
-      const { src, onSuccess } = this.props;
       const doc = await fetchPdf(src);
       this.setState({ doc: Outcome.successful(doc) }, () => {
         this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
@@ -127,6 +129,10 @@ export class PDFRenderer extends React.Component<Props, State> {
       this.setState({
         doc: Outcome.failed(createError('previewFailed', err)),
       });
+
+      if (onError) {
+        onError(err);
+      }
     }
   }
 

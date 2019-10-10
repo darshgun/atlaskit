@@ -112,13 +112,22 @@ export class ItemViewerBase extends React.Component<Props, State> {
     }
   };
 
-  private onError = (
-    fileState: FileState,
-    failReason = 'Playback failed',
-  ) => () => {
+  private onError = (fileState: FileState) => () => {
     if (fileState.status === 'processed') {
       this.fireAnalytics(
-        mediaFileLoadFailedEvent(fileState.id, failReason, fileState),
+        mediaFileLoadFailedEvent(fileState.id, 'Playback failed', fileState),
+      );
+    }
+  };
+
+  private onDocError = (fileState: FileState) => (error: Error) => {
+    if (fileState.status === 'processed') {
+      this.fireAnalytics(
+        mediaFileLoadFailedEvent(
+          fileState.id,
+          `${error.name}: ${error.message}`,
+          fileState,
+        ),
       );
     }
   };
@@ -171,7 +180,7 @@ export class ItemViewerBase extends React.Component<Props, State> {
         return (
           <DocViewer
             onSuccess={this.onCanPlay(item)}
-            onError={this.onError(item, 'DocumentViewer error')}
+            onError={this.onDocError(item)}
             {...viewerProps}
           />
         );

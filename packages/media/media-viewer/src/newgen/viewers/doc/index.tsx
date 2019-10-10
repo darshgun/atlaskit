@@ -19,7 +19,7 @@ export type Props = {
   item: FileState;
   collectionName?: string;
   onClose?: () => void;
-  onError?: () => void;
+  onError?: (error: Error) => void;
   onSuccess?: () => void;
 };
 
@@ -58,7 +58,7 @@ export class DocViewer extends BaseViewer<string, Props> {
           content: Outcome.failed(createError('previewFailed', err, item)),
         });
         if (onError) {
-          onError();
+          onError(err);
         }
       }
     } else {
@@ -90,14 +90,19 @@ export class DocViewer extends BaseViewer<string, Props> {
   }
 
   protected renderSuccessful(content: string) {
-    const { onClose, onSuccess } = this.props;
+    const { onClose, onSuccess, onError } = this.props;
     const { PDFComponent } = DocViewer;
 
     if (!PDFComponent) {
       return <Spinner />;
     }
     return (
-      <PDFComponent src={content} onSuccess={onSuccess} onClose={onClose} />
+      <PDFComponent
+        src={content}
+        onSuccess={onSuccess}
+        onError={onError}
+        onClose={onClose}
+      />
     );
   }
 }
