@@ -44,9 +44,41 @@ export class ElementHandle extends JSHandle {
   uploadFile = TODO;
 }
 
+const mappedKeys = {
+  ArrowLeft: '\ue012',
+  ArrowRight: '\ue014',
+  ArrowUp: '\ue013',
+  ArrowDown: '\ue015',
+  Escape: '\ue00C',
+};
+
+const getMappedKey = str => {
+  return mappedKeys[str] || str;
+};
+
 export default class Page {
   constructor(client) {
     this.browser = client;
+  }
+
+  async type(selector, text) {
+    if (this.isBrowser('chrome') && selector === EDITOR) {
+      if (Array.isArray(text)) {
+        return await this.browser.sendKeys(text.map(getMappedKey));
+      } else {
+        return await this.browser.sendKeys([getMappedKey(text)]);
+      }
+    }
+
+    const elem = await this.browser.$(selector);
+
+    if (Array.isArray(text)) {
+      for (let t of text) {
+        await elem.addValue(t);
+      }
+    } else {
+      await elem.addValue(text);
+    }
   }
 
   // Navigation
@@ -140,26 +172,6 @@ export default class Page {
   async count(selector) {
     const result = await this.$$(selector);
     return result.length;
-  }
-
-  async type(selector, text) {
-    if (this.isBrowser('chrome') && selector === EDITOR) {
-      if (Array.isArray(text)) {
-        return await this.browser.sendKeys(text);
-      } else {
-        return await this.browser.sendKeys([text]);
-      }
-    }
-
-    const elem = await this.browser.$(selector);
-
-    if (Array.isArray(text)) {
-      for (let t of text) {
-        await elem.addValue(t);
-      }
-    } else {
-      await elem.addValue(text);
-    }
   }
 
   async clear(selector) {
