@@ -53,10 +53,6 @@ export type RecentItemType = SwitcherItemType & {
   description: React.ReactNode;
 };
 
-export type DiscoverSectionLinksType = {
-  [key: string]: SwitcherItemType[];
-};
-
 export const OBJECT_TYPE_TO_LABEL_MAP: MessagesDict = {
   'jira-project': messages.jiraProject,
   'confluence-space': messages.confluenceSpace,
@@ -72,35 +68,21 @@ export const getObjectTypeLabel = (type: string): React.ReactNode => {
 
 export const getFixedProductLinks = (params: {
   isDiscoverMoreForEveryoneEnabled: boolean;
-  isDiscoverSectionEnabled?: boolean;
 }): SwitcherItemType[] => {
-  const { isDiscoverMoreForEveryoneEnabled, isDiscoverSectionEnabled } = params;
-  const discoverMoreLink = getDiscoverMoreLink({
-    isDiscoverMoreForEveryoneEnabled,
-    isDiscoverSectionEnabled,
-  });
-  return !isDiscoverSectionEnabled && discoverMoreLink
-    ? [discoverMoreLink]
-    : [];
+  return params.isDiscoverMoreForEveryoneEnabled ? [getDiscoverMoreLink()] : [];
 };
 
-export const getDiscoverMoreLink = ({
-  isDiscoverMoreForEveryoneEnabled,
-  isDiscoverSectionEnabled,
-}: {
-  isDiscoverMoreForEveryoneEnabled: boolean;
-  isDiscoverSectionEnabled?: boolean;
-}): SwitcherItemType | undefined => {
-  if (isDiscoverMoreForEveryoneEnabled) {
-    const icon = isDiscoverSectionEnabled ? DiscoverFilledGlyph : AddIcon;
-    return {
-      // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
-      key: 'discover-more',
-      label: <FormattedMessage {...messages.discoverMore} />,
-      Icon: createIcon(icon, { size: 'medium' }),
-      href: '',
-    };
-  }
+const getDiscoverMoreLink = (
+  customIcon?: React.ComponentType<any>,
+): SwitcherItemType => {
+  const icon = customIcon || AddIcon;
+  return {
+    // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
+    key: 'discover-more',
+    label: <FormattedMessage {...messages.discoverMore} />,
+    Icon: createIcon(icon, { size: 'medium' }),
+    href: '',
+  };
 };
 
 type AvailableProductDetails = Pick<
@@ -295,7 +277,7 @@ export const getAdministrationLinks = (
     return adminLinks;
   }
 
-  const emceeLink = getEmceeLink({ isEmceeLinkEnabled, product });
+  const emceeLink = isEmceeLinkEnabled && getEmceeLink(product);
   if (emceeLink) {
     adminLinks.unshift(emceeLink);
   }
@@ -311,16 +293,10 @@ export const getAdministrationLinks = (
   return adminLinks;
 };
 
-export const getEmceeLink = ({
-  isEmceeLinkEnabled,
-  product,
-}: {
-  isEmceeLinkEnabled: boolean;
-  product?: Product;
-}): SwitcherItemType | undefined => {
+const getEmceeLink = (product?: Product): SwitcherItemType | undefined => {
   const emceeLink = product && BROWSE_APPS_URL[product];
 
-  if (isEmceeLinkEnabled && emceeLink) {
+  if (emceeLink) {
     return {
       key: 'browse-apps',
       label: <FormattedMessage {...messages.browseApps} />,
@@ -359,22 +335,19 @@ export const getSuggestedProductLink = (
 };
 
 export function getDiscoverSectionLinks({
-  suggestedProductLinks,
   isDiscoverMoreForEveryoneEnabled,
   isEmceeLinkEnabled,
   product,
 }: {
-  suggestedProductLinks: SwitcherItemType[];
   isDiscoverMoreForEveryoneEnabled: boolean;
   isEmceeLinkEnabled: boolean;
   product?: Product;
 }) {
   const discoverLinks: SwitcherItemType[] = [];
-  const discoverMoreLink = getDiscoverMoreLink({
-    isDiscoverMoreForEveryoneEnabled,
-    isDiscoverSectionEnabled: true,
-  });
-  const emceeLink = getEmceeLink({ isEmceeLinkEnabled, product });
+  const discoverMoreLink =
+    isDiscoverMoreForEveryoneEnabled &&
+    getDiscoverMoreLink(DiscoverFilledGlyph);
+  const emceeLink = isEmceeLinkEnabled && getEmceeLink(product);
 
   if (discoverMoreLink) {
     discoverLinks.push(discoverMoreLink);
@@ -384,12 +357,7 @@ export function getDiscoverSectionLinks({
     discoverLinks.push(emceeLink);
   }
 
-  const sectionLinks = {
-    suggestedProductLinks,
-    discoverLinks,
-  };
-
-  return sectionLinks;
+  return discoverLinks;
 }
 
 export const getProvisionedProducts = (

@@ -21,6 +21,7 @@ describe('Switcher', () => {
           adminLinks={[]}
           recentLinks={[]}
           customLinks={[]}
+          discoverSectionLinks={[]}
         />,
       ),
     ).toMatchSnapshot();
@@ -42,6 +43,7 @@ describe('Switcher', () => {
           recentLinks={[]}
           customLinks={[]}
           disableHeadings
+          discoverSectionLinks={[]}
         />,
       ),
     ).toMatchSnapshot();
