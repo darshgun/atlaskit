@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.5.0
+
+### Minor Changes
+
+- [minor][331053f02c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/331053f02c):
+
+  Add experimental discover section to Atlassian Switcher.
+
 ## 4.4.0
 
 ### Minor Changes
