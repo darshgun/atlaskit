@@ -5,6 +5,7 @@ const assert = require('assert').strict;
  */
 
 const WAIT_TIMEOUT = 5000;
+const EDITOR = '.ProseMirror';
 
 export class JSHandle {
   constructor(client, selector) {
@@ -138,7 +139,16 @@ export default class Page {
   }
 
   async type(selector, text) {
+    if (this.isBrowser('chrome') && selector === EDITOR) {
+      if (Array.isArray(text)) {
+        return await this.browser.sendKeys(text);
+      } else {
+        return await this.browser.sendKeys([text]);
+      }
+    }
+
     const elem = await this.browser.$(selector);
+
     if (Array.isArray(text)) {
       for (let t of text) {
         await elem.addValue(t);
