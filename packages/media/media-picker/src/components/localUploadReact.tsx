@@ -14,6 +14,17 @@ import { UploadComponent } from './component';
 import { UploadParams } from '../domain/config';
 import { UploadServiceImpl } from '../service/uploadServiceImpl';
 import { LocalUploadConfig } from './types';
+import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
+import {
+  TRACK_EVENT_TYPE,
+  OPERATIONAL_EVENT_TYPE,
+} from '@atlaskit/analytics-gas-types';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../version.json';
+import { MediaFile } from '../domain/file';
+import { ANALYTICS_MEDIA_CHANNEL } from './media-picker-analytics-error-boundary';
 
 export type LocalUploadComponentBaseProps = {
   mediaClient: MediaClient;
@@ -24,7 +35,24 @@ export type LocalUploadComponentBaseProps = {
   onProcessing?: (payload: UploadProcessingEventPayload) => void;
   onEnd?: (payload: UploadEndEventPayload) => void;
   onError?: (payload: UploadErrorEventPayload) => void;
-};
+} & WithAnalyticsEventsProps;
+
+const basePayload = (
+  { size, type }: Partial<MediaFile>,
+  additionalAttributes: any = {},
+) => ({
+  actionSubject: 'mediaUpload',
+  actionSubjectId: 'localMedia',
+  attributes: {
+    packageName,
+    packageVersion,
+    fileAttributes: {
+      fileSize: size,
+      fileMimetype: type,
+    },
+    ...additionalAttributes,
+  },
+});
 
 export class LocalUploadComponentReact<
   Props extends LocalUploadComponentBaseProps,
@@ -32,6 +60,7 @@ export class LocalUploadComponentReact<
 > extends Component<Props, {}> {
   protected readonly uploadService: UploadService;
   protected uploadComponent = new UploadComponent();
+  private readonly uploadTimeStartMap: { [k: string]: number } = {};
 
   constructor(props: Props) {
     super(props);
@@ -49,6 +78,59 @@ export class LocalUploadComponentReact<
     const tenantUploadParams = config.uploadParams;
     const { shouldCopyFileToRecents = true } = config;
 
+    this.uploadComponent.on(
+      'uploads-start',
+      (payload: UploadsStartEventPayload) => {
+        payload.files.forEach(({ id, size, type }) => {
+          this.uploadTimeStartMap[id] = Date.now();
+          this.createAndMaybeFireAnalyticsEvent({
+            ...basePayload({ size, type }),
+            action: 'commenced',
+            eventType: OPERATIONAL_EVENT_TYPE,
+          });
+        });
+      },
+    );
+    this.uploadComponent.on('upload-end', (payload: UploadEndEventPayload) => {
+      const { size, type, id } = payload.file;
+
+      this.createAndMaybeFireAnalyticsEvent({
+        ...basePayload(
+          { size, type },
+          {
+            status: 'success',
+            uploadDurationMsec: this.uploadTimeStartMap[id]
+              ? Date.now() - this.uploadTimeStartMap[id]
+              : -1,
+          },
+        ),
+        action: 'uploaded',
+        eventType: TRACK_EVENT_TYPE,
+      });
+      delete this.uploadTimeStartMap[payload.file.id];
+    });
+    this.uploadComponent.on(
+      'upload-error',
+      (payload: UploadErrorEventPayload) => {
+        const { size, type, id } = payload.file;
+
+        this.createAndMaybeFireAnalyticsEvent({
+          ...basePayload(
+            { size, type },
+            {
+              status: 'fail',
+              failReason: payload.error.description,
+              uploadDurationMsec: this.uploadTimeStartMap[id]
+                ? Date.now() - this.uploadTimeStartMap[id]
+                : -1,
+            },
+          ),
+          action: 'uploaded',
+          eventType: TRACK_EVENT_TYPE,
+        });
+        delete this.uploadTimeStartMap[payload.file.id];
+      },
+    );
     if (onUploadsStart) {
       this.uploadComponent.on('uploads-start', onUploadsStart!);
     }
@@ -80,6 +162,15 @@ export class LocalUploadComponentReact<
     this.uploadService.on('file-converted', this.onFileConverted);
     this.uploadService.on('file-upload-error', this.onUploadError);
   }
+
+  private createAndMaybeFireAnalyticsEvent = (
+    payload: { [k: string]: any } = {},
+  ) => {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      createAnalyticsEvent(payload).fire(ANALYTICS_MEDIA_CHANNEL);
+    }
+  };
 
   public cancel = (uniqueIdentifier?: string): void => {
     this.uploadService.cancel(uniqueIdentifier);

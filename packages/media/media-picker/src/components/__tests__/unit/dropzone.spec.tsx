@@ -213,9 +213,10 @@ const container = document.createElement('div');
       const expectedChannel = 'media';
       const expectedContext = [
         {
-          componentName: 'dropzone',
-          packageName: '@atlaskit/media-picker',
-          packageVersion: '999.9.9',
+          attributes: {
+            componentName: 'dropzone',
+            packageName: '@atlaskit/media-picker',
+          },
         },
       ];
       it('should fire a draggedInto event when a file is dragged over dropzone', async () => {
@@ -224,6 +225,8 @@ const container = document.createElement('div');
           action: 'draggedInto',
           actionSubject: 'dropzone',
           attributes: {
+            packageName: '@atlaskit/media-picker',
+            packageVersion: '999.9.9',
             fileCount: 1,
           },
         };
@@ -252,7 +255,11 @@ const container = document.createElement('div');
           eventType: 'ui',
           action: 'draggedOut',
           actionSubject: 'dropzone',
-          attributes: { fileCount: 1 },
+          attributes: {
+            packageName: '@atlaskit/media-picker',
+            packageVersion: '999.9.9',
+            fileCount: 1,
+          },
         };
         const handleAnalyticsEvent = jest.fn();
 
@@ -284,7 +291,11 @@ const container = document.createElement('div');
           eventType: 'ui',
           action: 'droppedInto',
           actionSubject: 'dropzone',
-          attributes: { fileCount: 1 },
+          attributes: {
+            packageName: '@atlaskit/media-picker',
+            packageVersion: '999.9.9',
+            fileCount: 1,
+          },
         };
         const handleAnalyticsEvent = jest.fn();
 

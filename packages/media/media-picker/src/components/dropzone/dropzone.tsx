@@ -1,4 +1,10 @@
 import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
+
+import {
   LocalUploadComponentReact,
   LocalUploadComponentBaseProps,
 } from '../localUploadReact';
@@ -9,12 +15,6 @@ import {
   DropzoneDragLeaveEventPayload,
   DropzoneUploadEventPayloadMap,
 } from '../types';
-
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  WithAnalyticsEventsProps,
-} from '@atlaskit/analytics-next';
 
 import {
   name as packageName,
@@ -208,6 +208,8 @@ export class DropzoneBase extends LocalUploadComponentReact<
         actionSubject: 'dropzone',
         action,
         attributes: {
+          packageName,
+          packageVersion,
           fileCount,
         },
       });
@@ -221,7 +223,8 @@ export class DropzoneBase extends LocalUploadComponentReact<
 }
 
 export const Dropzone = withAnalyticsContext({
-  componentName: 'dropzone',
-  packageName,
-  packageVersion,
+  attributes: {
+    componentName: 'dropzone',
+    packageName,
+  },
 })(withAnalyticsEvents()(DropzoneBase));

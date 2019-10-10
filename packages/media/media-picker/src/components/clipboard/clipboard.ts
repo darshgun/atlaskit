@@ -19,11 +19,7 @@ import {
 import { ANALYTICS_MEDIA_CHANNEL } from '../media-picker-analytics-error-boundary';
 import { ClipboardConfig } from '../types';
 import { appendTimestamp } from '../../util/appendTimestamp';
-
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../version.json';
+import { name as packageName } from '../../version.json';
 
 export const getFilesFromClipboard = (files: FileList) => {
   return Array.from(files).map(file => {
@@ -167,7 +163,8 @@ export class ClipboardBase extends LocalUploadComponentReact<ClipboardProps> {
 }
 
 export const Clipboard = withAnalyticsContext({
-  componentName: 'clipboard',
-  packageName,
-  packageVersion,
+  attributes: {
+    componentName: 'clipboard',
+    packageName,
+  },
 })(withAnalyticsEvents()(ClipboardBase));
