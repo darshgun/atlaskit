@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.20.8
+
+### Patch Changes
+
+- [patch][5027c848f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5027c848f4):
+
+  changed scrollTo for sctollTop (not supported in IE11 and edge)
+
 ## 0.20.7
 
 ### Patch Changes

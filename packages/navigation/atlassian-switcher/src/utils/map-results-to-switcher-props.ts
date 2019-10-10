@@ -6,6 +6,7 @@ import {
   getProvisionedProducts,
   getRecentLinkItems,
   getSuggestedProductLink,
+  getDiscoverSectionLinks,
   SwitcherItemType,
 } from './links';
 import {
@@ -46,6 +47,7 @@ function collectSuggestedLinks(
   userSiteData: ProviderResult<UserSiteDataResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
+  isDiscoverSectionEnabled?: boolean,
 ) {
   if (isError(isXFlowEnabled) || isError(userSiteData)) {
     return [];
@@ -59,6 +61,7 @@ function collectSuggestedLinks(
       ? getSuggestedProductLink(
           userSiteData.data.provisionedProducts,
           productRecommendations.data,
+          isDiscoverSectionEnabled,
         )
       : [];
   }
@@ -78,6 +81,7 @@ function collectAdminLinks(
   isDiscoverMoreForEveryoneEnabled: boolean,
   isEmceeLinkEnabled: boolean,
   product?: Product,
+  isDiscoverSectionEnabled?: boolean,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
     return [];
@@ -90,6 +94,7 @@ function collectAdminLinks(
         isDiscoverMoreForEveryoneEnabled,
         isEmceeLinkEnabled,
         product,
+        isDiscoverSectionEnabled,
       );
     }
 
@@ -205,6 +210,11 @@ export function mapResultsToSwitcherProps(
   const hasLoadedSuggestedProducts = features.xflow
     ? hasLoaded(productRecommendations) && hasLoaded(isXFlowEnabled)
     : true;
+  const hasLoadedDiscoverSection =
+    features.isDiscoverSectionEnabled &&
+    hasLoadedAvailableProducts &&
+    hasLoadedSuggestedProducts &&
+    hasLoadedAdminLinks;
 
   return {
     licensedProductLinks: collect(
@@ -217,14 +227,17 @@ export function mapResultsToSwitcherProps(
             userSiteData,
             productRecommendations,
             isXFlowEnabled,
+            features.isDiscoverSectionEnabled,
           ),
           [],
         )
       : [],
-    fixedLinks: collect(
-      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
-      [],
-    ),
+    fixedLinks: !features.isDiscoverSectionEnabled
+      ? collect(
+          collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+          [],
+        )
+      : [],
     adminLinks: collect(
       collectAdminLinks(
         managePermission,
@@ -232,6 +245,7 @@ export function mapResultsToSwitcherProps(
         features.isDiscoverMoreForEveryoneEnabled,
         features.isEmceeLinkEnabled,
         product,
+        features.isDiscoverSectionEnabled,
       ),
       [],
     ),
@@ -247,5 +261,13 @@ export function mapResultsToSwitcherProps(
       hasLoadedAdminLinks &&
       hasLoadedSuggestedProducts,
     hasLoadedCritical: hasLoadedAvailableProducts,
+    discoverSectionLinks: hasLoadedDiscoverSection
+      ? getDiscoverSectionLinks({
+          product,
+          isDiscoverMoreForEveryoneEnabled:
+            features.isDiscoverMoreForEveryoneEnabled,
+          isEmceeLinkEnabled: features.isEmceeLinkEnabled,
+        })
+      : [],
   };
 }
