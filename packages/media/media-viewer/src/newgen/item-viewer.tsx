@@ -81,14 +81,14 @@ export class ItemViewerBase extends React.Component<Props, State> {
     this.init(this.props);
   }
 
-  private onViewerLoaded = async (payload: ViewerLoadPayload) => {
+  private onImageViewerLoaded = async (payload: ViewerLoadPayload) => {
     const { item } = this.state;
     // the item.whenFailed case is handled in the "init" method
-    item.whenSuccessful(async file => {
-      if (file.status === 'processed') {
+    item.whenSuccessful(async fileState => {
+      if (fileState.status === 'processed') {
         const { identifier } = this.props;
         if (payload.status === 'success') {
-          this.fireAnalytics(mediaFileLoadSucceededEvent(file));
+          this.fireAnalytics(mediaFileLoadSucceededEvent(fileState));
         } else if (payload.status === 'error' && isFileIdentifier(identifier)) {
           const id =
             typeof identifier.id === 'string'
@@ -97,8 +97,8 @@ export class ItemViewerBase extends React.Component<Props, State> {
           this.fireAnalytics(
             mediaFileLoadFailedEvent(
               id,
-              payload.errorMessage || 'Viewer error',
-              file,
+              payload.errorMessage || 'ImageViewer error',
+              fileState,
             ),
           );
         }
@@ -157,7 +157,9 @@ export class ItemViewerBase extends React.Component<Props, State> {
 
     switch (item.mediaType) {
       case 'image':
-        return <ImageViewer onLoad={this.onViewerLoaded} {...viewerProps} />;
+        return (
+          <ImageViewer onLoad={this.onImageViewerLoaded} {...viewerProps} />
+        );
       case 'audio':
         return (
           <AudioViewer

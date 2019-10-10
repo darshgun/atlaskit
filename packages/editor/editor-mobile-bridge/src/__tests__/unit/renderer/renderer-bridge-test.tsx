@@ -44,7 +44,10 @@ describe('renderer bridge', () => {
   beforeEach(() => {
     jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
     onContentRendered = jest.fn();
-    window.renderBridge = { onContentRendered };
+    window.renderBridge = {
+      onContentRendered,
+      onRenderedContentHeightChanged() {},
+    };
   });
 
   afterEach(() => {

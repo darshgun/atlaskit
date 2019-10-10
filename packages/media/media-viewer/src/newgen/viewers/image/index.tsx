@@ -98,7 +98,8 @@ export class ImageViewer extends BaseViewer<
         this.setState({
           content: Outcome.failed(createError('previewFailed', err, file)),
         });
-        this.props.onLoad({ status: 'error', errorMessage: err.message });
+        const errorMessage = err.message || err.name;
+        this.props.onLoad({ status: 'error', errorMessage });
       }
     }
   }
@@ -145,7 +146,5 @@ export class ImageViewer extends BaseViewer<
 }
 
 const isAbortedRequestError = (error: Error): boolean => {
-  const abortedErrorNames = ['request_cancelled', 'AbortError'];
-
-  return abortedErrorNames.indexOf(error.name) > -1;
+  return error.message === 'request_cancelled' || error.name === 'AbortError';
 };
