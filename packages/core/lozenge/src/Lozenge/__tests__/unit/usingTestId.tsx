@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import cases from 'jest-in-case';
 
 import Lozenge from '../../..';
 

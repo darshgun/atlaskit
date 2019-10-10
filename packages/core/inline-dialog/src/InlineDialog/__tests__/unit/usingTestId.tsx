@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { InlineDialogWithoutAnalytics as InlineDialog } from '../..';
-import { Container } from '../../styled';
 
 jest.mock('popper.js', () => {
   // @ts-ignore requireActual property is missing from jest

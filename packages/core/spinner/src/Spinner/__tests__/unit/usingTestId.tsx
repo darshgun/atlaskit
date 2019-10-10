@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import Spinner from '../..';
-import Container from '../../styledContainer';
 
 describe('Using react-test-library', () => {
   describe('Spinner should be found by data-testid', () => {
