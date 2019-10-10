@@ -68,6 +68,10 @@ class JiraSwitcherExample extends React.Component {
     );
   };
 
+  onDiscoverMoreClicked = () => {
+    console.log(`Triggering discover more!`);
+  };
+
   render() {
     return (
       <div style={{ padding: '2rem' }}>
@@ -79,6 +83,7 @@ class JiraSwitcherExample extends React.Component {
             isDiscoverSectionEnabled
             isDiscoverMoreForEveryoneEnabled
             isEmceeLinkEnabled
+            onDiscoverMoreClicked={this.onDiscoverMoreClicked}
           />
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>

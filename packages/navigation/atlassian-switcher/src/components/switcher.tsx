@@ -331,6 +331,11 @@ export default class Switcher extends React.Component<SwitcherProps> {
                   <SwitcherThemedItemWithEvents
                     icon={<item.Icon theme="discover" />}
                     href={item.href}
+                    onClick={
+                      item.key === 'discover-more'
+                        ? this.onDiscoverMoreClicked
+                        : noop
+                    }
                   >
                     {item.label}
                   </SwitcherThemedItemWithEvents>
