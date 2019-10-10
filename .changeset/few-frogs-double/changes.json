@@ -1,0 +1,10 @@
+{
+  "releases": [{ "name": "@atlaskit/popup", "type": "minor" }],
+  "dependents": [
+    {
+      "name": "@atlaskit/atlassian-navigation",
+      "type": "patch",
+      "dependencies": ["@atlaskit/popup"]
+    }
+  ]
+}
