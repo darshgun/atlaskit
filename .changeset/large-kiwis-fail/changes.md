@@ -1,1 +1,0 @@
-changed scrollTo for sctollTop (not supported in IE11 and edge)
