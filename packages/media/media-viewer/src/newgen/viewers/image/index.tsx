@@ -15,7 +15,6 @@ import { AnalyticViewerProps } from '../../analytics/item-viewer';
 import { BaseViewer } from '../base-viewer';
 
 export type ObjectUrl = string;
-export const REQUEST_CANCELLED = 'request_cancelled';
 
 export type ImageViewerProps = AnalyticViewerProps & {
   mediaClient: MediaClient;
@@ -95,11 +94,12 @@ export class ImageViewer extends BaseViewer<
         content: Outcome.successful({ objectUrl, orientation }),
       });
     } catch (err) {
-      if (err.message !== REQUEST_CANCELLED) {
+      if (!isAbortedRequestError(err)) {
         this.setState({
           content: Outcome.failed(createError('previewFailed', err, file)),
         });
-        this.props.onLoad({ status: 'error', errorMessage: err.message });
+        const errorMessage = err.message || err.name;
+        this.props.onLoad({ status: 'error', errorMessage });
       }
     }
   }
@@ -144,3 +144,7 @@ export class ImageViewer extends BaseViewer<
     });
   };
 }
+
+const isAbortedRequestError = (error: Error): boolean => {
+  return error.message === 'request_cancelled' || error.name === 'AbortError';
+};
