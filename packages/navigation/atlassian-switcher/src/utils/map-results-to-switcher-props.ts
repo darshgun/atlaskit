@@ -104,11 +104,9 @@ function collectAdminLinks(
 
 function collectFixedProductLinks(
   isDiscoverMoreForEveryoneEnabled: boolean,
-  isDiscoverSectionEnabled?: boolean,
 ): SwitcherItemType[] {
   return getFixedProductLinks({
     isDiscoverMoreForEveryoneEnabled,
-    isDiscoverSectionEnabled,
   });
 }
 
@@ -218,33 +216,28 @@ export function mapResultsToSwitcherProps(
     hasLoadedSuggestedProducts &&
     hasLoadedAdminLinks;
 
-  const suggestedProductLinks = features.xflow
-    ? collect(
-        collectSuggestedLinks(
-          userSiteData,
-          productRecommendations,
-          isXFlowEnabled,
-          features.isDiscoverSectionEnabled,
-        ),
-        [],
-      )
-    : [];
-
   return {
     licensedProductLinks: collect(
       collectAvailableProductLinks(cloudId, availableProducts),
       [],
     ),
-    suggestedProductLinks: !features.isDiscoverSectionEnabled
-      ? suggestedProductLinks
+    suggestedProductLinks: features.xflow
+      ? collect(
+          collectSuggestedLinks(
+            userSiteData,
+            productRecommendations,
+            isXFlowEnabled,
+            features.isDiscoverSectionEnabled,
+          ),
+          [],
+        )
       : [],
-    fixedLinks: collect(
-      collectFixedProductLinks(
-        features.isDiscoverMoreForEveryoneEnabled,
-        features.isDiscoverSectionEnabled,
-      ),
-      [],
-    ),
+    fixedLinks: !features.isDiscoverSectionEnabled
+      ? collect(
+          collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+          [],
+        )
+      : [],
     adminLinks: collect(
       collectAdminLinks(
         managePermission,
@@ -270,12 +263,11 @@ export function mapResultsToSwitcherProps(
     hasLoadedCritical: hasLoadedAvailableProducts,
     discoverSectionLinks: hasLoadedDiscoverSection
       ? getDiscoverSectionLinks({
-          suggestedProductLinks,
           product,
           isDiscoverMoreForEveryoneEnabled:
             features.isDiscoverMoreForEveryoneEnabled,
           isEmceeLinkEnabled: features.isEmceeLinkEnabled,
         })
-      : undefined,
+      : [],
   };
 }

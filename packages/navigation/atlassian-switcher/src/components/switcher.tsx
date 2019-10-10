@@ -13,11 +13,7 @@ import {
   FormattedMessage,
 } from '../primitives';
 
-import {
-  SwitcherItemType,
-  RecentItemType,
-  DiscoverSectionLinksType,
-} from '../utils/links';
+import { SwitcherItemType, RecentItemType } from '../utils/links';
 import {
   analyticsAttributes,
   NavigationAnalyticsContext,
@@ -61,7 +57,7 @@ export type SwitcherProps = {
    * which is a variation of suggestedProductLinks and fixedLinks combined
    */
   isDiscoverSectionEnabled?: boolean;
-  discoverSectionLinks?: DiscoverSectionLinksType;
+  discoverSectionLinks: SwitcherItemType[];
 };
 
 const getAnalyticsContext = (itemsCount: number) => ({
@@ -155,7 +151,10 @@ export default class Switcher extends React.Component<SwitcherProps> {
     ];
 
     const itemsCount =
-      switchToLinks.length + recentLinks.length + customLinks.length;
+      switchToLinks.length +
+      recentLinks.length +
+      customLinks.length +
+      discoverSectionLinks.length;
 
     const firstContentArrived = Boolean(licensedProductLinks.length);
 
@@ -228,27 +227,28 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 </SwitcherItemWithDropdown>
               </NavigationAnalyticsContext>
             ))}
-            {suggestedProductLinks.map(item => (
-              <NavigationAnalyticsContext
-                key={item.key}
-                data={getItemAnalyticsContext(
-                  switchToLinks.indexOf(item),
-                  item.key,
-                  'try',
-                  item.href,
-                )}
-              >
-                <SwitcherThemedItemWithEvents
-                  icon={<item.Icon theme="product" />}
-                  onClick={this.triggerXFlow(item.key)}
+            {!isDiscoverSectionEnabled &&
+              suggestedProductLinks.map(item => (
+                <NavigationAnalyticsContext
+                  key={item.key}
+                  data={getItemAnalyticsContext(
+                    switchToLinks.indexOf(item),
+                    item.key,
+                    'try',
+                    item.href,
+                  )}
                 >
-                  {item.label}
-                  <TryLozenge>
-                    <FormattedMessage {...messages.try} />
-                  </TryLozenge>
-                </SwitcherThemedItemWithEvents>
-              </NavigationAnalyticsContext>
-            ))}
+                  <SwitcherThemedItemWithEvents
+                    icon={<item.Icon theme="product" />}
+                    onClick={this.triggerXFlow(item.key)}
+                  >
+                    {item.label}
+                    <TryLozenge>
+                      <FormattedMessage {...messages.try} />
+                    </TryLozenge>
+                  </SwitcherThemedItemWithEvents>
+                </NavigationAnalyticsContext>
+              ))}
             {fixedLinks.map(item => (
               <NavigationAnalyticsContext
                 key={item.key}
@@ -292,7 +292,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
             ))}
           </Section>
           )}
-          {isDiscoverSectionEnabled && discoverSectionLinks && (
+          {isDiscoverSectionEnabled && (
             <Section
               sectionId="discover"
               title={
@@ -301,7 +301,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 )
               }
             >
-              {discoverSectionLinks.suggestedProductLinks.map((item, idx) => (
+              {suggestedProductLinks.map((item, idx) => (
                 <NavigationAnalyticsContext
                   key={item.key}
                   data={getItemAnalyticsContext(
@@ -320,7 +320,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                   </SwitcherThemedItemWithEvents>
                 </NavigationAnalyticsContext>
               ))}
-              {discoverSectionLinks.discoverLinks.map((item, idx) => (
+              {discoverSectionLinks.map((item, idx) => (
                 <NavigationAnalyticsContext
                   key={item.key}
                   data={getItemAnalyticsContext(
