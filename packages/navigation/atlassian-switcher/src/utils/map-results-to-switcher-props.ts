@@ -230,7 +230,7 @@ export function mapResultsToSwitcherProps(
       )
     : [];
 
-  const switcherProps = {
+  return {
     licensedProductLinks: collect(
       collectAvailableProductLinks(cloudId, availableProducts),
       [],
@@ -278,6 +278,4 @@ export function mapResultsToSwitcherProps(
         })
       : undefined,
   };
-
-  return switcherProps;
 }
