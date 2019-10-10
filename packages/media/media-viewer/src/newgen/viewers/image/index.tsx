@@ -145,7 +145,5 @@ export class ImageViewer extends BaseViewer<
 }
 
 const isAbortedRequestError = (error: Error): boolean => {
-  const abortedErrorNames = ['request_cancelled', 'AbortError'];
-
-  return abortedErrorNames.indexOf(error.name) > -1;
+  return error.message === 'request_cancelled' || error.name === 'AbortError';
 };
