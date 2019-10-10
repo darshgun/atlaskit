@@ -1,5 +1,13 @@
 # @atlaskit/docs
 
+## 8.1.9
+
+### Patch Changes
+
+- [patch][5f044ec4d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f044ec4d0):
+
+  Update pretty-proptype dep fro 1.0.1 to 1.0.2
+
 ## 8.1.8
 
 ### Patch Changes
