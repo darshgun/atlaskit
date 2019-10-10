@@ -1,0 +1,2 @@
+- Adds the ability to render class components as children of Popup.
+- Removes redundatnt onOpen callback prop for Popup
