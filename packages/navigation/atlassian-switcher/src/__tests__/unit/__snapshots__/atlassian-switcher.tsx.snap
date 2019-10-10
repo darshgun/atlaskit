@@ -11,6 +11,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "disableHeadings": false,
             "disableRecentContainers": false,
             "isDiscoverMoreForEveryoneEnabled": false,
+            "isDiscoverSectionEnabled": false,
             "isEmceeLinkEnabled": false,
             "xflow": true,
           },
@@ -151,6 +152,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "disableHeadings": false,
             "disableRecentContainers": false,
             "isDiscoverMoreForEveryoneEnabled": false,
+            "isDiscoverSectionEnabled": false,
             "isEmceeLinkEnabled": false,
             "xflow": true,
           }

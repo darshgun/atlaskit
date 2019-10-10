@@ -53,6 +53,10 @@ export type RecentItemType = SwitcherItemType & {
   description: React.ReactNode;
 };
 
+export type DiscoverSectionLinksType = {
+  [key: string]: SwitcherItemType[];
+};
+
 export const OBJECT_TYPE_TO_LABEL_MAP: MessagesDict = {
   'jira-project': messages.jiraProject,
   'confluence-space': messages.confluenceSpace,
@@ -68,23 +72,40 @@ export const getObjectTypeLabel = (type: string): React.ReactNode => {
 
 export const getFixedProductLinks = (params: {
   isDiscoverMoreForEveryoneEnabled: boolean;
+  isDiscoverSectionEnabled?: boolean;
 }): SwitcherItemType[] => {
-  return params.isDiscoverMoreForEveryoneEnabled
-    ? [
-        {
-          // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
-          key: 'discover-more',
-          label: <FormattedMessage {...messages.discoverMore} />,
-          Icon: createIcon(AddIcon, { size: 'medium' }),
-          href: '',
-        },
-      ]
+  const { isDiscoverMoreForEveryoneEnabled, isDiscoverSectionEnabled } = params;
+  const discoverMoreLink = getDiscoverMoreLink({
+    isDiscoverMoreForEveryoneEnabled,
+    isDiscoverSectionEnabled,
+  });
+  return !isDiscoverSectionEnabled && discoverMoreLink
+    ? [discoverMoreLink]
     : [];
+};
+
+export const getDiscoverMoreLink = ({
+  isDiscoverMoreForEveryoneEnabled,
+  isDiscoverSectionEnabled,
+}: {
+  isDiscoverMoreForEveryoneEnabled: boolean;
+  isDiscoverSectionEnabled?: boolean;
+}): SwitcherItemType | undefined => {
+  if (isDiscoverMoreForEveryoneEnabled) {
+    const icon = isDiscoverSectionEnabled ? DiscoverFilledGlyph : AddIcon;
+    return {
+      // The discover more link href is intentionally empty to prioritise the onDiscoverMoreClicked callback
+      key: 'discover-more',
+      label: <FormattedMessage {...messages.discoverMore} />,
+      Icon: createIcon(icon, { size: 'medium' }),
+      href: '',
+    };
+  }
 };
 
 type AvailableProductDetails = Pick<
   SwitcherItemType,
-  'label' | 'Icon' | 'href'
+  'label' | 'Icon' | 'href' | 'description'
 >;
 
 export const AVAILABLE_PRODUCT_DATA_MAP: {
@@ -99,6 +120,9 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
     label: 'Confluence',
     Icon: createIcon(ConfluenceIcon, { size: 'small' }),
     href: '/wiki',
+    description: (
+      <FormattedMessage {...messages.productDescriptionConfluence} />
+    ),
   },
   [WorklensProductType.JIRA_BUSINESS]: {
     label: 'Jira Core',
@@ -109,16 +133,23 @@ export const AVAILABLE_PRODUCT_DATA_MAP: {
     label: 'Jira Software',
     Icon: createIcon(JiraSoftwareIcon, { size: 'small' }),
     href: '/secure/BrowseProjects.jspa?selectedProjectType=software',
+    description: (
+      <FormattedMessage {...messages.productDescriptionJiraSoftware} />
+    ),
   },
   [WorklensProductType.JIRA_SERVICE_DESK]: {
     label: 'Jira Service Desk',
     Icon: createIcon(JiraServiceDeskIcon, { size: 'small' }),
     href: '/secure/BrowseProjects.jspa?selectedProjectType=service_desk',
+    description: (
+      <FormattedMessage {...messages.productDescriptionJiraServiceDesk} />
+    ),
   },
   [WorklensProductType.OPSGENIE]: {
     label: 'Opsgenie',
     Icon: createIcon(OpsGenieIcon, { size: 'small' }),
     href: 'https://app.opsgenie.com',
+    description: <FormattedMessage {...messages.productDescriptionOpsgenie} />,
   },
   [WorklensProductType.STATUSPAGE]: {
     label: 'Statuspage',
@@ -248,9 +279,10 @@ export const getAdministrationLinks = (
   isDiscoverMoreForEveryoneEnabled: boolean,
   isEmceeLinkEnabled: boolean,
   product?: Product,
+  isDiscoverSectionEnabled?: boolean,
 ): SwitcherItemType[] => {
   const adminBaseUrl = isAdmin ? `/admin` : '/trusted-admin';
-  const adminLinks = [
+  const adminLinks: SwitcherItemType[] = [
     {
       key: 'administration',
       label: <FormattedMessage {...messages.administration} />,
@@ -258,15 +290,16 @@ export const getAdministrationLinks = (
       href: adminBaseUrl,
     },
   ];
-  const emceeLink = product && BROWSE_APPS_URL[product];
-  if (isEmceeLinkEnabled && emceeLink) {
-    adminLinks.unshift({
-      key: 'browse-apps',
-      label: <FormattedMessage {...messages.browseApps} />,
-      Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
-      href: `${emceeLink}#!/discover?source=app_switcher`,
-    });
+
+  if (isDiscoverSectionEnabled) {
+    return adminLinks;
   }
+
+  const emceeLink = getEmceeLink({ isEmceeLinkEnabled, product });
+  if (emceeLink) {
+    adminLinks.unshift(emceeLink);
+  }
+
   if (!isDiscoverMoreForEveryoneEnabled) {
     adminLinks.unshift({
       key: 'discover-applications',
@@ -278,11 +311,32 @@ export const getAdministrationLinks = (
   return adminLinks;
 };
 
+export const getEmceeLink = ({
+  isEmceeLinkEnabled,
+  product,
+}: {
+  isEmceeLinkEnabled: boolean;
+  product?: Product;
+}): SwitcherItemType | undefined => {
+  const emceeLink = product && BROWSE_APPS_URL[product];
+
+  if (isEmceeLinkEnabled && emceeLink) {
+    return {
+      key: 'browse-apps',
+      label: <FormattedMessage {...messages.browseApps} />,
+      Icon: createIcon(MarketplaceGlyph, { size: 'medium' }),
+      href: `${emceeLink}#!/discover?source=app_switcher`,
+    };
+  }
+};
+
 const PRODUCT_RECOMMENDATION_LIMIT = 2;
+const DISCOVER_PRODUCT_RECOMMENDATION_LIMIT = 3;
 
 export const getSuggestedProductLink = (
   provisionedProducts: ProvisionedProducts,
   productRecommendations: RecommendationsEngineResponse,
+  isDiscoverSectionEnabled?: boolean,
 ): SwitcherItemType[] => {
   return productRecommendations
     .filter(legacyProduct => {
@@ -296,8 +350,47 @@ export const getSuggestedProductLink = (
         ...AVAILABLE_PRODUCT_DATA_MAP[productKey],
       };
     })
-    .slice(0, PRODUCT_RECOMMENDATION_LIMIT);
+    .slice(
+      0,
+      isDiscoverSectionEnabled
+        ? DISCOVER_PRODUCT_RECOMMENDATION_LIMIT
+        : PRODUCT_RECOMMENDATION_LIMIT,
+    );
 };
+
+export function getDiscoverSectionLinks({
+  suggestedProductLinks,
+  isDiscoverMoreForEveryoneEnabled,
+  isEmceeLinkEnabled,
+  product,
+}: {
+  suggestedProductLinks: SwitcherItemType[];
+  isDiscoverMoreForEveryoneEnabled: boolean;
+  isEmceeLinkEnabled: boolean;
+  product?: Product;
+}) {
+  const discoverLinks: SwitcherItemType[] = [];
+  const discoverMoreLink = getDiscoverMoreLink({
+    isDiscoverMoreForEveryoneEnabled,
+    isDiscoverSectionEnabled: true,
+  });
+  const emceeLink = getEmceeLink({ isEmceeLinkEnabled, product });
+
+  if (discoverMoreLink) {
+    discoverLinks.push(discoverMoreLink);
+  }
+
+  if (emceeLink) {
+    discoverLinks.push(emceeLink);
+  }
+
+  const sectionLinks = {
+    suggestedProductLinks,
+    discoverLinks,
+  };
+
+  return sectionLinks;
+}
 
 export const getProvisionedProducts = (
   availableProducts: AvailableProductsResponse,

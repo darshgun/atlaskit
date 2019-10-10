@@ -1,0 +1,1 @@
+Add experimental discover section to Atlassian Switcher.

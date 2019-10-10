@@ -43,9 +43,11 @@ interface IconBackgroundTheme {
 }
 
 interface IconTheme {
-  primaryColor: string;
+  primaryColor?: string;
   iconColor?: string;
   iconElevation?: string;
+  iconGradientStart?: string;
+  iconGradientStop?: string;
 }
 
 type IconThemeMap = {
@@ -77,6 +79,18 @@ export const themes: IconThemeMap = {
   subtle: {
     backgroundColor: 'transparent',
     primaryColor: colors.text,
+  },
+  recommendedProduct: {
+    backgroundColor: colors.N30,
+    iconColor: colors.B200,
+    iconGradientStart: colors.B400,
+    iconGradientStop: colors.B200,
+    iconElevation: elevation.e100,
+  },
+  discover: {
+    backgroundColor: colors.N30,
+    primaryColor: colors.DN90,
+    iconElevation: elevation.e100,
   },
 };
 
