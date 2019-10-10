@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { FC, forwardRef, memo, useState, useEffect } from 'react';
+import { FC, forwardRef, memo, useState } from 'react';
 import { layers } from '@atlaskit/theme/constants';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
@@ -25,7 +25,6 @@ export const Popup: FC<PopupProps> = memo(
     testId,
     content: Content,
     trigger,
-    onOpen,
     onClose,
     popupComponent: PopupContainer = DefaultPopupComponent,
     zIndex = layers.layer(),
@@ -35,12 +34,6 @@ export const Popup: FC<PopupProps> = memo(
 
     useFocusManager({ initialFocusRef, popupRef });
     useCloseManager({ isOpen, onClose, popupRef });
-
-    useEffect(() => {
-      if (isOpen) {
-        onOpen && onOpen();
-      }
-    }, [isOpen, onOpen]);
 
     return (
       <div css={containerCSS}>

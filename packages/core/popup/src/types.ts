@@ -50,8 +50,6 @@ export type PopupProps = {
   testId?: string;
   /** Content to display in the Popup */
   content: ComponentType<ContentProps>;
-  /** Callback function when the Popup is opened */
-  onOpen?(): void;
   /** Callback function when the Popup is closed */
   onClose?(): void;
   /** Open State of the Dialog */
