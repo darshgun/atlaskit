@@ -3,6 +3,7 @@ import {
   mountEditor,
   goToEditorTestingExample,
 } from '../../__helpers/testing-example-helpers';
+import { animationFrame } from '../_helpers';
 
 BrowserTestCase(
   'emoji-4.ts: emoji picker should be scrollable',
@@ -30,7 +31,7 @@ BrowserTestCase(
       el.dispatchEvent(new WheelEvent('wheel', { deltaY: 100 }));
     }, emojiList);
 
-    await page.tick();
+    await animationFrame(page);
 
     const scrollTop = await client.execute((emojiList: string) => {
       const el = document.querySelector(emojiList) as HTMLElement;
