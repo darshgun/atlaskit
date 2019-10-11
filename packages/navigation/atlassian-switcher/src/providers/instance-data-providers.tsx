@@ -7,6 +7,7 @@ import asDataProvider, {
   Status,
 } from './as-data-provider';
 import {
+  Product,
   Permissions,
   RecentContainersResponse,
   UserPermissionResponse,
@@ -90,7 +91,7 @@ export const XFlowSettingsProvider = withHandleOptionalCloudId(
     fetchXflowSettings,
     fetchXflowSettings.cached,
   ),
-  false,
+  true,
 );
 
 export const prefetchAll = ({ cloudId }: WithCloudId) => {

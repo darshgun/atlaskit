@@ -151,6 +151,7 @@ interface ProviderResults {
 function asUserSiteDataProviderResult(
   availableProductsProvider: ProviderResult<AvailableProductsResponse>,
   cloudId: string | null | undefined,
+  product?: Product,
 ): ProviderResult<UserSiteDataResponse> {
   switch (availableProductsProvider.status) {
     case Status.LOADING: // intentional fallthrough
@@ -162,6 +163,22 @@ function asUserSiteDataProviderResult(
         availableProductsProvider.data.sites.find(
           site => site.cloudId === cloudId,
         );
+
+      if (product === Product.BITBUCKET) {
+        return {
+          status: Status.COMPLETE,
+          data: {
+            currentSite: {
+              url: 'https://bitbucket.org',
+              products: [],
+            },
+            provisionedProducts: getProvisionedProducts(
+              availableProductsProvider.data,
+            ),
+          },
+        };
+      }
+
       if (!site) {
         return {
           status: Status.ERROR,
@@ -203,7 +220,11 @@ export function mapResultsToSwitcherProps(
     recentContainers,
     productRecommendations,
   } = results;
-  const userSiteData = asUserSiteDataProviderResult(availableProducts, cloudId);
+  const userSiteData = asUserSiteDataProviderResult(
+    availableProducts,
+    cloudId,
+    product,
+  );
   const hasLoadedAvailableProducts = hasLoaded(availableProducts);
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);
