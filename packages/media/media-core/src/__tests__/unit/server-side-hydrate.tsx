@@ -10,7 +10,6 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-// TODO: failing due to whatwg-fetch issues. Re-enable once fixed
 test('should ssr then hydrate media-core correctly', async () => {
   const [example] = await getExamplesFor('media-core');
   const Example = require(example.filePath).default;
