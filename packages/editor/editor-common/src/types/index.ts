@@ -33,4 +33,4 @@ export {
   RemoteData,
   SendableSelection,
   TelepointerData,
-} from './collab'
+} from './collab';

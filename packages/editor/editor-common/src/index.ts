@@ -8,7 +8,6 @@ export {
   ExtensionHandlers,
   Transformer,
   SortOrder,
-
   // Collab Types
   CollabEditProvider,
   CollabEvent,
@@ -19,8 +18,7 @@ export {
   PresenceData,
   RemoteData,
   SendableSelection,
-  TelepointerData,
-  // End Collab Types
+  TelepointerData, // End Collab Types
 } from './types';
 
 export * from './contextIdentifier';

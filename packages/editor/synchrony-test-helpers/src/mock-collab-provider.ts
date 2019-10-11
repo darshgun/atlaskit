@@ -5,12 +5,10 @@ import { CollabEditProvider, CollabEvent } from '@atlaskit/editor-common';
 import { participants } from './user-profile';
 import { ParticipantData } from './types';
 
-
-
 const others = (sid: string) =>
   (Object.keys(participants) as Array<keyof typeof participants>).reduce<
     ParticipantData[]
-    >((all, id) => (id === sid ? all : all.concat(participants[id])), []);
+  >((all, id) => (id === sid ? all : all.concat(participants[id])), []);
 
 class Mediator extends EventEmitter {
   emit(eventName: string, data: any) {
@@ -22,7 +20,7 @@ class Mediator extends EventEmitter {
 
         const joined = (Object.keys(participants) as Array<
           keyof typeof participants
-          >).reduce<Array<Record<string, string | number>>>((all, id) => {
+        >).reduce<Array<Record<string, string | number>>>((all, id) => {
           const { sid: sessionId, ...rest } = participants[id];
           return all.concat({
             sessionId,
@@ -168,4 +166,6 @@ const getCollabEditProviderFor = <T>(_participants: T) => (
   defaultDoc?: any,
 ) => Promise.resolve(new MockCollabEditProvider(mediator, sid, defaultDoc));
 
-export const createMockCollabEditProvider = getCollabEditProviderFor(participants);
+export const createMockCollabEditProvider = getCollabEditProviderFor(
+  participants,
+);
