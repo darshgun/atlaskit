@@ -55,7 +55,9 @@ const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
 );
 
-const createBrowserRef = (mediaClient: MediaClient): RefObject<any> => ({
+const createBrowserRef = (
+  mediaClient: MediaClient,
+): RefObject<BrowserBase> => ({
   current: new BrowserBase({ config: {} as any, mediaClient }),
 });
 

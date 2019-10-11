@@ -216,6 +216,7 @@ const container = document.createElement('div');
           attributes: {
             componentName: 'dropzone',
             packageName: '@atlaskit/media-picker',
+            packageVersion: '999.9.9',
           },
         },
       ];
@@ -226,7 +227,6 @@ const container = document.createElement('div');
           actionSubject: 'dropzone',
           attributes: {
             packageName: '@atlaskit/media-picker',
-            packageVersion: '999.9.9',
             fileCount: 1,
           },
         };
@@ -257,7 +257,6 @@ const container = document.createElement('div');
           actionSubject: 'dropzone',
           attributes: {
             packageName: '@atlaskit/media-picker',
-            packageVersion: '999.9.9',
             fileCount: 1,
           },
         };
@@ -293,7 +292,6 @@ const container = document.createElement('div');
           actionSubject: 'dropzone',
           attributes: {
             packageName: '@atlaskit/media-picker',
-            packageVersion: '999.9.9',
             fileCount: 1,
           },
         };

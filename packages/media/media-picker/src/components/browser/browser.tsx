@@ -9,7 +9,10 @@ import {
   LocalUploadComponentReact,
   LocalUploadComponentBaseProps,
 } from '../localUploadReact';
-import { name as packageName } from '../../version.json';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../version.json';
 
 export type RenderBrowserFunc = () => ReactNode;
 export interface BrowserOwnProps {
@@ -24,7 +27,7 @@ export interface BrowserOwnProps {
   onCancelFn?: (cancel: (uploadId: string) => void) => void;
 }
 
-export type BrowserProps = BrowserOwnProps & LocalUploadComponentBaseProps;
+export type BrowserProps = LocalUploadComponentBaseProps & BrowserOwnProps;
 
 const defaultConfig: BrowserConfig = { uploadParams: {} };
 
@@ -106,5 +109,6 @@ export const Browser = withAnalyticsContext({
   attributes: {
     componentName: 'browser',
     packageName,
+    packageVersion,
   },
 })(withAnalyticsEvents()(BrowserBase));

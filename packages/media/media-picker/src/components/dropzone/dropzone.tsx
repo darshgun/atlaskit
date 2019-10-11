@@ -1,7 +1,6 @@
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
-  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 
 import {
@@ -23,14 +22,13 @@ import {
 
 import { ANALYTICS_MEDIA_CHANNEL } from '../media-picker-analytics-error-boundary';
 
-export type DropzoneProps = LocalUploadComponentBaseProps &
-  WithAnalyticsEventsProps & {
-    config: DropzoneConfig;
-    onDrop?: () => void;
-    onDragEnter?: (payload: DropzoneDragEnterEventPayload) => void;
-    onDragLeave?: (payload: DropzoneDragLeaveEventPayload) => void;
-    onCancelFn?: (cancel: (uploadId: string) => void) => void;
-  };
+export type DropzoneProps = LocalUploadComponentBaseProps & {
+  config: DropzoneConfig;
+  onDrop?: () => void;
+  onDragEnter?: (payload: DropzoneDragEnterEventPayload) => void;
+  onDragLeave?: (payload: DropzoneDragLeaveEventPayload) => void;
+  onCancelFn?: (cancel: (uploadId: string) => void) => void;
+};
 
 function dragContainsFiles(event: DragEvent): boolean {
   if (!event.dataTransfer) {
@@ -209,7 +207,6 @@ export class DropzoneBase extends LocalUploadComponentReact<
         action,
         attributes: {
           packageName,
-          packageVersion,
           fileCount,
         },
       });
@@ -226,5 +223,6 @@ export const Dropzone = withAnalyticsContext({
   attributes: {
     componentName: 'dropzone',
     packageName,
+    packageVersion,
   },
 })(withAnalyticsEvents()(DropzoneBase));

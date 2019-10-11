@@ -19,10 +19,7 @@ import {
   TRACK_EVENT_TYPE,
   OPERATIONAL_EVENT_TYPE,
 } from '@atlaskit/analytics-gas-types';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../version.json';
+import { name as packageName } from '../version.json';
 import { MediaFile } from '../domain/file';
 import { ANALYTICS_MEDIA_CHANNEL } from './media-picker-analytics-error-boundary';
 
@@ -45,7 +42,6 @@ const basePayload = (
   actionSubjectId: 'localMedia',
   attributes: {
     packageName,
-    packageVersion,
     fileAttributes: {
       fileSize: size,
       fileMimetype: type,
@@ -83,7 +79,7 @@ export class LocalUploadComponentReact<
       (payload: UploadsStartEventPayload) => {
         payload.files.forEach(({ id, size, type }) => {
           this.uploadTimeStartMap[id] = Date.now();
-          this.createAndMaybeFireAnalyticsEvent({
+          this.createAndFireAnalyticsEvent({
             ...basePayload({ size, type }),
             action: 'commenced',
             eventType: OPERATIONAL_EVENT_TYPE,
@@ -94,7 +90,7 @@ export class LocalUploadComponentReact<
     this.uploadComponent.on('upload-end', (payload: UploadEndEventPayload) => {
       const { size, type, id } = payload.file;
 
-      this.createAndMaybeFireAnalyticsEvent({
+      this.createAndFireAnalyticsEvent({
         ...basePayload(
           { size, type },
           {
@@ -114,7 +110,7 @@ export class LocalUploadComponentReact<
       (payload: UploadErrorEventPayload) => {
         const { size, type, id } = payload.file;
 
-        this.createAndMaybeFireAnalyticsEvent({
+        this.createAndFireAnalyticsEvent({
           ...basePayload(
             { size, type },
             {
@@ -163,7 +159,7 @@ export class LocalUploadComponentReact<
     this.uploadService.on('file-upload-error', this.onUploadError);
   }
 
-  private createAndMaybeFireAnalyticsEvent = (
+  private createAndFireAnalyticsEvent = (
     payload: { [k: string]: any } = {},
   ) => {
     const { createAnalyticsEvent } = this.props;
