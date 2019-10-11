@@ -10,7 +10,7 @@ import { hoveredPayload } from '../../utils/analytics-payloads';
 declare var global: any;
 
 // Tooltip makes fairly heavy use of timers so we have to runAllTimers after
-// simulating events. Unfortuantely, these timers cause enzyme's understanding of
+// simulating events. Unfortunately, these timers cause enzyme's understanding of
 // the component tree to become stale so we call update to refresh that.
 const simulate = (wrapper: any, query: any, event: any) => {
   wrapper.find(query).simulate(event);
