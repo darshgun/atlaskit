@@ -1,5 +1,13 @@
 # @atlaskit/portal
 
+## 3.1.2
+
+### Patch Changes
+
+- [patch][adc048de7e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adc048de7e):
+
+  Fixing ie11 bug caused by using Event constructor
+
 ## 3.1.1
 
 **Warning: Do not use this version. It has been deprecated**

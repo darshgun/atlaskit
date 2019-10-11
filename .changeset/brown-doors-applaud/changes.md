@@ -1,1 +1,0 @@
-Fixing ie11 bug caused by using Event constructor
