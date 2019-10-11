@@ -2,6 +2,10 @@
 
 ## 3.1.1
 
+**Warning: Do not use this version. It has been deprecated**
+
+It is broken for ie11 if you are not polyfilling the `new Event` constructor
+
 ### Patch Changes
 
 - [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
@@ -9,6 +13,10 @@
   Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
 
 ## 3.1.0
+
+**Warning: Do not use this version. It has been deprecated**
+
+It is broken for ie11 if you are not polyfilling the `new Event` constructor
 
 ### Minor Changes
 
