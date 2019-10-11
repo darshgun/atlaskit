@@ -4,11 +4,13 @@
  * run `bolt build --help` for more information.
  */
 import * as bolt from 'bolt';
+import chalk from 'chalk';
 import meow from 'meow';
 import * as yalc from 'yalc';
 
 import { PackageInfo } from '@atlaskit/build-utils/types';
 import { getPackagesInfo } from '@atlaskit/build-utils/tools';
+import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
 import getGlobPackagesForTools from './get.glob.packages.for.tools';
 import createEntryPointsDirectories from './create.entry.points.directories';
 import copyVersion from './copy.version';
@@ -26,6 +28,10 @@ type Options = {
   watch: boolean | undefined;
 };
 type StepArgs = Options & { pkg: PackageInfo | undefined };
+
+function log(...msg: any[]) {
+  console.log(chalk.green('Atlaskit build:'), ...msg);
+}
 
 async function getPkgGlob(
   tools: string[],
@@ -94,19 +100,21 @@ async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
     commandOptions = {
       watchFirstSuccessCondition: (output: string) => initialRe.test(output),
       watchSuccessCondition: (output: string) => recompileRe.test(output),
-      onWatchSuccess: () => {
-        runValidateDists({
+      onWatchSuccess: async () => {
+        await runValidateDists({
           cwd,
           distType,
           packageName: (pkg as PackageInfo).name,
         });
-        // const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
-        yalc.publishPackage({
+        const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
+        await yalc.publishPackage({
           // If watch mode is enabled, we have a package
           // TODO: Add TS 3.7 assertion here
           workingDir: (pkg as PackageInfo).dir,
           push: true,
         });
+        restoreConsoleLog();
+        log('Recompiled and pushed changes...');
       },
     };
   }
@@ -169,18 +177,22 @@ async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
     const re = /Watching for file changes./;
     commandOptions = {
       watchSuccessCondition: (output: string) => re.test(output),
-      onWatchSuccess: () => {
-        runValidateDists({
+      onWatchSuccess: async () => {
+        await runValidateDists({
           cwd,
           distType,
           packageName: (pkg as PackageInfo).name,
         });
-        yalc.publishPackage({
+        const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
+        await yalc.publishPackage({
           // If watch mode is enabled, we have a package
           // TODO: Add TS 3.7 assertion here
           workingDir: (pkg as PackageInfo).dir,
           push: true,
         });
+        restoreConsoleLog();
+
+        log('Recompiled and pushed changes...');
       },
     };
   }
@@ -276,7 +288,7 @@ export default async function main(
     // Do a full build first to ensure non-compilation build steps have built since they are not rerun
     // in watch mode. Set dist type to none so we don't unnecessarily build dists since that will happen on the
     // initial watch execution.
-    console.log(
+    log(
       'Running initial build for watch mode to cover non-compilation build steps...',
     );
     await main(packageName, { ...options, distType: 'none', watch: false });
@@ -289,25 +301,25 @@ export default async function main(
     fullPackageName = pkg.name;
   }
 
-  console.log(`Building ${pkg ? fullPackageName : 'all packages'}...`);
-  console.log('Creating entry point directories...');
+  log(`Building ${pkg ? fullPackageName : 'all packages'}...`);
+  log('Creating entry point directories...');
   await createEntryPointsDirectories({ cwd, packageName: fullPackageName });
-  console.log('Building JS packages...');
+  log('Building JS packages...');
   await buildJSPackages({ pkg, ...options });
-  console.log('Building TS packages...');
+  log('Building TS packages...');
   await buildTSPackages({ pkg, ...options });
-  console.log('Running post-build scripts for packages...');
+  log('Running post-build scripts for packages...');
   await buildExceptionPackages({ pkg, ...options });
-  console.log('Copying version.json...');
+  log('Copying version.json...');
   await copyVersion(fullPackageName);
-  console.log('Validating dists...');
+  log('Validating dists...');
   await runValidateDists({
     cwd,
     distType: options.distType,
     packageName: fullPackageName,
   });
 
-  console.log('Success');
+  log('Success');
 }
 
 if (require.main === module) {
