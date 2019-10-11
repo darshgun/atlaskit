@@ -10,17 +10,23 @@ export default {
   'fabric.atlassianSwitcher.switchToTooltip': 'Overschakelen naar...',
   'fabric.atlassianSwitcher.recent': 'Recent',
   'fabric.atlassianSwitcher.more': 'Meer',
-  'fabric.atlassianSwitcher.try': 'Uitproberen',
+  'fabric.atlassianSwitcher.try': 'Probeer',
   'fabric.atlassianSwitcher.manageList': 'Lijst beheren',
   'fabric.atlassianSwitcher.jiraProject': 'Jira-project',
   'fabric.atlassianSwitcher.confluenceSpace': 'Confluence-space',
   'fabric.atlassianSwitcher.people': 'Gebruikers',
   'fabric.atlassianSwitcher.administration': 'Beheer',
   'fabric.atlassianSwitcher.discoverMore': 'Meer ontdekken',
-  'fabric.atlassianSwitcher.errorHeading': 'Er is iets misgegaan',
+  'fabric.atlassianSwitcher.browseApps': 'Blader door Marketplace-apps',
+  'fabric.atlassianSwitcher.errorHeading': 'Er is iets misgegaan.',
   'fabric.atlassianSwitcher.errorText':
-    'We houden deze fouten bij, maar aarzel niet om contact met ons op te nemen als de pagina vernieuwen het probleem niet oplost.',
+    'We houden deze fouten bij, maar aarzel niet om contact met ons op te nemen als pagina vernieuwen het probleem niet oplost.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Een defecte robot en een aantal mensen die bezig zijn hem te repareren.',
-  'fabric.atlassianSwitcher.expand': 'Meer weergeven',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'De lijst met artikelen kan niet worden geladen. Laad de pagina opnieuw en probeer het nog eens.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Je bent uitgelogd. Log opnieuw in.',
+  'fabric.atlassianSwitcher.login': 'Inloggen',
+  'fabric.atlassianSwitcher.show.more.sites': 'Meer sites weergeven',
 };

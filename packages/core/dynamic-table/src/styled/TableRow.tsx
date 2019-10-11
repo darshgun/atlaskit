@@ -10,8 +10,13 @@ export const TableBodyRow = styled.tr<ITableRowProps>`
     isHighlighted &&
     css`
       background-color: ${row.highlightedBackground};
-    `};
+    `}
+
   &:hover {
-    background: ${row.hoverBackground};
-  }
+    ${({ isHighlighted }) =>
+      css`
+        background-color: ${isHighlighted
+          ? row.hoverHighlightedBackground
+          : row.hoverBackground};
+      `}
 `;

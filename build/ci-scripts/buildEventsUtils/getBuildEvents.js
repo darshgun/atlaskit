@@ -275,7 +275,7 @@ async function getStepEvents(buildId /*: string*/) {
         buildId,
         stepObject.uuid,
         buildStatus,
-        stepObject.script_commands[stepObject.script_commands.length - 2]
+        stepObject.script_commands[stepObject.script_commands.length - 1]
           .command,
       );
       // Build type and build name are confused for custom build.

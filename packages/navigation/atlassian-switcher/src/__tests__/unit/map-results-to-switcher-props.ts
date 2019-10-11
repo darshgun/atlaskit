@@ -25,6 +25,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -50,6 +51,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -75,6 +77,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -98,6 +101,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -119,6 +123,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -196,6 +201,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -249,6 +255,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -281,6 +288,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -311,6 +319,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [

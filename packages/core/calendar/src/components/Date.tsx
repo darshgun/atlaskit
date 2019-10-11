@@ -12,6 +12,7 @@ interface Props {
   selected?: boolean;
   sibling?: boolean;
   year: number;
+  testId?: string;
 }
 
 interface State {
@@ -61,6 +62,7 @@ export default class extends Component<Props, State> {
       previouslySelected,
       selected,
       sibling,
+      testId,
     } = this.props;
 
     return (
@@ -70,6 +72,7 @@ export default class extends Component<Props, State> {
         onClick={this.onClick}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
+        data-testid={testId && selected ? `${testId}--selected-day` : undefined}
       >
         <DateDiv
           disabled={disabled}

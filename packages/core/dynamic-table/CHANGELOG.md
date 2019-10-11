@@ -1,5 +1,14 @@
 # @atlaskit/dynamic-table
 
+## 13.4.0
+
+### Minor Changes
+
+- [minor][97a4a48f58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97a4a48f58):
+
+  - use more obvious hover background color for highlighted row
+  - add onClick into RowType typing and add examples of its usage
+
 ## 13.3.3
 
 ### Patch Changes

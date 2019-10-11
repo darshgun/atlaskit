@@ -26,6 +26,15 @@ function jswOgRecommendation(): RecommendationItem[] {
   ];
 }
 
+export function productStoreRecommendation(): RecommendationItem[] {
+  return [
+    { productKey: ProductKey.JIRA_SOFTWARE },
+    { productKey: ProductKey.CONFLUENCE },
+    { productKey: ProductKey.JIRA_SERVICE_DESK },
+    { productKey: ProductKey.OPSGENIE },
+  ];
+}
+
 export const jswOgExpandsExperiment = {
   flagKey: JSW_OG_EXPANDS_EXPERIMENT_FEATURE_FLAG_KEY,
   variationValues: JSW_OG_EXPANDS_EXPERIMENT_FEATURE_FLAG_KEY,
