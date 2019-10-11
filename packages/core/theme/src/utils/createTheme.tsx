@@ -1,13 +1,12 @@
 import React, { createContext, ComponentType, ReactNode } from 'react';
 
 export type ThemeProp<ThemeTokens, ThemeProps> = (
-  //TODO: should we require props be passed in? For example, allowing themed-resets to just not pass anything in
-  getTokens: (props?: ThemeProps) => ThemeTokens,
-  themeProps?: ThemeProps,
+  getTokens: (props: ThemeProps) => ThemeTokens,
+  themeProps: ThemeProps,
 ) => ThemeTokens;
 
 export function createTheme<ThemeTokens, ThemeProps>(
-  defaultGetTokens: (props?: ThemeProps) => ThemeTokens,
+  defaultGetTokens: (props: ThemeProps) => ThemeTokens,
 ): {
   Consumer: ComponentType<
     ThemeProps & {
@@ -20,8 +19,8 @@ export function createTheme<ThemeTokens, ThemeProps>(
   }>;
 } {
   const emptyThemeFn = (
-    getTokens: (props?: ThemeProps) => ThemeTokens,
-    props?: ThemeProps,
+    getTokens: (props: ThemeProps) => ThemeTokens,
+    props: ThemeProps,
   ) => getTokens(props);
   const ThemeContext = createContext(defaultGetTokens);
 
@@ -51,7 +50,7 @@ export function createTheme<ThemeTokens, ThemeProps>(
       <ThemeContext.Consumer>
         {themeFn => {
           const valueFn = props.value || emptyThemeFn;
-          const mixedFn = (themeProps?: ThemeProps) =>
+          const mixedFn = (themeProps: ThemeProps) =>
             valueFn(themeFn, themeProps);
           return (
             <ThemeContext.Provider value={mixedFn}>
