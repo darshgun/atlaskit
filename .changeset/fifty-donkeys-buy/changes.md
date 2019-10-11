@@ -1,0 +1,1 @@
+ED-7847 Adding option to connect atlaskit example page to synchrony server on development
