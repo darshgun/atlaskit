@@ -25,7 +25,7 @@
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/modal-dialog": "^10.3.3",
     "@atlaskit/popper": "^3.1.6",
-    "@atlaskit/portal": "^3.1.1",
+    "@atlaskit/portal": "^3.1.2",
     "@atlaskit/theme": "^9.2.4",
     "exenv": "^1.2.2",
     "memoize-one": "^5.1.0",
