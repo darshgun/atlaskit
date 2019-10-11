@@ -24,7 +24,7 @@ const cancelBtn = 'button[type="button"]#create-repo-cancel';
 
 BrowserTestCase(
   'Create repository form should render without errors',
-  { skip: [] },
+  {},
   async client => {
     const formTest = new Page(client);
     await formTest.goto(urlFormCreateRepo);
