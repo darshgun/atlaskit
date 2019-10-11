@@ -1,0 +1,1 @@
+Added support for additional languages: Thai, Turkish, Ukrainia and Vietnamese

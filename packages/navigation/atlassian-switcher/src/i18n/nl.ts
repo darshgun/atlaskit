@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Gebruikers',
   'fabric.atlassianSwitcher.administration': 'Beheer',
   'fabric.atlassianSwitcher.discoverMore': 'Meer ontdekken',
+  'fabric.atlassianSwitcher.browseApps': 'Blader door Marketplace-apps',
   'fabric.atlassianSwitcher.errorHeading': 'Er is iets misgegaan.',
   'fabric.atlassianSwitcher.errorText':
     'We houden deze fouten bij, maar aarzel niet om contact met ons op te nemen als pagina vernieuwen het probleem niet oplost.',

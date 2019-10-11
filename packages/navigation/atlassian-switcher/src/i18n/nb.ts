@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Personer',
   'fabric.atlassianSwitcher.administration': 'Administrasjon',
   'fabric.atlassianSwitcher.discoverMore': 'Få mer informasjon',
+  'fabric.atlassianSwitcher.browseApps': 'Bla gjennom Marketplace-apper',
   'fabric.atlassianSwitcher.errorHeading': 'Noe har gått galt',
   'fabric.atlassianSwitcher.errorText':
     'Vi registrerer disse feilene, men ta gjerne kontakt hvis det ikke hjelper å oppdatere',

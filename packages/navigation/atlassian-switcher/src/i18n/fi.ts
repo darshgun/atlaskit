@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Henkilöt',
   'fabric.atlassianSwitcher.administration': 'Hallinto',
   'fabric.atlassianSwitcher.discoverMore': 'Löydä enemmän',
+  'fabric.atlassianSwitcher.browseApps': 'Selaa Marketplace-sovelluksia',
   'fabric.atlassianSwitcher.errorHeading': 'Jotain meni pieleen',
   'fabric.atlassianSwitcher.errorText':
     'Huomioimme nämä virheet, mutta ota meihin yhteyttä, jos sivun lataus ei paranna asiaa',

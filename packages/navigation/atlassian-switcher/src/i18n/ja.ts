@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'ユーザー',
   'fabric.atlassianSwitcher.administration': '管理',
   'fabric.atlassianSwitcher.discoverMore': 'もっと見る',
+  'fabric.atlassianSwitcher.browseApps': 'Marketplace アプリを閲覧',
   'fabric.atlassianSwitcher.errorHeading': '問題が発生しました',
   'fabric.atlassianSwitcher.errorText':
     'エラーはすべて記録されていますが、リフレッシュしても問題が修正されない場合はお気軽にお問い合わせください。',

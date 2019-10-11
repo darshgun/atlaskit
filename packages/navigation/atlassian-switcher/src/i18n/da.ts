@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Personer',
   'fabric.atlassianSwitcher.administration': 'Administration',
   'fabric.atlassianSwitcher.discoverMore': 'Se flere',
+  'fabric.atlassianSwitcher.browseApps': 'Gennembladr Marketplace-apps',
   'fabric.atlassianSwitcher.errorHeading': 'Something’s gone wrong',
   'fabric.atlassianSwitcher.errorText':
     'Vi registrerer disse fejl, men du er velkommen til at kontakte os, hvis problemet ikke løses, når du genindlæser',

@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Személyek',
   'fabric.atlassianSwitcher.administration': 'Adminisztráció',
   'fabric.atlassianSwitcher.discoverMore': 'Továbbiak felfedezése',
+  'fabric.atlassianSwitcher.browseApps': 'Marketplace-alkalmazások böngészése',
   'fabric.atlassianSwitcher.errorHeading': 'Hiba történt',
   'fabric.atlassianSwitcher.errorText':
     'Nyomon követjük az ilyen hibákat, de bátran vegye fel velünk a kapcsolatot, ha az oldal frissítésével sem oldódnak meg a problémák.',

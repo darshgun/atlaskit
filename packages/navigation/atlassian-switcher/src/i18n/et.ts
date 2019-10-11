@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Inimesed',
   'fabric.atlassianSwitcher.administration': 'Administreerimine',
   'fabric.atlassianSwitcher.discoverMore': 'Avasta veel',
+  'fabric.atlassianSwitcher.browseApps': 'Rakenduse Marketplace sirvimine',
   'fabric.atlassianSwitcher.errorHeading': 'Midagi läks valesti',
   'fabric.atlassianSwitcher.errorText':
     'Hoiame neil vigadel silma peal, ent võid ka meiega ühendust võtta, kui värskendamine ei tee asju paremaks.',

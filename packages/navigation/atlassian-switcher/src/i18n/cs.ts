@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Lidé',
   'fabric.atlassianSwitcher.administration': 'Správa',
   'fabric.atlassianSwitcher.discoverMore': 'Objevte více',
+  'fabric.atlassianSwitcher.browseApps': 'Procházet aplikace na Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Něco se pokazilo',
   'fabric.atlassianSwitcher.errorText':
     'Tyto chyby zaznamenáváme, ale nebojte se nás kontaktovat, pokud obnovení stránky problém nevyřeší.',

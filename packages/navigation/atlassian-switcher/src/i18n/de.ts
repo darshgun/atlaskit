@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Personen',
   'fabric.atlassianSwitcher.administration': 'Administration',
   'fabric.atlassianSwitcher.discoverMore': 'Mehr entdecken',
+  'fabric.atlassianSwitcher.browseApps': 'Marketplace-Apps durchsuchen',
   'fabric.atlassianSwitcher.errorHeading': 'Irgendetwas ist schiefgelaufen',
   'fabric.atlassianSwitcher.errorText':
     'Wir verfolgen diese Fehler, aber Sie können uns gerne kontaktieren, wenn das Problem nach dem Aktualisieren weiterhin besteht.',

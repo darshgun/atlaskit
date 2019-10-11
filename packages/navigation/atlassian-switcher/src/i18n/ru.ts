@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': 'Люди',
   'fabric.atlassianSwitcher.administration': 'Администрирование',
   'fabric.atlassianSwitcher.discoverMore': 'Другие продукты',
+  'fabric.atlassianSwitcher.browseApps': 'Просмотр приложений Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Произошла ошибка',
   'fabric.atlassianSwitcher.errorText':
     'Мы стараемся отслеживать все ошибки. Если обновление страницы не поможет, обязательно сообщите нам об этом.',

@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': '사용자',
   'fabric.atlassianSwitcher.administration': '관리',
   'fabric.atlassianSwitcher.discoverMore': '자세히 살펴보기',
+  'fabric.atlassianSwitcher.browseApps': 'Marketplace 앱 찾아보기',
   'fabric.atlassianSwitcher.errorHeading': '문제가 발생했습니다.',
   'fabric.atlassianSwitcher.errorText':
     '이 오류를 추적하고 있습니다. 페이지를 새로 고쳐도 문제가 해결되지 않는 경우 저희에게 문의해 주시기 바랍니다.',

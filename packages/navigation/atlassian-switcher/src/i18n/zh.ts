@@ -17,6 +17,7 @@ export default {
   'fabric.atlassianSwitcher.people': '人员',
   'fabric.atlassianSwitcher.administration': '管理',
   'fabric.atlassianSwitcher.discoverMore': '发现更多',
+  'fabric.atlassianSwitcher.browseApps': '浏览 Marketplace 应用',
   'fabric.atlassianSwitcher.errorHeading': '出错了',
   'fabric.atlassianSwitcher.errorText':
     '我们会跟踪这些错误，但是如果刷新不能修复问题，请随时与我们联系',
