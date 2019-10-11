@@ -1,7 +1,5 @@
-import { mount, shallow } from 'enzyme';
 import { render } from '@testing-library/react';
 import React from 'react';
-import cases from 'jest-in-case';
 
 import SectionMessage from '../..';
 
@@ -45,60 +43,16 @@ const sectionMessageWrapperWithTestIds = (
   </SectionMessage>
 );
 
-describe('Using enzyme', () => {
-  test('Section message > it should not generate data-testid', () => {
-    const wrapper = mount(<SectionMessage>boo</SectionMessage>);
-    expect(wrapper).toBeDefined();
-    expect(wrapper.prop('data-testid')).toBeUndefined();
-  });
-
-  test('Section Message > it should have data-testid ', () => {
-    const wrapper = shallow(sectionMessageWrapperWithTestIds);
-    expect(
-      wrapper.find(`[data-testid='${sectionMessageInfoId}']`),
-    ).toBeDefined();
-  });
-
-  test('Section message actions should have data-testid ', () => {
-    const wrapper = shallow(sectionMessageWrapperWithTestIds);
-    expect(
-      wrapper.find(`[data-testid='${sectionMessageInfoBBId}']`),
-    ).toBeDefined();
-    expect(
-      wrapper.find(`[data-testid='${sectionMessageInfoJiraId}']`),
-    ).toBeDefined();
-  });
-
-  describe('Section Message with different data-testid', () => {
-    cases(
-      'should be generated',
-      ({ testId }: { testId: string }) => {
-        const wrapper = shallow(sectionMessageWrapperWithTestIds);
-        expect(wrapper.find(`[data-testid='${testId}']`)).toBeTruthy();
-      },
-      [
-        { testId: 'josefGiTan' },
-        { testId: 'ZZZZŹŽ;;;;' },
-        { testId: '@3$&&&&Helooo' },
-        { testId: '126^^^' },
-        { testId: 123 },
-      ],
-    );
+describe('Section Message should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const { getByTestId } = render(sectionMessageWrapperWithTestIds);
+    expect(getByTestId(sectionMessageInfoId)).toBeTruthy();
   });
 });
-
-describe('Using react-test-library', () => {
-  describe('Section Message should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const { getByTestId } = render(sectionMessageWrapperWithTestIds);
-      expect(getByTestId(sectionMessageInfoId)).toBeTruthy();
-    });
-  });
-  describe('Flag actions should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const { getByTestId } = render(sectionMessageWrapperWithTestIds);
-      expect(getByTestId(sectionMessageInfoBBId)).toBeTruthy();
-      expect(getByTestId(sectionMessageInfoJiraId)).toBeTruthy();
-    });
+describe('Flag actions should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const { getByTestId } = render(sectionMessageWrapperWithTestIds);
+    expect(getByTestId(sectionMessageInfoBBId)).toBeTruthy();
+    expect(getByTestId(sectionMessageInfoJiraId)).toBeTruthy();
   });
 });

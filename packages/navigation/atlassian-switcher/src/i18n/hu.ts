@@ -7,7 +7,7 @@
 // Hungarian
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Átváltás erre:',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Átváltás erre...',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Átváltás erre…',
   'fabric.atlassianSwitcher.recent': 'Legutóbbi',
   'fabric.atlassianSwitcher.more': 'Továbbiak',
   'fabric.atlassianSwitcher.try': 'Próbálja ki',
@@ -17,10 +17,16 @@ export default {
   'fabric.atlassianSwitcher.people': 'Személyek',
   'fabric.atlassianSwitcher.administration': 'Adminisztráció',
   'fabric.atlassianSwitcher.discoverMore': 'Továbbiak felfedezése',
-  'fabric.atlassianSwitcher.errorHeading': 'Valami baj történt',
+  'fabric.atlassianSwitcher.browseApps': 'Marketplace-alkalmazások böngészése',
+  'fabric.atlassianSwitcher.errorHeading': 'Hiba történt',
   'fabric.atlassianSwitcher.errorText':
     'Nyomon követjük az ilyen hibákat, de bátran vegye fel velünk a kapcsolatot, ha az oldal frissítésével sem oldódnak meg a problémák.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Meghibásodott robot, és számos ember, aki a javításán szorgoskodik.',
-  'fabric.atlassianSwitcher.expand': 'Kibontás',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Nem sikerült betölteni ezt a listát. Frissítsd az oldalt, és próbáld meg újra.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Nem vagy bejelentkezve. Jelentkezz be újból.',
+  'fabric.atlassianSwitcher.login': 'Bejelentkezés',
+  'fabric.atlassianSwitcher.show.more.sites': 'További webhelyek megjelenítése',
 };

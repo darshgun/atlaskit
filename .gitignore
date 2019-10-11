@@ -35,7 +35,8 @@ packages/**/**/yarn.lock
 *.log
 
 # ignore editor generated files
-.vscode
+.vscode/*
+!.vscode/extensions.json
 .idea
 .iml
 
