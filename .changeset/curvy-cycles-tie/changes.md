@@ -1,1 +1,0 @@
-Add support for passing arbitrary flags to the branch install command, i.e. yarn/bolt, by adding the flags after a '--' separator
