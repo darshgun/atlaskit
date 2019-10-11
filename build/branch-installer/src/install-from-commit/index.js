@@ -143,6 +143,7 @@ async function installFromCommit(fullCommitHash = '', userOptions = {}) {
     packages: 'all',
     timeout: 20000,
     interval: 5000,
+    extraArgs: [],
   };
   const options = {
     ...defaultOptions,
@@ -176,7 +177,7 @@ async function _installFromCommit(commitHash = '', options = {}) {
       : options.packages.split(',');
 
   const { engine, cmd } = options;
-  const cmdArgs = [cmd]; // args that we'll pass to the engine ('add'/'upgrade' pkgName@url pkgName@url)
+  const cmdArgs = [cmd, ...options.extraArgs]; // args that we'll pass to the engine ('add'/'upgrade' pkgName@url pkgName@url)
 
   packages.forEach(pkg => {
     if (manifest[pkg]) {
