@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.5.2
+
+### Patch Changes
+
+- [patch][be38f90454](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be38f90454):
+
+  Added support for additional languages: Thai, Turkish, Ukrainia and Vietnamese
+
 ## 4.5.1
 
 ### Patch Changes
