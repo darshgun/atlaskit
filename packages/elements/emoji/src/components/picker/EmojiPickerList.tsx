@@ -25,11 +25,11 @@ import {
   CategoryHeadingItem,
   EmojisRowItem,
   LoadingItem,
-  SearchItem,
   VirtualItem,
   virtualItemRenderer,
 } from './EmojiPickerVirtualItems';
 import * as styles from './styles';
+import EmojiPickerListSearch from './EmojiPickerListSearch';
 
 const categoryClassname = 'emoji-category';
 
@@ -201,13 +201,6 @@ export default class EmojiPickerVirtualList extends PureComponent<
 
     this.categoryTracker.reset();
 
-    items.push(
-      new SearchItem({
-        onChange: this.onSearch,
-        query,
-      }),
-    );
-
     if (loading) {
       items.push(new LoadingItem());
     } else {
@@ -366,7 +359,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
     virtualItemRenderer(this.virtualItems, context);
 
   render() {
-    const { onMouseLeave, onMouseEnter } = this.props;
+    const { onMouseLeave, onMouseEnter, query } = this.props;
     const classes = [styles.emojiPickerList];
 
     return (
@@ -376,6 +369,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
         onMouseLeave={onMouseLeave}
         onMouseEnter={onMouseEnter}
       >
+        <EmojiPickerListSearch onChange={this.onSearch} query={query} />
         <VirtualList
           ref="list"
           height={sizes.listHeight}

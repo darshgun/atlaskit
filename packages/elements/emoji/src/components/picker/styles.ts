@@ -144,7 +144,7 @@ export const input = 'input';
 
 export const pickerSearch = style({
   boxSizing: 'border-box',
-  padding: '10px',
+  padding: '10px 10px 9px 10px',
   flex: '0 0 auto',
 
   $nest: {
