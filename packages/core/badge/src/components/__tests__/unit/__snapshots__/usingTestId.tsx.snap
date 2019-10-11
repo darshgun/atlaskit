@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Using react-test-library Badge should be found by data-testid Using container snapshot 1`] = `
+exports[`Badge should be found by data-testid Using container snapshot 1`] = `
 <div>
   <span
     class="sc-htpNat kZCqmS"

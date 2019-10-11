@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Using react-test-library Button should be found by data-testid Using container snapshot 1`] = `
+exports[`Button should be found by data-testid Using container snapshot 1`] = `
 .emotion-2 {
   -webkit-align-items: baseline;
   -webkit-box-align: baseline;
