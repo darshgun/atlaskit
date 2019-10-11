@@ -1,1 +1,1 @@
-@atlaskit/portal had an issue in IE11 and this is fixed in 3.1.1
+@atlaskit/portal had an issue in IE11 and this is fixed in 3.1.2
