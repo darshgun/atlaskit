@@ -11,6 +11,7 @@ import installFromCommit from '@atlaskit/branch-installer';
 
 //@ts-ignore
 import fetch from 'isomorphic-fetch';
+import { debugMock } from './util';
 
 // prettier-ignore
 const HELP_MSG = `
@@ -24,6 +25,8 @@ const HELP_MSG = `
      ${chalk.yellow('--packages')} comma delimited list of packages to install branch deploy of
      ${chalk.yellow('--dedupe')} run yarn deduplicate at the end to deduplicate the lock file
      ${chalk.yellow('--cmd')} the command to use can be add or upgrade [default=upgrade]
+     ${chalk.yellow('--dryRun')} Log out commands that would be run instead of running them
+     ${chalk.yellow('--')} Any arguments after -- will be appended to the upgrade command
 `;
 
 export async function run() {
@@ -55,6 +58,10 @@ export async function run() {
         type: 'string',
         default: 'upgrade',
       },
+      dryRun: {
+        type: 'boolean',
+        default: false,
+      },
     },
   });
   const {
@@ -65,14 +72,16 @@ export async function run() {
     packages,
     dedupe,
     cmd,
+    dryRun,
   } = cli.flags;
+  const extraArgs = cli.input;
 
-  const git = simpleGit('./');
+  const git = dryRun ? debugMock('git') : simpleGit('./');
   const branchName = `${branchPrefix}${atlaskitBranchName}`;
 
   const remote = await git.listRemote(['--get-url']);
 
-  if (remote.indexOf('atlassian/atlaskit-mk-2') > -1) {
+  if (!dryRun && remote.indexOf('atlassian/atlaskit-mk-2') > -1) {
     throw new Error('Working path should not be the Atlaskit repo!');
   }
 
@@ -98,6 +107,8 @@ export async function run() {
     packages: packages,
     timeout: 30 * 60 * 1000, // Takes between 15 - 20 minutes to build a AK branch deploy
     interval: 30000,
+    extraArgs,
+    dryRun,
   });
 
   await git.add(['./']);

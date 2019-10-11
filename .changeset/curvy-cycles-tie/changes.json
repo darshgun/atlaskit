@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/branch-installer", "type": "minor" },
+    { "name": "@atlaskit/branch-deploy-product-integrator", "type": "minor" }
+  ],
+  "dependents": []
+}
