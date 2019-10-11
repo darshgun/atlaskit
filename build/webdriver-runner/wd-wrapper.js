@@ -45,12 +45,17 @@ export class ElementHandle extends JSHandle {
 }
 
 const mappedKeys = {
+  NULL: '\ue000',
   ArrowLeft: '\ue012',
   ArrowRight: '\ue014',
   ArrowUp: '\ue013',
   ArrowDown: '\ue015',
   Escape: '\ue00C',
   Return: '\ue007',
+  Control: '\ue009',
+  Shift: '\ue008',
+  Insert: '\ue016',
+  Command: '\ue03D',
 };
 
 const getMappedKey = str => {
