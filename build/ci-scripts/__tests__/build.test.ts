@@ -1,6 +1,7 @@
 import * as bolt from 'bolt';
 import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
+import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
 import { getPackagesInfo } from '@atlaskit/build-utils/tools';
 import createEntryPointsDirectories from '../create.entry.points.directories';
 import copyVersion from '../copy.version';
@@ -25,6 +26,8 @@ describe('Build', () => {
     // Comment out the mockImplementation to read console.logs for debugging
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     consoleErrorSpy = jest.spyOn(console, 'error');
+    // Mock to return a function as the impl returns an unsubscribe fn that is called
+    (prefixConsoleLog as any).mockImplementation(() => () => {});
   });
   afterAll(() => {
     consoleLogSpy.mockRestore();
@@ -292,205 +295,367 @@ describe('Build', () => {
         packageName: '@atlaskit/editor-core',
       });
     });
-    it('should run the JS compilation in watch mode for a JS package', async () => {
-      (getPackagesInfo as any).mockImplementation(() => [
-        {
-          name: '@atlaskit/navigation-next',
-          relativeDir: 'packages/core/navigation-next',
-          isBabel: true,
-          isFlow: true,
-        },
-      ]);
-
-      expect(runCommands).not.toHaveBeenCalled();
-      await build('navigation-next', {
-        cwd: '/Users/dev/atlaskit-mk-2',
-        watch: true,
+    describe('JS package', () => {
+      beforeEach(() => {
+        (getPackagesInfo as any).mockImplementation(() => [
+          {
+            name: '@atlaskit/navigation-next',
+            dir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
+            relativeDir: 'packages/core/navigation-next',
+            isBabel: true,
+            isFlow: true,
+          },
+        ]);
       });
-      // Does not build JS on initial build
-      expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
-      // Does not try to build TS
-      expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
-      expect(runCommands).toHaveBeenNthCalledWith(
-        3,
-        [
-          'NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "packages/core/navigation-next" -- babel src -d dist/cjs --root-mode upward -w --verbose',
-          'NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "packages/core/navigation-next" -- babel src -d dist/esm --root-mode upward -w --verbose',
-          'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/cjs -w',
-          'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm -w',
-        ],
-        {
-          onWatchSuccess: expect.any(Function),
-          watchFirstSuccessCondition: expect.any(Function),
-          watchSuccessCondition: expect.any(Function),
-        },
-      );
-      // Does not try to build TS
-      expect(runCommands).toHaveBeenNthCalledWith(4, [], expect.any(Object));
+      it('should run the JS compilation in watch mode for a JS package', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+        // Does not build JS on initial build
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        // Does not try to build TS
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
+
+        expect(runCommands).toHaveBeenNthCalledWith(
+          3,
+          [
+            'NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "packages/core/navigation-next" -- babel src -d dist/cjs --root-mode upward -w --verbose',
+            'NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "packages/core/navigation-next" -- babel src -d dist/esm --root-mode upward -w --verbose',
+            'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/cjs -w',
+            'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm -w',
+          ],
+          {
+            onWatchSuccess: expect.any(Function),
+            watchFirstSuccessCondition: expect.any(Function),
+            watchSuccessCondition: expect.any(Function),
+          },
+        );
+        // Does not try to build TS
+        expect(runCommands).toHaveBeenNthCalledWith(4, [], expect.any(Object));
+      });
+
+      it('should validate dists on successful recompile of a JS package', async () => {
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+
+        // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+        expect(validateDists).toHaveBeenCalled();
+        expect(validateDists).toHaveBeenCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'none',
+          packageName: '@atlaskit/navigation-next',
+        });
+
+        jest.clearAllMocks();
+        runCommandOptions.onWatchSuccess();
+        expect(validateDists).toHaveBeenCalledTimes(1);
+        expect(validateDists).toHaveBeenLastCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: undefined,
+          packageName: '@atlaskit/navigation-next',
+        });
+      });
+
+      it('should trigger `yalc push` on successful recompile of a JS package', async () => {
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+
+        expect(runCommands).toHaveBeenCalled();
+
+        // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+        // Test onWatchSuccess
+        expect(yalc.publishPackage).not.toHaveBeenCalled();
+        await runCommandOptions.onWatchSuccess();
+        expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
+        expect(yalc.publishPackage).toHaveBeenCalledWith({
+          workingDir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
+          push: true,
+        });
+      });
+      it('should detect successful JS initial watch compile after babel emits success message twice', async () => {
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+
+        expect(runCommands).toHaveBeenCalled();
+
+        // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+        // Running once means only one dist type has completed
+        expect(
+          runCommandOptions.watchFirstSuccessCondition(
+            'Successfully compiled 1 files with Babel',
+          ),
+        ).toBe(false);
+        // Twice means both dist types have completed
+        expect(
+          runCommandOptions.watchFirstSuccessCondition(
+            'Successfully compiled 1 files with Babel',
+          ),
+        ).toBe(true);
+
+        // Different type of message should never return success
+        expect(
+          runCommandOptions.watchFirstSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(false);
+        expect(
+          runCommandOptions.watchFirstSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(false);
+      });
+      it('should detect successful JS subsequent watch recompiles after babel emits transpilation message twice', async () => {
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+
+        expect(runCommands).toHaveBeenCalled();
+
+        // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+        // Running once means only one dist has recompiled
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(false);
+        // Running twice means both have recompiled
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(true);
+
+        // Running again should revert back to false since its start of another recompile
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(false);
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(true);
+
+        // Invalid messages should never be successful
+        expect(runCommandOptions.watchSuccessCondition('error')).toBe(false);
+        expect(runCommandOptions.watchSuccessCondition('error')).toBe(false);
+      });
+      it('should detect successful JS initial watch compile after only one success message when a single dist type is built', async () => {
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+          watch: true,
+        });
+
+        expect(runCommands).toHaveBeenCalled();
+
+        // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+        // Should detect success straight away
+        expect(
+          runCommandOptions.watchFirstSuccessCondition(
+            'Successfully compiled 1 files with Babel',
+          ),
+        ).toBe(true);
+
+        expect(
+          runCommandOptions.watchFirstSuccessCondition('non-success message'),
+        ).toBe(false);
+      });
+      it('should detect successful JS subsequent watch recompile after only one success message when a single dist type is built', async () => {
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+          watch: true,
+        });
+
+        expect(runCommands).toHaveBeenCalled();
+
+        // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+        // Should detect success straight away
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(true);
+
+        // Running again should be detected as success as well
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
+          ),
+        ).toBe(true);
+
+        expect(
+          runCommandOptions.watchFirstSuccessCondition('non-success message'),
+        ).toBe(false);
+      });
     });
-    it('should run the TS compilation in watch mode for a TS package', async () => {
-      expect(runCommands).not.toHaveBeenCalled();
-      await build('editor-core', {
-        cwd: '/Users/dev/atlaskit-mk-2',
-        watch: true,
+    describe('TS package', () => {
+      it('should run the TS compilation in watch mode for a TS package', async () => {
+        expect(runCommands).not.toHaveBeenCalled();
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+        // Does not build anything on initial build
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
+
+        // Watch mode
+        expect(runCommands).toHaveBeenNthCalledWith(3, [], expect.any(Object));
+        expect(runCommands).toHaveBeenNthCalledWith(
+          4,
+          [
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs -w --preserveWatchOutput && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext -w --preserveWatchOutput && echo Success || true\'',
+          ],
+          {
+            sequential: false,
+            onWatchSuccess: expect.any(Function),
+            watchSuccessCondition: expect.any(Function),
+          },
+        );
       });
-      // Does not build anything on initial build
-      expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
-      expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
+      it('should validate dists on successful recompile of a TS package', async () => {
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
 
-      // Watch mode
-      expect(runCommands).toHaveBeenNthCalledWith(3, [], expect.any(Object));
-      expect(runCommands).toHaveBeenNthCalledWith(
-        4,
-        [
-          'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs -w --preserveWatchOutput && echo Success || true\'',
-          'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext -w --preserveWatchOutput && echo Success || true\'',
-        ],
-        {
-          sequential: false,
-          onWatchSuccess: expect.any(Function),
-          watchSuccessCondition: expect.any(Function),
-        },
-      );
-    });
-    it('should validate dists on successful recompile of a JS package', async () => {
-      (getPackagesInfo as any).mockImplementation(() => [
-        {
-          name: '@atlaskit/navigation-next',
-          dir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
-          relativeDir: 'packages/core/navigation-next',
-          isBabel: true,
-          isFlow: true,
-        },
-      ]);
+        // Third run of runCommands - first 2 are the initial build, 4th is TS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[3][1];
 
-      await build('navigation-next', {
-        cwd: '/Users/dev/atlaskit-mk-2',
-        watch: true,
+        expect(validateDists).toHaveBeenCalled();
+        expect(validateDists).toHaveBeenCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'none',
+          packageName: '@atlaskit/editor-core',
+        });
+
+        jest.clearAllMocks();
+        runCommandOptions.onWatchSuccess();
+        expect(validateDists).toHaveBeenCalledTimes(1);
+        expect(validateDists).toHaveBeenLastCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: undefined,
+          packageName: '@atlaskit/editor-core',
+        });
       });
+      it('should trigger `yalc push` on successful recompile of a TS package', async () => {
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
 
-      // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
-      const runCommandOptions = (runCommands as any).mock.calls[2][1];
+        expect(runCommands).toHaveBeenCalled();
 
-      expect(validateDists).toHaveBeenCalled();
-      expect(validateDists).toHaveBeenCalledWith({
-        cwd: '/Users/dev/atlaskit-mk-2',
-        distType: 'none',
-        packageName: '@atlaskit/navigation-next',
+        // Fourth run of runCommands - first 2 are the initial build, 4th is TS watch
+        const runCommandOptions = (runCommands as any).mock.calls[3][1];
+
+        expect(yalc.publishPackage).not.toHaveBeenCalled();
+        await runCommandOptions.onWatchSuccess();
+        expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
+        expect(yalc.publishPackage).toHaveBeenCalledWith({
+          workingDir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
+          push: true,
+        });
       });
+      it('should detect successful TS watch recompiles after tsc emits completion message twice', async () => {
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
 
-      jest.clearAllMocks();
-      runCommandOptions.onWatchSuccess();
-      expect(validateDists).toHaveBeenCalledTimes(1);
-      expect(validateDists).toHaveBeenLastCalledWith({
-        cwd: '/Users/dev/atlaskit-mk-2',
-        distType: undefined,
-        packageName: '@atlaskit/navigation-next',
+        expect(runCommands).toHaveBeenCalled();
+
+        // Fourth run of runCommands - first 2 are the initial build, 4th is TS watch
+        const runCommandOptions = (runCommands as any).mock.calls[3][1];
+
+        // First run should be false as only one dist type has completed
+        expect(
+          runCommandOptions.watchSuccessCondition('Watching for file changes.'),
+        ).toBe(false);
+        // Second should now return true
+        expect(
+          runCommandOptions.watchSuccessCondition('Watching for file changes.'),
+        ).toBe(true);
+
+        // After success, recompile resets and now returns false again for first dist
+        expect(
+          runCommandOptions.watchSuccessCondition('Watching for file changes.'),
+        ).toBe(false);
+        // Second should now return true
+        expect(
+          runCommandOptions.watchSuccessCondition('Watching for file changes.'),
+        ).toBe(true);
+
+        // Bad patterns should never trigger success
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'Starting compilation in watch mode',
+          ),
+        ).toBe(false);
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'Starting compilation in watch mode',
+          ),
+        ).toBe(false);
       });
-    });
-    it('should validate dists on successful recompile of a TS package', async () => {
-      await build('editor-core', {
-        cwd: '/Users/dev/atlaskit-mk-2',
-        watch: true,
-      });
+      it('should detect successful TS watch recompiles after tsc emits only one completion message when a single dist type is built', async () => {
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'cjs',
+          watch: true,
+        });
 
-      // Third run of runCommands - first 2 are the initial build, 4th is TS in watch
-      const runCommandOptions = (runCommands as any).mock.calls[3][1];
+        expect(runCommands).toHaveBeenCalled();
 
-      expect(validateDists).toHaveBeenCalled();
-      expect(validateDists).toHaveBeenCalledWith({
-        cwd: '/Users/dev/atlaskit-mk-2',
-        distType: 'none',
-        packageName: '@atlaskit/editor-core',
-      });
+        // Fourth run of runCommands - first 2 are the initial build, 4th is TS watch
+        const runCommandOptions = (runCommands as any).mock.calls[3][1];
 
-      jest.clearAllMocks();
-      runCommandOptions.onWatchSuccess();
-      expect(validateDists).toHaveBeenCalledTimes(1);
-      expect(validateDists).toHaveBeenLastCalledWith({
-        cwd: '/Users/dev/atlaskit-mk-2',
-        distType: undefined,
-        packageName: '@atlaskit/editor-core',
-      });
-    });
-    it('should trigger `yalc push` on successful recompile of a JS package', async () => {
-      (getPackagesInfo as any).mockImplementation(() => [
-        {
-          name: '@atlaskit/navigation-next',
-          dir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
-          relativeDir: 'packages/core/navigation-next',
-          isBabel: true,
-          isFlow: true,
-        },
-      ]);
+        // First run should emit success now
+        expect(
+          runCommandOptions.watchSuccessCondition('Watching for file changes.'),
+        ).toBe(true);
+        // Second should also emit success for recompiles
+        expect(
+          runCommandOptions.watchSuccessCondition('Watching for file changes.'),
+        ).toBe(true);
 
-      await build('navigation-next', {
-        cwd: '/Users/dev/atlaskit-mk-2',
-        watch: true,
-      });
-
-      expect(runCommands).toHaveBeenCalled();
-
-      // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
-      const runCommandOptions = (runCommands as any).mock.calls[2][1];
-      // Test watchFirstSuccessCondition
-      expect(
-        runCommandOptions.watchFirstSuccessCondition(
-          'Successfully compiled 1 files with Babel',
-        ),
-      ).toBe(true);
-      expect(
-        runCommandOptions.watchFirstSuccessCondition(
-          'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
-        ),
-      ).toBe(false);
-
-      // Test watchSuccessCondition
-      expect(
-        runCommandOptions.watchSuccessCondition(
-          'babel src -d dist/cjs -w --verbose src/foo.js -> src/bar.js',
-        ),
-      ).toBe(true);
-      expect(runCommandOptions.watchSuccessCondition('error')).toBe(false);
-
-      // Test onWatchSuccess
-      expect(yalc.publishPackage).not.toHaveBeenCalled();
-      runCommandOptions.onWatchSuccess();
-      expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
-      expect(yalc.publishPackage).toHaveBeenCalledWith({
-        workingDir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
-        push: true,
-      });
-    });
-    it('should trigger `yalc push` on successful recompile of a TS package', async () => {
-      await build('editor-core', {
-        cwd: '/Users/dev/atlaskit-mk-2',
-        watch: true,
-      });
-
-      expect(runCommands).toHaveBeenCalled();
-
-      // Fourth run of runCommands - first 2 are the initial build, 4th is TS watch
-      const runCommandOptions = (runCommands as any).mock.calls[3][1];
-
-      // Test watchSuccessCondition
-      expect(
-        runCommandOptions.watchSuccessCondition('Watching for file changes.'),
-      ).toBe(true);
-      expect(
-        runCommandOptions.watchSuccessCondition(
-          'Starting compilation in watch mode',
-        ),
-      ).toBe(false);
-
-      // Test onWatchSuccess
-      expect(yalc.publishPackage).not.toHaveBeenCalled();
-      runCommandOptions.onWatchSuccess();
-      expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
-      expect(yalc.publishPackage).toHaveBeenCalledWith({
-        workingDir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
-        push: true,
+        // Bad patterns should never trigger success
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'Starting compilation in watch mode',
+          ),
+        ).toBe(false);
+        expect(
+          runCommandOptions.watchSuccessCondition(
+            'Starting compilation in watch mode',
+          ),
+        ).toBe(false);
       });
     });
   });

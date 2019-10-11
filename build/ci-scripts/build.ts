@@ -57,6 +57,79 @@ function getDistCommands(
   }
 }
 
+/**
+ * We pattern match watch command output to detect when a recompile has successfully finished.
+ * However, since we execute two watch commands if building both types of dists, we have to ensure
+ * that we only emit success when both watch commands have finished rather than only one.
+ */
+function generateWatchSuccessCondition(
+  regex: RegExp,
+  distType: DistType | undefined,
+) {
+  const successesRequired = distType ? 1 : 2;
+  let successCount = 0;
+  return (output: string) => {
+    successCount += regex.test(output) ? 1 : 0;
+    if (successCount === successesRequired) {
+      successCount = 0;
+      return true;
+    }
+    return false;
+  };
+}
+
+/* Returns watch specific options to the runCommands module that allows us to execute steps after
+ * a successful recompile.
+ * The steps executed are:
+ *   - Validate dists
+ *   - Publish package to yalc and push to linked repos
+ */
+function getWatchCommandOptions(
+  buildOptions: {
+    cwd: string | undefined;
+    distType: DistType | undefined;
+    pkg: PackageInfo;
+  },
+  successRegex: RegExp,
+  firstSuccessRegex?: RegExp,
+) {
+  const { cwd, distType, pkg } = buildOptions;
+  const options: Pick<
+    RunOptions,
+    'watchSuccessCondition' | 'onWatchSuccess' | 'watchFirstSuccessCondition'
+  > = {
+    watchSuccessCondition: generateWatchSuccessCondition(
+      successRegex,
+      distType,
+    ),
+    onWatchSuccess: async () => {
+      // Validate dists after recompile to verify they aren't broken
+      await runValidateDists({
+        cwd,
+        distType,
+        packageName: pkg.name,
+      });
+      const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
+      // Publish package to yalc with push mode to automatically update the package in linked repos
+      await yalc.publishPackage({
+        workingDir: pkg.dir,
+        push: true,
+      });
+      restoreConsoleLog();
+      log('Recompiled and pushed changes...');
+    },
+  };
+
+  if (firstSuccessRegex) {
+    options.watchFirstSuccessCondition = generateWatchSuccessCondition(
+      firstSuccessRegex,
+      distType,
+    );
+  }
+
+  return options;
+}
+
 async function generateFlowTypeCommands({
   cwd,
   distType,
@@ -95,28 +168,13 @@ async function babelCommands({ cwd, distType, pkg, watch }: StepArgs) {
 async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
   let commandOptions: RunOptions = {};
   if (watch) {
-    const initialRe = /Successfully compiled \d+ files with Babel/;
-    const recompileRe = /babel/;
-    commandOptions = {
-      watchFirstSuccessCondition: (output: string) => initialRe.test(output),
-      watchSuccessCondition: (output: string) => recompileRe.test(output),
-      onWatchSuccess: async () => {
-        await runValidateDists({
-          cwd,
-          distType,
-          packageName: (pkg as PackageInfo).name,
-        });
-        const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
-        await yalc.publishPackage({
-          // If watch mode is enabled, we have a package
-          // TODO: Add TS 3.7 assertion here
-          workingDir: (pkg as PackageInfo).dir,
-          push: true,
-        });
-        restoreConsoleLog();
-        log('Recompiled and pushed changes...');
-      },
-    };
+    commandOptions = getWatchCommandOptions(
+      // If watch mode is enabled, we have a package
+      // TODO: Add TS 3.7 assertion here
+      { cwd, distType, pkg: pkg as PackageInfo },
+      /babel/,
+      /Successfully compiled \d+ files with Babel/,
+    );
   }
   return runCommands(
     [
@@ -174,27 +232,12 @@ async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
 async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
   let commandOptions: RunOptions = {};
   if (watch) {
-    const re = /Watching for file changes./;
-    commandOptions = {
-      watchSuccessCondition: (output: string) => re.test(output),
-      onWatchSuccess: async () => {
-        await runValidateDists({
-          cwd,
-          distType,
-          packageName: (pkg as PackageInfo).name,
-        });
-        const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
-        await yalc.publishPackage({
-          // If watch mode is enabled, we have a package
-          // TODO: Add TS 3.7 assertion here
-          workingDir: (pkg as PackageInfo).dir,
-          push: true,
-        });
-        restoreConsoleLog();
-
-        log('Recompiled and pushed changes...');
-      },
-    };
+    commandOptions = getWatchCommandOptions(
+      // If watch mode is enabled, we have a package
+      // TODO: Add TS 3.7 assertion here
+      { cwd, distType, pkg: pkg as PackageInfo },
+      /Watching for file changes./,
+    );
   }
 
   return runCommands(
