@@ -50,6 +50,7 @@ const mappedKeys = {
   ArrowUp: '\ue013',
   ArrowDown: '\ue015',
   Escape: '\ue00C',
+  Return: '\ue007',
 };
 
 const getMappedKey = str => {
