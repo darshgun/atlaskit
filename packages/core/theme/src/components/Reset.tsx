@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import * as colors from '../colors';
 import { createTheme, ThemeProp } from '../utils/createTheme';
 
-export type ResetThemeProps = { children?: any };
+export type ResetThemeProps = { children?: ReactNode };
 export interface ResetThemeTokens {
   backgroundColor: string;
   textColor: string;
@@ -66,10 +66,12 @@ export const ResetTheme = createTheme<ResetThemeTokens, ResetThemeProps>(
   }),
 );
 
-export function Reset(props: {
+interface ResetProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   theme?: ThemeProp<ResetThemeTokens, ResetThemeProps>;
-}) {
+}
+
+export function Reset(props: ResetProps) {
   return (
     <ResetTheme.Provider value={props.theme}>
       <ResetTheme.Consumer>
