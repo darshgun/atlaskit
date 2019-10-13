@@ -103,8 +103,7 @@ class ClipboardImpl {
         attributes: {
           packageName,
           fileCount: files.length,
-          fileAttributes: files.map(({ file: { name, type, size } }) => ({
-            fileName: name,
+          fileAttributes: files.map(({ file: { type, size } }) => ({
             fileMimetype: type,
             fileSize: size,
           })),

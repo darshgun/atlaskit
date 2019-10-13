@@ -68,6 +68,62 @@ describe('Browser upload phases', () => {
     });
   });
 
+  it('should fire a uploading success event on end', () => {
+    const mediaClient = fakeMediaClient();
+    const fileStateObservable = new ReplaySubject<FileState>(1);
+    mediaClient.file.upload = jest.fn().mockReturnValue(fileStateObservable);
+    mediaClient.file.touchFiles = jest.fn(
+      (descriptors: TouchFileDescriptor[], collection?: string) => {
+        fileStateObservable.next({
+          id: descriptors[0].fileId,
+          mediaType: 'doc',
+          name: '',
+          mimeType: 'text/plain',
+          size: 13,
+          progress: 0.1,
+          status: 'uploading',
+        });
+        return Promise.resolve({
+          created: descriptors.map(({ fileId }) => ({
+            fileId,
+            uploadId,
+          })),
+        });
+      },
+    );
+    const onStatusUpdate = jest.fn();
+    const browser = mount(
+      <Browser
+        mediaClient={mediaClient}
+        config={browseConfig}
+        onStatusUpdate={onStatusUpdate}
+      />,
+    );
+    const fileContents = 'file contents';
+    const file = new Blob([fileContents], { type: 'text/plain' });
+
+    browser.find('input').simulate('change', { target: { files: [file] } });
+
+    expect(onStatusUpdate).toHaveBeenCalledWith({
+      file: {
+        creationDate: Date.now(),
+        id: uuidRegexMatcher,
+        name: undefined,
+        occurrenceKey: uuidRegexMatcher,
+        size: 13,
+        type: 'text/plain',
+      },
+      progress: {
+        absolute: 1.3,
+        expectedFinishTime: 111,
+        max: 13,
+        overallTime: 0,
+        portion: 0.1,
+        timeLeft: 0,
+      },
+    });
+  });
+
   it('should fire an uploaded success event on end', () => {
     const mediaClient = fakeMediaClient();
     const fileStateObservable = new ReplaySubject<FileState>(1);
