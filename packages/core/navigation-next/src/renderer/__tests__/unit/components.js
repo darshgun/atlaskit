@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import { JiraWordmark } from '@atlaskit/logo';
-import Loadable from 'react-loadable';
 
 import BackItemComponent from '../../../components/connected/BackItem';
 import ConnectedItemComponent from '../../../components/connected/ConnectedItem';
@@ -11,7 +10,6 @@ import GoToItemComponent from '../../../components/connected/GoToItem';
 import HeaderSectionComponent from '../../../components/presentational/HeaderSection';
 import MenuSectionComponent from '../../../components/presentational/MenuSection';
 import SortableContextComponent from '../../../components/connected/SortableContext';
-import SortableGroupComponent from '../../../components/connected/SortableGroup';
 import ItemsRenderer, { components, LazySortableItem } from '../../components';
 
 const {
