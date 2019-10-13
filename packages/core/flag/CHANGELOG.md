@@ -1,5 +1,13 @@
 # @atlaskit/flag
 
+## 12.3.3
+
+### Patch Changes
+
+- [patch][f86839ca4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86839ca4e):
+
+  @atlaskit/portal had an issue in IE11 and this is fixed in 3.1.2
+
 ## 12.3.2
 
 ### Patch Changes
