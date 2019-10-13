@@ -52,6 +52,7 @@ const mappedKeys = {
   ArrowDown: '\ue015',
   Escape: '\ue00C',
   Return: '\ue007',
+  Enter: '\ue007',
   Control: '\ue009',
   Shift: '\ue008',
   Insert: '\ue016',
