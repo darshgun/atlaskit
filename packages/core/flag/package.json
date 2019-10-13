@@ -25,7 +25,7 @@
     "@atlaskit/analytics-next": "^6.3.1",
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/icon": "^19.0.6",
-    "@atlaskit/portal": "^3.1.1",
+    "@atlaskit/portal": "^3.1.2",
     "@atlaskit/theme": "^9.2.4",
     "@babel/runtime": "^7.0.0",
     "react-transition-group": "^2.2.1",

@@ -25,7 +25,7 @@
     "@atlaskit/blanket": "^10.0.14",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/item": "^10.1.6",
-    "@atlaskit/portal": "^3.1.1",
+    "@atlaskit/portal": "^3.1.2",
     "@atlaskit/theme": "^9.2.4",
     "@emotion/core": "^10.0.9",
     "chromatism": "^2.6.0",
