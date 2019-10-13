@@ -3,10 +3,6 @@ const SamplesPath = './samples';
 const ExamplesPath = '../../../../examples';
 
 describe('server side rendering and hydration', () => {
-  beforeAll(() => {
-    jest.setTimeout(10000);
-  });
-
   beforeEach(() => {
     jest.spyOn(global.console, 'error');
   });
