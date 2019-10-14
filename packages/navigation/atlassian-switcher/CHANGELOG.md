@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.1
+
+### Patch Changes
+
+- [patch][e6f7f7747f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6f7f7747f):
+
+  Add Opsgenie to default list of product recommendations
+
 ## 4.6.0
 
 ### Minor Changes
