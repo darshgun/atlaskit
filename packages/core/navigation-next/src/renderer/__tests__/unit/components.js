@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import { JiraWordmark } from '@atlaskit/logo';
 
+// eslint-disable-next-line no-unused-vars
+import { GroupHeading } from '../../..';
 import BackItemComponent from '../../../components/connected/BackItem';
 import ConnectedItemComponent from '../../../components/connected/ConnectedItem';
 import GoToItemComponent from '../../../components/connected/GoToItem';
