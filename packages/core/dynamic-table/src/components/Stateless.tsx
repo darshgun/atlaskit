@@ -221,7 +221,7 @@ class DynamicTable extends React.Component<Props, State> {
         >
           <Table
             isFixedSize={isFixedSize}
-            testId={testId && `${testId}--table`}
+            data-testid={testId && `${testId}--table`}
           >
             {!!caption && <Caption>{caption}</Caption>}
             {head && (

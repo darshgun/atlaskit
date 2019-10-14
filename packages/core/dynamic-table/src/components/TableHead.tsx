@@ -13,6 +13,7 @@ interface Props {
   onSort: (item: RowCellType) => () => void;
   isRankable?: boolean;
   isRanking: boolean;
+  testId?: string;
 }
 
 class TableHead extends React.Component<Props, {}> {
@@ -41,6 +42,7 @@ class TableHead extends React.Component<Props, {}> {
       onSort,
       isRanking,
       isRankable,
+      testId,
     } = this.props;
 
     if (!head) {
@@ -52,7 +54,7 @@ class TableHead extends React.Component<Props, {}> {
     const { cells, ...rest } = head;
 
     return (
-      <Head {...rest} isRanking={isRanking}>
+      <Head {...rest} isRanking={isRanking} data-testid={testId}>
         <tr>
           {cells.map((cell, index) => {
             const { isSortable, key, ...restCellProps } = cell;

@@ -55,6 +55,7 @@ export default class extends React.Component<{}, StateType> {
           sortOrder="DESC"
           onSort={() => console.log('onSort')}
           onSetPage={() => console.log('onSetPage')}
+          testId="the-table"
         />
       </Wrapper>
     );

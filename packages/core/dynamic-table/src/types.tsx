@@ -51,6 +51,19 @@ export interface StatelessProps extends WithAnalyticsEventsProps {
   paginationi18n?: I18nShape;
   /** It highlights the passed row number on the current visible page. Starts with 0 */
   highlightedRowIndex?: number;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute
+   * `data-testid` in the rendered code, serving as a hook for automated tests.
+   *
+   * The value of `testId` is used to prefix testId props in given elements:
+   *
+   * `${testId}--container` - Loading container
+   * `${testId}--table` - Table
+   * `${testId}--table-head` - Table header
+   * `${testId}--rankable-body` - Rankable table body
+   * `${testId}--body` - Table body
+   **/
+  testId?: string;
 }
 
 export interface StatefulProps extends WithAnalyticsEventsProps {
