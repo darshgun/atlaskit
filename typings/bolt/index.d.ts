@@ -24,6 +24,7 @@ declare module 'bolt' {
     config: AnyJson;
   }
 
+  /** Glob patterns (minimatch) to filter execution to certain workspaces */
   export interface FilterOpts {
     only?: string;
     ignore?: string;
@@ -32,6 +33,12 @@ declare module 'bolt' {
   }
 
   export interface SpawnOpts {
+    /* Run tasks in serial, parallel or in parallel across a number of worker nodes.
+     * For 'parallel-nodes', the command should be executed once for each node/process, with
+     * CI_NODE_TOTAL' and 'CI_NODE_INDEX' env variables representing the total number of nodes and the
+     * current node executing the command.
+     * Bolt will then execute the specific chunk of packages referred to by CI_NODE_INDEX, in parallel.
+     */
     orderMode?: 'serial' | 'parallel' | 'parallel-nodes';
     bail?: boolean;
   }

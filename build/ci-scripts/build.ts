@@ -394,7 +394,7 @@ if (require.main === module) {
       Examples
         $ bolt build @atlaskit/button -w
         $ bolt build editor-core --watch --distType cjs
-        $ bolt build --d cjs
+        $ bolt build -d cjs
   `,
     {
       description:
