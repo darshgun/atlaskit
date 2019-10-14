@@ -102,13 +102,17 @@ function getWatchCommandOptions(
       successRegex,
       distType,
     ),
-    onWatchSuccess: async () => {
-      // Validate dists after recompile to verify they aren't broken
-      await runValidateDists({
-        cwd,
-        distType,
-        packageName: pkg.name,
-      });
+    onWatchSuccess: async ({ firstSuccess }) => {
+      if (firstSuccess) {
+        // Validate dists after initial build to verify they aren't broken
+        // We don't run after every recompile since this will fail when adding
+        // a new file that would be an entry point.
+        await runValidateDists({
+          cwd,
+          distType,
+          packageName: pkg.name,
+        });
+      }
       const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
       // Publish package to yalc with push mode to automatically update the package in linked repos
       await yalc.publishPackage({
@@ -175,7 +179,7 @@ async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
         // TODO: Add TS 3.7 assertion here
         { cwd, distType, pkg: pkg as PackageInfo },
         /babel/,
-        /Successfully compiled \d+ files with Babel/,
+        /Successfully compiled/,
       ),
     };
   }
