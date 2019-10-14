@@ -103,7 +103,7 @@ describe('Link AK', () => {
     expect(runCommands).toHaveBeenCalledWith(
       [
         expect.stringMatching(
-          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && bolt upgrade bar@file:.yalc\/bar/,
+          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && bolt add bar@file:.yalc\/bar/,
         ),
       ],
       {

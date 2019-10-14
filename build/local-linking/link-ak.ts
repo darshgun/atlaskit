@@ -50,7 +50,7 @@ async function installDependencies(
   const commands = {
     npm: 'npm install',
     yarn: 'yarn',
-    bolt: `bolt upgrade ${packageNames.map(
+    bolt: `bolt add ${packageNames.map(
       pkg => `${pkg}@file:.yalc/${pkg}`,
     )} && bolt`,
   };
