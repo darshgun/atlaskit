@@ -1,0 +1,1 @@
+Fix broken style in IE 11
