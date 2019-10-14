@@ -66,7 +66,7 @@ describe('Build', () => {
           'bolt workspaces exec --only-fs "babel-flow-glob" -- flow-copy-source -i \'**/__tests__/**\' src dist/cjs',
           'bolt workspaces exec --only-fs "babel-flow-glob" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm',
         ],
-        {},
+        { cwd: '/Users/dev/atlaskit-mk-2' },
       );
     });
     it('should build all TS packages', async () => {
@@ -79,7 +79,7 @@ describe('Build', () => {
           'NODE_ENV=production bolt workspaces exec --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
           'NODE_ENV=production bolt workspaces exec --only-fs "typescriptcli-glob" -- bash -c \'tsc --project ./build/cli && echo Success || true\'',
         ],
-        { sequential: true },
+        { cwd: '/Users/dev/atlaskit-mk-2', sequential: true },
       );
     });
     it('should run ak-postbuild scripts for exception packages', async () => {
@@ -101,7 +101,9 @@ describe('Build', () => {
       expect(copyVersion).not.toHaveBeenCalled();
       await build(undefined, { cwd: '/Users/dev/atlaskit-mk-2' });
       expect(copyVersion).toHaveBeenCalledTimes(1);
-      expect(copyVersion).toHaveBeenCalledWith(undefined);
+      expect(copyVersion).toHaveBeenCalledWith(undefined, {
+        cwd: '/Users/dev/atlaskit-mk-2',
+      });
     });
     it('should validate dists', async () => {
       // Success
@@ -156,7 +158,7 @@ describe('Build', () => {
           'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/cjs',
           'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm',
         ],
-        {},
+        { cwd: '/Users/dev/atlaskit-mk-2' },
       );
       // Does not try to build TS
       expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
@@ -170,10 +172,13 @@ describe('Build', () => {
           'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
           'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
         ],
-        { sequential: false },
+        {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          sequential: false,
+        },
       );
       // Does not try to build JS
-      expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+      expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
     });
     it('should run exception postbuild for package, if one exists', async () => {
       expect(bolt.workspacesRun).not.toHaveBeenCalled();
@@ -194,7 +199,9 @@ describe('Build', () => {
       expect(copyVersion).not.toHaveBeenCalled();
       await build('editor-core', { cwd: '/Users/dev/atlaskit-mk-2' });
       expect(copyVersion).toHaveBeenCalledTimes(1);
-      expect(copyVersion).toHaveBeenCalledWith('@atlaskit/editor-core');
+      expect(copyVersion).toHaveBeenCalledWith('@atlaskit/editor-core', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+      });
     });
     it('should validate dist', async () => {
       expect(validateDists).not.toHaveBeenCalled();
@@ -315,7 +322,7 @@ describe('Build', () => {
           watch: true,
         });
         // Does not build JS on initial build
-        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
         // Does not try to build TS
         expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
@@ -328,6 +335,7 @@ describe('Build', () => {
             'bolt workspaces exec --only-fs "packages/core/navigation-next" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm -w',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             onWatchSuccess: expect.any(Function),
             watchFirstSuccessCondition: expect.any(Function),
             watchSuccessCondition: expect.any(Function),
@@ -337,7 +345,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(4, [], expect.any(Object));
       });
 
-      it('should validate dists on successful recompile of a JS package', async () => {
+      it('should validate dists on first successful recompile of a JS package', async () => {
         await build('navigation-next', {
           cwd: '/Users/dev/atlaskit-mk-2',
           watch: true,
@@ -354,13 +362,34 @@ describe('Build', () => {
         });
 
         jest.clearAllMocks();
-        runCommandOptions.onWatchSuccess();
+        runCommandOptions.onWatchSuccess({ firstSuccess: true });
         expect(validateDists).toHaveBeenCalledTimes(1);
         expect(validateDists).toHaveBeenLastCalledWith({
           cwd: '/Users/dev/atlaskit-mk-2',
           distType: undefined,
           packageName: '@atlaskit/navigation-next',
         });
+      });
+
+      it('should not validate dists on subsequent successful recompiles of a JS package', async () => {
+        await build('navigation-next', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+
+        // Third run of runCommands - first 2 are the initial build, 3rd is JS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[2][1];
+
+        expect(validateDists).toHaveBeenCalled();
+        expect(validateDists).toHaveBeenCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'none',
+          packageName: '@atlaskit/navigation-next',
+        });
+
+        jest.clearAllMocks();
+        runCommandOptions.onWatchSuccess({ firstSuccess: false });
+        expect(validateDists).not.toHaveBeenCalled();
       });
 
       it('should trigger `yalc push` on successful recompile of a JS package', async () => {
@@ -376,7 +405,7 @@ describe('Build', () => {
 
         // Test onWatchSuccess
         expect(yalc.publishPackage).not.toHaveBeenCalled();
-        await runCommandOptions.onWatchSuccess();
+        await runCommandOptions.onWatchSuccess({ firstSuccess: false });
         expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
         expect(yalc.publishPackage).toHaveBeenCalledWith({
           workingDir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
@@ -533,13 +562,14 @@ describe('Build', () => {
             'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext -w --preserveWatchOutput && echo Success || true\'',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             sequential: false,
             onWatchSuccess: expect.any(Function),
             watchSuccessCondition: expect.any(Function),
           },
         );
       });
-      it('should validate dists on successful recompile of a TS package', async () => {
+      it('should validate dists on first successful recompile of a TS package', async () => {
         await build('editor-core', {
           cwd: '/Users/dev/atlaskit-mk-2',
           watch: true,
@@ -556,13 +586,33 @@ describe('Build', () => {
         });
 
         jest.clearAllMocks();
-        runCommandOptions.onWatchSuccess();
+        runCommandOptions.onWatchSuccess({ firstSuccess: true });
         expect(validateDists).toHaveBeenCalledTimes(1);
         expect(validateDists).toHaveBeenLastCalledWith({
           cwd: '/Users/dev/atlaskit-mk-2',
           distType: undefined,
           packageName: '@atlaskit/editor-core',
         });
+      });
+      it('should NOT validate dists on subsequent successful recompiles of a TS package', async () => {
+        await build('editor-core', {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          watch: true,
+        });
+
+        // Third run of runCommands - first 2 are the initial build, 4th is TS in watch
+        const runCommandOptions = (runCommands as any).mock.calls[3][1];
+
+        expect(validateDists).toHaveBeenCalled();
+        expect(validateDists).toHaveBeenCalledWith({
+          cwd: '/Users/dev/atlaskit-mk-2',
+          distType: 'none',
+          packageName: '@atlaskit/editor-core',
+        });
+
+        jest.clearAllMocks();
+        runCommandOptions.onWatchSuccess({ firstSuccess: false });
+        expect(validateDists).not.toHaveBeenCalled();
       });
       it('should trigger `yalc push` on successful recompile of a TS package', async () => {
         await build('editor-core', {
@@ -576,7 +626,7 @@ describe('Build', () => {
         const runCommandOptions = (runCommands as any).mock.calls[3][1];
 
         expect(yalc.publishPackage).not.toHaveBeenCalled();
-        await runCommandOptions.onWatchSuccess();
+        await runCommandOptions.onWatchSuccess({ firstSuccess: false });
         expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
         expect(yalc.publishPackage).toHaveBeenCalledWith({
           workingDir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
@@ -675,7 +725,7 @@ describe('Build', () => {
             'NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --parallel --only-fs "babel-glob" -- babel src -d dist/cjs --root-mode upward',
             'bolt workspaces exec --only-fs "babel-flow-glob" -- flow-copy-source -i \'**/__tests__/**\' src dist/cjs',
           ],
-          {},
+          { cwd: '/Users/dev/atlaskit-mk-2' },
         );
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
@@ -684,6 +734,7 @@ describe('Build', () => {
             'NODE_ENV=production bolt workspaces exec --only-fs "typescriptcli-glob" -- bash -c \'tsc --project ./build/cli && echo Success || true\'',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             sequential: true,
           },
         );
@@ -702,7 +753,7 @@ describe('Build', () => {
             'NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --parallel --only-fs "babel-glob" -- babel src -d dist/esm --root-mode upward',
             'bolt workspaces exec --only-fs "babel-flow-glob" -- flow-copy-source -i \'**/__tests__/**\' src dist/esm',
           ],
-          {},
+          { cwd: '/Users/dev/atlaskit-mk-2' },
         );
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
@@ -710,6 +761,7 @@ describe('Build', () => {
             'NODE_ENV=production bolt workspaces exec --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             sequential: true,
           },
         );
@@ -722,7 +774,7 @@ describe('Build', () => {
           distType: 'none',
         });
         expect(runCommands).toHaveBeenCalledTimes(2);
-        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
         expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
       });
       it('should only validate dists for the specific distType', async () => {
@@ -748,13 +800,14 @@ describe('Build', () => {
           distType: 'cjs',
         });
         expect(runCommands).toHaveBeenCalledTimes(2);
-        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
             'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             sequential: false,
           },
         );
@@ -767,13 +820,14 @@ describe('Build', () => {
           distType: 'esm',
         });
         expect(runCommands).toHaveBeenCalledTimes(2);
-        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
             'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             sequential: false,
           },
         );
@@ -786,10 +840,8 @@ describe('Build', () => {
           distType: 'none',
         });
         expect(runCommands).toHaveBeenCalledTimes(2);
-        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
-        expect(runCommands).toHaveBeenNthCalledWith(2, [], {
-          sequential: false,
-        });
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
+        expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
       });
     });
 
@@ -804,7 +856,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenCalledTimes(4);
 
         // Initial build
-        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
         expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
         // Watch
@@ -815,6 +867,7 @@ describe('Build', () => {
             'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs -w --preserveWatchOutput && echo Success || true\'',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             sequential: false,
             onWatchSuccess: expect.any(Function),
             watchSuccessCondition: expect.any(Function),
@@ -832,7 +885,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenCalledTimes(4);
 
         // Initial Build
-        expect(runCommands).toHaveBeenNthCalledWith(1, [], {});
+        expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
         expect(runCommands).toHaveBeenNthCalledWith(2, [], expect.any(Object));
 
         // Watch
@@ -843,6 +896,7 @@ describe('Build', () => {
             'NODE_ENV=production bolt workspaces exec --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext -w --preserveWatchOutput && echo Success || true\'',
           ],
           {
+            cwd: '/Users/dev/atlaskit-mk-2',
             sequential: false,
             onWatchSuccess: expect.any(Function),
             watchSuccessCondition: expect.any(Function),
@@ -868,7 +922,7 @@ describe('Build', () => {
         });
 
         jest.clearAllMocks();
-        runCommandOptions.onWatchSuccess();
+        runCommandOptions.onWatchSuccess({ firstSuccess: true });
         expect(validateDists).toHaveBeenCalledTimes(1);
         expect(validateDists).toHaveBeenLastCalledWith({
           cwd: '/Users/dev/atlaskit-mk-2',

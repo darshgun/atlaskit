@@ -2,6 +2,7 @@ import path from 'path';
 import fse from 'fs-extra';
 import * as bolt from 'bolt';
 import * as yalc from 'yalc';
+import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
 import runCommands from '@atlaskit/build-utils/runCommands';
 import linkAk from '../../link-ak';
 
@@ -30,6 +31,9 @@ describe('Link AK', () => {
     ]);
     mockedFse.pathExists.mockImplementation(() => false);
     mockedFse.readJson.mockImplementation(() => ({}));
+
+    // Mock to return a function as the impl returns an unsubscribe fn that is called
+    (prefixConsoleLog as any).mockImplementation(() => () => {});
   });
 
   it('should run yalc publish in each package directory', async () => {
