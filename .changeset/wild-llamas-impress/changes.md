@@ -1,1 +1,1 @@
-yAdd groupIndex to switcher item analytics
+Add groupIndex to switcher item analytics
