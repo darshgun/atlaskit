@@ -317,6 +317,11 @@ export default class Switcher extends React.Component<SwitcherProps> {
                     onClick={this.triggerXFlow(item.key)}
                   >
                     {item.label}
+                    {groupIndex === 0 && (
+                      <TryLozenge isBold={false}>
+                        <FormattedMessage {...messages.try} />
+                      </TryLozenge>
+                    )}
                   </SwitcherThemedItemWithEvents>
                 </NavigationAnalyticsContext>
               ))}
