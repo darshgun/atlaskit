@@ -1,12 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "*.ts"
+    "*.ts",
+    "typings/*.ts"
   ],
   "compilerOptions": {
-    "allowJs": true,
-    "declaration": false,
-    "outDir": "dist",
     "baseUrl": ".",
     "module": "commonjs",
     "target": "es2018",
