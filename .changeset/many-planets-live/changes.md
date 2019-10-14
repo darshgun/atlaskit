@@ -1,0 +1,1 @@
+Use kebab case for switcher chunk names
