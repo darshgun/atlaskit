@@ -36,6 +36,7 @@ class BitbucketSwitcherExample extends React.Component {
                     url: null,
                   },
                 ],
+                cloudId: 'bitbucket',
                 displayName: 'random-instance',
                 url: 'https://some-random-instance.atlassian.net',
                 avatar:

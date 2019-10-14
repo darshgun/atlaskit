@@ -7,7 +7,6 @@ import asDataProvider, {
   Status,
 } from './as-data-provider';
 import {
-  Product,
   Permissions,
   RecentContainersResponse,
   UserPermissionResponse,

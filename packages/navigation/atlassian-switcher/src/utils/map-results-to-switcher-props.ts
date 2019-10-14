@@ -151,33 +151,20 @@ interface ProviderResults {
 function asUserSiteDataProviderResult(
   availableProductsProvider: ProviderResult<AvailableProductsResponse>,
   cloudId: string | null | undefined,
-  product?: Product,
+  product: Product | null | undefined,
 ): ProviderResult<UserSiteDataResponse> {
   switch (availableProductsProvider.status) {
     case Status.LOADING: // intentional fallthrough
     case Status.ERROR:
       return availableProductsProvider;
     case Status.COMPLETE:
-      const site =
-        cloudId &&
-        availableProductsProvider.data.sites.find(
-          site => site.cloudId === cloudId,
-        );
-
-      if (product === Product.BITBUCKET) {
-        return {
-          status: Status.COMPLETE,
-          data: {
-            currentSite: {
-              url: 'https://bitbucket.org',
-              products: [],
-            },
-            provisionedProducts: getProvisionedProducts(
-              availableProductsProvider.data,
-            ),
-          },
-        };
-      }
+      const site = availableProductsProvider.data.sites.find(
+        site =>
+          (cloudId && site.cloudId === cloudId) ||
+          (product &&
+            product === Product.BITBUCKET &&
+            site.cloudId === Product.BITBUCKET),
+      );
 
       if (!site) {
         return {
