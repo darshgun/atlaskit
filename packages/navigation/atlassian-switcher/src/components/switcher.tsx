@@ -283,7 +283,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 )
               }
             >
-              {suggestedProductLinks.map(item => (
+              {suggestedProductLinks.map((item, index) => (
                 <NavigationAnalyticsContext
                   key={item.key}
                   data={getItemAnalyticsContext(
@@ -298,6 +298,11 @@ export default class Switcher extends React.Component<SwitcherProps> {
                     onClick={this.triggerXFlow(item.key)}
                   >
                     {item.label}
+                    {index === 0 && (
+                      <TryLozenge isBold={false}>
+                        <FormattedMessage {...messages.try} />
+                      </TryLozenge>
+                    )}
                   </SwitcherThemedItemWithEvents>
                 </NavigationAnalyticsContext>
               ))}
