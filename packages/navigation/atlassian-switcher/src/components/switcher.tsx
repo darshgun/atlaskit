@@ -326,7 +326,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                   data={getItemAnalyticsContext(
                     groupIndex,
                     item.key,
-                    'admin',
+                    'discover-fixed-links',
                     item.href,
                   )}
                 >
