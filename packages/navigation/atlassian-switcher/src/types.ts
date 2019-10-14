@@ -45,6 +45,7 @@ export enum Permissions {
 }
 
 export enum Product {
+  BITBUCKET = 'bitbucket',
   CONFLUENCE = 'confluence',
   HOME = 'home',
   JIRA = 'jira',

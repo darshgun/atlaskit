@@ -1,0 +1,1 @@
+Fix discover/x-sell work for Bitbucket cloud
