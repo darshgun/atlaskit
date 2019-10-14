@@ -151,17 +151,21 @@ interface ProviderResults {
 function asUserSiteDataProviderResult(
   availableProductsProvider: ProviderResult<AvailableProductsResponse>,
   cloudId: string | null | undefined,
+  product: Product | null | undefined,
 ): ProviderResult<UserSiteDataResponse> {
   switch (availableProductsProvider.status) {
     case Status.LOADING: // intentional fallthrough
     case Status.ERROR:
       return availableProductsProvider;
     case Status.COMPLETE:
-      const site =
-        cloudId &&
-        availableProductsProvider.data.sites.find(
-          site => site.cloudId === cloudId,
-        );
+      const site = availableProductsProvider.data.sites.find(
+        site =>
+          (cloudId && site.cloudId === cloudId) ||
+          (product &&
+            product === Product.BITBUCKET &&
+            site.cloudId === Product.BITBUCKET),
+      );
+
       if (!site) {
         return {
           status: Status.ERROR,
@@ -203,7 +207,11 @@ export function mapResultsToSwitcherProps(
     recentContainers,
     productRecommendations,
   } = results;
-  const userSiteData = asUserSiteDataProviderResult(availableProducts, cloudId);
+  const userSiteData = asUserSiteDataProviderResult(
+    availableProducts,
+    cloudId,
+    product,
+  );
   const hasLoadedAvailableProducts = hasLoaded(availableProducts);
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);

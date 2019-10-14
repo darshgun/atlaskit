@@ -8,17 +8,13 @@ declare var global: any;
 
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
-beforeEach(() => {
-  jest.setTimeout(10000);
-});
-
 afterEach(() => {
   jest.resetAllMocks();
 });
-// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate toggle correctly', async () => {
+
+test('should ssr then hydrate toggle correctly', async () => {
   const [example] = await getExamplesFor('toggle');
-  const Example = await require(example.filePath).default;
+  const Example = require(example.filePath).default;
 
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);
