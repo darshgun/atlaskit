@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/atlassian-switcher",
-  "version": "4.4.0",
+  "version": "4.6.2",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -9,7 +9,9 @@
   "sideEffects": false,
   "scripts": {
     "i18n:push": "i18n-tools push --resource atlassian-switcher . --type ts",
-    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource atlassian-switcher . --type ts"
+    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource atlassian-switcher . --type ts",
+    "lint": "(cd ../../.. && yarn eslint 'packages/navigation/atlassian-switcher/**/*.{ts,tsx,ts}')",
+    "typecheck": "NODE_OPTIONS=--max-old-space-size=4096 tsc --noEmit --project ./tsconfig.json"
   },
   "author": "Atlassian Pty Ltd",
   "description": "App switcher component for Atlassian products.",

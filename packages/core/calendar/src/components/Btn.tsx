@@ -4,6 +4,7 @@ import Button from '@atlaskit/button';
 interface Props {
   onClick?: () => void;
   children?: ReactChild;
+  testId?: string;
 }
 
 export default (props: Props) => (
@@ -13,5 +14,6 @@ export default (props: Props) => (
     spacing="none"
     tabIndex={-1}
     iconBefore={props.children}
+    testId={props.testId}
   />
 );

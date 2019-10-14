@@ -7,7 +7,7 @@
 // French
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Passer à',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Passer à…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Basculer vers…',
   'fabric.atlassianSwitcher.recent': 'Récents',
   'fabric.atlassianSwitcher.more': 'Plus',
   'fabric.atlassianSwitcher.try': 'Essayer',
@@ -17,10 +17,16 @@ export default {
   'fabric.atlassianSwitcher.people': 'Personnes',
   'fabric.atlassianSwitcher.administration': 'Administration',
   'fabric.atlassianSwitcher.discoverMore': "Découvrir d'autres produits",
+  'fabric.atlassianSwitcher.browseApps': 'Parcourir les apps du Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Une erreur est survenue',
   'fabric.atlassianSwitcher.errorText':
     'Nous suivons ces erreurs, mais n’hésitez pas à nous contacter si elles persistent même après avoir actualisé la page.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Plusieurs personnes occupées à réparer un robot cassé.',
-  'fabric.atlassianSwitcher.expand': 'Découvrir',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Impossible de charger la liste. Actualisez la page, puis réessayez.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Vous avez été déconnecté. Veuillez vous reconnecter.',
+  'fabric.atlassianSwitcher.login': 'Se connecter',
+  'fabric.atlassianSwitcher.show.more.sites': 'Afficher plus de sites',
 };

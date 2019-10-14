@@ -10,7 +10,7 @@ const avatarTestId = "[data-testid='myAvatar']";
 
 BrowserTestCase(
   'Avatar should be able to be clicked by data-testid',
-  {} as any,
+  {},
   async (client: any) => {
     const avatarTest = new Page(client);
     await avatarTest.goto(urlAvatar);

@@ -9,11 +9,11 @@ jest.spyOn(global.console, 'error').mockImplementation(() => {});
 afterEach(() => {
   jest.resetAllMocks();
 });
-// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate page-header correctly', async () => {
+
+test('should ssr then hydrate page-header correctly', async () => {
   const [example] = await getExamplesFor('page-header');
 
-  const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
+  const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);

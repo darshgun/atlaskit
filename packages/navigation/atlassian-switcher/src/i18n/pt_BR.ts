@@ -7,7 +7,7 @@
 // Portuguese (Brazil)
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Alternar para',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Alternar para...',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Alternar para…',
   'fabric.atlassianSwitcher.recent': 'Recentes',
   'fabric.atlassianSwitcher.more': 'Mais',
   'fabric.atlassianSwitcher.try': 'Testar',
@@ -17,10 +17,16 @@ export default {
   'fabric.atlassianSwitcher.people': 'Pessoas',
   'fabric.atlassianSwitcher.administration': 'Administração',
   'fabric.atlassianSwitcher.discoverMore': 'Descobrir mais',
+  'fabric.atlassianSwitcher.browseApps': 'Procurar por apps do Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Algo deu errado',
   'fabric.atlassianSwitcher.errorText':
     'Nós acompanhamos esses erros, mas fique à vontade para entrar em contato conosco caso a atualização não resolva as coisas',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Um robô quebrado e várias pessoas ocupadas no conserto dele.',
-  'fabric.atlassianSwitcher.expand': 'Expandir',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Não foi possível carregar esta lista. Recarregue a página e tente novamente.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Sua sessão foi encerrada. Entre novamente.',
+  'fabric.atlassianSwitcher.login': 'Entrar',
+  'fabric.atlassianSwitcher.show.more.sites': 'Mostrar mais sites',
 };

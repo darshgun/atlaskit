@@ -139,31 +139,6 @@ describe('Popup', () => {
     expect(queryByText('content')).toBeInTheDocument();
   });
 
-  it('does not call onOpen when the popup is not open', () => {
-    const onOpen = jest.fn();
-    render(<Popup {...defaultProps} isOpen={false} onOpen={onOpen} />);
-
-    expect(onOpen).not.toHaveBeenCalled();
-  });
-
-  it('calls onOpen when the popup is open', () => {
-    const onOpen = jest.fn();
-    render(<Popup {...defaultProps} isOpen onOpen={onOpen} />);
-
-    expect(onOpen).toHaveBeenCalledTimes(1);
-  });
-
-  it('calls onOpen when the popup is opened', () => {
-    const onOpen = jest.fn();
-    const { rerender } = render(
-      <Popup {...defaultProps} isOpen={false} onOpen={onOpen} />,
-    );
-
-    rerender(<Popup {...defaultProps} isOpen onOpen={onOpen} />);
-
-    expect(onOpen).toHaveBeenCalledTimes(1);
-  });
-
   it('does not call onClose after pressing escape when the popup is not open', () => {
     const onClose = jest.fn();
     const { baseElement } = render(

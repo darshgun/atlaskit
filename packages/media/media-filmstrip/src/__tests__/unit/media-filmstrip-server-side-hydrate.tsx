@@ -6,17 +6,13 @@ import waitForExpect from 'wait-for-expect';
 
 const getConsoleMockCalls = mockConsole(console);
 
-beforeAll(() => {
-  jest.setTimeout(20000);
-});
-
 afterEach(() => {
   jest.resetAllMocks();
 });
-// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate media-filmstrip correctly', async () => {
+
+test('should ssr then hydrate media-filmstrip correctly', async () => {
   const [example] = await getExamplesFor('media-filmstrip');
-  const Example = await require(example.filePath).default;
+  const Example = require(example.filePath).default;
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);
 

@@ -1,5 +1,13 @@
 # @atlaskit/theme
 
+## 9.2.5
+
+### Patch Changes
+
+- [patch][2119c45dfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2119c45dfc):
+
+  Add missing Theme/GlobalThemeTokens to constants.d.ts
+
 ## 9.2.4
 
 ### Patch Changes

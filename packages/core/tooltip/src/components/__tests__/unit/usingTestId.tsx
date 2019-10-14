@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { render } from '@testing-library/react';
-import cases from 'jest-in-case';
 
 import Tooltip from '../../Tooltip';
 import { Tooltip as StyledTooltip } from '../../../styled';
@@ -48,36 +47,16 @@ describe('Using enzyme', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(wrapper.find(StyledTooltip).prop('data-testid')).toBeDefined();
   });
-  describe('Tooltip data-testid should be stable and predictable', () => {
-    cases(
-      'should be generated',
-      ({ testId }: { testId: string }) => {
-        const spy = jest.fn();
-        const wrapper = mount(
-          <Tooltip content="Tooltip content" onShow={spy} testId={testId}>
-            <Target>foo</Target>
-          </Tooltip>,
-        );
-        simulate(wrapper, Target, 'mouseover');
-        expect(wrapper.find(StyledTooltip).text()).toEqual('Tooltip content');
-        expect(spy).toHaveBeenCalledTimes(1);
-        expect(wrapper.find(StyledTooltip).prop('data-testid')).toBeDefined();
-      },
-      [{ testId: 'AnY' }, { testId: '$%#%#()+_' }, { testId: '123;*&' }],
-    );
-  });
 });
 
-describe('Using react-test-library', () => {
-  describe('Tooltip should be found by data-testid', () => {
-    test('Using getByTestId()', async () => {
-      const testId = 'the-tooltip';
-      const { getByTestId } = render(
-        <Tooltip content="Tooltip content" testId={testId}>
-          <Target>foo</Target>
-        </Tooltip>,
-      );
-      expect(getByTestId(testId)).toBeTruthy();
-    });
+describe('Tooltip should be found by data-testid', () => {
+  test('Using getByTestId()', async () => {
+    const testId = 'the-tooltip';
+    const { getByTestId } = render(
+      <Tooltip content="Tooltip content" testId={testId}>
+        <Target>foo</Target>
+      </Tooltip>,
+    );
+    expect(getByTestId(testId)).toBeTruthy();
   });
 });

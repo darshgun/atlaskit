@@ -2,11 +2,11 @@
 
 exports[`TableRow on rendering with highlighted prop should render with required background color 1`] = `
 .c0 {
-  background-color: #DEEBFF;
+  background-color: #F4F5F7;
 }
 
 .c0:hover {
-  background: #FAFBFC;
+  background-color: #EBECF0;
 }
 
 <tr
@@ -16,7 +16,7 @@ exports[`TableRow on rendering with highlighted prop should render with required
 
 exports[`TableRow on rendering without highlighted prop should render without background color 1`] = `
 .c0:hover {
-  background: #FAFBFC;
+  background-color: #FAFBFC;
 }
 
 <tr

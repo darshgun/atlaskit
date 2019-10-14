@@ -108,6 +108,9 @@ type Props = ReactSelectProps & {
 };
 
 function baseStyles(validationState, isCompact) {
+  const BORDER_WIDTH = 2;
+  const ICON_PADDING = 2;
+  const paddingExcludingBorder = gridSize() - BORDER_WIDTH;
   return {
     control: (css, { isFocused, isDisabled }) => {
       let borderColor = isFocused ? colors.B100 : colors.N20;
@@ -161,14 +164,16 @@ function baseStyles(validationState, isCompact) {
     },
     valueContainer: css => ({
       ...css,
+      paddingLeft: paddingExcludingBorder,
+      paddingRight: paddingExcludingBorder,
       paddingBottom: isCompact ? 0 : 2,
       paddingTop: isCompact ? 0 : 2,
     }),
     clearIndicator: css => ({
       ...css,
       color: colors.N70,
-      paddingLeft: '2px',
-      paddingRight: '2px',
+      paddingLeft: ICON_PADDING,
+      paddingRight: ICON_PADDING,
       paddingBottom: isCompact ? 0 : 6,
       paddingTop: isCompact ? 0 : 6,
       ':hover': {
@@ -188,15 +193,19 @@ function baseStyles(validationState, isCompact) {
       return {
         ...css,
         color,
+        paddingLeft: ICON_PADDING,
+        paddingRight: ICON_PADDING,
         paddingBottom: isCompact ? 0 : 6,
         paddingTop: isCompact ? 0 : 6,
-        paddingLeft: '2px',
-        paddingRight: '2px',
         ':hover': {
           color: colors.N200,
         },
       };
     },
+    indicatorsContainer: css => ({
+      ...css,
+      paddingRight: paddingExcludingBorder - ICON_PADDING,
+    }),
     option: (css, { isFocused, isSelected }) => {
       const color = isSelected ? colors.N0 : null;
 

@@ -56,11 +56,11 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return loading ? (
-    <div css={spinnerContainerCSS}>
+    <div id="spinner" css={spinnerContainerCSS}>
       <Spinner size="large" />
     </div>
   ) : (
-    <div css={contentCSS}>
+    <div id="popup-content" css={contentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
       <p>
         Current position: <strong>{position}</strong>
@@ -112,7 +112,6 @@ export default () => {
     },
     [isOpen],
   );
-
   const position = positions[idx];
 
   const setPosition = () => {
@@ -138,7 +137,11 @@ export default () => {
           />
         )}
         trigger={triggerProps => (
-          <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            id="popup-trigger"
+            {...triggerProps}
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {isOpen ? 'Close' : 'Open'} Popup{' '}
             <div css={expanderCSS({ width: buttonWidth })} />
           </Button>

@@ -1,5 +1,22 @@
 # @atlaskit/popup
 
+## 0.2.1
+
+### Patch Changes
+
+- [patch][f86839ca4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86839ca4e):
+
+  @atlaskit/portal had an issue in IE11 and this is fixed in 3.1.2
+
+## 0.2.0
+
+### Minor Changes
+
+- [minor][6e0bcc75ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e0bcc75ac):
+
+  - Adds the ability to render class components as children of Popup.
+  - Removes redundatnt onOpen callback prop for Popup
+
 ## 0.1.5
 
 ### Patch Changes
