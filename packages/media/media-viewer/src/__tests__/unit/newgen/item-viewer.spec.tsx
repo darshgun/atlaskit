@@ -23,6 +23,7 @@ import {
   mountWithIntlContext,
   fakeMediaClient,
   asMock,
+  sleep,
 } from '@atlaskit/media-test-helpers';
 import {
   ItemViewer,
@@ -529,6 +530,35 @@ describe('<ItemViewer />', () => {
         },
         innerError: undefined,
       });
+    });
+
+    it('should trigger error analytics if DocumentViewer fails', async () => {
+      const state: FileState = {
+        id: await identifier.id,
+        mediaType: 'doc',
+        status: 'processed',
+        artifacts: {},
+        name: '',
+        size: 0,
+        mimeType: '',
+        representations: { image: {} },
+      };
+      const mediaClient = makeFakeMediaClient(Observable.of(state));
+      const { el, createAnalyticsEventSpy } = mountBaseComponent(
+        mediaClient,
+        identifier,
+      );
+      el.update();
+      expect(el.find(DocViewer)).toHaveLength(1);
+
+      el.find(DocViewer).simulate('error');
+      await sleep(1);
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(2);
+      expect(createAnalyticsEventSpy).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          action: 'loadFailed',
+        }),
+      );
     });
 
     test.each(['audio', 'video'])(
