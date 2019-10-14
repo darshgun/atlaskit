@@ -18,15 +18,10 @@ describe('Link AK integration', () => {
   let consoleErrorSpy: jest.SpyInstance<Console['error']>;
   let consoleLogSpy: jest.SpyInstance<Console['log']>;
 
-  beforeAll(() => {
+  beforeEach(async () => {
     // Comment out the mockImplementation to read console.logs for debugging
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     consoleErrorSpy = jest.spyOn(console, 'error');
-  });
-
-  beforeEach(async () => {
-    consoleLogSpy.mockClear();
-    consoleErrorSpy.mockClear();
     tempDirPath = await createTempDir();
     atlaskitPath = await copyFixtureIntoDir(
       tempDirPath,
@@ -36,7 +31,7 @@ describe('Link AK integration', () => {
     yalc.yalcGlobal.yalcStoreMainDir = path.join(tempDirPath, '.yalc');
   });
 
-  afterAll(() => {
+  afterEach(() => {
     consoleLogSpy.mockRestore();
     consoleErrorSpy.mockRestore();
   });

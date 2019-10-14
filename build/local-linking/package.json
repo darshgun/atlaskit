@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@atlaskit/build-utils": "^2.2.6",
-    "bolt": "^0.24.1",
+    "bolt": "^0.24.3",
     "fs-extra": "^4.0.2",
     "meow": "^5.0.0",
     "ts-node": "^6.1.1",
