@@ -19,7 +19,6 @@
     "bolt": "^0.24.3",
     "bolt-webpack-analyzer": "^0.0.1",
     "chalk": "^2.1.0",
-    "concurrently": "^4.1.2",
     "meow": "^5.0.0",
     "npm-run": "^4.1.2",
     "p-settle": "^3.1.0",
