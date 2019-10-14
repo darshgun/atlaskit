@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.5.4
+
+### Patch Changes
+
+- [patch][d904d4df82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d904d4df82):
+
+  Use kebab case for switcher chunk names
+
 ## 4.5.3
 
 ### Patch Changes
