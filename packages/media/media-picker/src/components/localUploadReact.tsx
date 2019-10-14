@@ -18,6 +18,8 @@ import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 import {
   TRACK_EVENT_TYPE,
   OPERATIONAL_EVENT_TYPE,
+  GasPurePayload,
+  GasCorePayload,
 } from '@atlaskit/analytics-gas-types';
 import { name as packageName } from '../version.json';
 import { MediaFile } from '../domain/file';
@@ -34,10 +36,34 @@ export type LocalUploadComponentBaseProps = {
   onError?: (payload: UploadErrorEventPayload) => void;
 } & WithAnalyticsEventsProps;
 
+interface BasePayload {
+  attributes: {
+    packageName: string;
+    fileAttributes: {
+      fileSize: number;
+      fileMimetype: string;
+    };
+  };
+}
+
+type AdditionalPayloadAttributes =
+  | {}
+  | {
+      status: 'success' | 'fail';
+      uploadDurationMsec: number;
+      failReason?: any;
+    };
+
+type AnalyticsPayload = GasCorePayload &
+  BasePayload &
+  AdditionalPayloadAttributes & {
+    action: 'commenced' | 'uploaded';
+  };
+
 const basePayload = (
-  { size, type }: Partial<MediaFile>,
-  additionalAttributes: any = {},
-) => ({
+  { size, type }: Pick<MediaFile, 'size' | 'type'>,
+  additionalAttributes: AdditionalPayloadAttributes = {},
+): GasPurePayload & BasePayload & AdditionalPayloadAttributes => ({
   actionSubject: 'mediaUpload',
   actionSubjectId: 'localMedia',
   attributes: {
@@ -56,7 +82,7 @@ export class LocalUploadComponentReact<
 > extends Component<Props, {}> {
   protected readonly uploadService: UploadService;
   protected uploadComponent = new UploadComponent();
-  private readonly uploadTimeStartMap: { [k: string]: number } = {};
+  private readonly uploadTimeStartMap: { [id: string]: number } = {};
 
   constructor(props: Props) {
     super(props);
@@ -159,9 +185,7 @@ export class LocalUploadComponentReact<
     this.uploadService.on('file-upload-error', this.onUploadError);
   }
 
-  private createAndFireAnalyticsEvent = (
-    payload: { [k: string]: any } = {},
-  ) => {
+  private createAndFireAnalyticsEvent = (payload: AnalyticsPayload) => {
     const { createAnalyticsEvent } = this.props;
     if (createAnalyticsEvent) {
       createAnalyticsEvent(payload).fire(ANALYTICS_MEDIA_CHANNEL);
