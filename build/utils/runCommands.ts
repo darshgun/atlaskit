@@ -3,6 +3,8 @@ import stream from 'stream';
 import stripAnsi from 'strip-ansi';
 
 export type Options = concurrently.Options & {
+  // cd to cwd before executing the command
+  cwd?: string;
   // Strips ansi codes from command output
   stripAnsi?: boolean;
   // A prefix that prepends to each line of output rather than each chunk
@@ -15,7 +17,7 @@ export type Options = concurrently.Options & {
   watchSuccessCondition?: (output: string) => boolean;
   // Triggered when a successful watch compilation has finished, triggered by either
   // watchFirstSuccessCondition or watchSuccessCondition
-  onWatchSuccess?: () => void;
+  onWatchSuccess?: (result: { firstSuccess: boolean }) => void;
 };
 
 /**
@@ -108,7 +110,7 @@ function listenForSuccess({
       successful = watchFirstSuccessCondition(output);
     }
     if (successful) {
-      onWatchSuccess({ firstSuccess: hasSucceededOnce });
+      onWatchSuccess({ firstSuccess: !hasSucceededOnce });
       hasSucceededOnce = true;
     }
   };
@@ -131,6 +133,7 @@ export default async function runCommands(
     watchSuccessCondition,
     onWatchSuccess,
     linePrefix,
+    cwd,
     ...concurrentlyOpts
   } = opts;
   if (commands.length === 0) {
@@ -147,7 +150,10 @@ export default async function runCommands(
     });
     let result;
     try {
-      result = await concurrently(commands, {
+      const mappedCommands = commands.map(c =>
+        cwd ? `cd "${cwd}" && ${c}` : c,
+      );
+      result = await concurrently(mappedCommands, {
         ...defaultOpts,
         ...concurrentlyOpts,
         // Set output stream to our stdoutProxy rather than stdout so we can listen to stdout.
@@ -168,7 +174,7 @@ export default async function runCommands(
   } else {
     let result;
     for (const command of commands) {
-      result = await runCommands([command]);
+      result = await runCommands([command], opts);
     }
     return result;
   }

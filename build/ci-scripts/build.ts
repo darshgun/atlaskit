@@ -166,15 +166,18 @@ async function babelCommands({ cwd, distType, pkg, watch }: StepArgs) {
 }
 
 async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
-  let commandOptions: RunOptions = {};
+  let commandOptions: RunOptions = { cwd };
   if (watch) {
-    commandOptions = getWatchCommandOptions(
-      // If watch mode is enabled, we have a package
-      // TODO: Add TS 3.7 assertion here
-      { cwd, distType, pkg: pkg as PackageInfo },
-      /babel/,
-      /Successfully compiled \d+ files with Babel/,
-    );
+    commandOptions = {
+      ...commandOptions,
+      ...getWatchCommandOptions(
+        // If watch mode is enabled, we have a package
+        // TODO: Add TS 3.7 assertion here
+        { cwd, distType, pkg: pkg as PackageInfo },
+        /babel/,
+        /Successfully compiled \d+ files with Babel/,
+      ),
+    };
   }
   return runCommands(
     [
@@ -230,14 +233,17 @@ async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
  *  - At least one circular dependency exists between packages in the repo, which makes a pure topological sort impossible
  */
 async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
-  let commandOptions: RunOptions = {};
+  let commandOptions: RunOptions = { cwd };
   if (watch) {
-    commandOptions = getWatchCommandOptions(
-      // If watch mode is enabled, we have a package
-      // TODO: Add TS 3.7 assertion here
-      { cwd, distType, pkg: pkg as PackageInfo },
-      /Watching for file changes./,
-    );
+    commandOptions = {
+      ...commandOptions,
+      ...getWatchCommandOptions(
+        // If watch mode is enabled, we have a package
+        // TODO: Add TS 3.7 assertion here
+        { cwd, distType, pkg: pkg as PackageInfo },
+        /Watching for file changes./,
+      ),
+    };
   }
 
   return runCommands(
@@ -354,7 +360,7 @@ export default async function main(
   log('Running post-build scripts for packages...');
   await buildExceptionPackages({ pkg, ...options });
   log('Copying version.json...');
-  await copyVersion(fullPackageName);
+  await copyVersion(fullPackageName, { cwd });
   log('Validating dists...');
   await runValidateDists({
     cwd,
