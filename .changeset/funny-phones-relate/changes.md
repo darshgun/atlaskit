@@ -1,1 +1,0 @@
-ED-7730: Fixes XSS attacks in hyperlink edits
