@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.0
+
+### Minor Changes
+
+- [minor][cd96adc5e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd96adc5e7):
+
+  Add Try lozenge to first item in Discover section
+
 ## 4.5.4
 
 ### Patch Changes

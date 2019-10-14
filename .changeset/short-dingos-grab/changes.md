@@ -1,1 +1,0 @@
-Add Try lozenge to first item in Discover section
