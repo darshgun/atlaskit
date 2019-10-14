@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.5.3
+
+### Patch Changes
+
+- [patch][03e00bd3d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03e00bd3d7):
+
+  Fix discover/x-sell work for Bitbucket cloud
+
 ## 4.5.2
 
 ### Patch Changes
