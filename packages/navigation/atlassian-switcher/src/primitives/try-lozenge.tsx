@@ -15,11 +15,12 @@ export const InnerLozengeContainer = styled.span`
 
 interface AkLozengeProps {
   children: React.ReactNode;
+  isBold?: boolean;
 }
 
-export default ({ children, ...props }: AkLozengeProps) => (
+export default ({ children, isBold = true, ...props }: AkLozengeProps) => (
   <OuterLozengeContainer>
-    <Lozenge appearance="inprogress" isBold {...props}>
+    <Lozenge appearance="inprogress" isBold={isBold} {...props}>
       <InnerLozengeContainer>{children}</InnerLozengeContainer>
     </Lozenge>
   </OuterLozengeContainer>
