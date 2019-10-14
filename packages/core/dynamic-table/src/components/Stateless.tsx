@@ -5,6 +5,7 @@ import {
   createAndFireEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
+// TODO: Add testId
 import ManagedPagination from './managedPagination';
 
 import {
@@ -18,16 +19,21 @@ import {
   validateSortKey,
   assertIsSortable,
 } from '../internal/helpers';
+// TODO: Add testId
 import TableHead from './TableHead';
+// TODO: Add testId
 import Body from './Body';
+// TODO: Add testId
 import RankableTableBody from './rankable/Body';
+// TODO: Add testId
 import LoadingContainer from './LoadingContainer';
 import LoadingContainerAdvanced from './LoadingContainerAdvanced';
+// TODO: Add testId
 import {
   EmptyViewContainer,
   EmptyViewWithFixedHeight,
 } from '../styled/EmptyBody';
-
+// TODO: Add testId
 import { Table, Caption, PaginationWrapper } from '../styled/DynamicTable';
 
 import {
@@ -179,6 +185,7 @@ class DynamicTable extends React.Component<Props, State> {
       isRankingDisabled,
       paginationi18n,
       onPageRowsUpdate,
+      testId,
     } = this.props;
 
     const rowsLength = rows && rows.length;
@@ -195,6 +202,7 @@ class DynamicTable extends React.Component<Props, State> {
       ref: (el: any) => {
         this.tableBody = el;
       },
+      testId,
     };
     const totalPages =
       rowsLength && rowsPerPage ? Math.ceil(rowsLength / rowsPerPage) : 0;
@@ -209,8 +217,12 @@ class DynamicTable extends React.Component<Props, State> {
           isLoading={isLoading && rowsExist}
           spinnerSize={spinnerSize}
           targetRef={() => this.tableBody}
+          testId={testId && `${testId}--container`}
         >
-          <Table isFixedSize={isFixedSize}>
+          <Table
+            isFixedSize={isFixedSize}
+            testId={testId && `${testId}--table`}
+          >
             {!!caption && <Caption>{caption}</Caption>}
             {head && (
               <TableHead
@@ -220,6 +232,7 @@ class DynamicTable extends React.Component<Props, State> {
                 sortOrder={sortOrder}
                 isRanking={this.state.isRanking}
                 isRankable={canRank}
+                testId={testId && `${testId}--table-head`}
               />
             )}
             {rowsExist &&
@@ -230,9 +243,10 @@ class DynamicTable extends React.Component<Props, State> {
                   onRankStart={this.onRankStart}
                   onRankEnd={this.onRankEnd}
                   isRankingDisabled={isRankingDisabled || isLoading || false}
+                  testId={testId && `${testId}--rankable-body`}
                 />
               ) : (
-                <Body {...bodyProps} />
+                <Body {...bodyProps} testId={testId && `${testId}--body`} />
               ))}
           </Table>
         </LoadingContainerAdvanced>
