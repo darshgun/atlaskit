@@ -1,1 +1,1 @@
-ED-7860 Fix empty heading ids cased by striping out all special characters
+ED-7860 Fix empty heading ids caused by striping out all special characters

@@ -85,8 +85,8 @@ export class Renderer extends PureComponent<Props, {}> {
       this.editorRef instanceof HTMLElement
     ) {
       const anchorLinkElement = document.getElementById(hash);
-      // We are not using this.editorRef.querySelector here
-      // because querySelector might fail if there are special characters in hash
+      // We are not use this.editorRef.querySelector here, instead we have this.editorRef.contains
+      // because querySelector might fail if there are special characters in hash, and CSS.escape is still experimental.
       if (anchorLinkElement && this.editorRef.contains(anchorLinkElement)) {
         this.fireAnalyticsEvent({
           action: ACTION.VIEWED,

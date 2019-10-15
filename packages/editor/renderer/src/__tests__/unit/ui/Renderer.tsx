@@ -149,14 +149,18 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
 
     beforeEach(() => {
       client = analyticsClient();
-    });
-
-    it('should fire heading anchor hit analytics event', () => {
       jest.useFakeTimers();
       jest
         .spyOn(window, 'requestAnimationFrame')
         .mockImplementation((fn: Function) => fn());
+    });
 
+    afterEach(() => {
+      (window.requestAnimationFrame as jest.Mock).mockRestore();
+      jest.useRealTimers();
+    });
+
+    it('should fire heading anchor hit analytics event', () => {
       const oldHash = window.location.hash;
       window.location.hash = '#test';
 
@@ -184,15 +188,9 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
 
       renderer.detach();
       window.location.hash = oldHash;
-      (window.requestAnimationFrame as jest.Mock).mockRestore();
-      jest.useRealTimers();
     });
 
     it('should fire analytics event on renderer started', () => {
-      jest
-        .spyOn(window, 'requestAnimationFrame')
-        .mockImplementation((fn: Function) => fn());
-
       renderer = initRendererWithAnalytics();
 
       expect(client.sendUIEvent).toHaveBeenCalledWith(

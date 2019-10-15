@@ -24,6 +24,7 @@ import {
   ExtensionHandlers,
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
+import { getText } from '../utils';
 
 export interface RendererContext {
   objectAri?: string;
@@ -313,12 +314,22 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     };
   }
 
+  // The return value of this function is NOT url encoded,
+  // In HTML5 standard, id can contain any characters, encoding is no necessary.
+  // Plus we trying to avoid double encoding, therefore we leave the value as is.
+  // Remember to use encodeURIComponent when generating url from the id value.
   private getHeadingId(node: Node) {
     if (this.disableHeadingIDs || !node.content.size) {
       return;
     }
 
-    const nodeContent = node.textContent.replace(/\s/g, '-');
+    // We are not use node.textContent here, because we would like to handle cases where
+    // headings only contain inline blocks like emoji, status and date.
+    const nodeContent = (node as any).content
+      .toJSON()
+      .reduce((acc: string, node: any) => acc.concat(getText(node) || ''), '')
+      .trim()
+      .replace(/\s/g, '-');
 
     if (!nodeContent) {
       return;

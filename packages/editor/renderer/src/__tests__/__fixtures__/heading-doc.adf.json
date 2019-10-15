@@ -82,10 +82,48 @@
       "content": [
         {
           "type": "text",
-          "text": " \nwhite\t\rspaces\f"
+          "text": " \nwhite\n\t\r\fspaces\f"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "emoji",
+          "attrs": {
+            "shortName": ":heart:",
+            "id": "2764",
+            "text": "❤"
+          }
+        },
+        {
+          "type": "emoji",
+          "attrs": {
+            "shortName": ":smirk:",
+            "id": "1f60f",
+            "text": "😏"
+          }
+        },
+        {
+          "type": "status",
+          "attrs": {
+            "text": "status",
+            "color": "neutral",
+            "localId": "48059fb1-aaf9-4838-9a25-e7c6315caf69",
+            "style": ""
+          }
+        },
+        {
+          "type": "date",
+          "attrs": {
+            "timestamp": "1572480000000"
+          }
         }
       ]
     }
-
   ]
 }

@@ -170,7 +170,8 @@ describe('Renderer - ReactSerializer', () => {
       expect(headings.at(5).prop('headingId')).toEqual(
         'CJK-characters-中文-日文-한국어',
       );
-      expect(headings.at(6).prop('headingId')).toEqual('--white--spaces-');
+      expect(headings.at(6).prop('headingId')).toEqual('white----spaces');
+      expect(headings.at(7).prop('headingId')).toEqual('❤😏status[date]');
     });
 
     it('should not render heading ids if "disableHeadingIDs" is true', () => {
