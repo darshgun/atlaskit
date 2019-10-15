@@ -1,0 +1,1 @@
+http failures now return Error instances rather than the Response
