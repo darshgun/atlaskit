@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/local-linking", "type": "minor" }],
+  "dependents": []
+}
