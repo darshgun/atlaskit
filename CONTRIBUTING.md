@@ -391,62 +391,7 @@ They will, however, affect the output of the d.ts files created for the package,
 
 ## Linking packages
 
-Linking packages in Atlaskit is more difficult than the standard workflow of running `yarn link`. This is because of the majority of packages in the repo need to be built because `yarn link` uses symlinks and building all packages in the repo takes a significant amount of time.
-
-To handle this problem, we provide two main ways of linking packages:
-
-### Linking a single package that is a direct dependency of another repo
-
-#### Bolt link-ak <repo> <pkg> + Bolt watch <pkg>
-
-We provide a `bolt link-ak` command to link a package to another repo, provided it is a direct dependency. Under the hood it uses [Yalc](https://www.npmjs.com/package/yalc)
-to copy packages to another repo as a `file:...` dependency.
-
-Run the following steps:
-
-1. `bolt link-ak <repo_path> <package>`
-
-   E.g. `bolt link-ak confluence-frontend editor-core`.
-   You can run `bolt link-ak --help` for more info.
-
-2. `bolt watch <package>`
-
-   E.g. `bolt watch editor-core`.
-   The command just runs `bolt build <pkg>` in watch mode and pushes changes to any linked repos. Run `bolt watch --help` for more info.
-
-**Note**: Linking a single package suffers the same caveats as [individual package builds](#individual-package-builds), namely type definitions from other packages in the repo will be coerced to any. If this is a problem for you, you can instead follow the steps in [Linking a package that is a transitive dependency of another repo](#Linking-a-package-that-is-a-transitive-dependency-of-another-repo) which does a full repo build instead.
-
-### Linking a package and all of its dependencies / Linking a package that is a transitive dependency of another repo
-
-#### Yarn link <repo> <pkg> + Bolt build + Bolt watch <pkg>
-
-Linking a package and all of its dependencies, or linking a package that is only a transitive dependency, is a bit trickier to do in an efficient manner. This is because we need to know the direct dependencies of the target repo that the linked package is a transitive dependency of and link any intermediate dependencies.
-At the moment we don't have tooling to support linking transitive dependencies with reduced build times, so linking them will require a full build. We are looking into improving this in the future though by using [Typescript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html) to enable incremental builds across the entire repo.
-
-Run the following steps:
-
-1. `cd <package_dir> && yarn link`
-
-   E.g. `cd packages/editor/media-card && yarn link`
-
-2. `cd <repo_dir> && yarn link <full_package_name>`
-
-   E.g. `cd ../confluence-frontend && yarn link @atlaskit/media-card`
-
-3. Run the full build if you haven't ran it already or it is out of date, otherwise you can skip: `bolt build`.
-
-   To speed this up, you can specify that only a specific dist type is built with `bolt build --distType cjs`.
-
-   Note that our packages expose their `d.ts` files through the `cjs` build, so if you only build `esm`, you will experience the same caveats as [individual package builds](#individual-package-builds) and `link-ak` where certain types are coerced to `any`.
-
-4. Run the package you're working on in watch mode: `bolt watch <package>`
-
-   E.g. `bolt watch media-card`
-
-**Note**: There is a chance your local full builds become stale if you haven't ran them in a while and depend on more recent code that hasn't been built. In that case,
-you can either rerun the full build or [build the individual packages](#individual-package-builds) you know need to be rebuilt.
-
-**Note**: This method uses native `yarn link`, you may experience problems with peer dependencies resolving to different locations depending on whether they are imported from within Atlaskit or the target repo, resulting in multiple instances of peer dependencies being instantiated. If that becomes a problem, you will have to try some of the solutions suggested here: https://stackoverflow.com/q/31169760/893630
+See the [Linking guide](./docs/guides/03-linking.md).
 
 ## Documenting your code
 
