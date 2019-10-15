@@ -10,7 +10,7 @@ import {
   fontSize,
 } from '../..';
 import { colorPalette } from '../../colors';
-import { ThemedValue } from 'src/types';
+import { ThemedValue } from '../../types';
 
 describe('AtlaskitThemeProvider', () => {
   it('should mount', () => {

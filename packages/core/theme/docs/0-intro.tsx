@@ -1,4 +1,4 @@
-import React, { Node } from 'react';
+import React, { ReactNode } from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 import Lozenge from '@atlaskit/lozenge';
 

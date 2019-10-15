@@ -2,11 +2,15 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { createTheme, ThemeProp } from '../createTheme';
 
+interface TestTokens {
+  [index: string]: boolean;
+}
+
 test('component as a consumer', done => {
-  const Theme = createTheme(() => ({ test: true }));
+  const Theme = createTheme<TestTokens, any>(() => ({ test: true }));
   mount(
     <Theme.Consumer>
-      {tokens => {
+      {(tokens: TestTokens) => {
         expect(tokens.test).toBe(true);
         done();
         return null;
@@ -46,14 +50,14 @@ interface TestProps {
 }
 
 test('cascade order', done => {
-  const Theme = createTheme(() => {
+  const Theme = createTheme<TestTokens, TestProps>(() => {
     return { default: true };
   });
-  const context: ThemeProp<any, TestProps> = (themeDefault, props) => {
+  const context: ThemeProp<TestTokens, TestProps> = (themeDefault, props) => {
     expect(themeDefault(props)).toEqual({ default: true });
     return { context: true };
   };
-  const supplied: ThemeProp<any, TestProps> = (themeContext, props) => {
+  const supplied: ThemeProp<TestTokens, TestProps> = (themeContext, props) => {
     expect(themeContext(props)).toEqual({ default: undefined, context: true });
     return { supplied: true };
   };

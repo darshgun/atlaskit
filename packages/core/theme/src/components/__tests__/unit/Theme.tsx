@@ -1,12 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Theme from '../../..';
-import { ThemeProp } from 'src/utils/createTheme';
 
 test('no parent', done => {
   mount(
     <Theme.Consumer>
-      {(t: ThemeProp) => {
+      {(t: any) => {
         expect(t).toEqual({ mode: 'light' });
         done();
       }}
@@ -21,7 +20,7 @@ test('has parent', done => {
     <Theme.Provider value={t => ({ backgroundColor, ...t({}) })}>
       <Theme.Provider value={t => ({ ...t({}), textColor })}>
         <Theme.Consumer>
-          {(t: ThemeProp) => {
+          {(t: any) => {
             expect(t).toEqual({ backgroundColor, mode: 'light', textColor });
             done();
           }}

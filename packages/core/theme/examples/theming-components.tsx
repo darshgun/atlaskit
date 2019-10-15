@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { createTheme, ThemeProp } from '../src';
-import { ThemeProps, ThemedValue } from '../src/types';
 
 interface LocalThemeProps {
   hover: boolean;
@@ -16,25 +15,32 @@ const defaultButtonTheme = (props: LocalThemeProps) => ({
   textColor: '#333',
 });
 
-// TODO look into whether ThemedValue should be used here
-const contextButtonTheme = (theme: ThemedValue, props: LocalThemeProps) => {
+const contextButtonTheme: ThemeProp<ThemeTokens, LocalThemeProps> = (
+  theme,
+  props,
+) => {
   return {
-    ...(theme(props) as Object),
+    ...theme(props),
     backgroundColor: props.hover ? 'rebeccapurple' : 'palevioletred',
     textColor: props.hover ? '#fff' : 'papayawhip',
   };
 };
 
-const propButtonTheme = (theme: ThemedValue, props: LocalThemeProps) => ({
-  ...(theme(props) as Object),
-  backgroundColor: props.hover ? 'palevioletred' : 'rebeccapurple',
-});
+const propButtonTheme: ThemeProp<ThemeTokens, LocalThemeProps> = (
+  theme,
+  props,
+) => {
+  return {
+    ...theme(props),
+    backgroundColor: props.hover ? 'palevioletred' : 'rebeccapurple',
+  };
+};
 
 const Theme = createTheme<ThemeTokens, LocalThemeProps>(defaultButtonTheme);
 
 interface Props {
-  children?: Node;
-  theme?: ThemeProp<ThemeTokens, ThemeProps>;
+  children?: React.ReactNode;
+  theme?: ThemeProp<ThemeTokens, LocalThemeProps>;
 }
 
 interface State {

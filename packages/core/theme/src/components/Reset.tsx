@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import * as colors from '../colors';
 import { createTheme, ThemeProp } from '../utils/createTheme';
 
-export type ResetThemeProps = { children?: ReactNode };
+export type ResetThemeProps = { children?: ReactNode } | undefined;
 export interface ResetThemeTokens {
   backgroundColor: string;
   textColor: string;

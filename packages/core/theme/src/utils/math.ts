@@ -1,3 +1,4 @@
+// TODO when P is not provided, props are inferred never, which can be passed up.
 export function add<P>(fn: (props: P) => number, addend: number) {
   return (props: P) => fn(props) + addend;
 }
