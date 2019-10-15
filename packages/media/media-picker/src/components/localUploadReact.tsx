@@ -14,6 +14,16 @@ import { UploadComponent } from './component';
 import { UploadParams } from '../domain/config';
 import { UploadServiceImpl } from '../service/uploadServiceImpl';
 import { LocalUploadConfig } from './types';
+import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
+import {
+  TRACK_EVENT_TYPE,
+  OPERATIONAL_EVENT_TYPE,
+  GasPurePayload,
+  GasCorePayload,
+} from '@atlaskit/analytics-gas-types';
+import { name as packageName } from '../version.json';
+import { MediaFile } from '../domain/file';
+import { ANALYTICS_MEDIA_CHANNEL } from './media-picker-analytics-error-boundary';
 
 export type LocalUploadComponentBaseProps = {
   mediaClient: MediaClient;
@@ -24,7 +34,47 @@ export type LocalUploadComponentBaseProps = {
   onProcessing?: (payload: UploadProcessingEventPayload) => void;
   onEnd?: (payload: UploadEndEventPayload) => void;
   onError?: (payload: UploadErrorEventPayload) => void;
-};
+} & WithAnalyticsEventsProps;
+
+interface BasePayload {
+  attributes: {
+    packageName: string;
+    fileAttributes: {
+      fileSize: number;
+      fileMimetype: string;
+    };
+  };
+}
+
+type AdditionalPayloadAttributes =
+  | {}
+  | {
+      status: 'success' | 'fail';
+      uploadDurationMsec: number;
+      failReason?: any;
+    };
+
+type AnalyticsPayload = GasCorePayload &
+  BasePayload &
+  AdditionalPayloadAttributes & {
+    action: 'commenced' | 'uploaded';
+  };
+
+const basePayload = (
+  { size, type }: Pick<MediaFile, 'size' | 'type'>,
+  additionalAttributes: AdditionalPayloadAttributes = {},
+): GasPurePayload & BasePayload & AdditionalPayloadAttributes => ({
+  actionSubject: 'mediaUpload',
+  actionSubjectId: 'localMedia',
+  attributes: {
+    packageName,
+    fileAttributes: {
+      fileSize: size,
+      fileMimetype: type,
+    },
+    ...additionalAttributes,
+  },
+});
 
 export class LocalUploadComponentReact<
   Props extends LocalUploadComponentBaseProps,
@@ -32,6 +82,7 @@ export class LocalUploadComponentReact<
 > extends Component<Props, {}> {
   protected readonly uploadService: UploadService;
   protected uploadComponent = new UploadComponent();
+  private readonly uploadTimeStartMap: { [id: string]: number } = {};
 
   constructor(props: Props) {
     super(props);
@@ -49,6 +100,9 @@ export class LocalUploadComponentReact<
     const tenantUploadParams = config.uploadParams;
     const { shouldCopyFileToRecents = true } = config;
 
+    this.uploadComponent.on('uploads-start', this.fireCommencedEvent);
+    this.uploadComponent.on('upload-end', this.fireUploadSucceeded);
+    this.uploadComponent.on('upload-error', this.fireUploadFailed);
     if (onUploadsStart) {
       this.uploadComponent.on('uploads-start', onUploadsStart!);
     }
@@ -80,6 +134,63 @@ export class LocalUploadComponentReact<
     this.uploadService.on('file-converted', this.onFileConverted);
     this.uploadService.on('file-upload-error', this.onUploadError);
   }
+
+  private fireCommencedEvent = (payload: UploadsStartEventPayload) => {
+    payload.files.forEach(({ id, size, type }) => {
+      this.uploadTimeStartMap[id] = Date.now();
+      this.createAndFireAnalyticsEvent({
+        ...basePayload({ size, type }),
+        action: 'commenced',
+        eventType: OPERATIONAL_EVENT_TYPE,
+      });
+    });
+  };
+
+  private fireUploadSucceeded = (payload: UploadEndEventPayload) => {
+    const { size, type, id } = payload.file;
+
+    this.createAndFireAnalyticsEvent({
+      ...basePayload(
+        { size, type },
+        {
+          status: 'success',
+          uploadDurationMsec: this.uploadTimeStartMap[id]
+            ? Date.now() - this.uploadTimeStartMap[id]
+            : -1,
+        },
+      ),
+      action: 'uploaded',
+      eventType: TRACK_EVENT_TYPE,
+    });
+    delete this.uploadTimeStartMap[payload.file.id];
+  };
+
+  private fireUploadFailed = (payload: UploadErrorEventPayload) => {
+    const { size, type, id } = payload.file;
+
+    this.createAndFireAnalyticsEvent({
+      ...basePayload(
+        { size, type },
+        {
+          status: 'fail',
+          failReason: payload.error.description,
+          uploadDurationMsec: this.uploadTimeStartMap[id]
+            ? Date.now() - this.uploadTimeStartMap[id]
+            : -1,
+        },
+      ),
+      action: 'uploaded',
+      eventType: TRACK_EVENT_TYPE,
+    });
+    delete this.uploadTimeStartMap[payload.file.id];
+  };
+
+  private createAndFireAnalyticsEvent = (payload: AnalyticsPayload) => {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      createAnalyticsEvent(payload).fire(ANALYTICS_MEDIA_CHANNEL);
+    }
+  };
 
   public cancel = (uniqueIdentifier?: string): void => {
     this.uploadService.cancel(uniqueIdentifier);
