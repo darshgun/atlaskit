@@ -33,12 +33,12 @@ const constants = [
 
 const akTheme = '@atlaskit/theme';
 
-const constantsPredicate = specifier =>
+const constantsPredicate = (specifier: any) =>
   !specifier ||
   !specifier.imported ||
   constants.indexOf(specifier.imported.name) > -1;
 
-function getConstantsImport(j, path) {
+function getConstantsImport(j: any, path: any) {
   const constantsSpecifierspath = path.value.specifiers.filter(
     constantsPredicate,
   );
@@ -52,12 +52,12 @@ function getConstantsImport(j, path) {
     j.literal(`${akTheme}/constants`),
   );
 }
-const indexPredicate = specifier =>
+const indexPredicate = (specifier: any) =>
   !specifier ||
   !specifier.imported ||
   themeIndexImports.indexOf(specifier.imported.name) > -1;
 
-function getIndexImport(j, path) {
+function getIndexImport(j: any, path: any) {
   const mainIndexSpecifierspath = path.value.specifiers.filter(indexPredicate);
 
   if (mainIndexSpecifierspath.length === 0) {
@@ -70,25 +70,26 @@ function getIndexImport(j, path) {
   );
 }
 
-function getUsesOfImport(j, fileSource, importVarname) {
+function getUsesOfImport(j: any, fileSource: any, importVarname: any) {
   return fileSource
     .find(j.MemberExpression)
-    .filter(spec => spec.value.object.name === importVarname);
+    .filter((spec: any) => spec.value.object.name === importVarname);
 }
 
-function getOtherImports(j, path, fileSource) {
+function getOtherImports(j: any, path: any, fileSource: any) {
   return path.value.specifiers
     .filter(
-      specifier => !indexPredicate(specifier) && !constantsPredicate(specifier),
+      (specifier: any) =>
+        !indexPredicate(specifier) && !constantsPredicate(specifier),
     )
-    .map(specifier => {
+    .map((specifier: any) => {
       const usesOfImport = getUsesOfImport(j, fileSource, specifier.local.name);
 
       if (usesOfImport.size() > 0 && usesOfImport.size() < 7) {
-        const importSpecifiers = [];
-        const names = [];
+        const importSpecifiers: any[] = [];
+        const names: any[] = [];
 
-        usesOfImport.forEach(lowerPath => {
+        usesOfImport.forEach((lowerPath: any) => {
           // Make stupid lint rule happy
           const propertyName = lowerPath.value.property.name;
           if (!names.includes(propertyName)) {
@@ -115,15 +116,15 @@ function getOtherImports(j, path, fileSource) {
     });
 }
 
-export default function transformer(file, api) {
+export default function transformer(file: any, api: any) {
   const j = api.jscodeshift;
   const fileSource = j(file.source);
 
   // Fixup imports
   fileSource
     .find(j.ImportDeclaration)
-    .filter(path => path.node.source.value === akTheme)
-    .forEach(path => {
+    .filter((path: any) => path.node.source.value === akTheme)
+    .forEach((path: any) => {
       const otherImports = getOtherImports(j, path, fileSource);
       const [firstImport, ...importsAfter] = [
         getIndexImport(j, path),
