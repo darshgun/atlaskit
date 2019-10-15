@@ -31,12 +31,13 @@ export default md`
   ${code`
   import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
   import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+  const selectInputElement = '.react-select__input';
   
   BrowserTestCase('ak/select input should be identifiable by classname',
     {},
     async (client: any) => {
       const page = new Page(client);
-      expect(await page.isVisible(.react-select__input)).toBe(true);
+      expect(await page.isVisible(selectInputElement)).toBe(true);
     }  
   )
   
