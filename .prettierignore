@@ -1,6 +1,7 @@
 *.ejs
 *.json
 dist
+node_modules
 .yarn
 .*/packages/core/logo/src
 packages/core/icon/cjs

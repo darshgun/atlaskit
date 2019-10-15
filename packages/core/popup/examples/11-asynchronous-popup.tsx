@@ -43,16 +43,23 @@ const PopupContent: FC<PopupProps> = ({
   position,
   setButtonWidth,
   buttonWidth,
+  scheduleUpdate,
 }) => {
   const [content, setContent] = useState(
     'Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. ',
   );
   const addContent = () => {
     setContent(`${content}Lorem Ipsum dolor sit amet. `);
+
+    // Reposition the popup
+    typeof scheduleUpdate === 'function' && scheduleUpdate();
   };
 
   const clearContent = () => {
     setContent('');
+
+    // Reposition the popup
+    typeof scheduleUpdate === 'function' && scheduleUpdate();
   };
 
   return loading ? (
@@ -127,13 +134,14 @@ export default () => {
       <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        content={() => (
+        content={({ scheduleUpdate }) => (
           <PopupContent
             loading={!isLoaded}
             setPosition={setPosition}
             position={position}
             setButtonWidth={setButtonWidth}
             buttonWidth={buttonWidth}
+            scheduleUpdate={scheduleUpdate}
           />
         )}
         trigger={triggerProps => (
