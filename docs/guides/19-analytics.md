@@ -15,7 +15,7 @@ In order to enable developers to validate the analytics flow easily via Atlaskit
 
 Install this plugin is required, so that you can easily validate and track Atlassian client side analytics. After installing, restart your Chrome browser. Open the dev tools and there should be a new tab called "Analytics".
 
-Now you should install the required package globally. Keep in mind this is a private package and your should required access to download that. Since you have the proper access, install the package globally by running the command:
+Now you should install the required package globally. Keep in mind this is a private package and your should have required access to download that. Since you have the proper access, install the package globally by running the command:
 
 ```
 yarn global add @atlassiansox/analytics-web-client
