@@ -39,7 +39,7 @@ describe('JIRA wiki markup - Preformatted text', () => {
       '{{~subscript~}}',
     ],
     [
-      '[CS-1470] should convert citation inside preformatted text',
+      '[CS-1470] should convert color macro inside preformatted text',
       '{{{color:#59afe1}colour{color}}}',
     ],
     [
