@@ -17,20 +17,21 @@ export type RequestOptions = {
   readonly body?: any;
 };
 
+const processFetchResponse = async (response: Response) => {
+  if (response.ok || response.redirected) {
+    return response;
+  } else {
+    const text = await response.text();
+    throw new Error(`network error ${response.status}: ${text}`);
+  }
+};
+
 export function request(
   url: string,
   options: RequestOptions = {},
   controller?: AbortController,
 ): Promise<Response> {
   const { method = 'GET', auth, params, headers, body } = options;
-
-  const processFetchResponse = (response: Response) => {
-    if (response.ok || response.redirected) {
-      return response;
-    } else {
-      throw response;
-    }
-  };
 
   if (method === 'GET') {
     return fetch(createUrl(url, { params }), {
