@@ -87,7 +87,6 @@ const PopupContent: FC<PopupProps> = ({
 };
 
 const positions: Placement[] = [
-  'left',
   'bottom-start',
   'bottom',
   'bottom-end',
@@ -98,6 +97,7 @@ const positions: Placement[] = [
   'right',
   'right-end',
   'left-start',
+  'left',
   'left-end',
   'auto-start',
   'auto',
