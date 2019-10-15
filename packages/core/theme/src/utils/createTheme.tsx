@@ -5,6 +5,14 @@ export type ThemeProp<ThemeTokens, ThemeProps> = (
   themeProps: ThemeProps,
 ) => ThemeTokens;
 
+/* 
+createTheme is used to create a set of Providers and Consumers for theming components. 
+- Takes a default theme function; this theme function gets a set of props, and returns tokens
+   based on those props. An example of this default theme function is one that produces the standard 
+   appearance of the component
+- Returns two things - a Provider that allow for additional themes to be applied, and a Consumer
+   that can get the current theme and fetch it.
+*/
 export function createTheme<ThemeTokens, ThemeProps>(
   defaultGetTokens: (props: ThemeProps) => ThemeTokens,
 ): {
@@ -18,12 +26,18 @@ export function createTheme<ThemeTokens, ThemeProps>(
     value?: ThemeProp<ThemeTokens, ThemeProps>;
   }>;
 } {
-  const emptyThemeFn = (
-    getTokens: (props: ThemeProps) => ThemeTokens,
-    props: ThemeProps,
-  ) => getTokens(props);
+  const emptyThemeFn: ThemeProp<ThemeTokens, ThemeProps> = (getTokens, props) =>
+    getTokens(props);
+
+  /* Internally, Theme uses React Context, with internal providers and consumers.
+     The React Context passes only a function that gets props, and turns them into tokens. This
+        function gets mixed as more Providers with their own themes are added. This mixed function
+        is ultimately picked up by Consumers, which implement a context consumer internally to fetch
+        the theme. */
   const ThemeContext = createContext(defaultGetTokens);
 
+  // The Theme Consumer takes a function as its child - this function takes tokens, and the
+  // return value is generally a set of nodes with the tokens applied appropriately.
   function Consumer(
     props: ThemeProps & { children: (tokens: ThemeTokens) => ReactNode },
   ) {
@@ -42,6 +56,13 @@ export function createTheme<ThemeTokens, ThemeProps>(
     );
   }
 
+  /* The Theme Provider takes regular nodes as its child, but also takes a *theme function*
+     - The theme function takes a set of props, as well as a function (getTokens) that can 
+        turn props into tokens.
+     - The getTokens function isn't called immediately - instead the props are passed
+        through a mix of parent theming functions
+     Children of this provider will receive this mixed theme
+  */
   function Provider(props: {
     children?: ReactNode;
     value?: ThemeProp<ThemeTokens, ThemeProps>;
