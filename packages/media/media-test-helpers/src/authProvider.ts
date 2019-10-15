@@ -19,11 +19,11 @@ export class StoryBookAuthProvider {
         method: 'POST',
         credentials: 'include',
         headers,
-        body: access ? JSON.stringify({ access, expiresIn: 1 }) : undefined,
+        body: access ? JSON.stringify({ access }) : undefined,
       };
       const url = `${authProviderBaseURL}/token/tenant?collection=${collectionName}&environment=${environment}`;
       const response = fetch(url, config);
-      // console.log({config})
+
       // We leverage the fact, that our internal /toke/tenant API returns data in the same format as Auth
       return (await (await response).json()) as Auth;
     };
