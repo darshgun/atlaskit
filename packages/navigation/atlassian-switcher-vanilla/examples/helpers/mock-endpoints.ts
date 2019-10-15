@@ -37,7 +37,7 @@ export const REQUEST_FAST = {
 export const mockEndpoints = (
   product: string,
   transformer?: DataTransformer,
-  loadTimes: LoadTimes = {},
+  loadTimes: LoadTimes = REQUEST_FAST,
 ) => {
   const mockData = transformer
     ? transformer(ORIGINAL_MOCK_DATA)

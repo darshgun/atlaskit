@@ -5,3 +5,6 @@ export {
 } from './components/prefetch-trigger';
 
 export { createCustomTheme } from './theme/theme-builder';
+export {
+  mockEndpoints as mockAtlassianSwitcherEndpoints,
+} from '../examples/helpers/mock-endpoints';

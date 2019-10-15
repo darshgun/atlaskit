@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 import Drawer from '@atlaskit/drawer';
-import { mockEndpoints, REQUEST_MEDIUM } from './helpers/mock-endpoints';
+import { mockEndpoints } from './helpers/mock-endpoints';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 
@@ -11,7 +11,7 @@ class GenericSwitcherExample extends React.Component {
   };
 
   openDrawer = () => {
-    mockEndpoints('jira', originalMockData => originalMockData, REQUEST_MEDIUM);
+    mockEndpoints('jira');
     this.setState({
       isDrawerOpen: true,
     });

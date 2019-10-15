@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
+import { mockEndpoints } from './helpers/mock-endpoints';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 import styled from 'styled-components';
@@ -42,22 +42,7 @@ class InlineDialogSwitcherExample extends React.Component {
     this.loadData();
   }
   loadData = () => {
-    mockEndpoints(
-      'jira',
-      originalMockData => {
-        return {
-          ...originalMockData,
-          RECENT_CONTAINERS_DATA: {
-            data: [],
-          },
-          CUSTOM_LINKS_DATA: {
-            data: [],
-          },
-          XFLOW_SETTINGS: {},
-        };
-      },
-      REQUEST_FAST,
-    );
+    mockEndpoints('trello');
     this.setState({
       isLoaded: true,
     });

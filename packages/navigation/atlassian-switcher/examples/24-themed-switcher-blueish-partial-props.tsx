@@ -15,7 +15,7 @@ class SwitcherExample extends React.Component {
   }
 
   openDrawer = () => {
-    mockEndpoints('jira', originalMockData => originalMockData, REQUEST_MEDIUM);
+    mockEndpoints('jira');
 
     this.setState({
       isDrawerOpen: true,
