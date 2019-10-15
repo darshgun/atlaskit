@@ -42,4 +42,18 @@ export default md`
   
 `}
 
+ Once you provide a classNamePrefix, these are the selectors that will be exposed to you:
+ * [classNamePrefix]__control
+ * [classNamePrefix]__input
+ * [classNamePrefix]__placeholder
+ * [classNamePrefix]__value-container
+ * [classNamePrefix]__indicators
+ * [classNamePrefix]__dropdown-indicator
+ * [classNamePrefix]__clear-indicator
+ * [classNamePrefix]__menu 
+ * [classNamePrefix]__menu-list
+ * [classNamePrefix]__option
+ 
+ Providing a value for the className prop will reflect that value to the class name of the select container.
+
 `;
