@@ -117,6 +117,7 @@ function getWatchCommandOptions(
       // Publish package to yalc with push mode to automatically update the package in linked repos
       await yalc.publishPackage({
         workingDir: pkg.dir,
+        changed: true,
         push: true,
       });
       restoreConsoleLog();
