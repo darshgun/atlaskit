@@ -23,7 +23,7 @@ import {
   mountWithIntlContext,
   fakeMediaClient,
   asMock,
-  sleep,
+  nextTick,
 } from '@atlaskit/media-test-helpers';
 import {
   ItemViewer,
@@ -552,7 +552,7 @@ describe('<ItemViewer />', () => {
       expect(el.find(DocViewer)).toHaveLength(1);
 
       el.find(DocViewer).simulate('error');
-      await sleep(1);
+      await nextTick();
       expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(2);
       expect(createAnalyticsEventSpy).toHaveBeenLastCalledWith({
         action: 'loadFailed',
