@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import resetCSS from './resetCss';
 import * as srcDoc from 'srcdoc-polyfill';
 import { ArticleFrame } from './styled';
 import debounce from 'lodash.debounce';
-
-import { RESET_CSS } from './const';
 
 export interface Props {
   // Article Content
@@ -58,7 +57,7 @@ export const ArticleBody = (props: Props) => {
       if (currentIframe.contentWindow.document.body) {
         srcDoc.set(
           currentIframe,
-          `<style>${RESET_CSS}</style><div class="content-platform-support">${body}</div>`,
+          `<style>${resetCSS}</style><div class="content-platform-support">${body}</div>`,
         );
       }
     }
