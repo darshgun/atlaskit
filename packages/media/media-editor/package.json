@@ -22,7 +22,7 @@
   },
   "scripts": {
     "check-dist": "cd dist/esm/engine/core/binaries && cd - && cd dist/cjs/engine/core/binaries",
-    "copy-binaries": "cp -r src/engine/core/binaries dist/esm/engine/core && cp -r src/engine/core/binaries dist/cjs/engine/core",
+    "copy-binaries": "{ cp -r src/engine/core/binaries dist/esm/engine/core || true; } && { cp -r src/engine/core/binaries dist/cjs/engine/core || true; }",
     "ak-postbuild": "yarn copy-binaries && yarn check-dist"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
