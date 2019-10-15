@@ -1,6 +1,5 @@
 {
   "releases": [
-    { "name": "@atlaskit/atlassian-switcher-vanilla", "type": "minor" },
     { "name": "@atlaskit/atlassian-switcher", "type": "minor" }
   ],
   "dependents": []
