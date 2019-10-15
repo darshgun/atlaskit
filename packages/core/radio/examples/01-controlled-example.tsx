@@ -1,5 +1,5 @@
 import React from 'react';
-import Form, { Field } from '@atlaskit/form';
+import Form, { Field, FormFooter } from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import { RadioGroup } from '../src';
 
@@ -25,7 +25,7 @@ export default function ControlledExample() {
             <form {...formProps} name="form-example">
               <Field
                 name="color2"
-                label="Pick a color (Checked state isn't managed by the component):"
+                label="Pick a color (Checked state is duplicated between Form and Component):"
                 defaultValue={null}
               >
                 {({
@@ -56,7 +56,9 @@ export default function ControlledExample() {
               >
                 onChange called with value: {selectedOption}
               </div>
-              <Button type="submit">Submit</Button>
+              <FormFooter>
+                <Button type="submit">Submit</Button>
+              </FormFooter>
             </form>
           );
         }}
