@@ -159,14 +159,14 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
 
       const oldHash = window.location.hash;
       window.location.hash = '#test';
-      jest.spyOn(document, 'getElementById').mockImplementation(() => ({
-        scrollIntoView: jest.fn(),
-      }));
 
       renderer = mount(
         <FabricAnalyticsListeners client={client}>
           <Renderer document={validDoc} />
         </FabricAnalyticsListeners>,
+        {
+          attachTo: document.body,
+        },
       );
 
       jest.runAllTimers();
@@ -182,8 +182,8 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
         }),
       );
 
+      renderer.detach();
       window.location.hash = oldHash;
-      (document.getElementById as jest.Mock).mockRestore();
       (window.requestAnimationFrame as jest.Mock).mockRestore();
       jest.useRealTimers();
     });

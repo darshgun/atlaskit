@@ -70,7 +70,7 @@
       "content": [
         {
           "type": "text",
-          "text": "6 start with a number?"
+          "text": "CJK characters 中文 日文 한국어"
         }
       ]
     },
@@ -82,7 +82,7 @@
       "content": [
         {
           "type": "text",
-          "text": "-5start with mixed invalid characters?"
+          "text": " \nwhite\t\rspaces\f"
         }
       ]
     }
