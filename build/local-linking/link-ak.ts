@@ -131,11 +131,12 @@ Provide either full name (@atlaskit/foo) or unscoped name (foo).`,
   const packageNames = resolvedPackages.map(p => p.name);
   await yalc.addPackages(packageNames, {
     workingDir: resolvedRepoPath,
-    /* We install the packages in 'pure' mode so the package.json isn't modified in the target repo
-     * since this will break the `bolt upgrade` command we need to run to upgrade all workspaces to
-     * the local install due to the 'Outdated lockfile' check.
-     * If we run `bolt` beforehand to not have an outdated lockfile, the workspace dependency version validation
-     * fails
+    /* We install the packages in 'pure' mode so the package.json isn't modified in the target repo. We rely on the `bolt add`
+     * command to install in node_modules instead.
+     * Once package.json is modified, the `bolt add` command that we need to run to upgrade all workspaces to the local install won't work
+     * because yarn complains of an 'Outdated lockfile' check.
+     * If we run `bolt` beforehand to not have an outdated lockfile, the workspace dependency version validation step
+     * fail.
      */
     pure: repoType === 'bolt',
   });
@@ -143,6 +144,15 @@ Provide either full name (@atlaskit/foo) or unscoped name (foo).`,
   restoreConsoleLog();
 
   await installDependencies(resolvedRepoPath, packageNames, opts);
+
+  if (repoType === 'bolt') {
+    /* Re-add the packages for bolt repos with pure set to false so that subsequent yalc pushes from
+     * the build actually update node_modules */
+    await yalc.addPackages(packageNames, {
+      workingDir: resolvedRepoPath,
+      pure: false,
+    });
+  }
 }
 
 if (require.main === module) {
