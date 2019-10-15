@@ -86,10 +86,9 @@ describe('request', () => {
       status: 400,
       body: 'There was a problem',
     });
-    return request(url).then(throwExpectedToFail, (response: Response) => {
-      return response.text().then(responseText => {
-        expect(responseText).toEqual('There was a problem');
-      });
+    return request(url).then(throwExpectedToFail, (error: Error) => {
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toEqual('network error 400: There was a problem');
     });
   });
 
