@@ -1,0 +1,1 @@
+ED-7849 fixed issue for header anchor links can't be copied in Columns

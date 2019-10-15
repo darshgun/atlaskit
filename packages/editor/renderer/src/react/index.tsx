@@ -159,14 +159,13 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         }
 
         let currentPath = (parentInfo && parentInfo.path) || [];
-        currentPath.push(node);
 
         const parentIsIncompleteTask =
           node.type.name === 'taskItem' && node.attrs.state !== 'DONE';
 
         let pInfo = {
           parentIsIncompleteTask,
-          path: currentPath,
+          path: [...currentPath, node],
         };
 
         const serializedContent = this.serializeFragment(
