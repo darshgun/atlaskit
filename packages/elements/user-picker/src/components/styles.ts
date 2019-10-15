@@ -12,47 +12,53 @@ export const getStyles = memoizeOne((width: string | number) => ({
     width,
     minWidth: state.selectProps.menuMinWidth,
   }),
-  control: (css: any, state: any) => ({
-    ...css,
-    width,
-    borderColor: state.isFocused
-      ? css.borderColor
-      : state.selectProps.subtle
-      ? 'transparent'
-      : colors.N40,
-    backgroundColor: state.isFocused
-      ? css['backgroundColor']
-      : state.selectProps.subtle
-      ? 'transparent'
-      : colors.N10,
-    '&:hover .fabric-user-picker__clear-indicator': { opacity: 1 },
-    ':hover': {
-      ...css[':hover'],
+  control: (css: any, state: any) => {
+    const isCompact = state.selectProps.appearance === 'compact';
+
+    return {
+      ...css,
+      width,
       borderColor: state.isFocused
-        ? css[':hover']
-          ? css[':hover'].borderColor
-          : colors.B100
+        ? css.borderColor
         : state.selectProps.subtle
-        ? state.selectProps.hoveringClearIndicator
-          ? colors.R50
-          : colors.N30
+        ? 'transparent'
         : colors.N40,
-      backgroundColor:
-        state.selectProps.subtle && state.selectProps.hoveringClearIndicator
-          ? colors.R50
-          : state.isFocused
+      backgroundColor: state.isFocused
+        ? css['backgroundColor']
+        : state.selectProps.subtle
+        ? 'transparent'
+        : colors.N10,
+      '&:hover .fabric-user-picker__clear-indicator': { opacity: 1 },
+      ':hover': {
+        ...css[':hover'],
+        borderColor: state.isFocused
           ? css[':hover']
-            ? css[':hover'].backgroundColor
-            : colors.N0
-          : state.isDisabled
-          ? colors.N10
-          : colors.N30,
-    },
-    padding: 0,
-    minHeight: state.selectProps.appearance === 'compact' ? 32 : 44,
-    alignItems: 'stretch',
-    maxWidth: '100%',
-  }),
+            ? css[':hover'].borderColor
+            : colors.B100
+          : state.selectProps.subtle
+          ? state.selectProps.hoveringClearIndicator
+            ? colors.R50
+            : colors.N30
+          : colors.N40,
+        backgroundColor:
+          state.selectProps.subtle && state.selectProps.hoveringClearIndicator
+            ? colors.R50
+            : state.isFocused
+            ? css[':hover']
+              ? css[':hover'].backgroundColor
+              : colors.N0
+            : state.isDisabled
+            ? colors.N10
+            : colors.N30,
+      },
+      padding: 0,
+      minHeight: isCompact ? 32 : 44,
+      /* IE 11 needs to set height explicitly to be vertical align when being in not compact mode */
+      height: isCompact ? '100%' : 44,
+      alignItems: 'stretch',
+      maxWidth: '100%',
+    };
+  },
   clearIndicator: ({
     paddingTop,
     paddingBottom,
