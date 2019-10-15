@@ -544,11 +544,11 @@ describe('MediaStore', () => {
       });
 
       it('should fail if error status is returned', () => {
-        const error = {
+        const errorBody = {
           error: 'something wrong',
         };
         fetchMock.mock(`begin:${baseUrl}/upload/createWithFiles`, {
-          body: error,
+          body: errorBody,
           status: 403,
         });
 
@@ -559,9 +559,10 @@ describe('MediaStore', () => {
           result => {
             expect(result).not.toBeDefined();
           },
-          async (response: Response) => {
-            const reason = await response.json();
-            expect(reason).toEqual(error);
+          async error => {
+            expect(error.message).toEqual(
+              'network error 403: {"error":"something wrong"}',
+            );
           },
         );
       });

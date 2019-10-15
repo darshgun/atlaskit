@@ -179,13 +179,7 @@ export class ItemViewerBase extends React.Component<Props, State> {
           />
         );
       case 'doc':
-        return (
-          <DocViewer
-            onSuccess={this.onCanPlay(item)}
-            onError={this.onDocError(item)}
-            {...viewerProps}
-          />
-        );
+        return <DocViewer {...viewerProps} />;
       default:
         return this.renderError('unsupported', item);
     }

@@ -49,13 +49,16 @@ import { SpinnerWrapper, Wrapper } from '../../styled';
 import { LocalBrowserButton } from '../../../../views/upload/uploadButton';
 import { menuDelete } from '../../../editor/phrases';
 import { LocalUploadFileMetadata } from '../../../../../domain/local-upload';
-import { Browser } from '../../../../../../components/browser/browser';
+import { BrowserBase } from '../../../../../../components/browser/browser';
 
 const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
 );
-const createBrowserRef = (mediaClient: MediaClient): RefObject<Browser> => ({
-  current: new Browser({ config: {} as any, mediaClient }),
+
+const createBrowserRef = (
+  mediaClient: MediaClient,
+): RefObject<BrowserBase> => ({
+  current: new BrowserBase({ config: {} as any, mediaClient }),
 });
 
 const createConnectedComponent = (

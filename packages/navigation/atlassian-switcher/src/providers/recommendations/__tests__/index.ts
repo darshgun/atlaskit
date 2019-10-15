@@ -9,6 +9,7 @@ describe('recommendations-provider-recommendations', () => {
       { productKey: ProductKey.JIRA_SOFTWARE },
       { productKey: ProductKey.CONFLUENCE },
       { productKey: ProductKey.JIRA_SERVICE_DESK },
+      { productKey: ProductKey.OPSGENIE },
     ]);
   });
 
@@ -19,6 +20,7 @@ describe('recommendations-provider-recommendations', () => {
       { productKey: ProductKey.JIRA_SOFTWARE },
       { productKey: ProductKey.CONFLUENCE },
       { productKey: ProductKey.JIRA_SERVICE_DESK },
+      { productKey: ProductKey.OPSGENIE },
     ]);
   });
 
@@ -44,6 +46,7 @@ describe('recommendations-provider-recommendations', () => {
       { productKey: ProductKey.JIRA_SOFTWARE },
       { productKey: ProductKey.CONFLUENCE },
       { productKey: ProductKey.JIRA_SERVICE_DESK },
+      { productKey: ProductKey.OPSGENIE },
     ]);
   });
 });

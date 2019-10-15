@@ -14,6 +14,7 @@ function baseRecommendation(): RecommendationItem[] {
     { productKey: ProductKey.JIRA_SOFTWARE },
     { productKey: ProductKey.CONFLUENCE },
     { productKey: ProductKey.JIRA_SERVICE_DESK },
+    { productKey: ProductKey.OPSGENIE },
   ];
 }
 
