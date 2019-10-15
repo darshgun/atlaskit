@@ -396,7 +396,8 @@ const Renderer = (props: {
       style={{
         position: 'absolute',
         right: '0',
-        margin: '20px',
+        margin: '0 20px',
+        zIndex: 100,
       }}
     >
       Edit
@@ -407,7 +408,6 @@ const Renderer = (props: {
       dataProviders={providerFactory}
       extensionHandlers={extensionHandlers}
       document={props.document && JSON.parse(props.document)}
-      // @ts-ignore
       appearance="full-page"
     />
   </div>
