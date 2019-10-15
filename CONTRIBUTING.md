@@ -391,12 +391,11 @@ They will, however, affect the output of the d.ts files created for the package,
 
 ## Linking packages
 
-Linking packages in Atlaskit is more complicated than running the built-in `yarn link` command because of the fact that the majority of packages in the repo need to be built
-for it to work and building all those packages takes a significant amount of time.
+Linking packages in Atlaskit is more difficult than the standard workflow of running `yarn link`. This is because of the majority of packages in the repo need to be built because `yarn link` uses symlinks and building all packages in the repo takes a significant amount of time.
 
 To handle this problem, we provide two main ways of linking packages:
 
-### Linking a package that is a direct dependency of another repo
+### Linking a single package that is a direct dependency of another repo
 
 #### Bolt link-ak <repo> <pkg> + Bolt watch <pkg>
 
@@ -407,7 +406,7 @@ Run the following steps:
 
 1. `bolt link-ak <repo_path> <package>`
 
-   E.g. `bolt link-ak ../confluence-frontend editor-core`.
+   E.g. `bolt link-ak confluence-frontend editor-core`.
    You can run `bolt link-ak --help` for more info.
 
 2. `bolt watch <package>`
@@ -417,11 +416,11 @@ Run the following steps:
 
 **Note**: Linking a single package suffers the same caveats as [individual package builds](#individual-package-builds), namely type definitions from other packages in the repo will be coerced to any. If this is a problem for you, you can instead follow the steps in [Linking a package that is a transitive dependency of another repo](#Linking-a-package-that-is-a-transitive-dependency-of-another-repo) which does a full repo build instead.
 
-### Linking a package that is a transitive dependency of another repo
+### Linking a package and all of its dependencies / Linking a package that is a transitive dependency of another repo
 
 #### Yarn link <repo> <pkg> + Bolt build + Bolt watch <pkg>
 
-Linking a package that is only a transitive dependency is a bit trickier since we need to know the direct dependencies of the target repo that the linked package is a transitive dependency of. We also need to account for any intermediate dependencies.
+Linking a package and all of its dependencies, or linking a package that is only a transitive dependency, is a bit trickier to do in an efficient manner. This is because we need to know the direct dependencies of the target repo that the linked package is a transitive dependency of and link any intermediate dependencies.
 At the moment we don't have tooling to support linking transitive dependencies with reduced build times, so linking them will require a full build. We are looking into improving this in the future though by using [Typescript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html) to enable incremental builds across the entire repo.
 
 Run the following steps:
@@ -434,7 +433,7 @@ Run the following steps:
 
    E.g. `cd ../confluence-frontend && yarn link @atlaskit/media-card`
 
-3. Run the full build if you haven't ran it already, otherwise you can skip: `bolt build`.
+3. Run the full build if you haven't ran it already or it is out of date, otherwise you can skip: `bolt build`.
 
    To speed this up, you can specify that only a specific dist type is built with `bolt build --distType cjs`.
 
