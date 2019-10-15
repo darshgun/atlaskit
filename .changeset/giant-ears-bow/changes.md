@@ -1,1 +1,0 @@
-Updates controlled example to show better pattern for state duplication between RadioGroup and Form
