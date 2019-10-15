@@ -100,59 +100,9 @@ export class LocalUploadComponentReact<
     const tenantUploadParams = config.uploadParams;
     const { shouldCopyFileToRecents = true } = config;
 
-    this.uploadComponent.on(
-      'uploads-start',
-      (payload: UploadsStartEventPayload) => {
-        payload.files.forEach(({ id, size, type }) => {
-          this.uploadTimeStartMap[id] = Date.now();
-          this.createAndFireAnalyticsEvent({
-            ...basePayload({ size, type }),
-            action: 'commenced',
-            eventType: OPERATIONAL_EVENT_TYPE,
-          });
-        });
-      },
-    );
-    this.uploadComponent.on('upload-end', (payload: UploadEndEventPayload) => {
-      const { size, type, id } = payload.file;
-
-      this.createAndFireAnalyticsEvent({
-        ...basePayload(
-          { size, type },
-          {
-            status: 'success',
-            uploadDurationMsec: this.uploadTimeStartMap[id]
-              ? Date.now() - this.uploadTimeStartMap[id]
-              : -1,
-          },
-        ),
-        action: 'uploaded',
-        eventType: TRACK_EVENT_TYPE,
-      });
-      delete this.uploadTimeStartMap[payload.file.id];
-    });
-    this.uploadComponent.on(
-      'upload-error',
-      (payload: UploadErrorEventPayload) => {
-        const { size, type, id } = payload.file;
-
-        this.createAndFireAnalyticsEvent({
-          ...basePayload(
-            { size, type },
-            {
-              status: 'fail',
-              failReason: payload.error.description,
-              uploadDurationMsec: this.uploadTimeStartMap[id]
-                ? Date.now() - this.uploadTimeStartMap[id]
-                : -1,
-            },
-          ),
-          action: 'uploaded',
-          eventType: TRACK_EVENT_TYPE,
-        });
-        delete this.uploadTimeStartMap[payload.file.id];
-      },
-    );
+    this.uploadComponent.on('uploads-start', this.fireCommencedEvent);
+    this.uploadComponent.on('upload-end', this.fireUploadSucceeded);
+    this.uploadComponent.on('upload-error', this.fireUploadFailed);
     if (onUploadsStart) {
       this.uploadComponent.on('uploads-start', onUploadsStart!);
     }
@@ -184,6 +134,56 @@ export class LocalUploadComponentReact<
     this.uploadService.on('file-converted', this.onFileConverted);
     this.uploadService.on('file-upload-error', this.onUploadError);
   }
+
+  private fireCommencedEvent = (payload: UploadsStartEventPayload) => {
+    payload.files.forEach(({ id, size, type }) => {
+      this.uploadTimeStartMap[id] = Date.now();
+      this.createAndFireAnalyticsEvent({
+        ...basePayload({ size, type }),
+        action: 'commenced',
+        eventType: OPERATIONAL_EVENT_TYPE,
+      });
+    });
+  };
+
+  private fireUploadSucceeded = (payload: UploadEndEventPayload) => {
+    const { size, type, id } = payload.file;
+
+    this.createAndFireAnalyticsEvent({
+      ...basePayload(
+        { size, type },
+        {
+          status: 'success',
+          uploadDurationMsec: this.uploadTimeStartMap[id]
+            ? Date.now() - this.uploadTimeStartMap[id]
+            : -1,
+        },
+      ),
+      action: 'uploaded',
+      eventType: TRACK_EVENT_TYPE,
+    });
+    delete this.uploadTimeStartMap[payload.file.id];
+  };
+
+  private fireUploadFailed = (payload: UploadErrorEventPayload) => {
+    const { size, type, id } = payload.file;
+
+    this.createAndFireAnalyticsEvent({
+      ...basePayload(
+        { size, type },
+        {
+          status: 'fail',
+          failReason: payload.error.description,
+          uploadDurationMsec: this.uploadTimeStartMap[id]
+            ? Date.now() - this.uploadTimeStartMap[id]
+            : -1,
+        },
+      ),
+      action: 'uploaded',
+      eventType: TRACK_EVENT_TYPE,
+    });
+    delete this.uploadTimeStartMap[payload.file.id];
+  };
 
   private createAndFireAnalyticsEvent = (payload: AnalyticsPayload) => {
     const { createAnalyticsEvent } = this.props;
