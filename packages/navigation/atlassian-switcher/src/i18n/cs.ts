@@ -7,7 +7,7 @@
 // Czech
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Přepnout na',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Přepnout na…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Přepnout na...',
   'fabric.atlassianSwitcher.recent': 'Nedávné',
   'fabric.atlassianSwitcher.more': 'Více',
   'fabric.atlassianSwitcher.try': 'Vyzkoušejte to',
@@ -17,10 +17,16 @@ export default {
   'fabric.atlassianSwitcher.people': 'Lidé',
   'fabric.atlassianSwitcher.administration': 'Správa',
   'fabric.atlassianSwitcher.discoverMore': 'Objevte více',
+  'fabric.atlassianSwitcher.browseApps': 'Procházet aplikace na Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Něco se pokazilo',
   'fabric.atlassianSwitcher.errorText':
     'Tyto chyby zaznamenáváme, ale nebojte se nás kontaktovat, pokud obnovení stránky problém nevyřeší.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Rozbitý robot a několik lidí se ho snaží opravit.',
-  'fabric.atlassianSwitcher.expand': 'Rozbalit',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Tento seznam se nám nepodařilo načíst. Obnovte stránku a zkuste to znova.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Byli jste odhlášeni. Přihlaste se znovu.',
+  'fabric.atlassianSwitcher.login': 'Přihlášení',
+  'fabric.atlassianSwitcher.show.more.sites': 'Zobrazit více stránek',
 };

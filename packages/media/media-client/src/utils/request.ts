@@ -33,10 +33,10 @@ export function request(
   };
 
   if (method === 'GET') {
-    return fetch(createUrl(url, { params, auth }), {
+    return fetch(createUrl(url, { params }), {
       method,
       body,
-      headers,
+      headers: withAuth(auth)(headers),
       signal: controller && controller.signal,
     }).then(processFetchResponse);
   } else {

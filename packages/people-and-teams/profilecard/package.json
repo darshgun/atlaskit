@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "12.3.1",
+  "version": "12.3.2",
   "config": {
     "access": "public"
   },
@@ -20,7 +20,7 @@
     "@atlaskit/layer": "^7.1.1",
     "@atlaskit/lozenge": "^9.1.1",
     "@atlaskit/popper": "^3.1.6",
-    "@atlaskit/portal": "^3.1.1",
+    "@atlaskit/portal": "^3.1.2",
     "@atlaskit/spinner": "^12.1.1",
     "@atlaskit/theme": "^9.2.4",
     "@atlaskit/util-shared-styles": "^2.10.3",

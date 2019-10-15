@@ -12,6 +12,7 @@ type Props = {
   year: number;
   handleClickNext?: () => void;
   handleClickPrev?: () => void;
+  testId?: string;
 };
 
 const ArrowLeft = styled.div`
@@ -24,13 +25,23 @@ const ArrowRight = styled.div`
 export default (props: Props) => (
   <Heading aria-hidden="true">
     <ArrowLeft>
-      <Btn onClick={props.handleClickPrev}>
+      <Btn
+        onClick={props.handleClickPrev}
+        testId={props.testId && `${props.testId}--previous-month`}
+      >
         <ArrowleftIcon label="Last month" size="medium" primaryColor={N70} />
       </Btn>
     </ArrowLeft>
-    <MonthAndYear>{`${props.monthLongTitle} ${props.year}`}</MonthAndYear>
+    <MonthAndYear
+      data-testid={props.testId && `${props.testId}--current-month-year`}
+    >
+      {`${props.monthLongTitle} ${props.year}`}
+    </MonthAndYear>
     <ArrowRight>
-      <Btn onClick={props.handleClickNext}>
+      <Btn
+        onClick={props.handleClickNext}
+        testId={props.testId && `${props.testId}--next-month`}
+      >
         <ArrowrightIcon label="Next month" size="medium" primaryColor={N70} />
       </Btn>
     </ArrowRight>

@@ -7,9 +7,6 @@ import EmojiPickerCategoryHeading, {
 import EmojiPickerEmojiRow, {
   Props as EmojiRowProps,
 } from './EmojiPickerEmojiRow';
-import EmojiPickerListSearch, {
-  Props as SearchProps,
-} from './EmojiPickerListSearch';
 import { sizes } from './EmojiPickerSizes';
 import * as styles from './styles';
 
@@ -33,14 +30,6 @@ export abstract class AbstractItem<P> implements VirtualItem<P> {
   }
 
   abstract renderItem: RenderItem;
-}
-
-export class SearchItem extends AbstractItem<SearchProps> {
-  constructor(props: SearchProps) {
-    super(props, sizes.searchHeight);
-  }
-
-  renderItem = () => <EmojiPickerListSearch {...this.props} />;
 }
 
 export class EmojisRowItem extends AbstractItem<EmojiRowProps> {

@@ -1,6 +1,18 @@
 # @atlaskit/portal
 
+## 3.1.2
+
+### Patch Changes
+
+- [patch][adc048de7e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adc048de7e):
+
+  Fixing ie11 bug caused by using Event constructor
+
 ## 3.1.1
+
+**Warning: Do not use this version. It has been deprecated**
+
+It is broken for ie11 if you are not polyfilling the `new Event` constructor
 
 ### Patch Changes
 
@@ -9,6 +21,10 @@
   Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
 
 ## 3.1.0
+
+**Warning: Do not use this version. It has been deprecated**
+
+It is broken for ie11 if you are not polyfilling the `new Event` constructor
 
 ### Minor Changes
 

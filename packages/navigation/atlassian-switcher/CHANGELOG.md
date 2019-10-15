@@ -1,5 +1,37 @@
 # @atlaskit/atlassian-switcher
 
+## 4.5.3
+
+### Patch Changes
+
+- [patch][03e00bd3d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03e00bd3d7):
+
+  Fix discover/x-sell work for Bitbucket cloud
+
+## 4.5.2
+
+### Patch Changes
+
+- [patch][be38f90454](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be38f90454):
+
+  Added support for additional languages: Thai, Turkish, Ukrainia and Vietnamese
+
+## 4.5.1
+
+### Patch Changes
+
+- [patch][165f1cd0ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/165f1cd0ad):
+
+  Refactor codes related to experimental Discover section in Atlassian Switcher.
+
+## 4.5.0
+
+### Minor Changes
+
+- [minor][331053f02c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/331053f02c):
+
+  Add experimental discover section to Atlassian Switcher.
+
 ## 4.4.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/branch-deploy-product-integrator",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "TODO",
   "license": "Apache-2.0",
   "sideEffects": false,
@@ -17,7 +17,7 @@
     "team": "AFP"
   },
   "dependencies": {
-    "@atlaskit/branch-installer": "^0.2.1",
+    "@atlaskit/branch-installer": "^0.3.0",
     "@types/node": "^11.11.7",
     "@types/node-fetch": "^2.1.4",
     "@types/url-parse": "^1.4.3",

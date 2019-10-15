@@ -7,7 +7,7 @@
 // Icelandic
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Skipta í',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Skipta í…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Skipta í ...',
   'fabric.atlassianSwitcher.recent': 'Nýlegt',
   'fabric.atlassianSwitcher.more': 'Meira',
   'fabric.atlassianSwitcher.try': 'Prófa',
@@ -22,5 +22,10 @@ export default {
     'Við fylgjumst með þessum villum en þér er velkomið að hafa samband við okkur ef þetta lagast ekki við endurnýjun.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Bilað vélmenni og fjöldi aðila sem eru önnum kafnir við að laga það.',
-  'fabric.atlassianSwitcher.expand': 'Stækka',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Ekki tókst að hlaða þennan lista. Endurhladdu síðuna og reyndu aftur.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Þú hefur verið skráður út. Vinsamlegast skráðu þig inn aftur.',
+  'fabric.atlassianSwitcher.login': 'Innskrán',
+  'fabric.atlassianSwitcher.show.more.sites': 'Sýna fleiri vefsvæði',
 };

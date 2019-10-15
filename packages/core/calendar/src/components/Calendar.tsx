@@ -84,6 +84,16 @@ export interface CalendarProps extends WithAnalyticsEventsProps {
   /** Year to display the calendar for. */
   year?: number;
   locale: string;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+   *
+   * testId--month - Container containing all available days for the month
+   * testId--previous-month - Button to show next month
+   * testId--next-month - Button to show previous month
+   * testId--current-month-year - Text containing the current month and year
+   * testId--selected-day - The currently selected day (may be missing if a date isn’t selected)
+   * */
+  testId?: string;
 }
 
 interface State {
@@ -369,6 +379,7 @@ class Calendar extends Component<CalendarProps, State> {
       selected,
       today,
     } = mappedState;
+    const { testId } = this.props;
     const calendar = this.calendar.getCalendar(year, month - 1);
     const weeks: Week[] = [];
     const shouldDisplaySixthWeek = calendar.length % 6;
@@ -420,6 +431,7 @@ class Calendar extends Component<CalendarProps, State> {
           selected={isSelected}
           sibling={isSiblingMonth}
           year={date.year}
+          testId={testId}
         >
           {date.day}
         </DateComponent>,
@@ -432,7 +444,7 @@ class Calendar extends Component<CalendarProps, State> {
   render() {
     const mappedState = this.getState();
     const { l10n } = mappedState;
-    const { innerProps } = this.props;
+    const { innerProps, testId } = this.props;
 
     const announceId = getUniqueId('announce');
 
@@ -465,6 +477,7 @@ class Calendar extends Component<CalendarProps, State> {
             year={mappedState.year}
             handleClickNext={this.handleClickNext}
             handleClickPrev={this.handleClickPrev}
+            testId={testId}
           />
           <CalendarTable role="presentation">
             <CalendarThead>
@@ -474,7 +487,7 @@ class Calendar extends Component<CalendarProps, State> {
                 ))}
               </tr>
             </CalendarThead>
-            <CalendarTbody>
+            <CalendarTbody data-testid={testId && `${testId}--month`}>
               {this.getCalendarWeeks(mappedState).map(week => (
                 <tr key={week.key}>{week.components}</tr>
               ))}

@@ -29,4 +29,8 @@ export default {
   sk: 'Slovak',
   es: 'Spanish',
   sv: 'Swedish',
+  th: 'Thai',
+  tr: 'Turkish',
+  uk: 'Ukrainian',
+  vi: 'Vietnamese',
 };

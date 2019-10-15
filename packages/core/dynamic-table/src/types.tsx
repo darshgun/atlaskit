@@ -82,6 +82,7 @@ export interface StatefulProps extends WithAnalyticsEventsProps {
 export type RowType = {
   cells: Array<RowCellType>;
   key?: string;
+  onClick?: React.MouseEventHandler;
 };
 
 export type SortOrderType = 'ASC' | 'DESC';

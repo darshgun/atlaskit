@@ -1,0 +1,1 @@
+ED-7487: Ensure EmojiPickerList scrolls in Safari
