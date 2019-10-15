@@ -71,6 +71,7 @@ class TableHead extends React.Component<Props, {}> {
                     ? onSort(cell)()
                     : undefined
                 }
+                testId={testId}
                 sortOrder={key === sortKey ? sortOrder : undefined}
                 {...restCellProps}
               />

@@ -232,7 +232,7 @@ class DynamicTable extends React.Component<Props, State> {
                 sortOrder={sortOrder}
                 isRanking={this.state.isRanking}
                 isRankable={canRank}
-                testId={testId && `${testId}--table-head`}
+                testId={testId && `${testId}--head`}
               />
             )}
             {rowsExist &&
@@ -261,7 +261,11 @@ class DynamicTable extends React.Component<Props, State> {
           </PaginationWrapper>
         )}
         {!rowsExist && emptyBody && (
-          <LoadingContainer isLoading={isLoading} spinnerSize={LARGE}>
+          <LoadingContainer
+            isLoading={isLoading}
+            spinnerSize={LARGE}
+            testId={testId && `${testId}--container`}
+          >
             {emptyBody}
           </LoadingContainer>
         )}

@@ -12,6 +12,7 @@ export interface Props {
   content?: React.ReactNode;
   onClick?: () => void;
   onKeyDown?: (e: KeyboardEvent) => void;
+  testId?: string;
 }
 
 class TableHeadCell extends React.Component<Props, {}> {
@@ -21,11 +22,12 @@ class TableHeadCell extends React.Component<Props, {}> {
   };
 
   render() {
-    const { content, inlineStyles, ...rest } = this.props;
-
+    const { content, inlineStyles, testId, ...rest } = this.props;
+    const cellName = content ? content : 'no-name';
     return (
       <HeadCell
         style={inlineStyles}
+        data-testid={testId && `${testId}--${content}-cell`}
         {...rest}
         tabIndex={rest.isSortable ? 0 : undefined}
       >

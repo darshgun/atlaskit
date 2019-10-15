@@ -8,6 +8,7 @@ export interface RowCellType {
   key?: string | number;
   colSpan?: number;
   content?: React.ReactNode | string;
+  testId?: string;
 }
 
 export interface I18nShape {
@@ -59,9 +60,11 @@ export interface StatelessProps extends WithAnalyticsEventsProps {
    *
    * `${testId}--container` - Loading container
    * `${testId}--table` - Table
-   * `${testId}--table-head` - Table header
+   * `${testId}--head` - Table header
+   * `${testId}--head--{content of the cell}` - Table header cell can be identified by their content.
    * `${testId}--rankable-body` - Rankable table body
    * `${testId}--body` - Table body
+   * `${testId}--body--{content of the cell}` - Table body cell can be identified by their content.
    **/
   testId?: string;
 }
