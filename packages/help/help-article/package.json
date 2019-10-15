@@ -21,6 +21,8 @@
     "@atlaskit/theme": "^9.2.4",
     "@emotion/core": "^10.0.9",
     "@emotion/styled": "^10.0.7",
+    "srcdoc-polyfill": "^1.0.0",
+    "lodash.debounce": "^4.0.8",
     "exenv": "^1.2.2"
   },
   "peerDependencies": {

@@ -17,21 +17,22 @@ export const ArticleBody = (props: Props) => {
   /**
    * Set article height
    */
-  const resizeIframe = () => {
-    if (!iframeRef.current) {
+  const resizeIframe = (iframeRef: React.RefObject<HTMLIFrameElement>) => {
+    const currentIframe: HTMLIFrameElement | null = iframeRef.current;
+
+    if (!currentIframe) {
       return;
     }
 
-    const currentIframe: HTMLIFrameElement = iframeRef.current;
-
     if (currentIframe !== null && currentIframe.contentWindow !== null) {
-      const iframeContent =
+      const iframeContent: Element | null =
         currentIframe.contentWindow.document.body.firstElementChild;
+      // if the iframe has content, set the height of the iframe body
+      // and of the iframe itself
       if (iframeContent) {
-        var contentHeight = iframeContent.scrollHeight;
+        const contentHeight: number = iframeContent.scrollHeight;
         currentIframe.style.height = contentHeight + 'px';
         setArticleHeight(`${contentHeight}px`);
-        console.log(contentHeight);
       }
     }
 
@@ -43,29 +44,25 @@ export const ArticleBody = (props: Props) => {
    * NOTE: I need to inject the content this way because I need to use srcDoc polyfill for IE11 and
    * old versions of Edge
    */
-  const setIframeContent = () => {
-    if (!iframeRef.current) {
+  const setIframeContent = (
+    iframeRef: React.RefObject<HTMLIFrameElement>,
+    body: string = '',
+  ) => {
+    const currentIframe: HTMLIFrameElement | null = iframeRef.current;
+
+    if (!currentIframe) {
       return;
     }
-
-    const currentIframe: HTMLIFrameElement = iframeRef.current;
 
     if (currentIframe !== null && currentIframe.contentWindow !== null) {
       if (currentIframe.contentWindow.document.body) {
         srcDoc.set(
           currentIframe,
-          `<style>${RESET_CSS}</style><div class="content-platform-support">${
-            props.body
-          }</div>`,
+          `<style>${RESET_CSS}</style><div class="content-platform-support">${body}</div>`,
         );
       }
     }
   };
-
-  /**
-   * Set article height with debounce
-   */
-  const onWindowResize = debounce(resizeIframe, 500);
 
   /**
    * When the article changes, update the content of the iframe and
@@ -73,8 +70,8 @@ export const ArticleBody = (props: Props) => {
    */
   useEffect(
     () => {
-      setIframeContent();
-      resizeIframe();
+      setIframeContent(iframeRef, props.body);
+      resizeIframe(iframeRef);
     },
     [props.body],
   );
@@ -83,6 +80,11 @@ export const ArticleBody = (props: Props) => {
    * When the window is resized, resize the iframe
    */
   useEffect(() => {
+    /**
+     * Set article height with debounce
+     */
+    const onWindowResize = debounce(() => resizeIframe(iframeRef), 500);
+
     window.addEventListener('resize', onWindowResize);
 
     return () => {
