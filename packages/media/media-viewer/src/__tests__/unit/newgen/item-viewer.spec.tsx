@@ -554,11 +554,22 @@ describe('<ItemViewer />', () => {
       el.find(DocViewer).simulate('error');
       await sleep(1);
       expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(2);
-      expect(createAnalyticsEventSpy).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          action: 'loadFailed',
-        }),
-      );
+      expect(createAnalyticsEventSpy).toHaveBeenLastCalledWith({
+        action: 'loadFailed',
+        actionSubject: 'mediaFile',
+        actionSubjectId: 'some-id',
+        attributes: {
+          fileId: 'some-id',
+          fileMediatype: 'doc',
+          fileMimetype: '',
+          fileSize: 0,
+          status: 'fail',
+          failReason:
+            'Error: Invalid parameter in getDocument, need either Uint8Array, string or a parameter object',
+          ...analyticsBaseAttributes,
+        },
+        eventType: 'operational',
+      });
     });
 
     test.each(['audio', 'video'])(

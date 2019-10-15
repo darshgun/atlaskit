@@ -121,15 +121,15 @@ export class ItemViewerBase extends React.Component<Props, State> {
   };
 
   private onDocError = (fileState: FileState) => (error: Error) => {
-    if (fileState.status === 'processed') {
-      this.fireAnalytics(
-        mediaFileLoadFailedEvent(
-          fileState.id,
-          `${error.name}: ${error.message}`,
-          fileState,
-        ),
-      );
-    }
+    const processedFileState =
+      fileState.status === 'processed' ? fileState : undefined;
+    this.fireAnalytics(
+      mediaFileLoadFailedEvent(
+        fileState.id,
+        `${error.name}: ${error.message}`,
+        processedFileState,
+      ),
+    );
   };
 
   private renderFileState(item: FileState) {
