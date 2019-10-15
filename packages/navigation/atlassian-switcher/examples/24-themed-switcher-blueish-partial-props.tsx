@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Drawer from '@atlaskit/drawer';
 import Button from '@atlaskit/button';
-import { mockEndpoints, REQUEST_MEDIUM } from './helpers/mock-endpoints';
+import { mockEndpoints } from './helpers/mock-endpoints';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 

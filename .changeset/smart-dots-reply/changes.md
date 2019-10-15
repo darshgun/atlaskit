@@ -1,1 +1,1 @@
-yAdd mockEndpoints to switcher exports
+Add mockEndpoints to switcher exports
