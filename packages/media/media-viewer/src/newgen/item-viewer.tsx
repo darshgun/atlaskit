@@ -120,18 +120,6 @@ export class ItemViewerBase extends React.Component<Props, State> {
     }
   };
 
-  private onDocError = (fileState: FileState) => (error: Error) => {
-    if (fileState.status === 'processed') {
-      this.fireAnalytics(
-        mediaFileLoadFailedEvent(
-          fileState.id,
-          `${error.name}: ${error.message}`,
-          fileState,
-        ),
-      );
-    }
-  };
-
   private renderFileState(item: FileState) {
     if (item.status === 'error') {
       return this.renderError('previewFailed', item);
@@ -179,13 +167,7 @@ export class ItemViewerBase extends React.Component<Props, State> {
           />
         );
       case 'doc':
-        return (
-          <DocViewer
-            onSuccess={this.onCanPlay(item)}
-            onError={this.onDocError(item)}
-            {...viewerProps}
-          />
-        );
+        return <DocViewer {...viewerProps} />;
       default:
         return this.renderError('unsupported', item);
     }
