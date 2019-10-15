@@ -69,6 +69,7 @@ export default class Page {
   }
 
   async type(selector, text) {
+    // TODO: https://product-fabric.atlassian.net/browse/BUILDTOOLS-321
     if (this.isBrowser('chrome') && selector === EDITOR) {
       if (Array.isArray(text)) {
         return await this.browser.sendKeys(text.map(getMappedKey));
