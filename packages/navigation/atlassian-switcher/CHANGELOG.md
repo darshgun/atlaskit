@@ -1,5 +1,37 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.2
+
+### Patch Changes
+
+- [patch][14e55631c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14e55631c6):
+
+  Add groupIndex to switcher item analytics
+
+## 4.6.1
+
+### Patch Changes
+
+- [patch][e6f7f7747f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6f7f7747f):
+
+  Add Opsgenie to default list of product recommendations
+
+## 4.6.0
+
+### Minor Changes
+
+- [minor][cd96adc5e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd96adc5e7):
+
+  Add Try lozenge to first item in Discover section
+
+## 4.5.4
+
+### Patch Changes
+
+- [patch][d904d4df82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d904d4df82):
+
+  Use kebab case for switcher chunk names
+
 ## 4.5.3
 
 ### Patch Changes
