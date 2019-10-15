@@ -1,5 +1,13 @@
 # @atlaskit/radio
 
+## 3.1.3
+
+### Patch Changes
+
+- [patch][70e57645f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e57645f2):
+
+  Updates controlled example to show better pattern for state duplication between RadioGroup and Form
+
 ## 3.1.2
 
 ### Patch Changes
