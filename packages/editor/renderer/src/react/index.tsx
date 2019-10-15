@@ -24,7 +24,6 @@ import {
   ExtensionHandlers,
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
-import { generateIdFromString } from '../utils';
 
 export interface RendererContext {
   objectAri?: string;
@@ -319,7 +318,13 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       return;
     }
 
-    return this.getUniqueHeadingId(generateIdFromString(node.textContent));
+    const nodeContent = node.textContent.replace(/\s/g, '-');
+
+    if (!nodeContent) {
+      return;
+    }
+
+    return this.getUniqueHeadingId(nodeContent);
   }
 
   private getUniqueHeadingId(baseId: string, counter = 0): string {
