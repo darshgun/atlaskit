@@ -1077,7 +1077,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "language": "java",
+                    "language": "javascript",
                     "uniqueId": null,
                   },
                   "content": Array [
@@ -1178,7 +1178,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "language": "java",
+                    "language": null,
                     "uniqueId": null,
                   },
                   "content": Array [
