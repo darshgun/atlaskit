@@ -1,0 +1,1 @@
+check if selection.containsNode is available before using it to fix issue with IE11
