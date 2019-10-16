@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/dropdown-menu", "type": "minor" },
+    { "name": "@atlaskit/droplist", "type": "minor" }
+  ],
+  "dependents": []
+}
