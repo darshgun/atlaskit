@@ -86,6 +86,20 @@ export const ArticleBody = (props: Props) => {
 
     window.addEventListener('resize', onWindowResize);
 
+    /**
+     * Add onload event to iframe. The iframe will be resized only after
+     * the content is loaded
+     */
+    const currentIframe: HTMLIFrameElement | null = iframeRef.current;
+
+    if (currentIframe !== null && currentIframe.contentWindow !== null) {
+      if (currentIframe.contentWindow.document.body) {
+        currentIframe.onload = () => {
+          resizeIframe(iframeRef);
+        };
+      }
+    }
+
     return () => {
       window.removeEventListener('resize', onWindowResize);
     };
