@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { start, end } from 'perf-marks';
 import { MediaClient } from '@atlaskit/media-client';
 import { UploadService } from '../service/types';
 import {
@@ -82,7 +83,6 @@ export class LocalUploadComponentReact<
 > extends Component<Props, {}> {
   protected readonly uploadService: UploadService;
   protected uploadComponent = new UploadComponent();
-  private readonly uploadTimeStartMap: { [id: string]: number } = {};
 
   constructor(props: Props) {
     super(props);
@@ -137,7 +137,7 @@ export class LocalUploadComponentReact<
 
   private fireCommencedEvent = (payload: UploadsStartEventPayload) => {
     payload.files.forEach(({ id, size, type }) => {
-      this.uploadTimeStartMap[id] = Date.now();
+      start(`MediaPicker:fireUpload:${id}`);
       this.createAndFireAnalyticsEvent({
         ...basePayload({ size, type }),
         action: 'commenced',
@@ -149,40 +149,36 @@ export class LocalUploadComponentReact<
   private fireUploadSucceeded = (payload: UploadEndEventPayload) => {
     const { size, type, id } = payload.file;
 
+    const { duration = -1 } = end(`MediaPicker:fireUpload:${id}`);
     this.createAndFireAnalyticsEvent({
       ...basePayload(
         { size, type },
         {
           status: 'success',
-          uploadDurationMsec: this.uploadTimeStartMap[id]
-            ? Date.now() - this.uploadTimeStartMap[id]
-            : -1,
+          uploadDurationMsec: duration,
         },
       ),
       action: 'uploaded',
       eventType: TRACK_EVENT_TYPE,
     });
-    delete this.uploadTimeStartMap[payload.file.id];
   };
 
   private fireUploadFailed = (payload: UploadErrorEventPayload) => {
     const { size, type, id } = payload.file;
 
+    const { duration = -1 } = end(`MediaPicker:fireUpload:${id}`);
     this.createAndFireAnalyticsEvent({
       ...basePayload(
         { size, type },
         {
           status: 'fail',
           failReason: payload.error.description,
-          uploadDurationMsec: this.uploadTimeStartMap[id]
-            ? Date.now() - this.uploadTimeStartMap[id]
-            : -1,
+          uploadDurationMsec: duration,
         },
       ),
       action: 'uploaded',
       eventType: TRACK_EVENT_TYPE,
     });
-    delete this.uploadTimeStartMap[payload.file.id];
   };
 
   private createAndFireAnalyticsEvent = (payload: AnalyticsPayload) => {

@@ -453,6 +453,7 @@
     "p-settle": "^3.1.0",
     "p-wait-for": "^3.1.0",
     "pdfjs-dist": "2.0.489",
+    "perf-marks": "^1.0.1",
     "png-chunks-extract": "^1.0.0",
     "polished": "1.9.3",
     "popper.js": "^1.14.1",

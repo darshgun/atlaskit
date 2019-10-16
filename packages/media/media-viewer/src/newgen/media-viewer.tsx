@@ -20,6 +20,7 @@ import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
 import { Blanket } from './styled';
+import { start } from 'perf-marks';
 
 export type Props = {
   onClose?: () => void;
@@ -34,9 +35,6 @@ export class MediaViewerComponent extends React.Component<Props, {}> {
     intl: intlShape,
   };
 
-  static startTime: number = Date.now();
-  static timerElapsed = () => Date.now() - MediaViewerComponent.startTime;
-
   private fireAnalytics = (payload: GasPayload | GasScreenEventPayload) => {
     const { createAnalyticsEvent } = this.props;
     if (createAnalyticsEvent) {
@@ -47,7 +45,7 @@ export class MediaViewerComponent extends React.Component<Props, {}> {
 
   UNSAFE_componentWillMount() {
     this.fireAnalytics(mediaViewerModalEvent());
-    MediaViewerComponent.startTime = Date.now();
+    start('MediaViewer:SessionDuration');
   }
 
   onShortcutClosed = () => {

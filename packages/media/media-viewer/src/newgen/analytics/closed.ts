@@ -1,6 +1,6 @@
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { packageAttributes, PackageAttributes } from './index';
-import { MediaViewerComponent } from '../media-viewer';
+import { end } from 'perf-marks';
 
 export type ClosedInputType = 'button' | 'blanket' | 'escKey';
 export interface CloseGasPayload extends GasPayload {
@@ -11,6 +11,7 @@ export interface CloseGasPayload extends GasPayload {
 }
 
 export function closedEvent(input: ClosedInputType): CloseGasPayload {
+  const { duration = 0 } = end('MediaViewer:SessionDuration');
   return {
     eventType: 'ui',
     action: 'closed',
@@ -18,7 +19,7 @@ export function closedEvent(input: ClosedInputType): CloseGasPayload {
     actionSubjectId: undefined,
     attributes: {
       ...packageAttributes,
-      sessionDurationMs: MediaViewerComponent.timerElapsed(),
+      sessionDurationMs: duration,
       input,
     },
   };
