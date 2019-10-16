@@ -17,11 +17,14 @@
   },
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/css-reset": "^5.0.9",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/theme": "^9.2.4",
     "@emotion/core": "^10.0.9",
     "@emotion/styled": "^10.0.7",
-    "exenv": "^1.2.2"
+    "exenv": "^1.2.2",
+    "lodash.debounce": "^4.0.8",
+    "srcdoc-polyfill": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^16.8.0",
