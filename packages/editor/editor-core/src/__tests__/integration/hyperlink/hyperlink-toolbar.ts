@@ -28,6 +28,7 @@ const linkText1 = 'http://hello.com ';
       await browser.type(editable, [
         'Return',
         linkText1,
+        'Return',
         'ArrowLeft',
         'ArrowLeft',
       ]);
