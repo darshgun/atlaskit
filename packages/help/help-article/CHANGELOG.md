@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 0.6.0
+
+### Minor Changes
+
+- [minor][17445706d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17445706d3):
+
+  Use iframe to display articles
+
 ## 0.5.5
 
 ### Patch Changes
