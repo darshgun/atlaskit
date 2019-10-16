@@ -43,6 +43,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "@atlaskit/atlassian-switcher-test-utils": "^0.0.0",
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/drawer": "^5.0.13",
     "@atlaskit/field-text": "^9.0.13",

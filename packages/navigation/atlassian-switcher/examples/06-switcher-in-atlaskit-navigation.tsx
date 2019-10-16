@@ -5,7 +5,7 @@ import Tooltip from '@atlaskit/tooltip';
 import SwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 import * as colors from '@atlaskit/theme/colors';
 import AkDrawer from '@atlaskit/drawer';
-import { mockEndpoints, REQUEST_MEDIUM } from './helpers/mock-endpoints';
+import { mockEndpoints } from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 
@@ -15,7 +15,7 @@ class ConfluenceSwitcherExample extends React.Component {
   };
 
   openDrawer = () => {
-    mockEndpoints('confluence', undefined, REQUEST_MEDIUM);
+    mockEndpoints('confluence');
     this.setState({
       isDrawerOpen: true,
     });

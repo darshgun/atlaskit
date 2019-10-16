@@ -23,10 +23,6 @@
         "../../bitbucket/panel/src/",
         "./packages/bitbucket/panel/src/"
       ],
-      "@atlaskit/panel/types": [
-        "../../bitbucket/panel/src/types",
-        "./packages/bitbucket/panel/src/types"
-      ],
       "@atlaskit/analytics/AnalyticsDecorator": [
         "../../core/analytics/src/AnalyticsDecorator",
         "./packages/core/analytics/src/AnalyticsDecorator"
@@ -250,6 +246,10 @@
       "@atlaskit/datetime-picker": [
         "../../core/datetime-picker/src/",
         "./packages/core/datetime-picker/src/"
+      ],
+      "@atlaskit/datetime-picker/types": [
+        "../../core/datetime-picker/src/types",
+        "./packages/core/datetime-picker/src/types"
       ],
       "@atlaskit/drawer/constants": [
         "../../core/drawer/src/constants",
@@ -683,13 +683,21 @@
         "../../core/popup/src/Popup",
         "./packages/core/popup/src/Popup"
       ],
-      "@atlaskit/popup/styled": [
-        "../../core/popup/src/styled",
-        "./packages/core/popup/src/styled"
+      "@atlaskit/popup/RepositionOnUpdate": [
+        "../../core/popup/src/RepositionOnUpdate",
+        "./packages/core/popup/src/RepositionOnUpdate"
+      ],
+      "@atlaskit/popup/styles": [
+        "../../core/popup/src/styles",
+        "./packages/core/popup/src/styles"
       ],
       "@atlaskit/popup/types": [
         "../../core/popup/src/types",
         "./packages/core/popup/src/types"
+      ],
+      "@atlaskit/popup/useCloseManager": [
+        "../../core/popup/src/useCloseManager",
+        "./packages/core/popup/src/useCloseManager"
       ],
       "@atlaskit/popup/useFocusManager": [
         "../../core/popup/src/useFocusManager",
@@ -2111,6 +2119,10 @@
         "../../monorepo-tooling/branch-deploy-product-integrator/src/",
         "./packages/monorepo-tooling/branch-deploy-product-integrator/src/"
       ],
+      "@atlaskit/branch-deploy-product-integrator/util": [
+        "../../monorepo-tooling/branch-deploy-product-integrator/src/util",
+        "./packages/monorepo-tooling/branch-deploy-product-integrator/src/util"
+      ],
       "@atlaskit/code-insights": [
         "../../monorepo-tooling/code-insights/src/",
         "./packages/monorepo-tooling/code-insights/src/"
@@ -2174,6 +2186,10 @@
       "@atlaskit/atlassian-switcher/types": [
         "../../navigation/atlassian-switcher/src/types",
         "./packages/navigation/atlassian-switcher/src/types"
+      ],
+      "@atlaskit/atlassian-switcher-test-utils": [
+        "../../navigation/atlassian-switcher-test-utils/src/",
+        "./packages/navigation/atlassian-switcher-test-utils/src/"
       ],
       "@atlaskit/atlassian-switcher-vanilla": [
         "../../navigation/atlassian-switcher-vanilla/src/",

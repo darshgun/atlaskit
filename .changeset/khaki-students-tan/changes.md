@@ -1,0 +1,1 @@
+Split mockEndpoints into a separate package
