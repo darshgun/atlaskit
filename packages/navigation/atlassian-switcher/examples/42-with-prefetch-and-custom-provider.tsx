@@ -4,7 +4,7 @@ import Drawer from '@atlaskit/drawer';
 import {
   mockAvailableProductsEndpoint,
   REQUEST_MEDIUM,
-} from './helpers/mock-endpoints';
+} from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher, { AtlassianSwitcherPrefetchTrigger } from '../src';
 import { resetAll } from '../src/providers/instance-data-providers';
