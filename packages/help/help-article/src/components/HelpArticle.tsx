@@ -1,10 +1,12 @@
 import * as React from 'react';
+import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
+
 import {
   ArticleContentInner,
   ArticleContentTitle,
   ArticleContentTitleLink,
 } from './styled';
-import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
+import ArticleBody from './ArticleBody';
 export interface Props {
   // Article Title
   title?: string;
@@ -14,8 +16,9 @@ export interface Props {
   titleLinkUrl?: string;
 }
 
-const HelpArticle: React.SFC<Props> = props => {
-  const { title = '', body = '', titleLinkUrl } = props;
+const HelpArticle = (props: Props) => {
+  const { title = '', body, titleLinkUrl } = props;
+
   return (
     <ArticleContentInner>
       {title && (
@@ -33,12 +36,7 @@ const HelpArticle: React.SFC<Props> = props => {
           )}
         </ArticleContentTitle>
       )}
-      {body && (
-        <div
-          className={'content-platform-support'}
-          dangerouslySetInnerHTML={{ __html: body }}
-        />
-      )}
+      <ArticleBody body={body} />
     </ArticleContentInner>
   );
 };
