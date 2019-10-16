@@ -1,1 +1,0 @@
-Add mockEndpoints to switcher exports
