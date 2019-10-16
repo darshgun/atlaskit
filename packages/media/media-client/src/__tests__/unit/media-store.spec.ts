@@ -22,6 +22,7 @@ import {
   MediaFileArtifacts,
   checkWebpSupport,
 } from '../..';
+import { FILE_CACHE_MAX_AGE } from '../../constants';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
@@ -598,7 +599,7 @@ describe('MediaStore', () => {
         const url = await mediaStore.getFileImageURL('1234');
 
         expect(url).toEqual(
-          `${baseUrl}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+          `${baseUrl}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=${FILE_CACHE_MAX_AGE}&mode=crop&token=some-token`,
         );
       });
     });
@@ -614,7 +615,7 @@ describe('MediaStore', () => {
 
         const image = await mediaStore.getImage('123');
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=${FILE_CACHE_MAX_AGE}&mode=crop&token=some-token`,
         );
         expect(image).toBeInstanceOf(Blob);
       });
@@ -633,7 +634,7 @@ describe('MediaStore', () => {
           upscale: true,
         });
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
+          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=${FILE_CACHE_MAX_AGE}&mode=full-fit&token=some-token&upscale=true&version=2`,
         );
       });
 
@@ -656,7 +657,7 @@ describe('MediaStore', () => {
           true,
         );
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&height=4096&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2&width=4096`,
+          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&height=4096&max-age=${FILE_CACHE_MAX_AGE}&mode=full-fit&token=some-token&upscale=true&version=2&width=4096`,
         );
       });
 
@@ -681,7 +682,7 @@ describe('MediaStore', () => {
           true,
         );
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&height=4096&max-age=3600&mode=crop&token=some-token&upscale=true&version=2&width=4096`,
+          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&height=4096&max-age=${FILE_CACHE_MAX_AGE}&mode=crop&token=some-token&upscale=true&version=2&width=4096`,
         );
       });
 

@@ -23,9 +23,10 @@ import {
   getArtifactUrl,
   // checkWebpSupport,
 } from '..';
+import { FILE_CACHE_MAX_AGE } from '../constants';
 
 const defaultImageOptions: MediaStoreGetFileImageParams = {
-  'max-age': 3600,
+  'max-age': FILE_CACHE_MAX_AGE,
   allowAnimated: true,
   mode: 'crop',
 };
