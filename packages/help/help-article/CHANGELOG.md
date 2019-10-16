@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 0.6.1
+
+### Patch Changes
+
+- [patch][03293fa2a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03293fa2a5):
+
+  Resize iframe after content is loaded
+
 ## 0.6.0
 
 ### Minor Changes
