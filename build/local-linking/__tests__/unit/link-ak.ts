@@ -142,17 +142,21 @@ describe('Link AK', () => {
       );
     });
 
-    it('should run yalc add with pure mode in bolt repos', async () => {
+    it('should run yalc add with pure mode in bolt repos and then re-run without pure mode', async () => {
       mockedFse.pathExists.mockImplementation((p: string) =>
         p.includes('yarn.lock'),
       );
       mockedFse.readJson.mockImplementation(() => ({ bolt: {} }));
       const spy = jest.spyOn(yalc, 'addPackages');
       await linkAk('repo-foo', ['bar']);
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(['bar'], {
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenNthCalledWith(1, ['bar'], {
         workingDir: path.resolve('projects/repo-foo'),
         pure: true,
+      });
+      expect(spy).toHaveBeenNthCalledWith(2, ['bar'], {
+        workingDir: path.resolve('projects/repo-foo'),
+        pure: false,
       });
       spy.mockRestore();
     });

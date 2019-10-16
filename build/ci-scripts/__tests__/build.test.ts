@@ -409,6 +409,7 @@ describe('Build', () => {
         expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
         expect(yalc.publishPackage).toHaveBeenCalledWith({
           workingDir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
+          changed: true,
           push: true,
         });
       });
@@ -630,6 +631,7 @@ describe('Build', () => {
         expect(yalc.publishPackage).toHaveBeenCalledTimes(1);
         expect(yalc.publishPackage).toHaveBeenCalledWith({
           workingDir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
+          changed: true,
           push: true,
         });
       });
