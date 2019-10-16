@@ -416,14 +416,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
-          sites: [
-            generateSite(
-              'site40',
-              [WorklensProductType.CONFLUENCE, 40],
-              undefined,
-              true,
-            ),
-          ],
+          sites: [generateSite('site40', [WorklensProductType.CONFLUENCE, 40])],
         }),
         Product.CONFLUENCE,
       );
