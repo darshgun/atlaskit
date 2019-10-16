@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.3
+
+### Patch Changes
+
+- [patch][f07586ba0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f07586ba0e):
+
+  Hide manage list link when custom links are disabled
+
 ## 4.6.2
 
 ### Patch Changes

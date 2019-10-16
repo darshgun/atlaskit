@@ -1,1 +1,0 @@
-Hide manage list link when custom links are disabled
