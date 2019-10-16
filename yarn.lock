@@ -13244,7 +13244,15 @@ npm-packlist@^1.1.6:
     ignore-walk "^3.0.1"
     npm-bundled "^1.0.1"
 
-npm-packlist@^1.4.1, npm-packlist@^1.4.4:
+npm-packlist@^1.4.1:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-1.4.6.tgz#53ba3ed11f8523079f1457376dd379ee4ea42ff4"
+  integrity sha512-u65uQdb+qwtGvEJh/DgQgW1Xg7sqeNbmxYyrvlNznaVTjV3E5P6F/EFjM+BVHXl7JJlsdG8A64M0XI8FI/IOlg==
+  dependencies:
+    ignore-walk "^3.0.1"
+    npm-bundled "^1.0.1"
+
+npm-packlist@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-1.4.4.tgz#866224233850ac534b63d1a6e76050092b5d2f44"
   dependencies:
@@ -19874,9 +19882,9 @@ y18n@^3.2.1:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
 
-yalc@Blasz/yalc#copy-dir-fix-0.2:
+yalc@Blasz/yalc#copy-dir-fix-0.3:
   version "1.0.0-pre.34"
-  resolved "https://codeload.github.com/Blasz/yalc/tar.gz/9469ac2ddd6d4b91b4bf11a2278f661769490aeb"
+  resolved "https://codeload.github.com/Blasz/yalc/tar.gz/ad196600830bb2458ae9fb56c1d17f1122738d61"
   dependencies:
     fs-extra "^8.0.1"
     glob "^7.1.4"
