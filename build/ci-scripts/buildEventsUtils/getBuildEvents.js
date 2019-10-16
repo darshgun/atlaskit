@@ -43,7 +43,7 @@ type IPipelines = {
 function stripLogs(logs /*: string */, command /*: string */) {
   const logsMessage =
     logs.indexOf(command) >= 0 ? logs.split(command)[1] : logs;
-  const logsToSentry = `The build failed on this command: ${command} for this reasons: ${
+  const logsToSentry = `The build failed on this command: ${command} for these reasons: ${
     logs.split(command)[1]
   }`;
   return stripAnsi(logsToSentry);
