@@ -42,9 +42,12 @@ export default class ErrorBoundary extends React.Component<
         },
       ],
     });
-    this.setState({
-      error,
-    });
+    this.setState(
+      {
+        error,
+      },
+      () => this.setState({ error: undefined }),
+    );
   }
 
   render() {
