@@ -21,8 +21,7 @@
     "name": "Atlassian Switcher test utils",
     "team": "navigation"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "fetch-mock": "^7.3.3",
     "memoize-one": "^5.1.0"
   }
