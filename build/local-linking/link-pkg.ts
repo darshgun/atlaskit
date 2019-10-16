@@ -125,8 +125,8 @@ Provide either full name (@atlaskit/foo) or unscoped name (foo).`,
   }
 
   const project = await bolt.getProject({ cwd: opts.cwd });
-  // Repo path is relative to the parent directory of the project (atlaskit)
-  const resolvedRepoPath = path.resolve(project.dir, '..', repoPath);
+  // Repo path is relative to the root directory of the project (atlaskit)
+  const resolvedRepoPath = path.resolve(project.dir, repoPath);
   const repoType = await detectRepoType(resolvedRepoPath);
   const packageNames = resolvedPackages.map(p => p.name);
   await yalc.addPackages(packageNames, {
@@ -163,15 +163,14 @@ if (require.main === module) {
     Usage
         $ link-pkg <repo> <package> [package2 ...]
 
-      where <repo> is a path relative to the atlaskit repo's parent directory
+      where <repo> is a path relative to the atlaskit root directory
       and packages are package names with scope optionally removed
 
       Options
         --no-nvm             Disable using nvm when installing in <repo>
 
       Examples
-        $ link-pkg confluence-frontend editor-core
-        $ link-pkg confluence-frontend media-card --entry editor-core
+        $ link-pkg ../confluence-frontend editor-core
 `,
     {
       flags: {

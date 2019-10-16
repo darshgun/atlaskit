@@ -26,7 +26,8 @@ Run the following steps:
 
 1. `yarn link-pkg <repo_path> <package>`
 
-   E.g. `yarn link-pkg confluence-frontend editor-core`.
+   E.g. `yarn link-pkg ../confluence-frontend editor-core`.
+
    You can run `yarn link-pkg --help` for more info.
 
 2. `yarn watch <package>`
