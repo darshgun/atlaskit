@@ -122,7 +122,7 @@ exports[`navigation-next view renderer MenuSection should render the MenuSection
 `;
 
 exports[`navigation-next view renderer SortableContext should render the SortableContext UI component 1`] = `
-<SortableContext
+<LoadableComponent
   id="sortable"
   onDragEnd={[Function]}
 >
@@ -156,11 +156,11 @@ exports[`navigation-next view renderer SortableContext should render the Sortabl
       ]
     }
   />
-</SortableContext>
+</LoadableComponent>
 `;
 
 exports[`navigation-next view renderer SortableGroup should render the SortableGroup UI Component 1`] = `
-<SortableGroup
+<LoadableComponent
   heading="Sortable Group"
   id="sortable-group"
 >
@@ -214,5 +214,5 @@ exports[`navigation-next view renderer SortableGroup should render the SortableG
       }
     />
   </RenderBlocker>
-</SortableGroup>
+</LoadableComponent>
 `;
