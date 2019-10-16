@@ -2191,6 +2191,10 @@
         "../../navigation/atlassian-switcher/src/types",
         "./packages/navigation/atlassian-switcher/src/types"
       ],
+      "@atlaskit/atlassian-switcher-test-utils": [
+        "../../navigation/atlassian-switcher-test-utils/src/",
+        "./packages/navigation/atlassian-switcher-test-utils/src/"
+      ],
       "@atlaskit/atlassian-switcher-vanilla": [
         "../../navigation/atlassian-switcher-vanilla/src/",
         "./packages/navigation/atlassian-switcher-vanilla/src/"

@@ -5,7 +5,7 @@ import Tooltip from '@atlaskit/tooltip';
 import SwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 import * as colors from '@atlaskit/theme/colors';
 import AkDrawer from '@atlaskit/drawer';
-import { mockEndpoints } from './helpers/mock-endpoints';
+import { mockEndpoints } from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 
