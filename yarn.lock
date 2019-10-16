@@ -19882,9 +19882,9 @@ y18n@^3.2.1:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
 
-yalc@Blasz/yalc#copy-dir-fix-0.3:
+yalc@Blasz/yalc#copy-dir-fix-0.4:
   version "1.0.0-pre.34"
-  resolved "https://codeload.github.com/Blasz/yalc/tar.gz/ad196600830bb2458ae9fb56c1d17f1122738d61"
+  resolved "https://codeload.github.com/Blasz/yalc/tar.gz/ba2c36498181c94f8e36349e5f378a9b8aa3dd96"
   dependencies:
     fs-extra "^8.0.1"
     glob "^7.1.4"

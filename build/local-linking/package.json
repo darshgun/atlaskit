@@ -14,7 +14,7 @@
     "fs-extra": "^4.0.2",
     "meow": "^5.0.0",
     "ts-node": "^6.1.1",
-    "yalc": "Blasz/yalc#copy-dir-fix-0.3"
+    "yalc": "Blasz/yalc#copy-dir-fix-0.4"
   },
   "devDependencies": {
     "@types/fs-extra": "^4.0.0",

@@ -26,7 +26,7 @@
     "s3-cli": "^0.13.0",
     "spawndamnit": "^1.0.0",
     "tslib": "^1.9.3",
-    "yalc": "Blasz/yalc#copy-dir-fix-0.3"
+    "yalc": "Blasz/yalc#copy-dir-fix-0.4"
   },
   "devDependencies": {
     "@types/concurrently": "^4.1.0",
