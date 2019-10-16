@@ -120,8 +120,8 @@ If you know which packages are causing you problems you can run `bolt build <pkg
 
 ### My full repo bolt build fails when running with a single distType
 
-There is a known issue with some postbuild scripts where they rely on both dist types being built to succeed. These scripts will fail when building a single dist type.
-For the most part, they can be ignored unless they have not run for the dist type that you have built. If this is the case, try running the postbuild script for the package that is causing you problems.
+Postbuild scripts may rely on both dist types being built to succeed. These scripts will fail when building a single dist type. The solution is to fix the postbuild script to gracefully handle dist type folders not existing.
+We run a separate dist validation step at the end of the build to verify that these folders do exist with correct files, so this does not need to be done in postbuild scripts.
 
 <a id="no-postbuild"></a>
 
