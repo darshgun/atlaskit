@@ -2,7 +2,7 @@
 
 ## Usage
 
-Linking packages in Atlaskit is more difficult than the standard workflow of running `yarn link`. This is because of the majority of packages in the repo need to be built because `yarn link` uses symlinks and building all packages in the repo takes a significant amount of time.
+Linking packages in Atlaskit is more difficult than the standard workflow of running the built-in `yarn link` command. This is because of the majority of packages in the repo need to be built as `yarn link` uses symlinks and building all packages in the repo takes a significant amount of time.
 
 To handle this problem, we provide two main ways of linking packages:
 
@@ -10,24 +10,29 @@ To handle this problem, we provide two main ways of linking packages:
 
 ### A) Linking a _single_ package that is a direct dependency of another repo
 
-#### Bolt link-ak <repo> <pkg> + Bolt watch <pkg>
+#### Pre-requisites
 
-We provide a `bolt link-ak` command to link a package to another repo, provided it is a direct dependency. Under the hood it uses [Yalc](https://www.npmjs.com/package/yalc)
+- The package you've made changed to is a direct dependency of your target repo. I.e. it's directly imported by the repo, and not by another atlaskit package
+- The package does not rely on any local changes to its dependencies. I.e. you don't need to locally link the packages dependencies as well
+
+#### yarn link-pkg <repo> <pkg> + yarn watch <pkg>
+
+We provide a `yarn link-pkg` command to link a package to another repo, provided it is a direct dependency. Under the hood it uses [Yalc](https://www.npmjs.com/package/yalc)
 to copy packages to another repo as a `file:...` dependency.
 
-This links and builds only a single package, so has a much faster initial setup time than the second option of building all packages below.
+This links and builds only a single package and none of its dependencies, so is a faster way of linking than [option B](#option-b) but only covers a subset of use cases.
 
 Run the following steps:
 
-1. `bolt link-ak <repo_path> <package>`
+1. `yarn link-pkg <repo_path> <package>`
 
-   E.g. `bolt link-ak confluence-frontend editor-core`.
-   You can run `bolt link-ak --help` for more info.
+   E.g. `yarn link-pkg confluence-frontend editor-core`.
+   You can run `yarn link-pkg --help` for more info.
 
-2. `bolt watch <package>`
+2. `yarn watch <package>`
 
-   E.g. `bolt watch editor-core`.
-   The command just runs `bolt build <pkg>` in watch mode and pushes changes to any linked repos. Run `bolt watch --help` for more info.
+   E.g. `yarn watch editor-core`.
+   The command just runs `yarn build <pkg>` in watch mode and pushes changes to any linked repos. Run `yarn watch --help` for more info.
 
 **Note**: Linking a single package suffers the same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds), namely type definitions from other packages in the repo will be coerced to any. If this is a problem for you, you can instead follow the steps in [Linking a package that is a transitive dependency of another repo](#Linking-a-package-that-is-a-transitive-dependency-of-another-repo) which does a full repo build instead.
 
@@ -35,10 +40,15 @@ Run the following steps:
 
 ### B) Linking a package and all of its dependencies / Linking a package that is a transitive dependency
 
-#### Yarn link <repo> <pkg> + Bolt build + Bolt watch <pkg>
+#### Pre-requisites
 
-Linking a package and all of its dependencies, or linking a package that is only a transitive dependency, is a bit trickier to do in an efficient manner. This is because we need to know the direct dependencies of the target repo that the linked package is a transitive dependency of and link any intermediate dependencies.
-At the moment we don't have tooling to support linking transitive dependencies with reduced build times, so linking them will require a full build. We are looking into improving this in the future though by using [Typescript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html) to enable incremental builds across the entire repo.
+- You need to link a package that isn't directly imported from the target repo, e.g. usage of media-card inside editor-core, or a peer dependency, e.g. media-core.
+
+#### yarn link <repo> <pkg> + yarn build + yarn watch <pkg>
+
+Linking a package and all of its dependencies, or linking a package that is only a transitive dependency, is a bit trickier to do in an efficient manner. This is because we need to build all transitive dependencies of the linked package that is a direct dependency of the target repo.
+
+As a result, we need to do a full atlaskit project build. We are looking into improving this in the future though by using [Typescript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html) to enable incremental builds across the entire repo and allow building all of a packages dependencies.
 
 Run the following steps:
 
@@ -50,15 +60,15 @@ Run the following steps:
 
    E.g. `cd ../confluence-frontend && yarn link @atlaskit/editor-core`
 
-3. Run the full build if you haven't ran it already or it is out of date, otherwise you can skip: `bolt build`.
+3. Run the full build if you haven't ran it already or it is out of date, otherwise you can skip: `yarn build`.
 
-   To speed this up, you can specify that only a specific dist type is built with `bolt build --distType esm`.
+   To speed this up, you can specify that only a specific dist type is built with `yarn build --distType esm`.
 
-   Note that our packages expose their `d.ts` files through the `cjs` build, so if you only build `esm`, you will experience the same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds) and `link-ak` where certain types are coerced to `any`.
+   Note that our packages expose their `d.ts` files through the `cjs` build, so if you only build `esm`, you will experience the same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds) and `link-pkg` where certain types are coerced to `any`.
 
-4. Run the package you're working on in watch mode: `bolt watch <package>`
+4. Run the package you're working on in watch mode: `yarn watch <package>`
 
-   E.g. `bolt watch editor-core`
+   E.g. `yarn watch editor-core`
 
 **Note**: Be careful with specifying the 'cjs' distType. If you have already built the 'esm' dists, the product repo will most likely only be reading that, resulting in no changes being picked up.
 
@@ -85,17 +95,17 @@ We'll be able to make this easier in the future when we have Typescript Project 
 
 ### How do I clean or delete built packages?
 
-You can run the `bolt delete:build:artifacts` command to delete built package artifacts such as dist folders and entry point directories.
+You can run the `yarn delete:build:artifacts` command to delete built package artifacts such as dist folders and entry point directories.
 
 ## Troubleshooting
 
 [My watched changes are not triggering a recompile in the target repo](#not-recompiling)
 
-[There are a lot of errors being reported in bolt watch](#lots-of-errors)
+[There are a lot of errors being reported in yarn watch](#lots-of-errors)
 
 [Some transitive dependencies are out of date or causing me problems when using yarn link](#stale-deps)
 
-[My full repo bolt build fails when running with a single distType](#full-build-disttype)
+[My full repo yarn build fails when running with a single distType](#full-build-disttype)
 
 [My package's postbuild script is not re-running on build](#no-postbuild)
 
@@ -118,13 +128,13 @@ devServer: {
   },
 ```
 
-Secondly, make sure that you are building both dist types as part of your `bolt watch` command. If you build one dist type, you chance the risk that the target repo is reading from the other dist type if it already exists. This issue usually only presents itself when running `yarn link`.
+Secondly, make sure that you are building both dist types as part of your `yarn watch` command. If you build one dist type, you chance the risk that the target repo is reading from the other dist type if it already exists. This issue usually only presents itself when running `yarn link`.
 
-Finally, ensure you're `bolt watch`ing the right package. If you are not watching the package you linked, you'll need to make sure you're using the [transitive dependency option B](#option-b) method of linking using `yarn link` so that your transitive dependency changes are picked up.
+Finally, ensure you're `yarn watch`ing the right package. If you are not watching the package you linked, you'll need to make sure you're using the [transitive dependency option B](#option-b) method of linking using `yarn link` so that your transitive dependency changes are picked up.
 
 <a id="lots-of-errors"></a>
 
-### There are a lot of errors being reported in bolt watch
+### There are a lot of errors being reported in yarn watch
 
 This is a known issue related to the fact that we are building a single package in isolation. Other atlaskit package types are not built and so typescript reports 'module not found' errors. These just result in types being coerced to any where used, so shouldn't cause a problem in the target repo. See the caveat in same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds)
 
@@ -132,13 +142,13 @@ This is a known issue related to the fact that we are building a single package 
 
 ### Some transitive dependencies are out of date or failing in product when using yarn link
 
-If you haven't run a full `bolt build` in a while and are using `yarn link`, you run the risk of the transitive dependencies of your package becoming stale, which can cause build or runtime errors in the target repo.
+If you haven't run a full `yarn build` in a while and are using `yarn link`, you run the risk of the transitive dependencies of your package becoming stale, which can cause build or runtime errors in the target repo.
 
-If you know which packages are causing you problems you can run `bolt build <pkg>` to build the package individually. Alternatively, you can run the full build again to be certain that you are up to date.
+If you know which packages are causing you problems you can run `yarn build <pkg>` to build the package individually. Alternatively, you can run the full build again to be certain that you are up to date.
 
 <a id="full-build-disttype"></a>
 
-### My full repo bolt build fails when running with a single distType
+### My full repo yarn build fails when running with a single distType
 
 Postbuild scripts may rely on both dist types being built to succeed. These scripts will fail when building a single dist type. The solution is to fix the postbuild script to gracefully handle dist type folders not existing.
 We run a separate dist validation step at the end of the build to verify that these folders do exist with correct files, so this does not need to be done in postbuild scripts.
@@ -147,7 +157,7 @@ We run a separate dist validation step at the end of the build to verify that th
 
 ### My package's postbuild script is not re-running on build
 
-Currently, we only execute the postbuild script once as part of the initial build of a package. If you need this to run after each update, you'll need to manually run `bolt build <package>` after each change. If this is a problem for you, let us know.
+Currently, we only execute the postbuild script once as part of the initial build of a package. If you need this to run after each update, you'll need to manually run `yarn build <package>` after each change. If this is a problem for you, let us know.
 
 <a id="peer-dependencies"></a>
 

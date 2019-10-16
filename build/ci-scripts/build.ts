@@ -1,7 +1,7 @@
 /**
  * The canonical build script for Atlaskit.
  * See CONTRIBUTING.md#building-packages or
- * run `bolt build --help` for more information.
+ * run `yarn build --help` for more information.
  */
 import * as bolt from 'bolt';
 import chalk from 'chalk';
@@ -384,7 +384,7 @@ if (require.main === module) {
   const cli = meow(
     `
       Usage
-        $ bolt build [packageName]
+        $ build [packageName]
 
       where packageName is a long form (@atlaskit/my-pkg) or short form (my-pkg) name
 
@@ -393,9 +393,9 @@ if (require.main === module) {
         -w, --watch                   Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
 
       Examples
-        $ bolt build @atlaskit/button -w
-        $ bolt build editor-core --watch --distType cjs
-        $ bolt build -d cjs
+        $ build @atlaskit/button -w
+        $ build editor-core --watch --distType cjs
+        $ build -d cjs
   `,
     {
       description:

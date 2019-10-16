@@ -4,17 +4,17 @@ import * as bolt from 'bolt';
 import * as yalc from 'yalc';
 import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
 import runCommands from '@atlaskit/build-utils/runCommands';
-import linkAk from '../../link-ak';
+import linkPkg from '../../link-pkg';
 
 jest.enableAutomock();
 jest.mock('fs-extra');
-jest.unmock('../../link-ak');
+jest.unmock('../../link-pkg');
 jest.unmock('../../utils');
 
 const mockedFse: any = fse;
 const mockedBolt: any = bolt;
 
-describe('Link AK', () => {
+describe('Link Pkg', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     mockedBolt.getProject.mockImplementation(() => ({
@@ -38,7 +38,7 @@ describe('Link AK', () => {
 
   it('should run yalc publish in each package directory', async () => {
     const spy = jest.spyOn(yalc, 'publishPackage');
-    await linkAk('repo-foo', ['bar']);
+    await linkPkg('repo-foo', ['bar']);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith({
       workingDir: 'packages/bar',
@@ -48,7 +48,7 @@ describe('Link AK', () => {
 
   it('should run yalc add in the target repo after publishing', async () => {
     const spy = jest.spyOn(yalc, 'addPackages');
-    await linkAk('repo-foo', ['bar']);
+    await linkPkg('repo-foo', ['bar']);
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(['bar'], {
       workingDir: path.resolve('projects/repo-foo'),
@@ -58,7 +58,7 @@ describe('Link AK', () => {
   });
 
   it('should run npm to install transitive dependencies in standard repo', async () => {
-    await linkAk('repo-foo', ['bar']);
+    await linkPkg('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
     expect(runCommands).toHaveBeenCalledWith(
       [
@@ -77,7 +77,7 @@ describe('Link AK', () => {
     mockedFse.pathExists.mockImplementation((p: string) =>
       p.includes('yarn.lock'),
     );
-    await linkAk('repo-foo', ['bar']);
+    await linkPkg('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
     expect(runCommands).toHaveBeenCalledWith(
       [
@@ -97,7 +97,7 @@ describe('Link AK', () => {
       p.includes('yarn.lock'),
     );
     mockedFse.readJson.mockImplementation(() => ({ bolt: {} }));
-    await linkAk('repo-foo', ['bar']);
+    await linkPkg('repo-foo', ['bar']);
     expect(runCommands).toHaveBeenCalledTimes(1);
 
     expect(runCommands).toHaveBeenCalledWith(
@@ -131,7 +131,7 @@ describe('Link AK', () => {
     });
 
     it('should not run nvm commands when nvm option is false', async () => {
-      await linkAk('repo-foo', ['bar'], { nvm: false });
+      await linkPkg('repo-foo', ['bar'], { nvm: false });
       expect(runCommands).toHaveBeenCalledTimes(1);
       expect(runCommands).toHaveBeenCalledWith(
         [expect.stringMatching(/cd ".*\/projects\/repo-foo" && npm install/)],
@@ -148,7 +148,7 @@ describe('Link AK', () => {
       );
       mockedFse.readJson.mockImplementation(() => ({ bolt: {} }));
       const spy = jest.spyOn(yalc, 'addPackages');
-      await linkAk('repo-foo', ['bar']);
+      await linkPkg('repo-foo', ['bar']);
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenNthCalledWith(1, ['bar'], {
         workingDir: path.resolve('projects/repo-foo'),
@@ -169,7 +169,7 @@ describe('Link AK', () => {
         publishSpy.mockClear();
         addSpy.mockClear();
 
-        await linkAk('repo-foo', [name]);
+        await linkPkg('repo-foo', [name]);
         expect(publishSpy).toHaveBeenCalledTimes(1);
         expect(publishSpy).toHaveBeenCalledWith({ workingDir: 'packages/foo' });
 
@@ -191,7 +191,7 @@ describe('Link AK', () => {
       const publishSpy = jest.spyOn(yalc, 'publishPackage');
       const addSpy = jest.spyOn(yalc, 'addPackages');
 
-      await linkAk('repo-foo', ['foo', 'bar']);
+      await linkPkg('repo-foo', ['foo', 'bar']);
 
       expect(publishSpy).toHaveBeenCalledTimes(2);
       expect(publishSpy).toHaveBeenCalledWith({ workingDir: 'packages/foo' });
@@ -210,7 +210,7 @@ describe('Link AK', () => {
   describe('Validation', () => {
     it('should throw if no repo arg passed', async () => {
       // @ts-ignore
-      const check = async () => await linkAk();
+      const check = async () => await linkPkg();
 
       await expect(check()).rejects.toThrow(
         'Must specify repoPath and at least one package',
@@ -219,13 +219,13 @@ describe('Link AK', () => {
 
     it('should throw if no package arg passed', async () => {
       // @ts-ignore
-      const check = async () => await linkAk('repo-foo');
+      const check = async () => await linkPkg('repo-foo');
 
       await expect(check()).rejects.toThrow(
         'Must specify repoPath and at least one package',
       );
 
-      const checkAgain = async () => await linkAk('repo-foo', []);
+      const checkAgain = async () => await linkPkg('repo-foo', []);
 
       await expect(checkAgain()).rejects.toThrow(
         'Must specify repoPath and at least one package',
@@ -234,7 +234,7 @@ describe('Link AK', () => {
 
     it('should throw if invalid package name passed', async () => {
       const check = async () =>
-        await linkAk('repo-foo', ['package-name-does-not-exist']);
+        await linkPkg('repo-foo', ['package-name-does-not-exist']);
 
       await expect(check()).rejects.toThrow(
         'Could not find the following packages: package-name-does-not-exist\nProvide either full name (@atlaskit/foo) or unscoped name (foo).',

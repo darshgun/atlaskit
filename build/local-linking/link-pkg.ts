@@ -1,7 +1,7 @@
 /**
- * @file link-ak.ts
+ * @file link-pkg.ts
  *
- * Links packages to another repo
+ * Links packages to another repo via yalc
  */
 import * as bolt from 'bolt';
 import chalk from 'chalk';
@@ -159,18 +159,17 @@ if (require.main === module) {
   const cli = meow(
     `
     Usage
-        $ link-ak <repo> <package> [package2 ...]
+        $ link-pkg <repo> <package> [package2 ...]
 
       where <repo> is a path relative to the atlaskit repo's parent directory
       and packages are package names with scope optionally removed
 
       Options
-        --entry [package]    Not implemented - Links package(s) through the entry package
         --no-nvm             Disable using nvm when installing in <repo>
 
       Examples
-        $ link-ak confluence-frontend editor-core
-        $ link-ak confluence-frontend media-card --entry editor-core
+        $ link-pkg confluence-frontend editor-core
+        $ link-pkg confluence-frontend media-card --entry editor-core
 `,
     {
       flags: {

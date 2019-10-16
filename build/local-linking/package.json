@@ -6,7 +6,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "scripts": {
-    "link-ak": "ts-node link-ak.ts"
+    "link-pkg": "ts-node link-pkg.ts"
   },
   "dependencies": {
     "@atlaskit/build-utils": "^2.2.6",
