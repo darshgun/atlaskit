@@ -1,7 +1,9 @@
-import React, { forwardRef } from 'react';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import { forwardRef } from 'react';
 import { render } from '@testing-library/react';
-import FadeIn from '../../entering/fade-in';
 import { StaggeredEntrance } from '../../index';
+import { useStaggeredEntrance } from '../../entering/staggered-entrance';
 
 describe('<StaggeredEntrance />', () => {
   const firstGroupDelay = '0ms';
@@ -10,13 +12,32 @@ describe('<StaggeredEntrance />', () => {
   const fourthGroupDelay = '104ms';
   const fifthGroupDelay = '121ms';
 
-  const EnteringComponent = forwardRef(
-    ({ id, ...props }: { id: string }, ref) => (
-      <FadeIn {...props}>
-        {motion => <div ref={ref} data-testid={id} {...motion} />}
-      </FadeIn>
-    ),
-  );
+  interface BoundingBox {
+    offsetHeight: number;
+    offsetLeft: number;
+    offsetTop: number;
+    offsetWidth: number;
+  }
+
+  const EnteringComponent = forwardRef<
+    HTMLElement,
+    { id: string; box?: Partial<BoundingBox> }
+  >(({ id, box }) => {
+    const staggered = useStaggeredEntrance();
+    if (typeof staggered.ref === 'function') {
+      staggered.ref(box as HTMLElement);
+    }
+
+    return (
+      <div
+        ref={box ? null : staggered.ref}
+        css={{
+          animationDelay: `${staggered.delay}ms`,
+        }}
+        data-testid={id}
+      />
+    );
+  });
 
   it('should set a staggered duration for a list of elements', () => {
     const { getByTestId } = render(
@@ -163,25 +184,10 @@ describe('<StaggeredEntrance />', () => {
     );
   });
 
-  interface BoundingBox {
-    offsetHeight: number;
-    offsetLeft: number;
-    offsetTop: number;
-    offsetWidth: number;
-  }
-
-  const ListItem = forwardRef<
-    HTMLElement,
-    { id: string; box: Partial<BoundingBox> }
-  >(({ box, id, ...props }, ref) => {
-    if (typeof ref === 'function') ref(box as HTMLElement);
-    return <EnteringComponent {...props} id={id} />;
-  });
-
   it('should render with no delay when there is only one child element', () => {
     const { getByTestId } = render(
       <StaggeredEntrance>
-        <ListItem box={{ offsetTop: 0 }} id="first" />
+        <EnteringComponent box={{ offsetTop: 0 }} id="first" />
       </StaggeredEntrance>,
     );
 
@@ -194,9 +200,9 @@ describe('<StaggeredEntrance />', () => {
   it('should stagger over one column for a small viewport', () => {
     const { getByTestId } = render(
       <StaggeredEntrance>
-        <ListItem id="first" box={{ offsetTop: 0 }} />
-        <ListItem id="second" box={{ offsetTop: 50 }} />
-        <ListItem id="third" box={{ offsetTop: 100 }} />
+        <EnteringComponent id="first" box={{ offsetTop: 0 }} />
+        <EnteringComponent id="second" box={{ offsetTop: 50 }} />
+        <EnteringComponent id="third" box={{ offsetTop: 100 }} />
       </StaggeredEntrance>,
     );
 
@@ -217,9 +223,9 @@ describe('<StaggeredEntrance />', () => {
   it('should stagger over two columns for a medium viewport', () => {
     const { getByTestId } = render(
       <StaggeredEntrance>
-        <ListItem id="first" box={{ offsetTop: 0 }} />
-        <ListItem id="second" box={{ offsetTop: 0 }} />
-        <ListItem id="third" box={{ offsetTop: 50 }} />
+        <EnteringComponent id="first" box={{ offsetTop: 0 }} />
+        <EnteringComponent id="second" box={{ offsetTop: 0 }} />
+        <EnteringComponent id="third" box={{ offsetTop: 50 }} />
       </StaggeredEntrance>,
     );
 
@@ -240,9 +246,9 @@ describe('<StaggeredEntrance />', () => {
   it('should stagger over three columns for a large viewport', () => {
     const { getByTestId } = render(
       <StaggeredEntrance>
-        <ListItem id="first" box={{ offsetTop: 0 }} />
-        <ListItem id="second" box={{ offsetTop: 0 }} />
-        <ListItem id="third" box={{ offsetTop: 0 }} />
+        <EnteringComponent id="first" box={{ offsetTop: 0 }} />
+        <EnteringComponent id="second" box={{ offsetTop: 0 }} />
+        <EnteringComponent id="third" box={{ offsetTop: 0 }} />
       </StaggeredEntrance>,
     );
 
