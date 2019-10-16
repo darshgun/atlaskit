@@ -461,14 +461,8 @@ export class SmartMediaEditor extends React.Component<
   };
 
   renderEditor = (imageUrl: string) => {
-    const EditorViewWithAnalyticsContext = withAnalyticsContext({
-      attributes: {
-        annotated: this.state.hasBeenEdited,
-      },
-    })(EditorView);
-
     return (
-      <EditorViewWithAnalyticsContext
+      <EditorView
         imageUrl={imageUrl}
         onSave={this.onSave}
         onCancel={this.onCancel}
