@@ -43,9 +43,7 @@ type IPipelines = {
 function stripLogs(logs /*: string */, command /*: string */) {
   const logsMessage =
     logs.indexOf(command) >= 0 ? logs.split(command)[1] : logs;
-  const logsToSentry = `The build failed on this command: ${command} for these reasons: ${
-    logs.split(command)[1]
-  }`;
+  const logsToSentry = `The build failed on this command: ${command} for these reasons: ${logsMessage}`;
   return stripAnsi(logsToSentry);
 }
 /* This function computes build time if build.duration_in_seconds returns 0, it is often applicable for 1 step build.
