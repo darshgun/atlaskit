@@ -58,13 +58,13 @@ async function installDependencies(
   let installCmd = commands[repoType];
   let fullCommand = installCmd;
   if (opts.nvm) {
-    /* We need to unset environment variables set by yarn that conflict with nvm
-     * This occurs because we run this as a yarn script
+    /* We need to unset environment variables set by yarn that conflict with nvm since this is run as a yarn script.
      * We also deactivate nvm before running `nvm use` so that the nvm node version is
      * prepended to the start of path, which is required since yarn prepends its own
-     * node version that is then always used if we don't override it by reactivating
+     * node version that is then always used if we don't override it by reactivating.
+     * Finally we modify the NODE env var since some preinstall scripts use that to check version.
      */
-    fullCommand = `unset PREFIX && unset npm_config_prefix && source "$NVM_DIR/nvm.sh" && nvm deactivate && nvm use && ${fullCommand}`;
+    fullCommand = `unset PREFIX && unset \${!npm_@} && unset YARN_IGNORE_PATH && source "$NVM_DIR/nvm.sh" && nvm deactivate && nvm use && NODE="$NVM_BIN/node" ${fullCommand}`;
   }
   fullCommand = `cd "${repoPath}" && ${fullCommand}`;
   try {
@@ -148,10 +148,12 @@ Provide either full name (@atlaskit/foo) or unscoped name (foo).`,
   if (repoType === 'bolt') {
     /* Re-add the packages for bolt repos with pure set to false so that subsequent yalc pushes from
      * the build actually update node_modules */
+    const restoreConsoleLog = prefixConsoleLog(chalk.blue('Yalc:'));
     await yalc.addPackages(packageNames, {
       workingDir: resolvedRepoPath,
       pure: false,
     });
+    restoreConsoleLog();
   }
 }
 

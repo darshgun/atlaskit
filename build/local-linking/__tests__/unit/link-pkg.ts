@@ -63,7 +63,7 @@ describe('Link Pkg', () => {
     expect(runCommands).toHaveBeenCalledWith(
       [
         expect.stringMatching(
-          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && npm install/,
+          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset \${!npm_@} && unset YARN_IGNORE_PATH && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && NODE="\$NVM_BIN\/node" npm install/,
         ),
       ],
       {
@@ -82,7 +82,7 @@ describe('Link Pkg', () => {
     expect(runCommands).toHaveBeenCalledWith(
       [
         expect.stringMatching(
-          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && yarn/,
+          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset \${!npm_@} && unset YARN_IGNORE_PATH && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && NODE="\$NVM_BIN\/node" yarn/,
         ),
       ],
       {
@@ -103,7 +103,7 @@ describe('Link Pkg', () => {
     expect(runCommands).toHaveBeenCalledWith(
       [
         expect.stringMatching(
-          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset npm_config_prefix && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && bolt add bar@file:.yalc\/bar/,
+          /cd ".*\/projects\/repo-foo" && unset PREFIX && unset \${!npm_@} && unset YARN_IGNORE_PATH && source "\$NVM_DIR\/nvm.sh" && nvm deactivate && nvm use && NODE="\$NVM_BIN\/node" bolt add bar@file:.yalc\/bar/,
         ),
       ],
       {
