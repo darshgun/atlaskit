@@ -67,7 +67,27 @@ you can either rerun the full build or [build the individual packages](../../CON
 
 **Note**: This method uses native `yarn link`, you may experience problems with peer dependencies resolving to different locations depending on whether they are imported from within Atlaskit or the target repo, resulting in multiple instances of peer dependencies being instantiated. If that becomes a problem, you will have to try some of the solutions suggested here: https://stackoverflow.com/q/31169760/893630
 
-## Troubleshooting / FAQ
+## FAQ
+
+[How do I link multiple packages?](#link-multiple-packages)
+
+[How do I clean or delete built packages?](#clean-packages)
+
+<a id="link-multiple-packages"></a>
+
+### How do I link multiple packages?
+
+To link multiple packages, you'll need to run the linking steps individually for each package.
+
+We'll be able to make this easier in the future when we have Typescript Project References as we'll be able to run watch mode across the entire repo instead of having to run it for individual packages. We are also looking to add the ability to link multiple packages in an easy way, such as all changed packages in a branch, using changesets or accepting a list of packages.
+
+<a id="clean-packages"></a>
+
+### How do I clean or delete built packages?
+
+You can run the `bolt delete:build:artifacts` command to delete built package artifacts such as dist folders and entry point directories.
+
+## Troubleshooting
 
 [My watched changes are not triggering a recompile in the target repo](#not-recompiling)
 
@@ -79,7 +99,7 @@ you can either rerun the full build or [build the individual packages](../../CON
 
 [My package's postbuild script is not re-running on build](#no-postbuild)
 
-[How do I link multiple packages?](#link-multiple-packages)
+[Multiple instances of peer dependencies such as styled-components/react are causing issues](#peer-dependencies)
 
 <a id="not-recompiling"></a>
 
@@ -129,10 +149,19 @@ We run a separate dist validation step at the end of the build to verify that th
 
 Currently, we only execute the postbuild script once as part of the initial build of a package. If you need this to run after each update, you'll need to manually run `bolt build <package>` after each change. If this is a problem for you, let us know.
 
-<a id="link-multiple-packages"></a>
+<a id="peer-dependencies"></a>
 
-### How do I link multiple packages?
+### Multiple instances of peer dependencies such as styled-components/react are causing issues
 
-To link multiple packages, you'll need to run the linking steps individually for each package.
+This is one of the downsides to using the native `yarn link` method of linking. The problem arises because of node's module resolution resolving a peer dependency to two different places depending on whether it was imported inside the linked dependency or in the target repo.
 
-We'll be able to make this easier in the future when we have Typescript Project References as we'll be able to run watch mode across the entire repo instead of having to run it for individual packages. We are also looking to add the ability to link multiple packages in an easy way, such as all changed packages in a branch, using changesets or accepting a list of packages.
+This may not be a problem for all peer dependencies, e.g. react, as they should try to gracefully handle multiple instances running on the same page, but if they do cause issues then you can try solutions suggested here: https://stackoverflow.com/q/31169760/893630.
+
+The easiest approach would be linking the peer dependency from atlaskit to the target repo or vice versa.
+
+E.g.
+
+```sh
+confluence-frontend $ cd node_modules/styled-components && yarn link
+atlaskit $ yarn link styled-components
+```
