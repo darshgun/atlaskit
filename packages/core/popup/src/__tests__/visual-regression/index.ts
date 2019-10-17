@@ -1,6 +1,5 @@
 import {
   getExampleUrl,
-  compareScreenshot,
 } from '@atlaskit/visual-regression/helper';
 
 describe('Snapshot Test', () => {
