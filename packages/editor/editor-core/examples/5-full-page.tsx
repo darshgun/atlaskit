@@ -12,13 +12,19 @@ import {
   macroProvider,
   autoformattingProvider,
 } from '@atlaskit/editor-test-helpers';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import {
   Provider as SmartCardProvider,
   Client as SmartCardClient,
 } from '@atlaskit/smart-card';
-import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
+import {
+  mention,
+  emoji,
+  taskDecision,
+  profilecard as profilecardUtils,
+} from '@atlaskit/util-data-test';
 
 import Editor, { EditorProps, EditorAppearance } from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -34,6 +40,8 @@ import {
   LOCALSTORAGE_defaultMode,
 } from '../example-helpers/example-constants';
 import { ExampleInlineCommentComponent } from '@atlaskit/editor-test-helpers';
+import { ReactRenderer } from '@atlaskit/renderer';
+import { ProfileClient, modifyResponse } from '@atlaskit/profilecard';
 
 /**
  * +-------------------------------+
@@ -68,30 +76,33 @@ export const LOCALSTORAGE_defaultDocKey = 'fabric.editor.example.full-page';
 export const LOCALSTORAGE_defaultTitleKey =
   'fabric.editor.example.full-page.title';
 
+export const saveChanges = (props: {
+  editorActions?: EditorActions;
+  setMode?: (mode: boolean) => void;
+}) => () => {
+  if (!props.editorActions) {
+    return;
+  }
+
+  props.editorActions.getValue().then(value => {
+    // eslint-disable-next-line no-console
+    console.log(value);
+    localStorage.setItem(LOCALSTORAGE_defaultDocKey, JSON.stringify(value));
+    if (props.setMode) {
+      props.setMode(false);
+    }
+  });
+};
+
 export const SaveAndCancelButtons = (props: {
   editorActions?: EditorActions;
+  setMode?: (mode: boolean) => void;
 }) => (
   <ButtonGroup>
-    <Button
-      tabIndex={-1}
-      appearance="primary"
-      onClick={() => {
-        if (!props.editorActions) {
-          return;
-        }
-
-        props.editorActions.getValue().then(value => {
-          // eslint-disable-next-line no-console
-          console.log(value);
-          localStorage.setItem(
-            LOCALSTORAGE_defaultDocKey,
-            JSON.stringify(value),
-          );
-        });
-      }}
-    >
+    <Button tabIndex={-1} appearance="primary" onClick={saveChanges(props)}>
       Publish
     </Button>
+
     <Button
       tabIndex={-1}
       appearance="subtle"
@@ -147,6 +158,7 @@ export const getAppearance = (): EditorAppearance => {
 
 export interface ExampleProps {
   onTitleChange?: (title: string) => void;
+  setMode?: (isEditing: boolean) => void;
 }
 
 export class ExampleEditorComponent extends React.Component<
@@ -261,7 +273,10 @@ export class ExampleEditorComponent extends React.Component<
                 <WithEditorActions
                   key={1}
                   render={actions => (
-                    <SaveAndCancelButtons editorActions={actions} />
+                    <SaveAndCancelButtons
+                      editorActions={actions}
+                      setMode={this.props.setMode}
+                    />
                   )}
                 />,
               ]}
@@ -312,14 +327,108 @@ export class ExampleEditorComponent extends React.Component<
   };
 }
 
-export const ExampleEditor = withSentry<EditorProps>(ExampleEditorComponent);
+export const ExampleEditor = withSentry<EditorProps & ExampleProps>(
+  ExampleEditorComponent,
+);
+
+const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
+const MockProfileClient = getMockProfileClientUtil(
+  ProfileClient,
+  modifyResponse,
+);
+
+const mentionProvider = Promise.resolve({
+  shouldHighlightMention(mention: { id: string }) {
+    return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
+  },
+});
+
+const emojiProvider = emoji.storyData.getEmojiResource();
+
+const profilecardProvider = Promise.resolve({
+  cloudId: 'DUMMY-CLOUDID',
+  resourceClient: new MockProfileClient({
+    cacheSize: 10,
+    cacheMaxAge: 5000,
+  }),
+  getActions: (id: string) => {
+    const actions = [
+      {
+        label: 'Mention',
+        callback: () => console.log('profile-card:mention'),
+      },
+      {
+        label: 'Message',
+        callback: () => console.log('profile-card:message'),
+      },
+    ];
+
+    return id === '1' ? actions : actions.slice(0, 1);
+  },
+});
+
+const taskDecisionProvider = Promise.resolve(
+  taskDecision.getMockTaskDecisionResource(),
+);
+
+const contextIdentifierProvider = storyContextIdentifierProviderFactory();
+
+const providerFactory = ProviderFactory.create({
+  mentionProvider,
+  mediaProvider,
+  emojiProvider,
+  profilecardProvider,
+  taskDecisionProvider,
+  contextIdentifierProvider,
+});
+
+const Renderer = (props: {
+  document: any;
+  setMode: (mode: boolean) => void;
+}) => (
+  <div
+    style={{
+      margin: '30px 0',
+    }}
+  >
+    <Button
+      appearance="primary"
+      onClick={() => props.setMode(true)}
+      style={{
+        position: 'absolute',
+        right: '0',
+        margin: '0 20px',
+        zIndex: 100,
+      }}
+    >
+      Edit
+    </Button>
+    <ReactRenderer
+      allowHeadingAnchorLinks
+      adfStage="stage0"
+      dataProviders={providerFactory}
+      extensionHandlers={extensionHandlers}
+      document={props.document && JSON.parse(props.document)}
+      appearance="full-page"
+    />
+  </div>
+);
 
 export default function Example(props: EditorProps & ExampleProps) {
+  const [isEditingMode, setMode] = React.useState(true);
+  const document =
+    (localStorage && localStorage.getItem(LOCALSTORAGE_defaultDocKey)) ||
+    undefined;
+
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor {...props} />
+        {isEditingMode ? (
+          <ExampleEditor {...props} setMode={setMode} />
+        ) : (
+          <Renderer document={document} setMode={setMode} />
+        )}
       </div>
     </EditorContext>
   );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Drawer from '@atlaskit/drawer';
 import Button from '@atlaskit/button';
-import { mockEndpoints, REQUEST_MEDIUM } from './helpers/mock-endpoints';
+import { mockEndpoints } from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 
@@ -15,7 +15,7 @@ class SwitcherExample extends React.Component {
   }
 
   openDrawer = () => {
-    mockEndpoints('jira', originalMockData => originalMockData, REQUEST_MEDIUM);
+    mockEndpoints('jira');
 
     this.setState({
       isDrawerOpen: true,
