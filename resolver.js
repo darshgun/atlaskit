@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const resolveFrom = require('resolve-from');
 
-/* 
-These modules should not have their imports resolved differently 
+/*
+These modules should not have their imports resolved differently
 as their src is in root of the package.
 */
 const blockedFromMultiEntryPointsModuleList = [
@@ -25,7 +25,7 @@ const wpResolver = require('enhanced-resolve').ResolverFactory.createResolver({
   fileSystem: fs,
   useSyncFileSystemCalls: true,
   mainFields: ['atlaskit:src', 'browser', 'main'],
-  extensions: ['.js', '.ts', '.tsx'],
+  extensions: ['.js', '.ts', '.tsx', '.json'],
 });
 
 module.exports = function resolver(
@@ -40,7 +40,7 @@ module.exports = function resolver(
   }
 
   /*
-  The alternative entry files are only created at publish time. So for jest we resolve 
+  The alternative entry files are only created at publish time. So for jest we resolve
   import { N0 } from '@atlaskit/theme/colors'
   to
   import { N0 } from '@atlaskit/theme/src/colors'
