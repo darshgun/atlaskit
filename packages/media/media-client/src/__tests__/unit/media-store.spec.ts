@@ -831,7 +831,7 @@ describe('MediaStore', () => {
 
       it('should return file url', () => {
         expect(url).toEqual(
-          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&token=some-token`,
+          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&max-age=${FILE_CACHE_MAX_AGE}&token=some-token`,
         );
       });
 
@@ -856,7 +856,7 @@ describe('MediaStore', () => {
         );
 
         expect(url).toEqual(
-          `${baseUrl}/sd-video?client=some-client-id&collection=some-collection&token=some-token`,
+          `${baseUrl}/sd-video?client=some-client-id&collection=some-collection&max-age=${FILE_CACHE_MAX_AGE}&token=some-token`,
         );
       });
 
