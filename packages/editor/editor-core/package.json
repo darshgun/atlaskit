@@ -140,6 +140,7 @@
     "puppeteer": "1.17.0",
     "raf-stub": "^2.0.1",
     "react": "^16.8.0",
+    "react-test-renderer": "^16.8.0",
     "react-intl": "^2.6.0",
     "sinon": "^2.2.0"
   }
