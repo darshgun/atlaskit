@@ -23,7 +23,7 @@
     "@atlaskit/analytics-next": "^6.3.1",
     "@atlaskit/form": "^6.3.1",
     "@atlaskit/button": "^13.3.3",
-    "@atlaskit/help-article": "^0.6.0",
+    "@atlaskit/help-article": "^0.6.2",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/item": "^10.1.6",
     "@atlaskit/quick-search": "^7.8.1",
