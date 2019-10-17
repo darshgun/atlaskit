@@ -44,36 +44,28 @@ import type {
 
 const gridSize = gridSizeFn();
 const loadSwitcher = () =>
-  import(
-    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/switcher" */ '../components/presentational/Switcher'
-  );
+  import(/* webpackChunkName: "@atlaskit/navigation-next/async-chunk/switcher" */ '../components/presentational/Switcher');
 const LazySwitcher = Loadable({
   loader: loadSwitcher,
   loading: () => null,
 });
 
 const loadSortableContextComponent = () =>
-  import(
-    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-context-component" */ '../components/connected/SortableContext'
-  );
+  import(/* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-context-component" */ '../components/connected/SortableContext');
 const LazySortableContextComponent = Loadable({
   loader: loadSortableContextComponent,
   loading: () => null,
 });
 
 const loadSortableGroupComponent = () =>
-  import(
-    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-group-component" */ '../components/connected/SortableGroup'
-  );
+  import(/* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-group-component" */ '../components/connected/SortableGroup');
 export const LazySortableGroupComponent = Loadable({
   loader: loadSortableGroupComponent,
   loading: () => null,
 });
 
 const loadSortableItem = () =>
-  import(
-    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-item" */ '../components/connected/SortableItem'
-  );
+  import(/* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-item" */ '../components/connected/SortableItem');
 export const LazySortableItem = Loadable({
   loader: loadSortableItem,
   loading: () => null,

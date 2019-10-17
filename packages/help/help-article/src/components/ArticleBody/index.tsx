@@ -67,10 +67,13 @@ export const ArticleBody = (props: Props) => {
    * When the article changes, update the content of the iframe and
    * resize the iframe based on the new content
    */
-  useEffect(() => {
-    setIframeContent(iframeRef, props.body);
-    resizeIframe(iframeRef);
-  }, [props.body]);
+  useEffect(
+    () => {
+      setIframeContent(iframeRef, props.body);
+      resizeIframe(iframeRef);
+    },
+    [props.body],
+  );
 
   /**
    * When the window is resized, resize the iframe
