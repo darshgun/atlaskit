@@ -44,6 +44,13 @@ another line`;
     expect(transformer.parse(wiki)).toMatchSnapshot();
   });
 
+  test('should detect monospace mark with a table inside, but not render as a table', () => {
+    const wiki = '{{|this|is|a|table|}}';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
   test('should not be a monospace mark if there is a space after opening {{', () => {
     const wiki = 'This is not a {{ monospace}} text';
 

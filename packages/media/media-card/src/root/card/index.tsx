@@ -98,6 +98,7 @@ export class CardBase extends Component<
         this.cardRef.current &&
         this.cardRef.current.divRef.current instanceof Node &&
         selection &&
+        selection.containsNode &&
         selection.containsNode(this.cardRef.current.divRef.current, true)
       ) {
         this.fireAnalytics();

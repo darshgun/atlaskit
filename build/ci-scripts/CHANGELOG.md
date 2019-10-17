@@ -1,5 +1,13 @@
 # @atlaskit/ci-scripts
 
+## 1.0.7
+
+### Patch Changes
+
+- [patch][4156c2c34d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4156c2c34d):
+
+  Update build with better watch mode that will push changes to linked repos. Also single dist type build option.
+
 ## 1.0.6
 
 ### Patch Changes

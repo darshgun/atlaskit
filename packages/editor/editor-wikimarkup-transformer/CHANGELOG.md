@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.2
+
+### Patch Changes
+
+- [patch][e95f75250d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e95f75250d):
+
+  a bug where a | character at the start of a monospace would cause the parser to crash was fixed, but adding table token type to the ignorelist of the monospace parser.
+
 ## 4.5.1
 
 - Updated dependencies [1194ad5eb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1194ad5eb3):
