@@ -137,7 +137,7 @@ export class LocalUploadComponentReact<
 
   private fireCommencedEvent = (payload: UploadsStartEventPayload) => {
     payload.files.forEach(({ id, size, type }) => {
-      start(`MediaPicker:fireUpload:${id}`);
+      start(`MediaPicker.fireUpload.${id}`);
       this.createAndFireAnalyticsEvent({
         ...basePayload({ size, type }),
         action: 'commenced',
@@ -149,7 +149,7 @@ export class LocalUploadComponentReact<
   private fireUploadSucceeded = (payload: UploadEndEventPayload) => {
     const { size, type, id } = payload.file;
 
-    const { duration = -1 } = end(`MediaPicker:fireUpload:${id}`);
+    const { duration = -1 } = end(`MediaPicker.fireUpload.${id}`);
     this.createAndFireAnalyticsEvent({
       ...basePayload(
         { size, type },
@@ -166,7 +166,7 @@ export class LocalUploadComponentReact<
   private fireUploadFailed = (payload: UploadErrorEventPayload) => {
     const { size, type, id } = payload.file;
 
-    const { duration = -1 } = end(`MediaPicker:fireUpload:${id}`);
+    const { duration = -1 } = end(`MediaPicker.fireUpload.${id}`);
     this.createAndFireAnalyticsEvent({
       ...basePayload(
         { size, type },

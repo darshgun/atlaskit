@@ -255,7 +255,7 @@ export class SmartMediaEditor extends React.Component<
       occurrenceKey,
     };
 
-    start('MediaEditor:MediaAnnotation:Uploaded');
+    start('MediaEditor.MediaAnnotation.Uploaded');
 
     fireAnalyticsEvent(
       {
@@ -277,7 +277,7 @@ export class SmartMediaEditor extends React.Component<
             if (onFinish) {
               onFinish(newFileIdentifier);
             }
-            const { duration } = end('MediaEditor:MediaAnnotation:Uploaded');
+            const { duration } = end('MediaEditor.MediaAnnotation.Uploaded');
 
             fireAnalyticsEvent(
               {
@@ -313,7 +313,7 @@ export class SmartMediaEditor extends React.Component<
             0,
           );
 
-          const { duration } = end('MediaEditor:MediaAnnotation:Uploaded');
+          const { duration } = end('MediaEditor.MediaAnnotation.Uploaded');
           fireAnalyticsEvent(
             {
               eventType: 'track',

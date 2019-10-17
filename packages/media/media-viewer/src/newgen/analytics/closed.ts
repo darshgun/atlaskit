@@ -11,7 +11,7 @@ export interface CloseGasPayload extends GasPayload {
 }
 
 export function closedEvent(input: ClosedInputType): CloseGasPayload {
-  const { duration = 0 } = end('MediaViewer:SessionDuration');
+  const { duration = 0 } = end('MediaViewer.SessionDuration');
   return {
     eventType: 'ui',
     action: 'closed',

@@ -45,7 +45,7 @@ export class MediaViewerComponent extends React.Component<Props, {}> {
 
   UNSAFE_componentWillMount() {
     this.fireAnalytics(mediaViewerModalEvent());
-    start('MediaViewer:SessionDuration');
+    start('MediaViewer.SessionDuration');
   }
 
   onShortcutClosed = () => {
