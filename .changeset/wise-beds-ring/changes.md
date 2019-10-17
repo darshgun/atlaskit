@@ -1,1 +1,0 @@
-Updated dependency atlaskit/help-article
