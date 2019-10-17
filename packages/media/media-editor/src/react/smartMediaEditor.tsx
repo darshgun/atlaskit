@@ -36,6 +36,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
+import { start, end } from 'perf-marks';
 
 export const convertFileNameToPng = (fileName?: string) => {
   if (!fileName) {
@@ -253,7 +254,8 @@ export class SmartMediaEditor extends React.Component<
       mediaItemType: 'file',
       occurrenceKey,
     };
-    const timeStarted = Date.now();
+
+    start('MediaEditor.MediaAnnotation.Uploaded');
 
     fireAnalyticsEvent(
       {
@@ -275,6 +277,7 @@ export class SmartMediaEditor extends React.Component<
             if (onFinish) {
               onFinish(newFileIdentifier);
             }
+            const { duration } = end('MediaEditor.MediaAnnotation.Uploaded');
 
             fireAnalyticsEvent(
               {
@@ -288,7 +291,7 @@ export class SmartMediaEditor extends React.Component<
                   fileMediatype: fileState.mediaType,
                   fileMimetype: fileState.mimeType,
                   fileSize: fileState.size,
-                  uploadDurationMsec: Date.now() - timeStarted,
+                  uploadDurationMsec: duration,
                   annotated: hasBeenEdited,
                 },
               },
@@ -310,6 +313,7 @@ export class SmartMediaEditor extends React.Component<
             0,
           );
 
+          const { duration } = end('MediaEditor.MediaAnnotation.Uploaded');
           fireAnalyticsEvent(
             {
               eventType: 'track',
@@ -320,7 +324,7 @@ export class SmartMediaEditor extends React.Component<
                 status: 'fail',
                 failReason: formatMessage(messages.could_not_save_image),
                 fileStatus: fileState.status,
-                uploadDurationMsec: Date.now() - timeStarted,
+                uploadDurationMsec: duration,
                 annotated: hasBeenEdited,
               },
             },

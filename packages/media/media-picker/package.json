@@ -42,6 +42,7 @@
     "exenv": "^1.2.2",
     "filesize": "^3.2.1",
     "lodash.debounce": "^4.0.8",
+    "perf-marks": "^1.0.1",
     "postis": "^2.2.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2",
