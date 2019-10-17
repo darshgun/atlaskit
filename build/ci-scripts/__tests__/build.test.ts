@@ -19,8 +19,14 @@ jest.mock('../get.glob.packages.for.tools', () =>
 );
 
 describe('Build', () => {
-  let consoleErrorSpy: jest.SpyInstance<Console['error']>;
-  let consoleLogSpy: jest.SpyInstance<Console['log']>;
+  let consoleErrorSpy: jest.SpyInstance<
+    ReturnType<Console['error']>,
+    Parameters<Console['error']>
+  >;
+  let consoleLogSpy: jest.SpyInstance<
+    ReturnType<Console['log']>,
+    Parameters<Console['log']>
+  >;
 
   beforeAll(() => {
     // Comment out the mockImplementation to read console.logs for debugging

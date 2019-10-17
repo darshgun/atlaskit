@@ -22,8 +22,14 @@ async function cleanWatchProcesses() {
 
 describe('Build - Functional', () => {
   let tempDirPath: string;
-  let consoleErrorSpy: jest.SpyInstance<Console['error']>;
-  let consoleLogSpy: jest.SpyInstance<Console['log']>;
+  let consoleErrorSpy: jest.SpyInstance<
+    ReturnType<Console['error']>,
+    Parameters<Console['error']>
+  >;
+  let consoleLogSpy: jest.SpyInstance<
+    ReturnType<Console['log']>,
+    Parameters<Console['log']>
+  >;
   let fooDistPath: string;
   let barDistPath: string;
 

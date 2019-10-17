@@ -15,8 +15,14 @@ async function copyFixtureIntoDir(dir: string, fixtureName: string) {
 describe('Link Pkg integration', () => {
   let tempDirPath: string;
   let atlaskitPath: string;
-  let consoleErrorSpy: jest.SpyInstance<Console['error']>;
-  let consoleLogSpy: jest.SpyInstance<Console['log']>;
+  let consoleErrorSpy: jest.SpyInstance<
+    ReturnType<Console['error']>,
+    Parameters<Console['error']>
+  >;
+  let consoleLogSpy: jest.SpyInstance<
+    ReturnType<Console['log']>,
+    Parameters<Console['log']>
+  >;
 
   beforeEach(async () => {
     // Comment out the mockImplementation to read console.logs for debugging
