@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/ci-scripts",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": true,
   "description": "A collection of scripts for use in CI",
   "main": "index.js",
@@ -12,7 +12,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "@atlaskit/build-utils": "^2.2.7",
+    "@atlaskit/build-utils": "^2.3.0",
     "adf-builder": "^3.2.0",
     "axios": "^0.18.0",
     "bitbucket-build-status": "^1.1.0",
