@@ -9,7 +9,8 @@ import {
   ReactNodeViewState,
 } from '../plugins/base/pm-plugins/react-nodeview';
 
-export type getPosHandler = () => number;
+export type getPosHandler = getPosHandlerNode | boolean;
+export type getPosHandlerNode = () => number;
 export type ReactComponentProps = { [key: string]: unknown };
 export type ForwardRef = (node: HTMLElement | null) => void;
 export type shouldUpdate = (nextNode: PMNode) => boolean;
@@ -285,6 +286,9 @@ export class SelectionBasedNodeView<
    * expensive, unless you know you're definitely going to render.
    */
   private updatePos() {
+    if (typeof this.getPos === 'boolean') {
+      return;
+    }
     this.pos = this.getPos();
     this.posEnd = this.pos + this.node.nodeSize;
   }

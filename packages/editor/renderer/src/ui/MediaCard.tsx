@@ -23,10 +23,6 @@ import { MediaType } from '@atlaskit/adf-schema';
 import {
   withImageLoader,
   ImageStatus,
-  // @ts-ignore
-  ImageLoaderProps,
-  // @ts-ignore
-  ImageLoaderState,
   ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './Renderer/types';

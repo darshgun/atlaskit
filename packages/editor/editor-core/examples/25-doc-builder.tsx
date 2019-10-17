@@ -1,7 +1,5 @@
 import * as React from 'react';
-// @ts-ignore
 import prettier from 'prettier/standalone';
-// @ts-ignore
 import babylon from 'prettier/parser-babylon';
 
 import TextArea from '@atlaskit/textarea';

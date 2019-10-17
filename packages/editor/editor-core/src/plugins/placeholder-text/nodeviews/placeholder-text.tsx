@@ -1,15 +1,17 @@
 import { Node as PMNode, DOMSerializer } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { TextSelection } from 'prosemirror-state';
+import { getPosHandler } from '../../../nodeviews';
+import { getPosHandlerNode } from '../../../nodeviews/ReactNodeView';
 
 export default class PlaceholderTextNode {
   dom: HTMLElement | undefined;
   view: EditorView;
   getPos: () => number;
 
-  constructor(node: PMNode, view: EditorView, getPos: () => number) {
+  constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
     this.view = view;
-    this.getPos = getPos;
+    this.getPos = getPos as getPosHandlerNode;
     this.dom = DOMSerializer.renderSpec(document, node.type.spec.toDOM!(node))
       .dom as HTMLElement;
     // Using `onclick` rather than `addEventListener` due to ED-3728

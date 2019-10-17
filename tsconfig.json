@@ -59,6 +59,7 @@
     "./typings/pdfjs-dist.d.ts",
     "./typings/png-chunks-extract.d.ts",
     "./typings/postis.d.ts",
+    "./typings/prettier-nested-imports.d.ts",
     "./typings/pretty-data.d.ts",
     "./typings/prosemirror-dev-tools.d.ts",
     "./typings/prosemirror-markdown.d.ts",

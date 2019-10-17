@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
+import { HTMLAttributes, ComponentClass } from 'react';
 import { borderRadius } from '@atlaskit/theme';
 import { Wrapper as WrapperDefault } from '../styles';
 
