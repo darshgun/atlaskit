@@ -273,6 +273,8 @@ describe('<ExitingPersistence />', () => {
 
   it('should not remount other children when a child is persisted', () => {
     const UnmountCallback = (props: { onUnmount: () => void }) => {
+      // We only want this to fire on mount and never again.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       useEffect(() => () => props.onUnmount(), []);
       return <div />;
     };

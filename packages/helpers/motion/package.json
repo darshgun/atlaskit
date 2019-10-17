@@ -29,10 +29,13 @@
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/logo": "^12.1.8",
     "@atlaskit/section-message": "^4.0.12",
+    "@atlaskit/lozenge": "^9.0.7",
     "@atlaskit/theme": "^9.2.2",
+    "@atlaskit/tooltip": "^15.0.14",
     "@testing-library/react": "^8.0.1",
     "raf-stub": "^2.0.1",
-    "react-dom": "^16.8.0"
+    "react-dom": "^16.8.0",
+    "react-router-dom": "^4.2.2"
   },
   "keywords": [
     "atlaskit",

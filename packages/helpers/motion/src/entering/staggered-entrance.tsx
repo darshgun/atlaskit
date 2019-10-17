@@ -45,7 +45,7 @@ const StaggeredEntranceContext = createContext<
 
 export const useStaggeredEntrance = () => {
   // TODO: Rework for IE11 here.
-  const indentifier = Symbol();
+  const indentifier = Symbol('StaggeredEntranceId');
   const context = useContext(StaggeredEntranceContext);
   return context(indentifier);
 };

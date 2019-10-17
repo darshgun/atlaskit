@@ -34,14 +34,14 @@ export const fadeOutAnimation = () => ({
 interface FadeInProps extends EnteringMotionProps {
   /**
    * Duration in ms.
-   * How long the animation will take.
+   * How long the motion will take.
    * Defaults to `largeDurationMs`.
    */
   duration?: number;
 }
 
 /**
- * For a single element that needs a fade in entering animation.
+ * For a single element that needs a fade in entering motion.
  * This does not need Javascript to execute so it will run immediately for any SSR rendered React apps before the JS has executed.
  *
  * Will add a `className` to the direct child.
@@ -51,20 +51,20 @@ const FadeIn: React.FC<FadeInProps> = ({
   duration = largeDurationMs,
 }: FadeInProps) => {
   const staggered = useStaggeredEntrance();
-  const exiting = useExitingPersistence();
-  const delay = exiting.isExiting ? 0 : staggered.delay;
+  const { isExiting, onFinish } = useExitingPersistence();
+  const delay = isExiting ? 0 : staggered.delay;
 
   useEffect(
     () => {
       const timeoutId = setTimeout(() => {
-        exiting.onFinish && exiting.onFinish();
+        onFinish && onFinish();
       }, duration + delay);
 
       return () => {
         clearTimeout(timeoutId);
       };
     },
-    [exiting.onFinish, exiting.isExiting, delay],
+    [onFinish, isExiting, duration, delay],
   );
 
   return (
@@ -75,17 +75,17 @@ const FadeIn: React.FC<FadeInProps> = ({
             ref: staggered.ref,
             className: css({
               animationName: `${keyframes(
-                exiting.isExiting ? fadeOutAnimation() : fadeInAnimation(),
+                isExiting ? fadeOutAnimation() : fadeInAnimation(),
               )}`,
               animationTimingFunction: easeInOut,
               animationDelay: `${delay}ms`,
-              animationFillMode: exiting.isExiting ? 'forwards' : 'backwards',
+              animationFillMode: isExiting ? 'forwards' : 'backwards',
               animationDuration: `${duration}ms`,
               animationPlayState: staggered.isReady ? 'running' : 'paused',
               ...prefersReducedMotion(),
             }),
           },
-          exiting.isExiting ? 'exiting' : 'entering',
+          isExiting ? 'exiting' : 'entering',
         )
       }
     </ClassNames>
