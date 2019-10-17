@@ -1,41 +1,13 @@
 import { EventEmitter } from 'events';
 import { Step } from 'prosemirror-transform';
-import {
-  CollabEditProvider,
-  CollabEvent,
-} from '../src/plugins/collab-edit/provider';
 import { Transaction } from 'prosemirror-state';
-
-interface Participant {
-  sid: string;
-  name: string;
-  avatar: string;
-}
-
-const participants = {
-  rick: {
-    sid: 'rick',
-    name: 'Rick Sanchez',
-    avatar:
-      'https://pbs.twimg.com/profile_images/897250392022540288/W1T-QjML_400x400.jpg',
-  },
-  morty: {
-    sid: 'morty',
-    name: 'Morty Smith',
-    avatar:
-      'https://pbs.twimg.com/profile_images/685489227082129408/YhGfwW73_400x400.png',
-  },
-  summer: {
-    sid: 'sumsum',
-    name: 'Summer Smith',
-    avatar:
-      'https://pbs.twimg.com/profile_images/878646716328812544/dYdU_OKZ_400x400.jpg',
-  },
-};
+import { CollabEditProvider, CollabEvent } from '@atlaskit/editor-common';
+import { participants } from './user-profile';
+import { ParticipantData } from './types';
 
 const others = (sid: string) =>
   (Object.keys(participants) as Array<keyof typeof participants>).reduce<
-    Participant[]
+    ParticipantData[]
   >((all, id) => (id === sid ? all : all.concat(participants[id])), []);
 
 class Mediator extends EventEmitter {
@@ -194,4 +166,6 @@ const getCollabEditProviderFor = <T>(_participants: T) => (
   defaultDoc?: any,
 ) => Promise.resolve(new MockCollabEditProvider(mediator, sid, defaultDoc));
 
-export const collabEditProvider = getCollabEditProviderFor(participants);
+export const createMockCollabEditProvider = getCollabEditProviderFor(
+  participants,
+);

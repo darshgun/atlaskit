@@ -121,6 +121,7 @@
     "@atlaskit/renderer": "^51.1.1",
     "@atlaskit/section-message": "^4.0.12",
     "@atlaskit/share": "^0.6.10",
+    "@atlaskit/synchrony-test-helpers": "^1.0.0",
     "@atlaskit/textarea": "^2.2.1",
     "@atlaskit/toggle": "^8.1.1",
     "@atlaskit/user-picker": "^4.1.1",

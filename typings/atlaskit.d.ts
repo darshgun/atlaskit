@@ -50,6 +50,7 @@ declare module '@atlaskit/visual-regression/*';
 declare module '@atlaskit/webdriver-runner/wd-wrapper';
 declare module '@atlaskit/util-common-test';
 
+declare const SYNCHRONY_URL: string;
 declare const ENABLE_ANALYTICS_GASV3: string;
 declare const WEBSITE_ENV: string;
 declare const DEFAULT_META_DESCRIPTION: string;
