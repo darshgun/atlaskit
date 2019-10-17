@@ -15,7 +15,7 @@ import {
 
 import Avatars from '../../../../../plugins/collab-edit/ui/avatars';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
-import { createMockCollabEditProvider } from '@atlaskit/synchrony-test-helpers/src/mock-collab-provider';
+import { createMockCollabEditProvider } from '@atlaskit/synchrony-test-helpers';
 
 describe('collab-edit | Avatars', () => {
   const createEditor = createEditorFactory<PluginState>();
