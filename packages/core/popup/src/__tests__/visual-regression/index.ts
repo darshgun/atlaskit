@@ -49,7 +49,7 @@ describe('Snapshot Test', () => {
     await page.click(button);
     await page.waitForSelector(spinner);
     const image = await page.screenshot();
-    await compareScreenshot(image, 0.7, { useUnsafeThreshold: true });
+    expect(image).toMatchProdImageSnapshot();
 
     await page.waitForSelector(popup);
     const imageWithContent = await page.screenshot();
