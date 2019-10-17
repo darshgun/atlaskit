@@ -1,6 +1,4 @@
-import {
-  getExampleUrl,
-} from '@atlaskit/visual-regression/helper';
+import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 
 describe('Snapshot Test', () => {
   it('it should match visual snapshot for popup', async () => {
