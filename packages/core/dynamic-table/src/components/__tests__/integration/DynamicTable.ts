@@ -7,6 +7,14 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 const urlDynamicTable = getExampleUrl('core', 'dynamic-table', 'testing');
 
 /* Css selectors used for the test */
+const table = "[data-testid='the-table--table']";
+const tableHead = "[data-testid='the-table--table']";
+const tableHeadCell = "[data-testid='the-table--head--cell']";
+const tableHeadName = `${tableHeadCell}:nth-child(1)`;
+const tableHeadParty = `${tableHeadCell}:nth-child(2)`;
+const tableHeadTerm = `${tableHeadCell}:nth-child(3)`;
+const tableHeadComment = `${tableHeadCell}:nth-child(4)`;
+// Add table row and cell
 // const dynamicTableBtn = "[data-testid='the-button-for-dynamic-table']";
 // const dynamicTableTestId = "[data-testid='the-dynamic-table']";
 
