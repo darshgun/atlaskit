@@ -1,5 +1,13 @@
 # @atlaskit/smart-card
 
+## 12.5.10
+
+### Patch Changes
+
+- [patch][666464508d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/666464508d):
+
+  handle undefined meta
+
 ## 12.5.9
 
 - Updated dependencies [f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):
