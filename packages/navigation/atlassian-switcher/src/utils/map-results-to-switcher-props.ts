@@ -6,6 +6,7 @@ import {
   getProvisionedProducts,
   getRecentLinkItems,
   getSuggestedProductLink,
+  getDiscoverSectionLinks,
   SwitcherItemType,
 } from './links';
 import {
@@ -46,6 +47,7 @@ function collectSuggestedLinks(
   userSiteData: ProviderResult<UserSiteDataResponse>,
   productRecommendations: ProviderResults['productRecommendations'],
   isXFlowEnabled: ProviderResults['isXFlowEnabled'],
+  isDiscoverSectionEnabled?: boolean,
 ) {
   if (isError(isXFlowEnabled) || isError(userSiteData)) {
     return [];
@@ -59,6 +61,7 @@ function collectSuggestedLinks(
       ? getSuggestedProductLink(
           userSiteData.data.provisionedProducts,
           productRecommendations.data,
+          isDiscoverSectionEnabled,
         )
       : [];
   }
@@ -78,6 +81,7 @@ function collectAdminLinks(
   isDiscoverMoreForEveryoneEnabled: boolean,
   isEmceeLinkEnabled: boolean,
   product?: Product,
+  isDiscoverSectionEnabled?: boolean,
 ) {
   if (isError(managePermission) || isError(addProductsPermission)) {
     return [];
@@ -90,6 +94,7 @@ function collectAdminLinks(
         isDiscoverMoreForEveryoneEnabled,
         isEmceeLinkEnabled,
         product,
+        isDiscoverSectionEnabled,
       );
     }
 
@@ -146,17 +151,21 @@ interface ProviderResults {
 function asUserSiteDataProviderResult(
   availableProductsProvider: ProviderResult<AvailableProductsResponse>,
   cloudId: string | null | undefined,
+  product: Product | null | undefined,
 ): ProviderResult<UserSiteDataResponse> {
   switch (availableProductsProvider.status) {
     case Status.LOADING: // intentional fallthrough
     case Status.ERROR:
       return availableProductsProvider;
     case Status.COMPLETE:
-      const site =
-        cloudId &&
-        availableProductsProvider.data.sites.find(
-          site => site.cloudId === cloudId,
-        );
+      const site = availableProductsProvider.data.sites.find(
+        site =>
+          (cloudId && site.cloudId === cloudId) ||
+          (product &&
+            product === Product.BITBUCKET &&
+            site.cloudId === Product.BITBUCKET),
+      );
+
       if (!site) {
         return {
           status: Status.ERROR,
@@ -198,13 +207,22 @@ export function mapResultsToSwitcherProps(
     recentContainers,
     productRecommendations,
   } = results;
-  const userSiteData = asUserSiteDataProviderResult(availableProducts, cloudId);
+  const userSiteData = asUserSiteDataProviderResult(
+    availableProducts,
+    cloudId,
+    product,
+  );
   const hasLoadedAvailableProducts = hasLoaded(availableProducts);
   const hasLoadedAdminLinks =
     hasLoaded(managePermission) && hasLoaded(addProductsPermission);
   const hasLoadedSuggestedProducts = features.xflow
     ? hasLoaded(productRecommendations) && hasLoaded(isXFlowEnabled)
     : true;
+  const hasLoadedDiscoverSection =
+    features.isDiscoverSectionEnabled &&
+    hasLoadedAvailableProducts &&
+    hasLoadedSuggestedProducts &&
+    hasLoadedAdminLinks;
 
   return {
     licensedProductLinks: collect(
@@ -217,14 +235,17 @@ export function mapResultsToSwitcherProps(
             userSiteData,
             productRecommendations,
             isXFlowEnabled,
+            features.isDiscoverSectionEnabled,
           ),
           [],
         )
       : [],
-    fixedLinks: collect(
-      collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
-      [],
-    ),
+    fixedLinks: !features.isDiscoverSectionEnabled
+      ? collect(
+          collectFixedProductLinks(features.isDiscoverMoreForEveryoneEnabled),
+          [],
+        )
+      : [],
     adminLinks: collect(
       collectAdminLinks(
         managePermission,
@@ -232,6 +253,7 @@ export function mapResultsToSwitcherProps(
         features.isDiscoverMoreForEveryoneEnabled,
         features.isEmceeLinkEnabled,
         product,
+        features.isDiscoverSectionEnabled,
       ),
       [],
     ),
@@ -241,11 +263,21 @@ export function mapResultsToSwitcherProps(
     ),
     customLinks: collect(collectCustomLinks(customLinks, userSiteData), []),
 
-    showManageLink: collect(collectCanManageLinks(managePermission), false),
+    showManageLink:
+      !features.disableCustomLinks &&
+      collect(collectCanManageLinks(managePermission), false),
     hasLoaded:
       hasLoadedAvailableProducts &&
       hasLoadedAdminLinks &&
       hasLoadedSuggestedProducts,
     hasLoadedCritical: hasLoadedAvailableProducts,
+    discoverSectionLinks: hasLoadedDiscoverSection
+      ? getDiscoverSectionLinks({
+          product,
+          isDiscoverMoreForEveryoneEnabled:
+            features.isDiscoverMoreForEveryoneEnabled,
+          isEmceeLinkEnabled: features.isEmceeLinkEnabled,
+        })
+      : [],
   };
 }

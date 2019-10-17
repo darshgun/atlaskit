@@ -54,7 +54,10 @@ describe('ADF => WikiMarkup - List', () => {
 
   test('should convert codeblock node', () => {
     const node = doc(
-      ul(li(p('item 1')), li(p('item 2'), code_block()('const i = 0;'))),
+      ul(
+        li(p('item 1')),
+        li(p('item 2'), code_block({ language: 'javascript' })('const i = 0;')),
+      ),
     )(defaultSchema);
     expect(transformer.encode(node)).toMatchSnapshot();
   });

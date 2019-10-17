@@ -21,11 +21,13 @@ let cli = meow(
         --packages Comma separated list of packages to install from commit. All meaning all that are installed in the target package.json [Default: all]
         --timeout Maximum time to wait (in ms) for a manifest to be published for a commit [Default: 20000]
         --interval How long to wait (in ms) between retries when looking for packages manifest [Default: 5000]
+        '--' Any arguments following '--' will be appended to the install command
 
       Examples
         $ yarn atlaskit-branch-installer 6ce63f22816e --verbose
         $ yarn atlaskit-branch-installer 6ce63f22816e --packages=@atlaskit/avatar,@atlaskit/editor-core
         $ yarn atlaskit-branch-installer 6ce63f22816e --timeout=180000 --interval=10000 --engine=bolt --cmd=upgrade
+        $ yarn atlaskit-branch-installer 6ce63f22816e --cmd add -- --force --update-checksums
 `,
   {
     flags: {
@@ -65,10 +67,15 @@ let cli = meow(
 const input = cli.input[0] || '';
 const commitHash = input.substr(0, 12);
 
-const errors = validateOptions(commitHash, { ...cli.flags });
+const options = { ...cli.flags, extraArgs: cli.input.slice(1) };
+
+const errors = validateOptions(commitHash, options);
 
 if (errors.length === 0) {
-  _installFromCommit(commitHash, cli.flags).catch(e => process.exit(1));
+  _installFromCommit(commitHash, options).catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
 } else {
   console.error(chalk.red(errors.join('\n')));
   cli.showHelp();

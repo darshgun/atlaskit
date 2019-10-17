@@ -149,6 +149,24 @@ red
 red
 {panEl}`,
     ],
+    [
+      '[CS-1470] noformat macro converts to code node with no language',
+      `{noformat}preformatted
+text
+with
+linebreaks{noformat}`,
+    ],
+    [
+      '[CS-1470] code macro converts to code node with xml language',
+      `{code:xml}<test attr='value'><nested/></test>{code}`,
+    ],
+    [
+      '[CS-1470] code macro converts to code node with java language',
+      `{code:java}
+      public static main(String test) {
+        System.out.print("test");
+     }{code}`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

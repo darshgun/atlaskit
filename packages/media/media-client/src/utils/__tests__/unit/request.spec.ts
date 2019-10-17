@@ -24,27 +24,35 @@ describe('request', () => {
     });
   });
 
-  it('should call fetch with auth query parameters given GET request and client based auth', () => {
+  it('should call fetch with auth header given GET request and client based auth', () => {
     return request(url, {
       method: 'GET',
       auth: { clientId, token, baseUrl },
     }).then(() => {
-      expect(fetchMock.lastUrl()).toEqual(
-        `${url}?client=${clientId}&token=${token}`,
-      );
-      expect(fetchMock.lastOptions()).toEqual({ method: 'GET' });
+      expect(fetchMock.lastUrl()).toEqual(`${url}`);
+      expect(fetchMock.lastOptions()).toEqual({
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer some-token',
+          'X-Client-Id': 'some-client-id',
+        },
+      });
     });
   });
 
-  it('should call fetch with auth query parameters given GET request and asap based auth', () => {
+  it('should call fetch with auth header given GET request and asap based auth', () => {
     return request(url, {
       method: 'GET',
       auth: { asapIssuer, token, baseUrl },
     }).then(() => {
-      expect(fetchMock.lastUrl()).toEqual(
-        `${url}?issuer=${asapIssuer}&token=${token}`,
-      );
-      expect(fetchMock.lastOptions()).toEqual({ method: 'GET' });
+      expect(fetchMock.lastUrl()).toEqual(`${url}`);
+      expect(fetchMock.lastOptions()).toEqual({
+        method: 'GET',
+        headers: {
+          'X-Issuer': asapIssuer,
+          Authorization: `Bearer ${token}`,
+        },
+      });
     });
   });
 
@@ -86,10 +94,9 @@ describe('request', () => {
       status: 400,
       body: 'There was a problem',
     });
-    return request(url).then(throwExpectedToFail, (response: Response) => {
-      return response.text().then(responseText => {
-        expect(responseText).toEqual('There was a problem');
-      });
+    return request(url).then(throwExpectedToFail, (error: Error) => {
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toEqual('network error 400: There was a problem');
     });
   });
 

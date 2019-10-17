@@ -1,10 +1,17 @@
 import * as React from 'react';
 import { BrowserProps } from './browser';
 import { WithMediaClientConfigProps } from '@atlaskit/media-client';
+import { BrowserConfig } from '../types';
 
 type BrowserWithMediaClientConfigProps = WithMediaClientConfigProps<
-  BrowserProps
+  // BrowserBase defines config default value, which modifies final shape of BrowserBase component.
+  // Specifically this changes one of the props - config, it makes it an optional property.
+  // We want BrowserWithMediaClientConfigProps to match this modified props of BrowserBase here.
+  Omit<BrowserProps, 'config'> & {
+    config?: BrowserConfig;
+  }
 >;
+
 type BrowserWithMediaClientConfigComponent = React.ComponentType<
   BrowserWithMediaClientConfigProps
 >;

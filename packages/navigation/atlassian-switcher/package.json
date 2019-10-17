@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/atlassian-switcher",
-  "version": "4.4.0",
+  "version": "4.6.4",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -9,7 +9,9 @@
   "sideEffects": false,
   "scripts": {
     "i18n:push": "i18n-tools push --resource atlassian-switcher . --type ts",
-    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource atlassian-switcher . --type ts"
+    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource atlassian-switcher . --type ts",
+    "lint": "(cd ../../.. && yarn eslint 'packages/navigation/atlassian-switcher/**/*.{ts,tsx,ts}')",
+    "typecheck": "NODE_OPTIONS=--max-old-space-size=4096 tsc --noEmit --project ./tsconfig.json"
   },
   "author": "Atlassian Pty Ltd",
   "description": "App switcher component for Atlassian products.",
@@ -41,6 +43,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "@atlaskit/atlassian-switcher-test-utils": "^0.0.1",
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/drawer": "^5.0.13",
     "@atlaskit/field-text": "^9.0.13",

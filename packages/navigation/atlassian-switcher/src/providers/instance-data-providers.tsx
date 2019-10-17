@@ -90,7 +90,7 @@ export const XFlowSettingsProvider = withHandleOptionalCloudId(
     fetchXflowSettings,
     fetchXflowSettings.cached,
   ),
-  false,
+  true,
 );
 
 export const prefetchAll = ({ cloudId }: WithCloudId) => {

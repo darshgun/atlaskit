@@ -43,7 +43,7 @@ type IPipelines = {
 function stripLogs(logs /*: string */, command /*: string */) {
   if (logs.indexOf(command) >= 0) {
     /* All the logs for testing contain `Summary of all failing tests`.*/
-    const logsToSentry = `The build failed on this command: ${command} for this reasons: ${logs}`;
+    const logsToSentry = `The build failed on this command: ${command} for these reasons: ${logs}`;
     return stripAnsi(logsToSentry);
   }
 }
@@ -275,7 +275,7 @@ async function getStepEvents(buildId /*: string*/) {
         buildId,
         stepObject.uuid,
         buildStatus,
-        stepObject.script_commands[stepObject.script_commands.length - 2]
+        stepObject.script_commands[stepObject.script_commands.length - 1]
           .command,
       );
       // Build type and build name are confused for custom build.

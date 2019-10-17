@@ -21,7 +21,7 @@ const label = 'label';
 
 BrowserTestCase(
   'The edit button should have focus after edit is confirmed by pressing Enter',
-  { skip: [] },
+  {},
   async (client: any) => {
     const inlineEditTest = new Page(client);
     await inlineEditTest.goto(inlineEditExampleUrl);
@@ -42,7 +42,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'The edit button should not have focus after edit is confirmed by clicking on the confirm button',
-  { skip: [] },
+  {},
   async (client: any) => {
     const inlineEditTest = new Page(client);
     await inlineEditTest.goto(inlineEditExampleUrl);
@@ -63,7 +63,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'The edit button should not have focus after edit is confirmed by pressing Enter, if edit view entered by mouse click',
-  { skip: [] },
+  {},
   async (client: any) => {
     const inlineEditTest = new Page(client);
     await inlineEditTest.goto(inlineEditExampleUrl);
@@ -82,7 +82,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'The edit view should remain open when tab is pressed in the input and when tab is pressed on the confirm button',
-  { skip: [] },
+  {},
   async (client: any) => {
     const inlineEditTest = new Page(client);
     await inlineEditTest.goto(inlineEditExampleUrl);
@@ -107,7 +107,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'An error message is displayed correctly',
-  { skip: [] },
+  {},
   async (client: any) => {
     const inlineEditTest = new Page(client);
     await inlineEditTest.goto(validationExampleUrl);

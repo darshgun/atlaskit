@@ -17,10 +17,16 @@ export default {
   'fabric.atlassianSwitcher.people': 'Pessoas',
   'fabric.atlassianSwitcher.administration': 'Administração',
   'fabric.atlassianSwitcher.discoverMore': 'Descobrir mais',
+  'fabric.atlassianSwitcher.browseApps': 'Procurar aplicações do Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Ocorreu um erro',
   'fabric.atlassianSwitcher.errorText':
     'Temos conhecimento destes erros, mas contacte-nos se atualizar a página não solucionar o problema.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Um problema e várias pessoas a tentar corrigi-lo.',
-  'fabric.atlassianSwitcher.expand': 'Expandir',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Não foi possível carregar esta lista. Recarregue a página e tente novamente.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'A sua sessão foi encerrada. Inicie sessão novamente.',
+  'fabric.atlassianSwitcher.login': 'Iniciar sessão',
+  'fabric.atlassianSwitcher.show.more.sites': 'Mostrar mais sites',
 };

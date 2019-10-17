@@ -43,24 +43,31 @@ const PopupContent: FC<PopupProps> = ({
   position,
   setButtonWidth,
   buttonWidth,
+  scheduleUpdate,
 }) => {
   const [content, setContent] = useState(
     'Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. ',
   );
   const addContent = () => {
     setContent(`${content}Lorem Ipsum dolor sit amet. `);
+
+    // Reposition the popup
+    typeof scheduleUpdate === 'function' && scheduleUpdate();
   };
 
   const clearContent = () => {
     setContent('');
+
+    // Reposition the popup
+    typeof scheduleUpdate === 'function' && scheduleUpdate();
   };
 
   return loading ? (
-    <div css={spinnerContainerCSS}>
+    <div id="spinner" css={spinnerContainerCSS}>
       <Spinner size="large" />
     </div>
   ) : (
-    <div css={contentCSS}>
+    <div id="popup-content" css={contentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
       <p>
         Current position: <strong>{position}</strong>
@@ -112,7 +119,6 @@ export default () => {
     },
     [isOpen],
   );
-
   const position = positions[idx];
 
   const setPosition = () => {
@@ -128,17 +134,22 @@ export default () => {
       <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        content={() => (
+        content={({ scheduleUpdate }) => (
           <PopupContent
             loading={!isLoaded}
             setPosition={setPosition}
             position={position}
             setButtonWidth={setButtonWidth}
             buttonWidth={buttonWidth}
+            scheduleUpdate={scheduleUpdate}
           />
         )}
         trigger={triggerProps => (
-          <Button {...triggerProps} onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            id="popup-trigger"
+            {...triggerProps}
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {isOpen ? 'Close' : 'Open'} Popup{' '}
             <div css={expanderCSS({ width: buttonWidth })} />
           </Button>
