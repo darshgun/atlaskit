@@ -6,7 +6,6 @@ import {
 } from '@atlaskit/media-core';
 import {
   MediaFile,
-  MediaCollection,
   MediaCollectionItems,
   MediaUpload,
   MediaChunksProbe,
@@ -53,28 +52,6 @@ const jsonHeaders = {
 
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
-
-  createCollection(
-    collectionName: string,
-  ): Promise<MediaStoreResponse<MediaCollection>> {
-    return this.request('/collection', {
-      method: 'POST',
-      body: JSON.stringify({ name: collectionName }),
-      authContext: { collectionName },
-      headers: jsonHeaders,
-    }).then(mapResponseToJson);
-  }
-
-  getCollection(
-    collectionName: string,
-  ): Promise<MediaStoreResponse<MediaCollection>> {
-    return this.request(`/collection/${collectionName}`, {
-      authContext: { collectionName },
-      headers: {
-        Accept: 'application/json',
-      },
-    }).then(mapResponseToJson);
-  }
 
   async getCollectionItems(
     collectionName: string,

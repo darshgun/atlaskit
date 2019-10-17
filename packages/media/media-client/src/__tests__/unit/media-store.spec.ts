@@ -9,7 +9,6 @@ import {
   MediaUpload,
   MediaChunksProbe,
   MediaFile,
-  MediaCollection,
   MediaCollectionItems,
   MediaStoreGetFileParams,
   ItemsPayload,
@@ -279,72 +278,6 @@ describe('MediaStore', () => {
             },
             body: JSON.stringify(body),
           });
-        });
-      });
-    });
-
-    describe('createCollection', () => {
-      it('should POST to /collection endpoint with correct options', () => {
-        const collectionName = 'some-collection-name';
-        const data: MediaCollection = {
-          name: collectionName,
-          createdAt: Date.now(),
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/collection`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore.createCollection(collectionName).then(response => {
-          expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(`${baseUrl}/collection`);
-          expect(fetchMock.lastOptions()).toEqual({
-            method: 'POST',
-            headers: {
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({ name: collectionName }),
-          });
-          expect(authProvider).toHaveBeenCalledWith({ collectionName });
-        });
-      });
-    });
-
-    describe('getCollection', () => {
-      it('should GET to /collection/{collectionName} endpoint with correct options', () => {
-        const collectionName = 'some-collection-name';
-        const data: MediaCollection = {
-          name: collectionName,
-          createdAt: Date.now(),
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/collection/${collectionName}`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore.getCollection(collectionName).then(response => {
-          expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(
-            `${baseUrl}/collection/${collectionName}`,
-          );
-          expect(fetchMock.lastOptions()).toEqual({
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          expect(authProvider).toHaveBeenCalledWith({ collectionName });
         });
       });
     });
