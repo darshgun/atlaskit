@@ -6,6 +6,7 @@ import React, {
   type ElementConfig,
   type Node,
 } from 'react';
+import Loadable from 'react-loadable';
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 
 import { navigationItemClicked } from '../common/analytics';
@@ -20,15 +21,11 @@ import MenuSectionComponent from '../components/presentational/MenuSection';
 import SectionComponent from '../components/presentational/Section';
 import SectionHeadingComponent from '../components/presentational/SectionHeading';
 import Separator from '../components/presentational/Separator';
-import Switcher from '../components/presentational/Switcher';
 import Wordmark from '../components/presentational/Wordmark';
 
 import BackItem from '../components/connected/BackItem';
 import ConnectedItem from '../components/connected/ConnectedItem';
 import GoToItem from '../components/connected/GoToItem';
-import SortableContextComponent from '../components/connected/SortableContext';
-import SortableGroupComponent from '../components/connected/SortableGroup';
-import SortableItem from '../components/connected/SortableItem';
 
 import type {
   CustomComponents,
@@ -46,7 +43,41 @@ import type {
 } from './types';
 
 const gridSize = gridSizeFn();
+const loadSwitcher = () =>
+  import(
+    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/switcher" */ '../components/presentational/Switcher'
+  );
+const LazySwitcher = Loadable({
+  loader: loadSwitcher,
+  loading: () => null,
+});
 
+const loadSortableContextComponent = () =>
+  import(
+    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-context-component" */ '../components/connected/SortableContext'
+  );
+const LazySortableContextComponent = Loadable({
+  loader: loadSortableContextComponent,
+  loading: () => null,
+});
+
+const loadSortableGroupComponent = () =>
+  import(
+    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-group-component" */ '../components/connected/SortableGroup'
+  );
+export const LazySortableGroupComponent = Loadable({
+  loader: loadSortableGroupComponent,
+  loading: () => null,
+});
+
+const loadSortableItem = () =>
+  import(
+    /* webpackChunkName: "@atlaskit/navigation-next/async-chunk/sortable-item" */ '../components/connected/SortableItem'
+  );
+export const LazySortableItem = Loadable({
+  loader: loadSortableItem,
+  loading: () => null,
+});
 /**
  * ITEMS
  */
@@ -111,7 +142,7 @@ const SortableGroup = <T: TypeShape>({
   id,
 }: SortableGroupProps<T>) =>
   items && items.length ? (
-    <SortableGroupComponent
+    <LazySortableGroupComponent
       heading={heading}
       hasSeparator={hasSeparator}
       id={id}
@@ -119,7 +150,7 @@ const SortableGroup = <T: TypeShape>({
       <RenderBlocker items={items} customComponents={customComponents}>
         <TypedItemsRenderer items={items} customComponents={customComponents} />
       </RenderBlocker>
-    </SortableGroupComponent>
+    </LazySortableGroupComponent>
   ) : null;
 
 // Section
@@ -201,14 +232,14 @@ const SortableContext = <T: TypeShape>({
   onDragEnd,
 }: SortableContextProps<T>) =>
   items && items.length ? (
-    <SortableContextComponent
+    <LazySortableContextComponent
       id={id}
       onDragStart={onDragStart}
       onDragUpdate={onDragUpdate}
       onDragEnd={onDragEnd}
     >
       <TypedItemsRenderer items={items} customComponents={customComponents} />
-    </SortableContextComponent>
+    </LazySortableContextComponent>
   ) : null;
 
 const itemComponents = {
@@ -218,10 +249,10 @@ const itemComponents = {
   GoToItem,
   GroupHeading,
   Item: ConnectedItem,
-  SortableItem,
+  SortableItem: LazySortableItem,
   SectionHeading,
   Separator,
-  Switcher,
+  Switcher: LazySwitcher,
   Wordmark,
 };
 
@@ -249,7 +280,7 @@ const renderItemComponent = <T: empty>(
     element = <ConnectedItem key={key} {...compProps} index={index} />;
   } else if (props.type === 'SortableItem') {
     const { type, ...compProps } = props;
-    element = <SortableItem key={key} {...compProps} index={index} />;
+    element = <LazySortableItem key={key} {...compProps} index={index} />;
   } else if (props.type === 'SectionHeading') {
     const { type, id, ...compProps } = props;
     element = <SectionHeading key={key} {...compProps} />;
@@ -258,7 +289,7 @@ const renderItemComponent = <T: empty>(
     element = <Separator key={key} {...compProps} />;
   } else if (props.type === 'Switcher') {
     const { type, ...compProps } = props;
-    element = <Switcher key={key} {...compProps} />;
+    element = <LazySwitcher key={key} {...compProps} />;
   } else if (props.type === 'Wordmark') {
     const { type, id, ...compProps } = props;
     element = <Wordmark key={key} {...compProps} />;

@@ -1,5 +1,12 @@
 # @atlaskit/global-search
 
+## 12.2.4
+
+- Updated dependencies [4778521db3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4778521db3):
+  - @atlaskit/feedback-collector@4.0.19
+  - @atlaskit/global-navigation@8.0.4
+  - @atlaskit/navigation-next@7.0.0
+
 ## 12.2.3
 
 - Updated dependencies [f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):

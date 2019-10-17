@@ -263,7 +263,9 @@ export function mapResultsToSwitcherProps(
     ),
     customLinks: collect(collectCustomLinks(customLinks, userSiteData), []),
 
-    showManageLink: collect(collectCanManageLinks(managePermission), false),
+    showManageLink:
+      !features.disableCustomLinks &&
+      collect(collectCanManageLinks(managePermission), false),
     hasLoaded:
       hasLoadedAvailableProducts &&
       hasLoadedAdminLinks &&

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/feedback-collector",
-  "version": "4.0.18",
+  "version": "4.0.19",
   "config": {
     "access": "public"
   },
@@ -25,9 +25,9 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.2.5",
     "@atlaskit/docs": "^8.1.8",
-    "@atlaskit/global-navigation": "^8.0.3",
+    "@atlaskit/global-navigation": "^8.0.4",
     "@atlaskit/logo": "^12.2.1",
-    "@atlaskit/navigation-next": "^6.8.2",
+    "@atlaskit/navigation-next": "^7.0.0",
     "@atlaskit/ssr": "^0.1.1",
     "axios": "^0.18.0",
     "enzyme": "^3.7.0",

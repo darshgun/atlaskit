@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.4
+
+### Patch Changes
+
+- [patch][6bc87c7501](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bc87c7501):
+
+  Split mockEndpoints into a separate package
+
+## 4.6.3
+
+### Patch Changes
+
+- [patch][f07586ba0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f07586ba0e):
+
+  Hide manage list link when custom links are disabled
+
 ## 4.6.2
 
 ### Patch Changes
