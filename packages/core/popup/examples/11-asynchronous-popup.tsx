@@ -2,6 +2,7 @@
 import { FC, useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
 import { Placement } from '@atlaskit/popper';
+import Spinner from '@atlaskit/spinner';
 import { jsx } from '@emotion/core';
 
 import Popup from '../src';
@@ -63,7 +64,7 @@ const PopupContent: FC<PopupProps> = ({
 
   return loading ? (
     <div id="spinner" css={spinnerContainerCSS}>
-      <div>Loading...</div>
+      <Spinner size="large" />
     </div>
   ) : (
     <div id="popup-content" css={contentCSS}>
