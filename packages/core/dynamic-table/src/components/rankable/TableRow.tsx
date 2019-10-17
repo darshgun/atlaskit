@@ -71,7 +71,7 @@ export class RankableTableRow extends React.Component<Props, {}> {
                   isRanking={isRanking}
                   key={cellIndex} // eslint-disable-line react/no-array-index-key
                   isFixedSize={isFixedSize}
-                  testId={testId}
+                  testId={testId && `${testId}--rankable-cell-${cellIndex}`}
                 />
               );
             })}

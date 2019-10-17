@@ -31,6 +31,7 @@ class Body extends React.Component<Props, {}> {
             key={rowIndex} // eslint-disable-line react/no-array-index-key
             row={row}
             isHighlighted={highlightedRowIndex === rowIndex}
+            testId={testId}
           />
         ))}
       </tbody>

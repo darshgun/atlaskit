@@ -8,7 +8,6 @@ export interface Props extends WithDimensionsProps {
   head?: HeadCellType;
   cell: RowCellType;
   isFixedSize: boolean;
-  testId?: string;
 }
 
 export class RankableTableCell extends React.Component<Props, {}> {
@@ -20,16 +19,14 @@ export class RankableTableCell extends React.Component<Props, {}> {
       isRanking,
       innerRef,
       refWidth,
-      testId,
     } = this.props;
-    const { content, testId, ...restCellProps } = cell;
+    const { content, ...restCellProps } = cell;
     const { shouldTruncate, width }: HeadCellType =
       head || ({} as HeadCellType);
     const inlineStyles = inlineStylesIfRanking(isRanking, refWidth);
 
     return (
       <RankableTableBodyCell
-        data-testid={testId && `${testId}--${content}-cell`}
         {...restCellProps}
         isFixedSize={isFixedSize}
         shouldTruncate={shouldTruncate}

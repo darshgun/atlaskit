@@ -5,37 +5,27 @@ import {
   createAndFireEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
-// TODO: Add testId
 import ManagedPagination from './managedPagination';
-
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
 import {
   getPageRows,
   validateSortKey,
   assertIsSortable,
 } from '../internal/helpers';
-// TODO: Add testId
 import TableHead from './TableHead';
-// TODO: Add testId
 import Body from './Body';
-// TODO: Add testId
 import RankableTableBody from './rankable/Body';
-// TODO: Add testId
 import LoadingContainer from './LoadingContainer';
 import LoadingContainerAdvanced from './LoadingContainerAdvanced';
-// TODO: Add testId
 import {
   EmptyViewContainer,
   EmptyViewWithFixedHeight,
 } from '../styled/EmptyBody';
-// TODO: Add testId
 import { Table, Caption, PaginationWrapper } from '../styled/DynamicTable';
-
 import {
   StatelessProps as Props,
   RowCellType,
@@ -217,7 +207,6 @@ class DynamicTable extends React.Component<Props, State> {
           isLoading={isLoading && rowsExist}
           spinnerSize={spinnerSize}
           targetRef={() => this.tableBody}
-          testId={testId && `${testId}--container`}
         >
           <Table
             isFixedSize={isFixedSize}
@@ -261,11 +250,7 @@ class DynamicTable extends React.Component<Props, State> {
           </PaginationWrapper>
         )}
         {!rowsExist && emptyBody && (
-          <LoadingContainer
-            isLoading={isLoading}
-            spinnerSize={LARGE}
-            testId={testId && `${testId}--container`}
-          >
+          <LoadingContainer isLoading={isLoading} spinnerSize={LARGE}>
             {emptyBody}
           </LoadingContainer>
         )}

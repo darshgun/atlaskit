@@ -18,3 +18,5 @@ BrowserTestCase(
     await dynamicTableTest.goto(urlDynamicTable);
   },
 );
+SORT;
+SELECT;

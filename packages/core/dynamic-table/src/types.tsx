@@ -58,7 +58,6 @@ export interface StatelessProps extends WithAnalyticsEventsProps {
    *
    * The value of `testId` is used to prefix testId props in given elements:
    *
-   * `${testId}--container` - Loading container
    * `${testId}--table` - Table
    * `${testId}--head` - Table header
    * `${testId}--head--{content of the cell}` - Table header cell can be identified by their content.
@@ -99,6 +98,7 @@ export type RowType = {
   cells: Array<RowCellType>;
   key?: string;
   onClick?: React.MouseEventHandler;
+  testId?: string;
 };
 
 export type SortOrderType = 'ASC' | 'DESC';

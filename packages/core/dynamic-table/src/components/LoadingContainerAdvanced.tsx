@@ -15,7 +15,6 @@ export interface Props {
   spinnerSize?: SpinnerSizeType;
   contentsOpacity: number;
   targetRef?: () => React.ComponentType<any> | undefined;
-  testId?: string;
 }
 
 export default class LoadingContainerAdvanced extends React.Component<
@@ -206,7 +205,7 @@ export default class LoadingContainerAdvanced extends React.Component<
     const { children, isLoading, spinnerSize, testId } = this.props;
 
     return (
-      <Container data-testid={testId}>
+      <Container>
         {React.cloneElement(children, {
           ref: (el: HTMLElement) => {
             this.children = el;
