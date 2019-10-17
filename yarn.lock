@@ -5631,17 +5631,10 @@ chrome-trace-event@^1.0.2:
   dependencies:
     tslib "^1.9.0"
 
-<<<<<<< HEAD
-chromedriver@^74.0.0:
-  version "74.0.0"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-74.0.0.tgz#a060308ac858918aa445efb85428ee25dfc76183"
-  integrity sha512-xXgsq0l4gVTY9X5vuccOSVj/iEBm3Bf5MIwzSAASIRJagt4BlWw77SxQq1f4JAJ35/9Ys4NLMA/kWFbd7A/gfQ==
-=======
 chromedriver@^77.0.0:
   version "77.0.0"
   resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-77.0.0.tgz#bd916cc87a0ccb7a6e4fb4b43cb2368bc54db6a0"
   integrity sha512-mZa1IVx4HD8rDaItWbnS470mmypgiWsDiu98r0NkiT4uLm3qrANl4vOU6no6vtWtLQiW5kt1POcIbjeNpsLbXA==
->>>>>>> 1581bccd8cc8e1e3be195e24bb71c7fa2414f804
   dependencies:
     del "^4.1.1"
     extract-zip "^1.6.7"
@@ -11782,11 +11775,6 @@ is-path-cwd@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-path-cwd/-/is-path-cwd-1.0.0.tgz#d225ec23132e89edd38fda767472e62e65f1106d"
   integrity sha1-0iXsIxMuie3Tj9p2dHLmLmXxEG0=
-
-is-path-cwd@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/is-path-cwd/-/is-path-cwd-2.2.0.tgz#67d43b82664a7b5191fd9119127eb300048a9fdb"
-  integrity sha512-w942bTcih8fdJPJmQHFzkS76NEP8Kzzvmw92cXsazb8intwLqPibPPdXf4ANdKV3rYMuuQYGIWtvz9JilB3NFQ==
 
 is-path-cwd@^2.0.0:
   version "2.2.0"
@@ -22136,17 +22124,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-<<<<<<< HEAD
-wdio-chromedriver-service@^0.1.3:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-0.1.5.tgz#d8e8bc817d9c961bd37910f02b3da47863d5508a"
-  integrity sha512-/b9rVXwXnXJKSLqcNpW/tC2U7BVM3Lzj2NuT2MWPLnGmzHZ6JZpTlSLoRSW5bVsaZcolEb22m0pAPLxwy6reBQ==
-=======
 wdio-chromedriver-service@^5.0.0:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/wdio-chromedriver-service/-/wdio-chromedriver-service-5.0.2.tgz#171c642252b7ab3bab610b366ddcfe6018a7d67a"
   integrity sha512-EvdhHJhFpKXIMXph+g84ugSKlYSTiTqg85iu0fD6JzeK6Gg5ZuLeDgvyvvTdkCMq9q4dqwkA+1IikoGQvMOpEA==
->>>>>>> 1581bccd8cc8e1e3be195e24bb71c7fa2414f804
   dependencies:
     fs-extra "^0.30.0"
 
