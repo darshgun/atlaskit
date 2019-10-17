@@ -1,5 +1,10 @@
 # @atlaskit/global-navigation
 
+## 8.0.4
+
+- Updated dependencies [4778521db3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4778521db3):
+  - @atlaskit/navigation-next@7.0.0
+
 ## 8.0.3
 
 ### Patch Changes

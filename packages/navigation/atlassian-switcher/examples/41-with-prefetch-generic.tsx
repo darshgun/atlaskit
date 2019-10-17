@@ -1,7 +1,10 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
 import Drawer from '@atlaskit/drawer';
-import { mockEndpoints, REQUEST_MEDIUM } from './helpers/mock-endpoints';
+import {
+  mockEndpoints,
+  REQUEST_MEDIUM,
+} from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher, { AtlassianSwitcherPrefetchTrigger } from '../src';
 import { resetAll } from '../src/providers/instance-data-providers';

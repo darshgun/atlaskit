@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
 import Drawer from '@atlaskit/drawer';
-import { mockEndpoints, REQUEST_MEDIUM } from './helpers/mock-endpoints';
+import { mockEndpoints } from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 
@@ -15,11 +15,7 @@ class ConfluenceSwitcherExample extends React.Component {
   }
 
   openDrawer = () => {
-    mockEndpoints(
-      'confluence',
-      originalMockData => originalMockData,
-      REQUEST_MEDIUM,
-    );
+    mockEndpoints('confluence');
     this.setState({
       isDrawerOpen: true,
     });
