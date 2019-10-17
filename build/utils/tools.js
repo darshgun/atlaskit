@@ -3,14 +3,14 @@ const path = require('path');
 const { exists } = require('./fs');
 
 async function getPackagesInfo(cwd, opts) {
-  let project = await bolt.getProject();
+  let project = await bolt.getProject({ cwd });
   let packages = await bolt.getWorkspaces({ cwd, ...opts });
 
   return await Promise.all(packages.map(pkg => getPackageInfo(pkg, project)));
 }
 
 async function getPackageInfo(pkg, project) {
-  let resolvedProject = project || (await bolt.getProject());
+  let resolvedProject = project || (await bolt.getProject({ cwd }));
   let relativeDir = path.relative(resolvedProject.dir, pkg.dir);
   let srcExists = await exists(path.join(pkg.dir, 'src'));
   let tsConfigExists = await exists(path.join(pkg.dir, 'tsconfig.json'));

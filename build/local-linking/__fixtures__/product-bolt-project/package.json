@@ -1,0 +1,10 @@
+{
+  "name": "product-bolt-project",
+  "version": "0.0.1",
+  "private": true,
+  "bolt": {
+    "workspaces": [
+      "packages/*"
+    ]
+  }
+}

@@ -1,5 +1,13 @@
 # @atlaskit/media-card
 
+## 65.3.4
+
+### Patch Changes
+
+- [patch][c0bb2ebac5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0bb2ebac5):
+
+  check if selection.containsNode is available before using it to fix issue with IE11
+
 ## 65.3.3
 
 ### Patch Changes
