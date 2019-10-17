@@ -1,0 +1,1 @@
+Fixed IE11 CSS issue (hide horizontal scrollbar)
