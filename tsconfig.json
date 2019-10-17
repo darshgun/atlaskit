@@ -79,11 +79,12 @@
     "./typings/url.d.ts",
     "./typings/utf8-string-bytes.d.ts",
     "./typings/uuid.d.ts",
-    "./typings/webpack.d.ts",
     "./typings/yarn-deduplicate.d.ts",
     "./typings/css-color-names/index.d.ts",
     "./typings/bolt/index.d.ts",
-    "./typings/concurrently/index.d.ts",
-    "./typings/pubnub.d.ts"
+    "./typings/pubnub.d.ts",
+    "./typings/jest-fixtures.d.ts",
+    "./typings/yalc.d.ts",
+    "./typings/jest.d.ts"
   ]
 }

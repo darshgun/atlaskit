@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.5
+
+### Patch Changes
+
+- [patch][fb43fc2e99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb43fc2e99):
+
+  PTC-2695: Add "reason" to the analytics event fired on provider failed events
+
 ## 4.6.4
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 # Contributing to Atlaskit
 
-Thank you for your interest in contributing to Atlaskit! 
+Thank you for your interest in contributing to Atlaskit!
 
 Contribution is currently **only** available for Atlassian employees.
 
@@ -119,7 +119,7 @@ only take about a second.
 Since this is a git-lfs repo, turn on lfs hooks for code push by running:
 
 ```sh
-bolt enable:lfs
+yarn enable:lfs
 ```
 
 You're now ready to start developing in Atlaskit!
@@ -160,10 +160,10 @@ more information.
 Each component or utility lives in its own package under the `packages` directory.
 
 You can start the development server for a specific component using
-`bolt start <pkg-name>`, for example:
+`yarn start <pkg-name>`, for example:
 
 ```sh
-bolt start button
+yarn start button
 ```
 
 This will start the dev server with only packages matching the "button" pattern, served on http://localhost:9000.
@@ -171,7 +171,7 @@ This will start the dev server with only packages matching the "button" pattern,
 You can start the development server for multiple components by separating the package names by a space, for example:
 
 ```sh
-bolt start button modal-dialog
+yarn start button modal-dialog
 ```
 
 ## Writing new code
@@ -205,6 +205,9 @@ bolt workspaces <add/remove/upgrade> <dep>[@<version>] [--dev/peer/etc]
 > Note that there are additional restrictions to dependencies in Bolt than there
 > are in Yarn, so you should not use `yarn` to manage dependencies.
 
+For all other commands, you can use `yarn` since `bolt` will passthrough to `yarn` anyway. The benefits of using `yarn` over `build` are a slightly faster
+execution time and less bolt logging.
+
 ## Type checking your code
 
 We use [TypeScript](http://www.typescriptlang.org/) inside of Atlaskit, however there are some packages that still use [Flow](https://flow.org/) and
@@ -226,7 +229,7 @@ If you want to run both type checkers on all files from the command line you can
 run:
 
 ```sh
-bolt typecheck
+yarn typecheck
 ```
 
 ## Linting your code
@@ -245,7 +248,7 @@ later on.
 To run the linter on all files from the command line you can run:
 
 ```sh
-bolt lint
+yarn lint
 ```
 
 To run the linter on only a subset of files, you'll need to take the contents of the relevant lint npm script, e.g. `lint:eslint` and change the
@@ -281,7 +284,7 @@ In order to view these examples within your browser, from the root of atlaskit-m
 ### Single package
 
 ```sh
-bolt start <pkg>
+yarn start <pkg>
 ```
 
 where `<pkg>` is a package name without the `@atlaskit/` prefix.
@@ -289,7 +292,7 @@ where `<pkg>` is a package name without the `@atlaskit/` prefix.
 e.g.
 
 ```sh
-bolt start button
+yarn start button
 ```
 
 ### Multiple packages
@@ -297,7 +300,7 @@ bolt start button
 If you need to start more than one packages, you can do:
 
 ```sh
-bolt start button toggle tabs
+yarn start button toggle tabs
 ```
 
 It will start button, toggle and tabs packages on your local server.
@@ -307,16 +310,16 @@ It will start button, toggle and tabs packages on your local server.
 Sometimes you really only want to run a small subset of examples. Depending on what you are trying to achieve the following scripts might be useful:
 
 ```sh
-bolt start:core # start the website only for packages under packages/core
-bolt start:media # start the website only for packages under packages/media
-bolt start:editor # start the website only for packages under packages/editor
+yarn start:core # start the website only for packages under packages/core
+yarn start:media # start the website only for packages under packages/media
+yarn start:editor # start the website only for packages under packages/editor
 # See the npm scripts in package.json
 ```
 
 ### Running all packages
 
 ```sh
-bolt start
+yarn start
 ```
 
 however this will take a long time so is unwise to run locally.
@@ -324,7 +327,7 @@ however this will take a long time so is unwise to run locally.
 To run the examples on a different port, set the `ATLASKIT_DEV_PORT` environment variable.
 
 ```sh
-ATLASKIT_DEV_PORT=9001 bolt start
+ATLASKIT_DEV_PORT=9001 yarn start
 ```
 
 ## Testing your code
@@ -361,7 +364,7 @@ Please refer to [testing in atlaskit][testing] for more information about testin
 
 ## Building packages
 
-To build all packages, run `bolt build` - although this may take quite a while. See [individual package builds](#individual-package-builds) to build single packages only.
+To build all packages, run `yarn build` - although this may take quite a while. See [individual package builds](#individual-package-builds) to build single packages only.
 
 Our build process has multiple steps, some of which are conditional based on the type of package being built. We infer the type of package
 based on rules defined in [build/utils/tools.js](./build/utils/tools.js). For example, packages still using JS + flow will be compiled using babel whereas
@@ -373,9 +376,11 @@ using this approach.
 
 ### Individual package builds
 
-Individual packages can be built by running `bolt build <pkg-name>`, e.g. `bolt build @atlaskit/button`.
+Individual packages can be built by running `yarn build <pkg-name>`, e.g. `yarn build @atlaskit/button` or `yarn build button`.
 
 You can also rebuild them in watch mode via the `--watch` flag.
+
+Run `yarn build --help` for a full list of options.
 
 One caveat with the individual package build is that typescript will emit errors whenever it encounters a transitive dependency that has not been built, saying
 
@@ -389,13 +394,7 @@ They will, however, affect the output of the d.ts files created for the package,
 
 ## Linking packages
 
-Linking is currently a very manual process at the moment and will be more automated in the future.
-
-To link a package we recommend using [Yalc](https://www.npmjs.com/package/yalc) after building the package locally via [individual package builds](#individual-package-builds). Using `yalc` instead of `yarn link`
-will only require building the package you want to link instead of the package and all of its transitive dependencies. It also sidesteps issues where
-multiple instances of peer dependencies exist (react, styled-components etc.).
-
-Linking a package _and_ one of its dependencies is more tedious. If you need to do this we recommend building all packages as a one-off, using `yarn link` and then rebuilding the individual packages as required.
+See the [Linking guide](./docs/guides/03-linking.md).
 
 ## Documenting your code
 

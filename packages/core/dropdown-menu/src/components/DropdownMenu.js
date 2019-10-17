@@ -107,6 +107,7 @@ export default class DropdownMenu extends Component<
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
+      testId,
       trigger,
       triggerButtonProps,
       triggerType,
@@ -131,6 +132,7 @@ export default class DropdownMenu extends Component<
         triggerButtonProps={triggerButtonProps}
         triggerType={triggerType}
         onPositioned={onPositioned}
+        testId={testId}
       >
         {children}
       </StatelessMenu>

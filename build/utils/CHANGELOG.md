@@ -1,5 +1,13 @@
 # @atlaskit/build-utils
 
+## 2.3.0
+
+### Minor Changes
+
+- [minor][2e18ff850d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e18ff850d):
+
+  Add runCommands module that runs commands via concurrently.
+
 ## 2.2.7
 
 ### Patch Changes
