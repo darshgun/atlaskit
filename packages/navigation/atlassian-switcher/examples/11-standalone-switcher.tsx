@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
+import {
+  mockEndpoints,
+  REQUEST_FAST,
+} from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 import styled from 'styled-components';

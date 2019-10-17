@@ -2119,6 +2119,10 @@
         "../../monorepo-tooling/branch-deploy-product-integrator/src/",
         "./packages/monorepo-tooling/branch-deploy-product-integrator/src/"
       ],
+      "@atlaskit/branch-deploy-product-integrator/util": [
+        "../../monorepo-tooling/branch-deploy-product-integrator/src/util",
+        "./packages/monorepo-tooling/branch-deploy-product-integrator/src/util"
+      ],
       "@atlaskit/code-insights": [
         "../../monorepo-tooling/code-insights/src/",
         "./packages/monorepo-tooling/code-insights/src/"
@@ -2182,6 +2186,10 @@
       "@atlaskit/atlassian-switcher/types": [
         "../../navigation/atlassian-switcher/src/types",
         "./packages/navigation/atlassian-switcher/src/types"
+      ],
+      "@atlaskit/atlassian-switcher-test-utils": [
+        "../../navigation/atlassian-switcher-test-utils/src/",
+        "./packages/navigation/atlassian-switcher-test-utils/src/"
       ],
       "@atlaskit/atlassian-switcher-vanilla": [
         "../../navigation/atlassian-switcher-vanilla/src/",
