@@ -586,9 +586,7 @@ describe('MediaStore', () => {
 
         await mediaStore.getImage('123');
 
-        expect(fetchMock.lastOptions()!.headers || {}).not.toHaveProperty(
-          'accept',
-        );
+        expect(fetchMock.lastOptions()!.headers).not.toHaveProperty('accept');
       });
     });
 

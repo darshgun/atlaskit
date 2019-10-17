@@ -9,7 +9,7 @@ describe('request', () => {
   const token = 'some-token';
   const baseUrl = 'some-base-url';
 
-  describe('2xx', () => {
+  describe('2xx codes handling', () => {
     beforeEach(() => fetchMock.mock(`*`, {}));
 
     afterEach(fetchMock.restore);
@@ -86,7 +86,7 @@ describe('request', () => {
     });
   });
 
-  describe('errors and retries', () => {
+  describe('errors and retries handling', () => {
     afterEach(fetchMock.restore);
 
     it('should not fail or retry if response is 300', async () => {

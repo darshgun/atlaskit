@@ -154,7 +154,6 @@ export interface RetryOptions {
   attempts: number;
   startTimeoutInMs: number;
   factor: number;
-  startImmediately: boolean;
 }
 type RetryOptionsWithCondition<T> = RetryOptions & {
   retryCondition?: {
@@ -168,7 +167,6 @@ const DEFAULT_OPTIONS: RetryOptions = {
   attempts: 5, // Current test delay is 60s, so retries should finish before if a promise takes < 1s
   startTimeoutInMs: 1000, // 1 second is generally a good timeout to start
   factor: 2, // Good for polling, which is out main use case
-  startImmediately: false, // Good when you expect results not to be immediate
 };
 const wait = (timeoutInMs: number) =>
   new Promise<void>(resolve => {
@@ -190,9 +188,6 @@ async function promiseRetry<T>(
     await wait(timeoutInMs);
     timeoutInMs *= options.factor;
   };
-  if (!options.startImmediately) {
-    await waitAndBumpTimeout();
-  }
 
   for (let i = 1; i < options.attempts + 1; ++i) {
     try {
