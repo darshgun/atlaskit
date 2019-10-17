@@ -1,13 +1,13 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
+import { CSSObject } from "@emotion/core";
 
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
 import { NavigationTheme } from '../../theme';
-
 const gridSize = gridSizeFn();
 
-export const containerCSS = ({ mode: { navigation } }: NavigationTheme) => ({
+export const containerCSS = ({ mode: { navigation } }: NavigationTheme): CSSObject => ({
   alignItems: 'center',
-  boxSizing: 'border-box' as const,
+  boxSizing: 'border-box',
   display: 'flex',
   flexShrink: 0,
   justifyContent: 'space-between',
@@ -15,7 +15,7 @@ export const containerCSS = ({ mode: { navigation } }: NavigationTheme) => ({
   paddingRight: gridSize * 2,
   height: HORIZONTAL_GLOBAL_NAV_HEIGHT,
   position: 'relative',
-  ...bottomShadow,
+  ...bottomShadow as CSSObject,
   ...navigation,
 });
 
