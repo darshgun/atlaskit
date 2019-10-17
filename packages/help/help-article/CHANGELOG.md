@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 0.6.2
+
+### Patch Changes
+
+- [patch][a44f829bdc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a44f829bdc):
+
+  Fixed IE11 CSS issue (hide horizontal scrollbar)
+
 ## 0.6.1
 
 ### Patch Changes
