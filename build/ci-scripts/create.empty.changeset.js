@@ -21,6 +21,5 @@ fs.writeFileSync(changesJsonPath, JSON.stringify(emptyChangeset, null, 2));
 
 simpleGit
   .add([changesMdPath, changesJsonPath])
-  .commit('Adding empty changeset files.');
-
+  .commit('Add empty changeset files.');
 console.log(`Created empty changeset in ${changesJsonPath}`);
