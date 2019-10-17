@@ -52,6 +52,7 @@ import { ProfileClient, modifyResponse } from '@atlaskit/profilecard';
  * +                               +  16px padding-bottom
  * +-------------------------------+  ----
  *                                    80px - 48px (Outside of iframe)
+ *
  */
 export const Wrapper: any = styled.div`
   box-sizing: border-box;
@@ -173,7 +174,7 @@ export class ExampleEditorComponent extends React.Component<
 
   componentDidMount() {
     // eslint-disable-next-line no-console
-    console.log(`To try the macro paste handler, paste one of the following links:
+    console.log(`To try the macro paste handler, paste one of the following links: 
 
   www.dumbmacro.com?paramA=CFE
   www.smartmacro.com?paramB=CFE
