@@ -16,6 +16,7 @@ describe('Using testId', () => {
     testIds.forEach(testId => {
       expect(getByTestId(testId)).toBeTruthy();
     });
+
     const multipleTestIds = [
       `${testId}--head--cell`,
       `${testId}--body--cell-0`,
@@ -24,7 +25,8 @@ describe('Using testId', () => {
       `${testId}--body--cell-3`,
       `${testId}--body--cell-4`,
     ];
-    testIds.forEach(testId => {
+
+    multipleTestIds.forEach(testId => {
       expect(getAllByTestId(testId)).toBeTruthy();
     });
   });

@@ -202,7 +202,7 @@ export default class LoadingContainerAdvanced extends React.Component<
   }
 
   render() {
-    const { children, isLoading, spinnerSize, testId } = this.props;
+    const { children, isLoading, spinnerSize } = this.props;
 
     return (
       <Container>
