@@ -1,6 +1,6 @@
-import { CollabEditProvider, Participant } from '@atlaskit/editor-common';
+import { CollabEditProvider, CollabParticipant } from '@atlaskit/editor-common';
 
-export type ParticipantData = Pick<Participant, 'name' | 'avatar'> & {
+export type ParticipantData = Pick<CollabParticipant, 'name' | 'avatar'> & {
   sid: string;
 };
 

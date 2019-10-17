@@ -12,13 +12,13 @@ export {
   CollabEditProvider,
   CollabEvent,
   CollabEventData,
-  ConnectionData,
-  InitData,
-  Participant,
-  PresenceData,
-  RemoteData,
-  SendableSelection,
-  TelepointerData, // End Collab Types
+  CollabEventConnectionData,
+  CollabEventInitData,
+  CollabParticipant,
+  CollabeEventPresenceData,
+  CollabEventRemoteData,
+  CollabSendableSelection,
+  CollabEventTelepointerData, // End Collab Types
 } from './types';
 
 export * from './contextIdentifier';

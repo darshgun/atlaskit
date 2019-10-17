@@ -1,7 +1,7 @@
 import { Transaction, EditorState } from 'prosemirror-state';
 import { Step } from 'prosemirror-transform';
 
-export interface Participant {
+export interface CollabParticipant {
   lastActive: number;
   sessionId: string;
   avatar: string;
@@ -9,35 +9,35 @@ export interface Participant {
   email: string;
 }
 
-export interface InitData {
+export interface CollabEventInitData {
   doc?: any;
   json?: any;
   version?: number;
   sid?: string;
 }
 
-export interface RemoteData {
+export interface CollabEventRemoteData {
   json?: any;
   newState?: EditorState;
   userIds?: string[];
 }
 
-export interface ConnectionData {
+export interface CollabEventConnectionData {
   sid: string;
 }
 
-export interface PresenceData {
-  joined?: Participant[];
+export interface CollabeEventPresenceData {
+  joined?: CollabParticipant[];
   left?: { sessionId: string }[];
 }
 
-export interface TelepointerData {
+export interface CollabEventTelepointerData {
   type: 'telepointer';
-  selection: SendableSelection;
+  selection: CollabSendableSelection;
   sessionId: string;
 }
 
-export interface SendableSelection {
+export interface CollabSendableSelection {
   type: 'textSelection' | 'nodeSelection';
   anchor: number;
   head: number;
@@ -54,11 +54,11 @@ export type CollabEvent =
   | 'editor-appearance';
 
 export interface CollabEventData {
-  init: InitData;
-  connected: ConnectionData;
-  data: RemoteData;
-  telepointer: TelepointerData;
-  presensense: PresenceData;
+  init: CollabEventInitData;
+  connected: CollabEventConnectionData;
+  data: CollabEventRemoteData;
+  telepointer: CollabEventTelepointerData;
+  presensense: CollabeEventPresenceData;
   error: any;
 }
 

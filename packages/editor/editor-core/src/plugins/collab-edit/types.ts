@@ -2,13 +2,13 @@ import { ReactElement } from 'react';
 import { CollabEditProvider } from './provider';
 
 export {
-  Participant,
-  InitData,
-  RemoteData,
-  ConnectionData,
-  PresenceData,
-  TelepointerData,
-  SendableSelection,
+  CollabParticipant,
+  CollabEventInitData,
+  CollabEventRemoteData,
+  CollabEventConnectionData,
+  CollabeEventPresenceData,
+  CollabEventTelepointerData,
+  CollabSendableSelection,
 } from '@atlaskit/editor-common';
 
 export type InviteToEditComponentProps = {

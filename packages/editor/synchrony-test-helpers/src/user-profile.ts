@@ -3,7 +3,7 @@
  *
  */
 import { ParticipantData, SynchronyUser } from './types';
-import { Participant } from '@atlaskit/editor-common';
+import { CollabParticipant } from '@atlaskit/editor-common';
 
 type AvailableParticipants = 'rick' | 'morty' | 'summer';
 
@@ -32,7 +32,9 @@ const participantsArray = Object.keys(participants).map(
   (key: string) => participants[key as AvailableParticipants],
 );
 
-export const getProfile = (user: SynchronyUser): Omit<Participant, 'email'> => {
+export const getProfile = (
+  user: SynchronyUser,
+): Omit<CollabParticipant, 'email'> => {
   return {
     ...getUserData(user.origin),
     lastActive: user.joinedAt,
