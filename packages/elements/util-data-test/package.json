@@ -10,7 +10,7 @@
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
   "scripts": {
-    "ak-postbuild": "mkdir -p dist/esm/json-data dist/cjs/json-data && cp -r src/json-data dist/esm/json-data && cp -r src/json-data dist/cjs/json-data"
+    "ak-postbuild": "mkdir -p dist/esm dist/cjs && cp -r src/json-data dist/esm/json-data && cp -r src/json-data dist/cjs/json-data"
   },
   "dependencies": {
     "@atlaskit/analytics-next": "^6.3.1",
