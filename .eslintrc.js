@@ -4,7 +4,15 @@ const prettierTsRules = require('eslint-config-prettier/@typescript-eslint')
   .rules;
 
 module.exports = {
-  extends: ['airbnb', 'prettier', 'prettier/react'],
+  extends: [
+    'airbnb',
+    'prettier',
+    'prettier/react',
+    'plugin:compat/recommended',
+  ],
+  settings: {
+    polyfills: ['fetch'],
+  },
   parser: 'babel-eslint',
   plugins: ['flowtype', 'jest', 'prettier', 'react-hooks', '@wordpress'],
   rules: {

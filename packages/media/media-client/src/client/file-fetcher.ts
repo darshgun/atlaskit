@@ -294,6 +294,7 @@ export class FileFetcherImpl implements FileFetcher {
     );
     const { id, occurrenceKey } = uploadableFileUpfrontIds;
     const subject = new ReplaySubject<FileState>(1);
+
     const deferredBlob = fetch(url)
       .then(response => response.blob())
       .catch(() => undefined);
