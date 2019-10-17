@@ -1,1 +1,0 @@
-a bug where a | character at the start of a monospace would cause the parser to crash was fixed, but adding table token type to the ignorelist of the monospace parser.
