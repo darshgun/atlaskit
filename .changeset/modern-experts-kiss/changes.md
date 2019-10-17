@@ -1,0 +1,1 @@
+PTC-2695: Add "reason" to the analytics event fired on provider failed events

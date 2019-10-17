@@ -189,16 +189,24 @@ describe('as-data-provider', () => {
     } catch (e) {}
 
     expect(onEvent).toHaveBeenCalledTimes(1);
-    expect(onEvent.mock.calls[0][0]).toMatchObject({
-      hasFired: true,
-      payload: {
-        action: 'failed',
-        actionSubject: 'atlassianSwitcherDataProvider',
-        actionSubjectId: 'test',
-        attributes: { outdated: false },
-        eventType: 'operational',
-      },
-    });
+    expect(onEvent.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        hasFired: true,
+        payload: {
+          action: 'failed',
+          actionSubject: 'atlassianSwitcherDataProvider',
+          actionSubjectId: 'test',
+          attributes: {
+            outdated: false,
+            reason: {
+              name: 'Unknown',
+              status: undefined,
+            },
+          },
+          eventType: 'operational',
+        },
+      }),
+    );
   });
 
   it('should fire receivedResult event with outdated attribute', async () => {
