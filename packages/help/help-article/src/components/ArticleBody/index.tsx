@@ -106,7 +106,11 @@ export const ArticleBody = (props: Props) => {
   }, []);
 
   return props.body ? (
-    <ArticleFrame style={{ height: articleHeight }} ref={iframeRef} />
+    <ArticleFrame
+      style={{ height: articleHeight }}
+      ref={iframeRef}
+      sandbox="allow-same-origin"
+    />
   ) : null;
 };
 
