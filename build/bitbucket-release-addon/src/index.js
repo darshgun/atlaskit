@@ -65,7 +65,7 @@ const yamlToReleases = changesets =>
     .flat();
 
 const {
-  // user,
+  user,
   repo,
   pullrequestid,
   repoid,
@@ -73,22 +73,17 @@ const {
   destinationhash,
 } = queryString.parse(window.location.search);
 
-const user = 'jackrgardner';
-
 // Only retrieve one type of changesets. Legacy commit changesets and v2 changesets (md files with yaml frontmatter)
 // are only supported in repos defined in config.js
 const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
 
 const changesetInfoPromise = legacy
-  ? Promise.resolve({
-      changesetPromise: getCommits(user, repo, pullrequestid),
-      v2: false,
-    })
+  ? Promise.resolve({ changesetPromise: getCommits(user, repo, pullrequestid) })
   : getChangesets(user, repo, sourcehash, destinationhash);
 
 console.log(changesetInfoPromise);
 
-changesetInfoPromise.then(({ changesetPromise, v2 }) =>
+changesetInfoPromise.then(({ changesetPromise, v2 = false }) =>
   changesetPromise
     .then(changesets => {
       if (!changesets || changesets.length === 0) {
