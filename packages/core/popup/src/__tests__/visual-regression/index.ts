@@ -1,4 +1,7 @@
-import { getExampleUrl } from '@atlaskit/visual-regression/helper';
+import {
+  getExampleUrl,
+  takeElementScreenShot,
+} from '@atlaskit/visual-regression/helper';
 
 const button = '#popup-trigger';
 const spinner = '#spinner';
@@ -22,12 +25,9 @@ describe('Snapshot Test', () => {
     await page.waitForSelector(button);
 
     await page.click(button);
-    // We need to wait for the active state animation to finish.
-    await page.waitFor(500);
-    await page.waitForSelector(popup);
 
-    const image = await page.screenshot();
-    expect(image).toMatchProdImageSnapshot();
+    const popupImage = await takeElementScreenShot(page, popup);
+    expect(popupImage).toMatchProdImageSnapshot();
   });
 
   it('it should match visual snapshot for async popup', async () => {
@@ -46,15 +46,14 @@ describe('Snapshot Test', () => {
     await page.waitForSelector(button);
 
     await page.click(button);
-    await page.waitForSelector(spinner);
 
-    const image = await page.screenshot();
-    expect(image).toMatchProdImageSnapshot();
-    // We need to wait for the active state animation to finish.
-    await page.waitFor(500);
+    const spinnerImage = await takeElementScreenShot(page, spinner);
+    expect(spinnerImage).toMatchProdImageSnapshot();
+
     await page.waitForSelector(popup);
-    const imageWithContent = await page.screenshot();
-    expect(imageWithContent).toMatchProdImageSnapshot();
+
+    const popupImage = await takeElementScreenShot(page, popup);
+    expect(popupImage).toMatchProdImageSnapshot();
   });
 
   it('it should match visual snapshot for setting focus', async () => {
@@ -71,8 +70,7 @@ describe('Snapshot Test', () => {
 
     await page.goto(url);
     await page.waitFor(button);
-    // We need to wait for the active state animation to finish.
-    await page.waitFor(500);
+
     await page.click(button);
     await page.waitForSelector(popup);
 
