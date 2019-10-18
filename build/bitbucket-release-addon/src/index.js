@@ -65,7 +65,7 @@ const yamlToReleases = changesets =>
     .flat();
 
 const {
-  user,
+  // user,
   repo,
   pullrequestid,
   repoid,
@@ -73,31 +73,34 @@ const {
   destinationhash,
 } = queryString.parse(window.location.search);
 
+const user = 'jackrgardner';
+
 // Only retrieve one type of changesets. Legacy commit changesets and v2 changesets (md files with yaml frontmatter)
 // are only supported in repos defined in config.js
 const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
-const v2 = v2ChangesetRepos.indexOf(repoid) >= 0;
 
-const changesetPromise = legacy
+const changesetInfoPromise = legacy
   ? getCommits(user, repo, pullrequestid)
-  : getChangesets(user, repo, sourcehash, destinationhash, v2);
+  : getChangesets(user, repo, sourcehash, destinationhash);
 
-changesetPromise
-  .then(changesets => {
-    if (!changesets || changesets.length === 0) {
-      document.body.innerHTML = noChangesetMessage;
-      return;
-    }
+changesetInfoPromise.then(({ changesetPromise, v2 }) =>
+  changesetPromise
+    .then(changesets => {
+      if (!changesets || changesets.length === 0) {
+        document.body.innerHTML = noChangesetMessage;
+        return;
+      }
 
-    // Changesets will be in text form (from the markdown file) if V2
-    // Otherwise in the JSON format that needs to be flattened
-    const releases = v2
-      ? yamlToReleases(changesets)
-      : flattenChangesets(changesets);
+      // Changesets will be in text form (from the markdown file) if V2
+      // Otherwise in the JSON format that needs to be flattened
+      const releases = v2
+        ? yamlToReleases(changesets)
+        : flattenChangesets(changesets);
 
-    document.body.innerHTML = releasedPackagesMessage(releases, v2);
-  })
-  .catch(e => {
-    console.error('error in changeset', e);
-    document.body.innerHTML = errorLoadingChangesetMessage;
-  });
+      document.body.innerHTML = releasedPackagesMessage(releases, v2);
+    })
+    .catch(e => {
+      console.error('error in changeset', e);
+      document.body.innerHTML = errorLoadingChangesetMessage;
+    }),
+);

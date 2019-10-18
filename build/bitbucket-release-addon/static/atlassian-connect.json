@@ -1,7 +1,7 @@
 {
   "name": "AK-MK-2 Release Addon",
   "description": "Addon to display a 'releases' panel in PRs to show which packages will be released",
-  "baseUrl": "https://ak-mk-2-releases-addon.netlify.com/",
+  "baseUrl": "https://jgardner.ngrok.io/",
   "key": "ak-mk-2-release-addon",
   "vendor": {
     "name": "Luke Batchelor"
@@ -50,6 +50,13 @@
                 "target": "repository.uuid",
                 "params": {
                   "value": "{d583078e-91b2-4fd9-875c-558bcf62e6a6}"
+                }
+              },
+              {
+                "condition": "equals",
+                "target": "repository.uuid",
+                "params": {
+                  "value": "{fe9432b2-1f81-4fc8-a1c0-51c06f452e8e}"
                 }
               }
             ],
