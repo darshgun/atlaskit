@@ -1,1 +1,0 @@
-Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.

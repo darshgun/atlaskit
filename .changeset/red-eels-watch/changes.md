@@ -1,1 +1,0 @@
-MS-2145: added GASv3 events for media browser & clipboard
