@@ -80,8 +80,13 @@ const user = 'jackrgardner';
 const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
 
 const changesetInfoPromise = legacy
-  ? getCommits(user, repo, pullrequestid)
+  ? Promise.resolve({
+      changesetPromise: getCommits(user, repo, pullrequestid),
+      v2: false,
+    })
   : getChangesets(user, repo, sourcehash, destinationhash);
+
+console.log(changesetInfoPromise);
 
 changesetInfoPromise.then(({ changesetPromise, v2 }) =>
   changesetPromise
