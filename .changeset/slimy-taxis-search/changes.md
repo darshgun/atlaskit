@@ -1,0 +1,1 @@
+Removed sandbox attr from iframe
