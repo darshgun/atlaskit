@@ -6,6 +6,7 @@ import {
   Record,
   RouterOptions,
   RequestHandler,
+  InterceptorOptions,
   Database,
 } from 'kakapo';
 import uuid from 'uuid/v4';
@@ -24,8 +25,11 @@ import { mockDataUri } from '../database/mockData';
 import { mapDataUriToBlob } from '../../utils';
 
 class RouterWithLogging<M extends DatabaseSchema> extends Router<M> {
-  constructor(options?: RouterOptions) {
-    super(options);
+  constructor(
+    interceptorOptions?: InterceptorOptions,
+    options?: RouterOptions,
+  ) {
+    super(interceptorOptions, options);
   }
 
   register(method: string, path: string, originalHandler: RequestHandler<M>) {
@@ -69,10 +73,13 @@ class RouterWithLogging<M extends DatabaseSchema> extends Router<M> {
 }
 
 export function createApiRouter(): Router<DatabaseSchema> {
-  const router = new RouterWithLogging<DatabaseSchema>({
-    host: defaultBaseUrl,
-    requestDelay: 10,
-  });
+  const router = new RouterWithLogging<DatabaseSchema>(
+    {
+      host: defaultBaseUrl,
+      requestDelay: 10,
+    },
+    { strategies: ['fetch'] },
+  );
 
   router.post('/collection', ({ body }, database) => {
     const { name } = JSON.parse(body);
