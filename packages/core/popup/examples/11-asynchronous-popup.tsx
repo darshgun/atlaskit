@@ -63,9 +63,7 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return loading ? (
-    <div id="spinner" css={spinnerContainerCSS}>
-      <Spinner size="large" />
-    </div>
+    <div id="spinner">Loading...</div>
   ) : (
     <div id="popup-content" css={contentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>
