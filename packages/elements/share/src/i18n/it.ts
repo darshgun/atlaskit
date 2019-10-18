@@ -11,12 +11,12 @@ export default {
   'fabric.elements.share.form.retry': 'Riprova',
   'fabric.elements.share.form.comment.placeholder': 'Aggiungi un messaggio',
   'fabric.elements.share.form.user-picker.placeholder.generic':
-    'Inserisci nome, team o e-mail',
+    'Inserisci nome, gruppo, team o e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Inserisci nome o team',
   'fabric.elements.share.form.user-picker.add-more': 'Inerisci altri elementi',
   'fabric.elements.share.form.user-picker.validation.required':
-    'Seleziona almeno un utente, un team o un’e-mail.',
+    "Seleziona almeno un utente, un gruppo, un team o un'e-mail.",
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Puoi invitare solo le persone con indirizzi e-mail {domains}. Contatta l’amministratore del sito per invitare altre persone.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':
@@ -27,11 +27,10 @@ export default {
   'fabric.elements.share.trigger.button.text': 'Condividi',
   'fabric.elements.share.trigger.button.tooltip.text': 'Condividi',
   'fabric.elements.share.trigger.button.invite.text': 'Invita',
-  'fabric.elements.share.copylink.button.icon.label':
-    'Icona Copia collegamento',
+  'fabric.elements.share.copylink.button.icon.label': 'Icona Copia link',
   'fabric.elements.share.copylink.button.text': 'Copia link',
   'fabric.elements.share.copied.to.clipboard.icon.label':
-    'Icona Copia collegamento riuscita',
+    'Icona Copia link riuscita',
   'fabric.elements.share.copied.to.clipboard.message':
     'Link copiato negli appunti',
   'fabric.elements.share.form.capabilities.info.message':
@@ -40,7 +39,7 @@ export default {
   'fabric.elements.share.failure.message':
     'Impossibile effettuare la condivisione',
   'fabric.elements.share.success.message':
-    '{object, select, blogpost {Blog post shared} board {Board shared} calendario {Calendar shared} bozza {Draft shared} filtro {Filter shared} ticket {Issue shared} file multimediali {Media shared} pagina {Page shared} progetto {Project shared} richiesta pull {Pull Request shared} domanda {Question shared} report {Report shared} repository {Repository shared} richiesta {Request shared} roadmap {Roadmap shared} sito {Site shared} spazio {Space shared} altro {Link Shared}}',
+    '{object, select, blogpost {Blog post shared} board {Board shared} calendario {Calendar shared} bozza {Draft shared} filtro {Filter shared} ticket {Issue shared} file multimediali {Media shared} pagina {Page shared} progetto {Project shared} pull request {Pull Request shared} domanda {Question shared} report {Report shared} repository {Repository shared} richiesta {Request shared} roadmap {Roadmap shared} sito {Site shared} spazio {Space shared} altro {Link Shared}}',
   'fabric.elements.share.admin.notified.message':
     'Il tuo amministratore è stato avvisato',
 };

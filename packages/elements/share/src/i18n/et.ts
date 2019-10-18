@@ -11,16 +11,16 @@ export default {
   'fabric.elements.share.form.retry': 'Proovi uuesti',
   'fabric.elements.share.form.comment.placeholder': 'Sõnumi lisamine',
   'fabric.elements.share.form.user-picker.placeholder.generic':
-    'Sisesta nimi, meeskond või e-posti aadress',
+    'Sisestage nimi, rühm, meeskond või meil',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Sisesta nimi või meeskond',
   'fabric.elements.share.form.user-picker.add-more': 'Sisesta veel',
   'fabric.elements.share.form.user-picker.validation.required':
-    'Vali vähemalt üks kasutaja, meeskond või e-posti aadress.',
+    'Valige vähemalt üks kasutaja, rühm, meeskond või meil.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Saad kutsuda vaid {domains} e-posti aadressiga inimesi. Teiste kutsumiseks võta ühendust lehe administraatoriga.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':
-    'Me ei suutnud leida ühtegi tulemust seoses otsitavaga „{inputValue}". ',
+    'Me ei suutnud leida ühtegi tulemust seoses otsitavaga „{inputValue}".',
   'fabric.elements.share.form.user-picker.no-options.generic':
     'Me ei suutnud leida ühtegi tulemust seoses otsitavaga „{inputValue}". Kutsu inimesi e-posti aadressi alusel.',
   'fabric.elements.share.trigger.button.icon.label': 'Jagamisikoon',
