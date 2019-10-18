@@ -1,0 +1,1 @@
+Bump kakapo, to fix Router instantiation: we now use only 'fetch' as strategy.
