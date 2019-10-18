@@ -73,6 +73,7 @@ const config = {
     'ts-jest': {
       tsConfig: './tsconfig.jest.json',
       diagnostics: false,
+      isolatedModules: true,
     },
     __BASEURL__: 'http://localhost:9000',
   },

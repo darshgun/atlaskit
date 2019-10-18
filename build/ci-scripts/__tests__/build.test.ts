@@ -1,3 +1,4 @@
+jest.enableAutomock();
 import * as bolt from 'bolt';
 import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
@@ -9,7 +10,6 @@ import validateDists from '../validate.dists';
 
 import build from '../build';
 
-jest.enableAutomock();
 jest.unmock('../build');
 jest.mock('../validate.dists', () =>
   jest.fn(() => Promise.resolve({ success: true })),
