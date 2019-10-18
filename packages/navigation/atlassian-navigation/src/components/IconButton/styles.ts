@@ -17,18 +17,19 @@ export const padding = {
 
 export const getIconButtonTheme = ({
   mode: { iconButton },
-}: NavigationTheme) => (
+}: NavigationTheme, shouldHaveLeftMargin: boolean) => (
   current: (props: ThemeProps) => ThemeTokens,
   props: ThemeProps,
 ): ThemeTokens => {
   const { buttonStyles, spinnerStyles } = current(props);
+
   return {
     buttonStyles: {
       ...buttonStyles,
       borderRadius: 100,
       display: 'flex',
       height: 'auto',
-      marginLeft: margin.left,
+      marginLeft: shouldHaveLeftMargin && margin.left,
       padding: padding.all,
       ...iconButton.default,
       ':hover': iconButton.hover,

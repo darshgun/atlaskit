@@ -7,6 +7,7 @@ export type IconButtonProps = Omit<
   icon: ButtonProps['iconBefore'];
   testId?: string;
   tooltip: string;
+  shouldHaveLeftMargin?: boolean;
 };
 
 export type IconButtonSkeletonProps = {

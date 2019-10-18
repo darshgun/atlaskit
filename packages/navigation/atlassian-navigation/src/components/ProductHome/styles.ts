@@ -9,10 +9,10 @@ export const containerCSS = {
   alignItems: 'center',
   display: 'flex',
   [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
-    marginRight: `${gridSize}px`,
+    margin: `0 ${gridSize}px`,
   },
   [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
-    marginRight: `${gridSize * 2}px`,
+    margin: `0 ${gridSize * 2}px`,
   },
 };
 
