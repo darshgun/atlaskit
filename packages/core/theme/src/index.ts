@@ -8,7 +8,7 @@ import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
 import { ThemedValue } from './types';
 
-const typedColors: Record<string, any> = { ...colors };
+const typedColors: Record<string, any> = { ...colors }; // TODO: check if we need to spread here
 const typedElevation: Record<string, ThemedValue> = { ...elevation };
 const typedTypography: Record<string, any> = { ...typography };
 const typedMath: Record<string, Function> = { ...math };

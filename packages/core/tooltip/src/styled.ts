@@ -12,23 +12,17 @@ const textColor = themed({
   dark: DN600,
 });
 
-const truncate = (p: { truncate?: boolean }) =>
-  p.truncate
-    ? css`
-        max-width: 420px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      `
-    : '';
+interface TooltipProps {
+  truncate?: boolean;
+}
 
-export const TooltipPrimitive = styled.div`
+export const TooltipPrimitive = styled.div<TooltipProps>`
   z-index: ${layers.tooltip};
   pointer-events: none;
   position: fixed;
 `;
 
-export const Tooltip = styled(TooltipPrimitive)`
+export const Tooltip = styled<TooltipProps>(TooltipPrimitive)`
   background-color: ${backgroundColor};
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
@@ -42,8 +36,18 @@ export const Tooltip = styled(TooltipPrimitive)`
   /* Edge does not support overflow-wrap */
   word-wrap: break-word;
   overflow-wrap: break-word;
-  ${truncate};
+
+  ${({ truncate }) =>
+    truncate &&
+    `
+      max-width: 420px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    `}
 `;
+
+// TODO Test this truncate stuff
 
 // The inline-block here is needed to keep the tooltip appearing in the correct position
 // when nested inside a wider parent (see position: relative example).

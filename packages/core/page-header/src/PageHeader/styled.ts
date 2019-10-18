@@ -19,7 +19,7 @@ export const Outer = styled.div`
   margin: ${gridSize() * 3}px 0 ${gridSize() * 2}px 0;
 `;
 
-export const StyledTitle = styled.h1`
+export const StyledTitle = styled.h1<StyledProps>`
   ${h700()};
   ${getTruncationStyles} line-height: ${gridSize() * 4}px;
   margin-top: 0;

@@ -10,7 +10,6 @@ import {
   fontSize,
 } from '../..';
 import { colorPalette } from '../../colors';
-import { ThemedValue } from '../../types';
 
 describe('AtlaskitThemeProvider', () => {
   it('should mount', () => {
@@ -25,7 +24,7 @@ describe('AtlaskitThemeProvider', () => {
 });
 
 describe('themed', () => {
-  const blackOrWhite: ThemedValue = themed({ light: 'white', dark: 'black' });
+  const blackOrWhite = themed({ light: 'white', dark: 'black' });
   it('should return a function', () => {
     expect(typeof blackOrWhite).toBe('function');
   });

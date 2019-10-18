@@ -35,7 +35,7 @@ export const resolveColors = (
  * TODO when update typescript to 2.9+
  * add custom props as Generic Parameter to span instead of casting
  */
-export const DateLozenge = styled.span`
+export const DateLozenge = styled.span<Props>`
   border-radius: ${borderRadius()}px;
   padding: 2px 4px;
   margin: 0 1px;
@@ -44,7 +44,7 @@ export const DateLozenge = styled.span`
   white-space: nowrap;
   cursor: ${(props: Props) => (props.onClick ? 'pointer' : 'unset')};
 
-  ${(props: Props) => {
+  ${props => {
     const [background, color, hoverBackground]: ColoursTuple = themed(
       resolveColors(props.color),
     )(props);

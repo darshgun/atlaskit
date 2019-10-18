@@ -1,16 +1,16 @@
 // TODO when P is not provided, props are inferred never, which can be passed up.
-export function add<P>(fn: (props: P) => number, addend: number) {
-  return (props: P) => fn(props) + addend;
+export function add(fn: (props?: any) => number, addend: number) {
+  return (props?: any) => fn(props) + addend;
 }
 
-export function subtract<P>(fn: (props: P) => number, subtrahend: number) {
-  return (props: P) => fn(props) - subtrahend;
+export function subtract(fn: (props?: any) => number, subtrahend: number) {
+  return (props?: any) => fn(props) - subtrahend;
 }
 
-export function multiply<P>(fn: (props: P) => number, factor: number) {
-  return (props: P) => fn(props) * factor;
+export function multiply(fn: (props?: any) => number, factor: number) {
+  return (props?: any) => fn(props) * factor;
 }
 
-export function divide<P>(fn: (props: P) => number, divisor: number) {
-  return (props: P) => fn(props) / divisor;
+export function divide(fn: (props?: any) => number, divisor: number) {
+  return (props?: any) => fn(props) / divisor;
 }

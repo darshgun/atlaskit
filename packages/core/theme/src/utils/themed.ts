@@ -4,7 +4,11 @@ import getTheme from './getTheme';
 import { ThemedValue, ThemeProps } from '../types';
 
 type Value = string | number;
-type Modes = { light: Value; dark: Value };
+type Modes = Partial<{
+  light: Value;
+  dark: Value;
+  [index: string]: Value;
+}>;
 type VariantModes = { [key: string]: Modes };
 
 function themedVariants(variantProp: string, variants?: VariantModes) {
@@ -29,9 +33,8 @@ export default function themed(
     // @ts-ignore
     return themedVariants(modesOrVariant, variantModes);
   }
-  const modes = modesOrVariant;
-  return (props?: ThemeProps) => {
+  return (props?: Record<string, any>) => {
     const theme = getTheme(props);
-    return modes[theme.mode];
+    return modesOrVariant[theme.mode]!; // TODO Potentially revisit the fact that Mode cant be an empty object and break things
   };
 }
