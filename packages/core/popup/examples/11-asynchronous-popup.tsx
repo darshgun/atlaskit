@@ -2,7 +2,6 @@
 import { FC, useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
 import { Placement } from '@atlaskit/popper';
-import Spinner from '@atlaskit/spinner';
 import { jsx } from '@emotion/core';
 
 import Popup from '../src';
@@ -27,10 +26,6 @@ const contentCSS = {
   padding: '30px',
   maxWidth: '300px',
 } as const;
-
-const spinnerContainerCSS = {
-  margin: '40px',
-};
 
 const expanderCSS = ({ width }: { width: number }) => ({
   display: 'inline-block',
