@@ -74,8 +74,8 @@ describe('Snapshot Test', () => {
     await page.click(button);
     await page.waitForSelector(popup);
 
-    const image = await page.screenshot();
-    expect(image).toMatchProdImageSnapshot();
+    const popupImage = await takeElementScreenShot(page, popup);
+    expect(popupImage).toMatchProdImageSnapshot();
 
     await page.click(button);
     await page.click(button0);
@@ -83,7 +83,7 @@ describe('Snapshot Test', () => {
     await page.waitForSelector(popup);
     // We need to wait for the active state animation to finish.
     await page.waitFor(500);
-    const imageWithFocus = await page.screenshot();
-    expect(imageWithFocus).toMatchProdImageSnapshot();
+    const popupImageWithFocus = await takeElementScreenShot(page, popup);
+    expect(popupImageWithFocus).toMatchProdImageSnapshot();
   });
 });
