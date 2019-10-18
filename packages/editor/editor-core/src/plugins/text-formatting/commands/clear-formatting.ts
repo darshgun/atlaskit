@@ -83,7 +83,7 @@ export function clearFormatting(
     tr.setStoredMarks([]);
 
     if (formattingCleared.length && inputMethod) {
-      addAnalytics(tr, {
+      addAnalytics(state, tr, {
         action: ACTION.FORMATTED,
         eventType: EVENT_TYPE.TRACK,
         actionSubject: ACTION_SUBJECT.TEXT,

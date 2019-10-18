@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
-import { WithEditorActions, EditorActions } from '../src';
+import { WithEditorActions, EditorActions, EditorContext } from '../src';
 import { TitleArea } from '../example-helpers/PageElements';
 
 /**
@@ -51,27 +51,41 @@ export const Content: any = styled.div`
 Content.displayName = 'Content';
 
 export default function Example() {
+  const [disabled, setDisabledState] = React.useState(false);
+  const [mounted, setMountState] = React.useState(true);
   return (
-    <Wrapper>
-      <Content>
-        <EditorPresetCXHTML placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
-          <FullPageEditor
-            contentComponents={[
-              <TitleArea key="title=placeholder" placeholder="Some text..." />,
-            ]}
-            primaryToolbarComponents={[
-              <WithEditorActions
-                key="editor-actions-save"
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />,
-            ]}
-            allowDynamicTextSizing={true}
-          />
-        </EditorPresetCXHTML>
-      </Content>
-    </Wrapper>
+    <EditorContext>
+      <Wrapper>
+        <Content>
+          <button onClick={() => setDisabledState(!disabled)}>
+            Toggle Disabled
+          </button>
+          <button onClick={() => setMountState(!mounted)}>Toggle Mount</button>
+          {mounted ? (
+            <EditorPresetCXHTML placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
+              <FullPageEditor
+                disabled={disabled}
+                contentComponents={[
+                  <TitleArea
+                    key="title=placeholder"
+                    placeholder="Some text..."
+                  />,
+                ]}
+                primaryToolbarComponents={[
+                  <WithEditorActions
+                    key="editor-actions-save"
+                    // tslint:disable-next-line:jsx-no-lambda
+                    render={actions => (
+                      <SaveAndCancelButtons editorActions={actions} />
+                    )}
+                  />,
+                ]}
+                allowDynamicTextSizing={true}
+              />
+            </EditorPresetCXHTML>
+          ) : null}
+        </Content>
+      </Wrapper>
+    </EditorContext>
   );
 }

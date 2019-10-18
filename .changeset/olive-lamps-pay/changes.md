@@ -1,0 +1,1 @@
+Add failedProcessing error event + fix passing file attributes to mediaPreviewFailedEvent

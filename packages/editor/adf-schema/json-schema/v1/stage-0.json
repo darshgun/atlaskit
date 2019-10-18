@@ -1036,17 +1036,17 @@
     "taskList_node": {
       "type": "object",
       "properties": {
-        "type": {
-          "enum": [
-            "taskList"
-          ]
-        },
         "content": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/taskItem_node"
           },
           "minItems": 1
+        },
+        "type": {
+          "enum": [
+            "taskList"
+          ]
         },
         "attrs": {
           "type": "object",
@@ -1062,8 +1062,55 @@
         }
       },
       "required": [
-        "type",
         "content",
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "nestableTaskList_node": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/taskItem_node"
+            },
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/taskItem_node"
+                },
+                {
+                  "$ref": "#/definitions/nestableTaskList_node"
+                }
+              ]
+            }
+          ],
+          "minItems": 1
+        },
+        "type": {
+          "enum": [
+            "taskList"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "localId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "localId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "content",
+        "type",
         "attrs"
       ],
       "additionalProperties": false
@@ -1738,6 +1785,9 @@
           "$ref": "#/definitions/taskList_node"
         },
         {
+          "$ref": "#/definitions/nestableTaskList_node"
+        },
+        {
           "$ref": "#/definitions/table_node"
         },
         {
@@ -1804,6 +1854,9 @@
             "$ref": "#/definitions/taskList_node"
           },
           {
+            "$ref": "#/definitions/nestableTaskList_node"
+          },
+          {
             "$ref": "#/definitions/extension_node"
           },
           {
@@ -1852,6 +1905,9 @@
           },
           {
             "$ref": "#/definitions/taskList_node"
+          },
+          {
+            "$ref": "#/definitions/nestableTaskList_node"
           },
           {
             "$ref": "#/definitions/table_node"
@@ -2040,6 +2096,9 @@
               },
               {
                 "$ref": "#/definitions/taskList_node"
+              },
+              {
+                "$ref": "#/definitions/nestableTaskList_node"
               },
               {
                 "$ref": "#/definitions/table_node"

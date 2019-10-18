@@ -1,0 +1,11 @@
+{
+  "releases": [
+    { "name": "@atlaskit/adf-schema", "type": "minor" },
+    { "name": "@atlaskit/adf-utils", "type": "minor" },
+    { "name": "@atlaskit/editor-common", "type": "minor" },
+    { "name": "@atlaskit/editor-core", "type": "minor" },
+    { "name": "@atlaskit/renderer", "type": "minor" },
+    { "name": "@atlaskit/task-decision", "type": "minor" }
+  ],
+  "dependents": []
+}

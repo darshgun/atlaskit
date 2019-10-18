@@ -14,6 +14,7 @@ export interface MediaBlobUrlAttrs {
   mimeType?: string;
   width?: number;
   height?: number;
+  alt?: string;
 }
 
 const getNumberFromParams = (
@@ -57,6 +58,7 @@ export const getAttrsFromUrl = (
     id,
     contextId,
     collection,
+    alt: getStringFromParams(params, 'alt'),
     height: getNumberFromParams(params, 'height'),
     width: getNumberFromParams(params, 'width'),
     size: getNumberFromParams(params, 'size'),

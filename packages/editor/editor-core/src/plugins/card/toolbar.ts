@@ -82,7 +82,7 @@ export const removeCard: Command = (state, dispatch) => {
     eventType: EVENT_TYPE.TRACK,
   };
   if (dispatch) {
-    dispatch(addAnalytics(removeSelectedNode(state.tr), payload));
+    dispatch(addAnalytics(state, removeSelectedNode(state.tr), payload));
   }
   analyticsService.trackEvent('atlassian.editor.format.card.delete.button');
   return true;
@@ -114,7 +114,7 @@ export const visitCardLink: Command = (state, dispatch) => {
   window.open(url);
 
   if (dispatch) {
-    dispatch(addAnalytics(state.tr, payload));
+    dispatch(addAnalytics(state, state.tr, payload));
   }
   return true;
 };

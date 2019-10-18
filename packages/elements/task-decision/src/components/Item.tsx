@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { AttributionWrapper, ContentWrapper, Wrapper } from '../styled/Item';
+import { ContentWrapper, Wrapper } from '../styled/Item';
 
 import { Appearance, ContentRef } from '../types';
 import { Placeholder } from '../styled/Placeholder';
@@ -13,7 +13,6 @@ export interface Props {
   contentRef?: ContentRef;
   placeholder?: string;
   showPlaceholder?: boolean;
-  attribution?: string;
 }
 
 export default class Item extends PureComponent<Props, {}> {
@@ -27,16 +26,6 @@ export default class Item extends PureComponent<Props, {}> {
       return null;
     }
     return <Placeholder contentEditable={false}>{placeholder}</Placeholder>;
-  }
-
-  renderAttribution() {
-    const { attribution } = this.props;
-
-    if (!attribution) {
-      return null;
-    }
-
-    return <AttributionWrapper>{attribution}</AttributionWrapper>;
   }
 
   renderMessageAppearance() {

@@ -68,7 +68,6 @@ describe('@atlaskit/editor-core/ui/Task', () => {
     task.update();
     const resourcedTaskItem = task.find(ResourcedTaskItem);
     expect(resourcedTaskItem.prop('objectAri')).toEqual('abc');
-    expect(resourcedTaskItem.prop('containerAri')).toEqual('def');
     task.unmount();
   });
 

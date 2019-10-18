@@ -1,0 +1,1 @@
+ED-7766 improve heading anchor link analytics

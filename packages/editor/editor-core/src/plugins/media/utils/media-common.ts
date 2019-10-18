@@ -315,8 +315,9 @@ function canContainImage(element: HTMLElement | null): boolean {
  * @param html
  */
 export const unwrapNestedMediaElements = (html: string) => {
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = html;
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const wrapper = doc.body;
 
   // Remove Google Doc's wrapper <b> el
   const docsWrapper = wrapper.querySelector<HTMLElement>(
