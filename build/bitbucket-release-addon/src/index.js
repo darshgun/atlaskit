@@ -81,8 +81,6 @@ const changesetInfoPromise = legacy
   ? Promise.resolve({ changesetPromise: getCommits(user, repo, pullrequestid) })
   : getChangesets(user, repo, sourcehash, destinationhash);
 
-console.log(changesetInfoPromise);
-
 changesetInfoPromise.then(({ changesetPromise, v2 = false }) =>
   changesetPromise
     .then(changesets => {
