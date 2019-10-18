@@ -52,27 +52,15 @@ export function request(
     retryOptions = {},
   } = options;
 
-  return promiseRetry(
-    () =>
-      fetch(createUrl(url, { params }), {
-        method,
-        body,
-        headers: withAuth(auth)(headers),
-        signal: controller && controller.signal,
-      })
-        .catch(async e => {
-          throw e;
-        })
-        .then(processFetchResponse),
-    {
-      ...retryOptions,
-      retryCondition: {
-        reject: (e: Error) =>
-          e instanceof TypeError || (e as HttpError).statusCode >= 500,
-        resolve: (_: Response) => false,
-      },
-    },
-  );
+  const doFetch = () =>
+    fetch(createUrl(url, { params }), {
+      method,
+      body,
+      headers: withAuth(auth)(headers),
+      signal: controller && controller.signal,
+    }).then(processFetchResponse);
+
+  return promiseRetry(doFetch, retryOptions);
 }
 
 export function mapResponseToJson(response: Response): Promise<any> {
@@ -83,7 +71,7 @@ export function mapResponseToBlob(response: Response): Promise<Blob> {
   return response.blob();
 }
 
-export function mapResponseToVoid(_response: Response): Promise<void> {
+export function mapResponseToVoid(): Promise<void> {
   return Promise.resolve();
 }
 
@@ -155,13 +143,6 @@ export interface RetryOptions {
   startTimeoutInMs: number;
   factor: number;
 }
-type RetryOptionsWithCondition<T> = RetryOptions & {
-  retryCondition?: {
-    resolve: (result: T) => boolean;
-    reject: (err: Error) => boolean;
-  };
-};
-type PromiseConstructor<T> = () => Promise<T>;
 
 const DEFAULT_OPTIONS: RetryOptions = {
   attempts: 5, // Current test delay is 60s, so retries should finish before if a promise takes < 1s
@@ -173,52 +154,44 @@ const wait = (timeoutInMs: number) =>
     setTimeout(resolve, timeoutInMs);
   });
 
+// fetch throws TypeError for network errors
+const isNotFetchNetworkError = (e: Error): boolean => !(e instanceof TypeError);
+
 async function promiseRetry<T>(
-  promiseConstructor: PromiseConstructor<T>,
-  overwriteOptions: Partial<RetryOptionsWithCondition<T>> = {},
+  functionToRetry: () => Promise<T>,
+  overwriteOptions: Partial<RetryOptions> = {},
 ): Promise<T> {
   const options = {
     ...DEFAULT_OPTIONS,
     ...overwriteOptions,
-  } as RetryOptionsWithCondition<T>;
+  } as RetryOptions;
 
   let timeoutInMs = options.startTimeoutInMs;
-  let lastError: Error = new Error('Default error for retry exhaustion');
   const waitAndBumpTimeout = async () => {
     await wait(timeoutInMs);
     timeoutInMs *= options.factor;
   };
 
-  for (let i = 1; i < options.attempts + 1; ++i) {
+  for (let i = 1; i <= options.attempts; i++) {
     try {
-      const result = await promiseConstructor();
-      if (!options.retryCondition || !options.retryCondition.resolve(result)) {
-        return result;
-      }
-
-      lastError = new Error('Retry-on-resolve condition was met');
-      await waitAndBumpTimeout();
+      return await functionToRetry();
     } catch (err) {
-      if (!options.retryCondition || !options.retryCondition.reject(err)) {
-        return Promise.reject<T>(
+      const isLastAttempt = i === options.attempts;
+      if (
+        (isNotFetchNetworkError(err) && (err as HttpError).statusCode < 500) ||
+        isLastAttempt
+      ) {
+        return Promise.reject(
           new Error(
-            `The call did not succeed after one attempt. Last error is\n---\n${
+            `The call did not succeed after ${i} attempts. Last error is\n---\n${
               err.stack
             }\n---`,
           ),
         );
+      } else {
+        await waitAndBumpTimeout();
       }
-
-      lastError = err;
-      await waitAndBumpTimeout();
     }
   }
-
-  return Promise.reject<T>(
-    new Error(
-      `The call did not succeed after ${
-        options.attempts
-      } attempts. Last error is\n---\n${lastError.stack}\n---`,
-    ),
-  );
+  return Promise.reject(new Error('Exhaused all attempts'));
 }

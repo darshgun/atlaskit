@@ -100,7 +100,7 @@ describe('request', () => {
       expect(response._bodyText).toBe(
         '{"status":300,"__redirectUrl":"http://other-url"}',
       );
-      expect(fetchMock.calls().length).toEqual(1); // meaning it didn't retry because it shouldn't retry on 4xx
+      expect(fetchMock.calls().length).toEqual(1); // meaning it didn't retry because it shouldn't retry on 3xx
     });
 
     it('should fail but not retry if response is 400', async () => {
@@ -122,11 +122,12 @@ describe('request', () => {
         error = e;
       }
 
+      // should not retry on 4xx
       expect(error).toBeInstanceOf(Error);
       expect(error.message).toMatch(
-        /The call did not succeed after one attempt.*/,
+        /The call did not succeed after 1 attempt.*/,
       );
-      expect(fetchMock.calls().length).toEqual(1); // meaning it didn't retry because it shouldn't retry on 4xx
+      expect(fetchMock.calls().length).toEqual(1);
     });
 
     it('should retry on >= http 500', async () => {
@@ -134,14 +135,14 @@ describe('request', () => {
       fetchMock
         .get(
           // the type here should be fetchMock.MockRequest but the authors of this library forgot to export it
-          (_url: string, _opts: any) => !!++requestCount && requestCount < 3,
+          () => !!++requestCount && requestCount < 3,
           {
             status: 500,
           },
           { name: 'fails' },
         )
         .get(
-          (_url: string, _opts: any) => requestCount === 3,
+          () => requestCount === 3,
           {
             status: 200,
           },
@@ -152,8 +153,46 @@ describe('request', () => {
         retryOptions: { factor: 1, startTimeoutInMs: 1 },
       });
 
+      // shoud retry twice
       expect(response.status).toEqual(200);
-      expect(fetchMock.calls().length).toEqual(3); // shoud retry twice
+      expect(fetchMock.calls().length).toEqual(3);
+    });
+
+    it('should retry on >= http 500 and fail on 400', async () => {
+      let requestCount = 0;
+      let error;
+
+      fetchMock
+        .get(
+          // the type here should be fetchMock.MockRequest but the authors of this library forgot to export it
+          () => !!++requestCount && requestCount < 3,
+          {
+            status: 500,
+          },
+          { name: 'fails' },
+        )
+        .get(
+          () => requestCount === 3,
+          {
+            status: 400,
+          },
+          { name: 'succeeds' },
+        );
+
+      try {
+        await request(url, {
+          retryOptions: { factor: 1, startTimeoutInMs: 1 },
+        });
+      } catch (e) {
+        error = e;
+      }
+
+      // should retry 2 times and then hit non-retryable error
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toMatch(
+        /The call did not succeed after 3 attempts.*/,
+      );
+      expect(fetchMock.calls().length).toEqual(3);
     });
 
     it('should retry on >= http 500 and fail after a number of attempts if unsuccessful', async () => {
@@ -170,11 +209,12 @@ describe('request', () => {
         error = e;
       }
 
+      // shoud retry the set number of times and fail
       expect(error).toBeInstanceOf(Error);
       expect(error.message).toMatch(
         /The call did not succeed after 2 attempts.*/,
       );
-      expect(fetchMock.calls().length).toEqual(2); // shoud retry the set number of times and fail
+      expect(fetchMock.calls().length).toEqual(2);
     });
 
     it('should retry on >= http 500 and fail after default number of attempts if unsuccessful', async () => {
@@ -191,11 +231,12 @@ describe('request', () => {
         error = e;
       }
 
+      // shoud retry the default number of times and fail
       expect(error).toBeInstanceOf(Error);
       expect(error.message).toMatch(
         /The call did not succeed after 5 attempts.*/,
       );
-      expect(fetchMock.calls().length).toEqual(5); // shoud retry the default number of times and fail
+      expect(fetchMock.calls().length).toEqual(5);
     });
   });
 });
