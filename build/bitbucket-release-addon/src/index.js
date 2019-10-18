@@ -81,7 +81,7 @@ const changesetInfoPromise = legacy
   ? Promise.resolve({ changesetPromise: getCommits(user, repo, pullrequestid) })
   : getChangesets(user, repo, sourcehash, destinationhash);
 
-changesetInfoPromise.then(({ changesetPromise, v2 = false }) =>
+changesetInfoPromise.then(({ changesetPromise, v2 = false }) => {
   changesetPromise
     .then(changesets => {
       if (!changesets || changesets.length === 0) {
@@ -100,5 +100,5 @@ changesetInfoPromise.then(({ changesetPromise, v2 = false }) =>
     .catch(e => {
       console.error('error in changeset', e);
       document.body.innerHTML = errorLoadingChangesetMessage;
-    }),
-);
+    });
+});
