@@ -29,6 +29,8 @@ import {
   MediaStoreCopyFileWithTokenBody,
   MediaStoreCopyFileWithTokenParams,
   mapMediaFileToFileState,
+  globalMediaEventEmitter,
+  RECENTS_COLLECTION,
 } from '..';
 import isValidId from 'uuid-validate';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
@@ -292,6 +294,7 @@ export class FileFetcherImpl implements FileFetcher {
     );
     const { id, occurrenceKey } = uploadableFileUpfrontIds;
     const subject = new ReplaySubject<FileState>(1);
+
     const deferredBlob = fetch(url)
       .then(response => response.blob())
       .catch(() => undefined);
@@ -478,6 +481,12 @@ export class FileFetcherImpl implements FileFetcher {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    globalMediaEventEmitter.emit('media-viewed', {
+      fileId: id,
+      isUserCollection: collectionName === RECENTS_COLLECTION,
+      viewingLevel: 'download',
+    });
   }
 
   public async copyFile(

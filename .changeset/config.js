@@ -29,6 +29,7 @@ const getDependencyReleaseLine = async (changesets, dependenciesUpdated) => {
 const changesetOptions = {
   commit: true,
 };
+
 const versionOptions = {
   commit: true,
   skipCI: true,

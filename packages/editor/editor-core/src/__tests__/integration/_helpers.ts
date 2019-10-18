@@ -4,7 +4,10 @@ import { ToolbarFeatures } from '../../../example-helpers/ToolsDrawer';
 import { EditorAppearance, EditorProps } from '../../types';
 import { pluginKey as tableResizingPluginKey } from '../../plugins/table/pm-plugins/table-resizing';
 import messages from '../../messages';
-import { tableSelectors } from '../__helpers/page-objects/_table';
+import {
+  tableSelectors,
+  getSelectorForTableCell,
+} from '../__helpers/page-objects/_table';
 import { TableCssClassName } from '../../plugins/table/types';
 
 /**
@@ -480,33 +483,13 @@ export const animationFrame = async (page: any) => {
 
 export const doubleClickResizeHandle = async (
   page: any,
-  resizeHandlePos: number,
+  row: number,
+  column: number,
 ) => {
-  await page.browser.execute(
-    (tableResizingPluginKey: any, resizeHandlePos: any) => {
-      const view = (window as any).__editorView;
-      if (!view) {
-        return;
-      }
-      const startX = 600;
+  const tableCellSelector = getSelectorForTableCell({ row, cell: column });
 
-      view.dispatch(
-        view.state.tr.setMeta(tableResizingPluginKey, {
-          type: 'SET_RESIZE_HANDLE_POSITION',
-          data: {
-            resizeHandlePos,
-          },
-        }),
-      );
-
-      view.dom.dispatchEvent(new MouseEvent('mousedown', { clientX: startX }));
-      window.dispatchEvent(new MouseEvent('mouseup', { clientX: startX }));
-      view.dom.dispatchEvent(new MouseEvent('mousedown', { clientX: startX }));
-      window.dispatchEvent(new MouseEvent('mouseup', { clientX: startX }));
-    },
-    tableResizingPluginKey,
-    resizeHandlePos,
-  );
+  await page.moveTo(tableCellSelector, 0, 0);
+  await page.browser.positionDoubleClick();
 };
 
 export const selectColumns = async (page: any, indexes: number[]) => {

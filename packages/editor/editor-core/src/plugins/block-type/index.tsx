@@ -58,7 +58,7 @@ const headingPluginOptions = ({
       ),
       action(insert: QuickInsertActionInsert, state: EditorState) {
         const tr = insert(state.schema.nodes.heading.createChecked({ level }));
-        return addAnalytics(tr, {
+        return addAnalytics(state, tr, {
           action: ACTION.FORMATTED,
           actionSubject: ACTION_SUBJECT.TEXT,
           eventType: EVENT_TYPE.TRACK,
@@ -174,7 +174,7 @@ const blockTypePlugin = (options?: BlockTypePluginOptions): EditorPlugin => ({
               ),
             );
 
-            return addAnalytics(tr, {
+            return addAnalytics(state, tr, {
               action: ACTION.FORMATTED,
               actionSubject: ACTION_SUBJECT.TEXT,
               eventType: EVENT_TYPE.TRACK,

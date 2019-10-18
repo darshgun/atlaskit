@@ -61,47 +61,42 @@ class MockedMobileSmartCardClient extends MobileSmartCardClient {
 
 const mockCardClient = new MockedMobileSmartCardClient();
 
-// Note: the mobile renderer alters the prop type of `document` to require a string
-// representation of ADF, despite the base renderer supporting either a string or an object.
-// For some reason, a string version fails to populate the content within Enzyme.
-// Here we cast back to an object, which would usually complain about types, but conveniently
-// JSON.parse returns `any`.
-const linkADF = JSON.parse(`{
-  "version": 1,
-  "type": "doc",
-  "content": [
+const linkADF = JSON.stringify({
+  version: 1,
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "type": "text",
-          "text": "I'm a normal link",
-          "marks": [
+          type: 'text',
+          text: "I'm a normal link",
+          marks: [
             {
-              "type": "link",
-              "attrs": {
-                "href": "http://prosemirror.net"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}`);
-const smartLinkADF = JSON.parse(`{
-  "version": 1,
-  "type": "doc",
-  "content": [
+              type: 'link',
+              attrs: {
+                href: 'http://prosemirror.net',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+});
+const smartLinkADF = JSON.stringify({
+  version: 1,
+  type: 'doc',
+  content: [
     {
-      "type": "inlineCard",
-      "attrs": {
-        "url": "https://github.com/ProseMirror/prosemirror-view",
-        "data": null
-      }
-    }
-  ]
-}`);
+      type: 'inlineCard',
+      attrs: {
+        url: 'https://github.com/ProseMirror/prosemirror-view',
+        data: null,
+      },
+    },
+  ],
+});
 
 /**
  * This test suite ensures that clicking links inside the mobile renderer

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/droplist",
-  "version": "9.0.19",
+  "version": "9.1.0",
   "description": "Droplist component",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -44,6 +44,7 @@
     "@atlaskit/section-message": "^4.1.1",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/webdriver-runner": "^0.1.5",
+    "@testing-library/react": "^8.0.1",
     "enzyme": "^3.7.0",
     "react-dom": "^16.8.0"
   },

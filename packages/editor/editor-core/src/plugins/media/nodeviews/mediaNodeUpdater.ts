@@ -104,9 +104,7 @@ export class MediaNodeUpdater {
     const mediaClientConfig = await getViewMediaClientConfigFromMediaProvider(
       mediaProvider,
     );
-    const mediaClient = getMediaClient({
-      mediaClientConfig,
-    });
+    const mediaClient = getMediaClient(mediaClientConfig);
 
     const options = {
       collectionName: attrs.collection,
@@ -161,9 +159,7 @@ export class MediaNodeUpdater {
       if (!uploadMediaClientConfig || !node.attrs.url) {
         return;
       }
-      const mediaClient = getMediaClient({
-        mediaClientConfig: uploadMediaClientConfig,
-      });
+      const mediaClient = getMediaClient(uploadMediaClientConfig);
 
       const collection =
         mediaProvider.uploadParams && mediaProvider.uploadParams.collection;
@@ -243,9 +239,7 @@ export class MediaNodeUpdater {
     const viewMediaClientConfig = await getViewMediaClientConfigFromMediaProvider(
       mediaProvider,
     );
-    const mediaClient = getMediaClient({
-      mediaClientConfig: viewMediaClientConfig,
-    });
+    const mediaClient = getMediaClient(viewMediaClientConfig);
     const state = await mediaClient.getImageMetadata(id, {
       collection,
     });
@@ -318,9 +312,7 @@ export class MediaNodeUpdater {
     ) {
       return;
     }
-    const mediaClient = getMediaClient({
-      mediaClientConfig: uploadMediaClientConfig,
-    });
+    const mediaClient = getMediaClient(uploadMediaClientConfig);
     const auth = await uploadMediaClientConfig.getAuthFromContext(contextId);
     const source = {
       id,
@@ -366,9 +358,7 @@ export class MediaNodeUpdater {
     if (!uploadMediaClientConfig) {
       return;
     }
-    const mediaClient = getMediaClient({
-      mediaClientConfig: uploadMediaClientConfig,
-    });
+    const mediaClient = getMediaClient(uploadMediaClientConfig);
 
     if (uploadMediaClientConfig.getAuthFromContext && contextId) {
       const auth = await uploadMediaClientConfig.getAuthFromContext(contextId);

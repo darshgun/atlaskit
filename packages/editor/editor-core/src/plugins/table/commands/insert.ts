@@ -2,11 +2,11 @@
 import { Selection } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import {
-  findTable,
   addColumnAt,
   addRowAt,
-  safeInsert,
   createTable as createTableNode,
+  findTable,
+  safeInsert,
 } from 'prosemirror-utils';
 import { getPluginState } from '../pm-plugins/main';
 import { checkIfHeaderRowEnabled, copyPreviousRow } from '../utils';

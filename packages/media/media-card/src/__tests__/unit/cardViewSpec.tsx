@@ -266,4 +266,19 @@ describe('CardView', () => {
     expect(actualReturnedEvent.payload.action).toEqual('clicked');
     expect(actualReturnedEvent.context).toEqual(actualFiredEvent.context);
   });
+
+  it('should trigger "media-viewed" in globalMediaEventEmitter when image card is rendered', () => {
+    const onDisplayImage = jest.fn();
+    mount(
+      <CardView
+        status="complete"
+        dataURI="a"
+        metadata={file}
+        resizeMode="stretchy-fit"
+        onDisplayImage={onDisplayImage}
+      />,
+    );
+
+    expect(onDisplayImage).toHaveBeenCalledTimes(1);
+  });
 });

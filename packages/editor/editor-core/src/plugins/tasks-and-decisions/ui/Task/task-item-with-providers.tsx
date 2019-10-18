@@ -67,7 +67,7 @@ export default class TaskItemWithProviders extends Component<Props, State> {
 
   render() {
     const { contextIdentifierProvider, ...otherProps } = this.props;
-    const { objectId, containerId } =
+    const { objectId } =
       this.state.resolvedContextProvider || ({} as ContextIdentifierProvider);
     const userContext = objectId ? 'edit' : 'new';
 
@@ -77,11 +77,7 @@ export default class TaskItemWithProviders extends Component<Props, State> {
           userContext,
         }}
       >
-        <ResourcedTaskItem
-          {...otherProps}
-          objectAri={objectId}
-          containerAri={containerId}
-        />
+        <ResourcedTaskItem {...otherProps} objectAri={objectId} />
       </FabricElementsAnalyticsContext>
     );
   }

@@ -9,7 +9,7 @@ import {
   PopupConstructor,
 } from './components/types';
 
-import { Context, MediaClientConfig } from '@atlaskit/media-core';
+import { MediaClientConfig } from '@atlaskit/media-core';
 
 // Events public API and types
 export {
@@ -34,14 +34,8 @@ export { UploadParams } from './domain/config';
 export { BrowserConfig, PopupConfig, ClipboardConfig, DropzoneConfig };
 export { PopupConstructor };
 
-function isContext(
-  contextOrMediaClientConfig: Context | MediaClientConfig,
-): contextOrMediaClientConfig is Context {
-  return !!(contextOrMediaClientConfig as Context).collection;
-}
-
 export async function MediaPicker(
-  contextOrMediaClientConfig: Context | MediaClientConfig,
+  mediaClientConfig: MediaClientConfig,
   pickerConfig: PopupConfig,
 ): Promise<Popup> {
   const [{ PopupImpl }, { getMediaClient }] = await Promise.all([
@@ -49,11 +43,7 @@ export async function MediaPicker(
     import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
   ]);
 
-  const contextOrMediaClientConfigObject = isContext(contextOrMediaClientConfig)
-    ? { context: contextOrMediaClientConfig }
-    : { mediaClientConfig: contextOrMediaClientConfig };
-
-  const mediaClient = getMediaClient(contextOrMediaClientConfigObject);
+  const mediaClient = getMediaClient(mediaClientConfig);
 
   return new PopupImpl(mediaClient, pickerConfig);
 }

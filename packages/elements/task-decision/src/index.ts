@@ -8,12 +8,6 @@ import TaskList from './components/TaskList';
 export * from './types';
 
 export {
-  convertServiceItemResponseToItemResponse,
-  convertServiceDecisionResponseToDecisionResponse,
-  convertServiceTaskResponseToTaskResponse,
-} from './api/TaskDecisionUtils';
-
-export {
   DecisionItem,
   DecisionList,
   ResourcedTaskItem,

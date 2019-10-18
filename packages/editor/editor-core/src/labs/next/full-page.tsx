@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import {
   Editor,
+  EditorContent,
   EditorSharedConfigConsumer,
   EditorSharedConfig,
 } from './Editor';
@@ -13,7 +14,6 @@ import { scrollbarStyles } from '../../ui/styles';
 import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import { Toolbar } from './Toolbar';
-import { EditorContent } from './EditorContent';
 import { ContentComponents } from './ContentComponents';
 import { ClickAreaBlock } from '../../ui/Addon';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
@@ -190,7 +190,8 @@ export class FullPage extends React.Component<EditorProps, State> {
     } = this.props;
 
     return (
-      <Editor {...this.props}>
+      // TODO: fix this type
+      <Editor {...this.props as any}>
         <BaseTheme dynamicTextSizing={allowDynamicTextSizing}>
           <FullPageEditorWrapper className="akEditor">
             <MainToolbar showKeyline={this.state.showKeyline}>

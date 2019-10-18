@@ -98,7 +98,11 @@ function insertNodesWithOptionalParagraph(
 
     tr.replaceSelection(new Slice(Fragment.from(nodes), 0, openEnd));
     if (inputMethod) {
-      addAnalytics(tr, getInsertMediaAnalytics(inputMethod, fileExtension));
+      addAnalytics(
+        state,
+        tr,
+        getInsertMediaAnalytics(inputMethod, fileExtension),
+      );
     }
 
     if (dispatch) {
@@ -190,6 +194,7 @@ export const insertMediaSingleNode = (
 
     if (inputMethod) {
       tr = addAnalytics(
+        state,
         tr,
         getInsertMediaAnalytics(inputMethod, fileExtension),
       );

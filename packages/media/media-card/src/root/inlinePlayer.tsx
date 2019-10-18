@@ -5,6 +5,7 @@ import {
   FileIdentifier,
   FileState,
   MediaFileArtifacts,
+  globalMediaEventEmitter,
 } from '@atlaskit/media-client';
 import { Subscription } from 'rxjs/Subscription';
 import { CustomMediaPlayer, InactivityDetector } from '@atlaskit/media-ui';
@@ -177,6 +178,14 @@ export class InlinePlayerBase extends Component<
     mediaClient.file.downloadBinary(await id, undefined, collectionName);
   };
 
+  onFirstPlay = async () => {
+    const { identifier } = this.props;
+    globalMediaEventEmitter.emit('media-viewed', {
+      fileId: await identifier.id,
+      viewingLevel: 'full',
+    });
+  };
+
   render() {
     const { onClick, dimensions, selected } = this.props;
     const { fileSrc } = this.state;
@@ -200,6 +209,7 @@ export class InlinePlayerBase extends Component<
               isAutoPlay
               isHDAvailable={false}
               onDownloadClick={this.onDownloadClick}
+              onFirstPlay={this.onFirstPlay}
             />
           )}
         </InactivityDetector>

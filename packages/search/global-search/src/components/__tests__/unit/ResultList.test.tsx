@@ -189,7 +189,7 @@ it('should avoid duplicate result keys', () => {
   expect(personKey).toEqual(expect.stringMatching('person-resultId'));
 });
 
-describe.skip('Jira Avatar default Icons', () => {
+describe('Jira Avatar default Icons', () => {
   let spy: jest.SpyInstance<JSX.Element | null, [ContentType]>;
   beforeEach(() => {
     spy = jest.spyOn(JiraAvatarUtil, 'getDefaultAvatar');

@@ -1593,7 +1593,7 @@ describe('paste plugins', () => {
         [
           'a task item',
           'taskItem',
-          `<meta charset='utf-8'><ol data-node-type="actionList" data-task-list-local-id="c0060bd1-ee91-47e7-b55e-4f45bd2e0b0b" style="list-style: none; padding-left: 0"><li data-task-local-id="1803f18d-1fad-4998-81e4-644ed22f3929" data-task-state="TODO"> foo</li></ol>`,
+          `<meta charset='utf-8'><div data-node-type="actionList" data-task-list-local-id="c0060bd1-ee91-47e7-b55e-4f45bd2e0b0b" style="list-style: none; padding-left: 0"><div data-task-local-id="1803f18d-1fad-4998-81e4-644ed22f3929" data-task-state="TODO"> foo</div></div>`,
           'foo',
         ],
       ])(
