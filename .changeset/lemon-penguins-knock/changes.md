@@ -1,0 +1,1 @@
+ED-7883 [v3] Add ability to override plugin preset similar to babel
