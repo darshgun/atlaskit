@@ -1,5 +1,10 @@
 import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 
+const button = '#popup-trigger';
+const spinner = '#spinner';
+const popup = '#popup-content';
+const button0 = '[name="Button 0"]';
+
 describe('Snapshot Test', () => {
   it('it should match visual snapshot for popup', async () => {
     const url = getExampleUrl(
@@ -12,8 +17,7 @@ describe('Snapshot Test', () => {
 
     // @ts-ignore
     const { page } = global;
-    const button = '#popup-trigger';
-    const popup = '#popup-content';
+
     await page.goto(url);
     await page.waitForSelector(button);
 
@@ -37,20 +41,17 @@ describe('Snapshot Test', () => {
 
     // @ts-ignore
     const { page } = global;
-    const button = '#popup-trigger';
-    const spinner = '#spinner';
-    const popup = '#popup-content';
 
     await page.goto(url);
     await page.waitForSelector(button);
 
     await page.click(button);
     await page.waitForSelector(spinner);
-    // We need to wait for the active state animation to finish.
-    await page.waitFor(500);
+
     const image = await page.screenshot();
     expect(image).toMatchProdImageSnapshot();
-
+    // We need to wait for the active state animation to finish.
+    await page.waitFor(500);
     await page.waitForSelector(popup);
     const imageWithContent = await page.screenshot();
     expect(imageWithContent).toMatchProdImageSnapshot();
@@ -67,9 +68,6 @@ describe('Snapshot Test', () => {
 
     // @ts-ignore
     const { page } = global;
-    const button = '#popup-trigger';
-    const popup = '#popup-content';
-    const button0 = '[name="Button 0"]';
 
     await page.goto(url);
     await page.waitFor(button);
