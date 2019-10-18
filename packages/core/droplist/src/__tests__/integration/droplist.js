@@ -9,7 +9,7 @@ const urlDrawer = getExampleUrl('core', 'droplist', 'basic-example');
 
 /* Css selectors used for the test */
 const droplistButton = 'button[type="button"]';
-const droplist = 'div[data-role="droplistContent"]';
+const droplist = '[data-testid="droplist--content"]';
 
 BrowserTestCase(
   'Droplist should close when Escape key is pressed in IE and Edge But should still work on Chrome',
@@ -28,7 +28,7 @@ BrowserTestCase(
         await droplistTest.isExisting(droplist);
       } catch (err) {
         expect(err.toString()).toContain(
-          'Error: Unable to find element with css selector == div[data-role="droplistContent"]',
+          `Error: Unable to find element with css selector == ${droplist}`,
         );
       }
     } else {
