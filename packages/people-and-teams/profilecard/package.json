@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "12.3.2",
+  "version": "12.3.3",
   "config": {
     "access": "public"
   },
@@ -34,8 +34,8 @@
   "devDependencies": {
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/dynamic-table": "^13.3.3",
-    "@atlaskit/i18n-tools": "^0.5.2",
-    "@atlaskit/util-data-test": "^12.11.2",
+    "@atlaskit/i18n-tools": "^0.6.0",
+    "@atlaskit/util-data-test": "^13.0.0",
     "enzyme": "^3.7.0",
     "fetch-mock": "^7.3.3",
     "loader-utils": "^1.1.0",

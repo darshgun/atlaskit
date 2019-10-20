@@ -1,1 +1,0 @@
-Update "scroll to element" after changing DOM type for action in ED-7674

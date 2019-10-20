@@ -36,7 +36,7 @@ export const getUrl = (store: Store<CardStore>, url: string) => {
 };
 
 export const getDefinitionId = (details?: JsonLd) =>
-  details && details.meta.definitionId;
+  details && details.meta && details.meta.definitionId;
 
 export const getServices = (details?: JsonLd) =>
   (details && details.meta.auth) || [];

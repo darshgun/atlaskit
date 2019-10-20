@@ -1,1 +1,0 @@
-merge multiple media groups with single child media node into one media group with multiple children media nodes

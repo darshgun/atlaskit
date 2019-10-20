@@ -1,1 +1,0 @@
-New event `media-viewed` with type `UploadEventPayloadMap` is added to `globalMediaEventEmitter`
