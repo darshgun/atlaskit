@@ -28,5 +28,5 @@ export default {
   ru: 'Russian',
   sk: 'Slovak',
   es: 'Spanish',
-  sv: 'Swedish'
+  sv: 'Swedish',
 };
