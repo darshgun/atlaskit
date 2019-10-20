@@ -48,7 +48,6 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "kakapo": "^3.3.6",
     "rxjs": "^5.5.0"
   }
 }
