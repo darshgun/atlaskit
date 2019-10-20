@@ -8,6 +8,7 @@ import {
 } from '../integration/_helpers';
 
 export async function mountEditor(page: any, props: EditorProps) {
+  await page.waitForSelector('#editor-container');
   await page.$eval(
     '#editor-container',
     (_e: any, props: EditorProps) => {
@@ -16,6 +17,7 @@ export async function mountEditor(page: any, props: EditorProps) {
     props,
   );
   await page.waitForSelector('.ProseMirror', 500);
+  await page.click('.ProseMirror');
 }
 
 export async function goToEditorTestingExample(client: any) {
@@ -34,6 +36,7 @@ export async function goToEditorTestingExample(client: any) {
   }
 
   await page.browser.maximizeWindow();
+
   return page;
 }
 

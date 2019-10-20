@@ -1,18 +1,12 @@
-import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
+import { Plugin, PluginKey } from 'prosemirror-state';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
-  measureRender,
   isPerformanceAPIAvailable,
+  measureRender,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import {
-  AnalyticsEventPayload,
-  EVENT_TYPE,
-  AnalyticsEventPayloadWithChannel,
-  ACTION,
-} from './types';
-import { AnalyticsStep } from './analytics-step';
-import { fireAnalyticsEvent } from './utils';
+import { ACTION, AnalyticsEventPayload, EVENT_TYPE } from './types';
+import { fireAnalyticsEvent, getAnalyticsEventsFromTransaction } from './utils';
 
 export const analyticsPluginKey = new PluginKey('analyticsPlugin');
 
@@ -26,15 +20,11 @@ function createPlugin(createAnalyticsEvent?: CreateUIAnalyticsEvent) {
   return new Plugin({
     key: analyticsPluginKey,
     state: {
-      init: () => null,
+      init: () => createAnalyticsEvent,
       apply: tr => {
-        const meta = tr.getMeta(analyticsPluginKey) as
-          | { payload: AnalyticsEventPayload; channel?: string }[]
-          | undefined;
-        if (meta) {
-          for (const analytics of meta) {
-            const { payload, channel } = analytics;
-
+        const analyticsEventWithChannel = getAnalyticsEventsFromTransaction(tr);
+        if (analyticsEventWithChannel.length > 0) {
+          for (const { payload, channel } of analyticsEventWithChannel) {
             // Measures how much time it takes to update the DOM after each ProseMirror document update
             // that has an analytics event.
             if (
@@ -55,57 +45,8 @@ function createPlugin(createAnalyticsEvent?: CreateUIAnalyticsEvent) {
             }
           }
         }
+        return createAnalyticsEvent;
       },
-    },
-    appendTransaction(
-      transactions,
-      oldState: EditorState,
-      newState: EditorState,
-    ) {
-      const analyticsEvents: AnalyticsEventPayloadWithChannel[] = transactions
-        .map(
-          (tr): AnalyticsEventPayloadWithChannel[] =>
-            tr.getMeta(analyticsPluginKey),
-        )
-        .filter(analyticsMeta => !!analyticsMeta)
-        .reduce(
-          (allAnalyticsEvents, trAnalyticsEvents) => [
-            ...allAnalyticsEvents,
-            ...trAnalyticsEvents,
-          ],
-          [],
-        );
-
-      if (analyticsEvents.length > 0) {
-        const tr = newState.tr.step(
-          new AnalyticsStep(createAnalyticsEvent, analyticsEvents),
-        );
-
-        // Preserve marks eg. if user clicked bold button with no selection
-        if (newState.tr.storedMarks) {
-          tr.setStoredMarks(newState.tr.storedMarks);
-        }
-
-        // Preserve active input rule
-        // Appending this transaction will deactivate an input rule, as a transaction
-        // with steps is interpreted as the doc changing
-        // This is needed so undo of autoformatting works as expected, this is a special
-        // case handled by prosemirror-inputrules plugin
-        const activeInputRulePlugin = newState.plugins.find(
-          plugin => plugin.spec.isInputRules && plugin.getState(newState),
-        );
-        if (activeInputRulePlugin) {
-          const inputRuleState = activeInputRulePlugin.getState(newState);
-          inputRuleState.transform.step(
-            new AnalyticsStep(createAnalyticsEvent, analyticsEvents),
-          );
-          tr.setMeta(activeInputRulePlugin, inputRuleState);
-        }
-
-        return tr;
-      }
-
-      return null;
     },
   });
 }

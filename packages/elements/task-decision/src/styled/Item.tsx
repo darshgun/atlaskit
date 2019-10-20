@@ -41,12 +41,3 @@ export const ParticipantWrapper: ComponentClass<
 > = styled.div`
   margin: -2px 8px;
 `;
-
-export const AttributionWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  color: ${colors.N200};
-  margin-top: ${akGridSize}px;
-  font-size: 12px;
-  font-weight: 500;
-`;

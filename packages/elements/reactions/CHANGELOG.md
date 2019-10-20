@@ -1,5 +1,16 @@
 # @atlaskit/reactions
 
+## 17.2.4
+
+- Updated dependencies [bd94b1d552](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd94b1d552):
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  - @atlaskit/emoji@62.5.4
+  - @atlaskit/util-data-test@13.0.0
+  - @atlaskit/i18n-tools@0.6.0
+  - @atlaskit/util-service-support@4.1.0
+  - @atlaskit/editor-test-helpers@10.1.2
+  - @atlaskit/analytics-namespaced-context@4.1.10
+
 ## 17.2.3
 
 ### Patch Changes

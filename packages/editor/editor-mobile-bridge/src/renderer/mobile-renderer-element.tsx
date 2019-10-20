@@ -1,8 +1,18 @@
 /* eslint-disable no-console */
 import * as React from 'react';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  WithCreateAnalyticsEvent,
+} from '@atlaskit/editor-common';
 import { MediaProvider as MediaProviderType } from '@atlaskit/editor-core';
 import { ReactRenderer, RendererProps } from '@atlaskit/renderer';
+import FabricAnalyticsListeners, {
+  AnalyticsWebClient,
+} from '@atlaskit/analytics-listeners';
+import {
+  GasPurePayload,
+  GasPureScreenEventPayload,
+} from '@atlaskit/analytics-gas-types';
 
 import RendererBridgeImpl from './native-to-web/implementation';
 import { toNativeBridge } from './web-to-native/implementation';
@@ -19,6 +29,7 @@ import {
 } from '@atlaskit/smart-card';
 import { eventDispatcher } from './dispatcher';
 import { ObjectKey, TaskState } from '@atlaskit/task-decision';
+import { analyticsBridgeClient } from '../analytics-client';
 
 export interface MobileRendererProps extends RendererProps {
   document: string;
@@ -33,6 +44,14 @@ export interface MobileRendererState {
 
 const rendererBridge = ((window as any).rendererBridge = new RendererBridgeImpl());
 
+const handleAnalyticsEvent = (
+  event: GasPurePayload | GasPureScreenEventPayload,
+) => {
+  toNativeBridge.call('analyticsBridge', 'trackEvent', {
+    event: JSON.stringify(event),
+  });
+};
+
 export default class MobileRenderer extends React.Component<
   MobileRendererProps,
   MobileRendererState
@@ -42,12 +61,20 @@ export default class MobileRenderer extends React.Component<
   private objectAri: string;
   private containerAri: string;
 
+  private analyticsClient: AnalyticsWebClient = analyticsBridgeClient(
+    handleAnalyticsEvent,
+  );
+
   constructor(props: MobileRendererProps) {
     super(props);
 
-    this.state = {
-      document: props.document || null,
-    };
+    let document: any = null;
+    if (props.document) {
+      try {
+        document = JSON.parse(props.document);
+      } catch (e) {}
+    }
+    this.state = { document };
 
     const taskDecisionProvider = TaskDecisionProvider(this.handleToggleTask);
 
@@ -64,6 +91,18 @@ export default class MobileRenderer extends React.Component<
     rendererBridge.containerAri = this.containerAri;
     rendererBridge.objectAri = this.objectAri;
     rendererBridge.taskDecisionProvider = taskDecisionProvider;
+  }
+
+  private handleRendererContentLoaded() {
+    if (
+      window &&
+      !window.webkit && // don't fire on iOS
+      window.requestAnimationFrame
+    ) {
+      window.requestAnimationFrame(() =>
+        toNativeBridge.call('renderBridge', 'onContentRendered'),
+      );
+    }
   }
 
   private handleToggleTask = (key: ObjectKey, state: TaskState) => {
@@ -105,60 +144,58 @@ export default class MobileRenderer extends React.Component<
       const authFlow = 'disabled';
       const smartCardClient = this.props.cardClient || cardClient;
       return (
-        <SmartCardProvider client={smartCardClient} authFlow={authFlow}>
-          <ReactRenderer
-            onComplete={() => {
-              if (
-                window &&
-                !window.webkit && // don't fire on iOS
-                window.requestAnimationFrame
-              ) {
-                window.requestAnimationFrame(() =>
-                  toNativeBridge.call('renderBridge', 'onContentRendered'),
-                );
-              }
-            }}
-            dataProviders={this.providerFactory}
-            appearance="mobile"
-            document={this.state.document}
-            rendererContext={{
-              // These will need to come from the native side.
-              objectAri: this.objectAri,
-              containerAri: this.containerAri,
-            }}
-            eventHandlers={{
-              link: {
-                onClick: this.onLinkClick,
-              },
-              media: {
-                onClick: (result: any, analyticsEvent?: any) => {
-                  const { mediaItemDetails } = result;
-                  // Media details only exist once resolved. Not available during loading/pending state.
-                  if (mediaItemDetails) {
-                    const mediaId = mediaItemDetails.id;
-                    // We don't have access to the occurrence key at this point so native will default to the first instance for now.
-                    // https://product-fabric.atlassian.net/browse/FM-1984
-                    const occurrenceKey: string | null = null;
-                    toNativeBridge.call('mediaBridge', 'onMediaClick', {
-                      mediaId,
-                      occurrenceKey,
-                    });
-                  }
-                },
-              },
-              mention: {
-                onClick: (profileId: string, alias: string) => {
-                  toNativeBridge.call('mentionBridge', 'onMentionClick', {
-                    profileId,
-                  });
-                },
-              },
-              smartCard: {
-                onClick: this.onLinkClick,
-              },
-            }}
+        <FabricAnalyticsListeners client={this.analyticsClient}>
+          <WithCreateAnalyticsEvent
+            render={createAnalyticsEvent => (
+              <SmartCardProvider client={smartCardClient} authFlow={authFlow}>
+                <ReactRenderer
+                  onComplete={this.handleRendererContentLoaded}
+                  onError={this.handleRendererContentLoaded}
+                  dataProviders={this.providerFactory}
+                  appearance="mobile"
+                  document={this.state.document}
+                  createAnalyticsEvent={createAnalyticsEvent}
+                  rendererContext={{
+                    // These will need to come from the native side.
+                    objectAri: this.objectAri,
+                    containerAri: this.containerAri,
+                  }}
+                  eventHandlers={{
+                    link: {
+                      onClick: this.onLinkClick,
+                    },
+                    media: {
+                      onClick: (result: any, analyticsEvent?: any) => {
+                        const { mediaItemDetails } = result;
+                        // Media details only exist once resolved. Not available during loading/pending state.
+                        if (mediaItemDetails) {
+                          const mediaId = mediaItemDetails.id;
+                          // We don't have access to the occurrence key at this point so native will default to the first instance for now.
+                          // https://product-fabric.atlassian.net/browse/FM-1984
+                          const occurrenceKey: string | null = null;
+                          toNativeBridge.call('mediaBridge', 'onMediaClick', {
+                            mediaId,
+                            occurrenceKey,
+                          });
+                        }
+                      },
+                    },
+                    mention: {
+                      onClick: (profileId: string, alias: string) => {
+                        toNativeBridge.call('mentionBridge', 'onMentionClick', {
+                          profileId,
+                        });
+                      },
+                    },
+                    smartCard: {
+                      onClick: this.onLinkClick,
+                    },
+                  }}
+                />
+              </SmartCardProvider>
+            )}
           />
-        </SmartCardProvider>
+        </FabricAnalyticsListeners>
       );
     } catch (ex) {
       return <pre>Invalid document</pre>;

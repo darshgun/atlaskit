@@ -287,6 +287,7 @@ class DropdownMenuStateless extends Component<
       isOpen,
       triggerButtonProps,
       triggerType,
+      testId,
     } = this.props;
     const insideTriggerContent = this.isUsingDeprecatedAPI()
       ? children
@@ -307,7 +308,11 @@ class DropdownMenuStateless extends Component<
       triggerProps.iconAfter = <ExpandIcon size="medium" label="" />;
     }
     return (
-      <Button {...defaultButtonProps} {...triggerProps}>
+      <Button
+        {...defaultButtonProps}
+        {...triggerProps}
+        testId={testId && `${testId}--trigger`}
+      >
         {insideTriggerContent}
       </Button>
     );
@@ -441,6 +446,7 @@ class DropdownMenuStateless extends Component<
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
+      testId,
     } = this.props;
     const { id } = this.state;
     const isDeprecated = this.isUsingDeprecatedAPI();
@@ -474,6 +480,7 @@ class DropdownMenuStateless extends Component<
             packageName,
             packageVersion,
           }}
+          testId={testId}
         >
           {isDeprecated ? (
             this.renderDeprecated()

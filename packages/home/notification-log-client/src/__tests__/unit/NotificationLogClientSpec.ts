@@ -33,7 +33,7 @@ describe('NotificationLogClient', () => {
   it('should add the app version header', () => {
     const provider = new NotificationLogClient(notificationLogUrl, '123');
     return provider.countUnseenNotifications().then(() => {
-      expect(fetchMock.lastOptions().headers.get('x-app-version')).toEqual(
+      expect(fetchMock.lastOptions().headers['x-app-version']).toEqual(
         `${npmPackageVersion}-${DEFAULT_SOURCE}`,
       );
     });

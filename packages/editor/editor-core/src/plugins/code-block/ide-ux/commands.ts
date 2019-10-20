@@ -45,7 +45,7 @@ export function indent(state: EditorState, dispatch?: CommandDispatch) {
     );
     tr.insertText(indentToAdd, tr.mapping.map(start + offset, -1));
 
-    addAnalytics(tr, {
+    addAnalytics(state, tr, {
       action: ACTION.FORMATTED,
       actionSubject: ACTION_SUBJECT.TEXT,
       actionSubjectId: ACTION_SUBJECT_ID.FORMAT_INDENT,
@@ -91,7 +91,7 @@ export function outdent(state: EditorState, dispatch?: CommandDispatch) {
         tr.mapping.map(start + offset + unindentLength),
       );
 
-      addAnalytics(tr, {
+      addAnalytics(state, tr, {
         action: ACTION.FORMATTED,
         actionSubject: ACTION_SUBJECT.TEXT,
         actionSubjectId: ACTION_SUBJECT_ID.FORMAT_INDENT,

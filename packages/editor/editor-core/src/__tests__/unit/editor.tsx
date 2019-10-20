@@ -19,6 +19,11 @@ import {
 import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import { EditorAppearance } from '../../types';
 
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../version-wrapper';
+
 describe(name, () => {
   describe('Editor', () => {
     describe('callbacks', () => {
@@ -103,6 +108,9 @@ describe(name, () => {
         ) => {
           expect(event.attributes).toMatchObject({
             appearance: analyticsAppearance,
+            packageName,
+            packageVersion,
+            componentName: 'editorCore',
           });
           done();
         };

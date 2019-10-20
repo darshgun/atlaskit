@@ -1,6 +1,12 @@
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { Node as PMNode } from 'prosemirror-model';
-import { Step, StepResult, StepMap, ReplaceStep } from 'prosemirror-transform';
+import {
+  Step,
+  StepResult,
+  StepMap,
+  ReplaceStep,
+  Mappable,
+} from 'prosemirror-transform';
 import { Slice } from 'prosemirror-model';
 import {
   AnalyticsEventPayloadWithChannel,
@@ -54,14 +60,17 @@ const toggleEventAction = (analyticsEvent: AnalyticsEventPayloadWithChannel) =>
 export class AnalyticsStep extends Step {
   analyticsEvents: AnalyticsEventPayloadWithChannel[] = [];
   createAnalyticsEvent: CreateUIAnalyticsEvent;
+  pos?: number;
 
   constructor(
     createAnalyticsEvent: CreateUIAnalyticsEvent,
     analyticsEvents: AnalyticsEventPayloadWithChannel[],
+    pos?: number, // Used to create the map, prevent splitting history.
   ) {
     super();
     this.createAnalyticsEvent = createAnalyticsEvent;
     this.analyticsEvents = analyticsEvents;
+    this.pos = pos;
   }
 
   /**
@@ -95,12 +104,35 @@ export class AnalyticsStep extends Step {
     return StepResult.ok(doc);
   }
 
-  map() {
-    return null;
+  map(mapping: Mappable) {
+    let newPos = this.pos;
+    if (typeof newPos === 'number') {
+      newPos = mapping.map(newPos);
+    }
+    // Return the same events, this step will never be removed
+    return new AnalyticsStep(
+      this.createAnalyticsEvent,
+      this.analyticsEvents,
+      newPos,
+    );
   }
 
   getMap() {
-    return new StepMap([0, 0, 0]);
+    if (typeof this.pos === 'number') {
+      return new StepMap([this.pos, 0, 0]);
+    }
+    return new StepMap([]);
+  }
+
+  merge(other: Step) {
+    if (other instanceof AnalyticsStep) {
+      const otherAnalyticsEvents = (other as AnalyticsStep).analyticsEvents;
+      return new AnalyticsStep(this.createAnalyticsEvent, [
+        ...otherAnalyticsEvents,
+        ...this.analyticsEvents,
+      ]);
+    }
+    return null;
   }
 
   toJSON() {

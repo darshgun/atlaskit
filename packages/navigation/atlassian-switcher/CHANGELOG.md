@@ -1,5 +1,75 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.6
+
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  - @atlaskit/i18n-tools@0.6.0
+  - @atlaskit/analytics-namespaced-context@4.1.10
+
+## 4.6.5
+
+### Patch Changes
+
+- [patch][fb43fc2e99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb43fc2e99):
+
+  PTC-2695: Add "reason" to the analytics event fired on provider failed events
+
+## 4.6.4
+
+### Patch Changes
+
+- [patch][6bc87c7501](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bc87c7501):
+
+  Split mockEndpoints into a separate package
+
+## 4.6.3
+
+### Patch Changes
+
+- [patch][f07586ba0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f07586ba0e):
+
+  Hide manage list link when custom links are disabled
+
+## 4.6.2
+
+### Patch Changes
+
+- [patch][14e55631c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/14e55631c6):
+
+  Add groupIndex to switcher item analytics
+
+## 4.6.1
+
+### Patch Changes
+
+- [patch][e6f7f7747f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6f7f7747f):
+
+  Add Opsgenie to default list of product recommendations
+
+## 4.6.0
+
+### Minor Changes
+
+- [minor][cd96adc5e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd96adc5e7):
+
+  Add Try lozenge to first item in Discover section
+
+## 4.5.4
+
+### Patch Changes
+
+- [patch][d904d4df82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d904d4df82):
+
+  Use kebab case for switcher chunk names
+
+## 4.5.3
+
+### Patch Changes
+
+- [patch][03e00bd3d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03e00bd3d7):
+
+  Fix discover/x-sell work for Bitbucket cloud
+
 ## 4.5.2
 
 ### Patch Changes

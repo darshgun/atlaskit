@@ -229,7 +229,7 @@ export const setPresetLayout = (layout: PresetLayout): Command => (
 
   let tr = forceSectionToPresetLayout(state, node, pos, layout);
   if (tr) {
-    tr = addAnalytics(tr, {
+    tr = addAnalytics(state, tr, {
       action: ACTION.CHANGED_LAYOUT,
       actionSubject: ACTION_SUBJECT.LAYOUT,
       attributes: {
@@ -300,7 +300,7 @@ export const deleteActiveLayoutNode: Command = (state, dispatch) => {
     const node = state.doc.nodeAt(pos) as Node;
     if (dispatch) {
       let tr = state.tr.delete(pos, pos + node.nodeSize);
-      tr = addAnalytics(tr, {
+      tr = addAnalytics(state, tr, {
         action: ACTION.DELETED,
         actionSubject: ACTION_SUBJECT.LAYOUT,
         attributes: { layout: formatLayoutName(<PresetLayout>selectedLayout) },

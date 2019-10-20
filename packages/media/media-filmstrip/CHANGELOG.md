@@ -1,12 +1,166 @@
 # @atlaskit/media-filmstrip
 
+## 35.0.0
+
+### Major Changes
+
+- [major][c3e65f1b9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e65f1b9e):
+
+  ## Breaking change
+
+  > remove deprecated "context" property from media components in favor of "mediaClientConfig"
+
+  This affects all public media UI components:
+
+  - Card
+  - Filmstrip
+  - SmartMediaEditor
+  - MediaImage
+  - Dropzone
+  - Clipboard
+  - Browser
+  - MediaPicker
+  - MediaViewer
+
+  **Before**:
+
+  ```
+  import {ContextFactory} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+
+  const context = ContextFactory.creat({
+    authProvider: () => Promise.resolve({})
+  })
+
+  const mediaPicker = MediaPicker(context);
+  ```
+
+  <Card context={context}>
+  <SmartMediaEditor context={context}>
+  <Filmstrip context={context}>
+  <MediaImage context={context}>
+  <Dropzone context={context}>
+  <Clipboard context={context}>
+  <Browser context={context}>
+  <MediaViewer context={context}>
+  ```
+
+**Now**:
+
+````
+import {MediaClientConfig} from '@atlaskit/media-core';
+import {Card} from '@atlaskit/media-card'
+import {SmartMediaEditor} from '@atlaskit/media-editor'
+import {Filmstrip} from '@atlaskit/media-filmstrip'
+import {MediaImage} from '@atlaskit/media-image'
+import {MediaViewer} from '@atlaskit/media-viewer'
+import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+
+
+const mediaClientConfig: MediaClientConfig = {
+  authProvider: () => Promise.resolve({})
+}
+
+const mediaPicker = MediaPicker(mediaClientConfig);
+
+<Card mediaClientConfig={mediaClientConfig}>
+<SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+<Filmstrip mediaClientConfig={mediaClientConfig}>
+<MediaImage mediaClientConfig={mediaClientConfig}>
+<Dropzone mediaClientConfig={mediaClientConfig}>
+<Clipboard mediaClientConfig={mediaClientConfig}>
+<Browser mediaClientConfig={mediaClientConfig}>
+<MediaViewer mediaClientConfig={mediaClientConfig}>
+```- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+
+
+**FABDODGEM-13 Editor Damask Release**
+  - [Internal post](http://go.atlassian.com/damask-release)
+
+**BREAKING CHANGES**
+
+- **Media:** Removed deprecated "context" property from media components in favor of "mediaClientConfig". This affects all public media UI components.
+  - https://product-fabric.atlassian.net/browse/MS-2038
+- **Tasks & Decisions:** Removed containerAri for task-decisions components.
+  - https://product-fabric.atlassian.net/browse/ED-7631
+- **Renderer:** Adapts to task-decision changes.
+- **Editor Mobile Bridge:** Adapts to task-decision changes.
+- **Util Data Test:** Adapts to task-decision changes.
+
+-----
+
+**Affected Editor Components:**
+
+tables, media, mobile, emoji, tasks & decisions, analytics
+
+**Editor**
+
+- Support nested actions in stage-0 schema; Change DOM representation of actions
+  - https://product-fabric.atlassian.net/browse/ED-7674
+- Updated i18n translations
+  - https://product-fabric.atlassian.net/browse/ED-7750
+- Improved analytics & crash reporting (via a new error boundary)
+  - https://product-fabric.atlassian.net/browse/ED-7766
+  - https://product-fabric.atlassian.net/browse/ED-7806
+- Improvements to heading anchor links.
+  - https://product-fabric.atlassian.net/browse/ED-7849
+  - https://product-fabric.atlassian.net/browse/ED-7860
+- Copy/Paste improvements
+  - https://product-fabric.atlassian.net/browse/ED-7840
+  - https://product-fabric.atlassian.net/browse/ED-7849
+- Fixes for the selection state of Smart links.
+  - https://product-fabric.atlassian.net/browse/ED-7602?src=confmacro
+- Improvements for table resizing & column creation.
+  - https://product-fabric.atlassian.net/browse/ED-7698
+  - https://product-fabric.atlassian.net/browse/ED-7319
+  - https://product-fabric.atlassian.net/browse/ED-7799
+
+**Mobile**
+
+- GASv3 Analytics Events are now relayed from the web to the native context, ready for dispatching.
+  - https://product-fabric.atlassian.net/browse/FM-2502
+- Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
+  - https://product-fabric.atlassian.net/browse/FM-2370
+
+
+**Media**
+
+- Improved analytics
+  - https://product-fabric.atlassian.net/browse/MS-2036
+  - https://product-fabric.atlassian.net/browse/MS-2145
+  - https://product-fabric.atlassian.net/browse/MS-2416
+  - https://product-fabric.atlassian.net/browse/MS-2487
+- Added shouldOpenMediaViewer property to renderer
+  - https://product-fabric.atlassian.net/browse/MS-2393
+- Implemented analytics for file copy
+  - https://product-fabric.atlassian.net/browse/MS-2036
+- New `media-viewed` event dispatched when media is interacted with via the media card or viewer.
+  - https://product-fabric.atlassian.net/browse/MS-2284
+- Support for `alt` text attribute on media image elements.
+  - https://product-fabric.atlassian.net/browse/ED-7776
+
+**i18n-tools**
+
+Bumped dependencies.
+
+- Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
+- @atlaskit/media-card@66.0.0
+- @atlaskit/media-core@30.0.17
+- @atlaskit/media-test-helpers@25.2.0
+- @atlaskit/media-client@3.0.0
+
 ## 34.3.10
 
 ### Patch Changes
 
 - [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
 
-  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
 
 ## 34.3.9
 
@@ -14,15 +168,15 @@
 
 - [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
 
-  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+Updated version of analytics-next to fix potential incompatibilities with TS 3.6
 
 ## 34.3.8
 
 - Updated dependencies [97bab7fd28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97bab7fd28):
-  - @atlaskit/button@13.3.1
-  - @atlaskit/media-card@65.2.1
-  - @atlaskit/checkbox@10.0.0
-  - @atlaskit/docs@8.1.7
+- @atlaskit/button@13.3.1
+- @atlaskit/media-card@65.2.1
+- @atlaskit/checkbox@10.0.0
+- @atlaskit/docs@8.1.7
 
 ## 34.3.7
 
@@ -30,15 +184,15 @@
 
 - [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
 
-  Update all the theme imports in media to use multi entry points
+Update all the theme imports in media to use multi entry points
 
 ## 34.3.6
 
 - Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
-  - @atlaskit/media-client@2.1.2
-  - @atlaskit/media-core@30.0.14
-  - @atlaskit/media-test-helpers@25.1.1
-  - @atlaskit/media-card@65.0.0
+- @atlaskit/media-client@2.1.2
+- @atlaskit/media-core@30.0.14
+- @atlaskit/media-test-helpers@25.1.1
+- @atlaskit/media-card@65.0.0
 
 ## 34.3.5
 
@@ -46,7 +200,7 @@
 
 - [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
 
-  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
 
 ## 34.3.4
 
@@ -54,31 +208,31 @@
 
 - [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
 
-  Upgraded Typescript to 3.3.x
+Upgraded Typescript to 3.3.x
 
 ## 34.3.3
 
 - Updated dependencies [3624730f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3624730f44):
-  - @atlaskit/media-client@2.0.2
-  - @atlaskit/media-core@30.0.11
-  - @atlaskit/media-test-helpers@25.0.2
-  - @atlaskit/media-card@64.0.0
+- @atlaskit/media-client@2.0.2
+- @atlaskit/media-core@30.0.11
+- @atlaskit/media-test-helpers@25.0.2
+- @atlaskit/media-card@64.0.0
 
 ## 34.3.2
 
 - Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
-  - @atlaskit/media-card@63.3.11
-  - @atlaskit/media-client@2.0.1
-  - @atlaskit/media-core@30.0.10
-  - @atlaskit/media-test-helpers@25.0.0
+- @atlaskit/media-card@63.3.11
+- @atlaskit/media-client@2.0.1
+- @atlaskit/media-core@30.0.10
+- @atlaskit/media-test-helpers@25.0.0
 
 ## 34.3.1
 
 - Updated dependencies [ee804f3eeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee804f3eeb):
-  - @atlaskit/media-card@63.3.9
-  - @atlaskit/media-core@30.0.9
-  - @atlaskit/media-test-helpers@24.3.5
-  - @atlaskit/media-client@2.0.0
+- @atlaskit/media-card@63.3.9
+- @atlaskit/media-core@30.0.9
+- @atlaskit/media-test-helpers@24.3.5
+- @atlaskit/media-client@2.0.0
 
 ## 34.3.0
 
@@ -86,19 +240,21 @@
 
 - [minor][40c6ed5a59](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40c6ed5a59):
 
-  Allows consumer to enable Media Viewer on Cards
+Allows consumer to enable Media Viewer on Cards
 
-  Use boolean prop `shouldOpenMediaViewer` to activate Media Viewer in media cards contained
+Use boolean prop `shouldOpenMediaViewer` to activate Media Viewer in media cards contained
 
-  Example:
+Example:
 
-  ```
-  <Filmstrip
+````
+
+<Filmstrip
     shouldOpenMediaViewer={openMediaViewer}
     mediaClientConfig={mediaClient.config}
     items={items}
   />
-  ```
+
+````
 
 ## 34.2.5
 
@@ -106,7 +262,7 @@
 
 - [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
 
-  bugfix, fixes missing version.json file
+bugfix, fixes missing version.json file
 
 ## 34.2.4
 
@@ -114,44 +270,44 @@
 
 - [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
 
-  In this PR, we are:
+In this PR, we are:
 
-  - Re-introducing dist build folders
-  - Adding back cjs
-  - Replacing es5 by cjs and es2015 by esm
-  - Creating folders at the root for entry-points
-  - Removing the generation of the entry-points at the root
-    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+- Re-introducing dist build folders
+- Adding back cjs
+- Replacing es5 by cjs and es2015 by esm
+- Creating folders at the root for entry-points
+- Removing the generation of the entry-points at the root
+  Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
 
 ## 34.2.3
 
 - Updated dependencies [87a2638655](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a2638655):
-  - @atlaskit/button@13.0.10
-  - @atlaskit/media-card@63.3.2
-  - @atlaskit/checkbox@9.0.0
+- @atlaskit/button@13.0.10
+- @atlaskit/media-card@63.3.2
+- @atlaskit/checkbox@9.0.0
 
 ## 34.2.2
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
-  - @atlaskit/docs@8.1.3
-  - @atlaskit/button@13.0.9
-  - @atlaskit/checkbox@8.0.5
-  - @atlaskit/field-radio-group@6.0.4
-  - @atlaskit/media-card@63.3.1
-  - @atlaskit/media-test-helpers@24.1.2
-  - @atlaskit/icon@19.0.0
+- @atlaskit/docs@8.1.3
+- @atlaskit/button@13.0.9
+- @atlaskit/checkbox@8.0.5
+- @atlaskit/field-radio-group@6.0.4
+- @atlaskit/media-card@63.3.1
+- @atlaskit/media-test-helpers@24.1.2
+- @atlaskit/icon@19.0.0
 
 ## 34.2.1
 
 - Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
-  - @atlaskit/docs@8.1.2
-  - @atlaskit/button@13.0.8
-  - @atlaskit/checkbox@8.0.2
-  - @atlaskit/field-radio-group@6.0.2
-  - @atlaskit/media-card@63.1.5
-  - @atlaskit/media-test-helpers@24.0.3
-  - @atlaskit/field-range@7.0.4
-  - @atlaskit/icon@18.0.0
+- @atlaskit/docs@8.1.2
+- @atlaskit/button@13.0.8
+- @atlaskit/checkbox@8.0.2
+- @atlaskit/field-radio-group@6.0.2
+- @atlaskit/media-card@63.1.5
+- @atlaskit/media-test-helpers@24.0.3
+- @atlaskit/field-range@7.0.4
+- @atlaskit/icon@18.0.0
 
 ## 34.2.0
 
@@ -159,147 +315,147 @@
 
 - [minor][73edc6baae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/73edc6baae):
 
-  - You can supply mediaClientConfig instead of Context to Filmstrip component. Soon Context input will be deprecated and removed.
+- You can supply mediaClientConfig instead of Context to Filmstrip component. Soon Context input will be deprecated and removed.
 
 ## 34.1.4
 
 - Updated dependencies [70862830d6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70862830d6):
-  - @atlaskit/button@13.0.6
-  - @atlaskit/media-card@63.1.2
-  - @atlaskit/checkbox@8.0.0
-  - @atlaskit/icon@17.2.0
-  - @atlaskit/theme@9.1.0
+- @atlaskit/button@13.0.6
+- @atlaskit/media-card@63.1.2
+- @atlaskit/checkbox@8.0.0
+- @atlaskit/icon@17.2.0
+- @atlaskit/theme@9.1.0
 
 ## 34.1.3
 
 - [patch][b0ef06c685](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0ef06c685):
 
-  - This is just a safety release in case anything strange happened in in the previous one. See Pull Request #5942 for details
+- This is just a safety release in case anything strange happened in in the previous one. See Pull Request #5942 for details
 
 ## 34.1.2
 
 - Updated dependencies [9ecfef12ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ecfef12ac):
-  - @atlaskit/media-card@63.1.0
-  - @atlaskit/media-core@30.0.3
-  - @atlaskit/media-test-helpers@24.0.0
+- @atlaskit/media-card@63.1.0
+- @atlaskit/media-core@30.0.3
+- @atlaskit/media-test-helpers@24.0.0
 
 ## 34.1.1
 
 - Updated dependencies [ed3f034232](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed3f034232):
-  - @atlaskit/media-card@63.0.2
-  - @atlaskit/media-core@30.0.1
-  - @atlaskit/media-test-helpers@23.0.0
+- @atlaskit/media-card@63.0.2
+- @atlaskit/media-core@30.0.1
+- @atlaskit/media-test-helpers@23.0.0
 
 ## 34.1.0
 
 - [minor][5a49043dac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a49043dac):
 
-  - Enable strictPropertyInitialization in tsconfig.base
+- Enable strictPropertyInitialization in tsconfig.base
 
 ## 34.0.0
 
 - [major][7c17b35107](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c17b35107):
 
-  - Updates react and react-dom peer dependencies to react@^16.8.0 and react-dom@^16.8.0. To use this package, please ensure you use at least this version of react and react-dom.
+- Updates react and react-dom peer dependencies to react@^16.8.0 and react-dom@^16.8.0. To use this package, please ensure you use at least this version of react and react-dom.
 
 - Updated dependencies [7c17b35107](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c17b35107):
-  - @atlaskit/media-card@63.0.0
-  - @atlaskit/docs@8.0.0
-  - @atlaskit/button@13.0.0
-  - @atlaskit/checkbox@7.0.0
-  - @atlaskit/field-radio-group@6.0.0
-  - @atlaskit/field-range@7.0.0
-  - @atlaskit/icon@17.0.0
-  - @atlaskit/theme@9.0.0
-  - @atlaskit/media-core@30.0.0
-  - @atlaskit/media-test-helpers@22.0.0
+- @atlaskit/media-card@63.0.0
+- @atlaskit/docs@8.0.0
+- @atlaskit/button@13.0.0
+- @atlaskit/checkbox@7.0.0
+- @atlaskit/field-radio-group@6.0.0
+- @atlaskit/field-range@7.0.0
+- @atlaskit/icon@17.0.0
+- @atlaskit/theme@9.0.0
+- @atlaskit/media-core@30.0.0
+- @atlaskit/media-test-helpers@22.0.0
 
 ## 33.0.0
 
 - Updated dependencies [a1192ef860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a1192ef860):
-  - @atlaskit/media-card@62.0.0
-  - @atlaskit/media-test-helpers@21.4.0
-  - @atlaskit/media-core@29.3.0
+- @atlaskit/media-card@62.0.0
+- @atlaskit/media-test-helpers@21.4.0
+- @atlaskit/media-core@29.3.0
 
 ## 32.0.0
 
 - Updated dependencies [e7292ab444](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7292ab444):
-  - @atlaskit/media-card@61.0.0
-  - @atlaskit/media-test-helpers@21.3.0
-  - @atlaskit/media-core@29.2.0
+- @atlaskit/media-card@61.0.0
+- @atlaskit/media-test-helpers@21.3.0
+- @atlaskit/media-core@29.2.0
 
 ## 31.0.5
 
 - [patch][0a4ccaafae](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a4ccaafae):
 
-  - Bump tslib
+- Bump tslib
 
 ## 31.0.4
 
 - Updated dependencies [9c0b4744be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c0b4744be):
-  - @atlaskit/docs@7.0.3
-  - @atlaskit/button@12.0.3
-  - @atlaskit/checkbox@6.0.4
-  - @atlaskit/field-radio-group@5.0.3
-  - @atlaskit/field-range@6.0.4
-  - @atlaskit/icon@16.0.9
-  - @atlaskit/media-card@60.0.3
-  - @atlaskit/theme@8.1.7
+- @atlaskit/docs@7.0.3
+- @atlaskit/button@12.0.3
+- @atlaskit/checkbox@6.0.4
+- @atlaskit/field-radio-group@5.0.3
+- @atlaskit/field-range@6.0.4
+- @atlaskit/icon@16.0.9
+- @atlaskit/media-card@60.0.3
+- @atlaskit/theme@8.1.7
 
 ## 31.0.3
 
 - Updated dependencies [1e826b2966](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e826b2966):
-  - @atlaskit/docs@7.0.2
-  - @atlaskit/checkbox@6.0.3
-  - @atlaskit/field-radio-group@5.0.2
-  - @atlaskit/icon@16.0.8
-  - @atlaskit/theme@8.1.6
-  - @atlaskit/media-card@60.0.1
-  - @atlaskit/media-core@29.1.4
-  - @atlaskit/field-range@6.0.3
-  - @atlaskit/button@12.0.0
+- @atlaskit/docs@7.0.2
+- @atlaskit/checkbox@6.0.3
+- @atlaskit/field-radio-group@5.0.2
+- @atlaskit/icon@16.0.8
+- @atlaskit/theme@8.1.6
+- @atlaskit/media-card@60.0.1
+- @atlaskit/media-core@29.1.4
+- @atlaskit/field-range@6.0.3
+- @atlaskit/button@12.0.0
 
 ## 31.0.2
 
 - [patch][0ff405bd0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ff405bd0f):
 
-  - Removed CardView and CardViewLoader from public APIs and replaced it with light-weight and stateless CardLoading and CardError components. Handling of external images is now done by Card component itself using ExternalImageIdentifier interface.
+- Removed CardView and CardViewLoader from public APIs and replaced it with light-weight and stateless CardLoading and CardError components. Handling of external images is now done by Card component itself using ExternalImageIdentifier interface.
 
-  If you’ve been using CardView for loading:
+If you’ve been using CardView for loading:
 
-  ```js
-  <CardView status="loading" mediaItemType="file" dimensions={cardDimensions} />
-  ```
+```js
+<CardView status="loading" mediaItemType="file" dimensions={cardDimensions} />
+````
 
-  Now you can use new component:
+Now you can use new component:
 
-  ```js
-  <CardLoading dimensions={cardDimensions} />
-  ```
+```js
+<CardLoading dimensions={cardDimensions} />
+```
 
-  If you were using CardView to show an error
+If you were using CardView to show an error
 
-  ```js
-  <CardView status="error" mediaItemType={type} dimensions={cardDimensions} />
-  ```
+```js
+<CardView status="error" mediaItemType={type} dimensions={cardDimensions} />
+```
 
-  Now you can use new component:
+Now you can use new component:
 
-  ```js
-  <CardError dimensions={cardDimensions} />
-  ```
+```js
+<CardError dimensions={cardDimensions} />
+```
 
-  In case you were using CardView to show image with known external URI:
+In case you were using CardView to show image with known external URI:
 
-  ```js
-  <CardView status="complete" dataURI={dataURI} metadata={metadata} />
-  ```
+```js
+<CardView status="complete" dataURI={dataURI} metadata={metadata} />
+```
 
-  You will have to find a way to switch to using Card component using ExternalImageIdentifier interface:
+You will have to find a way to switch to using Card component using ExternalImageIdentifier interface:
 
-  ```js
-  <Card identifier={identifier} context={context} />
-  ```
+```js
+<Card identifier={identifier} context={context} />
+```
 
 ## 31.0.1
 
