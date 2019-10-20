@@ -1,18 +1,17 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { EditorView } from 'prosemirror-view';
-import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { Transformer } from '@atlaskit/editor-common';
 import { EventDispatcher, Dispatch } from '../../../../event-dispatcher';
 import { EditorAppearanceComponentProps } from '../../../../types';
-import { EditorProps } from '../editor-props-type';
+import { EditorProps, AnalyticsEventHandler } from '../editor-props-type';
 
 export type EditorSharedConfig = {
   editorView: EditorView;
   eventDispatcher: EventDispatcher;
   dispatch: Dispatch;
   transformer?: Transformer<any>;
-  createAnalyticsEvent?: CreateUIAnalyticsEvent;
+  handleAnalyticsEvent?: AnalyticsEventHandler;
 
   primaryToolbarComponents: EditorAppearanceComponentProps['primaryToolbarComponents'];
   contentComponents: EditorAppearanceComponentProps['contentComponents'];
