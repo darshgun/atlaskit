@@ -26,7 +26,7 @@ class TableHeadCell extends React.Component<Props, {}> {
     return (
       <HeadCell
         style={inlineStyles}
-        data-testid={testId && `${testId}--cell`}
+        data-testid={testId && `${testId}--head--cell`}
         {...rest}
         tabIndex={rest.isSortable ? 0 : undefined}
       >

@@ -19,11 +19,11 @@ describe('Using testId', () => {
 
     const multipleTestIds = [
       `${testId}--head--cell`,
-      `${testId}--body--cell-0`,
-      `${testId}--body--cell-1`,
-      `${testId}--body--cell-2`,
-      `${testId}--body--cell-3`,
-      `${testId}--body--cell-4`,
+      `${testId}--cell-0`,
+      `${testId}--cell-1`,
+      `${testId}--cell-2`,
+      `${testId}--cell-3`,
+      `${testId}--cell-4`,
     ];
 
     multipleTestIds.forEach(testId => {

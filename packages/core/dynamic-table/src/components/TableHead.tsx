@@ -54,7 +54,11 @@ class TableHead extends React.Component<Props, {}> {
     const { cells, ...rest } = head;
 
     return (
-      <Head {...rest} isRanking={isRanking} data-testid={testId}>
+      <Head
+        {...rest}
+        isRanking={isRanking}
+        data-testid={testId && `${testId}--head`}
+      >
         <tr>
           {cells.map((cell, index) => {
             const { isSortable, key, ...restCellProps } = cell;

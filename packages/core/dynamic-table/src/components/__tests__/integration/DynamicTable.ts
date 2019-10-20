@@ -13,16 +13,15 @@ const tableHeadName = `${tableHeadCell}:nth-child(1)`;
 const tableHeadParty = `${tableHeadCell}:nth-child(2)`;
 const tableHeadTerm = `${tableHeadCell}:nth-child(3)`;
 const tableHeadComment = `${tableHeadCell}:nth-child(4)`;
-const tableRowG =
-  "[data-testid='the-table--body--row-row-0-George Washington']";
-const tableRowJ = "[data-testid='the-table--body--row-row-1-John Adams']";
-const tableRowT = "[data-testid='the-table--body--row-row-2-Thomas Jefferson']";
-const tableRowJa = "[data-testid='the-table--body--row-row-3-James Madison']";
-const tableRowA = "[data-testid='the-table--body--row-row-15-Abraham Lincoln']";
-const tableCell0 = "[data-testid='the-table--body--cell-0']";
-const tableCell1 = "[data-testid='the-table--body--cell-1']";
-const tableCell2 = "[data-testid='the-table--body--cell-2']";
-const tableCell3 = "[data-testid='the-table--body--cell-3']";
+const tableRowG = "[data-testid='the-table--row-row-0-George Washington']";
+const tableRowJ = "[data-testid='the-table--row-row-1-John Adams']";
+const tableRowT = "[data-testid='the-table--row-row-2-Thomas Jefferson']";
+const tableRowJa = "[data-testid='the-table--row-row-3-James Madison']";
+const tableRowA = "[data-testid='the-table--row-row-15-Abraham Lincoln']";
+const tableCell0 = "[data-testid='the-table--cell-0']";
+const tableCell1 = "[data-testid='the-table--cell-1']";
+const tableCell2 = "[data-testid='the-table--cell-2']";
+const tableCell3 = "[data-testid='the-table--cell-3']";
 
 BrowserTestCase(
   'DynamicTable elements should be able to be identified, interacted and sorted by data-testid',

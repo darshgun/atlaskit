@@ -23,7 +23,7 @@ class Body extends React.Component<Props, {}> {
     } = this.props;
 
     return (
-      <tbody data-testid={testId}>
+      <tbody data-testid={testId && `${testId}--body`}>
         {pageRows.map((row, rowIndex) => (
           <TableRow
             head={head}
