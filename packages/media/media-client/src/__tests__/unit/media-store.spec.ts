@@ -22,6 +22,7 @@ import {
   MediaFileArtifacts,
   checkWebpSupport,
 } from '../..';
+import { FILE_CACHE_MAX_AGE } from '../../constants';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
@@ -607,7 +608,7 @@ describe('MediaStore', () => {
         const url = await mediaStore.getFileImageURL('1234');
 
         expect(url).toEqual(
-          `${baseUrl}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+          `${baseUrl}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=${FILE_CACHE_MAX_AGE}&mode=crop&token=some-token`,
         );
       });
     });
@@ -623,7 +624,7 @@ describe('MediaStore', () => {
 
         const image = await mediaStore.getImage('123');
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&max-age=3600&mode=crop`,
+          `${baseUrl}/file/123/image?allowAnimated=true&max-age=${FILE_CACHE_MAX_AGE}&mode=crop`,
         );
         expect(image).toBeInstanceOf(Blob);
       });
@@ -642,7 +643,7 @@ describe('MediaStore', () => {
           upscale: true,
         });
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&max-age=3600&mode=full-fit&upscale=true&version=2`,
+          `${baseUrl}/file/123/image?allowAnimated=true&max-age=${FILE_CACHE_MAX_AGE}&mode=full-fit&upscale=true&version=2`,
         );
       });
 
@@ -665,7 +666,7 @@ describe('MediaStore', () => {
           true,
         );
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&height=4096&max-age=3600&mode=full-fit&upscale=true&version=2&width=4096`,
+          `${baseUrl}/file/123/image?allowAnimated=true&height=4096&max-age=${FILE_CACHE_MAX_AGE}&mode=full-fit&upscale=true&version=2&width=4096`,
         );
       });
 
@@ -690,7 +691,7 @@ describe('MediaStore', () => {
           true,
         );
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&height=4096&max-age=3600&mode=crop&upscale=true&version=2&width=4096`,
+          `${baseUrl}/file/123/image?allowAnimated=true&height=4096&max-age=${FILE_CACHE_MAX_AGE}&mode=crop&upscale=true&version=2&width=4096`,
         );
       });
 
@@ -839,7 +840,7 @@ describe('MediaStore', () => {
 
       it('should return file url', () => {
         expect(url).toEqual(
-          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&token=some-token`,
+          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&max-age=${FILE_CACHE_MAX_AGE}&token=some-token`,
         );
       });
 
@@ -864,7 +865,7 @@ describe('MediaStore', () => {
         );
 
         expect(url).toEqual(
-          `${baseUrl}/sd-video?client=some-client-id&collection=some-collection&token=some-token`,
+          `${baseUrl}/sd-video?client=some-client-id&collection=some-collection&max-age=${FILE_CACHE_MAX_AGE}&token=some-token`,
         );
       });
 
