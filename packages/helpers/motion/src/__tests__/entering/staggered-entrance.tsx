@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { forwardRef } from 'react';
 import { render } from '@testing-library/react';
 import { StaggeredEntrance } from '../../index';
 import { useStaggeredEntrance } from '../../entering/staggered-entrance';
@@ -19,10 +18,13 @@ describe('<StaggeredEntrance />', () => {
     offsetWidth: number;
   }
 
-  const EnteringComponent = forwardRef<
-    HTMLElement,
-    { id: string; box?: Partial<BoundingBox> }
-  >(({ id, box }) => {
+  const EnteringComponent = ({
+    id,
+    box,
+  }: {
+    id: string;
+    box?: Partial<BoundingBox>;
+  }) => {
     const staggered = useStaggeredEntrance();
     if (typeof staggered.ref === 'function') {
       staggered.ref(box as HTMLElement);
@@ -37,7 +39,7 @@ describe('<StaggeredEntrance />', () => {
         data-testid={id}
       />
     );
-  });
+  };
 
   it('should set a staggered duration for a list of elements', () => {
     const { getByTestId } = render(
