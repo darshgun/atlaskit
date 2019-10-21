@@ -29,6 +29,8 @@ export { decisionList } from './nodes/decision-list';
 export { doc } from './nodes/doc';
 export { emoji } from './nodes/emoji';
 export { extension } from './nodes/extension';
+export { expand } from './nodes/expand';
+export { nestedExpand } from './nodes/nested-expand';
 export { hardBreak } from './nodes/hard-break';
 export { hardBreak as br } from './nodes/hard-break';
 export { heading } from './nodes/heading';
