@@ -597,7 +597,8 @@ const getRecentItems = (product: string) =>
             );
           });
 
-          it('should trigger prequery drawer view event', () => {
+          // https://product-fabric.atlassian.net/browse/QS-1049
+          it.skip('should trigger prequery drawer view event', () => {
             const event = findAnalyticEventWithProperties(onEventSpy, {
               actionSubject: 'globalSearchDrawer',
               action: 'viewed',
@@ -631,7 +632,8 @@ const getRecentItems = (product: string) =>
       });
     });
 
-    describe('Dismissed Event', () => {
+    // https://product-fabric.atlassian.net/browse/QS-1049
+    describe.skip('Dismissed Event', () => {
       it('should not trigger dismissed Event when result is selected', () => {
         // setup
         keyPress('Enter');
