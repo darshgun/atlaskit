@@ -23,7 +23,6 @@ module.exports = {
     // E.g. a TS package that imports from @atlaskit/docs (js) in an example
     'import/parsers': {
       'babel-eslint': ['.js'],
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     // List of polyfills for `eslint-plugin-compat` check
     // To know how to add in case you have a new one to add, please check
