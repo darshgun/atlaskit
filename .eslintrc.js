@@ -12,6 +12,7 @@ module.exports = {
     'plugin:compat/recommended',
   ],
   settings: {
+    'import/extensions': ['.js', '.ts', '.tsx'],
     // Required to resolve atlaskit deps to src and remove webpack loader prefixes
     'import/resolver': {
       [path.resolve(`${__dirname}/build/resolvers/eslint-resolver.js`)]: {
