@@ -13,7 +13,7 @@ module.exports = {
   ],
   settings: {
     'import/resolver': {
-      [path.resolve(`${__dirname}/build/resolver/eslint-resolver.js`)]: {
+      [path.resolve(`${__dirname}/build/resolvers/eslint-resolver.js`)]: {
         debug: false,
       },
     },

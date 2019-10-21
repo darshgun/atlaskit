@@ -9,6 +9,12 @@ exports.interfaceVersion = 2;
 exports.resolve = (source, file, config = {}) => {
   let resolved;
 
+  // Remove webpack loader prefix
+  const lastExclam = source.lastIndexOf('!');
+  if (lastExclam !== -1) {
+    source = source.slice(lastExclam + 1);
+  }
+
   try {
     resolved = baseResolver(source, {
       basedir: path.dirname(file),
