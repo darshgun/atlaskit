@@ -116,12 +116,16 @@ export const unlink = createMediaLinkingCommand(
     type: MediaLinkingActionsTypes.unlink,
   },
   (tr, state) => {
-    return addAnalytics(toggleLinkMark(tr, state, { forceRemove: true }), {
-      eventType: EVENT_TYPE.TRACK,
-      action: ACTION.UNLINK,
-      actionSubject: ACTION_SUBJECT.MEDIA_SINGLE,
-      actionSubjectId: ACTION_SUBJECT_ID.MEDIA_LINK,
-    });
+    return addAnalytics(
+      state,
+      toggleLinkMark(tr, state, { forceRemove: true }),
+      {
+        eventType: EVENT_TYPE.TRACK,
+        action: ACTION.UNLINK,
+        actionSubject: ACTION_SUBJECT.MEDIA_SINGLE,
+        actionSubjectId: ACTION_SUBJECT_ID.MEDIA_LINK,
+      },
+    );
   },
 );
 
@@ -138,7 +142,7 @@ export const setUrlToMedia = (
       const currentUrl = getCurrentUrl(state);
       if (!currentUrl) {
         // Insert Media Link
-        addAnalytics(tr, {
+        addAnalytics(state, tr, {
           eventType: EVENT_TYPE.TRACK,
           action: ACTION.INSERTED,
           actionSubject: ACTION_SUBJECT.DOCUMENT,
@@ -149,7 +153,7 @@ export const setUrlToMedia = (
         });
       } else if (url !== currentUrl) {
         // Change Url Event
-        addAnalytics(tr, {
+        addAnalytics(state, tr, {
           eventType: EVENT_TYPE.TRACK,
           action: ACTION.CHANGED_URL,
           actionSubject: ACTION_SUBJECT.MEDIA_SINGLE,

@@ -1,4 +1,4 @@
-import EmailSerializer, { EmailSerializerOpts } from '..';
+import EmailSerializer, { EmailSerializerOpts } from '../..';
 import { defaultSchema as schema } from '@atlaskit/adf-schema';
 
 import * as paragraphIndents from './__fixtures__/paragraph-indents.adf.json';
@@ -30,7 +30,7 @@ import * as image from './__fixtures__/image.adf.json';
 import * as placeholder from './__fixtures__/placeholder.adf.json';
 import * as annotation from './__fixtures__/annotation.adf.json';
 import * as breakout from './__fixtures__/breakout.adf.json';
-import { MetaDataContext } from '../interfaces';
+import { MetaDataContext } from '../../interfaces';
 
 const defaultTestOpts: EmailSerializerOpts = {
   isImageStubEnabled: false,

@@ -3,6 +3,7 @@ import { CardBaseActionCreator, ServerErrors } from './types';
 import { CardStore } from '../types';
 import { CardType } from '../store/types';
 import { Store } from 'redux';
+import { ServerError, isServerError } from '../../client/types';
 
 export const cardAction: CardBaseActionCreator<JsonLd> = (
   type,
@@ -65,7 +66,14 @@ export const getStatus = ({ meta }: JsonLd): CardType => {
   }
 };
 
-export const getError = ({ data }: JsonLd): ServerErrors | undefined => {
-  const { error = {} } = data || {};
-  return error.type;
+export const getError = (
+  obj: JsonLd | ServerError,
+): ServerErrors | undefined => {
+  if (isServerError(obj)) {
+    return (obj as ServerError).name as ServerErrors;
+  } else {
+    const data: { [name: string]: any } | undefined = (obj as JsonLd).data;
+    const { error = {} } = data || {};
+    return error.type;
+  }
 };

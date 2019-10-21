@@ -1,5 +1,10 @@
 # @atlaskit/focused-task-close-account
 
+## 0.12.12
+
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  - @atlaskit/i18n-tools@0.6.0
+
 ## 0.12.11
 
 ### Patch Changes

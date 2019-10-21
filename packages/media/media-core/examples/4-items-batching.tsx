@@ -18,7 +18,7 @@ export interface ExampleState {
 }
 
 const mediaClientConfig = createStorybookMediaClientConfig();
-const mediaClient = getMediaClient({ mediaClientConfig });
+const mediaClient = getMediaClient(mediaClientConfig);
 
 class Example extends Component<{}, ExampleState> {
   state: ExampleState = {

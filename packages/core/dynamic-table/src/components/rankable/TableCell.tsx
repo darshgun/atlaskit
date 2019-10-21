@@ -8,6 +8,7 @@ export interface Props extends WithDimensionsProps {
   head?: HeadCellType;
   cell: RowCellType;
   isFixedSize: boolean;
+  testId?: string;
 }
 
 export class RankableTableCell extends React.Component<Props, {}> {

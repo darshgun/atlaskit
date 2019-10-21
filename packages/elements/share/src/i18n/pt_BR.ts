@@ -11,12 +11,12 @@ export default {
   'fabric.elements.share.form.retry': 'Tentar novamente',
   'fabric.elements.share.form.comment.placeholder': 'Adicione uma mensagem',
   'fabric.elements.share.form.user-picker.placeholder.generic':
-    'Insira um nome, uma equipe ou um e-mail',
+    'Insira nome, grupo, equipe ou e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Insira um nome ou uma equipe',
   'fabric.elements.share.form.user-picker.add-more': 'Insira mais itens',
   'fabric.elements.share.form.user-picker.validation.required':
-    'Selecione pelo menos um usuário, equipe ou e-mail.',
+    'Selecione ao menos um usuário, grupo, equipe ou e-mail.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Você só pode convidar pessoas com endereços de e-mail {domains}. Entre em contato com o administrador do site para convidar outras pessoas.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':
@@ -39,7 +39,7 @@ export default {
   'fabric.elements.share.failure.icon.label': 'Ícone de erro',
   'fabric.elements.share.failure.message': 'Não foi possível compartilhar',
   'fabric.elements.share.success.message':
-    '{object, select, blogpost {Blog compartilhado} board {Painel compartilhado} calendar {Calendário compartilhado} draft {Rascunho compartilhado} filter {Filtro compartilhado} issue {Item compartilhado} media {Mídia compartilhada} page {Página compartilhada} project {Projeto compartilhado} pullrequest {Solicitação pull compartilhada} question {Pergunta compartilhada} report {Relatório compartilhado} repository {Repositório compartilhado} request {Solicitação compartilhada} roadmap {Roteiro compartilhado} site {Site compartilhado} space {Espaço compartilhado} other {Link compartilhado}}',
+    '{objeto, selecionar, blogpost {Blog post shared} painel {Board shared} calendário {Calendar shared} rascunho {Draft shared} filtro {Filter shared} item {Issue shared} mídia {Media shared} página {Page shared} projeto {Project shared} solicitação de pull {Pull Request shared} pergunta {Question shared} relatório {Report shared} repositório {Repository shared} solicitação {Request shared} roteiro {Roadmap shared} site {Site shared} espaço {Space shared} outro {Link compartilhado}}',
   'fabric.elements.share.admin.notified.message':
     'Seu administrador foi notificado',
 };

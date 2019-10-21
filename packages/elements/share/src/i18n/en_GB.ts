@@ -11,12 +11,12 @@ export default {
   'fabric.elements.share.form.retry': 'Retry',
   'fabric.elements.share.form.comment.placeholder': 'Add a message',
   'fabric.elements.share.form.user-picker.placeholder.generic':
-    'Enter name, team or email',
+    'Enter name, group, team or email',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Enter name or team',
   'fabric.elements.share.form.user-picker.add-more': 'Enter more',
   'fabric.elements.share.form.user-picker.validation.required':
-    'Select at least one user, team or email.',
+    'Select at least one user, group, team or email.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'You can only invite people with {domains} email addresses. Contact your site admin to invite other people.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

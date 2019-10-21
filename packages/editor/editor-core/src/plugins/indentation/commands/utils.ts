@@ -10,7 +10,7 @@ import {
   EVENT_TYPE,
   FormatEventPayload,
 } from '../../analytics';
-import { Transaction } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { GetAttrsChange } from '../../../utils/getAttrsWithChangesRecorder';
 
 // Analytics GAS v3 Utils
@@ -58,6 +58,7 @@ export function getPrevIndentLevel(prevAttrs: PrevAttributes): number {
  *
  * @export
  * @param {*} getAttrsChanges
+ * @param {*} state
  * @param dispatch
  * @returns
  */
@@ -66,6 +67,7 @@ export function createAnalyticsDispatch(
     IndentationMarkAttributes,
     IndentationChangesOptions
   >[],
+  state: EditorState,
   dispatch?: (tr: Transaction) => void,
 ): (tr: Transaction) => void {
   return (tr: Transaction) => {
@@ -79,7 +81,7 @@ export function createAnalyticsDispatch(
         return; // If no valid indent type continue
       }
 
-      currentTr = addAnalytics(currentTr, {
+      currentTr = addAnalytics(state, currentTr, {
         action: ACTION.FORMATTED,
         actionSubject: ACTION_SUBJECT.TEXT,
         actionSubjectId: ACTION_SUBJECT_ID.FORMAT_INDENT,

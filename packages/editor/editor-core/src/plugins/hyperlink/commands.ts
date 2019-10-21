@@ -219,7 +219,7 @@ export function showLinkToolbar(
       let tr = state.tr.setMeta(stateKey, {
         type: LinkAction.SHOW_INSERT_TOOLBAR,
       });
-      tr = addAnalytics(tr, {
+      tr = addAnalytics(state, tr, {
         action: ACTION.INVOKED,
         actionSubject: ACTION_SUBJECT.TYPEAHEAD,
         actionSubjectId: ACTION_SUBJECT_ID.TYPEAHEAD_LINK,

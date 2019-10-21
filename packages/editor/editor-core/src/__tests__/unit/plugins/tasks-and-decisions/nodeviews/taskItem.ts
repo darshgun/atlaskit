@@ -5,7 +5,7 @@ describe('Task Item - NodeView', () => {
   const providerFactory = {} as any;
   const portalProviderAPI = { render() {}, remove() {} } as any;
 
-  it('should render a contentDOM of `div` inside `li`', () => {
+  it('should render a contentDOM of `div` inside `div`', () => {
     const node = taskItem()('this is the task')(defaultSchema);
 
     const nodeView = taskItemNodeViewFactory(
@@ -16,6 +16,6 @@ describe('Task Item - NodeView', () => {
     const contentDOM = nodeView!.contentDOM as HTMLElement;
 
     expect(contentDOM.tagName).toBe('DIV');
-    expect(contentDOM.parentElement!.tagName).toBe('LI');
+    expect(contentDOM.parentElement!.tagName).toBe('DIV');
   });
 });

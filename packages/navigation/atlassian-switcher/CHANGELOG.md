@@ -1,5 +1,11 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.6
+
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  - @atlaskit/i18n-tools@0.6.0
+  - @atlaskit/analytics-namespaced-context@4.1.10
+
 ## 4.6.5
 
 ### Patch Changes

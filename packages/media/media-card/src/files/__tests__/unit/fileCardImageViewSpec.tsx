@@ -3,6 +3,7 @@ import { mount, shallow, ShallowWrapper, ReactWrapper } from 'enzyme';
 import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import { expectToEqual } from '@atlaskit/media-test-helpers';
 import { Ellipsify, MediaImage } from '@atlaskit/media-ui';
+import { MediaType } from '@atlaskit/media-client';
 
 import {
   FileCardImageViewBase as FileCardImageView,
@@ -20,6 +21,7 @@ import CardActions from '../../../utils/cardActions';
 
 describe('FileCardImageView', () => {
   let onRetry: FileCardImageViewProps['onRetry'];
+  let onDisplayImage: FileCardImageViewProps['onDisplayImage'];
   let mediaName: FileCardImageViewProps['mediaName'];
   let mediaType: FileCardImageViewProps['mediaType'];
   let actions: FileCardImageViewProps['actions'];
@@ -27,6 +29,7 @@ describe('FileCardImageView', () => {
 
   beforeEach(() => {
     onRetry = jest.fn();
+    onDisplayImage = jest.fn();
     mediaName = 'some-media-name';
     mediaType = 'image';
     actions = [
@@ -77,6 +80,7 @@ describe('FileCardImageView', () => {
           error={errorStr}
           status="error"
           onRetry={onRetry}
+          onDisplayImage={onDisplayImage}
           mediaName={mediaName}
           mediaType={mediaType}
           actions={actions}
@@ -319,6 +323,7 @@ describe('FileCardImageView', () => {
           actions={actions}
           mediaName={mediaName}
           previewOrientation={6}
+          alt="this is a test"
         />,
       );
     });
@@ -329,6 +334,10 @@ describe('FileCardImageView', () => {
 
     it('should have dataURI', () => {
       expectToEqual(card.find(MediaImage).props().dataURI, 'some-data');
+    });
+
+    it('should have alt', () => {
+      expectToEqual(card.find(MediaImage).props().alt, 'this is a test');
     });
 
     it('should have crop and stretch props', () => {
@@ -411,5 +420,34 @@ describe('FileCardImageView', () => {
 
     expect(wrapperAsImage).toMatchSnapshot();
     expect(wrapperNotImage).toMatchSnapshot();
+  });
+
+  it('should call onDisplayImage only once during first render', () => {
+    const card = shallow(
+      <FileCardImageView
+        mediaType="image"
+        status="complete"
+        dataURI="some-data"
+        onDisplayImage={onDisplayImage}
+      />,
+    );
+    expect(onDisplayImage).toHaveBeenCalledTimes(1);
+    card.update();
+    expect(onDisplayImage).toHaveBeenCalledTimes(1);
+  });
+
+  const mediaTypes: MediaType[] = ['video', 'audio', 'doc', 'unknown'];
+  mediaTypes.forEach(mediaType => {
+    it(`should not call onDisplayImage when mediaType is ${mediaType}`, () => {
+      shallow(
+        <FileCardImageView
+          mediaType={mediaType}
+          status="complete"
+          dataURI="some-data"
+          onDisplayImage={onDisplayImage}
+        />,
+      );
+      expect(onDisplayImage).toHaveBeenCalledTimes(0);
+    });
   });
 });

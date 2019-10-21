@@ -95,6 +95,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
             component: ExampleInlineCommentComponent,
           }}
           allowStatus={true}
+          allowNestedTasks
           {...providers}
           mentionProvider={Promise.resolve(
             mention.storyData.resourceProviderWithTeamMentionHighlight,
