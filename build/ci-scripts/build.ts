@@ -201,7 +201,7 @@ async function cliTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
   const pkgGlob = await getPkgGlob(['typescriptcli'], pkg, { cwd });
   const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
   const commands = {
-    cjs: `NODE_ENV=production bolt workspaces exec --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} && echo Success || true'`,
+    cjs: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} && echo Success || true'`,
     esm: '',
   };
 
@@ -221,8 +221,8 @@ async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
   // suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
   // We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
   const commands = {
-    cjs: `NODE_ENV=production bolt workspaces exec --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`,
-    esm: `NODE_ENV=production bolt workspaces exec --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
+    cjs: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`,
+    esm: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
   };
 
   return getDistCommands(commands, distType);
