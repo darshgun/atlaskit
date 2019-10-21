@@ -67,15 +67,13 @@ const yamlToReleases = changesets => {
 };
 
 const {
-  // user,
+  user,
   repo,
   pullrequestid,
   repoid,
   sourcehash,
   destinationhash,
 } = queryString.parse(window.location.search);
-
-const user = 'jackrgardner';
 
 async function main() {
   // Only retrieve one type of changesets. Legacy commit changesets
