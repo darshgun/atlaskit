@@ -1,5 +1,13 @@
 # @atlaskit/media-test-helpers
 
+## 25.2.1
+
+### Patch Changes
+
+- [patch][6ef4ae5768](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ef4ae5768):
+
+  Bump kakapo, to fix Router instantiation: we now use only 'fetch' as strategy.
+
 ## 25.2.0
 
 ### Minor Changes

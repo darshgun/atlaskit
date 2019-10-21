@@ -101,6 +101,7 @@ export default class DynamicTable extends React.Component<
       paginationi18n,
       onRankStart,
       onPageRowsUpdate,
+      testId,
     } = this.props;
 
     return (
@@ -125,6 +126,7 @@ export default class DynamicTable extends React.Component<
         onRankEnd={this.onRankEnd}
         onRankStart={onRankStart}
         onPageRowsUpdate={onPageRowsUpdate}
+        testId={testId}
       />
     );
   }

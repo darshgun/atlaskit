@@ -25,6 +25,7 @@ export interface Props extends WithSortedPageRowsProps {
   isRanking: boolean;
   isRankingDisabled: boolean;
   head?: HeadType;
+  testId?: string;
 }
 
 // computes destination of ranking
@@ -96,6 +97,7 @@ export class RankableBody extends React.Component<Props, {}> {
       isFixedSize,
       isRanking,
       isRankingDisabled,
+      testId,
     } = this.props;
 
     return (
@@ -108,7 +110,11 @@ export class RankableBody extends React.Component<Props, {}> {
           isDropDisabled={isRankingDisabled}
         >
           {provided => (
-            <tbody ref={provided.innerRef} {...provided.droppableProps}>
+            <tbody
+              data-testid={testId}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
               {pageRows.map((row, rowIndex) => (
                 <TableRow
                   head={head}

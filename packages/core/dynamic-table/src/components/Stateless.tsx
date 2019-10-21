@@ -6,12 +6,10 @@ import {
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import ManagedPagination from './managedPagination';
-
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
-
 import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
 import {
   getPageRows,
@@ -27,9 +25,7 @@ import {
   EmptyViewContainer,
   EmptyViewWithFixedHeight,
 } from '../styled/EmptyBody';
-
 import { Table, Caption, PaginationWrapper } from '../styled/DynamicTable';
-
 import {
   StatelessProps as Props,
   RowCellType,
@@ -179,6 +175,7 @@ class DynamicTable extends React.Component<Props, State> {
       isRankingDisabled,
       paginationi18n,
       onPageRowsUpdate,
+      testId,
     } = this.props;
 
     const rowsLength = rows && rows.length;
@@ -195,6 +192,7 @@ class DynamicTable extends React.Component<Props, State> {
       ref: (el: any) => {
         this.tableBody = el;
       },
+      testId,
     };
     const totalPages =
       rowsLength && rowsPerPage ? Math.ceil(rowsLength / rowsPerPage) : 0;
@@ -210,7 +208,10 @@ class DynamicTable extends React.Component<Props, State> {
           spinnerSize={spinnerSize}
           targetRef={() => this.tableBody}
         >
-          <Table isFixedSize={isFixedSize}>
+          <Table
+            isFixedSize={isFixedSize}
+            data-testid={testId && `${testId}--table`}
+          >
             {!!caption && <Caption>{caption}</Caption>}
             {head && (
               <TableHead
@@ -220,6 +221,7 @@ class DynamicTable extends React.Component<Props, State> {
                 sortOrder={sortOrder}
                 isRanking={this.state.isRanking}
                 isRankable={canRank}
+                testId={testId}
               />
             )}
             {rowsExist &&

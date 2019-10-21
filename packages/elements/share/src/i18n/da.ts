@@ -11,12 +11,12 @@ export default {
   'fabric.elements.share.form.retry': 'Prøv igen',
   'fabric.elements.share.form.comment.placeholder': 'TIlføj en meddelelse',
   'fabric.elements.share.form.user-picker.placeholder.generic':
-    'Indtast navn, team eller e-mail',
+    'Indtast navn, gruppe, team eller e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Indtast navn eller team',
   'fabric.elements.share.form.user-picker.add-more': 'Indtast mere',
   'fabric.elements.share.form.user-picker.validation.required':
-    'Vælg mindst én bruger, ét team eller én e-mail.',
+    'Vælg mindst én bruger, én gruppe, ét team eller én e-mail.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Du kan kun invitere personer med {domains}-e-mailadresser. Kontakt administratoren for din side for at invitere andre personer.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':
