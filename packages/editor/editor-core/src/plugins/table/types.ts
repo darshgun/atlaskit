@@ -8,11 +8,14 @@ import {
   tableHeaderSelector,
 } from '@atlaskit/adf-schema';
 import { TableSharedCssClassName } from '@atlaskit/editor-common';
+import { Rect } from 'prosemirror-tables';
 
 export enum SortOrder {
   ASC = 'asc',
   DESC = 'desc',
 }
+
+export const RESIZE_HANDLE_AREA_DECORATION_GAP = 30;
 
 export type PermittedLayoutsDescriptor = TableLayout[] | 'all';
 export type Cell = { pos: number; start: number; node: PmNode };
@@ -39,7 +42,34 @@ export interface ColumnResizingPluginState {
   lastClick: { x: number; y: number; time: number } | null;
   lastColumnResizable?: boolean;
   dynamicTextSizing?: boolean;
+  decorationSet?: DecorationSet;
 }
+
+/*
+ * This type represents the start and end from a cell in a column,
+ * for example, on this table the cell C1 will have
+ * `left: 1` and `right: 3`.
+ *
+ * ```
+ *      left          right
+ *        1             3
+ *        |             |
+ *        |             |
+ *        |             |
+ * _______∨_____________∨_______
+ * |      |             |      |
+ * |  B1  |     C1      |  A1  |
+ * |______|______ ______|______|
+ * |             |      |      |
+ * |     B2      |  D1  |  A2  |
+ * |______ ______|______|______|
+ * |      |      |             |
+ * |  B3  |  C2  |      D2     |
+ * |______|______|_____________|
+ * ```
+ *
+ */
+export type CellColumnPositioning = Pick<Rect, 'right' | 'left'>;
 
 export interface TableColumnOrdering {
   columnIndex: number;
@@ -117,7 +147,13 @@ export type TablePluginAction =
         isInDanger?: boolean;
       };
     }
+  | {
+      type: 'ADD_RESIZE_HANDLE_DECORATIONS';
+      data: { decorationSet: DecorationSet };
+    }
   | { type: 'CLEAR_HOVER_SELECTION'; data: { decorationSet: DecorationSet } }
+  | { type: 'SHOW_RESIZE_HANDLE_LINE'; data: { decorationSet: DecorationSet } }
+  | { type: 'HIDE_RESIZE_HANDLE_LINE'; data: { decorationSet: DecorationSet } }
   | { type: 'SET_TARGET_CELL_POSITION'; data: { targetCellPosition?: number } }
   | {
       type: 'SET_TABLE_LAYOUT';
@@ -157,6 +193,10 @@ export enum TableDecorations {
 
   COLUMN_CONTROLS_DECORATIONS = 'COLUMN_CONTROLS_DECORATIONS',
   COLUMN_SELECTED = 'COLUMN_SELECTED',
+  COLUMN_RESIZING_HANDLE = 'COLUMN_RESIZING_HANDLE',
+  COLUMN_RESIZING_HANDLE_LINE = 'COLUMN_RESIZING_HANDLE_LINE',
+
+  LAST_CELL_ELEMENT = 'LAST_CELL_ELEMENT',
 }
 
 export const TableCssClassName = {
@@ -213,6 +253,7 @@ export const TableCssClassName = {
   IS_RESIZING: `${tablePrefixSelector}-is-resizing`,
 
   RESIZE_HANDLE: `${tablePrefixSelector}-resize-handle`,
+  RESIZE_HANDLE_DECORATION: `${tablePrefixSelector}-resize-decoration`,
 
   CONTEXTUAL_SUBMENU: `${tablePrefixSelector}-contextual-submenu`,
   CONTEXTUAL_MENU_BUTTON_WRAP: `${tablePrefixSelector}-contextual-menu-button-wrap`,
@@ -230,4 +271,7 @@ export const TableCssClassName = {
   TABLE_HEADER_CELL: tableHeaderSelector,
 
   TOP_LEFT_CELL: 'table > tbody > tr:nth-child(2) > td:nth-child(1)',
+  LAST_ITEM_IN_CELL: `${tablePrefixSelector}-last-item-in-cell`,
+
+  WITH_RESIZE_LINE: `${tablePrefixSelector}-column-resize-line`,
 };

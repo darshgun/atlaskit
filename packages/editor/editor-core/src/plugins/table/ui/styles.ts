@@ -10,11 +10,11 @@ import {
   akEditorSmallZIndex,
   akEditorTableNumberColumnWidth,
   akEditorTableBorder,
+  akMediaSingleResizeZIndex,
   tableCellBorderWidth,
-  tableResizeHandleWidth
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
-import { TableCssClassName as ClassName } from '../types';
+import { TableCssClassName as ClassName, RESIZE_HANDLE_AREA_DECORATION_GAP } from '../types';
 import { tableBackgroundBorderColor } from '@atlaskit/adf-schema';
 
 const {
@@ -65,6 +65,9 @@ export const columnControlsDecorationHeight = 25;
 export const columnControlsZIndex = akEditorUnitZIndex * 10;
 export const columnControlsSelectedZIndex = columnControlsZIndex + 1;
 export const columnResizeHandleZIndex = columnControlsSelectedZIndex + 1;
+export const resizeHandlerAreaWidth = RESIZE_HANDLE_AREA_DECORATION_GAP / 3;
+export const resizeLineWidth = 2;
+export const resizeHandlerZIndex = columnControlsZIndex + akMediaSingleResizeZIndex;
 
 const isIE11 = browser.ie_version === 11;
 
@@ -343,20 +346,6 @@ const columnControlsDecoration = `
     }
   }
 
-
-  .${ClassName.TABLE_CONTAINER} {
-    td, th {
-      overflow: hidden;
-    }
-
-    &.${ClassName.WITH_CONTROLS} tr:first-child {
-      td, th {
-        overflow: visible;
-      }
-    }
-  }
-
-
   .${ClassName.WITH_CONTROLS} .${ClassName.COLUMN_CONTROLS_DECORATIONS} {
     display: block;
   }
@@ -383,31 +372,6 @@ const columnControlsDecoration = `
   .${ClassName.TABLE_SELECTED} table tr:first-child th.${ClassName.TABLE_HEADER_CELL} {
     .${ClassName.COLUMN_CONTROLS_DECORATIONS}::after {
       ${columnHeaderButtonSelected};
-    }
-  }
-
-  table .${ClassName.RESIZE_HANDLE} {
-    position: absolute;
-    top: ${columnControlsDecorationHeight - tableToolbarSize}px;
-    right: -${tableResizeHandleWidth/2 + 2}px;
-    width: ${tableResizeHandleWidth * 2}px;
-    cursor: col-resize;
-    z-index: ${1000};
-
-    :after {
-      background: ${tableBorderSelectedColor};
-      display: none;
-      content: '';
-      height: 100%;
-      width: 2px;
-      position: absolute;
-      left: 50%;
-    }
-
-    :hover {
-      :after {
-        display: block;
-      }
     }
   }
 `;
@@ -443,6 +407,41 @@ const hoveredWarningCell = `
   }
 `
 
+const resizeHandle = `
+  .${ClassName.TABLE_CONTAINER} {
+    .${ClassName.RESIZE_HANDLE_DECORATION} {
+      background-color: transparent;
+      position: absolute;
+      width: ${resizeHandlerAreaWidth}px;
+      height: 100%;
+      top: 0;
+      right: -${resizeHandlerAreaWidth / 2}px;
+      cursor: col-resize;
+      z-index: ${resizeHandlerZIndex};
+    }
+
+    td.${ClassName.WITH_RESIZE_LINE},
+    th.${ClassName.WITH_RESIZE_LINE} {
+      .${ClassName.RESIZE_HANDLE_DECORATION}::after {
+        content: ' ';
+        right: ${(resizeHandlerAreaWidth - resizeLineWidth) / 2}px;
+        position: absolute;
+        width: ${resizeLineWidth}px;
+        height: calc(100% + 1px);
+        background-color: ${tableBorderSelectedColor};
+        z-index: ${columnControlsZIndex * 2};
+        top: 0;
+      }
+    }
+
+    table tr:first-child th.${ClassName.WITH_RESIZE_LINE} .${ClassName.RESIZE_HANDLE_DECORATION}::after,
+    table tr:first-child td.${ClassName.WITH_RESIZE_LINE} .${ClassName.RESIZE_HANDLE_DECORATION}::after {
+      top: -${tableToolbarSize + tableCellBorderWidth}px;
+      height: calc(100% + ${tableToolbarSize + tableCellBorderWidth}px);
+    }
+  }
+`;
+
 export const tableStyles = css`
   .${ClassName.LAYOUT_BUTTON} button {
     background: ${N20A};
@@ -463,6 +462,23 @@ export const tableStyles = css`
     ${hoveredDeleteButton};
     ${hoveredCell};
     ${hoveredWarningCell};
+    ${resizeHandle};
+
+    .${ClassName.LAST_ITEM_IN_CELL} {
+      margin-bottom: 0;
+    }
+
+    .${ClassName.TABLE_NODE_WRAPPER} {
+      td.${ClassName.TABLE_CELL},
+      th.${ClassName.TABLE_HEADER_CELL} {
+        position: relative;
+        overflow: visible;
+      }
+
+      td.${ClassName.TABLE_CELL} {
+        background-color: #ffffff; // basic color to avoid overflow content on cell
+      }
+    }
 
     .${ClassName.CONTROLS_FLOATING_BUTTON_COLUMN} {
       ${insertColumnButtonWrapper}

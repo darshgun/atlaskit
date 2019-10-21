@@ -49,6 +49,10 @@ import {
   TablePluginState,
 } from '../types';
 import { CellAttributes } from '@atlaskit/adf-schema';
+import {
+  createResizeHandleDecoration,
+  updateNodeDecorations,
+} from '../utils/decoration';
 // #endregion
 
 // #region Constants
@@ -447,6 +451,62 @@ export const hideInsertColumnOrRowButton = () =>
   createCommand(
     {
       type: 'HIDE_INSERT_COLUMN_OR_ROW_BUTTON',
+    },
+    tr => tr.setMeta('addToHistory', false),
+  );
+
+export const addResizeHandleDecorations = (columnIndex: number) =>
+  createCommand(
+    state => {
+      const tableNode = findTable(state.selection);
+      const {
+        pluginConfig: { allowColumnResizing },
+      } = getPluginState(state);
+
+      let decorationSet =
+        getPluginState(state).decorationSet || DecorationSet.empty;
+
+      if (tableNode) {
+        if (columnIndex < 0) {
+          decorationSet = updatePluginStateDecorations(
+            state,
+            [],
+            TableDecorations.COLUMN_RESIZING_HANDLE,
+          );
+
+          decorationSet = updatePluginStateDecorations(
+            state,
+            [],
+            TableDecorations.LAST_CELL_ELEMENT,
+          );
+        } else if (allowColumnResizing) {
+          const [
+            columnResizesDecorations,
+            lastCellElementsDecorations,
+          ] = createResizeHandleDecoration(state.tr, { right: columnIndex });
+
+          decorationSet = updateNodeDecorations(
+            state.doc,
+            decorationSet,
+            columnResizesDecorations,
+            TableDecorations.COLUMN_RESIZING_HANDLE,
+          );
+
+          decorationSet = updateNodeDecorations(
+            state.doc,
+            decorationSet,
+            lastCellElementsDecorations,
+            TableDecorations.LAST_CELL_ELEMENT,
+          );
+        }
+      }
+
+      return {
+        type: 'ADD_RESIZE_HANDLE_DECORATIONS',
+        data: {
+          decorationSet,
+        },
+      };
     },
     tr => tr.setMeta('addToHistory', false),
   );
