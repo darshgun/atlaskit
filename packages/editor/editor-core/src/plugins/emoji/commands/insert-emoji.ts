@@ -33,7 +33,7 @@ export function insertEmoji(
         const fragment = Fragment.fromArray([node, textNode]);
         const tr = safeInsert(fragment)(state.tr);
         if (inputMethod) {
-          addAnalytics(tr, {
+          addAnalytics(state, tr, {
             action: ACTION.INSERTED,
             actionSubject: ACTION_SUBJECT.DOCUMENT,
             actionSubjectId: ACTION_SUBJECT_ID.EMOJI,

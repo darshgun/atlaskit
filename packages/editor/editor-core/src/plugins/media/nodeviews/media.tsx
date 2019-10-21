@@ -128,13 +128,16 @@ class MediaNode extends Component<MediaNodeProps> {
           };
     const contextId =
       contextIdentifierProvider && contextIdentifierProvider.objectId;
+    // mediaClientConfig is not needed for "external" case. So we have to cheat here.
+    // there is a possibility mediaClientConfig will be part of a identifier,
+    // so this might be not an issue
+    const mediaClientConfig: MediaClientConfig = viewMediaClientConfig || {
+      authProvider: () => ({} as any),
+    };
 
     return (
       <Card
-        // mediaClientConfig is not needed for "external" case. So we have to cheat here.
-        // there is a possibility mediaClientConfig will be part of a identifier,
-        // so this might be not an issue
-        mediaClientConfig={viewMediaClientConfig!}
+        mediaClientConfig={mediaClientConfig}
         resizeMode="stretchy-fit"
         dimensions={cardDimensions}
         identifier={identifier}

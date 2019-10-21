@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 12.2.5
+
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  - @atlaskit/i18n-tools@0.6.0
+  - @atlaskit/util-service-support@4.1.0
+
 ## 12.2.4
 
 - Updated dependencies [4778521db3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4778521db3):

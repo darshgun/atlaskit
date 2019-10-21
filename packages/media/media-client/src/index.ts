@@ -120,13 +120,17 @@ export {
   isDifferentIdentifier,
 } from './identifier';
 
-export { EventPayloadListener, UploadEventPayloadMap } from './client/events';
+export {
+  EventPayloadListener,
+  UploadEventPayloadMap,
+  MediaViewedEventPayload,
+} from './client/events';
 
 export {
   withMediaClient,
-  WithContextOrMediaClientConfig,
-  WithContextOrMediaClientConfigProps,
+  WithMediaClientConfig,
   getMediaClient,
+  WithMediaClientConfigProps,
 } from './utils/with-media-client-hoc';
 
 export { globalMediaEventEmitter } from './globalMediaEventEmitter';

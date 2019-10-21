@@ -238,7 +238,7 @@ class AsciiEmojiTransactionCreator {
       this.to,
       this.createNodes(),
     );
-    return addAnalytics(tr, {
+    return addAnalytics(this.state, tr, {
       action: ACTION.INSERTED,
       actionSubject: ACTION_SUBJECT.DOCUMENT,
       actionSubjectId: ACTION_SUBJECT_ID.EMOJI,

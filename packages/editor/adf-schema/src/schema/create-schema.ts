@@ -61,6 +61,7 @@ import {
   unsupportedBlock,
   unsupportedInline,
   status,
+  nestableTaskList,
 } from './nodes';
 
 function addItems(
@@ -159,6 +160,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'decisionList', spec: decisionList },
   { name: 'decisionItem', spec: decisionItem },
   { name: 'taskList', spec: taskList },
+  { name: 'taskList', spec: nestableTaskList },
   { name: 'taskItem', spec: taskItem },
   { name: 'date', spec: date },
   { name: 'status', spec: status },

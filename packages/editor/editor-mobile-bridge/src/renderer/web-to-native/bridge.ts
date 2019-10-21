@@ -20,12 +20,17 @@ export interface RenderBridge {
   onContentRendered(): void;
 }
 
+export interface AnalyticsBridge {
+  trackEvent(event: string): void;
+}
+
 export default interface WebBridge
   extends LinkBridge,
     TaskDecisionBridge,
     MediaBridge,
     MentionBridge,
-    RenderBridge {}
+    RenderBridge,
+    AnalyticsBridge {}
 
 export interface RendererBridges {
   linkBridge?: LinkBridge;
@@ -33,6 +38,7 @@ export interface RendererBridges {
   mediaBridge?: MediaBridge;
   mentionBridge?: MentionBridge;
   renderBridge?: RenderBridge;
+  analyticsBridge?: AnalyticsBridge;
 }
 
 export type RendererPluginBridges = keyof RendererBridges;

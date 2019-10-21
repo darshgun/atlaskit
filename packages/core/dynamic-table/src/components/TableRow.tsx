@@ -8,20 +8,25 @@ interface Props {
   isFixedSize: boolean;
   isHighlighted?: boolean;
   row: RowType;
+  testId?: string;
 }
 
-const Row = ({ row, head, isFixedSize, isHighlighted }: Props) => {
+const Row = ({ row, head, testId, isFixedSize, isHighlighted }: Props) => {
   const { cells, ...restRowProps } = row;
 
   return (
-    <TableBodyRow {...restRowProps} isHighlighted={isHighlighted}>
+    <TableBodyRow
+      {...restRowProps}
+      isHighlighted={isHighlighted}
+      data-testid={testId && `${testId}--row-${restRowProps.key}`}
+    >
       {cells.map((cell, cellIndex) => {
         const { content, ...restCellProps } = cell;
         const { shouldTruncate, width } =
           (head || { cells: [] }).cells[cellIndex] || ({} as any);
-
         return (
           <TableBodyCell
+            data-testid={testId && `${testId}--cell-${cellIndex}`}
             {...restCellProps}
             isFixedSize={isFixedSize}
             key={cellIndex} // eslint-disable-line react/no-array-index-key

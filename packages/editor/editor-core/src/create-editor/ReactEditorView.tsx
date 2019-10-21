@@ -1,55 +1,54 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { EditorState, Transaction, Selection } from 'prosemirror-state';
-import { EditorView, DirectEditorProps } from 'prosemirror-view';
+import { EditorState, Selection, Transaction } from 'prosemirror-state';
+import { DirectEditorProps, EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { intlShape } from 'react-intl';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
+  browser,
+  ErrorReporter,
+  getResponseEndTime,
+  measureRender,
   ProviderFactory,
   Transformer,
-  ErrorReporter,
-  browser,
-  measureRender,
-  getResponseEndTime,
 } from '@atlaskit/editor-common';
 
-import { EventDispatcher, createDispatch, Dispatch } from '../event-dispatcher';
+import { createDispatch, Dispatch, EventDispatcher } from '../event-dispatcher';
 import { processRawValue } from '../utils';
 import { findChangedNodesFromTransaction, validateNodes } from '../utils/nodes';
 import createPluginList from './create-plugins-list';
 import {
-  analyticsEventKey,
-  fireAnalyticsEvent,
-  AnalyticsDispatch,
-  AnalyticsEventPayload,
-  DispatchAnalyticsEvent,
   ACTION,
   ACTION_SUBJECT,
+  AnalyticsDispatch,
+  analyticsEventKey,
+  AnalyticsEventPayload,
+  DispatchAnalyticsEvent,
   EVENT_TYPE,
+  fireAnalyticsEvent,
   FULL_WIDTH_MODE,
+  getAnalyticsEventsFromTransaction,
   PLATFORMS,
-  AnalyticsEventPayloadWithChannel,
-  analyticsPluginKey,
 } from '../plugins/analytics';
 import {
-  EditorProps,
+  EditorAppearance,
   EditorConfig,
   EditorPlugin,
-  EditorAppearance,
+  EditorProps,
 } from '../types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
 import {
-  pluginKey as editorDisabledPluginKey,
   EditorDisabledPluginState,
+  pluginKey as editorDisabledPluginKey,
 } from '../plugins/editor-disabled';
 import { analyticsService } from '../analytics';
 import {
-  processPluginsList,
-  createSchema,
   createErrorReporter,
   createPMPlugins,
+  createSchema,
   initAnalytics,
+  processPluginsList,
 } from './create-editor';
 import { getDocStructure } from '../utils/document-logger';
 import { isFullPage } from '../utils/is-full-page';
@@ -446,14 +445,15 @@ export default class ReactEditorView<T = {}> extends React.Component<
         'atlaskit.fabric.editor.invalidtransaction',
         { documents: JSON.stringify(documents) }, // V2 events don't support object properties
       );
+
       this.dispatchAnalyticsEvent({
         action: ACTION.DISPATCHED_INVALID_TRANSACTION,
         actionSubject: ACTION_SUBJECT.EDITOR,
         eventType: EVENT_TYPE.OPERATIONAL,
         attributes: {
-          analyticsEventPayloads: transaction.getMeta(
-            analyticsPluginKey,
-          ) as AnalyticsEventPayloadWithChannel[],
+          analyticsEventPayloads: getAnalyticsEventsFromTransaction(
+            transaction,
+          ),
           documents,
         },
       });

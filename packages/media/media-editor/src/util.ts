@@ -1,4 +1,9 @@
-import { ColorWithAlpha, Dimensions } from './common';
+import {
+  AnalyticsEventPayload,
+  CreateUIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
+
+import { ANALYTICS_MEDIA_CHANNEL, ColorWithAlpha, Dimensions } from './common';
 import { VeColor } from './engine/core/binaries/mediaEditor';
 
 export const colorWithAlphaSame = (
@@ -159,3 +164,12 @@ export const rgbToHex = ({ red, green, blue }: VeColor) => {
   );
 };
 /* eslint-enable no-bitwise */
+
+export function fireAnalyticsEvent(
+  payload: AnalyticsEventPayload,
+  createAnalyticsEvent?: CreateUIAnalyticsEvent,
+): void {
+  if (createAnalyticsEvent) {
+    createAnalyticsEvent(payload).fire(ANALYTICS_MEDIA_CHANNEL);
+  }
+}

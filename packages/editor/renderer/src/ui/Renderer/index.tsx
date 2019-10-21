@@ -31,6 +31,8 @@ import { AnalyticsEventPayload, PLATFORM, MODE } from '../../analytics/events';
 import AnalyticsContext from '../../analytics/analyticsContext';
 import { CopyTextProvider } from '../../react/nodes/copy-text-provider';
 import { Provider as SmartCardStorageProvider } from '../SmartCardStorage';
+import { name, version } from '../../version.json';
+
 export interface Extension<T> {
   extensionKey: string;
   parameters?: T;
@@ -43,6 +45,7 @@ export interface Props {
   eventHandlers?: EventHandlers;
   extensionHandlers?: ExtensionHandlers;
   onComplete?: (stat: RenderOutputStat) => void;
+  onError?: (error: any) => void;
   portal?: HTMLElement;
   rendererContext?: RendererContext;
   schema?: Schema;
@@ -55,12 +58,14 @@ export interface Props {
   truncated?: boolean;
   createAnalyticsEvent?: CreateUIAnalyticsEvent;
   allowColumnSorting?: boolean;
+  shouldOpenMediaViewer?: boolean;
 }
 
 export class Renderer extends PureComponent<Props, {}> {
   private providerFactory: ProviderFactory;
   private serializer?: ReactSerializer;
-  private rafID: number | undefined;
+  private rafID?: number;
+  private editorRef?: React.RefObject<HTMLElement>;
 
   constructor(props: Props) {
     super(props);
@@ -70,20 +75,26 @@ export class Renderer extends PureComponent<Props, {}> {
   }
 
   private anchorLinkAnalytics() {
-    const anchorLinkAttributeHit =
-      !this.props.disableHeadingIDs &&
-      window.location.hash &&
-      document.getElementById(
-        decodeURIComponent(window.location.hash.slice(1)),
-      );
+    const hash =
+      window.location.hash && decodeURIComponent(window.location.hash.slice(1));
 
-    if (anchorLinkAttributeHit) {
-      this.fireAnalyticsEvent({
-        action: ACTION.VIEWED,
-        actionSubject: ACTION_SUBJECT.ANCHOR_LINK,
-        attributes: { platform: PLATFORM.WEB, mode: MODE.RENDERER },
-        eventType: EVENT_TYPE.UI,
-      });
+    if (
+      !this.props.disableHeadingIDs &&
+      hash &&
+      this.editorRef &&
+      this.editorRef instanceof HTMLElement
+    ) {
+      const anchorLinkElement = document.getElementById(hash);
+      // We are not use this.editorRef.querySelector here, instead we have this.editorRef.contains
+      // because querySelector might fail if there are special characters in hash, and CSS.escape is still experimental.
+      if (anchorLinkElement && this.editorRef.contains(anchorLinkElement)) {
+        this.fireAnalyticsEvent({
+          action: ACTION.VIEWED,
+          actionSubject: ACTION_SUBJECT.ANCHOR_LINK,
+          attributes: { platform: PLATFORM.WEB, mode: MODE.RENDERER },
+          eventType: EVENT_TYPE.UI,
+        });
+      }
     }
   }
 
@@ -142,6 +153,7 @@ export class Renderer extends PureComponent<Props, {}> {
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
       allowColumnSorting,
+      shouldOpenMediaViewer,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -160,6 +172,7 @@ export class Renderer extends PureComponent<Props, {}> {
       allowHeadingAnchorLinks,
       allowColumnSorting,
       fireAnalyticsEvent: this.fireAnalyticsEvent,
+      shouldOpenMediaViewer,
     });
   }
 
@@ -176,6 +189,7 @@ export class Renderer extends PureComponent<Props, {}> {
     const {
       document,
       onComplete,
+      onError,
       schema,
       appearance,
       adfStage,
@@ -208,6 +222,9 @@ export class Renderer extends PureComponent<Props, {}> {
                 <RendererWrapper
                   appearance={appearance}
                   dynamicTextSizing={!!allowDynamicTextSizing}
+                  wrapperRef={ref => {
+                    this.editorRef = ref;
+                  }}
                 >
                   {result}
                 </RendererWrapper>
@@ -222,7 +239,10 @@ export class Renderer extends PureComponent<Props, {}> {
       ) : (
         rendererOutput
       );
-    } catch (ex) {
+    } catch (e) {
+      if (onError) {
+        onError(e);
+      }
       return (
         <RendererWrapper
           appearance={appearance}
@@ -251,7 +271,12 @@ export class Renderer extends PureComponent<Props, {}> {
 
 const RendererWithAnalytics = (props: Props) => (
   <FabricEditorAnalyticsContext
-    data={{ appearance: getAnalyticsAppearance(props.appearance) }}
+    data={{
+      appearance: getAnalyticsAppearance(props.appearance),
+      packageName: name,
+      packageVersion: version,
+      componentName: 'editorCore',
+    }}
   >
     <WithCreateAnalyticsEvent
       render={createAnalyticsEvent => (
@@ -266,17 +291,21 @@ export default RendererWithAnalytics;
 type RendererWrapperProps = {
   appearance: RendererAppearance;
   dynamicTextSizing: boolean;
+  wrapperRef?: (instance: React.RefObject<HTMLElement>) => void;
 } & { children?: React.ReactNode };
 
 export function RendererWrapper({
   appearance,
   children,
   dynamicTextSizing,
+  wrapperRef,
 }: RendererWrapperProps) {
   return (
     <WidthProvider>
       <BaseTheme dynamicTextSizing={dynamicTextSizing}>
-        <Wrapper appearance={appearance}>{children}</Wrapper>
+        <Wrapper innerRef={wrapperRef} appearance={appearance}>
+          {children}
+        </Wrapper>
       </BaseTheme>
     </WidthProvider>
   );

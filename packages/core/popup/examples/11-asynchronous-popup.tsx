@@ -2,7 +2,6 @@
 import { FC, useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
 import { Placement } from '@atlaskit/popper';
-import Spinner from '@atlaskit/spinner';
 import { jsx } from '@emotion/core';
 
 import Popup from '../src';
@@ -27,10 +26,6 @@ const contentCSS = {
   padding: '30px',
   maxWidth: '300px',
 } as const;
-
-const spinnerContainerCSS = {
-  margin: '40px',
-};
 
 const expanderCSS = ({ width }: { width: number }) => ({
   display: 'inline-block',
@@ -63,9 +58,7 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return loading ? (
-    <div id="spinner" css={spinnerContainerCSS}>
-      <Spinner size="large" />
-    </div>
+    <div id="spinner">Loading...</div>
   ) : (
     <div id="popup-content" css={contentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>

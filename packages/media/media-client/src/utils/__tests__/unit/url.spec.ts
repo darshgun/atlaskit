@@ -8,12 +8,13 @@ describe('url utils', () => {
   describe('getAttrsFromUrl()', () => {
     it('should return media attrs from url', () => {
       const url =
-        'blob:http://localhost/blob_id#media-blob-url=true&id=file_id&collection=some_collection&contextId=some_context_id';
+        'blob:http://localhost/blob_id#media-blob-url=true&id=file_id&collection=some_collection&contextId=some_context_id&alt=test';
 
       expect(getAttrsFromUrl(url)).toEqual({
         id: 'file_id',
         collection: 'some_collection',
         contextId: 'some_context_id',
+        alt: 'test',
       });
     });
 

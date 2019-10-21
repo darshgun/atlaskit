@@ -11,8 +11,7 @@ import {
   CardLoading,
 } from '@atlaskit/media-card';
 import { Identifier } from '@atlaskit/media-client';
-import { Context, MediaClientConfig } from '@atlaskit/media-core';
-import { XOR } from '@atlaskit/type-helpers';
+import { MediaClientConfig } from '@atlaskit/media-core';
 import { FilmstripView } from './filmstripView';
 import { generateIdentifierKey } from './utils/generateIdentifierKey';
 
@@ -27,18 +26,11 @@ export interface FilmstripItem {
   readonly onLoadingChange?: OnLoadingChangeFunc;
 }
 
-interface WithContext {
-  context?: Context;
-}
-
-interface WithMediaClientConfig {
-  mediaClientConfig?: MediaClientConfig;
-}
-
 export type FilmstripProps = {
   items: FilmstripItem[];
   shouldOpenMediaViewer?: boolean;
-} & XOR<WithContext, WithMediaClientConfig>;
+  mediaClientConfig?: MediaClientConfig;
+};
 
 export interface FilmstripState {
   animate: boolean;
@@ -57,12 +49,7 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
     this.setState({ animate, offset });
 
   private renderCards() {
-    const {
-      items,
-      mediaClientConfig: mediaClientConfigProp,
-      context,
-      shouldOpenMediaViewer,
-    } = this.props;
+    const { items, mediaClientConfig, shouldOpenMediaViewer } = this.props;
 
     const mediaViewerDataSource = shouldOpenMediaViewer
       ? { list: items.map(item => item.identifier) }
@@ -71,12 +58,7 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
     return items.map(item => {
       const key = generateIdentifierKey(item.identifier);
 
-      let mediaClientConfig: MediaClientConfig;
-      if (context) {
-        mediaClientConfig = context.config;
-      } else if (mediaClientConfigProp) {
-        mediaClientConfig = mediaClientConfigProp;
-      } else {
+      if (!mediaClientConfig) {
         return (
           <CardLoading key={key} dimensions={defaultImageCardDimensions} />
         );

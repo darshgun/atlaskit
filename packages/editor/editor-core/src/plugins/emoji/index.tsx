@@ -83,7 +83,7 @@ const emojiPlugin = (options?: EmojiPluginOptions): EditorPlugin => ({
           });
           const emojiText = state.schema.text(':', [mark]);
           const tr = insert(emojiText);
-          return addAnalytics(tr, {
+          return addAnalytics(state, tr, {
             action: ACTION.INVOKED,
             actionSubject: ACTION_SUBJECT.TYPEAHEAD,
             actionSubjectId: ACTION_SUBJECT_ID.TYPEAHEAD_EMOJI,
@@ -183,6 +183,7 @@ const emojiPlugin = (options?: EmojiPluginOptions): EditorPlugin => ({
         });
 
         return addAnalytics(
+          state,
           insert(
             state.schema.nodes.emoji.createChecked({
               shortName,

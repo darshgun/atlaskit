@@ -1,38 +1,27 @@
 import uuid from 'uuid';
 import { RequestServiceOptions, utils } from '@atlaskit/util-service-support';
 
-import { defaultLimit } from '../constants';
-
 import {
-  convertServiceDecisionResponseToDecisionResponse,
-  convertServiceItemResponseToItemResponse,
-  convertServiceTaskResponseToTaskResponse,
   convertServiceTaskToTask,
   convertServiceTaskStateToBaseItem,
   findIndex,
-  ResponseConverter,
 } from './TaskDecisionUtils';
 
 import {
   BaseItem,
   ServiceTaskState,
-  DecisionResponse,
   DecisionState,
   Handler,
-  ItemResponse,
   ObjectKey,
   PubSubSpecialEventType,
   PubSubClient,
-  Query,
   RecentUpdateContext,
   RecentUpdatesId,
   RecentUpdatesListener,
   ServiceTask,
   TaskDecisionProvider,
   TaskDecisionResourceConfig,
-  TaskResponse,
   TaskState,
-  User,
   ServiceItem,
 } from '../types';
 
@@ -44,7 +33,7 @@ import {
 
 interface RecentUpdateByIdValue {
   listener: RecentUpdatesListener;
-  containerAri: string;
+  objectAri: string;
 }
 
 export const ACTION_CREATED_FPS_EVENT =
@@ -82,20 +71,17 @@ export class RecentUpdates {
     this.subscribeToPubSubEvents();
   }
 
-  subscribe(
-    containerAri: string,
-    recentUpdatesListener: RecentUpdatesListener,
-  ) {
+  subscribe(objectAri: string, recentUpdatesListener: RecentUpdatesListener) {
     const id = uuid();
-    let containerIds = this.idsByContainer.get(containerAri);
+    let containerIds = this.idsByContainer.get(objectAri);
     if (!containerIds) {
       containerIds = [];
-      this.idsByContainer.set(containerAri, containerIds);
+      this.idsByContainer.set(objectAri, containerIds);
     }
     containerIds.push(id);
     this.listenersById.set(id, {
       listener: recentUpdatesListener,
-      containerAri,
+      objectAri,
     });
     // Notify of id
     recentUpdatesListener.id(id);
@@ -105,11 +91,11 @@ export class RecentUpdates {
     const listenerDetail = this.listenersById.get(unsubscribeId);
     if (listenerDetail) {
       this.listenersById.delete(unsubscribeId);
-      const { containerAri } = listenerDetail;
-      const idsToFilter = this.idsByContainer.get(containerAri);
+      const { objectAri } = listenerDetail;
+      const idsToFilter = this.idsByContainer.get(objectAri);
       if (idsToFilter) {
         this.idsByContainer.set(
-          containerAri,
+          objectAri,
           idsToFilter.filter(id => id !== unsubscribeId),
         );
       }
@@ -117,8 +103,8 @@ export class RecentUpdates {
   }
 
   notify(recentUpdateContext: RecentUpdateContext) {
-    const { containerAri } = recentUpdateContext;
-    const subscriberIds = this.idsByContainer.get(containerAri);
+    const { objectAri } = recentUpdateContext;
+    const subscriberIds = this.idsByContainer.get(objectAri);
     if (subscriberIds) {
       subscriberIds.forEach(subscriberId => {
         const listenerDetail = this.listenersById.get(subscriberId);
@@ -131,8 +117,8 @@ export class RecentUpdates {
   }
 
   onPubSubEvent = (_event: string, payload: ServiceItem) => {
-    const { containerAri } = payload;
-    this.notify({ containerAri });
+    const { objectAri } = payload;
+    this.notify({ objectAri });
   };
 
   destroy() {
@@ -205,7 +191,7 @@ export class ItemStateManager {
         stringKey,
         window.setTimeout(() => {
           const options: RequestServiceOptions = {
-            path: 'tasks',
+            path: 'tasks/state',
             requestInit: {
               method: 'PUT',
               headers: {
@@ -330,8 +316,8 @@ export class ItemStateManager {
   }
 
   onTaskUpdatedEvent = (_event: string, payload: ServiceTask) => {
-    const { containerAri, objectAri, localId } = payload;
-    const objectKey = { containerAri, objectAri, localId };
+    const { objectAri, localId } = payload;
+    const objectKey = { objectAri, localId };
 
     const cached = this.getCached(objectKey);
     if (!cached) {
@@ -414,8 +400,8 @@ export class ItemStateManager {
     this.debouncedTaskStateQuery = window.setTimeout(() => {
       this.getTaskState(Array.from(this.batchedKeys.values())).then(tasks => {
         tasks.forEach(task => {
-          const { containerAri, objectAri, localId } = task;
-          const objectKey = { containerAri, objectAri, localId };
+          const { objectAri, localId } = task;
+          const objectKey = { objectAri, localId };
           this.updateCache(convertServiceTaskStateToBaseItem(task));
           this.dequeueItem(objectKey);
           this.notifyUpdated(objectKey, task.state);
@@ -426,50 +412,12 @@ export class ItemStateManager {
 }
 
 export default class TaskDecisionResource implements TaskDecisionProvider {
-  private serviceConfig: TaskDecisionResourceConfig;
   private recentUpdates: RecentUpdates;
   private itemStateManager: ItemStateManager;
 
   constructor(serviceConfig: TaskDecisionResourceConfig) {
-    this.serviceConfig = serviceConfig;
     this.recentUpdates = new RecentUpdates(serviceConfig.pubSubClient);
     this.itemStateManager = new ItemStateManager(serviceConfig);
-  }
-
-  getDecisions(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<DecisionResponse> {
-    return this.query(
-      query,
-      'decisions/query',
-      convertServiceDecisionResponseToDecisionResponse,
-      recentUpdatesListener,
-    );
-  }
-
-  getTasks(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<TaskResponse> {
-    return this.query(
-      query,
-      'tasks/query',
-      convertServiceTaskResponseToTaskResponse,
-      recentUpdatesListener,
-    );
-  }
-
-  getItems(
-    query: Query,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<ItemResponse> {
-    return this.query(
-      query,
-      'elements/query',
-      convertServiceItemResponseToItemResponse,
-      recentUpdatesListener,
-    );
   }
 
   unsubscribeRecentUpdates(id: RecentUpdatesId) {
@@ -479,50 +427,6 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
   notifyRecentUpdates(recentUpdateContext: RecentUpdateContext) {
     this.recentUpdates.notify(recentUpdateContext);
     this.itemStateManager.refreshAllTasks();
-  }
-
-  private query<S, R>(
-    query: Query,
-    path: string,
-    converter: ResponseConverter<S, R>,
-    recentUpdatesListener?: RecentUpdatesListener,
-  ): Promise<R> {
-    const options: RequestServiceOptions = {
-      path,
-      requestInit: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: JSON.stringify(this.apiQueryToServiceQuery(query)),
-      },
-    };
-    if (recentUpdatesListener) {
-      this.recentUpdates.subscribe(query.containerAri, recentUpdatesListener);
-    }
-    return utils
-      .requestService<S>(this.serviceConfig, options)
-      .then(serviceResponse => {
-        return converter(serviceResponse, query);
-      });
-  }
-
-  private apiQueryToServiceQuery(query: Query) {
-    const { sortCriteria, limit, ...other } = query;
-    const serviceQuery: any = {
-      ...other,
-      limit: limit || defaultLimit,
-    };
-    switch (sortCriteria) {
-      case 'lastUpdateDate':
-        serviceQuery.sortCriteria = 'LAST_UPDATE_DATE';
-        break;
-      case 'creationDate':
-      default:
-        serviceQuery.sortCriteria = 'CREATION_DATE';
-        break;
-    }
-    return serviceQuery;
   }
 
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState> {
@@ -548,9 +452,5 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
   destroy() {
     this.recentUpdates.destroy();
     this.itemStateManager.destroy();
-  }
-
-  getCurrentUser(): User | undefined {
-    return this.serviceConfig.currentUser;
   }
 }

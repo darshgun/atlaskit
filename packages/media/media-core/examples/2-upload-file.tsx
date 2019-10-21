@@ -16,9 +16,7 @@ export interface ComponentState {
 }
 
 const mediaClient = getMediaClient({
-  mediaClientConfig: {
-    authProvider: mediaPickerAuthProvider('asap'),
-  },
+  authProvider: mediaPickerAuthProvider('asap'),
 });
 
 class Example extends Component<ComponentProps, ComponentState> {
