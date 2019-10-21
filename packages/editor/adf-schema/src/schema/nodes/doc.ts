@@ -136,7 +136,9 @@ export type ExtensionContent = Array<
  * @minItems 1
  * @allowUnsupportedBlock true
  */
-export type NestedExpandContent = Array<Paragraph | Heading | MediaSingle>;
+export type NestedExpandContent = Array<
+  Paragraph | Heading | MediaSingle | MediaGroup
+>;
 
 /**
  * @additionalProperties true

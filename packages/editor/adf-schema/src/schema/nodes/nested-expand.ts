@@ -16,7 +16,8 @@ export interface NestedExpandDefinition {
 export const nestedExpand: NodeSpec = {
   inline: false,
   group: 'block',
-  content: '(paragraph | heading | mediaSingle | unsupportedBlock)+',
+  content:
+    '(paragraph | heading | mediaSingle | mediaGroup | unsupportedBlock)+',
   defining: true,
   isolating: true,
   selectable: true,
