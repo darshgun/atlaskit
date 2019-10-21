@@ -1,5 +1,13 @@
 # @atlaskit/inline-dialog
 
+## 12.1.4
+
+### Patch Changes
+
+- [patch][a568ade043](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a568ade043):
+
+  Inline-dialog now correctly removes handlers when closed
+
 ## 12.1.3
 
 ### Patch Changes

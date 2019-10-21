@@ -1,1 +1,0 @@
-Inline-dialog now correctly removes handlers when closed
