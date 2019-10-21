@@ -29,7 +29,7 @@ import {
 const spyOnComponentDidUpdate = () => {
   const componentsToWaitFor = [QuickSearchContainer, ABTestProvider];
 
-  const spy = jest.fn<{}>();
+  const spy = jest.fn();
 
   componentsToWaitFor.forEach(component => {
     const baseComponentDidUpdateImplementation =
@@ -129,7 +129,7 @@ const getRecentItems = (product: string) =>
 ['confluence', 'jira'].forEach(product => {
   describe(`${product} Quick Search Analytics`, () => {
     const updateSpy = spyOnComponentDidUpdate();
-    const onEventSpy = jest.fn<{}>();
+    const onEventSpy = jest.fn();
     let wrapper: ReactWrapper;
     let originalWindowLocation = window.location;
 
@@ -145,7 +145,7 @@ const getRecentItems = (product: string) =>
     beforeAll(() => {
       delete window.location;
       window.location = Object.assign({}, window.location, {
-        assign: jest.fn<{}>(),
+        assign: jest.fn(),
       });
       setupMocks(ZERO_DELAY_CONFIG);
       jest.setTimeout(10000);
@@ -269,7 +269,7 @@ const getRecentItems = (product: string) =>
             keyPress('ArrowDown');
           }
           expect(onEventSpy).toHaveBeenCalledTimes(count);
-          onEventSpy.mock.calls.forEach(([event], index) => {
+          onEventSpy.mock.calls.forEach(([event]: any, index: number) => {
             validateEvent(
               event,
               getHighlightEvent({
@@ -296,7 +296,7 @@ const getRecentItems = (product: string) =>
 
           // skip the first link which is advanced issue search link
           const callsWithoutFirstLink = onEventSpy.mock.calls.slice(1);
-          callsWithoutFirstLink.forEach(([event], index) => {
+          callsWithoutFirstLink.forEach(([event]: any, index: number) => {
             validateEvent(
               event,
               getHighlightEvent({
@@ -597,7 +597,8 @@ const getRecentItems = (product: string) =>
             );
           });
 
-          it('should trigger prequery drawer view event', () => {
+          // https://product-fabric.atlassian.net/browse/QS-1049
+          it.skip('should trigger prequery drawer view event', () => {
             const event = findAnalyticEventWithProperties(onEventSpy, {
               actionSubject: 'globalSearchDrawer',
               action: 'viewed',
@@ -631,7 +632,8 @@ const getRecentItems = (product: string) =>
       });
     });
 
-    describe('Dismissed Event', () => {
+    // https://product-fabric.atlassian.net/browse/QS-1049
+    describe.skip('Dismissed Event', () => {
       it('should not trigger dismissed Event when result is selected', () => {
         // setup
         keyPress('Enter');

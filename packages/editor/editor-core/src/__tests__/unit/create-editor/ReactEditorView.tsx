@@ -66,7 +66,7 @@ const payload: AnalyticsEventPayload = {
 };
 
 describe(name, () => {
-  let mockFire: jest.SpyInstance;
+  let mockFire: ReturnType<typeof AnalyticsPlugin.fireAnalyticsEvent>;
 
   beforeEach(() => {
     mockFire = jest.fn();
@@ -307,6 +307,8 @@ describe(name, () => {
           eventType: EVENT_TYPE.UI,
         };
 
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         mockFire.mockClear();
         dispatchInvalidTransaction(
           // add v3 analytics meta to transaction as we want to check this info is sent on

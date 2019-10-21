@@ -20,6 +20,7 @@ export const Popup: FC<PopupProps> = memo(
     boundariesElement,
     isOpen,
     id,
+    offset,
     placement,
     shouldFlip = true,
     testId,
@@ -52,6 +53,7 @@ export const Popup: FC<PopupProps> = memo(
             <Portal zIndex={zIndex}>
               <Popper
                 placement={placement || 'auto'}
+                offset={offset}
                 modifiers={{
                   flip: {
                     enabled: shouldFlip || true,

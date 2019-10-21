@@ -46,7 +46,7 @@ import {
   emoji as emojiData,
   mention as mentionData,
 } from '@atlaskit/util-data-test';
-import { TextSelection } from 'prosemirror-state';
+import { TextSelection, Transaction } from 'prosemirror-state';
 import { uuid } from '@atlaskit/adf-schema';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { setMacroProvider, MacroAttributes } from '../../../../plugins/macro';
@@ -62,7 +62,7 @@ import { __serializeForClipboard } from 'prosemirror-view';
 describe('paste plugins', () => {
   const createEditor = createEditorFactory();
   let providerFactory: ProviderFactory;
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent, any>;
 
   const editor = (doc: any, props: Partial<EditorProps> = {}) => {
     const contextIdentifierProvider = storyContextIdentifierProviderFactory();
@@ -516,7 +516,9 @@ describe('paste plugins', () => {
         dispatchPasteEvent(editorView, { plain: 'plain text' });
 
         const tr = dispatchSpy.mock.calls[0][0];
-        expect(tr.scrolledIntoView).toBe(true);
+        expect(
+          (tr as Transaction & { scrolledIntoView: boolean }).scrolledIntoView,
+        ).toBe(true);
       });
     });
 
@@ -805,7 +807,11 @@ describe('paste plugins', () => {
         });
 
         const tr = dispatchSpy.mock.calls[0][0];
-        expect(tr.scrolledIntoView).toBe(true);
+        expect(
+          (tr as Transaction & {
+            scrolledIntoView: boolean;
+          }).scrolledIntoView,
+        ).toBe(true);
       });
     });
 

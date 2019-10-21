@@ -81,6 +81,8 @@ describe('CopyLinkButton', () => {
   describe('shouldShowCopiedMessage state', () => {
     it('should render the copied to clip board message, and dismiss the message when click outside the Inline Dialog', () => {
       const eventMap: { click: Function } = { click: () => {} };
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       window.addEventListener = jest.fn(
         (event: 'click', cb: Function) => (eventMap[event] = cb),
       );

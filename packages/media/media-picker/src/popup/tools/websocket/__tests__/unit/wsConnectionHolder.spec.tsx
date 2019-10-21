@@ -57,7 +57,7 @@ describe('WsConnectionHolder', () => {
 
     it('should close the connection after activity is complete', () => {
       let connection = {
-        teardown: jest.fn<TeardownFunction>(),
+        teardown: jest.fn<TeardownFunction, []>(),
       };
       (WsConnection as any).mockImplementation(() => {
         return connection;
@@ -74,7 +74,7 @@ describe('WsConnectionHolder', () => {
 
     it('should close the connection after all added activities are complete', () => {
       let connection = {
-        teardown: jest.fn<TeardownFunction>(),
+        teardown: jest.fn<TeardownFunction, []>(),
       };
       (WsConnection as any).mockImplementation(() => {
         return connection;
@@ -146,8 +146,8 @@ describe('WsConnectionHolder', () => {
           wsConnection = {
             onDataReceived,
             onConnectionLost,
-            teardown: jest.fn<TeardownFunction>(),
-            send: jest.fn<SendFunction>(),
+            teardown: jest.fn<TeardownFunction, []>(),
+            send: jest.fn<SendFunction, []>(),
           };
 
           return wsConnection;
