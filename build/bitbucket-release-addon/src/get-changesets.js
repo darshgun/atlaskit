@@ -6,7 +6,7 @@ function getFileUrl(user, repo, hash, filePath) {
   return `/2.0/repositories/${user}/${repo}/src/${hash}/${filePath}`;
 }
 
-function promisifyAPRequest(url, type = 'json') {
+function promisifyAPRequest(url, type) {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
       request({
@@ -38,32 +38,30 @@ function getFullDiffStat(url, allValues = []) {
  * number of requests after the first request and make serveral at a time in
  * parallel.
  */
-export default function getChangesetInfo(
+export default async function getChangesetInfo(
   user,
   repo,
   sourcehash,
   destinationhash,
+  v2,
 ) {
   const diffstatUrl = getDiffStatUrl(user, repo, sourcehash, destinationhash);
-  let v2 = false;
-  return getFullDiffStat(diffstatUrl).then(allDiffStats => {
-    const relevantDiffs = allDiffStats
-      .filter(diff => diff.status !== 'removed')
-      .filter(diff => {
-        if (!(diff.new && diff.new.path)) return false;
-        if (diff.new.path.match(/\.changeset\/[^/]+?\.md$/)) {
-          v2 = true;
-          return true;
-        } else if (v2) {
-          return false;
-        }
-        return diff.new.path.match(/\.changeset\/.+?\/changes.json$/);
-      })
-      .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
-      .map(url => promisifyAPRequest(url, v2 ? 'text' : 'json'));
-    return {
-      changesetPromise: Promise.all(relevantDiffs),
-      v2,
-    };
-  });
+  const allDiffStats = await getFullDiffStat(diffstatUrl);
+
+  const relevantDiffs = allDiffStats.filter(diff => diff.new && diff.new.path);
+
+  const changesets = relevantDiffs
+    .filter(diff => diff.new.path.match(/\.changeset\/[^/]+?\/changes\.json$/))
+    .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
+    .map(url => promisifyAPRequest(url, 'json'));
+
+  const v2Changesets = relevantDiffs
+    .filter(diff => diff.new.path.match(/\.changeset\/[^/]+?\.md$/))
+    .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
+    .map(url => promisifyAPRequest(url, 'text'));
+
+  return {
+    changesetsPromise: Promise.all(changesets),
+    v2ChangesetsPromise: Promise.all(v2Changesets),
+  };
 }

@@ -33,12 +33,15 @@ function getCommits(user, repo, pullrequestid, urlNext) {
 }
 
 export default function getCommitsThenParse(user, repo, pullrequestid) {
-  return getCommits(user, repo, pullrequestid).then(commits =>
-    commits
-      .map(commit => commit.message)
-      .filter(commit => !!commit.match(/^CHANGESET: .+?\n/))
-      .map(parseChangesetCommit)
-      // remove any changesets that couldn't be parsed
-      .filter(changsetOrUndefined => !!changsetOrUndefined),
-  );
+  return getCommits(user, repo, pullrequestid).then(commits => ({
+    changesetsPromise: Promise.resolve(
+      commits
+        .map(commit => commit.message)
+        .filter(commit => !!commit.match(/^CHANGESET: .+?\n/))
+        .map(parseChangesetCommit)
+        // remove any changesets that couldn't be parsed
+        .filter(changsetOrUndefined => !!changsetOrUndefined),
+    ),
+    v2ChangesetsPromise: null,
+  }));
 }

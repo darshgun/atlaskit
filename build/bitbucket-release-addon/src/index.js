@@ -4,7 +4,7 @@ import yaml from 'js-yaml';
 
 import getCommits from './get-commits';
 import getChangesets from './get-changesets';
-import { legacyChangesetRepos, v2ChangesetRepos } from './config';
+import { legacyChangesetRepos } from './config';
 
 const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
   <p><strong>Warning:</strong> No packages will be released with this PR</p>
@@ -54,8 +54,9 @@ const releasedPackagesMessage = (releases, v2) => {
   </div>`;
 };
 
-const yamlToReleases = changesets =>
-  changesets
+const yamlToReleases = changesets => {
+  if (!changesets || changesets.length === 0) return [];
+  return changesets
     .map(changeset => {
       const result = /\s*---([^]*?)\n\s*---\n([^]+)/.exec(changeset);
       const [, roughReleases] = result;
@@ -63,9 +64,10 @@ const yamlToReleases = changesets =>
       return Object.entries(yamlStuff).map(([name, type]) => ({ name, type }));
     })
     .flat();
+};
 
 const {
-  user,
+  // user,
   repo,
   pullrequestid,
   repoid,
@@ -73,32 +75,37 @@ const {
   destinationhash,
 } = queryString.parse(window.location.search);
 
-// Only retrieve one type of changesets. Legacy commit changesets and v2 changesets (md files with yaml frontmatter)
-// are only supported in repos defined in config.js
-const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
+const user = 'jackrgardner';
 
-const changesetInfoPromise = legacy
-  ? Promise.resolve({ changesetPromise: getCommits(user, repo, pullrequestid) })
-  : getChangesets(user, repo, sourcehash, destinationhash);
+async function main() {
+  // Only retrieve one type of changesets. Legacy commit changesets
+  // are only supported in repos defined in config.js
+  const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
 
-changesetInfoPromise.then(({ changesetPromise, v2 = false }) => {
-  changesetPromise
-    .then(changesets => {
-      if (!changesets || changesets.length === 0) {
-        document.body.innerHTML = noChangesetMessage;
-        return;
-      }
+  const { changesetsPromise, v2ChangesetsPromise } = legacy
+    ? await getCommits(user, repo, pullrequestid)
+    : await getChangesets(user, repo, sourcehash, destinationhash);
 
-      // Changesets will be in text form (from the markdown file) if V2
-      // Otherwise in the JSON format that needs to be flattened
-      const releases = v2
-        ? yamlToReleases(changesets)
-        : flattenChangesets(changesets);
+  const changesets = await changesetsPromise;
+  const releases = changesets ? flattenChangesets(changesets) : [];
 
-      document.body.innerHTML = releasedPackagesMessage(releases, v2);
-    })
-    .catch(e => {
-      console.error('error in changeset', e);
-      document.body.innerHTML = errorLoadingChangesetMessage;
-    });
-});
+  const v2Changesets = !legacy ? await v2ChangesetsPromise : [];
+  releases.push(...yamlToReleases(v2Changesets));
+
+  if (releases.length === 0) {
+    document.body.innerHTML = noChangesetMessage;
+    return;
+  }
+
+  document.body.innerHTML = releasedPackagesMessage(
+    releases,
+    v2Changesets.length > 0,
+  );
+}
+
+try {
+  main();
+} catch (e) {
+  console.error('error in changeset', e);
+  document.body.innerHTML = errorLoadingChangesetMessage;
+}
