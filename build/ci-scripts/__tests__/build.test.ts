@@ -1,3 +1,4 @@
+jest.enableAutomock();
 import * as bolt from 'bolt';
 import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
@@ -9,7 +10,6 @@ import validateDists from '../validate.dists';
 
 import build from '../build';
 
-jest.enableAutomock();
 jest.unmock('../build');
 jest.mock('../validate.dists', () =>
   jest.fn(() => Promise.resolve({ success: true })),
@@ -19,8 +19,14 @@ jest.mock('../get.glob.packages.for.tools', () =>
 );
 
 describe('Build', () => {
-  let consoleErrorSpy: jest.SpyInstance<Console['error']>;
-  let consoleLogSpy: jest.SpyInstance<Console['log']>;
+  let consoleErrorSpy: jest.SpyInstance<
+    ReturnType<Console['error']>,
+    Parameters<Console['error']>
+  >;
+  let consoleLogSpy: jest.SpyInstance<
+    ReturnType<Console['log']>,
+    Parameters<Console['log']>
+  >;
 
   beforeAll(() => {
     // Comment out the mockImplementation to read console.logs for debugging

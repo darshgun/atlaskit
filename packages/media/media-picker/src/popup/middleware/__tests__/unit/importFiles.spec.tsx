@@ -87,7 +87,7 @@ describe('importFiles middleware', () => {
   };
 
   const getDispatchArgs = (store: any, type: string): Action[] =>
-    (store.dispatch.mock as MockContext<Dispatch<any>>).calls
+    (store.dispatch.mock as MockContext<Dispatch<any>, any[]>).calls
       .filter(args => args[0].type === type)
       .map(args => args[0]);
 
@@ -627,6 +627,8 @@ describe('importFiles middleware', () => {
       expect(tenantMediaClient.emit).toBeCalledTimes(4);
 
       const globalEmitSpyCall = globalEmitSpy.mock.calls.find(
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         call => call[1].name === fileState.name,
       );
       expect(globalEmitSpyCall).toEqual(['file-added', fileState]);

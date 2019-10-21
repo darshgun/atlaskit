@@ -678,7 +678,7 @@ describe('Renderer - React/Nodes/Table', () => {
         return <TableRow {...tableRowProps} />;
       };
 
-      test.each([
+      test.each<[Map<string, string>, number[]]>([
         [
           new Map([[trelloUrl, 'a'], [atlassianUrl, 'c'], [bitbucketUrl, 'b']]),
           [1, 2, 4, 3],
