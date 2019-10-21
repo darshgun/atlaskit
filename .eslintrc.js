@@ -1,3 +1,4 @@
+const path = require('path');
 const tsRecommendedRules = require('@typescript-eslint/eslint-plugin/dist/configs/recommended')
   .rules;
 const prettierTsRules = require('eslint-config-prettier/@typescript-eslint')
@@ -11,6 +12,11 @@ module.exports = {
     'plugin:compat/recommended',
   ],
   settings: {
+    'import/resolver': {
+      [path.resolve(`${__dirname}/build/resolver/eslint-resolver.js`)]: {
+        debug: false,
+      },
+    },
     // List of polyfills for `eslint-plugin-compat` check
     // To know how to add in case you have a new one to add, please check
     // https://github.com/amilajack/eslint-plugin-compat/wiki/Adding-polyfills-(v2)
@@ -122,7 +128,6 @@ module.exports = {
           '**/__tests__/**/*.js',
           '**/examples/**/*.js',
           './projector.js',
-          './resolver.js',
         ],
       },
     ],

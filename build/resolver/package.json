@@ -1,0 +1,8 @@
+{
+  "name": "@atlaskit/resolver",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "resolve-from": "^4.0.0"
+  }
+}
