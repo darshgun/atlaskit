@@ -12,10 +12,17 @@ module.exports = {
     'plugin:compat/recommended',
   ],
   settings: {
+    // Required to resolve atlaskit deps to src and remove webpack loader prefixes
     'import/resolver': {
       [path.resolve(`${__dirname}/build/resolvers/eslint-resolver.js`)]: {
         debug: false,
       },
+    },
+    // Required so that the correct parser is used when resolving .js files from .ts
+    // E.g. a TS package that imports from @atlaskit/docs (js) in an example
+    'import/parsers': {
+      'babel-eslint': ['.js'],
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     // List of polyfills for `eslint-plugin-compat` check
     // To know how to add in case you have a new one to add, please check
