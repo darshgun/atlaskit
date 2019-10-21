@@ -349,6 +349,7 @@ async function compareScreenshot(
   expect(screenshot).toMatchProdImageSnapshot({
     failureThreshold: `${tolerance}`,
     failureThresholdType: 'percent',
+    customSnapshotIdentifier: screenshotOptions.customSnapshotIdentifier,
   });
 }
 
