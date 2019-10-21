@@ -1,0 +1,1 @@
+Exposed offset prop for popper allowing positioning of popups relative to the trigger. Added example for double pop-up pattern
