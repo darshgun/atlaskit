@@ -91,6 +91,7 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --frozen-lockfile
+              - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
               - bolt measure:dependents:s3
               - node build/ci-scripts/merge.json.in.folder.js .currentBundleSize
               - if [ -e ".currentBundleSize/merged.json" ]; then node build/ci-scripts/upload.build.artefact.for.commit.js .currentBundleSize/merged.json; fi
@@ -601,7 +602,8 @@ pipelines:
               name: Bundle size update for editor-part-2 packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - node build/ci-scripts/get.pkgs.in.team.js editor-part-2| xargs -n1 -P2 yarn measure --updateSnapshot --s3
               artifacts:
@@ -614,7 +616,8 @@ pipelines:
               name: Bundle size update for core packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - node build/ci-scripts/get.pkgs.in.team.js core| xargs -n1 -P2 yarn measure --updateSnapshot --s3
               artifacts:
@@ -627,7 +630,8 @@ pipelines:
               name: Bundle size update for media packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - node build/ci-scripts/get.pkgs.in.team.js media| xargs -n1 -P2 yarn measure --updateSnapshot --s3
               artifacts:
@@ -640,7 +644,8 @@ pipelines:
               name: Bundle size update for all other packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - export input=elements,bitbucket,css-packs,growth,help,helpers,home,jira,navigation,people-and-teams,search,teamwork-ecosystem,engagement-platform,server
                 - node build/ci-scripts/get.pkgs.in.team.js $input| xargs -n1 -P2 yarn measure --updateSnapshot --s3
