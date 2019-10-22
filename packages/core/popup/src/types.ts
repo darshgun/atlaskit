@@ -5,7 +5,9 @@ import {
   ReactNode,
   Ref,
   SetStateAction,
+  ComponentType,
 } from 'react';
+
 import { Placement } from '@atlaskit/popper';
 
 export type TriggerProps = {
@@ -39,6 +41,8 @@ export type PopupProps = {
   boundariesElement?: 'viewport' | 'window' | 'scrollParent';
   /** HTML Id for testing etc */
   id?: string;
+  /** Formatted like "0, 8px" — how far to offset the Popper from the Reference. Changes automatically based on the placement */
+  offset?: number | string;
   /** Positioning string of the Popup. See the documentation of @atlaskit/popper for more details. */
   placement?: Placement;
   /** Allows the Popup to be placed on the opposite side of its trigger if it does not
@@ -47,9 +51,7 @@ export type PopupProps = {
   /** testId maps to data-testid for testing in your application */
   testId?: string;
   /** Content to display in the Popup */
-  content: FC<ContentProps>;
-  /** Callback function when the Popup is opened */
-  onOpen?(): void;
+  content: ComponentType<ContentProps>;
   /** Callback function when the Popup is closed */
   onClose?(): void;
   /** Open State of the Dialog */
@@ -72,6 +74,6 @@ export type FocusManagerHook = {
 };
 
 export type RepositionOnUpdateProps = {
-  content: FC<ContentProps>;
+  content: ComponentType<ContentProps>;
   scheduleUpdate(): void;
 };

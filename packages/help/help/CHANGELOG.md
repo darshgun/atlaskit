@@ -1,5 +1,77 @@
 ## 0.1.0
 
+## 0.20.11
+
+### Patch Changes
+
+- [patch][48cd7f3d35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48cd7f3d35):
+
+  Updated atlaskit/help-article dependency
+
+## 0.20.10
+
+### Patch Changes
+
+- [patch][d951057197](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d951057197):
+
+  Updated dependency atlaskit/help-article
+
+## 0.20.9
+
+### Patch Changes
+
+- [patch][90a14c313d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90a14c313d):
+
+  Fix type errors
+
+- Updated dependencies [17445706d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17445706d3):
+  - @atlaskit/help-article@0.6.0
+
+## 0.20.8
+
+### Patch Changes
+
+- [patch][5027c848f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5027c848f4):
+
+  changed scrollTo for sctollTop (not supported in IE11 and edge)
+
+## 0.20.7
+
+### Patch Changes
+
+- [patch][89c775c2eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89c775c2eb):
+
+  fix animation when ArticleComponent mounts
+
+## 0.20.6
+
+- Updated dependencies [49c89962de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c89962de):
+  - @atlaskit/right-side-panel@0.3.0
+
+## 0.20.5
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
+## 0.20.4
+
+### Patch Changes
+
+- [patch][edd83f6f68](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edd83f6f68):
+
+  Fix ArticleContent Animation
+
+## 0.20.3
+
+### Patch Changes
+
+- [patch][acbc924e23](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acbc924e23):
+
+  Improved ArticleContent animations
+
 ## 0.20.2
 
 ### Patch Changes

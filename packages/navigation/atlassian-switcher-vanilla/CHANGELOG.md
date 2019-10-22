@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher-vanilla
 
+## 2.1.4
+
+### Patch Changes
+
+- [patch][6bc87c7501](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bc87c7501):
+
+  Split mockEndpoints into a separate package
+
+## 2.1.3
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 2.1.2
 
 ### Patch Changes

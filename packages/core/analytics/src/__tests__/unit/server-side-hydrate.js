@@ -1,3 +1,4 @@
+// TODO: This component will be deprecated. So there is no need to run this test.
 // @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -7,18 +8,14 @@ import waitForExpect from 'wait-for-expect';
 
 jest.spyOn(global.console, 'error').mockImplementation(() => {});
 
-beforeEach(() => {
-  jest.setTimeout(10000);
-});
-
 afterEach(() => {
   jest.resetAllMocks();
 });
-// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
+
 test.skip('should ssr then hydrate analytics correctly', async () => {
   const [example] = await getExamplesFor('analytics');
   // $StringLitteral
-  const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
+  const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);

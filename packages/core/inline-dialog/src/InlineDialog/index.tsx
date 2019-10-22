@@ -33,7 +33,7 @@ class InlineDialog extends Component<Props, {}> {
     if (!prevProps.isOpen && this.props.isOpen) {
       window.addEventListener('click', this.handleClickOutside, true);
     } else if (prevProps.isOpen && !this.props.isOpen) {
-      window.removeEventListener('click', this.handleClickOutside);
+      window.removeEventListener('click', this.handleClickOutside, true);
     }
   }
 
@@ -48,7 +48,7 @@ class InlineDialog extends Component<Props, {}> {
   componentWillUnmount() {
     if (typeof window === 'undefined') return;
 
-    window.removeEventListener('click', this.handleClickOutside);
+    window.removeEventListener('click', this.handleClickOutside, true);
   }
 
   handleClickOutside = (event: any) => {

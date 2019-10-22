@@ -1,5 +1,3 @@
-declare var require: any;
-
 describe('checkWebpSupport util', () => {
   let imageObjects: any[];
 

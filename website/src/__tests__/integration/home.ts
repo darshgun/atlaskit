@@ -11,7 +11,7 @@ const openNavigationButton = '[aria-label="Open navigation"]';
 
 BrowserTestCase(
   'home.js: The website home page should be displayed without errors on desktop view',
-  { skip: [] },
+  {},
   async (client: any) => {
     const homeTest = new Page(client);
     await homeTest.goto(urlHome);
@@ -32,7 +32,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'home.js: The website home page should be displayed without errors on tablet/ mobile view',
-  { skip: [] },
+  {},
   async (client: any) => {
     const homeTest = new Page(client);
     await homeTest.goto(urlHome);
@@ -52,7 +52,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'home.js: The website home page should be displayed without errors when custom CSS is present above the header in the document body',
-  { skip: [] },
+  {},
   async (client: any) => {
     const homeTest = new Page(client);
     await homeTest.execute(() => {

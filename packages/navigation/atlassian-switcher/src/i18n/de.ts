@@ -7,7 +7,7 @@
 // German
 export default {
   'fabric.atlassianSwitcher.switchTo': 'Wechseln zu',
-  'fabric.atlassianSwitcher.switchToTooltip': 'Wechseln zu…',
+  'fabric.atlassianSwitcher.switchToTooltip': 'Wechseln zu …',
   'fabric.atlassianSwitcher.recent': 'Letzte',
   'fabric.atlassianSwitcher.more': 'Mehr',
   'fabric.atlassianSwitcher.try': 'Ausprobieren',
@@ -17,10 +17,16 @@ export default {
   'fabric.atlassianSwitcher.people': 'Personen',
   'fabric.atlassianSwitcher.administration': 'Administration',
   'fabric.atlassianSwitcher.discoverMore': 'Mehr entdecken',
+  'fabric.atlassianSwitcher.browseApps': 'Marketplace-Apps durchsuchen',
   'fabric.atlassianSwitcher.errorHeading': 'Irgendetwas ist schiefgelaufen',
   'fabric.atlassianSwitcher.errorText':
     'Wir verfolgen diese Fehler, aber Sie können uns gerne kontaktieren, wenn das Problem nach dem Aktualisieren weiterhin besteht.',
   'fabric.atlassianSwitcher.errorImageAltText':
     'Ein kaputter Roboter und viele Menschen, die ihn reparieren.',
-  'fabric.atlassianSwitcher.expand': 'Erweiterte Erfahrung',
+  'fabric.atlassianSwitcher.errorTextNetwork':
+    'Diese Liste konnte nicht geladen werden. Bitte laden Sie diese Seite neu und versuchen Sie es erneut.',
+  'fabric.atlassianSwitcher.errorTextLoggedOut':
+    'Sie wurden ausgeloggt. Bitte loggen Sie sich wieder ein.',
+  'fabric.atlassianSwitcher.login': 'Einloggen',
+  'fabric.atlassianSwitcher.show.more.sites': 'Mehr Sites anzeigen',
 };

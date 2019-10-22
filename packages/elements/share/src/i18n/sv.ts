@@ -11,12 +11,12 @@ export default {
   'fabric.elements.share.form.retry': 'Försök igen',
   'fabric.elements.share.form.comment.placeholder': 'Lägg till ett meddelande',
   'fabric.elements.share.form.user-picker.placeholder.generic':
-    'Ange namn, team eller e-post',
+    'Ange namn, grupp, team eller e-postadress',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Ange namn eller team',
   'fabric.elements.share.form.user-picker.add-more': 'Ange fler',
   'fabric.elements.share.form.user-picker.validation.required':
-    'Välj minst en användare, team eller e-post',
+    'Välj minst en användare, en grupp, ett team eller en e-postadress.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Du kan bara bjuda in personer med e-postadresser med {domains}. Kontakta din administratör för att bjuda in andra personer.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

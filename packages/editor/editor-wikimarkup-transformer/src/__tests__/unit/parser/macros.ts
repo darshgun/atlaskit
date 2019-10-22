@@ -66,6 +66,15 @@ describe('JIRA wiki markup - Macros', () => {
 this is a text as well{panel}`,
     ],
     [
+      'should lift attachment node when it is inside macro',
+      `{panel}this is a text
+[^attachment-file11.txt] [^attachment-file12.txt] [^attachment-file13.txt]
+
+[^attachment-file21.txt] [^attachment-file22.txt] [^attachment-file23.txt]
+[^attachment-file31.txt] [^attachment-file32.txt] [^attachment-file33.txt]text[^attachment-file41.txt] [^attachment-file42.txt] [^attachment-file43.txt]
+this is a text as well{panel}`,
+    ],
+    [
       'should render rule node if it is on the top level',
       `this is a text
 ----
@@ -100,6 +109,15 @@ this is a text as well`,
       `{quote}something
 * list item
 {quote}`,
+    ],
+    [
+      'should lift attachment node when it is inside quote',
+      `{quote}this is text inside a quote
+[^attachment-file11.txt] [^attachment-file12.txt] [^attachment-file13.txt]
+
+[^attachment-file21.txt] [^attachment-file22.txt] [^attachment-file23.txt]
+[^attachment-file31.txt] [^attachment-file32.txt] [^attachment-file33.txt]text[^attachment-file41.txt] [^attachment-file42.txt] [^attachment-file43.txt]
+this is text at end of a quote{quote}`,
     ],
     [
       'should render {anchor} as empty string',

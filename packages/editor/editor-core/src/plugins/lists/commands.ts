@@ -646,7 +646,7 @@ export const toggleList = (
       state.tr,
     );
     tr = liftSelectionList(state, tr);
-    tr = addAnalytics(tr, {
+    tr = addAnalytics(state, tr, {
       action: ACTION.FORMATTED,
       actionSubject: ACTION_SUBJECT.TEXT,
       actionSubjectId:
@@ -744,7 +744,7 @@ export const toggleListCommandWithAnalytics = (
     if (toggleListCommand(listType)(state, dispatch, view)) {
       if (view && dispatch) {
         dispatch(
-          addAnalytics(view.state.tr, {
+          addAnalytics(state, view.state.tr, {
             action: ACTION.FORMATTED,
             actionSubject: ACTION_SUBJECT.TEXT,
             actionSubjectId: listTypeActionSubjectId[listType] as

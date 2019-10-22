@@ -147,7 +147,7 @@ const mentionsPlugin = (options?: MentionPluginOptions): EditorPlugin => {
             });
             const mentionText = state.schema.text('@', [mark]);
             const tr = insert(mentionText);
-            return addAnalytics(tr, {
+            return addAnalytics(state, tr, {
               action: ACTION.INVOKED,
               actionSubject: ACTION_SUBJECT.TYPEAHEAD,
               actionSubjectId: ACTION_SUBJECT_ID.TYPEAHEAD_MENTION,

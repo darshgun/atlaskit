@@ -1,5 +1,21 @@
 # @atlaskit/inline-message
 
+## 10.1.0
+
+### Minor Changes
+
+- [minor][3c86f3180f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c86f3180f):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 10.0.15
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 10.0.14
 
 ### Patch Changes

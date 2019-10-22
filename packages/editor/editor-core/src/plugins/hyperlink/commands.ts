@@ -90,6 +90,12 @@ export function updateLink(
     if (!node) {
       return false;
     }
+    const url = normalizeUrl(href);
+
+    if (!url) {
+      return false;
+    }
+
     const mark: Mark = state.schema.marks.link.isInSet(node.marks);
     const linkMark = state.schema.marks.link;
 
@@ -102,7 +108,7 @@ export function updateLink(
       pos + text.length,
       linkMark.create({
         ...((mark && mark.attrs) || {}),
-        href,
+        url,
       }),
     );
     tr.setMeta(stateKey, { type: LinkAction.HIDE_TOOLBAR });
@@ -213,7 +219,7 @@ export function showLinkToolbar(
       let tr = state.tr.setMeta(stateKey, {
         type: LinkAction.SHOW_INSERT_TOOLBAR,
       });
-      tr = addAnalytics(tr, {
+      tr = addAnalytics(state, tr, {
         action: ACTION.INVOKED,
         actionSubject: ACTION_SUBJECT.TYPEAHEAD,
         actionSubjectId: ACTION_SUBJECT_ID.TYPEAHEAD_LINK,

@@ -111,6 +111,32 @@ const messages = defineMessages({
     defaultMessage: 'Show more sites',
     description: 'The text of a toggle showing more site options',
   },
+  discover: {
+    id: 'fabric.atlassianSwitcher.discover',
+    defaultMessage: 'Discover',
+    description: 'The header of "Discover" section',
+  },
+  productDescriptionConfluence: {
+    id: 'fabric.atlassianSwitcher.product.description.confluence',
+    defaultMessage: 'Document collaboration',
+    description: 'Text displayed under Confluence product recommendation.',
+  },
+  productDescriptionJiraServiceDesk: {
+    id: 'fabric.atlassianSwitcher.product.description.jsd',
+    defaultMessage: 'IT service desk and customer service',
+    description:
+      'Text displayed under Jira Service Desk product recommendation.',
+  },
+  productDescriptionJiraSoftware: {
+    id: 'fabric.atlassianSwitcher.product.description.jsw',
+    defaultMessage: 'Project and issue tracking',
+    description: 'Text displayed under Jira Software product recommendation.',
+  },
+  productDescriptionOpsgenie: {
+    id: 'fabric.atlassianSwitcher.product.description.opsgenie',
+    defaultMessage: 'Modern incident management',
+    description: 'Text displayed under Opsgenie product recommendation.',
+  },
 });
 
 export const SwitchToTooltipText = (

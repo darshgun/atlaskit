@@ -10,6 +10,10 @@ import {
   AvailableSite,
   WorklensProductType,
   AvailableProduct,
+  Product,
+  CustomLinksResponse,
+  RecentContainersResponse,
+  RecommendationsEngineResponse,
 } from '../../types';
 
 describe('map-results-to-switcher-props', () => {
@@ -25,6 +29,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -50,6 +55,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -75,6 +81,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: true,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -98,6 +105,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
       );
@@ -119,6 +127,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -196,6 +205,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -249,6 +259,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -281,6 +292,7 @@ describe('map-results-to-switcher-props', () => {
           xflow: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -311,6 +323,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverMoreForEveryoneEnabled: false,
           disableHeadings: false,
           isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [
@@ -341,6 +354,74 @@ describe('map-results-to-switcher-props', () => {
           childItems: [],
         },
       ]);
+    });
+
+    it('shows manage list if custom links are enabled', () => {
+      const props = mapResultsToSwitcherProps(
+        cloudId,
+        {
+          ...completedProvidersResult,
+          customLinks: asCompletedProvider<CustomLinksResponse>([
+            {
+              key: 'home',
+              link:
+                'https://some-random-instance.atlassian.net/secure/MyJiraHome.jspa',
+              label: 'Jira',
+              local: true,
+            },
+          ]),
+          managePermission: asCompletedProvider(true),
+        },
+        {
+          disableCustomLinks: false,
+          disableRecentContainers: false,
+          xflow: false,
+          isDiscoverMoreForEveryoneEnabled: false,
+          disableHeadings: false,
+          isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
+        },
+        asCompletedProvider<AvailableProductsResponse>({
+          sites: [generateSite('site40', [WorklensProductType.CONFLUENCE, 40])],
+        }),
+        Product.CONFLUENCE,
+      );
+
+      expect(props.showManageLink).toBe(true);
+    });
+
+    it('does not shows manage list if custom links are disabled', () => {
+      const props = mapResultsToSwitcherProps(
+        cloudId,
+        {
+          ...completedProvidersResult,
+          customLinks: asCompletedProvider<CustomLinksResponse>([
+            {
+              key: 'home',
+              link:
+                'https://some-random-instance.atlassian.net/secure/MyJiraHome.jspa',
+              label: 'Jira',
+              local: true,
+            },
+          ]),
+          managePermission: asCompletedProvider(true),
+        },
+        {
+          disableCustomLinks: true,
+          disableRecentContainers: false,
+          xflow: false,
+          isDiscoverMoreForEveryoneEnabled: false,
+          disableHeadings: false,
+          isEmceeLinkEnabled: false,
+          isDiscoverSectionEnabled: false,
+        },
+        asCompletedProvider<AvailableProductsResponse>({
+          sites: [generateSite('site40', [WorklensProductType.CONFLUENCE, 40])],
+        }),
+        Product.CONFLUENCE,
+      );
+
+      expect(props.showManageLink).toBe(false);
     });
   });
 });
@@ -387,16 +468,27 @@ function asCompletedProvider<T>(data: T): ResultComplete<T> {
   };
 }
 
-const loadingProviderResult: ResultLoading = {
+const loadingProviderResultObject: ResultLoading = {
   status: Status.LOADING,
   data: null,
 };
 
 const loadingProvidersResult = {
-  customLinks: loadingProviderResult,
-  recentContainers: loadingProviderResult,
-  managePermission: loadingProviderResult,
-  addProductsPermission: loadingProviderResult,
-  isXFlowEnabled: loadingProviderResult,
-  productRecommendations: loadingProviderResult,
+  customLinks: loadingProviderResultObject,
+  recentContainers: loadingProviderResultObject,
+  managePermission: loadingProviderResultObject,
+  addProductsPermission: loadingProviderResultObject,
+  isXFlowEnabled: loadingProviderResultObject,
+  productRecommendations: loadingProviderResultObject,
+};
+
+const completedProvidersResult = {
+  customLinks: asCompletedProvider<CustomLinksResponse>([]),
+  recentContainers: asCompletedProvider<RecentContainersResponse>({ data: [] }),
+  managePermission: asCompletedProvider(false),
+  addProductsPermission: asCompletedProvider(false),
+  isXFlowEnabled: asCompletedProvider(false),
+  productRecommendations: asCompletedProvider<RecommendationsEngineResponse>(
+    [],
+  ),
 };

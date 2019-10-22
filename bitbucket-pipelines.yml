@@ -1,5 +1,5 @@
 # Note: This image can be found in build/pipelines/docker-image
-image: atlassianlabs/atlaskit-mk-2:1.0.14
+image: atlassianlabs/atlaskit-mk-2:1.0.16
 # This ensures we do a full clone on each build which prevents issues when cross referencing
 # changesets and releases
 clone:
@@ -58,6 +58,8 @@ pipelines:
               - mkdir -p dists/
               - node build/ci-scripts/branch-deploys/copy.built.tgzs.to.dists.dir.js
               - for file in dists/*; do node build/ci-scripts/upload.build.artefact.for.commit.js $file dists/; done
+              # Need to check that we definitely have a changeset present, error with a message if not
+              - yarn changeset status || (echo "\033[0;31m ~ Please run yarn changeset:empty to create an empty changeset ~" && false)
             artifacts:
               - dists/manifest.json
             after-script:
@@ -141,7 +143,7 @@ pipelines:
               - node
         - step:
             name: Visual Regression Tests
-            image: atlassianlabs/atlaskit-mk-2-vr:1.0.14
+            image: atlassianlabs/atlaskit-mk-2-vr:1.0.16
             script:
               - source ./build-setup.sh
               - git lfs pull
@@ -256,7 +258,7 @@ pipelines:
     # This will run the full suite of the visual regression tests using Docker.
     build-visual-regression:
       - step:
-          image: atlassianlabs/atlaskit-mk-2-vr:1.0.14
+          image: atlassianlabs/atlaskit-mk-2-vr:1.0.16
           script:
             - source ./build-setup.sh
             - git lfs pull
@@ -322,7 +324,7 @@ pipelines:
                 - yarn send:stepFailureEvents
           - step:
               name: Running All Visual Regression tests
-              image: atlassianlabs/atlaskit-mk-2-vr:1.0.14
+              image: atlassianlabs/atlaskit-mk-2-vr:1.0.16
               script:
                 - source ./build-setup.sh
                 - bolt install --frozen-lockfile
@@ -358,7 +360,8 @@ pipelines:
               name: Building
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - yarn build
               after-script:
@@ -367,7 +370,8 @@ pipelines:
               name: Linting
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - yarn lint
               after-script:
@@ -376,7 +380,8 @@ pipelines:
               name: Typechecking (and checking changesets)
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - yarn typecheck
                 - echo "We are now about to run the `version` command which will read changesets and bump packages"
@@ -390,7 +395,8 @@ pipelines:
               name: Running Unit tests - Jest 1 of 3 chunks
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - export TMPFILE=$(mktemp /tmp/jest.XXXXXX) && yarn --silent jest --listTests --json > $TMPFILE
                 - STEPS="3" STEP_IDX="0" PARALLELIZE_TESTS_FILE="$TMPFILE" yarn jest --maxWorkers=50%
@@ -402,7 +408,8 @@ pipelines:
               name: Running Unit tests - Jest 2 of 3 chunks
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - export TMPFILE=$(mktemp /tmp/jest.XXXXXX) && yarn --silent jest --listTests --json > $TMPFILE
                 - STEPS="3" STEP_IDX="1" PARALLELIZE_TESTS_FILE="$TMPFILE" yarn jest --maxWorkers=50%
@@ -413,7 +420,8 @@ pipelines:
               name: Running Unit tests - Jest 2 of 3 chunks
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - export TMPFILE=$(mktemp /tmp/jest.XXXXXX) && yarn --silent jest --listTests --json > $TMPFILE
                 - STEPS="3" STEP_IDX="2" PARALLELIZE_TESTS_FILE="$TMPFILE" yarn jest --maxWorkers=50%
@@ -424,17 +432,19 @@ pipelines:
               name: Running Browser Integration tests
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - LANDKID=true yarn test:webdriver:browserstack:changed
               after-script:
                 - yarn send:stepFailureEvents
           - step:
               name: Running Visual Regression tests
-              image: atlassianlabs/atlaskit-mk-2-vr:1.0.14
+              image: atlassianlabs/atlaskit-mk-2-vr:1.0.16
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+                - git fetch origin $TARGET_BRANCH && git checkout $TARGET_BRANCH && git checkout - && git merge $TARGET_BRANCH --no-edit
                 - git lfs pull
                 - bolt install --frozen-lockfile
                 - yarn test:vr

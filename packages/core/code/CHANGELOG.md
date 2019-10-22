@@ -1,5 +1,13 @@
 # @atlaskit/code
 
+## 11.0.14
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 11.0.13
 
 ### Patch Changes
@@ -16,7 +24,7 @@
 
   **FABDODGEM-12 Editor Cashmere Release**
 
-  - [Internal post](https://go.atlassian.com/cashmere-release)
+  - [Internal post](http://go.atlassian.com/cashmere-release)
 
   **Affected editor components:**
 

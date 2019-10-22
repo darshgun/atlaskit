@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  WithAnalyticsEventsProps,
+  withAnalyticsEvents,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
 import { messages } from '@atlaskit/media-ui';
 
 import { Tool } from '../../../common';
+import { fireAnalyticsEvent } from '../../../util';
 import LineWidthButton from './buttons/lineWidthButton';
 import ColorButton from './buttons/colorButton';
 import { ToolButton } from './buttons/toolButton';
@@ -44,7 +49,7 @@ export interface ToolbarState {
 }
 
 export class Toolbar extends Component<
-  ToolbarProps & InjectedIntlProps,
+  ToolbarProps & InjectedIntlProps & WithAnalyticsEventsProps,
   ToolbarState
 > {
   state: ToolbarState = { popup: 'none' };
@@ -63,6 +68,7 @@ export class Toolbar extends Component<
       onSave,
       onCancel,
       intl: { formatMessage },
+      createAnalyticsEvent,
     } = this.props;
     const { popup } = this.state;
 
@@ -72,10 +78,32 @@ export class Toolbar extends Component<
 
     const onPickColor = (color: string) => {
       onColorChanged(color);
+
+      fireAnalyticsEvent(
+        {
+          eventType: 'ui',
+          action: 'selected',
+          actionSubject: 'annotation',
+          actionSubjectId: 'colour',
+          attributes: { color },
+        },
+        createAnalyticsEvent,
+      );
     };
 
     const onLineWidthClick = (lineWidth: number) => {
       onLineWidthChanged(lineWidth);
+
+      fireAnalyticsEvent(
+        {
+          eventType: 'ui',
+          action: 'selected',
+          actionSubject: 'annotation',
+          actionSubjectId: 'size',
+          attributes: { lineWidth },
+        },
+        createAnalyticsEvent,
+      );
     };
 
     const onCloseInlinePopup = () => {
@@ -164,6 +192,16 @@ export class Toolbar extends Component<
   private onToolClick = (tool: Tool) => {
     this.setState({ popup: 'none' });
     this.props.onToolChanged(tool);
+
+    fireAnalyticsEvent(
+      {
+        eventType: 'ui',
+        action: 'selected',
+        actionSubject: 'annotation',
+        actionSubjectId: tool,
+      },
+      this.props.createAnalyticsEvent,
+    );
   };
 
   private renderSimpleTool(tool: Tool) {
@@ -188,4 +226,4 @@ export class Toolbar extends Component<
   }
 }
 
-export default injectIntl(Toolbar);
+export default withAnalyticsEvents()(injectIntl(Toolbar));

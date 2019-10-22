@@ -29,6 +29,7 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
       sectionId="switchTo"
       title={null}
     />
+    )}
     <Component
       sectionId="recent"
       title={null}
@@ -76,6 +77,7 @@ exports[`Switcher should render sections with headers by default 1`] = `
         />
       }
     />
+    )}
     <Component
       sectionId="recent"
       title={

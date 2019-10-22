@@ -40,6 +40,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     super(props);
 
     this.onArticleEntered = this.onArticleEntered.bind(this);
+    this.onArticleExited = this.onArticleExited.bind(this);
     this.renderArticleContent = this.renderArticleContent.bind(this);
   }
 
@@ -47,9 +48,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     // if helpContext.articleId is defined when this component is mounted,
     // set skipArticleFadeInAnimation = true to skip the initial slide-in
     this.setState({
-      skipArticleFadeInAnimation:
-        this.props.help.articleId !== '' ||
-        this.props.help.articleId !== undefined,
+      skipArticleFadeInAnimation: this.props.help.articleId !== '',
     });
   }
 
@@ -64,7 +63,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
       prevProps.help.history !== this.props.help.history &&
       this.refArticleContainer.current
     ) {
-      this.refArticleContainer.current.scrollTo(0, 0);
+      this.refArticleContainer.current.scrollTop = 0;
     }
   }
 
@@ -75,6 +74,14 @@ export class Article extends Component<Props & HelpContextInterface, State> {
     const { skipArticleFadeInAnimation } = this.state;
     if (skipArticleFadeInAnimation) {
       this.setState({ skipArticleFadeInAnimation: false });
+    }
+  }
+
+  onArticleExited() {
+    // when the user navigates back to the default content and the animation finished,
+    // set the articleId to ''
+    if (this.props.help.articleIdSetter) {
+      this.props.help.articleIdSetter('');
     }
   }
 
@@ -127,6 +134,7 @@ export class Article extends Component<Props & HelpContextInterface, State> {
         timeout={TRANSITION_DURATION_MS}
         enter={!skipArticleFadeInAnimation}
         onEntered={this.onArticleEntered}
+        onExited={this.onArticleExited}
         mountOnEnter
         unmountOnExit
       >

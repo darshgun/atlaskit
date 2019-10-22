@@ -7,7 +7,12 @@ import { PostQueryAnalyticsComponent } from '../../ScreenAnalyticsHelper';
 import ResultGroupsComponent, {
   ResultGroupType,
 } from '../../ResultGroupsComponent';
-import { ResultType, AnalyticsType } from '../../../../model/Result';
+import {
+  ResultType,
+  AnalyticsType,
+  ResultsGroup,
+  ContentType,
+} from '../../../../model/Result';
 
 const defaultProps = {
   isPreQuery: true,
@@ -27,7 +32,7 @@ const defaultProps = {
   onFilterChanged: () => {},
 };
 
-const mockResultsGroup = [
+const mockResultsGroup: ResultsGroup[] = [
   {
     items: [
       {
@@ -36,8 +41,11 @@ const mockResultsGroup = [
         href: 'http://www.jdog.jira-dev.com/link',
         resultType: ResultType.JiraObjectResult,
         analyticsType: AnalyticsType.RecentJira,
+        contentType: ContentType.JiraIssue,
       },
     ],
+    showTotalSize: false,
+    totalSize: 1,
     key: 'issues',
   },
 ];
@@ -126,7 +134,9 @@ it('should render no results state when there are no results and a query is ente
     isPreQuery: false,
     isLoading: false,
     keepPreQueryState: false,
-    getPostQueryGroups: jest.fn(() => [{ items: [] }]),
+    getPostQueryGroups: jest.fn(() => [
+      { items: [], showTotalSize: false, totalSize: 0, key: 'issues' },
+    ]),
     renderNoResult: jest.fn(),
   };
 

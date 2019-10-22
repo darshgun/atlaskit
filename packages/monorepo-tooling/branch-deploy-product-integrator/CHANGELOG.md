@@ -1,5 +1,21 @@
 # @atlaskit/branch-deploy-product-integrator
 
+## 1.1.0
+
+### Minor Changes
+
+- [minor][5344193efa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5344193efa):
+
+  Add support for passing arbitrary flags to the branch install command, i.e. yarn/bolt, by adding the flags after a '--' separator
+
+## 1.0.5
+
+### Patch Changes
+
+- [patch][0ed6b4e90c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ed6b4e90c):
+
+  Expose cmd and add a retry to the upgrade
+
 ## 1.0.4
 
 - Updated dependencies [4dc307b4f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4dc307b4f9):

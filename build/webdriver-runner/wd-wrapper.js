@@ -5,6 +5,7 @@ const assert = require('assert').strict;
  */
 
 const WAIT_TIMEOUT = 5000;
+const EDITOR = '.ProseMirror';
 
 export class JSHandle {
   constructor(client, selector) {
@@ -43,14 +44,58 @@ export class ElementHandle extends JSHandle {
   uploadFile = TODO;
 }
 
+const mappedKeys = {
+  NULL: '\ue000',
+  ArrowLeft: '\ue012',
+  ArrowRight: '\ue014',
+  ArrowUp: '\ue013',
+  ArrowDown: '\ue015',
+  Escape: '\ue00C',
+  Return: '\ue007',
+  Enter: '\ue007',
+  Control: '\ue009',
+  Shift: '\ue008',
+  Insert: '\ue016',
+  Command: '\ue03D',
+};
+
+const getMappedKey = str => {
+  return mappedKeys[str] || str;
+};
+
 export default class Page {
   constructor(client) {
     this.browser = client;
   }
 
+  async type(selector, text) {
+    // TODO: https://product-fabric.atlassian.net/browse/BUILDTOOLS-325
+    if (this.isBrowser('chrome') && selector === EDITOR) {
+      if (Array.isArray(text)) {
+        return await this.browser.sendKeys(text.map(getMappedKey));
+      } else {
+        return await this.browser.sendKeys([getMappedKey(text)]);
+      }
+    }
+
+    const elem = await this.browser.$(selector);
+
+    if (Array.isArray(text)) {
+      for (let t of text) {
+        await elem.addValue(t);
+      }
+    } else {
+      await elem.addValue(text);
+    }
+  }
+
   // Navigation
   goto(url) {
     return this.browser.url(url);
+  }
+
+  refresh() {
+    return this.browser.refresh();
   }
 
   async moveTo(selector, x, y) {
@@ -137,17 +182,6 @@ export default class Page {
     return result.length;
   }
 
-  async type(selector, text) {
-    const elem = await this.browser.$(selector);
-    if (Array.isArray(text)) {
-      for (let t of text) {
-        await elem.addValue(t);
-      }
-    } else {
-      await elem.addValue(text);
-    }
-  }
-
   async clear(selector) {
     const elem = await this.browser.$(selector);
     return elem.clearValue();
@@ -177,6 +211,11 @@ export default class Page {
   // Get
   getProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
+  }
+
+  async getCSSProperty(selector, cssProperty) {
+    const elem = await this.browser.$(selector);
+    return elem.getCSSProperty(cssProperty);
   }
 
   async getLocation(selector, property) {
@@ -250,6 +289,10 @@ export default class Page {
 
   async execute(func, ...args) {
     return this.browser.execute(func, ...args);
+  }
+
+  async executeAsync(func, ...args) {
+    return this.browser.executeAsync(func, ...args);
   }
 
   getBrowserName() {

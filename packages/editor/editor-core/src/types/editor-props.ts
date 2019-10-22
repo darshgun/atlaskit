@@ -208,6 +208,7 @@ export interface EditorProps {
   presenceProvider?: Promise<any>;
   emojiProvider?: Promise<EmojiProvider>;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
+  allowNestedTasks?: boolean;
   contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
 
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;

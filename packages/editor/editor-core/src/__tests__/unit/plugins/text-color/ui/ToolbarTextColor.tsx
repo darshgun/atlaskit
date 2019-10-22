@@ -66,8 +66,8 @@ function getColorFromPalette(palette: PaletteColor[], position: number) {
 
 describe('ToolbarTextColor', () => {
   const createEditor = createEditorFactory<TextColorPluginState>();
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
-  let analyticsHandler: jest.MockInstance<AnalyticsHandler>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent, any>;
+  let analyticsHandler: jest.MockInstance<AnalyticsHandler, any>;
   let toolbarTextColor: ReactWrapper<ToolbarTextColorProps>;
 
   const editor = (doc: any) => {

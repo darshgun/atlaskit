@@ -3,7 +3,10 @@ jest.mock('../../../components/emailValidation', () => ({
 }));
 
 import { getCreatableProps } from '../../../components/creatable';
-import { isValidEmail } from '../../../components/emailValidation';
+import {
+  isValidEmail,
+  EmailValidationResponse,
+} from '../../../components/emailValidation';
 import { EmailType } from '../../../types';
 
 describe('getCreatableProps', () => {
@@ -78,11 +81,13 @@ describe('getCreatableProps', () => {
       expect(isOptionDisabled({ data: { type: 'user' } })).toBeFalsy();
     });
 
-    test.each([
-      [false, { type: 'email', id: '1' }, 'VALID'],
-      [true, { type: 'email', id: '2' }, 'POTENTIAL'],
-      [true, { type: 'email', id: '3' }, 'INVALID'],
-    ])(
+    test.each<[boolean, { type: string; id: string }, EmailValidationResponse]>(
+      [
+        [false, { type: 'email', id: '1' }, 'VALID'],
+        [true, { type: 'email', id: '2' }, 'POTENTIAL'],
+        [true, { type: 'email', id: '3' }, 'INVALID'],
+      ],
+    )(
       'should return %p when called with %p and email is "%s"',
       (expected, data, isValidEmailReturn) => {
         (isValidEmail as jest.Mock).mockReturnValueOnce(isValidEmailReturn);

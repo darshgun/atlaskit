@@ -1,7 +1,10 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
-import { mockEndpoints, REQUEST_FAST } from './helpers/mock-endpoints';
+import {
+  mockEndpoints,
+  REQUEST_FAST,
+} from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
 

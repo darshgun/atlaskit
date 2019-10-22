@@ -40,6 +40,10 @@ this is a new line text, not in the table`,
       '|!quicktime.mov|width=300,height=400!|',
     ],
     [
+      '[CS-1404] should parse multiple attachments separated by non-whitespace characters inside tables as separate media groups',
+      '|colum 1 [^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt] abc [^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]|column 2|',
+    ],
+    [
       'HOT-87510 should respect emoji first in table content',
       `
 || Day / Status || Mon (!) || Tue (!) || Wed (!) || Thu (!) || Fri (!) ||

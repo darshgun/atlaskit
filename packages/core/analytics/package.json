@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "The Atlaskit Component Analytics Framework",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.2.5",
-    "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/section-message": "^4.0.12",
+    "@atlaskit/docs": "^8.1.8",
+    "@atlaskit/section-message": "^4.1.1",
     "@atlaskit/ssr": "^0.1.1",
     "enzyme": "^3.7.0",
     "react-dom": "^16.8.0",

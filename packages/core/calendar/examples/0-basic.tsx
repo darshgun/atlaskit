@@ -20,5 +20,6 @@ export default () => (
     onChange={() => log('change')}
     onFocus={() => log('focus')}
     onSelect={() => log('select')}
+    testId={'calendar'}
   />
 );

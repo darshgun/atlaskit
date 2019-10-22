@@ -8,23 +8,32 @@ declare var global: any;
 
 jest.spyOn(global.console, 'error');
 
-beforeAll(() => {
-  jest.setTimeout(10000);
-});
-
 afterEach(() => {
   jest.resetAllMocks();
 });
-// TODO: https://ecosystem.atlassian.net/browse/AK-6450// https://product-fabric.atlassian.net/browse/BUILDTOOLS-282: SSR tests are still timing out in Landkid.
-test.skip('should ssr then hydrate checkbox correctly', async () => {
+
+test('should ssr then hydrate checkbox correctly', async () => {
   const [example] = await getExamplesFor('checkbox');
-  const Example = await require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
+  const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');
   elem.innerHTML = await ssr(example.filePath);
 
   ReactDOM.hydrate(<Example />, elem);
+
   await waitForExpect(() => {
-    expect(console.error).not.toBeCalled(); // eslint-disable-line no-console
+    // ignore warnings caused by emotion's server-side rendering approach
+    // @ts-ignore
+    // eslint-disable-next-line no-console
+    const mockCalls = console.error.mock.calls.filter(
+      ([f, s]: [any, any]) =>
+        !(
+          f ===
+            'Warning: Did not expect server HTML to contain a <%s> in <%s>.' &&
+          s === 'style'
+        ),
+    );
+
+    expect(mockCalls.length).toBe(0);
   });
 });
