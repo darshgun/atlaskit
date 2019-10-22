@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "css-box-model": "^1.2.0",
-    "react-beautiful-dnd": "^10.0.2",
+    "react-beautiful-dnd": "12.0.0-beta.8",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {

@@ -16,12 +16,9 @@ import {
 } from '../styled/ItemParts';
 
 type DnDType = {
-  draggableProps: {
-    style: ?Object,
-    'data-react-beautiful-dnd-draggable': string,
-  },
+  draggableProps: Object,
   dragHandleProps: ?Object,
-  innerRef: Function,
+  innerRef: (ref: HTMLElement | null) => void,
   placeholder?: Node,
 };
 
@@ -139,50 +136,20 @@ export default class Item extends Component<Props, {}> {
 
     const patchedEventHandlers = {
       onClick: (event: MouseEvent) => {
-        const original = () => {
-          if (!isDisabled && onClick) {
-            onClick(event);
-          }
-        };
-
-        if (!dragHandleProps || !dragHandleProps.onClick) {
-          original();
-          return;
-        }
-
-        // Drag and drop has its own disabled mechansim
-        // So not checking for isDisabled
-        dragHandleProps.onClick(event);
-
         // if default is prevent - do not fire the onClick prop
         if (event.defaultPrevented) {
           return;
         }
 
-        original();
+        if (!isDisabled && onClick) {
+          onClick(event);
+        }
       },
       onMouseDown: (event: MouseEvent) => {
-        if (dragHandleProps && dragHandleProps.onMouseDown) {
-          dragHandleProps.onMouseDown(event);
-        }
-
         // We want to prevent the item from getting focus when clicked
         event.preventDefault();
       },
       onKeyDown: (event: KeyboardEvent) => {
-        const original = () => {
-          if (!isDisabled && onKeyDown) {
-            onKeyDown(event);
-          }
-        };
-
-        if (!dragHandleProps || !dragHandleProps.onKeyDown) {
-          original();
-          return;
-        }
-
-        dragHandleProps.onKeyDown(event);
-
         // if default is prevent - do not fire other handlers
         if (event.defaultPrevented) {
           return;
@@ -193,11 +160,20 @@ export default class Item extends Component<Props, {}> {
           return;
         }
 
-        original();
+        // swallowing event if disabled
+        if (isDisabled) {
+          return;
+        }
+
+        if (!onKeyDown) {
+          return;
+        }
+
+        onKeyDown(event);
       },
     };
 
-    const patchedInnerRef = ref => {
+    const patchedInnerRef = (ref: HTMLElement | null) => {
       this.setRef(ref);
 
       if (dnd && dnd.innerRef) {

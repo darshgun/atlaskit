@@ -116,27 +116,6 @@ class ItemLineCard extends React.Component<
     this.props.onClick(this.props.item, event);
   };
 
-  patchedHandlers = (dragHandleProps: DragHandleProps | null) => {
-    // The 'isActive' state is determined by the
-    // draggable state, i.e. if isDragging then
-    // the state is considered active. The below
-    // ensures the events are still propagated
-    // correctly to the drag-and-drop library.
-    const onMouseDown = (() => (event: React.MouseEvent) => {
-      if (isMiddleClick(event)) {
-        this.propagateClick(event);
-      }
-      if (dragHandleProps && dragHandleProps.onMouseDown) {
-        dragHandleProps.onMouseDown(event);
-      }
-    })();
-    return {
-      ...dragHandleProps,
-      ...this.eventHandlers,
-      onMouseDown,
-    };
-  };
-
   renderCard = (cardProps: CardProps) => {
     const { isHovering, isFocused } = this.state;
     const isActive = !!cardProps.isDragging || this.state.isActive;
@@ -157,7 +136,7 @@ class ItemLineCard extends React.Component<
               isDraggable: true,
               isDragging: snapshot.isDragging,
               ...provided.draggableProps,
-              ...this.patchedHandlers(provided.dragHandleProps),
+              ...this.eventHandlers,
             })}
           </div>
         )}
