@@ -69,7 +69,7 @@ const FULL_CONTEXT = {
   sessionId: 'someSessionId',
 };
 
-const MESSY_CONTEXT = {
+const PARTIAL_CONTEXT = {
   containerId: '',
   objectId: undefined,
   childObjectId: '',
@@ -435,19 +435,21 @@ describe('MentionResource', () => {
         });
     });
 
-    it('should resolve the query parameters with a messy context', done => {
+    it('should resolve the query parameters with a partial context', done => {
       const resource = new MentionResource(apiConfig);
-      resource.recordMentionSelection({ id: '666' }, MESSY_CONTEXT).then(() => {
-        const queryParams = queryString.parse(
-          queryString.extract(fetchMock.lastUrl()),
-        );
+      resource
+        .recordMentionSelection({ id: '666' }, PARTIAL_CONTEXT)
+        .then(() => {
+          const queryParams = queryString.parse(
+            queryString.extract(fetchMock.lastUrl()),
+          );
 
-        expect(queryParams).not.toHaveProperty('containerId');
-        expect(queryParams).not.toHaveProperty('objectId');
-        expect(queryParams).not.toHaveProperty('objectChildId');
-        expect(queryParams.sessionId).toBe(MESSY_CONTEXT.sessionId);
-        done();
-      });
+          expect(queryParams).not.toHaveProperty('containerId');
+          expect(queryParams).not.toHaveProperty('objectId');
+          expect(queryParams).not.toHaveProperty('objectChildId');
+          expect(queryParams.sessionId).toBe(PARTIAL_CONTEXT.sessionId);
+          done();
+        });
     });
   });
 

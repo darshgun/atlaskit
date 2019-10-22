@@ -376,7 +376,8 @@ export class MentionResource extends AbstractMentionResource
   }
 
   /**
-   * Clear a messy context to generate query params by removing falsy values.
+   * Clear a context object to generate query params by removing empty
+   * strings, `undefined` and empty values.
    *
    * @param contextIdentifier the current context identifier
    * @returns a safe context for query encoding
