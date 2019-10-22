@@ -225,6 +225,7 @@ export class ExampleEditorComponent extends React.Component<
               UNSAFE_cards={{
                 provider: Promise.resolve(cardProviderStaging),
               }}
+              UNSAFE_allowExpand={true}
               annotationProvider={{
                 component: ExampleInlineCommentComponent,
               }}

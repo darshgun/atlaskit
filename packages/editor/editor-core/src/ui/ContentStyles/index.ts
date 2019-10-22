@@ -14,6 +14,7 @@ import {
   akEditorDeleteBorder,
   akEditorSelectedBorderBoldSize,
   tasksAndDecisionsStyles,
+  expandStyles as expandSharedStyles,
 } from '@atlaskit/editor-common';
 
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
@@ -34,6 +35,7 @@ import { placeholderTextStyles } from '../../plugins/placeholder-text/styles';
 import { gridStyles } from '../../plugins/grid/styles';
 import { linkStyles } from '../../plugins/hyperlink/styles';
 import { extensionStyles } from '../../plugins/extension/ui/styles';
+import { expandStyles } from '../../plugins/expand/ui/styles';
 
 const ContentStyles: ComponentClass<
   HTMLAttributes<{}> & { theme: any; allowAnnotation?: boolean }
@@ -121,6 +123,8 @@ const ContentStyles: ComponentClass<
   ${blockMarksSharedStyles}
   ${dateSharedStyle}
   ${extensionStyles}
+  ${expandSharedStyles}
+  ${expandStyles}
 
   /** Global selector for extensions, as .danger tag is assigned to root level node which is unaccessible from triggered child node **/
   /* Danger when nested node */
@@ -171,7 +175,7 @@ const ContentStyles: ComponentClass<
     padding: 0;
   }
 
-  /* Link icon in the Atlaskit package 
+  /* Link icon in the Atlaskit package
      is bigger than the others
   */
   .hyperlink-open-link {
