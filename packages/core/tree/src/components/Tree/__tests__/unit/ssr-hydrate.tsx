@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import exenv from 'exenv';
 // @ts-ignore resetServerContext is not typed in @types/rbd
-import { resetServerContext } from 'react-beautiful-dnd';
+import { resetServerContext } from 'react-beautiful-dnd-next';
 
 import { complexTree } from '../../../../../mockdata/complexTree';
 import Tree from '../..';

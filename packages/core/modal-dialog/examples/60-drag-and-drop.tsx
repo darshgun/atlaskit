@@ -8,7 +8,6 @@ import {
   DragDropContext,
   Droppable,
   DropResult,
-  DraggableProvidedDragHandleProps as DragHandleProps,
 } from 'react-beautiful-dnd';
 import Modal, { ModalTransition } from '../src';
 
