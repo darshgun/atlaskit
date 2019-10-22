@@ -15,9 +15,10 @@ export const padding = {
   all: gridSize / 2,
 };
 
-export const getIconButtonTheme = ({
-  mode: { iconButton },
-}: NavigationTheme, shouldHaveLeftMargin: boolean) => (
+export const getIconButtonTheme = (
+  { mode: { iconButton } }: NavigationTheme,
+  shouldHaveLeftMargin: boolean,
+) => (
   current: (props: ThemeProps) => ThemeTokens,
   props: ThemeProps,
 ): ThemeTokens => {

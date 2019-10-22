@@ -37,7 +37,11 @@ export const AtlassianNavigation = (
           <div css={leftCSS}>
             {AppSwitcher && <AppSwitcher />}
             {ProductHome && <ProductHome />}
-            <PrimaryItemsContainer moreLabel={moreLabel} items={primaryItems} create={create} />
+            <PrimaryItemsContainer
+              moreLabel={moreLabel}
+              items={primaryItems}
+              create={create}
+            />
           </div>
           <div css={rightCSS}>
             {Search && <Search />}

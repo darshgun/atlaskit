@@ -51,7 +51,11 @@ export const productLogoCSS = {
   },
 };
 
-export const siteNameCSS = ({ mode: { navigation: { color }}}: NavigationTheme) => ({
+export const siteNameCSS = ({
+  mode: {
+    navigation: { color },
+  },
+}: NavigationTheme) => ({
   marginLeft: `${gridSize * 0.5}px`,
   display: 'flex',
   alignItems: 'center',
@@ -66,14 +70,14 @@ export const siteNameCSS = ({ mode: { navigation: { color }}}: NavigationTheme) 
     height: gridSize * 3,
     backgroundColor: color,
     opacity: 0.2,
-  }
+  },
 });
 
 export const siteNameSkeletonCSS = (theme: NavigationTheme) => ({
   ...siteNameCSS(theme),
   ...skeletonCSS(theme),
   width: gridSize * 3,
-})
+});
 
 export const productLogoSkeletonCSS = (theme: NavigationTheme) => ({
   borderRadius: `${height / 2}px`,

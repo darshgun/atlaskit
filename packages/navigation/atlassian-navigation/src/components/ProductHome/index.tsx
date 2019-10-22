@@ -18,24 +18,21 @@ export const ProductHome = ({
   siteName,
   onClick = () => {},
 }: ProductHomeProps) => {
-
-    const theme = useTheme();
-    return (
-      <Fragment>
-        <div css={containerCSS} onClick={onClick}>
-          <div css={productLogoCSS}>
-            <Logo />
-          </div>
-          <div css={productIconCSS}>
-            <Icon size="small" />
-          </div>
+  const theme = useTheme();
+  return (
+    <Fragment>
+      <div css={containerCSS} onClick={onClick}>
+        <div css={productLogoCSS}>
+          <Logo />
         </div>
-        {siteName && <div css={siteNameCSS(theme)}>
-          {siteName}
-        </div>}
-      </Fragment>
-    );
-  }
+        <div css={productIconCSS}>
+          <Icon size="small" />
+        </div>
+      </div>
+      {siteName && <div css={siteNameCSS(theme)}>{siteName}</div>}
+    </Fragment>
+  );
+};
 
 export const CustomProductHome = (props: CustomProductHomeProps) => {
   const { iconAlt, iconUrl, logoAlt, logoUrl, onClick } = props;

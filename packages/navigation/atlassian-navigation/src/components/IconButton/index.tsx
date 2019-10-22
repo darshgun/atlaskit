@@ -8,7 +8,13 @@ import { IconButtonProps } from './types';
 
 export const IconButton = forwardRef(
   (props: IconButtonProps, ref: Ref<any>) => {
-    const { icon, testId, tooltip, shouldHaveLeftMargin = true ,...buttonProps } = props;
+    const {
+      icon,
+      testId,
+      tooltip,
+      shouldHaveLeftMargin = true,
+      ...buttonProps
+    } = props;
     const theme = useTheme();
 
     const button = (

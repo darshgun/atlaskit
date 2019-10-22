@@ -1,11 +1,13 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
-import { CSSObject } from "@emotion/core";
+import { CSSObject } from '@emotion/core';
 
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
 import { NavigationTheme } from '../../theme';
 const gridSize = gridSizeFn();
 
-export const containerCSS = ({ mode: { navigation } }: NavigationTheme): CSSObject => ({
+export const containerCSS = ({
+  mode: { navigation },
+}: NavigationTheme): CSSObject => ({
   alignItems: 'center',
   boxSizing: 'border-box',
   display: 'flex',
@@ -15,7 +17,7 @@ export const containerCSS = ({ mode: { navigation } }: NavigationTheme): CSSObje
   paddingRight: gridSize * 2,
   height: HORIZONTAL_GLOBAL_NAV_HEIGHT,
   position: 'relative',
-  ...bottomShadow as CSSObject,
+  ...(bottomShadow as CSSObject),
   ...navigation,
 });
 
@@ -36,12 +38,13 @@ export const rightCSS = {
 export const bottomShadow = {
   '&::after': {
     content: '""',
-    position:' absolute',
+    position: ' absolute',
     left: 0,
     right: 0,
     top: '100%',
     height: '4px',
-    background:'linear-gradient(180deg, #091E42 -333.33%, rgba(9, 30, 66, 0.55) -201.3%, rgba(9, 30, 66, 0.17) -99.01%, rgba(9, 30, 66, 0) 100%)',
+    background:
+      'linear-gradient(180deg, #091E42 -333.33%, rgba(9, 30, 66, 0.55) -201.3%, rgba(9, 30, 66, 0.17) -99.01%, rgba(9, 30, 66, 0) 100%)',
   },
 
   '&::before': {
@@ -52,5 +55,5 @@ export const bottomShadow = {
     right: 0,
     height: '1px',
     background: 'rgba(9, 30, 66, 0.06)',
-  }
-}
+  },
+};

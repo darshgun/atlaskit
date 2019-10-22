@@ -1,8 +1,5 @@
 import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
-import {
-  fontSize,
-  gridSize as gridSizeFn,
-} from '@atlaskit/theme/constants';
+import { fontSize, gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { skeletonCSS } from '../../common/styles';
 import { NavigationTheme } from '../../theme';
 
@@ -57,5 +54,4 @@ export const isSelectedCSS = ({
   position: 'absolute' as const,
   bottom: gridSize * -1.75,
   left: gridSize / 2,
-})
-
+});

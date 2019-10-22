@@ -6,7 +6,7 @@ export const atlassianTheme: NavigationTheme = generateTheme({
   name: 'atlassian',
   primary: {
     backgroundColor: N0,
-    color: N600 ,
+    color: N600,
   },
   secondary: {
     backgroundColor: B400,
