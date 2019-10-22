@@ -34,10 +34,10 @@ const FadeIn: React.FC<EnteringMotionProps> = ({
 }: EnteringMotionProps) => {
   return (
     <EnteringMotion
-      animationTimingFunction={() => easeInOut}
       duration={duration}
       enteringAnimation={fadeInAnimation()}
       exitingAnimation={fadeOutAnimation()}
+      animationTimingFunction={() => easeInOut}
     >
       {children}
     </EnteringMotion>

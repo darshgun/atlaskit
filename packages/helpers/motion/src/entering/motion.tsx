@@ -19,6 +19,11 @@ export interface EnteringMotionProps {
   duration?: number;
 
   /**
+   * Use to pause the animation.
+   */
+  isPaused?: boolean;
+
+  /**
    * Children as `function`.
    * Will be passed `props` for you to hook up.
    * The `direction` arg can be used to know if the motion is `entering` or `exiting`.
@@ -33,6 +38,7 @@ interface InternalEnteringMotionProps extends EnteringMotionProps {
   /**
    * Timing function to be used with the animation.
    * Receives the `direction` and expects a `string` return value.
+   * Useful if you want a different curve when entering vs. exiting.
    */
   animationTimingFunction: (direction: Direction) => string;
 
@@ -47,7 +53,7 @@ interface InternalEnteringMotionProps extends EnteringMotionProps {
   exitingAnimation?: ObjectInterpolation<undefined>;
 
   /**
-   * Duration in ms.
+   * Duration in `ms`.
    * How long the motion will take.
    */
   duration: number;
@@ -73,6 +79,7 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
   animationTimingFunction,
   enteringAnimation,
   exitingAnimation,
+  isPaused,
   duration = largeDurationMs,
 }: InternalEnteringMotionProps) => {
   const staggered = useStaggeredEntrance();
@@ -82,6 +89,10 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
 
   useEffect(
     () => {
+      if (isPaused) {
+        return;
+      }
+
       const timeoutId = setTimeout(() => {
         onFinish && onFinish();
       }, duration + delay);
@@ -90,7 +101,7 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
         clearTimeout(timeoutId);
       };
     },
-    [onFinish, isExiting, duration, delay],
+    [onFinish, isExiting, duration, delay, isPaused],
   );
 
   return (
@@ -109,7 +120,8 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
               animationDelay: `${delay}ms`,
               animationFillMode: isExiting ? 'forwards' : 'backwards',
               animationDuration: `${duration}ms`,
-              animationPlayState: staggered.isReady ? 'running' : 'paused',
+              animationPlayState:
+                staggered.isReady || !isPaused ? 'running' : 'paused',
               ...prefersReducedMotion(),
             }),
           },

@@ -134,12 +134,6 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
   }, []);
 
   return (
-    /**
-     * quick thoughts
-     * - what if a single child re-renders. it should get the same duration.
-     * - can we get the key of the child somehow to uniquely identify them?
-     * - we can assume index by call order - but only if every child element renders once during the initial render.
-     */
     <StaggeredEntranceContext.Provider
       value={id => {
         if (!indexes.includes(id)) {

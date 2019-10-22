@@ -1,38 +1,10 @@
 import React from 'react';
 import { md, Props, Example } from '@atlaskit/docs';
-import Lozenge from '@atlaskit/lozenge';
-import Tooltip from '@atlaskit/tooltip';
-
-const exitMotionEnabled = (
-  <Tooltip
-    content="This motion has a pairing exit motion"
-    position="mouse"
-    tag="span"
-    delay={50}
-  >
-    <Lozenge appearance="new">Has exit</Lozenge>
-  </Tooltip>
-);
-
-const staggeredEntranceEnabled = (
-  <Tooltip
-    content="This motion can be staggered across multiple elements"
-    position="mouse"
-    tag="span"
-    delay={50}
-  >
-    <Lozenge appearance="inprogress">Can stagger</Lozenge>
-  </Tooltip>
-);
 
 export default md`
   ## \`<FadeIn />\`
 
-  ${exitMotionEnabled}
-
-  ${' '}
-
-  ${staggeredEntranceEnabled}
+  Useful for fading in one or more elements.
 
   ${(
     <Example
@@ -54,13 +26,7 @@ export default md`
 
   ## \`<StaggeredEntrance />\`
 
-  ${(
-    <p>
-      Some entering motions can be staggered over multiple elements, look for
-      the {staggeredEntranceEnabled} label. To enable staggered entering motions
-      import this component and wrap the entering motions with it.
-    </p>
-  )}
+  Useful for staggering an entering motion over many elements.
 
   ${(
     <Example
@@ -91,13 +57,7 @@ export default md`
 
   ## \`<ExitingPersistence />\`
 
-  ${(
-    <p>
-      Some entering motions have a pairing exit motion, look for the{' '}
-      {exitMotionEnabled} label. To enable exit motions import this component
-      and wrap the entering motions with it.
-    </p>
-  )}
+  Useful for enabling elements to persist and animate away when they are removed from the DOM.
 
   ${(
     <Example
