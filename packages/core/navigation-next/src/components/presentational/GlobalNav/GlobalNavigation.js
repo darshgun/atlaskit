@@ -19,11 +19,14 @@ import type { GlobalNavigationProps } from './types';
 const THROTTLE_INTERVAL = 100;
 
 export default class GlobalNavigation extends Component<GlobalNavigationProps> {
-  constructor(props) {
-    super(props);
-    this.vh = window.innerHeight * 0.01;
-    this.throttled_listener = throttle(this.listener, THROTTLE_INTERVAL);
-  }
+  // constructor(props: GlobalNavigationProps) {
+  //   super(props);
+  //   this.
+  //   this.throttled_listener = throttle(this.listener, THROTTLE_INTERVAL);
+  // }
+  vh = window.innerHeight * 0.01;
+
+  throttledListener = throttle(this.listener, THROTTLE_INTERVAL);
 
   listener() {
     this.vh = window.innerHeight * 0.01;
@@ -33,11 +36,11 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
 
   componentDidMount() {
     this.listener();
-    window.addEventListener('resize', this.throttled_listener);
+    window.addEventListener('resize', this.throttledListener);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.throttled_listener);
+    window.removeEventListener('resize', this.throttledListener);
   }
 
   render() {
