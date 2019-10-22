@@ -2,6 +2,10 @@ import Select, {
   CreatableSelect,
   components,
   mergeStyles,
+  StylesConfig,
+  MenuProps,
+  OptionType,
+  SelectProps,
 } from '@atlaskit/select';
 import {
   createLocalizationProvider,
@@ -10,8 +14,7 @@ import {
 import pick from 'lodash.pick';
 // eslint-disable-next-line no-restricted-imports
 import { format, isValid } from 'date-fns';
-import React from 'react';
-import { CSSObject } from '@emotion/core';
+import React, { CSSProperties } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -20,7 +23,8 @@ import {
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
 import { gridSize } from '@atlaskit/theme/constants';
-import { Appearance, Spacing, SelectProps } from '../types';
+
+import { Appearance, Spacing } from '../types';
 import {
   name as packageName,
   version as packageVersion,
@@ -67,14 +71,14 @@ export interface Props extends WithAnalyticsEventsProps {
   /** The name of the field. */
   name: string;
   /** Called when the field is blurred. */
-  onBlur: React.FocusEventHandler<HTMLInputElement>;
+  onBlur: React.FocusEventHandler<HTMLElement>;
   /** Called when the value changes. The only argument is an ISO time or empty string. */
   onChange: (value: string) => void;
   /** Called when the field is focused. */
-  onFocus: React.FocusEventHandler<HTMLInputElement>;
+  onFocus: React.FocusEventHandler<HTMLElement>;
   parseInputValue: (time: string, timeFormat: string) => string | Date;
   /** Props to apply to the select. */
-  selectProps: SelectProps;
+  selectProps: SelectProps<any>;
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing: Spacing;
   /** The times to show in the dropdown. */
@@ -106,7 +110,7 @@ interface State {
   l10n: LocalizationProvider;
 }
 
-const menuStyles: CSSObject = {
+const menuStyles: CSSProperties = {
   /* Need to remove default absolute positioning as that causes issues with position fixed */
   position: 'static',
   /* Need to add overflow to the element with max-height, otherwise causes overflow issues in IE11 */
@@ -117,7 +121,12 @@ const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
   <FixedLayer
     inputValue={selectProps.inputValue}
     containerRef={selectProps.fixedLayerRef}
-    content={<components.Menu {...rest} menuShouldScrollIntoView={false} />}
+    content={
+      <components.Menu
+        {...rest as MenuProps<OptionType>}
+        menuShouldScrollIntoView={false}
+      />
+    }
   />
 );
 
@@ -224,26 +233,26 @@ class TimePicker extends React.Component<Props, State> {
     }
   };
 
-  onBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+  onBlur = (event: React.FocusEvent<HTMLElement>) => {
     this.setState({ isFocused: false });
     this.props.onBlur(event);
   };
 
-  onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+  onFocus = (event: React.FocusEvent<HTMLElement>) => {
     this.setState({ isFocused: true });
     this.props.onFocus(event);
   };
 
-  getSubtleControlStyles = (selectStyles: any): CSSObject => {
-    if (selectStyles.control) return {};
-    return {
-      border: `2px solid ${
-        this.getSafeState().isFocused ? `${B100}` : `transparent`
-      }`,
-      backgroundColor: 'transparent',
-      padding: '1px',
-    };
-  };
+  getSubtleControlStyles = (selectStyles: StylesConfig) =>
+    !selectStyles.control
+      ? {
+          border: `2px solid ${
+            this.getSafeState().isFocused ? `${B100}` : `transparent`
+          }`,
+          backgroundColor: 'transparent',
+          padding: '1px',
+        }
+      : {};
 
   /**
    * There are multiple props that can change how the time is formatted.
@@ -350,11 +359,11 @@ class TimePicker extends React.Component<Props, State> {
           onMenuClose={this.onMenuClose}
           placeholder={this.getPlaceholder()}
           styles={mergeStyles(selectStyles, {
-            control: (base: CSSObject): CSSObject => ({
+            control: base => ({
               ...base,
               ...controlStyles,
             }),
-            menu: (base: CSSObject): CSSObject => ({
+            menu: base => ({
               ...base,
               ...menuStyles,
               ...{
@@ -365,7 +374,7 @@ class TimePicker extends React.Component<Props, State> {
                   : 'auto',
               },
             }),
-            indicatorsContainer: (base: CSSObject): CSSObject => ({
+            indicatorsContainer: base => ({
               ...base,
               paddingLeft: icon ? ICON_PADDING : 0,
               paddingRight: icon ? gridSize() - BORDER_WIDTH : 0,

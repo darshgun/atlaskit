@@ -31,7 +31,7 @@ const data = [
 
 const selectOptions = new Array(11)
   .fill(undefined)
-  .map((_, i) => ({ label: i, value: i }));
+  .map((_, i) => ({ label: i.toString(), value: i }));
 
 interface State {
   isExpanded: boolean;
@@ -39,6 +39,11 @@ interface State {
   maxItems?: number;
   itemsAfterCollapse?: number;
   itemsBeforeCollapse?: number;
+}
+
+interface Option {
+  label: string;
+  value: number;
 }
 
 export default class BreadcrumbsExpand extends React.Component<{}, State> {
@@ -81,9 +86,11 @@ export default class BreadcrumbsExpand extends React.Component<{}, State> {
           <Select
             defaultValue={selectOptions[3]}
             options={selectOptions}
-            onChange={({ value }: { value: any }) =>
-              this.setState({ itemsToShow: value })
-            }
+            onChange={option => {
+              if (!option) return;
+
+              this.setState({ itemsToShow: (option as Option).value });
+            }}
           />
         </div>
         <div
@@ -97,8 +104,8 @@ export default class BreadcrumbsExpand extends React.Component<{}, State> {
           <Select
             defaultValue={selectOptions[8]}
             options={selectOptions}
-            onChange={({ value }: { value: any }) =>
-              this.setState({ maxItems: value })
+            onChange={option =>
+              this.setState({ maxItems: (option as Option).value })
             }
           />
         </div>
@@ -113,8 +120,8 @@ export default class BreadcrumbsExpand extends React.Component<{}, State> {
           <Select
             defaultValue={selectOptions[1]}
             options={selectOptions}
-            onChange={({ value }: { value: any }) =>
-              this.setState({ itemsBeforeCollapse: value })
+            onChange={option =>
+              this.setState({ itemsBeforeCollapse: (option as Option).value })
             }
           />
         </div>
@@ -129,8 +136,8 @@ export default class BreadcrumbsExpand extends React.Component<{}, State> {
           <Select
             defaultValue={selectOptions[1]}
             options={selectOptions}
-            onChange={({ value }: { value: any }) =>
-              this.setState({ itemsAfterCollapse: value })
+            onChange={option =>
+              this.setState({ itemsAfterCollapse: (option as Option).value })
             }
           />
         </div>

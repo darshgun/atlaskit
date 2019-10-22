@@ -1,6 +1,6 @@
 import React, { Component, ComponentType } from 'react';
 import { AkCodeBlock } from '@atlaskit/code';
-import Select from '@atlaskit/select';
+import Select, { ValueType } from '@atlaskit/select';
 import styled from 'styled-components';
 import * as Logos from '../src';
 import { Props as ConstantProps } from '../src/constants';
@@ -26,7 +26,7 @@ const products: Product[] = [
   { label: 'Trello', value: 'Trello' },
 ];
 
-const files = [
+const files: File[] = [
   { label: 'Logo', value: 'Logo' },
   { label: 'Icon', value: 'Icon' },
   { label: 'Wordmark', value: 'Wordmark' },
@@ -59,7 +59,7 @@ export default class GetPath extends Component<any, any> {
           <Select
             options={products}
             value={selectedProduct}
-            onChange={(product: Product) =>
+            onChange={(product: ValueType<Product>) =>
               this.setState({ selectedProduct: product })
             }
           />
@@ -68,7 +68,9 @@ export default class GetPath extends Component<any, any> {
           <Select
             options={files}
             value={selectedFile}
-            onChange={(file: File) => this.setState({ selectedFile: file })}
+            onChange={(file: ValueType<File>) =>
+              this.setState({ selectedFile: file })
+            }
           />
         </SelectWrapper>
         <p>This import statement will render the image below:</p>

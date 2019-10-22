@@ -1,9 +1,8 @@
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
-import { mergeStyles } from '@atlaskit/select';
+import { mergeStyles, StylesConfig, SelectProps } from '@atlaskit/select';
 import { borderRadius } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
 import styled from '@emotion/styled';
-import { CSSObject } from '@emotion/core';
 import pick from 'lodash.pick';
 import {
   withAnalyticsEvents,
@@ -14,7 +13,7 @@ import {
 import React from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { parse, format, isValid } from 'date-fns';
-import { Appearance, Spacing, SelectProps } from '../types';
+import { Appearance, Spacing } from '../types';
 import {
   name as packageName,
   version as packageVersion,
@@ -65,9 +64,9 @@ export interface Props extends WithAnalyticsEventsProps {
     timezone: string,
   ) => { dateValue: string; timeValue: string; zoneValue: string };
   /** [Select props](/packages/core/select) to pass onto the DatePicker component. This can be used to set options such as placeholder text. */
-  datePickerSelectProps: SelectProps;
+  datePickerSelectProps: SelectProps<any>;
   /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
-  timePickerSelectProps: SelectProps;
+  timePickerSelectProps: SelectProps<any>;
   /** The times to show in the times dropdown. */
   times?: Array<string>;
   /** DEPRECATED - Use locale instead. Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
@@ -156,8 +155,8 @@ const FlexItem = styled.div`
 `;
 
 // react-select overrides (via @atlaskit/select).
-const styles = {
-  control: (style: CSSObject): CSSObject => ({
+const styles: StylesConfig = {
+  control: style => ({
     ...style,
     backgroundColor: 'transparent',
     border: 2,
