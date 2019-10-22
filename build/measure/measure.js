@@ -28,6 +28,7 @@ const {
 const { returnMissingPkgBasedOn } = require('./utils/error.js');
 
 const targetBranch = process.env.TARGET_BRANCH || targetBranch;
+const bitbucketBranch = process.env.BITBUCKET_BRANCH;
 
 function fWriteStats(path, content) {
   fs.writeFileSync(path, JSON.stringify(clearStats(content), null, 2), 'utf8');
@@ -238,7 +239,7 @@ module.exports = async function main(
     fWriteStats(masterStatsFilePath, stats);
     if (process.env.CI) {
       // upload to s3 masterStats
-      uploadToS3(masterStatsFilePath, targetBranch);
+      uploadToS3(masterStatsFilePath, bitbucketBranch);
     }
   } else {
     if (process.env.CI) {
