@@ -291,6 +291,10 @@ export default class Page {
     return this.browser.execute(func, ...args);
   }
 
+  async executeAsync(func, ...args) {
+    return this.browser.executeAsync(func, ...args);
+  }
+
   getBrowserName() {
     return this.browser.capabilities.browserName;
   }
