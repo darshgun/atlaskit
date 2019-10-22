@@ -7,6 +7,7 @@
 
 import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import throttle from 'lodash.throttle';
 
 import {
   FirstPrimaryItemWrapper,
@@ -15,13 +16,17 @@ import {
 } from './primitives';
 import type { GlobalNavigationProps } from './types';
 
+const THROTTLE_INTERVAL = 100;
+
 export default class GlobalNavigation extends Component<GlobalNavigationProps> {
   vh = window.innerHeight * 0.01;
 
   listener() {
-    this.vh = window.innerHeight * 0.01;
-    // $FlowFixMe - document.documentElement will be HTMLElement, not null
-    document.documentElement.style.setProperty('--vh', `${this.vh}px`);
+    throttle(() => {
+      this.vh = window.innerHeight * 0.01;
+      // $FlowFixMe - document.documentElement will be HTMLElement, not null
+      document.documentElement.style.setProperty('--vh', `${this.vh}px`);
+    }, THROTTLE_INTERVAL);
   }
 
   componentDidMount() {
