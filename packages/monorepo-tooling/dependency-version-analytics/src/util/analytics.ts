@@ -2,6 +2,7 @@ import chalk from 'chalk';
 // @ts-ignore
 import inquirer from 'inquirer';
 import semver from 'semver';
+/* eslint-disable-next-line import/no-unresolved */
 import { analyticsClient } from '@atlassiansox/analytics-node-client';
 import {
   UpgradeEvent,

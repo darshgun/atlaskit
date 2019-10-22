@@ -148,6 +148,9 @@ module.exports = {
       },
     ],
 
+    // TODO: Might be worth re-enabling it at some stage (or using stricter instead)
+    'import/no-cycle': 'off',
+
     'no-labels': 'off',
     'no-restricted-syntax': 'off',
     'no-underscore-dangle': 'off',
@@ -274,7 +277,12 @@ module.exports = {
         'jsx-a11y/aria-proptypes': 'off',
         'jsx-a11y/no-noninteractive-element-interactions': 'off',
 
+        // Typechecking should cover this and there are issues with this rule for TS
+        // https://github.com/benmosher/eslint-plugin-import/issues/1282
+        'import/named': 'off',
+
         // disabled temporarily during tslint -> eslint transition
+        'import/no-named-as-default': 'off',
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
@@ -296,7 +304,6 @@ module.exports = {
         'import/first': 'off',
         'import/newline-after-import': 'off',
         'import/no-commonjs': 'off',
-        'import/no-cycle': 'off',
         'import/no-duplicates': 'off',
         'import/no-dynamic-require': 'off',
         'import/no-extraneous-dependencies': [

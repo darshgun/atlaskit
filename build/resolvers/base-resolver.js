@@ -24,7 +24,7 @@ const wpResolver = require('enhanced-resolve').ResolverFactory.createResolver({
   fileSystem: fs,
   useSyncFileSystemCalls: true,
   mainFields: ['atlaskit:src', 'browser', 'main'],
-  extensions: ['.js', '.ts', '.tsx', '.json'],
+  extensions: ['.js', '.ts', '.tsx', '.json', '.d.ts'],
 });
 
 /**

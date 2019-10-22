@@ -1,7 +1,7 @@
 import React from 'react';
 import { DynamicTableStateless } from '../src';
 import { head, rows as allRows } from './content/sample-data';
-import { RankEnd, RowType } from '@atlaskit/dynamic-table/types';
+import { RankEnd, RowType } from '../src/types';
 
 const rows = allRows.slice(0, 10);
 
