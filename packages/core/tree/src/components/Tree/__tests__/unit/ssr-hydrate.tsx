@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import exenv from 'exenv';
+// @ts-ignore resetServerContext is not typed in @types/rbd
+import { resetServerContext } from 'react-beautiful-dnd';
 
 import { complexTree } from '../../../../../mockdata/complexTree';
 import Tree from '../..';
@@ -38,13 +40,13 @@ const App = () => (
   />
 );
 
-//TODO: https://ecosystem.atlassian.net/browse/AK-6450
-test.skip('should ssr then hydrate tree correctly', () => {
+test('should ssr then hydrate tree correctly', () => {
   const canUseDom = jest.spyOn(exenv, 'canUseDOM', 'get');
 
   // server-side
   canUseDom.mockReturnValue(false);
   const serverHTML = ReactDOMServer.renderToString(<App />);
+  resetServerContext();
 
   // client-side
   canUseDom.mockReturnValue(true);
