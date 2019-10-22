@@ -134,10 +134,9 @@ export default class AtlaskitThemeProvider extends Component<
       allows us to use components converted to use the new API with consumers
       using the old provider along side components that may still be using the
       old theming API. */
-      // TODO: TS LegacyReset expects `theme`?
       <Theme.Provider value={() => ({ mode: theme[CHANNEL].mode })}>
         <ThemeProvider theme={theme}>
-          <LegacyReset theme={undefined}>{children}</LegacyReset>
+          <LegacyReset>{children}</LegacyReset>
         </ThemeProvider>
       </Theme.Provider>
     );

@@ -5,7 +5,6 @@ interface Props {
   theme: Record<string, any>;
 }
 
-// TODO no idea what this is for
 export default ({ children, props, theme }: Props) => {
   const appearance = typeof props === 'object' ? 'default' : props;
   const merged = typeof props === 'object' ? { ...props } : {};

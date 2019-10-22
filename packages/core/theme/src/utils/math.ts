@@ -1,4 +1,4 @@
-// TODO when P is not provided, props are inferred never, which can be passed up.
+// If a generic is used here, props can be inferred never and passed up (even with defaults)
 export function add(fn: (props?: any) => number, addend: number) {
   return (props?: any) => fn(props) + addend;
 }
