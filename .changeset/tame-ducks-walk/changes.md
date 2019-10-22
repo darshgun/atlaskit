@@ -13,7 +13,7 @@
 * getFileStreamsCache
 * ImageResizeMode
 * Identifier / FileIdentifier / ExternalImageIdentifier / isFileIdentifier / isExternalImageIdentifier / isDifferentIdentifier
-
+* remove `cacheSize` from `ContextConfig` \ `MediaClientConfig`: This was used internally only by other media components and doesn't affect integrators
 
 ### Upgrading
 
