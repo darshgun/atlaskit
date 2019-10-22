@@ -10,6 +10,7 @@ export {
   default as AtlaskitThemeProvider,
 } from './components/AtlaskitThemeProvider';
 
+export { GlobalThemeTokens } from './types';
 export { default as Appearance } from './components/Appearance';
 
 // New API

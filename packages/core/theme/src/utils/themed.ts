@@ -4,15 +4,16 @@ import getTheme from './getTheme';
 import { ThemedValue, ThemeProps } from '../types';
 
 type Value = string | number;
-type Modes = Partial<{
-  light: Value;
-  dark: Value;
-  [index: string]: Value;
-}>;
-type VariantModes = { [key: string]: Modes };
 
-function themedVariants(variantProp: string, variants?: VariantModes) {
-  return (props?: ThemeProps & VariantModes) => {
+type Modes<V> = Partial<{
+  light: V;
+  dark: V;
+}>;
+
+type VariantModes<V> = { [index: string]: Modes<V> };
+
+function themedVariants<V>(variantProp: string, variants?: VariantModes<V>) {
+  return (props?: ThemeProps & VariantModes<V>) => {
     const theme = getTheme(props);
     if (props && props.variantProp && variants) {
       // @ts-ignore
@@ -25,13 +26,13 @@ function themedVariants(variantProp: string, variants?: VariantModes) {
   };
 }
 
-export default function themed(
-  modesOrVariant: Modes | string,
-  variantModes?: VariantModes,
-): ThemedValue {
+export default function themed<V = Value>(
+  modesOrVariant: Modes<V> | string,
+  variantModes?: VariantModes<V>,
+): ThemedValue<V> {
   if (typeof modesOrVariant === 'string') {
     // @ts-ignore
-    return themedVariants(modesOrVariant, variantModes);
+    return themedVariants<V>(modesOrVariant, variantModes);
   }
   return (props?: Record<string, any>) => {
     const theme = getTheme(props);

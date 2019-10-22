@@ -6,14 +6,12 @@ import { DEFAULT_APPEARANCE } from '../Flag';
 import { flagTextColor } from '../../theme';
 import { AppearanceTypes } from '../../types';
 
-// Outputs the styles for actions separator: mid-dot for non-bold flags, or space for bold flags.
-const getDivider = ({
-  hasDivider,
-  useMidDot,
-}: {
+interface getDividerProps {
   hasDivider: boolean;
   useMidDot: boolean;
-}) => css`
+}
+// Outputs the styles for actions separator: mid-dot for non-bold flags, or space for bold flags.
+const getDivider = ({ hasDivider, useMidDot }: getDividerProps) => css`
   display: ${hasDivider ? 'inline-block' : 'none'};
   content: "${useMidDot ? '\u00B7' : ''}";
   width: ${useMidDot ? multiply(gridSize, 2) : gridSize}px;
@@ -27,7 +25,7 @@ export default styled.div`
     appearance === DEFAULT_APPEARANCE ? `translateX(-${gridSize() / 2}px)` : 0};
 `;
 
-export const Action = styled.div`
+export const Action = styled.div<getDividerProps>`
   &::before {
     color: ${flagTextColor};
     text-align: center;

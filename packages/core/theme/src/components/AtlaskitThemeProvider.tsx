@@ -10,7 +10,10 @@ import { CHANNEL, DEFAULT_THEME_MODE } from '../constants';
 // For forward-compat until everything is upgraded.
 import Theme from './Theme';
 
-function getStylesheetResetCSS(state: ThemeProps) {
+// In this ThemeProvider theme will always be provided
+type ThemeProviderProps = Required<ThemeProps>;
+
+function getStylesheetResetCSS(state: ThemeProviderProps) {
   const backgroundColor = colors.background(state);
   return `
     body { background: ${backgroundColor}; }
@@ -22,7 +25,7 @@ interface Props {
   mode: ThemeModes;
 }
 
-function buildThemeState(mode: ThemeModes): ThemeProps {
+function buildThemeState(mode: ThemeModes): ThemeProviderProps {
   return { theme: { [CHANNEL]: { mode } } };
 }
 
@@ -67,7 +70,7 @@ const LegacyReset = styled.div`
 
 export default class AtlaskitThemeProvider extends Component<
   Props,
-  ThemeProps
+  ThemeProviderProps
 > {
   stylesheet: any;
 

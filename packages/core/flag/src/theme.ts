@@ -29,10 +29,15 @@ export const flagShadowColor = themed('appearance', {
   success: { light: colors.N50A, dark: colors.N50A },
   warning: { light: colors.N50A, dark: colors.N50A },
 });
+
 export const flagFocusRingColor = themed('appearance', {
   error: { light: colors.N40, dark: colors.N40 },
   info: { light: colors.N40, dark: colors.N40 },
-  normal: { light: colors.B100, dark: colors.link },
+  // TODO: Fix this
+  normal: {
+    light: colors.B100,
+    dark: colors.link({ theme: { __ATLASKIT_THEME__: { mode: 'dark' } } }),
+  },
   success: { light: colors.N40, dark: colors.N40 },
   warning: { light: colors.N200, dark: colors.N200 },
 });

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { ThemeProps } from '@atlaskit/theme';
 import { borderRadius, gridSize } from '@atlaskit/theme/constants';
 import { multiply } from '@atlaskit/theme/math';
 
@@ -13,7 +14,10 @@ import {
 
 import { AppearanceTypes } from '../../types';
 
-const getBoxShadow = (props: unknown) => {
+interface FlagColorProps extends ThemeProps {
+  appearance?: AppearanceTypes;
+}
+const getBoxShadow = (props: FlagColorProps) => {
   const borderColor = flagBorderColor(props);
   const shadowColor = flagShadowColor(props);
 
@@ -97,11 +101,10 @@ export const Content = styled.div`
 interface ExpanderProps {
   isExpanded: boolean;
 }
-export const Expander = styled.div`
-  max-height: ${({ isExpanded }: ExpanderProps) => (isExpanded ? 150 : 0)}px;
-  opacity: ${({ isExpanded }: ExpanderProps) => (isExpanded ? 1 : 0)};
-  overflow: ${({ isExpanded }: ExpanderProps) =>
-    isExpanded ? 'visible' : 'hidden'};
+export const Expander = styled.div<ExpanderProps>`
+  max-height: ${({ isExpanded }) => (isExpanded ? 150 : 0)}px;
+  opacity: ${({ isExpanded }) => (isExpanded ? 1 : 0)};
+  overflow: ${({ isExpanded }) => (isExpanded ? 'visible' : 'hidden')};
   transition: max-height 0.3s, opacity 0.3s;
 `;
 

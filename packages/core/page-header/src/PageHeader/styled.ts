@@ -25,16 +25,15 @@ export const StyledTitle = styled.h1<StyledProps>`
   margin-top: 0;
 `;
 
-export const TitleWrapper = styled.div`
+export const TitleWrapper = styled.div<StyledProps>`
   align-items: flex-start;
   display: flex;
-  ${({ truncate }: StyledProps) =>
-    truncate ? 'flex-wrap: no-wrap;' : 'flex-wrap: wrap;'}
+  ${({ truncate }) => (truncate ? 'flex-wrap: no-wrap;' : 'flex-wrap: wrap;')}
 `;
 
-export const TitleContainer = styled.div`
+export const TitleContainer = styled.div<StyledProps>`
   flex: 1 0 auto;
-  ${({ truncate }: StyledProps) => (truncate ? 'flex-shrink: 1;' : null)}
+  ${({ truncate }) => (truncate ? 'flex-shrink: 1;' : null)}
   margin-bottom: ${gridSize()}px;
   max-width: 100%;
   min-width: 0;

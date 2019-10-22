@@ -10,6 +10,6 @@ export interface Theme {
 export interface GlobalThemeTokens extends Theme {}
 export interface ThemeProps {
   theme?: { __ATLASKIT_THEME__: Theme };
-  [key: string]: any;
+  [key: string]: any; //TODO look into this
 }
-export type ThemedValue = (props?: ThemeProps) => string | number;
+export type ThemedValue<V = string | number> = (props?: ThemeProps) => V;

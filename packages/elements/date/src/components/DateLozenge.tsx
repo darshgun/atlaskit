@@ -31,10 +31,6 @@ export const resolveColors = (
   };
 };
 
-/**
- * TODO when update typescript to 2.9+
- * add custom props as Generic Parameter to span instead of casting
- */
 export const DateLozenge = styled.span<Props>`
   border-radius: ${borderRadius()}px;
   padding: 2px 4px;

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { themed } from '@atlaskit/theme/components';
 import { borderRadius, layers } from '@atlaskit/theme/constants';
 import { N800, DN0, N0, DN600 } from '@atlaskit/theme/colors';
