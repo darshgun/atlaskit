@@ -381,13 +381,20 @@ export class MentionResource extends AbstractMentionResource
    * @param contextIdentifier the current context identifier
    * @returns a safe context for query encoding
    */
-  private clearContext(contextIdentifier: MentionContextIdentifier = {}): MentionContextIdentifier {
-    return (Object.keys(contextIdentifier) as Array<keyof MentionContextIdentifier>)
+  private clearContext(
+    contextIdentifier: MentionContextIdentifier = {},
+  ): MentionContextIdentifier {
+    return (Object.keys(contextIdentifier) as Array<
+      keyof MentionContextIdentifier
+    >)
       .filter(key => contextIdentifier[key])
-      .reduce((context, key) => ({
-        [key]: contextIdentifier[key],
-        ...context
-      }), {});
+      .reduce(
+        (context, key) => ({
+          [key]: contextIdentifier[key],
+          ...context,
+        }),
+        {},
+      );
   }
 
   private getQueryParams(
