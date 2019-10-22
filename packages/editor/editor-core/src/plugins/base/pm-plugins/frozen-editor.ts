@@ -14,7 +14,7 @@ import {
 
 const FREEZE_CHECK_TIME = 600;
 const SLOW_INPUT_TIME = 300;
-const KEYSTROKE_SAMPLING_LIMIT = 100;
+const DEFAULT_KEYSTROKE_SAMPLING_LIMIT = 100;
 
 const dispatchLongTaskEvent = (
   dispatchAnalyticsEvent: DispatchAnalyticsEvent,
@@ -34,18 +34,25 @@ const dispatchLongTaskEvent = (
   });
 };
 
-let keystrokeCount = 0;
-export default (dispatchAnalyticsEvent: DispatchAnalyticsEvent) =>
-  new Plugin({
+export default (
+  dispatchAnalyticsEvent: DispatchAnalyticsEvent,
+  inputSamplingLimit?: number,
+) => {
+  let keystrokeCount = 0;
+  const samplingLimit =
+    typeof inputSamplingLimit === 'number'
+      ? inputSamplingLimit
+      : DEFAULT_KEYSTROKE_SAMPLING_LIMIT;
+  return new Plugin({
     props: isPerformanceAPIAvailable()
       ? {
-          handleTextInput(view) {
+          handleTextInput(view, from: number, to: number, text: string) {
             const { state } = view;
             const now = performance.now();
 
             requestAnimationFrame(() => {
               const diff = performance.now() - now;
-              if (++keystrokeCount === KEYSTROKE_SAMPLING_LIMIT) {
+              if (++keystrokeCount === samplingLimit && samplingLimit) {
                 keystrokeCount = 0;
                 dispatchAnalyticsEvent({
                   action: ACTION.INPUT_PERF_SAMPLING,
@@ -105,3 +112,4 @@ export default (dispatchAnalyticsEvent: DispatchAnalyticsEvent) =>
       };
     },
   });
+};

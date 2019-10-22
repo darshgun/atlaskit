@@ -46,9 +46,9 @@ const basePlugin = (options?: BasePluginOptions): EditorPlugin => ({
       { name: 'reactNodeView', plugin: () => reactNodeView },
       {
         name: 'frozenEditor',
-        plugin: ({ dispatchAnalyticsEvent }) =>
+        plugin: ({ dispatchAnalyticsEvent, props }) =>
           options && options.addRunTimePerformanceCheck
-            ? frozenEditor(dispatchAnalyticsEvent)
+            ? frozenEditor(dispatchAnalyticsEvent, props.inputSamplingLimit)
             : undefined,
       },
       { name: 'decorationPlugin', plugin: () => decorationPlugin() },
