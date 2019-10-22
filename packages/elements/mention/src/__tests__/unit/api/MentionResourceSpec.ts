@@ -69,6 +69,13 @@ const FULL_CONTEXT = {
   sessionId: 'someSessionId',
 };
 
+const MESSY_CONTEXT = {
+  containerId: '',
+  objectId: undefined,
+  childObjectId: '',
+  sessionId: 'longfurbies'
+};
+
 describe('MentionResource', () => {
   beforeEach(() => {
     // eslint-disable-next-line no-unused-expressions
@@ -427,6 +434,21 @@ describe('MentionResource', () => {
           done();
         });
     });
+
+    it('should resolve the query parameters with a messy context', done => {
+      const resource = new MentionResource(apiConfig);
+      resource
+        .recordMentionSelection({ id: '666' }, MESSY_CONTEXT)
+        .then(() => {
+          const queryParams = queryString.parse(queryString.extract(fetchMock.lastUrl()));
+
+          expect(queryParams).not.toHaveProperty('containerId');
+          expect(queryParams).not.toHaveProperty('objectId');
+          expect(queryParams).not.toHaveProperty('objectChildId');
+          expect(queryParams.sessionId).toBe(MESSY_CONTEXT.sessionId);
+          done();
+        });
+    })
   });
 
   describe('#shouldHighlightMention', () => {

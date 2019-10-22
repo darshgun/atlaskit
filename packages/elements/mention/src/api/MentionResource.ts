@@ -375,6 +375,21 @@ export class MentionResource extends AbstractMentionResource
     return this.remoteInitialState(contextIdentifier);
   }
 
+  /**
+   * Clear a messy context to generate query params by removing falsy values.
+   *
+   * @param contextIdentifier the current context identifier
+   * @returns a safe context for query encoding
+   */
+  private clearContext(contextIdentifier: MentionContextIdentifier = {}): MentionContextIdentifier {
+    return (Object.keys(contextIdentifier) as Array<keyof MentionContextIdentifier>)
+      .filter(key => contextIdentifier[key])
+      .reduce((context, key) => ({
+        [key]: contextIdentifier[key],
+        ...context
+      }), {});
+  }
+
   private getQueryParams(
     contextIdentifier?: MentionContextIdentifier,
   ): KeyValues {
@@ -389,7 +404,7 @@ export class MentionResource extends AbstractMentionResource
     }
 
     // if contextParams exist then it will override configParams for containerId
-    return { ...configParams, ...contextIdentifier };
+    return { ...configParams, ...this.clearContext(contextIdentifier) };
   }
 
   /**
