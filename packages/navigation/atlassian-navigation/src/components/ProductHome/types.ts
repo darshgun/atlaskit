@@ -9,6 +9,8 @@ export type ProductHomeProps = {
   logo: ComponentType<{}>;
   /** Optional onClick handler */
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  /** Name of the site that appears next to the logo **/
+  siteName?: string;
 };
 
 export type CustomProductHomeProps = {
@@ -18,4 +20,6 @@ export type CustomProductHomeProps = {
   logoUrl: string;
   /** Optional onClick handler */
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  /** Name of the site that appears next to the logo **/
+  siteName?: string;
 };

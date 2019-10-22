@@ -51,6 +51,30 @@ export const productLogoCSS = {
   },
 };
 
+export const siteNameCSS = ({ mode: {navigation: { color }}}: NavigationTheme) => ({
+  marginLeft: `${gridSize * 0.5}px`,
+  display: 'flex',
+  alignItems: 'center',
+
+  // Adds separator after site name.
+  '&::after': {
+    marginLeft: gridSize * 3,
+    marginRight: gridSize * 1.5,
+    content: '""',
+    display: 'inline-block',
+    width: '1px',
+    height: gridSize * 3,
+    backgroundColor: color,
+    opacity: 0.2,
+  }
+});
+
+export const siteNameSkeletonCSS = (theme: NavigationTheme) => ({
+  ...siteNameCSS(theme),
+  ...skeletonCSS(theme),
+  width: gridSize * 3,
+})
+
 export const productLogoSkeletonCSS = (theme: NavigationTheme) => ({
   borderRadius: `${height / 2}px`,
   width: '120px',

@@ -173,7 +173,7 @@ const Logo = () => (
   </a>
 );
 
-const ProductHomeExample = () => <ProductHome icon={Icon} logo={Logo} />;
+const ProductHomeExample = () => <ProductHome icon={Icon} logo={Logo} siteName="Hello" />;
 
 const SearchDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
