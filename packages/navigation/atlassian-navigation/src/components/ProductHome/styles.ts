@@ -51,7 +51,7 @@ export const productLogoCSS = {
   },
 };
 
-export const siteNameCSS = ({ mode: {navigation: { color }}}: NavigationTheme) => ({
+export const siteNameCSS = ({ mode: { navigation: { color }}}: NavigationTheme) => ({
   marginLeft: `${gridSize * 0.5}px`,
   display: 'flex',
   alignItems: 'center',

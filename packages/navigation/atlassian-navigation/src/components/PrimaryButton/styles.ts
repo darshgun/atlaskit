@@ -1,6 +1,6 @@
 import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
 import {
-  fontSizeSmall,
+  fontSize,
   gridSize as gridSizeFn,
 } from '@atlaskit/theme/constants';
 import { skeletonCSS } from '../../common/styles';
@@ -28,8 +28,7 @@ export const getPrimaryButtonTheme = ({
   return {
     buttonStyles: {
       ...buttonStyles,
-      fontSize: fontSizeSmall(),
-      fontWeight: 'bold',
+      fontSize: fontSize(),
       height: buttonHeight,
       padding: padding.all,
       ...primaryButton.default,
