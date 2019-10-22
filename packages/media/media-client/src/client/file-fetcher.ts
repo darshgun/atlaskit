@@ -181,7 +181,7 @@ export class FileFetcherImpl implements FileFetcher {
   ): Observable<FileState> {
     if (!isValidId(id)) {
       return Observable.create((observer: Observer<FileState>) => {
-        observer.error(`${id} is not a valid file id`);
+        observer.error('invalid id was passed to getFileState');
       });
     }
 

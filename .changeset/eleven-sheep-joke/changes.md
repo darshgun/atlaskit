@@ -1,0 +1,1 @@
+dont log id when is not a valid uuid in FileFetcher getFileState
