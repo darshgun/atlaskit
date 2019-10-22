@@ -8,7 +8,7 @@ import ScrollLock from 'react-scrolllock';
 import Footer from './Footer';
 import Header from './Header';
 
-import { AppearanceType, KeyboardOrMouseEvent, ButtonOnClick } from '../types';
+import { AppearanceType, KeyboardOrMouseEvent, ActionProps } from '../types';
 import {
   keylineHeight,
   Body as DefaultBody,
@@ -28,10 +28,7 @@ interface Props {
   /**
     Buttons to render in the footer
   */
-  actions?: Array<{
-    onClick?: ButtonOnClick;
-    text?: string;
-  }>;
+  actions?: Array<ActionProps>;
   /**
     Appearance of the primary action. Also adds an icon to the heading, if provided.
   */

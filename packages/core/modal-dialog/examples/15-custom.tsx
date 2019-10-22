@@ -9,7 +9,7 @@ import InlineDialog from '@atlaskit/inline-dialog';
 import { colors } from '@atlaskit/theme';
 
 import ModalDialog, { ModalFooter, ModalTransition } from '../src';
-import { ButtonOnClick } from '../src/types';
+import { ActionProps } from '../src/types';
 
 const defaults = ['header', 'footer', 'both', 'neither'];
 const custom = ['custom header', 'custom body', 'custom footer'];
@@ -36,7 +36,7 @@ const headerStyles: React.CSSProperties = {
   paddingTop: 170,
   position: 'relative',
 };
-const Header = ({ onClose }: { onClose: ButtonOnClick }) => (
+const Header = ({ onClose }: { onClose: ActionProps['onClick'] }) => (
   <div style={headerStyles}>
     <span style={{ position: 'absolute', right: 0, top: 4 }}>
       <Button onClick={onClose} appearance="link">
@@ -69,7 +69,7 @@ const Body = React.forwardRef<
 });
 
 interface FooterProps {
-  onClose: ButtonOnClick;
+  onClose: ActionProps['onClick'];
   showKeyline: boolean;
 }
 interface FooterState {
