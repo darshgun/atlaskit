@@ -1,1 +1,0 @@
-fixed type for the actions props
