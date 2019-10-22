@@ -19,6 +19,7 @@ export type ButtonCSSContext = {
   hover: ButtonCSSProperties;
   focus: ButtonFocusCSSProperties;
   active: ButtonCSSProperties;
+  selected: ButtonCSSProperties;
 };
 
 export type CreateCSS = ButtonCSSContext;

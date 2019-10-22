@@ -281,10 +281,11 @@ const AppsContent = () => (
 type PrimaryDropdownProps = {
   content: PopupProps['content'];
   text: string;
+  isSelected?: boolean;
 };
 
 const PrimaryDropdown = (props: PrimaryDropdownProps) => {
-  const { content, text } = props;
+  const { content, text, isSelected } = props;
   const { isVisible } = useOverflowStatus();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -316,6 +317,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
         <PrimaryDropdownButton
           onClick={onClick}
           onKeyDown={onKeyDown}
+          isSelected={isSelected}
           {...triggerProps}
         >
           {text}
@@ -326,7 +328,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 };
 
 const primaryItems = [
-  <PrimaryDropdown content={ProjectsContent} text="Projects" />,
+  <PrimaryDropdown isSelected content={ProjectsContent} text="Projects" />,
   <PrimaryDropdown content={FiltersContent} text="Filters" />,
   <PrimaryDropdown content={DashboardsContent} text="Dashboards" />,
   <PrimaryDropdown content={AppsContent} text="Apps" />,

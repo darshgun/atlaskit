@@ -47,3 +47,15 @@ export const primaryButtonSkeletonCSS = (theme: NavigationTheme) => ({
   width: '68px',
   ...skeletonCSS(theme),
 });
+
+export const isSelectedCSS = ({
+  mode: { primaryButton },
+}: NavigationTheme) => ({
+  backgroundColor: primaryButton.selected.color,
+  width: `calc(100% - ${gridSize}px)`,
+  height: '3px',
+  position: 'absolute' as const,
+  bottom: gridSize * -1.75,
+  left: gridSize / 2,
+})
+

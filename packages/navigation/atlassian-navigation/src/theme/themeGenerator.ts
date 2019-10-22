@@ -72,6 +72,11 @@ const generateCSSStates = (colors: Colors): ButtonCSSContext => {
       boxShadow: getBoxShadow('transparent'),
       color,
     },
+    selected: {
+      color: '#0052CC',
+      backgroundColor,
+      boxShadow: getBoxShadow('transparent')
+    }
   };
 };
 

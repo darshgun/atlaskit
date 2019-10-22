@@ -6,7 +6,10 @@ import { useOverflowStatus } from '../../src/controllers/overflow';
 const NavigationButton = (props: PrimaryButtonProps) => {
   const { isVisible } = useOverflowStatus();
   if (isVisible) {
-    return <PrimaryButton {...props} />;
+    // Wrapping div is required to position the
+    // isSelected styling correctly. May look for a
+    // better solution later.
+    return <div style={{position: 'relative'}}><PrimaryButton {...props} /></div>
   } else {
     return <DropdownItem>{props.children}</DropdownItem>;
   }
@@ -100,6 +103,7 @@ export const jiraPrimaryItems = [
     onClick={(...args: any[]) => {
       console.log('Projects click', ...args);
     }}
+    isSelected
   >
     Projects
   </NavigationButton>,
