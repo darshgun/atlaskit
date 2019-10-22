@@ -93,6 +93,18 @@ type SlowInputAEP = OperationalAEP<
   undefined
 >;
 
+type InputPerfSamlingAEP = OperationalAEP<
+  ACTION.INPUT_PERF_SAMPLING,
+  ACTION_SUBJECT.EDITOR,
+  undefined,
+  {
+    time: number;
+    nodeSize: number;
+    nodes?: Record<string, number>;
+  },
+  undefined
+>;
+
 type UploadExternalFailedAEP = OperationalAEP<
   ACTION.UPLOAD_EXTERNAL_FAIL,
   ACTION_SUBJECT.EDITOR,
@@ -217,4 +229,5 @@ export type GeneralEventPayload =
   | EditorPerfAEP
   | BrowserFreezePayload
   | SlowInputAEP
-  | UploadExternalFailedAEP;
+  | UploadExternalFailedAEP
+  | InputPerfSamlingAEP;

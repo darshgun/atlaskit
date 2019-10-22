@@ -14,6 +14,7 @@ import {
 
 const FREEZE_CHECK_TIME = 600;
 const SLOW_INPUT_TIME = 300;
+const KEYSTROKE_SAMPLING_LIMIT = 100;
 
 const dispatchLongTaskEvent = (
   dispatchAnalyticsEvent: DispatchAnalyticsEvent,
@@ -33,6 +34,7 @@ const dispatchLongTaskEvent = (
   });
 };
 
+let keystrokeCount = 0;
 export default (dispatchAnalyticsEvent: DispatchAnalyticsEvent) =>
   new Plugin({
     props: isPerformanceAPIAvailable()
@@ -40,8 +42,23 @@ export default (dispatchAnalyticsEvent: DispatchAnalyticsEvent) =>
           handleTextInput(view) {
             const { state } = view;
             const now = performance.now();
+
             requestAnimationFrame(() => {
               const diff = performance.now() - now;
+              if (++keystrokeCount === KEYSTROKE_SAMPLING_LIMIT) {
+                keystrokeCount = 0;
+                dispatchAnalyticsEvent({
+                  action: ACTION.INPUT_PERF_SAMPLING,
+                  actionSubject: ACTION_SUBJECT.EDITOR,
+                  attributes: {
+                    time: diff,
+                    nodeSize: state.doc.nodeSize,
+                    nodes: getNodesCount(state.doc),
+                  },
+                  eventType: EVENT_TYPE.OPERATIONAL,
+                });
+              }
+
               if (diff > SLOW_INPUT_TIME) {
                 dispatchAnalyticsEvent({
                   action: ACTION.SLOW_INPUT,
