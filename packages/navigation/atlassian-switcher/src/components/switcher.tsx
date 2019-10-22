@@ -11,6 +11,7 @@ import {
   Skeleton,
   TryLozenge,
   FormattedMessage,
+  ItemWithAvatarGroup,
 } from '../primitives';
 
 import { SwitcherItemType, RecentItemType } from '../utils/links';
@@ -131,6 +132,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
       adminLinks,
       recentLinks,
       customLinks,
+      joinableSiteLinks,
       manageLink,
       hasLoaded,
       hasLoadedCritical,
@@ -350,6 +352,27 @@ export default class Switcher extends React.Component<SwitcherProps> {
               ))}
             </Section>
           )}
+          <Section
+            sectionId="join"
+            title={<FormattedMessage {...messages.join} />}
+          >
+            {joinableSiteLinks.map(
+              ({ label, description, Icon, users }, idx) => (
+                <NavigationAnalyticsContext
+                  key={idx}
+                  data={getItemAnalyticsContext(idx, '', 'recent', '')}
+                >
+                  <ItemWithAvatarGroup
+                    icon={<Icon theme="product" />}
+                    description={description}
+                    users={users}
+                  >
+                    {label}
+                  </ItemWithAvatarGroup>
+                </NavigationAnalyticsContext>
+              ),
+            )}
+          </Section>
           <Section
             sectionId="recent"
             title={

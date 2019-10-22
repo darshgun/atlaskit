@@ -7,6 +7,17 @@ import SettingsGlyph from '@atlaskit/icon/glyph/settings';
 import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 
 import {
+  ConfluenceIcon,
+  JiraSoftwareIcon,
+  JiraServiceDeskIcon,
+  JiraCoreIcon,
+  OpsGenieIcon,
+  StatuspageIcon,
+  TrelloIcon,
+} from '@atlaskit/logo';
+import { createIcon } from '../utils/icon-themes';
+
+import {
   BitbucketIcon,
   ConfluenceIcon,
   JiraSoftwareIcon,
@@ -434,4 +445,49 @@ export const getRecentLinkItems = (
       type: customLink.type,
       description: getObjectTypeLabel(customLink.type),
     }));
+};
+
+export const getJoinableSiteLinks = joinableSites => {
+  return (
+    joinableSites
+      // filter out sites with no product || collaborators
+      .filter(
+        site =>
+          site.products &&
+          site.products.length &&
+          (site.users && site.users.length),
+      )
+      // display 3 items max
+      .slice(0, 3)
+      .map(site => {
+        const [defaultProduct] = site.products;
+
+        let label, icon;
+
+        // TODO: complete this list
+        switch (defaultProduct) {
+          case 'jira-software.ondemand':
+            label = 'Jira Software';
+            icon = JiraSoftwareIcon;
+            break;
+
+          default:
+            break;
+        }
+
+        return {
+          label,
+          description: site.url,
+          Icon: createIcon(icon, { size: 'small' }),
+          users: site.users.map(user => ({
+            key: user.displayName,
+            name: user.displayName,
+            src: user.avatarUrl,
+            appearance: 'circle',
+            size: 'small',
+            enableTooltip: true,
+          })),
+        };
+      })
+  );
 };

@@ -7,6 +7,7 @@ import {
   getRecentLinkItems,
   getSuggestedProductLink,
   getDiscoverSectionLinks,
+  getJoinableSiteLinks,
   SwitcherItemType,
 } from './links';
 import {
@@ -139,6 +140,16 @@ function collectCustomLinks(
   }
 }
 
+function collectJoinableSiteLinks(joinableSites) {
+  if (joinableSites === undefined || isError(joinableSites)) {
+    return [];
+  }
+
+  if (isComplete(joinableSites)) {
+    return getJoinableSiteLinks(joinableSites.data);
+  }
+}
+
 interface ProviderResults {
   customLinks?: ProviderResult<CustomLinksResponse>;
   recentContainers: ProviderResult<RecentContainersResponse>;
@@ -196,6 +207,7 @@ export function mapResultsToSwitcherProps(
   features: FeatureMap,
   availableProducts: ProviderResult<AvailableProductsResponse>,
   product?: Product,
+  joinableSites?: ProviderResult<any>,
 ) {
   const collect = createCollector();
 
@@ -262,6 +274,7 @@ export function mapResultsToSwitcherProps(
       [],
     ),
     customLinks: collect(collectCustomLinks(customLinks, userSiteData), []),
+    joinableSiteLinks: collect(collectJoinableSiteLinks(joinableSites), []),
 
     showManageLink:
       !features.disableCustomLinks &&
