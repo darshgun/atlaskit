@@ -52,9 +52,11 @@ describe('finalizeUploadMiddleware', () => {
       Promise.resolve(auth),
     );
 
-    jest.spyOn(MediaClientModule, 'MediaStore').mockImplementation(() => ({
-      copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
-    }));
+    jest
+      .spyOn(MediaClientModule, 'MediaStore' as any)
+      .mockImplementation(() => ({
+        copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
+      }));
 
     return {
       store,
@@ -146,9 +148,11 @@ describe('finalizeUploadMiddleware', () => {
       message: 'some-error-message',
     };
 
-    jest.spyOn(MediaClientModule, 'MediaStore').mockImplementation(() => ({
-      copyFileWithToken: () => Promise.reject(error),
-    }));
+    jest
+      .spyOn(MediaClientModule, 'MediaStore' as any)
+      .mockImplementation(() => ({
+        copyFileWithToken: () => Promise.reject(error),
+      }));
 
     return finalizeUpload(store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(

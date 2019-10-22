@@ -17,13 +17,11 @@ import Spinner from '@atlaskit/spinner';
 import {
   MediaClient,
   FileState,
-  UploadableFile,
   FileIdentifier,
   TouchedFiles,
   UploadableFileUpfrontIds,
 } from '@atlaskit/media-client';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
-import uuidV4 from 'uuid/v4';
 import {
   SmartMediaEditor,
   SmartMediaEditorProps,
