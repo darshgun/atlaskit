@@ -1,6 +1,8 @@
 import { FileIdentifier } from '@atlaskit/media-client';
 import { MediaClientConfig } from '@atlaskit/media-core';
 import { MediaFile, UploadParams } from '@atlaskit/media-picker';
+import { EditorView } from 'prosemirror-view';
+import { NodeType } from 'prosemirror-model';
 
 export type MediaStateStatus =
   | 'unknown'
@@ -99,8 +101,20 @@ export type SetMediaMediaClientConfig = {
   mediaClientConfig?: MediaClientConfig;
 };
 
+export type ToggleMediaAltTextToolbar = {
+  type: 'toggleMediaAltTextToolbar';
+};
+
 export type MediaEditorAction =
   | OpenMediaEditor
   | CloseMediaEditor
   | UploadAnnotation
   | SetMediaMediaClientConfig;
+
+export type MediaAction = ToggleMediaAltTextToolbar;
+
+export type MediaToolbarBaseConfig = {
+  title: string;
+  getDomRef?: (view: EditorView) => HTMLElement | undefined;
+  nodeType: NodeType | NodeType[];
+};

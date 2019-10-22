@@ -18,6 +18,7 @@ export interface Props {
   target?: string;
   children?: React.ReactNode;
   className?: string;
+  tooltipContent?: React.ReactNode;
 }
 
 export default ({
@@ -34,9 +35,14 @@ export default ({
   appearance = 'subtle',
   children,
   className,
+  tooltipContent,
 }: Props) => {
   return (
-    <Tooltip content={title} hideTooltipOnClick={true} position="top">
+    <Tooltip
+      content={tooltipContent || title}
+      hideTooltipOnClick={true}
+      position="top"
+    >
       <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         <Button
           className={className}
