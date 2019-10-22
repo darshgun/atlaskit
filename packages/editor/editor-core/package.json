@@ -40,6 +40,7 @@
     "@atlaskit/editor-common": "^41.2.0",
     "@atlaskit/editor-json-transformer": "^6.3.4",
     "@atlaskit/editor-markdown-transformer": "^3.1.7",
+    "@atlaskit/dropdown-menu": "^8.1.2",
     "@atlaskit/emoji": "^62.5.4",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/item": "^10.1.5",
@@ -110,7 +111,6 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/dropdown-menu": "^8.1.2",
     "@atlaskit/editor-bitbucket-transformer": "^6.2.5",
     "@atlaskit/editor-test-helpers": "^10.1.2",
     "@atlaskit/i18n-tools": "^0.6.0",
