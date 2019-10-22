@@ -19,11 +19,6 @@ import type { GlobalNavigationProps } from './types';
 const THROTTLE_INTERVAL = 100;
 
 export default class GlobalNavigation extends Component<GlobalNavigationProps> {
-  // constructor(props: GlobalNavigationProps) {
-  //   super(props);
-  //   this.
-  //   this.throttled_listener = throttle(this.listener, THROTTLE_INTERVAL);
-  // }
   vh = window.innerHeight * 0.01;
 
   throttledListener = throttle(this.listener, THROTTLE_INTERVAL);
