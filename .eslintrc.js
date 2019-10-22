@@ -295,6 +295,7 @@ module.exports = {
         'import/first': 'off',
         'import/newline-after-import': 'off',
         'import/no-commonjs': 'off',
+        'import/no-cycle': 'off',
         'import/no-duplicates': 'off',
         'import/no-dynamic-require': 'off',
         'import/no-extraneous-dependencies': [
