@@ -1108,6 +1108,19 @@ describe('Card', () => {
       expect(onEvent).not.toBeCalled();
     });
 
+    it('should not fire copy analytics if selection api is not available', async () => {
+      const mediaClient = fakeMediaClient() as any;
+      const onEvent = jest.fn();
+      window.getSelection = jest.fn().mockReturnValue({});
+      mount<CardProps, CardState>(
+        <AnalyticsListener channel={FabricChannel.media} onEvent={onEvent}>
+          <Card mediaClient={mediaClient} identifier={identifier} />
+        </AnalyticsListener>,
+      );
+      await callCopy();
+      expect(onEvent).not.toBeCalled();
+    });
+
     it('should remove listener on unmount', async () => {
       const mediaClient = fakeMediaClient() as any;
       const onEvent = jest.fn();

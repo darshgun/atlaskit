@@ -114,7 +114,10 @@ const smartLinkADF = JSON.stringify({
  */
 describe('renderer bridge: links', () => {
   beforeEach(() => {
-    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => {
+      cb(1);
+      return 1;
+    });
   });
 
   it('should prevent WebView redirection when clicking regular links', () => {

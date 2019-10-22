@@ -63,6 +63,13 @@ type Props = {
   trigger?: Node,
   /** Callback to know when the list is first correctly positioned within it's Layer */
   onPositioned?: Function,
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique
+   * string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests.
+   - testId--content to identify the droplist content.
+    */
+  testId?: string,
 };
 
 if (process.env.NODE_ENV !== 'production' && !process.env.CI) {
@@ -197,11 +204,13 @@ class Droplist extends Component<Props, void> {
       shouldFlip,
       trigger,
       onPositioned,
+      testId,
     } = this.props;
 
     const layerContent = isOpen ? (
       <Content
         data-role="droplistContent"
+        data-testid={testId && `${testId}--content`}
         isTall={appearance === 'tall'}
         innerRef={this.handleContentRef}
         maxHeight={maxHeight}

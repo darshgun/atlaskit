@@ -19,6 +19,8 @@ describe('<ResourcedTaskItem/>', () => {
     provider = {
       subscribe: jest.fn(),
       unsubscribe: jest.fn(),
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       toggleTask: jest.fn(() => Promise.resolve(true)),
       unsubscribeRecentUpdates: jest.fn(),
       notifyRecentUpdates: jest.fn(),

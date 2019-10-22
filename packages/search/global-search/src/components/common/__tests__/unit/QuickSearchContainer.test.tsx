@@ -11,7 +11,6 @@ import {
   PartiallyLoadedRecentItems,
   Props,
   QuickSearchContainer,
-  SearchResultProps,
 } from '../../QuickSearchContainer';
 import { GlobalQuickSearch } from '../../../GlobalQuickSearch';
 import * as AnalyticsHelper from '../../../../util/analytics-event-helper';
@@ -22,7 +21,12 @@ import {
 import { ReferralContextIdentifiers } from '../../../GlobalQuickSearchWrapper';
 import { QuickSearchContext } from '../../../../api/types';
 import { mockLogger } from '../../../../__tests__/unit/mocks/_mockLogger';
-import { JiraResultsMap, ConfluenceResultsMap } from '../../../../model/Result';
+import {
+  JiraResultsMap,
+  ConfluenceResultsMap,
+  ResultsGroup,
+  ResultsWithTiming,
+} from '../../../../model/Result';
 import uuid from 'uuid/v4';
 import { DEFAULT_FEATURES } from '../../../../util/features';
 
@@ -35,11 +39,13 @@ const defaultReferralContext = {
 
 type GenericResultMap = JiraResultsMap | ConfluenceResultsMap;
 
-const mapToResultGroup = (resultMap: GenericResultMap) =>
+const mapToResultGroup = (resultMap: GenericResultMap): ResultsGroup[] =>
   Object.keys(resultMap).map(key => ({
     key,
     title: `title_${key}` as any,
-    items: resultMap[key],
+    items: resultMap[key] as any[],
+    showTotalSize: false,
+    totalSize: 0,
   }));
 
 const mockEvent: any = {
@@ -48,21 +54,16 @@ const mockEvent: any = {
   fire: jest.fn(() => mockEvent),
 };
 
-const defaultProps = {
+const defaultProps: Props<GenericResultMap> = {
   product: 'confluence' as QuickSearchContext,
   logger: mockLogger(),
-  getSearchResultsComponent: jest.fn<{}>(
-    (props: SearchResultProps<GenericResultMap>) => null,
-  ),
-  getRecentItems: jest.fn((searchSessionId: string) => ({
-    eagerRecentItemsPromise: Promise.resolve({ results: {} }),
+  getSearchResultsComponent: jest.fn(() => null),
+  getRecentItems: jest.fn(() => ({
+    eagerRecentItemsPromise: Promise.resolve({ results: {} as any }),
     lazyLoadedRecentItemsPromise: Promise.resolve({}),
   })),
-  getSearchResults: jest.fn(
-    (query: string, sessionId: string, startTime: number) =>
-      Promise.resolve({ results: {} }),
-  ),
-  getAutocompleteSuggestions: jest.fn((query: string) =>
+  getSearchResults: jest.fn(() => Promise.resolve({ results: {} as any })),
+  getAutocompleteSuggestions: jest.fn(() =>
     Promise.resolve(defaultAutocompleteData),
   ),
   createAnalyticsEvent: jest.fn(() => mockEvent),
@@ -102,35 +103,34 @@ const assertLastCall = (spy: jest.Mock<{}>, obj: {} | any[]) => {
 
 describe('QuickSearchContainer', () => {
   let firePreQueryShownEventSpy: jest.SpyInstance<
-    (
-      eventAttributes: ShownAnalyticsAttributes,
-      elapsedMs: number,
-      renderTimeMs: number,
-      searchSessionId: string,
-      createAnalyticsEvent: CreateAnalyticsEventFn,
-      abTest: ABTest,
-      referralContextIdentifiers?: ReferralContextIdentifiers,
-      retrievedFromAggregator?: boolean | undefined,
-    ) => void
+    void,
+    [
+      ShownAnalyticsAttributes,
+      number,
+      number,
+      string,
+      CreateAnalyticsEventFn,
+      ABTest,
+      ReferralContextIdentifiers?,
+      boolean?
+    ]
   >;
   let firePostQueryShownEventSpy: jest.SpyInstance<
-    (
-      resultsDetails: ShownAnalyticsAttributes,
-      timings: PerformanceTiming,
-      searchSessionId: string,
-      query: string,
-      filtersApplied: { [filterType: string]: boolean },
-      createAnalyticsEvent: CreateAnalyticsEventFn,
-      abTest: ABTest,
-      referralContextIdentifiers?: ReferralContextIdentifiers,
-    ) => void
+    void,
+    [
+      ShownAnalyticsAttributes,
+      PerformanceTiming,
+      string,
+      string,
+      { [filter: string]: boolean },
+      CreateAnalyticsEventFn,
+      ABTest,
+      ReferralContextIdentifiers?
+    ]
   >;
   let fireExperimentExposureEventSpy: jest.SpyInstance<
-    (
-      abTest: ABTest,
-      searchSessionId: string,
-      createAnalyticsEvent: CreateAnalyticsEventFn,
-    ) => void
+    void,
+    [ABTest, string, CreateAnalyticsEventFn]
   >;
 
   const assertPreQueryAnalytics = (
@@ -271,10 +271,15 @@ describe('QuickSearchContainer', () => {
 
     it('should render recent items after mount', async () => {
       const getRecentItems = jest.fn<
-        PartiallyLoadedRecentItems<GenericResultMap>
+        PartiallyLoadedRecentItems<GenericResultMap>,
+        []
       >(() => ({
-        eagerRecentItemsPromise: Promise.resolve({ results: recentItems }),
-        lazyLoadedRecentItemsPromise: Promise.resolve(lazyLoadedRecentItems),
+        eagerRecentItemsPromise: Promise.resolve({
+          results: recentItems as any,
+        }),
+        lazyLoadedRecentItemsPromise: Promise.resolve(
+          lazyLoadedRecentItems as any,
+        ),
       }));
 
       const wrapper = await mountQuickSearchContainerWaitingForRender({
@@ -285,7 +290,7 @@ describe('QuickSearchContainer', () => {
       const globalQuickSearch = wrapper.find(GlobalQuickSearch);
       expect(globalQuickSearch.props().isLoading).toBe(false);
       expect(getRecentItems).toHaveBeenCalled();
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         recentItems: expectedRecentItems,
         isLoading: false,
         isError: false,
@@ -299,15 +304,20 @@ describe('QuickSearchContainer', () => {
       let eagerResolveFn = () => {};
       let lazyResolveFn = () => {};
 
-      const eagerRecentItemsPromise = new Promise(resolve => {
-        eagerResolveFn = () => resolve({ results: recentItems });
+      const eagerRecentItemsPromise: Promise<
+        ResultsWithTiming<GenericResultMap>
+      > = new Promise(resolve => {
+        eagerResolveFn = () => resolve({ results: recentItems as any });
       });
-      const lazyLoadedRecentItemsPromise = new Promise(resolve => {
-        lazyResolveFn = () => resolve(lazyLoadedRecentItems);
+      const lazyLoadedRecentItemsPromise: Promise<
+        Partial<GenericResultMap>
+      > = new Promise(resolve => {
+        lazyResolveFn = () => resolve(lazyLoadedRecentItems as any);
       });
 
       const getRecentItems = jest.fn<
-        PartiallyLoadedRecentItems<GenericResultMap>
+        PartiallyLoadedRecentItems<GenericResultMap>,
+        []
       >(() => ({
         eagerRecentItemsPromise,
         lazyLoadedRecentItemsPromise,
@@ -319,7 +329,7 @@ describe('QuickSearchContainer', () => {
         getRecentItems,
       });
 
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         recentItems,
         isLoading: false,
         isError: false,
@@ -327,7 +337,7 @@ describe('QuickSearchContainer', () => {
 
       await lazyResolveFn();
 
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         recentItems: expectedRecentItems,
         isLoading: false,
         isError: false,
@@ -336,7 +346,7 @@ describe('QuickSearchContainer', () => {
   });
 
   describe('Search', () => {
-    let getSearchResults: jest.Mock<{}>;
+    let getSearchResults: jest.Mock;
 
     const renderAndWait = async (getRecentItems?: undefined) => {
       const wrapper = await mountQuickSearchContainerWaitingForRender({
@@ -384,7 +394,7 @@ describe('QuickSearchContainer', () => {
       const query = 'query';
       const wrapper = await renderAndWait();
       await search(wrapper, query, Promise.resolve({ results: searchResults }));
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         searchResults,
         isLoading: false,
         isError: false,
@@ -408,7 +418,7 @@ describe('QuickSearchContainer', () => {
         Promise.resolve({ results: searchResults }),
         [{ filter: { '@type': FilterType.Spaces, spaceKeys: ['abc123'] } }],
       );
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         searchResults,
         isLoading: false,
         isError: false,
@@ -442,7 +452,7 @@ describe('QuickSearchContainer', () => {
         query,
         Promise.reject(new Error('something wrong')),
       );
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         isLoading: false,
         isError: true,
         latestSearchQuery: query,
@@ -457,7 +467,7 @@ describe('QuickSearchContainer', () => {
         query,
         Promise.reject(new Error('something wrong')),
       );
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         isLoading: false,
         isError: true,
         latestSearchQuery: query,
@@ -477,7 +487,7 @@ describe('QuickSearchContainer', () => {
         newQuery,
         Promise.resolve({ results: searchResults }),
       );
-      assertLastCall(defaultProps.getSearchResultsComponent, {
+      assertLastCall(defaultProps.getSearchResultsComponent as any, {
         isLoading: false,
         isError: false,
         latestSearchQuery: newQuery,

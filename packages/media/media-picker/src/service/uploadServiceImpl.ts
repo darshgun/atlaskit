@@ -186,7 +186,7 @@ export class UploadServiceImpl implements UploadService {
             }
 
             if (state.status === 'processing') {
-              subscription.unsubscribe();
+              setTimeout(() => subscription.unsubscribe(), 0);
               if (shouldCopyFileToRecents) {
                 mediaClient.emit('file-added', state);
                 globalMediaEventEmitter.emit('file-added', state);

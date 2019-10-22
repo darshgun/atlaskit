@@ -1,16 +1,15 @@
-jest.mock('uuid/v4', () => ({
-  __esModule: true, // this property makes it work
-  default: jest.fn(),
-}));
-
 import * as React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { InjectedIntlProps } from 'react-intl';
+import { ReactWrapper } from 'enzyme';
 import {
   asMock,
   expectFunctionToHaveBeenCalledWith,
   expectToEqual,
   fakeMediaClient,
+  mountWithIntlContext,
   getDefaultMediaClientConfig,
+  nextTick,
+  sleep,
 } from '@atlaskit/media-test-helpers';
 import { Shortcut } from '@atlaskit/media-ui';
 import ModalDialog from '@atlaskit/modal-dialog';
@@ -33,8 +32,9 @@ import {
 } from '../smartMediaEditor';
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import EditorView, { EditorViewProps } from '../editorView/editorView';
+import { EditorView, EditorViewProps } from '../editorView/editorView';
 import ErrorView, { ErrorViewProps } from '../editorView/errorView/errorView';
+import { ANALYTICS_MEDIA_CHANNEL } from '../../common';
 import { Blanket } from '../styled';
 
 describe('Smart Media Editor', () => {
@@ -45,9 +45,11 @@ describe('Smart Media Editor', () => {
   let onUploadStart: SmartMediaEditorProps['onUploadStart'];
   let onClose: SmartMediaEditorProps['onClose'];
   let mediaClient: MediaClient;
-  let component: ShallowWrapper<SmartMediaEditorProps, SmartMediaEditorState>;
+  let component: ReactWrapper<SmartMediaEditorProps, SmartMediaEditorState>;
   let givenFileStateObservable: ReplaySubject<FileState>;
   let formatMessage: jest.Mock<any>;
+  let fakeCreateAnalyticsEvent: jest.Mock<any>;
+  let fakeAnalyticsEventFire: jest.Mock<any>;
 
   beforeEach(() => {
     formatMessage = jest
@@ -66,12 +68,19 @@ describe('Smart Media Editor', () => {
     onClose = jest.fn();
     onUploadStart = jest.fn();
     mediaClient = fakeMediaClient();
+    fakeAnalyticsEventFire = jest.fn();
+    fakeCreateAnalyticsEvent = jest
+      .fn()
+      .mockImplementation(() => ({ fire: fakeAnalyticsEventFire }));
     givenFileStateObservable = new ReplaySubject<FileState>(1);
     asMock(mediaClient.file.getFileState).mockReturnValue(
       givenFileStateObservable,
     );
 
-    component = shallow(
+    component = mountWithIntlContext<
+      SmartMediaEditorProps,
+      SmartMediaEditorState
+    >(
       <SmartMediaEditor
         mediaClient={mediaClient}
         identifier={fileIdentifier}
@@ -79,18 +88,12 @@ describe('Smart Media Editor', () => {
         onClose={onClose}
         onUploadStart={onUploadStart}
         intl={fakeIntl}
+        createAnalyticsEvent={fakeCreateAnalyticsEvent}
       />,
     );
-
-    (uuidV4 as jest.Mock<{}>)
-      .mockReturnValueOnce('uuid1')
-      .mockReturnValueOnce('uuid2')
-      .mockReturnValueOnce('uuid3')
-      .mockReturnValueOnce('uuid4');
   });
 
   afterEach(() => {
-    (uuidV4 as jest.Mock<{}>).mockReset();
     jest.restoreAllMocks();
   });
 
@@ -101,7 +104,6 @@ describe('Smart Media Editor', () => {
     handler();
     expect(onClose).toHaveBeenCalled();
   });
-
   it('should display spinner on initial render', () => {
     expect(component.find(Spinner)).toHaveLength(1);
   });
@@ -125,7 +127,7 @@ describe('Smart Media Editor', () => {
   });
 
   const forFileToBeProcessed = async () => {
-    const imageUrlPromise = Promise.resolve('some-image-url');
+    const imageUrlPromise = Promise.resolve('https://some-image-url');
     asMock(mediaClient.getImageUrl).mockReturnValue(imageUrlPromise);
     givenFileStateObservable.next({
       status: 'processed',
@@ -141,6 +143,7 @@ describe('Smart Media Editor', () => {
     await fileIdPromise;
     await imageUrlPromise;
     component.update();
+    await nextTick();
   };
 
   describe('when incoming file is processed', () => {
@@ -149,10 +152,12 @@ describe('Smart Media Editor', () => {
     });
 
     it('should render EditorView', async () => {
-      const editorView = component.find<EditorViewProps>(EditorView);
+      const editorView = component.find<EditorViewProps & InjectedIntlProps>(
+        EditorView,
+      );
       expect(editorView).toHaveLength(1);
       const { imageUrl } = editorView.props();
-      expectToEqual(imageUrl, 'some-image-url');
+      expectToEqual(imageUrl, 'https://some-image-url');
     });
 
     it('should call mediaClient.getImageUrl', () => {
@@ -167,7 +172,7 @@ describe('Smart Media Editor', () => {
 
     it('should not listen for farther file states', async () => {
       // Wait for observable unsubscription
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await sleep();
       givenFileStateObservable.next({
         status: 'error',
         id: fileId,
@@ -197,7 +202,9 @@ describe('Smart Media Editor', () => {
       asMock(customMediaClient.file.upload).mockReturnValue(
         resultingFileStateObservable,
       );
-      const editorView = component.find<EditorViewProps>(EditorView);
+      const editorView = component.find<EditorViewProps & InjectedIntlProps>(
+        EditorView,
+      );
       const { onSave } = editorView.props();
       onSave('some-image-content', { width: 200, height: 100 });
     };
@@ -229,7 +236,7 @@ describe('Smart Media Editor', () => {
           size: 42,
           representations: {},
         });
-        await new Promise(resolve => setTimeout(resolve, 0));
+        await nextTick();
         expect(mediaClient.file.copyFile).toHaveBeenCalledTimes(1);
         expectFunctionToHaveBeenCalledWith(mediaClient.file.copyFile, [
           {
@@ -240,7 +247,7 @@ describe('Smart Media Editor', () => {
           {
             collection: RECENTS_COLLECTION,
             authProvider: userAuthProvider,
-            occurrenceKey: 'uuid3',
+            occurrenceKey: expect.any(String),
           },
         ]);
       });
@@ -257,7 +264,7 @@ describe('Smart Media Editor', () => {
         });
 
         expect(onFinish).toHaveBeenCalledTimes(0);
-        await new Promise(resolve => setTimeout(resolve, 0));
+        await nextTick();
         expect(mediaClient.file.copyFile).toHaveBeenCalledTimes(1);
         expect(onFinish).toHaveBeenCalledTimes(1);
       });
@@ -274,29 +281,27 @@ describe('Smart Media Editor', () => {
         expectFunctionToHaveBeenCalledWith(mediaClient.file.touchFiles, [
           [
             {
-              fileId: 'uuid1',
+              fileId: expect.any(String),
               collection: fileIdentifier.collectionName,
-              occurrenceKey: 'uuid2',
+              occurrenceKey: expect.any(String),
             },
           ],
           fileIdentifier.collectionName,
         ]);
 
         // Then we call upload
-        const expectedUploadableFile: UploadableFile = {
-          content: 'some-image-content',
-          name: 'some-name.png',
-          collection: fileIdentifier.collectionName,
-        };
-        const expectedUploadableFileUpfrontIds: UploadableFileUpfrontIds = {
-          id: 'uuid1',
-          deferredUploadId: expect.anything(),
-          occurrenceKey: 'uuid2',
-        };
         expectFunctionToHaveBeenCalledWith(mediaClient.file.upload, [
-          expectedUploadableFile,
+          {
+            content: 'some-image-content',
+            name: 'some-name.png',
+            collection: fileIdentifier.collectionName,
+          },
           undefined,
-          expectedUploadableFileUpfrontIds,
+          {
+            id: expect.any(String),
+            deferredUploadId: expect.anything(),
+            occurrenceKey: expect.any(String),
+          },
         ]);
         const actualUploadableFileUpfrontIds: UploadableFileUpfrontIds = asMock(
           mediaClient.file.upload,
@@ -308,9 +313,9 @@ describe('Smart Media Editor', () => {
         expectFunctionToHaveBeenCalledWith(onUploadStart!, [
           {
             mediaItemType: 'file',
-            id: 'uuid1',
+            id: expect.any(String),
             collectionName: fileIdentifier.collectionName,
-            occurrenceKey: 'uuid2',
+            occurrenceKey: expect.any(String),
           },
           {
             width: 200,
@@ -330,77 +335,172 @@ describe('Smart Media Editor', () => {
             size: 42,
             representations: {},
           });
-          await new Promise(resolve => setTimeout(resolve, 0));
+          await nextTick();
           expect(onFinish).toHaveBeenCalledTimes(1);
         });
+
+        it('should emit analytics ui + track events if observable returns "processing" file state', async () => {
+          resultingFileStateObservable.next({
+            status: 'processing',
+            id: 'uuid1',
+            mediaType: 'image',
+            mimeType: 'image/gif',
+            name: 'some-name',
+            size: 42,
+            representations: {},
+          });
+          await nextTick();
+          expect(fakeCreateAnalyticsEvent).toHaveBeenCalledTimes(2);
+
+          expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              eventType: 'ui',
+              action: 'clicked',
+              actionSubject: 'button',
+              actionSubjectId: 'saveButton',
+              attributes: { annotated: false },
+            }),
+          );
+          expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              eventType: 'track',
+              action: 'uploaded',
+              actionSubject: 'media',
+              actionSubjectId: expect.any(String),
+              attributes: {
+                status: 'success',
+                fileStatus: 'processing',
+                fileMediatype: 'image',
+                fileMimetype: 'image/gif',
+                fileSize: 42,
+                uploadDurationMsec: expect.any(Number),
+                annotated: false,
+              },
+            }),
+          );
+          expect(fakeAnalyticsEventFire).toHaveBeenLastCalledWith(
+            ANALYTICS_MEDIA_CHANNEL,
+          );
+        });
       });
 
-      it('should show error screen when processing-failed', async () => {
-        asMock(formatMessage).mockReturnValue('Error message');
-        resultingFileStateObservable.next({
-          status: 'failed-processing',
-          id: 'uuid1',
-          mediaType: 'image',
-          mimeType: 'image/gif',
-          name: 'some-name',
-          size: 42,
-          artifacts: [],
-          representations: {},
+      describe('when new file processing fails (failed-processing)', () => {
+        it('should show error screen when processing-failed', async () => {
+          asMock(formatMessage).mockReturnValue('Error message');
+          resultingFileStateObservable.next({
+            status: 'failed-processing',
+            id: 'uuid1',
+            mediaType: 'image',
+            mimeType: 'image/gif',
+            name: 'some-name',
+            size: 42,
+            artifacts: [],
+            representations: {},
+          });
+          await nextTick();
+          component.update();
+          expect(component.find(EditorView)).toHaveLength(0);
+          expect(component.find(ErrorView)).toHaveLength(1);
+          const errorViewProps = component
+            .find<ErrorViewProps>(ErrorView)
+            .props();
+          expectToEqual(errorViewProps.message, 'Error message');
         });
-        component.update();
-        expect(component.find(EditorView)).toHaveLength(0);
-        expect(component.find(ErrorView)).toHaveLength(1);
-        const errorViewProps = component
-          .find<ErrorViewProps>(ErrorView)
-          .props();
-        expectToEqual(errorViewProps.message, 'Error message');
-      });
 
-      it('should show error screen when error', async () => {
-        asMock(formatMessage).mockReturnValue('Error message');
-        resultingFileStateObservable.next({
-          status: 'error',
-          id: 'uuid1',
+        it('should show error screen when error', async () => {
+          asMock(formatMessage).mockReturnValue('Error message');
+          resultingFileStateObservable.next({
+            status: 'error',
+            id: 'uuid1',
+          });
+          await nextTick();
+          component.update();
+          expect(component.find(EditorView)).toHaveLength(0);
+          expect(component.find(ErrorView)).toHaveLength(1);
+          const errorViewProps = component
+            .find<ErrorViewProps>(ErrorView)
+            .props();
+          expectToEqual(errorViewProps.message, 'Error message');
         });
-        component.update();
-        expect(component.find(EditorView)).toHaveLength(0);
-        expect(component.find(ErrorView)).toHaveLength(1);
-        const errorViewProps = component
-          .find<ErrorViewProps>(ErrorView)
-          .props();
-        expectToEqual(errorViewProps.message, 'Error message');
-      });
 
-      it('should close editor when error is dismissed', () => {
-        resultingFileStateObservable.next({
-          status: 'failed-processing',
-          id: 'uuid1',
-          mediaType: 'image',
-          mimeType: 'image/gif',
-          name: 'some-name',
-          size: 42,
-          artifacts: [],
-          representations: {},
+        it('should close editor when error is dismissed', async () => {
+          resultingFileStateObservable.next({
+            status: 'failed-processing',
+            id: 'uuid1',
+            mediaType: 'image',
+            mimeType: 'image/gif',
+            name: 'some-name',
+            size: 42,
+            artifacts: [],
+            representations: {},
+          });
+          await nextTick();
+          component.update();
+          const errorViewProps = component
+            .find<ErrorViewProps>(ErrorView)
+            .props();
+          errorViewProps.onCancel();
+          expect(onClose).toHaveBeenCalled();
         });
-        component.update();
-        const errorViewProps = component
-          .find<ErrorViewProps>(ErrorView)
-          .props();
-        errorViewProps.onCancel();
-        expect(onClose).toHaveBeenCalled();
+
+        it('should emit analytics ui + track events if observable returns "failed-processing" file state', async () => {
+          resultingFileStateObservable.next({
+            status: 'failed-processing',
+            id: 'uuid1',
+            mediaType: 'image',
+            mimeType: 'image/gif',
+            name: 'some-name',
+            size: 42,
+            artifacts: [],
+            representations: {},
+          });
+          await nextTick();
+          expect(fakeCreateAnalyticsEvent).toHaveBeenCalledTimes(2);
+
+          expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              eventType: 'ui',
+              action: 'clicked',
+              actionSubject: 'button',
+              actionSubjectId: 'saveButton',
+              attributes: { annotated: false },
+            }),
+          );
+          expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              eventType: 'track',
+              action: 'uploaded',
+              actionSubject: 'media',
+              actionSubjectId: expect.any(String),
+              attributes: {
+                status: 'fail',
+                failReason: 'Ouch! We could not save the image',
+                fileStatus: 'failed-processing',
+                uploadDurationMsec: expect.any(Number),
+                annotated: false,
+              },
+            }),
+          );
+          expect(fakeAnalyticsEventFire).toHaveBeenLastCalledWith(
+            ANALYTICS_MEDIA_CHANNEL,
+          );
+        });
       });
     });
   });
 
-  describe('when changes has been made and cancel is pressed', () => {
-    let modalDialog: ShallowWrapper<React.ComponentProps<typeof ModalDialog>>;
+  describe('when changes have been made and cancel is pressed', () => {
+    let modalDialog: ReactWrapper<React.ComponentProps<typeof ModalDialog>>;
 
     beforeEach(async () => {
       await forFileToBeProcessed();
-      const editorView = component.find<EditorViewProps>(EditorView);
+      const editorView = component.find<EditorViewProps & InjectedIntlProps>(
+        EditorView,
+      );
       const { onAnyEdit, onCancel } = editorView.props();
-      onAnyEdit!();
-      onCancel();
+      onAnyEdit!('arrow', { lineWidth: 1, addShadow: true, color: '#ccc' });
+      onCancel('button');
+      component.update();
       modalDialog = component.find(ModalDialog);
     });
 
@@ -421,8 +521,72 @@ describe('Smart Media Editor', () => {
       expect(secondAction.text).toEqual('Cancel');
       secondAction.onClick();
       expect(onClose).not.toHaveBeenCalled();
+      component.update();
       modalDialog = component.find(ModalDialog);
       expect(modalDialog).toHaveLength(0);
+    });
+
+    it('should emit analytics ui clicked+annotated events', async () => {
+      expect(fakeCreateAnalyticsEvent).toHaveBeenCalledTimes(2);
+      expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          eventType: 'ui',
+          action: 'clicked',
+          actionSubject: 'button',
+          actionSubjectId: 'cancelButton',
+          attributes: { annotated: true, input: 'button' },
+        }),
+      );
+      expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          eventType: 'ui',
+          action: 'annotated',
+          actionSubject: 'annotation',
+          actionSubjectId: 'arrow',
+          attributes: { lineWidth: 1, addShadow: true, color: '#ccc' },
+        }),
+      );
+      expect(fakeAnalyticsEventFire).toHaveBeenLastCalledWith(
+        ANALYTICS_MEDIA_CHANNEL,
+      );
+    });
+  });
+
+  describe('when changes have been made and esc is pressed', () => {
+    beforeEach(async () => {
+      await forFileToBeProcessed();
+      const editorView = component.find<EditorViewProps & InjectedIntlProps>(
+        EditorView,
+      );
+      const { onAnyEdit, onCancel } = editorView.props();
+      onAnyEdit!('arrow', { lineWidth: 1, addShadow: true, color: '#ccc' });
+      onCancel('esc');
+      component.update();
+    });
+
+    it('should emit analytics ui annotated event', async () => {
+      expect(fakeCreateAnalyticsEvent).toHaveBeenCalledTimes(2);
+      expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          eventType: 'ui',
+          action: 'clicked',
+          actionSubject: 'button',
+          actionSubjectId: 'cancelButton',
+          attributes: { annotated: true, input: 'esc' },
+        }),
+      );
+      expect(fakeCreateAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          eventType: 'ui',
+          action: 'annotated',
+          actionSubject: 'annotation',
+          actionSubjectId: 'arrow',
+          attributes: { lineWidth: 1, addShadow: true, color: '#ccc' },
+        }),
+      );
+      expect(fakeAnalyticsEventFire).toHaveBeenLastCalledWith(
+        ANALYTICS_MEDIA_CHANNEL,
+      );
     });
   });
 

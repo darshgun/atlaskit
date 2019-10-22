@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { NodeView, Decoration } from 'prosemirror-view';
 import DecisionItem from '../ui/Decision';
-import { ReactNodeView, ForwardRef } from '../../../nodeviews';
+import { ReactNodeView, ForwardRef, getPosHandler } from '../../../nodeviews';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 class Decision extends ReactNodeView {
@@ -51,7 +51,7 @@ class Decision extends ReactNodeView {
 export const decisionItemNodeView = (portalProviderAPI: PortalProviderAPI) => (
   node: any,
   view: any,
-  getPos: () => number,
+  getPos: getPosHandler,
 ): NodeView => {
   return new Decision(node, view, getPos, portalProviderAPI, {}).init();
 };

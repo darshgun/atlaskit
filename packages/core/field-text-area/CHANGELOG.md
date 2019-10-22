@@ -1,5 +1,13 @@
 # @atlaskit/field-text-area
 
+## 6.0.14
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 6.0.13
 
 ### Patch Changes

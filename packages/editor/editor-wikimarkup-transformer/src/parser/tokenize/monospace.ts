@@ -18,6 +18,15 @@ export const monospace: TokenParser = ({
     TokenType.TRIPLE_DASH_SYMBOL,
     TokenType.QUADRUPLE_DASH_SYMBOL,
     TokenType.ISSUE_KEY,
+    TokenType.CITATION,
+    TokenType.DELETED,
+    TokenType.EMPHASIS,
+    TokenType.INSERTED,
+    TokenType.LINK_FORMAT,
+    TokenType.STRONG,
+    TokenType.SUBSCRIPT,
+    TokenType.SUPERSCRIPT,
+    TokenType.TABLE,
   ];
   // Add code mark to each text
   const contentDecorator = (n: PMNode) => {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { intlShape } from 'react-intl';
 import * as PropTypes from 'prop-types';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { WidthProvider } from '@atlaskit/editor-common';
 import EditorContext from '../../../../ui/EditorContext';
 import { EditorActions } from '../../../../index';
@@ -17,9 +18,13 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
   const [editorSharedConfig, mountEditor] = useEditor({
     context,
     editorActions,
+    createAnalyticsEvent: props.createAnalyticsEvent,
 
     disabled: props.disabled,
+
+    transformer: props.transformer,
     defaultValue: props.defaultValue,
+
     plugins: props.plugins,
 
     portalProviderAPI: props.portalProviderAPI,
@@ -30,6 +35,8 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
     onChange: props.onChange,
   });
 
+  const onMount = props.onMount;
+
   React.useEffect(
     () => {
       if (editorSharedConfig) {
@@ -37,12 +44,17 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
           editorSharedConfig.editorView,
           editorSharedConfig.eventDispatcher,
         );
+
+        if (onMount) {
+          onMount(editorActions);
+        }
+
         return () => {
           editorActions._privateUnregisterEditor();
         };
       }
     },
-    [editorSharedConfig, editorActions],
+    [editorSharedConfig, editorActions, onMount],
   );
 
   return (
@@ -65,4 +77,5 @@ EditorInternal.contextTypes = {
 
 export type EditorPropsExtended = EditorProps & {
   portalProviderAPI: PortalProviderAPI;
+  createAnalyticsEvent?: CreateUIAnalyticsEvent;
 };

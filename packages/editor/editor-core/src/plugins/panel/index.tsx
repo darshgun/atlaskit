@@ -33,7 +33,7 @@ const insertPanelTypeWithAnalytics = (
 ) => {
   const tr = insert(insertPanelType(panelType, state));
   if (tr) {
-    addAnalytics(tr, {
+    addAnalytics(state, tr, {
       action: ACTION.INSERTED,
       actionSubject: ACTION_SUBJECT.DOCUMENT,
       actionSubjectId: ACTION_SUBJECT_ID.PANEL,

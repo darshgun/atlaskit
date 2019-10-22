@@ -1,5 +1,21 @@
 # @atlaskit/dropdown-menu
 
+## 8.2.0
+
+### Minor Changes
+
+- [minor][0e2241e904](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e2241e904):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 8.1.4
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 8.1.3
 
 - Updated dependencies [10e0798da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10e0798da6):

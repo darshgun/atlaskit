@@ -18,11 +18,13 @@ import {
   FileState,
   Identifier,
   MediaClient,
+  MediaType,
 } from '@atlaskit/media-client';
 import {
   mountWithIntlContext,
   fakeMediaClient,
   asMock,
+  nextTick,
 } from '@atlaskit/media-test-helpers';
 import {
   ItemViewer,
@@ -169,7 +171,7 @@ describe('<ItemViewer />', () => {
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
     expect(errorMessage.text()).toContain(
-      `We couldn't generate a preview for this file.Try downloading the file to view it.Download`,
+      `Something went wrong.It might just be a hiccup.Try downloading the file to view it.Download`,
     );
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
@@ -510,11 +512,74 @@ describe('<ItemViewer />', () => {
       });
     });
 
+    it('should trigger analytics when file failed processing', () => {
+      const mediaClient = makeFakeMediaClient(
+        Observable.of({
+          id: identifier.id,
+          mediaType: 'image',
+          status: 'failed-processing',
+        }),
+      );
+      const { el } = mountBaseComponent(mediaClient, identifier);
+
+      expect(el.find('ErrorMessage').prop('error')).toEqual({
+        errorName: 'failedProcessing',
+        fileState: {
+          id: 'some-id',
+          mediaType: 'image',
+          status: 'failed-processing',
+        },
+        innerError: undefined,
+      });
+    });
+
+    it('should trigger error analytics if DocumentViewer fails', async () => {
+      const state: FileState = {
+        id: await identifier.id,
+        mediaType: 'doc',
+        status: 'processed',
+        artifacts: {},
+        name: '',
+        size: 0,
+        mimeType: '',
+        representations: { image: {} },
+      };
+      const mediaClient = makeFakeMediaClient(Observable.of(state));
+      const { el, createAnalyticsEventSpy } = mountBaseComponent(
+        mediaClient,
+        identifier,
+      );
+      el.update();
+      expect(el.find(DocViewer)).toHaveLength(1);
+
+      el.find(DocViewer).simulate('error');
+      await nextTick();
+      expect(createAnalyticsEventSpy).toHaveBeenCalledTimes(2);
+      expect(createAnalyticsEventSpy).toHaveBeenLastCalledWith({
+        action: 'loadFailed',
+        actionSubject: 'mediaFile',
+        actionSubjectId: 'some-id',
+        attributes: {
+          fileId: 'some-id',
+          fileMediatype: 'doc',
+          fileMimetype: '',
+          fileSize: 0,
+          status: 'fail',
+          failReason:
+            'Error: Invalid parameter in getDocument, need either Uint8Array, string or a parameter object',
+          ...analyticsBaseAttributes,
+        },
+        eventType: 'operational',
+      });
+    });
+
     test.each(['audio', 'video'])(
       'should trigger analytics when %s can play',
-      async (type: 'audio' | 'video') => {
+      async type => {
         const state: ProcessedFileState = {
           id: await identifier.id,
+          // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+          //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
           mediaType: type,
           status: 'processed',
           mimeType: '',
@@ -550,9 +615,9 @@ describe('<ItemViewer />', () => {
       },
     );
 
-    test.each(['audio', 'video'])(
+    test.each<[MediaType, MediaType]>([['audio', 'video']])(
       'should trigger analytics when %s errors',
-      async (type: 'audio' | 'video') => {
+      async type => {
         const state: ProcessedFileState = {
           id: await identifier.id,
           mediaType: type,

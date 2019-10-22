@@ -99,7 +99,7 @@ const getBorder = ({ appearance, isFocused, isInvalid }: StyleProps) => {
   if (isFocused) color = colors.B100;
   if (isInvalid) color = colors.R400;
 
-  return `border: 2px solid ${color}`;
+  return `border: 2px solid ${color};`;
 };
 
 const getBorderColorHover = ({
@@ -110,14 +110,14 @@ const getBorderColorHover = ({
   let color = colors.N30;
   if (isFocused || isDisabled) return ``;
   if (isInvalid) color = colors.R400;
-  return `border-color: ${color}`;
+  return `border-color: ${color};`;
 };
 
 const getBackgroundColor = ({ appearance, isFocused }: StyleProps) => {
   let color = colors.N20;
   if (isFocused) color = colors.N0;
   if (appearance === 'subtle') color = 'transparent';
-  return `background-color: ${color}`;
+  return `background-color: ${color};`;
 };
 
 const getBackgroundColorHover = ({
@@ -128,7 +128,7 @@ const getBackgroundColorHover = ({
   let color = colors.N30;
   if (isFocused || isDisabled) return ``;
   if (isInvalid) color = colors.N0;
-  return `background-color: ${color}`;
+  return `background-color: ${color};`;
 };
 
 const Flex = styled.div<StyleProps>`

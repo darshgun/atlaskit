@@ -76,7 +76,7 @@ export const buildLinkingButtons = (
           // Track if is visited
           if (dispatch) {
             dispatch(
-              addAnalytics(state.tr, {
+              addAnalytics(state, state.tr, {
                 eventType: EVENT_TYPE.TRACK,
                 action: ACTION.VISITED,
                 actionSubject: ACTION_SUBJECT.MEDIA_SINGLE,

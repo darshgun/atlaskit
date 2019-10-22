@@ -1,5 +1,33 @@
 # @atlaskit/navigation-next
 
+## 7.0.0
+
+### Major Changes
+
+- [major][4778521db3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4778521db3):
+
+  ## What changed and why was this change made?
+
+  Lazy load react-select and react-beautiful-dnd to bring down the bundle size. This reduces the main navigation-next bundle by 33% (Drops from 184kb to 124kb un-minified)
+
+  ## How to consume the breaking change?
+
+  Although this is a major version, there's no API change or any other noticable change in the behaviour. It should *just work*™️ like before. But do perform a thorough round of testing to ensure nothing breaks unexpectedly. Areas to stress would be parts of navigation that use the Switcher component and any of the draggable components.
+
+## 6.8.3
+
+- Updated dependencies [f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):
+  - @atlaskit/icon-object@5.0.0
+  - @atlaskit/icon@19.0.8
+
+## 6.8.2
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 6.8.1
 
 ### Patch Changes

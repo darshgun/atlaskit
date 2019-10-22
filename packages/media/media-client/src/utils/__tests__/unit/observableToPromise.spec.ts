@@ -21,7 +21,7 @@ describe('observableToPromise()', () => {
   });
 
   it('should unsubscribe after getting the value', async () => {
-    const unsubscribe = jest.fn<() => void>();
+    const unsubscribe = jest.fn<() => void, []>();
     const subject = createFakeSubject(unsubscribe);
 
     await observableToPromise(subject);

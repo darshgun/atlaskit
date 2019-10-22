@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { FC, forwardRef, memo, useState, useEffect } from 'react';
+import { FC, forwardRef, memo, useState } from 'react';
 import { layers } from '@atlaskit/theme/constants';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
@@ -20,12 +20,12 @@ export const Popup: FC<PopupProps> = memo(
     boundariesElement,
     isOpen,
     id,
+    offset,
     placement,
     shouldFlip = true,
     testId,
-    content,
+    content: Content,
     trigger,
-    onOpen,
     onClose,
     popupComponent: PopupContainer = DefaultPopupComponent,
     zIndex = layers.layer(),
@@ -35,15 +35,6 @@ export const Popup: FC<PopupProps> = memo(
 
     useFocusManager({ initialFocusRef, popupRef });
     useCloseManager({ isOpen, onClose, popupRef });
-
-    useEffect(
-      () => {
-        if (isOpen) {
-          onOpen && onOpen();
-        }
-      },
-      [isOpen, onOpen],
-    );
 
     return (
       <div css={containerCSS}>
@@ -62,6 +53,7 @@ export const Popup: FC<PopupProps> = memo(
             <Portal zIndex={zIndex}>
               <Popper
                 placement={placement || 'auto'}
+                offset={offset}
                 modifiers={{
                   flip: {
                     enabled: shouldFlip || true,
@@ -83,15 +75,15 @@ export const Popup: FC<PopupProps> = memo(
                       tabIndex={-1}
                     >
                       <RepositionOnUpdate
-                        content={content}
+                        content={Content}
                         scheduleUpdate={scheduleUpdate}
                       >
-                        {content({
-                          scheduleUpdate,
-                          isOpen,
-                          onClose,
-                          setInitialFocusRef,
-                        })}
+                        <Content
+                          scheduleUpdate={scheduleUpdate}
+                          isOpen={isOpen}
+                          onClose={onClose}
+                          setInitialFocusRef={setInitialFocusRef}
+                        />
                       </RepositionOnUpdate>
                     </PopupContainer>
                   );

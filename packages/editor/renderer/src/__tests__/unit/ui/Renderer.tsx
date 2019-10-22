@@ -4,6 +4,7 @@ import FabricAnalyticsListeners, {
   AnalyticsWebClient,
 } from '@atlaskit/analytics-listeners';
 import { analyticsClient } from '@atlaskit/editor-test-helpers/src/analytics-client-mock';
+import { doc, p, a, b, heading, text } from '@atlaskit/adf-utils';
 import { EDITOR_APPEARANCE_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import Renderer, {
   Renderer as BaseRenderer,
@@ -25,10 +26,19 @@ const initialDoc = {
     },
   ],
 };
+
 const invalidDoc = {
   type: 'doc',
   content: 'foo',
 };
+
+const validDoc = doc(
+  heading({ level: 1 })(text('test')),
+  p(
+    a({ href: 'https://www.atlassian.com' })('Hello, '),
+    a({ href: 'https://www.atlassian.com' })(b('World!')),
+  ),
+);
 
 describe('@atlaskit/renderer/ui/Renderer', () => {
   let renderer: ReactWrapper;
@@ -37,7 +47,7 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
     mount(<Renderer document={doc} {...props} />);
 
   afterEach(() => {
-    if (renderer) {
+    if (renderer && renderer.length === 1) {
       renderer.unmount();
     }
   });
@@ -139,28 +149,28 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
 
     beforeEach(() => {
       client = analyticsClient();
-    });
-
-    it('should fire analytics event on renderer started', () => {
       jest.useFakeTimers();
       jest
         .spyOn(window, 'requestAnimationFrame')
         .mockImplementation((fn: Function) => fn());
+    });
 
+    afterEach(() => {
+      (window.requestAnimationFrame as jest.Mock).mockRestore();
+      jest.useRealTimers();
+    });
+
+    it('should fire heading anchor hit analytics event', () => {
       const oldHash = window.location.hash;
       window.location.hash = '#test';
-      jest.spyOn(document, 'getElementById').mockImplementation(() => ({
-        scrollIntoView: jest.fn(),
-      }));
 
-      renderer = initRendererWithAnalytics();
-
-      expect(client.sendUIEvent).toHaveBeenCalledWith(
-        expect.objectContaining({
-          action: 'started',
-          actionSubject: 'renderer',
-          attributes: expect.objectContaining({ platform: 'web' }),
-        }),
+      renderer = mount(
+        <FabricAnalyticsListeners client={client}>
+          <Renderer document={validDoc} />
+        </FabricAnalyticsListeners>,
+        {
+          attachTo: document.body,
+        },
       );
 
       jest.runAllTimers();
@@ -176,10 +186,20 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
         }),
       );
 
+      renderer.detach();
       window.location.hash = oldHash;
-      (document.getElementById as jest.Mock).mockRestore();
-      (window.requestAnimationFrame as jest.Mock).mockRestore();
-      jest.useRealTimers();
+    });
+
+    it('should fire analytics event on renderer started', () => {
+      renderer = initRendererWithAnalytics();
+
+      expect(client.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'started',
+          actionSubject: 'renderer',
+          attributes: expect.objectContaining({ platform: 'web' }),
+        }),
+      );
     });
 
     const appearances: {

@@ -4,6 +4,8 @@ export {
   hoverTable,
   hoverMergedCells,
   clearHoverSelection,
+  showResizeHandleLine,
+  hideResizeHandleLine,
 } from './hover';
 export { insertColumn, insertRow, createTable } from './insert';
 export {
@@ -33,5 +35,6 @@ export {
   transformSliceToAddTableHeaders,
   triggerUnlessTableHeader,
   addBoldInEmptyHeaderCells,
+  addResizeHandleDecorations,
 } from './misc';
 export { sortByColumn } from './sort';

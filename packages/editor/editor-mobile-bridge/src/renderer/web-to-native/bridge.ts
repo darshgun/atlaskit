@@ -18,6 +18,11 @@ export interface MentionBridge {
 
 export interface RenderBridge {
   onContentRendered(): void;
+  onRenderedContentHeightChanged(newHeight: number): void;
+}
+
+export interface AnalyticsBridge {
+  trackEvent(event: string): void;
 }
 
 export default interface WebBridge
@@ -25,7 +30,8 @@ export default interface WebBridge
     TaskDecisionBridge,
     MediaBridge,
     MentionBridge,
-    RenderBridge {}
+    RenderBridge,
+    AnalyticsBridge {}
 
 export interface RendererBridges {
   linkBridge?: LinkBridge;
@@ -33,6 +39,7 @@ export interface RendererBridges {
   mediaBridge?: MediaBridge;
   mentionBridge?: MentionBridge;
   renderBridge?: RenderBridge;
+  analyticsBridge?: AnalyticsBridge;
 }
 
 export type RendererPluginBridges = keyof RendererBridges;

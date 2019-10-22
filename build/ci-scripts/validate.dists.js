@@ -35,6 +35,8 @@ const nonCjsEsmPackages = [
   '@atlaskit/code-insights',
   '@atlaskit/branch-deploy-product-integrator',
   '@atlaskit/icon',
+  '@atlaskit/icon-file-type',
+  '@atlaskit/icon-object',
   '@atlaskit/icon-priority',
   '@atlaskit/css-reset',
   '@atlaskit/reduced-ui-pack',
@@ -60,16 +62,21 @@ function validateEntryPoints(srcContents, rootContents) {
   return missingEntries;
 }
 
-async function validateAllPackages(packages) {
-  const results = await Promise.all(packages.map(pkg => validatePackage(pkg)));
+async function validateAllPackages(packages, { distType }) {
+  const results = await Promise.all(
+    packages.map(pkg => validatePackage(pkg, { distType })),
+  );
   const errors = [].concat(...results);
   return errors;
 }
 
-async function validatePackage(pkg) {
+async function validatePackage(pkg, { distType }) {
   const errors = [];
+  const distFolders = ['dist/cjs', 'dist/esm'].filter(
+    f => !distType || f.indexOf(distType) !== -1,
+  );
   const dirs = await pSettle(
-    ['src', '', 'dist/cjs', 'dist/esm'].map(async f => {
+    ['src', '', ...distFolders].map(async f => {
       const dir = `${pkg.dir}/${f}`;
       return {
         dir,
@@ -160,7 +167,7 @@ function hasCjsEsmBuild(pkg) {
 }
 
 async function main(opts = {}) {
-  const { cwd = process.cwd(), packageName } = opts;
+  const { cwd = process.cwd(), packageName, distType } = opts;
   const packagesInfo = await getPackagesInfo(cwd);
 
   /* We only want to check packages that ship cjs + esm */
@@ -186,7 +193,9 @@ async function main(opts = {}) {
 
   const standardPackages = browserPackages.filter(pkg => hasCjsEsmBuild(pkg));
 
-  const packageDistErrors = await validateAllPackages(standardPackages);
+  const packageDistErrors = await validateAllPackages(standardPackages, {
+    distType,
+  });
   return {
     success: packageDistErrors.length === 0,
     packageDistErrors,

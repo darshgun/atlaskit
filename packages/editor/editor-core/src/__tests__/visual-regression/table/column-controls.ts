@@ -26,6 +26,11 @@ describe('Table context menu: merge-split cells', () => {
       appearance: Appearance.fullPage,
       adf,
       viewport: { width: 1040, height: 400 },
+      editorProps: {
+        allowTables: {
+          advanced: true,
+        },
+      },
     });
     await clickFirstCell(page);
   };
@@ -69,6 +74,7 @@ describe('Table context menu: merge-split cells', () => {
 
   it('should display column resizer handler on top of the column controls', async () => {
     await grabResizeHandle(page, { colIdx: 1, row: 2 });
+    await animationFrame(page);
     await snapshot(page, { tolerance: 0 }, tableSelectors.nthColumnControl(1));
   });
 

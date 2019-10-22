@@ -1,0 +1,1 @@
+ED-5450: remove most of ts-ignores from editor packages

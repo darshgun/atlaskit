@@ -1,5 +1,30 @@
 # @atlaskit/dynamic-table
 
+## 13.5.0
+
+### Minor Changes
+
+- [minor][19e5d77c84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/19e5d77c84):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 13.4.0
+
+### Minor Changes
+
+- [minor][97a4a48f58](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97a4a48f58):
+
+  - use more obvious hover background color for highlighted row
+  - add onClick into RowType typing and add examples of its usage
+
+## 13.3.3
+
+### Patch Changes
+
+- [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
+
+  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+
 ## 13.3.2
 
 ### Patch Changes

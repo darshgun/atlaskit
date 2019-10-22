@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass, ImgHTMLAttributes } from 'react';
+import { HTMLAttributes, ComponentClass, ImgHTMLAttributes } from 'react';
 import { fontSize, gridSize } from '@atlaskit/theme';
 import { colors, borderRadius, themed } from '@atlaskit/theme';
 

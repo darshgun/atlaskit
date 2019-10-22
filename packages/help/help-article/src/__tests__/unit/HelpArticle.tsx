@@ -1,9 +1,10 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies */
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import HelpArticle from '../../components/HelpArticle';
 import { ArticleContentTitleLink } from '../../components/styled';
+import ArticleBody from '../../components/ArticleBody';
 
 describe('HelpArticle', () => {
   const TITLE = 'title content';
@@ -17,10 +18,12 @@ describe('HelpArticle', () => {
       expect(title.text()).toEqual(TITLE);
     });
 
-    it('should render body', () => {
-      const helpArticle = mount(<HelpArticle body={BODY} />);
-      const body = helpArticle.find('.content-platform-support').first();
-      expect(body.text()).toEqual(BODY);
+    it('should render body inside iframe', () => {
+      const helpArticle = shallow(<HelpArticle body={BODY} />);
+      const articleBodyElm = helpArticle.find(ArticleBody);
+
+      expect(articleBodyElm.length).toEqual(1);
+      expect(articleBodyElm.prop('body')).toEqual(BODY);
     });
 
     it('should render title with link', () => {

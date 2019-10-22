@@ -71,7 +71,9 @@ const config = {
   },
   globals: {
     'ts-jest': {
-      tsConfigFile: './tsconfig.jest.json',
+      tsConfig: './tsconfig.jest.json',
+      diagnostics: false,
+      isolatedModules: true,
     },
     __BASEURL__: 'http://localhost:9000',
   },
@@ -95,6 +97,18 @@ const config = {
   globalTeardown: undefined,
   // Jest's default test environment 'jsdom' uses JSDOM 11 to support Node 6. Here we upgrade to JSDOM 14, which supports Node >= 8
   testEnvironment: 'jest-environment-jsdom-fourteen',
+  // The modules below cause problems when automocking.
+  unmockedModulePathPatterns: [
+    'tslib',
+    'babel-runtime',
+    'es-abstract',
+    'graceful-fs',
+    'any-promise',
+    'globby',
+    'chalk',
+    'fs-extra',
+    'meow',
+  ],
 };
 
 // If the CHANGED_PACKAGES variable is set, we parse it to get an array of changed packages and only

@@ -27,6 +27,11 @@ describe('MediaNodeUpdater', () => {
     jest.spyOn(commands, 'updateAllMediaNodesAttrs').mockReturnValue(() => {});
     jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => {});
     jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => {});
+    jest
+      .spyOn(commands, 'updateAllMediaNodesAttrs')
+      .mockReturnValue(() => true);
+    jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => true);
+    jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => true);
 
     const contextIdentifierProvider: Promise<
       ContextIdentifierProvider

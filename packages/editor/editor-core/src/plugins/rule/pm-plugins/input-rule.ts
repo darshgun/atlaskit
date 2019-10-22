@@ -65,7 +65,7 @@ export const createHorizontalRule = (
     );
   }
 
-  return addAnalytics(tr, {
+  return addAnalytics(state, tr, {
     action: ACTION.INSERTED,
     actionSubject: ACTION_SUBJECT.DOCUMENT,
     actionSubjectId: ACTION_SUBJECT_ID.DIVIDER,

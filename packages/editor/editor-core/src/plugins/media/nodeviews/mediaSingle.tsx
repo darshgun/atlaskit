@@ -16,7 +16,11 @@ import { CardEvent } from '@atlaskit/media-card';
 import { NodeSelection } from 'prosemirror-state';
 import { MediaClientConfig } from '@atlaskit/media-core';
 
-import { SelectionBasedNodeView } from '../../../nodeviews/ReactNodeView';
+import {
+  SelectionBasedNodeView,
+  getPosHandler,
+  getPosHandlerNode,
+} from '../../../nodeviews/ReactNodeView';
 import MediaItem from './media';
 import WithPluginState from '../../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../../width';
@@ -346,6 +350,9 @@ class MediaSingleNodeView extends SelectionBasedNodeView<
       dispatchAnalyticsEvent,
     } = this.reactComponentProps;
 
+    // getPos is a boolean for marks, since this is a node we know it must be a function
+    const getPos = this.getPos as getPosHandlerNode;
+
     return (
       <WithProviders
         providers={['mediaProvider', 'contextIdentifierProvider']}
@@ -363,14 +370,14 @@ class MediaSingleNodeView extends SelectionBasedNodeView<
                 const isSelected = () =>
                   this.isSelectionInsideNode(selection.from, selection.to) ||
                   (selection instanceof NodeSelection &&
-                    selection.from === this.getPos());
+                    selection.from === getPos());
 
                 return (
                   <MediaSingleNode
                     width={width.width}
                     lineLength={width.lineLength}
                     node={this.node}
-                    getPos={this.getPos}
+                    getPos={getPos}
                     mediaProvider={mediaProvider}
                     contextIdentifierProvider={contextIdentifierProvider}
                     mediaOptions={mediaOptions || {}}
@@ -416,7 +423,7 @@ export const ReactMediaSingleNode = (
   pluginOptions?: MediaPMPluginOptions,
   fullWidthMode?: boolean,
   dispatchAnalyticsEvent?: DispatchAnalyticsEvent,
-) => (node: PMNode, view: EditorView, getPos: () => number) => {
+) => (node: PMNode, view: EditorView, getPos: getPosHandler) => {
   return new MediaSingleNodeView(node, view, getPos, portalProviderAPI, {
     eventDispatcher,
     mediaPluginOptions: pluginOptions,

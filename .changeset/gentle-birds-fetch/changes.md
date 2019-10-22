@@ -1,1 +1,0 @@
-ED-7673: Using hooks for new architecture components
