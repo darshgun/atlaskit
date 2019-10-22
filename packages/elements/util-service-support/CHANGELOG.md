@@ -2,6 +2,10 @@
 
 ## 4.1.0
 
+**Warning: Do not use this version. It has been deprecated**
+
+_Contains an API breaking change:`headers.map(key)` => `headers[key]`._
+
 ### Minor Changes
 
 - [minor][c38928b077](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c38928b077):
