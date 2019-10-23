@@ -25,6 +25,11 @@ const heightCSS = {
 };
 
 export const productIconCSS = {
+  // Ensure anything passed into
+  // productHome is aligned correctly
+  '& > *': {
+    display: 'flex',
+  },
   [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
     display: 'none',
   },
@@ -46,6 +51,11 @@ export const customProductIconCSS = {
 };
 
 export const productLogoCSS = {
+  // Ensure anything passed into
+  // productHome is aligned correctly
+  '& > *': {
+    display: 'flex',
+  },
   [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
     display: 'none',
   },
@@ -59,6 +69,13 @@ export const siteNameCSS = ({
   marginLeft: `${gridSize * 0.5}px`,
   display: 'flex',
   alignItems: 'center',
+
+  // Alternate and leaner way of adding separator
+  // go with this if border color opacity can be solved with
+  // theme generator.
+  // paddingRight: gridSize * 3,
+  // marginRight: gridSize * 1.5,
+  // borderRight: `solid 1px ${color}`
 
   // Adds separator after site name.
   '&::after': {

@@ -30,6 +30,8 @@ export const getIconButtonTheme = (
       borderRadius: 100,
       display: 'flex',
       height: 'auto',
+      // All icon buttons except atlassianSwitcher have
+      // a left margin.
       marginLeft: shouldHaveLeftMargin && margin.left,
       padding: padding.all,
       ...iconButton.default,
