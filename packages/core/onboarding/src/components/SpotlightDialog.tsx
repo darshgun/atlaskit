@@ -17,7 +17,7 @@ import { Actions } from '../types';
 import { Image } from '../styled/Dialog';
 import SpotlightCard from './SpotlightCard';
 import ValueChanged from './ValueChanged';
-import { CardTokens } from './Card.js';
+import { CardTokens } from './Card';
 
 export interface SpotlightDialogProps extends WithAnalyticsEventsProps {
   /** Buttons to render in the footer */
