@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { createTheme, ThemeProp } from '../src';
 
 interface LocalThemeProps {
@@ -88,13 +88,12 @@ class Button extends Component<Props, State> {
   }
 }
 
-// TODO fix children issue and replace fragment
 export default () => (
-  <Fragment>
+  <>
     <Button>Default</Button>
     <Theme.Provider value={contextButtonTheme}>
       <Button>Context</Button>
       <Button theme={propButtonTheme}>Custom</Button>
     </Theme.Provider>
-  </Fragment>
+  </>
 );

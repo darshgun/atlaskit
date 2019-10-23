@@ -1,4 +1,3 @@
-// TODO: TS no index signature for Props['theme']
 interface Props {
   children: Function;
   props: Record<string, any> | string;
