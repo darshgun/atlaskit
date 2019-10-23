@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/resolver",
+  "name": "@atlaskit/resolvers",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
