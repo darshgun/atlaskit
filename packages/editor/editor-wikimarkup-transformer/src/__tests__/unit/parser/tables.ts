@@ -81,7 +81,7 @@ this is a new line text, not in the table`,
       ['should parse panel', `|{panel}foo{panel}|`],
       ['should parse color', `|{color:red}foo{panel}|`],
       ['should parse noformat', `|{noformat}foo{noformat}|`],
-      ['should parse code', `|{code}foo{code}|`],
+      ['should parse code', `|{code:javascript}foo{code}|`],
       ['should parse quote', `|{quote}foo{quote}|`],
       ['should parse anchor', `|{anchor}foo{anchor}|`],
     ];
