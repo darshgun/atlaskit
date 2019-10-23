@@ -14,6 +14,7 @@ export interface ExternalImageIdentifier {
   readonly dataURI: string;
   readonly name?: string;
 }
+
 export const isFileIdentifier = (
   identifier: Identifier,
 ): identifier is FileIdentifier => {
