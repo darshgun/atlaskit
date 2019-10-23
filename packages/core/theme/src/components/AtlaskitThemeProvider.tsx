@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
 import exenv from 'exenv';
-import { ThemeModes, ThemeProps } from '../types';
+import { ThemeModes, AtlaskitThemeProps } from '../types';
 import * as colors from '../colors';
 
 import { CHANNEL, DEFAULT_THEME_MODE } from '../constants';
@@ -10,10 +10,7 @@ import { CHANNEL, DEFAULT_THEME_MODE } from '../constants';
 // For forward-compat until everything is upgraded.
 import Theme from './Theme';
 
-// In this ThemeProvider theme will always be provided
-type ThemeProviderProps = Required<ThemeProps>;
-
-function getStylesheetResetCSS(state: ThemeProviderProps) {
+function getStylesheetResetCSS(state: AtlaskitThemeProps) {
   const backgroundColor = colors.background(state);
   return `
     body { background: ${backgroundColor}; }
@@ -25,7 +22,7 @@ interface Props {
   mode: ThemeModes;
 }
 
-function buildThemeState(mode: ThemeModes): ThemeProviderProps {
+function buildThemeState(mode: ThemeModes): AtlaskitThemeProps {
   return { theme: { [CHANNEL]: { mode } } };
 }
 
@@ -70,7 +67,7 @@ const LegacyReset = styled.div`
 
 export default class AtlaskitThemeProvider extends Component<
   Props,
-  ThemeProviderProps
+  AtlaskitThemeProps
 > {
   stylesheet: any;
 

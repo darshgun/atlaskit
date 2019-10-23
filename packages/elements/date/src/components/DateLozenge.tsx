@@ -41,9 +41,9 @@ export const DateLozenge = styled.span<Props>`
   cursor: ${(props: Props) => (props.onClick ? 'pointer' : 'unset')};
 
   ${props => {
-    const [background, color, hoverBackground]: ColoursTuple = themed(
-      resolveColors(props.color),
-    )(props);
+    var colors = themed(resolveColors(props.color))(props);
+    if (colors == '') colors = ['', '', ''];
+    const [background, color, hoverBackground]: ColoursTuple = colors;
     return `
       background: ${background};
       color: ${color};

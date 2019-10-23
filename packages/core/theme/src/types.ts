@@ -8,12 +8,20 @@ export interface Theme {
   mode: ThemeModes;
 }
 export interface GlobalThemeTokens extends Theme {}
-export type CombinedThemeProps = OtherThemeProps | ThemeProps;
-interface OtherThemeProps {
+
+export type ThemeProps = AtlaskitThemeProps | CustomThemeProps | NoThemeProps;
+export interface CustomThemeProps {
   theme: Theme;
+  [index: string]: any;
 }
-export interface ThemeProps {
-  theme?: { __ATLASKIT_THEME__: Theme };
-  [key: string]: any; //TODO look into this
+export interface AtlaskitThemeProps {
+  theme: { __ATLASKIT_THEME__: Theme };
+  [index: string]: any;
 }
-export type ThemedValue<V = string | number> = (props?: ThemeProps) => V | '';
+export interface NoThemeProps {
+  [index: string]: any;
+}
+
+export type DefaultValue = string | number;
+
+export type ThemedValue<V = DefaultValue> = (props?: ThemeProps) => V | '';

@@ -3,7 +3,6 @@ import { themed } from '@atlaskit/theme/components';
 import { N500, N0 } from '@atlaskit/theme/colors';
 import { SpinnerPhases } from '../types';
 import { SIZES_MAP } from './constants';
-import { ThemeProps } from '@atlaskit/theme';
 
 type StyleParams = {
   invertColor: boolean;
@@ -79,7 +78,7 @@ const getEnterStrokeKeyframe = (size: number) => {
 const spinnerColor = themed({ light: N500, dark: N0 });
 const spinnerColorInverted = themed({ light: N0, dark: N0 });
 
-interface GetStrokeColorProps extends ThemeProps {
+interface GetStrokeColorProps {
   invertColor?: boolean;
 }
 export const getStrokeColor = ({

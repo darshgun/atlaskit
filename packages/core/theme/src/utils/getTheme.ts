@@ -1,8 +1,8 @@
 import { DEFAULT_THEME_MODE } from '../constants';
-import { Theme, CombinedThemeProps } from '../types';
+import { Theme, ThemeProps } from '../types';
 
 // Resolves the different types of theme objects in the current API
-export default function getTheme(props?: CombinedThemeProps): Theme {
+export default function getTheme(props?: ThemeProps): Theme {
   if (props && props.theme) {
     // Theme is the global Atlaskit theme
     if ('__ATLASKIT_THEME__' in props.theme) {

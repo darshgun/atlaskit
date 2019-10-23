@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { ThemeProps } from '@atlaskit/theme';
+import { AtlaskitThemeProps } from '@atlaskit/theme';
 import { borderRadius, gridSize } from '@atlaskit/theme/constants';
 import { multiply } from '@atlaskit/theme/math';
 
@@ -14,7 +14,7 @@ import {
 
 import { AppearanceTypes } from '../../types';
 
-interface FlagColorProps extends ThemeProps {
+interface FlagColorProps extends AtlaskitThemeProps {
   appearance?: AppearanceTypes;
 }
 const getBoxShadow = (props: FlagColorProps) => {
