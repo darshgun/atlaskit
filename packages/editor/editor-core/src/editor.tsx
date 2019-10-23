@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import { EditorView } from 'prosemirror-view';
 import { intlShape, IntlShape, IntlProvider } from 'react-intl';
 import { name, version } from './version-wrapper';
-import { dropdownMenu } from '@atlaskit/dropdown-menu';
 import {
   ProviderFactory,
   Transformer,
@@ -38,8 +37,6 @@ import {
 import ErrorBoundary from './create-editor/ErrorBoundary';
 
 export * from './types';
-
-console.log(dropdownMenu);
 
 type Context = {
   editorActions?: EditorActions;
