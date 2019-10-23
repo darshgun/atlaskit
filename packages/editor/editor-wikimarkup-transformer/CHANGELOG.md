@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.4
+
+### Patch Changes
+
+- [patch][0a67332a0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a67332a0f):
+
+  Fix bug where monospace wikimarkup fails to convert to ADF when it contains an attachment link
+
 ## 4.5.3
 
 ### Patch Changes

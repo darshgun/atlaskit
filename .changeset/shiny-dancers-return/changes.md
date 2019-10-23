@@ -1,1 +1,0 @@
-Fix bug where monospace wikimarkup fails to convert to ADF when it contains an attachment link
