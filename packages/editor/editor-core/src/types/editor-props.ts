@@ -278,4 +278,8 @@ export interface EditorProps {
   // flag to indicate display name instead of nick name should be inserted for mentions
   // default: false, which inserts the nick name
   mentionInsertDisplayName?: boolean;
+
+  // The nth keystroke after which an input time taken event is sent, 0 to disable it
+  // default: 100
+  inputSamplingLimit?: number;
 }
