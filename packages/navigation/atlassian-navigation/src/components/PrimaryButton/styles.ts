@@ -50,11 +50,11 @@ export const isSelectedCSS = (
   { mode: { primaryButton } }: NavigationTheme,
   isSelected?: boolean,
 ) => ({
-  height: HORIZONTAL_GLOBAL_NAV_HEIGHT - 8,
+  height: HORIZONTAL_GLOBAL_NAV_HEIGHT - gridSize,
   display: 'flex',
   alignItems: 'center',
-  borderTop: '4px solid transparent',
+  borderTop: `${gridSize / 2}px solid transparent`,
   borderBottom: isSelected
-    ? `4px solid ${primaryButton.selected.color}`
-    : '4px solid transparent',
+    ? `${gridSize / 2}px solid ${primaryButton.selected.color}`
+    : `${gridSize / 2}px solid transparent`,
 });

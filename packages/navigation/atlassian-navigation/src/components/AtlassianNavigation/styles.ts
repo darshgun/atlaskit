@@ -1,4 +1,5 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
+import { N40A, N30A, N10A } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
 
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
@@ -38,22 +39,11 @@ export const rightCSS = {
 export const bottomShadow = {
   '&::after': {
     content: '""',
-    position: ' absolute',
-    left: 0,
-    right: 0,
-    top: '100%',
-    height: '4px',
-    background:
-      'linear-gradient(180deg, #091E42 -333.33%, rgba(9, 30, 66, 0.55) -201.3%, rgba(9, 30, 66, 0.17) -99.01%, rgba(9, 30, 66, 0) 100%)',
-  },
-
-  '&::before': {
-    content: '""',
     position: 'absolute',
-    top: '100%',
     left: 0,
     right: 0,
-    height: '1px',
-    background: 'rgba(9, 30, 66, 0.06)',
+    top: '100%',
+    height: gridSize / 2,
+    background: `linear-gradient(180deg, ${N40A} 0, ${N40A} 1px, ${N30A} 1px, ${N10A} 4px)`,
   },
 };
