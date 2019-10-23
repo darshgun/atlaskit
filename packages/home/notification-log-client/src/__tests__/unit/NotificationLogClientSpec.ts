@@ -30,7 +30,7 @@ describe('NotificationLogClient', () => {
     });
   });
 
-  it.skip('should add the app version header', () => {
+  it('should add the app version header', () => {
     const provider = new NotificationLogClient(notificationLogUrl, '123');
     return provider.countUnseenNotifications().then(() => {
       expect(fetchMock.lastOptions().headers['x-app-version']).toEqual(
