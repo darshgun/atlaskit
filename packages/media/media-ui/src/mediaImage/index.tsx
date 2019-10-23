@@ -420,6 +420,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
     return (
       <ImageComponent
+        data-test-id="media-image"
         draggable={false}
         alt={alt}
         style={style}

@@ -18,4 +18,9 @@ integration/e2e tests available in media-card:
     - \`error\`
     - \`failed-processing\`
   - \`data-test-progress\` will have a number (from 0 to 1) indication uploading progress
+- \`[data-test-id="media-card-retry-button"]\`: Retry button
+- \`[data-test-id="media-card-primary-action"]\`: Primary action button (there could be two of them max)
+- \`[data-test-id="media-card-actions-menu"]\`: Actions menu button (three dots icon) that open dropdown
+- \`[data-test-id="media-card-actions-menu-item"]\`: Action dropdown item
+- \`[data-test-id="media-image"]\`: Actual image (\`<img />\`) of a card
 `;
