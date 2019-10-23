@@ -12,6 +12,7 @@ import { linkifyContent } from '../../hyperlink/utils';
 import { transformSliceToRemoveOpenBodiedExtension } from '../../extension/actions';
 import { transformSliceToRemoveOpenLayoutNodes } from '../../layout/utils';
 import { getPluginState as getTablePluginState } from '../../table/pm-plugins/main';
+import { transformSliceNestedExpandToExpand } from '../../expand/utils';
 import {
   transformSliceToRemoveOpenTable,
   transformSliceToCorrectEmptyTableCells,
@@ -32,6 +33,7 @@ import {
   handlePastePreservingMarksWithAnalytics,
   handleMarkdownWithAnalytics,
   handleRichTextWithAnalytics,
+  handleExpandWithAnalytics,
 } from './analytics';
 import { PasteTypes } from '../../analytics';
 import { insideTable } from '../../../utils';
@@ -281,6 +283,14 @@ export function createPlugin(
             )(state, dispatch)
           ) {
             return true;
+          }
+
+          if (handleExpandWithAnalytics(view, event, slice)(state, dispatch)) {
+            return true;
+          }
+
+          if (!insideTable(state)) {
+            slice = transformSliceNestedExpandToExpand(slice, state.schema);
           }
 
           return handleRichTextWithAnalytics(view, event, slice)(

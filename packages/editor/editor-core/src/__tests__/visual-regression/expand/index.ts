@@ -1,7 +1,6 @@
 import { Device, snapshot, initFullPageEditorWithAdf } from '../_utils';
 import { expandADF } from './__fixtures__/expand-adf';
 import { selectors } from '../../__helpers/page-objects/_expand';
-import { animationFrame } from '../../__helpers/page-objects/_editor';
 
 describe('Expand: full-page', () => {
   let page: any;
@@ -12,7 +11,6 @@ describe('Expand: full-page', () => {
   });
 
   afterEach(async () => {
-    await animationFrame(page);
     await snapshot(page, undefined, selectors.expand);
   });
 

@@ -33,6 +33,19 @@ export const expand: NodeSpec = {
       skip: true,
     },
     {
+      context: 'nestedExpand//',
+      tag: '[data-node-type="expand"]',
+      skip: true,
+    },
+    {
+      tag: '[data-node-type="nestedExpand"] button',
+      ignore: true,
+    },
+    {
+      tag: '[data-node-type="expand"] button',
+      ignore: true,
+    },
+    {
       tag: 'div[data-node-type="expand"]',
       getAttrs: domNode => {
         const dom = domNode as HTMLElement;

@@ -26,6 +26,7 @@ import {
   handlePastePreservingMarks,
   handleMarkdown,
   handleRichText,
+  handleExpand,
 } from '../handlers';
 import { Command } from '../../../types';
 import { pipe } from '../../../utils';
@@ -361,6 +362,21 @@ export const handleRichTextWithAnalytics = (
 ): Command =>
   pipe(
     handleRichText,
+    commandWithV2Analytics('atlassian.editor.paste', {
+      source: getPasteSource(event),
+    }),
+    pasteCommandWithAnalytics(view, event, slice, {
+      type: PasteTypes.richText,
+    }),
+  )(slice);
+
+export const handleExpandWithAnalytics = (
+  view: EditorView,
+  event: ClipboardEvent,
+  slice: Slice,
+): Command =>
+  pipe(
+    handleExpand,
     commandWithV2Analytics('atlassian.editor.paste', {
       source: getPasteSource(event),
     }),
