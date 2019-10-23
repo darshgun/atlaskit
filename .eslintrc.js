@@ -4,6 +4,10 @@ const tsRecommendedRules = require('@typescript-eslint/eslint-plugin/dist/config
 const prettierTsRules = require('eslint-config-prettier/@typescript-eslint')
   .rules;
 
+const resolverPath = path.resolve(
+  `${__dirname}/build/resolvers/eslint-resolver.ts`,
+);
+
 module.exports = {
   extends: [
     'airbnb',
@@ -15,7 +19,7 @@ module.exports = {
     'import/extensions': ['.js', '.ts', '.tsx'],
     // Required to resolve atlaskit deps to src and remove webpack loader prefixes
     'import/resolver': {
-      [path.resolve(`${__dirname}/build/resolvers/eslint-resolver.js`)]: {
+      [resolverPath]: {
         debug: false,
       },
     },

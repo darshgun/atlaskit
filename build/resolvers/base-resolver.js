@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const resolveFrom = require('resolve-from');
+const enhancedResolve = require('enhanced-resolve');
 
 /*
 These modules should not have their imports resolved differently
@@ -20,7 +21,7 @@ const blockedFromMultiEntryPointsModuleList = [
 
 // This is the resolver used by webpack, which we configure similarly
 // to AK website (see ./website/webpack.config.js - "resolve" field)
-const wpResolver = require('enhanced-resolve').ResolverFactory.createResolver({
+const wpResolver = enhancedResolve.ResolverFactory.createResolver({
   fileSystem: fs,
   useSyncFileSystemCalls: true,
   mainFields: ['atlaskit:src', 'browser', 'main'],
