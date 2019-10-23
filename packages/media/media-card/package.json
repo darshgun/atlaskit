@@ -58,6 +58,7 @@
     "@atlaskit/media-test-helpers": "^25.2.0",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/toggle": "^8.1.2",
+    "@atlaskit/webdriver-runner": "^0.1.5",
     "@types/classnames": "^2.2.6",
     "deepcopy": "0.6.3",
     "enzyme": "^3.7.0",

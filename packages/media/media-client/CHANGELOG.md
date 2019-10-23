@@ -1,5 +1,13 @@
 # @atlaskit/media-client
 
+## 3.0.1
+
+### Patch Changes
+
+- [patch][f1bbcf3847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1bbcf3847):
+
+  dont log id when is not a valid uuid in FileFetcher getFileState
+
 ## 3.0.0
 
 ### Major Changes

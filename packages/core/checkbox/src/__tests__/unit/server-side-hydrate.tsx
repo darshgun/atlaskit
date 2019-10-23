@@ -11,8 +11,8 @@ jest.spyOn(global.console, 'error');
 afterEach(() => {
   jest.resetAllMocks();
 });
-// TODO: https://ecosystem.atlassian.net/browse/AK-6450
-test.skip('should ssr then hydrate checkbox correctly', async () => {
+
+test('should ssr then hydrate checkbox correctly', async () => {
   const [example] = await getExamplesFor('checkbox');
   const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
@@ -20,7 +20,20 @@ test.skip('should ssr then hydrate checkbox correctly', async () => {
   elem.innerHTML = await ssr(example.filePath);
 
   ReactDOM.hydrate(<Example />, elem);
+
   await waitForExpect(() => {
-    expect(console.error).not.toBeCalled(); // eslint-disable-line no-console
+    // ignore warnings caused by emotion's server-side rendering approach
+    // @ts-ignore
+    // eslint-disable-next-line no-console
+    const mockCalls = console.error.mock.calls.filter(
+      ([f, s]: [any, any]) =>
+        !(
+          f ===
+            'Warning: Did not expect server HTML to contain a <%s> in <%s>.' &&
+          s === 'style'
+        ),
+    );
+
+    expect(mockCalls.length).toBe(0);
   });
 });

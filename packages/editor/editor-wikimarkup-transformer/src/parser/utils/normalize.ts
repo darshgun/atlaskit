@@ -52,6 +52,9 @@ function normalizeMediaGroups(nodes: PMNode[], schema: Schema): PMNode[] {
   for (const n of nodes) {
     if (n.type.name === 'mediaGroup' && n.childCount === 1) {
       mediaGroupBuffer.push(n);
+      //separator buffer keeps track of the seperator(s) between each mediaGroup nodes,
+      //so needs resetting every time we encounter a new mediaGroup node
+      separatorBuffer = [];
       continue;
     }
     if (mediaGroupBuffer.length > 0) {

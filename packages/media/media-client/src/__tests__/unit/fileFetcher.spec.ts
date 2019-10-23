@@ -198,7 +198,7 @@ describe('FileFetcher', () => {
 
       fileFetcher.getFileState('invalid-id').subscribe({
         error(error) {
-          expect(error).toEqual('invalid-id is not a valid file id');
+          expect(error).toEqual('invalid id was passed to getFileState');
           done();
         },
       });
