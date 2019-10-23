@@ -1,5 +1,13 @@
 # @atlaskit/util-service-support
 
+## 4.1.1
+
+### Patch Changes
+
+- [patch][36f5a93068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f5a93068):
+
+  Revert API breaking change `headers[key]` => `headers.get(key)`. This change will be reintroduced as a major in a subsequent release.
+
 ## 4.1.0
 
 **Warning: Do not use this version. It has been deprecated**
