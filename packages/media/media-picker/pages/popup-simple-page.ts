@@ -19,7 +19,7 @@ export class PopupSimplePage {
   constructor(private readonly page: any) {}
 
   async clickUploadButton(): Promise<void> {
-    const selector = '.e2e-upload-button';
+    const selector = '[data-test-id="media-picker-upload-button"]';
     await this.page.waitForSelector(selector);
     await this.page.click(selector);
   }
