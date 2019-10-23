@@ -15,7 +15,7 @@ module.exports = {
     // To know how to add in case you have a new one to add, please check
     // https://github.com/amilajack/eslint-plugin-compat/wiki/Adding-polyfills-(v2)
     polyfills: [
-      //   // Shared polyfills across different packages
+      // Shared polyfills across different packages
       'fetch',
       'Object.entries',
       'URL',
@@ -35,12 +35,12 @@ module.exports = {
       'String.raw',
       'PerformanceObserver',
       'IntersectionObserver',
-      //   // @atlaskit/polyfills items
+      // @atlaskit/polyfills items
       'Object.assign',
       'Array.prototype.includes',
       'Array.prototype.find',
       'String.prototype.includes',
-      //   // List based on polyfill.io polyfill added in website examples
+      // List based on polyfill.io polyfill added in website examples
       'Array.from',
       'Array.prototype.fill',
       'Array.prototype.find',
