@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import { EditorView } from 'prosemirror-view';
 import { intlShape, IntlShape, IntlProvider } from 'react-intl';
 import { name, version } from './version-wrapper';
-
 import {
   ProviderFactory,
   Transformer,
