@@ -58,7 +58,6 @@
     "@atlaskit/task-decision": "^16.0.0",
     "@atlaskit/theme": "^9.2.3",
     "@atlaskit/tooltip": "^15.0.15",
-    "@atlaskit/type-helpers": "^4.2.1",
     "@atlaskit/util-service-support": "^4.1.0",
     "@atlaskit/width-detector": "^2.0.8",
     "@sentry/browser": "^4.6.3",

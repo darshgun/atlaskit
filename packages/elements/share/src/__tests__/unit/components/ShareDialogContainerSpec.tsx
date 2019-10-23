@@ -73,19 +73,29 @@ describe('ShareDialogContainer', () => {
       addToUrl: jest.fn(),
       toAnalyticsAttributes: jest.fn(),
     };
-    mockOriginTracingFactory = jest.fn<{}>().mockReturnValue(mockOriginTracing);
-    mockGetConfig = jest.fn<{}>().mockResolvedValue(mockConfig);
-    mockShare = jest.fn<{}>().mockResolvedValue({});
+    mockOriginTracingFactory = jest
+      .fn<{}, []>()
+      .mockReturnValue(mockOriginTracing);
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
+    mockGetConfig = jest.fn<{}, []>().mockResolvedValue(mockConfig);
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
+    mockShare = jest.fn<{}, []>().mockResolvedValue({});
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     mockRequestService = jest
       .spyOn(utils, 'requestService')
       .mockResolvedValue(mockConfig);
     mockShareServiceClient = jest
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       .spyOn(ShareServiceExports, 'ShareServiceClient')
       .mockImplementation(() => ({
         share: mockShare,
         getConfig: mockGetConfig,
       }));
-    mockCreateAnalyticsEvent = jest.fn<{}>().mockReturnValue({
+    mockCreateAnalyticsEvent = jest.fn<{}, []>().mockReturnValue({
       fire: jest.fn(),
     });
     mockFormatCopyLink = jest.fn((origin, link) => link + '&someOrigin');

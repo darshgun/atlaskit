@@ -66,11 +66,15 @@ describe('Ws', () => {
 
   beforeEach(() => {
     webSocketConstructor = jest.fn().mockImplementation(() => {
-      webSocketClose = jest.fn<WebSocketCloseFunction>();
-      webSocketSend = jest.fn<WebSocketSendFunction>();
+      webSocketClose = jest.fn<WebSocketCloseFunction, []>();
+      webSocketSend = jest.fn<WebSocketSendFunction, []>();
       webSocketAddListener = jest
-        .fn<WebSocketListenerFunction>()
+        .fn<WebSocketListenerFunction, []>()
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         .mockImplementation((_: string, callback: Function) => callback());
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       webSocketRemoveListener = jest.fn<WebSocketListenerFunction>();
 
       webSocket = {
@@ -90,8 +94,8 @@ describe('Ws', () => {
     });
     (window as any).WebSocket = webSocketConstructor;
 
-    onDataReceived = jest.fn<WebsocketDataReceivedHandler>();
-    onConnectionLost = jest.fn<ConnectionLostHandler>();
+    onDataReceived = jest.fn<WebsocketDataReceivedHandler, []>();
+    onConnectionLost = jest.fn<ConnectionLostHandler, []>();
 
     (randomInt as any).mockReturnValue(30 * 1000);
     ws = new Ws(auth, onDataReceived, onConnectionLost);

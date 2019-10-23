@@ -387,7 +387,8 @@ describe('Jira Quick Search Container', () => {
 
     describe('Advanced Search callback', () => {
       let redirectSpy: jest.SpyInstance<
-        (entityType: SearchUtils.JiraEntityTypes, query?: string) => void
+        void,
+        [SearchUtils.JiraEntityTypes, (string | undefined)?]
       >;
       let originalWindowLocation = window.location;
 

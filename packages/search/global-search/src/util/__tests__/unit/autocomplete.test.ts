@@ -5,7 +5,10 @@ describe('Autocomplete-util', () => {
     expect(getAutocompleteText('', ['auto', 'car'])).toBeUndefined();
   });
 
-  const testData = [
+  const testData: [
+    (string[] | undefined),
+    (string | string[] | undefined)
+  ][] = [
     // autocomplete array, expected autocomplete text
     [undefined, undefined],
     [[], 'au'],

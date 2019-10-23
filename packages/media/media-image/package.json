@@ -23,7 +23,6 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/media-client": "^3.0.0",
-    "@atlaskit/media-store": "^12.0.14",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {

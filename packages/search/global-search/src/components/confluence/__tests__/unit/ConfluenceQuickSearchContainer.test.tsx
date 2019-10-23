@@ -640,7 +640,7 @@ describe('ConfluenceQuickSearchContainer', () => {
   });
 
   describe('Advanced Search callback', () => {
-    let redirectSpy: jest.SpyInstance<(query?: string) => void>;
+    let redirectSpy: jest.SpyInstance<void, [(string | undefined)?]>;
     let originalWindowLocation = window.location;
 
     beforeEach(() => {
@@ -681,7 +681,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     const mockSearchSessionId = 'someSearchSessionId';
 
     it('should call onAdvancedSearch call', () => {
-      const spy = jest.fn<{}>();
+      const spy = jest.fn<{}, []>();
       const handleSearchSubmit = mountComponent(spy);
       const mockedEvent = mockEvent();
       handleSearchSubmit(mockedEvent, mockSearchSessionId);

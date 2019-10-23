@@ -18,6 +18,7 @@ import {
   FileState,
   Identifier,
   MediaClient,
+  MediaType,
 } from '@atlaskit/media-client';
 import {
   mountWithIntlContext,
@@ -574,9 +575,11 @@ describe('<ItemViewer />', () => {
 
     test.each(['audio', 'video'])(
       'should trigger analytics when %s can play',
-      async (type: 'audio' | 'video') => {
+      async type => {
         const state: ProcessedFileState = {
           id: await identifier.id,
+          // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+          //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
           mediaType: type,
           status: 'processed',
           mimeType: '',
@@ -612,9 +615,9 @@ describe('<ItemViewer />', () => {
       },
     );
 
-    test.each(['audio', 'video'])(
+    test.each<[MediaType, MediaType]>([['audio', 'video']])(
       'should trigger analytics when %s errors',
-      async (type: 'audio' | 'video') => {
+      async type => {
         const state: ProcessedFileState = {
           id: await identifier.id,
           mediaType: type,

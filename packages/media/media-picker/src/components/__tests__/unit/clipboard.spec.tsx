@@ -22,6 +22,8 @@ describe('Clipboard', () => {
 
     jest
       .spyOn(document, 'addEventListener')
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       .mockImplementation((event, cb) => (eventsMap[event] = cb));
   });
 
@@ -109,18 +111,26 @@ describe('Clipboard', () => {
 
     expect(addFilesWithSourceSpy).toHaveBeenCalledTimes(1);
     expect(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       addFilesWithSourceSpy.mock
         .calls /*1st call*/[0] /*1st arg*/[0] /*1st item*/[0].file,
     ).toEqual(mockFile1);
     expect(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       addFilesWithSourceSpy.mock
         .calls /*1st call*/[0] /*1st arg*/[0] /*2nd item*/[1].file,
     ).toEqual(mockFile2);
     expect(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       addFilesWithSourceSpy.mock
         .calls /*1st call*/[0] /*1st arg*/[0] /*1st item*/[0].source,
     ).toEqual(LocalFileSource.PastedFile);
     expect(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       addFilesWithSourceSpy.mock
         .calls /*1st call*/[0] /*1st arg*/[0] /*2nd item*/[1].source,
     ).toEqual(LocalFileSource.PastedFile);
@@ -169,10 +179,14 @@ describe('Clipboard', () => {
     // simulate paste event on document object
     eventsMap.paste(event);
     expect(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       addFilesWithSourceSpy.mock
         .calls /*1st call*/[0] /*1st arg*/[0] /*1st item*/[0].file,
     ).toEqual(mockFile);
     expect(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       addFilesWithSourceSpy.mock
         .calls /*1st call*/[0] /*1st arg*/[0] /*1st item*/[0].source,
     ).toEqual(LocalFileSource.PastedScreenshot);

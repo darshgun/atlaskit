@@ -5,6 +5,8 @@ import {
   initEditorWithAdf,
   Appearance,
 } from '../_utils';
+import adfTableWithMergedCellsOnFirstRow from './__fixtures__/table-with-merged-cells-on-first-row.adf.json';
+import adfTableWithMergedCells from './__fixtures__/table-with-merged-cells.adf.json';
 import adf from '../common/__fixtures__/noData-adf.json';
 import {
   deleteColumn,
@@ -151,4 +153,51 @@ describe('Snapshot Test: table scale', () => {
     await toggleBreakout(page, 1);
     await snapshot(page);
   });
+});
+
+describe('Snapshot Test: table with merged cell on first row', () => {
+  let page: Page;
+  beforeEach(async () => {
+    // @ts-ignore
+    page = global.page;
+    await initFullPageEditorWithAdf(page, adfTableWithMergedCellsOnFirstRow);
+    await clickFirstCell(page);
+  });
+
+  it('should resize the first cell on first row', async () => {
+    await resizeColumn(page, { colIdx: 1, row: 1, amount: 100 });
+    await animationFrame(page);
+    await snapshot(page);
+  });
+
+  it('should resize the first cell on second row', async () => {
+    await resizeColumn(page, { colIdx: 1, row: 2, amount: 100 });
+    await animationFrame(page);
+    await snapshot(page);
+  });
+
+  it('should resize the first cell on third row', async () => {
+    await resizeColumn(page, { colIdx: 1, row: 3, amount: 100 });
+    await animationFrame(page);
+    await snapshot(page);
+  });
+});
+
+describe('Snapshot Test: table resize handle line', () => {
+  let page: Page;
+  beforeEach(async () => {
+    // @ts-ignore
+    page = global.page;
+    await initFullPageEditorWithAdf(page, adfTableWithMergedCells);
+    await clickFirstCell(page);
+  });
+
+  it.each([1, 2, 3, 4, 5, 6])(
+    'should display the resize handle line row %d',
+    async row => {
+      await grabResizeHandle(page, { colIdx: 1, row });
+      await animationFrame(page);
+      await snapshot(page);
+    },
+  );
 });

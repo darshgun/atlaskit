@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 0.6.3
+
+### Patch Changes
+
+- [patch][c3b69b95e7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b69b95e7):
+
+  Removed sandbox attr from iframe
+
 ## 0.6.2
 
 ### Patch Changes

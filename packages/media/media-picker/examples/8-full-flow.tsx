@@ -19,6 +19,8 @@ import {
   UploadPreviewUpdateEventPayload,
   MediaFile,
   Popup,
+  UploadProcessingEventPayload,
+  UploadEndEventPayload,
 } from '../src';
 import { addGlobalEventEmitterListeners } from '@atlaskit/media-test-helpers';
 
@@ -84,10 +86,20 @@ export default class Example extends React.Component<{}, State> {
     });
 
     popup.on('upload-preview-update', this.onUploadPreviewUpdate);
+    popup.on('upload-processing', this.onUploadProcessing);
+    popup.on('upload-end', this.onUploadEnd);
     this.setState({ popup });
 
     popup.show();
   }
+
+  onUploadProcessing = (event: UploadProcessingEventPayload) => {
+    console.log('onUploadProcessing', event.file.id);
+  };
+
+  onUploadEnd = (event: UploadEndEventPayload) => {
+    console.log('onUploadEnd', event.file.id);
+  };
 
   private onUploadPreviewUpdate = async (
     event: UploadPreviewUpdateEventPayload,

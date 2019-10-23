@@ -1,5 +1,15 @@
 # @atlaskit/share
 
+## 0.6.13
+
+### Patch Changes
+
+- [patch][c714d73a8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c714d73a8b):
+
+  Updated translations from Smartling- [patch][6441adad13](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6441adad13):
+
+  Update translations for Share component
+
 ## 0.6.12
 
 - Updated dependencies [bd94b1d552](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd94b1d552):

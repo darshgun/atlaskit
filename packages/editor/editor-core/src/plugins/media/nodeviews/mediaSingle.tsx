@@ -34,7 +34,6 @@ import { stateKey as mediaPluginKey } from '../pm-plugins/main';
 import { isMobileUploadCompleted } from '../commands/helpers';
 import { MediaSingleNodeProps, MediaSingleNodeViewProps } from './types';
 import { MediaNodeUpdater } from './mediaNodeUpdater';
-import { getViewMediaClientConfigFromMediaProvider } from '../utils/media-common';
 import { DispatchAnalyticsEvent } from '../../analytics';
 import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
 
@@ -83,9 +82,7 @@ export default class MediaSingleNode extends Component<
   setViewMediaClientConfig = async (props: MediaSingleNodeProps) => {
     const mediaProvider = await props.mediaProvider;
     if (mediaProvider) {
-      const viewMediaClientConfig = await getViewMediaClientConfigFromMediaProvider(
-        mediaProvider,
-      );
+      const viewMediaClientConfig = await mediaProvider.viewMediaClientConfig;
 
       this.setState({
         viewMediaClientConfig,

@@ -17,7 +17,10 @@ describe('<Checkbox/>', () => {
   const makeCustomTheme = jest.fn((customTheme: ComponentTokens) => {
     return (
       current: (
-        props: { tokens: ComponentTokens; mode: string },
+        props: {
+          tokens: ComponentTokens;
+          mode: string;
+        },
       ) => ThemeTokens,
       props: { tokens: ComponentTokens; mode: string },
     ) => {

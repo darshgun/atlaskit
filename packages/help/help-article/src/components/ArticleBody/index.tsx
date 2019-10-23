@@ -109,7 +109,7 @@ export const ArticleBody = (props: Props) => {
     <ArticleFrame
       style={{ height: articleHeight }}
       ref={iframeRef}
-      sandbox="allow-scripts allow-same-origin"
+      sandbox="allow-same-origin"
     />
   ) : null;
 };

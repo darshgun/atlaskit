@@ -1,3 +1,4 @@
+jest.enableAutomock();
 import path from 'path';
 import fse from 'fs-extra';
 import * as bolt from 'bolt';
@@ -6,7 +7,6 @@ import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
 import runCommands from '@atlaskit/build-utils/runCommands';
 import linkPkg from '../../link-pkg';
 
-jest.enableAutomock();
 jest.mock('fs-extra');
 jest.unmock('../../link-pkg');
 jest.unmock('../../utils');

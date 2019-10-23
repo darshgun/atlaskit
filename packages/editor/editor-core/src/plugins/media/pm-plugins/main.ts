@@ -26,12 +26,7 @@ import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import DropPlaceholder, { PlaceholderType } from '../ui/Media/DropPlaceholder';
 import { MediaPluginOptions } from '../media-plugin-options';
 import { insertMediaGroupNode } from '../utils/media-files';
-import {
-  removeMediaNode,
-  splitMediaGroup,
-  getViewMediaClientConfigFromMediaProvider,
-  getUploadMediaClientConfigFromMediaProvider,
-} from '../utils/media-common';
+import { removeMediaNode, splitMediaGroup } from '../utils/media-common';
 import PickerFacade, {
   PickerFacadeConfig,
   MediaStateEventListener,
@@ -160,9 +155,8 @@ export class MediaPluginState {
       // We want to re assign the view and upload configs if they are missing for backwards compatibility
       // as currently integrators can pass context || mediaClientConfig
       if (!this.mediaProvider.viewMediaClientConfig) {
-        const viewMediaClientConfig = await getViewMediaClientConfigFromMediaProvider(
-          this.mediaProvider,
-        );
+        const viewMediaClientConfig = await this.mediaProvider
+          .viewMediaClientConfig;
 
         if (viewMediaClientConfig) {
           (this
@@ -171,9 +165,8 @@ export class MediaPluginState {
       }
 
       if (!this.mediaProvider.uploadMediaClientConfig) {
-        this.mediaProvider.uploadMediaClientConfig = await getUploadMediaClientConfigFromMediaProvider(
-          this.mediaProvider,
-        );
+        this.mediaProvider.uploadMediaClientConfig = await this.mediaProvider
+          .uploadMediaClientConfig;
       }
 
       assert(
@@ -204,10 +197,7 @@ export class MediaPluginState {
 
     this.mediaClientConfig = await this.mediaProvider.viewMediaClientConfig;
 
-    this.allowsUploads = !!(
-      this.mediaProvider.uploadContext ||
-      this.mediaProvider.uploadMediaClientConfig
-    );
+    this.allowsUploads = !!this.mediaProvider.uploadMediaClientConfig;
     const { view, allowsUploads } = this;
 
     // make sure editable DOM node is mounted

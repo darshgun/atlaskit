@@ -127,6 +127,7 @@ export default () => {
       <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
+        offset="0, 20px"
         content={({ scheduleUpdate }) => (
           <PopupContent
             loading={!isLoaded}

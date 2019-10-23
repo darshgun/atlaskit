@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
 import { Card, CardAction } from '@atlaskit/media-card';
-import { MediaCollectionItem } from '@atlaskit/media-store';
 import {
   asMock,
   fakeIntl,
@@ -16,7 +15,11 @@ import {
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import { InfiniteScroll } from '@atlaskit/media-ui';
-import { MediaClient, RECENTS_COLLECTION } from '@atlaskit/media-client';
+import {
+  MediaClient,
+  MediaCollectionItem,
+  RECENTS_COLLECTION,
+} from '@atlaskit/media-client';
 import {
   State,
   SelectedItem,

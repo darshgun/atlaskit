@@ -1,5 +1,13 @@
 # @atlaskit/modal-dialog
 
+## 10.3.5
+
+### Patch Changes
+
+- [patch][b39742b616](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b39742b616):
+
+  fixed type for the actions props
+
 ## 10.3.4
 
 ### Patch Changes

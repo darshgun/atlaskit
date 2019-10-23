@@ -1,19 +1,14 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 
-import { AppearanceType, ButtonOnClick } from '../types';
+import { AppearanceType, ActionProps } from '../types';
 import { Actions, ActionItem, Footer } from '../styled/Content';
 
 const JustifyShim = (props: any) => <span {...props} />;
 
 export interface FooterProps {
   /** Buttons to render in the footer */
-  actions?: Array<{
-    onClick?: ButtonOnClick;
-    text?: string;
-    /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
-    testId?: string;
-  }>;
+  actions?: Array<ActionProps>;
   /** Appearance of the primary button. Also adds an icon to the heading, if provided. */
   appearance?: AppearanceType;
   /** Component to render the footer of the modal */
@@ -47,11 +42,11 @@ export default class ModalFooter extends React.Component<FooterProps, {}> {
         <JustifyShim />
         <Actions>
           {actions
-            ? actions.map(({ text, testId, ...rest }, idx) => {
+            ? actions.map(({ text, ...rest }, idx) => {
                 const variant = idx !== 0 ? 'subtle' : appearance || 'primary';
                 return (
                   <ActionItem key={text || idx}>
-                    <Button appearance={variant} testId={testId} {...rest}>
+                    <Button appearance={variant} {...rest}>
                       {text}
                     </Button>
                   </ActionItem>

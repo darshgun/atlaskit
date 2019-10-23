@@ -4,7 +4,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { fakeMediaClient, nextTick } from '@atlaskit/media-test-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { FileState, TouchFileDescriptor } from '@atlaskit/media-core';
+import { FileState, TouchFileDescriptor } from '@atlaskit/media-client';
 
 import { Browser } from '../../browser/browser';
 import {

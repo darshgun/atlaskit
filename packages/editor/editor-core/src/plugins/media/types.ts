@@ -1,7 +1,6 @@
 import { FileIdentifier } from '@atlaskit/media-client';
-import { Context, MediaClientConfig } from '@atlaskit/media-core';
+import { MediaClientConfig } from '@atlaskit/media-core';
 import { MediaFile, UploadParams } from '@atlaskit/media-picker';
-import { XOR } from '@atlaskit/type-helpers';
 
 export type MediaStateStatus =
   | 'unknown'
@@ -34,7 +33,7 @@ export interface MediaState {
 
 export interface FeatureFlags {}
 
-type MediaProviderBase = {
+export type MediaProvider = {
   uploadParams?: UploadParams;
 
   /**
@@ -45,38 +44,15 @@ type MediaProviderBase = {
   uploadMediaClientConfig?: MediaClientConfig;
 
   /**
-   * @deprecated Use uploadMediaClientConfig instead.
-   */
-  uploadContext?: Promise<Context>;
-
-  /**
    * (optional) For any additional feature to be enabled
    */
   featureFlags?: FeatureFlags;
-};
 
-export type WithViewMediaClientConfig = {
   /**
    * Used for displaying Media Cards and downloading files.
    */
   viewMediaClientConfig: MediaClientConfig;
 };
-
-export type WithViewContext = {
-  /**
-   * @deprecated Use viewMediaClientConfig instead.
-   */
-  viewContext: Promise<Context>;
-};
-
-/* Note on why XOR is used here.
- * Previously Customers had to define Media's Context object. We are slowly moving from Context to
- * MediaClientConfig.This new type allows for old API to co-exist with a new one. In the future when
- * all customers are switched to the new one (`viewMediaClientConfig` and `uploadMediaClientConfig?`)
- * we will be able to introduce breaking change and remove (`viewContext` and `uploadContext?`).
- */
-export type MediaProvider = MediaProviderBase &
-  XOR<WithViewMediaClientConfig, WithViewContext>;
 
 export type Listener = (data: any) => void;
 
