@@ -1,5 +1,13 @@
 # @atlaskit/mention
 
+## 18.15.6
+
+### Patch Changes
+
+- [patch][d04ac087fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d04ac087fc):
+
+  Handle query parameters for operations in mentions
+
 ## 18.15.5
 
 - Updated dependencies [bd94b1d552](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd94b1d552):
