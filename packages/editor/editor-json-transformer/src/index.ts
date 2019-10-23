@@ -9,7 +9,9 @@ import {
   toJSONTableCell,
   toJSONTableHeader,
 } from '@atlaskit/adf-schema';
+import * as _ from 'lodash';
 import { Node as PMNode, Mark as PMMark } from 'prosemirror-model';
+import { paragraph } from '../../adf-utils/src/validator/specs';
 
 interface Transformer<T> {
   encode(node: PMNode): T;
@@ -61,6 +63,21 @@ const filterNull = (subject: any) => {
     return { ...acc, [key]: current };
   }, {});
 };
+
+const createDocFromContent = (content: JSONNode[]): JSONDocNode => {
+  return {
+    version: 1,
+    type: 'doc',
+    content: content || [],
+  };
+};
+
+const emptyDoc = createDocFromContent([
+  {
+    type: 'paragraph',
+    content: [],
+  },
+]);
 
 const toJSON = (node: PMNode): JSONNode => {
   const obj: JSONNode = { type: node.type.name };
@@ -120,20 +137,29 @@ export class JSONTransformer implements Transformer<JSONDocNode> {
       content.push(toJSON(child));
     });
 
-    return {
-      version: 1,
-      type: 'doc',
-      content,
-    };
+    if (!content || _.isEqual(content, emptyDoc.content)) {
+      return createDocFromContent([]);
+    }
+
+    return createDocFromContent(content);
+  }
+
+  private internalParse(content: JSONDocNode): PMNode {
+    const doc = defaultSchema.nodeFromJSON(content);
+    doc.check();
+    return doc;
   }
 
   parse(content: JSONDocNode): PMNode {
     if (content.type !== 'doc') {
       throw new Error('Expected content format to be ADF');
     }
-    const doc = defaultSchema.nodeFromJSON(content);
-    doc.check();
-    return doc;
+
+    if (!content.content || content.content.length == 0) {
+      return this.internalParse(emptyDoc);
+    }
+
+    return this.internalParse(content);
   }
 
   /**
