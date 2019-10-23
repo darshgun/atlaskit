@@ -90,10 +90,23 @@ type TableSortColumnAEP = AEP<
   EVENT_TYPE.TRACK
 >;
 
+type ExpandAEP = AEP<
+  ACTION.TOGGLE_EXPAND,
+  ACTION_SUBJECT.EXPAND | ACTION_SUBJECT.NESTED_EXPAND,
+  undefined,
+  {
+    platform: PLATFORM.WEB;
+    mode: MODE.RENDERER;
+    expanded: boolean;
+  },
+  EVENT_TYPE.TRACK
+>;
+
 export type AnalyticsEventPayload =
   | RendererStartAEP
   | RendererRenderedAEP
   | HeadingAnchorLinkButtonAEP
   | AnchorLinkAEP
   | TableSortColumnNotAllowedAEP
-  | TableSortColumnAEP;
+  | TableSortColumnAEP
+  | ExpandAEP;

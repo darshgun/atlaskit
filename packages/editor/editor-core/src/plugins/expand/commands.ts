@@ -4,6 +4,15 @@ import { safeInsert, findTable } from 'prosemirror-utils';
 import { createCommand } from './pm-plugins/main';
 import { Command } from '../../types';
 import { findExpand } from './utils';
+import {
+  addAnalytics,
+  AnalyticsEventPayload,
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+  INPUT_METHOD,
+  EVENT_TYPE,
+} from '../analytics';
 
 export const setExpandRef = (ref?: HTMLDivElement | null): Command =>
   createCommand(
@@ -18,11 +27,29 @@ export const setExpandRef = (ref?: HTMLDivElement | null): Command =>
 
 export const deleteExpand = (): Command => (state, dispatch) => {
   const expandNode = findExpand(state);
+  if (!expandNode) {
+    return false;
+  }
+
+  const payload: AnalyticsEventPayload = {
+    action: ACTION.DELETED,
+    actionSubject:
+      expandNode.node.type === state.schema.nodes.expand
+        ? ACTION_SUBJECT.EXPAND
+        : ACTION_SUBJECT.NESTED_EXPAND,
+    attributes: { inputMethod: INPUT_METHOD.TOOLBAR },
+    eventType: EVENT_TYPE.TRACK,
+  };
+
   if (expandNode && dispatch) {
     dispatch(
-      state.tr.delete(
-        expandNode.pos,
-        expandNode.pos + expandNode.node.nodeSize,
+      addAnalytics(
+        state,
+        state.tr.delete(
+          expandNode.pos,
+          expandNode.pos + expandNode.node.nodeSize,
+        ),
+        payload,
       ),
     );
   }
@@ -86,10 +113,27 @@ export const createExpandNode = (state: EditorState): PMNode => {
 };
 
 export const insertExpand: Command = (state, dispatch) => {
-  const node = createExpandNode(state);
+  const expandNode = createExpandNode(state);
+
+  const payload: AnalyticsEventPayload = {
+    action: ACTION.INSERTED,
+    actionSubject: ACTION_SUBJECT.DOCUMENT,
+    actionSubjectId:
+      expandNode.type === state.schema.nodes.expand
+        ? ACTION_SUBJECT_ID.EXPAND
+        : ACTION_SUBJECT_ID.NESTED_EXPAND,
+    attributes: { inputMethod: INPUT_METHOD.INSERT_MENU },
+    eventType: EVENT_TYPE.TRACK,
+  };
 
   if (dispatch) {
-    dispatch(safeInsert(node)(state.tr).scrollIntoView());
+    dispatch(
+      addAnalytics(
+        state,
+        safeInsert(expandNode)(state.tr).scrollIntoView(),
+        payload,
+      ),
+    );
   }
 
   return true;
