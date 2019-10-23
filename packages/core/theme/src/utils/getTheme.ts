@@ -3,9 +3,6 @@ import { Theme, CombinedThemeProps } from '../types';
 
 // Resolves the different types of theme objects in the current API
 export default function getTheme(props?: CombinedThemeProps): Theme {
-  console.log('getTheme gets default theme: ', !props || !props.theme);
-  console.log('props:', props);
-
   if (props && props.theme) {
     // Theme is the global Atlaskit theme
     if ('__ATLASKIT_THEME__' in props.theme) {

@@ -12,7 +12,7 @@ type VariantModes<V> = { [index: string]: Modes<V> };
 function themedVariants<V>(variantProp: string, variants?: VariantModes<V>) {
   return (props?: ThemeProps & VariantModes<V>) => {
     const theme = getTheme(props);
-    if (props && props.variantProp && variants) {
+    if (props && props[variantProp] && variants) {
       const modes = variants[props[variantProp]];
       if (modes) {
         return modes[theme.mode];
