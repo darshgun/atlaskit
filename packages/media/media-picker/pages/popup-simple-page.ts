@@ -47,7 +47,7 @@ export class PopupSimplePage {
   }
 
   async clickInsertButton(): Promise<void> {
-    await this.page.click('.e2e-insert-button');
+    await this.page.click('[data-test-id="media-picker-insert-button"]');
   }
 
   async getEvents(): Promise<Event[]> {
