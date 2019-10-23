@@ -21,6 +21,8 @@
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/adf-schema": "^4.2.0",
+    "@atlaskit/analytics-gas-types": "^4.0.12",
+    "@atlaskit/analytics-listeners": "^6.2.2",
     "@atlaskit/analytics-next": "^6.3.0",
     "@atlaskit/avatar": "^17.1.2",
     "@atlaskit/button": "^13.3.2",

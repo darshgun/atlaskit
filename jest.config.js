@@ -64,7 +64,7 @@ const config = {
   transformIgnorePatterns: [
     '\\/node_modules\\/(?!@atlaskit|react-syntax-highlighter)',
   ],
-  resolver: `${__dirname}/resolver.js`,
+  resolver: `${__dirname}/build/resolvers/jest-resolver.js`,
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.js$': 'babel-jest',

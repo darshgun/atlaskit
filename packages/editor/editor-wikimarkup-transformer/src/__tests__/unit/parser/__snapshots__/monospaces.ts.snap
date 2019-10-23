@@ -1,0 +1,294 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert attachment links inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "[^test.txt]",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert bold formatting inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "*bold*",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert citation inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "??citation??",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert italic formatting inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "_italic_",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert strikethrough inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "-strikethrough-",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert subscript inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "~subscript~",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert superscript inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "^superscript^",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should NOT convert wiki-links inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "[links|",
+          "type": "text",
+        },
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "__confluenceMetadata": null,
+                "href": "http://google.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "http://google.com",
+          "type": "text",
+        },
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "]",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should convert color macro inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "color": "#59afe1",
+              },
+              "type": "textColor",
+            },
+          ],
+          "text": "colour",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should convert raw link text inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "__confluenceMetadata": null,
+                "href": "http://example.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "http://example.com",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Preformatted text [CS-1470] should convert raw text around links inside preformatted text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "abc ",
+          "type": "text",
+        },
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "__confluenceMetadata": null,
+                "href": "http://google.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "http://google.com",
+          "type": "text",
+        },
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": " abc",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;

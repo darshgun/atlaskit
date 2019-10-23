@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/notification-log-client",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "description": "Client APIs for notification-log service",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -18,7 +18,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/util-service-support": "^4.0.9",
+    "@atlaskit/util-service-support": "^5.0.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {

@@ -32,6 +32,7 @@
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/editor-core": "^113.2.0",
     "@atlaskit/editor-test-helpers": "^10.1.2",
+    "@atlaskit/emoji": "^62.5.4",
     "@atlaskit/theme": "^9.2.3",
     "@atlaskit/util-data-test": "^13.0.0",
     "prosemirror-view": "^1.9.12",
