@@ -42,7 +42,7 @@ export const DateLozenge = styled.span<Props>`
 
   ${props => {
     var colors = themed(resolveColors(props.color))(props);
-    if (colors == '') colors = ['', '', ''];
+    if (colors === '') colors = ['', '', ''];
     const [background, color, hoverBackground]: ColoursTuple = colors;
     return `
       background: ${background};
