@@ -5,7 +5,7 @@ const prettierTsRules = require('eslint-config-prettier/@typescript-eslint')
   .rules;
 
 const resolverPath = path.resolve(
-  `${__dirname}/build/resolvers/eslint-resolver.ts`,
+  `${__dirname}/build/resolvers/eslint-resolver.js`,
 );
 
 module.exports = {
