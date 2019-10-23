@@ -1,14 +1,11 @@
 /* eslint-disable prefer-rest-params */
 
 import getTheme from './getTheme';
-import { ThemedValue, ThemeProps } from '../types';
+import { ThemedValue, ThemeProps, ThemeModes } from '../types';
 
 type Value = string | number;
 
-type Modes<V> = Partial<{
-  light: V;
-  dark: V;
-}>;
+type Modes<V> = { [key in ThemeModes]: V };
 
 type VariantModes<V> = { [index: string]: Modes<V> };
 
@@ -16,7 +13,6 @@ function themedVariants<V>(variantProp: string, variants?: VariantModes<V>) {
   return (props?: ThemeProps & VariantModes<V>) => {
     const theme = getTheme(props);
     if (props && props.variantProp && variants) {
-      // @ts-ignore
       const modes = variants[props[variantProp]];
       if (modes) {
         return modes[theme.mode];
@@ -31,11 +27,16 @@ export default function themed<V = Value>(
   variantModes?: VariantModes<V>,
 ): ThemedValue<V> {
   if (typeof modesOrVariant === 'string') {
-    // @ts-ignore
     return themedVariants<V>(modesOrVariant, variantModes);
   }
-  return (props?: Record<string, any>) => {
+  const modes = modesOrVariant;
+  return (props?: ThemeProps) => {
     const theme = getTheme(props);
-    return modesOrVariant[theme.mode]!; // TODO Potentially revisit the fact that Mode cant be an empty object and break things
+    // If user provides only light or dark and the other is called, return empty string
+    if (theme.mode in modes) {
+      return modes[theme.mode];
+    } else {
+      return '';
+    }
   };
 }

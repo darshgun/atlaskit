@@ -8,8 +8,12 @@ export interface Theme {
   mode: ThemeModes;
 }
 export interface GlobalThemeTokens extends Theme {}
+export type CombinedThemeProps = OtherThemeProps | ThemeProps;
+interface OtherThemeProps {
+  theme: Theme;
+}
 export interface ThemeProps {
   theme?: { __ATLASKIT_THEME__: Theme };
   [key: string]: any; //TODO look into this
 }
-export type ThemedValue<V = string | number> = (props?: ThemeProps) => V;
+export type ThemedValue<V = string | number> = (props?: ThemeProps) => V | '';
