@@ -300,7 +300,7 @@ export class StatelessUploadView extends Component<
     return uploadingFilesCards
       .concat(recentFilesCards)
       .map(({ key, el: card }) => (
-        <CardWrapper tabIndex={0} className="e2e-recent-upload-card" key={key}>
+        <CardWrapper tabIndex={0} data-test-id="recent-upload-card" key={key}>
           {card}
         </CardWrapper>
       ));

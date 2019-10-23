@@ -25,7 +25,7 @@ export class PopupSimplePage {
   }
 
   async getRecentUploadCards(): Promise<RecentUploadCard[]> {
-    const selector = '.e2e-recent-upload-card';
+    const selector = '[data-test-id="recent-upload-card"]';
     const results = await this.page.getHTML(selector);
     return results.map((html: string) => {
       const div = document.createElement('div');

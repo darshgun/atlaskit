@@ -43,7 +43,7 @@ export enum MediaToolbarButton {
 }
 
 // Selectors
-const mediaUploadCardSelector = '.e2e-recent-upload-card';
+const mediaUploadCardSelector = '[data-test-id="recent-upload-card"]';
 const mediaImageSelector = `.${mediaSingleClassName} .img-wrapper, .mediaGroupView-content-wrap .img-wrapper`;
 const mediaImageSelected = `.ProseMirror-selectednode .${mediaSingleClassName} .img-wrapper, .ProseMirror-selectednode .mediaGroupView-content-wrap .img-wrapper`;
 const insertMediaFileSelector = 'div[aria-label="%s"]';
