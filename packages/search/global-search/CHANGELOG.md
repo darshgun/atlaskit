@@ -1,5 +1,10 @@
 # @atlaskit/global-search
 
+## 12.2.6
+
+- Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
+  - @atlaskit/util-service-support@5.0.0
+
 ## 12.2.5
 
 - Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):

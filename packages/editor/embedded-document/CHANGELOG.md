@@ -1,5 +1,11 @@
 # @atlaskit/embedded-document
 
+## 0.6.8
+
+- Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
+  - @atlaskit/editor-core@113.2.1
+  - @atlaskit/util-service-support@5.0.0
+
 ## 0.6.7
 
 ### Patch Changes
