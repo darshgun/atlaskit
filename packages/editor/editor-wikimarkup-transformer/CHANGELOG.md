@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.5
+
+### Patch Changes
+
+- [patch][ca7488595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca7488595c):
+
+  fix bug in the mediaGroup normalization logic where mediaGroup nodes are not merged together properly when there are more than one newline
+
 ## 4.5.4
 
 ### Patch Changes

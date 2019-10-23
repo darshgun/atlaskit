@@ -1,1 +1,0 @@
-fix bug in the mediaGroup normalization logic where mediaGroup nodes are not merged together properly when there are more than one newline
