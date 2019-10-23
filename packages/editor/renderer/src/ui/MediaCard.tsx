@@ -29,11 +29,9 @@ import { RendererAppearance } from './Renderer/types';
 import { RendererContext } from '../react';
 import styled from 'styled-components';
 
-export interface WithViewMediaClientConfig {
+export type MediaProvider = {
   viewMediaClientConfig: MediaClientConfig;
-}
-
-export type MediaProvider = WithViewMediaClientConfig;
+};
 
 export interface MediaCardProps {
   id?: string;
