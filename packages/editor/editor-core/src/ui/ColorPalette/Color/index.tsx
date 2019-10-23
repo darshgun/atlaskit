@@ -5,7 +5,8 @@ import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import { colors } from '@atlaskit/theme';
 import { Button, ButtonWrapper } from './styles';
 import Tooltip from '@atlaskit/tooltip';
-import { hexToRgba, N800, N0 } from '@atlaskit/adf-schema';
+import { setAlpha } from '@atlaskit/editor-common';
+
 // IMO these should live inside @atlaskit/theme
 const messages = defineMessages({
   selected: {
@@ -25,8 +26,6 @@ export interface Props {
   checkMarkColor?: string;
 }
 
-const defaultBorderColor = hexToRgba(N800, 0.12) || N0;
-
 class Color extends PureComponent<Props & InjectedIntlProps> {
   render() {
     const {
@@ -34,7 +33,7 @@ class Color extends PureComponent<Props & InjectedIntlProps> {
       value,
       label,
       isSelected,
-      borderColor = defaultBorderColor,
+      borderColor = setAlpha(colors.N800, 0.12),
       checkMarkColor = colors.N0,
       intl: { formatMessage },
     } = this.props;
