@@ -52,7 +52,7 @@ export default (
 
             requestAnimationFrame(() => {
               const diff = performance.now() - now;
-              if (++keystrokeCount === samplingLimit && samplingLimit) {
+              if (samplingLimit && ++keystrokeCount === samplingLimit) {
                 keystrokeCount = 0;
                 dispatchAnalyticsEvent({
                   action: ACTION.INPUT_PERF_SAMPLING,
@@ -60,7 +60,6 @@ export default (
                   attributes: {
                     time: diff,
                     nodeSize: state.doc.nodeSize,
-                    nodes: getNodesCount(state.doc),
                   },
                   eventType: EVENT_TYPE.OPERATIONAL,
                 });
