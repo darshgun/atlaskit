@@ -9,12 +9,12 @@ export function useEditor(
   config: CreateEditorParams & { editorActions?: EditorActions },
 ): [EditorSharedConfig | null, (ref: HTMLDivElement | null) => void] {
   const [editorSharedConfig, mountEditor] = useCreateEditor(config);
-
   const editorSharedConfigRef = React.useRef<EditorSharedConfig | null>(null);
   editorSharedConfigRef.current = editorSharedConfig;
 
   useApplyEditorViewProps(editorSharedConfig, config.disabled);
   useHandleEditorUnmount(editorSharedConfigRef);
+
   return [editorSharedConfig, mountEditor];
 }
 
@@ -34,8 +34,11 @@ function useCreateEditor(
 
   return [
     editorSharedConfig,
+
+    // This callback is being used as `ref={callback}` on EditorContentProvider,
+    // When called with `ref` mounts editor and creates editorSharedConfig.
     React.useCallback(
-      (ref: any) => {
+      (ref: HTMLDivElement | null) => {
         setEditorSharedConfig(
           editorSharedConfig =>
             editorSharedConfig || createEditor({ ...config, ref }),

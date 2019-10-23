@@ -68,7 +68,7 @@
     "@types/prosemirror-history": "^1.0.1",
     "@types/prosemirror-inputrules": "^1.0.2",
     "@types/prosemirror-keymap": "^1.0.1",
-    "@types/prosemirror-model": "^1.5.0",
+    "@types/prosemirror-model": "^1.7.2",
     "@types/prosemirror-schema-list": "^1.0.1",
     "@types/prosemirror-state": "^1.2.0",
     "@types/prosemirror-transform": "^1.1.0",
@@ -121,6 +121,7 @@
     "@atlaskit/renderer": "^52.0.0",
     "@atlaskit/section-message": "^4.0.12",
     "@atlaskit/share": "^0.6.14",
+    "@atlaskit/synchrony-test-helpers": "^1.0.0",
     "@atlaskit/textarea": "^2.2.1",
     "@atlaskit/toggle": "^8.1.1",
     "@atlaskit/user-picker": "^4.1.3",
@@ -128,6 +129,7 @@
     "@atlaskit/profilecard": "^12.3.3",
     "@atlaskit/visual-regression": "^0.1.3",
     "@atlaskit/webdriver-runner": "^0.1.5",
+    "@types/prettier": "^1.15.2",
     "chai": "^4.1.2",
     "clipboard-polyfill": "2.4.3",
     "diff": "^4.0.1",
@@ -140,6 +142,7 @@
     "puppeteer": "1.17.0",
     "raf-stub": "^2.0.1",
     "react": "^16.8.0",
+    "react-test-renderer": "^16.8.0",
     "react-intl": "^2.6.0",
     "sinon": "^2.2.0"
   }

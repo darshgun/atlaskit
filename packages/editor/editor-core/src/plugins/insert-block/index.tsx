@@ -70,7 +70,7 @@ function handleInsertBlockType(name: string) {
   return insertBlockTypesWithAnalytics(name, INPUT_METHOD.TOOLBAR);
 }
 
-const insertBlockPlugin = (options: InsertBlockOptions): EditorPlugin => ({
+const insertBlockPlugin = (options: InsertBlockOptions = {}): EditorPlugin => ({
   name: 'insertBlock',
 
   primaryToolbarComponent({

@@ -14,7 +14,7 @@ import {
 import { CustomMediaPlayer } from '@atlaskit/media-ui';
 import { VideoViewer, Props } from '../../../../../newgen/viewers/video';
 import { ErrorMessage } from '../../../../../newgen/error';
-import { Auth } from '@atlaskit/media-store';
+import { Auth } from '@atlaskit/media-core';
 
 const token = 'some-token';
 const clientId = 'some-client-id';

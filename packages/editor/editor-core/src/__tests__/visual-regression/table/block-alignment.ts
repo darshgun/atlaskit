@@ -32,7 +32,8 @@ describe('Table with block looks correct for fullpage:', () => {
     await page.click(getSelectorForTableCell({ row: 4, cell: 1 }));
   });
 
-  it('default layout with dark theme', async () => {
+  // TODO: ED-7814
+  it.skip('default layout with dark theme', async () => {
     await initFullPageEditorWithAdf(
       page,
       adf,

@@ -7,7 +7,7 @@ import {
   UIAnalyticsEvent,
   AnalyticsEventPayload,
 } from '@atlaskit/analytics-next';
-import { ReactNodeView, ForwardRef } from '../../../nodeviews';
+import { ReactNodeView, ForwardRef, getPosHandler } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import WithPluginState from '../../../ui/WithPluginState';
@@ -19,6 +19,7 @@ import {
   pluginKey as editorDisabledPluginKey,
   EditorDisabledPluginState,
 } from '../../editor-disabled';
+import { getPosHandlerNode } from '../../../nodeviews/ReactNodeView';
 
 export interface Props {
   providerFactory: ProviderFactory;
@@ -31,7 +32,7 @@ class Task extends ReactNodeView<Props> {
 
   private handleOnChange = (taskId: string, isChecked: boolean) => {
     const { tr } = this.view.state;
-    const nodePos = this.getPos();
+    const nodePos = (this.getPos as getPosHandlerNode)();
 
     tr.setNodeMarkup(nodePos, undefined, {
       state: isChecked ? 'DONE' : 'TODO',
@@ -52,7 +53,9 @@ class Task extends ReactNodeView<Props> {
    */
   private addListAnalyticsData = (event: UIAnalyticsEvent) => {
     try {
-      const resolvedPos = this.view.state.doc.resolve(this.getPos());
+      const resolvedPos = this.view.state.doc.resolve(
+        (this.getPos as getPosHandlerNode)(),
+      );
       const position = resolvedPos.index();
       const listSize = resolvedPos.parent.childCount;
       const listLocalId = resolvedPos.parent.attrs.localId;
@@ -150,7 +153,7 @@ export function taskItemNodeViewFactory(
   portalProviderAPI: PortalProviderAPI,
   providerFactory: ProviderFactory,
 ) {
-  return (node: any, view: any, getPos: () => number): NodeView => {
+  return (node: any, view: any, getPos: getPosHandler): NodeView => {
     return new Task(node, view, getPos, portalProviderAPI, {
       providerFactory,
     }).init();

@@ -137,6 +137,18 @@ export default class RendererBridgeImpl extends WebBridge
     return String(offset);
   }
 
+  /**
+   * Used to observe the height of the rendered content and notify the native side when that happens
+   * by calling RenderBridge#onRenderedContentHeightChanged.
+   *
+   * @param enabled whether the height is being observed (and therefore the callback is being called).
+   */
+  observeRenderedContentHeight(enabled: boolean) {
+    if (eventDispatcher) {
+      eventDispatcher.emit('observeRenderedContentHeight', { enabled });
+    }
+  }
+
   onTaskUpdated(taskId: string, state: TaskState) {
     if (this.taskDecisionProvider) {
       const key: ObjectKey = {

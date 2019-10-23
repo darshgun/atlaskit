@@ -14,7 +14,6 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
         ? selectedItems.map(item => ({
             fileId: item.id,
             fileMimetype: item.mimeType,
-            fileName: item.name,
             fileSize: item.size,
             accountId: item.accountId,
             serviceName: item.serviceName,

@@ -313,7 +313,7 @@
     "@types/prosemirror-history": "^1.0.1",
     "@types/prosemirror-inputrules": "^1.0.2",
     "@types/prosemirror-keymap": "^1.0.1",
-    "@types/prosemirror-model": "^1.5.0",
+    "@types/prosemirror-model": "^1.7.2",
     "@types/prosemirror-schema-list": "^1.0.1",
     "@types/prosemirror-state": "^1.2.0",
     "@types/prosemirror-transform": "^1.1.0",
@@ -458,6 +458,7 @@
     "p-settle": "^3.1.0",
     "p-wait-for": "^3.1.0",
     "pdfjs-dist": "2.0.489",
+    "perf-marks": "^1.0.1",
     "png-chunks-extract": "^1.0.0",
     "polished": "1.9.3",
     "popper.js": "^1.14.1",
@@ -603,6 +604,7 @@
     "ie 11"
   ],
   "peerDependencies": {
+    "@atlassian/prosemirror-synchrony-plugin": "^0.28.454",
     "@atlassiansox/analytics-node-client": "^1.0.103",
     "@atlassiansox/analytics-web-client": "^1.7.1"
   }

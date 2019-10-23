@@ -1459,6 +1459,10 @@
         "../../editor/renderer/src/utils",
         "./packages/editor/renderer/src/utils"
       ],
+      "@atlaskit/synchrony-test-helpers": [
+        "../../editor/synchrony-test-helpers/src/",
+        "./packages/editor/synchrony-test-helpers/src/"
+      ],
       "@atlaskit/updater-cli": [
         "../../editor/updater-cli/src/",
         "./packages/editor/updater-cli/src/"
@@ -1970,6 +1974,10 @@
       "@atlaskit/media-test-helpers/getAuthFromContextProvider": [
         "../../media/media-test-helpers/src/getAuthFromContextProvider",
         "./packages/media/media-test-helpers/src/getAuthFromContextProvider"
+      ],
+      "@atlaskit/media-test-helpers/globalEventEmitterListeners": [
+        "../../media/media-test-helpers/src/globalEventEmitterListeners",
+        "./packages/media/media-test-helpers/src/globalEventEmitterListeners"
       ],
       "@atlaskit/media-test-helpers/I18nWrapper": [
         "../../media/media-test-helpers/src/I18nWrapper",

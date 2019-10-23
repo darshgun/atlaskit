@@ -1,0 +1,1 @@
+fixing analytics failed when user cancels file upload
