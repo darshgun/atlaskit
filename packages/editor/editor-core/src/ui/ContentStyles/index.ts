@@ -79,6 +79,7 @@ const ContentStyles: ComponentClass<
     max-width: calc(100% - 20px);
     vertical-align: top;
     word-break: break-all;
+    user-select: none;
   }
 
   .inlineCardView-content-wrap .card {
@@ -88,6 +89,7 @@ const ContentStyles: ComponentClass<
 
   .blockCardView-content-wrap {
     display: inline-block;
+    user-select: none;
   }
 
   /* fix cursor alignment */

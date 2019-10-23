@@ -46,11 +46,14 @@ export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
   transition: opacity 0.3s;
 `;
 
+// ED-6940 note that we use -moz-user-select: none; here
+// for a firefox specific fix.
 export const PlaceholderFallback: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   display: inline-flex;
   align-items: center;
+  -moz-user-select: none;
 
   & > img {
     margin: 0 4px;
