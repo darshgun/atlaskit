@@ -1,0 +1,1 @@
+Revert API breaking change `headers[key]` => `headers.get(key)`. This change will be reintroduced as a major in a subsequent release.
