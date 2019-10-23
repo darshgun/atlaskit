@@ -305,7 +305,7 @@ describe('MentionResource', () => {
     });
   });
 
-  describe('#filter auth issues', () => {
+  describe.skip('#filter auth issues', () => {
     it('401 error once retry', done => {
       const authUrl = 'https://authbogus/';
       const matcher = `begin:${authUrl}`;
