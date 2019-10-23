@@ -1,6 +1,7 @@
 import { Device, snapshot, initFullPageEditorWithAdf } from '../_utils';
 import { expandADF } from './__fixtures__/expand-adf';
 import { selectors } from '../../__helpers/page-objects/_expand';
+import { animationFrame } from '../../__helpers/page-objects/_editor';
 
 describe('Expand: full-page', () => {
   let page: any;
@@ -28,11 +29,12 @@ describe('Expand: full-page', () => {
   test('should render a border on hover of a collapsed top level expand', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
     await page.click(selectors.expandToggle);
-    await page.hover(selectors.expand);
+    await page.hover(selectors.expandTitleInput);
   });
 
-  test('should collapsed nested expand on click', async () => {
+  test('should collapse a nested expand on click', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
     await page.click(selectors.nestedExpandToggle);
+    await animationFrame(page);
   });
 });

@@ -6,6 +6,7 @@ import {
   akEditorMenuZIndex,
   akEditorFullWidthLayoutWidth,
   akEditorGutterPadding,
+  akEditorSwoopCubicBezier,
 } from '@atlaskit/editor-common';
 import { taskListSelector, decisionListSelector } from '@atlaskit/adf-schema';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
@@ -24,7 +25,7 @@ import { scrollbarStyles } from '../styles';
 import WidthEmitter from '../WidthEmitter';
 import { LAYOUT_OFFSET } from '../../plugins/layout/styles';
 
-const SWOOP_ANIMATION = '0.5s cubic-bezier(.15,1,.3,1)';
+const SWOOP_ANIMATION = `0.5s ${akEditorSwoopCubicBezier}`;
 const TOTAL_PADDING = akEditorGutterPadding * 2;
 
 const FullPageEditorWrapper = styled.div`

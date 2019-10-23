@@ -43,3 +43,10 @@ export {
 } from './OverflowShadow';
 
 export { WithCreateAnalyticsEvent } from './WithCreateAnalyticsEvent';
+
+export {
+  default as Expand,
+  messages as expandMessages,
+  ExpandProps,
+  LAYOUT_OFFSET as akEditorExpandLayoutOffset,
+} from './Expand';

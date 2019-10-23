@@ -40,13 +40,15 @@ const tableSharedStyle = css`
     margin: 0 auto ${tableMarginBottom}px;
     box-sizing: border-box;
 
+
     /**
      * Fix block top alignment inside table cells.
      */
     .code-block,
     .${PanelSharedCssClassName.PANEL_CONTAINER},
     .taskItemView-content-wrap > div,
-    .decisionItemView-content-wrap > div {
+    .decisionItemView-content-wrap > div,
+    .nestedExpandView-content-wrap {
       margin-top: 0;
     }
   }
