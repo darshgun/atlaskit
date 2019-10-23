@@ -30,7 +30,7 @@ export const flagShadowColor = themed('appearance', {
   warning: { light: colors.N50A, dark: colors.N50A },
 });
 
-export const flagFocusRingColor = themed<string>('appearance', {
+export const flagFocusRingColor = themed('appearance', {
   error: { light: colors.N40, dark: colors.N40 },
   info: { light: colors.N40, dark: colors.N40 },
   normal: { light: colors.B100, dark: colors.B100 },

@@ -47,8 +47,6 @@ export const Tooltip = styled<TooltipProps>(TooltipPrimitive)`
     `}
 `;
 
-// TODO Test this truncate stuff
-
 // The inline-block here is needed to keep the tooltip appearing in the correct position
 // when nested inside a wider parent (see position: relative example).
 export const Target = styled.div`

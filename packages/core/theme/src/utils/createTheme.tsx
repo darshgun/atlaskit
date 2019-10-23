@@ -45,7 +45,6 @@ export function createTheme<ThemeTokens, ThemeProps>(
     return (
       <ThemeContext.Consumer>
         {theme => {
-          // TODO will emptyThemeFn ever be called here? Even TS types it without considering emptyThemeFn
           const themeFn = theme || emptyThemeFn;
           // @ts-ignore See issue for more info: https://github.com/Microsoft/TypeScript/issues/10727
           // Argument of type 'Pick<ThemeProps & { children: (tokens: ThemeTokens) => ReactNode; }, Exclude<keyof ThemeProps, "children">>' is not assignable to parameter of type 'ThemeProps'.ts(2345)
