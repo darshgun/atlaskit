@@ -133,7 +133,6 @@ export class App extends Component<AppProps, AppState> {
     const mediaClient = new MediaClient({
       authProvider: tenantMediaClient.config.authProvider,
       userAuthProvider: userMediaClient.config.authProvider,
-      cacheSize: tenantMediaClient.config.cacheSize,
     });
 
     this.componentMediaClient = mediaClient;

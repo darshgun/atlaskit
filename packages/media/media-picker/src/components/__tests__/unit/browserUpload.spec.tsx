@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 
 import { fakeMediaClient } from '@atlaskit/media-test-helpers';
 import { Browser } from '../../browser/browser';
-import { TouchFileDescriptor, FileState } from '../../../../../media-core/src';
+import { TouchFileDescriptor, FileState } from '@atlaskit/media-client';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import {
   BrowserConfig,

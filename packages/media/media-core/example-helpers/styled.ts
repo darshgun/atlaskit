@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FileStatus } from '../src';
+import { FileStatus } from '@atlaskit/media-client';
 
 export const FilesWrapper = styled.div``;
 

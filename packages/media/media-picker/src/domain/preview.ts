@@ -1,4 +1,4 @@
-import { ImageMetadata } from '@atlaskit/media-store';
+import { ImageMetadata } from '@atlaskit/media-client';
 
 export type NonImagePreview = {
   readonly file?: Blob;

@@ -2,7 +2,7 @@ import { Server } from 'kakapo';
 import * as exenv from 'exenv';
 import uuid from 'uuid/v4';
 
-import { MediaFile, MediaType } from '@atlaskit/media-store';
+import { MediaFile, MediaType } from '@atlaskit/media-client';
 
 import { createApiRouter, createMediaPlaygroundRouter } from './routers';
 import { createDatabase } from './database';

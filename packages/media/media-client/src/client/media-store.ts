@@ -21,7 +21,6 @@ import {
   mapResponseToBlob,
   MediaFileArtifacts,
   getArtifactUrl,
-  // checkWebpSupport,
 } from '..';
 import { FILE_CACHE_MAX_AGE } from '../constants';
 

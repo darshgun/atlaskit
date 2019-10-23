@@ -2,8 +2,8 @@ import {
   FileIdentifier,
   Identifier,
   isFileIdentifier,
+  MediaCollectionItem,
 } from '@atlaskit/media-client';
-import { MediaCollectionItem } from '@atlaskit/media-store';
 
 export const toIdentifier = (
   item: MediaCollectionItem,

@@ -28,7 +28,6 @@
     "@atlaskit/media-client": "^3.0.0",
     "@atlaskit/media-core": "^30.0.17",
     "@atlaskit/media-picker": "^48.0.0",
-    "@atlaskit/media-store": "^12.0.14",
     "@atlaskit/media-ui": "^11.7.0",
     "@atlaskit/select": "^10.1.3",
     "enzyme": "^3.7.0",

@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import { MediaCollectionItem } from '@atlaskit/media-store';
+import { MediaCollectionItem } from '@atlaskit/media-client';
 import {
   getHackerNoun,
   getPastDate,
