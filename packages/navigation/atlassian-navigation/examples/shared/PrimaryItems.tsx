@@ -6,14 +6,7 @@ import { useOverflowStatus } from '../../src/controllers/overflow';
 const NavigationButton = (props: PrimaryButtonProps) => {
   const { isVisible } = useOverflowStatus();
   if (isVisible) {
-    // Wrapping div is required to position the
-    // isSelected styling correctly. May look for a
-    // better solution later.
-    return (
-      <div style={{ position: 'relative' }}>
-        <PrimaryButton {...props} />
-      </div>
-    );
+    return <PrimaryButton {...props} />;
   } else {
     return <DropdownItem>{props.children}</DropdownItem>;
   }

@@ -1,14 +1,15 @@
 import { gridSize } from '@atlaskit/theme/constants';
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
 
-const topMarginSize = HORIZONTAL_GLOBAL_NAV_HEIGHT * 0.25;
+const topMarginSize = 0;
 const rightMarginSize = 0;
-const bottomMarginSize = topMarginSize;
+const bottomMarginSize = 0;
 const leftMarginSize = gridSize() / 2;
 
 export const containerCSS = {
   display: 'flex',
   flexGrow: 1,
+  alignItems: 'center',
   overflow: 'hidden',
   '& > *': {
     flexShrink: 0,

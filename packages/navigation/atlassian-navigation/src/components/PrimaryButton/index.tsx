@@ -2,7 +2,7 @@
 import { jsx } from '@emotion/core';
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
-import { Fragment, forwardRef, Ref } from 'react';
+import { forwardRef, Ref } from 'react';
 
 import { useTheme } from '../../theme';
 import { getPrimaryButtonTheme, isSelectedCSS } from './styles';
@@ -14,7 +14,7 @@ export const PrimaryButton = forwardRef(
     const theme = useTheme();
 
     const button = (
-      <Fragment>
+      <div css={isSelectedCSS(theme, isSelected)}>
         <Button
           appearance="primary"
           data-testid={testId}
@@ -24,8 +24,7 @@ export const PrimaryButton = forwardRef(
         >
           {children}
         </Button>
-        {isSelected && <div css={isSelectedCSS(theme)} />}
-      </Fragment>
+      </div>
     );
 
     if (tooltip) {
