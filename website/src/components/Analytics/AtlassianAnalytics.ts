@@ -19,7 +19,9 @@ class AtlassianAnalyticsClient {
       // Make sure our JSON object is flat
       Object.keys(properties).some(key => typeof properties[key] === 'object')
     ) {
-      console.warn('Analytic properties are expected to be a flat JSON object');
+      console.warn(
+        'Analytic properties are expected to be a flat JSON object.',
+      );
     }
     this.payload.push({ name: eventName, properties });
     return this.payload;
