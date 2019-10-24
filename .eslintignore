@@ -41,9 +41,6 @@ packages/**/__tests__/flow/
 # Fixtures folders
 build/**/__fixtures__/
 
-# Mock folders
-__mocks__
-
 # Build folder
 # https://jdog.jira-dev.com/browse/AFP-500
 build
