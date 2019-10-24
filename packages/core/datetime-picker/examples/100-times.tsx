@@ -8,7 +8,12 @@ export default () => {
   return (
     <div>
       <Label label="TimePicker - times" />
-      <TimePicker times={times} />
+      <TimePicker
+        id="timepicker"
+        times={times}
+        selectProps={{ classNamePrefix: 'timepicker-select' }}
+        testId={'timePicker'}
+      />
 
       <Label label="DateTimePicker - times" />
       <DateTimePicker times={times} />

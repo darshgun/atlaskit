@@ -92,6 +92,8 @@ export interface Props extends WithAnalyticsEventsProps {
   /** Placeholder text displayed in input */
   placeholder?: string;
   locale: string;
+  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  testId?: string;
 }
 
 interface State {
@@ -290,6 +292,7 @@ class TimePicker extends React.Component<Props, State> {
       name,
       selectProps,
       spacing,
+      testId,
     } = this.props;
     const ICON_PADDING = 2;
     const BORDER_WIDTH = 2;
@@ -316,7 +319,11 @@ class TimePicker extends React.Component<Props, State> {
     };
 
     return (
-      <div {...innerProps} ref={this.setContainerRef}>
+      <div
+        {...innerProps}
+        ref={this.setContainerRef}
+        data-testid={testId && `${testId}--container`}
+      >
         <input name={name} type="hidden" value={value} />
         <SelectComponent
           autoFocus={autoFocus}
@@ -366,6 +373,7 @@ class TimePicker extends React.Component<Props, State> {
           dropdownIndicatorIcon={icon}
           fixedLayerRef={this.containerRef}
           validationState={validationState}
+          testId={testId}
           {...otherSelectProps}
         />
       </div>
