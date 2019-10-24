@@ -31,6 +31,10 @@ packages/core/icon-priority/glyph/**
 packages/core/icon-priority/cjs/**
 packages/core/icon-priority/utils/**
 
+# adf-utils manual entry-points
+packages/editor/adf-utils/*.ts
+packages/editor/adf-utils/*.js
+
 # flow tests
 packages/**/__tests__/flow/
 

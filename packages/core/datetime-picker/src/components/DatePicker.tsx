@@ -30,7 +30,7 @@ import {
   placeholderDatetime,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
-import { SelectProps, Appearance, Spacing } from '../types.js';
+import { SelectProps, Appearance, Spacing } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 export interface Props extends WithAnalyticsEventsProps {

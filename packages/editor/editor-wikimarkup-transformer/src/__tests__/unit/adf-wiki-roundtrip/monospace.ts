@@ -20,6 +20,14 @@ describe('ADF => WikiMarkup => ADF - Monospace', () => {
     adf2wiki(doc(p(code('+formatting+')))(defaultSchema));
   });
 
+  test('should convert monospace node with ruler', () => {
+    adf2wiki(doc(p(code('-----')))(defaultSchema));
+  });
+
+  test('should convert monospace node with bullet list', () => {
+    adf2wiki(doc(p(code('* abc')))(defaultSchema));
+  });
+
   test('should convert monospace node with attachment link', () => {
     wiki2adf('{{[^link.txt]}}');
   });
@@ -33,5 +41,11 @@ describe('ADF => WikiMarkup => ADF - Monospace', () => {
   });
   test('should convert monospace node with underline', () => {
     wiki2adf('{{+formatting+}}');
+  });
+  test('should convert monospace node with ruler', () => {
+    wiki2adf('{{-----}}');
+  });
+  test('should convert monospace node with bullet list', () => {
+    wiki2adf('{{* abc}}');
   });
 });
