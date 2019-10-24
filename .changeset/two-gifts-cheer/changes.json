@@ -1,0 +1,8 @@
+{
+  "releases": [
+    { "name": "@atlaskit/reactions", "type": "patch" },
+    { "name": "@atlaskit/util-data-test", "type": "patch" },
+    { "name": "@atlaskit/atlassian-switcher-vanilla", "type": "patch" }
+  ],
+  "dependents": []
+}
