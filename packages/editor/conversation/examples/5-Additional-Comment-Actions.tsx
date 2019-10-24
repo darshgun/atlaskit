@@ -11,7 +11,7 @@ const provider = new ConversationResource({
   user: MOCK_USERS[3],
 });
 
-export default class MoreCommentActions extends React.Component<
+export default class AdditionalCommentActions extends React.Component<
   {},
   { conversationId?: string }
 > {
@@ -39,13 +39,15 @@ export default class MoreCommentActions extends React.Component<
         objectId="ari:cloud:platform::conversation/demo"
         provider={provider}
         dataProviders={getDataProviderFactory()}
-        moreCommentActions={[
-          {
-            onClick: () => alert('Task created!'),
-            key: 'create-task',
-            content: 'Create Task',
-            // isDisabled: false,
-          },
+        renderAdditionalCommentActions={(CommentAction, comment) => [
+          <CommentAction
+            key="create-task"
+            onClick={() =>
+              alert(`Task created for comment ${comment.commentId}!`)
+            }
+          >
+            Create Task
+          </CommentAction>,
         ]}
       />
     );

@@ -55,6 +55,7 @@ export interface Props extends SharedProps {
   createAnalyticsEvent: createAnalyticsEvent;
 
   portal?: HTMLElement;
+  canModerateComments?: boolean;
 }
 
 export interface State {
@@ -117,7 +118,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       allowFeedbackAndHelpButtons,
       portal,
       canModerateComments,
-      moreCommentActions,
+      renderAdditionalCommentActions,
     } = this.props;
 
     if (!conversation) {
@@ -148,7 +149,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
           <Comment
             {...props}
             canModerateComment={canModerateComments}
-            moreCommentActions={moreCommentActions}
+            renderAdditionalCommentActions={renderAdditionalCommentActions}
           />
         )}
         renderEditor={renderEditor}

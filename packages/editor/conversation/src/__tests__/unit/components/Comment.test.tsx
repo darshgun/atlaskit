@@ -477,7 +477,7 @@ describe('Comment', () => {
   });
 
   describe('more actions', () => {
-    it('should render more comment actions when provided', () => {
+    it('should render additional comment actions when provided', () => {
       const [user] = MOCK_USERS;
       const comment = mount(
         <Comment
@@ -485,11 +485,8 @@ describe('Comment', () => {
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={user}
-          moreCommentActions={[
-            {
-              content: 'Create Task',
-              key: 'create-task',
-            },
+          renderAdditionalCommentActions={CommentAction => [
+            <CommentAction key="create-task">Create Task</CommentAction>,
           ]}
         />,
       );

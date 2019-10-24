@@ -458,7 +458,7 @@ export default class Comment extends React.Component<Props, State> {
       dataProviders,
       objectId,
       canModerateComment,
-      moreCommentActions,
+      renderAdditionalCommentActions,
     } = this.props;
     const { isEditing } = this.state;
     const canReply = !!user && !isEditing && !comment.deleted;
@@ -490,12 +490,10 @@ export default class Comment extends React.Component<Props, State> {
       actions = [...actions, deleteAction];
     }
 
-    if (Array.isArray(moreCommentActions)) {
+    if (typeof renderAdditionalCommentActions === 'function') {
       actions = [
         ...actions,
-        ...moreCommentActions.map(({ content, ...actionProps }) => (
-          <CommentAction {...actionProps}>{content}</CommentAction>
-        )),
+        ...renderAdditionalCommentActions(CommentAction, comment),
       ];
     }
 
