@@ -59,9 +59,6 @@ export class FileCard extends Component<FileCardProps, {}> {
 
     return (
       <FileCardImageView
-        data-test-id="media-file-card-view"
-        data-test-status={status}
-        data-test-progress={progress}
         error={errorMessage}
         dimensions={dimensions}
         selectable={selectable}

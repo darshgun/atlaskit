@@ -67,9 +67,20 @@ export class FileCardImageViewBase extends Component<
   };
 
   render() {
-    const { disableOverlay, selectable, selected, mediaType } = this.props;
+    const {
+      disableOverlay,
+      selectable,
+      selected,
+      mediaType,
+      progress,
+      status,
+    } = this.props;
     return (
       <Wrapper
+        data-test-id="media-file-card-view"
+        data-test-status={status}
+        data-test-progress={progress}
+        {...(selected ? { 'data-test-selected': true } : {})}
         disableOverlay={disableOverlay}
         selectable={selectable}
         selected={selected}
