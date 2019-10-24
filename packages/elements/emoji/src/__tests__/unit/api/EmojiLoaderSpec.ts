@@ -136,7 +136,7 @@ describe('EmojiLoader', () => {
       });
     });
 
-    it.skip('401 error once retry', () => {
+    it('401 error once retry', () => {
       const refreshedSecurityProvider = sinon.stub();
       refreshedSecurityProvider.returns(Promise.resolve(header(666)));
 

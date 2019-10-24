@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import merge from 'lodash.merge';
 import Checkbox from '../../Checkbox';
-import { ComponentTokens, ThemeTokens } from '@atlaskit/checkbox/types';
+import { ComponentTokens, ThemeTokens } from '../../types';
 
 beforeEach(async () => {
   jest.spyOn(global.console, 'error');

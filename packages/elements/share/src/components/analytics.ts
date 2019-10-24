@@ -6,11 +6,7 @@ import {
   OptionData,
   Team,
 } from '@atlaskit/user-picker';
-import {
-  ConfigResponse,
-  DialogContentState,
-  OriginTracing,
-} from '../types/index.js';
+import { ConfigResponse, DialogContentState, OriginTracing } from '../types';
 import {
   name as packageName,
   version as packageVersion,

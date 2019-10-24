@@ -1,7 +1,12 @@
+const path = require('path');
 const tsRecommendedRules = require('@typescript-eslint/eslint-plugin/dist/configs/recommended')
   .rules;
 const prettierTsRules = require('eslint-config-prettier/@typescript-eslint')
   .rules;
+
+const resolverPath = path.resolve(
+  `${__dirname}/build/resolvers/eslint-resolver.js`,
+);
 
 module.exports = {
   extends: [
@@ -11,6 +16,19 @@ module.exports = {
     'plugin:compat/recommended',
   ],
   settings: {
+    'import/extensions': ['.js', '.ts', '.tsx'],
+    // Required to resolve atlaskit deps to src and remove webpack loader prefixes
+    'import/resolver': {
+      [resolverPath]: {
+        debug: false,
+      },
+    },
+    // Required so that the correct parser is used when resolving .js files from .ts
+    // E.g. a TS package that imports from @atlaskit/docs (js) in an example
+    'import/parsers': {
+      'babel-eslint': ['.js'],
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
     // List of polyfills for `eslint-plugin-compat` check
     // To know how to add in case you have a new one to add, please check
     // https://github.com/amilajack/eslint-plugin-compat/wiki/Adding-polyfills-(v2)
@@ -88,11 +106,9 @@ module.exports = {
           '**/__tests__/**/*.js',
           '**/examples/**/*.js',
           './projector.js',
-          './resolver.js',
         ],
       },
     ],
-    'import/no-unresolved': ['off'],
     'import/prefer-default-export': 'off',
     'import/extensions': [
       'error',
@@ -101,6 +117,9 @@ module.exports = {
         json: 'always',
       },
     ],
+
+    // TODO: Might be worth re-enabling it at some stage (or using stricter instead)
+    'import/no-cycle': 'off',
 
     'no-labels': 'off',
     'no-restricted-syntax': 'off',
@@ -228,7 +247,12 @@ module.exports = {
         'jsx-a11y/aria-proptypes': 'off',
         'jsx-a11y/no-noninteractive-element-interactions': 'off',
 
+        // Typechecking should cover this and there are issues with this rule for TS
+        // https://github.com/benmosher/eslint-plugin-import/issues/1282
+        'import/named': 'off',
+
         // disabled temporarily during tslint -> eslint transition
+        'import/no-named-as-default': 'off',
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
