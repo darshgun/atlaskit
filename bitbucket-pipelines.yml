@@ -59,7 +59,8 @@ pipelines:
               - node build/ci-scripts/branch-deploys/copy.built.tgzs.to.dists.dir.js
               - for file in dists/*; do node build/ci-scripts/upload.build.artefact.for.commit.js $file dists/; done
               # Need to check that we definitely have a changeset present, error with a message if not.
-              - yarn changeset status || (echo "Please run yarn changeset:empty to create an empty changeset" && false)
+              - yarn changeset status
+              - yarn changeset status || $TERM=xterm-256color || || (echo "Please run yarn changeset:empty to create an empty changeset" && false)
             artifacts:
               - dists/manifest.json
             after-script:
