@@ -216,13 +216,20 @@ async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
   const pkgGlob = await getPkgGlob(['typescript'], pkg, { cwd });
   // preserveWatchOutput prevents watch from clearing console output on every change
   const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
-  // The `|| true` at the end of each typescript command was knowingly added in https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/5722/update-tsconfig/diff
-  // to suppress multi-entry point related failures, relying on the separate `typecheck` command to catch typecheck errors. Unfortunately, this also
-  // suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
-  // We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
+  /* The `|| true` at the end of each typescript command was knowingly added in https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/5722/update-tsconfig/diff
+   * to suppress multi-entry point related failures, relying on the separate `typecheck` command to catch typecheck errors. Unfortunately, this also
+   * suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
+   * We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
+   *
+   * We use the '--excludeFromGraph devDependencies' flag to exclude devDependencies from affecting the topological execution bolt does over workspaces using their dependency graph.
+   * We only need to factor in dependencies and peerDependencies. This prevents all but one cyclic dependency and speeds up the build quite a lot.
+   *
+   * Finally, we execute the ESM build in parallel because the esm builds only rely on their CJS dependencies being built because of the types field in package.json's referencing CJS.
+   * The CJS builds still require the default bolt topological ordering.
+   */
   const commands = {
     cjs: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`,
-    esm: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
+    esm: `NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
   };
 
   return getDistCommands(commands, distType);
@@ -256,10 +263,11 @@ async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
       ...(await standardTsCommands({ cwd, distType, pkg, watch })),
       ...(await cliTsCommands({ cwd, distType, pkg, watch })),
     ],
-    // When building all packages we run the ts commands sequentially  as the `types` field in package.json
-    // references the main index.d.ts in the cjs directory. Resulting in cjs needing to be built before esm/cli
-    // so that packages can properly utilise the types of their atlaskit dependencies.
-    // When building a package individually, we no longer have this requirement as we are only building a single package.
+    /* When building all packages we run the ts commands sequentially  as the `types` field in package.json
+     * references the main index.d.ts in the cjs directory. Resulting in cjs needing to be built before esm/cli
+     * so that packages can properly utilise the types of their atlaskit dependencies.
+     * When building a package individually, we no longer have this requirement as we are only building a single package.
+     */
     { sequential: !pkg, ...commandOptions },
   );
 }
