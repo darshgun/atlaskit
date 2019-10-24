@@ -3,9 +3,11 @@ import { gridSize } from '@atlaskit/theme/constants';
 const leftMarginSize = gridSize() / 2;
 
 export const containerCSS = {
+  alignItems: 'stretch',
   display: 'flex',
   flexGrow: 1,
-  alignItems: 'center',
+  flexShrink: 0,
+  height: '100%',
   overflow: 'hidden',
   '& > *': {
     flexShrink: 0,

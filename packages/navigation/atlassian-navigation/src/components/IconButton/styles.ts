@@ -15,10 +15,9 @@ export const padding = {
   all: gridSize / 2,
 };
 
-export const getIconButtonTheme = (
-  { mode: { iconButton } }: NavigationTheme,
-  shouldHaveLeftMargin: boolean,
-) => (
+export const getIconButtonTheme = ({
+  mode: { iconButton },
+}: NavigationTheme) => (
   current: (props: ThemeProps) => ThemeTokens,
   props: ThemeProps,
 ): ThemeTokens => {
@@ -29,11 +28,9 @@ export const getIconButtonTheme = (
       ...buttonStyles,
       borderRadius: 100,
       display: 'flex',
+      margin: '0 2px',
+      padding: 4,
       height: 'auto',
-      // All icon buttons except atlassianSwitcher have
-      // a left margin.
-      marginLeft: shouldHaveLeftMargin && margin.left,
-      padding: padding.all,
       ...iconButton.default,
       ':hover': iconButton.hover,
       ':focus': iconButton.focus,
@@ -53,9 +50,9 @@ export const iconButtonSkeletonCSS = (
   { marginLeft, marginRight, size }: IconButtonSkeletonProps,
 ) => ({
   borderRadius: '50%',
-  marginLeft: typeof marginLeft === 'number' ? marginLeft : `${margin.left}px`,
+  marginLeft: typeof marginLeft === 'number' ? marginLeft : margin.left,
   marginRight: typeof marginRight === 'number' ? marginRight : 0,
-  width: typeof size === 'number' ? size : `${buttonHeight}px}`,
-  height: typeof size === 'number' ? size : `${buttonHeight}px`,
+  width: typeof size === 'number' ? size : buttonHeight,
+  height: typeof size === 'number' ? size : buttonHeight,
   ...skeletonCSS(theme),
 });

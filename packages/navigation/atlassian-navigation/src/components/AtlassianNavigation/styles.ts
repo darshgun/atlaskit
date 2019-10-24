@@ -14,8 +14,8 @@ export const containerCSS = ({
   display: 'flex',
   flexShrink: 0,
   justifyContent: 'space-between',
-  paddingLeft: gridSize * 2,
-  paddingRight: gridSize * 2,
+  paddingLeft: gridSize * 1.5,
+  paddingRight: gridSize * 1.5,
   height: HORIZONTAL_GLOBAL_NAV_HEIGHT,
   position: 'relative',
   ...(bottomShadow as CSSObject),
@@ -27,6 +27,9 @@ export const leftCSS = {
   display: 'flex',
   flexGrow: 1,
   height: 'inherit',
+  '& > *': {
+    flexShrink: 0,
+  },
 };
 
 export const rightCSS = {
@@ -34,6 +37,10 @@ export const rightCSS = {
   display: 'flex',
   flexShrink: 0,
   right: gridSize * 4,
+  '& > *': {
+    flexShrink: 0,
+    marginRight: gridSize / 2,
+  },
 };
 
 export const bottomShadow = {

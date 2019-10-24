@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import { Fragment } from 'react';
 import { jsx } from '@emotion/core';
 import Button from '@atlaskit/button';
 import AddIcon from '@atlaskit/icon/glyph/add';
@@ -12,7 +11,12 @@ import { CreateProps } from './types';
 export const Create = ({ onClick, text }: CreateProps) => {
   const theme = useTheme();
   return (
-    <Fragment>
+    <div
+      css={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
       <Button
         css={createButtonCSS}
         onClick={onClick}
@@ -25,7 +29,8 @@ export const Create = ({ onClick, text }: CreateProps) => {
         icon={<AddIcon label={text} />}
         onClick={onClick}
         tooltip={text}
+        theme={getCreateButtonTheme(theme)}
       />
-    </Fragment>
+    </div>
   );
 };

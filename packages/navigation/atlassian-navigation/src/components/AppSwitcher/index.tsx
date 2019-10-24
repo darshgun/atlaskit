@@ -11,7 +11,6 @@ export const AppSwitcher = (props: AppSwitcherProps) => {
     <IconButton
       icon={<AppSwitcherIcon label={tooltip} />}
       tooltip={tooltip}
-      shouldHaveLeftMargin={false}
       {...iconButtonProps}
     />
   );

@@ -143,7 +143,9 @@ const ProfileDropdown = () => {
       placement="bottom-end"
       trigger={triggerProps => (
         <Profile
-          icon={<Avatar src={avatarUrl} />}
+          icon={
+            <Avatar src={avatarUrl} size="small" borderColor="transparent" />
+          }
           onClick={onClick}
           tooltip="Your profile and settings"
           {...triggerProps}

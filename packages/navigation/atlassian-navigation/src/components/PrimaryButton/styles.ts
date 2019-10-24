@@ -1,6 +1,5 @@
 import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
-import { fontSize, gridSize as gridSizeFn } from '@atlaskit/theme/constants';
-import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
+import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { skeletonCSS } from '../../common/styles';
 import { NavigationTheme } from '../../theme';
 
@@ -26,10 +25,8 @@ export const getPrimaryButtonTheme = ({
   return {
     buttonStyles: {
       ...buttonStyles,
-      fontSize: fontSize(),
-      height: buttonHeight,
-      padding: padding.all,
       ...primaryButton.default,
+      padding: 0,
       ':hover': primaryButton.hover,
       ':focus': primaryButton.focus,
       ':active': primaryButton.active,
@@ -50,11 +47,12 @@ export const isSelectedCSS = (
   { mode: { primaryButton } }: NavigationTheme,
   isSelected?: boolean,
 ) => ({
-  height: HORIZONTAL_GLOBAL_NAV_HEIGHT - gridSize,
-  display: 'flex',
   alignItems: 'center',
   borderTop: `${gridSize / 2}px solid transparent`,
   borderBottom: isSelected
     ? `${gridSize / 2}px solid ${primaryButton.selected.color}`
     : `${gridSize / 2}px solid transparent`,
+  boxSizing: 'border-box',
+  display: 'flex',
+  height: '100%',
 });
