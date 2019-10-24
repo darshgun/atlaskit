@@ -28,12 +28,12 @@ export const useCloseManager = ({
       };
 
       if (isOpen && popupRef) {
-        document.addEventListener('click', onClick);
+        document.addEventListener('click', onClick, true);
         document.addEventListener('keydown', onKeyDown);
       }
 
       return () => {
-        document.removeEventListener('click', onClick);
+        document.removeEventListener('click', onClick, true);
         document.removeEventListener('keydown', onKeyDown);
       };
     },
