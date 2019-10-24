@@ -94,6 +94,7 @@ export class BrowserBase extends LocalUploadComponentReact<BrowserProps> {
 
     return (
       <input
+        data-test-id="media-picker-file-input"
         ref={this.browserRef}
         type="file"
         style={{ display: 'none' }}

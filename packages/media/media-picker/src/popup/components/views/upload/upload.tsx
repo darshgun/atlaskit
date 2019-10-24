@@ -151,6 +151,7 @@ export class StatelessUploadView extends Component<
 
     return (
       <InfiniteScroll
+        data-test-id="media-picker-recents-infinite-scroll"
         height="100%"
         onThresholdReached={this.onThresholdReachedListener}
       >
@@ -300,7 +301,11 @@ export class StatelessUploadView extends Component<
     return uploadingFilesCards
       .concat(recentFilesCards)
       .map(({ key, el: card }) => (
-        <CardWrapper tabIndex={0} data-test-id="recent-upload-card" key={key}>
+        <CardWrapper
+          tabIndex={0}
+          data-test-id="media-picker-all-recents-media-card"
+          key={key}
+        >
           {card}
         </CardWrapper>
       ));
@@ -352,15 +357,17 @@ export class StatelessUploadView extends Component<
       return {
         key: id,
         el: (
-          <Card
-            mediaClientConfig={mediaClient.config}
-            identifier={identifier}
-            dimensions={cardDimension}
-            selectable={true}
-            selected={selected}
-            onClick={onClick}
-            actions={actions}
-          />
+          <div data-test-id="media-picker-uploading-media-card">
+            <Card
+              mediaClientConfig={mediaClient.config}
+              identifier={identifier}
+              dimensions={cardDimension}
+              selectable={true}
+              selected={selected}
+              onClick={onClick}
+              actions={actions}
+            />
+          </div>
         ),
       };
     });
@@ -436,19 +443,21 @@ export class StatelessUploadView extends Component<
       return {
         key: `${occurrenceKey}-${id}`,
         el: (
-          <Card
-            mediaClientConfig={mediaClient.config}
-            identifier={{
-              id,
-              mediaItemType: 'file',
-              collectionName: recentsCollection,
-            }}
-            dimensions={cardDimension}
-            selectable={true}
-            selected={selected}
-            onClick={onClick}
-            actions={actions}
-          />
+          <div data-test-id="media-picker-recent-media-card">
+            <Card
+              mediaClientConfig={mediaClient.config}
+              identifier={{
+                id,
+                mediaItemType: 'file',
+                collectionName: recentsCollection,
+              }}
+              dimensions={cardDimension}
+              selectable={true}
+              selected={selected}
+              onClick={onClick}
+              actions={actions}
+            />
+          </div>
         ),
       };
     });

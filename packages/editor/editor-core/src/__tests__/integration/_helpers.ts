@@ -181,7 +181,7 @@ export const insertMediaFromMediaPicker = async (
   const existingMediaCards = await browser.$$(mediaCardSelector);
   // wait for media item, and select it
   await browser.waitForSelector(
-    '[data-test-id="recent-upload-card"] [aria-label="one.svg"]',
+    '[data-test-id="media-picker-all-recents-media-card"] [aria-label="one.svg"]',
   );
   if (filenames) {
     for (const filename of filenames) {
