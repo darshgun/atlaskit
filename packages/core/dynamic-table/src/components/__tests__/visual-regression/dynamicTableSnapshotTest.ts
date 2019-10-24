@@ -4,7 +4,7 @@ import {
   takeElementScreenShot,
 } from '@atlaskit/visual-regression/helper';
 
-const table = "[data-testid='the-table--table']";
+const table = "[data-testid='the-table--body']";
 const tableHeadCell = "[data-testid='the-table--head--cell']";
 const tableHeadParty = `${tableHeadCell}:nth-child(2)`;
 
@@ -25,7 +25,7 @@ describe('Snapshot Test', () => {
     // @ts-ignore - Expected 0 arguments, but got 1.
     expect(image).toMatchProdImageSnapshot(0.02);
   });
-  it.skip('Testing example should match production example before and after sorting', async () => {
+  it('Testing example should match production example before and after sorting', async () => {
     const url = getExampleUrl(
       'core',
       'dynamic-table',
@@ -47,6 +47,8 @@ describe('Snapshot Test', () => {
     // Take screenshot after sorting
     await page.waitForSelector(tableHeadCell);
     await page.click(tableHeadParty);
+    // We need to wait for the animation to finish.
+    await page.waitFor(1000);
     const tableAfter = await takeElementScreenShot(page, table);
     expect(tableAfter).toMatchProdImageSnapshot();
   });
