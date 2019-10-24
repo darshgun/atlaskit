@@ -39,6 +39,14 @@ describe('JIRA wiki markup - Preformatted text', () => {
       '{{~subscript~}}',
     ],
     [
+      '[CS-1470] should NOT convert rulers inside preformatted text',
+      '{{-----}}',
+    ],
+    [
+      '[CS-1553] should NOT convert bullet lists inside preformatted text',
+      '{{* abc}}',
+    ],
+    [
       '[CS-1470] should convert color macro inside preformatted text',
       '{{{color:#59afe1}colour{color}}}',
     ],
