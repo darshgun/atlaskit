@@ -1,7 +1,12 @@
-// @flow
+/**
+ * Base resolver, used by tool-specific resolvers.
+ * This is used to make sure that packages resolve using the same algorithm as our webpack config
+ *  (checking for "atlaskit:src", etc) meaning that we dont need the old root index.js hack anymore
+ */
 const fs = require('fs');
 const path = require('path');
 const resolveFrom = require('resolve-from');
+const enhancedResolve = require('enhanced-resolve');
 
 /*
 These modules should not have their imports resolved differently
@@ -14,28 +19,30 @@ const blockedFromMultiEntryPointsModuleList = [
   'visual-regression',
 ];
 
-/** This file is used to resolve imports in jest.
- *  This is used to make sure that packages resolve using the same algorithm as our webpack config
- *  (checking for "atlaskit:src", etc) meaning that we dont need the old root index.js hack anymore
- */
-
 // This is the resolver used by webpack, which we configure similarly
 // to AK website (see ./website/webpack.config.js - "resolve" field)
-const wpResolver = require('enhanced-resolve').ResolverFactory.createResolver({
+const wpResolver = enhancedResolve.ResolverFactory.createResolver({
   fileSystem: fs,
   useSyncFileSystemCalls: true,
   mainFields: ['atlaskit:src', 'browser', 'main'],
-  extensions: ['.js', '.ts', '.tsx', '.json'],
+  extensions: ['.js', '.ts', '.tsx', '.json', '.d.ts'],
 });
 
-module.exports = function resolver(
-  modulePath /*: string */,
-  params /*: any */,
-) {
+/**
+ * @typedef {Object} Opts - resolver options
+ * @property {string} basedir - The base directory of the file importing modulePath
+ */
+/**
+ * Base resolver
+ *
+ * @param {string} modulePath - The module path to be resolved
+ * @param {Opts} opts - Resolver options
+ */
+module.exports = function resolver(modulePath, opts) {
   // If resolving relative paths, make sure we use resolveFrom and not resolve
   if (modulePath.startsWith('.') || modulePath.startsWith(path.sep)) {
     try {
-      return resolveFrom(params.basedir, modulePath);
+      return resolveFrom(opts.basedir, modulePath);
     } catch (e) {} // eslint-disable-line
   }
 
@@ -63,7 +70,7 @@ module.exports = function resolver(
   // Otherwise try to resolve to source files of AK packages using webpack resolver
   let result = wpResolver.resolveSync(
     {},
-    params.basedir,
+    opts.basedir,
     alternativeEntryModulePath || modulePath,
   );
 

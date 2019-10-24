@@ -81,4 +81,4 @@ git push --follow-tags
 
 ## 7. Recording
 
-Once you've published a hotfix, be sure record all relevant information about the fix on this page: (go/ak-hotfixes)[go/ak-hotfixes], so it can be referenced and tracked in the future.
+Once you've published a hotfix, be sure record all relevant information about the fix on this page: [go/ak-hotfixes](https://product-fabric.atlassian.net/wiki/spaces/DPT/pages/993627202/Published+Hotfix+Register), so it can be referenced and tracked in the future.
