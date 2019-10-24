@@ -25,7 +25,7 @@ describe('Snapshot Test', () => {
     // @ts-ignore - Expected 0 arguments, but got 1.
     expect(image).toMatchProdImageSnapshot(0.02);
   });
-  it('Testing example should match production example before and after sorting', async () => {
+  it.skip('Testing example should match production example before and after sorting', async () => {
     const url = getExampleUrl(
       'core',
       'dynamic-table',
