@@ -39,7 +39,7 @@ packages/editor/adf-utils/*.js
 packages/**/__tests__/flow/
 
 # Fixtures folders
-__fixtures__
+build/**/__fixtures__/
 
 # Mock folders
 __mocks__
