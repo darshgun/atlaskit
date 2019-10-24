@@ -6,6 +6,7 @@ export default md`
 Here is the list of available css selectors (\`[data-test-...=""]\`) attributes that you might find useful to use in
 integration/e2e tests available in media-picker:
 
+- \`[data-test-id="media-picker-popup"]\`: Main element that contains everything in Popup Media Picker
 - \`[data-test-id="media-picker-upload-button"]\`: Upload button that opens up native file picker
 - \`[data-test-id="media-picker-insert-button"]\`: "Insert" button that closes media picker and give selected files to the consumer
 - \`[data-test-id="media-picker-all-recents-media-card"]\`: A wrapper around media card in the list of recent files (includes all: freshly uploaded, and from previous sessions).
