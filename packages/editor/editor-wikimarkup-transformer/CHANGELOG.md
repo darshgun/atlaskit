@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.7
+
+### Patch Changes
+
+- [patch][650b9bd18d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/650b9bd18d):
+
+  fix up issue in wikimarkup parser where a url with url-encoded values are double encoded when converted into ADF
+
 ## 4.5.6
 
 ### Patch Changes
