@@ -22,6 +22,8 @@ export {
   MediaProvider,
 } from './types';
 
+export * from './extensions';
+
 export * from './contextIdentifier';
 
 export {
