@@ -1,3 +1,4 @@
+// @flow
 const child = require('child_process');
 // TODO: This script is only TEMPORARY while the issue on Netlify is fixed.
 const numberOfTries = 3;
@@ -37,8 +38,9 @@ async function main() {
       await deployWebsite();
       process.exit(0);
     } catch (e) {
+      /* eslint-disable no-console */
       console.log(`The deployment failed with ${e}`);
-      await sleep(5000 * Math.pow(2, i));
+      await sleep(5000 * 2 ** i);
     }
   }
   process.exit(1);

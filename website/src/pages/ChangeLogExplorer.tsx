@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line
 import * as H from 'history';
 import { match } from 'react-router';
 import styled from 'styled-components';

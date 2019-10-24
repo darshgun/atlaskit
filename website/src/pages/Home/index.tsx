@@ -58,6 +58,8 @@ export default class HomePage extends React.Component {
     return (
       <HomePageWrapper>
         <Helmet>
+          {/* BASE_TITLE is set by webpack config */}
+          {/* eslint-disable no-undef */}
           <title>{`${BASE_TITLE}`}</title>
         </Helmet>
         <Style />

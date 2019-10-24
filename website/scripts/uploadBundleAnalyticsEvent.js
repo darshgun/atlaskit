@@ -1,4 +1,7 @@
+// @flow
 const fetchUrl = require('node-fetch');
+// This file is a script and this is fine for now to disable eslint.
+/* eslint-disable */
 const stats = require('../dist/stats.json');
 
 // These are the known splits in the repo that we can look for.

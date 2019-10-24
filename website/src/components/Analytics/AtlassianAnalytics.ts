@@ -19,6 +19,7 @@ class AtlassianAnalyticsClient {
       // Make sure our JSON object is flat
       Object.keys(properties).some(key => typeof properties[key] === 'object')
     ) {
+      /* eslint-disable no-console */
       console.warn(
         'Analytic properties are expected to be a flat JSON object.',
       );
@@ -38,6 +39,8 @@ class AtlassianAnalyticsClient {
         events: this.payload.map(event => ({
           name: event.name,
           properties: event.properties,
+          // BASE_TITLE is set by webpack config.
+          /* eslint-disable no-undef */
           server: WEBSITE_ENV, //Set by webpack
           product: 'atlaskit',
           subproduct: 'website',

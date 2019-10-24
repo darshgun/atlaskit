@@ -118,6 +118,7 @@ export default function LoadData({
     ),
     loader: () =>
       fetchPackageData(groupId, pkgId).catch((error: Error) => {
+        /* eslint-disable no-console */
         console.error(error);
         return { error };
       }),
@@ -172,6 +173,8 @@ class Package extends React.Component<Props> {
           <Page>
             {urlIsExactMatch && (
               <Helmet>
+                {/* BASE_TITLE is set by webpack config */}
+                {/* eslint-disable no-undef */}
                 <title>{`${title} package - ${BASE_TITLE}`}</title>
               </Helmet>
             )}
