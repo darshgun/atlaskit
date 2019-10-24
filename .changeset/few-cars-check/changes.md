@@ -1,1 +1,0 @@
-fix bug where bullet points and rulers inside monospace causes parse error

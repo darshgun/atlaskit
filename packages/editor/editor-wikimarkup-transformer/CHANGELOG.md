@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.6
+
+### Patch Changes
+
+- [patch][24165e116f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24165e116f):
+
+  fix bug where bullet points and rulers inside monospace causes parse error
+
 ## 4.5.5
 
 ### Patch Changes
