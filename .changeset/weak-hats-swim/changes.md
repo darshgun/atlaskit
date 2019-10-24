@@ -1,0 +1,1 @@
+Popup close on outside click no longer fires when clicking on content within the popup that re-renders
