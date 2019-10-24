@@ -443,8 +443,6 @@ export default class Examples extends React.Component<Props, State> {
         />
         <Helmet>
           <title>
-            {/* BASE_TITLE is set by webpack config */}
-            {/* eslint-disable no-undef */}
             {`Example - ${fs.titleize(exampleId!)} - ${fs.titleize(
               packageId,
             )} -${' '}

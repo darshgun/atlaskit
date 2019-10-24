@@ -42,7 +42,6 @@ export default function Markdown({
         <meta
           name="description"
           // DEFAULT_META_DESCRIPTION is set by webpack config.
-          /* eslint-disable no-undef */
           content={description || DEFAULT_META_DESCRIPTION}
         />
       </Helmet>

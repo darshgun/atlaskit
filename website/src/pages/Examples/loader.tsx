@@ -68,7 +68,6 @@ export default class ExamplesIFrame extends React.Component<{}, State> {
       });
     }
     /* This variable is set by pipelines. */
-    /* eslint-disable no-undef */
     if (ENABLE_ANALYTICS_GASV3) {
       try {
         /* eslint-disable-next-line*/

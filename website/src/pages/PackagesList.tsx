@@ -136,8 +136,6 @@ export default function PackagesList() {
   return (
     <Page>
       <Helmet>
-        {/* BASE_TITLE is set by webpack config */}
-        {/* eslint-disable no-undef */}
         <title>{`Browse all packages - ${BASE_TITLE}`}</title>
       </Helmet>
       <Title>All Packages</Title>

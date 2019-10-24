@@ -4,6 +4,12 @@
     "import/extensions": "off",
     "import/no-dynamic-require": "off",
     "react/no-did-mount-set-state": "off",
-    "no-console": "off",
-  }
+    "no-console": "off"
+  },
+  "globals": {
+    "BASE_TITLE": "writable",
+    "ENABLE_ANALYTICS_GASV3": "writable",
+    "DEFAULT_META_DESCRIPTION": "writable",
+    "WEBSITE_ENV": "writable"
+}
 }

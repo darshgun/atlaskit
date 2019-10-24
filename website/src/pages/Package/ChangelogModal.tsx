@@ -193,8 +193,6 @@ export default class ExamplesModal extends React.Component<Props, State> {
         width={640}
       >
         <Helmet>
-          {/* BASE_TITLE is set by webpack config */}
-          {/* eslint-disable no-undef */}
           <title>{`Changelog - ${fs.titleize(pkgId)} - ${BASE_TITLE}`}</title>
         </Helmet>
         <ModalBody>

@@ -39,8 +39,6 @@ export default function PackageDocument({
     <Page>
       <Helmet>
         <title>
-          {/* BASE_TITLE is set by webpack config */}
-          {/* eslint-disable no-undef */}
           {`${fs.titleize(pkgId)} - ${fs.titleize(docId)} - ${BASE_TITLE}`}
         </title>
       </Helmet>

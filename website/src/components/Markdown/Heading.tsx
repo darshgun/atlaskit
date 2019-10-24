@@ -49,8 +49,6 @@ export default class Heading extends React.Component<Props, State> {
         {level === 1 ? (
           <Helmet>
             <title>
-              {/* BASE_TITLE is set by webpack config */}
-              {/* eslint-disable no-undef */}
               {`${reactAddonsTextContent(children)} - ${BASE_TITLE}`}
             </title>
           </Helmet>

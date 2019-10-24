@@ -39,7 +39,6 @@ class AtlassianAnalyticsClient {
           name: event.name,
           properties: event.properties,
           // BASE_TITLE is set by webpack config.
-          /* eslint-disable no-undef */
           server: WEBSITE_ENV, //Set by webpack
           product: 'atlaskit',
           subproduct: 'website',
