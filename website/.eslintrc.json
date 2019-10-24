@@ -3,6 +3,7 @@
   "rules": {
     "import/extensions": "off",
     "import/no-dynamic-require": "off",
-    "react/no-did-mount-set-state": "off"
+    "react/no-did-mount-set-state": "off",
+    "no-console": "off",
   }
 }

@@ -38,7 +38,6 @@ async function main() {
       await deployWebsite();
       process.exit(0);
     } catch (e) {
-      /* eslint-disable no-console */
       console.log(`The deployment failed with ${e}`);
       await sleep(5000 * 2 ** i);
     }

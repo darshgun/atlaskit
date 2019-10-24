@@ -118,7 +118,6 @@ export default function LoadData({
     ),
     loader: () =>
       fetchPackageData(groupId, pkgId).catch((error: Error) => {
-        /* eslint-disable no-console */
         console.error(error);
         return { error };
       }),

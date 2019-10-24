@@ -7,12 +7,10 @@ import GoogleAnalyticsListener from './GoogleAnalyticsListener';
 
 // AK-4967 - replace with real implementation from analytics-web-client
 const mockAnalyticsClient: AnalyticsWebClient = {
-  /* eslint-disable */
   sendUIEvent: e => console.log('sendUIEvent', e),
   sendOperationalEvent: e => console.log('sendOperationalEvent', e),
   sendTrackEvent: e => console.log('sendTrackEvent', e),
   sendScreenEvent: e => console.log('sendScreenEvent', e),
-  /* eslint-enable */
 };
 
 const AnalyticsListeners = ({ children }: { children: React.ReactNode }) => {

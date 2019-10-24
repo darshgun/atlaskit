@@ -63,7 +63,6 @@ export const getLoaderUrl = (
   exampleId?: string,
 ) => {
   if (!groupId || !packageId || !exampleId) {
-    /* eslint-disable no-console */
     console.error(`Warning missing parameter: Please ensure that you have passed in the correct arguments:
       \n  groupId: ${String(groupId)}
       \n  packageId: ${String(packageId)}

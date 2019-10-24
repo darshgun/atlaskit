@@ -139,7 +139,6 @@ class GoogleAnalyticsListener extends React.Component<Props> {
 
     mounted++;
     if (mounted > 1) {
-      /* eslint-disable no-console */
       console.warn(
         'There is more than one GoogleAnalyticsListener on the page, this could cause errors',
       );

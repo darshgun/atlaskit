@@ -19,7 +19,6 @@ class AtlassianAnalyticsClient {
       // Make sure our JSON object is flat
       Object.keys(properties).some(key => typeof properties[key] === 'object')
     ) {
-      /* eslint-disable no-console */
       console.warn(
         'Analytic properties are expected to be a flat JSON object.',
       );

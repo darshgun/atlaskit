@@ -40,12 +40,10 @@ export type ExampleLoaderProps = {
 // Using console.debug instead of console.log to reduce noise.
 // Chrome's default logging level excludes debug
 const mockClient: AnalyticsWebClient = {
-  /* eslint-disable */
   sendUIEvent: e => console.debug('UI event', e),
   sendOperationalEvent: e => console.debug('Operational event', e),
   sendTrackEvent: e => console.debug('Track event', e),
   sendScreenEvent: e => console.debug('Screen event', e),
-  /* eslint-enable */
 };
 
 export default class ExamplesIFrame extends React.Component<{}, State> {
@@ -94,7 +92,6 @@ export default class ExamplesIFrame extends React.Component<{}, State> {
         analyticsWebClient.startUIViewedEvent();
         this.setState({ client: analyticsWebClient });
       } catch (error) {
-        /* eslint-disable no-console */
         console.log(`
 You're running Atlaskit passing "ENABLE_ANALYTICS_GASV3=true" parameter.
 You should install "@atlassiansox/analytics-web-client" locally without saving

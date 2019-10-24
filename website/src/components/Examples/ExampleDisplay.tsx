@@ -91,7 +91,6 @@ export default class ExampleDisplay extends React.Component<Props> {
   getIframeRef = (ref: HTMLIFrameElement) => (this.iframeRef = ref);
   render() {
     if (!this.props.src) {
-      /* eslint-disable no-console */
       console.error(
         'No source url provided for the examples iframe',
         this.props.src,
