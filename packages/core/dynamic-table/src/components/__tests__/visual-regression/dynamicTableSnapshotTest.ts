@@ -4,7 +4,7 @@ import {
   takeElementScreenShot,
 } from '@atlaskit/visual-regression/helper';
 
-const table = "[data-testid='the-table--body']";
+const table = "[data-testid='the-table--table']";
 const tableHeadCell = "[data-testid='the-table--head--cell']";
 const tableHeadParty = `${tableHeadCell}:nth-child(2)`;
 
