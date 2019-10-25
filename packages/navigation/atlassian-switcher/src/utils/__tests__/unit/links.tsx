@@ -2,6 +2,8 @@ import {
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
+  getJoinableSiteLinks,
+  JoinableSiteItemType,
 } from '../../links';
 import {
   Product,
@@ -11,6 +13,7 @@ import {
 } from '../../../types';
 
 import { resolveRecommendations } from '../../../providers/recommendations';
+import mockJoinableSites from '../../../../test-helpers/mockJoinableSites';
 
 const generateProvisionedProducts = (
   activeProducts: WorklensProductType[],
@@ -204,6 +207,68 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result).toHaveLength(0);
+    });
+  });
+
+  describe('getJoinableSiteLinks', () => {
+    it('should return an array', () => {
+      const result = getJoinableSiteLinks();
+      expect(Array.isArray(result)).toBe(true);
+    });
+
+    it('should return 3 items at maximum', () => {
+      const result = getJoinableSiteLinks(
+        mockJoinableSites.sites.map(site =>
+          Object.assign({}, site, { relevance: 10 }),
+        ),
+      );
+      expect(result.length).toBe(3);
+    });
+
+    it('should not return any site with no products', () => {
+      const result = getJoinableSiteLinks(
+        mockJoinableSites.sites.map(site =>
+          Object.assign({}, site, { products: [] }),
+        ),
+      );
+      expect(result.length).toBe(0);
+    });
+
+    it('should not return any site with no users', () => {
+      const result = getJoinableSiteLinks(
+        mockJoinableSites.sites.map(site =>
+          Object.assign({}, site, { users: [] }),
+        ),
+      );
+      expect(result.length).toBe(0);
+    });
+
+    it('should not return any site with 0 relevance score', () => {
+      const result = getJoinableSiteLinks(
+        mockJoinableSites.sites.map(site =>
+          Object.assign({}, site, { relevance: 0 }),
+        ),
+      );
+      expect(result.length).toBe(0);
+    });
+
+    it('should always return the site if there is only one item', () => {
+      const oneSite = mockJoinableSites.sites.slice(0, 1);
+
+      let result: JoinableSiteItemType[] = getJoinableSiteLinks(
+        oneSite.map(site => Object.assign({}, site, { products: [] })),
+      );
+      expect(result.length).toBe(1);
+
+      result = getJoinableSiteLinks(
+        oneSite.map(site => Object.assign({}, site, { users: [] })),
+      );
+      expect(result.length).toBe(1);
+
+      result = getJoinableSiteLinks(
+        oneSite.map(site => Object.assign({}, site, { relevance: 0 })),
+      );
+      expect(result.length).toBe(1);
     });
   });
 });

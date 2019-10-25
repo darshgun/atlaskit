@@ -46,6 +46,7 @@ export default (props: ConfluenceSwitcherProps) => (
                 { customLinks, ...providerResults },
                 props.features,
                 availableProducts,
+                [],
                 Product.CONFLUENCE,
               );
 

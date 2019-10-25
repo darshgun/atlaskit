@@ -7,17 +7,6 @@ import SettingsGlyph from '@atlaskit/icon/glyph/settings';
 import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 
 import {
-  ConfluenceIcon,
-  JiraSoftwareIcon,
-  JiraServiceDeskIcon,
-  JiraCoreIcon,
-  OpsGenieIcon,
-  StatuspageIcon,
-  TrelloIcon,
-} from '@atlaskit/logo';
-import { createIcon } from '../utils/icon-themes';
-
-import {
   BitbucketIcon,
   ConfluenceIcon,
   JiraSoftwareIcon,
@@ -38,6 +27,8 @@ import {
   Product,
   ProvisionedProducts,
   CurrentSite,
+  JoinableSite,
+  JoinableSiteUser,
 } from '../types';
 import messages from './messages';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
@@ -57,6 +48,10 @@ export type SwitcherItemType = {
   childItems?: SwitcherChildItem[];
   productType?: WorklensProductType;
   analyticsAttributes?: { [key: string]: string };
+};
+
+export type JoinableSiteItemType = SwitcherItemType & {
+  users: JoinableSiteUser[];
 };
 
 export type RecentItemType = SwitcherItemType & {
@@ -447,47 +442,62 @@ export const getRecentLinkItems = (
     }));
 };
 
-export const getJoinableSiteLinks = joinableSites => {
+export const getJoinableSiteLinks = (
+  joinableSites: JoinableSite[] = [],
+): JoinableSiteItemType[] => {
   return (
     joinableSites
       // filter out sites with no product || collaborators
       .filter(
         site =>
-          site.products &&
-          site.products.length &&
-          (site.users && site.users.length),
+          // always display if there is only one joinable site
+          // as relevance data is not availalbe for single joinable site
+          joinableSites.length === 1 ||
+          (site.products &&
+          site.products.length && // at least one joinable product
+          (site.users && site.users.length) && // at least one collaborator
+            site.relevance > 0), // has a relevance score
       )
-      // display 3 items max
+      // display maximum 3 items
       .slice(0, 3)
-      .map(site => {
-        const [defaultProduct] = site.products;
+      .map(
+        (site: JoinableSite, index: number): JoinableSiteItemType => {
+          const [defaultProduct]: ProductKey[] = site.products;
 
-        let label, icon;
+          let label: string;
+          let icon: React.ComponentType<any>;
 
-        // TODO: complete this list
-        switch (defaultProduct) {
-          case 'jira-software.ondemand':
-            label = 'Jira Software';
-            icon = JiraSoftwareIcon;
-            break;
+          // TODO: complete this list
+          switch (defaultProduct) {
+            case 'jira-software.ondemand':
+              label = 'Jira Software';
+              icon = JiraSoftwareIcon;
+              break;
 
-          default:
-            break;
-        }
+            default:
+              label = 'Jira Software';
+              icon = JiraSoftwareIcon;
+              break;
+          }
 
-        return {
-          label,
-          description: site.url,
-          Icon: createIcon(icon, { size: 'small' }),
-          users: site.users.map(user => ({
-            key: user.displayName,
-            name: user.displayName,
-            src: user.avatarUrl,
-            appearance: 'circle',
-            size: 'small',
-            enableTooltip: true,
-          })),
-        };
-      })
+          return {
+            key: `${index}`,
+            label,
+            description: site.displayName,
+            Icon: createIcon(icon, { size: 'small' }),
+            href: site.url,
+            users: site.users.map(
+              (user: JoinableSiteUser): any => ({
+                key: user.displayName,
+                name: user.displayName,
+                src: user.avatarUrl,
+                appearance: 'circle',
+                size: 'small',
+                enableTooltip: true,
+              }),
+            ),
+          };
+        },
+      )
   );
 };

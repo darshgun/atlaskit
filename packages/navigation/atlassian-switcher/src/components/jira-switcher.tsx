@@ -50,6 +50,7 @@ export default (props: JiraSwitcherProps) => (
                 { customLinks, ...providerResults },
                 props.features,
                 availableProducts,
+                [],
                 Product.JIRA,
               );
 

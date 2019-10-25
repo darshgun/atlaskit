@@ -14,7 +14,11 @@ import {
   ItemWithAvatarGroup,
 } from '../primitives';
 
-import { SwitcherItemType, RecentItemType } from '../utils/links';
+import {
+  SwitcherItemType,
+  RecentItemType,
+  JoinableSiteItemType,
+} from '../utils/links';
 import {
   analyticsAttributes,
   NavigationAnalyticsContext,
@@ -45,6 +49,7 @@ export type SwitcherProps = {
   suggestedProductLinks: SwitcherItemType[];
   fixedLinks: SwitcherItemType[];
   adminLinks: SwitcherItemType[];
+  joinableSiteLinks?: JoinableSiteItemType[];
   recentLinks: RecentItemType[];
   customLinks: SwitcherItemType[];
   manageLink?: string;
@@ -356,22 +361,23 @@ export default class Switcher extends React.Component<SwitcherProps> {
             sectionId="join"
             title={<FormattedMessage {...messages.join} />}
           >
-            {joinableSiteLinks.map(
-              ({ label, description, Icon, users }, idx) => (
-                <NavigationAnalyticsContext
-                  key={idx}
-                  data={getItemAnalyticsContext(idx, '', 'recent', '')}
-                >
-                  <ItemWithAvatarGroup
-                    icon={<Icon theme="product" />}
-                    description={description}
-                    users={users}
+            {joinableSiteLinks &&
+              joinableSiteLinks!.map(
+                ({ label, description, Icon, users }, idx: number) => (
+                  <NavigationAnalyticsContext
+                    key={idx}
+                    data={getItemAnalyticsContext(idx, '', 'recent', '')}
                   >
-                    {label}
-                  </ItemWithAvatarGroup>
-                </NavigationAnalyticsContext>
-              ),
-            )}
+                    <ItemWithAvatarGroup
+                      icon={<Icon theme="product" />}
+                      description={description}
+                      users={users}
+                    >
+                      {label}
+                    </ItemWithAvatarGroup>
+                  </NavigationAnalyticsContext>
+                ),
+              )}
           </Section>
           <Section
             sectionId="recent"

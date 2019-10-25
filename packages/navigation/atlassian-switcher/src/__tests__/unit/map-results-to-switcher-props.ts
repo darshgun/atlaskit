@@ -14,6 +14,7 @@ import {
   CustomLinksResponse,
   RecentContainersResponse,
   RecommendationsEngineResponse,
+  JoinableSitesResponse,
 } from '../../types';
 
 describe('map-results-to-switcher-props', () => {
@@ -384,6 +385,9 @@ describe('map-results-to-switcher-props', () => {
         asCompletedProvider<AvailableProductsResponse>({
           sites: [generateSite('site40', [WorklensProductType.CONFLUENCE, 40])],
         }),
+        asCompletedProvider<JoinableSitesResponse>({
+          sites: [],
+        }),
         Product.CONFLUENCE,
       );
 
@@ -417,6 +421,9 @@ describe('map-results-to-switcher-props', () => {
         },
         asCompletedProvider<AvailableProductsResponse>({
           sites: [generateSite('site40', [WorklensProductType.CONFLUENCE, 40])],
+        }),
+        asCompletedProvider<JoinableSitesResponse>({
+          sites: [],
         }),
         Product.CONFLUENCE,
       );

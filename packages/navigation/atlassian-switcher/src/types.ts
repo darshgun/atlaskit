@@ -153,6 +153,26 @@ export interface AvailableProductsResponse {
   sites: AvailableSite[];
 }
 
+export interface JoinableSiteUser {
+  avatarUrl: string;
+  displayName: string;
+  relevance: number;
+}
+
+export interface JoinableSite {
+  displayName: string;
+  products: ProductKey[];
+  relevance: number;
+  url: string;
+  users: JoinableSiteUser[];
+  avatarUrl?: string;
+  cloudId?: string;
+}
+
+export interface JoinableSitesResponse {
+  sites: JoinableSite[];
+}
+
 export enum ProductKey {
   CONFLUENCE = 'confluence.ondemand',
   JIRA_CORE = 'jira-core.ondemand',
@@ -190,4 +210,6 @@ export type AtlassianSwitcherProps = WithTheme & {
   recommendationsFeatureFlags?: RecommendationsFeatureFlags;
   // Optional custom provider for available products
   availableProductsDataProvider?: AvailableProductsDataProvider;
+  // Optional custom provider for joinable sites
+  joinableSitesDataProvider?: any;
 } & FeatureFlagProps;

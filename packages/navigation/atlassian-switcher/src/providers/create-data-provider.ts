@@ -24,9 +24,13 @@ export type ExportedDataProvider<T> = {
 
 export const createProvider = <T>(
   name: string,
-  url: string,
+  dataSource: string | (() => Promise<T>),
 ): DataProvider<T> => {
-  const fetchMethod = withCached((param: object) => fetchJson<T>(url));
+  const fetchMethod = withCached((param: object) => {
+    return typeof dataSource === 'string'
+      ? fetchJson<T>(dataSource)
+      : dataSource();
+  });
 
   return {
     fetchMethod,

@@ -25,7 +25,9 @@ import {
   RecentContainersResponse,
   RecommendationsEngineResponse,
   UserSiteDataResponse,
+  JoinableSitesResponse,
 } from '../types';
+import { JoinableSiteItemType } from './links';
 import { createCollector } from './create-collector';
 
 function collectAvailableProductLinks(
@@ -140,17 +142,20 @@ function collectCustomLinks(
   }
 }
 
-function collectJoinableSiteLinks(joinableSites) {
+function collectJoinableSiteLinks(
+  joinableSites: ProviderResults['joinableSiteLinks'],
+): JoinableSiteItemType[] | undefined {
   if (joinableSites === undefined || isError(joinableSites)) {
     return [];
   }
 
   if (isComplete(joinableSites)) {
-    return getJoinableSiteLinks(joinableSites.data);
+    return getJoinableSiteLinks(joinableSites.data.sites);
   }
 }
 
 interface ProviderResults {
+  joinableSiteLinks?: ProviderResult<JoinableSitesResponse>;
   customLinks?: ProviderResult<CustomLinksResponse>;
   recentContainers: ProviderResult<RecentContainersResponse>;
   managePermission: ProviderResult<boolean>;
@@ -206,8 +211,8 @@ export function mapResultsToSwitcherProps(
   results: ProviderResults,
   features: FeatureMap,
   availableProducts: ProviderResult<AvailableProductsResponse>,
+  joinableSites: ProviderResult<JoinableSitesResponse>,
   product?: Product,
-  joinableSites?: ProviderResult<any>,
 ) {
   const collect = createCollector();
 
@@ -269,13 +274,12 @@ export function mapResultsToSwitcherProps(
       ),
       [],
     ),
+    joinableSiteLinks: collect(collectJoinableSiteLinks(joinableSites), []),
     recentLinks: collect(
       collectRecentLinks(recentContainers, userSiteData),
       [],
     ),
     customLinks: collect(collectCustomLinks(customLinks, userSiteData), []),
-    joinableSiteLinks: collect(collectJoinableSiteLinks(joinableSites), []),
-
     showManageLink:
       !features.disableCustomLinks &&
       collect(collectCanManageLinks(managePermission), false),
