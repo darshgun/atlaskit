@@ -81,6 +81,11 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "description": "In a context in which several items are listed , this text describes that the specific type of a given item is a Jira project",
             "id": "fabric.atlassianSwitcher.jiraProject",
           },
+          "join": Object {
+            "defaultMessage": "Join",
+            "description": "The header of \\"Join\\" section",
+            "id": "fabric.atlassianSwitcher.join",
+          },
           "login": Object {
             "defaultMessage": "Log in",
             "description": "Text in log in button.",
@@ -213,6 +218,11 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "defaultMessage": "Jira project",
               "description": "In a context in which several items are listed , this text describes that the specific type of a given item is a Jira project",
               "id": "fabric.atlassianSwitcher.jiraProject",
+            },
+            "join": Object {
+              "defaultMessage": "Join",
+              "description": "The header of \\"Join\\" section",
+              "id": "fabric.atlassianSwitcher.join",
             },
             "login": Object {
               "defaultMessage": "Log in",

@@ -31,6 +31,16 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
     />
     )}
     <Component
+      sectionId="join"
+      title={
+        <Unknown
+          defaultMessage="Join"
+          description="The header of \\"Join\\" section"
+          id="fabric.atlassianSwitcher.join"
+        />
+      }
+    />
+    <Component
       sectionId="recent"
       title={null}
     />
@@ -78,6 +88,16 @@ exports[`Switcher should render sections with headers by default 1`] = `
       }
     />
     )}
+    <Component
+      sectionId="join"
+      title={
+        <Unknown
+          defaultMessage="Join"
+          description="The header of \\"Join\\" section"
+          id="fabric.atlassianSwitcher.join"
+        />
+      }
+    />
     <Component
       sectionId="recent"
       title={
