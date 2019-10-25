@@ -30,6 +30,14 @@ const isEmptySelectionAtStart = (state: EditorState): boolean => {
   );
 };
 
+const isEmptySelectionAtEnd = (state: EditorState): boolean => {
+  const { empty, $from } = state.selection;
+  return (
+    empty &&
+    ($from.end() === $from.pos || state.selection instanceof GapCursorSelection)
+  );
+};
+
 const isFirstChildOfParent = (state: EditorState): boolean => {
   const { $from } = state.selection;
   return $from.depth > 1
@@ -204,6 +212,7 @@ export {
   Predicate,
   filter,
   isEmptySelectionAtStart,
+  isEmptySelectionAtEnd,
   isFirstChildOfParent,
   isNthParentOfType,
   findCutBefore,

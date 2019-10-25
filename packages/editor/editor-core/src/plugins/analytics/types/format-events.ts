@@ -17,6 +17,7 @@ export enum INDENT_TYPE {
   LIST = 'list',
   HEADING = 'heading',
   CODE_BLOCK = 'codeBlock',
+  TASK_LIST = 'taskList',
 }
 
 type FormatAEP<ActionSubjectID, Attributes> = TrackAEP<
@@ -60,7 +61,8 @@ type FormatIndentationAEP = FormatAEP<
       | INDENT_TYPE.PARAGRAPH
       | INDENT_TYPE.LIST
       | INDENT_TYPE.HEADING
-      | INDENT_TYPE.CODE_BLOCK;
+      | INDENT_TYPE.CODE_BLOCK
+      | INDENT_TYPE.TASK_LIST;
   }
 >;
 
