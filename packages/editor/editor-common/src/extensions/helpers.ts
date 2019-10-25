@@ -1,21 +1,28 @@
-import { ExtensionManifest, ExtensionProvider, Capability } from './types';
+import {
+  ExtensionManifest,
+  Node,
+  ExtensionProvider,
+  Capability,
+} from './types';
 
 export type MenuItem = {
   key: string;
   title: string;
-  node?: ExtensionManifest['capabilities']['node'];
+  icon: () => Promise<any>;
+  node?: Node;
 };
 
-const flatten = <T>(arr: T[][]): T[] => ([] as any).concat(...arr);
+export const flatten = <T>(arr: T[][]): T[] => ([] as any).concat(...arr);
 
 export const groupBy = <T>(
   arr: T[],
   attr: keyof T,
+  keyRenamer: (key: T[keyof T]) => string,
 ): {
   [k: string]: T;
 } =>
   arr.reduce<any>((acc, item) => {
-    acc[item[attr]] = item;
+    acc[keyRenamer(item[attr])] = item;
     return acc;
   }, {});
 
@@ -25,7 +32,8 @@ export const buildMenuItem = (
 ): MenuItem => ({
   key,
   title: manifest.name,
-  node: manifest.capabilities.node,
+  icon: manifest.icon['16x16'],
+  node: manifest.capabilities.node.find(node => node.key === key),
 });
 
 export const filterByCapability = (

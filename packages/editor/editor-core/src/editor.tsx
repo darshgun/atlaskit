@@ -37,6 +37,7 @@ import {
   ACTION,
 } from './plugins/analytics';
 import ErrorBoundary from './create-editor/ErrorBoundary';
+import { ADFEntity } from '@atlaskit/adf-utils/src';
 
 export * from './types';
 
@@ -200,9 +201,61 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
+  private async handleExtensionProviders() {
+    const { extensions } = this.props;
+
+    if (!extensions) {
+      return;
+    }
+
+    const { extensionsPoints, actions } = await parseExtensionManifests(
+      extensions,
+    );
+
+    console.log(JSON.stringify(extensionsPoints.quickInsert));
+
+    const quickInsert = Object.keys(extensionsPoints.quickInsert).map(key => {
+      const item = extensionsPoints.quickInsert[key];
+      return {
+        title: item.title,
+        icon: item.icon(),
+        action: async (insert: (node: ADFEntity) => void) => {
+          const node = (await item.node!.adf()).default;
+          if (!node) {
+            console.log('error, no item here');
+          }
+          return insert(node);
+        },
+      };
+    });
+
+    const insertMenu = Object.keys(extensionsPoints.insertMenu).map(key => {
+      const item = extensionsPoints.insertMenu[key];
+      return {
+        content: item.title,
+        value: { name: item.title },
+        tooltipDescription: item.title,
+        elemBefore: item.icon(),
+        onClick: async (editorActions: EditorActions) => {
+          const node = (await item.node!.adf()).default;
+          if (!node) {
+            console.log('error, no item here');
+          }
+          return editorActions.replaceDocument(node);
+        },
+      };
+    });
+
+    console.log({ quickInsert, insertMenu });
+
+    return {
+      quickInsert,
+      insertMenu,
+    };
+  }
+
   private handleProviders(props: EditorProps) {
     const {
-      extensions,
       emojiProvider,
       mentionProvider,
       taskDecisionProvider,
@@ -219,7 +272,8 @@ export default class Editor extends React.Component<EditorProps, {}> {
       UNSAFE_cards,
     } = props;
 
-    parseExtensionManifests(extensions);
+    this.handleExtensionProviders();
+
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider(
@@ -290,6 +344,13 @@ export default class Editor extends React.Component<EditorProps, {}> {
       ...this.props,
       onSave: this.props.onSave ? this.handleSave : undefined,
     };
+
+    const {
+      extensionsPoints,
+      actions: extensionProvider,
+    } = parseExtensionManifests(this.props.extensions);
+
+    console.log(extensionsPoints, extensionProvider);
 
     const editor = (
       <ErrorBoundary

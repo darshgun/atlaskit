@@ -4,7 +4,9 @@ const manifest: ExtensionManifest = {
   name: 'Loren ipsum',
   key: 'loren-ipsum-extension',
   description: 'Inline extension demo',
-  icon: {},
+  icon: {
+    '16x16': () => import('@atlaskit/icon/glyph/editor/code'),
+  },
   capabilities: {
     quickinsert: [
       {
@@ -20,12 +22,8 @@ const manifest: ExtensionManifest = {
       {
         key: 'loren-ipsum',
         type: 'inline',
-        adf: async () => {
-          return await import('./adf-node');
-        },
-        render: async () => {
-          return await import('./extension-handler');
-        },
+        adf: () => import('./adf-node'),
+        render: () => import('./extension-handler'),
       },
     ],
   },

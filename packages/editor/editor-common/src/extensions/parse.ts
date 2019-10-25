@@ -4,6 +4,7 @@ import {
   filterByCapability,
   runInAllExtensionProviders,
   groupBy,
+  flatten,
 } from './helpers';
 
 type MappedExtensionPoints = {
@@ -11,24 +12,33 @@ type MappedExtensionPoints = {
   insertMenu: { [key: string]: MenuItem };
 };
 
-export default async (extensionProviders: ExtensionProvider[]) => {
-  const extensionsPoints: MappedExtensionPoints = {
-    quickInsert: {} as never,
-    insertMenu: {} as never,
-  };
+const extensionsPoints: MappedExtensionPoints = {
+  quickInsert: {} as never,
+  insertMenu: {} as never,
+};
 
-  await extensionProviders.forEach(async provider => {
-    const extensions = await provider.getExtensions();
-    extensions.forEach(extension => {
-      Object.assign(
-        extensionsPoints.quickInsert,
-        groupBy(filterByCapability(extension, 'quickinsert'), 'key'),
-      );
-      Object.assign(
-        extensionsPoints.insertMenu,
-        groupBy(filterByCapability(extension, 'insertmenu'), 'key'),
-      );
-    });
+const groupMenuItemsByKey = (items: MenuItem[], keyPrefix: string) =>
+  groupBy(items, 'key', key => `${keyPrefix}-${key}`);
+
+export default async (extensionProviders: ExtensionProvider[]) => {
+  const extensionsResult = flatten(
+    await Promise.all(
+      extensionProviders.map(async provider => provider.getExtensions()),
+    ),
+  );
+
+  extensionsResult.forEach(extension => {
+    const quickInsertItems = filterByCapability(extension, 'quickinsert');
+    Object.assign(
+      extensionsPoints.quickInsert,
+      groupMenuItemsByKey(quickInsertItems, extension.key),
+    );
+
+    const insertMenuItems = filterByCapability(extension, 'insertmenu');
+    Object.assign(
+      extensionsPoints.insertMenu,
+      groupMenuItemsByKey(insertMenuItems, extension.key),
+    );
   });
 
   return {

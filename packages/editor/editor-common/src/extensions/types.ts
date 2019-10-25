@@ -19,7 +19,7 @@ export type Node = {
 export type ImagePath = string;
 
 export type Icon = {
-  [dimensions: string]: () => AsyncESModule<string> | ImagePath;
+  [dimensions: string]: () => AsyncESModule<any>;
 };
 
 export type Capabilities = {
