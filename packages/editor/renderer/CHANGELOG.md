@@ -1,5 +1,13 @@
 # @atlaskit/renderer
 
+## 52.0.1
+
+### Patch Changes
+
+- [patch][846d2fbcbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/846d2fbcbb):
+
+  ED-7932 Fixed copy to clipboard in IE 11
+
 ## 52.0.0
 
 ### Major Changes
