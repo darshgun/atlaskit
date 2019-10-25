@@ -7,9 +7,9 @@
     "no-console": "off"
   },
   "globals": {
-    "BASE_TITLE": "writable",
-    "ENABLE_ANALYTICS_GASV3": "writable",
-    "DEFAULT_META_DESCRIPTION": "writable",
-    "WEBSITE_ENV": "writable"
+    "BASE_TITLE": "readonly",
+    "ENABLE_ANALYTICS_GASV3": "readonly",
+    "DEFAULT_META_DESCRIPTION": "readonly",
+    "WEBSITE_ENV": "readonly"
 }
 }

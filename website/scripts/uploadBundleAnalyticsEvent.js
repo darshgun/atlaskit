@@ -1,7 +1,6 @@
 // @flow
 const fetchUrl = require('node-fetch');
-// This file is a script and this is fine for now to disable eslint.
-/* eslint-disable */
+/* eslint-disable import/no-unresolved */
 const stats = require('../dist/stats.json');
 
 // These are the known splits in the repo that we can look for.
@@ -37,7 +36,7 @@ sendAnalyticsEvents(events)
     process.exit(1);
   });
 
-function sendAnalyticsEvents(events) {
+function sendAnalyticsEvents(eventsParam) {
   return fetchUrl('https://analytics.atlassian.com/analytics/events', {
     method: 'POST',
     headers: {
@@ -45,7 +44,7 @@ function sendAnalyticsEvents(events) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      events: events.map(event => ({
+      events: eventsParam.map(event => ({
         name: event.name,
         properties: event.properties,
         server: 'dev',
