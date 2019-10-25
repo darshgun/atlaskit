@@ -41,6 +41,7 @@ export default function Markdown({
       <Helmet>
         <meta
           name="description"
+          // DEFAULT_META_DESCRIPTION is set by webpack config.
           content={description || DEFAULT_META_DESCRIPTION}
         />
       </Helmet>

@@ -42,6 +42,7 @@ const createClient = () => {
   return () => {
     if (!client) {
       client = LaunchDarkly.initialize(
+        /* WEBSITE_ENV is set by webpack config */
         clientKey(WEBSITE_ENV),
         anonymousUser(),
         {

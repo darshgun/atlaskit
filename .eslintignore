@@ -38,6 +38,6 @@ packages/editor/adf-utils/*.js
 # flow tests
 packages/**/__tests__/flow/
 
-# tmp
+# Build folder
+# https://jdog.jira-dev.com/browse/AFP-500
 build
-website
