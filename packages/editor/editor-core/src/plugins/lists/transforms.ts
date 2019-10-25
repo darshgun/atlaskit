@@ -135,36 +135,38 @@ const getListType = (node: Node, schema: Schema): [NodeType, number] | null => {
     return null;
   }
 
-  const { bulletList, numberedList } = schema.nodes;
-  [
+  const { bulletList, orderedList } = schema.nodes;
+
+  return [
     {
       node: bulletList,
       matcher: bullets,
     },
     {
-      node: numberedList,
+      node: orderedList,
       matcher: numbers,
     },
-  ].forEach(listType => {
-    const match = node.text!.match(listType.matcher);
-    if (match) {
-      return [listType.node, match[0].length];
+  ].reduce((lastMatch: [NodeType, number] | null, listType) => {
+    if (lastMatch) {
+      return lastMatch;
     }
-  });
 
-  return null;
+    const match = node.text!.match(listType.matcher);
+    return match ? [listType.node, match[0].length] : lastMatch;
+  }, null);
 };
 
 const extractListFromParagaph = (node: Node, schema: Schema): Fragment => {
-  const { hardBreak, bulletList, numberedList } = schema.nodes;
+  const { hardBreak, bulletList, orderedList } = schema.nodes;
   const content: Array<Node> = mapChildren(node.content, node => node);
 
-  const listTypes = [bulletList, numberedList];
+  const listTypes = [bulletList, orderedList];
 
   // wrap each line into a listItem and a containing list
   const listified = content
     .map(child => {
       const listMatch = getListType(child, schema);
+
       if (!listMatch || !child.text) {
         return child;
       }
@@ -269,7 +271,6 @@ export const splitParagraphs = (slice: Slice, schema: Schema): Slice => {
   // slice might just be a raw text string
   if (schema.nodes.paragraph.validContent(slice.content) && !hasCodeMark) {
     const replSlice = splitIntoParagraphs(slice.content, schema);
-
     return new Slice(replSlice, slice.openStart + 1, slice.openEnd + 1);
   }
 

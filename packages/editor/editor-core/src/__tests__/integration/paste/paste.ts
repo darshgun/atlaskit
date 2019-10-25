@@ -77,6 +77,52 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
+  'paste.ts: paste tests on fullpage editor: bullet list from unicode text bullets',
+  { skip: ['edge', 'ie', 'safari'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data = '• line 1\n• line 2\n• line 3';
+    await copyAsPlainText(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      allowLists: true,
+    });
+
+    await page.click(fullpage.placeholder);
+    await page.paste();
+
+    await page.waitForSelector('ul');
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'paste.ts: paste tests on fullpage editor: bullet list from mixed text bullets',
+  { skip: ['edge', 'ie', 'safari'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data = '• line 1\n- line 2\n* line 3';
+    await copyAsPlainText(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      allowLists: true,
+    });
+
+    await page.click(fullpage.placeholder);
+    await page.paste();
+
+    await page.waitForSelector('ul');
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
   'paste.ts: paste tests on fullpage editor: ordered list',
   { skip: ['edge', 'ie', 'safari'] },
   async (client: any, testName: string) => {
