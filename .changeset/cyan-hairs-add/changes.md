@@ -1,0 +1,1 @@
+ED-7932 Fixed copy to clipboard in IE 11
