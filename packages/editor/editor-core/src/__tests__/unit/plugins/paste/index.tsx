@@ -1545,6 +1545,104 @@ describe('paste plugins', () => {
     });
   });
 
+  describe('splitting paragraphs', () => {
+    it('should split simple text-based paragraphs into real paragraphs', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const plain = 'text 1\n\ntext 2\r\n\r\ntext 3';
+
+      dispatchPasteEvent(editorView, { plain });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('text 1'), p('text 2'), p('text 3')),
+      );
+    });
+
+    it('should split multi-line text-based paragraphs into real paragraphs', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const plain =
+        'text 1\nsecond line\nthird line\n\nsecond paragraph\nit good\r\nlast line';
+
+      dispatchPasteEvent(editorView, { plain });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('text 1', hardBreak(), 'second line', hardBreak(), 'third line'),
+          p(
+            'second paragraph',
+            hardBreak(),
+            'it good',
+            hardBreak(),
+            'last line',
+          ),
+        ),
+      );
+    });
+  });
+
+  describe('converting text to list', () => {
+    describe.each(['*', '-', '•'])('upgrades bullets with %s', () => {
+      it('works for a simple list', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        const plain = '* line 1\n* line 2\n* line 3';
+
+        dispatchPasteEvent(editorView, { plain });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+        );
+      });
+
+      it('works for a simple list with trailing newline and mixed line breaks', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+        const plain = '* line 1\r\n* line 2\n* line 3\n';
+
+        dispatchPasteEvent(editorView, { plain });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+        );
+      });
+
+      it('converts a list with trailing text', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+
+        const plain =
+          '* line 1\n* line 2\n* line 3\n\noutside the list\nline 2';
+
+        dispatchPasteEvent(editorView, { plain });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            ul(li(p('line 1')), li(p('line 2')), li(p('line 3'))),
+            p('outside the list', hardBreak(), 'line 2'),
+          ),
+        );
+      });
+
+      it('converts a multi-line list with trailing text', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+
+        const plain =
+          '* item 1\n* item 2\n* item 3\nline two of the last item\n\noutside the list\nline 2';
+
+        dispatchPasteEvent(editorView, { plain });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            ul(
+              li(p('item 1')),
+              li(p('item 2')),
+              li(p('item 3', hardBreak(), 'line two of the last item')),
+            ),
+            p('outside the list', hardBreak(), 'line 2'),
+          ),
+        );
+      });
+    });
+  });
+
   describe('analytics V3', () => {
     const paragraphDoc = doc(p('Five{<>}'));
     const orderedListDoc = doc(ol(li(p('Five{<>}'))));
