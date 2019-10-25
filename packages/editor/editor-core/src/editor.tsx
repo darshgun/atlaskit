@@ -202,14 +202,14 @@ export default class Editor extends React.Component<EditorProps, {}> {
   }
 
   private async handleExtensionProviders() {
-    const { extensions } = this.props;
+    const { extensionProviders } = this.props;
 
-    if (!extensions) {
+    if (!extensionProviders) {
       return;
     }
 
     const { extensionsPoints, actions } = await parseExtensionManifests(
-      extensions,
+      extensionProviders,
     );
 
     console.log(JSON.stringify(extensionsPoints.quickInsert));
@@ -269,11 +269,16 @@ export default class Editor extends React.Component<EditorProps, {}> {
       collabEdit,
       quickInsert,
       autoformattingProvider,
+      extensionProviders,
       UNSAFE_cards,
     } = props;
 
     this.handleExtensionProviders();
 
+    this.providerFactory.setProvider(
+      'extensionProviders',
+      Promise.resolve(extensionProviders),
+    );
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider(

@@ -85,7 +85,7 @@ export interface EditorProps {
   // Legacy analytics support handler, which will be removed soon. **Do not use**.
   analyticsHandler?: AnalyticsHandler;
 
-  extensions?: ExtensionProvider[];
+  extensionProviders?: ExtensionProvider[];
   contentComponents?: ReactComponents;
   primaryToolbarComponents?: ReactComponents;
   secondaryToolbarComponents?: ReactComponents;

@@ -1,9 +1,4 @@
-import {
-  ExtensionManifest,
-  Node,
-  ExtensionProvider,
-  Capability,
-} from './types';
+import { ExtensionManifest, Node, Capability } from './types';
 
 export type MenuItem = {
   key: string;
@@ -45,28 +40,3 @@ export const filterByCapability = (
     buildMenuItem(manifest, cap.key),
   );
 };
-
-export const runInAllExtensionProviders = (
-  extensionProviders: ExtensionProvider[],
-): ExtensionProvider => ({
-  async getExtensions() {
-    const result = await Promise.all(
-      extensionProviders.map(provider => provider.getExtensions()),
-    );
-    return flatten(result);
-  },
-
-  async getExtension(key: string) {
-    const result = await Promise.all(
-      extensionProviders.map(provider => provider.getExtension(key)),
-    );
-    return result.find(extension => extension);
-  },
-
-  async search(keyword: string) {
-    const result = await Promise.all(
-      extensionProviders.map(provider => provider.search(keyword)),
-    );
-    return flatten(result).filter(extension => extension);
-  },
-});

@@ -23,7 +23,7 @@ import {
 import { Error } from './ErrorReport';
 
 export type Props = {
-  extensions: ExtensionProvider[];
+  extensionProviders: ExtensionProvider[];
   actions: EditorActions;
   appearance: EditorAppearance;
   adf?: object;
@@ -55,12 +55,12 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
       disabled,
       primaryToolbarComponents,
       popupMountPoint,
-      extensions,
+      extensionProviders,
     } = this.props;
     return (
       <SmartCardProvider>
         <Editor
-          extensions={extensions}
+          extensionProviders={extensionProviders}
           appearance={appearance}
           analyticsHandler={analyticsHandler}
           allowCodeBlocks={{ enableKeybindingsForIDE: true }}

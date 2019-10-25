@@ -27,7 +27,11 @@ import HorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji/picker';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import { EmojiId } from '@atlaskit/emoji/types';
-import { Popup, akEditorMenuZIndex } from '@atlaskit/editor-common';
+import {
+  Popup,
+  akEditorMenuZIndex,
+  ExtensionProvider,
+} from '@atlaskit/editor-common';
 import EditorActions from '../../../../actions';
 import {
   analyticsService as analytics,
@@ -255,6 +259,7 @@ export interface Props {
   placeholderTextEnabled?: boolean;
   layoutSectionEnabled?: boolean;
   expandEnabled?: boolean;
+  extensionProviders?: Promise<ExtensionProvider[]>;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;

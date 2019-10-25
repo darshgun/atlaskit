@@ -9,7 +9,7 @@ import { ReactRenderer } from '@atlaskit/renderer';
 import { colors, AtlaskitThemeProvider } from '@atlaskit/theme';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { extensionHandlers } from '@atlaskit/editor-test-helpers';
-import { getXProductExtensions } from '../example-helpers/fake-x-product-extensions';
+import { getXProductExtensionProvider } from '../example-helpers/fake-x-product-extensions';
 
 import enMessages from '../src/i18n/en';
 import languages from '../src/i18n/languages';
@@ -416,7 +416,7 @@ class FullPageRendererExample extends React.Component<Props, State> {
                           popupMountPoint={this.popupMountPoint || undefined}
                           onDocumentChanged={this.onDocumentChanged}
                           onDocumentValidated={this.onDocumentValidated}
-                          extensions={[getXProductExtensions()]}
+                          extensionProviders={[getXProductExtensionProvider()]}
                           primaryToolbarComponents={
                             <React.Fragment>
                               <LanguagePicker

@@ -11,9 +11,9 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
     return Promise.resolve(this.manifests);
   }
 
-  async getExtension(name: string) {
+  async getExtension(key: string) {
     const extension = (await this.getManifests()).find(
-      manifest => manifest.name === name,
+      manifest => manifest.key === key,
     );
     return extension;
   }

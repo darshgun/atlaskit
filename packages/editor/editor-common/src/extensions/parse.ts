@@ -1,11 +1,6 @@
 import { ExtensionProvider } from './types';
-import {
-  MenuItem,
-  filterByCapability,
-  runInAllExtensionProviders,
-  groupBy,
-  flatten,
-} from './helpers';
+import { MenuItem, filterByCapability, groupBy, flatten } from './helpers';
+import combineProviders from './combine-providers';
 
 type MappedExtensionPoints = {
   quickInsert: { [key: string]: MenuItem };
@@ -23,7 +18,7 @@ const groupMenuItemsByKey = (items: MenuItem[], keyPrefix: string) =>
 export default async (extensionProviders: ExtensionProvider[]) => {
   const extensionsResult = flatten(
     await Promise.all(
-      extensionProviders.map(async provider => provider.getExtensions()),
+      extensionProviders.map(provider => provider.getExtensions()),
     ),
   );
 
@@ -43,6 +38,6 @@ export default async (extensionProviders: ExtensionProvider[]) => {
 
   return {
     extensionsPoints,
-    actions: runInAllExtensionProviders(extensionProviders),
+    actions: combineProviders(extensionProviders),
   };
 };
