@@ -24,6 +24,8 @@ export const monospace: TokenParser = ({
     TokenType.EMPHASIS,
     TokenType.INSERTED,
     TokenType.LINK_FORMAT,
+    TokenType.LIST,
+    TokenType.RULER,
     TokenType.STRONG,
     TokenType.SUBSCRIPT,
     TokenType.SUPERSCRIPT,

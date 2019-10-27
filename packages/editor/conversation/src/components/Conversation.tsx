@@ -118,6 +118,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       allowFeedbackAndHelpButtons,
       portal,
       canModerateComments,
+      renderAdditionalCommentActions,
     } = this.props;
 
     if (!conversation) {
@@ -145,7 +146,11 @@ export default class Conversation extends React.PureComponent<Props, State> {
         onUserClick={onUserClick}
         dataProviders={dataProviders}
         renderComment={props => (
-          <Comment {...props} canModerateComment={canModerateComments} />
+          <Comment
+            {...props}
+            canModerateComment={canModerateComments}
+            renderAdditionalCommentActions={renderAdditionalCommentActions}
+          />
         )}
         renderEditor={renderEditor}
         objectId={objectId}
