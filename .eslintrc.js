@@ -109,6 +109,12 @@ module.exports = {
         ],
       },
     ],
+    'import/no-unresolved': [
+      'error',
+      {
+        ignore: ['@atlassian', '@atlassiansox'],
+      },
+    ],
     'import/prefer-default-export': 'off',
     'import/extensions': [
       'error',

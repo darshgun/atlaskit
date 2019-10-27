@@ -173,20 +173,6 @@ describe('tasks and decisions - commands', () => {
             });
           });
 
-          describe(`when cursor is inside empty ${name} item`, () => {
-            it(`should not create another ${name} item`, () => {
-              const { editorView } = editorFactory(
-                doc(list(listProps)(item(itemProps)('{<>}'))),
-              );
-              insertTaskDecision(editorView, listName);
-
-              const expectedDoc = doc(list(listProps)(item(itemProps)('{<>}')));
-              expect(editorView.state.doc).toEqualDocument(expectedDoc);
-              compareSelection(editorFactory, expectedDoc, editorView);
-            });
-            // TODO FS-2896 - change in behaviour
-          });
-
           describe(`when cursor is inside non-empty ${name} item`, () => {
             it(`should add a task item to ${name} list`, () => {
               const { editorView } = editorFactory(
