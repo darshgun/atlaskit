@@ -234,6 +234,7 @@ describe('paste plugins', () => {
                     p('"'),
                     mediaSingle({ layout: 'center' })(
                       media({
+                        __external: true,
                         url: 'http://atlassian.com',
                         type: 'external',
                       })(),
@@ -263,6 +264,7 @@ describe('paste plugins', () => {
               mediaSingle({ layout: 'center' })(
                 media({
                   type: 'external',
+                  __external: true,
                   url:
                     'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
                 })(),
@@ -316,6 +318,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
@@ -337,18 +340,21 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
@@ -370,6 +376,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://www.biorbyt.com/pub/media/wysiwyg/MAPK_signaling_pathway.jpg`,
               })(),
             ),
@@ -394,6 +401,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://miro.medium.com/max/1088/1*Ul-CDqf6wi-Ee8FQgmBUhQ@2x.jpeg`,
               })(),
             ),
@@ -416,6 +424,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://lh5.googleusercontent.com/dnPAozzy3eYppgqEafLiZl3zzWYCrrzfwKCZiQ8nyYGeB9us9npuOVj48tM1VotqVlGriXQG2x2iYnbOVxsE54vkFErZs3n-6yYlZA8nRpu3Bt2DWhEoa8pFOkiMJHHGYrYhfLkg`,
               })(),
             ),
@@ -438,6 +447,7 @@ describe('paste plugins', () => {
                   mediaSingle()(
                     media({
                       type: 'external',
+                      __external: true,
                       url: `https://lh4.googleusercontent.com/9lblWb7GLsczlSZQXUmuyJ9MLe-D8i19B1ITI-fdjV7bDMHzKWL5STuYhFTnOGJxfNa5HrWCgbQ35fr_ZMcZGpKX83ZWcSSeNAhOMVur7M1Ww3UOkWR64BDy1r-4atSedbwGCwyK`,
                     })(),
                   ),

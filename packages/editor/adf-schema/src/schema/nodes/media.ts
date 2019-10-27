@@ -42,6 +42,9 @@ export interface MediaBaseAttributes {
   __displayType?: DisplayType | null;
   // For copy & paste
   __contextId?: string;
+
+  // to upload external images to media
+  __external?: boolean;
 }
 
 export interface MediaAttributes extends MediaBaseAttributes {
@@ -53,6 +56,7 @@ export interface ExternalMediaAttributes {
   url: string;
   width?: number;
   height?: number;
+  __external?: boolean;
 }
 
 export const defaultAttrs: DefaultAttributes<
