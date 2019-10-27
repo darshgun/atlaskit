@@ -16,6 +16,8 @@ import {
 export interface Props extends WithAnalyticsEventsProps {
   /** The content to render inside the action button. */
   children?: ReactNode;
+  /** Set if the action button is disabled. */
+  isDisabled?: boolean;
   /** Handler called when the element is clicked. */
   onClick?: (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
@@ -29,12 +31,17 @@ export interface Props extends WithAnalyticsEventsProps {
 
 class ActionItem extends Component<Props, {}> {
   render() {
-    const { children, onClick, onFocus, onMouseOver } = this.props;
+    const { children, onClick, onFocus, onMouseOver, isDisabled } = this.props;
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events
       <span onClick={onClick} onFocus={onFocus} onMouseOver={onMouseOver}>
-        <Button appearance="subtle-link" spacing="none" type="button">
+        <Button
+          appearance="subtle-link"
+          spacing="none"
+          type="button"
+          isDisabled={isDisabled}
+        >
           {children}
         </Button>
       </span>
