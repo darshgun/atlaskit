@@ -5,7 +5,7 @@ import util from 'util';
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import * as yalc from 'yalc';
 
-import build from '../build';
+import build from '../../build';
 
 const exec = util.promisify(child_process.exec);
 

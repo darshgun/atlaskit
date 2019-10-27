@@ -1,6 +1,6 @@
 // @flow
 import React, { type ComponentType } from 'react';
-import Example, { ToggleTitle, Toggle } from '../src/Example';
+import Example, { ToggleTitle, Toggle } from '../../src/Example';
 import { AkCodeBlock } from '@atlaskit/code';
 import { mount } from 'enzyme';
 import cases from 'jest-in-case';
