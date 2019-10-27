@@ -1,5 +1,5 @@
 // @ts-ignore
-import runCommands from './runCommands';
+import runCommands from '../../runCommands';
 
 describe('runCommands', () => {
   it.todo('should pass through commands to concurrently');

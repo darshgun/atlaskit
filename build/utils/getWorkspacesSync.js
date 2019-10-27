@@ -6,7 +6,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const glob = require('glob');
+const globby = require('globby');
 
 /*::
 type Options = {
@@ -39,8 +39,10 @@ function getWorkspacesSync(opts /*: Options */) {
   const cwd = opts.cwd || process.cwd();
   const tools = opts.tools || ['yarn', 'bolt']; // We also support root, but don't do it by default
 
-  const pkg = fs.readFileSync(path.join(cwd, 'package.json'), 'utf-8');
-  console.log(typeof pkg);
+  const pkg = JSON.parse(
+    fs.readFileSync(path.join(cwd, 'package.json'), 'utf-8'),
+  );
+
   let workspaces;
 
   if (tools.includes('yarn') && pkg.workspaces) {
@@ -59,7 +61,7 @@ function getWorkspacesSync(opts /*: Options */) {
     return null;
   }
 
-  const folders = glob(workspaces, {
+  const folders = globby.sync(workspaces, {
     cwd,
     onlyDirectories: true,
     absolute: true,
