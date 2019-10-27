@@ -1,5 +1,13 @@
 # @atlaskit/comment
 
+## 9.1.0
+
+### Minor Changes
+
+- [minor][0afd21589d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0afd21589d):
+
+  Add optional `renderAdditionalCommentActions` prop to `Conversation` component. Add optional `isDisabled` prop to `CommentAction` component.
+
 ## 9.0.1
 
 ### Patch Changes
