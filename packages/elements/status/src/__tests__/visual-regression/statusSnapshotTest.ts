@@ -34,8 +34,12 @@ describe('Snapshot Test', () => {
     );
 
     await loadPage(page, url);
-    const image = await takeElementScreenShot(page, '#container');
 
-    expect(image).toMatchProdImageSnapshot();
+    const buttons = await page.$$('button');
+    for (const button of buttons) {
+      await button.click();
+      const image = await takeElementScreenShot(page, '#container');
+      expect(image).toMatchProdImageSnapshot();
+    }
   });
 });
