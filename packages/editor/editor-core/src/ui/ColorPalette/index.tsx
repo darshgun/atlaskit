@@ -5,6 +5,8 @@ import Color from './Color';
 import { ColorPaletteWrapper } from './styles';
 import { PaletteColor } from './Palettes/type';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { colors } from '@atlaskit/theme';
+import { getContrastColor } from '@atlaskit/editor-common';
 
 export interface Props {
   palette: PaletteColor[];
@@ -12,7 +14,6 @@ export interface Props {
   onClick: (value: string) => void;
   cols?: number;
   className?: string;
-  checkMarkColor?: string;
 }
 
 class ColorPalette extends PureComponent<Props & InjectedIntlProps, any> {
@@ -23,7 +24,6 @@ class ColorPalette extends PureComponent<Props & InjectedIntlProps, any> {
       onClick,
       selectedColor,
       className,
-      checkMarkColor,
       intl: { formatMessage },
     } = this.props;
 
@@ -40,7 +40,7 @@ class ColorPalette extends PureComponent<Props & InjectedIntlProps, any> {
             label={message ? formatMessage(message) : label}
             onClick={onClick}
             isSelected={value === selectedColor}
-            checkMarkColor={checkMarkColor}
+            checkMarkColor={getContrastColor(value, [colors.N0, colors.N500])}
           />
         ))}
       </ColorPaletteWrapper>
