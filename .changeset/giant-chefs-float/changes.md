@@ -1,0 +1,1 @@
+Adds optional `renderAfterComment` prop to Conversation to allow consumers to render something after a comment but before its nested comments

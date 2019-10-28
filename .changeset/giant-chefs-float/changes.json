@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/comment", "type": "minor" },
+    { "name": "@atlaskit/conversation", "type": "minor" }
+  ],
+  "dependents": []
+}
