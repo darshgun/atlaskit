@@ -27,7 +27,7 @@ const {
 
 const { returnMissingPkgBasedOn } = require('./utils/error.js');
 
-const targetBranch = process.env.TARGET_BRANCH || targetBranch;
+const targetBranch = process.env.TARGET_BRANCH || 'master';
 const bitbucketBranch = process.env.BITBUCKET_BRANCH;
 
 function fWriteStats(path, content) {
