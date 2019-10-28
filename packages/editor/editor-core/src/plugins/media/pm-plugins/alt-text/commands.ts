@@ -1,15 +1,15 @@
 import { createCommand } from '.';
-import { isSelectionMediaNode } from '../../utils/media-common';
+import { isSelectionMediaSingleNode } from '../../utils/media-common';
 
 export const closeMediaAltTextMenu = createCommand(state => {
-  if (isSelectionMediaNode(state)) {
+  if (isSelectionMediaSingleNode(state)) {
     return { type: 'closeMediaAltTextMenu' };
   }
   return false;
 });
 
 export const openMediaAltTextMenu = createCommand(state => {
-  if (isSelectionMediaNode(state)) {
+  if (isSelectionMediaSingleNode(state)) {
     return { type: 'openMediaAltTextMenu' };
   }
   return false;

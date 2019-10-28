@@ -101,17 +101,11 @@ export type SetMediaMediaClientConfig = {
   mediaClientConfig?: MediaClientConfig;
 };
 
-export type ToggleMediaAltTextToolbar = {
-  type: 'toggleMediaAltTextToolbar';
-};
-
 export type MediaEditorAction =
   | OpenMediaEditor
   | CloseMediaEditor
   | UploadAnnotation
   | SetMediaMediaClientConfig;
-
-export type MediaAction = ToggleMediaAltTextToolbar;
 
 export type MediaToolbarBaseConfig = {
   title: string;

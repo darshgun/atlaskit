@@ -6,7 +6,7 @@ jest.mock('../../../../plugins/media/pm-plugins/alt-text/commands', () => ({
   updateAltText: mockUpdateAltText,
 }));
 
-import * as React from 'react';
+import React from 'react';
 import { mountWithIntl } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 import AltTextEdit from '../../../../plugins/media/pm-plugins/alt-text/ui/AltTextEdit';
