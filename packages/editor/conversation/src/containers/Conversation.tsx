@@ -181,6 +181,7 @@ export interface ContainerProps {
     CommentAction: typeof AkCommentAction,
     comment: CommentType,
   ) => JSX.Element[];
+  renderAfterComment?: (comment: CommentType) => JSX.Element;
 }
 
 class ConversationContainer extends React.Component<ContainerProps, any> {
