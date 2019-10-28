@@ -19,6 +19,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/adf-schema": "^4.2.0",
+    "lodash.isequal": "^4.5.0",
     "prosemirror-model": "^1.7.0"
   },
   "peerDependencies": {

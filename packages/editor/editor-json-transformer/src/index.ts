@@ -9,9 +9,8 @@ import {
   toJSONTableCell,
   toJSONTableHeader,
 } from '@atlaskit/adf-schema';
-import * as _ from 'lodash';
+import isEqual from 'lodash.isequal';
 import { Node as PMNode, Mark as PMMark } from 'prosemirror-model';
-import { paragraph } from '../../adf-utils/src/validator/specs';
 
 interface Transformer<T> {
   encode(node: PMNode): T;
@@ -137,7 +136,7 @@ export class JSONTransformer implements Transformer<JSONDocNode> {
       content.push(toJSON(child));
     });
 
-    if (!content || _.isEqual(content, emptyDoc.content)) {
+    if (!content || isEqual(content, emptyDoc.content)) {
       return createDocFromContent([]);
     }
 
@@ -155,7 +154,7 @@ export class JSONTransformer implements Transformer<JSONDocNode> {
       throw new Error('Expected content format to be ADF');
     }
 
-    if (!content.content || content.content.length == 0) {
+    if (!content.content || content.content.length === 0) {
       return this.internalParse(emptyDoc);
     }
 
