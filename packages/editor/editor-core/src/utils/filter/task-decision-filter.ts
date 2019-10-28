@@ -9,6 +9,8 @@ const taskDecisionAllowedNodeTypes = new Set([
   'status',
   'date',
   'hardBreak',
+  'taskList',
+  'taskItem',
 ]);
 
 export function taskDecisionDocFilter(

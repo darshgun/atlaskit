@@ -85,6 +85,7 @@ describe('paste plugins', () => {
         allowLists: true,
         allowPanel: true,
         allowTasksAndDecisions: true,
+        allowNestedTasks: true,
         allowTables: true,
         emojiProvider,
         mentionProvider: Promise.resolve(
@@ -1038,6 +1039,27 @@ describe('paste plugins', () => {
           doc(
             taskList({ localId: 'local-decision' })(
               taskItem({ localId: 'local-decision' })('plain text'),
+            ),
+          ),
+        );
+      });
+
+      it('pastes nested actions into an action', () => {
+        const attrs = { localId: 'local-decision' };
+        const { editorView } = editor(
+          doc(taskList(attrs)(taskItem(attrs)('first item{<>}'))),
+        );
+
+        const html = `<meta charset='utf-8'><div data-node-type="actionList" data-task-list-local-id="pasted-list-top" style="list-style: none; padding-left: 0" data-pm-slice="2 3 [&quot;taskList&quot;,null,&quot;taskList&quot;,null,&quot;taskList&quot;,null,&quot;taskList&quot;,null]"><div data-task-local-id="pasted-task-top" data-task-state="TODO"></div><div data-task-local-id="56426a95-e500-4d42-bb2b-58f523853a49" data-task-state="TODO">top level</div><div data-node-type="actionList" data-task-list-local-id="pasted-list-nested" style="list-style: none; padding-left: 0"><div data-task-local-id="pasted-task-nested" data-task-state="TODO">nested</div></div></div>`;
+
+        dispatchPasteEvent(editorView, { html });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList(attrs)(
+              taskItem(attrs)('first item'),
+              taskItem(attrs)('top level'),
+              taskList(attrs)(taskItem(attrs)('nested')),
             ),
           ),
         );
