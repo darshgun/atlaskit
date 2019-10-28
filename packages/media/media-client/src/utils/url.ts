@@ -68,13 +68,16 @@ export const getAttrsFromUrl = (
 };
 
 export const objectToQueryString = (json: {
-  [key: string]: string | number | boolean | undefined;
+  [key: string]: string | number | boolean | undefined | null;
 }): string => {
   return Object.keys(json)
-    .filter(attrName => typeof json[attrName] !== 'undefined')
+    .filter(
+      attrName =>
+        typeof json[attrName] !== 'undefined' && json[attrName] !== null,
+    )
     .map(key => {
       const value = json[key];
-      if (typeof value === 'undefined') {
+      if (typeof value === 'undefined' || value === null) {
         return;
       }
 
