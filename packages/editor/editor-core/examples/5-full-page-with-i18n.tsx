@@ -19,9 +19,9 @@ export default class ExampleEditor extends React.Component<Props, State> {
     const { locale, messages } = this.state;
     return (
       <IntlProvider locale={this.getLocalTag(locale)} messages={messages}>
-        {FullPageExample({
-          allowHelpDialog: true,
-          primaryToolbarComponents: (
+        <FullPageExample
+          allowHelpDialog
+          primaryToolbarComponents={
             <WithEditorActions
               render={actions => (
                 <React.Fragment>
@@ -34,8 +34,8 @@ export default class ExampleEditor extends React.Component<Props, State> {
                 </React.Fragment>
               )}
             />
-          ),
-        })}
+          }
+        />
       </IntlProvider>
     );
   }
