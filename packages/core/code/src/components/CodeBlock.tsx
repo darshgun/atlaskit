@@ -15,18 +15,13 @@ export interface CodeBlockProps {
 
   /**
    * Lines to highlight comma delimited.
-   * Valid uses:
+   * Example uses:
 
-   * To highlight one line:
-   * highlight="3"
-
-   * To highlight sequential lines:
-   * highlight="1-5"
-
-   * To highlight sequential and multiple single lines:
-   * highlight="1-5,7,10,15-20"
+   * - To highlight one line `highlight="3"`
+   * - To highlight a group of lines `highlight="1-5"`
+   * - To highlight multiple groups `highlight="1-5,7,10,15-20"`
    */
-  highlight?: string;
+  highlight: string;
 }
 
 const LANGUAGE_FALLBACK = 'text';
@@ -38,6 +33,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
     showLineNumbers: true,
     language: LANGUAGE_FALLBACK,
     theme: {},
+    highlight: '',
   };
 
   handleCopy = (event: any) => {

@@ -19,7 +19,6 @@ type Props = {
 type State = {
   isSourceVisible: boolean,
   isHover: boolean,
-  highlight: '',
 };
 
 export default class Example extends React.Component<Props, State> {

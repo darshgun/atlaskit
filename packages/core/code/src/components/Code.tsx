@@ -23,16 +23,11 @@ export interface CodeProps {
 
   /**
    * Lines to highlight comma delimited.
-   * Valid uses:
+   * Example uses:
 
-   * To highlight one line:
-   * highlight="3"
-
-   * To highlight a group of lines:
-   * highlight="1-5"
-
-   * To highlight multiple groups:
-   * highlight="1-5,7,10,15-20"
+   * - To highlight one line `highlight="3"`
+   * - To highlight a group of lines `highlight="1-5"`
+   * - To highlight multiple groups `highlight="1-5,7,10,15-20"`
    */
   highlight: string;
 }
