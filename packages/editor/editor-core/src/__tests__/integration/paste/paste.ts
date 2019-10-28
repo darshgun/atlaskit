@@ -78,7 +78,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'paste.ts: paste tests on fullpage editor: bullet list from unicode text bullets',
-  { skip: ['edge', 'ie', 'safari', 'chrome'] },
+  { skip: ['edge', 'ie', 'safari', 'chrome', 'Chrome'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 
@@ -101,7 +101,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'paste.ts: paste tests on fullpage editor: bullet list from mixed text bullets',
-  { skip: ['edge', 'ie', 'safari', 'chrome'] },
+  { skip: ['edge', 'ie', 'safari', 'chrome', 'Chrome'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 
