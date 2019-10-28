@@ -18,6 +18,7 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
         Object {
           "adminLinks": Array [],
           "fixedLinks": Array [],
+          "joinableSiteLinks": Array [],
           "licensedProducts": Array [],
           "numberOfSites": 0,
           "suggestedProducts": Array [],
@@ -70,6 +71,7 @@ exports[`Switcher should render sections with headers by default 1`] = `
         Object {
           "adminLinks": Array [],
           "fixedLinks": Array [],
+          "joinableSiteLinks": Array [],
           "licensedProducts": Array [],
           "numberOfSites": 0,
           "suggestedProducts": Array [],

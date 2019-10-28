@@ -51,6 +51,7 @@ export type SwitcherItemType = {
 };
 
 export type JoinableSiteItemType = SwitcherItemType & {
+  cloudId: string;
   users: JoinableSiteUser[];
 };
 
@@ -481,7 +482,7 @@ export const getJoinableSiteLinks = (
           }
 
           return {
-            key: `${index}`,
+            key: site.cloudId,
             label,
             description: site.displayName,
             Icon: createIcon(icon, { size: 'small' }),
@@ -496,6 +497,8 @@ export const getJoinableSiteLinks = (
                 enableTooltip: true,
               }),
             ),
+            cloudId: site.cloudId,
+            productType: TO_WORKLENS_PRODUCT_KEY[defaultProduct],
           };
         },
       )

@@ -16,6 +16,10 @@ import {
   Product,
 } from '../types';
 import { ProviderResult } from '../providers/as-data-provider';
+import {
+  JoinableSitesProvider,
+  JoinableSitesDataProvider,
+} from '../providers/joinable-sites-data-provider';
 import { AvailableProductsProvider } from '../providers/products-data-provider';
 import { WithTheme } from '../theme/types';
 
@@ -26,41 +30,50 @@ type ConfluenceSwitcherProps = WithTheme & {
   triggerXFlow: TriggerXFlowCallback;
   onDiscoverMoreClicked: DiscoverMoreCallback;
   recommendationsFeatureFlags?: RecommendationsFeatureFlags;
+  joinableSitesDataProvider?: JoinableSitesDataProvider;
 };
 
 export default (props: ConfluenceSwitcherProps) => (
-  <CustomLinksProvider disableCustomLinks={props.features.disableCustomLinks}>
-    {customLinks => (
-      <AvailableProductsProvider>
-        {(availableProducts: ProviderResult<AvailableProductsResponse>) => (
-          <CommonDataProvider
-            cloudId={props.cloudId}
-            disableRecentContainers={props.features.disableRecentContainers}
-          >
-            {providerResults => {
-              const {
-                showManageLink,
-                ...switcherLinks
-              } = mapResultsToSwitcherProps(
-                props.cloudId,
-                { customLinks, ...providerResults },
-                props.features,
-                availableProducts,
-                [],
-                Product.CONFLUENCE,
-              );
+  <JoinableSitesProvider
+    joinableSitesDataProvider={props.joinableSitesDataProvider}
+  >
+    {joinableSites => (
+      <CustomLinksProvider
+        disableCustomLinks={props.features.disableCustomLinks}
+      >
+        {customLinks => (
+          <AvailableProductsProvider>
+            {(availableProducts: ProviderResult<AvailableProductsResponse>) => (
+              <CommonDataProvider
+                cloudId={props.cloudId}
+                disableRecentContainers={props.features.disableRecentContainers}
+              >
+                {providerResults => {
+                  const {
+                    showManageLink,
+                    ...switcherLinks
+                  } = mapResultsToSwitcherProps(
+                    props.cloudId,
+                    { customLinks, ...providerResults },
+                    props.features,
+                    availableProducts,
+                    joinableSites,
+                    Product.CONFLUENCE,
+                  );
 
-              return (
-                <Switcher
-                  {...props}
-                  {...switcherLinks}
-                  manageLink={showManageLink ? MANAGE_HREF : undefined}
-                />
-              );
-            }}
-          </CommonDataProvider>
+                  return (
+                    <Switcher
+                      {...props}
+                      {...switcherLinks}
+                      manageLink={showManageLink ? MANAGE_HREF : undefined}
+                    />
+                  );
+                }}
+              </CommonDataProvider>
+            )}
+          </AvailableProductsProvider>
         )}
-      </AvailableProductsProvider>
+      </CustomLinksProvider>
     )}
-  </CustomLinksProvider>
+  </JoinableSitesProvider>
 );

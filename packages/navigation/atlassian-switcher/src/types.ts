@@ -160,13 +160,13 @@ export interface JoinableSiteUser {
 }
 
 export interface JoinableSite {
+  cloudId: string;
   displayName: string;
   products: ProductKey[];
   relevance: number;
   url: string;
   users: JoinableSiteUser[];
   avatarUrl?: string;
-  cloudId?: string;
 }
 
 export interface JoinableSitesResponse {

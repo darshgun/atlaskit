@@ -137,7 +137,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
       adminLinks,
       recentLinks,
       customLinks,
-      joinableSiteLinks,
       manageLink,
       hasLoaded,
       hasLoadedCritical,
@@ -157,11 +156,14 @@ export default class Switcher extends React.Component<SwitcherProps> {
       ...adminLinks,
     ];
 
+    const joinableSiteLinks = this.props.joinableSiteLinks || [];
+
     const itemsCount =
       switchToLinks.length +
       recentLinks.length +
       customLinks.length +
-      discoverSectionLinks.length;
+      discoverSectionLinks.length +
+      joinableSiteLinks.length;
 
     const firstContentArrived = Boolean(licensedProductLinks.length);
 
@@ -191,6 +193,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 suggestedProducts: suggestedProductLinks.map(item => item.key),
                 adminLinks: adminLinks.map(item => item.key),
                 fixedLinks: fixedLinks.map(item => item.key),
+                joinableSiteLinks: joinableSiteLinks.map(item => item.key),
                 numberOfSites,
               }}
             />
@@ -361,23 +364,36 @@ export default class Switcher extends React.Component<SwitcherProps> {
             sectionId="join"
             title={<FormattedMessage {...messages.join} />}
           >
-            {joinableSiteLinks &&
-              joinableSiteLinks!.map(
-                ({ label, description, Icon, users }, idx: number) => (
-                  <NavigationAnalyticsContext
-                    key={idx}
-                    data={getItemAnalyticsContext(idx, '', 'recent', '')}
+            {joinableSiteLinks.map(
+              (
+                { cloudId, description, href, Icon, label, productType, users },
+                groupIndex: number,
+              ) => (
+                <NavigationAnalyticsContext
+                  key={groupIndex}
+                  data={getItemAnalyticsContext(
+                    groupIndex,
+                    cloudId,
+                    'join',
+                    href,
+                    productType,
+                    {
+                      cloudId,
+                    },
+                  )}
+                >
+                  <ItemWithAvatarGroup
+                    icon={<Icon theme="product" />}
+                    description={description}
+                    users={users}
+                    href={href}
+                    target="_new"
                   >
-                    <ItemWithAvatarGroup
-                      icon={<Icon theme="product" />}
-                      description={description}
-                      users={users}
-                    >
-                      {label}
-                    </ItemWithAvatarGroup>
-                  </NavigationAnalyticsContext>
-                ),
-              )}
+                    {label}
+                  </ItemWithAvatarGroup>
+                </NavigationAnalyticsContext>
+              ),
+            )}
           </Section>
           <Section
             sectionId="recent"

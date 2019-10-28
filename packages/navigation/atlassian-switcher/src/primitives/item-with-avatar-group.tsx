@@ -3,7 +3,13 @@ import styled from 'styled-components';
 import AvatarGroup from '@atlaskit/avatar-group';
 
 import { JoinableSiteUser } from '../types';
-import { WithAnalyticsEventsProps } from '../utils/analytics';
+import {
+  createAndFireNavigationEvent,
+  withAnalyticsEvents,
+  WithAnalyticsEventsProps,
+  UI_EVENT_TYPE,
+  SWITCHER_ITEM_SUBJECT,
+} from '../utils/analytics';
 import { FadeIn } from './fade-in';
 import ThemedItem from './themed-item';
 
@@ -11,10 +17,11 @@ export interface ItemWithAvatarGroupProps extends WithAnalyticsEventsProps {
   children: React.ReactNode;
   icon: React.ReactNode;
   description?: React.ReactNode;
-  onClick?: Function;
   href?: string;
+  target?: string;
   isDisabled?: boolean;
   onKeyDown?: any;
+  onItemClick?: Function;
   users?: JoinableSiteUser[];
 }
 
@@ -31,11 +38,11 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class ItemWithAvatarGroup extends React.Component<
-  ItemWithAvatarGroupProps
-> {
+const noop = () => {};
+
+class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
   render() {
-    const { icon, description, users = [], ...rest } = this.props;
+    const { icon, description, users = [], onItemClick, ...rest } = this.props;
 
     return (
       <FadeIn>
@@ -49,8 +56,10 @@ export default class ItemWithAvatarGroup extends React.Component<
                 data={users}
                 maxCount={3}
                 size="small"
+                onMoreClick={noop}
               />
             }
+            onClick={onItemClick}
             {...rest}
           />
         </Wrapper>
@@ -58,3 +67,11 @@ export default class ItemWithAvatarGroup extends React.Component<
     );
   }
 }
+
+export default withAnalyticsEvents({
+  onItemClick: createAndFireNavigationEvent({
+    eventType: UI_EVENT_TYPE,
+    action: 'clicked',
+    actionSubject: SWITCHER_ITEM_SUBJECT,
+  }),
+})(ItemWithAvatarGroup);

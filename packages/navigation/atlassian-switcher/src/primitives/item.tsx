@@ -10,6 +10,7 @@ export interface SwitcherItemProps extends WithAnalyticsEventsProps {
   description?: React.ReactNode;
   onClick?: Function;
   href?: string;
+  target?: string;
   isDisabled?: boolean;
   onKeyDown?: any;
 }
