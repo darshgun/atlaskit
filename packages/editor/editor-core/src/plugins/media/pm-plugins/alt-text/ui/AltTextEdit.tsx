@@ -19,7 +19,7 @@ const SupportText = styled.p`
   line-height: 20px;
 `;
 
-const AltTextEditWrapper = styled.section`
+const AltTextEditWrapper = styled.div`
   width: ${CONTAINER_WIDTH_IN_PX}px;
   display: flex;
   flex-direction: column;
