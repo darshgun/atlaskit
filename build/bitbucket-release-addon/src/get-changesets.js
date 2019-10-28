@@ -1,9 +1,9 @@
-function getDiffStatUrl(user, repo, sourcehash, destinationhash) {
-  return `/2.0/repositories/${user}/${repo}/diffstat/${sourcehash}..${destinationhash}`;
+function getDiffStatUrl(repoName, sourcehash, destinationhash) {
+  return `/2.0/repositories/${repoName}/diffstat/${sourcehash}..${destinationhash}`;
 }
 
-function getFileUrl(user, repo, hash, filePath) {
-  return `/2.0/repositories/${user}/${repo}/src/${hash}/${filePath}`;
+function getFileUrl(repoName, hash, filePath) {
+  return `/2.0/repositories/${repoName}/src/${hash}/${filePath}`;
 }
 
 function promisifyAPRequest(url, type) {
@@ -38,30 +38,29 @@ function getFullDiffStat(url, allValues = []) {
  * number of requests after the first request and make serveral at a time in
  * parallel.
  */
-export default async function getChangesetInfo(
-  user,
-  repo,
+export default async function getChangesetsFromFiles(
+  repoName,
   sourcehash,
   destinationhash,
   v2,
 ) {
-  const diffstatUrl = getDiffStatUrl(user, repo, sourcehash, destinationhash);
+  const diffstatUrl = getDiffStatUrl(repoName, sourcehash, destinationhash);
   const allDiffStats = await getFullDiffStat(diffstatUrl);
-
   const relevantDiffs = allDiffStats.filter(diff => diff.new && diff.new.path);
 
   const changesets = relevantDiffs
     .filter(diff => diff.new.path.match(/\.changeset\/[^/]+?\/changes\.json$/))
-    .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
+    .map(diff => getFileUrl(repoName, sourcehash, diff.new.path))
     .map(url => promisifyAPRequest(url, 'json'));
 
   const v2Changesets = relevantDiffs
+    .filter(diff => !diff.new.path.match(/\.changeset\/README\.md$/))
     .filter(diff => diff.new.path.match(/\.changeset\/[^/]+?\.md$/))
-    .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
+    .map(diff => getFileUrl(repoName, sourcehash, diff.new.path))
     .map(url => promisifyAPRequest(url, 'text'));
 
   return {
-    changesetsPromise: Promise.all(changesets),
-    v2ChangesetsPromise: Promise.all(v2Changesets),
+    v1changesets: await Promise.all(changesets),
+    v2changesets: await Promise.all(v2Changesets),
   };
 }
