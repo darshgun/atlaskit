@@ -487,9 +487,9 @@ pipelines:
             - node
 
     # This build allow to deploy branch dists to easily tests new version of components into consumers / products code base.
-    deploy-branch-build-dists:
+    branch-deploy:
       - step:
-          name: Deploy branch build dists
+          name: Branch deploy
           script:
             - source ./build-setup.sh
             - bolt install --frozen-lockfile
