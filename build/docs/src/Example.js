@@ -13,16 +13,19 @@ type Props = {
   source: string,
   title: string,
   packageName: string,
+  highlight: string,
 };
 
 type State = {
   isSourceVisible: boolean,
   isHover: boolean,
+  highlight: '',
 };
 
 export default class Example extends React.Component<Props, State> {
   static defaultProps = {
     language: 'javascript',
+    highlight: '',
   };
 
   state = {
@@ -40,7 +43,14 @@ export default class Example extends React.Component<Props, State> {
   };
 
   render() {
-    const { Component, source, language, title, packageName } = this.props;
+    const {
+      Component,
+      source,
+      language,
+      title,
+      packageName,
+      highlight,
+    } = this.props;
     const { isHover, isSourceVisible } = this.state;
     const toggleLabel = isSourceVisible
       ? 'Hide Code Snippet'
@@ -68,6 +78,7 @@ export default class Example extends React.Component<Props, State> {
               text={packageName ? replaceSrc(source, packageName) : source}
               language={language}
               showLineNumbers={false}
+              highlight={highlight}
             />
           </CodeWrapper>
         ) : null}

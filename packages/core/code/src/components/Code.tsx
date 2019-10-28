@@ -3,7 +3,7 @@ import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { normalizeLanguage, SupportedLanguages } from '../supportedLanguages';
 import { Theme, ThemeProps, applyTheme } from '../themes/themeBuilder';
 
-type CodeProps = {
+export interface CodeProps {
   /** The style object to apply to code */
   codeStyle?: {};
   /** The element or custom react component to use in place of the default code tag */
@@ -20,7 +20,22 @@ type CodeProps = {
   text: string;
   /** A custom theme to be applied, implements the Theme interface */
   theme?: Theme | ThemeProps;
-};
+
+  /**
+   * Lines to highlight comma delimited.
+   * Valid uses:
+
+   * To highlight one line:
+   * highlight="3"
+
+   * To highlight a group of lines:
+   * highlight="1-5"
+
+   * To highlight multiple groups:
+   * highlight="1-5,7,10,15-20"
+   */
+  highlight: string;
+}
 
 export default class Code extends PureComponent<CodeProps, {}> {
   static defaultProps = {
@@ -29,7 +44,43 @@ export default class Code extends PureComponent<CodeProps, {}> {
     lineNumberContainerStyle: {},
     codeTagProps: {},
     preTag: 'span',
+    highlight: '',
   };
+
+  getLineOpacity(lineNumber: number) {
+    if (!this.props.highlight) {
+      return 1;
+    }
+
+    const highlight = this.props.highlight
+      .split(',')
+      .map(num => {
+        if (num.indexOf('-') > 0) {
+          // We found a line group, e.g. 1-3
+          const [from, to] = num
+            .split('-')
+            .map(Number)
+            .sort();
+          return Array(to + 1)
+            .fill(undefined)
+            .map((_, index) => index)
+            .slice(from, to + 1);
+        }
+
+        return Number(num);
+      })
+      .reduce<number[]>((acc, val) => acc.concat(val), []);
+
+    if (highlight.length === 0) {
+      return 1;
+    }
+
+    if (highlight.includes(lineNumber)) {
+      return 1;
+    }
+
+    return 0.3;
+  }
 
   render() {
     const { inlineCodeStyle } = applyTheme(this.props.theme);
@@ -44,6 +95,25 @@ export default class Code extends PureComponent<CodeProps, {}> {
       codeTagProps: this.props.codeTagProps,
     };
 
-    return <SyntaxHighlighter {...props}>{this.props.text}</SyntaxHighlighter>;
+    return (
+      <SyntaxHighlighter
+        {...props}
+        // Wrap lines is needed to set styles on the line.
+        // We use this to set opacity if highlight specific lines.
+        wrapLines={this.props.highlight.length > 0}
+        lineNumberStyle={(lineNumber: number) => ({
+          opacity: this.getLineOpacity(lineNumber),
+        })}
+        // Types are incorrect.
+        // @ts-ignore
+        lineProps={lineNumber => ({
+          style: {
+            opacity: this.getLineOpacity(lineNumber),
+          },
+        })}
+      >
+        {this.props.text}
+      </SyntaxHighlighter>
+    );
   }
 }

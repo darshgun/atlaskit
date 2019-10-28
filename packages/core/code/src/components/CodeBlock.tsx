@@ -3,7 +3,7 @@ import { normalizeLanguage, SupportedLanguages } from '../supportedLanguages';
 import { Theme, ThemeProps, applyTheme } from '../themes/themeBuilder';
 import Code from './Code';
 
-type CodeBlockProps = {
+export interface CodeBlockProps {
   /** The code to be formatted */
   text: string;
   /** The language in which the code is written */
@@ -12,7 +12,22 @@ type CodeBlockProps = {
   showLineNumbers?: boolean;
   /** A custom theme to be applied, implements the Theme interface */
   theme?: Theme | ThemeProps;
-};
+
+  /**
+   * Lines to highlight comma delimited.
+   * Valid uses:
+
+   * To highlight one line:
+   * highlight="3"
+
+   * To highlight sequential lines:
+   * highlight="1-5"
+
+   * To highlight sequential and multiple single lines:
+   * highlight="1-5,7,10,15-20"
+   */
+  highlight?: string;
+}
 
 const LANGUAGE_FALLBACK = 'text';
 
@@ -50,6 +65,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
       codeBlockStyle,
       codeContainerStyle,
     } = applyTheme(this.props.theme);
+
     const props = {
       language: normalizeLanguage(this.props.language || LANGUAGE_FALLBACK),
       codeStyle: codeBlockStyle,
@@ -57,6 +73,7 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
       codeTagProps: { style: codeContainerStyle },
       lineNumberContainerStyle,
       text: this.props.text.toString(),
+      highlight: this.props.highlight,
     };
 
     return <Code {...props} />;
