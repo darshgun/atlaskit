@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/adf-schema';
+import { MediaProvider } from '@atlaskit/editor-common';
 import {
   EditorPlugin,
   EditorAppearance,
@@ -20,7 +21,7 @@ import linkingPlugin from './pm-plugins/linking';
 import ToolbarMedia from './ui/ToolbarMedia';
 import { ReactMediaGroupNode } from './nodeviews/mediaGroup';
 import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
-import { CustomMediaPicker, MediaProvider, MediaEditorState } from './types';
+import { CustomMediaPicker, MediaEditorState } from './types';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { floatingToolbar } from './toolbar';
 

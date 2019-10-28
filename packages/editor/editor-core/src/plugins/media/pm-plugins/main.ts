@@ -17,6 +17,7 @@ import { MediaSingleLayout } from '@atlaskit/adf-schema';
 import {
   ErrorReporter,
   ContextIdentifierProvider,
+  MediaProvider,
 } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
@@ -32,7 +33,7 @@ import PickerFacade, {
   MediaStateEventListener,
   MediaStateEventSubscriber,
 } from '../picker-facade';
-import { MediaState, MediaProvider, MediaStateStatus } from '../types';
+import { MediaState, MediaStateStatus } from '../types';
 import { insertMediaSingleNode, isMediaSingle } from '../utils/media-single';
 import {
   INPUT_METHOD,

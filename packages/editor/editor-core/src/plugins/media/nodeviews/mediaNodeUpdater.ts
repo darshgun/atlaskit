@@ -8,6 +8,7 @@ import { MediaAttributes, ExternalMediaAttributes } from '@atlaskit/adf-schema';
 import {
   DEFAULT_IMAGE_HEIGHT,
   DEFAULT_IMAGE_WIDTH,
+  MediaProvider,
 } from '@atlaskit/editor-common';
 import {
   getMediaClient,
@@ -16,7 +17,6 @@ import {
 } from '@atlaskit/media-client';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaProvider } from '../types';
 import { ContextIdentifierProvider } from '@atlaskit/editor-common';
 import { MediaPMPluginOptions } from '../';
 import {

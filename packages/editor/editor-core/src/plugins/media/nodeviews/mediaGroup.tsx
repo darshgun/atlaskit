@@ -29,7 +29,7 @@ import {
   ProviderFactory,
   ContextIdentifierProvider,
 } from '@atlaskit/editor-common';
-import { MediaProvider } from '../types';
+import { MediaProvider } from '@atlaskit/editor-common';
 import { MediaNodeUpdater } from './mediaNodeUpdater';
 
 export type MediaGroupProps = {

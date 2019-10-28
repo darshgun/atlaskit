@@ -1,3 +1,4 @@
+import { Providers } from '../types';
 export { WithProviders } from './withProviders';
 export { Providers } from '../types';
 
@@ -7,10 +8,10 @@ export default class ProviderFactory {
   private providers: Map<string, Promise<any>> = new Map();
   private subscribers: Map<string, ProviderHandler[]> = new Map();
 
-  static create(providers: { [name: string]: Promise<any> }) {
+  static create(providers: Providers) {
     const providerFactory = new ProviderFactory();
     Object.keys(providers).forEach(name => {
-      providerFactory.setProvider(name, providers[name]);
+      providerFactory.setProvider(name, (providers as any)[name]);
     });
     return providerFactory;
   }
