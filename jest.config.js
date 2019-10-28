@@ -76,6 +76,7 @@ const config = {
       isolatedModules: true,
     },
     __BASEURL__: 'http://localhost:9000',
+    synchronyUrl: '',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
   moduleNameMapper: {
@@ -195,6 +196,10 @@ if (process.env.VISUAL_REGRESSION) {
 
   if (!process.env.CI && !process.env.DEBUG) {
     config.globals.__BASEURL__ = 'http://testing.local.com:9000';
+  }
+
+  if (process.env.SYNCHRONY_URL) {
+    config.globals.synchronyUrl = process.env.SYNCHRONY_URL;
   }
 }
 
