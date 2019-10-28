@@ -402,8 +402,6 @@ export default class Comment extends React.Component<Props, State> {
   }
 
   private getAfterContent() {
-    console.log('getAfterContent()');
-
     const { renderAfterComment, comment } = this.props;
 
     return typeof renderAfterComment === 'function'
@@ -593,8 +591,6 @@ export default class Comment extends React.Component<Props, State> {
     const commentId = disableScrollTo
       ? undefined
       : `comment-${comment.commentId}`;
-
-    console.log('hello from AK conversation comment!');
 
     return (
       <AkComment
