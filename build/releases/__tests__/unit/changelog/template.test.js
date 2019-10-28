@@ -1,6 +1,6 @@
 const outdent = require('outdent');
-const generateMarkdownTemplate = require('../../changelog/template');
-const { versionOptions } = require('../../initialize/initial/config');
+const generateMarkdownTemplate = require('../../../changelog/template');
+const { versionOptions } = require('../../../initialize/initial/config');
 
 describe('template', () => {
   it('should generate template from a simple release object', async () => {
