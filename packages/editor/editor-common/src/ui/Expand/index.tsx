@@ -28,6 +28,11 @@ export const messages = defineMessages({
     defaultMessage: 'Click here to expand...',
     description: 'Placeholder text for an expand node',
   },
+  expandPlaceholderText: {
+    id: 'fabric.editor.expandPlaceholder',
+    defaultMessage: 'Give this expand a title...',
+    description: 'Placeholder text for an expand node title input field',
+  },
 });
 
 export const LAYOUT_OFFSET = 17;
@@ -71,6 +76,29 @@ const Container = styled.div<StyleProps>`
   .nestedExpandView-content-wrap.danger > & {
     border-color: transparent;
     box-shadow: 0 0 0 ${akEditorSelectedBorderBoldSize}px ${colors.R300};
+  }
+
+  .expand-title-input,
+  .nestedExpand-title-input {
+    outline: none;
+    border: none;
+    font-size: ${fontSize}px;
+    line-height: 1.714;
+    font-weight: normal;
+    color: ${colors.N200A};
+    background: transparent;
+    display: flex;
+    flex: 1;
+    padding: 0;
+    width: 100%;
+
+    position: absolute;
+    top: -${gridSize() * 4}px;
+
+    &::placeholder {
+      opacity: 0.6;
+      color: ${colors.N200A};
+    }
   }
 `;
 
@@ -177,6 +205,7 @@ function Expand({
           setCollapsed(!collapsed);
         }}
         aria-label={label}
+        contentEditable={false}
       >
         <Tooltip content={label} position="top" tag={TooltipWrapper}>
           <Icon collapsed={collapsed} role={editable ? 'button' : undefined}>

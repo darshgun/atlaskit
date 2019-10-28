@@ -58,7 +58,7 @@ export const updateExpandTitle = (
       },
       node.marks,
     );
-    setCursorInsideExpand(pos, tr, -1);
+    // setCursorInsideExpand(pos, tr, -1);
     dispatch(tr);
   }
   return true;

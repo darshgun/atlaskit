@@ -18,6 +18,7 @@ const { createPluginState, createCommand, getPluginState } = pluginFactory(
 
 export const createPlugin = (
   dispatch: Dispatch,
+  reactContext: () => { [key: string]: any },
   portalProviderAPI: PortalProviderAPI,
 ) => {
   const state = createPluginState(dispatch, {});
@@ -27,8 +28,8 @@ export const createPlugin = (
     key: pluginKey,
     props: {
       nodeViews: {
-        expand: ExpandNodeView(portalProviderAPI),
-        nestedExpand: ExpandNodeView(portalProviderAPI),
+        expand: ExpandNodeView(portalProviderAPI, reactContext),
+        nestedExpand: ExpandNodeView(portalProviderAPI, reactContext),
       },
     },
     view: (editorView: EditorView) => {
