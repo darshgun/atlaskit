@@ -43,6 +43,7 @@ class ExpandNode extends ReactNodeView<Props> {
     dom.className = `${this.node.type.name}-content-dom-wrapper`;
 
     const contentDOM = document.createElement('div');
+    contentDOM.className = `${this.node.type.name}-content-wrapper`;
     const inputContainer = document.createElement('div');
 
     const { intl } = this.intl();
@@ -84,17 +85,12 @@ class ExpandNode extends ReactNodeView<Props> {
 
   stopEvent(event: Event) {
     const target = event.target as HTMLElement;
-    return target === this.input;
+    console.log(target);
+    return target === this.input || target.tagName === 'SPAN';
   }
 
   ignoreMutation(mutation: MutationRecord) {
-    console.log({ mutation });
-    return (
-      (mutation.target.nodeName === 'INPUT' &&
-        mutation.target === this.input) ||
-      (mutation.type === 'attributes' &&
-        mutation.attributeName === 'data-title')
-    );
+    return true;
   }
 
   destroy() {

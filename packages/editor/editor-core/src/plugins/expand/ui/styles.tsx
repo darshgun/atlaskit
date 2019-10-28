@@ -8,6 +8,7 @@ export const expandStyles = css`
   .expandView-content-wrap,
   .nestedExpandView-content-wrap {
     margin-top: ${blockNodesVerticalMargin}rem;
+    position: relative;
   }
 
   .ProseMirror > .expandView-content-wrap {
@@ -17,6 +18,5 @@ export const expandStyles = css`
 
   .expand-content-dom-wrapper,
   .nestedExpand-content-dom-wrapper {
-    position: relative;
   }
 `;

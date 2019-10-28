@@ -90,10 +90,10 @@ const Container = styled.div<StyleProps>`
     display: flex;
     flex: 1;
     padding: 0;
-    width: 100%;
 
+    width: calc(100% - ${gridSize() * 6}px);
     position: absolute;
-    top: -${gridSize() * 4}px;
+    top: ${gridSize}px;
 
     &::placeholder {
       opacity: 0.6;
@@ -147,18 +147,26 @@ const Icon = styled.div<StyleProps>`
 `;
 
 const ContentContainer = styled.div<StyleProps>`
-  padding: ${gridSize}px ${gridSize}px 0 ${gridSize() * 4 - gridSize() / 2}px
-    ${({ collapsed }) =>
-      collapsed &&
-      `
-      /* We visually hide the content here to preserve the content during copy+paste */
-      position: absolute;
-      height: 1px; 
-      width: 1px;
-      overflow: hidden;
-      clip: rect(1px, 1px, 1px, 1px);
-      white-space: nowrap;
-    `};
+  ${({ collapsed }) => {
+    return `
+      padding: ${
+        collapsed ? 0 : gridSize()
+      }px ${gridSize()}px 0px ${gridSize() * 4 - gridSize() / 2}px;
+
+      ${!!collapsed &&
+        `
+        .expand-content-wrapper, .nestedExpand-content-wrapper {
+          /* We visually hide the content here to preserve the content during copy+paste */
+          position: absolute;
+          height: 1px; 
+          width: 1px;
+          overflow: hidden;
+          clip: rect(1px, 1px, 1px, 1px);
+          white-space: nowrap;
+        }
+      `}
+      `;
+  }};
 `;
 
 const TooltipWrapper = styled.div`
@@ -214,9 +222,7 @@ function Expand({
         </Tooltip>
         {renderTitle}
       </TitleContainer>
-      <ContentContainer collapsed={collapsed}>
-        {!editable || !collapsed ? renderContent : null}
-      </ContentContainer>
+      <ContentContainer collapsed={collapsed}>{renderContent}</ContentContainer>
     </Container>
   );
 }

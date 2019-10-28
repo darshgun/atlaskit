@@ -15,7 +15,7 @@ const Title = styled.span`
   font-weight: normal;
   display: flex;
   flex: 1;
-  margin: 0;
+  margin: -1px 0 0;
   padding: 0 0 0 ${gridSize() / 2}px;
 `;
 
@@ -40,7 +40,9 @@ function Expand({
           {title || intl.formatMessage(expandMessages.expandDefaultTitle)}
         </Title>
       }
-      renderContent={children}
+      renderContent={
+        <div className={`${nodeType}-content-wrapper`}>{children}</div>
+      }
     />
   );
 }
