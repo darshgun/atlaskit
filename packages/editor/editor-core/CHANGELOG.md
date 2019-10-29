@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 113.2.2
+
+### Patch Changes
+
+- [patch][b1cdbefb71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1cdbefb71):
+
+  ED-7951 Update correct link attribute
+
 ## 113.2.1
 
 - Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
