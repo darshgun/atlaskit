@@ -38,7 +38,6 @@
   })
 
   const mediaPicker = MediaPicker(context);
-  ```
 
   <Card context={context}>
   <SmartMediaEditor context={context}>
@@ -50,103 +49,105 @@
   <MediaViewer context={context}>
   ```
 
-**Now**:
+  **Now**:
 
-````
-import {MediaClientConfig} from '@atlaskit/media-core';
-import {Card} from '@atlaskit/media-card'
-import {SmartMediaEditor} from '@atlaskit/media-editor'
-import {Filmstrip} from '@atlaskit/media-filmstrip'
-import {MediaImage} from '@atlaskit/media-image'
-import {MediaViewer} from '@atlaskit/media-viewer'
-import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
-
-
-const mediaClientConfig: MediaClientConfig = {
-  authProvider: () => Promise.resolve({})
-}
-
-const mediaPicker = MediaPicker(mediaClientConfig);
-
-<Card mediaClientConfig={mediaClientConfig}>
-<SmartMediaEditor mediaClientConfig={mediaClientConfig}>
-<Filmstrip mediaClientConfig={mediaClientConfig}>
-<MediaImage mediaClientConfig={mediaClientConfig}>
-<Dropzone mediaClientConfig={mediaClientConfig}>
-<Clipboard mediaClientConfig={mediaClientConfig}>
-<Browser mediaClientConfig={mediaClientConfig}>
-<MediaViewer mediaClientConfig={mediaClientConfig}>
-```- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
 
 
-**FABDODGEM-13 Editor Damask Release**
-  - [Internal post](http://go.atlassian.com/damask-release)
+  const mediaClientConfig: MediaClientConfig = {
+    authProvider: () => Promise.resolve({})
+  }
 
-**BREAKING CHANGES**
+  const mediaPicker = MediaPicker(mediaClientConfig);
 
-- **Media:** Removed deprecated "context" property from media components in favor of "mediaClientConfig". This affects all public media UI components.
-  - https://product-fabric.atlassian.net/browse/MS-2038
-- **Tasks & Decisions:** Removed containerAri for task-decisions components.
-  - https://product-fabric.atlassian.net/browse/ED-7631
-- **Renderer:** Adapts to task-decision changes.
-- **Editor Mobile Bridge:** Adapts to task-decision changes.
-- **Util Data Test:** Adapts to task-decision changes.
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
 
------
-
-**Affected Editor Components:**
-
-tables, media, mobile, emoji, tasks & decisions, analytics
-
-**Editor**
-
-- Support nested actions in stage-0 schema; Change DOM representation of actions
-  - https://product-fabric.atlassian.net/browse/ED-7674
-- Updated i18n translations
-  - https://product-fabric.atlassian.net/browse/ED-7750
-- Improved analytics & crash reporting (via a new error boundary)
-  - https://product-fabric.atlassian.net/browse/ED-7766
-  - https://product-fabric.atlassian.net/browse/ED-7806
-- Improvements to heading anchor links.
-  - https://product-fabric.atlassian.net/browse/ED-7849
-  - https://product-fabric.atlassian.net/browse/ED-7860
-- Copy/Paste improvements
-  - https://product-fabric.atlassian.net/browse/ED-7840
-  - https://product-fabric.atlassian.net/browse/ED-7849
-- Fixes for the selection state of Smart links.
-  - https://product-fabric.atlassian.net/browse/ED-7602?src=confmacro
-- Improvements for table resizing & column creation.
-  - https://product-fabric.atlassian.net/browse/ED-7698
-  - https://product-fabric.atlassian.net/browse/ED-7319
-  - https://product-fabric.atlassian.net/browse/ED-7799
-
-**Mobile**
-
-- GASv3 Analytics Events are now relayed from the web to the native context, ready for dispatching.
-  - https://product-fabric.atlassian.net/browse/FM-2502
-- Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
-  - https://product-fabric.atlassian.net/browse/FM-2370
+- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
 
 
-**Media**
+  **FABDODGEM-13 Editor Damask Release**
+    - [Internal post](http://go.atlassian.com/damask-release)
 
-- Improved analytics
-  - https://product-fabric.atlassian.net/browse/MS-2036
-  - https://product-fabric.atlassian.net/browse/MS-2145
-  - https://product-fabric.atlassian.net/browse/MS-2416
-  - https://product-fabric.atlassian.net/browse/MS-2487
-- Added shouldOpenMediaViewer property to renderer
-  - https://product-fabric.atlassian.net/browse/MS-2393
-- Implemented analytics for file copy
-  - https://product-fabric.atlassian.net/browse/MS-2036
-- New `media-viewed` event dispatched when media is interacted with via the media card or viewer.
-  - https://product-fabric.atlassian.net/browse/MS-2284
-- Support for `alt` text attribute on media image elements.
-  - https://product-fabric.atlassian.net/browse/ED-7776
+  **BREAKING CHANGES**
 
-**i18n-tools**
+  - **Media:** Removed deprecated "context" property from media components in favor of "mediaClientConfig". This affects all public media UI components.
+    - https://product-fabric.atlassian.net/browse/MS-2038
+  - **Tasks & Decisions:** Removed containerAri for task-decisions components.
+    - https://product-fabric.atlassian.net/browse/ED-7631
+  - **Renderer:** Adapts to task-decision changes.
+  - **Editor Mobile Bridge:** Adapts to task-decision changes.
+  - **Util Data Test:** Adapts to task-decision changes.
 
-Bumped dependencies.
+  -----
+
+  **Affected Editor Components:**
+
+  tables, media, mobile, emoji, tasks & decisions, analytics
+
+  **Editor**
+
+  - Support nested actions in stage-0 schema; Change DOM representation of actions
+    - https://product-fabric.atlassian.net/browse/ED-7674
+  - Updated i18n translations
+    - https://product-fabric.atlassian.net/browse/ED-7750
+  - Improved analytics & crash reporting (via a new error boundary)
+    - https://product-fabric.atlassian.net/browse/ED-7766
+    - https://product-fabric.atlassian.net/browse/ED-7806
+  - Improvements to heading anchor links.
+    - https://product-fabric.atlassian.net/browse/ED-7849
+    - https://product-fabric.atlassian.net/browse/ED-7860
+  - Copy/Paste improvements
+    - https://product-fabric.atlassian.net/browse/ED-7840
+    - https://product-fabric.atlassian.net/browse/ED-7849
+  - Fixes for the selection state of Smart links.
+    - https://product-fabric.atlassian.net/browse/ED-7602?src=confmacro
+  - Improvements for table resizing & column creation.
+    - https://product-fabric.atlassian.net/browse/ED-7698
+    - https://product-fabric.atlassian.net/browse/ED-7319
+    - https://product-fabric.atlassian.net/browse/ED-7799
+
+  **Mobile**
+
+  - GASv3 Analytics Events are now relayed from the web to the native context, ready for dispatching.
+    - https://product-fabric.atlassian.net/browse/FM-2502
+  - Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
+    - https://product-fabric.atlassian.net/browse/FM-2370
+
+
+  **Media**
+
+  - Improved analytics
+    - https://product-fabric.atlassian.net/browse/MS-2036
+    - https://product-fabric.atlassian.net/browse/MS-2145
+    - https://product-fabric.atlassian.net/browse/MS-2416
+    - https://product-fabric.atlassian.net/browse/MS-2487
+  - Added shouldOpenMediaViewer property to renderer
+    - https://product-fabric.atlassian.net/browse/MS-2393
+  - Implemented analytics for file copy
+    - https://product-fabric.atlassian.net/browse/MS-2036
+  - New `media-viewed` event dispatched when media is interacted with via the media card or viewer.
+    - https://product-fabric.atlassian.net/browse/MS-2284
+  - Support for `alt` text attribute on media image elements.
+    - https://product-fabric.atlassian.net/browse/ED-7776
+
+  **i18n-tools**
+
+  Bumped dependencies.
 
 - Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
 - @atlaskit/media-store@12.0.14
