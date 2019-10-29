@@ -1191,6 +1191,10 @@
         "../../editor/editor-markdown-transformer/src/media",
         "./packages/editor/editor-markdown-transformer/src/media"
       ],
+      "@atlaskit/editor-mobile-bridge/analytics-client": [
+        "../../editor/editor-mobile-bridge/src/analytics-client",
+        "./packages/editor/editor-mobile-bridge/src/analytics-client"
+      ],
       "@atlaskit/editor-mobile-bridge/bridge-utils": [
         "../../editor/editor-mobile-bridge/src/bridge-utils",
         "./packages/editor/editor-mobile-bridge/src/bridge-utils"
@@ -1970,6 +1974,10 @@
       "@atlaskit/media-test-helpers/getAuthFromContextProvider": [
         "../../media/media-test-helpers/src/getAuthFromContextProvider",
         "./packages/media/media-test-helpers/src/getAuthFromContextProvider"
+      ],
+      "@atlaskit/media-test-helpers/globalEventEmitterListeners": [
+        "../../media/media-test-helpers/src/globalEventEmitterListeners",
+        "./packages/media/media-test-helpers/src/globalEventEmitterListeners"
       ],
       "@atlaskit/media-test-helpers/I18nWrapper": [
         "../../media/media-test-helpers/src/I18nWrapper",
