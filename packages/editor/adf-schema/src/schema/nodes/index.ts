@@ -145,5 +145,5 @@ export {
 export { unsupportedBlock } from './unsupported-block';
 export { unsupportedInline } from './unsupported-inline';
 export { status, StatusDefinition } from './status';
-export { expand, ExpandDefinition } from './expand';
+export { expand, ExpandDefinition, toJSON as expandToJSON } from './expand';
 export { nestedExpand, NestedExpandDefinition } from './nested-expand';

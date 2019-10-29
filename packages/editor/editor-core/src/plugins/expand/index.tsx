@@ -29,8 +29,8 @@ const expandPlugin = (): EditorPlugin => ({
     return [
       {
         name: 'expand',
-        plugin: ({ dispatch, reactContext, portalProviderAPI }) => {
-          return createPlugin(dispatch, reactContext, portalProviderAPI);
+        plugin: ({ dispatch, reactContext }) => {
+          return createPlugin(dispatch, reactContext);
         },
       },
     ];

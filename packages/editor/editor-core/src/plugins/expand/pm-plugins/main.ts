@@ -4,7 +4,6 @@ import { findDomRefAtPos } from 'prosemirror-utils';
 import { Dispatch } from '../../../event-dispatcher';
 import { pluginFactory } from '../../../utils/plugin-state-factory';
 import ExpandNodeView from '../nodeviews';
-import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { setExpandRef } from '../commands';
 import reducer from '../reducer';
 import { findExpand } from '../utils';
@@ -19,7 +18,6 @@ const { createPluginState, createCommand, getPluginState } = pluginFactory(
 export const createPlugin = (
   dispatch: Dispatch,
   reactContext: () => { [key: string]: any },
-  portalProviderAPI: PortalProviderAPI,
 ) => {
   const state = createPluginState(dispatch, {});
 
@@ -28,8 +26,8 @@ export const createPlugin = (
     key: pluginKey,
     props: {
       nodeViews: {
-        expand: ExpandNodeView(portalProviderAPI, reactContext),
-        nestedExpand: ExpandNodeView(portalProviderAPI, reactContext),
+        expand: ExpandNodeView(reactContext),
+        nestedExpand: ExpandNodeView(reactContext),
       },
     },
     view: (editorView: EditorView) => {

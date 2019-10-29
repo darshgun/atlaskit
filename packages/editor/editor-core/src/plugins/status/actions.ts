@@ -34,7 +34,6 @@ export const createStatus = (showStatusPickerAtOffset = -2) => (
 
   const tr = insert(statusNode);
   const showStatusPickerAt = tr.selection.from + showStatusPickerAtOffset;
-  console.log('CREATE STATUS 1');
   return tr
     .setSelection(NodeSelection.create(tr.doc, showStatusPickerAt))
     .setMeta(pluginKey, {
@@ -78,7 +77,6 @@ export const updateStatus = (status?: StatusType): Command => (
         isNew: true,
       })
       .scrollIntoView();
-    console.log('UPDATING STATUS 1');
     if (dispatch) {
       dispatch(tr);
     }
@@ -89,7 +87,7 @@ export const updateStatus = (status?: StatusType): Command => (
     tr = tr.setNodeMarkup(showStatusPickerAt, schema.nodes.status, statusProps);
     tr = tr.setSelection(NodeSelection.create(tr.doc, showStatusPickerAt));
     tr = tr.setMeta(pluginKey, { showStatusPickerAt }).scrollIntoView();
-    console.log('UPDATING STATUS 2');
+
     if (dispatch) {
       dispatch(tr);
     }
@@ -115,7 +113,6 @@ export const setStatusPickerAt = (showStatusPickerAt: number | null) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  console.log('UPDATING STATUS 35');
   dispatch(
     state.tr.setMeta(pluginKey, {
       showStatusPickerAt,

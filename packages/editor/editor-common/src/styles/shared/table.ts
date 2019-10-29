@@ -98,6 +98,11 @@ const tableSharedStyle = css`
         /* https://stackoverflow.com/questions/7517127/borders-not-shown-in-firefox-with-border-collapse-on-table-position-relative-o */
         background-clip: padding-box;
 
+        // TODO this line should be '> *:first-child', need to work through test failures.
+        > .ak-editor-expand:first-child {
+          margin-top: 0;
+        }
+ 
         th p:not(:first-of-type),
         td p:not(:first-of-type) {
           margin-top: 12px;

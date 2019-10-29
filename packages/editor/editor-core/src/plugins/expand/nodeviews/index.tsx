@@ -1,26 +1,31 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import { InjectedIntl } from 'react-intl';
 import { EditorView, NodeView, Decoration } from 'prosemirror-view';
+import { colors, gridSize } from '@atlaskit/theme';
+import Tooltip from '@atlaskit/tooltip';
+import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import {
   Node as PmNode,
   DOMSerializer,
   DOMOutputSpec,
 } from 'prosemirror-model';
-
 import {
   expandMessages,
   akEditorSwoopCubicBezier,
 } from '@atlaskit/editor-common';
-import { colors, gridSize } from '@atlaskit/theme';
-import Tooltip from '@atlaskit/tooltip';
-import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import { getPosHandler } from '../../../nodeviews/ReactNodeView';
-import { updateExpandTitle, toggleExpandExpanded } from '../commands';
-import { closestElement } from '../../../utils';
 
-const Icon = styled.div<{ collapsed: boolean }>`
+import { getPosHandler } from '../../../nodeviews/ReactNodeView';
+import { closestElement } from '../../../utils';
+import {
+  updateExpandTitle,
+  toggleExpandExpanded,
+  selectExpand,
+} from '../commands';
+import { expandClassNames } from '../ui/class-names';
+
+const Icon = styled.div<{ expanded: boolean }>`
   cursor: pointer;
   display: flex;
   color: ${colors.N90};
@@ -33,7 +38,7 @@ const Icon = styled.div<{ collapsed: boolean }>`
   }
 
   svg {
-    ${props => (!props.collapsed ? 'transform: rotate(90deg);' : '')}
+    ${props => (props.expanded ? 'transform: rotate(90deg);' : '')}
     transition: 0.2s ${akEditorSwoopCubicBezier};
   }
 `;
@@ -43,91 +48,106 @@ const TooltipWrapper = styled.div`
   height: 24px;
 `;
 
-const toDOM = (node: PmNode) =>
+const toDOM = (node: PmNode, intl: InjectedIntl): DOMOutputSpec => [
+  'div',
+  {
+    // prettier-ignore
+    'class': `${expandClassNames.prefix} ${expandClassNames.type(node.type.name)} ${node.attrs.__expanded ? expandClassNames.expanded : ''}`,
+    'data-node-type': node.type.name,
+    'data-title': node.attrs.title,
+  },
   [
     'div',
-    {
-      // prettier-ignore
-      'class': `ak-editor-expand`
-    },
+    // prettier-ignore
+    { 'class': expandClassNames.titleContainer, 'contenteditable': 'false' },
+    // prettier-ignore
+    ['div', { 'class': expandClassNames.icon }],
     [
       'div',
-      // prettier-ignore
-      { 'class': 'ak-editor-expand__title-container', 'contenteditable': 'false' },
-      // prettier-ignore
-      ['span', { 'class': 'ak-editor-expand__icon' }],
+      {
+        // prettier-ignore
+        'class': expandClassNames.inputContainer
+      },
       [
-        'div',
+        'input',
         {
           // prettier-ignore
-          'class': `ak-editor-expand__title-input-wrapper`
+          'class': expandClassNames.titleInput,
+          value: node.attrs.title,
+          placeholder: intl.formatMessage(expandMessages.expandPlaceholderText),
+          type: 'text',
         },
-        [
-          'input',
-          {
-            // prettier-ignore
-            'class': 'ak-editor-expand__title-input',
-            value: node.attrs.title,
-            type: 'text',
-          },
-        ],
       ],
     ],
-    // prettier-ignore
-    node.attrs.__expanded
-        ? ['div', { 'class': 'ak-editor-expand__content' }, 0]
-        : ['div'],
-  ] as DOMOutputSpec;
+  ],
+  // prettier-ignore
+  ['div', { 'class': expandClassNames.content }, 0],
+];
 
-export class PmExpandNodeView implements NodeView {
+type ReactContext = () => { [key: string]: any };
+
+export class ExpandNodeView implements NodeView {
   node: PmNode;
   view: EditorView;
   dom?: HTMLElement;
   contentDOM?: HTMLElement;
-  icon: HTMLElement;
-  input: HTMLElement;
+  icon?: HTMLElement;
+  input?: HTMLElement;
   getPos: getPosHandler;
+  pos: number;
 
   constructor(
     node: PmNode,
     view: EditorView,
     getPos: getPosHandler,
-    reactContext?: any,
+    reactContext: ReactContext,
   ) {
-    const { dom, contentDOM } = DOMSerializer.renderSpec(document, toDOM(node));
+    const { intl } = reactContext();
+    const { dom, contentDOM } = DOMSerializer.renderSpec(
+      document,
+      toDOM(node, intl),
+    );
     this.getPos = getPos;
+    this.pos = getPos();
+    this.view = view;
     this.node = node;
     this.view = view;
     this.dom = dom as HTMLElement;
     this.contentDOM = contentDOM as HTMLElement;
     this.icon = this.dom.querySelector(
-      '.ak-editor-expand__icon',
+      `.${expandClassNames.icon}`,
     ) as HTMLElement;
     this.input = this.dom.querySelector(
-      '.ak-editor-expand__title-input',
+      `.${expandClassNames.titleInput}`,
     ) as HTMLElement;
-    this.renderIcon(reactContext);
+    this.renderIcon(intl);
     this.initHandlers();
   }
 
   private initHandlers() {
     if (this.dom) {
-      this.dom.addEventListener('click', event => this.handleClick(event));
-      this.dom.addEventListener('input', event => this.handleInput(event));
+      this.dom.addEventListener('click', this.handleClick);
+      this.dom.addEventListener('input', this.handleInput);
     }
   }
 
-  private renderIcon(reactContext: any) {
-    const { intl } = reactContext();
+  private renderIcon(intl: InjectedIntl) {
+    if (!this.icon) {
+      return;
+    }
+
+    const { __expanded } = this.node.attrs;
     const label = intl.formatMessage(
-      this.node.attrs.__expanded
-        ? expandMessages.collapseNode
-        : expandMessages.expandNode,
+      __expanded ? expandMessages.collapseNode : expandMessages.expandNode,
     );
     ReactDOM.render(
       <Tooltip content={label} position="top" tag={TooltipWrapper}>
-        <Icon collapsed={!this.node.attrs.__expanded} role="button">
-          <ChevronRightIcon label={label} />
+        <Icon
+          expanded={__expanded}
+          role="button"
+          className={expandClassNames.iconContainer}
+        >
+          <ChevronRightIcon label={label} primaryColor={colors.N80A} />
         </Icon>
       </Tooltip>,
       this.icon,
@@ -135,12 +155,19 @@ export class PmExpandNodeView implements NodeView {
   }
 
   private handleClick = (event: Event) => {
-    if (
-      closestElement(event.target as HTMLElement, '.ak-editor-expand__icon')
-    ) {
+    const target = event.target as HTMLElement;
+    if (closestElement(target, `.${expandClassNames.icon}`)) {
       event.stopPropagation();
       const { state, dispatch } = this.view;
       toggleExpandExpanded(this.getPos(), this.node.type)(state, dispatch);
+      return;
+    }
+
+    if (target === this.dom) {
+      event.stopPropagation();
+      const { state, dispatch } = this.view;
+      selectExpand(this.getPos())(state, dispatch);
+      return;
     }
   };
 
@@ -165,15 +192,18 @@ export class PmExpandNodeView implements NodeView {
     );
   }
 
-  ignoreMutation(mutation: MutationRecord) {
+  ignoreMutation(_mutation: MutationRecord) {
     return true;
   }
 
   update(node: PmNode, _decorations: Array<Decoration>) {
     if (this.node.type === node.type) {
-      if (this.node.attrs.__expanded !== node.attrs.__expanded) {
-        return false;
+      if (this.node.attrs.__expanded !== node.attrs.__expanded && this.dom) {
+        // Instead of re-rendering the view on an expand toggle
+        // we toggle a class name to hide the content and animate the chevron.
+        this.dom.classList.toggle(expandClassNames.expanded);
       }
+      this.node = node;
       return true;
     }
     return false;
@@ -184,99 +214,19 @@ export class PmExpandNodeView implements NodeView {
       this.dom.removeEventListener('click', this.handleClick);
       this.dom.removeEventListener('input', this.handleInput);
     }
+
+    if (this.icon) {
+      ReactDOM.unmountComponentAtNode(this.icon);
+    }
+
     this.dom = undefined;
     this.contentDOM = undefined;
-    ReactDOM.unmountComponentAtNode(this.icon);
+    this.icon = undefined;
+    this.input = undefined;
   }
 }
 
-export default function ExpandNodeView(
-  portalProviderAPI: PortalProviderAPI,
-  reactContext?: any,
-) {
+export default function(reactContext: ReactContext) {
   return (node: PmNode, view: EditorView, getPos: () => number): NodeView =>
-    new PmExpandNodeView(node, view, getPos, reactContext);
+    new ExpandNodeView(node, view, getPos, reactContext);
 }
-
-// class ExpandNode extends ReactNodeView<Props> {
-//   input: HTMLInputElement | null = null;
-//   intl: any | undefined;
-
-//   constructor(props: Props) {
-//     super(props.node, props.view, props.getPos, props.portalProviderAPI);
-
-//     this.intl = props.intl;
-//     this._onInputChange = this._onInputChange.bind(this);
-//   }
-
-//   getContentDOM() {
-//     const dom = document.createElement('div');
-//     dom.className = `${this.node.type.name}-content-dom-wrapper`;
-
-//     const contentDOM = document.createElement('div');
-//     contentDOM.className = `${this.node.type.name}-content-wrapper`;
-//     const inputContainer = document.createElement('div');
-
-//     const { intl } = this.intl();
-//     console.log(intl);
-//     const placeholder =
-//       intl && intl.formatMessage(expandMessages.expandPlaceholderText);
-//     this.input = getTitleInputElement(this.node, placeholder || '');
-//     this.input.addEventListener('input', this._onInputChange);
-
-//     inputContainer.contentEditable = 'false';
-//     inputContainer.className = `${this.node.type.name}-title-input-wrapper`;
-//     inputContainer.appendChild(this.input);
-
-//     dom.appendChild(inputContainer);
-//     dom.appendChild(contentDOM);
-//     return { dom, contentDOM };
-//   }
-
-//   setDomAttrs(node: PmNode) {
-//     const { dom } = this;
-//     if (dom) {
-//       Object.keys(node.attrs).forEach(attr => {
-//         dom.setAttribute(`data-${attr}`, node.attrs[attr]);
-//       });
-//       dom.setAttribute('data-node-type', node.type.name);
-//     }
-//   }
-
-//   render({}, forwardRef: ForwardRef) {
-//     return (
-//       <Expand
-//         node={this.node}
-//         view={this.view}
-//         pos={this.getPos()}
-//         contentDOMRef={forwardRef}
-//       />
-//     );
-//   }
-
-//   stopEvent(event: Event) {
-//     const target = event.target as HTMLElement;
-//     console.log(target);
-//     return target === this.input || target.tagName === 'SPAN';
-//   }
-
-//   ignoreMutation(mutation: MutationRecord) {
-//     return true;
-//   }
-
-//   destroy() {
-//     if (this.input) {
-//       this.input.removeEventListener('input', this._onInputChange);
-//     }
-//     super.destroy();
-//   }
-
-//   private _onInputChange(event: Event) {
-//     const { getPos, node, view } = this;
-//     const target = event.target as HTMLInputElement;
-//     updateExpandTitle(target.value, getPos(), node.type)(
-//       view.state,
-//       view.dispatch,
-//     );
-//   }
-// }

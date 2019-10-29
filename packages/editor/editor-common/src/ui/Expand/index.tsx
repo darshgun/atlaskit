@@ -7,7 +7,7 @@ import { injectIntl, InjectedIntlProps, defineMessages } from 'react-intl';
 
 import {
   akEditorSelectedBorder,
-  akEditorSelectedBorderBoldSize,
+  akEditorSelectedBorderSize,
   akEditorSwoopCubicBezier,
   blockNodesVerticalMargin,
 } from '../../styles';
@@ -37,6 +37,7 @@ export const messages = defineMessages({
 
 export const LAYOUT_OFFSET = 17;
 const BORDER_RADIUS = gridSize() / 2;
+const EXPAND_SELECTED_BACKGROUND = 'rgba(255, 255, 255, 0.6)';
 
 export interface StyleProps {
   collapsed?: boolean;
@@ -50,6 +51,9 @@ const ContainerStyles = css<StyleProps>`
   border-style: solid;
   border-color: ${({ collapsed }) => (collapsed ? 'transparent' : colors.N40A)};
   border-radius: ${BORDER_RADIUS}px;
+  min-height: 25px;
+  background: ${({ collapsed }) =>
+    collapsed ? 'transparent' : EXPAND_SELECTED_BACKGROUND};
   margin: ${props =>
     `${!props.editable ? blockNodesVerticalMargin : 0}rem ${
       // Only only these margins if the expand isn't editable
@@ -59,32 +63,38 @@ const ContainerStyles = css<StyleProps>`
         : `0`
     } 0`};
 
+  transition: background 0.3s ${akEditorSwoopCubicBezier};
   padding: ${gridSize}px;
   cursor: pointer;
 
   &:hover {
     border: 1px solid ${colors.N50A};
+    background: ${EXPAND_SELECTED_BACKGROUND};
   }
 
-  .ProseMirror-selectednode > & {
+  &.ProseMirror-selectednode {
     border-color: transparent;
-    box-shadow: 0 0 0 ${akEditorSelectedBorderBoldSize}px
-      ${akEditorSelectedBorder};
+    background: ${colors.B50};
+    box-shadow: 0 0 0 ${akEditorSelectedBorderSize}px ${akEditorSelectedBorder};
   }
 
-  .expandView-content-wrap.danger > &,
-  .nestedExpandView-content-wrap.danger > & {
+  &.danger {
     border-color: transparent;
-    box-shadow: 0 0 0 ${akEditorSelectedBorderBoldSize}px ${colors.R300};
+    background: ${colors.R50};
+    box-shadow: 0 0 0 ${akEditorSelectedBorderSize}px ${colors.R300};
+  }
+
+  td > &:first-child {
+    margin-top: 0;
   }
 `;
 
 const ContentStyles = css<StyleProps>`
   ${({ collapsed }) => {
     return `
-    padding: ${collapsed ? 0 : gridSize()}px ${gridSize()}px 0px ${gridSize() *
-      4 -
-      gridSize() / 2}px;
+    padding-top: ${collapsed ? 0 : gridSize()}px;
+    padding-right: ${gridSize()}px;
+    padding-left: ${gridSize() * 4 - gridSize() / 2}px;
 
     ${!!collapsed &&
       `
@@ -112,7 +122,7 @@ const TitleInputStyles = `
   background: transparent;
   display: flex;
   flex: 1;
-  padding: 0;
+  padding: 0 0 0 ${gridSize() / 2}px;
   width: 100%;
 
   &::placeholder {
@@ -129,7 +139,7 @@ const TitleContainerStyles = `
   border: none;
   font-size: ${fontSize()}px;
   width: 100%;
-  color: ${colors.N200};
+  color: ${colors.N300A};
   overflow: hidden;
   cursor: pointer;
 
@@ -228,7 +238,7 @@ function Expand({
       >
         <Tooltip content={label} position="top" tag={TooltipWrapper}>
           <Icon collapsed={collapsed} role={editable ? 'button' : undefined}>
-            <ChevronRightIcon label={label} />
+            <ChevronRightIcon label={label} primaryColor={colors.N80A} />
           </Icon>
         </Tooltip>
         {renderTitle}

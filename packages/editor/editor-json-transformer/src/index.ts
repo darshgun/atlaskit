@@ -8,6 +8,7 @@ import {
   tableToJSON,
   toJSONTableCell,
   toJSONTableHeader,
+  expandToJSON,
 } from '@atlaskit/adf-schema';
 import { Node as PMNode, Mark as PMMark } from 'prosemirror-model';
 
@@ -43,6 +44,8 @@ const isTable = isType('table');
 const isTableCell = isType('tableCell');
 const isTableHeader = isType('tableHeader');
 const isLinkMark = isType('link');
+const isExpand = isType('expand');
+const isNestedExpand = isType('nestedExpand');
 const isUnsupportedNode = (node: PMNode) =>
   isType('unsupportedBlock')(node) || isType('unsupportedInline')(node);
 
@@ -80,6 +83,8 @@ const toJSON = (node: PMNode): JSONNode => {
     obj.attrs = toJSONTableCell(node).attrs;
   } else if (isTableHeader(node)) {
     obj.attrs = toJSONTableHeader(node).attrs;
+  } else if (isExpand(node) || isNestedExpand(node)) {
+    obj.attrs = expandToJSON(node).attrs;
   } else if (Object.keys(node.attrs).length) {
     obj.attrs = node.attrs;
   }

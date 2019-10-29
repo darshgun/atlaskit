@@ -50,7 +50,7 @@ export const nestedExpand: NodeSpec = {
         const dom = domNode as HTMLElement;
         return {
           title: dom.getAttribute('data-title'),
-          __expanded: dom.getAttribute('data-expanded'),
+          __expanded: dom.getAttribute('data-expanded') === 'true',
         };
       },
     },
