@@ -43,6 +43,7 @@
     "@atlaskit/editor-test-helpers": "^10.1.2",
     "@atlaskit/elements-test-helpers": "^0.6.6",
     "@atlaskit/i18n-tools": "^0.6.0",
+    "@atlaskit/visual-regression": "^0.1.3",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "react": "^16.8.0",
