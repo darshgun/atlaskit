@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import { AkCodeBlock } from '@atlaskit/code';
-import code from '../src/code';
+import code from '../../Code';
 
 describe('code string literal', () => {
   it('should highlight code', () => {
