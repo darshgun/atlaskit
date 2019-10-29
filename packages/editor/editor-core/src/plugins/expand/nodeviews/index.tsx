@@ -6,16 +6,14 @@ import {
   DOMSerializer,
   DOMOutputSpec,
 } from 'prosemirror-model';
-import { InjectedIntl } from 'react-intl';
+
 import {
   expandMessages,
   akEditorSwoopCubicBezier,
 } from '@atlaskit/editor-common';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import { ReactNodeView } from '../../../nodeviews';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import { ForwardRef, getPosHandler } from '../../../nodeviews/ReactNodeView';
-import Expand from '../ui/Expand';
+import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 import { updateExpandTitle, toggleExpandExpanded } from '../commands';
 import styled from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
