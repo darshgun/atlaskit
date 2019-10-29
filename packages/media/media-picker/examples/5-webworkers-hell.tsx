@@ -7,10 +7,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import { Browser } from '../src';
-import {
-  BrowserConfig,
-  UploadPreviewUpdateEventPayload,
-} from '@atlaskit/media-picker/types';
+import { BrowserConfig, UploadPreviewUpdateEventPayload } from '../src/types';
 import {
   PreviewsWrapper,
   PopupHeader,
