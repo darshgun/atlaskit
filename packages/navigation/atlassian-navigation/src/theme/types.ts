@@ -12,6 +12,7 @@ export type ButtonCSSProperties = CSSProperties & {
 export type ButtonFocusCSSProperties = {
   boxShadow: string;
   color: string;
+  backgroundColor: string;
 };
 
 export type ButtonCSSContext = {
@@ -32,7 +33,10 @@ export type NavigationCSS = CSSProperties;
 
 export type SearchCSS = CSSProperties;
 
-export type SkeletonCSS = CSSObject & { backgroundColor: string };
+export type SkeletonCSS = CSSObject & {
+  backgroundColor: string;
+  opacity: number;
+};
 
 // This is the shape of a theme 'mode', e.g. light, dark, or custom
 export type Mode = {
@@ -46,4 +50,21 @@ export type Mode = {
 
 export type NavigationTheme = {
   mode: Mode;
+};
+
+export type Colors = {
+  backgroundColor: string;
+  color: string;
+};
+
+export type GenerateThemeArgs = {
+  name?: string;
+  primary: Colors;
+  secondary?: Colors;
+};
+
+export type GenerateThemesArgs = {
+  name?: string;
+  backgroundColor: string;
+  highlightColor: string;
 };

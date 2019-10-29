@@ -1,6 +1,13 @@
 import chromatism, { ColourModes } from 'chromatism';
 
-import { NavigationTheme, ButtonCSSContext } from './types';
+import defaultTheme, { DEFAULT_THEME_NAME } from './defaultTheme';
+import {
+  Colors,
+  GenerateThemeArgs,
+  GenerateThemesArgs,
+  NavigationTheme,
+  ButtonCSSContext,
+} from './types';
 
 const getBoxShadow = (color: string) => `0 0 0 2px ${color}`;
 
@@ -80,17 +87,6 @@ const generateCSSStates = (colors: Colors): ButtonCSSContext => {
   };
 };
 
-export type Colors = {
-  backgroundColor: string;
-  color: string;
-};
-
-export type GenerateThemeArgs = {
-  name?: string;
-  primary: Colors;
-  secondary?: Colors;
-};
-
 export const generateTheme = (args: GenerateThemeArgs): NavigationTheme => {
   const { primary: primaryColors, secondary: secondaryColors } = args;
   const primary = generateCSSStates(primaryColors);
@@ -125,6 +121,82 @@ export const generateTheme = (args: GenerateThemeArgs): NavigationTheme => {
       },
       skeleton: {
         backgroundColor: contrastBackgroundColor.hex,
+      },
+    },
+  };
+};
+
+const transparentBoxShadow = '0 0 0 2px transparent';
+
+const generateContrastingTextColor = backgroundColor => {
+  return '#FFFFFF';
+};
+
+const generateCreateButtonTheme = (backgroundColor, highlightColor) => {
+  return {
+    active: {
+      color: '#FFFFFF',
+      backgroundColor: 'rgb(33,104,211)',
+      boxShadow: transparentBoxShadow,
+    },
+    default: {
+      color: generateContrastingTextColor(backgroundColor),
+      backgroundColor: highlightColor,
+      boxShadow: transparentBoxShadow,
+    },
+    focus: {
+      color: '#FFFFFF',
+      backgroundColor: '#0052CC',
+      boxShadow: '0 0 0 2px rgb(128,169,230)',
+    },
+    hover: {
+      color: '#FFFFFF',
+      backgroundColor: 'rgb(20,96,208)',
+      boxShadow: transparentBoxShadow,
+    },
+    selected: { color: '', backgroundColor: '', boxShadow: '' },
+  };
+};
+
+export const generateThemes = (args: GenerateThemesArgs): NavigationTheme => {
+  const defaultButtonStyles = {
+    color: '',
+    backgroundColor: '',
+    boxShadow: '',
+  };
+  const { backgroundColor, highlightColor, name } = args;
+
+  if (name === DEFAULT_THEME_NAME) {
+    return defaultTheme;
+  }
+
+  return {
+    mode: {
+      create: generateCreateButtonTheme(backgroundColor, highlightColor),
+      iconButton: {
+        active: defaultButtonStyles,
+        default: defaultButtonStyles,
+        focus: defaultButtonStyles,
+        hover: defaultButtonStyles,
+        selected: defaultButtonStyles,
+      },
+      navigation: {
+        backgroundColor,
+        color: '',
+      },
+      primaryButton: {
+        active: defaultButtonStyles,
+        default: defaultButtonStyles,
+        focus: defaultButtonStyles,
+        hover: defaultButtonStyles,
+        selected: defaultButtonStyles,
+      },
+      search: {
+        backgroundColor: '',
+        color: '',
+      },
+      skeleton: {
+        backgroundColor: '',
       },
     },
   };
