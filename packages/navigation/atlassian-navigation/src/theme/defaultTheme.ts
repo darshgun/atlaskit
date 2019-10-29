@@ -22,7 +22,7 @@ const defaultTheme = {
       default: {
         color: N0,
         backgroundColor: B400,
-        boxShadow: '',
+        boxShadow: '0 0 0 2px transparent',
       },
       focus: {
         color: N0,
@@ -89,7 +89,7 @@ const defaultTheme = {
         color: B400,
         backgroundColor: '',
         boxShadow: '',
-        bordorBottom: B400,
+        bordorBottom: `4px solid ${B400}`,
       },
     },
     search: {
@@ -97,7 +97,7 @@ const defaultTheme = {
       color: N200,
       border: `2px solid ${N40}`,
     },
-    skeleton: { backgroundColor: DN10A, opacity: '0.15' },
+    skeleton: { backgroundColor: DN10A, opacity: 0.15 },
   },
 };
 
