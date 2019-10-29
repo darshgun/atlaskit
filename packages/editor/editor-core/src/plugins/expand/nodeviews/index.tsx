@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { EditorView, NodeView } from 'prosemirror-view';
+import styled from 'styled-components';
+import { EditorView, NodeView, Decoration } from 'prosemirror-view';
 import {
   Node as PmNode,
   DOMSerializer,
@@ -11,23 +12,15 @@ import {
   expandMessages,
   akEditorSwoopCubicBezier,
 } from '@atlaskit/editor-common';
+import { colors, gridSize } from '@atlaskit/theme';
+import Tooltip from '@atlaskit/tooltip';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 import { updateExpandTitle, toggleExpandExpanded } from '../commands';
-import styled from 'styled-components';
-import { colors, gridSize } from '@atlaskit/theme';
-import Tooltip from '@atlaskit/tooltip';
+import { closestElement } from '../../../utils';
 
-// interface Props {
-//   node: PmNode;
-//   portalProviderAPI: PortalProviderAPI;
-//   view: EditorView;
-//   getPos: () => number;
-//   intl: InjectedIntl;
-// }
-
-const Icon = styled.div`
+const Icon = styled.div<{ collapsed: boolean }>`
   cursor: pointer;
   display: flex;
   color: ${colors.N90};
@@ -40,7 +33,7 @@ const Icon = styled.div`
   }
 
   svg {
-    ${({ collapsed }: any) => !collapsed && `transform: rotate(90deg);`}
+    ${props => (!props.collapsed ? 'transform: rotate(90deg);' : '')}
     transition: 0.2s ${akEditorSwoopCubicBezier};
   }
 `;
@@ -55,7 +48,7 @@ const toDOM = (node: PmNode) =>
     'div',
     {
       // prettier-ignore
-      'class': `ak-editor-expand ${node.attrs.__expanded ? 'ak-editor-expand__expanded' : undefined}`
+      'class': `ak-editor-expand`
     },
     [
       'div',
@@ -81,21 +74,30 @@ const toDOM = (node: PmNode) =>
       ],
     ],
     // prettier-ignore
-    ['div', { 'class': 'ak-editor-expand__content' }, 0],
+    node.attrs.__expanded
+        ? ['div', { 'class': 'ak-editor-expand__content' }, 0]
+        : ['div'],
   ] as DOMOutputSpec;
 
 export class PmExpandNodeView implements NodeView {
   node: PmNode;
-  dom: HTMLElement;
-  contentDOM: HTMLElement;
+  view: EditorView;
+  dom?: HTMLElement;
+  contentDOM?: HTMLElement;
   icon: HTMLElement;
   input: HTMLElement;
   getPos: getPosHandler;
 
-  constructor(node: PmNode, getPos: getPosHandler, reactContext?: any) {
+  constructor(
+    node: PmNode,
+    view: EditorView,
+    getPos: getPosHandler,
+    reactContext?: any,
+  ) {
     const { dom, contentDOM } = DOMSerializer.renderSpec(document, toDOM(node));
     this.getPos = getPos;
     this.node = node;
+    this.view = view;
     this.dom = dom as HTMLElement;
     this.contentDOM = contentDOM as HTMLElement;
     this.icon = this.dom.querySelector(
@@ -109,18 +111,22 @@ export class PmExpandNodeView implements NodeView {
   }
 
   private initHandlers() {
-    this.dom.addEventListener('click', this.handleClick);
-    this.dom.addEventListener('input', this.handleInput);
+    if (this.dom) {
+      this.dom.addEventListener('click', event => this.handleClick(event));
+      this.dom.addEventListener('input', event => this.handleInput(event));
+    }
   }
 
   private renderIcon(reactContext: any) {
     const { intl } = reactContext();
     const label = intl.formatMessage(
-      false ? expandMessages.expandNode : expandMessages.collapseNode,
+      this.node.attrs.__expanded
+        ? expandMessages.collapseNode
+        : expandMessages.expandNode,
     );
     ReactDOM.render(
       <Tooltip content={label} position="top" tag={TooltipWrapper}>
-        <Icon collapsed={false} role="button">
+        <Icon collapsed={!this.node.attrs.__expanded} role="button">
           <ChevronRightIcon label={label} />
         </Icon>
       </Tooltip>,
@@ -128,28 +134,30 @@ export class PmExpandNodeView implements NodeView {
     );
   }
 
-  private handleClick(event: Event) {
-    event.stopPropagation();
-    event.preventDefault();
-    // todo
-    const target = event.target as HTMLElement;
-    if (target === this.icon) {
-      console.log('toggle');
-      toggleExpandExpanded(this.getPos(), this.node.type);
+  private handleClick = (event: Event) => {
+    if (
+      closestElement(event.target as HTMLElement, '.ak-editor-expand__icon')
+    ) {
+      event.stopPropagation();
+      const { state, dispatch } = this.view;
+      toggleExpandExpanded(this.getPos(), this.node.type)(state, dispatch);
     }
-  }
-  private handleInput(event: Event) {
-    event.stopPropagation();
-    // todo
+  };
+
+  private handleInput = (event: Event) => {
     const target = event.target as HTMLInputElement;
     if (target === this.input) {
-      updateExpandTitle(target.value, this.getPos(), this.node.type);
+      event.stopPropagation();
+      const { state, dispatch } = this.view;
+      updateExpandTitle(target.value, this.getPos(), this.node.type)(
+        state,
+        dispatch,
+      );
     }
-  }
+  };
 
   stopEvent(event: Event) {
     const target = event.target as HTMLElement;
-    // console.log(target);
     return (
       target === this.input ||
       target === this.icon ||
@@ -157,11 +165,28 @@ export class PmExpandNodeView implements NodeView {
     );
   }
 
+  ignoreMutation(mutation: MutationRecord) {
+    return true;
+  }
+
+  update(node: PmNode, _decorations: Array<Decoration>) {
+    if (this.node.type === node.type) {
+      if (this.node.attrs.__expanded !== node.attrs.__expanded) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
   destroy() {
     if (this.dom) {
       this.dom.removeEventListener('click', this.handleClick);
       this.dom.removeEventListener('input', this.handleInput);
     }
+    this.dom = undefined;
+    this.contentDOM = undefined;
+    ReactDOM.unmountComponentAtNode(this.icon);
   }
 }
 
@@ -170,7 +195,7 @@ export default function ExpandNodeView(
   reactContext?: any,
 ) {
   return (node: PmNode, view: EditorView, getPos: () => number): NodeView =>
-    new PmExpandNodeView(node, getPos, reactContext);
+    new PmExpandNodeView(node, view, getPos, reactContext);
 }
 
 // class ExpandNode extends ReactNodeView<Props> {

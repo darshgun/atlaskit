@@ -25,7 +25,7 @@ export const expandStyles = css`
   .ak-editor-expand__title-input {
     ${sharedExpandStyles.TitleInputStyles}
   }
-  
+
   .ak-editor-expand__title-container {
     ${sharedExpandStyles.TitleContainerStyles}
   }

@@ -23,6 +23,7 @@ export const nestedExpand: NodeSpec = {
   selectable: true,
   attrs: {
     title: { default: '' },
+    __expanded: { default: true },
   },
   parseDOM: [
     {
@@ -49,6 +50,7 @@ export const nestedExpand: NodeSpec = {
         const dom = domNode as HTMLElement;
         return {
           title: dom.getAttribute('data-title'),
+          __expanded: dom.getAttribute('data-expanded'),
         };
       },
     },
@@ -57,6 +59,7 @@ export const nestedExpand: NodeSpec = {
     const attrs = {
       'data-node-type': 'nestedExpand',
       'data-title': node.attrs.title,
+      'data-expanded': node.attrs.__expanded,
     };
     return ['div', attrs, 0];
   },
