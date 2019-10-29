@@ -55,17 +55,17 @@ describe('hyperlink commands', () => {
   describe('#setLinkHref', () => {
     it('should not set the link href when pos is not inside existing text node', () => {
       const { editorView: view, sel } = editor(doc(p('{<>}')));
-      expect(
-        setLinkHref('https://google.com', sel)(view.state, view.dispatch),
-      ).toBe(false);
+      expect(setLinkHref(googleUrl, sel)(view.state, view.dispatch)).toBe(
+        false,
+      );
     });
     it('should not set the link when href is same', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'http://google.com' })('{<>}text'))),
+        doc(p(a({ href: googleUrl })('{<>}text'))),
       );
-      expect(
-        setLinkHref('http://google.com', sel)(view.state, view.dispatch),
-      ).toBe(false);
+      expect(setLinkHref(googleUrl, sel)(view.state, view.dispatch)).toBe(
+        false,
+      );
     });
     it('should remove the link mark when the href is an empty string', () => {
       const { editorView: view, sel } = editor(
@@ -76,11 +76,13 @@ describe('hyperlink commands', () => {
     });
     it('should set normalized link href when the href is non-empty', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: googleUrl })('{<>}text'))),
+        doc(p(a({ href: 'google.com' })('{<>}text'))),
       );
-      expect(setLinkHref(googleUrl, sel)(view.state, view.dispatch)).toBe(true);
+      expect(setLinkHref('google.com', sel)(view.state, view.dispatch)).toBe(
+        true,
+      );
       expect(view.state.doc).toEqualDocument(
-        doc(p(a({ href: googleUrl })('text'))),
+        doc(p(a({ href: 'http://google.com' })('text'))),
       );
     });
     it('should set mailto: prefix when the href is email-like', () => {
@@ -101,7 +103,7 @@ describe('hyperlink commands', () => {
         true,
       );
       expect(view.state.doc).toEqualDocument(
-        doc(p('this is a ', a({ href: 'http://google.com' })('selection'))),
+        doc(p('this is a ', a({ href: googleUrl })('selection'))),
       );
     });
     it('should not set the link href when it contains XSS code', () => {
@@ -126,7 +128,7 @@ describe('hyperlink commands', () => {
       const { editorView: view, sel } = editor(
         doc(p(a({ href: googleUrl })('{<>}google.com'))),
       );
-      expect(setLinkText(googleUrl, sel)(view.state, view.dispatch)).toBe(
+      expect(setLinkText('google.com', sel)(view.state, view.dispatch)).toBe(
         false,
       );
     });
@@ -196,7 +198,7 @@ describe('hyperlink commands', () => {
         true,
       );
       expect(view.state.doc).toEqualDocument(
-        doc(p(a({ href: 'http://google.com' })(googleUrl))),
+        doc(p(a({ href: googleUrl })(googleUrl))),
       );
     });
     it('should insert normalized link when selection is a range and href is a non-empty string', () => {
@@ -208,7 +210,7 @@ describe('hyperlink commands', () => {
         true,
       );
       expect(view.state.doc).toEqualDocument(
-        doc(p(a({ href: 'http://google.com' })('example_link'))),
+        doc(p(a({ href: googleUrl })('example_link'))),
       );
     });
     it('should set mailto: prefix when the href is email-like', () => {
@@ -296,7 +298,7 @@ describe('hyperlink commands', () => {
         actionSubjectId: 'link',
         eventType: 'track',
         attributes: { inputMethod: 'typeAhead' },
-        nonPrivacySafeAttributes: { linkDomain: googleUrl },
+        nonPrivacySafeAttributes: { linkDomain: 'google.com' },
       });
     });
   });
