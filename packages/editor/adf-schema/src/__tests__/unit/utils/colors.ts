@@ -1,4 +1,4 @@
-import { hexToRgba, isRgb, normalizeHexColor } from '../../../utils/color';
+import { hexToRgba, isRgb, normalizeHexColor } from '../../../utils/colors';
 
 describe('@atlaskit/editor-core color utils', () => {
   describe('hex2rgba', () => {
