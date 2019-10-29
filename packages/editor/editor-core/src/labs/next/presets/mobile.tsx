@@ -23,6 +23,7 @@ import {
   basePlugin,
   placeholderPlugin,
   annotationPlugin,
+  iOSScrollPlugin,
 } from '../../../plugins';
 import { MediaProvider, CustomMediaPicker } from '../../../plugins/media';
 import { PresetProvider } from '../Editor';
@@ -48,10 +49,20 @@ export function useMobilePreset({
   media,
   placeholder,
 }: EditorPresetMobileProps & EditorPresetProps) {
+  const isIOS = !!(window as any).webkit;
+
   const [preset] = useDefaultPreset();
 
   preset.push(
-    [basePlugin, { allowScrollGutter: () => document.body }],
+    [
+      basePlugin,
+      {
+        allowScrollGutter: {
+          getScrollElement: () => document.body,
+          allowCustomScrollHandler: false,
+        },
+      },
+    ],
     [tablesPlugin, { tableOptions: { allowControls: false } }],
     codeBlockPlugin,
     panelPlugin,
@@ -88,6 +99,10 @@ export function useMobilePreset({
       // TODO: ED-7891 Align media plugin constructor with other plugins
       // { allowMarkingUploadsAsIncomplete: true },
     ]);
+  }
+
+  if (isIOS) {
+    preset.push(iOSScrollPlugin);
   }
 
   return [preset];

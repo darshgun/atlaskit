@@ -52,9 +52,10 @@ import {
   historyPlugin,
   sharedContextPlugin,
   expandPlugin,
+  iOSScrollPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
-import { EditorView } from 'prosemirror-view';
+import { ScrollGutterPluginOptions } from '../plugins/base/pm-plugins/scroll-gutter';
 
 /**
  * Returns list of plugins that are absolutely necessary for editor to work
@@ -67,7 +68,7 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
     pastePlugin(),
     basePlugin({
       allowInlineCursorTarget: appearance !== 'mobile',
-      allowScrollGutter: allowScrollGutter(props),
+      allowScrollGutter: getScrollGutterOptions(props),
       addRunTimePerformanceCheck: isFullPage,
     }),
     blockTypePlugin({ lastNodeMustBeParagraph: appearance === 'comment' }),
@@ -88,17 +89,23 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
   ];
 }
 
-function allowScrollGutter(
+function getScrollGutterOptions(
   props: EditorProps,
-): ((view: EditorView) => HTMLElement | null) | undefined {
+): ScrollGutterPluginOptions | undefined {
   const { appearance } = props;
   if (fullPageCheck(appearance)) {
     // Full Page appearance uses a scrollable div wrapper
-    return () => document.querySelector('.fabric-editor-popup-scroll-parent');
+    return {
+      getScrollElement: () =>
+        document.querySelector('.fabric-editor-popup-scroll-parent'),
+    };
   }
   if (appearance === 'mobile') {
     // Mobile appearance uses body scrolling for improved performance on low powered devices.
-    return () => document.body;
+    return {
+      getScrollElement: () => document.body,
+      allowCustomScrollHandler: false,
+    };
   }
   return undefined;
 }
@@ -112,6 +119,7 @@ export default function createPluginsList(
   createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ): EditorPlugin[] {
   const isMobile = props.appearance === 'mobile';
+  const isIOS = isMobile && !!(window as any).webkit;
   const isFullPage = fullPageCheck(props.appearance);
   const plugins = getDefaultPluginsList(props);
 
@@ -326,6 +334,10 @@ export default function createPluginsList(
 
   if (isMobile) {
     plugins.push(historyPlugin());
+  }
+
+  if (isIOS) {
+    plugins.push(iOSScrollPlugin());
   }
 
   return plugins;
