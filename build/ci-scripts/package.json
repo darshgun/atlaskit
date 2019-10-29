@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "build": "ts-node build.ts",
+    "update-pr": "ts-node scheduled-release-notifications/index.ts",
     "stop-if-older-build": "node ./release.stop.pipeline.if.older.build.running.js",
     "restart-stopped-build": "node ./release.restart.last.stopped.build.js"
   },
@@ -23,15 +24,20 @@
     "npm-run": "^4.1.2",
     "p-settle": "^3.1.0",
     "p-wait-for": "^3.1.0",
+    "query-string": "^4.3.2",
     "s3-cli": "^0.13.0",
+    "simple-git": "^1.115.0",
     "spawndamnit": "^1.0.0",
+    "ts-node": "^6.1.1",
     "tslib": "^1.9.3",
+    "typescript": "~3.6.2",
     "yalc": "Blasz/yalc#copy-dir-fix-0.4"
   },
   "devDependencies": {
     "@types/concurrently": "^4.1.0",
     "@types/jest": "^24.0.18",
     "@types/node": "^11.11.7",
+    "@types/query-string": "^4.3.1",
     "jest-fixtures": "^0.5.0",
     "js-yaml": "^3.13.1"
   }
