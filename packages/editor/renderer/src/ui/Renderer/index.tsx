@@ -59,6 +59,7 @@ export interface Props {
   createAnalyticsEvent?: CreateUIAnalyticsEvent;
   allowColumnSorting?: boolean;
   shouldOpenMediaViewer?: boolean;
+  UNSAFE_allowAltTextOnImages?: boolean;
 }
 
 export class Renderer extends PureComponent<Props, {}> {
@@ -154,6 +155,7 @@ export class Renderer extends PureComponent<Props, {}> {
       allowHeadingAnchorLinks,
       allowColumnSorting,
       shouldOpenMediaViewer,
+      UNSAFE_allowAltTextOnImages,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -173,6 +175,7 @@ export class Renderer extends PureComponent<Props, {}> {
       allowColumnSorting,
       fireAnalyticsEvent: this.fireAnalyticsEvent,
       shouldOpenMediaViewer,
+      UNSAFE_allowAltTextOnImages,
     });
   }
 
