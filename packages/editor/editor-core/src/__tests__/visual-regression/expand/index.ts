@@ -37,6 +37,7 @@ describe('Expand: full-page', () => {
     `;
     await page.addStyleTag({ content: css });
     await page.click(selectors.expandToggle);
+    await page.hover(selectors.expandTitleInput);
   });
 
   test.skip('should collapse a nested expand on click', async () => {
