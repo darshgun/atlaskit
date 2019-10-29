@@ -1,0 +1,1 @@
+Bumped react-popper and resolved infinite looping refs issue, and fixed close-on-outside-click for @atlaskit/popup
