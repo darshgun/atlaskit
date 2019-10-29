@@ -27,8 +27,16 @@ export default function Component() {
         text={exampleCodeBlock}
         showLineNumbers={false}
       />
+
       <h2>Showing code with line numbers</h2>
       <AkCodeBlock language="java" text={exampleCodeBlock} />
+
+      <h2>Highlighting specific lines</h2>
+      <AkCodeBlock
+        language="java"
+        text={exampleCodeBlock}
+        highlight="2,5-7,12-15"
+      />
     </div>
   );
 }
