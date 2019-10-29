@@ -695,6 +695,57 @@ describe('Renderer - Validator', () => {
         });
       });
 
+      it('should remove alt attr if adf is final', () => {
+        expect(
+          getValidNode(
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collection: 'MediaServicesSample',
+                alt: 'test',
+              },
+            },
+            schema,
+            'final',
+          ),
+        ).toStrictEqual({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample',
+          },
+        });
+      });
+
+      it('should add alt attr if adf is stage0', () => {
+        expect(
+          getValidNode(
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collection: 'MediaServicesSample',
+                alt: 'test',
+              },
+            },
+            schema,
+            'stage0',
+          ),
+        ).toStrictEqual({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample',
+            alt: 'test',
+          },
+        });
+      });
+
       it('should return "media" with attrs and type if collection is empty', () => {
         expect(
           getValidNode({

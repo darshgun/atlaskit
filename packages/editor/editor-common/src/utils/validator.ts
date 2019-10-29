@@ -319,6 +319,7 @@ export const getValidNode = (
         let mediaType = '';
         let mediaCollection = [];
         let mediaUrl = '';
+
         if (attrs) {
           const { id, collection, type, url } = attrs;
           mediaId = id;
@@ -328,7 +329,7 @@ export const getValidNode = (
         }
 
         if (mediaType === 'external' && !!mediaUrl) {
-          return {
+          const node: any = {
             type,
             attrs: {
               type: mediaType,
@@ -337,6 +338,12 @@ export const getValidNode = (
               height: attrs.height,
             },
           };
+
+          if (attrs.alt && adfStage === 'stage0') {
+            node.attrs.alt = attrs.alt;
+          }
+
+          return node;
         } else if (mediaId && mediaType) {
           const mediaAttrs: any = {
             type: mediaType,
@@ -350,6 +357,10 @@ export const getValidNode = (
 
           if (attrs.height) {
             mediaAttrs.height = attrs.height;
+          }
+
+          if (attrs.alt && adfStage === 'stage0') {
+            mediaAttrs.alt = attrs.alt;
           }
 
           return {

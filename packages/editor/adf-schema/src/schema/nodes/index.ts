@@ -66,6 +66,7 @@ export { text, TextDefinition } from './text';
 export { default as unknownBlock } from './unknown-block';
 export {
   media,
+  mediaWithAltText,
   MediaType,
   MediaBaseAttributes,
   MediaAttributes,
