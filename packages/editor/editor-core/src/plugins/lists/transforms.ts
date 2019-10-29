@@ -15,6 +15,7 @@ import {
 import { liftTarget, ReplaceAroundStep } from 'prosemirror-transform';
 import { getListLiftTarget } from './utils';
 import { mapSlice, mapChildren } from '../../utils/slice';
+import { autoJoin } from 'prosemirror-commands';
 
 function liftListItem(
   state: EditorState,
@@ -127,8 +128,9 @@ export function liftSelectionList(
   return tr;
 }
 
-const bullets = /^\s*([\*\-•])(\s*|$)/;
-const numbers = /^\s*(\d)[\.\)](\s*|$)/;
+// matchers for text lists
+const bullets = /^\s*[\*\-\u2022](\s*|$)/u;
+const numbers = /^\s*\d[\.\)](\s*|$)/u;
 
 const getListType = (node: Node, schema: Schema): [NodeType, number] | null => {
   if (!node.text) {
@@ -198,19 +200,44 @@ const extractListFromParagaph = (node: Node, schema: Schema): Fragment => {
       }
 
       if (idx > 0 && listTypes.indexOf(arr[idx - 1].type) > -1) {
+        // list node on the left
         return null;
       }
 
       if (idx < arr.length - 1 && listTypes.indexOf(arr[idx + 1].type) > -1) {
+        // list node on the right
         return null;
       }
 
       return child;
     });
 
+  // try to join
+  const mockState = EditorState.create({
+    schema,
+  });
+
+  let lastTr: Transaction | undefined;
+  const mockDispatch = (tr: Transaction) => {
+    lastTr = tr;
+  };
+
+  autoJoin(
+    (state, dispatch) => {
+      if (!dispatch) {
+        return false;
+      }
+
+      dispatch(state.tr.replaceWith(0, 2, listified));
+      return true;
+    },
+    () => true,
+  )(mockState, mockDispatch);
+
+  const fragment = lastTr ? lastTr.doc.content : Fragment.from(listified);
+
   // try to re-wrap fragment in paragraph (which is the original node we unwrapped)
   const { paragraph } = schema.nodes;
-  const fragment = Fragment.from(listified);
   if (paragraph.validContent(fragment)) {
     return Fragment.from(paragraph.create(node.attrs, fragment, node.marks));
   }

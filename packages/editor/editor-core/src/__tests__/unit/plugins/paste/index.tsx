@@ -1626,7 +1626,7 @@ describe('paste plugins', () => {
       );
     });
 
-    it.only('converts numbered list', () => {
+    it('converts numbered list', () => {
       const { editorView } = editor(doc(p('{<>}')));
       const plain = '1. line 1\n2. line 2\n3. line 3';
 
