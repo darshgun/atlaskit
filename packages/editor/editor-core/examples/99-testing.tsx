@@ -5,6 +5,7 @@ import { EditorView } from 'prosemirror-view';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
+import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import {
   cardProvider,
   storyMediaProviderFactory,
@@ -104,6 +105,22 @@ function createEditorWindowBindings(win: Window) {
       (window as any)['__editorView'] = instance.view;
       this.editorView = instance.view;
       this.createApplyRemoteSteps();
+      this.createDocumentToJSON();
+    }
+
+    createDocumentToJSON() {
+      const view = this.editorView;
+
+      if (!view) {
+        return;
+      }
+
+      (window as any)['__documentToJSON'] = function() {
+        const transform = new JSONTransformer();
+        const doc = view.state.doc;
+
+        return transform.encode(doc);
+      };
     }
 
     createApplyRemoteSteps() {
