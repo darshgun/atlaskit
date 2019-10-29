@@ -16,7 +16,7 @@ describe(name, () => {
           expect(
             Object.keys((eventDispatcher as any).listeners).length,
           ).toEqual(1);
-          expect((eventDispatcher as any).listeners['event'].length).toEqual(1);
+          expect((eventDispatcher as any).listeners['event'].size).toEqual(1);
         });
       });
 
@@ -28,7 +28,7 @@ describe(name, () => {
           expect(
             Object.keys((eventDispatcher as any).listeners).length,
           ).toEqual(1);
-          expect((eventDispatcher as any).listeners['event'].length).toEqual(0);
+          expect((eventDispatcher as any).listeners['event'].size).toEqual(0);
         });
       });
 

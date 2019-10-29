@@ -8,6 +8,8 @@ export type EditorProps = {
   transformer?: (schema: Schema) => Transformer<any>;
   children?: React.ReactChild;
 
+  handleAnalyticsEvent?: AnalyticsEventHandler;
+
   // Set the default editor content.
   defaultValue?: string | object;
 
@@ -29,3 +31,7 @@ export type EditorProps = {
 
   onMount?: (actions: EditorActions) => void;
 };
+
+export type AnalyticsEventHandler = (
+  data: { payload: Record<string, any>; [key: string]: any },
+) => void;

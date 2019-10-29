@@ -1,4 +1,4 @@
-import { processPluginPreset } from '../../../../../labs/next/presets/utils';
+import { processPluginPreset } from '../../utils';
 
 describe('processPluginPreset', () => {
   it('should be able to override any plugin', () => {
@@ -15,7 +15,7 @@ describe('processPluginPreset', () => {
     expect(plugin2).toBeCalledWith(plugin2Options);
   });
 
-  it('should be able to override aleady overriden plugin', () => {
+  it('should be able to override already overridden plugin', () => {
     const plugin1 = jest.fn(() => 'plugin-1');
     const plugin2 = jest.fn(() => 'plugin-2');
 
