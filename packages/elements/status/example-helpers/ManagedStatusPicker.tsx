@@ -43,6 +43,7 @@ export default class ManagedStatusPicker extends React.Component<Props, State> {
     const { selectedColor, text } = this.state;
     return (
       <div
+        id="container"
         style={{
           border: '1px solid #ccc',
           width: '225px',

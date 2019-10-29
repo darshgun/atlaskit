@@ -4,6 +4,7 @@ import { Command } from '../types';
 import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
 
+export const addAltText = makeKeyMapWithCommon('Add Alt Text', 'Mod-Alt-y');
 export const toggleBold = makeKeyMapWithCommon('Bold', 'Mod-b');
 export const toggleItalic = makeKeyMapWithCommon('Italic', 'Mod-i');
 export const toggleUnderline = makeKeyMapWithCommon('Underline', 'Mod-u');

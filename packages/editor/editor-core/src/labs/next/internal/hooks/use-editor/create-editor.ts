@@ -18,7 +18,7 @@ import { EditorProps } from '../../editor-props-type';
 
 export function createEditor({
   context,
-  createAnalyticsEvent,
+  handleAnalyticsEvent,
   transformer,
 
   plugins,
@@ -79,7 +79,7 @@ export function createEditor({
     editorView,
 
     transformer: transformerInstance,
-    createAnalyticsEvent,
+    handleAnalyticsEvent,
 
     eventDispatcher,
     dispatch,
@@ -107,6 +107,7 @@ export type CreateEditorParams = Pick<
   | 'onChange'
   | 'disabled'
   | 'transformer'
+  | 'handleAnalyticsEvent'
 > & {
   context: any;
   ref?: HTMLDivElement | null;

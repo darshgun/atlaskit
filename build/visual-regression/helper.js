@@ -262,13 +262,16 @@ async function waitForNoTooltip(page /*:any*/) {
   );
 }
 
-async function takeScreenShot(page /*:any*/, url /*:string*/) {
+async function loadPage(page /*:any*/, url /*:string*/) {
   await navigateToUrl(page, url);
   await disableAllAnimations(page);
   await disableAllTransitions(page);
   await disableCaretCursor(page);
   await page.waitForSelector(pageSelector);
+}
 
+async function takeScreenShot(page /*:any*/, url /*:string*/) {
+  await loadPage(page, url);
   return page.screenshot();
 }
 
@@ -349,6 +352,7 @@ async function compareScreenshot(
   expect(screenshot).toMatchProdImageSnapshot({
     failureThreshold: `${tolerance}`,
     failureThresholdType: 'percent',
+    customSnapshotIdentifier: screenshotOptions.customSnapshotIdentifier,
   });
 }
 
@@ -391,6 +395,7 @@ module.exports = {
   waitForLoadedBackgroundImages,
   waitForTooltip,
   waitForNoTooltip,
+  loadPage,
   takeScreenShot,
   takeElementScreenShot,
   compareScreenshot,

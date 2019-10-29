@@ -27,6 +27,9 @@ const {
 
 const { returnMissingPkgBasedOn } = require('./utils/error.js');
 
+const targetBranch = process.env.TARGET_BRANCH || 'master';
+const bitbucketBranch = process.env.BITBUCKET_BRANCH;
+
 function fWriteStats(path, content) {
   fs.writeFileSync(path, JSON.stringify(clearStats(content), null, 2), 'utf8');
 }
@@ -236,12 +239,12 @@ module.exports = async function main(
     fWriteStats(masterStatsFilePath, stats);
     if (process.env.CI) {
       // upload to s3 masterStats
-      uploadToS3(masterStatsFilePath, 'master');
+      uploadToS3(masterStatsFilePath, bitbucketBranch);
     }
   } else {
     if (process.env.CI) {
       try {
-        await downloadFromS3(masterStatsFolder, 'master', packageName);
+        await downloadFromS3(masterStatsFolder, targetBranch, packageName);
       } catch (err) {
         const errorMessage = `${err}`;
         if (errorMessage.includes('not found in s3 bucket')) {
@@ -251,13 +254,17 @@ module.exports = async function main(
             `${missingPkg}-bundle-size-ratchet.json`,
           );
           fWriteStats(masterStatsFilePath, stats);
-          uploadToS3(masterStatsFilePath, 'master');
+          uploadToS3(masterStatsFilePath, targetBranch);
         } else {
           throw err;
         }
       }
     } else {
-      await downloadFromS3ForLocal(masterStatsFolder, 'master', packageName);
+      await downloadFromS3ForLocal(
+        masterStatsFolder,
+        targetBranch,
+        packageName,
+      );
     }
   }
 

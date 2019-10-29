@@ -8,6 +8,7 @@ import { EditorProps } from '../../types';
 import { Page } from '../__helpers/page-objects/_types';
 import { animationFrame } from '../__helpers/page-objects/_editor';
 import { GUTTER_SELECTOR } from '../../plugins/base/pm-plugins/scroll-gutter';
+import { CreateCollabProviderOptions } from '@atlaskit/synchrony-test-helpers';
 
 export {
   setupMediaMocksProviders,
@@ -137,6 +138,7 @@ function getEditorProps(appearance: Appearance) {
 export type MountOptions = {
   mode?: 'light' | 'dark';
   withSidebar?: boolean;
+  collab?: CreateCollabProviderOptions;
 };
 
 export async function mountEditor(
@@ -177,21 +179,28 @@ type InitEditorWithADFOptions = {
   mode?: 'light' | 'dark';
   allowSideEffects?: SideEffectsOption;
   withSidebar?: boolean;
+  withCollab?: boolean;
 };
 
-export const initEditorWithAdf = async (
-  page: any,
-  {
+async function setupEditor(
+  page: Page,
+  options: Omit<
+    InitEditorWithADFOptions,
+    'withSidebar' | 'withCollab' | 'mode'
+  >,
+  mountOptions: MountOptions,
+) {
+  const {
     appearance,
     adf = {},
     device = Device.Default,
     viewport,
     editorProps = {},
-    mode,
     allowSideEffects = {},
-    withSidebar = false,
-  }: InitEditorWithADFOptions,
-) => {
+  } = options;
+
+  const { mode, withSidebar = false } = mountOptions;
+  await page.bringToFront();
   const url = getExampleUrl('editor', 'editor-core', 'vr-testing');
   await navigateToUrl(page, url);
 
@@ -221,6 +230,28 @@ export const initEditorWithAdf = async (
 
   // Visualise invisible elements
   await visualiseInvisibleElements(page);
+}
+
+export const initEditorWithAdf = async (
+  page: any,
+  options: InitEditorWithADFOptions,
+) => {
+  let mountOptions: MountOptions = {
+    mode: options.mode,
+    withSidebar: options.withSidebar,
+  };
+  // @ts-ignore
+  const collabPage = global.collabPage as Page;
+  if (options.withCollab && collabPage) {
+    mountOptions.collab = {
+      docId: Math.random()
+        .toString(32)
+        .substring(2),
+    };
+    // Remove adf, the page should be initialized by the other page.
+    await setupEditor(collabPage, { ...options, adf: '' }, mountOptions);
+  }
+  await setupEditor(page, options, mountOptions);
 };
 
 export const initFullPageEditorWithAdf = async (
@@ -275,14 +306,24 @@ export const clearEditor = async (page: any) => {
   });
 };
 
-export const snapshot = async (
+interface Threshold {
+  tolerance?: number;
+  useUnsafeThreshold?: boolean;
+}
+
+type CustomSnapshotIdentifier = (
+  testPath: string,
+  currentTestName: string,
+  counter: string,
+  defaultIdentifier: string,
+) => string;
+
+async function takeSnapshot(
   page: Page,
-  threshold: {
-    tolerance?: number;
-    useUnsafeThreshold?: boolean;
-  } = {},
+  threshold: Threshold = {},
   selector: string = editorFullPageContentSelector,
-) => {
+  customSnapshotIdentifier?: CustomSnapshotIdentifier,
+) {
   const { tolerance, useUnsafeThreshold } = threshold;
   const editor = await page.$(selector);
 
@@ -298,7 +339,30 @@ export const snapshot = async (
     image = await page.screenshot();
   }
 
-  return compareScreenshot(image, tolerance, { useUnsafeThreshold });
+  return compareScreenshot(image, tolerance, {
+    useUnsafeThreshold,
+    customSnapshotIdentifier,
+  });
+}
+
+export const snapshot = async (
+  page: Page,
+  threshold: Threshold = {},
+  selector: string = editorFullPageContentSelector,
+) => {
+  // @ts-ignore
+  const { collabPage, synchronyUrl } = global || {};
+  if (synchronyUrl && collabPage) {
+    await (collabPage as Page).bringToFront();
+    await takeSnapshot(
+      collabPage,
+      threshold,
+      selector,
+      (_t, _n, _c, defaultIdentifier) => `Collab Page - ${defaultIdentifier}`,
+    );
+    await page.bringToFront();
+  }
+  await takeSnapshot(page, threshold, selector);
 };
 
 export const applyRemoteStep = async (page: Page, stepsAsString: string[]) => {
