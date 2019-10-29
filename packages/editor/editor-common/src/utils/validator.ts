@@ -329,21 +329,21 @@ export const getValidNode = (
         }
 
         if (mediaType === 'external' && !!mediaUrl) {
-          const node: any = {
-            type,
-            attrs: {
-              type: mediaType,
-              url: mediaUrl,
-              width: attrs.width,
-              height: attrs.height,
-            },
+          const mediaAttrs: any = {
+            type: mediaType,
+            url: mediaUrl,
+            width: attrs.width,
+            height: attrs.height,
           };
 
           if (attrs.alt && adfStage === 'stage0') {
-            node.attrs.alt = attrs.alt;
+            mediaAttrs.alt = attrs.alt;
           }
 
-          return node;
+          return {
+            type,
+            attrs: mediaAttrs,
+          };
         } else if (mediaId && mediaType) {
           const mediaAttrs: any = {
             type: mediaType,
