@@ -1,14 +1,14 @@
 import React, { createContext, ComponentType, ReactNode } from 'react';
 
 export type ThemeProp<ThemeTokens, ThemeProps> = (
-  getTokens: (props: ThemeProps) => ThemeTokens,
+  getTokens: (props?: ThemeProps) => ThemeTokens,
   themeProps: ThemeProps,
 ) => ThemeTokens;
 
-/* 
-createTheme is used to create a set of Providers and Consumers for theming components. 
+/*
+createTheme is used to create a set of Providers and Consumers for theming components.
 - Takes a default theme function; this theme function gets a set of props, and returns tokens
-   based on those props. An example of this default theme function is one that produces the standard 
+   based on those props. An example of this default theme function is one that produces the standard
    appearance of the component
 - Returns two things - a Provider that allow for additional themes to be applied, and a Consumer
    that can get the current theme and fetch it.
@@ -56,7 +56,7 @@ export function createTheme<ThemeTokens, ThemeProps>(
   }
 
   /* The Theme Provider takes regular nodes as its child, but also takes a *theme function*
-     - The theme function takes a set of props, as well as a function (getTokens) that can 
+     - The theme function takes a set of props, as well as a function (getTokens) that can
         turn props into tokens.
      - The getTokens function isn't called immediately - instead the props are passed
         through a mix of parent theming functions
