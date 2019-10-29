@@ -26,7 +26,7 @@ export const getIconButtonTheme = ({
   return {
     buttonStyles: {
       ...buttonStyles,
-      borderRadius: 100,
+      borderRadius: 4,
       display: 'flex',
       margin: '0 2px',
       padding: 4,

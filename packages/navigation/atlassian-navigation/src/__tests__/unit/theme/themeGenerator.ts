@@ -1,4 +1,4 @@
-import { generateTheme, GenerateThemeArgs } from '../../../';
+// import { generateTheme, GenerateThemeArgs } from '../../../';
 
 import { generateThemes } from '../../../theme/themeGenerator';
 import { GenerateThemesArgs, Mode } from '../../../theme/types';
@@ -38,7 +38,7 @@ describe('generateTheme', () => {
       iconButton: {
         active: {
           color: '#42526E',
-          backgroundColor: '#DEEBFF',
+          backgroundColor: 'rgba(222, 235, 255, 0.3)',
           boxShadow: '',
           opacity: 0.5,
         },
@@ -49,14 +49,13 @@ describe('generateTheme', () => {
         },
         focus: {
           color: '#344563',
-          backgroundColor: '#0052CC',
-          boxShadow: '0 0 0 2px #97A0AF',
+          backgroundColor: 'rgba(222, 235, 255, 0.5)',
+          boxShadow: '0 0 0 2px #2684FF',
         },
         hover: {
           color: '#42526E',
-          backgroundColor: '#DEEBFF',
+          backgroundColor: 'rgba(222, 235, 255, 0.9)',
           boxShadow: '',
-          opacity: 0.7,
         },
         selected: { color: '', backgroundColor: '', boxShadow: '' },
       },
@@ -64,13 +63,12 @@ describe('generateTheme', () => {
       primaryButton: {
         active: {
           color: '#344563',
-          backgroundColor: '#DEEBFF',
-          opacity: 0.5,
+          backgroundColor: 'rgba(222, 235, 255, 0.5)',
           boxShadow: '0 0 0 2px transparent',
         },
         default: {
           color: '#344563',
-          backgroundColor: '',
+          backgroundColor: 'transparent',
           boxShadow: '0 0 0 2px transparent',
         },
         focus: {
@@ -80,8 +78,7 @@ describe('generateTheme', () => {
         },
         hover: {
           color: '#344563',
-          backgroundColor: '#DEEBFF',
-          opacity: 0.5,
+          backgroundColor: 'rgba(222, 235, 255, 0.5)',
           boxShadow: '0 0 0 2px transparent',
         },
         selected: {
@@ -100,7 +97,7 @@ describe('generateTheme', () => {
     },
   };
 
-  describe('atlassian theme', () => {
+  describe('default atlassian theme', () => {
     const generatedDefaultTheme = generateThemes(atlassianTheme).mode;
 
     type Component =

@@ -5,11 +5,18 @@ import {
   DN10A,
   N0,
   N40,
-  N80,
   N200,
   N500,
   N600,
 } from '@atlaskit/theme/colors';
+
+import chromatism from 'chromatism';
+
+const hexToRGBA = (hex: string, opacity: number = 1) => {
+  const rgba = { ...chromatism.convert(hex).rgb, ...{ a: opacity } };
+
+  return `rgba(${Object.values(rgba).join(', ')})`;
+};
 
 const defaultTheme = {
   mode: {
@@ -39,7 +46,7 @@ const defaultTheme = {
     iconButton: {
       active: {
         color: N500,
-        backgroundColor: B50,
+        backgroundColor: hexToRGBA(B50, 0.3),
         boxShadow: '',
         opacity: 0.5,
       },
@@ -50,14 +57,13 @@ const defaultTheme = {
       },
       focus: {
         color: N600,
-        backgroundColor: B400,
-        boxShadow: `0 0 0 2px ${N80}`,
+        backgroundColor: hexToRGBA(B50, 0.5),
+        boxShadow: `0 0 0 2px ${B200}`,
       },
       hover: {
         color: N500,
-        backgroundColor: B50,
+        backgroundColor: hexToRGBA(B50, 0.9),
         boxShadow: '',
-        opacity: 0.7,
       },
       selected: { color: '', backgroundColor: '', boxShadow: '' },
     },
@@ -65,13 +71,12 @@ const defaultTheme = {
     primaryButton: {
       active: {
         color: N600,
-        backgroundColor: B50,
-        opacity: 0.5,
+        backgroundColor: hexToRGBA(B50, 0.5),
         boxShadow: '0 0 0 2px transparent',
       },
       default: {
         color: N600,
-        backgroundColor: '',
+        backgroundColor: 'transparent',
         boxShadow: '0 0 0 2px transparent',
       },
       focus: {
@@ -81,8 +86,7 @@ const defaultTheme = {
       },
       hover: {
         color: N600,
-        backgroundColor: B50,
-        opacity: 0.5,
+        backgroundColor: hexToRGBA(B50, 0.5),
         boxShadow: '0 0 0 2px transparent',
       },
       selected: {
