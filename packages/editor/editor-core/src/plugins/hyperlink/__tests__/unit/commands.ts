@@ -1,12 +1,12 @@
 import {
-  createEditorFactory,
   doc,
   p,
   a,
   code_block,
   code,
-  EditorTestCardProvider,
-} from '@atlaskit/editor-test-helpers';
+} from '@atlaskit/editor-test-helpers/schema-builder';
+import { EditorTestCardProvider } from '@atlaskit/editor-test-helpers/card-provider';
+import createEditorFactory from '@atlaskit/editor-test-helpers/create-editor';
 import {
   setLinkHref,
   setLinkText,
@@ -15,17 +15,21 @@ import {
   hideLinkToolbar,
   removeLink,
   insertLinkWithAnalytics,
-} from '../../../../plugins/hyperlink/commands';
+  updateLink,
+} from '../../commands';
 import {
   stateKey as hyperlinkStateKey,
   LinkAction,
-} from '../../../../plugins/hyperlink/pm-plugins/main';
-import { pluginKey as cardPluginKey } from '../../../../plugins/card/pm-plugins/main';
-import { INPUT_METHOD } from '../../../../plugins/analytics';
+} from '../../pm-plugins/main';
+import { pluginKey as cardPluginKey } from '../../../card/pm-plugins/main';
+import { INPUT_METHOD } from '../../../analytics';
 import {
   CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
+
+const googleUrl = 'https://google.com';
+const yahooUrl = 'https://yahoo.com';
 
 describe('hyperlink commands', () => {
   const createEditor = createEditorFactory();
@@ -65,25 +69,23 @@ describe('hyperlink commands', () => {
     });
     it('should remove the link mark when the href is an empty string', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'google.com' })('{<>}text'))),
+        doc(p(a({ href: googleUrl })('{<>}text'))),
       );
       expect(setLinkHref('', sel)(view.state, view.dispatch)).toBe(true);
       expect(view.state.doc).toEqualDocument(doc(p('text')));
     });
     it('should set normalized link href when the href is non-empty', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'google.com' })('{<>}text'))),
+        doc(p(a({ href: googleUrl })('{<>}text'))),
       );
-      expect(setLinkHref('google.com', sel)(view.state, view.dispatch)).toBe(
-        true,
-      );
+      expect(setLinkHref(googleUrl, sel)(view.state, view.dispatch)).toBe(true);
       expect(view.state.doc).toEqualDocument(
-        doc(p(a({ href: 'http://google.com' })('text'))),
+        doc(p(a({ href: googleUrl })('text'))),
       );
     });
     it('should set mailto: prefix when the href is email-like', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'google.com' })('{<>}text'))),
+        doc(p(a({ href: googleUrl })('{<>}text'))),
       );
       expect(
         setLinkHref('scott@google.com', sel)(view.state, view.dispatch),
@@ -95,9 +97,9 @@ describe('hyperlink commands', () => {
     it('should set link on selection only', () => {
       const { editorView: view } = editor(doc(p('this is a {<}selection{>}')));
       const { from, to } = view.state.selection;
-      expect(
-        setLinkHref('google.com', from, to)(view.state, view.dispatch),
-      ).toBe(true);
+      expect(setLinkHref(googleUrl, from, to)(view.state, view.dispatch)).toBe(
+        true,
+      );
       expect(view.state.doc).toEqualDocument(
         doc(p('this is a ', a({ href: 'http://google.com' })('selection'))),
       );
@@ -116,73 +118,73 @@ describe('hyperlink commands', () => {
     });
     it('should not set the link text when text is an empty string', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'google.com' })('{<>}text'))),
+        doc(p(a({ href: googleUrl })('{<>}text'))),
       );
       expect(setLinkText('', sel)(view.state, view.dispatch)).toBe(false);
     });
     it('should not set the link text when text is equal to the node.text', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'google.com' })('{<>}google.com'))),
+        doc(p(a({ href: googleUrl })('{<>}google.com'))),
       );
-      expect(setLinkText('google.com', sel)(view.state, view.dispatch)).toBe(
+      expect(setLinkText(googleUrl, sel)(view.state, view.dispatch)).toBe(
         false,
       );
     });
     it('should set the link text when the text is non-empty', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'google.com' })('{<>}text'))),
+        doc(p(a({ href: googleUrl })('{<>}text'))),
       );
       expect(setLinkText('hi!', sel)(view.state, view.dispatch)).toBe(true);
       expect(view.state.doc).toEqualDocument(
-        doc(p(a({ href: 'google.com' })('hi!'))),
+        doc(p(a({ href: googleUrl })('hi!'))),
       );
     });
     it('should set the link text on selection only', () => {
       const { editorView: view } = editor(
-        doc(p('this is a ', a({ href: 'google.com' })('{<}link{>}'))),
+        doc(p('this is a ', a({ href: googleUrl })('{<}link{>}'))),
       );
       const { from, to } = view.state.selection;
       expect(
         setLinkText('selection', from, to)(view.state, view.dispatch),
       ).toBe(true);
       expect(view.state.doc).toEqualDocument(
-        doc(p('this is a ', a({ href: 'google.com' })('{<}selection{>}'))),
+        doc(p('this is a ', a({ href: googleUrl })('{<}selection{>}'))),
       );
     });
   });
   describe('#insertLink', () => {
     it('should not insert link when selection is inside an incompatible node', () => {
       const { editorView: view, sel } = editor(doc(code_block()('{<>}')));
-      expect(
-        insertLink(sel, sel, 'google.com')(view.state, view.dispatch),
-      ).toBe(false);
+      expect(insertLink(sel, sel, googleUrl)(view.state, view.dispatch)).toBe(
+        false,
+      );
     });
     it('should not insert link when selection is across incompatible nodes', () => {
       const {
         editorView: view,
         refs: { '<': from, '>': to },
       } = editor(doc(p('{<}hello'), p('world{>}')));
-      expect(
-        insertLink(from, to, 'google.com')(view.state, view.dispatch),
-      ).toBe(false);
+      expect(insertLink(from, to, googleUrl)(view.state, view.dispatch)).toBe(
+        false,
+      );
     });
     it('should not insert link when selection is across incompatible marks', () => {
       const {
         editorView: view,
         refs: { '<': from, '>': to },
       } = editor(doc(p(code('{<}hello'), 'world{>}')));
-      expect(
-        insertLink(from, to, 'google.com')(view.state, view.dispatch),
-      ).toBe(false);
+      expect(insertLink(from, to, googleUrl)(view.state, view.dispatch)).toBe(
+        false,
+      );
     });
     it('should not insert link when selection includes an existing link', () => {
       const {
         editorView: view,
         refs: { '<': from, '>': to },
       } = editor(doc(p('{<}hello ', a({ href: '' })('there'), ' world{>}')));
-      expect(
-        insertLink(from, to, 'google.com')(view.state, view.dispatch),
-      ).toBe(false);
+      expect(insertLink(from, to, googleUrl)(view.state, view.dispatch)).toBe(
+        false,
+      );
     });
     it('should not insert link when href is an empty string', () => {
       const { editorView: view, sel } = editor(doc(p('{<>}')));
@@ -190,11 +192,11 @@ describe('hyperlink commands', () => {
     });
     it('should insert normalized link when selection is a cursor and href is a non-empty string', () => {
       const { editorView: view, sel } = editor(doc(p('{<>}')));
-      expect(
-        insertLink(sel, sel, 'google.com')(view.state, view.dispatch),
-      ).toBe(true);
+      expect(insertLink(sel, sel, googleUrl)(view.state, view.dispatch)).toBe(
+        true,
+      );
       expect(view.state.doc).toEqualDocument(
-        doc(p(a({ href: 'http://google.com' })('google.com'))),
+        doc(p(a({ href: 'http://google.com' })(googleUrl))),
       );
     });
     it('should insert normalized link when selection is a range and href is a non-empty string', () => {
@@ -202,9 +204,9 @@ describe('hyperlink commands', () => {
         editorView: view,
         refs: { '<': from, '>': to },
       } = editor(doc(p('{<}example_link{>}')));
-      expect(
-        insertLink(from, to, 'google.com')(view.state, view.dispatch),
-      ).toBe(true);
+      expect(insertLink(from, to, googleUrl)(view.state, view.dispatch)).toBe(
+        true,
+      );
       expect(view.state.doc).toEqualDocument(
         doc(p(a({ href: 'http://google.com' })('example_link'))),
       );
@@ -257,6 +259,27 @@ describe('hyperlink commands', () => {
       );
     });
   });
+  describe('#updateLink', () => {
+    it('should update link with new url', () => {
+      const { editorView: view, sel } = editor(
+        doc(p(a({ href: googleUrl })('{<>}foo'))),
+      );
+      updateLink(yahooUrl, 'foo', sel)(view.state, view.dispatch);
+      expect(view.state.doc).toEqualDocument(
+        doc(p(a({ href: yahooUrl })('foo'))),
+      );
+    });
+
+    it('should update text', () => {
+      const { editorView: view, sel } = editor(
+        doc(p(a({ href: googleUrl })('{<>}foo'))),
+      );
+      updateLink(googleUrl, 'bar', sel)(view.state, view.dispatch);
+      expect(view.state.doc).toEqualDocument(
+        doc(p(a({ href: googleUrl })('bar'))),
+      );
+    });
+  });
   describe('#insertLinkWithAnalytics', () => {
     it('should fire analytics event', () => {
       const { editorView: view, sel } = editor(doc(p('{<>}')));
@@ -264,7 +287,7 @@ describe('hyperlink commands', () => {
         INPUT_METHOD.TYPEAHEAD,
         sel,
         sel,
-        'google.com',
+        googleUrl,
         'Google',
       )(view.state, view.dispatch);
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
@@ -273,14 +296,14 @@ describe('hyperlink commands', () => {
         actionSubjectId: 'link',
         eventType: 'track',
         attributes: { inputMethod: 'typeAhead' },
-        nonPrivacySafeAttributes: { linkDomain: 'google.com' },
+        nonPrivacySafeAttributes: { linkDomain: googleUrl },
       });
     });
   });
   describe('#removeLink', () => {
     it('should remove the link mark when the href is an empty string', () => {
       const { editorView: view, sel } = editor(
-        doc(p(a({ href: 'google.com' })('{<>}text'))),
+        doc(p(a({ href: googleUrl })('{<>}text'))),
       );
       expect(removeLink(sel)(view.state, view.dispatch)).toBe(true);
       expect(view.state.doc).toEqualDocument(doc(p('text')));
