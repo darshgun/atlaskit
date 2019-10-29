@@ -58,7 +58,27 @@ export const updateExpandTitle = (
       },
       node.marks,
     );
-    // setCursorInsideExpand(pos, tr, -1);
+    dispatch(tr);
+  }
+  return true;
+};
+
+export const toggleExpandExpanded = (
+  pos: number,
+  nodeType: NodeType,
+): Command => (state, dispatch) => {
+  const node = state.doc.nodeAt(pos);
+  if (node && node.type === nodeType && dispatch) {
+    const { tr } = state;
+    tr.setNodeMarkup(
+      pos,
+      node.type,
+      {
+        ...node.attrs,
+        __expanded: !node.attrs.__expanded,
+      },
+      node.marks,
+    );
     dispatch(tr);
   }
   return true;

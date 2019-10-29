@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors, gridSize, fontSize } from '@atlaskit/theme';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Tooltip from '@atlaskit/tooltip';
@@ -38,14 +38,14 @@ export const messages = defineMessages({
 export const LAYOUT_OFFSET = 17;
 const BORDER_RADIUS = gridSize() / 2;
 
-interface StyleProps {
+export interface StyleProps {
   collapsed?: boolean;
   editable?: boolean;
   'data-node-type'?: 'expand' | 'nestedExpand';
   'data-title'?: string;
 }
 
-const Container = styled.div<StyleProps>`
+const ContainerStyles = css<StyleProps>`
   border-width: 1px;
   border-style: solid;
   border-color: ${({ collapsed }) => (collapsed ? 'transparent' : colors.N40A)};
@@ -77,28 +77,47 @@ const Container = styled.div<StyleProps>`
     border-color: transparent;
     box-shadow: 0 0 0 ${akEditorSelectedBorderBoldSize}px ${colors.R300};
   }
+`;
 
-  .expand-title-input,
-  .nestedExpand-title-input {
-    outline: none;
-    border: none;
-    font-size: ${fontSize}px;
-    line-height: 1.714;
-    font-weight: normal;
+const ContentStyles = css<StyleProps>`
+  ${({ collapsed }) => {
+    return `
+    padding: ${collapsed ? 0 : gridSize()}px ${gridSize()}px 0px ${gridSize() *
+      4 -
+      gridSize() / 2}px;
+
+    ${!!collapsed &&
+      `
+      .expand-content-wrapper, .nestedExpand-content-wrapper {
+        /* We visually hide the content here to preserve the content during copy+paste */
+        position: absolute;
+        height: 1px; 
+        width: 1px;
+        overflow: hidden;
+        clip: rect(1px, 1px, 1px, 1px);
+        white-space: nowrap;
+      }
+    `}
+    `;
+  }};
+`;
+
+const TitleInputStyles = `
+  outline: none;
+  border: none;
+  font-size: ${fontSize()}px;
+  line-height: 1.714;
+  font-weight: normal;
+  color: ${colors.N200A};
+  background: transparent;
+  display: flex;
+  flex: 1;
+  padding: 0;
+  width: 100%;
+
+  &::placeholder {
+    opacity: 0.6;
     color: ${colors.N200A};
-    background: transparent;
-    display: flex;
-    flex: 1;
-    padding: 0;
-
-    width: calc(100% - ${gridSize() * 6}px);
-    position: absolute;
-    top: ${gridSize}px;
-
-    &::placeholder {
-      opacity: 0.6;
-      color: ${colors.N200A};
-    }
   }
 `;
 
@@ -108,7 +127,7 @@ const TitleContainerStyles = `
   align-items: center;
   background: none;
   border: none;
-  font-size: ${fontSize}px;
+  font-size: ${fontSize()}px;
   width: 100%;
   color: ${colors.N200};
   overflow: hidden;
@@ -118,6 +137,17 @@ const TitleContainerStyles = `
   &:focus {
     outline: 0;
   }
+`;
+
+export const sharedExpandStyles = {
+  TitleInputStyles,
+  TitleContainerStyles,
+  ContainerStyles,
+  ContentStyles,
+};
+
+const Container = styled.div<StyleProps>`
+  ${ContainerStyles}
 `;
 
 const TitleContainerButton = styled.button`
@@ -147,26 +177,7 @@ const Icon = styled.div<StyleProps>`
 `;
 
 const ContentContainer = styled.div<StyleProps>`
-  ${({ collapsed }) => {
-    return `
-      padding: ${
-        collapsed ? 0 : gridSize()
-      }px ${gridSize()}px 0px ${gridSize() * 4 - gridSize() / 2}px;
-
-      ${!!collapsed &&
-        `
-        .expand-content-wrapper, .nestedExpand-content-wrapper {
-          /* We visually hide the content here to preserve the content during copy+paste */
-          position: absolute;
-          height: 1px; 
-          width: 1px;
-          overflow: hidden;
-          clip: rect(1px, 1px, 1px, 1px);
-          white-space: nowrap;
-        }
-      `}
-      `;
-  }};
+  ${ContentStyles};
 `;
 
 const TooltipWrapper = styled.div`

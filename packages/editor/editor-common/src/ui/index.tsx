@@ -49,4 +49,5 @@ export {
   messages as expandMessages,
   ExpandProps,
   LAYOUT_OFFSET as akEditorExpandLayoutOffset,
+  sharedExpandStyles,
 } from './Expand';
