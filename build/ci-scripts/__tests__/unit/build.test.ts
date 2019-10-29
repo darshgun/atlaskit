@@ -4,17 +4,17 @@ import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
 import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
 import { getPackagesInfo } from '@atlaskit/build-utils/tools';
-import createEntryPointsDirectories from '../create.entry.points.directories';
-import copyVersion from '../copy.version';
-import validateDists from '../validate.dists';
+import createEntryPointsDirectories from '../../create.entry.points.directories';
+import copyVersion from '../../copy.version';
+import validateDists from '../../validate.dists';
 
-import build from '../build';
+import build from '../../build';
 
-jest.unmock('../build');
-jest.mock('../validate.dists', () =>
+jest.unmock('../../build');
+jest.mock('../../validate.dists', () =>
   jest.fn(() => Promise.resolve({ success: true })),
 );
-jest.mock('../get.glob.packages.for.tools', () =>
+jest.mock('../../get.glob.packages.for.tools', () =>
   jest.fn((tools: string[]) => `${tools.join('-')}-glob`),
 );
 
