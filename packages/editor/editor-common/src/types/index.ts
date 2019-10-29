@@ -16,7 +16,7 @@ export interface Transformer<T> {
 
 export interface Providers {
   mediaProvider?: Promise<MediaProvider>;
-  [key: string]: Promise<any>;
+  [key: string]: Promise<any> | undefined;
 }
 
 export interface FeatureFlags {}
