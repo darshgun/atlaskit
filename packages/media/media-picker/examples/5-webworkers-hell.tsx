@@ -6,11 +6,11 @@ import {
   defaultMediaPickerCollectionName,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
+import { Browser } from '../src';
 import {
-  Browser,
   BrowserConfig,
   UploadPreviewUpdateEventPayload,
-} from '../src';
+} from '@atlaskit/media-picker/types';
 import {
   PreviewsWrapper,
   PopupHeader,

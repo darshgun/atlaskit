@@ -1,5 +1,5 @@
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-import { PopupUploadEventPayloadMap } from '../src/components/types';
+import { PopupUploadEventPayloadMap } from '../src/types';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 export type Event = {

@@ -1927,6 +1927,10 @@
         "../../media/media-picker/src/",
         "./packages/media/media-picker/src/"
       ],
+      "@atlaskit/media-picker/types": [
+        "../../media/media-picker/src/types",
+        "./packages/media/media-picker/src/types"
+      ],
       "@atlaskit/media-test-helpers/authProvider": [
         "../../media/media-test-helpers/src/authProvider",
         "./packages/media/media-test-helpers/src/authProvider"

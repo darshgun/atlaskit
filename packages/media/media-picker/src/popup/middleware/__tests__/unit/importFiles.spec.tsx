@@ -50,7 +50,7 @@ import {
 } from '../../../actions/setEventProxy';
 import { getPreview } from '../../../actions/getPreview';
 import { hidePopup } from '../../../actions/hidePopup';
-import { MediaFile } from '../../../../domain/file';
+import { MediaFile } from '../../../../types';
 import {
   isSendUploadEventAction,
   SendUploadEventAction,

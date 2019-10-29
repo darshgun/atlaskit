@@ -3,7 +3,7 @@ import getPreviewMiddleware, { getPreview } from '../../getPreview';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
 import { GetPreviewAction } from '../../../actions/getPreview';
 import { Observable } from 'rxjs';
-import { Preview } from '../../../../domain/preview';
+import { Preview } from '../../../../types';
 import { FileState, ImageMetadata } from '@atlaskit/media-client';
 import { Auth } from '@atlaskit/media-core';
 

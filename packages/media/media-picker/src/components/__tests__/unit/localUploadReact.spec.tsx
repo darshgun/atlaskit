@@ -4,8 +4,8 @@ import {
 } from '../../localUploadReact';
 import { ReactWrapper, mount } from 'enzyme';
 import React from 'react';
-import { MediaFile } from '../../../domain/file';
 import {
+  MediaFile,
   UploadEventPayloadMap,
   UploadErrorEventPayload,
   UploadEndEventPayload,
@@ -13,7 +13,7 @@ import {
   UploadStatusUpdateEventPayload,
   UploadPreviewUpdateEventPayload,
   UploadsStartEventPayload,
-} from '../../../domain/uploadEvent';
+} from '../../../types';
 
 jest.mock('../../../service/uploadServiceImpl');
 jest.mock('../../component');

@@ -14,13 +14,13 @@ import { createStore } from '../store';
 import { UploadComponent } from './component';
 
 import { defaultUploadParams } from '../domain/uploadParams';
-import { UploadParams } from '../domain/config';
 import {
+  UploadParams,
   PopupUploadEventPayloadMap,
   Popup,
-  PopupUploadEventEmitter,
   PopupConfig,
-} from './types';
+} from '../types';
+import { PopupUploadEventEmitter } from './types';
 
 export class PopupImpl extends UploadComponent<PopupUploadEventPayloadMap>
   implements PopupUploadEventEmitter, Popup {

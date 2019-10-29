@@ -1,6 +1,6 @@
 import { FileIdentifier } from '@atlaskit/media-client';
 import { MediaClientConfig } from '@atlaskit/media-core';
-import { MediaFile, UploadParams } from '@atlaskit/media-picker';
+import { UploadParams, MediaFile } from '@atlaskit/media-picker/types';
 import { EditorView } from 'prosemirror-view';
 import { NodeType } from 'prosemirror-model';
 
