@@ -10,7 +10,7 @@ interface OuterProps {
   children?: React.ReactNode;
 }
 
-export const Outer = withTheme<OuterProps>(styled.span`
+export const Outer = withTheme(styled.span<OuterProps>`
   align-content: center;
   align-items: center;
   background-color: ${props => props.bgColor || background};

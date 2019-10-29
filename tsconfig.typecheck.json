@@ -1,12 +1,9 @@
 {
   "extends": "./tsconfig",
-  // "include": [
-  //   "./packages/core/theme/**/**/*"
-  // ],
   "include": [
-    // "./build/**/*",
+    "./build/**/*",
     "./packages/core/**/*",
-    // "./website/**/*",
+    "./website/**/*",
   ],
   "exclude": [
     "./packages/**/**/dist",
