@@ -1,0 +1,1 @@
+Move public types to media-picker/types entry point
