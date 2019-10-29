@@ -1584,9 +1584,9 @@ describe('paste plugins', () => {
   describe('converting text to list', () => {
     it('works for a simple list', () => {
       const { editorView } = editor(doc(p('{<>}')));
-      const plain = '* line 1\n* line 2\n* line 3';
+      const html = '<span>* line 1<br />* line 2<br />* line 3';
 
-      dispatchPasteEvent(editorView, { plain });
+      dispatchPasteEvent(editorView, { html });
 
       expect(editorView.state.doc).toEqualDocument(
         doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
@@ -1595,9 +1595,9 @@ describe('paste plugins', () => {
 
     it('maintains empty list items', () => {
       const { editorView } = editor(doc(p('{<>}')));
-      const plain = '* line 1\n*\n* line 3\n* line 4';
+      const html = '<span>* line 1<br />*<br />line 3<br />* line 4';
 
-      dispatchPasteEvent(editorView, { plain });
+      dispatchPasteEvent(editorView, { html });
 
       expect(editorView.state.doc).toEqualDocument(
         doc(ul(li(p('line 1')), li(p()), li(p('line 3')), li(p('line 4')))),
@@ -1606,9 +1606,20 @@ describe('paste plugins', () => {
 
     it('converts hyphen bullets', () => {
       const { editorView } = editor(doc(p('{<>}')));
-      const plain = '- line 1\n- line 2\n- line 3';
+      const html = '<span>- line 1<br />- line 2<br />- line 3';
 
-      dispatchPasteEvent(editorView, { plain });
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it.only('converts unicode bullets', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>• line 1<br />• line 2<br />• line 3';
+
+      dispatchPasteEvent(editorView, { html });
 
       expect(editorView.state.doc).toEqualDocument(
         doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
@@ -1617,9 +1628,9 @@ describe('paste plugins', () => {
 
     it('converts mixed bulleted list', () => {
       const { editorView } = editor(doc(p('{<>}')));
-      const plain = '* line 1\n- line 2\n* line 3';
+      const html = '<span>* line 1<br />- line 2<br />* line 3';
 
-      dispatchPasteEvent(editorView, { plain });
+      dispatchPasteEvent(editorView, { html });
 
       expect(editorView.state.doc).toEqualDocument(
         doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
@@ -1650,12 +1661,12 @@ describe('paste plugins', () => {
 
     it('converts mixed numbered and bulleted list', () => {
       const { editorView } = editor(doc(p('{<>}')));
-      const plain = '• line 1\n1. line 2\n* line 3';
+      const plain = '- line 1\n1. line 2\n* line 3';
 
       dispatchPasteEvent(editorView, { plain });
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(ul(li(p('line 1'))), ol(li(p('line 2'))), ol(li(p('line 3')))),
+        doc(ul(li(p('line 1'))), ol(li(p('line 2'))), ul(li(p('line 3')))),
       );
     });
 
