@@ -1,9 +1,9 @@
+import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
 import DefaultExtensionProvider from '../../default-extension-provider';
-import combineProviders from '../../combine-providers';
-import createFakeExtensionManifest from './helpers/create-fake-extension-manifest';
+import combineExtensionProviders from '../../combine-extension-providers';
 import { ExtensionProvider } from 'src/extensions/types';
 
-describe('combine-providers', () => {
+describe('combine-extension-providers', () => {
   const awesomeExtension = createFakeExtensionManifest('awesome', 'awesome', [
     'awesome-list',
     'awesome-item',
@@ -27,7 +27,7 @@ describe('combine-providers', () => {
   let combinedExtensionProvider: ExtensionProvider;
 
   beforeEach(() => {
-    combinedExtensionProvider = combineProviders([
+    combinedExtensionProvider = combineExtensionProviders([
       new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
       new DefaultExtensionProvider([shitExtension, mehhExtension]),
     ]);
@@ -85,7 +85,7 @@ describe('combine-providers', () => {
   });
 
   test('should work even if the provider is a promise', async () => {
-    const providers = combineProviders([
+    const providers = combineExtensionProviders([
       Promise.resolve(
         new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
       ),
@@ -144,7 +144,7 @@ describe('combine-providers', () => {
     });
 
     test('should discard failed providers and return all valid results', async () => {
-      const combinedProviders = combineProviders([
+      const combinedProviders = combineExtensionProviders([
         Promise.resolve(new DefaultExtensionProvider([asyncExtension1])),
         Promise.reject(new DefaultExtensionProvider([asyncExtension2])),
         Promise.resolve(new DefaultExtensionProvider([asyncExtension3])),
@@ -177,7 +177,7 @@ describe('combine-providers', () => {
       providers[0].getExtensions = jest.fn().mockRejectedValue('error');
       providers[2].getExtensions = jest.fn().mockRejectedValue('error');
 
-      const combinedProviders = combineProviders(providers);
+      const combinedProviders = combineExtensionProviders(providers);
 
       expect(await combinedProviders.getExtensions()).toEqual([
         asyncExtension2,
@@ -188,7 +188,7 @@ describe('combine-providers', () => {
     });
 
     test('getExtension should discard failures and return valid results', async () => {
-      const combinedProviders = combineProviders(providers);
+      const combinedProviders = combineExtensionProviders(providers);
 
       providers[4].getExtension = jest.fn().mockRejectedValue('error');
 
@@ -198,7 +198,7 @@ describe('combine-providers', () => {
     });
 
     test('search should discard failures and return valid results', async () => {
-      const combinedProviders = combineProviders(providers);
+      const combinedProviders = combineExtensionProviders(providers);
 
       providers[4].search = jest.fn().mockRejectedValue('error');
 

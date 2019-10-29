@@ -1,4 +1,4 @@
-import { ADFEntity } from '../../../adf-utils/src';
+import { ADFEntity } from '@atlaskit/adf-utils';
 import { ReactNode } from 'react';
 
 export type AsyncESModule<T> = Promise<{

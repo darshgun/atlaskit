@@ -1,5 +1,5 @@
 import DefaultExtensionProvider from '../../default-extension-provider';
-import createFakeExtensionManifest from './helpers/create-fake-extension-manifest';
+import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
 
 describe('default-extension-provider', () => {
   const awesomeExtension = createFakeExtensionManifest('awesome', 'awesome', [

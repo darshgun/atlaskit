@@ -7,8 +7,6 @@ export type MenuItem = {
   node?: Node;
 };
 
-export const flatten = <T>(arr: T[][]): T[] => ([] as any).concat(...arr);
-
 export const groupBy = <T>(
   arr: T[],
   attr: keyof T,
