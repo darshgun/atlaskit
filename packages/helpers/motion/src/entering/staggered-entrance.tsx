@@ -6,6 +6,7 @@ import React, {
   Ref,
   useContext,
 } from 'react';
+import { useUniqueId } from '../utils/random';
 
 interface StaggeredEntranceProps {
   /**
@@ -40,12 +41,11 @@ interface StaggeredEntranceProps {
 }
 
 const StaggeredEntranceContext = createContext<
-  (id: Symbol) => { isReady: boolean; delay: number; ref: Ref<any> }
+  (id: string) => { isReady: boolean; delay: number; ref: Ref<any> }
 >(() => ({ isReady: true, delay: 0, ref: () => {} }));
 
 export const useStaggeredEntrance = () => {
-  // TODO: Rework for IE11 here.
-  const indentifier = Symbol('StaggeredEntranceId');
+  const indentifier = useUniqueId();
   const context = useContext(StaggeredEntranceContext);
   return context(indentifier);
 };
@@ -65,7 +65,7 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
   delayStep = 50,
 }: StaggeredEntranceProps) => {
   const elementRefs = useRef<(HTMLElement | null)[]>([]);
-  const indexes: Array<Symbol> = [];
+  const indexes: string[] = [];
 
   const [actualColumns, setActualColumns] = useState(() => {
     if (typeof columns === 'number') {
