@@ -377,9 +377,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
                     'join',
                     href,
                     productType,
-                    {
-                      cloudId,
-                    },
                   )}
                 >
                   <ItemWithAvatarGroup
@@ -387,7 +384,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
                     description={description}
                     users={users}
                     href={href}
-                    target="_new"
                   >
                     {label}
                   </ItemWithAvatarGroup>

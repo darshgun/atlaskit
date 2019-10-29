@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { AvatarPropTypes } from '@atlaskit/avatar';
 import AvatarGroup from '@atlaskit/avatar-group';
 
-import { JoinableSiteUser } from '../types';
 import {
   createAndFireNavigationEvent,
   withAnalyticsEvents,
@@ -18,11 +18,10 @@ export interface ItemWithAvatarGroupProps extends WithAnalyticsEventsProps {
   icon: React.ReactNode;
   description?: React.ReactNode;
   href?: string;
-  target?: string;
   isDisabled?: boolean;
   onKeyDown?: any;
   onItemClick?: Function;
-  users?: JoinableSiteUser[];
+  users?: AvatarPropTypes[];
 }
 
 const Wrapper = styled.div`
@@ -60,6 +59,7 @@ class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
               />
             }
             onClick={onItemClick}
+            target="_new"
             {...rest}
           />
         </Wrapper>

@@ -1,8 +1,18 @@
 import {
+  ConfluenceIcon,
+  JiraSoftwareIcon,
+  JiraServiceDeskIcon,
+  JiraCoreIcon,
+  OpsGenieIcon,
+} from '@atlaskit/logo';
+
+import {
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
+  getLabelAndIconByProductKey,
   getJoinableSiteLinks,
+  getRelevantJoinableSites,
   JoinableSiteItemType,
 } from '../../links';
 import {
@@ -210,23 +220,47 @@ describe('utils/links', () => {
     });
   });
 
-  describe('getJoinableSiteLinks', () => {
+  describe('getLabelAndIconByProductKey', () => {
+    it('should return a map of label and icon by product key', () => {
+      expect(getLabelAndIconByProductKey(ProductKey.CONFLUENCE)).toMatchObject({
+        label: 'Confluence',
+        icon: ConfluenceIcon,
+      });
+
+      expect(getLabelAndIconByProductKey(ProductKey.JIRA_CORE)).toMatchObject({
+        label: 'Jira Core',
+        icon: JiraCoreIcon,
+      });
+
+      expect(
+        getLabelAndIconByProductKey(ProductKey.JIRA_SERVICE_DESK),
+      ).toMatchObject({
+        label: 'Jira Service Desk',
+        icon: JiraServiceDeskIcon,
+      });
+
+      expect(
+        getLabelAndIconByProductKey(ProductKey.JIRA_SOFTWARE),
+      ).toMatchObject({
+        label: 'Jira Software',
+        icon: JiraSoftwareIcon,
+      });
+
+      expect(getLabelAndIconByProductKey(ProductKey.OPSGENIE)).toMatchObject({
+        label: 'Opsgenie',
+        icon: OpsGenieIcon,
+      });
+    });
+  });
+
+  describe('getRelevantJoinableSites', () => {
     it('should return an array', () => {
-      const result = getJoinableSiteLinks();
+      const result = getRelevantJoinableSites([]);
       expect(Array.isArray(result)).toBe(true);
     });
 
-    it('should return 3 items at maximum', () => {
-      const result = getJoinableSiteLinks(
-        mockJoinableSites.sites.map(site =>
-          Object.assign({}, site, { relevance: 10 }),
-        ),
-      );
-      expect(result.length).toBe(3);
-    });
-
     it('should not return any site with no products', () => {
-      const result = getJoinableSiteLinks(
+      const result = getRelevantJoinableSites(
         mockJoinableSites.sites.map(site =>
           Object.assign({}, site, { products: [] }),
         ),
@@ -235,7 +269,7 @@ describe('utils/links', () => {
     });
 
     it('should not return any site with no users', () => {
-      const result = getJoinableSiteLinks(
+      const result = getRelevantJoinableSites(
         mockJoinableSites.sites.map(site =>
           Object.assign({}, site, { users: [] }),
         ),
@@ -244,7 +278,7 @@ describe('utils/links', () => {
     });
 
     it('should not return any site with 0 relevance score', () => {
-      const result = getJoinableSiteLinks(
+      const result = getRelevantJoinableSites(
         mockJoinableSites.sites.map(site =>
           Object.assign({}, site, { relevance: 0 }),
         ),
@@ -269,6 +303,22 @@ describe('utils/links', () => {
         oneSite.map(site => Object.assign({}, site, { relevance: 0 })),
       );
       expect(result.length).toBe(1);
+    });
+  });
+
+  describe('getJoinableSiteLinks', () => {
+    it('should return an array', () => {
+      const result = getJoinableSiteLinks([]);
+      expect(Array.isArray(result)).toBe(true);
+    });
+
+    it('should return 3 items at maximum', () => {
+      const result = getJoinableSiteLinks(
+        mockJoinableSites.sites.map(site =>
+          Object.assign({}, site, { relevance: 10 }),
+        ),
+      );
+      expect(result.length).toBe(3);
     });
   });
 });
