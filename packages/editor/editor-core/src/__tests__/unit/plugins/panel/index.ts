@@ -39,7 +39,6 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       editorProps: {
         allowAnalyticsGASV3: true,
         allowPanel: true,
-        allowLists: true,
         allowTables: true,
       },
       pluginKey: panelPluginKey,

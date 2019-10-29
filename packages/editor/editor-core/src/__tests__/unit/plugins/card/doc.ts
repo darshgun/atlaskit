@@ -70,7 +70,6 @@ describe('card', () => {
         allowAnalyticsGASV3: true,
         allowExtension: true,
         allowPanel: true,
-        allowLists: true,
         allowTasksAndDecisions: true,
         UNSAFE_cards: {},
       },

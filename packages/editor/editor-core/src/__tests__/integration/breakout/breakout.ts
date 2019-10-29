@@ -26,7 +26,6 @@ BrowserTestCase(
 
     await mountEditor(page, {
       appearance: 'full-page',
-      allowCodeBlocks: true,
       allowBreakout: true,
     });
 
@@ -49,7 +48,6 @@ BrowserTestCase(
 
     await mountEditor(page, {
       appearance: 'full-page',
-      allowCodeBlocks: true,
       allowBreakout: true,
     });
 
@@ -74,7 +72,6 @@ BrowserTestCase(
 
     await mountEditor(page, {
       appearance: 'full-page',
-      allowCodeBlocks: true,
       allowBreakout: true,
     });
 
@@ -105,7 +102,6 @@ BrowserTestCase(
 
     await mountEditor(page, {
       appearance: 'full-page',
-      allowCodeBlocks: true,
       allowBreakout: true,
     });
 

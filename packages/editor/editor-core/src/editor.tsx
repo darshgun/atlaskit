@@ -54,6 +54,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     appearance: 'comment',
     disabled: false,
     extensionHandlers: {},
+    allowHelpDialog: true,
     allowNewInsertionBehaviour: true,
   };
 
@@ -117,39 +118,18 @@ export default class Editor extends React.Component<EditorProps, {}> {
   private deprecationWarnings(props: EditorProps) {
     const nextVersion = nextMajorVersion();
     const deprecatedProperties = {
-      mediaProvider: {
-        message:
-          'To pass media provider use media property – <Editor media={{ provider }} />',
-        type: 'removed',
-      },
       allowTasksAndDecisions: {
         message:
           'To allow tasks and decisions use taskDecisionProvider – <Editor taskDecisionProvider={{ provider }} />',
         type: 'removed',
       },
-      allowPlaceholderCursor: {
-        type: 'removed',
-      },
+
       allowConfluenceInlineComment: {
         message:
           'To integrate inline comments use experimental annotationProvider – <Editor annotationProvider={{ provider }} />',
         type: 'removed',
       },
-      addonToolbarComponents: {
-        type: 'removed',
-      },
-      cardProvider: {
-        type: 'removed',
-      },
-      allowCodeBlocks: {
-        message:
-          'To disable codeBlocks use - <Editor allowBlockTypes={{ exclude: ["codeBlocks"] }} />',
-      },
-      allowLists: {},
-      allowHelpDialog: {},
-      allowGapCursor: {
-        type: 'removed',
-      },
+
       allowUnsupportedContent: {
         message: 'Deprecated. Defaults to true.',
         type: 'removed',
@@ -223,7 +203,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
     const {
       emojiProvider,
       mentionProvider,
-      mediaProvider,
       taskDecisionProvider,
       contextIdentifierProvider,
       collabEditProvider,
@@ -247,10 +226,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       'contextIdentifierProvider',
       contextIdentifierProvider,
     );
-    this.providerFactory.setProvider(
-      'mediaProvider',
-      media && media.provider ? media.provider : mediaProvider,
-    );
+    this.providerFactory.setProvider('mediaProvider', media && media.provider);
     this.providerFactory.setProvider(
       'imageUploadProvider',
       legacyImageUploadProvider,
@@ -399,9 +375,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
                                     }
                                     customSecondaryToolbarComponents={
                                       this.props.secondaryToolbarComponents
-                                    }
-                                    addonToolbarComponents={
-                                      this.props.addonToolbarComponents
                                     }
                                     collabEdit={this.props.collabEdit}
                                     allowAnnotation={

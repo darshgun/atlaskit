@@ -86,8 +86,6 @@ describe('paste plugins', () => {
       editorProps: {
         allowAnalyticsGASV3: true,
         allowExtension: true,
-        allowCodeBlocks: true,
-        allowLists: true,
         allowPanel: true,
         allowTasksAndDecisions: true,
         allowNestedTasks: true,

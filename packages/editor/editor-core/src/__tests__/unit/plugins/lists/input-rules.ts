@@ -28,8 +28,6 @@ describe('inputrules', () => {
       editorProps: {
         analyticsHandler: trackEvent as any,
         allowAnalyticsGASV3: true,
-        allowLists: true,
-        allowCodeBlocks: true,
       },
       createAnalyticsEvent,
     });

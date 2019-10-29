@@ -275,7 +275,6 @@ describe(name, () => {
             {...requiredProps()}
             {...analyticsProps()}
             editorProps={{
-              allowCodeBlocks: true,
               allowDate: true,
               ...analyticsProps(),
             }}

@@ -25,7 +25,6 @@ describe('hyperlink', () => {
       doc,
       pluginKey: hyperlinkStateKey,
       editorProps: {
-        allowLists: true,
         allowLayouts: true,
       },
     });

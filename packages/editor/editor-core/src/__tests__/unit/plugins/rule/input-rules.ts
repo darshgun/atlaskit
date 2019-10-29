@@ -23,7 +23,6 @@ describe('inputrules', () => {
         analyticsHandler: trackEvent,
         allowAnalyticsGASV3: true,
         allowRule: true,
-        allowCodeBlocks: true,
         allowNewInsertionBehaviour: true,
       },
       createAnalyticsEvent,

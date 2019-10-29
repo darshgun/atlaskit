@@ -29,8 +29,6 @@ describe('paste plugin: third-party', () => {
     createEditor({
       doc,
       editorProps: {
-        allowCodeBlocks: true,
-        allowLists: true,
         allowTextColor: true,
         allowTables: {
           advanced: true,

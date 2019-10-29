@@ -38,8 +38,6 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       pluginKey,
       editorProps: {
         allowPanel: true,
-        allowLists: true,
-        allowCodeBlocks: true,
       },
     });
 

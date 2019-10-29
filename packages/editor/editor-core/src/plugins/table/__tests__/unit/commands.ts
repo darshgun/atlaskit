@@ -738,8 +738,8 @@ describe('table plugin: actions', () => {
       {
         media: {
           allowMediaSingle: true,
+          provider: getFreshMediaProvider(),
         },
-        mediaProvider: getFreshMediaProvider(),
       },
     );
 

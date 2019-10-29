@@ -95,9 +95,7 @@ describe('Media plugin', () => {
       doc,
       editorProps: {
         ...editorProps,
-        allowLists: true,
         media: mediaPluginOptions(dropzoneContainer),
-        allowCodeBlocks: true,
         allowRule: true,
         allowTables: true,
         allowAnalyticsGASV3: true,

@@ -33,7 +33,6 @@ describe('ascii emojis - input rules', () => {
       editorProps: {
         allowAnalyticsGASV3: true,
         emojiProvider: new Promise(() => {}),
-        allowCodeBlocks: true,
       },
       providerFactory,
       createAnalyticsEvent,

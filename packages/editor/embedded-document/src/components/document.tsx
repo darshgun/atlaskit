@@ -94,13 +94,16 @@ export default class Document extends Component<Props> {
         let dataProviders: ProviderFactory | undefined;
 
         if (editorProps) {
-          const { mentionProvider, emojiProvider, mediaProvider } = editorProps;
+          const { mentionProvider, emojiProvider, media } = editorProps;
 
           dataProviders = ProviderFactory.create({
             mentionProvider: mentionProvider!,
             emojiProvider: emojiProvider!,
-            mediaProvider: mediaProvider!,
           });
+
+          if (media && media.provider) {
+            dataProviders.setProvider('mediaProvider', media.provider);
+          }
         }
 
         return (

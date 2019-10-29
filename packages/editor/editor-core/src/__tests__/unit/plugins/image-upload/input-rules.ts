@@ -16,7 +16,6 @@ describe('inputrules', () => {
       doc,
       editorProps: {
         legacyImageUploadProvider: Promise.resolve(() => {}),
-        allowCodeBlocks: true,
         media: {
           allowMediaSingle: true,
         },

@@ -46,8 +46,6 @@ export default class Example extends React.PureComponent<
       <Container>
         <Editor
           appearance="comment"
-          allowCodeBlocks={true}
-          allowLists={true}
           allowRule={true}
           allowTables={true}
           onChange={this.handleChangeInTheEditor}

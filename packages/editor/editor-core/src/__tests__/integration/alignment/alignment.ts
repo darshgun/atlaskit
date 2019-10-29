@@ -71,7 +71,6 @@ BrowserTestCase(
     await mountEditor(page, {
       appearance: 'full-page',
       allowTextAlignment: true,
-      allowCodeBlocks: true,
     });
 
     await page.click(`[aria-label="${messages.codeblock.defaultMessage}"]`);
