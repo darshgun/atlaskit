@@ -19,14 +19,15 @@ export const ProductHome = ({
   onClick = () => {},
 }: ProductHomeProps) => {
   const theme = useTheme();
+  const { backgroundColor, color } = theme.mode.productHome;
   return (
     <Fragment>
       <div css={containerCSS} onClick={onClick}>
         <div css={productLogoCSS}>
-          <Logo />
+          <Logo iconColor={backgroundColor} textColor={color} />
         </div>
         <div css={productIconCSS}>
-          <Icon size="small" />
+          <Icon size="small" iconColor={backgroundColor} />
         </div>
       </div>
       {siteName && <div css={siteNameCSS(theme)}>{siteName}</div>}

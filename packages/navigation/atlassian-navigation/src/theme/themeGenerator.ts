@@ -69,6 +69,7 @@ const generateCSSStates = (colors: Colors): ButtonCSSContext => {
     focus: {
       boxShadow: getBoxShadow(mix(backgroundColorRgb, colorRgb, 0.5)),
       color,
+      backgroundColor,
     },
     hover: {
       backgroundColor: mix(
@@ -126,38 +127,6 @@ export const generateTheme = (args: GenerateThemeArgs): NavigationTheme => {
   };
 };
 
-const transparentBoxShadow = '0 0 0 2px transparent';
-
-const generateContrastingTextColor = backgroundColor => {
-  return '#FFFFFF';
-};
-
-const generateCreateButtonTheme = (backgroundColor, highlightColor) => {
-  return {
-    active: {
-      color: '#FFFFFF',
-      backgroundColor: 'rgb(33,104,211)',
-      boxShadow: transparentBoxShadow,
-    },
-    default: {
-      color: generateContrastingTextColor(backgroundColor),
-      backgroundColor: highlightColor,
-      boxShadow: transparentBoxShadow,
-    },
-    focus: {
-      color: '#FFFFFF',
-      backgroundColor: '#0052CC',
-      boxShadow: '0 0 0 2px rgb(128,169,230)',
-    },
-    hover: {
-      color: '#FFFFFF',
-      backgroundColor: 'rgb(20,96,208)',
-      boxShadow: transparentBoxShadow,
-    },
-    selected: { color: '', backgroundColor: '', boxShadow: '' },
-  };
-};
-
 export const generateThemes = (args: GenerateThemesArgs): NavigationTheme => {
   const defaultButtonStyles = {
     color: '',
@@ -170,34 +139,5 @@ export const generateThemes = (args: GenerateThemesArgs): NavigationTheme => {
     return defaultTheme;
   }
 
-  return {
-    mode: {
-      create: generateCreateButtonTheme(backgroundColor, highlightColor),
-      iconButton: {
-        active: defaultButtonStyles,
-        default: defaultButtonStyles,
-        focus: defaultButtonStyles,
-        hover: defaultButtonStyles,
-        selected: defaultButtonStyles,
-      },
-      navigation: {
-        backgroundColor,
-        color: '',
-      },
-      primaryButton: {
-        active: defaultButtonStyles,
-        default: defaultButtonStyles,
-        focus: defaultButtonStyles,
-        hover: defaultButtonStyles,
-        selected: defaultButtonStyles,
-      },
-      search: {
-        backgroundColor: '',
-        color: '',
-      },
-      skeleton: {
-        backgroundColor: '',
-      },
-    },
-  };
+  return {};
 };

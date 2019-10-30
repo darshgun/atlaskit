@@ -9,8 +9,9 @@ import {
   N500,
   N600,
 } from '@atlaskit/theme/colors';
-
 import chromatism from 'chromatism';
+
+import { Mode } from './types';
 
 const hexToRGBA = (hex: string, opacity: number = 1) => {
   const rgba = { ...chromatism.convert(hex).rgb, ...{ a: opacity } };
@@ -18,7 +19,7 @@ const hexToRGBA = (hex: string, opacity: number = 1) => {
   return `rgba(${Object.values(rgba).join(', ')})`;
 };
 
-const defaultTheme = {
+const defaultTheme: { mode: Mode } = {
   mode: {
     create: {
       active: {
@@ -68,6 +69,11 @@ const defaultTheme = {
       selected: { color: '', backgroundColor: '', boxShadow: '' },
     },
     navigation: { backgroundColor: N0, color: N200 },
+    productHome: {
+      backgroundColor: B400,
+      color: DN10A,
+      borderRight: `1px solid ${hexToRGBA(N200, 0.3)}`,
+    },
     primaryButton: {
       active: {
         color: N600,

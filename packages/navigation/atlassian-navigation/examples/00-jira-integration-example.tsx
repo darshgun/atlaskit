@@ -163,15 +163,21 @@ const linkCSS = {
   },
 };
 
-const Icon = () => (
+const Icon = ({ iconColor }) => (
   <a css={linkCSS} href="#">
-    <JiraIcon />
+    <JiraIcon iconColor={iconColor} />
   </a>
 );
 
-const Logo = () => (
+const Logo = ({
+  iconColor,
+  textColor,
+}: {
+  iconColor: string;
+  textColor: string;
+}) => (
   <a css={linkCSS} href="#">
-    <JiraLogo />
+    <JiraLogo iconColor={iconColor} textColor={textColor} />
   </a>
 );
 

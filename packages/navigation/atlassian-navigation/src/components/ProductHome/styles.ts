@@ -64,30 +64,16 @@ export const productLogoCSS = {
 export const siteNameCSS = ({
   mode: {
     navigation: { color },
+    productHome: { borderRight },
   },
 }: NavigationTheme) => ({
   marginLeft: `${gridSize * 0.5}px`,
   display: 'flex',
   alignItems: 'center',
 
-  // Alternate and leaner way of adding separator
-  // go with this if border color opacity can be solved with
-  // theme generator.
-  // paddingRight: gridSize * 3,
-  // marginRight: gridSize * 1.5,
-  // borderRight: `solid 1px ${color}`
-
-  // Adds separator after site name.
-  '&::after': {
-    marginLeft: gridSize * 3,
-    marginRight: gridSize * 1.5,
-    content: '""',
-    display: 'inline-block',
-    width: '1px',
-    height: gridSize * 3,
-    backgroundColor: color,
-    opacity: 0.2,
-  },
+  paddingRight: gridSize * 3,
+  marginRight: gridSize * 1.5,
+  borderRight: borderRight,
 });
 
 export const siteNameSkeletonCSS = (theme: NavigationTheme) => ({

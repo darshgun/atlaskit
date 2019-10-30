@@ -31,6 +31,8 @@ export type PrimaryButtonCSS = ButtonCSSContext;
 
 export type NavigationCSS = CSSProperties;
 
+export type ProductHomeCSS = CSSProperties;
+
 export type SearchCSS = CSSProperties;
 
 export type SkeletonCSS = CSSObject & {
@@ -44,6 +46,7 @@ export type Mode = {
   iconButton: IconButtonCSS;
   navigation: NavigationCSS;
   primaryButton: PrimaryButtonCSS;
+  productHome: ProductHomeCSS;
   search: SearchCSS;
   skeleton: SkeletonCSS;
 };

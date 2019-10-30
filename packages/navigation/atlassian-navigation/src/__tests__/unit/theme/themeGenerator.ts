@@ -60,6 +60,10 @@ describe('generateTheme', () => {
         selected: { color: '', backgroundColor: '', boxShadow: '' },
       },
       navigation: { backgroundColor: '#FFFFFF', color: '#6B778C' },
+      productHome: {
+        backgroundColor: '#0052CC',
+        color: 'rgba(13, 20, 36, 0.97)',
+      },
       primaryButton: {
         active: {
           color: '#344563',
