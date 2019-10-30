@@ -2,7 +2,7 @@ import { copyFixtureIntoTempDir } from 'jest-fixtures';
 
 const fs = require('fs-extra');
 const path = require('path');
-const writeChangeset = require('../../changeset/writeChangeset');
+const writeChangeset = require('../../../changeset/writeChangeset');
 
 // avoid polluting test logs with error message in console
 const consoleError = console.error;

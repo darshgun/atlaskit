@@ -9,15 +9,15 @@ import {
 import { getChangedPackagesSinceMaster } from '@atlaskit/build-utils/packages';
 const git = require('@atlaskit/build-utils/git');
 
-import { changesetCommand } from '../../changeset';
-import { initializeCommand } from '../../initialize';
-import writeChangeset from '../../changeset/writeChangeset';
+import { changesetCommand } from '../../../changeset';
+import { initializeCommand } from '../../../initialize';
+import writeChangeset from '../../../changeset/writeChangeset';
 
 jest.mock('@atlaskit/build-utils/logger');
 jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/packages');
 jest.mock('@atlaskit/build-utils/git');
-jest.mock('../../changeset/writeChangeset');
+jest.mock('../../../changeset/writeChangeset');
 writeChangeset.mockImplementation(() => Promise.resolve('abcdefg'));
 git.commit.mockImplementation(() => Promise.resolve(true));
 

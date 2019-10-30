@@ -47,6 +47,8 @@ describe('Snapshot Test', () => {
     // Take screenshot after sorting
     await page.waitForSelector(tableHeadCell);
     await page.click(tableHeadParty);
+    // We need to wait for the animation to finish.
+    await page.waitFor(1000);
     const tableAfter = await takeElementScreenShot(page, table);
     expect(tableAfter).toMatchProdImageSnapshot();
   });

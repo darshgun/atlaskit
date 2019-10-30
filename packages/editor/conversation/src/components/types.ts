@@ -1,10 +1,12 @@
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { Comment as CommentType, User } from '../model';
 import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
+import { CommentAction as AkCommentAction } from '@atlaskit/comment';
 import { SuccessHandler } from '../internal/actions';
 import { EventData } from '../internal/analytics';
 
 export type SendAnalyticsEvent = (eventData: EventData) => void;
+
 /**
  * Props which are passed down from the parent Conversation/Comment
  */
@@ -74,4 +76,9 @@ export interface SharedProps {
   sendAnalyticsEvent: SendAnalyticsEvent;
 
   portal?: HTMLElement;
+
+  renderAdditionalCommentActions?: (
+    CommentAction: typeof AkCommentAction,
+    comment: CommentType,
+  ) => JSX.Element[];
 }

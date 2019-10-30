@@ -7,8 +7,8 @@ import {
   askQuestion,
 } from '@atlaskit/build-utils/cli';
 import { getChangedPackagesSinceMaster } from '@atlaskit/build-utils/packages';
-import { changesetCommand } from '../../changeset';
-import writeChangeset from '../../changeset/writeChangeset';
+import { changesetCommand } from '../../../changeset';
+import writeChangeset from '../../../changeset/writeChangeset';
 
 /*
     Bumping peerDeps is a tricky issue, so we are testing every single combination here so that
@@ -22,7 +22,7 @@ jest.mock('@atlaskit/build-utils/logger');
 jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/packages');
 jest.mock('@atlaskit/build-utils/git');
-jest.mock('../../changeset/writeChangeset');
+jest.mock('../../../changeset/writeChangeset');
 
 // This is some sad flow hackery
 const unsafeGetChangedPackagesSinceMaster: any = getChangedPackagesSinceMaster;

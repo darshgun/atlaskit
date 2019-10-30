@@ -3,7 +3,25 @@ import React from 'react';
 export const clipboardApiSupported = () =>
   !!navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
 
-// This function is needed for safari and IE.
+export const ieClipboardApiSupported = () =>
+  (window as any).clipboardData &&
+  typeof (window as any).clipboardData.setData === 'function';
+
+const isClipboardApiSupported = clipboardApiSupported();
+const isIEClipboardApiSupported = ieClipboardApiSupported();
+
+// for IE we can remove this if we dropped IE support.
+export const copyToClipboardIE = (textToCopy: string): Promise<void> =>
+  new Promise<void>((resolve: () => void, reject: (str: string) => void) => {
+    if (ieClipboardApiSupported()) {
+      (window as any).clipboardData.setData('text', textToCopy);
+      resolve();
+    } else {
+      reject('IE clipboard api is not supported');
+    }
+  });
+
+// This function is needed for safari .
 // This function is a synchronous function, but it is wrapped into a promise
 // to be consistent with "copyToClipboard".
 export const copyToClipboardLegacy = (
@@ -44,8 +62,6 @@ export const copyToClipboard = (textToCopy: string): Promise<void> =>
     }
   });
 
-const isClipboardApiSupported = clipboardApiSupported();
-
 const CopyTextContext = React.createContext<{
   copyTextToClipboard: (textToCopy: string) => Promise<void>;
 }>({
@@ -77,6 +93,8 @@ export class CopyTextProvider extends React.Component {
   copyTextToClipboard = (textToCopy: string): Promise<void> => {
     if (isClipboardApiSupported) {
       return copyToClipboard(textToCopy);
+    } else if (isIEClipboardApiSupported) {
+      return copyToClipboardIE(textToCopy);
     } else {
       return copyToClipboardLegacy(textToCopy, this.copyAreaRef.current);
     }
