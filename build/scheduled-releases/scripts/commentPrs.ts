@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import simpleGit from 'simple-git/promise';
 
-import { DevelopBranchName, ReleaseBranchPrefix } from './constants';
+import { DevelopBranchName, ReleaseBranchPrefix } from '../constants';
 import {
   getPrFromCommit,
   PullRequest,

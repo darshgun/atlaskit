@@ -6,8 +6,6 @@
   "main": "index.js",
   "scripts": {
     "build": "ts-node build.ts",
-    "create-release": "ts-node scheduled-releases/createRelease.ts",
-    "update-pr": "ts-node scheduled-releases/index.ts",
     "stop-if-older-build": "node ./release.stop.pipeline.if.older.build.running.js",
     "restart-stopped-build": "node ./release.restart.last.stopped.build.js"
   },

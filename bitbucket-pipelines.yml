@@ -464,7 +464,8 @@ pipelines:
             - yarn send:buildEvents
             # Only execute the below if successful
             - test $BITBUCKET_EXIT_CODE -eq 0
-            - cd build/ci-scripts
+            - cd build/scheduled-releases
+            - yarn --ignore-engines
             - yarn update-pr "$BITBUCKET_COMMIT" "$BITBUCKET_REPO_FULL_NAME"
 
     post-release-comment:
@@ -477,7 +478,8 @@ pipelines:
           after-script:
             # Only execute the below if successful
             - test $BITBUCKET_EXIT_CODE -eq 0
-            - cd build/ci-scripts
+            - cd build/scheduled-releases
+            - yarn --ignore-engines
             - yarn update-pr "$BITBUCKET_COMMIT" "$BITBUCKET_REPO_FULL_NAME"
 
     # This build should only be run on the master branch, once per day.
