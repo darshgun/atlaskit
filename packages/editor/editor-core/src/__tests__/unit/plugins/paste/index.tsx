@@ -1615,7 +1615,7 @@ describe('paste plugins', () => {
       );
     });
 
-    it.only('converts unicode bullets', () => {
+    it('converts unicode bullets', () => {
       const { editorView } = editor(doc(p('{<>}')));
       const html = '<span>• line 1<br />• line 2<br />• line 3';
 
@@ -1628,7 +1628,7 @@ describe('paste plugins', () => {
 
     it('converts mixed bulleted list', () => {
       const { editorView } = editor(doc(p('{<>}')));
-      const html = '<span>* line 1<br />- line 2<br />* line 3';
+      const html = '<span>• line 1<br />- line 2<br />* line 3';
 
       dispatchPasteEvent(editorView, { html });
 
