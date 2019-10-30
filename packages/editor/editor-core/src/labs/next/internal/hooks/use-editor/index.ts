@@ -119,7 +119,7 @@ function useApplyEditorViewProps(
 /**
  * Handles editor component unmount
  */
-function useHandleEditorUnmount(
+export function useHandleEditorUnmount(
   editorSharedConfigRef: React.MutableRefObject<EditorSharedConfig | null>,
 ) {
   React.useEffect(
@@ -133,7 +133,11 @@ function useHandleEditorUnmount(
           return;
         }
 
-        const { eventDispatcher, editorView } = editorSharedConfig.current;
+        const {
+          eventDispatcher,
+          editorView,
+          onDestroy,
+        } = editorSharedConfig.current;
 
         if (eventDispatcher) {
           eventDispatcher.destroy();
@@ -144,6 +148,10 @@ function useHandleEditorUnmount(
           editorView.setProps({
             dispatchTransaction: _tr => {},
           } as DirectEditorProps);
+
+          if (onDestroy) {
+            onDestroy();
+          }
 
           // Destroy plugin states and editor state
           // when the editor is being unmounted

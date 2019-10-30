@@ -24,6 +24,7 @@ export type EditorSharedConfig = {
   disabled: EditorProps['disabled'];
 
   onChange?: EditorProps['onChange'];
+  onDestroy?: EditorProps['onDestroy'];
 };
 
 const EditorSharedConfigContext = React.createContext<EditorSharedConfig | null>(
