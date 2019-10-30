@@ -2,8 +2,19 @@ import React, { useRef, useContext, createContext, Children } from 'react';
 import { isReducedMotion } from '../utils/accessibility';
 import { useForceRender } from '../utils/use-force-render';
 
+/**
+ * Internally we will be playing with an element that will always have a key defined.
+ */
+type ElementWithKey = JSX.Element & { key: string };
+
+/**
+ * Externally children may or may not have a key.
+ */
 type ChildElement = JSX.Element | boolean;
 
+/**
+ * Consumers can use either a single element or multiple elements.
+ */
 type ChildNode = ChildElement[] | ChildElement;
 
 interface ExitingPersistenceProps {
@@ -40,13 +51,13 @@ const emptyContext = {};
 const ExitingContext = createContext<ExitingMotionProps>(emptyContext);
 
 const isAnyPreviousKeysMissingFromCurrent = (
-  currentMap: { [key: string]: JSX.Element },
-  previous: JSX.Element[],
+  currentMap: { [key: string]: ElementWithKey },
+  previous: ElementWithKey[],
 ): boolean => {
   for (let i = 0; i < previous.length; i++) {
     const element = previous[i];
     const key = element.key;
-    if (!currentMap[key!]) {
+    if (!currentMap[key]) {
       return true;
     }
   }
@@ -71,10 +82,10 @@ const wrapChildWithContextProvider = (
 };
 
 const spliceNewElementsIntoPrevious = (
-  current: JSX.Element[],
-  previous: JSX.Element[],
-): JSX.Element[] => {
-  const splicedChildren: JSX.Element[] = previous.concat([]);
+  current: ElementWithKey[],
+  previous: ElementWithKey[],
+): ElementWithKey[] => {
+  const splicedChildren: ElementWithKey[] = previous.concat([]);
 
   for (let i = 0; i < current.length; i++) {
     const child = current[i];
@@ -90,9 +101,9 @@ const spliceNewElementsIntoPrevious = (
   return splicedChildren;
 };
 
-const childrenToObj = (children: JSX.Element[]) => {
-  return children.reduce<{ [key: string]: JSX.Element }>((acc, child) => {
-    acc[child.key!] = child;
+const childrenToObj = (children: ElementWithKey[]) => {
+  return children.reduce<{ [key: string]: ElementWithKey }>((acc, child) => {
+    acc[child.key] = child;
     return acc;
   }, {});
 };
@@ -100,15 +111,16 @@ const childrenToObj = (children: JSX.Element[]) => {
 /**
  * This function will convert all children types to an array while also filtering out non-valid React elements.
  */
-const childrenToArray = (children: ChildNode): JSX.Element[] => {
-  const childrenAsArray: JSX.Element[] = [];
+const childrenToArray = (children: ChildNode): ElementWithKey[] => {
+  const childrenAsArray: ElementWithKey[] = [];
 
   // We convert children to an array using this helper method as it will add keys to children that do not
   // have them, such as when we have hardcoded children that are conditionally rendered.
   Children.toArray(children).forEach(child => {
     // We ignore any boolean children to make our code a little more simple later on.
     if (typeof child !== 'boolean') {
-      childrenAsArray.push(child);
+      // Children WILL have a key after being forced into an array using the React.Children helper.
+      childrenAsArray.push(child as ElementWithKey);
     }
   });
 
@@ -123,14 +135,14 @@ const hasAnyExitingChildMountedAgain = (
   exitingChildren: React.MutableRefObject<{
     [key: string]: boolean;
   }>,
-  children: JSX.Element[],
+  children: ElementWithKey[],
 ): boolean => {
   let exitingChildMountedAgain = false;
 
   children.forEach(child => {
-    if (exitingChildren.current[child.key!]) {
+    if (exitingChildren.current[child.key]) {
       exitingChildMountedAgain = true;
-      delete exitingChildren.current[child.key!];
+      delete exitingChildren.current[child.key];
     }
   });
 
@@ -142,8 +154,8 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
 ): any => {
   const children = childrenToArray(props.children);
   const childrenObj = childrenToObj(children);
-  const previousChildren = useRef<JSX.Element[]>([]);
-  const persistedChildren = useRef<JSX.Element[]>([]);
+  const previousChildren = useRef<ElementWithKey[]>([]);
+  const persistedChildren = useRef<ElementWithKey[]>([]);
   const forceRender = useForceRender();
   const exitingChildren = useRef<{ [key: string]: boolean }>({});
 
@@ -151,6 +163,8 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
     return children;
   }
 
+  // This entire block can't be an effect because we need it to run synchronously during a render
+  // else when elements are being removed they will be remounted instead of being updated.
   if (
     previousChildren.current.length &&
     isAnyPreviousKeysMissingFromCurrent(childrenObj, previousChildren.current)
@@ -170,15 +184,15 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
       ? persistedChildren.current
       : spliceNewElementsIntoPrevious(children, persistedChildren.current)
     ).map(child => {
-      const currentChild = childrenObj[child.key!];
+      const currentChild = childrenObj[child.key];
       if (!currentChild) {
         // We've found an exiting child - mark it!
-        exitingChildren.current[child.key!] = true;
+        exitingChildren.current[child.key] = true;
 
         return wrapChildWithContextProvider(child, {
           isExiting: true,
           onFinish: () => {
-            delete exitingChildren.current[child.key!];
+            delete exitingChildren.current[child.key];
 
             // We will only remove the exiting elements when any subsequent exiting elements have also finished.
             // Think of removing many items from a todo list - when removing a few over a few clicks we don't

@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import { ReactNode } from 'react';
 import { jsx } from '@emotion/core';
 import { useState } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -6,7 +7,13 @@ import { ConfluenceIcon, JiraServiceDeskIcon } from '@atlaskit/logo';
 import { FadeIn, ExitingPersistence } from '../src';
 import { Block, Centered, RetryContainer } from '../examples-utils';
 
-const EnteringBlock = ({ children, exitThenEnter }: any) => (
+const EnteringBlock = ({
+  children,
+  exitThenEnter,
+}: {
+  children: ReactNode;
+  exitThenEnter?: boolean;
+}) => (
   <FadeIn>
     {(props, direction) => (
       <Block
