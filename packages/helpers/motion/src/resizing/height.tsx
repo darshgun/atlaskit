@@ -3,6 +3,7 @@ import { isReducedMotion } from '../utils/accessibility';
 import { mediumDurationMs } from '../utils/durations';
 import { easeInOut } from '../utils/curves';
 import { useSnapshotBeforeUpdate } from '../utils/use-snapshot-before-update';
+import { useSetTimeout } from '../utils/timer-hooks';
 
 interface ResizingHeightOpts {
   /**
@@ -42,7 +43,7 @@ export const useResizingHeight = ({
 }: ResizingHeightOpts = {}) => {
   const prevDimensions = useRef<Dimensions>();
   const childRef = useRef<HTMLElement>();
-  const inflightTimeout = useRef<number>();
+  const setTimeout = useSetTimeout();
 
   useSnapshotBeforeUpdate(() => {
     if (isReducedMotion() || !childRef.current) {
@@ -86,32 +87,24 @@ export const useResizingHeight = ({
     Object.assign(childRef.current.style, newStyles);
 
     // We split this over two animation frames so the DOM has enough time to flush the changes.
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
+    // We are deliberately not skipping this frame if another render happens - if we do the motion doesn't finish properly.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         if (!childRef.current) {
           return;
         }
 
         childRef.current.style.height = `${nextDimensions.height}px`;
 
-        inflightTimeout.current = window.setTimeout(() => {
-          window.requestAnimationFrame(() => {
-            if (!childRef.current) {
-              return;
-            }
+        setTimeout(() => {
+          if (!childRef.current) {
+            return;
+          }
 
-            childRef.current.setAttribute('style', '');
-          });
+          childRef.current.setAttribute('style', '');
         }, duration);
       });
     });
-
-    return () => {
-      if (inflightTimeout.current !== undefined) {
-        window.clearTimeout(inflightTimeout.current);
-        inflightTimeout.current = undefined;
-      }
-    };
   });
 
   return { ref: childRef as React.MutableRefObject<any> };

@@ -31,24 +31,13 @@ export default md`
 
   ${(
     <Example
+      highlight="13,53"
       packageName="@atlaskit/motion"
       Component={require('../examples/resizing-height').default}
       title="Resizing height"
       source={require('!!raw-loader!../examples/resizing-height')}
     />
   )}
-
-  ### Usage
-
-  ${code`
-import { useResizingHeight } from '@atlaskit/motion';
-
-export default ({ title }) => (
-  <div {...useResizingHeight()}>
-    {title}
-  </div>
-);
-`}
 
   ### Optimizations
 
