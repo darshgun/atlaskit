@@ -38,6 +38,7 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
     popupsScrollableElement: props.popupsScrollableElement,
 
     onChange: props.onChange,
+    onDestroy: props.onDestroy,
   });
 
   const onMount = props.onMount;
