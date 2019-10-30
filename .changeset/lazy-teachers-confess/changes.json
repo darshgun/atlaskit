@@ -1,9 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/popper", "type": "patch" },
-    { "name": "@atlaskit/popup", "type": "patch" },
-    { "name": "@atlaskit/select", "type": "patch" },
-    { "name": "@atlaskit/refinement-bar", "type": "patch" }
-  ],
-  "dependents": []
-}

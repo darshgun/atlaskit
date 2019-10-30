@@ -1,5 +1,13 @@
 # @atlaskit/refinement-bar
 
+## 1.1.12
+
+### Patch Changes
+
+- [patch][542080be8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/542080be8a):
+
+  Bumped react-popper and resolved infinite looping refs issue, and fixed close-on-outside-click for @atlaskit/popup
+
 ## 1.1.11
 
 - Updated dependencies [f9b5e24662](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9b5e24662):
