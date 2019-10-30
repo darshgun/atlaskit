@@ -8,6 +8,7 @@ export default md`
 
   ${(
     <Example
+      highlight="5,19-21"
       packageName="@atlaskit/motion"
       Component={require('../examples/fade-out-single-element').default}
       title="Single element"
@@ -30,6 +31,7 @@ export default md`
 
   ${(
     <Example
+      highlight="11,35-38,40,63-66"
       packageName="@atlaskit/motion"
       Component={require('../examples/fade-in-list-of-elements').default}
       title="List of elements"
@@ -39,6 +41,7 @@ export default md`
 
   ${(
     <Example
+      highlight="16,68-77,83-87"
       packageName="@atlaskit/motion"
       Component={require('../examples/fade-in-grid-of-elements').default}
       title="Grid of elements"
@@ -61,6 +64,7 @@ export default md`
 
   ${(
     <Example
+      highlight="7,79-81,34-45,21-22"
       packageName="@atlaskit/motion"
       Component={require('../examples/fade-between-elements').default}
       title="Single element"
@@ -70,6 +74,7 @@ export default md`
 
   ${(
     <Example
+      highlight="13,50-54,89-92"
       packageName="@atlaskit/motion"
       Component={require('../examples/fade-out-list-of-elements').default}
       title="List of elements"
