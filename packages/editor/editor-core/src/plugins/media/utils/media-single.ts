@@ -250,7 +250,17 @@ export function transformSliceForMedia(slice: Slice, schema: Schema) {
       );
     }
 
-    return slice;
+    newSlice = mapSlice(newSlice, node =>
+      node.type.name === 'media' && node.attrs.type === 'external'
+        ? media.createChecked(
+            { ...node.attrs, __external: true },
+            node.content,
+            node.marks,
+          )
+        : node,
+    );
+
+    return newSlice;
   };
 }
 
