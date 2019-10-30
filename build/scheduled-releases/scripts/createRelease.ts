@@ -4,6 +4,7 @@ import simpleGit, { SimpleGit } from 'simple-git/promise';
 import { ValidationError } from '@atlaskit/build-utils/errors';
 import { DevelopBranchName, ReleaseBranchPrefix } from '../constants';
 import { createSpyObject } from '@atlaskit/build-utils/logging';
+import { capitalise } from '../utils';
 
 type Options = {
   dryRun: boolean;
@@ -36,7 +37,12 @@ export default async function main(
     `Tagging ${originDevelopBranch} with start of next release...`,
   );
   await git.checkout(originDevelopBranch);
-  await git.addTag(nextReleaseTagName);
+  await git.addAnnotatedTag(
+    nextReleaseTagName,
+    `Marks the start of code that will go out in the next release - ${capitalise(
+      nextReleaseName,
+    )}`,
+  );
   console.log('Done.');
 
   // @ts-ignore

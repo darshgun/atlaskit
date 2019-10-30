@@ -1,37 +1,51 @@
 import chalk from 'chalk';
 import simpleGit from 'simple-git/promise';
 
-import { DevelopBranchName, ReleaseBranchPrefix } from '../constants';
+import {
+  DevelopBranchName,
+  ReleaseBranchPrefix,
+  ReleaseProjectLink,
+  NextReleaseTagPrefix,
+  ReleaseDocs,
+} from '../constants';
 import {
   getPrFromCommit,
   PullRequest,
   PullRequestClient,
 } from '@atlaskit/build-utils/bitbucket';
-
-type Opts = {
-  dryRun: boolean;
-};
+import { createSpyObject } from '@atlaskit/build-utils/logging';
+import { capitalise } from '../utils';
 
 async function updatePrWithFutureRelease(
   prClient: PullRequestClient,
   matchedPr: PullRequest,
-  opts: Opts,
 ) {
-  // @ts-ignore
   const git = simpleGit('./');
 
-  // TODO: Obtain this somehow, maybe as part of a git tag
-  const nextRelease = 'flannel';
+  const nextReleaseTagPattern = `${NextReleaseTagPrefix}*`;
+  const nextReleaseTag = await git.raw(
+    `describe --match ${nextReleaseTagPattern} origin/${DevelopBranchName}`.split(
+      ' ',
+    ),
+  );
+  const nextRelease = capitalise(
+    nextReleaseTag.replace(NextReleaseTagPrefix, ''),
+  ).trim();
   await prClient.addReleaseComment(
     matchedPr.id,
-    'Scheduled to release',
-    `in the \`${nextRelease}\` release`,
+    'Scheduled to be released',
+    `in \`${nextRelease}\`.\n
+Links: [Schedule](${ReleaseProjectLink}) | [Scheduled Release Process](${ReleaseDocs})`,
   );
 }
 
 function updateAllPrsWithRelease() {
-  console.log('Updating all PRs with release');
+  console.log('UNIMPLEMENTED - Updating all PRs with release');
 }
+
+type Opts = {
+  dryRun: boolean;
+};
 
 const defaultOpts = {
   dryRun: false,
@@ -64,15 +78,17 @@ export default async function main(
   }
   const sourceBranch = matchedPr.source.branch.name;
   const targetBranch = matchedPr.destination.branch.name;
-  const prClient = new PullRequestClient({
-    auth: {
-      username: BITBUCKET_USER,
-      password: BITBUCKET_PASSWORD,
-    },
-    repoFullName,
-  });
+  const prClient = opts.dryRun
+    ? createSpyObject<PullRequestClient>('PullRequestClient')
+    : new PullRequestClient({
+        auth: {
+          username: BITBUCKET_USER,
+          password: BITBUCKET_PASSWORD,
+        },
+        repoFullName,
+      });
   if (targetBranch === DevelopBranchName) {
-    await updatePrWithFutureRelease(prClient, matchedPr, opts);
+    await updatePrWithFutureRelease(prClient, matchedPr);
   } else if (
     targetBranch === 'master' &&
     sourceBranch.startsWith(ReleaseBranchPrefix)
@@ -84,8 +100,12 @@ export default async function main(
 }
 
 if (require.main === module) {
-  const [commitHash, repoFullName] = process.argv.slice(2);
-  main(commitHash, repoFullName).catch(e => {
+  const args = process.argv.slice(2);
+  const [commitHash, repoFullName] = args;
+  const flags = args.filter(a => a.startsWith('--'));
+  main(commitHash, repoFullName, {
+    dryRun: flags.includes('--dryRun') || flags.includes('--dry-run'),
+  }).catch(e => {
     console.error(chalk.red(e));
     process.exit(1);
   });
