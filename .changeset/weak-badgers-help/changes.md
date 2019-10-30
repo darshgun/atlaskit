@@ -1,1 +1,0 @@
-remove ! from Toolbar Annotation component to prevent runtime exception

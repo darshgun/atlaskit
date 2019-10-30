@@ -1,1 +1,0 @@
-Remove export of ContextConfig from media-store
