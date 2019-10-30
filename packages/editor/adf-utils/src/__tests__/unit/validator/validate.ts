@@ -22,7 +22,7 @@ const readFilesSync = (path: string) =>
   );
 
 describe('validate', () => {
-  ['full'].forEach(schemaType => {
+  ['full', 'stage-0'].forEach(schemaType => {
     let valid = [];
     try {
       valid = readFilesSync(`${BASE_DIR}/${schemaType}/valid`);
