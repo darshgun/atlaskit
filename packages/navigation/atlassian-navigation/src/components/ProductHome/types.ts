@@ -1,14 +1,16 @@
 import { ComponentType, MouseEvent } from 'react';
 
-import { ProductHomeCSS } from '../../theme/types';
-
 export type ProductHomeProps = {
   /** The product icon. Expected to be an Icon from the Atlaskit Logo package. Visible on smaller screen sizes */
   icon: ComponentType<{
     size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | undefined;
+    iconColor?: string;
   }>;
   /** The product logo, visible on larger screen sizes */
-  logo: ComponentType<ProductHomeCSS>;
+  logo: ComponentType<{
+    iconColor?: string;
+    textColor?: string;
+  }>;
   /** Optional onClick handler */
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   /** Name of the site that appears next to the logo **/

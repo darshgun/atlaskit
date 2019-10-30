@@ -63,6 +63,7 @@ describe('generateTheme', () => {
       productHome: {
         backgroundColor: '#0052CC',
         color: 'rgba(13, 20, 36, 0.97)',
+        borderRight: '1px solid rgba(107, 119, 140, 0.3)',
       },
       primaryButton: {
         active: {
@@ -116,6 +117,9 @@ describe('generateTheme', () => {
       it(`should match theme object for ${component}`, () => {
         const componentTheme = generatedDefaultTheme[component as Component];
 
+        expect(Object.keys(componentTheme)).toEqual(
+          Object.keys(atlassianThemeObject.mode[component as Component]),
+        );
         expect(componentTheme).toEqual(
           expect.objectContaining(
             atlassianThemeObject.mode[component as Component],
