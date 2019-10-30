@@ -104,8 +104,17 @@ export function createPlugin(
           return false;
         }
 
-        const text = event.clipboardData.getData('text/plain');
+        let text = event.clipboardData.getData('text/plain');
         const html = event.clipboardData.getData('text/html');
+        const uriList = event.clipboardData.getData('text/uri-list');
+
+        // Links copied from iOS Safari share button only have the text/uri-list data type
+        // ProseMirror don't do anything with this type so we want to make our own open slice
+        // with url as text content so link is pasted inline
+        if (uriList && !text && !html) {
+          text = uriList;
+          slice = new Slice(Fragment.from(schema.text(text)), 1, 1);
+        }
 
         const isPastedFile = clipboard.isPastedFile(event);
         const isPlainText = text && !html;

@@ -202,7 +202,8 @@ export function createPasteAnalyticsPayload(
   pasteContext: PasteContext,
 ): AnalyticsEventPayload {
   const text = event.clipboardData
-    ? event.clipboardData.getData('text/plain')
+    ? event.clipboardData.getData('text/plain') ||
+      event.clipboardData.getData('text/uri-list')
     : '';
 
   const actionSubjectId = getActionSubjectId(view);
