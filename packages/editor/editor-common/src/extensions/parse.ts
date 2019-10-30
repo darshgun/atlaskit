@@ -1,19 +1,71 @@
-import { ExtensionProvider } from './types';
+import { ExtensionProvider, ExtensionManifest } from './types';
 import { MenuItem, filterByCapability, groupBy } from './menu-helpers';
 import combineProviders from './combine-extension-providers';
+import { ADFEntity } from '@atlaskit/adf-utils';
+import { EditorActions } from 'src';
 
-type MappedExtensionPoints = {
-  quickInsert: { [key: string]: MenuItem };
-  insertMenu: { [key: string]: MenuItem };
-};
-
-const extensionsPoints: MappedExtensionPoints = {
-  quickInsert: {} as never,
-  insertMenu: {} as never,
-};
+type MenuItemMap = { [key: string]: MenuItem };
 
 const groupMenuItemsByKey = (items: MenuItem[], keyPrefix: string) =>
   groupBy(items, 'key', key => `${keyPrefix}-${key}`);
+
+const extractQuickInsertProvider = (extensions: ExtensionManifest[]) => {
+  const quickInsertKeys = extensions.reduce<MenuItemMap>((acc, extension) => {
+    const quickInsertItems = filterByCapability(extension, 'quickinsert');
+
+    return {
+      ...acc,
+      ...groupMenuItemsByKey(quickInsertItems, extension.key),
+    };
+  }, {});
+
+  const quickInsertMenuItems = Object.keys(quickInsertKeys).map(key => {
+    const item = quickInsertKeys[key];
+    return {
+      title: item.title,
+      icon: item.icon(),
+      action: async (insert: (node: ADFEntity) => void) => {
+        const node = (await item.node!.adf()).default;
+        if (!node) {
+          console.log('error, no item here');
+        }
+        return insert(node);
+      },
+    };
+  });
+
+  return { getItems: () => Promise.resolve(quickInsertMenuItems) };
+};
+
+const extractInsertMenuProvider = (extensions: ExtensionManifest[]) => {
+  const insertMenuKeys = extensions.reduce<MenuItemMap>((acc, extension) => {
+    const insertMenuItems = filterByCapability(extension, 'insertmenu');
+
+    return {
+      ...acc,
+      ...groupMenuItemsByKey(insertMenuItems, extension.key),
+    };
+  }, {});
+
+  const insertMenuMenuItems = Object.keys(insertMenuKeys).map(key => {
+    const item = insertMenuKeys[key];
+    return {
+      content: item.title,
+      value: { name: item.title },
+      tooltipDescription: item.title,
+      elemBefore: item.icon(),
+      onClick: async (editorActions: EditorActions) => {
+        const node = (await item.node!.adf()).default;
+        if (!node) {
+          console.log('error, no item here');
+        }
+        return editorActions.replaceDocument(node);
+      },
+    };
+  });
+
+  return { getItems: () => Promise.resolve(insertMenuMenuItems) };
+};
 
 /**
  * Will parse the providers and build a list of menu items for each extension point.
@@ -21,31 +73,20 @@ const groupMenuItemsByKey = (items: MenuItem[], keyPrefix: string) =>
 export default async (
   extensionProviders: ExtensionProvider[],
 ): Promise<{
-  extensionsPoints: MappedExtensionPoints;
-  provider: ExtensionProvider;
+  extensionProvider: ExtensionProvider;
+  quickInsertProvider: any;
+  insertMenuProvider: any;
 }> => {
   const combinedProviders = combineProviders(extensionProviders);
 
-  const extensionsResult = await combinedProviders.getExtensions();
+  const extensions = await combinedProviders.getExtensions();
 
-  extensionsResult.forEach(extension => {
-    const quickInsertItems = filterByCapability(extension, 'quickinsert');
-
-    Object.assign(
-      extensionsPoints.quickInsert,
-      groupMenuItemsByKey(quickInsertItems, extension.key),
-    );
-
-    const insertMenuItems = filterByCapability(extension, 'insertmenu');
-
-    Object.assign(
-      extensionsPoints.insertMenu,
-      groupMenuItemsByKey(insertMenuItems, extension.key),
-    );
-  });
+  const quickInsertProvider = extractQuickInsertProvider(extensions);
+  const insertMenuProvider = extractInsertMenuProvider(extensions);
 
   return {
-    extensionsPoints,
-    provider: combinedProviders,
+    extensionProvider: combinedProviders,
+    quickInsertProvider,
+    insertMenuProvider,
   };
 };

@@ -14,9 +14,9 @@ describe('combine-extension-providers', () => {
     'amazing-item',
   ]);
 
-  const shitExtension = createFakeExtensionManifest('shit', 'shit', [
-    'shit-list',
-    'shit-item',
+  const dumbExtension = createFakeExtensionManifest('dumb', 'dumb', [
+    'dumb-list',
+    'dumb-item',
   ]);
 
   const mehhExtension = createFakeExtensionManifest('mehh', 'mehh', [
@@ -29,7 +29,7 @@ describe('combine-extension-providers', () => {
   beforeEach(() => {
     combinedExtensionProvider = combineExtensionProviders([
       new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
-      new DefaultExtensionProvider([shitExtension, mehhExtension]),
+      new DefaultExtensionProvider([dumbExtension, mehhExtension]),
     ]);
   });
 
@@ -43,7 +43,7 @@ describe('combine-extension-providers', () => {
     expect(await combinedExtensionProvider.getExtensions()).toEqual([
       awesomeExtension,
       amazingExtension,
-      shitExtension,
+      dumbExtension,
       mehhExtension,
     ]);
   });
@@ -52,8 +52,8 @@ describe('combine-extension-providers', () => {
     expect(
       await combinedExtensionProvider.getExtension('awesome-extension'),
     ).toBe(awesomeExtension);
-    expect(await combinedExtensionProvider.getExtension('shit-extension')).toBe(
-      shitExtension,
+    expect(await combinedExtensionProvider.getExtension('dumb-extension')).toBe(
+      dumbExtension,
     );
     expect(await combinedExtensionProvider.getExtension('mehh-extension')).toBe(
       mehhExtension,
@@ -74,8 +74,8 @@ describe('combine-extension-providers', () => {
     expect(await combinedExtensionProvider.search('amaz')).toEqual([
       amazingExtension,
     ]);
-    expect(await combinedExtensionProvider.search('shi')).toEqual([
-      shitExtension,
+    expect(await combinedExtensionProvider.search('dum')).toEqual([
+      dumbExtension,
     ]);
     expect(await combinedExtensionProvider.search('me')).toEqual([
       awesomeExtension,
@@ -90,13 +90,13 @@ describe('combine-extension-providers', () => {
         new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
       ),
 
-      new DefaultExtensionProvider([shitExtension, mehhExtension]),
+      new DefaultExtensionProvider([dumbExtension, mehhExtension]),
     ]);
 
     expect(await providers.getExtensions()).toEqual([
       awesomeExtension,
       amazingExtension,
-      shitExtension,
+      dumbExtension,
       mehhExtension,
     ]);
 
