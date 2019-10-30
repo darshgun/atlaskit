@@ -1,1 +1,0 @@
-Fix a bug where basic users are seeing Browse Marketplace link.
