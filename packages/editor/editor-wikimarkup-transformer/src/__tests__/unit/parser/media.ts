@@ -46,6 +46,10 @@ yep`,
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n\r\n[^not-empty (askjsajnkjknads).txt]',
     ],
     [
+      '[CS-1404] should parse consecutive attachments separated by one new line as one media group',
+      '[^file1.txt]\r\n[^file2.txt]\r\n[^file3.txt]',
+    ],
+    [
       '[CS-1404] should parse list of multiple attachments separated by multiple new lines as separate media groups with multiple child media elements',
       '[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]\r\n\r\n[^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]',
     ],

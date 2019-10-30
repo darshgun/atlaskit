@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   mockConversation,
   MOCK_USERS,
@@ -7,7 +8,6 @@ import {
 import Conversation from '../../../components/Conversation';
 import Editor from '../../../components/Editor';
 import CommentContainer from '../../../containers/Comment';
-import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 const objectId = 'ari:cloud:platform::conversation/demo';
 const { comments } = mockConversation;

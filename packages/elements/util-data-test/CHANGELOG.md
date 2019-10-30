@@ -1,5 +1,21 @@
 # @atlaskit/util-data-test
 
+## 13.0.2
+
+### Patch Changes
+
+- [patch][ce21161796](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce21161796):
+
+  Fix some types that were being transpiled to 'any'
+
+## 13.0.1
+
+- Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
+  - @atlaskit/emoji@62.5.5
+  - @atlaskit/mention@18.15.7
+  - @atlaskit/task-decision@16.0.1
+  - @atlaskit/util-service-support@5.0.0
+
 ## 13.0.0
 
 ### Major Changes

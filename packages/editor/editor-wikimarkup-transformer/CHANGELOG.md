@@ -1,5 +1,37 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.7
+
+### Patch Changes
+
+- [patch][650b9bd18d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/650b9bd18d):
+
+  fix up issue in wikimarkup parser where a url with url-encoded values are double encoded when converted into ADF
+
+## 4.5.6
+
+### Patch Changes
+
+- [patch][24165e116f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24165e116f):
+
+  fix bug where bullet points and rulers inside monospace causes parse error
+
+## 4.5.5
+
+### Patch Changes
+
+- [patch][ca7488595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ca7488595c):
+
+  fix bug in the mediaGroup normalization logic where mediaGroup nodes are not merged together properly when there are more than one newline
+
+## 4.5.4
+
+### Patch Changes
+
+- [patch][0a67332a0f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a67332a0f):
+
+  Fix bug where monospace wikimarkup fails to convert to ADF when it contains an attachment link
+
 ## 4.5.3
 
 ### Patch Changes

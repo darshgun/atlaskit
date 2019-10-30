@@ -21,3 +21,24 @@ describe.skip('ADF => WikiMarkup - Media', () => {
     expect(adf).toEqual(node.toJSON());
   });
 });
+
+describe('WikiMarkup => ADF - Media', () => {
+  const transformer = new WikiMarkupTransformer(defaultSchema);
+  const expected = doc(
+    mediaGroup(
+      media({ id: 'file1.txt', type: 'file', collection: '' })(),
+      media({ id: 'file2.txt', type: 'file', collection: '' })(),
+      media({ id: 'file3.txt', type: 'file', collection: '' })(),
+    ),
+  )(defaultSchema);
+  test('should convert attachment links to mediaGroup nodes', () => {
+    const wiki = `[^file1.txt] [^file2.txt] [^file3.txt]`;
+    const adf = transformer.parse(wiki);
+    expect(adf.toJSON()).toEqual(expected.toJSON());
+  });
+  test('should convert attachment links with newlines to mediaGroup nodes', () => {
+    const wiki = `[^file1.txt]\r\n[^file2.txt]\r\n[^file3.txt]`;
+    const adf = transformer.parse(wiki);
+    expect(adf.toJSON()).toEqual(expected.toJSON());
+  });
+});

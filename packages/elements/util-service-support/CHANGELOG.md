@@ -1,6 +1,60 @@
 # @atlaskit/util-service-support
 
+## 5.0.0
+
+### Major Changes
+
+- [major][42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
+
+  **Breaking Change**:
+
+  > packages/elements/util-service-support/src/serviceUtils.ts:
+  >
+  > _Usage change:_ `headers.map(key)` => `headers[key]`.
+
+  _Before:_
+
+  ```
+  const addToHeaders = (headers: Headers, keyValues?: KeyValues) => { ... }
+  ...
+  const buildHeaders = (
+     secOptions?: SecurityOptions,
+     extraHeaders?: KeyValues,
+    ): Headers => {
+    const headers = new Headers();
+    addToHeaders(headers, extraHeaders);
+    ...
+  }
+  ```
+
+  _After:_
+
+  ```
+  const addToHeaders = (headers: KeyValues, keyValues?: KeyValues) => { ... }
+  ...
+  const buildHeaders = (
+    secOptions?: SecurityOptions,
+    extraHeaders?: KeyValues,
+    ): KeyValues => {
+      const headers = {};
+      addToHeaders(headers, extraHeaders);
+      ...
+  }
+  ```
+
+## 4.1.1
+
+### Patch Changes
+
+- [patch][36f5a93068](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f5a93068):
+
+  Revert API breaking change `headers[key]` => `headers.get(key)`. This change will be reintroduced as a major in a subsequent release.
+
 ## 4.1.0
+
+**Warning: Do not use this version. It has been deprecated**
+
+_Contains an API breaking change:`headers.map(key)` => `headers[key]`._
 
 ### Minor Changes
 
