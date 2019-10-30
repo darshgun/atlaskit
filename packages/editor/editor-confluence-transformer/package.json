@@ -35,7 +35,7 @@
     "@atlaskit/spinner": "^12.0.9",
     "@atlaskit/theme": "^9.2.3",
     "@atlaskit/util-data-test": "^13.0.0",
-    "@types/prosemirror-model": "^1.5.0",
+    "@types/prosemirror-model": "^1.7.2",
     "chai": "^4.1.2",
     "pretty-data": "^0.40.0",
     "styled-components": "^3.2.6"

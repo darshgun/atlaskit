@@ -7,9 +7,8 @@ import DownloadIcon from '@atlaskit/icon/glyph/download';
 import BookIcon from '@atlaskit/icon/glyph/book';
 import EditIcon from '@atlaskit/icon/glyph/edit';
 import { CardAction, CardStatus } from '../src';
-import { MediaType } from '@atlaskit/media-store';
 import { CardView } from '../src/root/cardView';
-import { FileDetails } from '@atlaskit/media-client';
+import { FileDetails, MediaType } from '@atlaskit/media-client';
 
 const CardWrapper = styled.div`
   width: 150px;

@@ -2,8 +2,6 @@ import {
   textblockTypeInputRule,
   wrappingInputRule,
   inputRules,
-  // @ts-ignore
-  InputRule,
 } from 'prosemirror-inputrules';
 import { Schema, NodeType } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';

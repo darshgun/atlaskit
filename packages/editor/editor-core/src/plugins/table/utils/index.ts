@@ -12,6 +12,8 @@ export {
   createCellHoverDecoration,
   updatePluginStateDecorations,
   updateNodeDecorations,
+  createResizeHandleDecoration,
+  createColumnLineResize,
 } from './decoration';
 export {
   isIsolating,
@@ -44,6 +46,7 @@ export {
   getMousePositionHorizontalRelativeByElement,
   getMousePositionVerticalRelativeByElement,
   updateResizeHandles,
+  isResizeHandleDecoration,
 } from './dom';
 export {
   getColumnsWidths,

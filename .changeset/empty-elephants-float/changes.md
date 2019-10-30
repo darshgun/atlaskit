@@ -1,0 +1,1 @@
+Removing unnecessary `preventRaceCondition` method in MVNG

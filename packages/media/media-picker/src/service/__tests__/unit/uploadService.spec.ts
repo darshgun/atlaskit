@@ -12,8 +12,8 @@ import {
   getFileStreamsCache,
   FileState,
 } from '@atlaskit/media-client';
-import { TouchedFiles } from '@atlaskit/media-client';
-import { AuthProvider, Auth, ProcessingFileState } from '@atlaskit/media-core';
+import { TouchedFiles, ProcessingFileState } from '@atlaskit/media-client';
+import { AuthProvider, Auth } from '@atlaskit/media-core';
 import uuidV4 from 'uuid/v4';
 import { asMock, fakeMediaClient } from '@atlaskit/media-test-helpers';
 import { Observable } from 'rxjs/Observable';

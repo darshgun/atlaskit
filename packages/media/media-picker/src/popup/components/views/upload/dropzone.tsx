@@ -13,11 +13,11 @@ import {
   DropzoneContentWrapper,
   TextWrapper,
 } from './styled';
-import { Browser } from '../../../../components/browser/browser';
+import { BrowserBase } from '../../../../components/browser/browser';
 
 export interface DropzoneProps {
   readonly isEmpty?: boolean;
-  readonly browserRef: React.RefObject<Browser>;
+  readonly browserRef: React.RefObject<BrowserBase>;
 }
 
 export class Dropzone extends Component<DropzoneProps> {

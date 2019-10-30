@@ -1,0 +1,1 @@
+ED-7904: Enabling input typing performance sampling - send time taken for every 100th keypressed
