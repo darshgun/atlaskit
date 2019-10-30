@@ -82,8 +82,8 @@ BrowserTestCase(
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 
-    const data = '• line 1\n• line 2\n• line 3';
-    await copyAsPlainText(page, data);
+    const data = '<span>• line 1<br />• line 2<br />• line 3</span>';
+    await copyAsHTML(page, data);
 
     await mountEditor(page, {
       appearance: fullpage.appearance,
@@ -105,8 +105,8 @@ BrowserTestCase(
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 
-    const data = '• line 1\n- line 2\n* line 3';
-    await copyAsPlainText(page, data);
+    const data = '<span>• line 1<br />- line 2<br />* line 3</span>';
+    await copyAsHTML(page, data);
 
     await mountEditor(page, {
       appearance: fullpage.appearance,
