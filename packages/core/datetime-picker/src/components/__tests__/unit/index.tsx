@@ -4,7 +4,11 @@ import toJson from 'enzyme-to-json';
 
 import { ClearIndicator, DropdownIndicator } from '../../../internal';
 
-import { isValid, removeSpacer, convertTo24hrTime } from '../../parseTime';
+import {
+  isValid,
+  removeSpacer,
+  convertTo24hrTime,
+} from '../../../internal/parseTime.ts';
 
 test('ClearIndicator', () => {
   expect(ClearIndicator).toBe(null);
