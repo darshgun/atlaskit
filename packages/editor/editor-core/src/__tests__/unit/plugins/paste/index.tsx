@@ -1595,7 +1595,7 @@ describe('paste plugins', () => {
 
     it('maintains empty list items', () => {
       const { editorView } = editor(doc(p('{<>}')));
-      const html = '<span>* line 1<br />*<br />line 3<br />* line 4';
+      const html = '<span>* line 1<br />*<br />* line 3<br />* line 4';
 
       dispatchPasteEvent(editorView, { html });
 
@@ -1681,26 +1681,6 @@ describe('paste plugins', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(
           ul(li(p('line 1')), li(p('line 2')), li(p('line 3'))),
-          p('outside the list', hardBreak(), 'line 2'),
-        ),
-      );
-    });
-
-    it('converts a multi-line list with trailing text', () => {
-      const { editorView } = editor(doc(p('{<>}')));
-
-      const html =
-        '<span>* item 1<br />* item 2<br />* item 3<br />line two of the last item<br /><br />outside the list<br />line 2';
-
-      dispatchPasteEvent(editorView, { html });
-
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          ul(
-            li(p('item 1')),
-            li(p('item 2')),
-            li(p('item 3', hardBreak(), 'line two of the last item')),
-          ),
           p('outside the list', hardBreak(), 'line 2'),
         ),
       );
