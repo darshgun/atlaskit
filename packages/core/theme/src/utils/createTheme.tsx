@@ -1,7 +1,7 @@
 import React, { createContext, ComponentType, ReactNode } from 'react';
 
 export type ThemeProp<ThemeTokens, ThemeProps> = (
-  getTokens: (props?: ThemeProps) => ThemeTokens,
+  getTokens: (props: ThemeProps) => ThemeTokens,
   themeProps: ThemeProps,
 ) => ThemeTokens;
 

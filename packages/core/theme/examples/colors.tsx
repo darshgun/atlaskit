@@ -4,7 +4,7 @@ import { colors } from '../src';
 
 export default () => (
   <>
-    {Object.keys(colors as Record<string, any>)
+    {Object.keys(colors)
       .filter(c => typeof colors[c] === 'string')
       .map(c => (
         <span
