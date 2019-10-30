@@ -27,7 +27,7 @@ export type SourceOrDest = {
   };
 };
 
-export type PullRequestSchema = {
+export type PullRequest = {
   id: number;
   title: string;
   rendered: any;
@@ -104,7 +104,7 @@ export type PrComment = {
   };
 };
 
-export type PaginatedPrComments = {
+export type PaginatedResponse<T> = {
   size: number;
   page: number;
   pagelen: number;
@@ -112,5 +112,9 @@ export type PaginatedPrComments = {
   next?: string;
   // URI
   previous?: string;
-  values: PrComment[];
+  values: T[];
 };
+
+export type PaginatedPrComments = PaginatedResponse<PrComment>;
+
+export type PaginatedPullRequests = PaginatedResponse<PullRequest>;

@@ -12,7 +12,9 @@
  *  On error will output an error message and exit with non-zero exit code
  */
 
-const getPrFromCommit = require('./bitbucket-utils/getPrFromCommit');
+require('ts-node').register();
+
+const { getPrFromCommit } = require('@atlaskit/build-utils/bitbucket');
 
 async function main() {
   const { BITBUCKET_COMMIT, BITBUCKET_REPO_FULL_NAME } = process.env;

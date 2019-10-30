@@ -2,9 +2,11 @@ import chalk from 'chalk';
 import simpleGit from 'simple-git/promise';
 
 import { DevelopBranchName, ReleaseBranchPrefix } from './constants';
-import getPrFromCommit from '../bitbucket-utils/getPrFromCommit';
-import { PullRequestSchema } from '../bitbucket-utils/types';
-import { PullRequestClient } from '../bitbucket-utils/PullRequestClient';
+import {
+  getPrFromCommit,
+  PullRequest,
+  PullRequestClient,
+} from '@atlaskit/build-utils/bitbucket';
 
 type Opts = {
   dryRun: boolean;
@@ -12,7 +14,7 @@ type Opts = {
 
 async function updatePrWithFutureRelease(
   prClient: PullRequestClient,
-  matchedPr: PullRequestSchema,
+  matchedPr: PullRequest,
   opts: Opts,
 ) {
   // @ts-ignore
@@ -53,7 +55,7 @@ export default async function main(
       '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables not set',
     );
   }
-  const matchedPr: PullRequestSchema | undefined = await getPrFromCommit(
+  const matchedPr: PullRequest | undefined = await getPrFromCommit(
     commitHash,
     repoFullName,
   );

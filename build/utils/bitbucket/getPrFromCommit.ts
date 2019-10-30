@@ -1,12 +1,9 @@
-/**
- * Retrieves an open PR containing `commitHash` as the top source commit, or `undefined` if none exist.
- * Will throw if more than one PR is found.
- */
-const https = require('https');
+import https from 'https';
+import { PaginatedPullRequests, PullRequest } from './types';
 
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
-function httpGetRequest(url) {
+function httpGetRequest(url: string) {
   return new Promise((resolve, reject) => {
     let data = '';
 
@@ -20,23 +17,30 @@ function httpGetRequest(url) {
 }
 
 /**
- * @param commitHash string Commit hash, minimum 12 chars
- * @param repoFullName string Full name of the repo, i.e. <owner>/<repoName>
- *
- * @return PR Object or undefined
+ * Retrieves an open PR containing `commitHash` as the top source commit, or `undefined` if none exist.
+ * Will throw if more than one PR is found. Commit hash requires 12 chars minimum.
  */
-async function getPrFromCommit(commitHash, repoFullName) {
+export async function getPrFromCommit(
+  commitHash: string,
+  repoFullName: string,
+) {
   if (!commitHash || !repoFullName) {
     throw Error('Missing commitHash or repoFullName');
   }
 
   // We sort descending on created_on to get newest first and only look at open PRs
-  let endpoint = `https://api.bitbucket.org/2.0/repositories/${repoFullName}/pullrequests?sort=-created_on&state=OPEN&pagelen=20`;
-  let response;
-  let matchedPr;
+  let endpoint:
+    | string
+    | undefined = `https://api.bitbucket.org/2.0/repositories/${repoFullName}/pullrequests?sort=-created_on&state=OPEN&pagelen=20`;
+  let response: PaginatedPullRequests;
+  let matchedPr: PullRequest | undefined;
 
   do {
-    response = await httpGetRequest(endpoint);
+    // TODO: TS 3.7 assertion
+    if (!endpoint) {
+      throw Error('Missing endpoint');
+    }
+    response = (await httpGetRequest(endpoint)) as PaginatedPullRequests;
     if (!response || !response.values) {
       throw Error(
         `Response is not in the format we expected. Received:\n${response}`,
@@ -63,5 +67,3 @@ async function getPrFromCommit(commitHash, repoFullName) {
 
   return matchedPr;
 }
-
-module.exports = getPrFromCommit;
