@@ -420,5 +420,11 @@ module.exports = {
         'no-restricted-imports': 'off',
       },
     },
+    {
+      files: ['build/**'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
   ],
 };

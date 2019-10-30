@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "@types/concurrently": "^4.1.0",
+    "@types/jest": "^24.0.18",
     "@types/node": "^11.11.7",
+    "jest-fixtures": "^0.5.0",
     "js-yaml": "^3.13.1"
   }
 }
