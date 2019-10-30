@@ -84,16 +84,18 @@ describe('Media Analytics', () => {
     mediaPickers.forEach(mediaPicker => {
       it(`should fire analytics event when inserted via ${mediaPicker.picker}`, () => {
         insertMedia(imageFile, mediaPicker.picker);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: 'media',
-          attributes: {
-            inputMethod: mediaPicker.inputMethod,
-            fileExtension: 'jpg',
-          },
-          eventType: 'track',
-        });
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: 'media',
+            attributes: {
+              inputMethod: mediaPicker.inputMethod,
+              fileExtension: 'jpg',
+            },
+            eventType: 'track',
+          }),
+        );
       });
     });
 

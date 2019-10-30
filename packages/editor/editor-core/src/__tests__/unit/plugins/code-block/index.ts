@@ -184,13 +184,15 @@ describe('code-block', () => {
           insertText(editorView, `/code`, sel);
           sendKeyToPm(editorView, 'Enter');
 
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'codeBlock',
-            attributes: { inputMethod: 'quickInsert' },
-            eventType: 'track',
-          });
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'codeBlock',
+              attributes: { inputMethod: 'quickInsert' },
+              eventType: 'track',
+            }),
+          );
         });
       });
     });

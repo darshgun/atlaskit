@@ -164,13 +164,15 @@ describe('status plugin: actions', () => {
         text: 'OK',
       })(editorView.state, editorView.dispatch);
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'status',
-        eventType: 'track',
-        attributes: { inputMethod: 'toolbar' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'status',
+          eventType: 'track',
+          attributes: { inputMethod: 'toolbar' },
+        }),
+      );
     });
   });
 

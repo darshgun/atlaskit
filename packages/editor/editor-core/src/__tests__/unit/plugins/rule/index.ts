@@ -55,13 +55,15 @@ describe('rule', () => {
       it('should fire analytics event when create rule', () => {
         const { editorView } = editor(doc(p('{<>}')));
         sendKeyToPm(editorView, 'Shift-Ctrl--');
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: 'divider',
-          attributes: { inputMethod: 'shortcut' },
-          eventType: 'track',
-        });
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: 'divider',
+            attributes: { inputMethod: 'shortcut' },
+            eventType: 'track',
+          }),
+        );
       });
     });
   });

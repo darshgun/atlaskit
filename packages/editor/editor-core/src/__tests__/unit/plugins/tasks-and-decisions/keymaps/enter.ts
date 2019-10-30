@@ -207,13 +207,15 @@ describe('tasks and decisions - keymaps', () => {
 
         sendKeyToPm(editorView, 'Enter');
 
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: name,
-          attributes: expect.objectContaining({ inputMethod: 'keyboard' }),
-          eventType: 'track',
-        });
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: name,
+            attributes: expect.objectContaining({ inputMethod: 'keyboard' }),
+            eventType: 'track',
+          }),
+        );
       });
     });
   });

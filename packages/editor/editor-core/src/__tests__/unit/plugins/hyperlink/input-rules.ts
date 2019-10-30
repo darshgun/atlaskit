@@ -364,40 +364,46 @@ describe('hyperlink', () => {
     it('for autoDetect', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'www.atlassian.com ', sel, sel);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'link',
-        attributes: { inputMethod: 'autoDetect' },
-        eventType: 'track',
-        nonPrivacySafeAttributes: { linkDomain: 'atlassian.com' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'link',
+          attributes: { inputMethod: 'autoDetect' },
+          eventType: 'track',
+          nonPrivacySafeAttributes: { linkDomain: 'atlassian.com' },
+        }),
+      );
     });
 
     it('for autoformatting', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '[text](http://foo)', sel, sel);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'link',
-        attributes: { inputMethod: 'autoformatting' },
-        eventType: 'track',
-        nonPrivacySafeAttributes: { linkDomain: 'foo' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'link',
+          attributes: { inputMethod: 'autoformatting' },
+          eventType: 'track',
+          nonPrivacySafeAttributes: { linkDomain: 'foo' },
+        }),
+      );
     });
 
     it('with only the domain', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'http://foo.org/sensitive/data ', sel, sel);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'link',
-        attributes: { inputMethod: 'autoDetect' },
-        eventType: 'track',
-        nonPrivacySafeAttributes: { linkDomain: 'foo.org' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'link',
+          attributes: { inputMethod: 'autoDetect' },
+          eventType: 'track',
+          nonPrivacySafeAttributes: { linkDomain: 'foo.org' },
+        }),
+      );
     });
   });
 });

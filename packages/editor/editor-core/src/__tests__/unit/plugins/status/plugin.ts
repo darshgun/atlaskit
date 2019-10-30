@@ -193,13 +193,15 @@ describe('status plugin: plugin', () => {
     });
 
     it('fires analytics event', () => {
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'status',
-        eventType: 'track',
-        attributes: { inputMethod: 'quickInsert' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'status',
+          eventType: 'track',
+          attributes: { inputMethod: 'quickInsert' },
+        }),
+      );
     });
   });
 });

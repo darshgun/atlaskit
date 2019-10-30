@@ -8,11 +8,8 @@ import { removeNodeBefore } from 'prosemirror-utils';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import { Direction, isBackward, isForward } from './direction';
 import { GapCursorSelection, Side } from './selection';
-import {
-  isTextBlockNearPos,
-  isValidTargetNode,
-  getMediaNearPos,
-} from './utils';
+import { isTextBlockNearPos, getMediaNearPos } from './utils';
+import { isValidTargetNode } from './utils/is-valid-target-node';
 import { Command } from '../../types';
 import {
   atTheBeginningOfDoc,

@@ -120,13 +120,15 @@ describe('layout actions', () => {
     });
 
     it('fires analytics event', () => {
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'layout',
-        eventType: 'track',
-        attributes: { inputMethod: 'insertMenu' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'layout',
+          eventType: 'track',
+          attributes: { inputMethod: 'insertMenu' },
+        }),
+      );
     });
   });
 });

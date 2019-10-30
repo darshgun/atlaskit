@@ -49,6 +49,28 @@ export enum LINK_RESOURCE {
   OTHER = 'other',
 }
 
+export enum SELECTION_TYPE {
+  CURSOR = 'cursor',
+  RANGED = 'ranged',
+  GAP_CURSOR = 'gapCursor',
+  NODE = 'node',
+  CELL = 'cell',
+}
+
+export enum SELECTION_POSITION {
+  START = 'start',
+  MIDDLE = 'middle',
+  END = 'end',
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
+interface NonRequiredAttributes {
+  insertLocation?: string;
+  selectionType?: SELECTION_TYPE;
+  selectionPosition?: SELECTION_POSITION;
+}
+
 export type InsertAEP<
   ActionSubjectID,
   Attributes,
@@ -58,7 +80,8 @@ export type InsertAEP<
   ACTION_SUBJECT.DOCUMENT,
   ActionSubjectID,
   Attributes,
-  NonPrivacySafeAttributes
+  NonPrivacySafeAttributes,
+  NonRequiredAttributes
 >;
 
 type InsertLineBreakAEP = TrackAEP<
