@@ -1,8 +1,8 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import path from 'path';
 import fs from 'fs';
-import updateChangelog from '../../changelog';
-import { versionOptions } from '../../initialize/initial/config';
+import updateChangelog from '../../../changelog';
+import { versionOptions } from '../../../initialize/initial/config';
 
 jest.mock('@atlaskit/build-utils/logger');
 

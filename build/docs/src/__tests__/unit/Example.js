@@ -1,6 +1,6 @@
 // @flow
 import React, { type ComponentType } from 'react';
-import Example, { ToggleTitle, Toggle } from '../src/Example';
+import Example, { ToggleTitle, Toggle } from '../../Example';
 import { AkCodeBlock } from '@atlaskit/code';
 import { mount } from 'enzyme';
 import cases from 'jest-in-case';
@@ -10,6 +10,7 @@ type Props = {
   language?: string,
   source?: string,
   title?: string,
+  highlight?: string,
 };
 
 cases(
@@ -27,6 +28,7 @@ cases(
       source: '<div>Mock Component</div>',
       title: 'Some title we have',
       packageName: '@atlaskit/somewhere',
+      highlight: '1',
     };
 
     let combinedProps = { ...defaultProps, ...props };
@@ -48,13 +50,14 @@ cases(
     },
     {
       name: 'toggle sourceIsVisible',
-      should: (Mock, { language, source, title }) => {
+      should: (Mock, { language, source, highlight }) => {
         expect(Mock.find(AkCodeBlock).length).toBe(0);
         let toggle = Mock.find(Toggle).simulate('click');
 
         let CodeBlock = Mock.find(AkCodeBlock);
         expect(CodeBlock.prop('text')).toBe(source);
         expect(CodeBlock.prop('language')).toBe(language);
+        expect(CodeBlock.prop('highlight')).toBe(highlight);
       },
     },
   ],

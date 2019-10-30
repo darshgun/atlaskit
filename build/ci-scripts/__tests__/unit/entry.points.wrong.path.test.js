@@ -5,7 +5,7 @@ const bolt = require('bolt');
 import {
   writeEntryPointsPathInPkgJson,
   createEntryPointsDirWithPkgJson,
-} from '../createEntryPointsUtils';
+} from '../../createEntryPointsUtils';
 
 jest.spyOn(global.console, 'log').mockImplementation(() => {});
 

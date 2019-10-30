@@ -20,6 +20,7 @@ import {
 import { queueCardsFromChangedTr } from '../card/pm-plugins/doc';
 import { LinkInputType } from './ui/HyperlinkAddToolbar/HyperlinkAddToolbar';
 import { getLinkCreationAnalyticsEvent } from './analytics';
+import { LinkAttributes } from '@atlaskit/adf-schema';
 
 export function isTextAtPos(pos: number): Predicate {
   return (state: EditorState) => {
@@ -103,14 +104,12 @@ export function updateLink(
       to && pos !== to ? to : pos - $pos.textOffset + node.nodeSize;
     const tr = state.tr;
     tr.insertText(text, pos, rightBound);
-    tr.addMark(
-      pos,
-      pos + text.length,
-      linkMark.create({
-        ...((mark && mark.attrs) || {}),
-        url,
-      }),
-    );
+    // Casting to LinkAttributes to prevent wrong attributes been passed (Example ED-7951)
+    const linkAttrs: LinkAttributes = {
+      ...((mark && (mark.attrs as LinkAttributes)) || {}),
+      href: url,
+    };
+    tr.addMark(pos, pos + text.length, linkMark.create(linkAttrs));
     tr.setMeta(stateKey, { type: LinkAction.HIDE_TOOLBAR });
     if (dispatch) {
       dispatch(tr);
