@@ -1,11 +1,4 @@
-import { ExtensionManifest, Node, Capability } from './types';
-
-export type MenuItem = {
-  key: string;
-  title: string;
-  icon: () => Promise<any>;
-  node?: Node;
-};
+import { ExtensionManifest, MenuItem, Capability } from './types';
 
 export const groupBy = <T>(
   arr: T[],

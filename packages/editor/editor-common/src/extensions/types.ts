@@ -38,6 +38,15 @@ export type ExtensionManifest = {
   capabilities: Capabilities;
 };
 
+export type MenuItem = {
+  key: string;
+  title: string;
+  icon: () => Promise<any>;
+  node?: Node;
+};
+
+export type MenuItemMap = { [key: string]: MenuItem };
+
 export interface ExtensionProvider {
   getExtensions(): Promise<ExtensionManifest[]>;
   getExtension(key: string): Promise<ExtensionManifest | undefined>;

@@ -36,6 +36,7 @@ import {
   ACTION,
 } from './plugins/analytics';
 import ErrorBoundary from './create-editor/ErrorBoundary';
+import combineExtensionProviders from '../../editor-common/src/extensions/combine-extension-providers';
 
 export * from './types';
 
@@ -214,6 +215,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       collabEdit,
       quickInsert,
       autoformattingProvider,
+      extensionProviders,
       UNSAFE_cards,
     } = props;
 
@@ -255,6 +257,13 @@ export default class Editor extends React.Component<EditorProps, {}> {
       this.providerFactory.setProvider(
         'quickInsertProvider',
         quickInsert.provider,
+      );
+    }
+
+    if (extensionProviders) {
+      this.providerFactory.setProvider(
+        'extensionProvider',
+        Promise.resolve(combineExtensionProviders(extensionProviders)),
       );
     }
   }

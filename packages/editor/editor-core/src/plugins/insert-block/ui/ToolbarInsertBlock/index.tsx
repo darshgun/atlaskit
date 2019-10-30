@@ -31,6 +31,7 @@ import {
   Popup,
   akEditorMenuZIndex,
   ExtensionProvider,
+  MenuItemMap,
 } from '@atlaskit/editor-common';
 import EditorActions from '../../../../actions';
 import {
@@ -79,6 +80,10 @@ import {
 } from '../../../analytics';
 import { insertEmoji } from '../../../emoji/commands/insert-emoji';
 import { DropdownItem } from '../../../block-type/ui/ToolbarBlockType';
+import {
+  filterByCapability,
+  groupBy,
+} from '../../../../../../editor-common/src/extensions/menu-helpers';
 
 export const messages = defineMessages({
   action: {
@@ -259,7 +264,7 @@ export interface Props {
   placeholderTextEnabled?: boolean;
   layoutSectionEnabled?: boolean;
   expandEnabled?: boolean;
-  extensionProviders?: Promise<ExtensionProvider[]>;
+  extensionProviders?: Promise<ExtensionProvider>[];
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -284,6 +289,7 @@ export interface Props {
 export interface State {
   isOpen: boolean;
   emojiPickerOpen: boolean;
+  extensionProvidedItems: InsertMenuCustomItem[];
 }
 
 export type TOOLBAR_MENU_TYPE = INPUT_METHOD.TOOLBAR | INPUT_METHOD.INSERT_MENU;
@@ -310,13 +316,36 @@ class ToolbarInsertBlock extends React.PureComponent<
   state: State = {
     isOpen: false,
     emojiPickerOpen: false,
+    extensionProvidedItems: [],
   };
+
+  componentDidMount() {
+    if (this.props.extensionProvider) {
+      this.showMenuItemsFromExtensionProvider(this.props.extensionProvider);
+    }
+  }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // If number of visible buttons changed, close emoji picker
     if (nextProps.buttons !== this.props.buttons) {
       this.setState({ emojiPickerOpen: false });
     }
+
+    if (
+      nextProps.extensionProvider &&
+      nextProps.extensionProvider !== this.props.extensionProvider
+    ) {
+      this.showMenuItemsFromExtensionProvider(nextProps.extensionProvider);
+    }
+  }
+
+  private async showMenuItemsFromExtensionProvider(
+    extensionProvider: Promise<ExtensionProvider>,
+  ) {
+    const items = await this.extractItemsFromExtensionProvider(
+      await extensionProvider,
+    );
+    this.setState({ extensionProvidedItems: items });
   }
 
   private onOpenChange = (attrs: { isOpen: boolean; open?: boolean }) => {
@@ -697,6 +726,10 @@ class ToolbarInsertBlock extends React.PureComponent<
       });
     }
 
+    if (this.state.extensionProvidedItems) {
+      items = items.concat(this.state.extensionProvidedItems);
+    }
+
     if (insertMenuItems) {
       items = items.concat(insertMenuItems);
       // keeping this here for backwards compatibility so confluence
@@ -711,6 +744,42 @@ class ToolbarInsertBlock extends React.PureComponent<
       });
     }
     return items;
+  };
+
+  private extractItemsFromExtensionProvider = async (
+    extensionProvider: ExtensionProvider,
+  ): Promise<InsertMenuCustomItem[]> => {
+    const extensions = await extensionProvider.getExtensions();
+
+    const insertMenuKeys = extensions.reduce<MenuItemMap>((acc, extension) => {
+      const insertMenuItems = filterByCapability(extension, 'insertmenu');
+
+      return {
+        ...acc,
+        ...groupBy(insertMenuItems, 'key', key => `${extension.key}-${key}`),
+      };
+    }, {});
+
+    const insertMenuMenuItems = Object.keys(insertMenuKeys).map(
+      (key): InsertMenuCustomItem => {
+        const item = insertMenuKeys[key];
+        return {
+          content: item.title,
+          value: { name: item.title },
+          tooltipDescription: item.title,
+          // elemBefore: item.icon(),
+          onClick: async (editorActions: EditorActions) => {
+            const node = (await item.node!.adf()).default;
+            if (!node) {
+              console.log('error, no item here');
+            }
+            return editorActions.replaceDocument(node);
+          },
+        };
+      },
+    );
+
+    return insertMenuMenuItems;
   };
 
   private toggleLinkPanel = withAnalytics(
