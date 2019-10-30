@@ -5,12 +5,14 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 const urlDateTimePicker = getExampleUrl('core', 'datetime-picker', 'basic');
 
 const dateTimePickerDate =
-  '[data-testid="dateTimePicker1--datepicker--container"]';
+  '[data-testid="dateTimePicker--datepicker--container"]';
+
 const dateTimePickerDateMenu = `${dateTimePickerDate} [aria-label="calendar"]`;
+
+const date = `${dateTimePickerDateMenu} > table > tbody > tr:nth-child(5) > td:nth-child(6)`;
+
 const dateTimePickerTime =
-  '[data-testid="dateTimePicker1--timepicker--container"]';
-// const dateTimePicker = `${dateTime} > div`;
-const dateTimeValues = `${dateTimePickerDate} > div > div > div > div > div`;
+  '[data-testid="dateTimePicker--timepicker--container"]';
 
 BrowserTestCase(
   'When DateTimePicker is focused & backspace pressed, the date value should be cleared but the time value should not be affected',
@@ -21,22 +23,19 @@ BrowserTestCase(
     await page.goto(urlDateTimePicker);
     await page.click(dateTimePickerDate);
     await page.waitForSelector(dateTimePickerDateMenu);
-    await page.click(
-      `${dateTimePickerDateMenu} > table > tbody > tr:nth-child(5) > td:nth-child(6)`,
-    );
-    await page.waitForSelector(dateTimeValues);
+    await page.click(date);
+    await page.waitForSelector(dateTimePickerDate);
 
-    const previousDate = await page.getText(dateTimeValues);
+    const previousDate = await page.getText(dateTimePickerDate);
 
-    const timevalue = `${dateTimePickerTime} > div + div > div > div > div >div > div`;
-    const previousTime = await page.getText(timevalue);
+    const previousTime = await page.getText(dateTimePickerTime);
 
     await page.keys('Backspace');
-    await page.waitForSelector(dateTimeValues);
+    await page.waitForSelector(dateTimePickerDate);
 
-    const afterDate = await page.getText(dateTimeValues);
+    const afterDate = await page.getText(dateTimePickerDate);
 
-    const afterTime = await page.getText(timevalue);
+    const afterTime = await page.getText(dateTimePickerTime);
 
     expect(afterDate).not.toBe(previousDate);
     expect(previousTime).toBe(afterTime);

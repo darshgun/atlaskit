@@ -9,7 +9,8 @@ const timePickerInput = 'input#react-select-timepicker-4-input';
 const timePickerMenu = '.timepicker-select__menu-list';
 const timePickerValue = `${timePicker} > div > div > div > div:first-child`;
 
-const dateTimePicker = '[data-testid="dateTimePicker--container"]';
+const calendarMenu = '[aria-label="calendar"]';
+const dateTimePicker = '[data-testid="dateTimePicker--datepicker--container"]';
 const dateTimePickerInput = 'input#react-select-datetimepicker-1-input';
 const dateTimePickerValue = `${dateTimePicker} > div > div > div > div`;
 
@@ -48,8 +49,10 @@ BrowserTestCase(
 
     await page.goto(urlI18nDateTimePicker);
     await page.click(dateTimePicker);
+    await page.waitForSelector(calendarMenu);
     await page.type(dateTimePickerInput, ['2', '0', '1', '6']);
-    await page.keys(['Enter', 'Enter']);
+    await page.keys('Enter');
+    await page.waitForSelector(dateTimePickerValue);
 
     const newDate = await page.getText(dateTimePickerValue);
 
