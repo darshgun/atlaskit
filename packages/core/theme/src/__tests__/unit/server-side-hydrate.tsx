@@ -22,9 +22,8 @@ test('should ssr then hydrate theme correctly', async () => {
   // @ts-ignore - no mock on error prop
   await waitForExpect(() => {
     // ignore warnings caused by emotion's server-side rendering approach
-    // @ts-ignore
     // eslint-disable-next-line no-console
-    const mockCalls = console.error.mock.calls.filter(
+    const mockCalls = (console.error as jest.Mock).mock.calls.filter(
       ([f, s]: [string, string]) =>
         !(
           f ===

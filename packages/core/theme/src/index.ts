@@ -1,4 +1,5 @@
 import * as colors from './colors';
+import * as colorPalettes from './color-palettes';
 import * as elevation from './elevation';
 import * as typography from './typography';
 import * as math from './utils/math';
@@ -6,18 +7,15 @@ import getTheme from './utils/getTheme';
 import themed from './utils/themed';
 import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
-import { ThemedValue } from './types';
-
-const typedColors: Record<string, any> = { ...colors };
-const typedElevation: Record<string, ThemedValue> = { ...elevation };
-const typedTypography: Record<string, any> = { ...typography };
-const typedMath: Record<string, Function> = { ...math };
+const typedColors: Record<string, string> = colors as any;
+const typedElevation: Record<string, string> = elevation as any;
 
 export {
   typedColors as colors,
+  colorPalettes,
   typedElevation as elevation,
-  typedTypography as typography,
-  typedMath as math,
+  typography,
+  math,
   getTheme,
   themed,
   AtlaskitThemeProvider,

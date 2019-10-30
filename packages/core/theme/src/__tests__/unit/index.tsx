@@ -9,7 +9,7 @@ import {
   borderRadius,
   fontSize,
 } from '../..';
-import { colorPalette } from '../../colors';
+import { colorPalette } from '../../color-palettes';
 
 describe('AtlaskitThemeProvider', () => {
   it('should mount', () => {
