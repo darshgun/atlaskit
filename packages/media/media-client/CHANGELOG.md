@@ -1,5 +1,13 @@
 # @atlaskit/media-client
 
+## 4.0.1
+
+### Patch Changes
+
+- [patch][c0da69b4dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0da69b4dc):
+
+  [MS-2626] Fix objectToQueryString when there is an object using null as value
+
 ## 4.0.0
 
 ### Minor Changes
