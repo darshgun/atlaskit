@@ -1,0 +1,1 @@
+Adds support for white nav. Repositions how the components are displayed. Changes to the theming API to support white nav. Add support for showing site name
