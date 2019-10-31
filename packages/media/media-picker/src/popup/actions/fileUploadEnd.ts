@@ -1,9 +1,6 @@
 import { Action } from 'redux';
-import {
-  UploadEndEvent,
-  UploadEndEventPayload,
-} from '../../domain/uploadEvent';
-import { MediaFile } from '../../domain/file';
+import { UploadEndEvent } from '../../domain/uploadEvent';
+import { MediaFile, UploadEndEventPayload } from '../../types';
 export const FILE_UPLOAD_END = 'FILE_UPLOAD_END';
 
 export interface FileUploadEndAction extends Action {

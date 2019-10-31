@@ -5,10 +5,8 @@ import { fakeMediaClient } from '@atlaskit/media-test-helpers';
 import { Browser } from '../../browser/browser';
 import { TouchFileDescriptor, FileState } from '@atlaskit/media-client';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
-import {
-  BrowserConfig,
-  LocalUploadConfig,
-} from '../../../../src/components/types';
+import { LocalUploadConfig } from '../../../../src/components/types';
+import { BrowserConfig } from '../../../../src/types';
 
 describe('Browser upload phases', () => {
   const browseConfig: BrowserConfig & LocalUploadConfig = {

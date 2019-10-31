@@ -16,7 +16,7 @@ import {
 } from '../../service/types';
 
 import { ANALYTICS_MEDIA_CHANNEL } from '../media-picker-analytics-error-boundary';
-import { ClipboardConfig } from '../types';
+import { ClipboardConfig } from '../../types';
 import { appendTimestamp } from '../../util/appendTimestamp';
 import {
   name as packageName,

@@ -1,7 +1,6 @@
 import { MediaType } from '@atlaskit/media-client';
 import VideoSnapshot from 'video-snapshot';
-import { Preview } from '../domain/preview';
-import { ImagePreview } from '../index';
+import { ImagePreview, Preview } from '../types';
 
 export const getPreviewFromBlob = (
   file: Blob,

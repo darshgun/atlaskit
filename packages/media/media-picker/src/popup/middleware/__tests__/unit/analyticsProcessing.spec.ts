@@ -24,7 +24,7 @@ import { editorClose } from '../../../actions/editorClose';
 import { handleCloudFetchingEvent } from '../../../actions/handleCloudFetchingEvent';
 import { startFileBrowser } from '../../../actions/startFileBrowser';
 import { GET_PREVIEW } from '../../../actions/getPreview';
-import { MediaFile } from '../../../../domain/file';
+import { MediaFile } from '../../../../types';
 import { buttonClickPayload, Payload } from '../../analyticsHandlers';
 
 type TestPayload = GasCorePayload & { action: string; attributes: {} };

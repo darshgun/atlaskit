@@ -7,7 +7,8 @@ import {
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Component } from 'react';
-import { MediaPicker, Popup } from '../src';
+import { MediaPicker } from '../src';
+import { Popup } from '../src/types';
 import { intlShape } from 'react-intl';
 
 const mediaClientConfig = {

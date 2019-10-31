@@ -11,7 +11,7 @@ import {
   createUploadMediaClientConfig,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
-import { MediaPicker, Popup } from '../src';
+import { MediaPicker } from '../src';
 import {
   PopupContainer,
   PopupHeader,
@@ -22,7 +22,8 @@ import {
   UploadEndEventPayload,
   UploadsStartEventPayload,
   UploadPreviewUpdateEventPayload,
-} from '../src/domain/uploadEvent';
+  Popup,
+} from '../src/types';
 
 const mediaClientConfig = createUploadMediaClientConfig();
 
