@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { intlShape } from 'react-intl';
 import * as PropTypes from 'prop-types';
-import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { WidthProvider } from '@atlaskit/editor-common';
 import EditorContext from '../../../../ui/EditorContext';
-import { EditorActions } from '../../../../index';
+import EditorActions from '../../../../actions';
 import { PortalProviderAPI } from '../../../../ui/PortalProvider';
 import { EditorProps } from '../editor-props-type';
 import { EditorSharedConfigProvider } from '../context/shared-config';
@@ -12,13 +11,19 @@ import { useEditor } from '../hooks/use-editor';
 import { EditorContentProvider } from './EditorContent';
 
 export function EditorInternal(props: EditorPropsExtended, context: any) {
-  const editorActions =
-    ((context || {}).editorActions as EditorActions) || new EditorActions();
+  // Need to memoize editor actions otherwise in case when editor is not
+  // wrapped with EditorContext every prop change triggers all hooks
+  // that depend on editorActions
+  const maybeEditorActions = (context || {}).editorActions;
+  const editorActions = React.useMemo(
+    () => maybeEditorActions || new EditorActions(),
+    [maybeEditorActions],
+  );
 
   const [editorSharedConfig, mountEditor] = useEditor({
     context,
     editorActions,
-    createAnalyticsEvent: props.createAnalyticsEvent,
+    handleAnalyticsEvent: props.handleAnalyticsEvent,
 
     disabled: props.disabled,
 
@@ -33,6 +38,7 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
     popupsScrollableElement: props.popupsScrollableElement,
 
     onChange: props.onChange,
+    onDestroy: props.onDestroy,
   });
 
   const onMount = props.onMount;
@@ -49,9 +55,7 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
           onMount(editorActions);
         }
 
-        return () => {
-          editorActions._privateUnregisterEditor();
-        };
+        return () => editorActions._privateUnregisterEditor();
       }
     },
     [editorSharedConfig, editorActions, onMount],
@@ -77,5 +81,4 @@ EditorInternal.contextTypes = {
 
 export type EditorPropsExtended = EditorProps & {
   portalProviderAPI: PortalProviderAPI;
-  createAnalyticsEvent?: CreateUIAnalyticsEvent;
 };

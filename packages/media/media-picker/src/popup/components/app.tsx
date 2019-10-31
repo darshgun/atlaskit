@@ -9,7 +9,6 @@ import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { UIAnalyticsEventHandler } from '@atlaskit/analytics-next';
 
 import { ServiceName, State } from '../domain';
-import { UploadParams, PopupConfig } from '../..';
 
 /* Components */
 import Footer from './footer/footer';
@@ -40,13 +39,15 @@ import {
   UploadProcessingEventPayload,
   UploadEndEventPayload,
   UploadErrorEventPayload,
-} from '../../domain/uploadEvent';
+  ClipboardConfig,
+  DropzoneConfig,
+  UploadParams,
+  PopupConfig,
+} from '../../types';
 import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 import {
   DropzoneDragEnterEventPayload,
   DropzoneDragLeaveEventPayload,
-  ClipboardConfig,
-  DropzoneConfig,
 } from '../../components/types';
 
 import { Clipboard } from '../../components/clipboard/clipboard';

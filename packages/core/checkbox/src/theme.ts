@@ -44,7 +44,7 @@ export const componentTokens: ComponentTokens = {
   },
   requiredIndicator: {
     textColor: {
-      rest: colors.r500,
+      rest: colors.R500,
     },
   },
 };

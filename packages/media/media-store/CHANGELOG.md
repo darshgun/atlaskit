@@ -1,5 +1,13 @@
 # @atlaskit/media-store
 
+## 12.0.15
+
+### Patch Changes
+
+- [patch][825688965c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/825688965c):
+
+  Remove export of ContextConfig from media-store
+
 ## 12.0.14
 
 - Updated dependencies [c3e65f1b9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e65f1b9e):

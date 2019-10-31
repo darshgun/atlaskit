@@ -1,7 +1,6 @@
 import { EventEmitter2 } from 'eventemitter2';
 import { LRUCache } from 'lru-fast';
 import { Observable } from 'rxjs/Observable';
-import { FileState } from '@atlaskit/media-client';
 
 export interface StateDeferredValue<T> {
   promise: Promise<T>;
@@ -15,8 +14,8 @@ export interface CachedMediaState<T> {
   eventEmitter?: EventEmitter2;
 }
 
-export const mediaState: CachedMediaState<FileState> = {
-  streams: new LRUCache<string, Observable<FileState>>(1000),
-  stateDeferreds: new Map<string, StateDeferredValue<FileState>>(),
+export const mediaState: CachedMediaState<Object> = {
+  streams: new LRUCache<string, Observable<Object>>(1000),
+  stateDeferreds: new Map<string, StateDeferredValue<Object>>(),
   eventEmitter: new EventEmitter2(),
 };

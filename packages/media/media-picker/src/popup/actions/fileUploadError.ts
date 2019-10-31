@@ -1,11 +1,8 @@
 import { Action } from 'redux';
 
-import { MediaError } from '../../domain/error';
-import {
-  UploadErrorEvent,
-  UploadErrorEventPayload,
-} from '../../domain/uploadEvent';
-import { MediaFile } from '../../domain/file';
+import { MediaError } from '../../types';
+import { UploadErrorEvent } from '../../domain/uploadEvent';
+import { MediaFile, UploadErrorEventPayload } from '../../types';
 
 export const FILE_UPLOAD_ERROR = 'FILE_UPLOAD_ERROR';
 

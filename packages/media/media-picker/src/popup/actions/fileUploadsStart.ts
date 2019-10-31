@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
-import { UploadsStartEventPayload } from '../../domain/uploadEvent';
-import { MediaFile } from '../../domain/file';
+import { UploadsStartEventPayload } from '../../types';
+import { MediaFile } from '../../types';
 
 export const FILE_UPLOADS_START = 'FILE_UPLOADS_START';
 

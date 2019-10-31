@@ -5,7 +5,19 @@ import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 import { colors } from '@atlaskit/theme';
 import { Button, ButtonWrapper } from './styles';
 import Tooltip from '@atlaskit/tooltip';
-import { setAlpha } from '@atlaskit/editor-common';
+import chromatism from 'chromatism';
+
+/**
+ * For a given color set the alpha channel to alpha
+ *
+ * @param color color string, suppports HEX, RGB, RGBA etc.
+ * @param alpha Alpha channel value as fraction of 1
+ * @return CSS RGBA string with applied alpha channel
+ */
+export function setAlpha(color: string, alpha: number): string {
+  const { r, g, b } = chromatism.convert(color).rgb;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 // IMO these should live inside @atlaskit/theme
 const messages = defineMessages({

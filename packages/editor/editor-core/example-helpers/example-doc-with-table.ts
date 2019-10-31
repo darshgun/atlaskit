@@ -61,7 +61,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1535500800000 } },
+                    { type: 'date', attrs: { timestamp: '1535500800000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -145,7 +145,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1534723200000 } },
+                    { type: 'date', attrs: { timestamp: '1534723200000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -239,7 +239,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1536364800000 } },
+                    { type: 'date', attrs: { timestamp: '1536364800000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -313,7 +313,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1537315200000 } },
+                    { type: 'date', attrs: { timestamp: '1537315200000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -415,7 +415,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1536105600000 } },
+                    { type: 'date', attrs: { timestamp: '1536105600000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -592,7 +592,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1535587200000 } },
+                    { type: 'date', attrs: { timestamp: '1535587200000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -670,7 +670,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1536537600000 } },
+                    { type: 'date', attrs: { timestamp: '1536537600000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -753,7 +753,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1535846400000 } },
+                    { type: 'date', attrs: { timestamp: '1535846400000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -848,7 +848,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1536451200000 } },
+                    { type: 'date', attrs: { timestamp: '1536451200000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -939,7 +939,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1536624000000 } },
+                    { type: 'date', attrs: { timestamp: '1536624000000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -1027,7 +1027,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1535760000000 } },
+                    { type: 'date', attrs: { timestamp: '1535760000000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -1110,7 +1110,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1538265600000 } },
+                    { type: 'date', attrs: { timestamp: '1538265600000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },
@@ -1192,7 +1192,7 @@ export const exampleDocument = {
                 {
                   type: 'paragraph',
                   content: [
-                    { type: 'date', attrs: { timestamp: 1534550400000 } },
+                    { type: 'date', attrs: { timestamp: '1534550400000' } },
                     { type: 'text', text: ' ' },
                   ],
                 },

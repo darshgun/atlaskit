@@ -106,6 +106,8 @@ module.exports = {
           '**/__tests__/**/*.js',
           '**/examples/**/*.js',
           './projector.js',
+          // Any build dirs
+          '**/build/**/*.js',
         ],
       },
     ],
@@ -290,6 +292,8 @@ module.exports = {
               'packages/*/*/!(src)/**/*.{ts,tsx}',
               // __tests__ dirs inside src
               '**/__tests__/**/*.{ts,tsx}',
+              // Any build dirs
+              '**/build/**/*.{ts,tsx}',
             ],
           },
         ],
@@ -419,6 +423,12 @@ module.exports = {
       rules: {
         'global-require': 'off',
         'no-restricted-imports': 'off',
+      },
+    },
+    {
+      files: ['**/build/**'],
+      rules: {
+        'no-console': 'off',
       },
     },
   ],

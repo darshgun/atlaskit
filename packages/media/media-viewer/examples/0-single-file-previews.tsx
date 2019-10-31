@@ -13,6 +13,7 @@ import {
   audioItemNoCover,
   docItem,
   imageItem,
+  emptyImage,
   largeImageItem,
   smallImageItem,
   unsupportedItem,
@@ -114,6 +115,7 @@ export default class Example extends React.Component<{}, State> {
                   'Failed processing',
                 )}
               </li>
+              <li>{this.createItem(emptyImage, 'Empty File (version: 0)')}</li>
             </ButtonList>
           </Group>
           {selectedIdentifier && (

@@ -4,10 +4,16 @@ import { createMockCollabEditProvider } from './mock-collab-provider';
 
 export { createMockCollabEditProvider };
 
+export interface CreateCollabProviderOptions {
+  userId?: string;
+  defaultDoc?: string;
+  docId?: string;
+}
+
 export async function createCollabEditProvider(
-  userId?: string,
-  defaultDoc?: string,
+  options?: CreateCollabProviderOptions,
 ): Promise<CollabEditProvider> {
+  const { userId, defaultDoc } = options || {};
   if (SYNCHRONY_URL) {
     const synchronyProvider = await createSynchronyProvider(SYNCHRONY_URL);
     if (synchronyProvider) {

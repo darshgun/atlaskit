@@ -1,5 +1,20 @@
 # @atlaskit/editor-common
 
+## 41.2.1
+
+### Patch Changes
+
+- [patch][e47220a6b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e47220a6b2):
+
+  ED-5450: remove most of ts-ignores from editor packages
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/editor-test-helpers@10.1.3
+  - @atlaskit/emoji@62.5.6
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/editor-json-transformer@6.3.5
+  - @atlaskit/media-card@66.0.1
+
 ## 41.2.0
 
 ### Minor Changes

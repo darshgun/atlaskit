@@ -5,7 +5,7 @@ import { UploadEvent } from '../../domain/uploadEvent';
 import { uploadHasProxy } from '../tools/uploadHasProxy';
 import { finalizeUpload } from '../actions/finalizeUpload';
 import { State } from '../domain';
-import { MediaFile } from '../../domain/file';
+import { MediaFile } from '../../types';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
 
 export interface ProxyUploadEventsAction extends Action {

@@ -1,5 +1,22 @@
 # @atlaskit/conversation
 
+## 15.4.0
+
+### Minor Changes
+
+- [minor][0c383bebaa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c383bebaa):
+
+  Adds optional `renderAfterComment` prop to Conversation to allow consumers to render something after a comment but before its nested comments
+
+## 15.3.1
+
+- Updated dependencies [f28c191f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28c191f4a):
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/comment@9.1.1
+  - @atlaskit/editor-core@114.0.0
+  - @atlaskit/renderer@53.0.0
+  - @atlaskit/editor-common@41.2.1
+
 ## 15.3.0
 
 ### Minor Changes

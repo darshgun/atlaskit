@@ -1,10 +1,7 @@
 import { Action } from 'redux';
 
-import {
-  UploadStatusUpdateEvent,
-  UploadStatusUpdateEventPayload,
-} from '../../domain/uploadEvent';
-import { MediaFile } from '../../domain/file';
+import { UploadStatusUpdateEvent } from '../../domain/uploadEvent';
+import { MediaFile, UploadStatusUpdateEventPayload } from '../../types';
 
 export const FILE_UPLOAD_PROGRESS = 'FILE_UPLOAD_PROGRESS';
 

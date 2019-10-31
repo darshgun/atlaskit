@@ -13,8 +13,12 @@ interface VisibilityProps {
   isOpen?: boolean;
 }
 
+interface AppearanceProp {
+  appearance: Appearance;
+}
+
 /* Container */
-export const getMaxHeight = ({ appearance }: { appearance: Appearance }) =>
+export const getMaxHeight = ({ appearance }: AppearanceProp) =>
   appearance === 'announcement' ? '88px' : '52px';
 
 export const backgroundColor = themed('appearance', {
@@ -23,9 +27,9 @@ export const backgroundColor = themed('appearance', {
   announcement: { light: colors.N500, dark: colors.N500 },
 });
 
-export const Container = styled.div`
+export const Container = styled.div<AppearanceProp>`
   max-height: ${getMaxHeight};
-  overflow: ${({ appearance }: { appearance: Appearance }) =>
+  overflow: ${({ appearance }) =>
     appearance === 'announcement' ? 'scroll' : 'visible'};
   background-color: ${backgroundColor};
 `;
@@ -38,7 +42,8 @@ export const textColor = themed('appearance', {
   warning: { light: colors.N700, dark: colors.DN40 },
   announcement: { light: colors.N0, dark: colors.N0 },
 });
-export const Content = styled.div`
+
+export const Content = styled.div<AppearanceProp>`
   align-items: center;
   background-color: ${backgroundColor};
   color: ${textColor};
@@ -51,7 +56,7 @@ export const Content = styled.div`
   ${'' /* transition: color ${TRANSITION_DURATION}; */}
 
   margin: auto;
-  ${({ appearance }: { appearance: Appearance }) =>
+  ${({ appearance }) =>
     appearance === 'announcement'
       ? 'max-width: 876px;'
       : ''} transition: color ${TRANSITION_DURATION};
@@ -73,7 +78,7 @@ export const Icon = styled.span`
   flex: 0 0 auto;
 `;
 
-const textOverflow = ({ appearance }: { appearance: Appearance }) =>
+const textOverflow = ({ appearance }: AppearanceProp) =>
   appearance === 'announcement'
     ? ''
     : css`

@@ -4,7 +4,7 @@ import { PreviewData } from './types';
 import { Card } from '@atlaskit/media-card';
 import { FileIdentifier } from '@atlaskit/media-client';
 import { createUploadMediaClientConfig } from '@atlaskit/media-test-helpers';
-import { Preview, ImagePreview } from '../src/domain/preview';
+import { Preview, ImagePreview } from '../src/types';
 
 const mediaClientConfig = createUploadMediaClientConfig();
 

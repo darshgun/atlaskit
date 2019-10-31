@@ -178,7 +178,6 @@ class Navigation extends PureComponent<Props, State> {
     super(props, context);
 
     const { containerTheme, globalTheme } = props;
-    // $FlowFixMe  - theme is not found in props
     const { mode } = getTheme(props);
 
     this.state = {
@@ -215,7 +214,6 @@ class Navigation extends PureComponent<Props, State> {
     // TODO work out why nextProps.theme.__ATLASKIT_THEME__.mode always returns the mode
     // that was applied at time of first page load.
 
-    // $FlowFixMe - theme is not found in props
     const { mode } = getTheme(nextProps);
 
     const isTogglingIsOpen = this.props.isOpen !== nextProps.isOpen;

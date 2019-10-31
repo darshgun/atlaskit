@@ -1,6 +1,6 @@
 import { LocalUploadComponent } from '../../localUpload';
 import { UploadServiceImpl } from '../../../service/uploadServiceImpl';
-import { MediaFile } from '../../../domain/file';
+import { MediaFile } from '../../../types';
 import { SCALE_FACTOR_DEFAULT } from '../../../util/getPreviewFromImage';
 import { fakeMediaClient } from '@atlaskit/media-test-helpers';
 

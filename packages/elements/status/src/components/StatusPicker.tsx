@@ -1,4 +1,4 @@
-import { FieldTextStateless } from '@atlaskit/field-text';
+import TextField from '@atlaskit/textfield';
 import { gridSize } from '@atlaskit/theme';
 import * as React from 'react';
 import { FormEvent, PureComponent } from 'react';
@@ -38,16 +38,14 @@ export class StatusPicker extends PureComponent<Props, any> {
     return (
       <React.Fragment>
         <FieldTextWrapper key={this.fieldTextWrapperKey}>
-          <FieldTextStateless
+          <TextField
             value={text}
-            isLabelHidden={true}
-            shouldFitContainer={true}
+            isCompact
+            ref={this.handleInputRef}
             onChange={this.onChange}
             onKeyPress={this.onKeyPress}
-            compact={true}
-            innerRef={this.handleInputRef}
+            spellCheck={false}
             autoComplete="off"
-            isSpellCheckEnabled={false}
           />
         </FieldTextWrapper>
         <ColorPalette

@@ -16,7 +16,7 @@ import {
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import PickerFacade from '../../../../plugins/media/picker-facade';
-import { MediaFile } from '@atlaskit/media-picker';
+import { MediaFile } from '@atlaskit/media-picker/types';
 import {
   imagePreview,
   imageFile,

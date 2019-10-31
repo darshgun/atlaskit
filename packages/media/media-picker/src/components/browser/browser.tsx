@@ -4,7 +4,7 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
-import { BrowserConfig } from '../types';
+import { BrowserConfig } from '../../types';
 import {
   LocalUploadComponentReact,
   LocalUploadComponentBaseProps,

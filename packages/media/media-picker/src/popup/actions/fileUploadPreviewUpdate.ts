@@ -1,10 +1,7 @@
 import { Action } from 'redux';
 
-import {
-  UploadPreviewUpdateEvent,
-  UploadPreviewUpdateEventPayload,
-} from '../../domain/uploadEvent';
-import { MediaFile } from '../../domain/file';
+import { UploadPreviewUpdateEvent } from '../../domain/uploadEvent';
+import { MediaFile, UploadPreviewUpdateEventPayload } from '../../types';
 
 export const FILE_PREVIEW_UPDATE = 'FILE_PREVIEW_UPDATE';
 
