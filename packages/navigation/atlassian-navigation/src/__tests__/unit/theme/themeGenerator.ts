@@ -17,7 +17,7 @@ describe('generateTheme', () => {
     const generatedDefaultTheme = generateTheme(atlassianColorScheme).mode;
 
     Object.keys(generatedDefaultTheme).forEach(component => {
-      it(`should match theme object for ${component}`, () => {
+      it(`should match theme object for "${component}"`, () => {
         const componentTheme = generatedDefaultTheme[component as Component];
 
         expect(Object.keys(componentTheme)).toEqual(

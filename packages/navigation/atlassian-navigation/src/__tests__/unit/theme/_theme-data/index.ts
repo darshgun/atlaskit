@@ -11,7 +11,7 @@ export const atlassianTheme: { mode: Mode } = {
     create: {
       active: {
         color: '#FFFFFF',
-        backgroundColor: 'rgb(33,104,211)',
+        backgroundColor: 'rgba(0, 82, 204, 0.8)',
         boxShadow: '0 0 0 2px transparent',
       },
       default: {
@@ -26,7 +26,7 @@ export const atlassianTheme: { mode: Mode } = {
       },
       hover: {
         color: '#FFFFFF',
-        backgroundColor: 'rgb(20,96,208)',
+        backgroundColor: 'rgba(0, 82, 204, 0.9)',
         boxShadow: '0 0 0 2px transparent',
       },
       selected: { color: '', backgroundColor: '', boxShadow: '' },
@@ -34,9 +34,8 @@ export const atlassianTheme: { mode: Mode } = {
     iconButton: {
       active: {
         color: '#42526E',
-        backgroundColor: 'rgba(222, 235, 255, 0.3)',
+        backgroundColor: 'rgba(222, 235, 255, 0.6)',
         boxShadow: '',
-        opacity: 0.5,
       },
       default: {
         color: '#344563',
@@ -64,7 +63,7 @@ export const atlassianTheme: { mode: Mode } = {
     primaryButton: {
       active: {
         color: '#344563',
-        backgroundColor: 'rgba(222, 235, 255, 0.5)',
+        backgroundColor: 'rgba(222, 235, 255, 0.7)',
         boxShadow: '0 0 0 2px transparent',
       },
       default: {
@@ -79,7 +78,7 @@ export const atlassianTheme: { mode: Mode } = {
       },
       hover: {
         color: '#344563',
-        backgroundColor: 'rgba(222, 235, 255, 0.5)',
+        backgroundColor: 'rgba(222, 235, 255, 0.9)',
         boxShadow: '0 0 0 2px transparent',
       },
       selected: {
@@ -90,9 +89,14 @@ export const atlassianTheme: { mode: Mode } = {
       },
     },
     search: {
-      backgroundColor: '#FFFFFF',
-      color: '#6B778C',
-      border: '2px solid #DFE1E6',
+      default: {
+        backgroundColor: '#FFFFFF',
+        color: '#6B778C',
+        borderColor: '#DFE1E6',
+      },
+      focus: {
+        borderColor: '#2684FF',
+      },
     },
     skeleton: { backgroundColor: 'rgba(13, 20, 36, 0.97)', opacity: 0.15 },
   },
