@@ -1,8 +1,9 @@
 // TODO: Fix imports
 // import { generateTheme, GenerateThemeArgs } from '../../../';
 
+import { GenerateThemeArgs } from '../../../theme/types';
 import { generateTheme } from '../../../theme/themeGenerator';
-import { atlassianColorScheme, atlassianTheme } from './_theme-data';
+import { colorSchemes, themes } from './_theme-data';
 
 type Component =
   | 'search'
@@ -13,19 +14,21 @@ type Component =
   | 'create';
 
 describe('generateTheme', () => {
-  describe('default atlassian theme', () => {
-    const generatedDefaultTheme = generateTheme(atlassianColorScheme).mode;
+  colorSchemes.forEach((colorScheme: GenerateThemeArgs, i) => {
+    describe(`${colorScheme.name} theme`, () => {
+      const theme = generateTheme(colorScheme).mode;
 
-    Object.keys(generatedDefaultTheme).forEach(component => {
-      it(`should match theme object for "${component}"`, () => {
-        const componentTheme = generatedDefaultTheme[component as Component];
+      Object.keys(theme).forEach(component => {
+        it(`should match theme object for "${component}"`, () => {
+          const componentTheme = theme[component as Component];
 
-        expect(Object.keys(componentTheme)).toEqual(
-          Object.keys(atlassianTheme.mode[component as Component]),
-        );
-        expect(componentTheme).toEqual(
-          expect.objectContaining(atlassianTheme.mode[component as Component]),
-        );
+          expect(Object.keys(componentTheme)).toEqual(
+            Object.keys(themes[i].mode[component as Component]),
+          );
+          expect(componentTheme).toEqual(
+            expect.objectContaining(themes[i].mode[component as Component]),
+          );
+        });
       });
     });
   });
