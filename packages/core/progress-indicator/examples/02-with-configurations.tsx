@@ -2,7 +2,12 @@ import React, { Component, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 import Button, { ButtonGroup, ButtonAppearances } from '@atlaskit/button';
-import { AtlaskitThemeProvider, colors, themed } from '@atlaskit/theme';
+import {
+  AtlaskitThemeProvider,
+  colors,
+  themed,
+  ThemeModes,
+} from '@atlaskit/theme';
 import { ProgressDots } from '../src';
 
 type Appearances = 'default' | 'help' | 'inverted' | 'primary';
@@ -10,7 +15,7 @@ type Sizes = 'small' | 'default' | 'large';
 type Spacing = 'comfortable' | 'cozy' | 'compact';
 
 const appearances: Appearances[] = ['default', 'primary', 'help', 'inverted'];
-const themes = ['light', 'dark'];
+const themes: ThemeModes[] = ['light', 'dark'];
 const sizes: Sizes[] = ['small', 'default', 'large'];
 const spacing: Spacing[] = ['comfortable', 'cozy', 'compact'];
 const values = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];

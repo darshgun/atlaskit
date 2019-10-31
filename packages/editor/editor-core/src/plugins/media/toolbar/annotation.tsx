@@ -138,14 +138,14 @@ export const renderAnnotationButton = (
 ) => {
   return (view?: EditorView, idx?: number) => {
     const selectedContainer = pluginState.selectedMediaContainerNode();
-    if (!selectedContainer) {
+    if (!selectedContainer || !pluginState.mediaClientConfig) {
       return null;
     }
 
     return (
       <AnnotationToolbar
         key={idx}
-        viewMediaClientConfig={pluginState.mediaClientConfig!}
+        viewMediaClientConfig={pluginState.mediaClientConfig}
         id={selectedContainer.firstChild!.attrs.id}
         collection={selectedContainer.firstChild!.attrs.collection}
         view={view}

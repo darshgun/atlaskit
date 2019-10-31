@@ -3,6 +3,7 @@
  * See CONTRIBUTING.md#building-packages or
  * run `yarn build --help` for more information.
  */
+/* eslint-disable no-throw-literal */
 import * as bolt from 'bolt';
 import chalk from 'chalk';
 import meow from 'meow';

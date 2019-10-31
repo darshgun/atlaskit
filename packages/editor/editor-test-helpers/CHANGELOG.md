@@ -1,5 +1,14 @@
 # @atlaskit/editor-test-helpers
 
+## 10.1.3
+
+- Updated dependencies [f28c191f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28c191f4a):
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/editor-core@114.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/editor-common@41.2.1
+  - @atlaskit/media-core@31.0.0
+
 ## 10.1.2
 
 ### Patch Changes

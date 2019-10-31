@@ -1,1 +1,0 @@
-ED-7882 Optimise and minimise SVG asset for feedback

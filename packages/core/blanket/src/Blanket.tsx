@@ -26,7 +26,7 @@ class Blanket extends React.Component<Props, {}> {
 
   render() {
     const { canClickThrough, isTinted, onBlanketClicked } = this.props;
-    const onClick = canClickThrough ? null : onBlanketClicked;
+    const onClick = canClickThrough ? undefined : onBlanketClicked;
     const containerProps = { canClickThrough, isTinted, onClick };
 
     return <Div {...containerProps} />;
