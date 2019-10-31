@@ -24,4 +24,9 @@ integration/e2e tests available in media-card:
 - \`[data-test-id="media-card-actions-menu"]\`: Actions menu button (three dots icon) that open dropdown
 - \`[data-test-id="media-card-actions-menu-item"]\`: Action dropdown item
 - \`[data-test-id="media-image"]\`: Actual image (\`<img />\`) of a card
+- These controls can be found as part of Card's inline media player:
+  - \`[data-test-id="custom-media-player-fullscreen-button"]\`: Fullscreen button
+  - \`[data-test-id="custom-media-player-download-button"]\`: Download button
+  - \`[data-test-id="custom-media-player-play-toggle-button"]\`: Pause/Pause button
+  - \`[data-test-is-playing="data-test-is-playing"]\`: Contains 'true' if it media is playing and 'false' otherwise.
 `;

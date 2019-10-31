@@ -17,4 +17,9 @@ integration/e2e tests available in media-viewer:
   - \`[data-test-id="media-viewer-image"]\`: \`<img />\` with image itself. Can be found inside 'media-viewer-image-content'
 - \`[data-test-id="media-viewer-audio-content"]\`: Content element for audio document
 - \`[data-test-id="media-viewer-video-content"]\`: Content element for video document
+- These controls can be found as part of media players:
+  - \`[data-test-id="custom-media-player-fullscreen-button"]\`: Fullscreen button
+  - \`[data-test-id="custom-media-player-download-button"]\`: Download button
+  - \`[data-test-id="custom-media-player-play-toggle-button"]\`: Pause/Pause button
+  - \`[data-test-is-playing="data-test-is-playing"]\`: Contains 'true' if it media is playing and 'false' otherwise.
 `;

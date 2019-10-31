@@ -306,11 +306,8 @@ export class CustomMediaPlayer extends Component<
             const toggleButtonAction = isPlaying ? this.pause : this.play;
             const button = (
               <MediaButton
-                data-test-id={
-                  isPlaying
-                    ? 'custom-media-player-pause-button'
-                    : 'custom-media-player-play-button'
-                }
+                data-test-id="custom-media-player-play-toggle-button"
+                data-test-is-playing={isPlaying}
                 appearance={toolbar}
                 iconBefore={toggleButtonIcon}
                 onClick={toggleButtonAction}

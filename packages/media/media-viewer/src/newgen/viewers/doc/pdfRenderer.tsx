@@ -159,7 +159,10 @@ export class PDFRenderer extends React.Component<Props, State> {
     return this.state.doc.match({
       pending: () => <Spinner />,
       successful: () => (
-        <PDFWrapper innerRef={this.savePdfElement}>
+        <PDFWrapper
+          data-test-id="media-viewer-pdf-content"
+          innerRef={this.savePdfElement}
+        >
           <div
             className={pdfViewerClassName}
             onClick={closeOnDirectClick(this.props.onClose)}

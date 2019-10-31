@@ -97,14 +97,12 @@ export class DocViewer extends BaseViewer<string, Props> {
       return <Spinner />;
     }
     return (
-      <div data-test-id="media-viewer-pdf-content">
-        <PDFComponent
-          src={content}
-          onSuccess={onSuccess}
-          onError={onError}
-          onClose={onClose}
-        />
-      </div>
+      <PDFComponent
+        src={content}
+        onSuccess={onSuccess}
+        onError={onError}
+        onClose={onClose}
+      />
     );
   }
 }
