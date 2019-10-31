@@ -401,6 +401,14 @@ export default class Comment extends React.Component<Props, State> {
     );
   }
 
+  private getAfterContent() {
+    const { renderAfterComment, comment } = this.props;
+
+    return typeof renderAfterComment === 'function'
+      ? renderAfterComment(comment)
+      : null;
+  }
+
   private renderComments() {
     const { comment, comments, ...otherCommentProps } = this.props;
 
@@ -609,6 +617,7 @@ export default class Comment extends React.Component<Props, State> {
         }
         actions={this.getActions()}
         content={this.getContent()}
+        afterContent={this.getAfterContent()}
         isSaving={commentState === 'SAVING'}
         isError={commentState === 'ERROR'}
         errorActions={errorProps.actions}
