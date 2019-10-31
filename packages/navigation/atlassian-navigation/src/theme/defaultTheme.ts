@@ -9,15 +9,9 @@ import {
   N500,
   N600,
 } from '@atlaskit/theme/colors';
-import chromatism from 'chromatism';
 
 import { Mode } from './types';
-
-const hexToRGBA = (hex: string, opacity: number = 1) => {
-  const rgba = { ...chromatism.convert(hex).rgb, ...{ a: opacity } };
-
-  return `rgba(${Object.values(rgba).join(', ')})`;
-};
+import { hexToRGBA } from './themeHelpers';
 
 const defaultTheme: { mode: Mode } = {
   mode: {

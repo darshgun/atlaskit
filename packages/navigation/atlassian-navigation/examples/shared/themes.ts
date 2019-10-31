@@ -10,75 +10,84 @@ import {
 } from '@atlaskit/theme/colors';
 import { generateTheme } from '../../src';
 
-export const themes = [
+export const theme = [
   generateTheme({
     name: 'atlassian',
-    primary: {
-      backgroundColor: B400,
-      color: N0,
-    },
+    backgroundColor: B400,
+    highlightColor: N0,
   }),
   generateTheme({
     name: 'settings',
-    primary: {
-      backgroundColor: N800,
-      color: N0,
-    },
+    backgroundColor: N800,
+    highlightColor: N0,
   }),
   generateTheme({
     name: 'white',
-    primary: {
-      backgroundColor: N0,
-      color: N800,
-    },
+    backgroundColor: N0,
+    highlightColor: N800,
   }),
   generateTheme({
     name: 'red',
-    primary: {
-      backgroundColor: R300,
-      color: N0,
-    },
+    backgroundColor: R300,
+    highlightColor: N0,
   }),
   generateTheme({
     name: 'orange',
-    primary: {
-      backgroundColor: Y300,
-      color: N800,
-    },
+    backgroundColor: Y300,
+    highlightColor: N800,
   }),
   generateTheme({
     name: 'yellow',
-    primary: {
-      backgroundColor: '#ffff00',
-      color: N800,
-    },
+    backgroundColor: '#ffff00',
+    highlightColor: N800,
   }),
   generateTheme({
     name: 'green',
-    primary: {
-      backgroundColor: G300,
-      color: N800,
-    },
+    backgroundColor: G300,
+    highlightColor: N800,
   }),
   generateTheme({
     name: 'blue',
-    primary: {
-      backgroundColor: T300,
-      color: N800,
-    },
+    backgroundColor: T300,
+    highlightColor: N800,
   }),
   generateTheme({
     name: 'violet',
-    primary: {
-      backgroundColor: P300,
-      color: N0,
-    },
+    backgroundColor: P300,
+    highlightColor: N0,
   }),
   generateTheme({
     name: 'pink',
-    primary: {
-      backgroundColor: '#fec8d8',
-      color: N800,
-    },
+    backgroundColor: '#fec8d8',
+    highlightColor: N800,
   }),
 ];
+
+// export const figmaThemes = [
+export const themes = [
+  generateTheme({
+    name: 'huge',
+    backgroundColor: '#FFFFFF',
+    highlightColor: '#D8388A',
+  }),
+  generateTheme({
+    name: 'showpo',
+    backgroundColor: '#E8CBD2',
+    highlightColor: '#333333',
+  }),
+  generateTheme({
+    name: 'up',
+    backgroundColor: '#EF816B',
+    highlightColor: '#FDEE80',
+  }),
+  generateTheme({
+    name: '86400',
+    backgroundColor: '#000448',
+    highlightColor: '#6FF2B4',
+  }),
+  generateTheme({
+    name: 'netflix',
+    backgroundColor: '#272727',
+    highlightColor: '#E94E34',
+  }),
+]

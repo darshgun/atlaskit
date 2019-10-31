@@ -9,7 +9,7 @@ import { NavigationTheme } from '../../theme';
 const gridSize = gridSizeFn();
 
 const searchCommonCSS = {
-  borderRadius: `${gridSize * 2}px`,
+  borderRadius: 6,
   boxSizing: 'border-box' as const,
   height: `${gridSize * 4}px`,
   padding: `0 ${gridSize}px 0 40px`,

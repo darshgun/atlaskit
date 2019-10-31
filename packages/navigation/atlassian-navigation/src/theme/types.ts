@@ -62,12 +62,6 @@ export type Colors = {
 
 export type GenerateThemeArgs = {
   name?: string;
-  primary: Colors;
-  secondary?: Colors;
-};
-
-export type GenerateThemesArgs = {
-  name?: string;
   backgroundColor: string;
   highlightColor: string;
 };
