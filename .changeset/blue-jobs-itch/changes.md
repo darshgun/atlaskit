@@ -1,1 +1,0 @@
-Prevent updating MediaSingle node if new attrs are the same as current ones
