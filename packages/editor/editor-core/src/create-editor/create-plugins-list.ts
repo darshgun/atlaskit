@@ -51,6 +51,7 @@ import {
   feedbackDialogPlugin,
   historyPlugin,
   sharedContextPlugin,
+  expandPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { EditorView } from 'prosemirror-view';
@@ -138,6 +139,10 @@ export default function createPluginsList(
 
   if (props.allowRule) {
     plugins.push(rulePlugin());
+  }
+
+  if (props.UNSAFE_allowExpand) {
+    plugins.push(expandPlugin());
   }
 
   if (props.media || props.mediaProvider) {

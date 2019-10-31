@@ -91,6 +91,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
           UNSAFE_cards={{
             provider: this.cardProviderPromise,
           }}
+          UNSAFE_allowExpand={true}
           annotationProvider={{
             component: ExampleInlineCommentComponent,
           }}

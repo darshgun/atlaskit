@@ -108,6 +108,13 @@ const Mention = Loadable({
   loading: () => null,
 });
 
+const Expand = Loadable({
+  loader: () =>
+    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Expand" */
+    '../../ui/Expand'),
+  loading: () => null,
+});
+
 export const nodeToReact: { [key: string]: React.ComponentType<any> } = {
   blockquote: Blockquote,
   bulletList: BulletList,
@@ -145,6 +152,8 @@ export const nodeToReact: { [key: string]: React.ComponentType<any> } = {
   tableHeader: TableHeader,
   tableRow: TableRow,
   unknownBlock: UnknownBlock,
+  expand: Expand,
+  nestedExpand: Expand,
 };
 
 export const toReact = (node: Node): React.ComponentType<any> => {

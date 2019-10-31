@@ -145,6 +145,7 @@ const tablesPlugin = (options?: TablePluginOptions): EditorPlugin => ({
           return (
             <>
               {pluginState.targetCellPosition &&
+                pluginState.tableRef &&
                 !isDragging &&
                 options &&
                 options.allowContextualMenu && (

@@ -65,10 +65,12 @@ export const checkIfNumberColumnEnabled = (state: EditorState): boolean =>
 
 export const isLayoutSupported = (state: EditorState): boolean => {
   const { permittedLayouts } = pluginKey.getState(state).pluginConfig;
-  const { bodiedExtension, layoutSection } = state.schema.nodes;
+  const { bodiedExtension, layoutSection, expand } = state.schema.nodes;
 
   return (
-    !hasParentNodeOfType([layoutSection, bodiedExtension])(state.selection) &&
+    !hasParentNodeOfType([expand, layoutSection, bodiedExtension])(
+      state.selection,
+    ) &&
     permittedLayouts &&
     (permittedLayouts === 'all' ||
       (permittedLayouts.indexOf('default') > -1 &&

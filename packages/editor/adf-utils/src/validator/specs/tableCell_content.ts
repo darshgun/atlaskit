@@ -20,6 +20,7 @@ export default {
       'taskList',
       'nestableTaskList',
       'extension',
+      'nestedExpand',
       'blockCard',
     ],
   ],
