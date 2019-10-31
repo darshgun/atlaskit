@@ -13,13 +13,13 @@ import { sleep } from '@atlaskit/media-test-helpers';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 BrowserTestCase(
-  'upload-external-media.ts: Uplaods external media when pasted',
+  'upload-external-media.ts: Uploads external media when pasted',
   { skip: ['edge', 'ie', 'safari'] },
   async (client: any, testCase: string) => {
     const sample = new Page(client);
     await copyToClipboard(
       sample,
-      `<meta charset='utf-8'><img src="https://images2.minutemediacdn.com/image/upload/c_crop,h_1193,w_2121,x_0,y_64/f_auto,q_auto,w_1100/v1565279671/shape/mentalfloss/578211-gettyimages-542930526.jpg" alt="Image result for cats"/>`,
+      `<meta charset='utf-8'><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Domestic_Cat_Face_Shot.jpg/220px-Domestic_Cat_Face_Shot.jpg"/>`,
       'html',
     );
 
@@ -32,6 +32,8 @@ BrowserTestCase(
     });
     await page.paste(editable);
     await sleep(0);
+    //waits until blob is available
+    await page.waitForSelector('.ProseMirror img[src^="blob"]');
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testCase);
   },
