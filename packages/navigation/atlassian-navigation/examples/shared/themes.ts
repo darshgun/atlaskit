@@ -90,4 +90,4 @@ export const themes = [
     backgroundColor: '#272727',
     highlightColor: '#E94E34',
   }),
-]
+];
