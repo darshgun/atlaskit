@@ -10,6 +10,7 @@ import {
   akEditorSelectedBorderSize,
   akEditorSwoopCubicBezier,
   blockNodesVerticalMargin,
+  akLayoutGutterOffset,
 } from '../../styles';
 
 export const messages = defineMessages({
@@ -35,7 +36,6 @@ export const messages = defineMessages({
   },
 });
 
-export const LAYOUT_OFFSET = 17;
 const BORDER_RADIUS = gridSize() / 2;
 const EXPAND_SELECTED_BACKGROUND = 'rgba(255, 255, 255, 0.6)';
 
@@ -59,7 +59,7 @@ const ContainerStyles = css<StyleProps>`
       // Only only these margins if the expand isn't editable
       // and is the root level expand.
       props['data-node-type'] === 'expand' && !props.editable
-        ? `-${LAYOUT_OFFSET}px`
+        ? `-${akLayoutGutterOffset}px`
         : `0`
     } 0`};
 
@@ -95,9 +95,11 @@ const ContentStyles = css<StyleProps>`
     padding-top: ${collapsed ? 0 : gridSize()}px;
     padding-right: ${gridSize()}px;
     padding-left: ${gridSize() * 4 - gridSize() / 2}px;
+    overflow: hidden;
 
-    ${!!collapsed &&
-      `
+    ${
+      !!collapsed
+        ? `
       .expand-content-wrapper, .nestedExpand-content-wrapper {
         /* We visually hide the content here to preserve the content during copy+paste */
         position: absolute;
@@ -107,7 +109,9 @@ const ContentStyles = css<StyleProps>`
         clip: rect(1px, 1px, 1px, 1px);
         white-space: nowrap;
       }
-    `}
+    `
+        : ''
+    }
     `;
   }};
 `;

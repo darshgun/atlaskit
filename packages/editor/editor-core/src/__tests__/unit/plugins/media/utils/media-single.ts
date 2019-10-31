@@ -333,7 +333,7 @@ describe('Media Single Utils', () => {
               isFullWidthModeEnabled: true,
               containerWidth: { width: 1920, lineLength: 1800 },
             });
-            expect(width).toBe(883); // width of layout column
+            expect(width).toBe(882); // width of layout column
           });
 
           it('calculates correct width for resized media', () => {
@@ -352,7 +352,7 @@ describe('Media Single Utils', () => {
             const width = calcWidth({
               origWidth: 2000,
             });
-            expect(width).toBe(363); // width of layout column
+            expect(width).toBe(362); // width of layout column
           });
 
           it('calculates correct width for resized media', () => {

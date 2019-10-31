@@ -7,6 +7,7 @@ import {
   akEditorFullWidthLayoutWidth,
   akEditorGutterPadding,
   akEditorSwoopCubicBezier,
+  akLayoutGutterOffset,
 } from '@atlaskit/editor-common';
 import { taskListSelector, decisionListSelector } from '@atlaskit/adf-schema';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
@@ -23,7 +24,6 @@ import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
 import WidthEmitter from '../WidthEmitter';
-import { LAYOUT_OFFSET } from '../../plugins/layout/styles';
 
 const SWOOP_ANIMATION = `0.5s ${akEditorSwoopCubicBezier}`;
 const TOTAL_PADDING = akEditorGutterPadding * 2;
@@ -144,7 +144,9 @@ const ContentArea = styled.div`
         }
 
         [data-layout-section] {
-          max-width: ${containerWidth - TOTAL_PADDING + LAYOUT_OFFSET * 2}px;
+          max-width: ${containerWidth -
+            TOTAL_PADDING +
+            akLayoutGutterOffset * 2}px;
         }
       `;
     }}
