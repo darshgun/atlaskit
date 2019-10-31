@@ -14,7 +14,6 @@ import {
   akEditorDeleteBorder,
   akEditorSelectedBorderBoldSize,
   tasksAndDecisionsStyles,
-  expandStyles as expandSharedStyles,
 } from '@atlaskit/editor-common';
 
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
@@ -123,7 +122,6 @@ const ContentStyles: ComponentClass<
   ${blockMarksSharedStyles}
   ${dateSharedStyle}
   ${extensionStyles}
-  ${expandSharedStyles}
   ${expandStyles}
 
   /** Global selector for extensions, as .danger tag is assigned to root level node which is unaccessible from triggered child node **/

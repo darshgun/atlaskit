@@ -1,9 +1,4 @@
-import {
-  Transaction,
-  NodeSelection,
-  Selection,
-  EditorState,
-} from 'prosemirror-state';
+import { NodeSelection, EditorState } from 'prosemirror-state';
 import { Node as PMNode, NodeType } from 'prosemirror-model';
 import { safeInsert, findTable } from 'prosemirror-utils';
 import { createCommand } from './pm-plugins/main';
@@ -82,18 +77,6 @@ export const toggleExpandExpanded = (
     dispatch(tr);
   }
   return true;
-};
-
-export const setCursorInsideExpand = (
-  pos: number,
-  tr: Transaction,
-  dir: number,
-) => {
-  const sel = Selection.findFrom(tr.doc.resolve(pos), dir, true);
-  if (sel) {
-    return tr.setSelection(sel);
-  }
-  return tr;
 };
 
 export const createExpandNode = (state: EditorState): PMNode => {

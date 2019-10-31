@@ -48,6 +48,10 @@ export const expandStyles = css`
     border-color: ${colors.N40A};
   }
 
+  .${expandClassNames.inputContainer} {
+    width: 100%;
+  }
+
   .${expandClassNames.prefix}:not(.${expandClassNames.expanded}) {
     .ak-editor-expand__content {
       position: absolute;

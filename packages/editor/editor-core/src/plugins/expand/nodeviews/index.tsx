@@ -16,7 +16,10 @@ import {
   akEditorSwoopCubicBezier,
 } from '@atlaskit/editor-common';
 
-import { getPosHandler } from '../../../nodeviews/ReactNodeView';
+import {
+  getPosHandlerNode,
+  getPosHandler,
+} from '../../../nodeviews/ReactNodeView';
 import { closestElement } from '../../../utils';
 import {
   updateExpandTitle,
@@ -93,13 +96,13 @@ export class ExpandNodeView implements NodeView {
   contentDOM?: HTMLElement;
   icon?: HTMLElement;
   input?: HTMLElement;
-  getPos: getPosHandler;
+  getPos: getPosHandlerNode;
   pos: number;
 
   constructor(
     node: PmNode,
     view: EditorView,
-    getPos: getPosHandler,
+    getPos: getPosHandlerNode,
     reactContext: ReactContext,
   ) {
     const { intl } = reactContext();
@@ -192,7 +195,7 @@ export class ExpandNodeView implements NodeView {
     );
   }
 
-  ignoreMutation(_mutation: MutationRecord) {
+  ignoreMutation() {
     return true;
   }
 
@@ -227,6 +230,6 @@ export class ExpandNodeView implements NodeView {
 }
 
 export default function(reactContext: ReactContext) {
-  return (node: PmNode, view: EditorView, getPos: () => number): NodeView =>
-    new ExpandNodeView(node, view, getPos, reactContext);
+  return (node: PmNode, view: EditorView, getPos: getPosHandler): NodeView =>
+    new ExpandNodeView(node, view, getPos as getPosHandlerNode, reactContext);
 }
