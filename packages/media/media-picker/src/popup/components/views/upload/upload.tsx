@@ -73,6 +73,12 @@ const createDeleteCardAction = (handler: CardEventHandler): CardAction => {
 
 const cardDimension = { width: 162, height: 108 };
 
+interface IterableCard {
+  key: string;
+  card: JSX.Element;
+  isUploading: boolean;
+}
+
 export interface UploadViewOwnProps {
   readonly browserRef: React.RefObject<BrowserBase>;
   readonly mediaClient: MediaClient;
@@ -298,29 +304,21 @@ export class StatelessUploadView extends Component<
   private renderCards() {
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-    const wrapCard = (
-      isUploading: boolean,
-      { key, el: card }: { key: string; el: JSX.Element },
-    ) => {
-      const dataTestId = isUploading
-        ? 'media-picker-uploading-media-card'
-        : 'media-picker-recent-media-card';
-      return (
-        <CardWrapper tabIndex={0} data-test-id={dataTestId} key={key}>
-          {card}
-        </CardWrapper>
-      );
-    };
-    const uploadingFilesCardWrappers = uploadingFilesCards.map(
-      wrapCard.bind(this, true),
-    );
-    const recentFilesCardWrappers = recentFilesCards.map(
-      wrapCard.bind(this, false),
-    );
-    return uploadingFilesCardWrappers.concat(recentFilesCardWrappers);
+    return uploadingFilesCards
+      .concat(recentFilesCards)
+      .map(({ key, card, isUploading }) => {
+        const dataTestId = isUploading
+          ? 'media-picker-uploading-media-card'
+          : 'media-picker-recent-media-card';
+        return (
+          <CardWrapper tabIndex={0} data-test-id={dataTestId} key={key}>
+            {card}
+          </CardWrapper>
+        );
+      });
   }
 
-  private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
+  private uploadingFilesCards(): IterableCard[] {
     const { uploads, onFileClick, mediaClient } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
@@ -364,8 +362,9 @@ export class StatelessUploadView extends Component<
       };
 
       return {
+        isUploading: true,
         key: id,
-        el: (
+        card: (
           <Card
             mediaClientConfig={mediaClient.config}
             identifier={identifier}
@@ -380,7 +379,7 @@ export class StatelessUploadView extends Component<
     });
   }
 
-  private recentFilesCards(): { key: string; el: JSX.Element }[] {
+  private recentFilesCards(): IterableCard[] {
     const {
       mediaClient,
       recents,
@@ -448,8 +447,9 @@ export class StatelessUploadView extends Component<
       }
 
       return {
+        isUploading: false,
         key: `${occurrenceKey}-${id}`,
-        el: (
+        card: (
           <Card
             mediaClientConfig={mediaClient.config}
             identifier={{
