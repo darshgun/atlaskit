@@ -2,12 +2,12 @@ import * as React from 'react';
 import { ReactWrapper } from 'enzyme';
 import { Observable } from 'rxjs';
 import { CustomMediaPlayer } from '@atlaskit/media-ui';
-import { MediaFileArtifacts } from '@atlaskit/media-store';
 import {
-  FileIdentifier,
-  FileState,
   globalMediaEventEmitter,
   MediaViewedEventPayload,
+  FileIdentifier,
+  FileState,
+  MediaFileArtifacts,
 } from '@atlaskit/media-client';
 import {
   asMockReturnValue,

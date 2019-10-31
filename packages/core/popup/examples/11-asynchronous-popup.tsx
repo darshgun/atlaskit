@@ -19,6 +19,11 @@ const containerCSS = {
   margin: '250px',
 };
 
+const loadingCSS = {
+  textAlign: 'center',
+  padding: '30px',
+} as const;
+
 const contentCSS = {
   alignItems: 'center',
   textAlign: 'center',
@@ -58,7 +63,9 @@ const PopupContent: FC<PopupProps> = ({
   };
 
   return loading ? (
-    <div id="spinner">Loading...</div>
+    <div id="spinner" css={loadingCSS}>
+      Loading...
+    </div>
   ) : (
     <div id="popup-content" css={contentCSS}>
       <Button onClick={() => setPosition()}>Toggle Position</Button>

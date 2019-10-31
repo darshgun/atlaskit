@@ -80,12 +80,18 @@ function closest(
   s: string,
 ): HTMLElement | null {
   let el = node as HTMLElement;
+
   if (!el) {
     return null;
   }
   if (!document.documentElement || !document.documentElement.contains(el)) {
     return null;
   }
+
+  if (el.closest) {
+    return el.closest(s);
+  }
+
   const matches = el.matches ? 'matches' : 'msMatchesSelector';
 
   do {
@@ -966,4 +972,8 @@ export function shallowEqual(obj1: any = {}, obj2: any = {}) {
 
 export function sum<T>(arr: Array<T>, f: (val: T) => number) {
   return arr.reduce((val, x) => val + f(x), 0);
+}
+
+export function nonNullable<T>(value: T): value is NonNullable<T> {
+  return value !== null && value !== undefined;
 }

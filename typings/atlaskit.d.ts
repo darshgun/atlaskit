@@ -37,7 +37,6 @@ declare module '@atlaskit/single-select';
 declare module '@atlaskit/size-detector';
 declare module '@atlaskit/table-tree';
 declare module '@atlaskit/textfield';
-declare module '@atlaskit/theme/colors';
 
 // Build
 declare module '@atlaskit/icon-build-process';
@@ -48,8 +47,10 @@ declare module '@atlaskit/build-utils/*';
 declare module '@atlaskit/visual-regression';
 declare module '@atlaskit/visual-regression/*';
 declare module '@atlaskit/webdriver-runner/wd-wrapper';
+declare module '@atlaskit/webdriver-runner/*';
 declare module '@atlaskit/util-common-test';
 
+declare const SYNCHRONY_URL: string;
 declare const ENABLE_ANALYTICS_GASV3: string;
 declare const WEBSITE_ENV: string;
 declare const DEFAULT_META_DESCRIPTION: string;

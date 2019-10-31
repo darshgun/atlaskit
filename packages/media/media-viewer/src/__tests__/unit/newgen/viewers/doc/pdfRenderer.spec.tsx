@@ -33,14 +33,15 @@ import { mountWithIntlContext } from '@atlaskit/media-test-helpers';
 
 function createFixture(documentPromise: Promise<any>) {
   const onClose = jest.fn();
+  const onSuccess = jest.fn();
   (pdfjsLib.getDocument as jest.Mock<{}>).mockReturnValue({
     promise: documentPromise,
   });
 
   const el = mountWithIntlContext<Props, State>(
-    <PDFRenderer src={''} onClose={onClose} />,
+    <PDFRenderer src={''} onClose={onClose} onSuccess={onSuccess} />,
   );
-  return { el, onClose };
+  return { el, onClose, onSuccess };
 }
 
 describe('PDFRenderer', () => {
@@ -106,5 +107,14 @@ describe('PDFRenderer', () => {
     el.find(`.${pdfViewerClassName}`).simulate('click');
 
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it('should call onSuccess when loaded', async () => {
+    const documentPromise = Promise.resolve({});
+    const { el, onSuccess } = createFixture(documentPromise);
+    await documentPromise;
+    el.update();
+
+    expect(onSuccess).toHaveBeenCalled();
   });
 });

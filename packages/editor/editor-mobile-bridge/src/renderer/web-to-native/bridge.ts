@@ -18,6 +18,7 @@ export interface MentionBridge {
 
 export interface RenderBridge {
   onContentRendered(): void;
+  onRenderedContentHeightChanged(newHeight: number): void;
 }
 
 export interface AnalyticsBridge {

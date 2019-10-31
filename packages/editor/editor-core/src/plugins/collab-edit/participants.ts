@@ -1,22 +1,25 @@
-import { Participant } from './types';
+import { CollabParticipant } from './types';
 
 export interface ReadOnlyParticipants {
-  get(sessionId: string): Participant | undefined;
-  toArray(): ReadonlyArray<Participant>;
+  get(sessionId: string): CollabParticipant | undefined;
+  toArray(): ReadonlyArray<CollabParticipant>;
   eq(other: ReadOnlyParticipants): boolean;
 }
 
 export class Participants implements ReadOnlyParticipants {
-  private participants: Map<string, Participant>;
+  private participants: Map<string, CollabParticipant>;
 
   constructor(
-    participants: Map<string, Participant> = new Map<string, Participant>(),
+    participants: Map<string, CollabParticipant> = new Map<
+      string,
+      CollabParticipant
+    >(),
   ) {
     this.participants = participants;
   }
 
-  add(data: Participant[]) {
-    const newSet = new Map<string, Participant>(this.participants);
+  add(data: CollabParticipant[]) {
+    const newSet = new Map<string, CollabParticipant>(this.participants);
     data.forEach(participant => {
       newSet.set(participant.sessionId, participant);
     });
@@ -24,7 +27,7 @@ export class Participants implements ReadOnlyParticipants {
   }
 
   remove(sessionIds: string[]) {
-    const newSet = new Map<string, Participant>(this.participants);
+    const newSet = new Map<string, CollabParticipant>(this.participants);
     sessionIds.forEach(sessionId => {
       newSet.delete(sessionId);
     });
@@ -33,7 +36,7 @@ export class Participants implements ReadOnlyParticipants {
   }
 
   update(sessionId: string, lastActive: number) {
-    const newSet = new Map<string, Participant>(this.participants);
+    const newSet = new Map<string, CollabParticipant>(this.participants);
     const data = newSet.get(sessionId);
     if (!data) {
       return this;
