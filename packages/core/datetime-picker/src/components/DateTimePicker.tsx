@@ -75,7 +75,11 @@ export interface Props extends WithAnalyticsEventsProps {
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing?: Spacing;
   locale: string;
-  /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+   *  - `{testId}--datepicker--container` wrapping element of date-picker
+   *  - `{testId}--timepicker--container` wrapping element of time-picker
+   **/
   testId?: string;
 }
 

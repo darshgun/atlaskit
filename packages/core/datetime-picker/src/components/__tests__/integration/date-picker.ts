@@ -14,8 +14,6 @@ const date =
   '[aria-label="calendar"] > table > tbody > tr:nth-child(5) > td:nth-child(6)';
 const input = 'input#react-select-datepicker-input';
 
-// TODO: refactor those commented tests and as we implemented testId.
-
 const value = `${datePicker} > div`;
 
 // BrowserTestCase(
