@@ -31,16 +31,16 @@ import {
   toggleHeaderColumn,
   addBoldInEmptyHeaderCells,
   toggleHeaderRow,
-} from '../../../../plugins/table/commands';
-import { handleCut } from '../../../../plugins/table/event-handlers';
-import { TablePluginState } from '../../../../plugins/table/types';
-import {
-  pluginKey,
-  getPluginState,
-} from '../../../../plugins/table/pm-plugins/main';
+} from '../../commands';
+import { handleCut } from '../../event-handlers';
+import { TablePluginState } from '../../types';
+import { pluginKey, getPluginState } from '../../pm-plugins/main';
 import { EditorView } from 'prosemirror-view';
-import { splitCell } from '../../../../plugins/table/commands/misc';
-import { temporaryMediaGroup, getFreshMediaProvider } from '../media/_utils';
+import { splitCell } from '../../commands/misc';
+import {
+  temporaryMediaGroup,
+  getFreshMediaProvider,
+} from '../../../../__tests__/unit/plugins/media/_utils';
 import { EditorProps } from '../../../../types';
 
 describe('table plugin: actions', () => {
@@ -585,6 +585,24 @@ describe('table plugin: actions', () => {
   });
 
   describe('#toggleBoldOnHeaderCells', () => {
+    describe('when there is no cursor', () => {
+      it('should not add a strong mark on storedMarks', function() {
+        const { editorView } = editor(
+          doc(table()(tr(th()(p('{<}foo bar{>}'))), tr(td()(p(''))))),
+        );
+
+        const { state, dispatch } = editorView;
+
+        const tableCellHeader = findParentNodeOfType(
+          state.schema.nodes.tableHeader,
+        )(state.selection);
+
+        addBoldInEmptyHeaderCells(tableCellHeader!)(state, dispatch);
+
+        const result = editorView.state.storedMarks || [];
+        expect(result).toEqual([]);
+      });
+    });
     describe('when the cursor is on table header cell', () => {
       describe('and the cell is empty', () => {
         it('should add strong mark on storedMarks', () => {
