@@ -79,11 +79,19 @@ export const siteNameCSS = ({
 export const siteNameSkeletonCSS = (theme: NavigationTheme) => ({
   ...siteNameCSS(theme),
   ...skeletonCSS(theme),
-  width: gridSize * 3,
+  width: gridSize * 5,
+  backgroundColor: 'transparent',
+
+  '&:after': {
+    content: '""',
+    width: '100%',
+    height: height / 2,
+    backgroundColor: theme.mode.skeleton.backgroundColor,
+    borderRadius: 4,
+  },
 });
 
 export const productLogoSkeletonCSS = (theme: NavigationTheme) => ({
-  borderRadius: `${height / 2}px`,
   width: '120px',
   ...heightCSS,
   ...productLogoCSS,
