@@ -298,17 +298,26 @@ export class StatelessUploadView extends Component<
   private renderCards() {
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-    return uploadingFilesCards
-      .concat(recentFilesCards)
-      .map(({ key, el: card }) => (
-        <CardWrapper
-          tabIndex={0}
-          data-test-id="media-picker-all-recents-media-card"
-          key={key}
-        >
+    const wrapCard = (
+      isUploading: boolean,
+      { key, el: card }: { key: string; el: JSX.Element },
+    ) => {
+      const dataTestId = isUploading
+        ? 'media-picker-uploading-media-card'
+        : 'media-picker-recent-media-card';
+      return (
+        <CardWrapper tabIndex={0} data-test-id={dataTestId} key={key}>
           {card}
         </CardWrapper>
-      ));
+      );
+    };
+    const uploadingFilesCardWrappers = uploadingFilesCards.map(
+      wrapCard.bind(this, true),
+    );
+    const recentFilesCardWrappers = recentFilesCards.map(
+      wrapCard.bind(this, false),
+    );
+    return uploadingFilesCardWrappers.concat(recentFilesCardWrappers);
   }
 
   private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
@@ -357,17 +366,15 @@ export class StatelessUploadView extends Component<
       return {
         key: id,
         el: (
-          <div data-test-id="media-picker-uploading-media-card">
-            <Card
-              mediaClientConfig={mediaClient.config}
-              identifier={identifier}
-              dimensions={cardDimension}
-              selectable={true}
-              selected={selected}
-              onClick={onClick}
-              actions={actions}
-            />
-          </div>
+          <Card
+            mediaClientConfig={mediaClient.config}
+            identifier={identifier}
+            dimensions={cardDimension}
+            selectable={true}
+            selected={selected}
+            onClick={onClick}
+            actions={actions}
+          />
         ),
       };
     });
@@ -443,21 +450,19 @@ export class StatelessUploadView extends Component<
       return {
         key: `${occurrenceKey}-${id}`,
         el: (
-          <div data-test-id="media-picker-recent-media-card">
-            <Card
-              mediaClientConfig={mediaClient.config}
-              identifier={{
-                id,
-                mediaItemType: 'file',
-                collectionName: recentsCollection,
-              }}
-              dimensions={cardDimension}
-              selectable={true}
-              selected={selected}
-              onClick={onClick}
-              actions={actions}
-            />
-          </div>
+          <Card
+            mediaClientConfig={mediaClient.config}
+            identifier={{
+              id,
+              mediaItemType: 'file',
+              collectionName: recentsCollection,
+            }}
+            dimensions={cardDimension}
+            selectable={true}
+            selected={selected}
+            onClick={onClick}
+            actions={actions}
+          />
         ),
       };
     });
