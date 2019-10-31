@@ -80,7 +80,7 @@ export class FileCardImageViewBase extends Component<
         data-test-id="media-file-card-view"
         data-test-status={status}
         data-test-progress={progress}
-        {...(selected ? { 'data-test-selected': true } : {})}
+        data-test-selected={selected ? true : undefined}
         disableOverlay={disableOverlay}
         selectable={selectable}
         selected={selected}
