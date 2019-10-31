@@ -47,7 +47,7 @@ export class Footer extends Component<FooterProps> {
 
     return (
       <InsertButton
-        data-testid="media-picker-insert-button"
+        testId="media-picker-insert-button"
         appearance="primary"
         onClick={onClick}
         isDisabled={!canInsert}
