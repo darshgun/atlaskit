@@ -8,6 +8,8 @@ import {
   li,
   code_block,
   emoji,
+  expand,
+  nestedExpand,
   br,
   h1,
   h2,
@@ -69,6 +71,7 @@ describe('JSONTransformer:', () => {
           allowLists: true,
           allowRule: true,
           allowTables: true,
+          UNSAFE_allowExpand: true,
         },
         providerFactory: ProviderFactory.create({ emojiProvider }),
       });
@@ -158,6 +161,100 @@ describe('JSONTransformer:', () => {
                   type: 'file',
                   collection: '',
                 },
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should strip optional attrs from expand node', () => {
+      const { editorView } = editor(
+        doc(
+          expand({
+            title: 'Click here to expand...',
+            __expanded: true,
+          })(p('hello')),
+        ),
+      );
+      expect(toJSON(editorView.state.doc)).toEqual({
+        version: 1,
+        type: 'doc',
+        content: [
+          {
+            type: 'expand',
+            attrs: {
+              title: 'Click here to expand...',
+            },
+            content: [
+              {
+                type: 'paragraph',
+                content: [
+                  {
+                    type: 'text',
+                    text: 'hello',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should strip optional attrs from nestedExpand node', () => {
+      const { editorView } = editor(
+        doc(
+          table()(
+            tr(
+              td({})(
+                nestedExpand({
+                  title: 'Click here to expand...',
+                  __expanded: true,
+                })(p('hello')),
+              ),
+            ),
+          ),
+        ),
+      );
+      expect(toJSON(editorView.state.doc)).toEqual({
+        version: 1,
+        type: 'doc',
+        content: [
+          {
+            type: 'table',
+            attrs: {
+              isNumberColumnEnabled: false,
+              layout: 'default',
+            },
+            content: [
+              {
+                type: 'tableRow',
+                content: [
+                  {
+                    type: 'tableCell',
+                    attrs: {},
+                    content: [
+                      {
+                        type: 'nestedExpand',
+                        attrs: {
+                          title: 'Click here to expand...',
+                        },
+                        content: [
+                          {
+                            type: 'paragraph',
+                            content: [
+                              {
+                                type: 'text',
+                                text: 'hello',
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
