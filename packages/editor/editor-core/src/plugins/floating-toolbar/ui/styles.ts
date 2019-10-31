@@ -1,5 +1,5 @@
 import { colors } from '@atlaskit/theme';
-import { hexToRgba } from '@atlaskit/editor-common';
+import { hexToRgba } from '@atlaskit/adf-schema';
 
 interface Property {
   [key: string]: {

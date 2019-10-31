@@ -1501,6 +1501,50 @@ describe('paste plugins', () => {
     });
   });
 
+  describe('paste link copied from iphone "share" button', () => {
+    it('should paste link', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(link({ href: uriList })(uriList))),
+      );
+    });
+
+    it('should paste link inline', () => {
+      const { editorView } = editor(doc(p('hello {<>}')));
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('hello ', link({ href: uriList })(uriList))),
+      );
+    });
+
+    it('should paste link inside action', () => {
+      const { editorView } = editor(
+        doc(
+          taskList({ localId: 'task-list-id' })(
+            taskItem({ localId: 'task-item-id' })('{<>}'),
+          ),
+        ),
+      );
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          taskList({ localId: 'task-list-id' })(
+            taskItem({ localId: 'task-item-id' })(
+              link({ href: uriList })(uriList),
+            ),
+          ),
+        ),
+      );
+    });
+  });
+
   describe('analytics V3', () => {
     const paragraphDoc = doc(p('Five{<>}'));
     const orderedListDoc = doc(ol(li(p('Five{<>}'))));

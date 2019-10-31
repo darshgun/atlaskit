@@ -2,7 +2,6 @@ let mockFindOverflowScrollParent = jest.fn();
 jest.mock('@atlaskit/editor-common', () => ({
   browser: () => ({}),
   findOverflowScrollParent: () => mockFindOverflowScrollParent(),
-  hexToRgba: jest.fn(),
   withImageLoader: jest.fn(),
   overflowShadow: jest.fn(),
 }));

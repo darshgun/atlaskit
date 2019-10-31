@@ -30,6 +30,7 @@ export type EditorProps = {
   onCancel?: (value: any) => void;
 
   onMount?: (actions: EditorActions) => void;
+  onDestroy?: () => void;
 };
 
 export type AnalyticsEventHandler = (
