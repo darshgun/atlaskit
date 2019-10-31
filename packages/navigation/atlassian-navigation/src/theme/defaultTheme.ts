@@ -18,7 +18,7 @@ const defaultTheme: { mode: Mode } = {
     create: {
       active: {
         color: N0,
-        backgroundColor: 'rgb(33,104,211)',
+        backgroundColor: hexToRGBA(B400, 0.8),
         boxShadow: '0 0 0 2px transparent',
       },
       default: {
@@ -33,7 +33,7 @@ const defaultTheme: { mode: Mode } = {
       },
       hover: {
         color: N0,
-        backgroundColor: 'rgb(20,96,208)',
+        backgroundColor: hexToRGBA(B400, 0.9),
         boxShadow: '0 0 0 2px transparent',
       },
       selected: { color: '', backgroundColor: '', boxShadow: '' },
@@ -41,9 +41,8 @@ const defaultTheme: { mode: Mode } = {
     iconButton: {
       active: {
         color: N500,
-        backgroundColor: hexToRGBA(B50, 0.3),
+        backgroundColor: hexToRGBA(B50, 0.6),
         boxShadow: '',
-        opacity: 0.5,
       },
       default: {
         color: N600,
@@ -71,7 +70,7 @@ const defaultTheme: { mode: Mode } = {
     primaryButton: {
       active: {
         color: N600,
-        backgroundColor: hexToRGBA(B50, 0.5),
+        backgroundColor: hexToRGBA(B50, 0.7),
         boxShadow: '0 0 0 2px transparent',
       },
       default: {
@@ -86,7 +85,7 @@ const defaultTheme: { mode: Mode } = {
       },
       hover: {
         color: N600,
-        backgroundColor: hexToRGBA(B50, 0.5),
+        backgroundColor: hexToRGBA(B50, 0.9),
         boxShadow: '0 0 0 2px transparent',
       },
       selected: {
@@ -97,9 +96,14 @@ const defaultTheme: { mode: Mode } = {
       },
     },
     search: {
-      backgroundColor: N0,
-      color: N200,
-      border: `2px solid ${N40}`,
+      default: {
+        backgroundColor: N0,
+        color: N200,
+        borderColor: N40,
+      },
+      focus: {
+        borderColor: B200,
+      },
     },
     skeleton: { backgroundColor: DN10A, opacity: 0.15 },
   },

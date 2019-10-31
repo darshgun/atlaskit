@@ -98,10 +98,10 @@ export const generateTheme = (
         default: {
           backgroundColor,
           color,
-          border: `2px solid ${hexToRGBA(color, 0.5)}`,
+          borderColor: hexToRGBA(color, 0.5),
         },
         focus: {
-          border: `2px solid ${hexToRGBA(highlightColor, 0.8)}`,
+          borderColor: hexToRGBA(highlightColor, 0.8),
         },
       },
       skeleton: { backgroundColor, color, opacity: 0.5 },

@@ -28,7 +28,7 @@ export const searchInputContainerCSS = {
 
 export const searchInputCSS = ({ mode: { search } }: NavigationTheme) => ({
   ...searchCommonCSS,
-  border: 'none',
+  border: '2px solid',
   fontSize: `${fontSize()}px`,
   outline: 'none',
   '::placeholder': {
