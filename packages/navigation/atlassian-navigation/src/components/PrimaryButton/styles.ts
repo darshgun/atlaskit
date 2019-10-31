@@ -1,4 +1,5 @@
 import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
+import { CSSObject } from '@emotion/core';
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { skeletonCSS } from '../../common/styles';
 import { NavigationTheme } from '../../theme';
@@ -46,7 +47,7 @@ export const primaryButtonSkeletonCSS = (theme: NavigationTheme) => ({
 export const isSelectedCSS = (
   { mode: { primaryButton } }: NavigationTheme,
   isSelected?: boolean,
-) => ({
+): CSSObject => ({
   alignItems: 'center',
   borderTop: `${gridSize / 2}px solid transparent`,
   borderBottom: isSelected
