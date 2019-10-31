@@ -66,6 +66,9 @@ const defaultTheme: { mode: Mode } = {
       backgroundColor: B400,
       color: DN10A,
       borderRight: `1px solid ${hexToRGBA(N200, 0.3)}`,
+      gradientStart: B400,
+      gradientStop: B200,
+      iconColor: B200,
     },
     primaryButton: {
       active: {

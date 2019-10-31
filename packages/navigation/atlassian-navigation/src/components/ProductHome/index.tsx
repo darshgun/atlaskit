@@ -19,14 +19,29 @@ export const ProductHome = ({
   onClick = () => {},
 }: ProductHomeProps) => {
   const theme = useTheme();
+  const {
+    iconColor = 'inherit',
+    gradientStart = 'inherit',
+    gradientStop = 'inherit',
+    textColor = theme.mode.productHome.color,
+  } = theme.mode.productHome;
   return (
     <Fragment>
       <div css={containerCSS} onClick={onClick}>
         <div css={productLogoCSS}>
-          <Logo />
+          <Logo
+            gradientStart={gradientStart}
+            gradientStop={gradientStop}
+            iconColor={iconColor}
+            textColor={textColor}
+          />
         </div>
         <div css={productIconCSS}>
-          <Icon />
+          <Icon
+            gradientStart={gradientStart}
+            gradientStop={gradientStop}
+            iconColor={iconColor}
+          />
         </div>
       </div>
       {siteName && <div css={siteNameCSS(theme)}>{siteName}</div>}

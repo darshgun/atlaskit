@@ -31,7 +31,13 @@ export type PrimaryButtonCSS = ButtonCSSContext;
 
 export type NavigationCSS = CSSProperties;
 
-export type ProductHomeCSS = CSSProperties;
+type LogoStyleProps = {
+  gradientStart?: string;
+  gradientStop?: string;
+  iconColor?: string;
+  textColor?: string;
+};
+export type ProductHomeCSS = CSSProperties & LogoStyleProps;
 
 export type SearchCSS = {
   default: CSSProperties;

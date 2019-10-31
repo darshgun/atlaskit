@@ -164,23 +164,44 @@ const linkCSS = {
   },
 };
 
-const Icon = () => (
+const Icon = ({
+  iconGradientStart,
+  iconGradientStop,
+  iconColor,
+  textColor,
+}: {
+  iconGradientStart: string;
+  iconGradientStop: string;
+  iconColor: string;
+  textColor: string;
+}) => (
   <a css={linkCSS} href="#">
     <JiraIcon
-      iconGradientStart={B400}
-      iconGradientStop={B200}
-      iconColor={B200}
+      iconGradientStart={iconGradientStart}
+      iconGradientStop={iconGradientStop}
+      iconColor={iconColor}
+      textColor={textColor}
     />
   </a>
 );
 
-const Logo = () => (
+const Logo = ({
+  iconGradientStart,
+  iconGradientStop,
+  iconColor,
+  textColor,
+}: {
+  iconGradientStart: string;
+  iconGradientStop: string;
+  iconColor: string;
+  textColor: string;
+}) => (
   <a css={linkCSS} href="#">
     <JiraLogo
-      iconGradientStart={B400}
-      iconGradientStop={B200}
-      iconColor={B200}
-      textColor="inherit"
+      iconGradientStart={iconGradientStart}
+      iconGradientStop={iconGradientStop}
+      iconColor={iconColor}
+      textColor={textColor}
     />
   </a>
 );
