@@ -16,46 +16,6 @@ const input = 'input#react-select-datepicker-input';
 
 const value = `${datePicker} > div`;
 
-// BrowserTestCase(
-//   'When the user enters a partial date and hits enter, the value should be selected from the calendar',
-//   {},
-//   async (client: any) => {
-//     const page = new Page(client);
-
-//     await page.goto(urlDateTimePicker);
-//     await page.click(datePicker);
-//     await page.type(input, ['2016', 'Enter']);
-//     await page.waitForSelector(menu);
-
-//     const nextDate = await page.getText(value);
-
-//     expect(nextDate).toBe(`2016/01/01`);
-
-//     await page.checkConsoleErrors();
-//   },
-// );
-
-// BrowserTestCase(
-//   'When the user enters an invalid date and hits enter, the value should be selected from the calendar',
-//   {},
-//   async (client: any) => {
-//     const page = new Page(client);
-
-//     await page.goto(urlDateTimePicker);
-//     await page.click(datePicker);
-//     await page.waitForSelector(menu);
-//     await page.type(input, ['2016', '/abcd']);
-//     await page.type(input, ['Enter']);
-//     await page.waitForSelector(menu);
-
-//     const nextDate = await page.getText(value);
-
-//     expect(nextDate).toEqual(`2016/01/01`);
-
-//     await page.checkConsoleErrors();
-//   },
-// );
-
 BrowserTestCase(
   'When DatePicker is focused & backspace pressed, the input should be cleared and defaulted to the place holder date',
   {},
