@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "9.1.1",
+  "version": "9.2.0",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
