@@ -31,8 +31,9 @@ import {
   Popup,
   akEditorMenuZIndex,
   ExtensionProvider,
-  MenuItemMap,
 } from '@atlaskit/editor-common';
+
+import Loadable from 'react-loadable';
 import EditorActions from '../../../../actions';
 import {
   analyticsService as analytics,
@@ -83,6 +84,7 @@ import { DropdownItem } from '../../../block-type/ui/ToolbarBlockType';
 import {
   filterByCapability,
   groupBy,
+  getItemsFromCapability,
 } from '../../../../../../editor-common/src/extensions/menu-helpers';
 
 export const messages = defineMessages({
@@ -751,35 +753,31 @@ class ToolbarInsertBlock extends React.PureComponent<
   ): Promise<InsertMenuCustomItem[]> => {
     const extensions = await extensionProvider.getExtensions();
 
-    const insertMenuKeys = extensions.reduce<MenuItemMap>((acc, extension) => {
-      const insertMenuItems = filterByCapability(extension, 'insertmenu');
+    const insertMenuMenuItems = getItemsFromCapability<
+      Promise<InsertMenuCustomItem>
+    >(extensions, 'insertmenu', async item => {
+      const Icon = Loadable({
+        loader: item.icon,
+        loading: () => null,
+      });
 
       return {
-        ...acc,
-        ...groupBy(insertMenuItems, 'key', key => `${extension.key}-${key}`),
+        content: item.title,
+        value: { name: item.title },
+        tooltipDescription: item.description,
+        elemBefore: <Icon label={item.title} />,
+        onClick: async (editorActions: EditorActions) => {
+          const node = item.node && (await item.node.adf()).default;
+          if (!node) {
+            console.error('no node available');
+            return;
+          }
+          return editorActions.replaceSelection(node);
+        },
       };
-    }, {});
+    });
 
-    const insertMenuMenuItems = Object.keys(insertMenuKeys).map(
-      (key): InsertMenuCustomItem => {
-        const item = insertMenuKeys[key];
-        return {
-          content: item.title,
-          value: { name: item.title },
-          tooltipDescription: item.title,
-          // elemBefore: item.icon(),
-          onClick: async (editorActions: EditorActions) => {
-            const node = (await item.node!.adf()).default;
-            if (!node) {
-              console.log('error, no item here');
-            }
-            return editorActions.replaceDocument(node);
-          },
-        };
-      },
-    );
-
-    return insertMenuMenuItems;
+    return await Promise.all(insertMenuMenuItems);
   };
 
   private toggleLinkPanel = withAnalytics(

@@ -1,12 +1,29 @@
 import { ADFEntity } from '@atlaskit/adf-utils';
 import { ReactNode } from 'react';
 
-export type AsyncESModule<T> = Promise<{
-  default: T;
-}>;
-
-export type NodeRef = {
+export type ExtensionManifest = {
   key: string;
+  title: string;
+  description: string;
+  icon: Icon;
+  capabilities: Capabilities;
+};
+
+export type Icon = {
+  [dimensions: string]: () => Promise<any>;
+};
+
+export type Capabilities = {
+  quickinsert: Capability[];
+  insertmenu: Capability[];
+  node: Node[];
+};
+
+export type Capability = {
+  key: string;
+  title?: string;
+  description?: string;
+  icon?: Icon;
 };
 
 export type Node = {
@@ -16,33 +33,18 @@ export type Node = {
   render: () => AsyncESModule<ReactNode>;
 };
 
-export type ImagePath = string;
+export type CapabilityType = Exclude<keyof Capabilities, 'node'>;
 
-export type Icon = {
-  [dimensions: string]: () => AsyncESModule<any>;
-};
-
-export type Capabilities = {
-  quickinsert: NodeRef[];
-  insertmenu: NodeRef[];
-  node: Node[];
-};
-
-export type Capability = Exclude<keyof Capabilities, 'node'>;
-
-export type ExtensionManifest = {
-  key: string;
-  name: string;
-  description: string;
-  icon: Icon;
-  capabilities: Capabilities;
-};
+export type AsyncESModule<T> = Promise<{
+  default: T;
+}>;
 
 export type MenuItem = {
   key: string;
   title: string;
+  description: string;
   icon: () => Promise<any>;
-  node?: Node;
+  node: Node;
 };
 
 export type MenuItemMap = { [key: string]: MenuItem };

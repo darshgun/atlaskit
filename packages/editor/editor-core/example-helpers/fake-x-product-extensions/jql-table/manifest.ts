@@ -1,7 +1,7 @@
 import { ExtensionManifest } from '@atlaskit/editor-common';
 
 const manifest: ExtensionManifest = {
-  name: 'JQL table',
+  title: 'JQL table',
   key: 'jql-table-extension',
   description: 'Jira results in a table',
   icon: {
@@ -11,11 +11,18 @@ const manifest: ExtensionManifest = {
     quickinsert: [
       {
         key: 'jql-table',
+        icon: {
+          '16x16': () => import('@atlaskit/icon/glyph/table'),
+        },
       },
     ],
     insertmenu: [
       {
         key: 'jql-table',
+        icon: {
+          '16x16': () => import('@atlaskit/icon/glyph/table'),
+        },
+        description: 'Insert a table with results from a JQL query',
       },
     ],
     node: [
