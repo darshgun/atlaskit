@@ -51,7 +51,7 @@ import {
   waitForAllPickersInitialised,
   testCollectionName,
   temporaryFileId,
-} from './_utils';
+} from '../../../../__tests__/unit/plugins/media/_utils';
 import { MediaAttributes, MediaSingleAttributes } from '@atlaskit/adf-schema';
 import { ReactWrapper } from 'enzyme';
 import { ClipboardWrapper } from '../../../../plugins/media/ui/MediaPicker/ClipboardWrapper';
