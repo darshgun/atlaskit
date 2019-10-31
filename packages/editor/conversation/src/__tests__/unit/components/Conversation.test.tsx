@@ -43,43 +43,6 @@ describe('Conversation', () => {
     });
   });
 
-  describe('beforeUnload behavior', () => {
-    let conversationWithWarning: ShallowWrapper;
-
-    beforeEach(() => {
-      window.addEventListener = jest.fn();
-      window.removeEventListener = jest.fn();
-    });
-
-    beforeAll(() => {
-      conversationWithWarning = shallow(
-        <Conversation
-          {...defaultProps}
-          objectId={objectId}
-          conversation={mockConversation}
-          comments={comments}
-          user={user}
-          isExpanded={true}
-          showBeforeUnloadWarning={true}
-        />,
-      );
-    });
-
-    it('should add a beforeunload event listener when an editor is open', () => {
-      conversationWithWarning.setState({ openEditorCount: 1 });
-      conversationWithWarning.update();
-      expect(window.addEventListener).toHaveBeenCalled();
-    });
-
-    it('should remove the beforeunload event listener when no editors are opened', () => {
-      conversationWithWarning.setState({ openEditorCount: 1 });
-      conversationWithWarning.update();
-      conversationWithWarning.setState({ openEditorCount: 0 });
-      conversationWithWarning.update();
-      expect(window.removeEventListener).toHaveBeenCalled();
-    });
-  });
-
   describe('editor', () => {
     it('should render if meta is not set', () => {
       expect(conversation.find(Editor).length).toBe(1);
@@ -139,6 +102,30 @@ describe('Conversation', () => {
           />,
         );
         expect(conversation.find(Editor).length).toBe(0);
+      });
+    });
+
+    describe('beforeUnload behavior', () => {
+      let editor: ShallowWrapper;
+
+      beforeEach(() => {
+        window.addEventListener = jest.fn();
+        window.removeEventListener = jest.fn();
+      });
+
+      const props = {
+        showBeforeUnloadWarning: true,
+      };
+
+      beforeAll(() => {
+        editor = shallow(<Editor {...props} />);
+      });
+
+      it('should remove the beforeunload event listener when set showBeforeUnloadWarning as False', () => {
+        editor.setProps({ showBeforeUnloadWarning: false });
+        editor.update();
+
+        expect(window.removeEventListener).toHaveBeenCalled();
       });
     });
   });

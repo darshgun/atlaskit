@@ -27,6 +27,7 @@ export interface Props extends SharedProps {
   conversationId: string;
   canModerateComment?: boolean;
   comment: CommentType;
+  showBeforeUnloadWarning?: boolean;
 }
 
 export interface State {
@@ -362,6 +363,7 @@ export default class Comment extends React.Component<Props, State> {
       onEditorClose,
       onEditorOpen,
       portal,
+      showBeforeUnloadWarning,
     } = this.props;
     const { isEditing } = this.state;
     const { createdBy } = comment;
@@ -387,6 +389,7 @@ export default class Comment extends React.Component<Props, State> {
           renderEditor={renderEditor}
           disableScrollTo={disableScrollTo}
           allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
+          showBeforeUnloadWarning={showBeforeUnloadWarning}
         />
       );
     }
@@ -440,6 +443,7 @@ export default class Comment extends React.Component<Props, State> {
       allowFeedbackAndHelpButtons,
       onEditorClose,
       onEditorOpen,
+      showBeforeUnloadWarning,
     } = this.props;
 
     return (
@@ -455,6 +459,7 @@ export default class Comment extends React.Component<Props, State> {
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}
         allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
+        showBeforeUnloadWarning={showBeforeUnloadWarning}
       />
     );
   }

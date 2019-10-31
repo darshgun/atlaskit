@@ -1,0 +1,1 @@
+Move unload logic from Conversation to Editor component
