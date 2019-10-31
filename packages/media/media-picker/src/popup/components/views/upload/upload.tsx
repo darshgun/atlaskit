@@ -157,7 +157,7 @@ export class StatelessUploadView extends Component<
 
     return (
       <InfiniteScroll
-        data-test-id="media-picker-recents-infinite-scroll"
+        data-testid="media-picker-recents-infinite-scroll"
         height="100%"
         onThresholdReached={this.onThresholdReachedListener}
       >
@@ -311,7 +311,7 @@ export class StatelessUploadView extends Component<
           ? 'media-picker-uploading-media-card'
           : 'media-picker-recent-media-card';
         return (
-          <CardWrapper tabIndex={0} data-test-id={dataTestId} key={key}>
+          <CardWrapper tabIndex={0} data-testid={dataTestId} key={key}>
             {card}
           </CardWrapper>
         );

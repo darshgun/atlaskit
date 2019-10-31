@@ -19,14 +19,14 @@ export class PopupSimplePage {
   constructor(private readonly page: any) {}
 
   async clickUploadButton(): Promise<void> {
-    const selector = '[data-test-id="media-picker-upload-button"]';
+    const selector = '[data-testid="media-picker-upload-button"]';
     await this.page.waitForSelector(selector);
     await this.page.click(selector);
   }
 
   async getRecentUploadCards(): Promise<RecentUploadCard[]> {
     const selector =
-      '[data-test-id="media-picker-popup"] [data-test-id="media-card-view"]';
+      '[data-testid="media-picker-popup"] [data-testid="media-card-view"]';
     const results = await this.page.getHTML(selector);
     return results.map((html: string) => {
       const div = document.createElement('div');
@@ -48,7 +48,7 @@ export class PopupSimplePage {
   }
 
   async clickInsertButton(): Promise<void> {
-    await this.page.click('[data-test-id="media-picker-insert-button"]');
+    await this.page.click('[data-testid="media-picker-insert-button"]');
   }
 
   async getEvents(): Promise<Event[]> {

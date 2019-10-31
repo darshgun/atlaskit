@@ -137,7 +137,7 @@ export class CardViewBase extends React.Component<
 
     return (
       <Wrapper
-        data-test-id="media-card-view"
+        data-testid="media-card-view"
         shouldUsePointerCursor={true}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}

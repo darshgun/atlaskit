@@ -44,7 +44,7 @@ export enum MediaToolbarButton {
 
 // Selectors
 const mediaUploadCardSelector =
-  '[data-test-id="media-picker-popup"] [data-test-id="media-card-view"]';
+  '[data-testid="media-picker-popup"] [data-testid="media-card-view"]';
 const mediaImageSelector = `.${mediaSingleClassName} .img-wrapper, .mediaGroupView-content-wrap .img-wrapper`;
 const mediaImageSelected = `.ProseMirror-selectednode .${mediaSingleClassName} .img-wrapper, .ProseMirror-selectednode .mediaGroupView-content-wrap .img-wrapper`;
 const insertMediaFileSelector = 'div[aria-label="%s"]';

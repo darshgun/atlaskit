@@ -109,12 +109,12 @@ export class InteractiveImgComponent extends React.Component<Props, State> {
 
     return (
       <ImageWrapper
-        data-test-id="media-viewer-image-content"
+        data-testid="media-viewer-image-content"
         onClick={this.onImageClicked}
         innerRef={this.saveWrapperRef}
       >
         <Img
-          data-test-id="media-viewer-image"
+          data-testid="media-viewer-image"
           canDrag={canDrag}
           isDragging={isDragging}
           src={src}

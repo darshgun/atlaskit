@@ -193,7 +193,7 @@ export class App extends Component<AppProps, AppState> {
           <Provider store={store}>
             <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
               <PassContext store={store} proxyReactContext={proxyReactContext}>
-                <div data-test-id="media-picker-popup">
+                <div data-testid="media-picker-popup">
                   <MediaPickerPopupWrapper>
                     <SidebarWrapper>
                       <Sidebar />

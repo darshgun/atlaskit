@@ -160,7 +160,7 @@ export class PDFRenderer extends React.Component<Props, State> {
       pending: () => <Spinner />,
       successful: () => (
         <PDFWrapper
-          data-test-id="media-viewer-pdf-content"
+          data-testid="media-viewer-pdf-content"
           innerRef={this.savePdfElement}
         >
           <div
