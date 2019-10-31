@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/media-test-helpers", "type": "patch" },
+    { "name": "@atlaskit/media-viewer", "type": "patch" }
+  ],
+  "dependents": []
+}
