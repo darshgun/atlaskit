@@ -689,7 +689,9 @@ export class MediaPluginState {
   ) {
     // update plugin state
     for (const [key, value] of Object.entries(props)) {
-      this[key as keyof typeof props] = value as boolean;
+      if (value !== undefined) {
+        this[key as keyof typeof props] = value;
+      }
     }
     if (this.dispatch) {
       this.dispatch(stateKey, { ...this });
