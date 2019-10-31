@@ -196,6 +196,7 @@ export class InlinePlayerBase extends Component<
 
     return (
       <InlinePlayerWrapper
+        data-test-id="media-card-inline-player"
         style={this.getStyle()}
         selected={selected}
         onClick={onClick}
