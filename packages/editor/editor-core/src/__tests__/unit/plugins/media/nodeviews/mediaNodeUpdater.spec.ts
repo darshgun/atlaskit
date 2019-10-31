@@ -178,6 +178,21 @@ describe('MediaNodeUpdater', () => {
         true,
       );
     });
+
+    it('should not update node if new attrs are the same', async () => {
+      const { mediaNodeUpdater } = setup();
+      const mediaClient = fakeMediaClient();
+      const fileState: Partial<FileState> = {
+        id: 'source-file-id',
+      };
+
+      asMock(mediaClient.file.getCurrentState).mockReturnValue(
+        Promise.resolve(fileState),
+      );
+      asMockReturnValue(getMediaClient, mediaClient);
+      await mediaNodeUpdater.updateFileAttrs();
+      expect(commands.updateAllMediaNodesAttrs).not.toBeCalled();
+    });
   });
 
   describe('isNodeFromDifferentCollection()', () => {
