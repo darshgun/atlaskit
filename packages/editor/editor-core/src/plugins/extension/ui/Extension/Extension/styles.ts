@@ -2,9 +2,18 @@ import styled from 'styled-components';
 import { colors, borderRadius, themed } from '@atlaskit/theme';
 import { Wrapper as WrapperDefault, padding } from '../styles';
 
+// ED-6940 -moz-user-select: none; is need to fix selection related issue on firefox.
 export const Wrapper = styled(WrapperDefault)`
   .extension-overflow-wrapper:not(.with-body) {
     overflow-x: auto;
+  }
+
+  .extension-overflow-wrapper {
+    -moz-user-select: none;
+
+    & > * {
+      -moz-user-select: all;
+    }
   }
 
   /* extension container breakout, only works on top level */
