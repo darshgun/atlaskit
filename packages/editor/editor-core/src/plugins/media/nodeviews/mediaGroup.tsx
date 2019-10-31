@@ -192,7 +192,7 @@ class MediaGroupNodeView extends ReactNodeView<MediaGroupNodeViewProps> {
     const getPos = this.getPos as getPosHandlerNode;
     return (
       <WithProviders
-        providers={['mediaProvider', 'contextIdentifierProvider']}
+        providers={['mediaProvider', 'contextIdentifierProvider', 'foo']}
         providerFactory={providerFactory}
         renderNode={({ mediaProvider, contextIdentifierProvider }) => {
           const renderFn = ({
@@ -204,6 +204,10 @@ class MediaGroupNodeView extends ReactNodeView<MediaGroupNodeViewProps> {
             const { $anchor, $head } = this.view.state.selection;
             const isSelected =
               nodePos < $anchor.pos && $head.pos < nodePos + this.node.nodeSize;
+
+            if (!mediaProvider) {
+              return null;
+            }
             return (
               <MediaGroup
                 node={this.node}

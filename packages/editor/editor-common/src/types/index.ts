@@ -1,5 +1,5 @@
 import { Node } from 'prosemirror-model';
-import { UploadParams } from '@atlaskit/media-picker';
+import { UploadParams } from '@atlaskit/media-picker/types';
 import { MediaClientConfig } from '@atlaskit/media-core';
 export {
   ExtensionParams,
@@ -14,6 +14,7 @@ export interface Transformer<T> {
   parse(content: T): Node;
 }
 
+// TODO: we should add other known providers like emoji, mention, etc
 export interface Providers {
   mediaProvider?: Promise<MediaProvider>;
   [key: string]: Promise<any> | undefined;

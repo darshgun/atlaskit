@@ -27,6 +27,7 @@
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/media-card": "^66.0.1",
     "@atlaskit/media-client": "^4.0.0",
+    "@atlaskit/media-picker": "^49.0.0",
     "@atlaskit/mention": "^18.15.5",
     "@atlaskit/profilecard": "^12.3.3",
     "@atlaskit/theme": "^9.2.3",
