@@ -11,5 +11,8 @@ export const getBoxShadow = (color: string) => `0 0 0 2px ${color}`;
 export const generateTextColor = (color: string) =>
   chromatism.contrastRatio(color).hex;
 
-export const getContrastColor = (contrastValue, opacityValue, color) =>
-  hexToRGBA(chromatism.contrast(contrastValue, color).hex, opacityValue);
+export const getContrastColor = (
+  contrastValue: number,
+  opacityValue: number,
+  color: string,
+) => hexToRGBA(chromatism.contrast(contrastValue, color).hex, opacityValue);

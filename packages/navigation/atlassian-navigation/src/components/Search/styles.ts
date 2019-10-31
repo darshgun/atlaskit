@@ -34,7 +34,8 @@ export const searchInputCSS = ({ mode: { search } }: NavigationTheme) => ({
   '::placeholder': {
     color: 'inherit',
   },
-  ...search,
+  ...search.default,
+  ':focus': search.focus,
 });
 
 export const searchInputIconCSS = {

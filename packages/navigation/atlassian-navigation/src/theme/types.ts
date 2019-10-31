@@ -33,7 +33,10 @@ export type NavigationCSS = CSSProperties;
 
 export type ProductHomeCSS = CSSProperties;
 
-export type SearchCSS = CSSProperties;
+export type SearchCSS = {
+  default: CSSProperties;
+  focus: CSSObject;
+};
 
 export type SkeletonCSS = CSSObject & {
   backgroundColor: string;

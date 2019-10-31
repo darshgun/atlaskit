@@ -1,4 +1,3 @@
-import chromatism from 'chromatism';
 import defaultTheme, { DEFAULT_THEME_NAME } from './defaultTheme';
 import {
   hexToRGBA,
@@ -96,9 +95,14 @@ export const generateTheme = (
         borderRight: `1px solid ${hexToRGBA(color, 0.5)}`,
       },
       search: {
-        backgroundColor,
-        color,
-        border: `2px solid ${hexToRGBA(color, 0.5)}`,
+        default: {
+          backgroundColor,
+          color,
+          border: `2px solid ${hexToRGBA(color, 0.5)}`,
+        },
+        focus: {
+          border: `2px solid ${hexToRGBA(highlightColor, 0.8)}`,
+        },
       },
       skeleton: { backgroundColor, color, opacity: 0.5 },
     },
