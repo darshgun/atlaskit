@@ -1191,6 +1191,10 @@
         "../../editor/editor-markdown-transformer/src/media",
         "./packages/editor/editor-markdown-transformer/src/media"
       ],
+      "@atlaskit/editor-mobile-bridge/analytics-client": [
+        "../../editor/editor-mobile-bridge/src/analytics-client",
+        "./packages/editor/editor-mobile-bridge/src/analytics-client"
+      ],
       "@atlaskit/editor-mobile-bridge/bridge-utils": [
         "../../editor/editor-mobile-bridge/src/bridge-utils",
         "./packages/editor/editor-mobile-bridge/src/bridge-utils"
@@ -1458,6 +1462,26 @@
       "@atlaskit/renderer/utils": [
         "../../editor/renderer/src/utils",
         "./packages/editor/renderer/src/utils"
+      ],
+      "@atlaskit/synchrony-test-helpers": [
+        "../../editor/synchrony-test-helpers/src/",
+        "./packages/editor/synchrony-test-helpers/src/"
+      ],
+      "@atlaskit/synchrony-test-helpers/mock-collab-provider": [
+        "../../editor/synchrony-test-helpers/src/mock-collab-provider",
+        "./packages/editor/synchrony-test-helpers/src/mock-collab-provider"
+      ],
+      "@atlaskit/synchrony-test-helpers/synchrony-provider": [
+        "../../editor/synchrony-test-helpers/src/synchrony-provider",
+        "./packages/editor/synchrony-test-helpers/src/synchrony-provider"
+      ],
+      "@atlaskit/synchrony-test-helpers/types": [
+        "../../editor/synchrony-test-helpers/src/types",
+        "./packages/editor/synchrony-test-helpers/src/types"
+      ],
+      "@atlaskit/synchrony-test-helpers/user-profile": [
+        "../../editor/synchrony-test-helpers/src/user-profile",
+        "./packages/editor/synchrony-test-helpers/src/user-profile"
       ],
       "@atlaskit/updater-cli": [
         "../../editor/updater-cli/src/",
@@ -1970,6 +1994,10 @@
       "@atlaskit/media-test-helpers/getAuthFromContextProvider": [
         "../../media/media-test-helpers/src/getAuthFromContextProvider",
         "./packages/media/media-test-helpers/src/getAuthFromContextProvider"
+      ],
+      "@atlaskit/media-test-helpers/globalEventEmitterListeners": [
+        "../../media/media-test-helpers/src/globalEventEmitterListeners",
+        "./packages/media/media-test-helpers/src/globalEventEmitterListeners"
       ],
       "@atlaskit/media-test-helpers/I18nWrapper": [
         "../../media/media-test-helpers/src/I18nWrapper",

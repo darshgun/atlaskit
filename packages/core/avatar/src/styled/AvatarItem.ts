@@ -1,13 +1,22 @@
 import styled, { css } from 'styled-components';
+import { ThemedValue } from '@atlaskit/theme';
 import { themed, withTheme } from '@atlaskit/theme/components';
 import { borderRadius, gridSize } from '@atlaskit/theme/constants';
-import * as colors from '@atlaskit/theme/colors';
-import { divide } from '@atlaskit/theme/math';
+import {
+  B200,
+  B75,
+  N900,
+  DN600,
+  N200,
+  DN300,
+  background,
+  backgroundHover,
+  backgroundActive,
+} from '@atlaskit/theme/colors';
 import { AvatarClickType } from '../types';
-
-const focusBorderColor = themed({ light: colors.B200, dark: colors.B75 });
-const textColors = themed({ light: colors.N900, dark: colors.DN600 });
-const subtleTextColors = themed({ light: colors.N200, dark: colors.DN300 });
+const focusBorderColor = themed({ light: B200, dark: B75 });
+const textColors = themed({ light: N900, dark: DN600 });
+const subtleTextColors = themed({ light: N200, dark: DN300 });
 
 interface GetBackgroundColorType {
   backgroundColor?: string;
@@ -29,16 +38,16 @@ export function getBackgroundColor({
 }: GetBackgroundColorType) {
   const isInteractive = href || onClick;
 
-  let themedBackgroundColor = backgroundColor || colors.background;
+  let themedBackgroundColor = backgroundColor || background;
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
-    themedBackgroundColor = colors.backgroundHover;
+    themedBackgroundColor = backgroundHover;
   }
 
   // Interaction: Active
   if (isInteractive && isActive) {
-    themedBackgroundColor = colors.backgroundActive;
+    themedBackgroundColor = backgroundActive;
   }
 
   return themedBackgroundColor;
@@ -58,7 +67,7 @@ export function getStyles({
   isDisabled,
   isFocus,
 }: getStylesType) {
-  let borderColor = 'transparent';
+  let borderColor: string | ThemedValue<string> = 'transparent';
   let cursor = 'auto';
   let opacity = 1;
   let outline = 'none';
@@ -98,7 +107,7 @@ export function getStyles({
     opacity: ${opacity};
     outline: ${outline};
     margin: 0;
-    padding: ${divide(gridSize, 2)}px;
+    padding: ${gridSize() * 2}px;
     pointer-events: ${pointerEvents};
     text-align: left;
     text-decoration: none;

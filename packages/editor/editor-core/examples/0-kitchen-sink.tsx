@@ -452,8 +452,12 @@ class FullPageRendererExample extends React.Component<Props, State> {
                             dataProviders={this.dataProviders}
                             extensionHandlers={extensionHandlers}
                             eventHandlers={this.legacyMediaEventHandlers()}
-                            // @ts-ignore
-                            appearance={this.state.appearance}
+                            appearance={
+                              this.state.appearance as Exclude<
+                                EditorAppearance,
+                                'chromeless'
+                              >
+                            }
                           />
                         </SmartCardProvider>
                       </IntlProvider>

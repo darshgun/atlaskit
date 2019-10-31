@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IntlProvider } from 'react-intl';
-import { EditorProps } from 'prosemirror-view';
+import { WithCreateAnalyticsEvent } from '@atlaskit/editor-common';
 import { PortalRenderer, PortalProvider } from '../../ui/PortalProvider';
 import { EditorInternal } from './internal/components/EditorInternal';
 import {
@@ -12,6 +12,7 @@ import {
   EditorSharedConfigConsumer,
 } from './internal/context/shared-config';
 import { EditorContent } from './internal/components/EditorContent';
+import { EditorProps } from './internal/editor-props-type';
 
 function Editor(props: EditorProps) {
   const plugins = usePresetContext();
@@ -21,10 +22,15 @@ function Editor(props: EditorProps) {
       <PortalProvider
         render={portalProviderAPI => (
           <>
-            <EditorInternal
-              {...props}
-              plugins={plugins}
-              portalProviderAPI={portalProviderAPI}
+            <WithCreateAnalyticsEvent
+              render={createAnalyticsEvent => (
+                <EditorInternal
+                  {...props}
+                  plugins={plugins.length ? plugins : props.plugins}
+                  portalProviderAPI={portalProviderAPI}
+                  createAnalyticsEvent={createAnalyticsEvent}
+                />
+              )}
             />
             <PortalRenderer portalProviderAPI={portalProviderAPI} />
           </>
@@ -41,10 +47,12 @@ function Editor(props: EditorProps) {
  */
 
 export {
+  // Components
   PresetProvider,
   Editor,
   EditorContent,
-  EditorProps,
   EditorSharedConfigConsumer,
+  // Types
+  EditorProps,
   EditorSharedConfig,
 };

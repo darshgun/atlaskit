@@ -181,6 +181,9 @@ export interface EditorProps {
    **/
   allowNewInsertionBehaviour?: boolean;
 
+  // This enables the option to add an alt-text attribute to images contained in the Editor.
+  UNSAFE_allowAltTextOnImages?: boolean;
+
   // Set to enable the quick insert menu i.e. '/' key trigger.
   // You can also provide your own insert menu options that will be shown in addition to the enabled
   // editor features e.g. Confluence uses this to provide its macros.
@@ -275,4 +278,8 @@ export interface EditorProps {
   // flag to indicate display name instead of nick name should be inserted for mentions
   // default: false, which inserts the nick name
   mentionInsertDisplayName?: boolean;
+
+  // The nth keystroke after which an input time taken event is sent, 0 to disable it
+  // default: 100
+  inputSamplingLimit?: number;
 }

@@ -1,12 +1,12 @@
-function getDiffStatUrl(user, repo, sourcehash, destinationhash) {
-  return `/2.0/repositories/${user}/${repo}/diffstat/${sourcehash}..${destinationhash}`;
+function getDiffStatUrl(repoName, sourcehash, destinationhash) {
+  return `/2.0/repositories/${repoName}/diffstat/${sourcehash}..${destinationhash}`;
 }
 
-function getFileUrl(user, repo, hash, filePath) {
-  return `/2.0/repositories/${user}/${repo}/src/${hash}/${filePath}`;
+function getFileUrl(repoName, hash, filePath) {
+  return `/2.0/repositories/${repoName}/src/${hash}/${filePath}`;
 }
 
-function promisifyAPRequest(url, type = 'json') {
+function promisifyAPRequest(url, type) {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
       request({
@@ -38,29 +38,29 @@ function getFullDiffStat(url, allValues = []) {
  * number of requests after the first request and make serveral at a time in
  * parallel.
  */
-export default function getChangesetInfo(
-  user,
-  repo,
+export default async function getChangesetsFromFiles(
+  repoName,
   sourcehash,
   destinationhash,
   v2,
 ) {
-  const diffstatUrl = getDiffStatUrl(user, repo, sourcehash, destinationhash);
-  return getFullDiffStat(diffstatUrl).then(allDiffStats => {
-    const relevantDiffs = allDiffStats
-      .filter(diff => diff.status !== 'removed')
-      .filter(
-        diff =>
-          diff.new &&
-          diff.new.path &&
-          // V2: .changeset/big-new-change.md
-          // V1: .changeset/big-new-change/changes.json
-          diff.new.path.match(
-            v2 ? /\.changeset\/[^/]+?\.md$/ : /\.changeset\/.+?\/changes.json$/,
-          ),
-      )
-      .map(diff => getFileUrl(user, repo, sourcehash, diff.new.path))
-      .map(url => promisifyAPRequest(url, v2 ? 'text' : 'json'));
-    return Promise.all(relevantDiffs);
-  });
+  const diffstatUrl = getDiffStatUrl(repoName, sourcehash, destinationhash);
+  const allDiffStats = await getFullDiffStat(diffstatUrl);
+  const relevantDiffs = allDiffStats.filter(diff => diff.new && diff.new.path);
+
+  const changesets = relevantDiffs
+    .filter(diff => diff.new.path.match(/\.changeset\/[^/]+?\/changes\.json$/))
+    .map(diff => getFileUrl(repoName, sourcehash, diff.new.path))
+    .map(url => promisifyAPRequest(url, 'json'));
+
+  const v2Changesets = relevantDiffs
+    .filter(diff => !diff.new.path.match(/\.changeset\/README\.md$/))
+    .filter(diff => diff.new.path.match(/\.changeset\/[^/]+?\.md$/))
+    .map(diff => getFileUrl(repoName, sourcehash, diff.new.path))
+    .map(url => promisifyAPRequest(url, 'text'));
+
+  return {
+    v1changesets: await Promise.all(changesets),
+    v2changesets: await Promise.all(v2Changesets),
+  };
 }

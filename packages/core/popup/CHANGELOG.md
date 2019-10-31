@@ -1,5 +1,15 @@
 # @atlaskit/popup
 
+## 0.2.3
+
+### Patch Changes
+
+- [patch][542080be8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/542080be8a):
+
+  Bumped react-popper and resolved infinite looping refs issue, and fixed close-on-outside-click for @atlaskit/popup- [patch][995c1f6fd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/995c1f6fd6):
+
+  Popup close on outside click no longer fires when clicking on content within the popup that re-renders
+
 ## 0.2.2
 
 ### Patch Changes

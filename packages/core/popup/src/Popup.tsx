@@ -30,24 +30,32 @@ export const Popup: FC<PopupProps> = memo(
     popupComponent: PopupContainer = DefaultPopupComponent,
     zIndex = layers.layer(),
   }: PopupProps) => {
-    const [popupRef, setPopupRef] = useState<HTMLDivElement>();
-    const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement>();
+    const [popupRef, setPopupRef] = useState<HTMLDivElement | null>(null);
+    const [triggerRef, setTriggerRef] = useState<HTMLElement | null>(null);
+    const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement | null>(
+      null,
+    );
 
     useFocusManager({ initialFocusRef, popupRef });
-    useCloseManager({ isOpen, onClose, popupRef });
+    useCloseManager({ isOpen, onClose, popupRef, triggerRef });
 
     return (
       <div css={containerCSS}>
         <Manager>
           <Reference>
-            {({ ref }) =>
-              trigger({
-                ref,
+            {({ ref }) => {
+              return trigger({
+                ref: (node: HTMLElement | null) => {
+                  if (node) {
+                    ref(node);
+                    setTriggerRef(node);
+                  }
+                },
                 'aria-controls': id,
                 'aria-expanded': isOpen,
                 'aria-haspopup': true,
-              })
-            }
+              });
+            }}
           </Reference>
           {isOpen && (
             <Portal zIndex={zIndex}>

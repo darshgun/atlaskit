@@ -14,7 +14,7 @@ The full list of components can be found in the [Atlaskit Registry][atlaskitregi
 
 Atlaskit components and utilities are available as discrete npm packages.
 
-The `@atlassiansox/analytics-web-client` package is a peer dependency as it is a private package and so must be installed alongside the tool.
+The `@atlassiansox/analytics-web-client` and `@atlassian/prosemirror-synchrony-plugin` packages are peer dependencies as they are private packages and so must be installed alongside the tool.
 
 #### Pre-requisites
 

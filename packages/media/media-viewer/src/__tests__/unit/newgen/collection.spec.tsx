@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { Observable, Subject } from 'rxjs';
-import { MediaClient, FileIdentifier } from '@atlaskit/media-client';
+import {
+  MediaClient,
+  FileIdentifier,
+  MediaCollectionItem,
+} from '@atlaskit/media-client';
 import {
   mountWithIntlContext,
   fakeMediaClient,
   asMock,
 } from '@atlaskit/media-test-helpers';
-import { MediaCollectionItem } from '@atlaskit/media-store';
 import Spinner from '@atlaskit/spinner';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { Collection, Props, State } from '../../../newgen/collection';

@@ -25,4 +25,5 @@ export default interface RendererBridge
     id: string,
     index?: number,
   ): string /* number as string */;
+  observeRenderedContentHeight(enabled: boolean): void;
 }

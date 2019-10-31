@@ -37,11 +37,13 @@ export const CardContainerEmpty = styled.div``;
 export const CardTriggerWrapper = styled.div`
   display: inherit;
 `;
-
-export const CardElevationWrapper = styled.div`
+interface CardElevationWrapperProps {
+  customElevation?: Elevation;
+}
+export const CardElevationWrapper = styled.div<CardElevationWrapperProps>`
   background-color: ${bgColor};
   border-radius: ${borderRadius}px;
-  ${(props: { customElevation?: Elevation }) =>
+  ${props =>
     props.customElevation
       ? elevation[props.customElevation] || ''
       : elevation.e200};

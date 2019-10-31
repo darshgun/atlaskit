@@ -21,3 +21,16 @@ export enum SortOrder {
   DESC = 'desc',
   NO_ORDER = 'no_order',
 }
+
+export {
+  CollabEditProvider,
+  CollabEvent,
+  CollabEventData,
+  CollabEventConnectionData,
+  CollabEventInitData,
+  CollabParticipant,
+  CollabeEventPresenceData,
+  CollabEventRemoteData,
+  CollabSendableSelection,
+  CollabEventTelepointerData,
+} from './collab';

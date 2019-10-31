@@ -10,10 +10,6 @@ import {
   DEFAULT_IMAGE_WIDTH,
 } from '@atlaskit/editor-common';
 import {
-  getViewMediaClientConfigFromMediaProvider,
-  getUploadMediaClientConfigFromMediaProvider,
-} from '../utils/media-common';
-import {
   getMediaClient,
   isMediaBlobUrl,
   getAttrsFromUrl,
@@ -101,9 +97,7 @@ export class MediaNodeUpdater {
       return;
     }
 
-    const mediaClientConfig = await getViewMediaClientConfigFromMediaProvider(
-      mediaProvider,
-    );
+    const mediaClientConfig = mediaProvider.viewMediaClientConfig;
     const mediaClient = getMediaClient(mediaClientConfig);
 
     const options = {
@@ -156,9 +150,7 @@ export class MediaNodeUpdater {
     const mediaProvider = await this.props.mediaProvider;
 
     if (node && mediaProvider) {
-      const uploadMediaClientConfig = await getUploadMediaClientConfigFromMediaProvider(
-        mediaProvider,
-      );
+      const uploadMediaClientConfig = await mediaProvider.uploadMediaClientConfig;
       if (!uploadMediaClientConfig || !node.attrs.url) {
         return;
       }
@@ -239,9 +231,7 @@ export class MediaNodeUpdater {
       };
     }
 
-    const viewMediaClientConfig = await getViewMediaClientConfigFromMediaProvider(
-      mediaProvider,
-    );
+    const viewMediaClientConfig = await mediaProvider.viewMediaClientConfig;
     const mediaClient = getMediaClient(viewMediaClientConfig);
     const state = await mediaClient.getImageMetadata(id, {
       collection,
@@ -306,9 +296,7 @@ export class MediaNodeUpdater {
       name,
       size,
     } = mediaAttrs;
-    const uploadMediaClientConfig = await getUploadMediaClientConfigFromMediaProvider(
-      mediaProvider,
-    );
+    const uploadMediaClientConfig = await mediaProvider.uploadMediaClientConfig;
     if (
       !uploadMediaClientConfig ||
       !uploadMediaClientConfig.getAuthFromContext
@@ -355,9 +343,8 @@ export class MediaNodeUpdater {
 
     const currentCollectionName = mediaProvider.uploadParams.collection;
     const contextId = this.getCurrentContextId() || (await this.getObjectId());
-    const uploadMediaClientConfig = await getUploadMediaClientConfigFromMediaProvider(
-      mediaProvider,
-    );
+    const uploadMediaClientConfig = await mediaProvider.uploadMediaClientConfig;
+
     if (!uploadMediaClientConfig) {
       return;
     }

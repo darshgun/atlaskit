@@ -11,7 +11,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 
 import { handleInit } from '../../../../plugins/collab-edit/actions';
 import {
-  InitData,
+  CollabEventInitData,
   CollabEditOptions,
 } from '../../../../plugins/collab-edit/types';
 
@@ -101,7 +101,7 @@ describe('collab-edit: actions', () => {
     it('should wrap invalid nodes in unsupported when the allowUnsupportedContent option is enabled.', () => {
       const { editorView } = editor(doc(p('')));
 
-      const initData: InitData = {
+      const initData: CollabEventInitData = {
         doc: unknownNodesDoc,
       };
 
@@ -129,7 +129,7 @@ describe('collab-edit: actions', () => {
       };
       const { editorView } = editor(doc(p('')), collabEdit, true);
 
-      const initData: InitData = {
+      const initData: CollabEventInitData = {
         doc: privateContentNodesDoc,
       };
 
@@ -146,7 +146,7 @@ describe('collab-edit: actions', () => {
       };
       const { editorView } = editor(doc(p('')), collabEdit, false);
 
-      const initData: InitData = {
+      const initData: CollabEventInitData = {
         doc: privateContentNodesDoc,
       };
 

@@ -1,5 +1,18 @@
 # @atlaskit/emoji
 
+## 62.5.6
+
+### Patch Changes
+
+- [patch][88e1e909ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88e1e909ac):
+
+  ED-7487: Ensure EmojiPickerList scrolls in Safari
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/editor-test-helpers@10.1.3
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-core@31.0.0
+
 ## 62.5.5
 
 - Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):

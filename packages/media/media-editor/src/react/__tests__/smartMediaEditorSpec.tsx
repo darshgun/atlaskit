@@ -14,9 +14,14 @@ import {
 import { Shortcut } from '@atlaskit/media-ui';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
-import { MediaClient, FileState, FileIdentifier } from '@atlaskit/media-client';
+import {
+  MediaClient,
+  FileState,
+  FileIdentifier,
+  TouchedFiles,
+  UploadableFileUpfrontIds,
+} from '@atlaskit/media-client';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
-import { TouchedFiles, UploadableFileUpfrontIds } from '@atlaskit/media-store';
 import {
   SmartMediaEditor,
   SmartMediaEditorProps,
