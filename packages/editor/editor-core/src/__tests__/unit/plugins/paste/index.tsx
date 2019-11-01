@@ -58,6 +58,7 @@ import { EditorProps } from '../../../..';
 
 // @ts-ignore
 import { __serializeForClipboard } from 'prosemirror-view';
+import { getDefaultMediaClientConfig } from '@atlaskit/media-test-helpers/fakeMediaClient';
 
 describe('paste plugins', () => {
   const createEditor = createEditorFactory();
@@ -69,9 +70,13 @@ describe('paste plugins', () => {
     const emojiProvider = emojiData.storyData.getEmojiResourceWithStandardAndAtlassianEmojis() as Promise<
       EmojiProvider
     >;
+    const mediaProvider = Promise.resolve({
+      viewMediaClientConfig: getDefaultMediaClientConfig(),
+    });
     providerFactory = ProviderFactory.create({
       contextIdentifierProvider,
       emojiProvider,
+      mediaProvider,
     });
     createAnalyticsEvent = createAnalyticsEventMock();
     const wrapper = createEditor({
