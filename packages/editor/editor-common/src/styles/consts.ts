@@ -89,6 +89,7 @@ export const akEditorTableCellMinWidth = 48;
 export const akEditorTableLegacyCellMinWidth = 128;
 export const akEditorMediaResizeHandlerPaddingWide = 12;
 export const akEditorMediaResizeHandlerPadding = 4;
+export const akEditorSwoopCubicBezier = `cubic-bezier(0.15, 1, 0.3, 1)`;
 export const gridMediumMaxWidth = 1024;
 export const breakoutWideScaleRatio = 1.33;
 export const akMediaSingleResizeZIndex = akEditorUnitZIndex * 99;

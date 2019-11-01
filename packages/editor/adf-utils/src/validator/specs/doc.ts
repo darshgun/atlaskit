@@ -27,6 +27,7 @@ export default {
           'table',
           'extension',
           'bodiedExtension',
+          'expand',
           'blockCard',
           'layoutSection',
         ],

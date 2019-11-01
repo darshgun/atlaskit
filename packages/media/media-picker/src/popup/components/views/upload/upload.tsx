@@ -73,6 +73,12 @@ const createDeleteCardAction = (handler: CardEventHandler): CardAction => {
 
 const cardDimension = { width: 162, height: 108 };
 
+interface IterableCard {
+  key: string;
+  card: JSX.Element;
+  isUploading: boolean;
+}
+
 export interface UploadViewOwnProps {
   readonly browserRef: React.RefObject<BrowserBase>;
   readonly mediaClient: MediaClient;
@@ -151,6 +157,7 @@ export class StatelessUploadView extends Component<
 
     return (
       <InfiniteScroll
+        data-test-id="media-picker-recents-infinite-scroll"
         height="100%"
         onThresholdReached={this.onThresholdReachedListener}
       >
@@ -299,14 +306,19 @@ export class StatelessUploadView extends Component<
     const uploadingFilesCards = this.uploadingFilesCards();
     return uploadingFilesCards
       .concat(recentFilesCards)
-      .map(({ key, el: card }) => (
-        <CardWrapper tabIndex={0} className="e2e-recent-upload-card" key={key}>
-          {card}
-        </CardWrapper>
-      ));
+      .map(({ key, card, isUploading }) => {
+        const dataTestId = isUploading
+          ? 'media-picker-uploading-media-card'
+          : 'media-picker-recent-media-card';
+        return (
+          <CardWrapper tabIndex={0} data-test-id={dataTestId} key={key}>
+            {card}
+          </CardWrapper>
+        );
+      });
   }
 
-  private uploadingFilesCards(): { key: string; el: JSX.Element }[] {
+  private uploadingFilesCards(): IterableCard[] {
     const { uploads, onFileClick, mediaClient } = this.props;
     const itemsKeys = Object.keys(uploads);
     itemsKeys.sort((a, b) => {
@@ -350,8 +362,9 @@ export class StatelessUploadView extends Component<
       };
 
       return {
+        isUploading: true,
         key: id,
-        el: (
+        card: (
           <Card
             mediaClientConfig={mediaClient.config}
             identifier={identifier}
@@ -366,7 +379,7 @@ export class StatelessUploadView extends Component<
     });
   }
 
-  private recentFilesCards(): { key: string; el: JSX.Element }[] {
+  private recentFilesCards(): IterableCard[] {
     const {
       mediaClient,
       recents,
@@ -434,8 +447,9 @@ export class StatelessUploadView extends Component<
       }
 
       return {
+        isUploading: false,
         key: `${occurrenceKey}-${id}`,
-        el: (
+        card: (
           <Card
             mediaClientConfig={mediaClient.config}
             identifier={{

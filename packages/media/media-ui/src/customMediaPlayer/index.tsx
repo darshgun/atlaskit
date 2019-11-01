@@ -210,6 +210,7 @@ export class CustomMediaPlayer extends Component<
 
     return (
       <MediaButton
+        data-test-id="custom-media-player-fullscreen-button"
         appearance={toolbar}
         onClick={this.onFullScreenClick}
         iconBefore={icon}
@@ -225,6 +226,7 @@ export class CustomMediaPlayer extends Component<
 
     return (
       <MediaButton
+        data-test-id="custom-media-player-download-button"
         appearance={toolbar}
         onClick={onDownloadClick}
         iconBefore={<DownloadIcon label="download" />}
@@ -304,6 +306,8 @@ export class CustomMediaPlayer extends Component<
             const toggleButtonAction = isPlaying ? this.pause : this.play;
             const button = (
               <MediaButton
+                data-test-id="custom-media-player-play-toggle-button"
+                data-test-is-playing={isPlaying}
                 appearance={toolbar}
                 iconBefore={toggleButtonIcon}
                 onClick={toggleButtonAction}

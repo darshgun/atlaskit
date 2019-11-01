@@ -39,7 +39,7 @@ const CardActionButtonWithAnalytics = withAnalyticsEvents({
 
 type DropdownItemProps = any & WithAnalyticsEventsProps; // Trick applied due to the lack of props type of DropdownItem
 const DropdownItemWithProps = (props: DropdownItemProps) => (
-  <DropdownItem {...props} />
+  <DropdownItem data-test-id="media-card-actions-menu-item" {...props} />
 );
 
 const createDropdownItemWithAnalytics = (action: CardAction, index: number) => {
@@ -72,6 +72,7 @@ export class CardActionsDropdownMenu extends Component<
     if (actions.length > 0) {
       return (
         <DropdownMenu
+          data-test-id="media-card-actions-menu"
           onOpenChange={onOpenChange}
           trigger={
             <CardActionButtonWithAnalytics style={{ color: triggerColor }}>

@@ -193,20 +193,22 @@ export class App extends Component<AppProps, AppState> {
           <Provider store={store}>
             <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
               <PassContext store={store} proxyReactContext={proxyReactContext}>
-                <MediaPickerPopupWrapper>
-                  <SidebarWrapper>
-                    <Sidebar />
-                  </SidebarWrapper>
-                  <ViewWrapper>
-                    {this.renderCurrentView(selectedServiceName)}
-                    <Footer />
-                  </ViewWrapper>
-                  <DropzonePlaceholder isActive={isDropzoneActive} />
-                  <MainEditorView localUploader={this.localUploader} />
-                </MediaPickerPopupWrapper>
-                {this.renderClipboard()}
-                {this.renderDropzone()}
-                {this.renderBrowser()}
+                <div data-test-id="media-picker-popup">
+                  <MediaPickerPopupWrapper>
+                    <SidebarWrapper>
+                      <Sidebar />
+                    </SidebarWrapper>
+                    <ViewWrapper>
+                      {this.renderCurrentView(selectedServiceName)}
+                      <Footer />
+                    </ViewWrapper>
+                    <DropzonePlaceholder isActive={isDropzoneActive} />
+                    <MainEditorView localUploader={this.localUploader} />
+                  </MediaPickerPopupWrapper>
+                  {this.renderClipboard()}
+                  {this.renderDropzone()}
+                  {this.renderBrowser()}
+                </div>
               </PassContext>
             </ModalDialog>
           </Provider>

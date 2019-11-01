@@ -19,10 +19,14 @@ export type SidebarItemProps = SidebarItemOwnProps & SidebarItemDispatchProps;
 
 export class StatelessSidebarItem extends Component<SidebarItemProps> {
   render() {
-    const { serviceFullName, isActive, children } = this.props;
+    const { serviceFullName, serviceName, isActive, children } = this.props;
 
     return (
-      <Wrapper isActive={isActive} onClick={this.onClick}>
+      <Wrapper
+        data-test-id={`media-picker-${serviceName}-menu-item`}
+        isActive={isActive}
+        onClick={this.onClick}
+      >
         <ServiceIcon>{children}</ServiceIcon>
         <ServiceName>{serviceFullName}</ServiceName>
       </Wrapper>

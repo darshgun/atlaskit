@@ -22,6 +22,8 @@ export const defaultSchema: Schema = createSchema({
     'confluenceUnsupportedBlock',
     'confluenceUnsupportedInline',
     'confluenceJiraIssue',
+    'expand',
+    'nestedExpand',
     'extension',
     'inlineExtension',
     'bodiedExtension',

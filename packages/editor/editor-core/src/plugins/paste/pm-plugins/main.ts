@@ -12,6 +12,7 @@ import { linkifyContent } from '../../hyperlink/utils';
 import { transformSliceToRemoveOpenBodiedExtension } from '../../extension/actions';
 import { transformSliceToRemoveOpenLayoutNodes } from '../../layout/utils';
 import { getPluginState as getTablePluginState } from '../../table/pm-plugins/main';
+import { transformSliceNestedExpandToExpand } from '../../expand/utils';
 import {
   transformSliceToRemoveOpenTable,
   transformSliceToCorrectEmptyTableCells,
@@ -32,6 +33,7 @@ import {
   handlePastePreservingMarksWithAnalytics,
   handleMarkdownWithAnalytics,
   handleRichTextWithAnalytics,
+  handleExpandWithAnalytics,
 } from './analytics';
 import { PasteTypes } from '../../analytics';
 import { insideTable } from '../../../utils';
@@ -44,6 +46,8 @@ import {
   transformSliceToRemoveColumnsWidths,
   transformSliceRemoveCellBackgroundColor,
 } from '../../table/commands/misc';
+import { upgradeTextToLists, splitParagraphs } from '../../lists/transforms';
+
 export const stateKey = new PluginKey('pastePlugin');
 
 export const md = MarkdownIt('zero', { html: false });
@@ -283,6 +287,14 @@ export function createPlugin(
             return true;
           }
 
+          if (handleExpandWithAnalytics(view, event, slice)(state, dispatch)) {
+            return true;
+          }
+
+          if (!insideTable(state)) {
+            slice = transformSliceNestedExpandToExpand(slice, state.schema);
+          }
+
           return handleRichTextWithAnalytics(view, event, slice)(
             state,
             dispatch,
@@ -318,6 +330,11 @@ export function createPlugin(
         slice = transformSliceToCorrectMediaWrapper(slice, schema);
 
         slice = transformSliceToCorrectEmptyTableCells(slice, schema);
+
+        // this must happen before upgrading text to lists
+        slice = splitParagraphs(slice, schema);
+
+        slice = upgradeTextToLists(slice, schema);
 
         if (
           slice.content.childCount &&
