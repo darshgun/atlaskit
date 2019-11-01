@@ -1,8 +1,8 @@
 export const badgeContainerCSS = {
   pointerEvents: 'none' as const,
   position: 'absolute' as const,
-  top: '-6px',
-  right: '-8px',
+  top: '-4px',
+  right: '-2px',
 };
 
 export const containerCSS = {

@@ -1,17 +1,12 @@
-import { B200, B500, N0 } from '@atlaskit/theme/colors';
+import { B400, N0 } from '@atlaskit/theme/colors';
 import { generateTheme } from './themeGenerator';
+import { DEFAULT_THEME_NAME } from './defaultTheme';
 import { NavigationTheme } from './types';
 
 export const atlassianTheme: NavigationTheme = generateTheme({
-  name: 'atlassian',
-  primary: {
-    backgroundColor: B500,
-    color: N0,
-  },
-  secondary: {
-    backgroundColor: B200,
-    color: N0,
-  },
+  name: DEFAULT_THEME_NAME,
+  backgroundColor: N0,
+  highlightColor: B400,
 });
 
 export const defaultTheme: NavigationTheme = atlassianTheme;

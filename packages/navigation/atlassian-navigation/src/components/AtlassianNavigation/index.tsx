@@ -18,7 +18,7 @@ export const AtlassianNavigation = (
   const {
     primaryItems,
     renderAppSwitcher: AppSwitcher,
-    renderCreate: Create,
+    renderCreate: create,
     renderHelp: Help,
     renderNotifications: Notifications,
     renderProductHome: ProductHome,
@@ -35,13 +35,16 @@ export const AtlassianNavigation = (
       <NavigationAnalyticsContext data={analyticsData}>
         <div css={containerCSS(theme)}>
           <div css={leftCSS}>
+            {AppSwitcher && <AppSwitcher />}
             {ProductHome && <ProductHome />}
-            <PrimaryItemsContainer moreLabel={moreLabel} items={primaryItems} />
+            <PrimaryItemsContainer
+              moreLabel={moreLabel}
+              items={primaryItems}
+              create={create}
+            />
           </div>
           <div css={rightCSS}>
-            {Create && <Create />}
             {Search && <Search />}
-            {AppSwitcher && <AppSwitcher />}
             {Notifications && <Notifications />}
             {Settings && <Settings />}
             {Help && <Help />}

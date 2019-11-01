@@ -1,8 +1,6 @@
 import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
-import {
-  fontSizeSmall,
-  gridSize as gridSizeFn,
-} from '@atlaskit/theme/constants';
+import { CSSObject } from '@emotion/core';
+import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { skeletonCSS } from '../../common/styles';
 import { NavigationTheme } from '../../theme';
 
@@ -28,11 +26,8 @@ export const getPrimaryButtonTheme = ({
   return {
     buttonStyles: {
       ...buttonStyles,
-      fontSize: fontSizeSmall(),
-      fontWeight: 'bold',
-      height: buttonHeight,
-      padding: padding.all,
       ...primaryButton.default,
+      padding: 0,
       ':hover': primaryButton.hover,
       ':focus': primaryButton.focus,
       ':active': primaryButton.active,
@@ -47,4 +42,18 @@ export const primaryButtonSkeletonCSS = (theme: NavigationTheme) => ({
   height: `${buttonHeight - padding.all * 2.5}px`,
   width: '68px',
   ...skeletonCSS(theme),
+});
+
+export const isSelectedCSS = (
+  { mode: { primaryButton } }: NavigationTheme,
+  isSelected?: boolean,
+): CSSObject => ({
+  alignItems: 'center',
+  borderTop: `${gridSize / 2}px solid transparent`,
+  borderBottom: isSelected
+    ? `${gridSize / 2}px solid ${primaryButton.selected.color}`
+    : `${gridSize / 2}px solid transparent`,
+  boxSizing: 'border-box',
+  display: 'flex',
+  height: '100%',
 });

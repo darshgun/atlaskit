@@ -1,4 +1,4 @@
-export { Colors, generateTheme, GenerateThemeArgs } from './themeGenerator';
+export { generateTheme } from './themeGenerator';
 export { ThemeProvider } from './ThemeProvider';
 export { atlassianTheme, defaultTheme } from './themes';
 export {
@@ -9,6 +9,9 @@ export {
   NavigationTheme,
   PrimaryButtonCSS,
   SearchCSS,
+  ProductHomeCSS,
   SkeletonCSS,
+  Colors,
+  GenerateThemeArgs,
 } from './types';
 export { useTheme } from './useTheme';

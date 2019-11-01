@@ -143,7 +143,9 @@ const ProfileDropdown = () => {
       placement="bottom-end"
       trigger={triggerProps => (
         <Profile
-          icon={<Avatar src={avatarUrl} />}
+          icon={
+            <Avatar src={avatarUrl} size="small" borderColor="transparent" />
+          }
           onClick={onClick}
           tooltip="Your profile and settings"
           {...triggerProps}
@@ -161,19 +163,51 @@ const linkCSS = {
   },
 };
 
-const Icon = () => (
+const Icon = ({
+  iconGradientStart,
+  iconGradientStop,
+  iconColor,
+  textColor,
+}: {
+  iconGradientStart?: string;
+  iconGradientStop?: string;
+  iconColor?: string;
+  textColor?: string;
+}) => (
   <a css={linkCSS} href="#">
-    <JiraIcon />
+    <JiraIcon
+      iconGradientStart={iconGradientStart}
+      iconGradientStop={iconGradientStop}
+      iconColor={iconColor}
+      textColor={textColor}
+    />
   </a>
 );
 
-const Logo = () => (
+const Logo = ({
+  iconGradientStart,
+  iconGradientStop,
+  iconColor,
+  textColor,
+}: {
+  iconGradientStart?: string;
+  iconGradientStop?: string;
+  iconColor?: string;
+  textColor?: string;
+}) => (
   <a css={linkCSS} href="#">
-    <JiraLogo />
+    <JiraLogo
+      iconGradientStart={iconGradientStart}
+      iconGradientStop={iconGradientStop}
+      iconColor={iconColor}
+      textColor={textColor}
+    />
   </a>
 );
 
-const ProductHomeExample = () => <ProductHome icon={Icon} logo={Logo} />;
+const ProductHomeExample = () => (
+  <ProductHome icon={Icon} logo={Logo} siteName="Hello" />
+);
 
 const SearchDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -281,10 +315,11 @@ const AppsContent = () => (
 type PrimaryDropdownProps = {
   content: PopupProps['content'];
   text: string;
+  isSelected?: boolean;
 };
 
 const PrimaryDropdown = (props: PrimaryDropdownProps) => {
-  const { content, text } = props;
+  const { content, text, isSelected } = props;
   const { isVisible } = useOverflowStatus();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -316,6 +351,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
         <PrimaryDropdownButton
           onClick={onClick}
           onKeyDown={onKeyDown}
+          isSelected={isSelected}
           {...triggerProps}
         >
           {text}
@@ -326,7 +362,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 };
 
 const primaryItems = [
-  <PrimaryDropdown content={ProjectsContent} text="Projects" />,
+  <PrimaryDropdown isSelected content={ProjectsContent} text="Projects" />,
   <PrimaryDropdown content={FiltersContent} text="Filters" />,
   <PrimaryDropdown content={DashboardsContent} text="Dashboards" />,
   <PrimaryDropdown content={AppsContent} text="Apps" />,
