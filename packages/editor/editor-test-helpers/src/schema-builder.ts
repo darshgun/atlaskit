@@ -406,6 +406,10 @@ export const inlineCard = (attrs: CardAttributes) =>
   nodeFactory(sampleSchema.nodes.inlineCard, attrs);
 export const blockCard = (attrs: CardAttributes) =>
   nodeFactory(sampleSchema.nodes.blockCard, attrs);
+export const expand = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.expand, attrs);
+export const nestedExpand = (attrs: {} = {}) =>
+  nodeFactory(sampleSchema.nodes.nestedExpand, attrs);
 export const unsupportedInline = (attrs: any) =>
   nodeFactory(sampleSchema.nodes.unsupportedInline, attrs);
 export const unsupportedBlock = (attrs: any) =>

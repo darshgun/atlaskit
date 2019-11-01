@@ -95,6 +95,14 @@ export type TableAEP<Action, Attributes, NonPrivacySafeAttributes> = TrackAEP<
   NonPrivacySafeAttributes
 >;
 
+export type ExpandAEP<Action, Attributes, NonPrivacySafeAttributes> = TrackAEP<
+  Action,
+  ACTION_SUBJECT.EXPAND,
+  null,
+  Attributes,
+  NonPrivacySafeAttributes
+>;
+
 export type AnalyticsEventPayload =
   | GeneralEventPayload
   | FormatEventPayload

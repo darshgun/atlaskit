@@ -211,3 +211,11 @@ export const IconFeedback = Loadable({
     >,
   loading: () => null,
 });
+
+export const IconExpand = Loadable({
+  loader: () =>
+    import('./expand').then(module => module.default) as Promise<
+      React.ComponentType<IconProps>
+    >,
+  loading: () => null,
+});

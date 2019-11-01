@@ -4,6 +4,7 @@ jest.mock('@atlaskit/editor-common', () => ({
   findOverflowScrollParent: () => mockFindOverflowScrollParent(),
   withImageLoader: jest.fn(),
   overflowShadow: jest.fn(),
+  sharedExpandStyles: jest.fn(),
 }));
 
 import * as React from 'react';

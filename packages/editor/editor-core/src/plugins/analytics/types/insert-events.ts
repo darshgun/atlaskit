@@ -125,6 +125,14 @@ type InsertTableAEP = InsertAEP<
   undefined
 >;
 
+type InsertExpandAEP = InsertAEP<
+  ACTION_SUBJECT_ID.EXPAND | ACTION_SUBJECT_ID.NESTED_EXPAND,
+  {
+    inputMethod: INPUT_METHOD.QUICK_INSERT | INPUT_METHOD.INSERT_MENU;
+  },
+  undefined
+>;
+
 type InsertActionDecisionAEP = InsertAEP<
   ACTION_SUBJECT_ID.DECISION | ACTION_SUBJECT_ID.ACTION,
   {
@@ -262,6 +270,7 @@ export type InsertEventPayload =
   | InsertPanelAEP
   | InsertCodeBlockAEP
   | InsertTableAEP
+  | InsertExpandAEP
   | InsertActionDecisionAEP
   | InsertEmojiAEP
   | InsertStatusAEP

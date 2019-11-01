@@ -16,6 +16,8 @@ const nodes = [
   'media',
   'confluenceUnsupportedBlock',
   'confluenceJiraIssue',
+  'expand',
+  'nestedExpand',
   'extension',
   'inlineExtension',
   'bodiedExtension',
