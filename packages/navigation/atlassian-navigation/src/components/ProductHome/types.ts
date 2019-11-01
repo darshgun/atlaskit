@@ -18,7 +18,7 @@ export type ProductHomeProps = {
   /** Optional onClick handler */
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   /** Name of the site that appears next to the logo **/
-  siteName?: string;
+  siteTitle?: string;
 };
 
 export type CustomProductHomeProps = {
@@ -29,5 +29,5 @@ export type CustomProductHomeProps = {
   /** Optional onClick handler */
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   /** Name of the site that appears next to the logo **/
-  siteName?: string;
+  siteTitle?: string;
 };

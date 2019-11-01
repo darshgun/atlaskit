@@ -8,14 +8,14 @@ import {
   customProductLogoCSS,
   productIconCSS,
   productLogoCSS,
-  siteNameCSS,
+  siteTitleCSS,
 } from './styles';
 import { CustomProductHomeProps, ProductHomeProps } from './types';
 
 export const ProductHome = ({
   icon: Icon,
   logo: Logo,
-  siteName,
+  siteTitle,
   onClick = () => {},
 }: ProductHomeProps) => {
   const theme = useTheme();
@@ -44,7 +44,7 @@ export const ProductHome = ({
           />
         </div>
       </div>
-      {siteName && <div css={siteNameCSS(theme)}>{siteName}</div>}
+      {siteTitle && <div css={siteTitleCSS(theme)}>{siteTitle}</div>}
     </Fragment>
   );
 };

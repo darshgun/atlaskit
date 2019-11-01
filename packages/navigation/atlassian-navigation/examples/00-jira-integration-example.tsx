@@ -206,7 +206,7 @@ const Logo = ({
 );
 
 const ProductHomeExample = () => (
-  <ProductHome icon={Icon} logo={Logo} siteName="Hello" />
+  <ProductHome icon={Icon} logo={Logo} siteTitle="Hello" />
 );
 
 const SearchDrawer = () => {
