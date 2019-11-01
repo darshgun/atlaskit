@@ -1,29 +1,29 @@
 export enum ResultStatus {
-  fulfilled = 'fulfilled',
-  failed = 'failed',
+  FULFILLED = 'fulfilled',
+  FAILED = 'failed',
 }
 
 type FulfiledResult<T> = {
-  status: ResultStatus.fulfilled;
+  status: ResultStatus.FULFILLED;
   value: T;
 };
 
 type RejectedResult = {
-  status: ResultStatus.failed;
+  status: ResultStatus.FAILED;
   reason: any;
 };
 
 const isFullfilled = <T>(
   result: FulfiledResult<T> | RejectedResult,
-): result is FulfiledResult<T> => result.status === ResultStatus.fulfilled;
+): result is FulfiledResult<T> => result.status === ResultStatus.FULFILLED;
 
 const markFullfilled = <T>(value: T): FulfiledResult<T> => ({
-  status: ResultStatus.fulfilled,
+  status: ResultStatus.FULFILLED,
   value: value,
 });
 
 const markRejected = (error: any): RejectedResult => ({
-  status: ResultStatus.failed,
+  status: ResultStatus.FAILED,
   reason: error,
 });
 
@@ -58,7 +58,6 @@ export const waitForFirstFulfilledPromise = <T>(
     promises.forEach((result: Promise<T>) =>
       result.then(resolve).catch(reason => {
         rejectedCount++;
-        // console.log({rejectedCount, len: promises.length});
         if (rejectedCount === promises.length) {
           reject(new Error('All promises have failed!'));
         }

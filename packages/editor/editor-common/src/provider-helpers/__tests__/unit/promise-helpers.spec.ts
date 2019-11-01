@@ -22,11 +22,11 @@ describe('promise-helpers', () => {
       const b = Promise.reject('b');
 
       expect(await waitForAllPromises([a])).toEqual([
-        { status: ResultStatus.fulfilled, value: 'a' },
+        { status: ResultStatus.FULFILLED, value: 'a' },
       ]);
 
       expect(await waitForAllPromises([b])).toEqual([
-        { status: ResultStatus.failed, reason: 'b' },
+        { status: ResultStatus.FAILED, reason: 'b' },
       ]);
     });
 
@@ -36,9 +36,9 @@ describe('promise-helpers', () => {
       const c = rejectsIn(20, 'c');
 
       expect(await waitForAllPromises([a, b, c])).toEqual([
-        { status: ResultStatus.fulfilled, value: 'a' },
-        { status: ResultStatus.fulfilled, value: 'b' },
-        { status: ResultStatus.failed, reason: 'c' },
+        { status: ResultStatus.FULFILLED, value: 'a' },
+        { status: ResultStatus.FULFILLED, value: 'b' },
+        { status: ResultStatus.FAILED, reason: 'c' },
       ]);
     });
   });
@@ -67,9 +67,9 @@ describe('promise-helpers', () => {
     test('should return only fulfilled results, unwrapped', async () => {
       expect(
         getOnlyFulfilled<string>([
-          { status: ResultStatus.fulfilled, value: 'a' },
-          { status: ResultStatus.fulfilled, value: 'b' },
-          { status: ResultStatus.failed, reason: 'c' },
+          { status: ResultStatus.FULFILLED, value: 'a' },
+          { status: ResultStatus.FULFILLED, value: 'b' },
+          { status: ResultStatus.FAILED, reason: 'c' },
         ]),
       ).toEqual(['a', 'b']);
     });
