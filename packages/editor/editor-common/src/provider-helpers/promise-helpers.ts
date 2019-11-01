@@ -1,6 +1,6 @@
-enum ResultStatus {
-  fulfilled,
-  failed,
+export enum ResultStatus {
+  fulfilled = 'fulfilled',
+  failed = 'failed',
 }
 
 type FulfiledResult<T> = {
@@ -42,6 +42,29 @@ export const waitForAllPromises = <T>(
       result.then(markFullfilled).catch(markRejected),
     ),
   );
+};
+
+/**
+ * Will resolve on the first fulfilled promise and disregard the remaining ones. Similar to `Promise.race` but won't
+ * care about rejected promises.
+ * @param promises
+ */
+export const waitForFirstFulfilledPromise = <T>(
+  promises: Promise<T>[],
+): Promise<T> => {
+  let rejectedCount = 0;
+
+  return new Promise((resolve, reject) => {
+    promises.forEach((result: Promise<T>) =>
+      result.then(resolve).catch(reason => {
+        rejectedCount++;
+        // console.log({rejectedCount, len: promises.length});
+        if (rejectedCount === promises.length) {
+          reject(new Error('All promises have failed!'));
+        }
+      }),
+    );
+  });
 };
 
 /**

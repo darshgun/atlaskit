@@ -1,6 +1,10 @@
-import { getOnlyFulfilled, waitForAllPromises } from './promise-helpers';
+import {
+  getOnlyFulfilled,
+  waitForAllPromises,
+  waitForFirstFulfilledPromise,
+} from './promise-helpers';
 
-const flatten = <T>(arr: T[][]): T[] => ([] as any).concat(...arr);
+const flatten = <T>(arr: T[][]): T[] => ([] as T[]).concat(...arr);
 
 /**
  * Allow to run methods from the given provider interface across all providers seamlessly.
@@ -11,7 +15,7 @@ export default <P>(providers: (P | Promise<P>)[]) => {
     throw new Error('At least one provider must be provided');
   }
 
-  const getUnwrappedProviders = async () => {
+  const getFulfilledProviders = async () => {
     const results = await waitForAllPromises<P>(
       providers.map(result => Promise.resolve(result)),
     );
@@ -22,28 +26,21 @@ export default <P>(providers: (P | Promise<P>)[]) => {
   const runInAllProviders = async <T>(
     mapFunction: (provider: P) => Promise<T>,
   ) => {
-    const results = await waitForAllPromises<T>(
-      (await getUnwrappedProviders()).map(provider => mapFunction(provider)),
+    return (await getFulfilledProviders()).map(provider =>
+      mapFunction(provider),
     );
-
-    return getOnlyFulfilled<T>(results);
   };
 
-  /**
-   * Run a method from the provider or throw if not found
-   * @param methodName
-   * @param args
-   */
-  const invoke = async <T>(methodName: keyof P, args?: any[]) => {
-    return await runInAllProviders<T>(provider => {
-      const method = provider[methodName];
+  const createCallback = (methodName: keyof P, args?: any[]) => (
+    provider: P,
+  ) => {
+    const method = provider[methodName];
 
-      if (typeof method === 'function') {
-        return method.apply(provider, args);
-      }
+    if (typeof method === 'function') {
+      return method.apply(provider, args);
+    }
 
-      throw new Error(`"${methodName}" isn't a function of the provider`);
-    });
+    throw new Error(`"${methodName}" isn't a function of the provider`);
   };
 
   /**
@@ -52,9 +49,8 @@ export default <P>(providers: (P | Promise<P>)[]) => {
    * @param args
    */
   const invokeSingle = async <T>(methodName: keyof P, args?: any[]) => {
-    const results = await invoke<T>(methodName, args);
-
-    return results.find(extension => extension);
+    const callback = createCallback(methodName, args);
+    return waitForFirstFulfilledPromise<T>(await runInAllProviders(callback));
   };
 
   /**
@@ -63,9 +59,13 @@ export default <P>(providers: (P | Promise<P>)[]) => {
    * @param args
    */
   const invokeList = async <T>(methodName: keyof P, args?: any[]) => {
-    const results = await invoke<T[]>(methodName, args);
+    const callback = createCallback(methodName, args);
+    const results = await waitForAllPromises<T[]>(
+      await runInAllProviders(callback),
+    );
+    const fulfilledResults = getOnlyFulfilled<T[]>(results);
 
-    return flatten<T>(results).filter(result => result);
+    return flatten<T>(fulfilledResults).filter(result => result);
   };
 
   return {
