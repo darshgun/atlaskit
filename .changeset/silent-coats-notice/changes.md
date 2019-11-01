@@ -1,0 +1,1 @@
+Removed spinner from the notifications package (handled by the iframe content instead)
