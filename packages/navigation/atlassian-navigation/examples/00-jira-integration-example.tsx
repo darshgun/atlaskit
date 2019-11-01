@@ -315,7 +315,7 @@ const AppsContent = () => (
 type PrimaryDropdownProps = {
   content: PopupProps['content'];
   text: string;
-  isSelected?: boolean;
+  isHighlighted?: boolean;
 };
 
 const PrimaryDropdown = (props: PrimaryDropdownProps) => {
