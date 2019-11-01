@@ -8,7 +8,6 @@ import Popup from '@atlaskit/popup';
 import { PopupProps } from '@atlaskit/popup/types';
 import { jsx } from '@emotion/core';
 import { Fragment, KeyboardEvent, useState } from 'react';
-import { B200, B400 } from '@atlaskit/theme/colors';
 
 import { DefaultCreate } from './shared/Create';
 import {
@@ -170,10 +169,10 @@ const Icon = ({
   iconColor,
   textColor,
 }: {
-  iconGradientStart: string;
-  iconGradientStop: string;
-  iconColor: string;
-  textColor: string;
+  iconGradientStart?: string;
+  iconGradientStop?: string;
+  iconColor?: string;
+  textColor?: string;
 }) => (
   <a css={linkCSS} href="#">
     <JiraIcon
@@ -191,10 +190,10 @@ const Logo = ({
   iconColor,
   textColor,
 }: {
-  iconGradientStart: string;
-  iconGradientStop: string;
-  iconColor: string;
-  textColor: string;
+  iconGradientStart?: string;
+  iconGradientStop?: string;
+  iconColor?: string;
+  textColor?: string;
 }) => (
   <a css={linkCSS} href="#">
     <JiraLogo
