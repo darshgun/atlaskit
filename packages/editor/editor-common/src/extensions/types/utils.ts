@@ -1,11 +1,11 @@
-import { ExtensionNode } from './extension-manifest';
+import { ExtensionModuleNode } from './extension-manifest';
 
 export type MenuItem = {
   key: string;
   title: string;
   description: string;
   icon: () => Promise<any>;
-  node: ExtensionNode;
+  node: ExtensionModuleNode;
 };
 
 export type MenuItemMap = { [key: string]: MenuItem };

@@ -23,7 +23,7 @@ export const buildMenuItem = (
   extensionModule: ExtensionModule,
 ): MenuItem => {
   const node = manifest.modules.nodes.find(
-    node => node.key === extensionModule.key,
+    node => node.key === extensionModule.target,
   );
 
   if (!node) {

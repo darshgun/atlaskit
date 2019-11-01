@@ -10,6 +10,7 @@ export { ExtensionProvider } from './extension-provider';
 
 export {
   ExtensionModuleType,
+  ExtensionModuleNode,
   ExtensionManifest,
   ExtensionModules,
   ExtensionModule,

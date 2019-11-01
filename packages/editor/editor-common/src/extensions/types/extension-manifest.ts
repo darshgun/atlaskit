@@ -20,7 +20,7 @@ export type ExtensionManifest = {
 export type ExtensionModules = {
   quickInsert?: ExtensionModule[];
   insertMenu?: ExtensionModule[];
-  nodes: ExtensionNode[];
+  nodes: ExtensionModuleNode[];
 };
 
 export type ExtensionModule = {
@@ -33,7 +33,7 @@ export type ExtensionModule = {
   target: ModuleKey;
 };
 
-export type ExtensionNode = {
+export type ExtensionModuleNode = {
   key: string;
   type: string;
   insert: () => AsyncESModule<ADFEntity>;

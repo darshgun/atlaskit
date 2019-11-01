@@ -31,10 +31,8 @@ import {
   Popup,
   akEditorMenuZIndex,
   ExtensionProvider,
-  getItemsFromModule,
 } from '@atlaskit/editor-common';
 
-import Loadable from 'react-loadable';
 import EditorActions from '../../../../actions';
 import {
   analyticsService as analytics,
@@ -57,6 +55,7 @@ import {
   ExpandIconWrapper,
   Shortcut,
 } from '../../../../ui/styles';
+import { extractItemsFromExtensionProvider } from '../../../../utils/extensions';
 import { BlockType } from '../../../block-type/types';
 import { MacroProvider } from '../../../macro/types';
 import { createTable } from '../../../table/commands';
@@ -340,7 +339,7 @@ class ToolbarInsertBlock extends React.PureComponent<
   private async showMenuItemsFromExtensionProvider(
     extensionProvider: Promise<ExtensionProvider>,
   ) {
-    const items = await this.extractItemsFromExtensionProvider(
+    const items = await extractItemsFromExtensionProvider(
       await extensionProvider,
     );
     this.setState({ extensionProvidedItems: items });
@@ -742,38 +741,6 @@ class ToolbarInsertBlock extends React.PureComponent<
       });
     }
     return items;
-  };
-
-  private extractItemsFromExtensionProvider = async (
-    extensionProvider: ExtensionProvider,
-  ): Promise<InsertMenuCustomItem[]> => {
-    const extensions = await extensionProvider.getExtensions();
-
-    const insertMenuMenuItems = getItemsFromModule<
-      Promise<InsertMenuCustomItem>
-    >(extensions, 'insertmenu', async item => {
-      const Icon = Loadable<{ label: string }, any>({
-        loader: item.icon,
-        loading: () => null,
-      });
-
-      return {
-        content: item.title,
-        value: { name: item.title },
-        tooltipDescription: item.description,
-        elemBefore: <Icon label={item.title} />,
-        onClick: async (editorActions: EditorActions) => {
-          const node = item.node && (await item.node.insert()).default;
-          if (!node) {
-            console.error('no node available');
-            return;
-          }
-          return editorActions.replaceSelection(node);
-        },
-      };
-    });
-
-    return await Promise.all(insertMenuMenuItems);
   };
 
   private toggleLinkPanel = withAnalytics(

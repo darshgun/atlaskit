@@ -14,6 +14,8 @@ import {
   startMeasure,
   stopMeasure,
   clearMeasure,
+  ExtensionProvider,
+  combineExtensionProviders,
 } from '@atlaskit/editor-common';
 import { Context as CardContext } from '@atlaskit/smart-card';
 import { FabricEditorAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
@@ -30,13 +32,16 @@ import { nextMajorVersion } from './version-wrapper';
 import { createContextAdapter } from './nodeviews';
 import measurements from './utils/performance/measure-enum';
 import {
+  combineQuickInsertProviders,
+  extensionProviderToQuickInsertProvider,
+} from './utils/extensions';
+import {
   fireAnalyticsEvent,
   EVENT_TYPE,
   ACTION_SUBJECT,
   ACTION,
 } from './plugins/analytics';
 import ErrorBoundary from './create-editor/ErrorBoundary';
-import combineExtensionProviders from '../../editor-common/src/extensions/combine-extension-providers';
 
 export * from './types';
 
@@ -253,17 +258,27 @@ export default class Editor extends React.Component<EditorProps, {}> {
       autoformattingProvider,
     );
 
-    if (quickInsert && typeof quickInsert !== 'boolean') {
+    let extensionProvider: ExtensionProvider | undefined;
+
+    if (extensionProviders) {
+      extensionProvider = combineExtensionProviders(extensionProviders);
       this.providerFactory.setProvider(
-        'quickInsertProvider',
-        quickInsert.provider,
+        'extensionProvider',
+        Promise.resolve(extensionProvider),
       );
     }
 
-    if (extensionProviders) {
+    if (quickInsert && typeof quickInsert !== 'boolean') {
+      const quickInsertProvider = extensionProvider
+        ? combineQuickInsertProviders([
+            quickInsert.provider,
+            extensionProviderToQuickInsertProvider(extensionProvider),
+          ])
+        : quickInsert.provider;
+
       this.providerFactory.setProvider(
-        'extensionProvider',
-        Promise.resolve(combineExtensionProviders(extensionProviders)),
+        'quickInsertProvider',
+        Promise.resolve(quickInsertProvider),
       );
     }
   }
