@@ -85,7 +85,6 @@ export interface EditorProps {
   // Legacy analytics support handler, which will be removed soon. **Do not use**.
   analyticsHandler?: AnalyticsHandler;
 
-  extensionProviders?: ExtensionProvider[];
   contentComponents?: ReactComponents;
   primaryToolbarComponents?: ReactComponents;
   secondaryToolbarComponents?: ReactComponents;
@@ -273,4 +272,8 @@ export interface EditorProps {
   // The nth keystroke after which an input time taken event is sent, 0 to disable it
   // default: 100
   inputSamplingLimit?: number;
+
+  // New extension API
+  // This is going to repalce `quickInsert.provider`, `extensionHandlers`, and `insertMenuItems`.
+  extensionProviders?: Array<ExtensionProvider>;
 }

@@ -1,8 +1,8 @@
 import {
   ExtensionManifest,
   MenuItem,
-  Capability,
-  CapabilityType,
+  ExtensionModule,
+  ExtensionModuleType,
   MenuItemMap,
 } from './types';
 
@@ -20,32 +20,45 @@ export const groupBy = <T>(
 
 export const buildMenuItem = (
   manifest: ExtensionManifest,
-  capability: Capability,
-): MenuItem => ({
-  key: capability.key,
-  title: capability.title || manifest.title,
-  description: capability.description || manifest.description,
-  icon: (capability.icon || manifest.icon)['16x16'],
-  node: manifest.capabilities.node.find(node => node.key === capability.key),
-});
+  extensionModule: ExtensionModule,
+): MenuItem => {
+  const node = manifest.modules.nodes.find(
+    node => node.key === extensionModule.key,
+  );
 
-export const filterByCapability = (
+  if (!node) {
+    throw new Error(
+      `The node "${extensionModule.key}" was not found on extension "${
+        manifest.key
+      }"`,
+    );
+  }
+  return {
+    key: extensionModule.key,
+    title: extensionModule.title || manifest.title,
+    description: extensionModule.description || manifest.description,
+    icon: (extensionModule.icon || manifest.icon)['16x16'],
+    node,
+  };
+};
+
+export const filterByModule = (
   manifest: ExtensionManifest,
-  capability: CapabilityType,
+  moduleType: ExtensionModuleType,
 ): MenuItem[] => {
-  const capabilities = manifest.capabilities[capability];
+  const modules = manifest.modules[moduleType];
 
-  return (capabilities || []).map((capability: any) =>
-    buildMenuItem(manifest, capability),
+  return (modules || []).map((extensionModule: any) =>
+    buildMenuItem(manifest, extensionModule),
   );
 };
 
 const getGroupedMenuItems = (
   extensions: ExtensionManifest[],
-  capability: CapabilityType,
+  moduleType: ExtensionModuleType,
 ): MenuItemMap => {
   return extensions.reduce<MenuItemMap>((acc, extension) => {
-    const items = filterByCapability(extension, capability);
+    const items = filterByModule(extension, moduleType);
 
     return {
       ...acc,
@@ -54,12 +67,12 @@ const getGroupedMenuItems = (
   }, {});
 };
 
-export const getItemsFromCapability = <T>(
+export const getItemsFromModule = <T>(
   extensions: ExtensionManifest[],
-  capability: CapabilityType,
+  moduleType: ExtensionModuleType,
   transformFunction: (value: MenuItem, index: number) => T,
 ): T[] => {
-  const groupedMenuItems = getGroupedMenuItems(extensions, capability);
+  const groupedMenuItems = getGroupedMenuItems(extensions, moduleType);
   return Object.keys(groupedMenuItems).map((key, index) =>
     transformFunction(groupedMenuItems[key], index),
   );

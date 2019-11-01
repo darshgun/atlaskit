@@ -152,20 +152,20 @@ const createFakeModule = (content: any) => () =>
   Promise.resolve({ default: content });
 
 export const createFakeExtensionManifest = (
-  name: string,
+  title: string,
   key: string,
   nodeKeys: string[],
 ): ExtensionManifest => ({
-  name,
+  title,
   key: `${key}-extension`,
   description: 'Jira results in a table',
   icon: {
     '16x16': createFakeModule({}),
   },
-  capabilities: {
-    quickinsert: nodeKeys.map(key => ({ key })),
-    insertmenu: nodeKeys.map(key => ({ key })),
-    node: nodeKeys.map(nodeKey => ({
+  modules: {
+    quickInsert: nodeKeys.map(key => ({ key })),
+    insertMenu: nodeKeys.map(key => ({ key })),
+    nodes: nodeKeys.map(nodeKey => ({
       key: nodeKey,
       type: 'block',
       adf: createFakeModule({

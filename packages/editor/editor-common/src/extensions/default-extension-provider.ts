@@ -1,4 +1,4 @@
-import { ExtensionProvider, ExtensionManifest } from './types';
+import { ExtensionManifest, ExtensionProvider } from './types';
 
 export default class DefaultExtensionProvider implements ExtensionProvider {
   private manifests: ExtensionManifest[] | Promise<ExtensionManifest[]>;
@@ -24,7 +24,7 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
 
   async search(keyword: string) {
     const extensions = (await this.getManifests()).filter(manifest =>
-      manifest.name.includes(keyword),
+      manifest.title.includes(keyword),
     );
     return extensions;
   }

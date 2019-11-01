@@ -31,6 +31,7 @@ import {
   Popup,
   akEditorMenuZIndex,
   ExtensionProvider,
+  getItemsFromModule,
 } from '@atlaskit/editor-common';
 
 import Loadable from 'react-loadable';
@@ -81,11 +82,6 @@ import {
 } from '../../../analytics';
 import { insertEmoji } from '../../../emoji/commands/insert-emoji';
 import { DropdownItem } from '../../../block-type/ui/ToolbarBlockType';
-import {
-  filterByCapability,
-  groupBy,
-  getItemsFromCapability,
-} from '../../../../../../editor-common/src/extensions/menu-helpers';
 
 export const messages = defineMessages({
   action: {
@@ -753,10 +749,10 @@ class ToolbarInsertBlock extends React.PureComponent<
   ): Promise<InsertMenuCustomItem[]> => {
     const extensions = await extensionProvider.getExtensions();
 
-    const insertMenuMenuItems = getItemsFromCapability<
+    const insertMenuMenuItems = getItemsFromModule<
       Promise<InsertMenuCustomItem>
     >(extensions, 'insertmenu', async item => {
-      const Icon = Loadable({
+      const Icon = Loadable<{ label: string }, any>({
         loader: item.icon,
         loading: () => null,
       });
@@ -767,7 +763,7 @@ class ToolbarInsertBlock extends React.PureComponent<
         tooltipDescription: item.description,
         elemBefore: <Icon label={item.title} />,
         onClick: async (editorActions: EditorActions) => {
-          const node = item.node && (await item.node.adf()).default;
+          const node = item.node && (await item.node.insert()).default;
           if (!node) {
             console.error('no node available');
             return;
