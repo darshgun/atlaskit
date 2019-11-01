@@ -319,7 +319,7 @@ type PrimaryDropdownProps = {
 };
 
 const PrimaryDropdown = (props: PrimaryDropdownProps) => {
-  const { content, text, isSelected } = props;
+  const { content, text, isHighlighted } = props;
   const { isVisible } = useOverflowStatus();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -351,7 +351,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
         <PrimaryDropdownButton
           onClick={onClick}
           onKeyDown={onKeyDown}
-          isSelected={isSelected}
+          isHighlighted={isHighlighted}
           {...triggerProps}
         >
           {text}
@@ -362,8 +362,8 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 };
 
 const primaryItems = [
-  <PrimaryDropdown isSelected content={ProjectsContent} text="Projects" />,
-  <PrimaryDropdown content={FiltersContent} text="Filters" />,
+  <PrimaryDropdown content={ProjectsContent} text="Projects" />,
+  <PrimaryDropdown isHighlighted content={FiltersContent} text="Filters" />,
   <PrimaryDropdown content={DashboardsContent} text="Dashboards" />,
   <PrimaryDropdown content={AppsContent} text="Apps" />,
 ];

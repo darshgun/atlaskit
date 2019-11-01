@@ -10,11 +10,11 @@ import { PrimaryButtonProps } from './types';
 
 export const PrimaryButton = forwardRef(
   (props: PrimaryButtonProps, ref: Ref<any>) => {
-    const { children, testId, tooltip, isSelected, ...buttonProps } = props;
+    const { children, testId, tooltip, isHighlighted, ...buttonProps } = props;
     const theme = useTheme();
 
     const button = (
-      <div css={isSelectedCSS(theme, isSelected)}>
+      <div css={isSelectedCSS(theme, isHighlighted)}>
         <Button
           appearance="primary"
           data-testid={testId}
