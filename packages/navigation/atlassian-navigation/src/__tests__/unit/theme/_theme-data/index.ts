@@ -73,6 +73,9 @@ export const themes: Themes = [
         backgroundColor: '#0052CC',
         color: 'rgba(13, 20, 36, 0.97)',
         borderRight: '1px solid rgba(107, 119, 140, 0.3)',
+        gradientStart: '#0052CC',
+        gradientStop: '#2684FF',
+        iconColor: '#2684FF',
       },
       primaryButton: {
         active: {
@@ -112,7 +115,10 @@ export const themes: Themes = [
           borderColor: '#2684FF',
         },
       },
-      skeleton: { backgroundColor: 'rgba(13, 20, 36, 0.97)', opacity: 0.15 },
+      skeleton: {
+        backgroundColor: 'rgba(13, 20, 36, 0.97)',
+        opacity: 0.15,
+      },
     },
   },
   {
@@ -212,7 +218,7 @@ export const themes: Themes = [
         },
         focus: { borderColor: 'rgba(51, 51, 51, 0.8)' },
       },
-      skeleton: { backgroundColor: '#E8CBD2', color: '#000000', opacity: 0.5 },
+      skeleton: { backgroundColor: '#000000', opacity: 0.3 },
     },
   },
   {
@@ -312,7 +318,7 @@ export const themes: Themes = [
         },
         focus: { borderColor: 'rgba(233, 78, 52, 0.8)' },
       },
-      skeleton: { backgroundColor: '#272727', color: '#ffffff', opacity: 0.5 },
+      skeleton: { backgroundColor: '#ffffff', opacity: 0.3 },
     },
   },
 ];
