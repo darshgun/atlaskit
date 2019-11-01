@@ -30,6 +30,7 @@ export interface InlinePlayerOwnProps {
     event: React.MouseEvent<HTMLDivElement>,
     analyticsEvent?: UIAnalyticsEvent,
   ) => void;
+  testId?: string;
 }
 
 export type InlinePlayerProps = InlinePlayerOwnProps & WithAnalyticsEventsProps;
@@ -187,16 +188,16 @@ export class InlinePlayerBase extends Component<
   };
 
   render() {
-    const { onClick, dimensions, selected } = this.props;
+    const { onClick, dimensions, selected, testId } = this.props;
     const { fileSrc } = this.state;
 
     if (!fileSrc) {
-      return <CardLoading dimensions={dimensions} />;
+      return <CardLoading testId={testId} dimensions={dimensions} />;
     }
 
     return (
       <InlinePlayerWrapper
-        data-testid="media-card-inline-player"
+        data-testid={testId || 'media-card-inline-player'}
         style={this.getStyle()}
         selected={selected}
         onClick={onClick}

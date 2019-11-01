@@ -62,11 +62,11 @@ export default class CardLoader extends React.PureComponent<
   }
 
   render() {
-    const { dimensions } = this.props;
+    const { dimensions, testId } = this.props;
     const { Card, MediaCardErrorBoundary } = this.state;
 
     if (!Card || !MediaCardErrorBoundary) {
-      return <CardLoading dimensions={dimensions} />;
+      return <CardLoading testId={testId} dimensions={dimensions} />;
     }
 
     return (

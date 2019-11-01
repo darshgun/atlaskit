@@ -130,14 +130,20 @@ export class CardViewBase extends React.Component<
   }
 
   render() {
-    const { dimensions, appearance, onClick, onMouseEnter } = this.props;
+    const {
+      dimensions,
+      appearance,
+      onClick,
+      onMouseEnter,
+      testId,
+    } = this.props;
     const wrapperDimensions = dimensions
       ? dimensions
       : getDefaultCardDimensions(appearance);
 
     return (
       <Wrapper
-        data-testid="media-card-view"
+        data-testid={testId || 'media-card-view'}
         shouldUsePointerCursor={true}
         breakpointSize={breakpointSize(this.width)}
         appearance={appearance}
