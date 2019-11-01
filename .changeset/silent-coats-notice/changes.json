@@ -1,0 +1,7 @@
+{
+  "releases": [
+    { "name": "@atlaskit/atlassian-navigation", "type": "patch" },
+    { "name": "@atlaskit/atlassian-notifications", "type": "patch" }
+  ],
+  "dependents": []
+}
