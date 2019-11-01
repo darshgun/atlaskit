@@ -50,6 +50,7 @@ export default <P>(providers: (P | Promise<P>)[]) => {
    */
   const invokeSingle = async <T>(methodName: keyof P, args?: any[]) => {
     const callback = createCallback(methodName, args);
+
     return waitForFirstFulfilledPromise<T>(await runInAllProviders(callback));
   };
 

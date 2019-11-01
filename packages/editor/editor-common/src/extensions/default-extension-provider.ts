@@ -15,6 +15,11 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
     const extension = (await this.getManifests()).find(
       manifest => manifest.key === key,
     );
+
+    if (!extension) {
+      throw new Error(`Extension with key "${key}" not found!`);
+    }
+
     return extension;
   }
 

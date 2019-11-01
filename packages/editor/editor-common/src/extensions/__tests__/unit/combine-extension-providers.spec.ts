@@ -1,7 +1,7 @@
 import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
 import DefaultExtensionProvider from '../../default-extension-provider';
 import combineExtensionProviders from '../../combine-extension-providers';
-import { ExtensionProvider } from 'src/extensions/types';
+import { ExtensionProvider } from '../../types';
 
 describe('combine-extension-providers', () => {
   const awesomeExtension = createFakeExtensionManifest('awesome', 'awesome', [
@@ -58,9 +58,14 @@ describe('combine-extension-providers', () => {
     expect(await combinedExtensionProvider.getExtension('mehh-extension')).toBe(
       mehhExtension,
     );
-    expect(
-      await combinedExtensionProvider.getExtension('unknown-extension'),
-    ).toBe(undefined);
+  });
+
+  test('should reject the promise if extension is not found', () => {
+    return expect(
+      combinedExtensionProvider.getExtension('unknown-extension'),
+    ).rejects.toEqual(
+      new Error('Extension with key "unknown-extension" not found!'),
+    );
   });
 
   test('should be able to search through the available extensions', async () => {
@@ -110,7 +115,7 @@ describe('combine-extension-providers', () => {
     ]);
   });
 
-  describe('should fail silently', () => {
+  describe('should deal with failures', () => {
     const asyncExtension1 = createFakeExtensionManifest('async1', 'async1', [
       'async1-list',
       'async1-item',
@@ -187,14 +192,16 @@ describe('combine-extension-providers', () => {
       ]);
     });
 
-    test('getExtension should discard failures and return valid results', async () => {
+    test('getExtension should fail if no result is found', async () => {
       const combinedProviders = combineExtensionProviders(providers);
 
       providers[4].getExtension = jest.fn().mockRejectedValue('error');
 
-      expect(
-        await combinedProviders.getExtension('awesome-extension'),
-      ).not.toBeDefined();
+      return expect(
+        combinedProviders.getExtension('awesome-extension'),
+      ).rejects.toEqual(
+        new Error('Extension with key "awesome-extension" not found!'),
+      );
     });
 
     test('search should discard failures and return valid results', async () => {

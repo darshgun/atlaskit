@@ -12,21 +12,21 @@ const resolvesIn = (timeout: number, value: any) =>
 
 const rejectsIn = (timeout: number, reason: any) =>
   new Promise((_, reject) => {
-    setTimeout(() => reject(reason), timeout);
+    setTimeout(() => reject(new Error(reason)), timeout);
   });
 
 describe('promise-helpers', () => {
   describe('waitForAllPromises', () => {
     test('should return the promise, wrapped in a object containing the status, so it can be filtered later', async () => {
       const a = Promise.resolve('a');
-      const b = Promise.reject('b');
+      const b = Promise.reject(new Error('b'));
 
       expect(await waitForAllPromises([a])).toEqual([
         { status: ResultStatus.FULFILLED, value: 'a' },
       ]);
 
       expect(await waitForAllPromises([b])).toEqual([
-        { status: ResultStatus.FAILED, reason: 'b' },
+        { status: ResultStatus.FAILED, reason: new Error('b') },
       ]);
     });
 
@@ -38,7 +38,7 @@ describe('promise-helpers', () => {
       expect(await waitForAllPromises([a, b, c])).toEqual([
         { status: ResultStatus.FULFILLED, value: 'a' },
         { status: ResultStatus.FULFILLED, value: 'b' },
-        { status: ResultStatus.FAILED, reason: 'c' },
+        { status: ResultStatus.FAILED, reason: new Error('c') },
       ]);
     });
   });
@@ -52,13 +52,23 @@ describe('promise-helpers', () => {
       expect(await waitForFirstFulfilledPromise([a, b, c])).toEqual('c');
     });
 
-    test('should reject if all promises have rejected', async () => {
+    test('should reject with the last error if all promises have rejected', async () => {
       const a = rejectsIn(10, 'a');
       const b = rejectsIn(15, 'b');
-      const c = rejectsIn(12, 'c');
+      const c = rejectsIn(11, 'c');
 
       return expect(waitForFirstFulfilledPromise([a, b, c])).rejects.toEqual(
-        new Error('All promises have failed!'),
+        new Error('b'),
+      );
+    });
+
+    test('should reject if resolved with falsy value', async () => {
+      return expect(
+        waitForFirstFulfilledPromise([Promise.resolve(undefined)]),
+      ).rejects.toEqual(
+        new Error(
+          `Result was not found but the method didn't reject/throw. Please ensure that it doesn't return falsy values.`,
+        ),
       );
     });
   });

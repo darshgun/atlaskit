@@ -52,16 +52,26 @@ export const waitForAllPromises = <T>(
 export const waitForFirstFulfilledPromise = <T>(
   promises: Promise<T>[],
 ): Promise<T> => {
-  let rejectedCount = 0;
+  const rejectReasons: string[] = [];
 
   return new Promise((resolve, reject) => {
-    promises.forEach((result: Promise<T>) =>
-      result.then(resolve).catch(reason => {
-        rejectedCount++;
-        if (rejectedCount === promises.length) {
-          reject(new Error('All promises have failed!'));
-        }
-      }),
+    promises.forEach((promise: Promise<T>) =>
+      promise
+        .then(value => {
+          if (!value) {
+            throw new Error(
+              `Result was not found but the method didn't reject/throw. Please ensure that it doesn't return falsy values.`,
+            );
+          }
+
+          resolve(value);
+        })
+        .catch(reason => {
+          rejectReasons.push(reason);
+          if (rejectReasons.length === promises.length) {
+            reject(reason);
+          }
+        }),
     );
   });
 };

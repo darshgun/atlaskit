@@ -35,8 +35,13 @@ describe('default-extension-provider', () => {
     expect(await extensionProvider.getExtension('amazing-extension')).toBe(
       amazingExtension,
     );
-    expect(await extensionProvider.getExtension('unknown-extension')).toBe(
-      undefined,
+  });
+
+  test('should fail if not able to get an extension by key', () => {
+    return expect(
+      extensionProvider.getExtension('unknown-extension'),
+    ).rejects.toEqual(
+      new Error('Extension with key "unknown-extension" not found!'),
     );
   });
 
