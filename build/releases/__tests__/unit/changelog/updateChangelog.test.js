@@ -1,3 +1,4 @@
+// @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import path from 'path';
 import fs from 'fs';
@@ -97,7 +98,10 @@ const multipleReleaseObj = {
 };
 
 describe('updateChangelog', () => {
-  let cwd, emptyChangelogPath, existingChangelogPath, noChangelogPath;
+  let cwd;
+  let emptyChangelogPath;
+  let existingChangelogPath;
+  let noChangelogPath;
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(
       __dirname,

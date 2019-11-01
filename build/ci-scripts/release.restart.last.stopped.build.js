@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @flow
 const axios = require('axios');
 
 /*
@@ -39,7 +40,8 @@ function pipelineFailedOrStopped(pipelineState) {
   // if it is COMPLETED the state also has a result.name of 'SUCCESSFUL', 'FAILED' or 'STOPPED'
   if (pipelineState.name === 'FAILED') {
     return true;
-  } else if (
+  }
+  if (
     pipelineState.name === 'COMPLETED' &&
     pipelineState.result.name === 'STOPPED'
   ) {

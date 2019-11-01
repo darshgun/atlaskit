@@ -1,3 +1,4 @@
+// @flow
 const sendLogs = require('@atlaskit/analytics-reporting');
 
 module.exports = {
@@ -19,9 +20,9 @@ module.exports = {
           };
         }),
       }),
-    ).then(res => {
+    ).then(() => {
       console.log(
-        `Sent ${tests.length} long running unit tests event${
+        `Sent ${tests.length} long running tests event${
           tests.length > 1 ? 's' : ''
         }`,
       );

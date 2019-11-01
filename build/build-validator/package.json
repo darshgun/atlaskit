@@ -7,7 +7,10 @@
     "validate-packages": "node scripts/validate-packages.js"
   },
   "dependencies": {
+    "bolt": "^0.24.3",
+    "fs-extra": "^8.1.0",
     "npm-packlist": "^1.4.4",
-    "p-limit": "^2.2.1"
+    "p-limit": "^2.2.1",
+    "rimraf": "^3.0.0"
   }
 }

@@ -1,3 +1,4 @@
+// @flow
 async function getReleaseLines(changesets, releaseName, config) {
   return Promise.all(
     changesets.map(async changeset => {

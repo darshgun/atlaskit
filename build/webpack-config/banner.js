@@ -35,7 +35,7 @@ function devServerBanner(
     msg.push(
       chalk.blue(
         `Running dev server with packages matching ${chalk.bold(
-          '"' + workspacesGlob + '"',
+          `'"'${workspacesGlob}'"'`,
         )} pattern:`,
       ),
       '',

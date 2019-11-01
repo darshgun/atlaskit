@@ -1,3 +1,4 @@
+// @flow
 const bolt = require('bolt');
 const path = require('path');
 

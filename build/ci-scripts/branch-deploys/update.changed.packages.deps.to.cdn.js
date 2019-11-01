@@ -1,3 +1,4 @@
+// @flow
 /**
  * This script is used during branch deployss to update all the package.json's of changed packages
  * so that if they have any dependencies on other changed packages, they also point to the branch
@@ -7,6 +8,7 @@
 const bolt = require('bolt');
 const path = require('path');
 const fs = require('fs');
+
 const cwd = process.cwd();
 
 const { CHANGED_PACKAGES, BITBUCKET_COMMIT } = process.env;
@@ -26,6 +28,7 @@ if (!BITBUCKET_COMMIT) {
 const changedPackages = JSON.parse(CHANGED_PACKAGES);
 const commit = BITBUCKET_COMMIT.substr(0, 12);
 
+// eslint-disable-next-line no-shadow
 const getExpectedUrl = (pkgName, pkgVersion, commit) => {
   const shortPkgName = pkgName.replace('@atlaskit/', 'atlaskit-');
   return `https://s3-ap-southeast-2.amazonaws.com/atlaskit-artefacts/${commit}/dists/${shortPkgName}-${pkgVersion}.tgz`;
@@ -40,8 +43,8 @@ bolt.getWorkspaces().then(workspaces => {
     const packageJsonPath = path.join(pkg.dir, 'package.json');
     const pkgJson = JSON.parse(fs.readFileSync(packageJsonPath));
     let pkgJsonDirty = false;
-    Object.entries(pkgJson.dependencies).forEach(([depName, depVersion]) => {
-      let cpInfo = changedPackagesInfo.find(
+    Object.entries(pkgJson.dependencies).forEach(([depName]) => {
+      const cpInfo = changedPackagesInfo.find(
         changedPkg => changedPkg.name === depName,
       );
 

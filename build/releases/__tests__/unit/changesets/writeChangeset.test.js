@@ -1,3 +1,4 @@
+// @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 
 const fs = require('fs-extra');
@@ -31,6 +32,7 @@ describe('simple project', () => {
     const mdPath = path.join(cwd, '.changeset', changesetID, 'changes.md');
     const jsonPath = path.join(cwd, '.changeset', changesetID, 'changes.json');
 
+    // eslint-disable-next-line import/no-dynamic-require
     const json = require(jsonPath);
     const mdContent = await fs.readFile(mdPath, 'utf-8');
 
@@ -61,6 +63,7 @@ describe('simple project', () => {
     try {
       await writeChangeset(simpleChangeset, { cwd });
     } catch (e) {
+      // eslint-disable-next-line prefer-destructuring
       message = e.message;
     }
     expect(message).toBe(

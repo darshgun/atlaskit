@@ -1,4 +1,5 @@
-const chalk = require('chalk').default;
+// @flow
+const chalk = require('chalk');
 const prettyBytes = require('pretty-bytes');
 
 function formatSizeDiff(diff, colors = ['red', 'green']) {
@@ -21,6 +22,7 @@ function printReport(stats, level = 1) {
     const title = `${group.name}:`;
     console.log(chalk.yellow(title.padStart(title.length + level * 2, ' ')));
 
+    // eslint-disable-next-line consistent-return
     group.stats.forEach(stat => {
       if (stat.group) return printReport([stat], level + 1);
 
@@ -29,10 +31,10 @@ function printReport(stats, level = 1) {
         [
           chalk.yellow.dim(subTitle.padStart(subTitle.length + level * 2 + 2)),
           formatFileStats(stat.stats),
-          `${stat.new ? ' ' + chalk.bgRed.black(' added ') : ''}`,
-          `${stat.deleted ? ' ' + chalk.bgGreen.black(' deleted ') : ''}`,
+          `${stat.new ? ` ${chalk.bgRed.black(' added ')}` : ''}`,
+          `${stat.deleted ? ` ${chalk.bgGreen.black(' deleted ')}` : ''}`,
           stat.isTooBig
-            ? ' ' + chalk.bgRed.black(` >${stat.threshold * 100}% `)
+            ? ` ${chalk.bgRed.black(` >${stat.threshold * 100}% `)}`
             : '',
           stat.stats.sizeDiff || stat.stats.gzipSizeDiff
             ? ` ${formatSizeDiff(stat.stats.sizeDiff)} (${formatSizeDiff(

@@ -1,3 +1,4 @@
+// @flow
 const fetch = require('node-fetch');
 const path = require('path');
 const spawn = require('projector-spawn');
@@ -119,8 +120,9 @@ async function createPullRequest(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Basic ' + Buffer.from(APP_USER + ':' + APP_KEY).toString('base64'),
+        Authorization: `Basic ${Buffer.from(`${APP_USER}:${APP_KEY}`).toString(
+          'base64',
+        )}`,
       },
       body: JSON.stringify(data),
     },
@@ -134,8 +136,8 @@ async function createPullRequest(
 
 (async () => {
   const operation = {
-    push: push,
-    pull: pull,
+    push,
+    pull,
   }[process.argv[2]];
 
   if (!operation) {

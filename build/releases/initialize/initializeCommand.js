@@ -1,3 +1,4 @@
+// @flow
 const path = require('path');
 const fs = require('fs-extra');
 const logger = require('@atlaskit/build-utils/logger');

@@ -1,5 +1,5 @@
+// @flow
 const editor = require('editor');
-const fs = require('fs');
 const uuid = require('uuid/v1');
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
@@ -21,13 +21,14 @@ async function askCheckboxPlus(message, choices) {
   // wraps fuzzyfilter, and removes inquirer sepearators/other data invalid to
   // fuzzy.
   function fuzzySearch(answersSoFar, input) {
+    // eslint-disable-next-line consistent-return
     return new Promise(resolve => {
       if (!input) return resolve(choices);
-      var fuzzyResult = fuzzy.filter(
+      const fuzzyResult = fuzzy.filter(
         input,
         choices.filter(choice => typeof choice === 'string'),
       );
-      var data = fuzzyResult.map(element => element.original);
+      const data = fuzzyResult.map(element => element.original);
 
       resolve(data);
     });
@@ -60,6 +61,7 @@ async function askQuestion(message) {
     .then(responses => responses[name]);
 }
 
+// eslint-disable-next-line no-unused-vars
 async function askAutoComplete(message) {
   const name = `Autocmplete-${uuid()}`;
 

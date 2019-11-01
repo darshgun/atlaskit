@@ -105,7 +105,7 @@ async function createChangeset(
     summary = await cli.askQuestion('Summary');
   }
 
-  let pkgsToSearch = [...releases];
+  const pkgsToSearch = [...releases];
   const dependents = [];
 
   while (pkgsToSearch.length > 0) {
@@ -170,6 +170,7 @@ async function createChangeset(
   // do it until now because we didn't have the entire list of packages being released yet
   dependents.forEach(dependent => {
     const dependentPkgJSON = getPackageJSON(dependent.name);
+    // eslint-disable-next-line no-param-reassign
     dependent.dependencies = [...dependents, ...releases]
       .map(pkg => pkg.name)
       .filter(
@@ -238,6 +239,7 @@ function getDependencyVersionRange(dependentPkgJSON, dependencyName) {
   };
   for (const type of DEPENDENCY_TYPES) {
     const deps = dependentPkgJSON[type];
+    // eslint-disable-next-line no-continue
     if (!deps) continue;
     if (deps[dependencyName]) {
       dependencyVersionRange.depTypes.push(type);

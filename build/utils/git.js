@@ -1,3 +1,4 @@
+// @flow
 const spawn = require('projector-spawn');
 const path = require('path');
 
@@ -25,7 +26,7 @@ async function getChangedFilesSince(ref, fullPath = false) {
 }
 
 async function getChangedChangesetFilesSinceMaster(fullPath = false) {
-  let ref = await getMasterRef();
+  const ref = await getMasterRef();
   // First we need to find the commit where we diverged from `ref` at using `git merge-base`
   let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
   // Now we can find which files we added
@@ -163,7 +164,8 @@ async function getAndParseJsonFromCommitsStartingWith(str, since) {
     // need to manually pull it out here.
     .filter(parsed => parsed.message.includes('---'))
     .map(parsedCommit => {
-      const commit = parsedCommit.commit;
+      // eslint-disable-next-line no-shadow
+      const { commit } = parsedCommit;
       const changeset = parseChangesetCommit(parsedCommit.message);
       if (!changeset) return undefined;
       // we only care about the changeset and the commit
@@ -223,22 +225,24 @@ async function getLastPublishCommit() {
     '--max-count=1',
     '--format="%H"',
   ]);
+  // eslint-disable-next-line no-shadow
   const commit = gitCmd.stdout.trim().replace(/"/g, '');
 
   return commit;
 }
 
-async function getCommitThatAddsFile(path) {
+async function getCommitThatAddsFile(pathTo) {
   const gitCmd = await spawn('git', [
     'log',
     '--reverse',
     '--max-count=1',
     '--pretty=format:%h',
     '-p',
-    path,
+    pathTo,
   ]);
   // For reasons I do not understand, passing pretty format through this is not working
   // The slice below is aimed at achieving the same thing.
+  // eslint-disable-next-line no-shadow
   const commit = gitCmd.stdout.split('\n')[0];
 
   return commit;

@@ -1,5 +1,5 @@
+// @flow
 const fs = require('fs');
-const path = require('path');
 const updateBuildStatus = require('../utils/updateBuildStatus');
 
 const netlifyLinkPath = './netlify-link.txt';

@@ -1,3 +1,4 @@
+// @flow
 const warnOnce = (() => {
   return () => {
     if (window.hasWarnedAboutJsdomFixtures) {

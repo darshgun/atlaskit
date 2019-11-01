@@ -1,4 +1,7 @@
-import path from 'path';
+/* eslint-disable global-require */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable import/no-dynamic-require */
+// @flow
 
 // This function fakes a renderToString in a "server" environment.
 // First resetModules so that we can require a "fresh" copy of the example.
@@ -7,15 +10,19 @@ import path from 'path';
 // This tricks modules into thinking they are running in a server environment.
 // After that we call renderToString and resolve with the html or reject with the error.
 // We make sure that window and document are restored before returning.
-export const ssr = async example =>
+export const ssr = async (example /*: string */) =>
   new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-undef
     jest.resetModules();
-    let document, window, html, error;
+    let document;
+    let window;
+    let html;
+    let error;
     try {
       document = global.document;
       window = global.window;
-      delete global['document'];
-      delete global['window'];
+      delete global.document;
+      delete global.window;
       const React = require('react');
       const ReactDOMServer = require('react-dom/server');
       // $StringLitteral

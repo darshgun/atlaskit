@@ -1,3 +1,4 @@
+// @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 
 const bolt = require('bolt');

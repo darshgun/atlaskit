@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+// @flow
 /**
  * Copy package.json version information to a specific location in dist
  */

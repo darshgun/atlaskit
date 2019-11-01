@@ -1,3 +1,4 @@
+// @flow
 /**
  * This script is used in CI to check if the current build is for a PR and if so returns the destination
  * branch of that PR. This is used during landkid builds to know which branch landkid should rebase on
@@ -13,6 +14,7 @@
  */
 
 const https = require('https');
+
 const DEBUG = false; // NOTE: Turning this on will make the script output intermediate information
 // which will actually cause anything using this to break. This flag should only be used for debugging
 
@@ -27,6 +29,7 @@ function httpGetRequest(url) {
     let data = '';
 
     const req = https.get(url, resp => {
+      // eslint-disable-next-line no-return-assign
       resp.on('data', chunk => (data += chunk));
       resp.on('end', () => resolve(JSON.parse(data)));
     });

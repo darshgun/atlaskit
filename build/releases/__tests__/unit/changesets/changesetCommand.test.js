@@ -1,4 +1,6 @@
 // @flow
+/* eslint-disable no-unused-vars */
+
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import {
   askCheckboxPlus,
@@ -7,11 +9,12 @@ import {
   askQuestion,
 } from '@atlaskit/build-utils/cli';
 import { getChangedPackagesSinceMaster } from '@atlaskit/build-utils/packages';
-const git = require('@atlaskit/build-utils/git');
 
 import { changesetCommand } from '../../../changeset';
-import { initializeCommand } from '../../../initialize';
+
 import writeChangeset from '../../../changeset/writeChangeset';
+
+const git = require('@atlaskit/build-utils/git');
 
 jest.mock('@atlaskit/build-utils/logger');
 jest.mock('@atlaskit/build-utils/cli');
@@ -19,7 +22,7 @@ jest.mock('@atlaskit/build-utils/packages');
 jest.mock('@atlaskit/build-utils/git');
 jest.mock('../../../changeset/writeChangeset');
 writeChangeset.mockImplementation(() => Promise.resolve('abcdefg'));
-git.commit.mockImplementation(() => Promise.resolve(true));
+git.commit.mockImplementation(async () => Promise.resolve(true));
 
 // This is some sad flow hackery
 const unsafeGetChangedPackagesSinceMaster: any = getChangedPackagesSinceMaster;
@@ -40,6 +43,7 @@ type mockResponses = {
   dependents?: Array<dependent>,
 };
 
+// eslint-disable-next-line no-shadow
 const mockUserResponses = (mockResponses: mockResponses) => {
   const summary = mockResponses.summary || 'summary message mock';
   const shouldCommit = mockResponses.shouldCommit || 'n';
@@ -59,6 +63,7 @@ describe('Changesets', () => {
   it('should generate changeset to patch a single package', async () => {
     const cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
     mockUserResponses({ releases: { 'pkg-a': 'patch' } });
+
     const cs = await changesetCommand({ cwd });
 
     const expectedChangeset = {
@@ -76,6 +81,7 @@ describe('Changesets', () => {
       'pinned-caret-tilde-dependents',
     );
     mockUserResponses({ releases: { 'depended-upon': 'patch' } });
+
     const cs = await changesetCommand({ cwd });
 
     const expectedChangeset = {
@@ -95,6 +101,7 @@ describe('Changesets', () => {
       'pinned-caret-tilde-dependents',
     );
     mockUserResponses({ releases: { 'depended-upon': 'minor' } });
+
     const cs = await changesetCommand({ cwd });
 
     const expectedChangeset = {
@@ -115,6 +122,7 @@ describe('Changesets', () => {
       'pinned-caret-tilde-dependents',
     );
     mockUserResponses({ releases: { 'depended-upon': 'major' } });
+
     const cs = await changesetCommand({ cwd });
 
     const expectedChangeset = {
@@ -137,6 +145,7 @@ describe('Changesets', () => {
       'simplest-transitive-dependents',
     );
     mockUserResponses({ releases: { 'pkg-a': 'patch' } });
+
     const cs = await changesetCommand({ cwd });
 
     const expectedChangeset = {
@@ -159,6 +168,7 @@ describe('Changesets', () => {
       'previously-checked-transitive-dependent',
     );
     mockUserResponses({ releases: { 'pkg-a': 'patch' } });
+
     const cs = await changesetCommand({ cwd });
 
     const expectedChangeset = {
@@ -179,8 +189,10 @@ describe('Changesets', () => {
     );
 
     mockUserResponses({ releases: { 'pkg-a': 'patch' } });
+
     const cs = await changesetCommand({ cwd, commit: true });
 
+    //
     const expectedChangeset = {
       summary: 'summary message mock',
       releases: [{ name: 'pkg-a', type: 'patch' }],

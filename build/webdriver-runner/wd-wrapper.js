@@ -1,3 +1,7 @@
+/* eslint-disable func-names */
+/* eslint-disable consistent-return */
+/* eslint-disable no-undef */
+// @flow
 const assert = require('assert').strict;
 
 /*
@@ -18,29 +22,49 @@ export class JSHandle {
   }
 
   dispose = TODO;
+
   executionContext = TODO;
+
   getProperties = TODO;
+
   jsonValue = TODO;
 }
 
 export class ElementHandle extends JSHandle {
   $ = TODO;
+
   $$ = TODO;
+
   $x = TODO;
+
   asElement = TODO;
+
   boundingBox = TODO;
+
   click = TODO;
+
   dispose = TODO;
+
   executionContext = TODO;
+
   focus = TODO;
+
   getProperties = TODO;
+
   hover = TODO;
+
   jsonValue = TODO;
+
   press = TODO;
+
   screenshot = TODO;
+
   tap = TODO;
+
   toString = TODO;
+
   type = TODO;
+
   uploadFile = TODO;
 }
 
@@ -68,20 +92,20 @@ export default class Page {
     this.browser = client;
   }
 
+  // eslint-disable-next-line consistent-return
   async type(selector, text) {
     // TODO: https://product-fabric.atlassian.net/browse/BUILDTOOLS-325
     if (this.isBrowser('chrome') && selector === EDITOR) {
       if (Array.isArray(text)) {
-        return await this.browser.sendKeys(text.map(getMappedKey));
-      } else {
-        return await this.browser.sendKeys([getMappedKey(text)]);
+        return this.browser.sendKeys(text.map(getMappedKey));
       }
+      return this.browser.sendKeys([getMappedKey(text)]);
     }
 
     const elem = await this.browser.$(selector);
 
     if (Array.isArray(text)) {
-      for (let t of text) {
+      for (const t of text) {
         await elem.addValue(t);
       }
     } else {
@@ -100,8 +124,9 @@ export default class Page {
 
   async moveTo(selector, x, y) {
     if (this.isBrowser('Safari')) {
+      // eslint-disable-next-line no-unused-vars
       const bounds = await this.getBoundingRect(selector);
-      await this.SAFARI_moveTo([{ x, y }]);
+      await this.SafariMoveTo([{ x, y }]);
     } else {
       const elem = await this.browser.$(selector);
       elem.moveTo(x, y);
@@ -113,17 +138,17 @@ export default class Page {
     if (this.isBrowser('Safari')) {
       const bounds = await this.getBoundingRect(selector);
 
-      await this.SAFARI_moveTo([{ x: bounds.left, y: bounds.top }]);
+      await this.SafariMoveTo([{ x: bounds.left, y: bounds.top }]);
     } else {
       const elem = await this.browser.$(selector);
       await elem.moveTo(1, 1);
-      return await this.browser.pause(500);
+      return this.browser.pause(500);
     }
   }
 
   // TODO: Remove it after the fix been merged on webdriver.io:
   // https://github.com/webdriverio/webdriverio/pull/4330
-  async SAFARI_moveTo(coords) {
+  async SafariMoveTo(coords) {
     const actions = coords.map(set => ({
       type: 'pointerMove',
       duration: 0,
@@ -142,7 +167,8 @@ export default class Page {
   }
 
   async getBoundingRect(selector) {
-    return await this.browser.execute(selector => {
+    // eslint-disable-next-line no-shadow
+    return this.browser.execute(selector => {
       const element = document.querySelector(selector);
       const { x, y, width, height } = element.getBoundingClientRect();
       return { left: x, top: y, width, height, id: element.id };
@@ -150,7 +176,7 @@ export default class Page {
   }
 
   async title() {
-    return await this.browser.getTitle();
+    return this.browser.getTitle();
   }
 
   async $(selector) {
@@ -199,7 +225,7 @@ export default class Page {
   async keys(values) {
     const keys = Array.isArray(values) ? values : [values];
 
-    for (let key of keys) {
+    for (const key of keys) {
       await this.browser.keys(key);
     }
   }
@@ -261,7 +287,9 @@ export default class Page {
     }
   }
 
+  // eslint-disable-next-line no-unused-vars
   backspace(selector) {
+    // eslint-disable-next-line no-shadow
     this.browser.execute(selector => {
       return document
         .querySelector(selector)
@@ -318,6 +346,7 @@ export default class Page {
     return elem.getHTML(false);
   }
 
+  // eslint-disable-next-line no-dupe-class-members
   async getProperty(selector, property) {
     const elem = await this.browser.$(selector);
     return elem.getProperty(property);
@@ -366,7 +395,7 @@ export default class Page {
     return this.browser.keys(keys[0]);
   }
 
-  async copy(selector) {
+  async copy() {
     let keys;
     if (this.browser.capabilities.os === 'Windows') {
       keys = ['Control', 'c'];
@@ -446,6 +475,7 @@ export default class Page {
   mockDate(timestamp, timezoneOffset) {
     this.browser.execute(
       (t, tz) => {
+        // eslint-disable-next-line no-multi-assign
         const _Date = (window._Date = window.Date);
         const realDate = params => new _Date(params);
         let offset = 0;
@@ -457,6 +487,7 @@ export default class Page {
 
         const mockedDate = new _Date(t + offset);
 
+        // eslint-disable-next-line no-global-assign
         Date = function(...params) {
           if (params.length > 0) {
             return realDate(...params);

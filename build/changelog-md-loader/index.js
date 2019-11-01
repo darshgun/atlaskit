@@ -1,5 +1,4 @@
 // @flow
-'use strict';
 
 function getChangeLog(changelog) {
   const splitToken = `__CHANGELOG_SPLIT_${Date.now()}__`;

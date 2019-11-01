@@ -1,9 +1,9 @@
+// @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import fs from 'fs-extra';
 import path from 'path';
 
 import { initializeCommand } from '../../../initialize';
-import resolveConfig from '../../../utils/resolveConfig';
 
 const consoleLog = console.log;
 

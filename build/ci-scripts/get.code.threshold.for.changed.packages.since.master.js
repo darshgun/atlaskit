@@ -1,4 +1,4 @@
-const bolt = require('bolt');
+// @flow
 const packages = require('../utils/packages');
 const codeCoverageByPackage = require('./jest.codeCoverageThreshold');
 /**
@@ -17,8 +17,6 @@ const codeCoverageByPackage = require('./jest.codeCoverageThreshold');
  * }
  * */
 (async () => {
-  const cwd = process.cwd();
-  const allPackages = await bolt.getWorkspaces({ cwd });
   const changedPackages = await packages.getChangedPackagesSinceMaster();
 
   const changedPackagesName = changedPackages.map(

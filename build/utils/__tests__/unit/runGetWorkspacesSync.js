@@ -1,8 +1,6 @@
-const getWorkspacesSync = require('./../../getWorkspacesSync')
-  .getWorkspacesSync;
+// @flow
 const bolt = require('bolt');
-const fs = require('fs');
-const path = require('path');
+const { getWorkspacesSync } = require('./../../getWorkspacesSync');
 
 describe('getWorkspacesSync >', () => {
   test('should return the same results as getWorkspaces', async () => {

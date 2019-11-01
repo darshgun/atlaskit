@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+// @flow
 const path = require('path');
 const webpackConfig = require('@atlaskit/webpack-config');
 

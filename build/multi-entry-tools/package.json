@@ -8,7 +8,10 @@
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
-  "dependencies": {},
+  "dependencies": {
+    "bolt": "^0.24.3",
+    "glob": "^7.1.5"
+  },
   "bin": {
     "get-multi-entry-map": "./cli.js"
   }

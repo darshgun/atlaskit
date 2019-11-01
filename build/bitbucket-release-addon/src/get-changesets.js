@@ -1,3 +1,4 @@
+// @flow
 function getDiffStatUrl(repoName, sourcehash, destinationhash) {
   return `/2.0/repositories/${repoName}/diffstat/${sourcehash}..${destinationhash}`;
 }
@@ -39,10 +40,9 @@ function getFullDiffStat(url, allValues = []) {
  * parallel.
  */
 export default async function getChangesetsFromFiles(
-  repoName,
-  sourcehash,
-  destinationhash,
-  v2,
+  repoName /*: string */,
+  sourcehash /*: string */,
+  destinationhash /*: string */,
 ) {
   const diffstatUrl = getDiffStatUrl(repoName, sourcehash, destinationhash);
   const allDiffStats = await getFullDiffStat(diffstatUrl);

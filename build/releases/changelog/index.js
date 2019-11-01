@@ -1,9 +1,10 @@
-const generateMarkdownTemplate = require('./template');
+// @flow
 const fs = require('fs');
 const bolt = require('bolt');
 const path = require('path');
 const util = require('util');
 const logger = require('@atlaskit/build-utils/logger');
+const generateMarkdownTemplate = require('./template');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
@@ -45,6 +46,7 @@ async function updateChangelog(releaseObject, opts) {
     logger.log(`Updated file ${changelogPath}`);
     udpatedChangelogs.push(changelogPath);
   }
+  // eslint-disable-next-line consistent-return
   return udpatedChangelogs;
 }
 

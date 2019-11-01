@@ -1,3 +1,4 @@
+// @flow
 /*
 Hey, welcome to the changeset config! This file has been generated
 for you with the default configs we use, and some comments around

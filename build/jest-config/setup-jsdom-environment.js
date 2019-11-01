@@ -1,3 +1,4 @@
+// @flow
 /**
  * Forked the code of `jest-environment-jsdom-fourteen` into this file.
  * (https://github.com/ianschmitz/jest-environment-jsdom-fourteen/blob/master/src/index.ts)
@@ -30,13 +31,13 @@ function getMockedEventListeners(global) {
   let userErrorListenerCount = 0;
 
   return {
-    addEventListener: function(...args) {
+    addEventListener(...args) {
       if (args[0] === 'error') {
         userErrorListenerCount++;
       }
       origAddEventListener.apply(this, args);
     },
-    removeEventListener: function(...args) {
+    removeEventListener(...args) {
       if (args[0] === 'error') {
         userErrorListenerCount--;
       }
@@ -66,6 +67,7 @@ class JSDOMEnvironment {
           : resources,
     });
 
+    // eslint-disable-next-line no-multi-assign
     const global = (this.global = this.dom.window.document.defaultView);
 
     if (!global) {
@@ -107,7 +109,7 @@ class JSDOMEnvironment {
   }
 
   setup() {
-    return Promise.resolve();
+    return this.Promise.resolve();
   }
 
   // @see https://github.com/ianschmitz/jest-environment-jsdom-fourteen/blob/v0.1.0/src/index.ts#L86

@@ -1,3 +1,5 @@
+// @flow
+
 const {
   getPackagesInfo,
   TOOL_NAME_TO_FILTERS,
@@ -15,8 +17,8 @@ async function main(toolNames, opts = {}) {
     throw Error();
   }
 
-  let filters = toolNames.map(toolName => {
-    let filterFn = TOOL_NAME_TO_FILTERS[toolName];
+  const filters = toolNames.map(toolName => {
+    const filterFn = TOOL_NAME_TO_FILTERS[toolName];
 
     if (!filterFn) {
       console.error(
@@ -30,8 +32,8 @@ async function main(toolNames, opts = {}) {
     return filterFn;
   });
 
-  let packages = await getPackagesInfo(cwd);
-  let relativePaths = packages
+  const packages = await getPackagesInfo(cwd);
+  const relativePaths = packages
     .filter(pkg => filters.every(filter => filter(pkg)))
     .map(pkg => pkg.relativeDir);
 
@@ -41,7 +43,7 @@ async function main(toolNames, opts = {}) {
 }
 
 if (require.main === module) {
-  let toolNames = process.argv.slice(2);
+  const toolNames = process.argv.slice(2);
   main(toolNames)
     .then(glob => {
       console.log(glob);

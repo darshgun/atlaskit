@@ -1,3 +1,5 @@
+// @flow
+
 const fs = require('fs');
 const util = require('util');
 
@@ -32,9 +34,8 @@ async function exists(filePath) {
   } catch (err) {
     if (err.code === 'ENOENT') {
       return false;
-    } else {
-      throw err;
     }
+    throw err;
   }
 }
 

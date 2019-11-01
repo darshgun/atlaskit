@@ -1,3 +1,4 @@
+// @flow
 const axios = require('axios');
 const queryString = require('querystring');
 

@@ -1,3 +1,4 @@
+// @flow
 function parseChangesetCommit(commitMsg) {
   const lines = commitMsg.split('\n');
   let curLine;

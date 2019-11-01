@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import {
@@ -43,11 +44,11 @@ type mockResponses = {
   dependents?: Array<dependent>,
 };
 
-const mockUserResponses = (mockResponses: mockResponses) => {
-  const summary = mockResponses.summary || 'summary message mock';
-  const shouldCommit = mockResponses.shouldCommit || 'n';
-  askCheckboxPlus.mockReturnValueOnce(Object.keys(mockResponses.releases));
-  Object.entries(mockResponses.releases).forEach(([pkg, type]) =>
+const mockUserResponses = (mockResponsesParam: mockResponses) => {
+  const summary = mockResponsesParam.summary || 'summary message mock';
+  const shouldCommit = mockResponsesParam.shouldCommit || 'n';
+  askCheckboxPlus.mockReturnValueOnce(Object.keys(mockResponsesParam.releases));
+  Object.entries(mockResponsesParam.releases).forEach(([pkg, type]) =>
     askList.mockReturnValueOnce(type),
   );
   askQuestion.mockReturnValueOnce(summary);

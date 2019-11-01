@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 
 /*::
 import type { Directory, File } from './types';
@@ -6,26 +6,30 @@ import type { Directory, File } from './types';
 
 const path = require('path');
 
-function dir(id /*: string */, path /*: string */ = '') {
-  return { type: 'dir', id, path, children: [] };
+function dir(id /*: string */, pathTo /*: string */ = '') {
+  return { type: 'dir', id, pathTo, children: [] };
 }
 
-function file(id /*: string */, path /*: string */) {
-  return { type: 'file', id, path };
+function file(id /*: string */, pathTo /*: string */) {
+  return { type: 'file', id, pathTo };
 }
 
-function findInDir(dir /*: Directory */, id /*: string */) {
-  return dir.children.find(c => c.id === id);
+function findInDir(directory /*: Directory */, id /*: string */) {
+  return directory.children.find(c => c.id === id);
 }
 
-function isDirHasFiles(dir /*: Directory */) /*: boolean */ {
-  return dir.children.some(child => child.type === 'file');
+function isDirHasFiles(directory /*: Directory */) /*: boolean */ {
+  return directory.children.some(child => child.type === 'file');
 }
 
-function appendToDir(dir /*: Directory */, child /*: Directory | File */) {
-  if (findInDir(dir, child.id)) return dir;
-  dir.children = [].concat(dir.children, child);
-  return dir;
+function appendToDir(
+  directory /*: Directory */,
+  child /*: Directory | File */,
+) {
+  if (findInDir(directory, child.id)) return directory;
+  // eslint-disable-next-line no-param-reassign
+  directory.children = [].concat(dir.directory, child);
+  return directory;
 }
 
 function buildFs(

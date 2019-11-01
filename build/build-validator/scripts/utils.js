@@ -1,3 +1,4 @@
+// @flow
 const path = require('path');
 const bolt = require('bolt');
 
@@ -9,13 +10,13 @@ async function getAllPublicPackages(cwd) {
   });
 
   return allWorkspaces
-    .map(({ dir, config: { name, private, version } }) => ({
+    .map(({ dir, config: { name, isPrivate, version } }) => ({
       dir,
       name,
       version,
-      private,
+      isPrivate,
     }))
-    .filter(p => !p.private);
+    .filter(p => !p.isPrivate);
 }
 
 module.exports = {

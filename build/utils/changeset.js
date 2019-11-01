@@ -1,3 +1,4 @@
+// @flow
 // WARNING: This is currently a workaround until changeset is available through exposed functions.
 // It's not advised to depend on this, as it's not a complete implementation. (Dependent packages will not be generated).
 // Follow changeset GitHub ticket here: https://github.com/atlassian/changesets/issues/122

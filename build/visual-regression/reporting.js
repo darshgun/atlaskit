@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 // @flow
 const get = require('lodash.get');
 const sendLogs = require('@atlaskit/analytics-reporting');
@@ -61,7 +62,7 @@ module.exports = {
           buildEventPayload(property, 'atlaskit.qa.vr_test.inconsistency'),
         ),
       }),
-    ).then(res => {
+    ).then(() => {
       console.log(
         `Sent ${properties.length} inconsistent visual-regression tests event${
           properties.length > 1 ? 's' : ''
@@ -106,7 +107,7 @@ module.exports = {
           };
         }),
       }),
-    ).then(res => {
+    ).then(() => {
       console.log(
         `Sent ${results.length} visual regression long running tests event${
           results.length > 1 ? 's' : ''

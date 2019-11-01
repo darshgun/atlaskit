@@ -1,5 +1,4 @@
 //@flow
-'use strict';
 /*
  * Utilities helper to get build data.
  */
@@ -50,6 +49,7 @@ async function computeBuildTime(
     .map(step => step.step_duration);
   // When a build has 1 step, we can't apply this function, we take the only available value.
   if (stepDurationArray.length === 1) {
+    // eslint-disable-next-line prefer-destructuring
     buildDuration = stepDurationArray[0];
   } else {
     // The minimum step duration cannot be 0 and it is in avg 30s in AK.
@@ -71,12 +71,10 @@ async function getBuildTime(
   if (buildTime) {
     if (computedBuildTime > buildTime) {
       return computedBuildTime;
-    } else {
-      return buildTime;
     }
-  } else {
-    return computedBuildTime;
+    return buildTime;
   }
+  return computedBuildTime;
 }
 
 /* This function computes step time if step.duration_in_seconds returns undefined or 0.
@@ -88,7 +86,7 @@ async function computeStepTimes(
 ) /*: Promise<number> */ {
   const currentTime = Date.now();
   // It returns the time in ms, we want in seconds.
-  return (parseInt(currentTime) - Date.parse(stepStartTime)) / 1000;
+  return (parseInt(currentTime, 10) - Date.parse(stepStartTime)) / 1000;
 }
 
 /* This function returns the step duration time. */
@@ -119,6 +117,7 @@ async function getPipelinesBuildEvents(
       buildId,
       build.target.selector.pattern || build.target.selector.type,
     );
+    // eslint-disable-next-line no-nested-ternary
     const buildStatus = process.env.BITBUCKET_EXIT_CODE
       ? process.env.BITBUCKET_EXIT_CODE === '0'
         ? 'SUCCESSFUL'
@@ -161,16 +160,22 @@ async function getPipelinesBuildEvents(
 }
 
 /* This function returns the payload for the build steps.*/
-async function getStepsEvents(buildId /*: string*/, buildType /*:? string */) {
+// eslint-disable-next-line consistent-return
+async function getStepsEvents(
+  buildId /*: string*/,
+  buildType /*:? string */,
+) /* IStepsDataType */ {
   const url = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}/steps/`;
   try {
     const resp = await axios.get(url);
     return Promise.all(
+      // eslint-disable-next-line consistent-return
       resp.data.values.map(async step => {
         // We don't have control of the last step, it is a edge case.
         // In the after_script, the last step is still 'IN-PROGRESS' but the result of the last step does not matter.
         // We use the process.env.BITBUCKET_EXIT_CODE to determine the status of the pipeline.
         if (step && step.state) {
+          // eslint-disable-next-line no-nested-ternary
           const stepStatus = process.env.BITBUCKET_EXIT_CODE
             ? process.env.BITBUCKET_EXIT_CODE === '0'
               ? 'SUCCESSFUL'
@@ -205,16 +210,15 @@ function returnPayloadPerBuildType(
       build_type: buildType,
       build_name: buildName,
     };
-  } else {
-    return {
-      step_name:
-        pipelines.custom[buildName][0].parallel[
-          process.env.BITBUCKET_PARALLEL_STEP
-        ].step.name,
-      build_type: buildType,
-      build_name: buildName,
-    };
   }
+  return {
+    step_name:
+      pipelines.custom[buildName][0].parallel[
+        process.env.BITBUCKET_PARALLEL_STEP
+      ].step.name,
+    build_type: buildType,
+    build_name: buildName,
+  };
 }
 
 /* This function identifies the step currently running and build a partial payload based on the build type.*/
@@ -234,6 +238,7 @@ async function getStepNamePerBuildType(buildId /*: string */) {
     // Only the 3 types of build below will have parallel steps.
     // process.env.BITBUCKET_PARALLEL_STEP returns zero-based index of the current step in the group, for example: 0, 1, 2, … - only for parallel step.
     // This will return the actual step where the build is currently running.
+    // eslint-disable-next-line consistent-return
     return returnPayloadPerBuildType(
       indentedJson.pipelines,
       buildType,
@@ -245,6 +250,7 @@ async function getStepNamePerBuildType(buildId /*: string */) {
 }
 
 /* This function the final step payload when a build with parallel step is running in Bitbucket.*/
+// eslint-disable-next-line consistent-return
 async function getStepEvents(buildId /*: string*/) {
   const stepsUrl = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}/steps/`;
   try {
@@ -255,6 +261,7 @@ async function getStepEvents(buildId /*: string*/) {
       const stepObject = res.data.values.filter(
         step => step.name === stepPayload.step_name,
       )[0];
+      // eslint-disable-next-line no-nested-ternary
       const buildStatus = process.env.BITBUCKET_EXIT_CODE
         ? process.env.BITBUCKET_EXIT_CODE === '0'
           ? 'SUCCESSFUL'

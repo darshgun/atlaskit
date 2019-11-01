@@ -12,7 +12,7 @@ import type { Directory, File, LoaderOptions } from './types';
 */
 
 function createLoaderOutput(
-  dir /*: Directory */,
+  directory /*: Directory */,
   files /*: Array<string> */ = [],
   debug /*: boolean */ = false,
 ) {
@@ -25,7 +25,7 @@ function createLoaderOutput(
       return { type: 'file', id: id, exports: exports, contents: contents };
     }
 
-    export default ${printDir(dir)};
+    export default ${printDir(directory)};
   `;
 
   if (debug) {
@@ -44,16 +44,17 @@ function createLoaderOutput(
   return output.replace(/\\/g, '\\\\');
 }
 
+// eslint-disable-next-line consistent-return
 function addWebpackDependencies(
-  dir /*: Directory */,
+  directory /*: Directory */,
   addContextDependency /* (path: string) => void */,
 ) {
   // Skipping top level directories and add only those that have files matching query inside.
-  if (isDirHasFiles(dir)) {
-    return addContextDependency(dir.path);
+  if (isDirHasFiles(directory)) {
+    return addContextDependency(directory.path);
   }
 
-  dir.children.forEach(
+  directory.children.forEach(
     // Making flow happy otherwise it doesn't understand that child here can only by a directory
     child =>
       child.type === 'dir' &&
@@ -76,7 +77,7 @@ module.exports = async function boltFsLoader() {
 
   // Separate option for exclude is necessary since webpack treats ! as a sign of a loader
   // which blocks us from using it inside import statement
-  let patterns = []
+  const patterns = []
     .concat(opts.include)
     .concat((opts.exclude || []).map(p => `!${p}`));
   const files /*: Array<string> */ = await globby(patterns, {

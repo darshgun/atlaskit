@@ -1,3 +1,4 @@
+// @flow
 const logger = require('@atlaskit/build-utils/logger');
 const { green, red } = require('chalk');
 const boxen = require('boxen');

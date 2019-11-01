@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-const log = console.log;
+// @flow
 const meow = require('meow');
 const chalk = require('chalk');
-const measure = require('./measure');
 const bolt = require('bolt');
 const minimatch = require('minimatch');
+const measure = require('./measure');
 
-let c = meow(
+const c = meow(
   `
     Usage
         $ measure <[paths]>
@@ -63,26 +63,28 @@ if (paths && paths.length > 0) {
   logInvalidUse('No paths specified, no packages to measure');
 }
 
-async function resolvePaths(paths) {
+async function resolvePaths(pathsParam) {
   const workspaces = await bolt.getWorkspaces();
   return workspaces
     .filter(ws =>
-      paths.some(path => minimatch(ws.dir, `**/${path}`, { matchBase: true })),
+      pathsParam.some(path =>
+        minimatch(ws.dir, `**/${path}`, { matchBase: true }),
+      ),
     )
     .map(ws => ws.dir);
 }
 
-async function executeMeasure(paths, c, errors = [], results = []) {
-  const path = paths.pop();
+async function executeMeasure(pathsParam, cParam, errors = [], results = []) {
+  const path = pathsParam.pop();
 
   try {
     const result = await measure(
       path,
-      c.flags.analyze,
-      c.flags.json,
-      c.flags.lint,
-      c.flags.updateSnapshot,
-      c.flags.s3,
+      cParam.flags.analyze,
+      cParam.flags.json,
+      cParam.flags.lint,
+      cParam.flags.updateSnapshot,
+      cParam.flags.s3,
     );
     results.push(result);
   } catch (error) {
@@ -90,10 +92,9 @@ async function executeMeasure(paths, c, errors = [], results = []) {
   }
 
   if (paths.length > 0) {
-    return executeMeasure(paths, c, errors, results);
-  } else {
-    return { errors, results };
+    return executeMeasure(paths, cParam, errors, results);
   }
+  return { errors, results };
 }
 
 function handleMeasureResult({ errors, results }) {
@@ -105,7 +106,7 @@ function handleMeasureResult({ errors, results }) {
     );
 
     errors.forEach(error => {
-      console.log('  ' + chalk.red(error));
+      console.log(`  ${chalk.red(error)}`);
     });
 
     logInvalidUse();

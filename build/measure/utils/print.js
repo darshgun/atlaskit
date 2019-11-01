@@ -1,3 +1,4 @@
+// @flow
 function processJoinedStats(measureGroups, stats) {
   return measureGroups
     .map(group => ({

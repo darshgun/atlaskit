@@ -1,3 +1,4 @@
+// @flow
 const axios = require('axios');
 const util = require('util');
 /**
@@ -14,27 +15,30 @@ const auth = Buffer.from(
 const sleep = util.promisify(setTimeout);
 
 function checkBSParallelSessions() {
-  return axios
-    .get('https://api.browserstack.com/automate/plan.json', {
-      headers: {
-        Authorization: 'Basic ' + auth,
-      },
-    })
-    .then(response => {
-      // Those two values are int and fixed on BS sides, so it should be always returning a proper value.
-      const percentageOfUsedSessions = Math.floor(
-        (response.data.parallel_sessions_running /
-          response.data.team_parallel_sessions_max_allowed) *
-          100,
-      );
-      if (percentageOfUsedSessions > percentageOfSessionsAllowed) {
-        return Promise.reject(
-          new Error(
-            `Browserstack is currently running with ${percentageOfUsedSessions} % of used sessions concurrently, the limit is ${percentageOfSessionsAllowed} %, please try again later`,
-          ),
+  return (
+    axios
+      .get('https://api.browserstack.com/automate/plan.json', {
+        headers: {
+          Authorization: `Basic ${auth}`,
+        },
+      })
+      // eslint-disable-next-line consistent-return
+      .then(response => {
+        // Those two values are int and fixed on BS sides, so it should be always returning a proper value.
+        const percentageOfUsedSessions = Math.floor(
+          (response.data.parallel_sessions_running /
+            response.data.team_parallel_sessions_max_allowed) *
+            100,
         );
-      }
-    });
+        if (percentageOfUsedSessions > percentageOfSessionsAllowed) {
+          return Promise.reject(
+            new Error(
+              `Browserstack is currently running with ${percentageOfUsedSessions} % of used sessions concurrently, the limit is ${percentageOfSessionsAllowed} %, please try again later`,
+            ),
+          );
+        }
+      })
+  );
 }
 
 async function main() {
@@ -44,7 +48,7 @@ async function main() {
       process.exit(0);
     } catch (e) {
       console.log(e);
-      await sleep(10000 * Math.pow(2, i));
+      await sleep(10000 * 2 ** i);
     }
   }
   process.exit(1);

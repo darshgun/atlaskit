@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+// @flow
 const { green } = require('chalk');
 const cli = require('@atlaskit/build-utils/cli');
 const git = require('@atlaskit/build-utils/git');

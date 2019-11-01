@@ -1,9 +1,8 @@
+// @flow
 const getAlternativeEntryPointAliasMap = require('./module-resolve-map-builder');
 const fromEntries = require('./utils/fromEntries');
 
 async function main() {
-  const isProjectLevel = process.argv[2] === '--project';
-
   const mapping = await getAlternativeEntryPointAliasMap();
   const cwd = process.cwd();
   const paths = fromEntries(

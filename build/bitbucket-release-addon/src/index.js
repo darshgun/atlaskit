@@ -1,3 +1,4 @@
+// @flow
 import queryString from 'query-string';
 import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
 import yaml from 'js-yaml';
@@ -63,7 +64,7 @@ const yamlToReleases = changesets => {
   if (!changesets || changesets.length === 0) return [];
   return changesets
     .map(changeset => {
-      let lines = changeset.split('\n');
+      const lines = changeset.split('\n');
       let yamlStr = '';
       if (lines[0] !== '---') return null; // if we don't have a frontmatter block, skip this file
       let lineIdx = 1; // skip the first line, we know it is '---'

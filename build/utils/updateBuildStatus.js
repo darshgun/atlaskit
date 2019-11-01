@@ -39,7 +39,7 @@ function updateBuildStatus(opts /*: buildStatusOpts*/) {
   const description = opts.description || defaultDescription;
   const url = opts.url || defaultUrl;
   const buildKey = opts.buildKey || defaultBuildKey(commit, buildName);
-  const state = opts.state;
+  const { state } = opts;
 
   if (!state) {
     console.error('No state provided to updateBuildStatus');

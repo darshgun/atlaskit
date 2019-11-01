@@ -1,3 +1,4 @@
+// @flow
 const fs = require('fs');
 const gzipSize = require('gzip-size');
 const exec = require('child_process').execSync;
@@ -22,7 +23,9 @@ function fDeleteIfExist(dir) {
   if (fExists(dir)) {
     try {
       exec(`rm -rf ${dir}`);
-    } catch (e) {}
+    } catch (e) {
+      console.error(`${e}`);
+    }
   }
 }
 

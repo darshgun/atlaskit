@@ -1,15 +1,16 @@
+// @flow
 const fs = require('fs');
 const path = require('path');
 const npmRun = require('npm-run');
-const chalk = require('chalk').default;
+const chalk = require('chalk');
 const axios = require('axios');
 
 const masterStatsFolder = createDir('./.masterBundleSize');
 const currentStatsFolder = createDir('./.currentBundleSize');
 
-const BITBUCKET_COMMIT = process.env.BITBUCKET_COMMIT;
-const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
-const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
+const { BITBUCKET_COMMIT } = process.env;
+const { AWS_ACCESS_KEY } = process.env;
+const { AWS_SECRET_KEY } = process.env;
 const BUCKET_NAME = 'atlaskit-artefacts';
 const BUCKET_REGION = 'ap-southeast-2';
 
@@ -17,12 +18,11 @@ function createDir(dir) {
   try {
     fs.mkdirSync(dir);
   } catch (err) {
-    if ((err.code = 'EEXIST')) {
+    if (err.code === 'EEXIST') {
       return dir;
-    } else {
-      console.log(err);
-      process.exit(0);
     }
+    console.log(err);
+    process.exit(0);
   }
   return dir;
 }
@@ -47,8 +47,8 @@ function isAWSAccessible() {
  * This does not use S3 commands instead uses http get to fetch ratchet file from S3.
  * This is designed to enable local dev loop without AWS credentials to access data on S3.
  **/
-async function downloadFromS3ForLocal(downloadToFolder, branch, package) {
-  const ratchetFile = `${package}-bundle-size-ratchet.json`;
+async function downloadFromS3ForLocal(downloadToFolder, branch, packageName) {
+  const ratchetFile = `${packageName}-bundle-size-ratchet.json`;
   const output = `${downloadToFolder}/${ratchetFile}`;
   const rachetFileUrl = `http://s3-${BUCKET_REGION}.amazonaws.com/${BUCKET_NAME}/${branch}/bundleSize/${ratchetFile}`;
   try {
@@ -71,12 +71,12 @@ async function downloadFromS3ForLocal(downloadToFolder, branch, package) {
   }
 }
 
-function downloadFromS3(downloadToFolder, branch, package) {
+function downloadFromS3(downloadToFolder, branch, packageName) {
   if (!isAWSAccessible()) {
     process.exit(1);
   }
 
-  const ratchetFile = `${package}-bundle-size-ratchet.json`;
+  const ratchetFile = `${packageName}-bundle-size-ratchet.json`;
   const bucketPath = `s3://${BUCKET_NAME}/${branch}/bundleSize/${ratchetFile}`;
 
   console.log('bucket', bucketPath);
@@ -91,7 +91,7 @@ function downloadFromS3(downloadToFolder, branch, package) {
        Don't worry, we will create and upload ratchet file for this pkg.`),
       );
       throw new Error(
-        `Ratchet file for this ${package} was not found in s3 bucket`,
+        `Ratchet file for this ${packageName} was not found in s3 bucket`,
       );
     } else {
       console.error(chalk.red(`${err}`));

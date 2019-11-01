@@ -1,11 +1,11 @@
 //@flow
-'use strict';
+
 /*
  * Visual-regression snapshot test helper with util functions to do
  * all the things ;)
  */
-
 const glob = require('glob');
+
 const pageSelector = '#examples';
 
 // Minimum threshold chosen to be as close to 0 as possible.
@@ -13,7 +13,7 @@ const pageSelector = '#examples';
 const MINIMUM_THRESHOLD = 0.001;
 
 function trackers(page /*:any*/) {
-  let requests = new Set();
+  const requests = new Set();
   const onStarted = request => requests.add(request);
   const onFinished = request => requests.delete(request);
   page.on('request', onStarted);
@@ -60,13 +60,15 @@ async function navigateToUrl(
 
   const tracker = trackers(page);
   if (!failHandler) {
+    // eslint-disable-next-line no-param-reassign
     failHandler = error => {
-      console.warn('Navigation failed: ' + error.message);
-      console.warn('Trying to navigate to: ' + url);
+      console.warn(`Navigation failed: ${error.message}`);
+      console.warn(`Trying to navigate to: ${url}`);
       const inflight = tracker.inflightRequests();
       console.warn(
-        'Waiting on requests:\n' +
-          inflight.map(requests => '  ' + requests.url()).join('\n'),
+        `Waiting on requests:\n${inflight
+          .map(requests => `  ${requests.url()}`)
+          .join('\n')}`,
       );
     };
   }
@@ -173,7 +175,7 @@ async function waitForLoadedImageElements(
   // Wait for Media API to resolve urls
   await page.waitFor(mediaDelayMs);
   // polling at 50ms (roughly every 3 rendered frames)
-  return await page.waitForFunction(areAllImageElementsLoaded, {
+  return page.waitForFunction(areAllImageElementsLoaded, {
     polling: 50,
     timeout,
   });
@@ -192,7 +194,7 @@ async function waitForLoadedBackgroundImages(
   if (rootSelector !== '*') {
     await page.waitFor(rootSelector);
   }
-  return await page
+  return page
     .evaluate(
       (selector /*:string*/, raceTimeout /*:number*/) => {
         const urlSrcRegex = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)/i;
@@ -200,11 +202,11 @@ async function waitForLoadedBackgroundImages(
           document.querySelectorAll(selector),
         ).reduce(
           (collection, node) => {
-            let prop = window
+            const prop = window
               .getComputedStyle(node, null)
               .getPropertyValue('background-image');
             // Find elements which have a bg image set
-            let match = urlSrcRegex.exec(prop);
+            const match = urlSrcRegex.exec(prop);
             if (match) {
               collection.add(match[1]);
             }
@@ -222,6 +224,7 @@ async function waitForLoadedBackgroundImages(
                 new Promise((resolve, reject) => {
                   const img = new Image();
                   img.onload = () => resolve({ url, loaded: true });
+                  // eslint-disable-next-line prefer-promise-reject-errors
                   img.onerror = () => reject({ url, loaded: false });
                   img.src = url;
                 }),
@@ -273,7 +276,7 @@ async function takeScreenShot(page /*:any*/, url /*:string*/) {
 }
 
 async function takeElementScreenShot(page /*:any*/, selector /*:string*/) {
-  let element = await page.$(selector);
+  const element = await page.$(selector);
   return element.screenshot();
 }
 
@@ -303,11 +306,12 @@ async function loadExampleUrl(
 // an inline error message, or as empty content.
 // Here we check for both scenarios and if discovered we return an error message.
 async function validateExampleLoaded(page /*:any*/) {
-  return await page.evaluate(() => {
+  return page.evaluate(() => {
     const doc = document /* as any*/;
     const renderedContent = doc.querySelector('#examples > div:first-child');
     if (renderedContent && !renderedContent.children.length) {
       const message = renderedContent.innerText || '';
+      // eslint-disable-next-line no-bitwise
       if (~message.indexOf('does not have an example built for'))
         return `This example isn't available`;
     }
@@ -366,7 +370,7 @@ function getAllExamplesSync() /*: Array<Object> */ {
         exampleName: reverseExamplePath[0]
           .replace('.js', '')
           .replace('.tsx', '')
-          .replace(/^\d+\-\s*/, ''),
+          .replace(/^\d+-\s*/, ''),
       };
     });
 }

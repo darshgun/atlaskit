@@ -1,3 +1,4 @@
+// @flow
 /*
 This file tests the old version command API that examines changesets in git history.
 
@@ -6,10 +7,10 @@ Once that method of writing changesets is removed, these tests should also be re
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 
 const path = require('path');
-const versionCommand = require('../../../version/versionCommand');
 const git = require('@atlaskit/build-utils/git');
 const fs = require('@atlaskit/build-utils/fs');
 const logger = require('@atlaskit/build-utils/logger');
+const versionCommand = require('../../../version/versionCommand');
 // avoid polluting test logs with error message in console
 const consoleError = console.error;
 
@@ -81,7 +82,7 @@ describe('running version in a simple project', () => {
       mockUnpublishedChangesetCommits([simpleChangeset2]);
 
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
 
       expect(JSON.parse(calls[0][1])).toEqual(
         expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
@@ -127,7 +128,7 @@ describe('running version in a simple project', () => {
       const spy = jest.spyOn(fs, 'writeFile');
 
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
       expect(JSON.parse(calls[0][1])).toEqual(
         expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
       );
@@ -140,7 +141,7 @@ describe('running version in a simple project', () => {
       mockUnpublishedChangesetCommits([simpleChangeset, simpleChangeset2]);
       const spy = jest.spyOn(fs, 'writeFile');
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
 
       // first call should be minor bump
       expect(JSON.parse(calls[0][1])).toEqual(

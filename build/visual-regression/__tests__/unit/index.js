@@ -1,3 +1,4 @@
+// @flow
 import {
   isLatestVersion,
   getDockerImageProdVersion,
@@ -22,7 +23,6 @@ describe('Delete old docker image', () => {
   });
   test('should not be called when the localVersion is undefined', async () => {
     const localVersion = undefined;
-    const prodVersion = getDockerImageProdVersion();
     const isLatest = await isLatestVersion(localVersion);
     expect(isLatest).toBe(false);
   });

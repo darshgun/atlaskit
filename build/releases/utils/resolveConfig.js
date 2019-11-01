@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+// @flow
 const path = require('path');
 const fs = require('fs-extra');
 const logger = require('@atlaskit/build-utils/logger');
@@ -12,6 +14,7 @@ async function resolveConfig(config) {
 
   if (hasConfigFile) {
     try {
+      // eslint-disable-next-line import/no-dynamic-require
       const loadedConfig = require(configPath);
       return loadedConfig;
     } catch (error) {

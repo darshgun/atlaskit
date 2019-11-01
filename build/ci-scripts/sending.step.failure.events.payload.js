@@ -1,13 +1,14 @@
+// @flow
 /* Script to send step failure events data to the fabric build stats service. */
 /* The repository is available there: https://bitbucket.org/atlassian/fabric-build-stats-service.
 /* The service is available in dev: https://fabric-build-stats-service.dev.services.atlassian.com.
 /* The service is available in prod: https://fabric-build-stats-service.services.atlassian.com. */
 
-const getStepEvents = require('./buildEventsUtils/getBuildEvents')
-  .getStepEvents;
+const { getStepEvents } = require('./buildEventsUtils/getBuildEvents');
 
-const sendBuildEventsPayload = require('./buildEventsUtils/sendBuildEventsPayload')
-  .sendBuildEventsPayload;
+const {
+  sendBuildEventsPayload,
+} = require('./buildEventsUtils/sendBuildEventsPayload');
 
 (async () => {
   try {

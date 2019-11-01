@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-
+// @flow
 const fs = require('fs');
 const path = require('path');
-const exec = require('child_process').execSync;
-const chalk = require('chalk').default;
+
+const chalk = require('chalk');
 const ora = require('ora');
 const webpack = require('webpack');
 const { fExists, fDeleteIfExist } = require('./utils/fs');
@@ -30,14 +30,18 @@ const { returnMissingPkgBasedOn } = require('./utils/error.js');
 const targetBranch = process.env.TARGET_BRANCH || 'master';
 const bitbucketBranch = process.env.BITBUCKET_BRANCH;
 
-function fWriteStats(path, content) {
-  fs.writeFileSync(path, JSON.stringify(clearStats(content), null, 2), 'utf8');
+function fWriteStats(pathTo, content) {
+  fs.writeFileSync(
+    pathTo,
+    JSON.stringify(clearStats(content), null, 2),
+    'utf8',
+  );
 }
 
-function getBundleCheckResult(path, stats) {
+function getBundleCheckResult(pathTo, stats) {
   let prevStats;
-  if (fExists(path)) {
-    prevStats = JSON.parse(fs.readFileSync(path, 'utf8'));
+  if (fExists(pathTo)) {
+    prevStats = JSON.parse(fs.readFileSync(pathTo, 'utf8'));
   }
 
   const statsWithDiff = prevStats ? diff(prevStats, stats) : stats;
@@ -53,6 +57,7 @@ function webpackCompilerRun(configs) {
    */
   return new Promise((resolve, reject) => {
     const compiler = webpack(configs);
+    // eslint-disable-next-line consistent-return
     compiler.run(err => {
       if (err) {
         reject(err);
@@ -225,7 +230,7 @@ module.exports = async function main(
   }
 
   // All the things for S3 flow is under this condition
-  const masterStatsFilePath = path.join(
+  let masterStatsFilePath = path.join(
     masterStatsFolder,
     `${packageName}-bundle-size-ratchet.json`,
   );
@@ -241,31 +246,25 @@ module.exports = async function main(
       // upload to s3 masterStats
       uploadToS3(masterStatsFilePath, bitbucketBranch);
     }
-  } else {
-    if (process.env.CI) {
-      try {
-        await downloadFromS3(masterStatsFolder, targetBranch, packageName);
-      } catch (err) {
-        const errorMessage = `${err}`;
-        if (errorMessage.includes('not found in s3 bucket')) {
-          const missingPkg = returnMissingPkgBasedOn(errorMessage);
-          const masterStatsFilePath = path.join(
-            masterStatsFolder,
-            `${missingPkg}-bundle-size-ratchet.json`,
-          );
-          fWriteStats(masterStatsFilePath, stats);
-          uploadToS3(masterStatsFilePath, targetBranch);
-        } else {
-          throw err;
-        }
+  } else if (process.env.CI) {
+    try {
+      await downloadFromS3(masterStatsFolder, targetBranch, packageName);
+    } catch (err) {
+      const errorMessage = `${err}`;
+      if (errorMessage.includes('not found in s3 bucket')) {
+        const missingPkg = returnMissingPkgBasedOn(errorMessage);
+        masterStatsFilePath = path.join(
+          masterStatsFolder,
+          `${missingPkg}-bundle-size-ratchet.json`,
+        );
+        fWriteStats(masterStatsFilePath, stats);
+        uploadToS3(masterStatsFilePath, targetBranch);
+      } else {
+        throw err;
       }
-    } else {
-      await downloadFromS3ForLocal(
-        masterStatsFolder,
-        targetBranch,
-        packageName,
-      );
     }
+  } else {
+    await downloadFromS3ForLocal(masterStatsFolder, targetBranch, packageName);
   }
 
   const results = getBundleCheckResult(masterStatsFilePath, stats);
@@ -281,7 +280,8 @@ module.exports = async function main(
 
   if (isJson) {
     return console.log(JSON.stringify(stats, null, 2));
-  } else if (!isLint || !results.passedBundleSizeCheck) {
+  }
+  if (!isLint || !results.passedBundleSizeCheck) {
     printHowToReadStats();
     printReport(prepareForPrint(joinedStatsGroups, results.statsWithDiff));
   }
@@ -291,5 +291,6 @@ module.exports = async function main(
   }
 
   // For s3, we always pass the bundle check.;
+  // eslint-disable-next-line no-nested-ternary
   return s3 ? 0 : results.passedBundleSizeCheck ? 1 : 0;
 };

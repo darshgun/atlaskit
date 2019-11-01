@@ -6,7 +6,9 @@
 // in node_modules folder which contains circular symbolic links
 
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
+
 const _oldSetDirectory = DirectoryWatcher.prototype.setDirectory;
+// eslint-disable-next-line func-names
 DirectoryWatcher.prototype.setDirectory = function(
   directoryPath,
   exist,
@@ -36,7 +38,8 @@ const chalk = require('chalk');
 const path = require('path');
 const createWebpackConfig = require('../config');
 const utils = require('../config/utils');
-const { print, devServerBanner, errorMsg } = require('../banner');
+const { print, devServerBanner } = require('../banner');
+
 let HOST = 'localhost';
 let disableHostCheck = false;
 
@@ -147,10 +150,12 @@ async function runDevServer() {
       spinner.succeed(chalk.cyan('Compiled packages!'));
     });
 
+    // eslint-disable-next-line consistent-return
     server.listen(PORT, HOST, err => {
       if (err) {
         spinner.fail();
         console.log(chalk.red(err.stack || err));
+        // eslint-disable-next-line prefer-promise-reject-errors
         return reject(1);
       }
 

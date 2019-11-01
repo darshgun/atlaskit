@@ -1,3 +1,4 @@
+// @flow
 const fetch = require('node-fetch');
 const chalk = require('chalk');
 const spawndamnit = require('spawndamnit');
@@ -5,6 +6,7 @@ const prettyjson = require('prettyjson');
 const pWaitFor = require('p-wait-for');
 const fs = require('fs');
 const util = require('util');
+
 const readFile = util.promisify(fs.readFile);
 const retry = require('async-retry');
 
@@ -31,7 +33,7 @@ async function getInstalledAtlaskitDependencies() {
     throw new Error(err);
   }
 
-  let atlaskitDependencies = flattenDeep(
+  const atlaskitDependencies = flattenDeep(
     [
       'dependencies',
       'devDependencies',
@@ -111,7 +113,7 @@ const urlExists = async (url, options = {}) => {
 
   verboseLog(`Checking if url exists: ${url}`);
 
-  let response = await fetch(url, { method: 'HEAD' });
+  const response = await fetch(url, { method: 'HEAD' });
   verboseLog(`HTTP Code ${response.status}`);
 
   return response.status === 200;
@@ -121,9 +123,9 @@ const fetchVerbose = async (url, options = {}) => {
   const { verboseLog } = options;
   verboseLog(`Trying to fetch ${url}`);
 
-  let response = await fetch(url);
+  const response = await fetch(url);
   verboseLog(`HTTP Code ${response.status}`);
-  let result = await response.json();
+  const result = await response.json();
   verboseLog(result);
 
   return result;
@@ -203,7 +205,7 @@ async function _installFromCommit(commitHash = '', options = {}) {
     https://github.com/yarnpkg/yarn/issues/2629
      */
     await retry(
-      async bail => {
+      async () => {
         try {
           await spawndamnit(engine, cmdArgs, {
             stdio: 'inherit',

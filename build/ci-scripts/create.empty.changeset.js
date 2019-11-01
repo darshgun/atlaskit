@@ -1,7 +1,9 @@
+// @flow
 const fs = require('fs');
 const path = require('path');
 
 const simpleGit = require('simple-git')(path.join(__dirname, '..', '..'));
+
 const CHANGESET_DIR = path.join(__dirname, '..', '..', '.changeset');
 
 const randomName = `empty-${new Date() % 100}`;

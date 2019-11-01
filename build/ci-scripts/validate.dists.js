@@ -1,3 +1,4 @@
+// @flow
 /**
  * @file validate.dists
  *
@@ -111,6 +112,7 @@ function validateDistContents(src, dist) {
   const errors = [];
   for (const srcFile of src.contents) {
     if (excludedSrcFiles.includes(srcFile.name)) {
+      // eslint-disable-next-line no-continue
       continue;
     }
     if (srcFile.isDirectory()) {

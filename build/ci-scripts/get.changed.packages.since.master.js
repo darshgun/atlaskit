@@ -1,8 +1,9 @@
+// @flow
 const bolt = require('bolt');
 const path = require('path');
 const meow = require('meow');
-const packages = require('../utils/packages');
 const flattenDeep = require('lodash.flattendeep');
+const packages = require('../utils/packages');
 
 // /**
 //  * NOTE: This prints the list of changed packages and dependent packages since master ONLY if they have been commited.
@@ -80,10 +81,9 @@ const displayChangedPackagesSinceMaster = async () => {
               return (
                 dependentPkgJSON.dependencies[changedPkgName] !== undefined
               );
-            else
-              throw new Error(
-                `The parsed flag is not recognised ${process.argv}`,
-              );
+            throw new Error(
+              `The parsed flag is not recognised ${process.argv}`,
+            );
           })
           .map(pkg => getPackageJSON(pkg).dir)
           .map(pkg => path.relative(cwd, pkg)),

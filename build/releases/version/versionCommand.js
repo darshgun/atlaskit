@@ -1,13 +1,15 @@
+/* eslint-disable import/no-dynamic-require */
+// @flow
 const path = require('path');
 const bolt = require('bolt');
 const logger = require('@atlaskit/build-utils/logger');
 const git = require('@atlaskit/build-utils/git');
+const fs = require('@atlaskit/build-utils/fs');
+const fse = require('fs-extra');
 const createRelease = require('./createRelease');
 const createReleaseCommit = require('./createReleaseCommit');
 const { removeFolders } = require('../utils/removeFolders');
 const updateChangelog = require('../changelog');
-const fs = require('@atlaskit/build-utils/fs');
-const fse = require('fs-extra');
 const resolveConfig = require('../utils/resolveConfig');
 const { removeEmptyFolders } = require('../utils/removeFolders');
 const getChangesetBase = require('../utils/getChangesetBase');
@@ -57,6 +59,7 @@ async function getNewFSChangesets(changesetBase) {
         'utf-8',
       );
       const jsonPath = path.join(changesetBase, changesetDir, 'changes.json');
+      // eslint-disable-next-line global-require
       const json = require(jsonPath);
       const commit = await git.getCommitThatAddsFile(jsonPath);
       return { ...json, summary, commit };
