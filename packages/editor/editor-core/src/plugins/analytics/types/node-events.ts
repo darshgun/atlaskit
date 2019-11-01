@@ -81,7 +81,7 @@ type DeletedExpandAEP = TrackAEP<
   ACTION_SUBJECT.EXPAND | ACTION_SUBJECT.NESTED_EXPAND,
   undefined,
   {
-    inputMethod: INPUT_METHOD.TOOLBAR | INPUT_METHOD.CARD;
+    inputMethod: INPUT_METHOD.TOOLBAR;
   },
   undefined
 >;
