@@ -1,10 +1,100 @@
+const path = require('path');
 const tsRecommendedRules = require('@typescript-eslint/eslint-plugin/dist/configs/recommended')
   .rules;
 const prettierTsRules = require('eslint-config-prettier/@typescript-eslint')
   .rules;
 
+const resolverPath = path.resolve(
+  `${__dirname}/build/resolvers/eslint-resolver.js`,
+);
+
 module.exports = {
-  extends: ['airbnb', 'prettier', 'prettier/react'],
+  extends: [
+    'airbnb',
+    'prettier',
+    'prettier/react',
+    'plugin:compat/recommended',
+  ],
+  settings: {
+    'import/extensions': ['.js', '.ts', '.tsx'],
+    // Required to resolve atlaskit deps to src and remove webpack loader prefixes
+    'import/resolver': {
+      [resolverPath]: {
+        debug: false,
+      },
+    },
+    // Required so that the correct parser is used when resolving .js files from .ts
+    // E.g. a TS package that imports from @atlaskit/docs (js) in an example
+    'import/parsers': {
+      'babel-eslint': ['.js'],
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    // List of polyfills for `eslint-plugin-compat` check
+    // To know how to add in case you have a new one to add, please check
+    // https://github.com/amilajack/eslint-plugin-compat/wiki/Adding-polyfills-(v2)
+    polyfills: [
+      // Shared polyfills across different packages
+      'fetch',
+      'Object.entries',
+      'URL',
+      'URLSearchParams',
+      'AbortController',
+      'Headers',
+      'TouchEvent',
+      'history.scrollRestoration',
+      'Reflect',
+      'Object.values',
+      'window.scrollY',
+      'Response',
+      'Symbol.toStringTag',
+      'Symbol.iterator',
+      'Request',
+      'Proxy',
+      'String.raw',
+      'PerformanceObserver',
+      'IntersectionObserver',
+      // @atlaskit/polyfills items
+      'Object.assign',
+      'Array.prototype.includes',
+      'Array.prototype.find',
+      'String.prototype.includes',
+      // List based on polyfill.io polyfill added in website examples
+      'Array.from',
+      'Array.prototype.fill',
+      'Array.prototype.find',
+      'Array.prototype.findIndex',
+      'Array.prototype.keys',
+      'Array.prototype.values',
+      'Map',
+      'Math.fround',
+      'Math.min',
+      'Math.max',
+      'Math.cos',
+      'Math.floor',
+      'Math.pow',
+      'Math.random',
+      'Math.ceil',
+      'Math.floor',
+      'Math.abs',
+      'Math.round',
+      'Math.pow',
+      'Math.PI',
+      'Number',
+      'Number.isInteger',
+      'Number.isNaN',
+      'Number.parseFloat',
+      'Number.parseInt',
+      'Set',
+      'String.prototype.endsWith',
+      'String.prototype.repeat',
+      'String.prototype.startsWith',
+      'Symbol.iterator',
+      'Symbol.toStringTag',
+      'WeakMap',
+      'WeakSet',
+      'Promise',
+    ],
+  },
   parser: 'babel-eslint',
   plugins: ['flowtype', 'jest', 'prettier', 'react-hooks', '@wordpress'],
   rules: {
@@ -16,11 +106,17 @@ module.exports = {
           '**/__tests__/**/*.js',
           '**/examples/**/*.js',
           './projector.js',
-          './resolver.js',
+          // Any build dirs
+          '**/build/**/*.js',
         ],
       },
     ],
-    'import/no-unresolved': ['off'],
+    'import/no-unresolved': [
+      'error',
+      {
+        ignore: ['@atlassian', '@atlassiansox'],
+      },
+    ],
     'import/prefer-default-export': 'off',
     'import/extensions': [
       'error',
@@ -29,6 +125,9 @@ module.exports = {
         json: 'always',
       },
     ],
+
+    // TODO: Might be worth re-enabling it at some stage (or using stricter instead)
+    'import/no-cycle': 'off',
 
     'no-labels': 'off',
     'no-restricted-syntax': 'off',
@@ -156,7 +255,12 @@ module.exports = {
         'jsx-a11y/aria-proptypes': 'off',
         'jsx-a11y/no-noninteractive-element-interactions': 'off',
 
+        // Typechecking should cover this and there are issues with this rule for TS
+        // https://github.com/benmosher/eslint-plugin-import/issues/1282
+        'import/named': 'off',
+
         // disabled temporarily during tslint -> eslint transition
+        'import/no-named-as-default': 'off',
         '@typescript-eslint/ban-types': 'off',
         '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
@@ -188,6 +292,8 @@ module.exports = {
               'packages/*/*/!(src)/**/*.{ts,tsx}',
               // __tests__ dirs inside src
               '**/__tests__/**/*.{ts,tsx}',
+              // Any build dirs
+              '**/build/**/*.{ts,tsx}',
             ],
           },
         ],
@@ -309,6 +415,7 @@ module.exports = {
         jest: true,
       },
       globals: {
+        SYNCHRONY_URL: 'readonly',
         fail: 'readonly',
         jasmine: 'readonly',
         spyOn: 'readonly',
@@ -316,6 +423,12 @@ module.exports = {
       rules: {
         'global-require': 'off',
         'no-restricted-imports': 'off',
+      },
+    },
+    {
+      files: ['**/build/**'],
+      rules: {
+        'no-console': 'off',
       },
     },
   ],

@@ -154,6 +154,14 @@ export const setResizeHandlePos = (resizeHandlePos: number | null) =>
     },
   });
 
+export const stopResizing = (tr?: Transaction) =>
+  createCommand(
+    {
+      type: 'STOP_RESIZING',
+    },
+    originalTr => tr || originalTr,
+  );
+
 export const setDragging = (
   dragging: { startX: number; startWidth: number } | null,
   tr?: Transaction,

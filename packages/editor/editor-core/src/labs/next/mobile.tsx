@@ -9,8 +9,7 @@ import {
 } from '../../plugins/max-content-size';
 import WithFlash from '../../ui/WithFlash';
 import { ClickAreaMobile as ClickArea } from '../../ui/Addon';
-import { EditorSharedConfigConsumer, Editor } from './Editor';
-import { EditorContent } from './EditorContent';
+import { EditorSharedConfigConsumer, Editor, EditorContent } from './Editor';
 import { ContentComponents } from './ContentComponents';
 
 export interface MobileEditorProps {

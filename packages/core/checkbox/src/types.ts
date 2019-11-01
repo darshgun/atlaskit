@@ -38,7 +38,11 @@ export type DefaultsType = {
   };
   HiddenCheckbox: {
     attributesFn: (
-      props: { disabled?: boolean; checked?: boolean; required?: boolean },
+      props: {
+        disabled?: boolean;
+        checked?: boolean;
+        required?: boolean;
+      },
     ) => Record<string, any>;
   };
 };
@@ -72,7 +76,11 @@ export type OverridesType = {
   };
   HiddenCheckbox?: {
     attributesFn?: (
-      props: { disabled?: boolean; checked?: boolean; required?: boolean },
+      props: {
+        disabled?: boolean;
+        checked?: boolean;
+        required?: boolean;
+      },
     ) => Record<string, any>;
   };
 };

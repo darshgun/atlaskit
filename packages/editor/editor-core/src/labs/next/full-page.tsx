@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import {
   Editor,
+  EditorContent,
   EditorSharedConfigConsumer,
   EditorSharedConfig,
 } from './Editor';
@@ -13,12 +14,12 @@ import { scrollbarStyles } from '../../ui/styles';
 import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import { Toolbar } from './Toolbar';
-import { EditorContent } from './EditorContent';
 import { ContentComponents } from './ContentComponents';
 import { ClickAreaBlock } from '../../ui/Addon';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import WidthEmitter from '../../ui/WidthEmitter';
 import { EditorProps } from '../../types';
+import { EditorActions } from '../..';
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
@@ -126,7 +127,10 @@ interface State {
   containerWidth?: number;
 }
 
-export class FullPage extends React.Component<EditorProps, State> {
+export class FullPage extends React.Component<
+  EditorProps & { onMount: (actions: EditorActions) => void },
+  State
+> {
   state = { showKeyline: false };
 
   static displayName = 'FullPageEditor';

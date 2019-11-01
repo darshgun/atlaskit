@@ -29,8 +29,22 @@ const options = (
   omitCredentials,
 });
 
-const getSecurityHeader = (call: any) =>
-  call[1].headers.get(defaultSecurityHeader);
+type MockFetchResponse = Array<
+  | string
+  | {
+      headers: any;
+      credentials: string;
+      request: any;
+      identifier: string;
+      isUnmatched: any;
+    }
+>;
+
+const getSecurityHeader = (call: MockFetchResponse) => {
+  const data = call[1];
+  if (typeof data === 'string') return undefined;
+  return data.headers[defaultSecurityHeader];
+};
 
 const defaultSecurityCode = '10804';
 
@@ -53,6 +67,13 @@ const FULL_CONTEXT = {
   objectId: 'someObjectId',
   childObjectId: 'someChildObjectId',
   sessionId: 'someSessionId',
+};
+
+const PARTIAL_CONTEXT = {
+  containerId: '',
+  objectId: undefined,
+  childObjectId: '',
+  sessionId: 'longfurbies',
 };
 
 describe('MentionResource', () => {
@@ -380,7 +401,7 @@ describe('MentionResource', () => {
             const calls = fetchMock.calls(matcher.name);
             expect(calls).toHaveLength(2);
             expect(getSecurityHeader(calls[0])).toEqual(defaultSecurityCode);
-            expect(getSecurityHeader(calls[1])).toEqual('666');
+            expect(getSecurityHeader(calls[1])).toEqual(666);
             done();
           } catch (ex) {
             done.fail(ex);
@@ -410,6 +431,23 @@ describe('MentionResource', () => {
           expect(queryParams.childObjectId).toBe('someChildObjectId');
           expect(queryParams.sessionId).toBe('someSessionId');
           expect(fetchMock.called('record')).toBe(true);
+          done();
+        });
+    });
+
+    it('should resolve the query parameters with a partial context', done => {
+      const resource = new MentionResource(apiConfig);
+      resource
+        .recordMentionSelection({ id: '666' }, PARTIAL_CONTEXT)
+        .then(() => {
+          const queryParams = queryString.parse(
+            queryString.extract(fetchMock.lastUrl()),
+          );
+
+          expect(queryParams).not.toHaveProperty('containerId');
+          expect(queryParams).not.toHaveProperty('objectId');
+          expect(queryParams).not.toHaveProperty('objectChildId');
+          expect(queryParams.sessionId).toBe(PARTIAL_CONTEXT.sessionId);
           done();
         });
     });

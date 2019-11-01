@@ -8,6 +8,7 @@ import Client, { PubSubClientConfig, SpecialEventType } from '../src';
 
 let clientConfig: { serviceConfig: PubSubClientConfig };
 try {
+  // eslint-disable-next-line import/no-unresolved
   clientConfig = require('../local-config')['default'];
 } catch (e) {
   clientConfig = require('../local-config-example')['default'];

@@ -128,6 +128,6 @@ BrowserTestCase(
 
     const pos = await getProseMirrorPos(page);
     // Start of the word Six
-    expect(pos).toEqual(81);
+    expect(pos).toEqual(217);
   },
 );

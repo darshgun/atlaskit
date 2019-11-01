@@ -72,10 +72,10 @@ describe('MediaEditor cursor positions', () => {
     it('should return ltr if previous character is to the left and close', () => {
       jest
         .spyOn(first, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 10, right: 12.3 }));
+        .mockImplementation(() => ({ left: 10, right: 12.3 } as DOMRect));
       jest
         .spyOn(second, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 12.4, right: 20 }));
+        .mockImplementation(() => ({ left: 12.4, right: 20 } as DOMRect));
 
       expect(getDirection(1, [first, second])).toBe('ltr');
     });
@@ -83,10 +83,10 @@ describe('MediaEditor cursor positions', () => {
     it('should return undefined if previous character is to the left but far', () => {
       jest
         .spyOn(first, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 10, right: 11.3 }));
+        .mockImplementation(() => ({ left: 10, right: 11.3 } as DOMRect));
       jest
         .spyOn(second, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 12.4, right: 20 }));
+        .mockImplementation(() => ({ left: 12.4, right: 20 } as DOMRect));
 
       expect(getDirection(1, [first, second])).toBeUndefined();
     });
@@ -94,10 +94,10 @@ describe('MediaEditor cursor positions', () => {
     it('should return rtl if previous character is to the right and close', () => {
       jest
         .spyOn(first, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 30, right: 32.3 }));
+        .mockImplementation(() => ({ left: 30, right: 32.3 } as DOMRect));
       jest
         .spyOn(second, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 21.5, right: 29.4 }));
+        .mockImplementation(() => ({ left: 21.5, right: 29.4 } as DOMRect));
 
       expect(getDirection(1, [first, second])).toBe('rtl');
     });
@@ -105,10 +105,10 @@ describe('MediaEditor cursor positions', () => {
     it('should return undefined if previous character is to the right but far', () => {
       jest
         .spyOn(first, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 30, right: 32.3 }));
+        .mockImplementation(() => ({ left: 30, right: 32.3 } as DOMRect));
       jest
         .spyOn(second, getBoundingClientRectMethod)
-        .mockImplementation(() => ({ left: 21.5, right: 23.4 }));
+        .mockImplementation(() => ({ left: 21.5, right: 23.4 } as DOMRect));
 
       expect(getDirection(1, [first, second])).toBeUndefined();
     });
@@ -271,22 +271,22 @@ describe('MediaEditor cursor positions', () => {
       jest.spyOn(span, getBoundingClientRectMethod).mockImplementation(() => {
         callCount++;
         if (callCount === 1) {
-          return { left: 10, right: 20 };
+          return { left: 10, right: 20 } as DOMRect;
         }
         if (callCount === 2) {
-          return { left: 10, right: 30 };
+          return { left: 10, right: 30 } as DOMRect;
         }
         if (callCount === 3) {
-          return { left: 10, right: 40 };
+          return { left: 10, right: 40 } as DOMRect;
         }
         if (callCount === 4) {
-          return { left: 10, right: 50 };
+          return { left: 10, right: 50 } as DOMRect;
         }
         if (callCount === 5) {
-          return { left: 10, right: 60 };
+          return { left: 10, right: 60 } as DOMRect;
         }
 
-        return {};
+        return {} as DOMRect;
       });
 
       putInternalPositions(
@@ -308,21 +308,21 @@ describe('MediaEditor cursor positions', () => {
       jest.spyOn(span, getBoundingClientRectMethod).mockImplementation(() => {
         callCount++;
         if (callCount === 1) {
-          return { left: 10, right: 20 };
+          return { left: 10, right: 20 } as DOMRect;
         }
         if (callCount === 2) {
-          return { left: 10, right: 30 };
+          return { left: 10, right: 30 } as DOMRect;
         }
         if (callCount === 3) {
-          return { left: 10, right: 40 };
+          return { left: 10, right: 40 } as DOMRect;
         }
         if (callCount === 4) {
-          return { left: 10, right: 50 };
+          return { left: 10, right: 50 } as DOMRect;
         }
         if (callCount === 5) {
-          return { left: 10, right: 60 };
+          return { left: 10, right: 60 } as DOMRect;
         }
-        return {};
+        return {} as DOMRect;
       });
 
       putInternalPositions(

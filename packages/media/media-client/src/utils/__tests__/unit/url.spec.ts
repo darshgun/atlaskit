@@ -8,12 +8,13 @@ describe('url utils', () => {
   describe('getAttrsFromUrl()', () => {
     it('should return media attrs from url', () => {
       const url =
-        'blob:http://localhost/blob_id#media-blob-url=true&id=file_id&collection=some_collection&contextId=some_context_id';
+        'blob:http://localhost/blob_id#media-blob-url=true&id=file_id&collection=some_collection&contextId=some_context_id&alt=test';
 
       expect(getAttrsFromUrl(url)).toEqual({
         id: 'file_id',
         collection: 'some_collection',
         contextId: 'some_context_id',
+        alt: 'test',
       });
     });
 
@@ -104,6 +105,16 @@ describe('url utils', () => {
     it('should convert complex object', () => {
       const result = objectToQueryString({ '%$^=': 1, key2: '&=%$' });
       expect(result).toBe('%25%24%5E%3D=1&key2=%26%3D%25%24');
+    });
+
+    it('should convert objects with null', () => {
+      const result = objectToQueryString({ a: 1, b: null });
+      expect(result).toBe('a=1');
+    });
+
+    it('should convert objects with undefined', () => {
+      const result = objectToQueryString({ a: 1, b: undefined });
+      expect(result).toBe('a=1');
     });
   });
 });

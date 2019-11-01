@@ -26,9 +26,12 @@ describe('Image Meta Data', () => {
   };
 
   beforeEach(() => {
-    loadImage = jest
-      .spyOn(util, 'loadImage')
-      .mockReturnValue({ naturalWidth: 1, naturalHeight: 2 });
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
+    loadImage = jest.spyOn(util, 'loadImage').mockReturnValue(({
+      naturalWidth: 1,
+      naturalHeight: 2,
+    } as unknown) as Promise<HTMLImageElement>);
     asMock(readImageMetaTags).mockReturnValue({ Orientation: 'top-right' });
   });
 

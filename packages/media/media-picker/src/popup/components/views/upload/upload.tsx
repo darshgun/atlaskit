@@ -50,7 +50,7 @@ import {
   CardWrapper,
 } from './styled';
 import { removeFileFromRecents } from '../../../actions/removeFileFromRecents';
-import { Browser } from '../../../../components/browser/browser';
+import { BrowserBase } from '../../../../components/browser/browser';
 
 const createEditCardAction = (
   handler: CardEventHandler,
@@ -74,7 +74,7 @@ const createDeleteCardAction = (handler: CardEventHandler): CardAction => {
 const cardDimension = { width: 162, height: 108 };
 
 export interface UploadViewOwnProps {
-  readonly browserRef: React.RefObject<Browser>;
+  readonly browserRef: React.RefObject<BrowserBase>;
   readonly mediaClient: MediaClient;
   readonly recentsCollection: string;
 }

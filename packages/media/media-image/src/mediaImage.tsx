@@ -5,10 +5,10 @@ import {
   FileIdentifier,
   isDifferentIdentifier,
   withMediaClient,
-  WithContextOrMediaClientConfig,
+  MediaStoreGetFileImageParams,
+  WithMediaClientConfig,
 } from '@atlaskit/media-client';
 import { Subscription } from 'rxjs/Subscription';
-import { MediaStoreGetFileImageParams } from '@atlaskit/media-store';
 
 export interface MediaImageChildrenProps {
   /** Boolean with value to check if component is loading image source from API */
@@ -168,6 +168,5 @@ export class MediaImageInternal extends Component<
   }
 }
 
-export type MediaImageProps = MediaImageInternalProps &
-  WithContextOrMediaClientConfig;
+export type MediaImageProps = MediaImageInternalProps & WithMediaClientConfig;
 export const MediaImage = withMediaClient(MediaImageInternal);

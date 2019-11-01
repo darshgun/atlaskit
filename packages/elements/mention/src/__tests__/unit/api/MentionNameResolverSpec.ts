@@ -24,6 +24,8 @@ describe('MentionNameResolver', () => {
     lookupMentionNames = jest.fn();
     mentionNameClientMock = {
       getLookupLimit: () => 2,
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       lookupMentionNames,
     };
     mentionNameResolver = new DefaultMentionNameResolver(mentionNameClientMock);
@@ -47,6 +49,8 @@ describe('MentionNameResolver', () => {
 
   it('lookup when not cached, and found in client', done => {
     lookupMentionNames.mockReturnValue(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -86,6 +90,8 @@ describe('MentionNameResolver', () => {
 
   it('lookup when not cached, and not found in client', done => {
     lookupMentionNames.mockReturnValue(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -115,6 +121,8 @@ describe('MentionNameResolver', () => {
 
   it('lookup when not cached, and error for id in client', done => {
     lookupMentionNames.mockReturnValue(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -143,6 +151,8 @@ describe('MentionNameResolver', () => {
   });
 
   it('lookup when not cached, and error in client', done => {
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     lookupMentionNames.mockReturnValue(Promise.reject('bad times'));
     const namePromise = mentionNameResolver.lookupName('cheese');
     jest.runAllTimers();
@@ -166,6 +176,8 @@ describe('MentionNameResolver', () => {
 
   it('lookup when not cached, exceed batch size', done => {
     lookupMentionNames.mockReturnValueOnce(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -180,6 +192,8 @@ describe('MentionNameResolver', () => {
       ]),
     );
     lookupMentionNames.mockReturnValueOnce(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'mighty',
@@ -188,6 +202,8 @@ describe('MentionNameResolver', () => {
         },
       ]),
     );
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     lookupMentionNames.mockRejectedValue('unexpected call');
     const promises = [
       mentionNameResolver.lookupName('cheese'),
@@ -256,6 +272,8 @@ describe('MentionNameResolver', () => {
 
   it('lookup twice when not cached, only one call to client, but both callbacks', done => {
     lookupMentionNames.mockReturnValue(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -312,8 +330,12 @@ describe('MentionNameResolver', () => {
     const delayedPromise = new Promise(resolve => {
       delayedResolve = resolve;
     });
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     lookupMentionNames.mockReturnValueOnce(delayedPromise);
     lookupMentionNames.mockReturnValue(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.reject('only one call expected'),
     );
 
@@ -372,6 +394,8 @@ describe('MentionNameResolver', () => {
 
   it("processes queue if it's reached the queue limit", done => {
     lookupMentionNames.mockReturnValueOnce(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -385,6 +409,8 @@ describe('MentionNameResolver', () => {
         },
       ]),
     );
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     lookupMentionNames.mockRejectedValue('unexpected call');
     const promises = [
       mentionNameResolver.lookupName('cheese'),
@@ -440,6 +466,8 @@ describe('MentionNameResolver', () => {
 
   it('ensure debouncing of request to MentionNameClient', done => {
     lookupMentionNames.mockReturnValue(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -483,6 +511,8 @@ describe('MentionNameResolver', () => {
 
   it('lookup when not cached, missing id treated as Unknown', done => {
     lookupMentionNames.mockReturnValueOnce(
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       Promise.resolve([
         {
           id: 'cheese',
@@ -491,6 +521,8 @@ describe('MentionNameResolver', () => {
         },
       ]),
     );
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     lookupMentionNames.mockRejectedValue('unexpected call');
     const promises = [
       mentionNameResolver.lookupName('cheese'),
@@ -553,10 +585,14 @@ describe('MentionNameResolver', () => {
     beforeEach(() => {
       mockCreateAnalyticsEvent = jest.fn();
       mockCreateAnalyticsEvent.mockImplementation(
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         payload => new UIAnalyticsEvent(payload),
       );
       mentionNameResolver = new DefaultMentionNameResolver(
         mentionNameClientMock,
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         { createAnalyticsEvent: mockCreateAnalyticsEvent },
       );
 
@@ -579,6 +615,8 @@ describe('MentionNameResolver', () => {
       done: Function,
     ) => {
       lookupMentionNames.mockReturnValue(
+        // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+        //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
         new Promise(resolve => {
           setTimeout(() => {
             resolve([mentionName]);

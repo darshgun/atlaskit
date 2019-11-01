@@ -15,6 +15,7 @@ interface SetupParams {
   isStretchingProhibited: boolean;
   loadImageImmediately?: boolean;
   previewOrientation?: number;
+  altText?: string;
 }
 
 describe('MediaImage', () => {
@@ -62,6 +63,7 @@ describe('MediaImage', () => {
       isStretchingProhibited,
       loadImageImmediately = true,
       previewOrientation,
+      altText,
     } = params;
     const [imageDimentions, containerDimentions] = dimensionsMap[
       isImageMoreLandscapyThanContainer
@@ -78,6 +80,7 @@ describe('MediaImage', () => {
         onImageLoad={onImageLoad}
         onImageError={onImageError}
         crossOrigin={'anonymous'}
+        alt={altText}
       />,
     );
     mockImageTag(
@@ -154,6 +157,33 @@ describe('MediaImage', () => {
 
       const { crossOrigin } = component.find('img').props();
       expect(crossOrigin).toBe('anonymous');
+    });
+
+    describe('alt prop is not provided', () => {
+      it('should render img tag without alt-text attribute', () => {
+        const component = setup({
+          isCoverStrategy: true,
+          isImageMoreLandscapyThanContainer: true,
+          isStretchingProhibited: true,
+        });
+
+        const { alt } = component.find('img').props();
+        expect(alt).toBeUndefined();
+      });
+    });
+
+    describe('alt prop is provided', () => {
+      it('should render img tag with alt-text attribute', () => {
+        const component = setup({
+          isCoverStrategy: true,
+          isImageMoreLandscapyThanContainer: true,
+          isStretchingProhibited: true,
+          altText: 'this is an alt text',
+        });
+
+        const { alt } = component.find('img').props();
+        expect(alt).toBe('this is an alt text');
+      });
     });
   });
 

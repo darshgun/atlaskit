@@ -198,7 +198,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
         <GridCell key={`${i}-metadata.id`} width={dimensions.width}>
           <Card
             identifier={identifier}
-            context={{} as any}
+            mediaClientConfig={{} as any}
             dimensions={dimensions}
             selectable={true}
             selected={selected}

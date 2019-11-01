@@ -1,5 +1,4 @@
-import { MediaClient } from '@atlaskit/media-client';
-import { MediaCollectionItem } from '@atlaskit/media-store';
+import { MediaClient, MediaCollectionItem } from '@atlaskit/media-client';
 import { Subscription } from 'rxjs/Subscription';
 import { LocalUploads } from './local-upload';
 

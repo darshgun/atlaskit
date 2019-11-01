@@ -1,5 +1,12 @@
-import { Auth, AuthProvider, getFileStreamsCache } from '@atlaskit/media-core';
-import { ResponseFileItem, MediaFile, RECENTS_COLLECTION } from '../..';
+import { Auth, AuthProvider } from '@atlaskit/media-core';
+import {
+  ResponseFileItem,
+  MediaFile,
+  RECENTS_COLLECTION,
+  globalMediaEventEmitter,
+  MediaViewedEventPayload,
+  getFileStreamsCache,
+} from '../..';
 import * as MediaClientModule from '../..';
 import uuid from 'uuid';
 import { FileFetcherImpl, getItemsFromKeys } from '../../client/file-fetcher';
@@ -78,6 +85,10 @@ describe('FileFetcher', () => {
     return { fileFetcher, mediaStore, items, itemsResponse };
   };
 
+  beforeEach(() => {
+    jest.spyOn(globalMediaEventEmitter, 'emit');
+  });
+
   afterEach(() => {
     getFileStreamsCache().removeAll();
     jest.restoreAllMocks();
@@ -89,6 +100,47 @@ describe('FileFetcher', () => {
     describe('with normal browser', () => {
       beforeEach(() => {
         appendChild = jest.spyOn(document.body, 'appendChild');
+      });
+
+      it('should trigger media-viewed in globalMediaEventEmitter for recents collection', async () => {
+        const { fileFetcher } = setup();
+        await fileFetcher.downloadBinary(fileId, fileName, RECENTS_COLLECTION);
+
+        expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
+        expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
+          'media-viewed',
+          {
+            fileId,
+            viewingLevel: 'download',
+            isUserCollection: true,
+          } as MediaViewedEventPayload,
+        ]);
+      });
+
+      it('should trigger media-viewed in globalMediaEventEmitter for non-recents collection', async () => {
+        const { fileFetcher } = setup();
+        await fileFetcher.downloadBinary(fileId, fileName, collectionName);
+
+        expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
+        expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
+          'media-viewed',
+          {
+            fileId,
+            viewingLevel: 'download',
+            isUserCollection: false,
+          } as MediaViewedEventPayload,
+        ]);
+      });
+
+      it('should not trigger media-viewed in globalMediaEventEmitter if getFileBinaryURL fails', async () => {
+        const { fileFetcher, mediaStore } = setup();
+        asMock(mediaStore.getFileBinaryURL).mockRejectedValue(new Error());
+        try {
+          await fileFetcher.downloadBinary(fileId, fileName, collectionName);
+        } catch {
+          expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(0);
+        }
+        expect.assertions(1);
       });
 
       it('should call getFileBinaryURL', () => {
@@ -146,7 +198,7 @@ describe('FileFetcher', () => {
 
       fileFetcher.getFileState('invalid-id').subscribe({
         error(error) {
-          expect(error).toEqual('invalid-id is not a valid file id');
+          expect(error).toEqual('invalid id was passed to getFileState');
           done();
         },
       });
@@ -199,6 +251,8 @@ describe('FileFetcher', () => {
 
   describe('copyFile', () => {
     it('should call mediaStore.copyFileWithToken', async () => {
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       const MediaStoreSpy = jest.spyOn(MediaClientModule, 'MediaStore');
       const { items, fileFetcher } = setup();
       const copyFileWithTokenMock = jest.fn().mockResolvedValue({ data: {} });
@@ -245,6 +299,8 @@ describe('FileFetcher', () => {
     });
 
     it('should populate cache with the copied file', async () => {
+      // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+      //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
       const MediaStoreSpy = jest.spyOn(MediaClientModule, 'MediaStore');
       const copiedFile: MediaFile = {
         id: 'copied-file-id',

@@ -7,9 +7,9 @@ import FullPageExample, {
   getAppearance,
   LOCALSTORAGE_defaultDocKey,
 } from './5-full-page';
-import { collabEditProvider } from '../example-helpers/mock-collab-provider';
 import { InviteToEditButton } from './3-collab';
 import SidebarContainer from '../example-helpers/SidebarContainer';
+import { createCollabEditProvider } from '@atlaskit/synchrony-test-helpers';
 
 const DisabledBlanket = styled.div`
   position: absolute;
@@ -75,7 +75,10 @@ export default class ExampleEditorComponent extends React.Component<
         <FullPageExample
           {...this.props}
           collabEdit={{
-            provider: collabEditProvider(this.collabSessionId, defaultDoc),
+            provider: createCollabEditProvider(
+              this.collabSessionId,
+              defaultDoc,
+            ),
             inviteToEditComponent: InviteToEditButton,
           }}
           disabled={this.state.disabled}

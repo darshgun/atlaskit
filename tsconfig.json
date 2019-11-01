@@ -31,6 +31,7 @@
   },
   "files": [
     "./typings/atlaskit.d.ts",
+    "./typings/atlassian.d.ts",
     "./typings/blueimp-load-image.d.ts",
     "./typings/calendar-base.d.ts",
     "./typings/deep-equal.d.ts",
@@ -58,6 +59,7 @@
     "./typings/pdfjs-dist.d.ts",
     "./typings/png-chunks-extract.d.ts",
     "./typings/postis.d.ts",
+    "./typings/prettier-nested-imports.d.ts",
     "./typings/pretty-data.d.ts",
     "./typings/prosemirror-dev-tools.d.ts",
     "./typings/prosemirror-markdown.d.ts",
@@ -77,11 +79,12 @@
     "./typings/url.d.ts",
     "./typings/utf8-string-bytes.d.ts",
     "./typings/uuid.d.ts",
-    "./typings/webpack.d.ts",
     "./typings/yarn-deduplicate.d.ts",
     "./typings/css-color-names/index.d.ts",
     "./typings/bolt/index.d.ts",
-    "./typings/concurrently/index.d.ts",
-    "./typings/pubnub.d.ts"
+    "./typings/pubnub.d.ts",
+    "./typings/jest-fixtures.d.ts",
+    "./typings/yalc.d.ts",
+    "./typings/jest.d.ts"
   ]
 }

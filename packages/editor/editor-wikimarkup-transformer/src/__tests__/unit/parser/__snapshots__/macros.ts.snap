@@ -25,6 +25,74 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Macros [CS-1470] code macro converts to code node with java language 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "language": "java",
+        "uniqueId": null,
+      },
+      "content": Array [
+        Object {
+          "text": "public static main(String test) {
+        System.out.print(\\"test\\");
+     }",
+          "type": "text",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros [CS-1470] code macro converts to code node with xml language 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "language": "xml",
+        "uniqueId": null,
+      },
+      "content": Array [
+        Object {
+          "text": "<test attr='value'><nested/></test>",
+          "type": "text",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros [CS-1470] noformat macro converts to code node with no language 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "language": null,
+        "uniqueId": null,
+      },
+      "content": Array [
+        Object {
+          "text": "preformatted
+text
+with
+linebreaks",
+          "type": "text",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Macros should collapse and join outer macros 1`] = `
 Object {
   "content": Array [
@@ -296,6 +364,564 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Macros should lift attachment node when it is inside macro 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this is a text",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file11.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file12.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file13.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file21.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file22.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file23.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file31.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file32.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file33.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "text",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file41.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file42.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file43.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "attrs": Object {
+        "panelType": "info",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this is a text as well",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "panel",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros should lift attachment node when it is inside quote 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this is text inside a quote",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "blockquote",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file11.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file12.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file13.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file21.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file22.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file23.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file31.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file32.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file33.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "text",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "blockquote",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file41.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file42.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+        Object {
+          "attrs": Object {
+            "__contextId": null,
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "collection": "",
+            "height": null,
+            "id": "attachment-file43.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "text": "this is text at end of a quote",
+              "type": "text",
+            },
+          ],
+          "type": "paragraph",
+        },
+      ],
+      "type": "blockquote",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Macros should lift list in a blockquote 1`] = `
 Object {
   "content": Array [
@@ -525,7 +1151,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "language": "java",
+        "language": null,
         "uniqueId": null,
       },
       "content": Array [
@@ -872,7 +1498,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "language": "java",
+        "language": null,
         "uniqueId": null,
       },
       "content": Array [

@@ -1,5 +1,76 @@
 # @atlaskit/media-core
 
+## 31.0.0
+
+### Major Changes
+
+- [major][24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+
+  ## Remove all interfaces and utils not related with auth or cache
+
+### Removes
+
+- Context / ContextFactory / ContextConfig
+- MediaItemType / FileItem / FileProcessingStatus / MediaArtifact / Artifacts / FileDetails / FileFetcher / FileFetcherImpl
+- UploadableFile / UploadFileCallbacks / UploadFileResult / UploadController / MediaType / isPreviewableType / TouchFileDescriptor / MediaFileArtifacts
+- isImageRemote
+- FileStatus / FilePreview / PreviewOptions / GetFileOptions / UploadingFileState / ProcessingFileState / ProcessedFileState / ProcessingFailedState / ErrorFileState / isErrorFileState / isImageRepresentationReady / mapMediaFileToFileState / mapMediaItemToFileState
+- getMediaTypeFromMimeType
+- FileState / StreamsCache
+- getFileStreamsCache
+- ImageResizeMode
+- Identifier / FileIdentifier / ExternalImageIdentifier / isFileIdentifier / isExternalImageIdentifier / isDifferentIdentifier
+- remove `cacheSize` from `ContextConfig` \ `MediaClientConfig`: This was used internally only by other media components and doesn't affect integrators
+
+### Upgrading
+
+Previously integrators were able to import any of the above interfaces from `@atlaskit/media-core` or from `@atlaskit/media-client`, now, it's only possible to import them from `@atlaskit/media-client`:
+
+**before**
+
+```
+import {MediaItemType, FileItem, FileProcessingStatus} from '@atlaskit/media-core'
+```
+
+**after**
+
+```
+import {MediaItemType, FileItem, FileProcessingStatus} from '@atlaskit/media-client'
+```
+
+Also, `Context, ContextFactory, ContextConfig` has been removed completely, in order to make your components work with media now you have to:
+
+**before**
+
+```
+import {Context, ContextFactory, ContextConfig} from '@atlaskit/media-core'
+
+const config: ContextConfig = {
+  authProvider: () => Promise.resolve({})
+}
+
+const context: Context = ContextFactory.create(config)
+```
+
+**after**
+
+```
+import {MediaClientConfig} from '@atlaskit/media-core'
+
+const config: MediaClientConfig = {
+  authProvider: () => Promise.resolve({})
+}
+```
+
+## 30.0.17
+
+- Updated dependencies [c3e65f1b9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e65f1b9e):
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+- Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
+  - @atlaskit/media-client@3.0.0
+  - @atlaskit/media-test-helpers@25.2.0
+  - @atlaskit/media-card@66.0.0
+
 ## 30.0.16
 
 ### Patch Changes

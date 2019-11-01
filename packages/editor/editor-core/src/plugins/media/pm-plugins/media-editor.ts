@@ -7,10 +7,6 @@ import { pluginFactory } from '../../../utils/plugin-state-factory';
 import { MediaEditorState, MediaEditorAction } from '../types';
 import { MediaProvider } from '../types';
 import { setMediaClientConfig } from '../commands/media-editor';
-import {
-  getUploadMediaClientConfigFromMediaProvider,
-  getViewMediaClientConfigFromMediaProvider,
-} from '../utils/media-common';
 
 export const pluginKey = new PluginKey('mediaEditorPlugin');
 
@@ -65,8 +61,8 @@ const pluginView = (
     }
 
     const resolvedMediaClientConfig =
-      (await getUploadMediaClientConfigFromMediaProvider(resolvedProvider)) ||
-      (await getViewMediaClientConfigFromMediaProvider(resolvedProvider));
+      (await resolvedProvider.uploadMediaClientConfig) ||
+      (await resolvedProvider.viewMediaClientConfig);
 
     const { dispatch, state } = view;
     setMediaClientConfig(resolvedMediaClientConfig)(state, dispatch, view);

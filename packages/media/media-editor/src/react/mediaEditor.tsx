@@ -61,7 +61,7 @@ export interface MediaEditorProps {
   onLoad: LoadHandler;
   onError: ErrorHandler;
   onShapeParametersChanged: ShapeParametersChangedHandler;
-  onAnyEdit?: () => void;
+  onAnyEdit?: (tool: Tool, shapeParameters: ShapeParameters) => void;
 }
 
 export interface MediaEditorState {
@@ -211,9 +211,9 @@ export class MediaEditor extends React.Component<
   }
 
   private onCanvasClick = () => {
-    const { onAnyEdit } = this.props;
+    const { onAnyEdit, shapeParameters, tool } = this.props;
     if (onAnyEdit) {
-      onAnyEdit();
+      onAnyEdit(tool, shapeParameters);
     }
   };
 

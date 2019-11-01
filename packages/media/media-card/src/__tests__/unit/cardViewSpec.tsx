@@ -19,10 +19,14 @@ import {
 } from '../../../src/root/cardView';
 import { FileCard } from '../../../src/files';
 import { Wrapper } from '../../../src/root/styled';
-import { breakpointSize } from '../../../src/utils/breakpoint';
+import {
+  breakpointSize,
+  BreakpointSizeValue,
+} from '../../../src/utils/breakpoint';
 
 import { shouldDisplayImageThumbnail } from '../../../src/utils/shouldDisplayImageThumbnail';
 import { FabricChannel } from '@atlaskit/analytics-listeners';
+import { CardDimensionValue } from '../../index';
 
 describe('CardView', () => {
   const file: FileDetails = {
@@ -151,7 +155,10 @@ describe('CardView', () => {
     it('should render wrapper with correct breakpoint size', () => {
       const dimensions = { width: '100%', height: '50%' };
 
-      (breakpointSize as jest.Mock<void>).mockReturnValue('small');
+      ((breakpointSize as (
+        width: CardDimensionValue,
+        sizes?: any,
+      ) => BreakpointSizeValue) as jest.Mock<string>).mockReturnValue('small');
       const element = shallowCardViewBaseElement(
         {
           status: 'loading',
@@ -258,5 +265,20 @@ describe('CardView', () => {
     expect(actualReturnedEvent.hasFired).toEqual(false);
     expect(actualReturnedEvent.payload.action).toEqual('clicked');
     expect(actualReturnedEvent.context).toEqual(actualFiredEvent.context);
+  });
+
+  it('should trigger "media-viewed" in globalMediaEventEmitter when image card is rendered', () => {
+    const onDisplayImage = jest.fn();
+    mount(
+      <CardView
+        status="complete"
+        dataURI="a"
+        metadata={file}
+        resizeMode="stretchy-fit"
+        onDisplayImage={onDisplayImage}
+      />,
+    );
+
+    expect(onDisplayImage).toHaveBeenCalledTimes(1);
   });
 });

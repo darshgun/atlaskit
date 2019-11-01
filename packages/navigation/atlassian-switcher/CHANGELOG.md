@@ -1,5 +1,43 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.7
+
+### Patch Changes
+
+- [patch][95d6aac929](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95d6aac929):
+
+  Fix a bug where basic users are seeing Browse Marketplace link.
+
+## 4.6.6
+
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  - @atlaskit/i18n-tools@0.6.0
+  - @atlaskit/analytics-namespaced-context@4.1.10
+
+## 4.6.5
+
+### Patch Changes
+
+- [patch][fb43fc2e99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb43fc2e99):
+
+  PTC-2695: Add "reason" to the analytics event fired on provider failed events
+
+## 4.6.4
+
+### Patch Changes
+
+- [patch][6bc87c7501](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bc87c7501):
+
+  Split mockEndpoints into a separate package
+
+## 4.6.3
+
+### Patch Changes
+
+- [patch][f07586ba0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f07586ba0e):
+
+  Hide manage list link when custom links are disabled
+
 ## 4.6.2
 
 ### Patch Changes

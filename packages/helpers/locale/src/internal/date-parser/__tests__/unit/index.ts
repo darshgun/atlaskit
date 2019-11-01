@@ -21,7 +21,7 @@ describe('date-parser', () => {
     const parseDate = createDateParser('en-US');
     const now = toDateObj(new Date());
 
-    it.each([
+    it.each<[string, Date]>([
       ['0', toDate(now)],
       ['02', toDate({ ...now, month: 2 })],
       ['02/', toDate({ ...now, month: 2 })],

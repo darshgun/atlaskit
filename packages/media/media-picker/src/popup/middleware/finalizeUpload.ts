@@ -1,11 +1,9 @@
 import { Store, Dispatch, Middleware } from 'redux';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import {
   MediaStore,
   MediaStoreCopyFileWithTokenBody,
   MediaStoreCopyFileWithTokenParams,
-} from '@atlaskit/media-store';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import {
   FileState,
   MediaFile as MediaClientFile,
 } from '@atlaskit/media-client';

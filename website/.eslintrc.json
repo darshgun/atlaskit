@@ -1,8 +1,15 @@
 {
-  "extends": "../.eslintrc.json",
+  "extends": "../.eslintrc.js",
   "rules": {
     "import/extensions": "off",
     "import/no-dynamic-require": "off",
-    "react/no-did-mount-set-state": "off"
-  }
+    "react/no-did-mount-set-state": "off",
+    "no-console": "off"
+  },
+  "globals": {
+    "BASE_TITLE": "readonly",
+    "ENABLE_ANALYTICS_GASV3": "readonly",
+    "DEFAULT_META_DESCRIPTION": "readonly",
+    "WEBSITE_ENV": "readonly"
+}
 }

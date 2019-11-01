@@ -1,5 +1,10 @@
 # @atlaskit/notification-log-service
 
+## 4.0.9
+
+- Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
+  - @atlaskit/util-service-support@5.0.0
+
 ## 4.0.8
 
 ### Patch Changes

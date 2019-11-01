@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Step } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
@@ -19,7 +20,6 @@ import ClipboardHelper from './1-clipboard-helper';
 import { SaveAndCancelButtons } from './5-full-page';
 import { TitleInput } from '../example-helpers/PageElements';
 import mediaMockServer from '../example-helpers/media-mock';
-// @ts-ignore
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
 import { withSidebarContainer } from '../example-helpers/SidebarContainer';
 import { MountOptions } from '../src/__tests__/visual-regression/_utils';
@@ -87,13 +87,61 @@ function createEditorWindowBindings(win: Window) {
   let editorProps: EditorProps;
 
   class EditorWithState extends Editor {
+    private editorView: EditorView | null = null;
+
     onEditorCreated(instance: EditorInstance) {
       super.onEditorCreated(instance);
       (window as any)['__editorView'] = instance.view;
+      this.editorView = instance.view;
+      this.createApplyRemoteSteps();
     }
+
+    createApplyRemoteSteps() {
+      const view = this.editorView;
+
+      if (!view) {
+        return;
+      }
+
+      (window as any)['__applyRemoteSteps'] = function(
+        stepsAsString: string[],
+      ) {
+        const {
+          state,
+          state: { schema, tr },
+        } = view;
+
+        const stepsAsJSON = stepsAsString.map(s => JSON.parse(s));
+        const steps = stepsAsJSON.map(step => Step.fromJSON(schema, step));
+
+        if (tr) {
+          steps.forEach(step => tr.step(step));
+
+          tr.setMeta('addToHistory', false);
+          tr.setMeta('isRemote', true);
+
+          const { from, to } = state.selection;
+          const [firstStep] = stepsAsJSON;
+
+          /**
+           * If the cursor is a the same position as the first step in
+           * the remote data, we need to manually set it back again
+           * in order to prevent the cursor from moving.
+           */
+          if (from === firstStep.from && to === firstStep.to) {
+            tr.setSelection(state.selection);
+          }
+
+          const newState = state.apply(tr);
+          view.updateState(newState);
+        }
+      };
+    }
+
     onEditorDestroyed(instance: EditorInstance) {
       super.onEditorDestroyed(instance);
       (window as any)['__editorView'] = undefined;
+      (window as any)['__applyRemoteSteps'] = undefined;
     }
   }
 

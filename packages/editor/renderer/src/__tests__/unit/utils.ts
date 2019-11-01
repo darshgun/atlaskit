@@ -5,7 +5,7 @@ import {
   strong,
 } from '@atlaskit/editor-test-helpers/src/schema-builder';
 import { ADFEncoder } from '../../index';
-import { getText, generateIdFromString } from '../../utils';
+import { getText } from '../../utils';
 
 describe('Renderer - utils', () => {
   describe('ADFEncoder', () => {
@@ -53,24 +53,6 @@ describe('Renderer - utils', () => {
     it('should process ProseMirror node and return text representation', () => {
       const node = p('hello')(defaultSchema);
       expect(getText(node)).toEqual('[paragraph]');
-    });
-  });
-
-  describe('generateIdFromString', () => {
-    test.each([
-      ['', ''],
-      ['  ', ''],
-      ['heading 1', 'heading-1'],
-      ['@heading -1', 'heading--1'],
-      ['1heading -1', 'heading--1'],
-      [' 1heading 1', 'heading-1'],
-      ['-heading 1', 'heading-1'],
-      [' -heading 1', 'heading-1'],
-      ['!test@!@#$%^&*()-1?', 'test--1'],
-      [' %test$              ', 'test'], // start with a space follow by an invalid character
-      [' %test$              1', 'test-1'],
-    ])('pass %s to generateIdFromString will return %s', (input, output) => {
-      expect(generateIdFromString(input)).toBe(output);
     });
   });
 });

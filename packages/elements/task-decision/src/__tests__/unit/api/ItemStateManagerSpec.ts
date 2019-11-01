@@ -29,8 +29,6 @@ const serviceTask = (
   parentLocalId: '123',
   participants: [],
   position: 1,
-  rawContent: '[]',
-  contentAsFabricDocument: '[]',
   state: state || 'TODO',
   type: 'TASK',
 });
@@ -39,7 +37,6 @@ describe('ItemStateManager', () => {
   const objectKey = {
     localId: 'task-1',
     objectAri: 'objectAri',
-    containerAri: 'containerAri',
   };
 
   beforeEach(() => {

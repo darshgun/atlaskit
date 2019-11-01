@@ -127,7 +127,7 @@ describe('<FolderViewer />', () => {
     });
 
     it('should format date the file adding hour, minutes and time marker string if file was created today', () => {
-      jest.spyOn(Date.prototype, 'toDateString').mockReturnValue(1);
+      jest.spyOn(Date.prototype, 'toDateString').mockReturnValue('1');
 
       const newProps = {
         ...props,

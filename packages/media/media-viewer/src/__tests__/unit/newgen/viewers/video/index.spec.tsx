@@ -1,15 +1,20 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
-import { ProcessedFileState } from '@atlaskit/media-client';
+import {
+  globalMediaEventEmitter,
+  MediaViewedEventPayload,
+  ProcessedFileState,
+} from '@atlaskit/media-client';
 import Spinner from '@atlaskit/spinner';
 import {
   mountWithIntlContext,
   fakeMediaClient,
+  expectFunctionToHaveBeenCalledWith,
 } from '@atlaskit/media-test-helpers';
 import { CustomMediaPlayer } from '@atlaskit/media-ui';
 import { VideoViewer, Props } from '../../../../../newgen/viewers/video';
 import { ErrorMessage } from '../../../../../newgen/error';
-import { Auth } from '@atlaskit/media-store';
+import { Auth } from '@atlaskit/media-core';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
@@ -74,15 +79,20 @@ function createFixture(
       mediaClient={mediaClient}
       item={item || videoItem}
       {...props}
-      previewCount={0}
+      previewCount={(props && props.previewCount) || 0}
     />,
   );
   return { mediaClient, el };
 }
 
 describe('Video viewer', () => {
+  beforeEach(() => {
+    jest.spyOn(globalMediaEventEmitter, 'emit');
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
+    jest.restoreAllMocks();
     localStorage.clear();
     (localStorage.setItem as jest.Mock).mockClear();
   });
@@ -232,5 +242,26 @@ describe('Video viewer', () => {
       expect(el.find(CustomMediaPlayer)).toHaveLength(1);
       expect(el.find({ autoPlay: true })).toHaveLength(0);
     });
+  });
+
+  it('should trigger media-viewed when video is first played', async () => {
+    localStorage.setItem('mv_video_player_quality', 'sd');
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
+    const { el } = createFixture(authPromise, { previewCount: 1 });
+    await (el as any).instance()['init']();
+    el.update();
+    const { onFirstPlay } = el.find(CustomMediaPlayer).props();
+    if (!onFirstPlay) {
+      return expect(onFirstPlay).toBeDefined();
+    }
+    onFirstPlay();
+    expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
+    expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
+      'media-viewed',
+      {
+        fileId: 'some-id',
+        viewingLevel: 'full',
+      } as MediaViewedEventPayload,
+    ]);
   });
 });

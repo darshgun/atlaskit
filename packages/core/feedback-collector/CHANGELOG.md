@@ -1,5 +1,11 @@
 # @atlaskit/feedback-collector
 
+## 4.0.19
+
+- Updated dependencies [4778521db3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4778521db3):
+  - @atlaskit/global-navigation@8.0.4
+  - @atlaskit/navigation-next@7.0.0
+
 ## 4.0.18
 
 ### Patch Changes

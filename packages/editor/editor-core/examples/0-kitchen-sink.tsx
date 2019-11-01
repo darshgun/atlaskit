@@ -29,6 +29,9 @@ import ErrorReport, { Error } from '../example-helpers/ErrorReport';
 import KitchenSinkEditor from '../example-helpers/KitchenSinkEditor';
 import withSentry from '../example-helpers/withSentry';
 import FullWidthToggle from '../example-helpers/full-width-toggle';
+import { addGlobalEventEmitterListeners } from '@atlaskit/media-test-helpers';
+
+addGlobalEventEmitterListeners();
 
 const Container = styled.div`
   display: flex;
@@ -185,6 +188,13 @@ function getInitialTheme(): Theme {
 }
 
 class FullPageRendererExample extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    if (history.scrollRestoration === 'auto') {
+      history.scrollRestoration = 'manual';
+    }
+  }
+
   private getJSONFromStorage = (key: string, fallback: any = undefined) => {
     const localADF = (localStorage && localStorage.getItem(key)) || undefined;
 
@@ -228,6 +238,17 @@ class FullPageRendererExample extends React.Component<Props, State> {
     if (prevState.theme !== this.state.theme) {
       window.sessionStorage.setItem('theme', this.state.theme);
     }
+  }
+
+  componentDidMount() {
+    window.requestAnimationFrame(() => {
+      const anchorElement: HTMLElement | null = document.getElementById(
+        decodeURIComponent(window.location.hash.slice(1)),
+      );
+      if (anchorElement) {
+        anchorElement.scrollIntoView();
+      }
+    });
   }
 
   showHideADF = () =>
@@ -425,13 +446,18 @@ class FullPageRendererExample extends React.Component<Props, State> {
                       >
                         <SmartCardProvider>
                           <ReactRenderer
+                            allowHeadingAnchorLinks
                             document={this.state.adf}
                             adfStage="stage0"
                             dataProviders={this.dataProviders}
                             extensionHandlers={extensionHandlers}
                             eventHandlers={this.legacyMediaEventHandlers()}
-                            // @ts-ignore
-                            appearance={this.state.appearance}
+                            appearance={
+                              this.state.appearance as Exclude<
+                                EditorAppearance,
+                                'chromeless'
+                              >
+                            }
                           />
                         </SmartCardProvider>
                       </IntlProvider>

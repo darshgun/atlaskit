@@ -31,6 +31,7 @@ export enum ACTION {
   BROWSER_FREEZE = 'browserFreeze',
   SLOW_INPUT = 'slowInput',
   UPLOAD_EXTERNAL_FAIL = 'uploadExternalFailed',
+  INPUT_PERF_SAMPLING = 'inputPerfSampling',
 }
 
 export enum INPUT_METHOD {

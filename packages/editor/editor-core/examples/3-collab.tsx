@@ -7,23 +7,24 @@ import { borderRadius } from '@atlaskit/theme';
 import { ShareDialogContainer } from '@atlaskit/share';
 
 import {
-  mention,
   emoji,
+  mention,
   taskDecision,
   userPickerData,
 } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import { OptionData, User } from '@atlaskit/user-picker';
-import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
+import {
+  cardProviderStaging,
+  customInsertMenuItems,
+  extensionHandlers,
+  storyContextIdentifierProviderFactory,
+  storyMediaProviderFactory,
+} from '@atlaskit/editor-test-helpers';
 
 import Editor, { EditorProps } from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
-import {
-  storyMediaProviderFactory,
-  storyContextIdentifierProviderFactory,
-  extensionHandlers,
-} from '@atlaskit/editor-test-helpers';
 
 import {
   akEditorCodeBackground,
@@ -31,7 +32,7 @@ import {
   akEditorCodeFontFamily,
 } from '../src/styles';
 
-import { collabEditProvider } from '../example-helpers/mock-collab-provider';
+import { createCollabEditProvider } from '@atlaskit/synchrony-test-helpers';
 import { TitleInput } from '../example-helpers/PageElements';
 import { EditorActions, MediaProvider, MentionProvider } from '../src';
 import { InviteToEditComponentProps } from '../src/plugins/collab-edit/types';
@@ -221,6 +222,7 @@ const editorProps = ({
     allowBreakout: true,
     UNSAFE_addSidebarLayouts: true,
   },
+  allowRule: true,
   allowStatus: true,
   allowLists: true,
   allowTextColor: true,
@@ -228,6 +230,9 @@ const editorProps = ({
   allowPanel: true,
   allowTables: {
     advanced: true,
+  },
+  UNSAFE_cards: {
+    provider: Promise.resolve(cardProviderStaging),
   },
   allowTemplatePlaceholders: { allowInserting: true },
   media: {
@@ -245,7 +250,7 @@ const editorProps = ({
   ),
   contextIdentifierProvider: storyContextIdentifierProviderFactory(),
   collabEdit: {
-    provider: collabEditProvider(sessionId),
+    provider: createCollabEditProvider(sessionId),
     inviteToEditHandler: inviteHandler,
     inviteToEditComponent,
   },

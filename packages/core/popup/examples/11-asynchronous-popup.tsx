@@ -2,7 +2,6 @@
 import { FC, useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
 import { Placement } from '@atlaskit/popper';
-import Spinner from '@atlaskit/spinner';
 import { jsx } from '@emotion/core';
 
 import Popup from '../src';
@@ -20,6 +19,11 @@ const containerCSS = {
   margin: '250px',
 };
 
+const loadingCSS = {
+  textAlign: 'center',
+  padding: '30px',
+} as const;
+
 const contentCSS = {
   alignItems: 'center',
   textAlign: 'center',
@@ -27,10 +31,6 @@ const contentCSS = {
   padding: '30px',
   maxWidth: '300px',
 } as const;
-
-const spinnerContainerCSS = {
-  margin: '40px',
-};
 
 const expanderCSS = ({ width }: { width: number }) => ({
   display: 'inline-block',
@@ -43,21 +43,28 @@ const PopupContent: FC<PopupProps> = ({
   position,
   setButtonWidth,
   buttonWidth,
+  scheduleUpdate,
 }) => {
   const [content, setContent] = useState(
     'Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. Lorem Ipsum dolor sit amet. ',
   );
   const addContent = () => {
     setContent(`${content}Lorem Ipsum dolor sit amet. `);
+
+    // Reposition the popup
+    typeof scheduleUpdate === 'function' && scheduleUpdate();
   };
 
   const clearContent = () => {
     setContent('');
+
+    // Reposition the popup
+    typeof scheduleUpdate === 'function' && scheduleUpdate();
   };
 
   return loading ? (
-    <div id="spinner" css={spinnerContainerCSS}>
-      <Spinner size="large" />
+    <div id="spinner" css={loadingCSS}>
+      Loading...
     </div>
   ) : (
     <div id="popup-content" css={contentCSS}>
@@ -127,13 +134,15 @@ export default () => {
       <Popup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        content={() => (
+        offset="0, 20px"
+        content={({ scheduleUpdate }) => (
           <PopupContent
             loading={!isLoaded}
             setPosition={setPosition}
             position={position}
             setButtonWidth={setButtonWidth}
             buttonWidth={buttonWidth}
+            scheduleUpdate={scheduleUpdate}
           />
         )}
         trigger={triggerProps => (

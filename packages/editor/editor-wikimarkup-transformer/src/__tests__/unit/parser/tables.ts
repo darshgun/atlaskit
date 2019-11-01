@@ -40,6 +40,10 @@ this is a new line text, not in the table`,
       '|!quicktime.mov|width=300,height=400!|',
     ],
     [
+      '[CS-1404] should parse multiple attachments separated by non-whitespace characters inside tables as separate media groups',
+      '|colum 1 [^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt] abc [^a-doc (jadsjdasjadsjkdasjk).pdf]\r\n[^not-empty (askjsajnkjknads).txt]|column 2|',
+    ],
+    [
       'HOT-87510 should respect emoji first in table content',
       `
 || Day / Status || Mon (!) || Tue (!) || Wed (!) || Thu (!) || Fri (!) ||
@@ -77,7 +81,7 @@ this is a new line text, not in the table`,
       ['should parse panel', `|{panel}foo{panel}|`],
       ['should parse color', `|{color:red}foo{panel}|`],
       ['should parse noformat', `|{noformat}foo{noformat}|`],
-      ['should parse code', `|{code}foo{code}|`],
+      ['should parse code', `|{code:javascript}foo{code}|`],
       ['should parse quote', `|{quote}foo{quote}|`],
       ['should parse anchor', `|{anchor}foo{anchor}|`],
     ];

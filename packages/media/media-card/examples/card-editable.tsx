@@ -186,6 +186,7 @@ class EditableCard extends Component<{}, EditableCardState> {
             identifier={identifier}
             dimensions={useDimensions ? newDimensions : undefined}
             isLazy={isLazy}
+            alt="this is an alt text"
           />
         </EditableCardContent>
       </div>

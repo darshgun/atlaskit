@@ -1,11 +1,11 @@
-jest.mock('@atlaskit/media-store');
-import { MediaStore } from '@atlaskit/media-store';
+import * as MediaClientModule from '@atlaskit/media-client';
+import { Auth } from '@atlaskit/media-core';
 import {
-  Auth,
+  getFileStreamsCache,
   ProcessedFileState,
   ProcessingFileState,
-} from '@atlaskit/media-core';
-import { getFileStreamsCache, FileState } from '@atlaskit/media-client';
+  FileState,
+} from '@atlaskit/media-client';
 import {
   mockStore,
   expectFunctionToHaveBeenCalledWith,
@@ -52,9 +52,11 @@ describe('finalizeUploadMiddleware', () => {
       Promise.resolve(auth),
     );
 
-    (MediaStore as any).mockImplementation(() => ({
-      copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
-    }));
+    jest
+      .spyOn(MediaClientModule, 'MediaStore' as any)
+      .mockImplementation(() => ({
+        copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
+      }));
 
     return {
       store,
@@ -92,6 +94,8 @@ describe('finalizeUploadMiddleware', () => {
     };
     const fileStateObservable = new ReplaySubject(1);
     fileStateObservable.next(processedFileState);
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     tenantMediaClient.file.getFileState = jest.fn(() => fileStateObservable);
 
     await finalizeUpload(store, action);
@@ -119,6 +123,8 @@ describe('finalizeUploadMiddleware', () => {
     };
     const fileStateObservable = new ReplaySubject(1);
     fileStateObservable.next(processingFileState);
+    // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
+    //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     tenantMediaClient.file.getFileState = jest.fn(() => fileStateObservable);
 
     return finalizeUpload(store, action).then(() => {
@@ -142,9 +148,11 @@ describe('finalizeUploadMiddleware', () => {
       message: 'some-error-message',
     };
 
-    (MediaStore as any).mockImplementation(() => ({
-      copyFileWithToken: () => Promise.reject(error),
-    }));
+    jest
+      .spyOn(MediaClientModule, 'MediaStore' as any)
+      .mockImplementation(() => ({
+        copyFileWithToken: () => Promise.reject(error),
+      }));
 
     return finalizeUpload(store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
@@ -174,9 +182,9 @@ describe('finalizeUploadMiddleware', () => {
 
     const copyFileWithToken = jest.fn().mockResolvedValue({
       data: { id: 'some-id' },
-    }) as MediaStore['copyFileWithToken'];
+    }) as MediaClientModule.MediaStore['copyFileWithToken'];
 
-    asMock(MediaStore).mockImplementation(() => ({
+    asMock(MediaClientModule.MediaStore).mockImplementation(() => ({
       copyFileWithToken,
     }));
 

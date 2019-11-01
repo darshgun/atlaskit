@@ -1,5 +1,11 @@
 # @atlaskit/status
 
+## 0.9.16
+
+- Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  - @atlaskit/i18n-tools@0.6.0
+  - @atlaskit/editor-test-helpers@10.1.2
+
 ## 0.9.15
 
 ### Patch Changes

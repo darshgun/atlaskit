@@ -65,6 +65,7 @@ export default class BasicExample extends PureComponent<void, State> {
           onClick={this.onClick}
           isOpen={this.state.isOpen}
           trigger={<Button>...</Button>}
+          testId="droplist"
         >
           <ItemGroup title="Australia">
             <Item href="//atlassian.com" target="_blank">
