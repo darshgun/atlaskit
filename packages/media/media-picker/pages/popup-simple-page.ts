@@ -26,7 +26,7 @@ export class PopupSimplePage {
 
   async getRecentUploadCards(): Promise<RecentUploadCard[]> {
     const selector =
-      '[data-testid="media-picker-popup"] [data-testid="media-card-view"]';
+      '[data-testid="media-picker-uploading-media-card"], [data-testid="media-picker-recent-media-card"]';
     const results = await this.page.getHTML(selector);
     return results.map((html: string) => {
       const div = document.createElement('div');

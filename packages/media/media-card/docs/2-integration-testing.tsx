@@ -15,6 +15,7 @@ Only one of these three can be found as a top DOM element:
 - \`[data-testid="media-card-view"]\`: Non loading (resolved) Media Card
 - \`[data-testid="media-card-inline-player"]\`: Media Card with inline media player
 
+- \`[data-test-loading]\`: This present for loading card (on the same element as \`media-card-loading\` (or 'testId')
 - \`[data-testid="media-file-card-view"]\`: This selector can be used to get some extra meta information via following attributes:
   - \`data-test-status\` will contain media card status - one from this list:
     - \`uploading\`
