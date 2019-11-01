@@ -3,16 +3,18 @@ import { ReactNode } from 'react';
 
 type ModuleKey = string;
 
+export type Icon = () => Promise<any>;
+
+export type Icons = {
+  [dimensions: string]: Icon;
+};
+
 export type ExtensionManifest = {
   key: string;
   title: string;
   description: string;
-  icon: Icon;
+  icons: Icons;
   modules: ExtensionModules;
-};
-
-export type Icon = {
-  [dimensions: string]: () => Promise<any>;
 };
 
 export type ExtensionModules = {

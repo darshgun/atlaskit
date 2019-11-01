@@ -1,4 +1,4 @@
-import { getItemsFromCapability } from '../../menu-helpers';
+import { getItemsFromModule } from '../../menu-helpers';
 import { createFakeExtensionManifest } from '../../../../../editor-test-helpers/src/extensions';
 
 describe('menu-helpers', () => {
@@ -14,9 +14,9 @@ describe('menu-helpers', () => {
     ]);
 
     test('should return all the extensions from a given capability', async () => {
-      const insertMenuItems = getItemsFromCapability(
+      const insertMenuItems = getItemsFromModule(
         [awesomeExtension, amazingExtension],
-        'insertmenu',
+        'insertMenu',
         item => item.key,
       );
 

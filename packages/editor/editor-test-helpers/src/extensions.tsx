@@ -159,16 +159,17 @@ export const createFakeExtensionManifest = (
   title,
   key: `${key}-extension`,
   description: 'Jira results in a table',
-  icon: {
-    '16x16': createFakeModule({}),
+  icons: {
+    '16': createFakeModule({}),
+    '48': createFakeModule({}),
   },
   modules: {
-    quickInsert: nodeKeys.map(key => ({ key })),
-    insertMenu: nodeKeys.map(key => ({ key })),
+    quickInsert: nodeKeys.map(key => ({ key, target: key })),
+    insertMenu: nodeKeys.map(key => ({ key, target: key })),
     nodes: nodeKeys.map(nodeKey => ({
       key: nodeKey,
       type: 'block',
-      adf: createFakeModule({
+      insert: createFakeModule({
         type: 'extension',
         attrs: {
           extensionType: 'com.atlassian.confluence.macro.core',

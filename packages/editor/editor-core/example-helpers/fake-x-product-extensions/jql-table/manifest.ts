@@ -4,32 +4,30 @@ const manifest: ExtensionManifest = {
   title: 'JQL table',
   key: 'jql-table-extension',
   description: 'Jira results in a table',
-  icon: {
-    '16x16': () => import('@atlaskit/icon/glyph/editor/code'),
+  icons: {
+    '16': () => import('@atlaskit/icon/glyph/editor/code'),
   },
-  capabilities: {
-    quickinsert: [
+  modules: {
+    quickInsert: [
       {
         key: 'jql-table',
-        icon: {
-          '16x16': () => import('@atlaskit/icon/glyph/table'),
-        },
+        icon: () => import('@atlaskit/icon/glyph/table'),
+        target: 'jql-table',
       },
     ],
-    insertmenu: [
+    insertMenu: [
       {
         key: 'jql-table',
-        icon: {
-          '16x16': () => import('@atlaskit/icon/glyph/table'),
-        },
+        icon: () => import('@atlaskit/icon/glyph/table'),
         description: 'Insert a table with results from a JQL query',
+        target: 'jql-table',
       },
     ],
-    node: [
+    nodes: [
       {
         key: 'jql-table',
         type: 'block',
-        adf: () => import('./adf-node'),
+        insert: () => import('./adf-node'),
         render: () => import('./extension-handler'),
       },
     ],

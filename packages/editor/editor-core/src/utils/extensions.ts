@@ -4,10 +4,6 @@ import {
   QuickInsertItem,
 } from '../plugins/quick-insert/types';
 
-export function getI18nValue(str: i18nString) {
-  return typeof str === 'string' ? str : str.value;
-}
-
 export function extensionProviderToQuickInsertProvider(
   extensionProvider: ExtensionProvider,
 ): QuickInsertProvider {
@@ -19,8 +15,10 @@ export function extensionProviderToQuickInsertProvider(
             return acc.concat(
               extensionManifest.modules.quickInsert.map<QuickInsertItem>(
                 quickInsertModule => ({
-                  title: getI18nValue(quickInsertModule.title),
-                  description: getI18nValue(quickInsertModule.description),
+                  title: quickInsertModule.title || extensionManifest.title,
+                  description:
+                    quickInsertModule.description ||
+                    extensionManifest.description,
                   action: insert => insert({ type: 'extension' }),
                 }),
               ),
