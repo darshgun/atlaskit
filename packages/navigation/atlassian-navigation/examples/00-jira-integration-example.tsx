@@ -2,6 +2,7 @@
 import Avatar from '@atlaskit/avatar';
 import Badge from '@atlaskit/badge';
 import Drawer from '@atlaskit/drawer';
+import Button from '@atlaskit/button';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import { JiraIcon, JiraLogo } from '@atlaskit/logo';
 import Popup from '@atlaskit/popup';
@@ -174,14 +175,18 @@ const Icon = ({
   iconColor?: string;
   textColor?: string;
 }) => (
-  <a css={linkCSS} href="#">
-    <JiraIcon
-      iconGradientStart={iconGradientStart}
-      iconGradientStop={iconGradientStop}
-      iconColor={iconColor}
-      textColor={textColor}
-    />
-  </a>
+  <Button
+    appearance="link"
+    href="#"
+    iconBefore={
+      <JiraIcon
+        iconGradientStart={iconGradientStart}
+        iconGradientStop={iconGradientStop}
+        iconColor={iconColor}
+        textColor={textColor}
+      />
+    }
+  />
 );
 
 const Logo = ({
