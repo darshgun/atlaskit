@@ -34,7 +34,12 @@ export const getIconButtonTheme = ({
       ...iconButton.default,
       ':hover': iconButton.hover,
       ':focus': iconButton.focus,
-      ':active': iconButton.active,
+      // :active doesn't work in FF, becasue we do a
+      // e.preventDefault() on mouse down in Button.
+      // '&&' is required to add more CSS specificity
+      '&&': {
+        ...(props.state === 'active' && iconButton.active),
+      },
       '> span > span': {
         margin: 0,
       },

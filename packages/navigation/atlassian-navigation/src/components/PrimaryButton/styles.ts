@@ -32,8 +32,12 @@ export const getPrimaryButtonTheme = ({
       padding: 0,
       ':hover': primaryButton.hover,
       ':focus': primaryButton.focus,
-      ':active': primaryButton.active,
-      // ...(props.state === 'active' && primaryButton.active),
+      // :active doesn't work in FF, becasue we do a
+      // e.preventDefault() on mouse down in Button.
+      // '&&' is required to add more CSS specificity
+      '&&': {
+        ...(props.state === 'active' && primaryButton.active),
+      },
     },
     spinnerStyles,
   };
