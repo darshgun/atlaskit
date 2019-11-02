@@ -23,14 +23,17 @@ export const getPrimaryButtonTheme = ({
   props: ThemeProps,
 ) => {
   const { buttonStyles, spinnerStyles } = current(props);
+
   return {
     buttonStyles: {
       ...buttonStyles,
       ...primaryButton.default,
+      ...(props.isSelected && primaryButton.active),
       padding: 0,
       ':hover': primaryButton.hover,
       ':focus': primaryButton.focus,
       ':active': primaryButton.active,
+      // ...(props.state === 'active' && primaryButton.active),
     },
     spinnerStyles,
   };
@@ -44,7 +47,7 @@ export const primaryButtonSkeletonCSS = (theme: NavigationTheme) => ({
   ...skeletonCSS(theme),
 });
 
-export const isSelectedCSS = (
+export const isHighlightedCSS = (
   { mode: { primaryButton } }: NavigationTheme,
   isSelected?: boolean,
 ): CSSObject => ({

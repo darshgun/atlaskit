@@ -357,6 +357,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
           onClick={onClick}
           onKeyDown={onKeyDown}
           isHighlighted={isHighlighted}
+          isSelected={isOpen}
           {...triggerProps}
         >
           {text}
