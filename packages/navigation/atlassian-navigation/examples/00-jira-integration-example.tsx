@@ -21,6 +21,7 @@ import {
   Profile,
   Search,
   Settings,
+  atlassianTheme,
 } from '../src';
 import { useOverflowStatus } from '../src/controllers/overflow';
 
@@ -164,51 +165,41 @@ const linkCSS = {
   },
 };
 
-const Icon = ({
-  iconGradientStart,
-  iconGradientStop,
-  iconColor,
-  textColor,
-}: {
-  iconGradientStart?: string;
-  iconGradientStop?: string;
-  iconColor?: string;
-  textColor?: string;
-}) => (
-  <Button
-    appearance="link"
-    href="#"
-    iconBefore={
-      <JiraIcon
-        iconGradientStart={iconGradientStart}
-        iconGradientStop={iconGradientStop}
-        iconColor={iconColor}
-        textColor={textColor}
-      />
-    }
-  />
-);
-
-const Logo = ({
-  iconGradientStart,
-  iconGradientStop,
-  iconColor,
-  textColor,
-}: {
-  iconGradientStart?: string;
-  iconGradientStop?: string;
-  iconColor?: string;
-  textColor?: string;
-}) => (
-  <a css={linkCSS} href="#">
-    <JiraLogo
-      iconGradientStart={iconGradientStart}
-      iconGradientStop={iconGradientStop}
-      iconColor={iconColor}
-      textColor={textColor}
+const Icon = () => {
+  const {
+    mode: { productHome },
+  } = atlassianTheme;
+  return (
+    <Button
+      appearance="link"
+      href="#"
+      iconBefore={
+        <JiraIcon
+          iconGradientStart={productHome.gradientStart}
+          iconGradientStop={productHome.gradientStop}
+          iconColor={productHome.iconColor}
+          textColor={productHome.color}
+        />
+      }
     />
-  </a>
-);
+  );
+};
+
+const Logo = () => {
+  const {
+    mode: { productHome },
+  } = atlassianTheme;
+  return (
+    <a css={linkCSS} href="#">
+      <JiraLogo
+        iconGradientStart={productHome.gradientStart}
+        iconGradientStop={productHome.gradientStop}
+        iconColor={productHome.iconColor}
+        textColor={productHome.color}
+      />
+    </a>
+  );
+};
 
 const ProductHomeExample = () => (
   <ProductHome icon={Icon} logo={Logo} siteTitle="Hello" />
