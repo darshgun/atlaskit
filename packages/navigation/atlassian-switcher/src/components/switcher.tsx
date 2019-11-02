@@ -29,7 +29,11 @@ import {
 import now from '../utils/performance-now';
 import { urlToHostname } from '../utils/url-to-hostname';
 import { Appearance } from '../theme/types';
-import { TriggerXFlowCallback, DiscoverMoreCallback } from '../types';
+import {
+  TriggerXFlowCallback,
+  DiscoverMoreCallback,
+  JoinableSiteClickHandler,
+} from '../types';
 
 const noop = () => void 0;
 
@@ -64,6 +68,7 @@ export type SwitcherProps = {
    */
   isDiscoverSectionEnabled?: boolean;
   discoverSectionLinks: SwitcherItemType[];
+  onJoinableSiteClicked?: JoinableSiteClickHandler;
 };
 
 const getAnalyticsContext = (itemsCount: number) => ({
@@ -144,6 +149,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
       appearance,
       isDiscoverSectionEnabled,
       discoverSectionLinks,
+      onJoinableSiteClicked,
     } = this.props;
     /**
      * It is essential that switchToLinks reflects the order corresponding nav items
@@ -384,6 +390,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                     description={description}
                     users={users}
                     href={href}
+                    onClick={onJoinableSiteClicked}
                   >
                     {label}
                   </ItemWithAvatarGroup>

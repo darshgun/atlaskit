@@ -21,6 +21,7 @@ export interface ItemWithAvatarGroupProps extends WithAnalyticsEventsProps {
   isDisabled?: boolean;
   onKeyDown?: any;
   onItemClick?: Function;
+  onClick?: Function;
   users?: AvatarPropTypes[];
 }
 
@@ -40,8 +41,14 @@ const Wrapper = styled.div`
 const noop = () => {};
 
 class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
+  onClick = () => {
+    const { onItemClick, onClick, href } = this.props;
+    onItemClick && onItemClick();
+    onClick && onClick(href);
+  };
+
   render() {
-    const { icon, description, users = [], onItemClick, ...rest } = this.props;
+    const { icon, description, users = [], href, ...rest } = this.props;
 
     return (
       <FadeIn>
@@ -58,7 +65,7 @@ class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
                 onMoreClick={noop}
               />
             }
-            onClick={onItemClick}
+            onClick={this.onClick}
             target="_new"
             {...rest}
           />
