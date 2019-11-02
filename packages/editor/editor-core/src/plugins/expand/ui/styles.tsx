@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import { colors, gridSize } from '@atlaskit/theme';
 import {
   blockNodesVerticalMargin,
   akLayoutGutterOffset,
@@ -34,6 +34,7 @@ export const expandStyles = css`
 
   .${expandClassNames.content} {
     ${sharedExpandStyles.ContentStyles}
+    padding-top: 0px;
   }
 
   .${expandClassNames.titleInput} {
@@ -47,6 +48,10 @@ export const expandStyles = css`
   .${expandClassNames.expanded} {
     background: ${EXPAND_SELECTED_BACKGROUND};
     border-color: ${colors.N40A};
+
+    .${expandClassNames.content} {
+      padding-top: ${gridSize}px;
+    }
   }
 
   .${expandClassNames.inputContainer} {
