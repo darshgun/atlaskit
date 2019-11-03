@@ -1,4 +1,10 @@
-import { EditorState, Plugin, PluginKey, Transaction, TextSelection } from 'prosemirror-state';
+import {
+  EditorState,
+  Plugin,
+  PluginKey,
+  Transaction,
+  TextSelection,
+} from 'prosemirror-state';
 import {
   findParentDomRefOfType,
   findParentNodeOfType,
@@ -145,7 +151,8 @@ export const createPlugin = (
 
           if (pluginState.editorHasFocus && pluginState.tableRef) {
             const { $cursor } = state.selection as TextSelection;
-            if ($cursor) { // Only update bold when it's a cursor
+            if ($cursor) {
+              // Only update bold when it's a cursor
               const tableCellHeader = findParentNodeOfType(
                 state.schema.nodes.tableHeader,
               )(state.selection);
@@ -154,7 +161,6 @@ export const createPlugin = (
                 addBoldInEmptyHeaderCells(tableCellHeader)(state, dispatch);
               }
             }
-
           }
         },
       };
