@@ -47,12 +47,7 @@ BrowserTestCase(
     });
 
     await page.waitForSelector('.ProseMirror .wrapper');
-    await page.click('.ProseMirror .wrapper');
-    await page.copy(editable);
-
-    await page.paste(editable);
     await sleep(0);
-    await page.waitForSelector('.ProseMirror .wrapper');
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testCase);
   },
