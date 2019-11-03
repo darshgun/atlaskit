@@ -1,38 +1,6 @@
-export { PopupUploadEventPayloadMap } from './components/types';
-
-import {
-  BrowserConfig,
-  ClipboardConfig,
-  DropzoneConfig,
-  Popup,
-  PopupConfig,
-  PopupConstructor,
-} from './components/types';
-
 import { MediaClientConfig } from '@atlaskit/media-core';
-
-// Events public API and types
-export {
-  UploadsStartEventPayload,
-  UploadStatusUpdateEventPayload,
-  UploadPreviewUpdateEventPayload,
-  UploadProcessingEventPayload,
-  UploadEndEventPayload,
-  UploadErrorEventPayload,
-  UploadEventPayloadMap,
-  isImagePreview,
-} from './domain/uploadEvent';
-
-export { MediaFile } from './domain/file';
-export { MediaProgress } from './domain/progress';
-export { MediaError } from './domain/error';
-export { ImagePreview, Preview, NonImagePreview } from './domain/preview';
-
-export { Popup };
-
-export { UploadParams } from './domain/config';
-export { BrowserConfig, PopupConfig, ClipboardConfig, DropzoneConfig };
-export { PopupConstructor };
+import { PopupConfig, Popup } from './types';
+export { isImagePreview } from './domain/preview';
 
 export async function MediaPicker(
   mediaClientConfig: MediaClientConfig,

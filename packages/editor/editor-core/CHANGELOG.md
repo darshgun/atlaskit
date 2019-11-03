@@ -1,5 +1,181 @@
 # @atlaskit/editor-core
 
+## 114.0.2
+
+### Patch Changes
+
+- [patch][dba498a7b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dba498a7b0):
+
+  Prevent updating MediaSingle node if new attrs are the same as current ones
+
+## 114.0.1
+
+### Patch Changes
+
+- [patch][d222c2b987](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d222c2b987):
+
+  Theme has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided.
+
+  ### Breaking
+
+  ** getTokens props changes **
+  When defining the value function passed into a ThemeProvider, the getTokens parameter cannot be called without props; if no props are provided an empty object `{}` must be passed in:
+
+  ```javascript
+  <CustomTheme.Provider
+    value={t => ({ ...t(), backgroundColor: '#333'})}
+  >
+  ```
+
+  becomes:
+
+  ```javascript
+  <CustomTheme.Provider
+    value={t => ({ ...t({}), backgroundColor: '#333'})}
+  >
+  ```
+
+  ** Color palette changes **
+  Color palettes have been moved into their own file.
+  Users will need to update imports from this:
+
+  ```javascript
+  import { colors } from '@atlaskit/theme';
+
+  colors.colorPalette('8');
+  ```
+
+  to this:
+
+  ```javascript
+  import { colorPalette } from '@atlaskit/theme';
+
+  colorPalette.colorPalette('8');
+  ```
+
+  or for multi entry-point users:
+
+  ```javascript
+  import * as colors from '@atlaskit/theme/colors';
+
+  colors.colorPalette('8');
+  ```
+
+  to this:
+
+  ```javascript
+  import * as colorPalettes from '@atlaskit/theme/color-palette';
+
+  colorPalettes.colorPalette('8');
+  ```
+
+## 114.0.0
+
+### Major Changes
+
+- [major][f28c191f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28c191f4a):
+
+  BREAKING: remove viewContext and uploadContext from Editor mediaProvider api
+
+  A few months ago we introduced the ability to pass either `viewContext` `uploadContext` or `viewMediaClientConfig` `uploadMediaClientConfig`, in order to help with the transition of media-client > media-core.
+
+  Now we are getting rid of the old `viewContext` + `uploadContext` and just keep `viewMediaClientConfig` + `uploadMediaClientConfig`.
+
+  ### Before
+
+  ```typescript
+  import {Editor} from '@atlaskit/editor-core`
+  import {ContextFactory} from '@atlaskit/media-core'
+
+  const mediaProvider = Promise.resolve({
+    viewContext: ContextFactory.create({
+      authProvider: () => Promise.resolve()
+    }),
+    uploadContext: ContextFactory.create({
+      authProvider: () => Promise.resolve()
+    }),
+  })
+
+  <Editor
+    mediaProvider={mediaProvider}
+  />
+
+  ```
+
+  ### Now
+
+  ```typescript
+  import {Editor} from '@atlaskit/editor-core`
+
+  const mediaProvider = Promise.resolve({
+    viewMediaClientConfig: {
+      authProvider: () => Promise.resolve()
+    },
+    uploadMediaClientConfig: {
+      authProvider: () => Promise.resolve()
+    }
+  })
+
+  <Editor
+    mediaProvider={mediaProvider}
+  />
+
+  ```
+
+### Minor Changes
+
+- [minor][6e46da0e7f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e46da0e7f):
+
+  ED-7847 Adding option to connect atlaskit example page to synchrony server on development- [minor][628fc6fa34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/628fc6fa34):
+
+  [ED-7738] Introducing `UNSAFE_allowAltTextOnImages` editor prop.
+  DO NOT USE THIS IN PRODUCTION!
+
+  There is no implementation delivered as part of this change. But we will use it to wrap all the UI changes.
+
+### Patch Changes
+
+- [patch][b16f92a4c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b16f92a4c9):
+
+  ED-7904: Enabling input typing performance sampling - send time taken for every 100th keypressed- [patch][e47220a6b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e47220a6b2):
+
+  ED-5450: remove most of ts-ignores from editor packages- [patch][79997ae8a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79997ae8a8):
+
+  Implement missing parts of dispatchTransaction for labs/next editor- [patch][66701534af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/66701534af):
+
+  ED-7883 [v3] Add ability to override plugin preset similar to babel- [patch][29f6a0bf45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29f6a0bf45):
+
+  [ED-7771] Add resize handler on tables when the first row is merged- [patch][c98b85f9cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98b85f9cd):
+
+  ED-7882 Optimise and minimise SVG asset for feedback- [patch][cc32fa0427](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc32fa0427):
+
+  remove ! from Toolbar Annotation component to prevent runtime exception
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/editor-test-helpers@10.1.3
+  - @atlaskit/renderer@53.0.0
+  - @atlaskit/emoji@62.5.6
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-picker@49.0.0
+  - @atlaskit/media-filmstrip@36.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/editor-bitbucket-transformer@6.2.6
+  - @atlaskit/editor-json-transformer@6.3.5
+  - @atlaskit/editor-markdown-transformer@3.1.8
+  - @atlaskit/task-decision@16.0.2
+  - @atlaskit/editor-common@41.2.1
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-editor@37.0.1
+  - @atlaskit/media-core@31.0.0
+
+## 113.2.2
+
+### Patch Changes
+
+- [patch][b1cdbefb71](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1cdbefb71):
+
+  ED-7951 Update correct link attribute
+
 ## 113.2.1
 
 - Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):

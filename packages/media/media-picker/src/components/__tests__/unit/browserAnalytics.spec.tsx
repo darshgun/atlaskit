@@ -7,11 +7,9 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { FileState, TouchFileDescriptor } from '@atlaskit/media-client';
 
 import { Browser } from '../../browser/browser';
-import {
-  BrowserConfig,
-  LocalUploadConfig,
-} from '../../../../src/components/types';
+import { BrowserConfig } from '../../../../src/types';
 import { ANALYTICS_MEDIA_CHANNEL } from '../../../../src/components/media-picker-analytics-error-boundary';
+import { LocalUploadConfig } from '../../../../src/components/types';
 
 describe('Browser analytics instrumentation', () => {
   const browseConfig: BrowserConfig & LocalUploadConfig = {

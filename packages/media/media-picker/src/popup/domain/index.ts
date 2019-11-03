@@ -19,7 +19,7 @@ export {
 } from './local-upload';
 
 import { ImageCardModel } from '../tools/fetcher/fetcher';
-import { PopupConfig } from '../..';
+import { PopupConfig } from '../../types';
 
 export interface State {
   readonly redirectUrl: string;

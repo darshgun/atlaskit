@@ -1,14 +1,6 @@
 // TODO these classes are deprecated and will be removed as part of MSW-691
 import { handleError } from '../util/handleError';
-
-export interface MediaProgress {
-  absolute: number;
-  portion: number;
-  max: number;
-  overallTime: number;
-  expectedFinishTime: number;
-  timeLeft: number;
-}
+import { MediaProgress } from '../types';
 
 export class SmartMediaProgress {
   constructor(

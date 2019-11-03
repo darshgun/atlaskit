@@ -11,7 +11,7 @@ import {
   PluginKey,
 } from 'prosemirror-state';
 import { findDomRefAtPos } from 'prosemirror-utils';
-import { UploadParams, PopupConfig } from '@atlaskit/media-picker';
+import { UploadParams, PopupConfig } from '@atlaskit/media-picker/types';
 import { MediaClientConfig } from '@atlaskit/media-core';
 import { MediaSingleLayout } from '@atlaskit/adf-schema';
 import {

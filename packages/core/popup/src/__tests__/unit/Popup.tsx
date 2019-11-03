@@ -7,12 +7,26 @@ describe('Popup', () => {
   const defaultProps = {
     content: () => <div>content</div>,
     isOpen: false,
-    trigger: (props: TriggerProps) => <button {...props}>trigger</button>,
+    trigger: (props: TriggerProps) => (
+      <button
+        {...props}
+        // @ts-ignore
+        ref={props.ref}
+      >
+        trigger
+      </button>
+    ),
   };
 
   it('renders the trigger correctly when the popup is not open', () => {
     const trigger = (props: TriggerProps) => (
-      <button {...props}>trigger</button>
+      <button
+        {...props}
+        // @ts-ignore
+        ref={props.ref}
+      >
+        trigger
+      </button>
     );
     const { getByText } = render(
       <Popup {...defaultProps} isOpen={false} trigger={trigger} />,
@@ -31,7 +45,13 @@ describe('Popup', () => {
 
   it('renders the trigger correctly when the popup is open', () => {
     const trigger = (props: TriggerProps) => (
-      <button {...props}>trigger</button>
+      <button
+        {...props}
+        // @ts-ignore
+        ref={props.ref}
+      >
+        trigger
+      </button>
     );
     const { getByText } = render(
       <Popup {...defaultProps} isOpen trigger={trigger} />,

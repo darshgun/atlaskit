@@ -1391,6 +1391,68 @@
       ],
       "additionalProperties": false
     },
+    "expand_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "expand"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "content": {
+          "$ref": "#/definitions/extension_content"
+        },
+        "marks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/breakout_mark"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "attrs",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "nestedExpand_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "nestedExpand"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "content": {
+          "$ref": "#/definitions/nestedExpand_content"
+        }
+      },
+      "required": [
+        "type",
+        "attrs",
+        "content"
+      ],
+      "additionalProperties": false
+    },
     "hardBreak_node": {
       "type": "object",
       "properties": {
@@ -1800,6 +1862,9 @@
           "$ref": "#/definitions/bodiedExtension_node"
         },
         {
+          "$ref": "#/definitions/expand_node"
+        },
+        {
           "$ref": "#/definitions/blockCard_node"
         }
       ]
@@ -1863,6 +1928,9 @@
             "$ref": "#/definitions/extension_node"
           },
           {
+            "$ref": "#/definitions/nestedExpand_node"
+          },
+          {
             "$ref": "#/definitions/blockCard_node"
           }
         ]
@@ -1920,6 +1988,26 @@
           },
           {
             "$ref": "#/definitions/blockCard_node"
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "nestedExpand_content": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/paragraph_with_no_marks_node"
+          },
+          {
+            "$ref": "#/definitions/mediaSingle_node"
+          },
+          {
+            "$ref": "#/definitions/heading_with_no_marks_node"
+          },
+          {
+            "$ref": "#/definitions/mediaGroup_node"
           }
         ]
       },
@@ -2111,6 +2199,9 @@
               },
               {
                 "$ref": "#/definitions/bodiedExtension_node"
+              },
+              {
+                "$ref": "#/definitions/expand_node"
               },
               {
                 "$ref": "#/definitions/blockCard_node"

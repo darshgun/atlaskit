@@ -1,1 +1,0 @@
-Image, Binary and Artifact files will be cached for 30 days

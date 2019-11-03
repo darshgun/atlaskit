@@ -1,5 +1,23 @@
 # @atlaskit/media-picker
 
+## 49.0.0
+
+### Patch Changes
+
+- [patch][46718eff4c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46718eff4c):
+
+  All components emit upload analytics events now, not only popup- [patch][e5945305be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5945305be):
+
+  adding user timing api to get operations spent time
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-viewer@44.0.1
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-editor@37.0.1
+  - @atlaskit/media-core@31.0.0
+
 ## 48.0.0
 
 ### Major Changes
@@ -38,7 +56,6 @@
   })
 
   const mediaPicker = MediaPicker(context);
-  ```
 
   <Card context={context}>
   <SmartMediaEditor context={context}>
@@ -50,37 +67,37 @@
   <MediaViewer context={context}>
   ```
 
-**Now**:
+  **Now**:
 
-````
-import {MediaClientConfig} from '@atlaskit/media-core';
-import {Card} from '@atlaskit/media-card'
-import {SmartMediaEditor} from '@atlaskit/media-editor'
-import {Filmstrip} from '@atlaskit/media-filmstrip'
-import {MediaImage} from '@atlaskit/media-image'
-import {MediaViewer} from '@atlaskit/media-viewer'
-import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
-
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+  ```
 
 const mediaClientConfig: MediaClientConfig = {
-  authProvider: () => Promise.resolve({})
+authProvider: () => Promise.resolve({})
 }
 
 const mediaPicker = MediaPicker(mediaClientConfig);
 
-<Card mediaClientConfig={mediaClientConfig}>
-<SmartMediaEditor mediaClientConfig={mediaClientConfig}>
-<Filmstrip mediaClientConfig={mediaClientConfig}>
-<MediaImage mediaClientConfig={mediaClientConfig}>
-<Dropzone mediaClientConfig={mediaClientConfig}>
-<Clipboard mediaClientConfig={mediaClientConfig}>
-<Browser mediaClientConfig={mediaClientConfig}>
-<MediaViewer mediaClientConfig={mediaClientConfig}>
-```- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
 
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
 
-**FABDODGEM-13 Editor Damask Release**
-  - [Internal post](http://go.atlassian.com/damask-release)
+**FABDODGEM-13 Editor Damask Release** - [Internal post](http://go.atlassian.com/damask-release)
 
 **BREAKING CHANGES**
 
@@ -92,7 +109,7 @@ const mediaPicker = MediaPicker(mediaClientConfig);
 - **Editor Mobile Bridge:** Adapts to task-decision changes.
 - **Util Data Test:** Adapts to task-decision changes.
 
------
+---
 
 **Affected Editor Components:**
 
@@ -127,7 +144,6 @@ tables, media, mobile, emoji, tasks & decisions, analytics
 - Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
   - https://product-fabric.atlassian.net/browse/FM-2370
 
-
 **Media**
 
 - Improved analytics
@@ -150,16 +166,18 @@ Bumped dependencies.
 
 ### Minor Changes
 
-- [minor] [7015d48ba4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7015d48ba4):
+- [minor][7015d48ba4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7015d48ba4):
 
 MS-2145: added GASv3 events for media browser & clipboard
+
 ### Patch Changes
 
-- [patch] [1c6d97bbb1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6d97bbb1):
+- [patch][1c6d97bbb1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6d97bbb1):
 
-Fix media-picker dialog min-height when downsizing- [patch] [ee3d05ef82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee3d05ef82):
+Fix media-picker dialog min-height when downsizing- [patch][ee3d05ef82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee3d05ef82):
 
 Adding provider for selected items in media-picker when inserting files
+
 - Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
 - @atlaskit/media-card@66.0.0
 - @atlaskit/media-core@30.0.17
@@ -220,14 +238,14 @@ tables, media, mobile, text color, emoji, copy/paste, analytics
 
 **Copy and Paste**
 
-  - Support copy & paste when missing context-id attr
-    - https://product-fabric.atlassian.net/browse/MS-2344
-  - Right click + copy image fails the second time that is pasted
-    - https://product-fabric.atlassian.net/browse/MS-2324
-  - Copying a never touched image for the first time from editor fails to paste
-    - https://product-fabric.atlassian.net/browse/MS-2338
-  - Implement analytics when a file is copied
-    - https://product-fabric.atlassian.net/browse/MS-2036
+- Support copy & paste when missing context-id attr
+  - https://product-fabric.atlassian.net/browse/MS-2344
+- Right click + copy image fails the second time that is pasted
+  - https://product-fabric.atlassian.net/browse/MS-2324
+- Copying a never touched image for the first time from editor fails to paste
+  - https://product-fabric.atlassian.net/browse/MS-2338
+- Implement analytics when a file is copied
+  - https://product-fabric.atlassian.net/browse/MS-2036
 
 **Media**
 
@@ -245,16 +263,17 @@ tables, media, mobile, text color, emoji, copy/paste, analytics
 
 **Notable Bug Fixes**
 
-  - Implement consistent behaviour for rule and mediaSingle on insertion
-    - Feature Flag:
-      - allowNewInsertionBehaviour - [default: true]
-    - https://product-fabric.atlassian.net/browse/ED-7503
-  - Fixed bug where we were showing table controls on mobile.
-    - https://product-fabric.atlassian.net/browse/ED-7690
-  - Fixed bug where editor crashes after unmounting react component.
-    - https://product-fabric.atlassian.net/browse/ED-7318
-  - Fixed bug where custom emojis are not been showed on the editor
-    - https://product-fabric.atlassian.net/browse/ED-7726
+- Implement consistent behaviour for rule and mediaSingle on insertion
+  - Feature Flag:
+    - allowNewInsertionBehaviour - [default: true]
+  - https://product-fabric.atlassian.net/browse/ED-7503
+- Fixed bug where we were showing table controls on mobile.
+  - https://product-fabric.atlassian.net/browse/ED-7690
+- Fixed bug where editor crashes after unmounting react component.
+  - https://product-fabric.atlassian.net/browse/ED-7318
+- Fixed bug where custom emojis are not been showed on the editor
+
+  - https://product-fabric.atlassian.net/browse/ED-7726
 
 - [patch][3addfe526a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3addfe526a):
 
@@ -571,7 +590,7 @@ Media Picker Dropone component is now migrated to React.
 
 - Previous vanilla js API:
 
-````
+```
 
 // instantiation
 const dropzone = await new MediaPicker('dropzone', context, pickerConfig).init();
@@ -584,72 +603,80 @@ dropzone.on('upload-processing', onUploadProcessing);
 dropzone.on('upload-end', onUploadEnd);
 dropzone.on('upload-error', onUploadError);
 
-````
+```
 
+// activate/deactivate dropone
+dropzone.activate();
+dropzone.deactivate();
 
-  // activate/deactivate dropone
-  dropzone.activate();
-  dropzone.deactivate();
+// cancel ongoing upload
+dropzone.cancel(uploadId);
 
-  // cancel ongoing upload
-  dropzone.cancel(uploadId);
+// when we want to dispose the component
+dropzone.teardown();
 
-  // when we want to dispose the component
-  dropzone.teardown();
-  ```
+```
 
-  - New React API:
+- New React API:
 
-  ```
-  class DropzoneConsumer extends React.Component {
-    render() {
-      return (
-        <Dropzone
+```
+
+class DropzoneConsumer extends React.Component {
+render() {
+return (
+<Dropzone
           config={config}
           context={context}
           onProcessing={onProcessing}
           onError={onError}
           onPreviewUpdate={onPreviewUpdate}
         />
-      )
-    }
-  }
-  ```
+)
+}
+}
 
-  Notes on new API:
+```
 
-  - old `MediaPicker` constructor does not recieve `pickerType` as first parameter anymore, since the only component left to migrate to react is `popup`.
-  Meaning that if before we were doing:
-   ```
-   new MediaPicker('popup', context, config)
-   ```
-  now we will need to just do
-   ```
-   new MediaPicker(context, config)
-   ```
+Notes on new API:
 
-  - No need to explicitly teardown the component. Unmounting the component will do the work
+- old `MediaPicker` constructor does not recieve `pickerType` as first parameter anymore, since the only component left to migrate to react is `popup`.
+Meaning that if before we were doing:
+```
 
-  - `onCancelFn` is a workaround to cancel an ongoing upload. Refer to its type definitions for more info. Before we were saving a ref and calling `ref.cancel()`.
+new MediaPicker('popup', context, config)
 
-  Basically if we render `Dropzone` component in isolation (meaning, not inside another react component), we will need to do something like:
+```
+now we will need to just do
+```
 
-  ```
-  const saveCancelUploadFn = (cancel) => this.cancelUpload = cancel;
+new MediaPicker(context, config)
 
-  ...
+```
 
-  <Dropzone
-    onCancelFn={(cancel) => saveCancelUploadFn(cancel)}
-    config={config}
-    context={context}
-    onProcessing={onProcessing}
-    onError={onError}
-    onPreviewUpdate={onPreviewUpdate}
-  />
-  ```
+- No need to explicitly teardown the component. Unmounting the component will do the work
 
-  At a later point we will just need to call `this.cancelUpload` function in that example, in order to cancel an ongoing upload if needed.
+- `onCancelFn` is a workaround to cancel an ongoing upload. Refer to its type definitions for more info. Before we were saving a ref and calling `ref.cancel()`.
+
+Basically if we render `Dropzone` component in isolation (meaning, not inside another react component), we will need to do something like:
+
+```
+
+const saveCancelUploadFn = (cancel) => this.cancelUpload = cancel;
+
+...
+
+<Dropzone
+onCancelFn={(cancel) => saveCancelUploadFn(cancel)}
+config={config}
+context={context}
+onProcessing={onProcessing}
+onError={onError}
+onPreviewUpdate={onPreviewUpdate}
+/>
+
+```
+
+At a later point we will just need to call `this.cancelUpload` function in that example, in order to cancel an ongoing upload if needed.
 
 ## 44.0.1
 
@@ -678,7 +705,7 @@ Media Picker Browser component is now migrated to React.
 
 - Previous vanilla js API:
 
-````
+```
 
 // instantiation
 const browser = await new MediaPicker('browser', context, pickerConfig).init();

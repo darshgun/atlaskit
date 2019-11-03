@@ -9,8 +9,8 @@ import {
   isSchemaWithSubSupMark,
   isSchemaWithTextColor,
   isSchemaWithTables,
+  normalizeHexColor,
 } from '@atlaskit/adf-schema';
-import { normalizeHexColor } from '@atlaskit/editor-common/color';
 
 import {
   Fragment,

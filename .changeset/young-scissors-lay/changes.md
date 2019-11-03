@@ -1,1 +1,0 @@
-Removed auth credentials from query params in GET requests. Now they are being sent in the heder to help on browser caching.

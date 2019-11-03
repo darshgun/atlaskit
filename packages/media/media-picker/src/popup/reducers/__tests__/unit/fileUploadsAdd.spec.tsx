@@ -2,7 +2,7 @@ import fileUploadsAdd from '../../fileUploadsAdd';
 import { mockState } from '@atlaskit/media-test-helpers';
 import { LocalUpload, State } from '../../../domain/index';
 import { fileUploadsStart } from '../../../actions/fileUploadsStart';
-import { MediaFile } from '../../../../domain/file';
+import { MediaFile } from '../../../../types';
 
 describe('fileUploadsAdd() reducer', () => {
   const MOCK_TIMESTAMP = Date.now();

@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { borderRadius, gridSize } from '@atlaskit/theme/constants';
 import { N500 } from '@atlaskit/theme/colors';
-import { multiply } from '@atlaskit/theme/math';
 import { h500 } from '@atlaskit/theme/typography';
 
 export const Container = styled.section<{ backgroundColor: string }>`
   display: flex;
   border-radius: ${borderRadius}px;
   background-color: ${({ backgroundColor }) => backgroundColor};
-  padding: ${multiply(gridSize, 2)}px;
+  padding: ${gridSize() * 2}px;
 `;
 
 export const ContentContainer = styled.div`
@@ -45,7 +44,7 @@ export const Action = styled.li`
     display: inline-block;
     text-align: center;
     vertical-align: middle;
-    width: ${multiply(gridSize, 2)}px;
+    width: ${gridSize() * 2}px;
   }
 `;
 
@@ -55,7 +54,7 @@ export const Action = styled.li`
 // space.
 export const IconWrapper = styled.div`
   flex: 0 0 auto;
-  width: ${multiply(gridSize, 5)}px;
+  width: ${gridSize() * 5}px;
   > span {
     margin: -2px 0;
     vertical-align: top;

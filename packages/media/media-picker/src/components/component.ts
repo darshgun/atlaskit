@@ -1,10 +1,11 @@
-import { MediaFile } from '../domain/file';
-import { MediaProgress } from '../domain/progress';
-import { MediaError } from '../domain/error';
-import { Preview } from '../domain/preview';
-
+import {
+  MediaFile,
+  Preview,
+  UploadEventPayloadMap,
+  MediaError,
+  MediaProgress,
+} from '../types';
 import { GenericEventEmitter } from '../util/eventEmitter';
-import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface UploadEventEmitter {
   emitUploadsStart(files: MediaFile[]): void;

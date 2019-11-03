@@ -9,14 +9,14 @@ import {
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import Spinner from '@atlaskit/spinner';
+import { Clipboard } from '../src';
 import {
-  Clipboard,
   ImagePreview,
   UploadPreviewUpdateEventPayload,
   UploadEndEventPayload,
   UploadsStartEventPayload,
   UploadErrorEventPayload,
-} from '../src';
+} from '../src/types';
 import {
   PopupHeader,
   PopupContainer,

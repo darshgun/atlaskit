@@ -1501,6 +1501,192 @@ describe('paste plugins', () => {
     });
   });
 
+  describe('paste link copied from iphone "share" button', () => {
+    it('should paste link', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(link({ href: uriList })(uriList))),
+      );
+    });
+
+    it('should paste link inline', () => {
+      const { editorView } = editor(doc(p('hello {<>}')));
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('hello ', link({ href: uriList })(uriList))),
+      );
+    });
+
+    it('should paste link inside action', () => {
+      const { editorView } = editor(
+        doc(
+          taskList({ localId: 'task-list-id' })(
+            taskItem({ localId: 'task-item-id' })('{<>}'),
+          ),
+        ),
+      );
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          taskList({ localId: 'task-list-id' })(
+            taskItem({ localId: 'task-item-id' })(
+              link({ href: uriList })(uriList),
+            ),
+          ),
+        ),
+      );
+    });
+  });
+
+  describe('splitting paragraphs', () => {
+    it('should split simple text-based paragraphs into real paragraphs', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const plain = 'text 1\n\ntext 2\r\n\r\ntext 3';
+
+      dispatchPasteEvent(editorView, { plain });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('text 1'), p('text 2'), p('text 3')),
+      );
+    });
+
+    it('should split multi-line text-based paragraphs into real paragraphs', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const plain =
+        'text 1\nsecond line\nthird line\n\nsecond paragraph\nit good\r\nlast line';
+
+      dispatchPasteEvent(editorView, { plain });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('text 1', hardBreak(), 'second line', hardBreak(), 'third line'),
+          p(
+            'second paragraph',
+            hardBreak(),
+            'it good',
+            hardBreak(),
+            'last line',
+          ),
+        ),
+      );
+    });
+  });
+
+  describe('converting text to list', () => {
+    it('works for a simple list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>* line 1<br />* line 2<br />* line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('maintains empty list items', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>* line 1<br />*<br />* line 3<br />* line 4';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p()), li(p('line 3')), li(p('line 4')))),
+      );
+    });
+
+    it('converts hyphen bullets', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>- line 1<br />- line 2<br />- line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts unicode bullets', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>• line 1<br />• line 2<br />• line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts mixed bulleted list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>• line 1<br />- line 2<br />* line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts numbered list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>1. line 1<br />2. line 2<br />3. line 3</span>';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts markdown-style numbered list (one without ordering)', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>1. line 1<br />1. line 2<br />1. line 3</span>';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts mixed numbered and bulleted list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>- line 1<br />1. line 2<br />* line 3</span>';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1'))), ol(li(p('line 2'))), ul(li(p('line 3')))),
+      );
+    });
+
+    it('converts a list with trailing text', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const html =
+        '<span>* line 1<br />* line 2<br />* line 3<br /><br />outside the list<br />line 2';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          ul(li(p('line 1')), li(p('line 2')), li(p('line 3'))),
+          p('outside the list', hardBreak(), 'line 2'),
+        ),
+      );
+    });
+  });
+
   describe('analytics V3', () => {
     const paragraphDoc = doc(p('Five{<>}'));
     const orderedListDoc = doc(ol(li(p('Five{<>}'))));

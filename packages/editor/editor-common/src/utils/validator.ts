@@ -672,6 +672,11 @@ export const getValidNode = (
 
         break;
       }
+
+      case 'expand':
+      case 'nestedExpand': {
+        return { type, attrs, content, marks };
+      }
     }
   }
 

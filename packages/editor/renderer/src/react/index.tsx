@@ -289,6 +289,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       allowHeadingAnchorLinks: this.allowHeadingAnchorLinks,
       rendererAppearance: this.appearance,
       fireAnalyticsEvent: this.fireAnalyticsEvent,
+      nodeType: node.type.name,
       ...node.attrs,
     };
   }

@@ -6,6 +6,7 @@ import createEvent from './create-event';
 export interface PasteContent {
   plain?: string;
   html?: string;
+  'uri-list'?: string;
   types?: Array<string>;
   files?: Array<File>;
 }
@@ -31,6 +32,9 @@ export default (
       }
       if (type === 'text/html') {
         return content.html;
+      }
+      if (type === 'text/uri-list') {
+        return content['uri-list'];
       }
       return;
     },

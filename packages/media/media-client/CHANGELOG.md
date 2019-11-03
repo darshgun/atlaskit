@@ -1,5 +1,34 @@
 # @atlaskit/media-client
 
+## 4.0.1
+
+### Patch Changes
+
+- [patch][c0da69b4dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0da69b4dc):
+
+  [MS-2626] Fix objectToQueryString when there is an object using null as value
+
+## 4.0.0
+
+### Minor Changes
+
+- [minor][cbe5316ac9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cbe5316ac9):
+
+  http failures now return Error instances rather than the Response- [minor][51dfee6d35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51dfee6d35):
+
+  Image, Binary and Artifact files will be cached for 30 days
+
+### Patch Changes
+
+- [patch][436b46929e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/436b46929e):
+
+  Removed auth credentials from query params in GET requests. Now they are being sent in the heder to help on browser caching.
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-core@31.0.0
+
 ## 3.0.1
 
 ### Patch Changes

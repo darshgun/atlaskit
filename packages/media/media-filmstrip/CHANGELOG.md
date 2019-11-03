@@ -1,5 +1,13 @@
 # @atlaskit/media-filmstrip
 
+## 36.0.0
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-core@31.0.0
+
 ## 35.0.0
 
 ### Major Changes
@@ -38,7 +46,6 @@
   })
 
   const mediaPicker = MediaPicker(context);
-  ```
 
   <Card context={context}>
   <SmartMediaEditor context={context}>
@@ -50,37 +57,37 @@
   <MediaViewer context={context}>
   ```
 
-**Now**:
+  **Now**:
 
-````
-import {MediaClientConfig} from '@atlaskit/media-core';
-import {Card} from '@atlaskit/media-card'
-import {SmartMediaEditor} from '@atlaskit/media-editor'
-import {Filmstrip} from '@atlaskit/media-filmstrip'
-import {MediaImage} from '@atlaskit/media-image'
-import {MediaViewer} from '@atlaskit/media-viewer'
-import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
-
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+  ```
 
 const mediaClientConfig: MediaClientConfig = {
-  authProvider: () => Promise.resolve({})
+authProvider: () => Promise.resolve({})
 }
 
 const mediaPicker = MediaPicker(mediaClientConfig);
 
-<Card mediaClientConfig={mediaClientConfig}>
-<SmartMediaEditor mediaClientConfig={mediaClientConfig}>
-<Filmstrip mediaClientConfig={mediaClientConfig}>
-<MediaImage mediaClientConfig={mediaClientConfig}>
-<Dropzone mediaClientConfig={mediaClientConfig}>
-<Clipboard mediaClientConfig={mediaClientConfig}>
-<Browser mediaClientConfig={mediaClientConfig}>
-<MediaViewer mediaClientConfig={mediaClientConfig}>
-```- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
 
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
 
-**FABDODGEM-13 Editor Damask Release**
-  - [Internal post](http://go.atlassian.com/damask-release)
+**FABDODGEM-13 Editor Damask Release** - [Internal post](http://go.atlassian.com/damask-release)
 
 **BREAKING CHANGES**
 
@@ -92,7 +99,7 @@ const mediaPicker = MediaPicker(mediaClientConfig);
 - **Editor Mobile Bridge:** Adapts to task-decision changes.
 - **Util Data Test:** Adapts to task-decision changes.
 
------
+---
 
 **Affected Editor Components:**
 
@@ -126,7 +133,6 @@ tables, media, mobile, emoji, tasks & decisions, analytics
   - https://product-fabric.atlassian.net/browse/FM-2502
 - Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
   - https://product-fabric.atlassian.net/browse/FM-2370
-
 
 **Media**
 
@@ -246,7 +252,7 @@ Use boolean prop `shouldOpenMediaViewer` to activate Media Viewer in media cards
 
 Example:
 
-````
+```
 
 <Filmstrip
     shouldOpenMediaViewer={openMediaViewer}
@@ -254,7 +260,7 @@ Example:
     items={items}
   />
 
-````
+```
 
 ## 34.2.5
 
@@ -425,7 +431,7 @@ If you’ve been using CardView for loading:
 
 ```js
 <CardView status="loading" mediaItemType="file" dimensions={cardDimensions} />
-````
+```
 
 Now you can use new component:
 

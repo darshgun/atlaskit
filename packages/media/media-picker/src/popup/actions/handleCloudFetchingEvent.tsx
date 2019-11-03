@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { WsUploadEvents } from '../tools/websocket/upload/wsUploadEvents';
-import { MediaFile } from '../../domain/file';
+import { MediaFile } from '../../types';
 
 export const HANDLE_CLOUD_FETCHING_EVENT = 'HANDLE_CLOUD_FETCHING_EVENT';
 

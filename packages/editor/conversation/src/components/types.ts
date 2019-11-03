@@ -81,4 +81,5 @@ export interface SharedProps {
     CommentAction: typeof AkCommentAction,
     comment: CommentType,
   ) => JSX.Element[];
+  renderAfterComment?: (comment: CommentType) => JSX.Element;
 }
