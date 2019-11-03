@@ -88,7 +88,6 @@ type SlowInputAEP = OperationalAEP<
   {
     time: number;
     nodeSize: number;
-    nodes?: Record<string, number>;
   },
   undefined
 >;
