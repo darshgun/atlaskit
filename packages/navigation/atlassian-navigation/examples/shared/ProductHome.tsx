@@ -28,7 +28,7 @@ export const ConfluenceProductHome = () => (
 );
 
 export const JiraProductHome = () => (
-  <ProductHome icon={JiraIcon} logo={JiraLogo} />
+  <ProductHome siteName="Extranet" icon={JiraIcon} logo={JiraLogo} />
 );
 
 export const JiraServiceDeskProductHome = () => (

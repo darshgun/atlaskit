@@ -1,8 +1,5 @@
 import { ThemeProps, ThemeTokens } from '@atlaskit/button/types';
-import {
-  fontSizeSmall,
-  gridSize as gridSizeFn,
-} from '@atlaskit/theme/constants';
+import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import {
   actionSectionDesktopCSS,
   actionSectionMobileCSS,
@@ -35,10 +32,6 @@ export const getCreateButtonTheme = ({ mode: { create } }: NavigationTheme) => (
   return {
     buttonStyles: {
       ...buttonStyles,
-      fontSize: fontSizeSmall(),
-      fontWeight: 'bold',
-      height: buttonHeight,
-      textTransform: 'uppercase',
       ...create.default,
       ':hover': create.hover,
       ':focus': create.focus,

@@ -85,6 +85,12 @@ export interface Props extends WithAnalyticsEventsProps {
   placeholder?: string;
   /** Locale used to format the the date and calendar. See [DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) */
   locale: string;
+
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+   *  - `{testId}--container` wrapping element of date-picker
+   **/
+  testId?: string;
 }
 
 interface State {
@@ -146,6 +152,7 @@ const Menu = ({
           selected={[selectProps.calendarValue]}
           innerProps={innerProps}
           locale={selectProps.calendarLocale}
+          testId={selectProps.testId}
         />
       </StyledMenu>
     }
@@ -444,6 +451,7 @@ class DatePicker extends React.Component<Props, State> {
       selectProps,
       spacing,
       locale,
+      testId,
     } = this.props;
     const BORDER_WIDTH = 2;
     const ICON_PADDING = 2;
@@ -474,6 +482,7 @@ class DatePicker extends React.Component<Props, State> {
         onInput={this.onSelectInput}
         onKeyDown={this.onSelectKeyDown}
         ref={this.getContainerRef}
+        data-testid={testId && `${testId}--container`}
       >
         <input name={name} type="hidden" value={value} />
         <Select
@@ -515,6 +524,7 @@ class DatePicker extends React.Component<Props, State> {
           {...calendarProps}
           spacing={spacing}
           validationState={isInvalid ? 'error' : 'default'}
+          testId={testId}
         />
       </div>
     );

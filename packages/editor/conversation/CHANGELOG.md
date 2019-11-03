@@ -1,5 +1,13 @@
 # @atlaskit/conversation
 
+## 15.4.1
+
+### Patch Changes
+
+- [patch][8cb11b71b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8cb11b71b6):
+
+  Move unload logic from Conversation to Editor component
+
 ## 15.4.0
 
 ### Minor Changes

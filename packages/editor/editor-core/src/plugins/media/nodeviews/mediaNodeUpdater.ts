@@ -118,12 +118,15 @@ export class MediaNodeUpdater {
       __fileSize: size,
       __contextId: contextId,
     };
+    const attrsChanged = hasPrivateAttrsChanged(attrs, newAttrs);
 
-    // TODO [MS-2258]: we should pass this.props.isMediaSingle and remove hardcoded "true"
-    updateAllMediaNodesAttrs(attrs.id, newAttrs, true)(
-      this.props.view.state,
-      this.props.view.dispatch,
-    );
+    if (attrsChanged) {
+      // TODO [MS-2258]: we should pass this.props.isMediaSingle and remove hardcoded "true"
+      updateAllMediaNodesAttrs(attrs.id, newAttrs, true)(
+        this.props.view.state,
+        this.props.view.dispatch,
+      );
+    }
   };
 
   getAttrs = (): MediaAttributes | ExternalMediaAttributes | undefined => {
@@ -373,3 +376,15 @@ export class MediaNodeUpdater {
     }
   };
 }
+
+const hasPrivateAttrsChanged = (
+  currentAttrs: MediaAttributes,
+  newAttrs: Partial<MediaAttributes>,
+): Boolean => {
+  return (
+    currentAttrs.__fileName !== newAttrs.__fileName ||
+    currentAttrs.__fileMimeType !== newAttrs.__fileMimeType ||
+    currentAttrs.__fileSize !== newAttrs.__fileSize ||
+    currentAttrs.__contextId !== newAttrs.__contextId
+  );
+};

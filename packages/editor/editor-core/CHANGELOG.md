@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 114.0.2
+
+### Patch Changes
+
+- [patch][dba498a7b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dba498a7b0):
+
+  Prevent updating MediaSingle node if new attrs are the same as current ones
+
 ## 114.0.1
 
 ### Patch Changes
