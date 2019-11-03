@@ -261,7 +261,7 @@ export interface Props {
   placeholderTextEnabled?: boolean;
   layoutSectionEnabled?: boolean;
   expandEnabled?: boolean;
-  extensionProviders?: Promise<ExtensionProvider>[];
+  extensionProvider?: Promise<ExtensionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
