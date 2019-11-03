@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 7.0.1
+
+- Updated dependencies [48640192dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48640192dc):
+  - @atlaskit/atlassian-navigation@0.5.0
+
 ## 7.0.0
 
 ### Major Changes

@@ -177,7 +177,11 @@ export default () => {
 
       <h3>Date / time picker</h3>
       <Label htmlFor="react-select-datetimepicker-1--input" label="default" />
-      <DateTimePicker id="datetimepicker-1" onChange={onChange} />
+      <DateTimePicker
+        id="datetimepicker-1"
+        onChange={onChange}
+        testId={'dateTimePicker'}
+      />
 
       <Label
         htmlFor="react-select-datetimepicker-2--input"
