@@ -468,20 +468,6 @@ pipelines:
             - yarn --ignore-engines
             - yarn update-pr "$BITBUCKET_COMMIT" "$BITBUCKET_REPO_FULL_NAME"
 
-    post-release-comment:
-      - step:
-          name: Post Release Comment
-          script:
-            - source ./build-setup.sh
-            - cd build/ci-scripts
-            - yarn --ignore-engines
-          after-script:
-            # Only execute the below if successful
-            - test $BITBUCKET_EXIT_CODE -eq 0
-            - cd build/scheduled-releases
-            - yarn --ignore-engines
-            - yarn update-pr "$BITBUCKET_COMMIT" "$BITBUCKET_REPO_FULL_NAME"
-
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install node_modules.
     # We split into two steps so that one can clear the cache so that the second one starts with no cache.

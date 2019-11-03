@@ -14,7 +14,7 @@ import {
   PullRequestClient,
 } from '@atlaskit/build-utils/bitbucket';
 import { createSpyObject } from '@atlaskit/build-utils/logging';
-import { capitalise } from '../utils';
+import { capitalise, addReleaseComment } from '../utils';
 
 async function updatePrWithFutureRelease(
   prClient: PullRequestClient,
@@ -31,7 +31,8 @@ async function updatePrWithFutureRelease(
   const nextRelease = capitalise(
     nextReleaseTag.replace(NextReleaseTagPrefix, ''),
   ).trim();
-  await prClient.addReleaseComment(
+  await addReleaseComment(
+    prClient,
     matchedPr.id,
     'Scheduled to be released',
     `in \`${nextRelease}\`.\n

@@ -45,7 +45,6 @@ export default async function main(
   );
   console.log('Done.');
 
-  // @ts-ignore
   const releaseBranchName = `${ReleaseBranchPrefix}${releaseName}`;
   process.stdout.write(
     `Checking out release branch from ${originDevelopBranch}...`,
