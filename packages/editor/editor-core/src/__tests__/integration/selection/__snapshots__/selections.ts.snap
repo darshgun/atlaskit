@@ -33,17 +33,6 @@ Object {
 }
 `;
 
-exports[`select-extension.ts: Select blockExtension with other contents from top to bottom 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "type": "paragraph",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
 exports[`select-extension.ts: Select bodiedExtension with other contents from bottom to top 1`] = `
 Object {
   "content": Array [
