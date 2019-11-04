@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { media, mediaGroup, mediaSingle } from '@atlaskit/adf-schema';
 import { MediaProvider } from '@atlaskit/editor-common';
+import {
+  media,
+  mediaGroup,
+  mediaSingle,
+  mediaWithAltText,
+} from '@atlaskit/adf-schema';
 import {
   EditorPlugin,
   EditorAppearance,
@@ -80,14 +85,19 @@ const mediaPlugin = (
   name: 'media',
 
   nodes() {
+    const {
+      allowMediaGroup = true,
+      allowMediaSingle = false,
+      UNSAFE_allowAltTextOnImages = false,
+    } = options || {};
+
+    const mediaNode = UNSAFE_allowAltTextOnImages ? mediaWithAltText : media;
+
     return [
       { name: 'mediaGroup', node: mediaGroup },
       { name: 'mediaSingle', node: mediaSingle },
-      { name: 'media', node: media },
+      { name: 'media', node: mediaNode },
     ].filter(node => {
-      const { allowMediaGroup = true, allowMediaSingle = false } =
-        options || {};
-
       if (node.name === 'mediaGroup') {
         return allowMediaGroup;
       }

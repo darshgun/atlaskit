@@ -319,6 +319,7 @@ export const getValidNode = (
         let mediaType = '';
         let mediaCollection = [];
         let mediaUrl = '';
+
         if (attrs) {
           const { id, collection, type, url } = attrs;
           mediaId = id;
@@ -328,14 +329,20 @@ export const getValidNode = (
         }
 
         if (mediaType === 'external' && !!mediaUrl) {
+          const mediaAttrs: any = {
+            type: mediaType,
+            url: mediaUrl,
+            width: attrs.width,
+            height: attrs.height,
+          };
+
+          if (attrs.alt && adfStage === 'stage0') {
+            mediaAttrs.alt = attrs.alt;
+          }
+
           return {
             type,
-            attrs: {
-              type: mediaType,
-              url: mediaUrl,
-              width: attrs.width,
-              height: attrs.height,
-            },
+            attrs: mediaAttrs,
           };
         } else if (mediaId && mediaType) {
           const mediaAttrs: any = {
@@ -350,6 +357,10 @@ export const getValidNode = (
 
           if (attrs.height) {
             mediaAttrs.height = attrs.height;
+          }
+
+          if (attrs.alt && adfStage === 'stage0') {
+            mediaAttrs.alt = attrs.alt;
           }
 
           return {

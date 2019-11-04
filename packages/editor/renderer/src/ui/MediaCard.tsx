@@ -55,6 +55,7 @@ export interface MediaCardProps {
   disableOverlay?: boolean;
   useInlinePlayer?: boolean;
   rendererContext?: RendererContext;
+  alt?: string;
 }
 
 export interface State {
@@ -252,6 +253,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
     } = this.state;
     const {
       id,
+      alt,
       type,
       collection,
       occurrenceKey,
@@ -303,6 +305,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       <CardWrapper
         {...getClipboardAttrs({
           id,
+          alt,
           collection,
           contextIdentifierProvider,
           cardDimensions,
@@ -311,6 +314,7 @@ export class MediaCardInternal extends Component<MediaCardProps, State> {
       >
         <Card
           identifier={identifier}
+          alt={alt}
           contextId={contextId}
           mediaClientConfig={mediaClientConfig}
           dimensions={cardDimensions}
@@ -334,12 +338,14 @@ export const CardWrapper = styled.div``;
 // Needed for copy & paste
 export const getClipboardAttrs = ({
   id,
+  alt,
   collection,
   contextIdentifierProvider,
   cardDimensions,
   fileState,
 }: {
   id: string;
+  alt?: string;
   collection?: string;
   contextIdentifierProvider?: ContextIdentifierProvider;
   cardDimensions?: CardDimensions;
@@ -376,6 +382,7 @@ export const getClipboardAttrs = ({
     'data-file-name': fileName,
     'data-file-size': fileSize,
     'data-file-mime-type': fileMimeType,
+    'data-alt': alt,
   };
 };
 

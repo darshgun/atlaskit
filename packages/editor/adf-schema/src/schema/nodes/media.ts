@@ -33,6 +33,10 @@ export interface MediaBaseAttributes {
    * @minLength 1
    */
   occurrenceKey?: string;
+  /**
+   * @stage 0
+   */
+  alt?: string;
   // For both CQ and JIRA
   __fileName?: string | null;
   // For CQ
@@ -133,6 +137,7 @@ export const media: NodeSpec = {
       'data-width': node.attrs.width,
       'data-height': node.attrs.height,
       'data-url': node.attrs.url,
+      'data-alt': node.attrs.alt,
       // toDOM is used for static rendering as well as editor rendering. This comes into play for
       // emails, copy/paste, etc, so the title and styling here *is* useful (despite a React-based
       // node view being used for editing).
@@ -150,6 +155,14 @@ export const media: NodeSpec = {
 
     return ['div', attrs];
   },
+};
+
+export const mediaWithAltText: NodeSpec = {
+  ...media,
+  attrs: {
+    ...defaultAttrs,
+    alt: { default: null },
+  } as any,
 };
 
 export const camelCaseToKebabCase = (str: string) =>
@@ -173,7 +186,7 @@ export const copyPrivateAttributes = (
  * There's no concept of optional property in ProseMirror. It sets value as `null`
  * when there's no use of any property. We are filtering out all private & optional attrs here.
  */
-const optionalAttributes = ['occurrenceKey', 'width', 'height', 'url'];
+const optionalAttributes = ['occurrenceKey', 'width', 'height', 'url', 'alt'];
 const externalOnlyAttributes = ['type', 'url', 'width', 'height'];
 
 export const toJSON = (node: PMNode) => ({

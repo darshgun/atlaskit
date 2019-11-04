@@ -76,10 +76,21 @@ type DeletedLayoutAEP = TrackAEP<
   undefined
 >;
 
+type DeletedExpandAEP = TrackAEP<
+  ACTION.DELETED,
+  ACTION_SUBJECT.EXPAND | ACTION_SUBJECT.NESTED_EXPAND,
+  undefined,
+  {
+    inputMethod: INPUT_METHOD.TOOLBAR;
+  },
+  undefined
+>;
+
 export type NodeEventPayload =
   | ChangePanelAEP
   | DeletePanelAEP
   | DeletedSmartLink
   | VisitedSmartLink
   | ChangedLayoutAEP
-  | DeletedLayoutAEP;
+  | DeletedLayoutAEP
+  | DeletedExpandAEP;
