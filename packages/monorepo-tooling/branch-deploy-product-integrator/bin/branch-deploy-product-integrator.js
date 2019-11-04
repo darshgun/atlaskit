@@ -10,7 +10,7 @@ if (dev) {
   require('ts-node').register({ project });
 }
 
-require(path.join('..', dev ? 'src/cli' : 'dist/cli'))
+require(path.join('..', dev ? 'src/cli' : 'dist/cjs/cli'))
   .run()
   .catch(error => {
     if (typeof error === 'number') {

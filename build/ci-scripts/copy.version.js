@@ -16,21 +16,15 @@ async function copyVersionJson(pkg, project) {
     only: ['name', 'version', 'sideEffects'],
   });
   const packageInfo = await getPackageInfo(pkg, project);
-  if (packageInfo.isTypeScriptCLI) {
-    await fse.move(`${distDir}/package.json`, `${distDir}/version.json`, {
-      overwrite: true,
-    });
-  } else {
+  if (packageInfo.runTypeScriptCjs) {
     await fse.mkdirp(`${distDir}/cjs`);
-    await fse.mkdirp(`${distDir}/esm`);
-    await fse.move(`${distDir}/package.json`, `${distDir}/cjs/version.json`, {
-      overwrite: true,
-    });
-    await fse.copy(
-      `${distDir}/cjs/version.json`,
-      `${distDir}/esm/version.json`,
-    );
+    await fse.copy(`${distDir}/package.json`, `${distDir}/cjs/version.json`);
   }
+  if (packageInfo.runTypescriptEsm) {
+    await fse.mkdirp(`${distDir}/esm`);
+    await fse.copy(`${distDir}/package.json`, `${distDir}/esm/version.json`);
+  }
+  await fse.remove(`${distDir}/package.json`);
 }
 
 async function main(

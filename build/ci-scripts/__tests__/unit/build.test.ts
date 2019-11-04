@@ -47,7 +47,7 @@ describe('Build', () => {
         name: '@atlaskit/editor-core',
         dir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
         relativeDir: 'packages/editor/editor-core',
-        isTypeScript: true,
+        runTypescript: true,
       },
     ]);
   });
@@ -149,8 +149,8 @@ describe('Build', () => {
         {
           name: '@atlaskit/navigation-next',
           relativeDir: 'packages/core/navigation-next',
-          isBabel: true,
-          isFlow: true,
+          runBabel: true,
+          runFlow: true,
         },
       ]);
 
@@ -259,12 +259,12 @@ describe('Build', () => {
           {
             name: '@atlaskit/editor-core',
             relativeDir: 'packages/editor/editor-core',
-            isTypeScript: true,
+            runTypescript: true,
           },
           {
             name: '@atlaskit/editor-common',
             relativeDir: 'packages/editor/editor-common',
-            isTypeScript: true,
+            runTypescript: true,
           },
         ]);
 
@@ -315,8 +315,8 @@ describe('Build', () => {
             name: '@atlaskit/navigation-next',
             dir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
             relativeDir: 'packages/core/navigation-next',
-            isBabel: true,
-            isFlow: true,
+            runBabel: true,
+            runFlow: true,
           },
         ]);
       });

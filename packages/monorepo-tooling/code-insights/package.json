@@ -14,7 +14,10 @@
   "atlaskit": {
     "internal": true,
     "name": "Code Insights",
-    "team": "monorepo tooling"
+    "team": "monorepo tooling",
+    "build": {
+      "targets": ["cjs"]
+    }
   },
   "dependencies": {
     "@yarnpkg/lockfile": "^1.1.0",

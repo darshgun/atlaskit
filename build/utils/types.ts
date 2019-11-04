@@ -9,15 +9,29 @@ export type PackageInfo = {
   name: string;
   config: PkgJson;
   relativeDir: string;
-  isTypeScript: boolean;
-  isTypeScriptCLI: boolean;
-  isBabel: boolean;
-  isFlow: boolean;
-  isESLint: boolean;
-  isKarma: boolean;
-  isBrowserStack: boolean;
-  isStylelint: boolean;
-  isWebdriver: boolean;
-  isVisualRegression: boolean;
   isBrowserPackage: boolean;
+  runTypeScriptCjs: boolean;
+  runTypeScriptEsm: boolean;
+  runTypecheck: boolean;
+  runBabel: boolean;
+  runFlow: boolean;
+  runESLint: boolean;
+  runKarma: boolean;
+  runBrowserStack: boolean;
+  runStylelint: boolean;
+  runWebdriver: boolean;
+  runVisualRegression: boolean;
 };
+
+export type Tool =
+  | 'typecheck'
+  | 'typescriptcjs'
+  | 'typescriptesm'
+  | 'babel'
+  | 'flow'
+  | 'eslint'
+  | 'karma'
+  | 'browserstack'
+  | 'stylelint'
+  | 'webdriver'
+  | 'vr';
