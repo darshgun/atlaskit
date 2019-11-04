@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, ImgHTMLAttributes, ComponentClass } from 'react';
+import { HTMLAttributes, ImgHTMLAttributes, ComponentClass } from 'react';
 import { gridSize, borderRadius, colors } from '@atlaskit/theme';
 
 export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`

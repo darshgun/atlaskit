@@ -22,19 +22,17 @@ export interface WrapperProps {
   dimensions: CardDimensions;
 }
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<WrapperProps>`
   ${center} background: ${themed({ light: N20, dark: DN50 })};
   color: ${themed({ light: N50, dark: DN100 })};
   ${borderRadius}
   max-height: 100%;
   max-width: 100%;
  
-  ${(props: WrapperProps) => {
-    return `
+  ${props => `
       width: ${props.dimensions.width};
       height: ${props.dimensions.height};
-    `;
-  }}
+    `}
   > span {
     animation: ${blinkLoadingAnimation} 0.8s infinite;
   }

@@ -18,12 +18,18 @@ export const NavigationSkeleton = ({
   primaryItemsCount = 4,
   secondaryItemsCount = 4,
   theme = defaultTheme,
+  showSiteName = false,
 }: NavigationSkeletonProps) => {
   return (
     <ThemeProvider value={theme}>
       <div css={containerCSS(theme)}>
         <div css={leftCSS}>
-          <ProductHomeSkeleton />
+          <IconButtonSkeleton
+            marginLeft={0}
+            marginRight={5}
+            size={gridSize() * 3.25}
+          />
+          <ProductHomeSkeleton showSiteName={showSiteName} />
           <PrimaryItemsContainerSkeleton count={primaryItemsCount} />
         </div>
         <div css={rightCSS}>

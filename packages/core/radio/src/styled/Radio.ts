@@ -12,9 +12,7 @@ interface LabelProps {
 export const Label = styled.label<LabelProps>`
   align-items: flex-start;
   color: ${(props): string =>
-    props.isDisabled
-      ? disabledColor(props)
-      : ((colors.text as unknown) as (props?: {}) => number | string)(props)};
+    props.isDisabled ? disabledColor(props) : colors.text(props)};
   ${({ isDisabled }: LabelProps) =>
     isDisabled
       ? css`

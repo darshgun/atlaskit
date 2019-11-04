@@ -9,7 +9,6 @@ import {
 
 import {
   ImageViewer,
-  REQUEST_CANCELLED,
   ImageViewerProps,
 } from '../../../../../newgen/viewers/image';
 import { BaseState } from '../../../../../newgen/viewers/base-viewer';
@@ -56,16 +55,27 @@ describe('ImageViewer', () => {
     expect(el.state().content.data).toBeDefined();
   });
 
-  it('does not update state when image fetch request is cancelled', async () => {
-    const response = Promise.reject(new Error(REQUEST_CANCELLED));
+  it('should not update state when image fetch request is cancelled', async () => {
+    const response = Promise.reject(new Error('request_cancelled'));
     const { el } = createFixture(response);
 
-    (el as any).instance()['preventRaceCondition'] = jest.fn();
-    await awaitError(response, REQUEST_CANCELLED);
-    expect(response).toBeDefined();
-    expect(
-      (el as any).instance()['preventRaceCondition'].mock.calls.length === 1,
-    );
+    const previousContent = el.state().content;
+    expect(previousContent).toEqual({ state: { status: 'PENDING' } });
+
+    await awaitError(response, 'request_cancelled');
+
+    expect(el.state().content).toEqual(previousContent);
+  });
+
+  it('should not call `onLoad` callback when image fetch request is cancelled', async () => {
+    const response = Promise.reject(new Error('request_cancelled'));
+    const { el } = createFixture(response);
+
+    expect(el.props().onLoad).not.toHaveBeenCalled();
+
+    await awaitError(response, 'request_cancelled');
+
+    expect(el.props().onLoad).not.toHaveBeenCalled();
   });
 
   it('cancels an image fetch request when unmounted', () => {

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { canUseDOM } from 'exenv';
 
-import { FileIdentifier, MediaClient } from '@atlaskit/media-client';
-import { MediaFile } from '@atlaskit/media-store';
+import { FileIdentifier, MediaClient, MediaFile } from '@atlaskit/media-client';
 import {
   MediaMock,
   defaultCollectionName,

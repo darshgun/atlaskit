@@ -19,6 +19,7 @@ import { ClickAreaBlock } from '../../ui/Addon';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import WidthEmitter from '../../ui/WidthEmitter';
 import { EditorProps } from '../../types';
+import { EditorActions } from '../..';
 
 const FullPageEditorWrapper = styled.div`
   min-width: 340px;
@@ -126,7 +127,10 @@ interface State {
   containerWidth?: number;
 }
 
-export class FullPage extends React.Component<EditorProps, State> {
+export class FullPage extends React.Component<
+  EditorProps & { onMount: (actions: EditorActions) => void },
+  State
+> {
   state = { showKeyline: false };
 
   static displayName = 'FullPageEditor';
@@ -190,8 +194,7 @@ export class FullPage extends React.Component<EditorProps, State> {
     } = this.props;
 
     return (
-      // TODO: fix this type
-      <Editor {...this.props as any}>
+      <Editor {...this.props}>
         <BaseTheme dynamicTextSizing={allowDynamicTextSizing}>
           <FullPageEditorWrapper className="akEditor">
             <MainToolbar showKeyline={this.state.showKeyline}>

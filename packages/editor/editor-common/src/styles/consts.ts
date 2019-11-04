@@ -91,6 +91,7 @@ export const akEditorMediaResizeHandlerPaddingWide = 12;
 export const akEditorMediaResizeHandlerPadding = 4;
 export const gridMediumMaxWidth = 1024;
 export const breakoutWideScaleRatio = 1.33;
+export const akMediaSingleResizeZIndex = akEditorUnitZIndex * 99;
 
 export type EditorTheme = {
   baseFontSize?: number;

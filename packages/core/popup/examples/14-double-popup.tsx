@@ -53,6 +53,8 @@ const PopupContent: FC<PopupProps> = ({ placement }) => {
           <a
             id="popup-trigger"
             {...triggerProps}
+            // @ts-ignore
+            ref={triggerProps.ref}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? 'Close' : 'Open'} Popup

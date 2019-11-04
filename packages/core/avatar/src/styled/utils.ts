@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+import { ThemedValue } from '@atlaskit/theme';
 import { themed } from '@atlaskit/theme/components';
 import { B200, N70A, N200A, DN80A, background } from '@atlaskit/theme/colors';
 import {
@@ -88,7 +89,7 @@ export function getInnerStyles(
   // Inherit cursor styles so we don't cancel out pointer cursors in places like avatar group more dropdown
   let cursor = 'inherit';
   let outline = 'none';
-  let overlayShade = overlayColorDefault;
+  let overlayShade: string | ThemedValue<string> = overlayColorDefault;
   let overlayOpacity = 0;
   let pointerEvents = 'auto';
   let position = 'static';

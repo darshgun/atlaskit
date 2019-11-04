@@ -14,7 +14,6 @@ import {
   MediaNodeUpdater,
   MediaNodeUpdaterProps,
 } from '../../../../../plugins/media/nodeviews/mediaNodeUpdater';
-import * as mediaCommon from '../../../../../plugins/media/utils/media-common';
 import { MediaProvider } from '../../../../../plugins/media/pm-plugins/main';
 
 describe('MediaNodeUpdater', () => {
@@ -30,9 +29,6 @@ describe('MediaNodeUpdater', () => {
       .mockReturnValue(() => true);
     jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => true);
     jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => true);
-    jest
-      .spyOn(mediaCommon, 'getViewMediaClientConfigFromMediaProvider')
-      .mockReturnValue(Promise.resolve(getDefaultMediaClientConfig()));
 
     const contextIdentifierProvider: Promise<
       ContextIdentifierProvider
@@ -181,6 +177,21 @@ describe('MediaNodeUpdater', () => {
         },
         true,
       );
+    });
+
+    it('should not update node if new attrs are the same', async () => {
+      const { mediaNodeUpdater } = setup();
+      const mediaClient = fakeMediaClient();
+      const fileState: Partial<FileState> = {
+        id: 'source-file-id',
+      };
+
+      asMock(mediaClient.file.getCurrentState).mockReturnValue(
+        Promise.resolve(fileState),
+      );
+      asMockReturnValue(getMediaClient, mediaClient);
+      await mediaNodeUpdater.updateFileAttrs();
+      expect(commands.updateAllMediaNodesAttrs).not.toBeCalled();
     });
   });
 

@@ -4,11 +4,8 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { publishReplay } from 'rxjs/operators/publishReplay';
 import uuid from 'uuid/v4';
 import Dataloader from 'dataloader';
-import {
-  AuthProvider,
-  authToOwner,
-  ProcessingFileState,
-} from '@atlaskit/media-core';
+import { ProcessingFileState } from '../models/file-state';
+import { AuthProvider, authToOwner } from '@atlaskit/media-core';
 import {
   MediaStore,
   UploadableFile,

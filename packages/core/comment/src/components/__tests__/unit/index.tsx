@@ -84,6 +84,18 @@ describe('@atlaskit comments', () => {
         });
       });
 
+      describe('afterContent prop', () => {
+        it('should render "after content" when provided', () => {
+          const content = <p>My sample content</p>;
+          const afterContent = <button>My sample after content</button>;
+          const wrapper = mount(
+            <Comment avatar="" content={content} afterContent={afterContent} />,
+          );
+          expect(wrapper.contains(content)).toBe(true);
+          expect(wrapper.contains(afterContent)).toBe(true);
+        });
+      });
+
       describe('time prop', () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;

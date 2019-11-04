@@ -39,16 +39,10 @@ export const authToOwner = (auth: Auth): ClientAltBasedAuth | AsapBasedAuth => {
 
   return clientAuth;
 };
-
-export interface ContextConfig {
-  readonly cacheSize?: number;
+export interface MediaClientConfig {
   readonly authProvider: AuthProvider;
   readonly userAuthProvider?: AuthProvider;
   readonly getAuthFromContext?: AuthFromContextProvider;
-}
-
-export interface MediaClientConfig extends ContextConfig {
-  // TODO remove cacheSize
 }
 
 export interface AuthContext {

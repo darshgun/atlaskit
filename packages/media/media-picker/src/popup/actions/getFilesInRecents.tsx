@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { MediaCollectionItem } from '@atlaskit/media-store';
+import { MediaCollectionItem } from '@atlaskit/media-client';
 
 export const GET_FILES_IN_RECENTS = 'GET_FILES_IN_RECENTS';
 

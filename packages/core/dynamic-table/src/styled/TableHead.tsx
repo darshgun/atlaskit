@@ -18,9 +18,9 @@ interface HeadProps {
   isRanking?: boolean;
 }
 
-export const Head = styled.thead`
+export const Head = styled.thead<HeadProps>`
   border-bottom: 2px solid ${head.borderColor};
-  ${({ isRanking }: HeadProps) => isRanking && rankingStyles};
+  ${({ isRanking }) => isRanking && rankingStyles};
 `;
 
 interface HeadCellProps extends TruncateStyleProps {
@@ -30,8 +30,11 @@ interface HeadCellProps extends TruncateStyleProps {
 }
 
 export const HeadCell = styled.th<HeadCellProps>`
-  ${p => onClickStyle({ onClick: Boolean(p.onClick) })} ${p =>
-  truncateStyle(p)} ${p => arrowsStyle(p)} ${cellStyle} border: none;
+  ${({ onClick }) => onClickStyle({ onClick: Boolean(onClick) })} 
+  ${p => truncateStyle(p)} 
+  ${p => arrowsStyle(p)} 
+  ${cellStyle} 
+  border: none;
   color: ${head.textColor};
   box-sizing: border-box;
   font-size: 12px;

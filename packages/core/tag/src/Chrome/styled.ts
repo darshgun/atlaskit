@@ -17,13 +17,13 @@ const colorRemoval = themed({ light: R500, dark: DN30 });
 const colorRemovalHover = themed({ light: N700, dark: DN30 });
 const backgroundColorRemoval = themed({ light: R50, dark: R100 });
 
-export const Span = styled.span`
+export const Span = styled.span<SpanProps>`
   &:focus {
     box-shadow: 0 0 0 2px ${focusRingColor};
     outline: none;
   }
 
-  background-color: ${(p: SpanProps) =>
+  background-color: ${p =>
     p.markedForRemoval ? backgroundColorRemoval(p) : backgroundColor(p)};
   color: ${p => (p.markedForRemoval ? colorRemoval(p) : textColor(p))};
   border-radius: ${({ isRounded }) =>
@@ -34,12 +34,12 @@ export const Span = styled.span`
   line-height: 1;
   margin: ${gridSizeUnitless / 2}px;
   padding: 0;
-  overflow: ${({ isRemoved, isRemoving }: SpanProps) =>
+  overflow: ${({ isRemoved, isRemoving }) =>
     isRemoved || isRemoving ? 'hidden' : 'initial'};
 
   &:hover {
     box-shadow: none;
-    background-color: ${(p: SpanProps) =>
+    background-color: ${p =>
       p.markedForRemoval ? backgroundColorRemoval(p) : backgroundColorHover(p)};
     color: ${p =>
       p.markedForRemoval ? colorRemovalHover(p) : textColorHover(p)};

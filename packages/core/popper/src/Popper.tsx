@@ -43,8 +43,8 @@ export class Popper extends React.Component<Props, State> {
     placement: 'bottom-start',
   };
 
-  getModifiers = memoizeOne(
-    (placement: Placement): PopperProps['modifiers'] => {
+  getModifiers: (placement: Placement) => PopperProps['modifiers'] = memoizeOne(
+    placement => {
       const flipBehavior = getFlipBehavior(placement.split('-')[0]);
       const modifiers: PopperProps['modifiers'] = {
         flip: {

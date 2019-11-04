@@ -72,8 +72,7 @@ export class Mobile extends React.Component<EditorProps, any> {
 
   render() {
     return (
-      // TODO: fix this type
-      <Editor {...this.props as any}>
+      <Editor {...this.props}>
         <EditorSharedConfigConsumer>
           {config => (
             <WithPluginState

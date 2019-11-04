@@ -16,6 +16,7 @@ import {
 
 import RendererBridgeImpl from './native-to-web/implementation';
 import { toNativeBridge } from './web-to-native/implementation';
+import HeightObserver from './height-observer';
 import {
   MediaProvider,
   MentionProvider,
@@ -148,50 +149,56 @@ export default class MobileRenderer extends React.Component<
           <WithCreateAnalyticsEvent
             render={createAnalyticsEvent => (
               <SmartCardProvider client={smartCardClient} authFlow={authFlow}>
-                <ReactRenderer
-                  onComplete={this.handleRendererContentLoaded}
-                  onError={this.handleRendererContentLoaded}
-                  dataProviders={this.providerFactory}
-                  appearance="mobile"
-                  document={this.state.document}
-                  createAnalyticsEvent={createAnalyticsEvent}
-                  rendererContext={{
-                    // These will need to come from the native side.
-                    objectAri: this.objectAri,
-                    containerAri: this.containerAri,
-                  }}
-                  eventHandlers={{
-                    link: {
-                      onClick: this.onLinkClick,
-                    },
-                    media: {
-                      onClick: (result: any, analyticsEvent?: any) => {
-                        const { mediaItemDetails } = result;
-                        // Media details only exist once resolved. Not available during loading/pending state.
-                        if (mediaItemDetails) {
-                          const mediaId = mediaItemDetails.id;
-                          // We don't have access to the occurrence key at this point so native will default to the first instance for now.
-                          // https://product-fabric.atlassian.net/browse/FM-1984
-                          const occurrenceKey: string | null = null;
-                          toNativeBridge.call('mediaBridge', 'onMediaClick', {
-                            mediaId,
-                            occurrenceKey,
-                          });
-                        }
+                <HeightObserver>
+                  <ReactRenderer
+                    onComplete={this.handleRendererContentLoaded}
+                    onError={this.handleRendererContentLoaded}
+                    dataProviders={this.providerFactory}
+                    appearance="mobile"
+                    document={this.state.document}
+                    createAnalyticsEvent={createAnalyticsEvent}
+                    rendererContext={{
+                      // These will need to come from the native side.
+                      objectAri: this.objectAri,
+                      containerAri: this.containerAri,
+                    }}
+                    eventHandlers={{
+                      link: {
+                        onClick: this.onLinkClick,
                       },
-                    },
-                    mention: {
-                      onClick: (profileId: string, alias: string) => {
-                        toNativeBridge.call('mentionBridge', 'onMentionClick', {
-                          profileId,
-                        });
+                      media: {
+                        onClick: (result: any, analyticsEvent?: any) => {
+                          const { mediaItemDetails } = result;
+                          // Media details only exist once resolved. Not available during loading/pending state.
+                          if (mediaItemDetails) {
+                            const mediaId = mediaItemDetails.id;
+                            // We don't have access to the occurrence key at this point so native will default to the first instance for now.
+                            // https://product-fabric.atlassian.net/browse/FM-1984
+                            const occurrenceKey: string | null = null;
+                            toNativeBridge.call('mediaBridge', 'onMediaClick', {
+                              mediaId,
+                              occurrenceKey,
+                            });
+                          }
+                        },
                       },
-                    },
-                    smartCard: {
-                      onClick: this.onLinkClick,
-                    },
-                  }}
-                />
+                      mention: {
+                        onClick: (profileId: string, alias: string) => {
+                          toNativeBridge.call(
+                            'mentionBridge',
+                            'onMentionClick',
+                            {
+                              profileId,
+                            },
+                          );
+                        },
+                      },
+                      smartCard: {
+                        onClick: this.onLinkClick,
+                      },
+                    }}
+                  />
+                </HeightObserver>
               </SmartCardProvider>
             )}
           />

@@ -78,12 +78,13 @@ const getEnterStrokeKeyframe = (size: number) => {
 const spinnerColor = themed({ light: N500, dark: N0 });
 const spinnerColorInverted = themed({ light: N0, dark: N0 });
 
+interface GetStrokeColorProps {
+  invertColor?: boolean;
+}
 export const getStrokeColor = ({
   invertColor,
   ...props
-}: {
-  invertColor?: boolean;
-}): string | number =>
+}: GetStrokeColorProps): string | number =>
   invertColor ? spinnerColorInverted(props) : spinnerColor(props);
 
 export const svgStyles = css`

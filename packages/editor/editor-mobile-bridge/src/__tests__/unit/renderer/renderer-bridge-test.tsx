@@ -46,7 +46,10 @@ describe('renderer bridge', () => {
     //See BUILDTOOLS-210-clean: https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/7178/buildtools-210-clean/diff
     jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => cb());
     onContentRendered = jest.fn();
-    window.renderBridge = { onContentRendered };
+    window.renderBridge = {
+      onContentRendered,
+      onRenderedContentHeightChanged() {},
+    };
   });
 
   afterEach(() => {

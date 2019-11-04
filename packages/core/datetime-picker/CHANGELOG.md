@@ -1,5 +1,13 @@
 # @atlaskit/datetime-picker
 
+## 9.2.0
+
+### Minor Changes
+
+- [minor][c423fbf5eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c423fbf5eb):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
 ## 9.1.0
 
 ### Minor Changes
