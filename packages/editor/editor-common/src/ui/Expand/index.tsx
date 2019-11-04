@@ -101,7 +101,7 @@ const ContentStyles = css<StyleProps>`
       .expand-content-wrapper, .nestedExpand-content-wrapper {
         /* We visually hide the content here to preserve the content during copy+paste */
         position: absolute;
-        height: 1px; 
+        height: 1px;
         width: 1px;
         overflow: hidden;
         clip: rect(1px, 1px, 1px, 1px);
@@ -163,10 +163,12 @@ const Container = styled.div<StyleProps>`
 const TitleContainerButton = styled.button`
   ${TitleContainerStyles}
 `;
+TitleContainerButton.displayName = 'TitleContainerButton';
 
 const TitleContainerDiv = styled.div`
   ${TitleContainerStyles}
 `;
+TitleContainerDiv.displayName = 'TitleContainerDiv';
 
 const Icon = styled.div<StyleProps>`
   cursor: pointer;
@@ -201,6 +203,7 @@ export interface ExpandProps {
   renderTitle: React.ReactNode;
   renderContent: React.ReactNode;
   onContainerClick?: (event: React.SyntheticEvent) => void;
+  onToggle?: (collapsed: boolean) => void;
   editable?: boolean;
 }
 
@@ -210,6 +213,7 @@ function Expand({
   renderTitle,
   renderContent,
   onContainerClick,
+  onToggle,
   editable = false,
   intl,
 }: ExpandProps & InjectedIntlProps) {
@@ -230,6 +234,9 @@ function Expand({
     >
       <TitleContainer
         onClick={(e: React.SyntheticEvent) => {
+          if (onToggle) {
+            onToggle(!collapsed);
+          }
           e.stopPropagation();
           setCollapsed(!collapsed);
         }}
