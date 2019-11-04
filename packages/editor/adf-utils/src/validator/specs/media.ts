@@ -10,6 +10,7 @@ export default {
           height: { type: 'number', optional: true },
           width: { type: 'number', optional: true },
           occurrenceKey: { type: 'string', minLength: 1, optional: true },
+          alt: { type: 'string', optional: true },
         },
       },
       {
