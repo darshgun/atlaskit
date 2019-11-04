@@ -14,7 +14,7 @@ import {
   UserWithEmail,
 } from '../types';
 
-type InviteType = 'ADMIN' | 'DIRECT';
+type InviteWarningType = 'ADMIN' | 'DIRECT';
 
 const matchAllowedDomains = memoizeOne(
   (domain: string, config: ConfigResponse | undefined) => {
@@ -65,6 +65,10 @@ export const showAdminNotifiedFlag = (
   selectedUsers: Value,
 ): boolean => getInviteWarningType(config, selectedUsers) === 'ADMIN';
 
+const extracUsersByEmail = (users: Value): Email[] => {
+  return Array.isArray(users) ? users.filter(isEmail) : [users].filter(isEmail);
+};
+
 /**
  * Returns the invite warning message type
  *
@@ -74,29 +78,29 @@ export const showAdminNotifiedFlag = (
 export const getInviteWarningType = (
   config: ConfigResponse | undefined,
   selectedUsers: Value,
-): InviteType | null => {
+): InviteWarningType | null => {
   if (config && selectedUsers) {
     const mode: ConfigResponseMode = config.mode;
-    const selectedEmails: Email[] = Array.isArray(selectedUsers)
-      ? selectedUsers.filter(isEmail)
-      : [selectedUsers].filter(isEmail);
+    const selectedEmails: Email[] = extracUsersByEmail(selectedUsers);
+
+    if (!selectedEmails.length) {
+      return null;
+    }
+
+    const isDomainBasedMode =
+      mode === 'ONLY_DOMAIN_BASED_INVITE' || mode === 'DOMAIN_BASED_INVITE';
 
     if (
-      selectedEmails.length > 0 &&
-      (mode === 'EXISTING_USERS_ONLY' ||
-        mode === 'INVITE_NEEDS_APPROVAL' ||
-        ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
-          mode === 'DOMAIN_BASED_INVITE') &&
-          checkDomains(config, selectedEmails)))
+      mode === 'EXISTING_USERS_ONLY' ||
+      mode === 'INVITE_NEEDS_APPROVAL' ||
+      (isDomainBasedMode && checkDomains(config, selectedEmails))
     ) {
       return 'ADMIN';
     } else if (
-      selectedEmails.length > 0 &&
-      (mode === 'ANYONE' ||
-        ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
-          mode === 'DOMAIN_BASED_INVITE') &&
-          !checkDomains(config, selectedEmails)))
+      mode === 'ANYONE' ||
+      (isDomainBasedMode && !checkDomains(config, selectedEmails))
     ) {
+      // https://product-fabric.atlassian.net/browse/PTC-2576
       return 'DIRECT';
     }
   }
