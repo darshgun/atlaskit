@@ -17,8 +17,8 @@ static/atlassian-connect.json
 
 When dev'ing, the two main things that need to be changed are
 
-* `atlassian-connect.json.baseUrl` being set to point to your local machine (see below)
-* `atlassian-connect.json.modules.webpanels.conditionals.params.value` needs to point to whichever repo you are testing in (see below)
+- `atlassian-connect.json.baseUrl` being set to point to your local machine (see below)
+- `atlassian-connect.json.modules.webpanels.conditionals.params.value` needs to point to whichever repo you are testing in (see below)
 
 ### Running locally
 
@@ -51,7 +51,7 @@ Now, you will need to get the uuid of the repo you are running in.
 To do this, simply open the repo and paste this snippet into your console:
 
 ```js
-JSON.parse($('[data-current-repo]')[0].getAttribute('data-current-repo')).uuid
+JSON.parse($('[data-current-repo]')[0].getAttribute('data-current-repo')).uuid;
 ```
 
 > **Note** This trick wont work on any pages that have been moved to the new UI. You can use an older page (most settings pages)
@@ -117,11 +117,11 @@ This will create the `dist/` directory.
 
 Before deploying **double** check the following:
 
-* Your baseUrl is set back to https://app.netlify.com/sites/ak-mk-2-releases-addon/overview in `dist/atlassian-connect.json`
-* Your uuid is set back to the uuid of ak-mk-2 (`{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}`)
-  * And also the atlassian/marketplace-frontend repo now (`{5e4d9c6e-5761-4c81-91b8-1e111f014b64}`)
-* Make sure the uuid has the brackets around it!
-* Seriously, double check that you haven't removed the conditions field. This will be catastrophically embarressing if we miss it
+- Your baseUrl is set back to https://app.netlify.com/sites/ak-mk-2-releases-addon/overview in `dist/atlassian-connect.json`
+- Your uuid is set back to the uuid of ak-mk-2 (`{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}`)
+  - And also the atlassian/marketplace-frontend repo now (`{5e4d9c6e-5761-4c81-91b8-1e111f014b64}`)
+- Make sure the uuid has the brackets around it!
+- Seriously, double check that you haven't removed the conditions field. This will be catastrophically embarressing if we miss it
 
 Now, simply login to Netlify (https://www.netlify.com/) as the `Design Platform` user (credentials in LastPass), click the `ak-mk-2-releases-addon` site, go to "deploys", go to the dist directory in finder and drag it into the dropzone.
 
