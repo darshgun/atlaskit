@@ -68,8 +68,8 @@ Object {
     },
     Object {
       "attrs": Object {
-        "layout": "wrap-left",
-        "width": 41.666666666666664,
+        "layout": "wrap-right",
+        "width": 66.67,
       },
       "content": Array [
         Object {
