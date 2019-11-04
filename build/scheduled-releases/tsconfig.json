@@ -8,9 +8,6 @@
     "baseUrl": ".",
     "module": "commonjs",
     "target": "es2018",
-    "types": [
-      "node"
-    ],
     "typeRoots": ["../../typings", "./typings", "./node_modules/@types"]
   }
 }
