@@ -22,46 +22,54 @@ const testDocuments: { [key: string]: string } = {
 
 [
   [
-    'p:first-child',
-    'p:last-child',
+    'h1:first-of-type',
+    'h6:first-of-type',
     'blockCard',
     'top to bottom',
     '.blockCardView-content-wrap',
   ],
   [
-    'p:last-child',
-    'p:first-child',
+    'h6:first-of-type',
+    'h1:first-of-type',
     'blockCard',
     'bottom to top',
     '.blockCardView-content-wrap',
   ],
-  ['p:first-child', 'p:last-child', 'mediaSingle', 'top to bottom'],
-  ['p:last-child', 'p:first-child', 'mediaSingle', 'bottom to top'],
+  ['h1:first-of-type', 'h6:first-of-type', 'mediaSingle', 'top to bottom'],
+  ['h6:first-of-type', 'h1:first-of-type', 'mediaSingle', 'bottom to top'],
   // TODO fix the dummy content provider that breaks this test.
   // ['p:first-child', 'p:last-child', 'blockExtension', 'top to bottom'],
-  ['p:last-child', 'p:first-child', 'blockExtension', 'bottom to top'],
   [
-    'p:first-child',
-    '.bodiedExtensionView-content-wrap + p',
+    'h6:first-of-type',
+    'h1:first-of-type',
+    'blockExtension',
+    'bottom to top',
+    '.extensionView-content-wrap',
+  ],
+  [
+    'h1:first-of-type',
+    'h6:first-of-type',
     'bodiedExtension',
     'top to bottom',
+    '.bodiedExtensionView-content-wrap',
   ],
   [
-    '.bodiedExtensionView-content-wrap + p',
-    'p:first-child',
+    'h6:first-of-type',
+    'h1:first-of-type',
     'bodiedExtension',
     'bottom to top',
+    '.bodiedExtensionView-content-wrap',
   ],
   [
-    'p:first-child',
-    'p:last-child',
+    'h1:first-of-type',
+    'h6:first-of-type',
     'smartLink',
     'top to bottom',
     '.inlineCardView-content-wrap',
   ],
   [
-    'p:last-child',
-    'p:first-child',
+    'h6:first-of-type',
+    'h1:first-of-type',
     'smartLink',
     'bottom to top',
     '.inlineCardView-content-wrap',
@@ -85,8 +93,9 @@ const testDocuments: { [key: string]: string } = {
 
       if (initSelection) {
         await page.waitForSelector(initSelection);
-        await page.browser.pause(1000);
       }
+
+      await page.browser.pause(1000);
 
       await page.simulateUserSelection(startSelector, targetSelector);
 

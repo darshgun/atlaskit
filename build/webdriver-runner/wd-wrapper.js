@@ -134,7 +134,7 @@ export default class Page {
     startY,
     targetX,
     targetY,
-    duration = 500,
+    duration = 2000,
   ) {
     if (this.isBrowser('chrome')) {
       return await this.simulateUserDragAndDropChrome(
@@ -153,7 +153,7 @@ export default class Page {
       y: startY,
     };
     const pointerDown = { type: 'pointerDown', button: 0 };
-    const pause = { type: 'pause', duration: 10 };
+    const pause = { type: 'pause', duration: 100 };
     const moveToTarget = {
       type: 'pointerMove',
       duration,
@@ -178,6 +178,7 @@ export default class Page {
           moveToTarget,
           pause,
           pointerUp,
+          pause,
         ],
       },
     ]);
