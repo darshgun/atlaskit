@@ -1,9 +1,5 @@
-import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { colors, gridSize, fontSize } from '@atlaskit/theme';
-import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import Tooltip from '@atlaskit/tooltip';
-import { injectIntl, InjectedIntlProps, defineMessages } from 'react-intl';
 
 import {
   akEditorSelectedBorder,
@@ -13,7 +9,7 @@ import {
   akLayoutGutterOffset,
 } from '../../styles';
 
-export const messages = defineMessages({
+export const messages = {
   expandNode: {
     id: 'fabric.editor.expandNode',
     defaultMessage: 'Expand content',
@@ -24,43 +20,53 @@ export const messages = defineMessages({
     defaultMessage: 'Collapse content',
     description: 'Collapse the node',
   },
-  expandDefaultTitle: {
-    id: 'fabric.editor.expandDefaultTitle',
-    defaultMessage: 'Click here to expand...',
-    description: 'Placeholder text for an expand node',
-  },
-  expandPlaceholderText: {
-    id: 'fabric.editor.expandPlaceholder',
-    defaultMessage: 'Give this expand a title...',
-    description: 'Placeholder text for an expand node title input field',
-  },
-});
+};
 
 const BORDER_RADIUS = gridSize() / 2;
 const EXPAND_SELECTED_BACKGROUND = 'rgba(255, 255, 255, 0.6)';
 
 export interface StyleProps {
-  collapsed?: boolean;
-  editable?: boolean;
+  expanded?: boolean;
   'data-node-type'?: 'expand' | 'nestedExpand';
   'data-title'?: string;
 }
 
+export const ExpandIconWrapper = styled.div<{ expanded: boolean }>`
+  cursor: pointer;
+  display: flex;
+  color: ${colors.N90};
+  border-radius: ${gridSize() / 2}px;
+  width: 24px;
+  height: 24px;
+
+  &:hover {
+    background: ${colors.N30A};
+  }
+
+  svg {
+    ${props => (props.expanded ? 'transform: rotate(90deg);' : '')}
+    transition: transform 0.2s ${akEditorSwoopCubicBezier};
+  }
+`;
+
+export const ExpandTooltipWrapper = styled.div`
+  width: ${gridSize() * 3}px;
+  height: ${gridSize() * 3}px;
+`;
+
 const ContainerStyles = css<StyleProps>`
   border-width: 1px;
   border-style: solid;
-  border-color: ${({ collapsed }) => (collapsed ? 'transparent' : colors.N40A)};
+  border-color: ${({ expanded }) => (!expanded ? 'transparent' : colors.N40A)};
   border-radius: ${BORDER_RADIUS}px;
   min-height: 25px;
-  background: ${({ collapsed }) =>
-    collapsed ? 'transparent' : EXPAND_SELECTED_BACKGROUND};
+  background: ${({ expanded }) =>
+    !expanded ? 'transparent' : EXPAND_SELECTED_BACKGROUND};
   margin: ${props =>
-    `${!props.editable ? blockNodesVerticalMargin : 0}rem ${
+    `${blockNodesVerticalMargin}rem ${
       // Only only these margins if the expand isn't editable
       // and is the root level expand.
-      props['data-node-type'] === 'expand' && !props.editable
-        ? `-${akLayoutGutterOffset}px`
-        : `0`
+      props['data-node-type'] === 'expand' ? `-${akLayoutGutterOffset}px` : `0`
     } 0`};
 
   transition: background 0.3s ${akEditorSwoopCubicBezier};
@@ -90,15 +96,15 @@ const ContainerStyles = css<StyleProps>`
 `;
 
 const ContentStyles = css<StyleProps>`
-  ${({ collapsed }) => {
+  ${({ expanded }) => {
     return `
-    padding-top: ${collapsed ? 0 : gridSize()}px;
+    padding-top: ${expanded ? gridSize() : 0}px;
     padding-right: ${gridSize()}px;
     padding-left: ${gridSize() * 4 - gridSize() / 2}px;
     overflow: hidden;
 
     ${
-      !!collapsed
+      !expanded
         ? `
       .expand-content-wrapper, .nestedExpand-content-wrapper {
         /* We visually hide the content here to preserve the content during copy+paste */
@@ -159,104 +165,3 @@ export const sharedExpandStyles = {
   ContainerStyles,
   ContentStyles,
 };
-
-const Container = styled.div<StyleProps>`
-  ${ContainerStyles}
-`;
-
-const TitleContainerButton = styled.button`
-  ${TitleContainerStyles}
-`;
-TitleContainerButton.displayName = 'TitleContainerButton';
-
-const TitleContainerDiv = styled.div`
-  ${TitleContainerStyles}
-`;
-TitleContainerDiv.displayName = 'TitleContainerDiv';
-
-const Icon = styled.div<StyleProps>`
-  cursor: pointer;
-  display: flex;
-  color: ${colors.N90};
-  border-radius: ${BORDER_RADIUS}px;
-  width: 24px;
-  height: 24px;
-
-  &:hover {
-    background: ${colors.N30A};
-  }
-
-  svg {
-    ${({ collapsed }) => !collapsed && `transform: rotate(90deg);`}
-    transition: 0.2s ${akEditorSwoopCubicBezier};
-  }
-`;
-
-const ContentContainer = styled.div<StyleProps>`
-  ${ContentStyles};
-`;
-
-const TooltipWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-`;
-
-export interface ExpandProps {
-  title: string;
-  nodeType: 'expand' | 'nestedExpand';
-  renderTitle: React.ReactNode;
-  renderContent: React.ReactNode;
-  onContainerClick?: (event: React.SyntheticEvent) => void;
-  onToggle?: (collapsed: boolean) => void;
-  editable?: boolean;
-}
-
-function Expand({
-  title,
-  nodeType,
-  renderTitle,
-  renderContent,
-  onContainerClick,
-  onToggle,
-  editable = false,
-  intl,
-}: ExpandProps & InjectedIntlProps) {
-  const [collapsed, setCollapsed] = React.useState(!editable);
-  const label = intl.formatMessage(
-    collapsed ? messages.expandNode : messages.collapseNode,
-  );
-
-  const TitleContainer = editable ? TitleContainerDiv : TitleContainerButton;
-
-  return (
-    <Container
-      data-node-type={nodeType}
-      data-title={title}
-      collapsed={collapsed}
-      editable={editable}
-      onClick={onContainerClick}
-    >
-      <TitleContainer
-        onClick={(e: React.SyntheticEvent) => {
-          if (onToggle) {
-            onToggle(!collapsed);
-          }
-          e.stopPropagation();
-          setCollapsed(!collapsed);
-        }}
-        aria-label={label}
-        contentEditable={false}
-      >
-        <Tooltip content={label} position="top" tag={TooltipWrapper}>
-          <Icon collapsed={collapsed} role={editable ? 'button' : undefined}>
-            <ChevronRightIcon label={label} primaryColor={colors.N80A} />
-          </Icon>
-        </Tooltip>
-        {renderTitle}
-      </TitleContainer>
-      <ContentContainer collapsed={collapsed}>{renderContent}</ContentContainer>
-    </Container>
-  );
-}
-
-export default injectIntl(Expand);

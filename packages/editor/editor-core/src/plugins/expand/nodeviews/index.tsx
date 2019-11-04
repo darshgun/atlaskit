@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import styled from 'styled-components';
-import { InjectedIntl } from 'react-intl';
+import { InjectedIntl, defineMessages } from 'react-intl';
 import { EditorView, NodeView, Decoration } from 'prosemirror-view';
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors } from '@atlaskit/theme';
 import Tooltip from '@atlaskit/tooltip';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import {
@@ -13,7 +12,8 @@ import {
 } from 'prosemirror-model';
 import {
   expandMessages,
-  akEditorSwoopCubicBezier,
+  ExpandIconWrapper,
+  ExpandTooltipWrapper,
 } from '@atlaskit/editor-common';
 
 import {
@@ -28,34 +28,26 @@ import {
 } from '../commands';
 import { expandClassNames } from '../ui/class-names';
 
-const Icon = styled.div<{ expanded: boolean }>`
-  cursor: pointer;
-  display: flex;
-  color: ${colors.N90};
-  border-radius: ${gridSize() / 2}px;
-  width: 24px;
-  height: 24px;
+const messages = defineMessages({
+  ...expandMessages,
+  expandPlaceholderText: {
+    id: 'fabric.editor.expandPlaceholder',
+    defaultMessage: 'Give this expand a title...',
+    description: 'Placeholder text for an expand node title input field',
+  },
+});
 
-  &:hover {
-    background: ${colors.N30A};
-  }
+function buildExpandClassName(type: string, expanded: boolean) {
+  return `${expandClassNames.prefix} ${expandClassNames.type(type)} ${
+    expanded ? expandClassNames.expanded : ''
+  }`;
+}
 
-  svg {
-    ${props => (props.expanded ? 'transform: rotate(90deg);' : '')}
-    transition: 0.2s ${akEditorSwoopCubicBezier};
-  }
-`;
-
-const TooltipWrapper = styled.div`
-  width: 24px;
-  height: 24px;
-`;
-
-const toDOM = (node: PmNode, intl: InjectedIntl): DOMOutputSpec => [
+const toDOM = (node: PmNode, intl?: InjectedIntl): DOMOutputSpec => [
   'div',
   {
     // prettier-ignore
-    'class': `${expandClassNames.prefix} ${expandClassNames.type(node.type.name)} ${node.attrs.__expanded ? expandClassNames.expanded : ''}`,
+    'class': buildExpandClassName(node.type.name, node.attrs.__expanded),
     'data-node-type': node.type.name,
     'data-title': node.attrs.title,
   },
@@ -77,7 +69,9 @@ const toDOM = (node: PmNode, intl: InjectedIntl): DOMOutputSpec => [
           // prettier-ignore
           'class': expandClassNames.titleInput,
           value: node.attrs.title,
-          placeholder: intl.formatMessage(expandMessages.expandPlaceholderText),
+          placeholder:
+            (intl && intl.formatMessage(messages.expandPlaceholderText)) ||
+            messages.expandPlaceholderText.defaultMessage,
           type: 'text',
         },
       ],
@@ -87,7 +81,8 @@ const toDOM = (node: PmNode, intl: InjectedIntl): DOMOutputSpec => [
   ['div', { 'class': expandClassNames.content }, 0],
 ];
 
-type ReactContext = () => { [key: string]: any };
+type ReactContext = { [key: string]: any } | undefined;
+type ReactContextFn = () => ReactContext;
 
 export class ExpandNodeView implements NodeView {
   node: PmNode;
@@ -98,17 +93,18 @@ export class ExpandNodeView implements NodeView {
   input?: HTMLElement;
   getPos: getPosHandlerNode;
   pos: number;
+  reactContext: ReactContext;
 
   constructor(
     node: PmNode,
     view: EditorView,
     getPos: getPosHandlerNode,
-    reactContext: ReactContext,
+    reactContext: ReactContextFn,
   ) {
-    const { intl } = reactContext();
+    this.reactContext = reactContext() || {};
     const { dom, contentDOM } = DOMSerializer.renderSpec(
       document,
-      toDOM(node, intl),
+      toDOM(node, this.reactContext.intl),
     );
     this.getPos = getPos;
     this.pos = getPos();
@@ -123,7 +119,7 @@ export class ExpandNodeView implements NodeView {
     this.input = this.dom.querySelector(
       `.${expandClassNames.titleInput}`,
     ) as HTMLElement;
-    this.renderIcon(intl);
+    this.renderIcon(this.reactContext.intl);
     this.initHandlers();
   }
 
@@ -134,24 +130,26 @@ export class ExpandNodeView implements NodeView {
     }
   }
 
-  private renderIcon(intl: InjectedIntl) {
+  private renderIcon(intl?: InjectedIntl) {
     if (!this.icon) {
       return;
     }
 
     const { __expanded } = this.node.attrs;
-    const label = intl.formatMessage(
-      __expanded ? expandMessages.collapseNode : expandMessages.expandNode,
-    );
+    const message = __expanded
+      ? expandMessages.collapseNode
+      : expandMessages.expandNode;
+    const label =
+      (intl && intl.formatMessage(message)) || message.defaultMessage;
     ReactDOM.render(
-      <Tooltip content={label} position="top" tag={TooltipWrapper}>
-        <Icon
+      <Tooltip content={label} position="top" tag={ExpandTooltipWrapper}>
+        <ExpandIconWrapper
           expanded={__expanded}
           role="button"
           className={expandClassNames.iconContainer}
         >
           <ChevronRightIcon label={label} primaryColor={colors.N80A} />
-        </Icon>
+        </ExpandIconWrapper>
       </Tooltip>,
       this.icon,
     );
@@ -205,6 +203,7 @@ export class ExpandNodeView implements NodeView {
         // Instead of re-rendering the view on an expand toggle
         // we toggle a class name to hide the content and animate the chevron.
         this.dom.classList.toggle(expandClassNames.expanded);
+        this.renderIcon(this.reactContext && this.reactContext.intl);
       }
       this.node = node;
       return true;
@@ -229,7 +228,7 @@ export class ExpandNodeView implements NodeView {
   }
 }
 
-export default function(reactContext: ReactContext) {
+export default function(reactContext: ReactContextFn) {
   return (node: PmNode, view: EditorView, getPos: getPosHandler): NodeView =>
     new ExpandNodeView(node, view, getPos as getPosHandlerNode, reactContext);
 }
