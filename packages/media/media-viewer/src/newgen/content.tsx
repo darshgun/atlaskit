@@ -32,7 +32,7 @@ export class Content extends Component<ContentProps> {
             <>
               <CloseButtonWrapper className={hideControlsClassName}>
                 <MediaButton
-                  data-test-id="media-viewer-close-button"
+                  data-testid="media-viewer-close-button"
                   appearance={'toolbar' as any}
                   onClick={onClose}
                   iconBefore={<CrossIcon label="Close" />}

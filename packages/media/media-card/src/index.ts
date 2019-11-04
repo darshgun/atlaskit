@@ -67,6 +67,7 @@ export interface SharedCardProps {
   readonly selectable?: boolean;
   readonly selected?: boolean;
   readonly alt?: string;
+  readonly testId?: string;
 }
 
 export interface CardOnClickCallback {

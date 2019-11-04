@@ -54,7 +54,7 @@ export const ErrorViewDownloadButton = (
   return (
     <DownloadButtonWrapper>
       <DownloadButton
-        data-test-id="media-viewer-download-button"
+        data-testid="media-viewer-download-button"
         analyticsPayload={downloadEvent}
         appearance="primary"
         onClick={createItemDownloader(
@@ -86,7 +86,7 @@ export const ToolbarDownloadButton = (props: ToolbarDownloadButtonProps) => {
 
   return (
     <DownloadButton
-      data-test-id="media-viewer-download-button"
+      data-testid="media-viewer-download-button"
       analyticsPayload={downloadEvent}
       appearance={'toolbar' as any}
       onClick={createItemDownloader(

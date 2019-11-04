@@ -36,7 +36,7 @@ import {
 type RetryProps = React.HTMLAttributes<HTMLDivElement> &
   WithAnalyticsEventsProps;
 const RetryWithProps = (props: RetryProps) => (
-  <Retry data-test-id="media-card-retry-button" {...props} />
+  <Retry data-testid="media-card-retry-button" {...props} />
 );
 
 const RetryWithAnalytics = withAnalyticsEvents({

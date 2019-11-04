@@ -76,7 +76,6 @@ const cardDimension = { width: 162, height: 108 };
 interface IterableCard {
   key: string;
   card: JSX.Element;
-  isUploading: boolean;
 }
 
 export interface UploadViewOwnProps {
@@ -157,7 +156,7 @@ export class StatelessUploadView extends Component<
 
     return (
       <InfiniteScroll
-        data-test-id="media-picker-recents-infinite-scroll"
+        data-testid="media-picker-recents-infinite-scroll"
         height="100%"
         onThresholdReached={this.onThresholdReachedListener}
       >
@@ -304,18 +303,11 @@ export class StatelessUploadView extends Component<
   private renderCards() {
     const recentFilesCards = this.recentFilesCards();
     const uploadingFilesCards = this.uploadingFilesCards();
-    return uploadingFilesCards
-      .concat(recentFilesCards)
-      .map(({ key, card, isUploading }) => {
-        const dataTestId = isUploading
-          ? 'media-picker-uploading-media-card'
-          : 'media-picker-recent-media-card';
-        return (
-          <CardWrapper tabIndex={0} data-test-id={dataTestId} key={key}>
-            {card}
-          </CardWrapper>
-        );
-      });
+    return uploadingFilesCards.concat(recentFilesCards).map(({ key, card }) => (
+      <CardWrapper tabIndex={0} key={key}>
+        {card}
+      </CardWrapper>
+    ));
   }
 
   private uploadingFilesCards(): IterableCard[] {
@@ -373,6 +365,7 @@ export class StatelessUploadView extends Component<
             selected={selected}
             onClick={onClick}
             actions={actions}
+            testId="media-picker-uploading-media-card"
           />
         ),
       };
@@ -447,7 +440,6 @@ export class StatelessUploadView extends Component<
       }
 
       return {
-        isUploading: false,
         key: `${occurrenceKey}-${id}`,
         card: (
           <Card
@@ -462,6 +454,7 @@ export class StatelessUploadView extends Component<
             selected={selected}
             onClick={onClick}
             actions={actions}
+            testId="media-picker-recent-media-card"
           />
         ),
       };

@@ -23,7 +23,7 @@ export class StatelessSidebarItem extends Component<SidebarItemProps> {
 
     return (
       <Wrapper
-        data-test-id={`media-picker-${serviceName}-menu-item`}
+        data-testid={`media-picker-${serviceName}-menu-item`}
         isActive={isActive}
         onClick={this.onClick}
       >

@@ -15,7 +15,7 @@ export class CardActionIconButton extends Component<CardActionIconButtonProps> {
     const { icon, triggerColor, onClick } = this.props;
     return (
       <CardActionButton
-        data-test-id="media-card-primary-action"
+        data-testid="media-card-primary-action"
         onClick={onClick}
         style={{ color: triggerColor }}
       >

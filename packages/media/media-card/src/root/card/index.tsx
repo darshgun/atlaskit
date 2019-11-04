@@ -507,7 +507,13 @@ export class CardBase extends Component<
   };
 
   renderInlinePlayer = () => {
-    const { identifier, mediaClient, dimensions, selected } = this.props;
+    const {
+      identifier,
+      mediaClient,
+      dimensions,
+      selected,
+      testId,
+    } = this.props;
 
     return (
       <InlinePlayer
@@ -518,6 +524,7 @@ export class CardBase extends Component<
         onClick={this.onClick}
         selected={selected}
         ref={this.cardRef}
+        testId={testId}
       />
     );
   };
@@ -589,6 +596,7 @@ export class CardBase extends Component<
       onSelectChange,
       disableOverlay,
       alt,
+      testId,
     } = this.props;
     const { progress, metadata, dataURI, previewOrientation } = this.state;
     const {
@@ -621,6 +629,7 @@ export class CardBase extends Component<
         onDisplayImage={onDisplayImage}
         previewOrientation={previewOrientation}
         ref={this.cardRef}
+        testId={testId}
       />
     );
 

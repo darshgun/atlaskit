@@ -77,7 +77,7 @@ export class FileCardImageViewBase extends Component<
     } = this.props;
     return (
       <Wrapper
-        data-test-id="media-file-card-view"
+        data-testid="media-file-card-view"
         data-test-status={status}
         data-test-progress={progress}
         data-test-selected={selected ? true : undefined}
