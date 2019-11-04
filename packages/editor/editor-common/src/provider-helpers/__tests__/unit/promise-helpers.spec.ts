@@ -62,14 +62,21 @@ describe('promise-helpers', () => {
       );
     });
 
-    test('should reject if resolved with falsy value', async () => {
-      return expect(
-        waitForFirstFulfilledPromise([Promise.resolve(undefined)]),
-      ).rejects.toEqual(
-        new Error(
-          `Result was not found but the method didn't reject/throw. Please ensure that it doesn't return falsy values.`,
-        ),
+    test('should reject if resolved with null or undefined values', async () => {
+      const nullReturnError = new Error(
+        `Result was not found but the method didn't reject/throw. Please ensure that it doesn't return null or undefined.`,
       );
+      await expect(
+        waitForFirstFulfilledPromise([Promise.resolve(null)]),
+      ).rejects.toEqual(nullReturnError);
+
+      await expect(
+        waitForFirstFulfilledPromise([Promise.resolve(undefined)]),
+      ).rejects.toEqual(nullReturnError);
+
+      await expect(
+        waitForFirstFulfilledPromise([Promise.resolve(false)]),
+      ).resolves.toEqual(false);
     });
   });
 

@@ -58,9 +58,9 @@ export const waitForFirstFulfilledPromise = <T>(
     promises.forEach((promise: Promise<T>) =>
       promise
         .then(value => {
-          if (!value) {
+          if (typeof value === 'undefined' || value === null) {
             throw new Error(
-              `Result was not found but the method didn't reject/throw. Please ensure that it doesn't return falsy values.`,
+              `Result was not found but the method didn't reject/throw. Please ensure that it doesn't return null or undefined.`,
             );
           }
 
