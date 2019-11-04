@@ -1,1 +1,0 @@
-Fix resize not working on FF when connected to an external monitor
