@@ -462,6 +462,13 @@ pipelines:
             - node ./wait.until.no.master.build.running.js
           after-script:
             - yarn send:buildEvents
+            # Only execute the below if successful
+            - test $BITBUCKET_EXIT_CODE -eq 0
+            - bolt install --frozen-lockfile
+            - cd build/scheduled-releases
+            - yarn update-pr "$BITBUCKET_COMMIT" "$BITBUCKET_REPO_FULL_NAME"
+          caches:
+            - node
 
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install node_modules.
@@ -487,9 +494,9 @@ pipelines:
             - node
 
     # This build allow to deploy branch dists to easily tests new version of components into consumers / products code base.
-    deploy-branch-build-dists:
+    branch-deploy:
       - step:
-          name: Deploy branch build dists
+          name: Branch deploy
           script:
             - source ./build-setup.sh
             - bolt install --frozen-lockfile

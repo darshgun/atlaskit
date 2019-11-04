@@ -9,7 +9,9 @@ import linkPkg from '../../link-pkg';
 
 jest.mock('fs-extra');
 jest.unmock('../../link-pkg');
+// These util functions need to be unmocked so core functionality works
 jest.unmock('../../utils');
+jest.unmock('@atlaskit/build-utils/errors');
 
 const mockedFse: any = fse;
 const mockedBolt: any = bolt;
