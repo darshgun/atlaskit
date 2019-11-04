@@ -40,11 +40,10 @@ jest.doMock('../../context', () => ({
 
 import { useSmartCardActions } from '..';
 import { mocks } from '../../../utils/mocks';
-import { FetchError } from '../../../client';
+import { FetchError } from '../../../client/errors';
 import { CardContext } from '../../context';
 import { JsonLd } from '../../../client/types';
 import { CardState } from '../../types';
-import { ERROR_MESSAGE_OAUTH, ERROR_MESSAGE_FATAL } from '../constants';
 
 describe('Smart Card: Actions', () => {
   let url: string;
@@ -186,7 +185,7 @@ describe('Smart Card: Actions', () => {
       );
       expect(mockContext.store.dispatch).toHaveBeenCalledTimes(2);
       expect(mockContext.store.dispatch).toHaveBeenCalledWith({
-        payload: ERROR_MESSAGE_OAUTH,
+        payload: 'fallback: Provider.authFlow is not set to OAuth2.',
         type: 'errored',
         url: 'https://some/url',
       });
@@ -209,7 +208,7 @@ describe('Smart Card: Actions', () => {
       );
       expect(mockContext.store.dispatch).toHaveBeenCalledTimes(2);
       expect(mockContext.store.dispatch).toHaveBeenCalledWith({
-        payload: ERROR_MESSAGE_FATAL,
+        payload: 'fallback: Fatal error resolving URL',
         type: 'errored',
         url: 'https://some/url',
       });
