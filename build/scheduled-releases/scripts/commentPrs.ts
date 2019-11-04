@@ -23,8 +23,9 @@ async function updatePrWithFutureRelease(
   const git = simpleGit('./');
 
   const nextReleaseTagPattern = `${NextReleaseTagPrefix}*`;
+  // --abbrev=0 flag suppresses long format which appends commit & hash info
   const nextReleaseTag = await git.raw(
-    `describe --match ${nextReleaseTagPattern} origin/${DevelopBranchName}`.split(
+    `describe --abbrev=0 --match ${nextReleaseTagPattern} origin/${DevelopBranchName}`.split(
       ' ',
     ),
   );
