@@ -72,7 +72,7 @@ export const siteTitleCSS = ({
   alignItems: 'center',
 
   paddingRight: gridSize * 3,
-  marginRight: gridSize * 1.5,
+  marginRight: gridSize / 2,
   borderRight: borderRight,
 });
 

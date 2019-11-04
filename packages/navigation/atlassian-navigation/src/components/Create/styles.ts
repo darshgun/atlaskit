@@ -33,6 +33,7 @@ export const getCreateButtonTheme = ({ mode: { create } }: NavigationTheme) => (
     buttonStyles: {
       ...buttonStyles,
       ...create.default,
+      fontWeight: 500,
       ':hover': create.hover,
       ':focus': create.focus,
       // :active doesn't work in FF, becasue we do a

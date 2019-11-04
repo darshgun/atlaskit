@@ -29,7 +29,8 @@ export const getPrimaryButtonTheme = ({
       ...buttonStyles,
       ...primaryButton.default,
       ...(props.isSelected && primaryButton.active),
-      padding: 0,
+      fontWeight: 500,
+      padding: '0 4px',
       ':hover': primaryButton.hover,
       ':focus': primaryButton.focus,
       // :active doesn't work in FF, becasue we do a
@@ -60,6 +61,7 @@ export const isHighlightedCSS = (
   justifyContent: 'center',
   alignItems: 'center',
   height: '100%',
+  position: 'relative',
 
   '&:after': {
     position: 'absolute',

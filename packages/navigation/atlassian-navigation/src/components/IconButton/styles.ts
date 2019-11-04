@@ -26,11 +26,12 @@ export const getIconButtonTheme = ({
   return {
     buttonStyles: {
       ...buttonStyles,
-      borderRadius: 4,
+      borderRadius: '100%',
       display: 'flex',
       margin: '0 2px',
       padding: 4,
       height: 'auto',
+      fontWeight: 500,
       ...iconButton.default,
       ':hover': iconButton.hover,
       ':focus': iconButton.focus,
