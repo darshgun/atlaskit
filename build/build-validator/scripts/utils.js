@@ -2,9 +2,10 @@
 const path = require('path');
 const bolt = require('bolt');
 
-const getNpmDistPath = pkgName => path.join(process.cwd(), 'dists', pkgName);
+const getNpmDistPath = (pkgName /*: string */) =>
+  path.join(process.cwd(), 'dists', pkgName);
 
-async function getAllPublicPackages(cwd) {
+async function getAllPublicPackages(cwd /*: string */) {
   const allWorkspaces = await bolt.getWorkspaces({
     cwd,
   });

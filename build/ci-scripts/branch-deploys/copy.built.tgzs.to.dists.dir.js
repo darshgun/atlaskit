@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const { CHANGED_PACKAGES } = process.env;
-const changedPackages = JSON.parse(CHANGED_PACKAGES);
+const changedPackages = CHANGED_PACKAGES ? JSON.parse(CHANGED_PACKAGES) : [];
 
 (async () => {
   const project = await bolt.getProject();

@@ -64,8 +64,7 @@ describe('Entrypoints', () => {
           expect(dirContent).toContain('package.json');
         } catch (e) {
           throw new Error(
-            `${entryPointDirName} folder should exist and should contain a package.json`,
-            e,
+            `${entryPointDirName} folder should exist and should contain a package.json : ${e}`,
           );
         }
       }

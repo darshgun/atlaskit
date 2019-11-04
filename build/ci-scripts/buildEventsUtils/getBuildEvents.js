@@ -9,11 +9,13 @@ const fs = require('fs');
 // started_on and duration_in_seconds are added to the object only for the logic below they are not sent to the service.
 /*::
 type IStepsDataType = {
+  step_uuid?: string,
+  step_command?: string,
   step_name: string,
   step_status: string,
   step_duration: number,
-  started_on: string,
-  duration_in_seconds: number,
+  started_on?: string,
+  duration_in_seconds?: number,
 }
 */
 
@@ -95,11 +97,18 @@ async function getStepTime(
   stepsLength /*: number */,
 ) {
   let stepDuration;
-  if (stepObject && stepObject.duration_in_seconds > 0 && stepsLength > 1) {
+  if (
+    stepObject &&
+    stepObject.duration_in_seconds &&
+    stepObject.duration_in_seconds > 0 &&
+    stepsLength > 1
+  ) {
     stepDuration = stepObject.duration_in_seconds;
   } else {
     // We need to do a computation if the step.duration_in_seconds is not yet available and it is a 1 step build.
-    stepDuration = computeStepTimes(stepObject.started_on);
+    stepDuration = stepObject.started_on
+      ? computeStepTimes(stepObject.started_on)
+      : 0;
   }
   return stepDuration;
 }
@@ -183,9 +192,13 @@ async function getStepsEvents(
             : step.state.result.name;
           const stepTime = await getStepTime(step, resp.data.values.length);
           return {
+            step_uuid: step.uuid,
+            step_command:
+              step.script_commands[step.script_commands.length - 1].command,
             step_duration: stepTime,
             step_name: step.name || buildType, // on Master, there is no step name.
             step_status: stepStatus,
+            duration_in_seconds: step.duration_in_seconds,
           };
         }
       }),
@@ -276,7 +289,9 @@ async function getStepEvents(buildId /*: string*/) {
       return {
         build_number: buildId,
         build_status: buildStatus,
+        build_time: stepTime,
         build_name: stepPayload.build_name,
+        build_number_steps: stepObject.length,
         build_type: buildType,
         build_steps: [
           {

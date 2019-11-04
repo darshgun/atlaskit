@@ -55,7 +55,7 @@ async function getInstalledAtlaskitDependencies() {
 }
 // This function needs to be shared between the cli and the main node entry point
 // so that they can print different error messages
-function validateOptions(commitHash, options = {}) {
+function validateOptions(commitHash /*:string */, options /*: Object */ = {}) {
   const errors = [];
   const { engine, cmd, timeout, interval } = options;
 
@@ -95,7 +95,7 @@ const createLogger = shouldLog => {
   return () => {};
 };
 
-async function getManifestForCommit(commitHash, options = {}) {
+async function getManifestForCommit(commitHash, options /*: Object */ = {}) {
   const manifestUrl = `${CDN_URL_BASE}/${commitHash}/dists/manifest.json`;
   const { log } = options;
   const { interval, timeout } = options;
@@ -108,7 +108,7 @@ async function getManifestForCommit(commitHash, options = {}) {
   return manifest;
 }
 
-const urlExists = async (url, options = {}) => {
+const urlExists = async (url, options /*: Object */ = {}) => {
   const { verboseLog } = options;
 
   verboseLog(`Checking if url exists: ${url}`);
@@ -119,7 +119,7 @@ const urlExists = async (url, options = {}) => {
   return response.status === 200;
 };
 
-const fetchVerbose = async (url, options = {}) => {
+const fetchVerbose = async (url, options /*: Object */ = {}) => {
   const { verboseLog } = options;
   verboseLog(`Trying to fetch ${url}`);
 
@@ -136,7 +136,10 @@ const fetchVerbose = async (url, options = {}) => {
  * node we can throw an error that can be caught, and from the cli we can print them and correctly
  * process.exit
  */
-async function installFromCommit(fullCommitHash = '', userOptions = {}) {
+async function installFromCommit(
+  fullCommitHash /*: string */ = '',
+  userOptions /*: Object */ = {},
+) {
   const defaultOptions = {
     dryRun: false,
     verbose: false,
@@ -161,7 +164,10 @@ async function installFromCommit(fullCommitHash = '', userOptions = {}) {
   return _installFromCommit(commitHash, options);
 }
 
-async function _installFromCommit(commitHash = '', options = {}) {
+async function _installFromCommit(
+  commitHash /*: string */ = '',
+  options /*: Object */ = {},
+) {
   const log = createLogger(true);
   const verboseLog = createLogger(options.verbose);
 

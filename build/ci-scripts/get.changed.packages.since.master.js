@@ -82,6 +82,7 @@ const displayChangedPackagesSinceMaster = async () => {
                 dependentPkgJSON.dependencies[changedPkgName] !== undefined
               );
             throw new Error(
+              // $FlowFixMe - array to string
               `The parsed flag is not recognised ${process.argv}`,
             );
           })
@@ -129,5 +130,5 @@ const displayChangedPackagesSinceMaster = async () => {
     console.log(JSON.stringify(changedPackagesRelativePaths));
   }
 };
-
+// $FlowFixMe - function
 (() => displayChangedPackagesSinceMaster(cli.input, cli.flags))();

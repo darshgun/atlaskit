@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 // @flow
 const spawndamnit = require('spawndamnit');
 const fse = require('fs-extra');
@@ -23,8 +24,7 @@ async function getAllFSChangesets() {
     .filter(file => fse.lstatSync(path.join(changesetBase, file)).isDirectory())
     .map(changesetDir => {
       const jsonPath = path.join(changesetBase, changesetDir, 'changes.json');
-      // $ExpectError
-      // eslint-disable-next-line import/no-dynamic-require
+      // $StringLitteral
       return require(jsonPath);
     });
 }
@@ -32,9 +32,7 @@ async function getAllFSChangesets() {
 async function getNewFSChangesets() {
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const paths = await git.getChangedChangesetFilesSinceMaster();
-
-  // $ExpectError
-  // eslint-disable-next-line import/no-dynamic-require
+  // $StringLitteral
   return paths.map(filePath => require(path.join(projectRoot, filePath)));
 }
 
@@ -46,7 +44,6 @@ async function getNewFSChangesets() {
  * `node build/ci-scripts/run.if.package.changed @full/package-name @another/package-name -- yarn toolName`.
  */
 (async () => {
-  const cwd = process.cwd();
   const args = process.argv.slice(2);
 
   const dashdashIndex = args.indexOf('--');
@@ -67,8 +64,8 @@ async function getNewFSChangesets() {
   // because using only files is not enough in cases where packages is only dependent of other package
   const newChangesets =
     branch === 'master'
-      ? await getAllFSChangesets(cwd)
-      : await getNewFSChangesets(cwd);
+      ? await getAllFSChangesets()
+      : await getNewFSChangesets();
   const oldChangesets = await git.getUnpublishedChangesetCommits();
   const unpublishedChangesets = oldChangesets.concat(newChangesets);
 

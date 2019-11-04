@@ -7,10 +7,11 @@ const util = require('util');
  * The goal is to prevent Browserstack to be hammered and reduce the number of timeout for users.
  * */
 const numberOfTries = process.env.BS_RETRY || 3;
-const percentageOfSessionsAllowed = process.env.BS_SESSIONS_ALLOWED || 50; // This number represents the percentage of sessiosn allowed.
-const auth = Buffer.from(
-  `${process.env.BROWSERSTACK_USERNAME}:${process.env.BROWSERSTACK_KEY}`,
-).toString('base64');
+const percentageOfSessionsAllowed =
+  Number(process.env.BS_SESSIONS_ALLOWED) || 50; // This number represents the percentage of sessions allowed.
+const user = process.env.BROWSERSTACK_USERNAME || '';
+const key = process.env.BROWSERSTACK_KEY || '';
+const auth = Buffer.from(`${user}:${key}`).toString('base64');
 
 const sleep = util.promisify(setTimeout);
 

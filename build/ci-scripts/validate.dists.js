@@ -168,7 +168,7 @@ function hasCjsEsmBuild(pkg) {
   );
 }
 
-async function main(opts = {}) {
+async function main(opts /*: Object */ = {}) {
   const { cwd = process.cwd(), packageName, distType } = opts;
   const packagesInfo = await getPackagesInfo(cwd);
 

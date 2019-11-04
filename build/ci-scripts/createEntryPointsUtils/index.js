@@ -9,8 +9,8 @@ const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
 const writeFile = promisify(fs.writeFile);
 
 async function writeEntryPointsPathInPkgJson(
-  isTs,
-  pkg,
+  isTs /*: boolean */,
+  pkg /*: Object */,
   pkgFile,
   entryPointDirName,
 ) {
@@ -31,7 +31,7 @@ async function writeEntryPointsPathInPkgJson(
   );
 }
 
-async function createEntryPointsDirWithPkgJson(opts = {}) {
+async function createEntryPointsDirWithPkgJson(opts /*: Object */ = {}) {
   const { cwd = process.cwd(), packageName, errorOnExistingDirs = true } = opts;
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const packages = await getPackagesInfo(cwd);

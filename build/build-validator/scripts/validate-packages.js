@@ -21,7 +21,7 @@ function toString(bufferOrStr) {
 
 // Spawns cmd and logs output/stderr to console
 // Returns a promise that resolves when the process exits completely and rejects otherwise
-function spawnPromise(cmd, args, opts = {}) {
+function spawnPromise(cmd, args, opts /*: Object */ = {}) {
   return new Promise((resolve, reject) => {
     let finished = false;
     function done(code, signal) {
@@ -112,7 +112,7 @@ async function validatePackage(pkgName, pkgDir, quiet, refetch = false) {
  *
  * If no `packageName` is passed, compares all packages under `optionalDependencies`.
  */
-async function main(pkgName, opts) {
+async function main(pkgName /*: string */, opts /*: Object */) {
   const allPackages = await getAllPublicPackages(
     path.join(process.cwd(), '..'),
   );

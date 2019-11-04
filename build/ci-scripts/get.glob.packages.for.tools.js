@@ -5,7 +5,7 @@ const {
   TOOL_NAME_TO_FILTERS,
 } = require('@atlaskit/build-utils/tools');
 
-async function main(toolNames, opts = {}) {
+async function main(toolNames /*: string[] */, opts /*: Object */ = {}) {
   const { cwd = process.cwd() } = opts;
 
   if (!toolNames.length) {

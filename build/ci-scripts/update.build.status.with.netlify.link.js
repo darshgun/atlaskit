@@ -19,6 +19,8 @@ try {
   };
 
   console.log('Updating build status with link: ', netlifyUrl);
+  // TODO: to discuss with Luke as some keys are missing.
+  // $FlowFixMe
   updateBuildStatus(buildStatusOpts);
 } catch (e) {
   console.error('Unable to update build status');

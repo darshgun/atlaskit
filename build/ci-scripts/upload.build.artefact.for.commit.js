@@ -35,14 +35,14 @@ if (
   process.exit(1);
 }
 
+const pathToFile = path.resolve(process.argv[2]);
+const fileName = path.basename(pathToFile);
+const commitHash = BITBUCKET_COMMIT ? BITBUCKET_COMMIT.substring(0, 12) : '';
+let outputPath = process.argv[3] || '';
+
 if (!fs.existsSync(path.resolve(process.argv[2]))) {
   console.error(`Could not find file: ${pathToFile} from ${process.cwd()}`);
 }
-
-const pathToFile = path.resolve(process.argv[2]);
-const fileName = path.basename(pathToFile);
-const commitHash = BITBUCKET_COMMIT.substring(0, 12);
-let outputPath = process.argv[3] || '';
 
 if (outputPath && !outputPath.endsWith('/')) {
   outputPath += '/';

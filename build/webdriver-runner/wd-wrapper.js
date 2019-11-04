@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-undef */
 // @flow
-const assert = require('assert').strict;
+const assert = require('assert');
 
 /*
  * wrapper on top of webdriver-io apis to give a feel of puppeeteer api
@@ -12,7 +12,7 @@ const WAIT_TIMEOUT = 5000;
 const EDITOR = '.ProseMirror';
 
 export class JSHandle {
-  constructor(client, selector) {
+  constructor(client /*: any */, selector /*: string */) {
     this.browser = client;
     this.selector = selector;
   }
@@ -437,12 +437,12 @@ export default class Page {
   }
 
   // Wait
-  async waitForSelector(selector, options = {}, reverse = false) {
+  async waitForSelector(selector, options /*: Object */ = {}, reverse = false) {
     const elem = await this.browser.$(selector);
     return elem.waitForExist(options.timeout || WAIT_TIMEOUT, reverse);
   }
 
-  async waitForVisible(selector, options = {}) {
+  async waitForVisible(selector, options /*: Object */ = {}) {
     const elem = await this.browser.$(selector);
 
     return elem.waitForDisplayed(options.timeout || WAIT_TIMEOUT);

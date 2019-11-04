@@ -16,6 +16,7 @@ const runKarma = async ({ watch, browserstack }) => {
     watch,
     browserstack,
   });
+  // $FlowFixMe - mixed
   await karma.run({ config, files: [] });
 };
 

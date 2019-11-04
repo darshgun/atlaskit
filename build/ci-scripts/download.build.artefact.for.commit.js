@@ -21,7 +21,7 @@ if (process.argv.length !== 3) {
   process.exit(1);
 }
 
-const commitHash = BITBUCKET_COMMIT.substring(0, 12);
+const commitHash = BITBUCKET_COMMIT ? BITBUCKET_COMMIT.substring(0, 12) : '';
 const filePath = process.argv[2];
 const remotePathToFile = `s3://${BUCKET_NAME}/${commitHash}/${filePath}`;
 const localFileName = path.basename(filePath);

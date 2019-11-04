@@ -6,9 +6,13 @@ const axios = require('axios');
 
 /*::
 type IStepsDataType = {
+  step_uuid?: string,
+  step_command?: string,
   step_name: string,
   step_status: string,
   step_duration: number,
+  started_on?: string,
+  duration_in_seconds?: number,
 }
 */
 

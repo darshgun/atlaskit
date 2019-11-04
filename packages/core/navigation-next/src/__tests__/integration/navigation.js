@@ -3,6 +3,7 @@
 /* Currently, this test will check if the new navigation example renders into different browsers.*/
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
+// $FlowFixMe - because the wrapper is currently .flowignore.
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 /* Url to test the example */

@@ -73,7 +73,7 @@ async function fetchDistFromNpm(pkgName, pkgVersion, forceRefetch) {
  *
  * --refetch - force refetch of bundle from npm
  */
-async function main(pkgName, opts) {
+async function main(pkgName /*:string */, opts /*: Object */) {
   const allPackages = await getAllPublicPackages(
     path.join(process.cwd(), '..'),
   );

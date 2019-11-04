@@ -25,8 +25,8 @@ if (!BITBUCKET_COMMIT) {
   process.exit(1);
 }
 
-const changedPackages = JSON.parse(CHANGED_PACKAGES);
-const commit = BITBUCKET_COMMIT.substr(0, 12);
+const changedPackages = CHANGED_PACKAGES ? JSON.parse(CHANGED_PACKAGES) : [];
+const commit = BITBUCKET_COMMIT ? BITBUCKET_COMMIT.substr(0, 12) : '';
 
 // eslint-disable-next-line no-shadow
 const getExpectedUrl = (pkgName, pkgVersion, commit) => {

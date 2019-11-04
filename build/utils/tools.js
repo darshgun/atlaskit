@@ -3,15 +3,15 @@ const bolt = require('bolt');
 const path = require('path');
 const { exists } = require('./fs');
 
-async function getPackagesInfo(cwd, opts) {
+async function getPackagesInfo(cwd /*:string*/, opts /*: Object*/) {
   const project = await bolt.getProject({ cwd });
   const packages = await bolt.getWorkspaces({ cwd, ...opts });
 
   return Promise.all(packages.map(pkg => getPackageInfo(pkg, project)));
 }
 
-async function getPackageInfo(pkg, project) {
-  // eslint-disable-next-line no-undef
+async function getPackageInfo(pkg /*: Object */, project /*: Object*/) {
+  const cwd = process.cwd();
   const resolvedProject = project || (await bolt.getProject({ cwd }));
   const relativeDir = path.relative(resolvedProject.dir, pkg.dir);
   const srcExists = await exists(path.join(pkg.dir, 'src'));
@@ -84,7 +84,7 @@ const TOOL_NAME_TO_FILTERS /*: { [key: string]: (pkg: Object) => boolean } */ = 
   vr: pkg => pkg.isVisualRegression,
 };
 
-async function getPackageDirsForTools(cwd) {
+async function getPackageDirsForTools(cwd /*: string */) {
   const packages = await getPackagesInfo(cwd);
   const toolGroups = {};
 

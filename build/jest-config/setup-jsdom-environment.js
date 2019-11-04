@@ -52,7 +52,7 @@ function getMockedEventListeners(global) {
 }
 
 class JSDOMEnvironment {
-  constructor(config, opts = {}) {
+  constructor(config, opts /*: Object */ = {}) {
     const { testEnvironmentOptions, testURL } = config;
     const { resources, resourceLoaderOptions } = testEnvironmentOptions;
 
