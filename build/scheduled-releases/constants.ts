@@ -1,4 +1,4 @@
-export const DevelopBranchName = 'test-develop';
+export const DevelopBranchName = 'develop';
 export const NextReleaseTagPrefix = 'next-release-start-';
 export const ReleaseBranchPrefix = 'release-candidate/';
 
