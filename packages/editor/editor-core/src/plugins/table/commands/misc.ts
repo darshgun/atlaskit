@@ -529,6 +529,7 @@ export const addBoldInEmptyHeaderCells = (
   if (
     // Avoid infinite loop when the current selection is not a TextSelection
     isTextSelection(tr.selection) &&
+    tr.selection.$cursor &&
     // When storedMark is null that means this is the initial state
     // if the user press to remove the mark storedMark will be an empty array
     // and we shouldn't apply the strong mark

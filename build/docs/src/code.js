@@ -14,11 +14,16 @@ export default function code(
   ...substitutions: any[]
 ) {
   let source = stringRaw(sources, substitutions);
+  const highlightRaw = /^highlight=(.*)/.exec(source);
+  const highlight =
+    highlightRaw && highlightRaw[1] ? highlightRaw[1] : undefined;
+  source = source.replace(/^highlight=(.*)/, ''); // Remove highlight if it's defined on the first line
   source = source.replace(/^(\s*\n)+/g, ''); // Remove leading newlines
   source = source.replace(/(\n\s*)+$/g, ''); // Remove trailing newlines
+
   return (
     <CodeWrapper>
-      <AkCodeBlock language="javascript" text={source} />
+      <AkCodeBlock language="javascript" text={source} highlight={highlight} />
     </CodeWrapper>
   );
 }

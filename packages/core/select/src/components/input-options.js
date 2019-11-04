@@ -72,7 +72,6 @@ const getPrimaryColor = ({
   } else if (isSelected) {
     color = colors.blue;
   }
-  // $FlowFixMe - theme is not found in props
   return color(rest);
 };
 
@@ -92,7 +91,6 @@ const getSecondaryColor = ({
   } else if (!isSelected) {
     color = transparent;
   }
-  // $FlowFixMe - theme is not found in props
   return color(rest);
 };
 

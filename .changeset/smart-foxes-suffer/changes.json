@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/visual-regression", "type": "patch" }],
+  "dependents": []
+}

@@ -52,6 +52,7 @@ import { ProfileClient, modifyResponse } from '@atlaskit/profilecard';
  * +                               +  16px padding-bottom
  * +-------------------------------+  ----
  *                                    80px - 48px (Outside of iframe)
+ *
  */
 export const Wrapper: any = styled.div`
   box-sizing: border-box;
@@ -173,7 +174,7 @@ export class ExampleEditorComponent extends React.Component<
 
   componentDidMount() {
     // eslint-disable-next-line no-console
-    console.log(`To try the macro paste handler, paste one of the following links:
+    console.log(`To try the macro paste handler, paste one of the following links: 
 
   www.dumbmacro.com?paramA=CFE
   www.smartmacro.com?paramB=CFE
@@ -224,6 +225,7 @@ export class ExampleEditorComponent extends React.Component<
               UNSAFE_cards={{
                 provider: Promise.resolve(cardProviderStaging),
               }}
+              UNSAFE_allowExpand={true}
               annotationProvider={{
                 component: ExampleInlineCommentComponent,
               }}
@@ -237,6 +239,7 @@ export class ExampleEditorComponent extends React.Component<
                 allowAnnotation: true,
                 allowLinking: true,
                 allowResizingInTables: true,
+                UNSAFE_allowAltTextOnImages: true,
               }}
               allowHelpDialog
               placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule."

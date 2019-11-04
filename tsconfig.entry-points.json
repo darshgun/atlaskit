@@ -1191,6 +1191,10 @@
         "../../editor/editor-markdown-transformer/src/media",
         "./packages/editor/editor-markdown-transformer/src/media"
       ],
+      "@atlaskit/editor-mobile-bridge/analytics-client": [
+        "../../editor/editor-mobile-bridge/src/analytics-client",
+        "./packages/editor/editor-mobile-bridge/src/analytics-client"
+      ],
       "@atlaskit/editor-mobile-bridge/bridge-utils": [
         "../../editor/editor-mobile-bridge/src/bridge-utils",
         "./packages/editor/editor-mobile-bridge/src/bridge-utils"
@@ -1462,6 +1466,22 @@
       "@atlaskit/synchrony-test-helpers": [
         "../../editor/synchrony-test-helpers/src/",
         "./packages/editor/synchrony-test-helpers/src/"
+      ],
+      "@atlaskit/synchrony-test-helpers/mock-collab-provider": [
+        "../../editor/synchrony-test-helpers/src/mock-collab-provider",
+        "./packages/editor/synchrony-test-helpers/src/mock-collab-provider"
+      ],
+      "@atlaskit/synchrony-test-helpers/synchrony-provider": [
+        "../../editor/synchrony-test-helpers/src/synchrony-provider",
+        "./packages/editor/synchrony-test-helpers/src/synchrony-provider"
+      ],
+      "@atlaskit/synchrony-test-helpers/types": [
+        "../../editor/synchrony-test-helpers/src/types",
+        "./packages/editor/synchrony-test-helpers/src/types"
+      ],
+      "@atlaskit/synchrony-test-helpers/user-profile": [
+        "../../editor/synchrony-test-helpers/src/user-profile",
+        "./packages/editor/synchrony-test-helpers/src/user-profile"
       ],
       "@atlaskit/updater-cli": [
         "../../editor/updater-cli/src/",
@@ -1926,6 +1946,10 @@
       "@atlaskit/media-picker": [
         "../../media/media-picker/src/",
         "./packages/media/media-picker/src/"
+      ],
+      "@atlaskit/media-picker/types": [
+        "../../media/media-picker/src/types",
+        "./packages/media/media-picker/src/types"
       ],
       "@atlaskit/media-test-helpers/authProvider": [
         "../../media/media-test-helpers/src/authProvider",

@@ -1,9 +1,7 @@
 import * as React from 'react';
 import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import OpenIcon from '@atlaskit/icon/glyph/shortcut';
-import { NodeType } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import { InjectedIntl } from 'react-intl';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { Command } from '../../../types';
@@ -31,6 +29,7 @@ import {
   RECENT_SEARCH_HEIGHT_IN_PX,
   RECENT_SEARCH_WIDTH_IN_PX,
 } from '../../../ui/RecentSearch/ToolbarComponents';
+import { MediaToolbarBaseConfig } from '../types';
 
 export function shouldShowMediaLinkToolbar(editorState: EditorState): boolean {
   const mediaLinkingState = getMediaLinkingState(editorState);
@@ -101,12 +100,6 @@ export const buildLinkingButtons = (
       onClick: showLinkingToolbar,
     },
   ];
-};
-
-type MediaToolbarBaseConfig = {
-  title: string;
-  getDomRef?: (view: EditorView) => HTMLElement | undefined;
-  nodeType: NodeType | NodeType[];
 };
 
 export const getLinkingToolbar = (

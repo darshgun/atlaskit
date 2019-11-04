@@ -51,20 +51,40 @@ Object {
     Object {
       "content": Array [
         Object {
-          "text": "1. Ordered list item",
-          "type": "text",
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "Ordered list item",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "listItem",
         },
       ],
-      "type": "paragraph",
+      "type": "orderedList",
     },
     Object {
       "content": Array [
         Object {
-          "text": "2. Ordered list item",
-          "type": "text",
+          "content": Array [
+            Object {
+              "content": Array [
+                Object {
+                  "text": "Ordered list item",
+                  "type": "text",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "type": "listItem",
         },
       ],
-      "type": "paragraph",
+      "type": "orderedList",
     },
     Object {
       "content": Array [

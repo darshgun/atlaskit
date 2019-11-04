@@ -1,5 +1,13 @@
 # @atlaskit/bitbucket-releases-addon
 
+## 1.1.4
+
+### Patch Changes
+
+- [patch][b8fe220790](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8fe220790):
+
+  Detect version of changeset being used from the PR and display changes accordingly
+
 ## 1.1.3
 
 ### Patch Changes

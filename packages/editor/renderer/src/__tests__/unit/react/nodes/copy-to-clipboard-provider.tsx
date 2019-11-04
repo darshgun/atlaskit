@@ -1,7 +1,9 @@
 import {
   clipboardApiSupported,
   copyToClipboardLegacy,
+  ieClipboardApiSupported,
   copyToClipboard,
+  copyToClipboardIE,
 } from '../../../../react/nodes/copy-text-provider';
 
 describe('Renderer - clipboard utils', () => {
@@ -32,6 +34,35 @@ describe('Renderer - clipboard utils', () => {
         },
       });
       expect(clipboardApiSupported()).toEqual(true);
+    });
+  });
+
+  describe('copyToClipboardIE', () => {
+    beforeEach(() => {
+      if (!(window as any).clipboardData) {
+        Object.defineProperty(window, 'clipboardData', {
+          value: {
+            setData: jest.fn(),
+          },
+        });
+      }
+    });
+
+    afterAll(() => {
+      delete (window as any).clipboardData;
+    });
+
+    it('returns true when clipboardData exists', () => {
+      expect(ieClipboardApiSupported()).toEqual(true);
+    });
+
+    it('returns false when clipboardData does not exists', () => {
+      delete (window as any).clipboardData;
+      expect(ieClipboardApiSupported()).toEqual(true);
+    });
+
+    it('returns true when copy is successful', () => {
+      expect(copyToClipboardIE('test')).resolves.toEqual(undefined);
     });
   });
 

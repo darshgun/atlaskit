@@ -18,7 +18,7 @@ import { EditorProps } from '../../editor-props-type';
 
 export function createEditor({
   context,
-  createAnalyticsEvent,
+  handleAnalyticsEvent,
   transformer,
 
   plugins,
@@ -32,6 +32,7 @@ export function createEditor({
 
   disabled,
   onChange,
+  onDestroy,
 }: CreateEditorParams): EditorSharedConfig | null {
   if (!ref) {
     return null;
@@ -79,7 +80,7 @@ export function createEditor({
     editorView,
 
     transformer: transformerInstance,
-    createAnalyticsEvent,
+    handleAnalyticsEvent,
 
     eventDispatcher,
     dispatch,
@@ -94,6 +95,7 @@ export function createEditor({
     disabled,
     providerFactory,
     onChange,
+    onDestroy,
   };
 }
 
@@ -107,6 +109,8 @@ export type CreateEditorParams = Pick<
   | 'onChange'
   | 'disabled'
   | 'transformer'
+  | 'handleAnalyticsEvent'
+  | 'onDestroy'
 > & {
   context: any;
   ref?: HTMLDivElement | null;

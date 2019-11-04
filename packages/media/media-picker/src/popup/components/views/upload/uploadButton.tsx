@@ -29,7 +29,7 @@ export class LocalBrowserButton extends React.Component<Props> {
   render() {
     return (
       <Button
-        className="e2e-upload-button"
+        data-test-id="media-picker-upload-button"
         appearance="default"
         onClick={this.onUploadClick}
       >

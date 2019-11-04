@@ -47,6 +47,12 @@ export const isSelectionNonMediaBlockNode = (state: EditorState): boolean => {
   return node && node.type !== state.schema.nodes.media && node.isBlock;
 };
 
+export const isSelectionMediaSingleNode = (state: EditorState): boolean => {
+  const { node } = state.selection as NodeSelection;
+
+  return node && node.type === state.schema.nodes.mediaSingle;
+};
+
 export const posOfPrecedingMediaGroup = (
   state: EditorState,
 ): number | undefined => {

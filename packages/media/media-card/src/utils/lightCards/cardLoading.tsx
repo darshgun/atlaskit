@@ -8,7 +8,11 @@ import { StaticCardProps } from './types';
 export class CardLoading extends Component<StaticCardProps, {}> {
   render() {
     const dimensions = getDimensionsWithDefault(this.props.dimensions);
-    return <Wrapper dimensions={dimensions}>{this.icon}</Wrapper>;
+    return (
+      <Wrapper data-test-id="media-card-loading" dimensions={dimensions}>
+        {this.icon}
+      </Wrapper>
+    );
   }
 
   get icon() {

@@ -1,5 +1,8 @@
-import { shallowWithIntl } from '@atlaskit/editor-test-helpers';
-import { FieldTextStateless } from '@atlaskit/field-text';
+import {
+  shallowWithIntl,
+  mountWithIntl,
+} from '@atlaskit/editor-test-helpers/enzyme';
+import TextField from '@atlaskit/textfield';
 import * as React from 'react';
 import { StatusPicker } from '../../..';
 import ColorPalette from '../../../components/internal/color-palette';
@@ -37,15 +40,39 @@ describe('StatusPicker', () => {
       />,
     );
 
-    expect(component.find(FieldTextStateless).length).toBe(1);
-    expect(component.find(FieldTextStateless).prop('value')).toBe(
-      'In progress',
-    );
-    expect(component.find(FieldTextStateless).prop('innerRef')).toBeDefined();
-    expect(component.find(FieldTextStateless).prop('autoComplete')).toBe('off');
-    expect(component.find(FieldTextStateless).prop('isSpellCheckEnabled')).toBe(
-      false,
-    );
+    expect(component.find(TextField).length).toBe(1);
+    expect(component.find(TextField).prop('value')).toBe('In progress');
+    expect(component.find(TextField).prop('autoComplete')).toBe('off');
+    expect(component.find(TextField).prop('spellCheck')).toBe(false);
+  });
+
+  describe('autofocus', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should defer autofocus', function() {
+      const component = mountWithIntl(
+        <StatusPicker
+          selectedColor="red"
+          text="In progress"
+          onColorClick={() => {}}
+          onTextChanged={() => {}}
+          onEnter={() => {}}
+          autoFocus={true}
+        />,
+      );
+
+      const input = component.find('input').getDOMNode() as HTMLElement;
+      const spyFocus = jest.spyOn(input, 'focus');
+
+      jest.runAllTimers();
+      expect(spyFocus).toHaveBeenCalled();
+    });
   });
 
   it('should pass onColorClick handler prop to color palette', () => {
@@ -75,9 +102,7 @@ describe('StatusPicker', () => {
       />,
     );
 
-    component
-      .find(FieldTextStateless)
-      .simulate('change', { target: { value: 'Done' } });
+    component.find(TextField).simulate('change', { target: { value: 'Done' } });
     expect(onTextChanged).toHaveBeenCalledWith('Done');
   });
 
@@ -93,7 +118,7 @@ describe('StatusPicker', () => {
       />,
     );
 
-    component.find(FieldTextStateless).simulate('keypress', { key: 'Enter' });
+    component.find(TextField).simulate('keypress', { key: 'Enter' });
     expect(onEnter).toHaveBeenCalled();
   });
 });

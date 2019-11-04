@@ -13,6 +13,7 @@ const ThemedSkeletonExample = () => (
         <NavigationSkeleton
           primaryItemsCount={primary}
           secondaryItemsCount={secondary}
+          showSiteName
           theme={theme}
         />
         {i < themes.length - 1 && <br />}

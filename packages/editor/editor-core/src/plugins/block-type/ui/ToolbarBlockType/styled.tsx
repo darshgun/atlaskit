@@ -4,12 +4,10 @@ import { HTMLAttributes, ComponentClass } from 'react';
 import { headingsSharedStyles } from '@atlaskit/editor-common';
 import { Shortcut } from '../../../../ui/styles';
 
-export const BlockTypeMenuItem: ComponentClass<
-  HTMLAttributes<{}> & {
-    tagName: string;
-    selected?: boolean;
-  }
-> = styled.div`
+export const BlockTypeMenuItem = styled.div<{
+  tagName: string;
+  selected?: boolean;
+}>`
   ${headingsSharedStyles};
   > {
     h1,

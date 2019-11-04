@@ -10,7 +10,7 @@ interface NavItem extends TabItemElementProps {
 }
 
 function lockSelectedColor(normal: Mode) {
-  const selected = { light: colors.B400, dark: colors.B100 };
+  const selected: Mode = { light: colors.B400, dark: colors.B100 };
 
   return themed('status', { normal, selected });
 }

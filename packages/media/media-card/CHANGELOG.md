@@ -1,5 +1,79 @@
 # @atlaskit/media-card
 
+## 66.0.2
+
+### Patch Changes
+
+- [patch][d222c2b987](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d222c2b987):
+
+  Theme has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided.
+
+  ### Breaking
+
+  ** getTokens props changes **
+  When defining the value function passed into a ThemeProvider, the getTokens parameter cannot be called without props; if no props are provided an empty object `{}` must be passed in:
+
+  ```javascript
+  <CustomTheme.Provider
+    value={t => ({ ...t(), backgroundColor: '#333'})}
+  >
+  ```
+
+  becomes:
+
+  ```javascript
+  <CustomTheme.Provider
+    value={t => ({ ...t({}), backgroundColor: '#333'})}
+  >
+  ```
+
+  ** Color palette changes **
+  Color palettes have been moved into their own file.
+  Users will need to update imports from this:
+
+  ```javascript
+  import { colors } from '@atlaskit/theme';
+
+  colors.colorPalette('8');
+  ```
+
+  to this:
+
+  ```javascript
+  import { colorPalette } from '@atlaskit/theme';
+
+  colorPalette.colorPalette('8');
+  ```
+
+  or for multi entry-point users:
+
+  ```javascript
+  import * as colors from '@atlaskit/theme/colors';
+
+  colors.colorPalette('8');
+  ```
+
+  to this:
+
+  ```javascript
+  import * as colorPalettes from '@atlaskit/theme/color-palette';
+
+  colorPalettes.colorPalette('8');
+  ```
+
+## 66.0.1
+
+### Patch Changes
+
+- [patch][760bd84462](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/760bd84462):
+
+  fixing analytics failed when user cancels file upload
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-viewer@44.0.1
+
 ## 66.0.0
 
 ### Major Changes
@@ -38,7 +112,6 @@
   })
 
   const mediaPicker = MediaPicker(context);
-  ```
 
   <Card context={context}>
   <SmartMediaEditor context={context}>
@@ -50,37 +123,39 @@
   <MediaViewer context={context}>
   ```
 
-**Now**:
+  **Now**:
 
-````
-import {MediaClientConfig} from '@atlaskit/media-core';
-import {Card} from '@atlaskit/media-card'
-import {SmartMediaEditor} from '@atlaskit/media-editor'
-import {Filmstrip} from '@atlaskit/media-filmstrip'
-import {MediaImage} from '@atlaskit/media-image'
-import {MediaViewer} from '@atlaskit/media-viewer'
-import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
-
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+  ```
 
 const mediaClientConfig: MediaClientConfig = {
-  authProvider: () => Promise.resolve({})
+authProvider: () => Promise.resolve({})
 }
 
 const mediaPicker = MediaPicker(mediaClientConfig);
 
-<Card mediaClientConfig={mediaClientConfig}>
-<SmartMediaEditor mediaClientConfig={mediaClientConfig}>
-<Filmstrip mediaClientConfig={mediaClientConfig}>
-<MediaImage mediaClientConfig={mediaClientConfig}>
-<Dropzone mediaClientConfig={mediaClientConfig}>
-<Clipboard mediaClientConfig={mediaClientConfig}>
-<Browser mediaClientConfig={mediaClientConfig}>
-<MediaViewer mediaClientConfig={mediaClientConfig}>
-```- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
 
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
 
 **FABDODGEM-13 Editor Damask Release**
-  - [Internal post](http://go.atlassian.com/damask-release)
+
+- [Internal post](http://go.atlassian.com/damask-release)
 
 **BREAKING CHANGES**
 
@@ -92,7 +167,7 @@ const mediaPicker = MediaPicker(mediaClientConfig);
 - **Editor Mobile Bridge:** Adapts to task-decision changes.
 - **Util Data Test:** Adapts to task-decision changes.
 
------
+---
 
 **Affected Editor Components:**
 
@@ -127,7 +202,6 @@ tables, media, mobile, emoji, tasks & decisions, analytics
 - Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
   - https://product-fabric.atlassian.net/browse/FM-2370
 
-
 **Media**
 
 - Improved analytics
@@ -150,11 +224,12 @@ Bumped dependencies.
 
 ### Minor Changes
 
-- [minor] [eeb47666dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eeb47666dd):
+- [minor][eeb47666dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eeb47666dd):
 
-Emit `media-viewed` event through `globalMediaEventEmitter` when media is viewed, played or downloaded via media card or media viewer.- [minor] [550d260bfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/550d260bfc):
+Emit `media-viewed` event through `globalMediaEventEmitter` when media is viewed, played or downloaded via media card or media viewer.- [minor][550d260bfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/550d260bfc):
 
 Introducing support for alt-text in media.
+
 - Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
 - @atlaskit/media-store@12.0.14
 - @atlaskit/media-test-helpers@25.2.0
@@ -419,7 +494,7 @@ Before:
 
 ```typescript
 withAnalyticsEvents()(Button) as ComponentClass<Props>;
-````
+```
 
 After:
 

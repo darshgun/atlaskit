@@ -35,7 +35,9 @@ import {
 
 type RetryProps = React.HTMLAttributes<HTMLDivElement> &
   WithAnalyticsEventsProps;
-const RetryWithProps = (props: RetryProps) => <Retry {...props} />;
+const RetryWithProps = (props: RetryProps) => (
+  <Retry data-test-id="media-card-retry-button" {...props} />
+);
 
 const RetryWithAnalytics = withAnalyticsEvents({
   onClick: createAndFireMediaEvent({

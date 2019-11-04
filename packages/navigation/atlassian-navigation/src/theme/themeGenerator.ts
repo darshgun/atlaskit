@@ -1,56 +1,34 @@
-import chromatism, { ColourModes } from 'chromatism';
+import defaultTheme, { DEFAULT_THEME_NAME } from './defaultTheme';
+import {
+  hexToRGBA,
+  getBoxShadow,
+  generateTextColor,
+  getContrastColor,
+} from './themeHelpers';
+import { GenerateThemeArgs, NavigationTheme, ButtonCSSContext } from './types';
 
-import { NavigationTheme, ButtonCSSContext } from './types';
-
-const getBoxShadow = (color: string) => `0 0 0 2px ${color}`;
-
-/**
- * Mixes color2 with color1 by the specified weight. This is effectively a simple rgba to rgb conversion.
- */
-const mix = (
-  color1: ColourModes.RGB,
-  color2: ColourModes.RGB,
-  weight: number,
-): ColourModes.CSSRGB => {
-  const weightDistance = 1 - weight;
-  const normalize = ({ r, g, b }: ColourModes.RGB) => ({
-    r: r / 255,
-    g: g / 255,
-    b: b / 255,
-  });
-  const normalizedBackground = normalize(color1);
-  const normalizedColor = normalize(color2);
-
-  const red = Math.round(
-    (weightDistance * normalizedBackground.r + weight * normalizedColor.r) *
-      255,
-  );
-  const green = Math.round(
-    (weightDistance * normalizedBackground.g + weight * normalizedColor.g) *
-      255,
-  );
-  const blue = Math.round(
-    (weightDistance * normalizedBackground.b + weight * normalizedColor.b) *
-      255,
-  );
-
-  return `rgb(${red}, ${green}, ${blue})`;
+type Colors = {
+  backgroundColor: string;
+  color: string;
+  highlightColor: string;
 };
 
-const generateCSSStates = (colors: Colors): ButtonCSSContext => {
-  const { backgroundColor, color } = colors;
-  const backgroundColorRgb = chromatism.convert(backgroundColor).rgb;
-  const contrastBackgroundColorRgb = chromatism.contrastRatio(backgroundColor)
-    .rgb;
-  const colorRgb = chromatism.convert(color).rgb;
+type ButtonType = 'create' | 'iconButton' | 'primaryButton';
+const generateButtonCSSStates = (
+  colors: Colors,
+  buttonType: ButtonType,
+): ButtonCSSContext => {
+  const { backgroundColor, color, highlightColor } = colors;
+
+  // Add less opacity for white text so it is still legible.
+  const opacityValue = color === '#000000' ? 0.3 : 0.6;
+  const isCreateButton = buttonType === 'create';
 
   return {
     active: {
-      backgroundColor: mix(
-        backgroundColorRgb,
-        contrastBackgroundColorRgb,
-        0.13,
-      ),
+      backgroundColor: isCreateButton
+        ? hexToRGBA(backgroundColor, 0.65)
+        : getContrastColor(0.3, opacityValue, backgroundColor),
       boxShadow: getBoxShadow('transparent'),
       color,
     },
@@ -60,67 +38,73 @@ const generateCSSStates = (colors: Colors): ButtonCSSContext => {
       color,
     },
     focus: {
-      boxShadow: getBoxShadow(mix(backgroundColorRgb, colorRgb, 0.5)),
+      boxShadow: getBoxShadow(hexToRGBA(highlightColor, 0.5)),
       color,
+      backgroundColor,
     },
     hover: {
-      backgroundColor: mix(
-        backgroundColorRgb,
-        contrastBackgroundColorRgb,
-        0.08,
-      ),
+      backgroundColor: isCreateButton
+        ? hexToRGBA(backgroundColor, 0.8)
+        : getContrastColor(0.1, opacityValue, backgroundColor),
       boxShadow: getBoxShadow('transparent'),
       color,
+    },
+    selected: {
+      color: highlightColor,
+      backgroundColor,
+      boxShadow: getBoxShadow('transparent'),
     },
   };
 };
 
-export type Colors = {
-  backgroundColor: string;
-  color: string;
-};
+const generateCreateButtonColors = (
+  themeBackground: string,
+  themeHighlight: string,
+) => ({
+  backgroundColor: themeHighlight,
+  color: generateTextColor(themeHighlight),
+  highlightColor: themeHighlight,
+});
 
-export type GenerateThemeArgs = {
-  name?: string;
-  primary: Colors;
-  secondary?: Colors;
-};
+export const generateTheme = (
+  themeColors: GenerateThemeArgs,
+): NavigationTheme => {
+  const { backgroundColor, highlightColor, name } = themeColors;
+  const color = generateTextColor(backgroundColor);
+  const colors = { ...themeColors, color };
 
-export const generateTheme = (args: GenerateThemeArgs): NavigationTheme => {
-  const { primary: primaryColors, secondary: secondaryColors } = args;
-  const primary = generateCSSStates(primaryColors);
-  const { active: primaryActive, default: primaryDefault } = primary;
-  const backgroundColorRgb = chromatism.convert(primaryColors.backgroundColor)
-    .rgb;
-  const contrastBackgroundColor = chromatism.contrastRatio(backgroundColorRgb);
-
-  const secondary = secondaryColors
-    ? generateCSSStates(secondaryColors)
-    : generateCSSStates({
-        backgroundColor: mix(
-          backgroundColorRgb,
-          contrastBackgroundColor.rgb,
-          0.13,
-        ),
-        color: primaryColors.color,
-      });
+  if (name === DEFAULT_THEME_NAME) {
+    return defaultTheme;
+  }
 
   return {
     mode: {
-      create: secondary,
-      iconButton: primary,
+      create: generateButtonCSSStates(
+        generateCreateButtonColors(backgroundColor, highlightColor),
+        'create',
+      ),
+      iconButton: generateButtonCSSStates(colors, 'iconButton'),
+      primaryButton: generateButtonCSSStates(colors, 'primaryButton'),
       navigation: {
-        backgroundColor: primaryDefault.backgroundColor,
-        color: primaryDefault.color,
+        backgroundColor,
+        color,
       },
-      primaryButton: primary,
+      productHome: {
+        color,
+        backgroundColor: highlightColor,
+        borderRight: `1px solid ${hexToRGBA(color, 0.5)}`,
+      },
       search: {
-        backgroundColor: primaryActive.backgroundColor,
-        color: primaryActive.color,
+        default: {
+          backgroundColor,
+          color,
+          borderColor: hexToRGBA(color, 0.5),
+        },
+        focus: {
+          borderColor: hexToRGBA(highlightColor, 0.8),
+        },
       },
-      skeleton: {
-        backgroundColor: contrastBackgroundColor.hex,
-      },
+      skeleton: { backgroundColor: color, opacity: 0.3 },
     },
   };
 };

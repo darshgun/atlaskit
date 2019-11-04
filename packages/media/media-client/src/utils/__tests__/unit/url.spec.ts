@@ -106,5 +106,15 @@ describe('url utils', () => {
       const result = objectToQueryString({ '%$^=': 1, key2: '&=%$' });
       expect(result).toBe('%25%24%5E%3D=1&key2=%26%3D%25%24');
     });
+
+    it('should convert objects with null', () => {
+      const result = objectToQueryString({ a: 1, b: null });
+      expect(result).toBe('a=1');
+    });
+
+    it('should convert objects with undefined', () => {
+      const result = objectToQueryString({ a: 1, b: undefined });
+      expect(result).toBe('a=1');
+    });
   });
 });

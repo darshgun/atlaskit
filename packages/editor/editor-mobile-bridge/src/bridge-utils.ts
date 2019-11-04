@@ -1,8 +1,5 @@
 import { toNativeBridge } from './editor/web-to-native';
 
-interface QueryParams {
-  theme?: 'dark' | 'light';
-}
 /**
  * Send an event to which ever bridge it can find.
  * @param bridgeName {string} bridge name
@@ -59,17 +56,16 @@ export const sendToBridge = (bridgeName: any, eventName: any, props = {}) => {
   }
 };
 
-export const parseLocationSearch = (): QueryParams => {
-  if (!window) {
-    return {};
+export function determineMode(input: unknown): 'dark' | 'light' {
+  switch (input) {
+    case 'dark':
+    case 'light':
+      return input;
+    case null:
+      return 'light';
+    default:
+      throw new Error(
+        `Could not determine mode for input ${JSON.stringify(input)}`,
+      );
   }
-
-  return window.location.search
-    .slice(1)
-    .split('&')
-    .reduce((acc: Record<string, string>, current) => {
-      const [key, value] = current.split('=');
-      acc[key] = value;
-      return acc;
-    }, {});
-};
+}

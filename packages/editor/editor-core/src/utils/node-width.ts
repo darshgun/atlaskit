@@ -5,10 +5,10 @@ import {
   akEditorFullWidthLayoutWidth,
   absoluteBreakoutWidth,
   gridMediumMaxWidth,
+  akLayoutGutterOffset,
 } from '@atlaskit/editor-common';
 import { WidthPluginState } from '../plugins/width';
 import {
-  LAYOUT_OFFSET,
   LAYOUT_SECTION_MARGIN,
   LAYOUT_COLUMN_PADDING,
 } from '../plugins/layout/styles';
@@ -47,7 +47,7 @@ export const getParentNodeWidth = (
   );
 
   if (node.type === schema.nodes.layoutSection) {
-    parentWidth += LAYOUT_OFFSET * 2; // extra width that gets added to layout
+    parentWidth += akLayoutGutterOffset * 2; // extra width that gets added to layout
 
     if (containerWidth.width > gridMediumMaxWidth) {
       parentWidth -= (LAYOUT_SECTION_MARGIN + 2) * (node.childCount - 1); // margin between sections

@@ -1,1 +1,0 @@
-All components emit upload analytics events now, not only popup

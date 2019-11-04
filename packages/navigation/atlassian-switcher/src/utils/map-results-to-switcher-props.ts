@@ -102,6 +102,32 @@ function collectAdminLinks(
   }
 }
 
+function collectDiscoverSectionLinks(
+  managePermission: ProviderResults['managePermission'],
+  addProductsPermission: ProviderResults['addProductsPermission'],
+  isDiscoverMoreForEveryoneEnabled: boolean,
+  isEmceeLinkEnabled: boolean,
+  product?: Product,
+) {
+  const canManagePermission =
+    !isError(managePermission) &&
+    isComplete(managePermission) &&
+    managePermission.data;
+
+  const canAddProducts =
+    !isError(addProductsPermission) &&
+    isComplete(addProductsPermission) &&
+    addProductsPermission.data;
+
+  return getDiscoverSectionLinks({
+    isDiscoverMoreForEveryoneEnabled,
+    isEmceeLinkEnabled,
+    product,
+    canManagePermission,
+    canAddProducts,
+  });
+}
+
 function collectFixedProductLinks(
   isDiscoverMoreForEveryoneEnabled: boolean,
 ): SwitcherItemType[] {
@@ -272,12 +298,16 @@ export function mapResultsToSwitcherProps(
       hasLoadedSuggestedProducts,
     hasLoadedCritical: hasLoadedAvailableProducts,
     discoverSectionLinks: hasLoadedDiscoverSection
-      ? getDiscoverSectionLinks({
-          product,
-          isDiscoverMoreForEveryoneEnabled:
+      ? collect(
+          collectDiscoverSectionLinks(
+            managePermission,
+            addProductsPermission,
             features.isDiscoverMoreForEveryoneEnabled,
-          isEmceeLinkEnabled: features.isEmceeLinkEnabled,
-        })
+            features.isEmceeLinkEnabled,
+            product,
+          ),
+          [],
+        )
       : [],
   };
 }

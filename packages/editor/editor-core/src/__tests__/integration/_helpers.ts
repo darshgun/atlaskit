@@ -176,12 +176,12 @@ export const insertMediaFromMediaPicker = async (
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
-  const insertMediaButton = '.e2e-insert-button';
+  const insertMediaButton = '[data-test-id="media-picker-insert-button"]';
   const mediaCardSelector = `${editable} .img-wrapper`;
   const existingMediaCards = await browser.$$(mediaCardSelector);
   // wait for media item, and select it
   await browser.waitForSelector(
-    '.e2e-recent-upload-card [aria-label="one.svg"]',
+    '[data-test-id="media-picker-popup"] [data-test-id="media-card-view"] [aria-label="one.svg"]',
   );
   if (filenames) {
     for (const filename of filenames) {

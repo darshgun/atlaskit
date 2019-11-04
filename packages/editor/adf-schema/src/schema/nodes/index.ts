@@ -7,6 +7,7 @@ export {
   BlockContent,
   Inline,
   ExtensionContent,
+  NestedExpandContent,
   NoMark,
   MarksObject,
   InlineFormattedText,
@@ -66,6 +67,7 @@ export { text, TextDefinition } from './text';
 export { default as unknownBlock } from './unknown-block';
 export {
   media,
+  mediaWithAltText,
   MediaType,
   MediaBaseAttributes,
   MediaAttributes,
@@ -144,3 +146,5 @@ export {
 export { unsupportedBlock } from './unsupported-block';
 export { unsupportedInline } from './unsupported-inline';
 export { status, StatusDefinition } from './status';
+export { expand, ExpandDefinition, toJSON as expandToJSON } from './expand';
+export { nestedExpand, NestedExpandDefinition } from './nested-expand';

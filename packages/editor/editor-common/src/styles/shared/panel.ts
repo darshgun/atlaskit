@@ -1,14 +1,13 @@
 import { css } from 'styled-components';
 import { gridSize, borderRadius, colors, themed } from '@atlaskit/theme';
-import { PanelType } from '@atlaskit/adf-schema';
-import { hexToRgba } from '../../utils';
+import { PanelType, hexToRgba } from '@atlaskit/adf-schema';
 import {
-  relativeSize,
   akEditorTableCellMinWidth,
   akEditorDeleteBackground,
   akEditorDeleteBorder,
   akEditorSelectedBorderSize,
   akEditorDeleteIconColor,
+  blockNodesVerticalMargin,
 } from '../consts';
 
 const lightPanelColor = {
@@ -95,7 +94,7 @@ const mainDynamicStyles = (panelType: PanelType) => (props: any) => {
 export const panelSharedStyles = css`
   .${PanelSharedCssClassName.PANEL_CONTAINER} {
     border-radius: ${borderRadius()}px;
-    margin: ${relativeSize(1.142)}px 0;
+    margin: ${blockNodesVerticalMargin}rem 0 0;
     padding: ${gridSize()}px;
     min-width: ${akEditorTableCellMinWidth}px;
     display: flex;

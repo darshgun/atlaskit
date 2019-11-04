@@ -38,6 +38,8 @@ packages/editor/adf-utils/*.js
 # flow tests
 packages/**/__tests__/flow/
 
-# tmp
-build
-website
+# Build folder
+# https://jdog.jira-dev.com/browse/AFP-500
+# Lint new TS files by only ignoring JS
+# Negated ignore patterns didn't work to first ignore build and THEN only include ts files
+build/**/*.js
