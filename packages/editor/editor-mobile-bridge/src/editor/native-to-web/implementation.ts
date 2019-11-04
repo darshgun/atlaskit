@@ -33,6 +33,7 @@ import {
   setLinkHref,
   setLinkText,
   clearEditorContent,
+  setKeyboardHeight,
 } from '@atlaskit/editor-core';
 import { EditorView } from 'prosemirror-view';
 import { EditorViewWithComposition } from '../../types';
@@ -379,6 +380,15 @@ export default class WebBridgeImpl extends WebBridge
   redo() {
     if (this.editorView) {
       pmHistoryRedo(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
+  setKeyboardControlsHeight(height: string) {
+    if (this.editorView) {
+      setKeyboardHeight(+height)(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
