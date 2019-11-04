@@ -235,22 +235,34 @@ export function transformSliceForMedia(slice: Slice, schema: Schema) {
     table,
     bulletList,
     orderedList,
+    media,
   } = schema.nodes;
 
   return (selection: Selection) => {
+    let newSlice = slice;
     if (
       hasParentNodeOfType([layoutSection, table, bulletList, orderedList])(
         selection,
       )
     ) {
-      return mapSlice(slice, node =>
+      newSlice = mapSlice(newSlice, node =>
         node.type.name === 'mediaSingle'
           ? mediaSingle.createChecked({}, node.content, node.marks)
           : node,
       );
     }
 
-    return slice;
+    newSlice = mapSlice(newSlice, node =>
+      node.type.name === 'media' && node.attrs.type === 'external'
+        ? media.createChecked(
+            { ...node.attrs, __external: true },
+            node.content,
+            node.marks,
+          )
+        : node,
+    );
+
+    return newSlice;
   };
 }
 

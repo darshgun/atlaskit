@@ -573,6 +573,7 @@ Object {
           "attrs": Object {
             "__contextId": null,
             "__displayType": null,
+            "__external": false,
             "__fileMimeType": null,
             "__fileName": null,
             "__fileSize": null,

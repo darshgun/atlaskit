@@ -46,6 +46,9 @@ export interface MediaBaseAttributes {
   __displayType?: DisplayType | null;
   // For copy & paste
   __contextId?: string;
+
+  // is set to true when new external media is inserted, false for external media in existing documents
+  __external?: boolean;
 }
 
 export interface MediaAttributes extends MediaBaseAttributes {
@@ -57,6 +60,7 @@ export interface ExternalMediaAttributes {
   url: string;
   width?: number;
   height?: number;
+  __external?: boolean;
 }
 
 export const defaultAttrs: DefaultAttributes<
@@ -74,6 +78,7 @@ export const defaultAttrs: DefaultAttributes<
   __fileMimeType: { default: null },
   __displayType: { default: null },
   __contextId: { default: null },
+  __external: { default: false },
 };
 
 export const media: NodeSpec = {
