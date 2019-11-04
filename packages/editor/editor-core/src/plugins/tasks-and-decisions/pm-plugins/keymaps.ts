@@ -294,7 +294,10 @@ const splitListItemWith = (
         tr = tr.lift(blockRange, blockRange.depth - 1).scrollIntoView();
       }
 
-      tr = tr.deleteRange(pos - 3, pos - 2);
+      // we delete 1 past the range of the empty taskItem
+      // otherwise we hit a bug in prosemirror-transform:
+      // Cannot read property 'content' of undefined
+      tr = tr.deleteRange(pos - 3, pos - 1);
     }
   }
 
