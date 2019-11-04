@@ -157,21 +157,13 @@ const ProfileDropdown = () => {
   );
 };
 
-const linkCSS = {
-  color: 'inherit',
-  textDecoration: 'none',
-  ':hover, :visited, :active': {
-    color: 'inherit',
-  },
-};
-
 const Icon = () => {
   const {
     mode: { productHome },
   } = atlassianTheme;
   return (
     <Button
-      appearance="link"
+      appearance="subtle-link"
       href="#"
       iconBefore={
         <JiraIcon
@@ -190,14 +182,18 @@ const Logo = () => {
     mode: { productHome },
   } = atlassianTheme;
   return (
-    <a css={linkCSS} href="#">
-      <JiraLogo
-        iconGradientStart={productHome.gradientStart}
-        iconGradientStop={productHome.gradientStop}
-        iconColor={productHome.iconColor}
-        textColor={productHome.color}
-      />
-    </a>
+    <Button
+      appearance="subtle-link"
+      href="#"
+      iconBefore={
+        <JiraLogo
+          iconGradientStart={productHome.gradientStart}
+          iconGradientStop={productHome.gradientStop}
+          iconColor={productHome.iconColor}
+          textColor={productHome.color}
+        />
+      }
+    />
   );
 };
 

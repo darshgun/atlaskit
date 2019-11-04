@@ -53,14 +53,22 @@ export const primaryButtonSkeletonCSS = (theme: NavigationTheme) => ({
 
 export const isHighlightedCSS = (
   { mode: { primaryButton } }: NavigationTheme,
-  isSelected?: boolean,
+  isHighlighted?: boolean,
 ): CSSObject => ({
-  alignItems: 'center',
-  borderTop: `${gridSize / 2}px solid transparent`,
-  borderBottom: isSelected
-    ? `${gridSize / 2}px solid ${primaryButton.selected.color}`
-    : `${gridSize / 2}px solid transparent`,
-  boxSizing: 'border-box',
   display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
   height: '100%',
+
+  '&:after': {
+    position: 'absolute',
+    bottom: '0',
+    content: isHighlighted ? '""' : '',
+    height: gridSize / 2,
+    backgroundColor: primaryButton.selected.color,
+    width: `calc(100% - ${gridSize}px)`,
+    borderTopLeftRadius: 1,
+    borderTopRightRadius: 1,
+  },
 });
