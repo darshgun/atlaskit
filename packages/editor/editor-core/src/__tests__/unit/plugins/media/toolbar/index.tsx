@@ -28,6 +28,7 @@ import { shallow } from 'enzyme';
 import { ReactElement } from 'react';
 import { IntlProvider } from 'react-intl';
 import commonMessages from '../../../../../messages';
+import { messages as altTextMessages } from '../../../../../plugins/media/pm-plugins/alt-text/messages';
 import { FloatingToolbarCustom } from '../../../../../plugins/floating-toolbar/types';
 import Button from '../../../../../plugins/floating-toolbar/ui/Button';
 import { MediaOptions } from '../../../../../plugins/media';
@@ -95,6 +96,7 @@ describe('media', () => {
   const temporaryMediaSingle = mediaSingle({ layout: 'center' })(
     temporaryMedia,
   );
+
   const docWithMediaSingle = doc(temporaryMediaSingle);
 
   beforeEach(() => {
@@ -124,6 +126,26 @@ describe('media', () => {
         appearance: 'danger',
         icon: RemoveIcon,
       });
+    });
+
+    it('should render alt text button when enabled', () => {
+      const { editorView } = editor(docWithMediaSingle, {
+        UNSAFE_allowAltTextOnImages: true,
+      });
+      setNodeSelection(editorView, 0);
+
+      const altTextTitle = intl.formatMessage(altTextMessages.altText);
+
+      const toolbar = floatingToolbar(editorView.state, intl, {
+        UNSAFE_allowAltTextOnImages: true,
+      });
+
+      const button = findToolbarBtn(
+        getToolbarItems(toolbar!, editorView),
+        altTextTitle,
+      );
+
+      expect(button).toBeDefined();
     });
 
     it('should render alignment, wrapping and breakout buttons in full page without resizing enabled', () => {
