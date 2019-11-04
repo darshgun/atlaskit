@@ -6,7 +6,6 @@ import {
   DispatchAnalyticsEvent,
 } from '../../analytics';
 import { EditorView } from 'prosemirror-view';
-import { getNodesCount } from '../../../utils/document';
 import {
   isPerformanceObserverAvailable,
   isPerformanceAPIAvailable,
@@ -28,7 +27,6 @@ const dispatchLongTaskEvent = (
     attributes: {
       freezeTime: time,
       nodeSize: state.doc.nodeSize,
-      nodes: getNodesCount(state.doc),
     },
     eventType: EVENT_TYPE.OPERATIONAL,
   });
@@ -72,7 +70,6 @@ export default (
                   attributes: {
                     time: diff,
                     nodeSize: state.doc.nodeSize,
-                    nodes: getNodesCount(state.doc),
                   },
                   eventType: EVENT_TYPE.OPERATIONAL,
                 });
