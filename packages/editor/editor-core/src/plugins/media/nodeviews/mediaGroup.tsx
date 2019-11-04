@@ -28,8 +28,8 @@ import {
   WithProviders,
   ProviderFactory,
   ContextIdentifierProvider,
+  MediaProvider,
 } from '@atlaskit/editor-common';
-import { MediaProvider } from '@atlaskit/editor-common';
 import { MediaNodeUpdater } from './mediaNodeUpdater';
 
 export type MediaGroupProps = {
@@ -192,7 +192,7 @@ class MediaGroupNodeView extends ReactNodeView<MediaGroupNodeViewProps> {
     const getPos = this.getPos as getPosHandlerNode;
     return (
       <WithProviders
-        providers={['mediaProvider', 'contextIdentifierProvider', 'foo']}
+        providers={['mediaProvider', 'contextIdentifierProvider']}
         providerFactory={providerFactory}
         renderNode={({ mediaProvider, contextIdentifierProvider }) => {
           const renderFn = ({
