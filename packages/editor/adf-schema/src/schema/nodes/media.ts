@@ -43,7 +43,7 @@ export interface MediaBaseAttributes {
   // For copy & paste
   __contextId?: string;
 
-  // to upload external images to media
+  // is set to true when new external media is inserted, false for external media in existing documents
   __external?: boolean;
 }
 
