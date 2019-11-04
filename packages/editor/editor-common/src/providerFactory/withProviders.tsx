@@ -1,11 +1,11 @@
-import { PureComponent } from 'react';
+import { PureComponent, ReactNode } from 'react';
 import ProviderFactory from './';
 import { Providers } from '../types';
 
 export interface Props {
   providerFactory: ProviderFactory;
   providers: string[];
-  renderNode: (providers: Providers) => JSX.Element;
+  renderNode: (providers: Providers) => ReactNode;
 }
 
 export class WithProviders extends PureComponent<Props, { providers: any }> {

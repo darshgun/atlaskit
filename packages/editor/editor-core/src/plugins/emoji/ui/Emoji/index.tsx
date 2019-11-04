@@ -44,6 +44,10 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
       return <span>{fallback || shortName}</span>;
     }
 
+    if (!providers.emojiProvider) {
+      return null;
+    }
+
     return (
       <ClickSelectWrapper>
         <ResourcedEmoji

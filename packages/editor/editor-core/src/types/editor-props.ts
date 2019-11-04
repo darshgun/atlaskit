@@ -8,6 +8,7 @@ import {
   ContextIdentifierProvider,
   ExtensionHandlers,
   ErrorReportingHandler,
+  MediaProvider,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
 import { MentionProvider } from '@atlaskit/mention/resource';
@@ -16,7 +17,7 @@ import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
 import { PluginConfig as TablesPluginConfig } from '../plugins/table/types';
 import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
-import { MediaProvider, MediaState } from '../plugins/media/types';
+import { MediaState } from '../plugins/media/types';
 import { AnalyticsHandler } from '../analytics/handler';
 
 import { ImageUploadHandler } from '../plugins/image-upload/types';

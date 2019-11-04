@@ -3,10 +3,10 @@ import { EditorView } from 'prosemirror-view';
 import {
   ContextIdentifierProvider,
   ProviderFactory,
+  MediaProvider,
 } from '@atlaskit/editor-common';
 import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import { EventDispatcher } from '../../../event-dispatcher';
-import { MediaProvider } from '../types';
 import { MediaOptions, MediaPMPluginOptions } from '../index';
 import { MediaPluginState } from '../pm-plugins/main';
 import { DispatchAnalyticsEvent } from '../../analytics';

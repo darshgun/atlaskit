@@ -19,6 +19,7 @@ export {
   CollabEventRemoteData,
   CollabSendableSelection,
   CollabEventTelepointerData, // End Collab Types
+  MediaProvider,
 } from './types';
 
 export * from './contextIdentifier';

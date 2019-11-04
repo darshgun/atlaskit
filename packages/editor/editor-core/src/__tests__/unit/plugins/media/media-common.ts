@@ -11,6 +11,8 @@ import {
 import { undo } from 'prosemirror-history';
 import { NodeSelection, TextSelection } from 'prosemirror-state';
 import { MockMentionResource } from '@atlaskit/util-data-test';
+import { getDefaultMediaClientConfig } from '@atlaskit/media-test-helpers/fakeMediaClient';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { setNodeSelection } from '../../../../utils';
 import {
   removeMediaNode,
@@ -21,6 +23,12 @@ const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
 
 describe('media-common', () => {
   const createEditor = createEditorFactory();
+  const mediaProvider = Promise.resolve({
+    viewMediaClientConfig: getDefaultMediaClientConfig(),
+  });
+  const providerFactory = ProviderFactory.create({
+    mediaProvider,
+  });
 
   const editor = (doc: any) =>
     createEditor({
@@ -30,6 +38,7 @@ describe('media-common', () => {
         mentionProvider: Promise.resolve(new MockMentionResource({})),
         allowRule: true,
       },
+      providerFactory,
     });
 
   describe('removeMediaNode', () => {
@@ -188,7 +197,6 @@ describe('media-common', () => {
             deletingMediaNode(editorView.state.schema),
             () => positionOfDeletingNode,
           );
-
           undo(editorView.state, editorView.dispatch);
 
           expect(editorView.state.doc).toEqualDocument(

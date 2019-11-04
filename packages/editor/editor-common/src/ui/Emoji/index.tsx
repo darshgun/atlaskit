@@ -2,7 +2,10 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojiId } from '@atlaskit/emoji/types';
 import { ResourcedEmoji } from '@atlaskit/emoji/element';
-import ProviderFactory, { WithProviders } from '../../providerFactory';
+import ProviderFactory, {
+  WithProviders,
+  Providers,
+} from '../../providerFactory';
 
 export interface EmojiProps extends EmojiId {
   allowTextFallback?: boolean;
@@ -26,7 +29,7 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
     }
   }
 
-  private renderWithProvider = (providers: Record<string, Promise<any>>) => {
+  private renderWithProvider = (providers: Providers) => {
     const {
       allowTextFallback,
       shortName,
@@ -37,6 +40,10 @@ export default class EmojiNode extends PureComponent<EmojiProps, {}> {
 
     if (allowTextFallback && !providers.emojiProvider) {
       return <span>{fallback || shortName}</span>;
+    }
+
+    if (!providers.emojiProvider) {
+      return null;
     }
 
     return (
