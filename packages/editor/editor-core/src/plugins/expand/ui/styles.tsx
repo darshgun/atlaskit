@@ -2,11 +2,12 @@ import { css } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 import {
   blockNodesVerticalMargin,
-  akEditorExpandLayoutOffset,
+  akLayoutGutterOffset,
   sharedExpandStyles,
 } from '@atlaskit/editor-common';
 
 import { expandClassNames } from './class-names';
+import { BreakoutCssClassName } from '../../breakout/constants';
 
 const EXPAND_SELECTED_BACKGROUND = 'rgba(255, 255, 255, 0.6)';
 
@@ -24,11 +25,11 @@ export const expandStyles = css`
     }
   }
 
-  .ProseMirror .${expandClassNames.prefix}:not(.${expandClassNames.type(
-  'nestedExpand',
-)}) {
-    margin-left: -${akEditorExpandLayoutOffset}px;
-    margin-right: -${akEditorExpandLayoutOffset}px;
+  .ProseMirror > .${expandClassNames.type('expand')}, .${
+  BreakoutCssClassName.BREAKOUT_MARK_DOM
+} > .${expandClassNames.type('expand')} {
+    margin-left: -${akLayoutGutterOffset}px;
+    margin-right: -${akLayoutGutterOffset}px;
   }
 
   .${expandClassNames.content} {

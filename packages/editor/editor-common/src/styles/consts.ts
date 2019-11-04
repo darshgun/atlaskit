@@ -3,6 +3,7 @@ import {
   layers,
   colors,
   fontSize as defaultFontSize,
+  gridSize,
 } from '@atlaskit/theme';
 
 const {
@@ -93,6 +94,7 @@ export const akEditorSwoopCubicBezier = `cubic-bezier(0.15, 1, 0.3, 1)`;
 export const gridMediumMaxWidth = 1024;
 export const breakoutWideScaleRatio = 1.33;
 export const akMediaSingleResizeZIndex = akEditorUnitZIndex * 99;
+export const akLayoutGutterOffset = gridSize() * 1.5;
 
 export type EditorTheme = {
   baseFontSize?: number;
