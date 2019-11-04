@@ -11,7 +11,7 @@ export default class ProviderFactory {
   static create(providers: Providers) {
     const providerFactory = new ProviderFactory();
     Object.keys(providers).forEach(name => {
-      providerFactory.setProvider(name, (providers as any)[name]);
+      providerFactory.setProvider(name, providers[name]);
     });
     return providerFactory;
   }
