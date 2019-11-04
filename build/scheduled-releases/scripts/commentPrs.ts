@@ -24,8 +24,9 @@ async function updatePrWithFutureRelease(
 
   const nextReleaseTagPattern = `${NextReleaseTagPrefix}*`;
   // --abbrev=0 flag suppresses long format which appends commit & hash info
+  // --first-parent follows only the first parent of merges, to filter out other branches merged in history
   const nextReleaseTag = await git.raw(
-    `describe --abbrev=0 --match ${nextReleaseTagPattern} origin/${DevelopBranchName}`.split(
+    `describe --abbrev=0 --first-parent --match ${nextReleaseTagPattern} origin/${DevelopBranchName}`.split(
       ' ',
     ),
   );
