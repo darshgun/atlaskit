@@ -1,9 +1,9 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
-import { N40A, N30A, N10A } from '@atlaskit/theme/colors';
+import { N40A, N30A, N900 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
 
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
-import { NavigationTheme } from '../../theme';
+import { NavigationTheme, hexToRGBA } from '../../theme';
 const gridSize = gridSizeFn();
 
 export const containerCSS = ({
@@ -51,6 +51,9 @@ export const bottomShadow = {
     right: 0,
     top: '100%',
     height: gridSize / 2,
-    background: `linear-gradient(180deg, ${N40A} 0, ${N40A} 1px, ${N30A} 1px, ${N10A} 4px)`,
+    background: `linear-gradient(180deg, ${N40A} 0, ${N40A} 1px, ${N30A} 1px, ${hexToRGBA(
+      N900,
+      0,
+    )} 4px)`,
   },
 };
