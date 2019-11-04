@@ -42,6 +42,7 @@
     "lint:stylelint": "                      stylelint '**/*.{js,ts,tsx}'",
     "lint:eslint": "                         jest --config jest-lint-config.js",
     "lint:checkPrettier": "                  eslint --print-config .eslintrc.json | eslint-config-prettier-check",
+    "lint:markdown": "                       yarn run prettier --write --no-editorconfig '**/*.md'",
     "typecheck": "                           yarn run typecheck:flow && yarn run typecheck:typescript",
     "typecheck:flow": "                      flow check --max-warnings=0",
     "typecheck:typescript": "                NODE_OPTIONS=--max-old-space-size=4096 tsc --noEmit --project ./tsconfig.typecheck.json",
@@ -589,7 +590,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": [
+    "*.{js,ts,tsx,md}": [
       "prettier --no-editorconfig --write",
       "git add"
     ]
