@@ -3,7 +3,6 @@ const path = require('path');
 const loaderUtils = require('loader-utils');
 const globby = require('globby');
 const bolt = require('bolt');
-const { dir, buildFs } = require('./buildFs');
 
 /*::
 import type { Directory, File, LoaderOptions } from './types';
@@ -54,15 +53,16 @@ module.exports = async function boltNavLoader() {
       ]
     }
     */
-  let packages = {};
+  const packages = {};
 
-  for (let workspace of workspaces) {
+  for (const workspace of workspaces) {
+    // eslint-disable-next-line no-continue
     if (!files.includes(workspace.relativeDir)) continue;
 
-    const [a, team, name] = workspace.relativeDir.split(path.sep);
+    const [team, name] = workspace.relativeDir.split(path.sep);
     if (!packages[team]) packages[team] = [];
 
-    let info = {
+    const info = {
       name,
       team,
       config: {},

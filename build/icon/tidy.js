@@ -1,3 +1,6 @@
+/* eslint-disable no-multi-assign */
+/* eslint-disable no-undef */
+// @flow
 const fs = require('fs-extra');
 
 /*::
@@ -12,5 +15,6 @@ type Config = {
 };
 */
 
+// $FlowFixMe
 module.exports = tidy = (config /*: Config */) =>
   fs.emptyDir(config.processedDir).then(() => fs.emptyDir(config.destDir));

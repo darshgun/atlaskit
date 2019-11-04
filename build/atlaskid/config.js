@@ -1,11 +1,12 @@
+// @flow
 // This file should never be checked in and is only used for local testing
 
 const botUsername = process.env.BITBUCKET_USERNAME;
 const botPassword = process.env.BITBUCKET_PASSWORD;
 const prodBaseUrl =
   'https://atlaskit-atlaskid.us-west-1.staging.public.atl-paas.net';
-const devBaseUrl =
-  'https://atlaskit-atlaskid.ap-southeast-2.dev.public.atl-paas.net';
+// const devBaseUrl =
+//   'https://atlaskit-atlaskid.ap-southeast-2.dev.public.atl-paas.net';
 const repoOwner = 'atlassian';
 const repoName = 'atlaskit-mk-2';
 // Sorting these lists into teams to make this easier to maintain
@@ -126,6 +127,7 @@ const bitbucketTeam = [
   'cdoan-atlassian',
   'peterwilliams-atl',
 ];
+// $FlowFixMe - concat issues
 const usersAllowedToApprove = [].concat(
   atlaskitTeam,
   editorTeam,
@@ -146,17 +148,17 @@ module.exports = {
   baseUrl: prodBaseUrl,
   port: 8080,
   hostConfig: {
-    botUsername: botUsername,
-    botPassword: botPassword,
-    repoOwner: repoOwner,
-    repoName: repoName,
+    botUsername,
+    botPassword,
+    repoOwner,
+    repoName,
     repoUuid: '{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}',
   },
   ciConfig: {
-    botUsername: botUsername,
-    botPassword: botPassword,
-    repoOwner: repoOwner,
-    repoName: repoName,
+    botUsername,
+    botPassword,
+    repoOwner,
+    repoName,
   },
   prSettings: {
     requiredApprovals: 1,
@@ -164,6 +166,6 @@ module.exports = {
     requireClosedTasks: true,
     requireGreenBuild: true,
     allowLandWhenAble: true,
-    usersAllowedToApprove: usersAllowedToApprove,
+    usersAllowedToApprove,
   },
 };

@@ -1,3 +1,4 @@
+// @flow
 const { promisify } = require('util');
 const Transifex = require('transifex');
 const { errorAndExit } = require('./index');
@@ -18,19 +19,23 @@ const transifex = new Transifex({
   credential: `api:${TRANSIFEX_API_TOKEN}`,
 });
 
-const pushTranslations = (project, resource, content) =>
+const pushTranslations = (
+  project /*:string*/,
+  resource /*:string*/,
+  content /*:string*/,
+) =>
   promisify(transifex.uploadSourceLanguageMethod.bind(transifex))(
     project,
     resource,
     {
       slug: resource,
-      name: resource + '.pot',
+      name: `${resource}.pot`,
       i18n_type: 'PO',
       content,
     },
   );
 
-const getAvailableLanguages = (project, resource) =>
+const getAvailableLanguages = (project /*:string*/, resource /*:string*/) =>
   promisify(transifex.resourcesInstanceMethods.bind(transifex))(
     project,
     resource,

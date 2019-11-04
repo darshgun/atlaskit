@@ -1,3 +1,4 @@
+// @flow
 // Object.fromEntries polyfill, remove when upgraded to node 10
 module.exports = function fromEntries(iterable) {
   return [...iterable].reduce(

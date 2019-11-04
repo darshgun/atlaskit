@@ -1,3 +1,4 @@
+// @flow
 function maxType(types) {
   if (types.includes('major')) return 'major';
   if (types.includes('minor')) return 'minor';
@@ -5,8 +6,8 @@ function maxType(types) {
   return 'none';
 }
 
-function flattenReleases(changesets) {
-  let abc = changesets
+function flattenReleases(changesets /*: Object*/) {
+  const abc = changesets
     .map(changeset => [
       ...changeset.releases.map(release => ({
         name: release.name,
@@ -27,10 +28,10 @@ function flattenReleases(changesets) {
       acc[release.name].push(release);
       return acc;
     }, {});
-
+  // $FlowFixMe - map issues
   return Object.entries(abc).map(([name, releases]) => ({
-    name,
-    type: maxType(releases.map(r => r.type)),
+    name, // $FlowFixMe - map issues
+    type: maxType(releases.map(r => r.type)), // $FlowFixMe - map issues
     commits: [...new Set(releases.map(r => r.commit))],
   }));
 }

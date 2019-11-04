@@ -1,3 +1,4 @@
+// @flow
 import { mount } from 'enzyme';
 import { AkCodeBlock } from '@atlaskit/code';
 import code from '../../code';
