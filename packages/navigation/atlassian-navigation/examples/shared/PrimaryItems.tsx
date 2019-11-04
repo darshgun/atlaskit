@@ -96,7 +96,6 @@ export const confluencePrimaryItems = [
 ];
 
 export const jiraPrimaryItems = [
-  <PrimaryButton href="#">Home</PrimaryButton>,
   <NavigationButton
     onClick={(...args: any[]) => {
       console.log('Projects click', ...args);

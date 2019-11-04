@@ -17,6 +17,7 @@ import {
   Help,
   Notifications,
   PrimaryDropdownButton,
+  PrimaryButton,
   ProductHome,
   Profile,
   Search,
@@ -355,6 +356,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 };
 
 const primaryItems = [
+  <PrimaryButton href="#">Home</PrimaryButton>,
   <PrimaryDropdown content={ProjectsContent} text="Projects" />,
   <PrimaryDropdown isHighlighted content={FiltersContent} text="Filters" />,
   <PrimaryDropdown content={DashboardsContent} text="Dashboards" />,
