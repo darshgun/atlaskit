@@ -57,6 +57,7 @@ module.exports = {
     }
     // eslint-disable-next-line consistent-return
     return sendLogs(
+      // $FlowFixMe - return error
       JSON.stringify({
         events: properties.map(property =>
           buildEventPayload(
@@ -80,6 +81,7 @@ module.exports = {
     }
     // eslint-disable-next-line consistent-return
     return sendLogs(
+      // $FlowFixMe - return error
       JSON.stringify({
         events: properties.map(property =>
           buildEventPayload(property, eventName),
@@ -95,6 +97,7 @@ module.exports = {
   },
   reportLongRunningTests(results /*: any */, threshold /*: number */) {
     return sendLogs(
+      // $FlowFixMe - return error
       JSON.stringify({
         events: results.map(result => {
           return {

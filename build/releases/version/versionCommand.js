@@ -1,4 +1,5 @@
 /* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
 // @flow
 const path = require('path');
 const bolt = require('bolt');
@@ -59,7 +60,7 @@ async function getNewFSChangesets(changesetBase) {
         'utf-8',
       );
       const jsonPath = path.join(changesetBase, changesetDir, 'changes.json');
-      // eslint-disable-next-line global-require
+      // $StringLitteral
       const json = require(jsonPath);
       const commit = await git.getCommitThatAddsFile(jsonPath);
       return { ...json, summary, commit };
@@ -67,7 +68,7 @@ async function getNewFSChangesets(changesetBase) {
   return Promise.all(changesets);
 }
 
-async function run(opts) {
+async function run(opts /*: Object*/) {
   let userConfig = await resolveConfig(opts);
   userConfig =
     userConfig && userConfig.versionOptions ? userConfig.versionOptions : {};

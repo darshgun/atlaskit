@@ -4,7 +4,7 @@ const path = require('path');
 
 const parseChangesetCommit = require('@atlaskit/build-releases/changeset/parseChangesetCommit');
 
-async function getCommitsSince(ref) {
+async function getCommitsSince(ref /*: string */) {
   const gitCmd = await spawn('git', [
     'rev-list',
     '--no-merges',
@@ -14,7 +14,7 @@ async function getCommitsSince(ref) {
   return gitCmd.stdout.trim().split('\n');
 }
 
-async function getChangedFilesSince(ref, fullPath = false) {
+async function getChangedFilesSince(ref /*: string */, fullPath = false) {
   // First we need to find the commit where we diverged from `ref` at using `git merge-base`
   let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
   const divergedAt = cmd.stdout.trim();
@@ -55,22 +55,22 @@ async function getMasterRef() {
   return gitCmd.stdout.trim().split('\n')[0];
 }
 
-async function add(pathToFile) {
+async function add(pathToFile /*: string */) {
   const gitCmd = await spawn('git', ['add', pathToFile]);
   return gitCmd.code === 0;
 }
 
-async function checkout(pathToFile) {
+async function checkout(pathToFile /*: string */) {
   const gitCmd = await spawn('git', ['checkout', pathToFile]);
   return gitCmd.code === 0;
 }
 
-async function branch(branchName) {
+async function branch(branchName /*: string */) {
   const gitCmd = await spawn('git', ['checkout', '-b', branchName]);
   return gitCmd.code === 0;
 }
 
-async function commit(message) {
+async function commit(message /*: string */) {
   const gitCmd = await spawn('git', ['commit', '-m', message, '--allow-empty']);
   return gitCmd.code === 0;
 }
@@ -81,7 +81,7 @@ async function push(args = []) {
 }
 
 // used to create a single tag at a time for the current head only
-async function tag(tagStr) {
+async function tag(tagStr /*: string */) {
   // NOTE: it's important we use the -m flag otherwise 'git push --follow-tags' wont actually push
   // the tags
   const gitCmd = await spawn('git', ['tag', tagStr, '-m', tagStr]);
@@ -178,11 +178,11 @@ async function getAndParseJsonFromCommitsStartingWith(str, since) {
 
 // TODO: Don't parse these, just return the commits
 // LB: BETTER DO THIS SOON
-async function getAllReleaseCommits(since) {
+async function getAllReleaseCommits(since /*: any */) {
   return getAndParseJsonFromCommitsStartingWith('RELEASING: ', since);
 }
 
-async function getAllChangesetCommits(since) {
+async function getAllChangesetCommits(since /*: any */) {
   return getAndParseJsonFromCommitsStartingWith('CHANGESET: ', since);
 }
 
@@ -231,7 +231,7 @@ async function getLastPublishCommit() {
   return commit;
 }
 
-async function getCommitThatAddsFile(pathTo) {
+async function getCommitThatAddsFile(pathTo /*: string */) {
   const gitCmd = await spawn('git', [
     'log',
     '--reverse',
@@ -248,7 +248,7 @@ async function getCommitThatAddsFile(pathTo) {
   return commit;
 }
 
-async function getUnpublishedChangesetCommits(since) {
+async function getUnpublishedChangesetCommits(since /*: any */) {
   // Start one commit before the "since" if it's passed in so that we can find that commit if required
   const releaseCommits = await getAllReleaseCommits(
     since ? `${since}~1` : undefined,

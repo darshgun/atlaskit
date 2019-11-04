@@ -7,7 +7,10 @@ const spawn = require('projector-spawn');
 const fse = require('fs-extra');
 const path = require('path');
 
-const createChangeset = async (packages, message) => {
+const createChangeset = async (
+  packages /*: string */,
+  message /*: string */,
+) => {
   const changeset = {
     releases: packages,
     dependents: [],

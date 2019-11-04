@@ -15,7 +15,7 @@ inquirer.registerPrompt(
  * identifier for the name every time. This is why we are using UUIDs.
  */
 
-async function askCheckboxPlus(message, choices) {
+async function askCheckboxPlus(message /*:string */, choices /*: string[]*/) {
   const name = `CheckboxPlus-${uuid()}`;
 
   // wraps fuzzyfilter, and removes inquirer sepearators/other data invalid to
@@ -48,7 +48,7 @@ async function askCheckboxPlus(message, choices) {
     .then(responses => responses[name]);
 }
 
-async function askQuestion(message) {
+async function askQuestion(message /*:string */) {
   const name = `Question-${uuid()}`;
 
   return inquirer
@@ -62,7 +62,7 @@ async function askQuestion(message) {
 }
 
 // eslint-disable-next-line no-unused-vars
-async function askAutoComplete(message) {
+async function askAutoComplete(message /*:string[] */) {
   const name = `Autocmplete-${uuid()}`;
 
   return inquirer
@@ -76,7 +76,7 @@ async function askAutoComplete(message) {
     .then(responses => responses[name]);
 }
 
-async function askConfirm(message) {
+async function askConfirm(message /*:string[] */) {
   const name = `Confirm-${uuid()}`;
 
   return inquirer
@@ -90,7 +90,7 @@ async function askConfirm(message) {
     .then(responses => responses[name]);
 }
 
-async function askList(message, choices) {
+async function askList(message /*:string */, choices /*: string[]*/) {
   const name = `List-${uuid()}`;
 
   return inquirer
@@ -105,7 +105,7 @@ async function askList(message, choices) {
     .then(responses => responses[name]);
 }
 
-async function askCheckbox(message, choices) {
+async function askCheckbox(message /*:string */, choices /*: string[]*/) {
   const name = `Checkbox-${uuid()}`;
 
   return inquirer
@@ -121,7 +121,7 @@ async function askCheckbox(message, choices) {
     .catch(e => console.log('can we do this?', e));
 }
 
-async function askEditor(pathToFile) {
+async function askEditor(pathToFile /*: string */) {
   return new Promise((resolve, reject) => {
     editor(pathToFile, code => {
       if (code === 0) resolve();

@@ -19,21 +19,26 @@ const hasSnapshotDiffFail = failedExpectations => {
  * This helps debug timeout or page error failures
  */
 class ScreenshotReporter {
-  constructor(page) {
+  constructor(page /*: any */) {
+    // $FlowFixMe - page error
     this.page = page;
+    // $FlowFixMe - page error
     this.pendingScreenshots = [];
   }
 
-  reset(page) {
+  reset(page /*:any*/) {
+    // $FlowFixMe - page error
     this.page = page;
+    // $FlowFixMe - page error
     this.pendingScreenshots = [];
   }
 
   async waitForPendingScreenshots() {
+    // $FlowFixMe - page error
     await Promise.all(this.pendingScreenshots);
   }
 
-  async specDone(result) {
+  async specDone(result /*: Object*/) {
     const { status, failedExpectations, fullName, testPath } = result;
 
     // Take screenshot if test failed for a reason other than screenshot diff - we will
@@ -46,9 +51,10 @@ class ScreenshotReporter {
         `${testFileName}-${fullName}-error`,
       );
       const path = `${screenshotDir}/${screenshotFileName}.png`;
-
+      // $FlowFixMe - page error
       if (!this.page.isClosed()) {
         await mkdirp(screenshotDir);
+        // $FlowFixMe - page error
         this.pendingScreenshots.push(this.page.screenshot({ path }));
       }
     }
