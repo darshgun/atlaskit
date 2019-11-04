@@ -1,1 +1,0 @@
-Replace slashes with dashes in branch name created in products. This ensures certain product integrations don't fail while allowing Atlaskit branche names to have slashes.
