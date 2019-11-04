@@ -1,0 +1,1 @@
+Show invite message for admins and trusted users sharing to an email
