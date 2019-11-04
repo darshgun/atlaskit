@@ -381,7 +381,6 @@ class ResizeControl extends PureComponent<Props, State> {
     updateResizeAreaPosition(mutationRefs, width);
 
     // NOTE: hijack the maual resize and force collapse, cancels mouse events
-    console.log({ screenX, eventScreenX: event.screenX });
     if (event.screenX < window.screenX) {
       this.setState({ width: CONTENT_NAV_WIDTH_COLLAPSED });
       this.handleResizeEnd();
