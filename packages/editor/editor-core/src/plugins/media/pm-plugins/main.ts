@@ -688,11 +688,14 @@ export class MediaPluginState {
     props: Partial<Pick<this, 'allowsUploads' | 'allUploadsFinished'>>,
   ) {
     // update plugin state
-    for (const [key, value] of Object.entries(props)) {
+    Object.keys(props).forEach(_key => {
+      const key = _key as keyof typeof props;
+      const value = props[key];
       if (value !== undefined) {
-        this[key as keyof typeof props] = value;
+        this[key] = value;
       }
-    }
+    });
+
     if (this.dispatch) {
       this.dispatch(stateKey, { ...this });
     }
