@@ -2,7 +2,7 @@ import { ExtensionManifest } from '@atlaskit/editor-common';
 
 const manifest: ExtensionManifest = {
   title: 'Lorem ipsum',
-  key: 'lorem-ipsum-extension',
+  key: 'fake.lorem.ipsum',
   description: 'Inline extension demo',
   icons: {
     '16': () => import('@atlaskit/icon/glyph/editor/code'),
@@ -10,13 +10,13 @@ const manifest: ExtensionManifest = {
   modules: {
     quickInsert: [
       {
-        key: 'lorem-ipsum-1',
+        key: 'qi-lorem-ipsum-1',
         title: 'Lorem Ipsum 1',
         icon: () => import('@atlaskit/icon/glyph/tray'),
         target: 'lorem-ipsum-1',
       },
       {
-        key: 'two-paragraphs',
+        key: 'qi-lorem-ipsum-2',
         title: 'Lorem Ipsum 2',
         icon: () => import('@atlaskit/icon/glyph/book'),
         target: 'lorem-ipsum-2',
@@ -24,13 +24,13 @@ const manifest: ExtensionManifest = {
     ],
     insertMenu: [
       {
-        key: 'lorem-ipsum-1',
+        key: 'im-lorem-ipsum-1',
         title: 'Lorem Ipsum 1',
         icon: () => import('@atlaskit/icon/glyph/tray'),
         target: 'lorem-ipsum-1',
       },
       {
-        key: 'lorem-ipsum-2',
+        key: 'im-lorem-ipsum-2',
         title: 'Lorem Ipsum 2',
         icon: () => import('@atlaskit/icon/glyph/book'),
         target: 'lorem-ipsum-2',

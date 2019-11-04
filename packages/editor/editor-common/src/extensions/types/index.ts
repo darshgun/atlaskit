@@ -14,6 +14,8 @@ export {
   ExtensionManifest,
   ExtensionModules,
   ExtensionModule,
+  ExtensionKey,
+  ExtensionType,
 } from './extension-manifest';
 
 export { MenuItem, MenuItemMap } from './utils';

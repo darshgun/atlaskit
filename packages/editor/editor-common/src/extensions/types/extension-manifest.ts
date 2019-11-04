@@ -9,8 +9,12 @@ export type Icons = {
   [dimensions: string]: Icon;
 };
 
+export type ExtensionType = string;
+
+export type ExtensionKey = string;
+
 export type ExtensionManifest = {
-  key: string;
+  key: ExtensionType;
   title: string;
   description: string;
   icons: Icons;
@@ -34,7 +38,7 @@ export type ExtensionModule = {
 };
 
 export type ExtensionModuleNode = {
-  key: string;
+  key: ExtensionKey;
   type: string;
   insert: () => AsyncESModule<ADFEntity>;
   render: () => AsyncESModule<ReactNode>;

@@ -12,18 +12,22 @@ import Extension from './Extension';
 import {
   ExtensionHandlers,
   getExtensionRenderer,
+  getNodeRenderer,
+  ExtensionProvider,
+  Providers,
 } from '@atlaskit/editor-common';
 import { setNodeSelection } from '../../../../utils';
 
 export interface Props {
   editorView: EditorView;
-  macroProvider?: Promise<MacroProvider>;
+  providers: Providers;
   node: PMNode;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   extensionHandlers: ExtensionHandlers;
 }
 
 export interface State {
+  extensionProvider?: ExtensionProvider;
   macroProvider?: MacroProvider;
 }
 
@@ -36,9 +40,10 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { macroProvider } = this.props;
-    if (macroProvider) {
-      macroProvider.then(this.handleMacroProvider);
+    const { providers } = this.props;
+
+    if (providers) {
+      this.handleProviders(providers);
     }
   }
 
@@ -47,14 +52,10 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { macroProvider } = nextProps;
+    const { providers } = nextProps;
 
-    if (this.props.macroProvider !== macroProvider) {
-      if (macroProvider) {
-        macroProvider.then(this.handleMacroProvider);
-      } else {
-        this.setState({ macroProvider });
-      }
+    if (providers && this.props.providers !== providers) {
+      this.handleProviders(providers);
     }
   }
 
@@ -87,11 +88,28 @@ export default class ExtensionComponent extends Component<Props, State> {
         return null;
     }
   }
+  private handleProviders = (providers: Providers) => {
+    const { macroProvider, extensionProvider } = providers;
 
-  private handleMacroProvider = (macroProvider: MacroProvider) => {
-    if (this.mounted) {
-      this.setState({ macroProvider });
-    }
+    macroProvider.then(p => {
+      if (!this.mounted) {
+        return;
+      }
+
+      this.setState(state => ({
+        macroProvider: p,
+      }));
+    });
+
+    extensionProvider.then(p => {
+      if (!this.mounted) {
+        return;
+      }
+
+      this.setState(state => ({
+        extensionProvider: p,
+      }));
+    });
   };
 
   private handleSelectExtension = (hasBody: boolean) => {
@@ -137,27 +155,40 @@ export default class ExtensionComponent extends Component<Props, State> {
     const { extensionType, extensionKey, parameters, text } = node.attrs;
     const isBodiedExtension = node.type.name === 'bodiedExtension';
 
-    if (
-      !extensionHandlers ||
-      !extensionHandlers[extensionType] ||
-      isBodiedExtension
-    ) {
+    if (isBodiedExtension) {
+      return;
+    }
+
+    const extensionParams = {
+      type: node.type.name as
+        | 'extension'
+        | 'inlineExtension'
+        | 'bodiedExtension',
+      extensionType,
+      extensionKey,
+      parameters,
+      content: text,
+    };
+
+    const extensionHandlerV2 =
+      this.state.extensionProvider &&
+      getNodeRenderer(
+        this.state.extensionProvider,
+        extensionType,
+        extensionKey,
+      );
+
+    if (extensionHandlerV2) {
+      const NodeRenderer = extensionHandlerV2;
+      return <NodeRenderer extensionParams={extensionParams} />;
+    }
+
+    if (!extensionHandlers || !extensionHandlers[extensionType]) {
       return;
     }
 
     const render = getExtensionRenderer(extensionHandlers[extensionType]);
-    return render(
-      {
-        type: node.type.name as
-          | 'extension'
-          | 'inlineExtension'
-          | 'bodiedExtension',
-        extensionType,
-        extensionKey,
-        parameters,
-        content: text,
-      },
-      editorView.state.doc,
-    );
+
+    return render(extensionParams, editorView.state.doc);
   };
 }
