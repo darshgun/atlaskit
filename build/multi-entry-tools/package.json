@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "bolt": "^0.24.3",
-    "glob": "^7.1.5"
+    "glob": "^7.1.2"
   },
   "bin": {
     "get-multi-entry-map": "./cli.js"

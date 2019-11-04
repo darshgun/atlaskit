@@ -9746,6 +9746,11 @@ human-id@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/human-id/-/human-id-1.0.2.tgz#e654d4b2b0d8b07e45da9f6020d8af17ec0a5df3"
 
+human-id@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/human-id/-/human-id-2.0.0.tgz#6e8df13c8ba50109bf8382807cb0476f74304824"
+  integrity sha512-BLLJKKS/vZqWONMsFXZq/AmKNLJI2OGKXpYYs02zFc2M34G3mwInQOmyqQIoIlkQRcFEpZ7QStfJBMV6GQmJcg==
+
 human-size@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/human-size/-/human-size-1.1.0.tgz#052562be999841c037022c20259990c56ea996f9"
@@ -19617,7 +19622,7 @@ warning@^4.0.2, warning@^4.0.3:
   dependencies:
     loose-envify "^1.0.0"
 
-watchpack@^1.5.0:
+watchpack@^1.5.0, watchpack@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"
   dependencies:
