@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import WithPluginState from '../../ui/WithPluginState';
 import ContentStyles from '../../ui/ContentStyles';
-import { EditorProps } from '../../types';
+import { EditorProps } from './internal/editor-props-type';
 import {
   pluginKey as maxContentSizePluginKey,
   MaxContentSizePluginState,
@@ -12,7 +12,7 @@ import { ClickAreaMobile as ClickArea } from '../../ui/Addon';
 import { EditorSharedConfigConsumer, Editor, EditorContent } from './Editor';
 import { ContentComponents } from './ContentComponents';
 
-export interface MobileEditorProps {
+export interface MobileEditorProps extends EditorProps {
   isMaxContentSizeReached?: boolean;
   maxHeight?: number;
 }
@@ -35,7 +35,7 @@ MobileEditor.displayName = 'MobileEditor';
 const ContentArea = styled(ContentStyles)``;
 ContentArea.displayName = 'ContentArea';
 
-export class Mobile extends React.Component<EditorProps, any> {
+export class Mobile extends React.Component<MobileEditorProps, any> {
   static displayName = 'MobileEditor';
 
   private renderMobile = ({
