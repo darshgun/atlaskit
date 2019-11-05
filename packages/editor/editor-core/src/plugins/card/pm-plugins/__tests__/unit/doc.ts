@@ -833,7 +833,7 @@ describe('card', () => {
       });
     });
 
-    describe.only('#insertCard', () => {
+    describe('#insertCard', () => {
       const getInlineCardNode = (editorView: EditorView): Node =>
         inlineCard(inlineCardAdf.attrs)()(editorView.state.schema);
       it('should insert adf node and add a white space', function() {

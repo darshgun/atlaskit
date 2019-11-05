@@ -54,7 +54,7 @@ import { EditorView } from 'prosemirror-view';
 import { ACTION_SUBJECT_ID } from '../../../analytics';
 import { CardProvider } from '../../../card';
 import { GapCursorSelection, Side } from '../../../gap-cursor';
-import { EditorProps } from '@atlaskit/editor-core';
+import { EditorProps } from '../../../../types/editor-props';
 
 // @ts-ignore
 import { __serializeForClipboard } from 'prosemirror-view';
@@ -63,7 +63,7 @@ import { getDefaultMediaClientConfig } from '@atlaskit/media-test-helpers/fakeMe
 describe('paste plugins', () => {
   const createEditor = createEditorFactory();
   let providerFactory: ProviderFactory;
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent, any>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
 
   const editor = (doc: any, props: Partial<EditorProps> = {}) => {
     const contextIdentifierProvider = storyContextIdentifierProviderFactory();
