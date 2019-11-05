@@ -55,7 +55,7 @@ const defaultTheme: { mode: Mode } = {
         boxShadow: `0 0 0 2px ${B200}`,
       },
       hover: {
-        color: N500,
+        color: B400,
         backgroundColor: hexToRGBA(B50, 0.9),
         boxShadow: '',
       },
@@ -87,7 +87,7 @@ const defaultTheme: { mode: Mode } = {
         boxShadow: `0 0 0 2px ${B200}`,
       },
       hover: {
-        color: N600,
+        color: B400,
         backgroundColor: hexToRGBA(B50, 0.9),
         boxShadow: '0 0 0 2px transparent',
       },

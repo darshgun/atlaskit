@@ -2,6 +2,7 @@
 import Avatar from '@atlaskit/avatar';
 import Badge from '@atlaskit/badge';
 import Drawer from '@atlaskit/drawer';
+import Button from '@atlaskit/button';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import { JiraIcon, JiraLogo } from '@atlaskit/logo';
 import Popup from '@atlaskit/popup';
@@ -16,10 +17,12 @@ import {
   Help,
   Notifications,
   PrimaryDropdownButton,
+  PrimaryButton,
   ProductHome,
   Profile,
   Search,
   Settings,
+  atlassianTheme,
 } from '../src';
 import { useOverflowStatus } from '../src/controllers/overflow';
 
@@ -155,58 +158,48 @@ const ProfileDropdown = () => {
   );
 };
 
-const linkCSS = {
-  color: 'inherit',
-  textDecoration: 'none',
-  ':hover, :visited, :active': {
-    color: 'inherit',
-  },
+const Icon = () => {
+  const {
+    mode: { productHome },
+  } = atlassianTheme;
+  return (
+    <Button
+      appearance="subtle-link"
+      href="#"
+      iconBefore={
+        <JiraIcon
+          iconGradientStart={productHome.gradientStart}
+          iconGradientStop={productHome.gradientStop}
+          iconColor={productHome.iconColor}
+          textColor={productHome.color}
+        />
+      }
+    />
+  );
 };
 
-const Icon = ({
-  iconGradientStart,
-  iconGradientStop,
-  iconColor,
-  textColor,
-}: {
-  iconGradientStart?: string;
-  iconGradientStop?: string;
-  iconColor?: string;
-  textColor?: string;
-}) => (
-  <a css={linkCSS} href="#">
-    <JiraIcon
-      iconGradientStart={iconGradientStart}
-      iconGradientStop={iconGradientStop}
-      iconColor={iconColor}
-      textColor={textColor}
+const Logo = () => {
+  const {
+    mode: { productHome },
+  } = atlassianTheme;
+  return (
+    <Button
+      appearance="subtle-link"
+      href="#"
+      iconBefore={
+        <JiraLogo
+          iconGradientStart={productHome.gradientStart}
+          iconGradientStop={productHome.gradientStop}
+          iconColor={productHome.iconColor}
+          textColor={productHome.color}
+        />
+      }
     />
-  </a>
-);
-
-const Logo = ({
-  iconGradientStart,
-  iconGradientStop,
-  iconColor,
-  textColor,
-}: {
-  iconGradientStart?: string;
-  iconGradientStop?: string;
-  iconColor?: string;
-  textColor?: string;
-}) => (
-  <a css={linkCSS} href="#">
-    <JiraLogo
-      iconGradientStart={iconGradientStart}
-      iconGradientStop={iconGradientStop}
-      iconColor={iconColor}
-      textColor={textColor}
-    />
-  </a>
-);
+  );
+};
 
 const ProductHomeExample = () => (
-  <ProductHome icon={Icon} logo={Logo} siteName="Hello" />
+  <ProductHome icon={Icon} logo={Logo} siteTitle="Hello" />
 );
 
 const SearchDrawer = () => {
@@ -315,11 +308,11 @@ const AppsContent = () => (
 type PrimaryDropdownProps = {
   content: PopupProps['content'];
   text: string;
-  isSelected?: boolean;
+  isHighlighted?: boolean;
 };
 
 const PrimaryDropdown = (props: PrimaryDropdownProps) => {
-  const { content, text, isSelected } = props;
+  const { content, text, isHighlighted } = props;
   const { isVisible } = useOverflowStatus();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -351,7 +344,8 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
         <PrimaryDropdownButton
           onClick={onClick}
           onKeyDown={onKeyDown}
-          isSelected={isSelected}
+          isHighlighted={isHighlighted}
+          isSelected={isOpen}
           {...triggerProps}
         >
           {text}
@@ -362,8 +356,9 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 };
 
 const primaryItems = [
-  <PrimaryDropdown isSelected content={ProjectsContent} text="Projects" />,
-  <PrimaryDropdown content={FiltersContent} text="Filters" />,
+  <PrimaryButton href="#">Home</PrimaryButton>,
+  <PrimaryDropdown content={ProjectsContent} text="Projects" />,
+  <PrimaryDropdown isHighlighted content={FiltersContent} text="Filters" />,
   <PrimaryDropdown content={DashboardsContent} text="Dashboards" />,
   <PrimaryDropdown content={AppsContent} text="Apps" />,
 ];
