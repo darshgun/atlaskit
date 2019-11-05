@@ -11,7 +11,7 @@ async function getAllPublicPackages(cwd /*: string */) {
   });
 
   return allWorkspaces
-    .map(({ dir, config: { name, isPrivate, version } }) => ({
+    .map(({ dir, config: { name, private: isPrivate, version } }) => ({
       dir,
       name,
       version,
