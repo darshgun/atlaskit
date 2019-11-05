@@ -42,10 +42,13 @@ function main(window: Window, document: Document) {
     });
   });
 
+  const mediaPicker = new MobilePicker();
+
   ReactDOM.render(
     <MobileEditorArchV3
       editorActions={bridge.editorActions}
       mode={mode}
+      mediaPicker={mediaPicker}
       analyticsClient={analyticsClient}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
@@ -55,6 +58,7 @@ function main(window: Window, document: Document) {
         const eventDispatcher = actions._privateGetEventDispatcher()!;
         bridge.editorView = view;
         bridge.editorActions._privateRegisterEditor(view, eventDispatcher);
+        bridge.mediaPicker = mediaPicker;
         initPluginListeners(eventDispatcher, bridge, view);
       }}
       onDestroy={() => {
@@ -71,6 +75,7 @@ function main(window: Window, document: Document) {
 interface MobileEditorArchV3Props {
   editorActions: EditorActions;
   mode: 'dark' | 'light';
+  mediaPicker: MobilePicker;
   analyticsClient: AnalyticsWebClient;
   onDestroy?(): void;
   onChange?(content: any): void;
@@ -90,7 +95,7 @@ function MobileEditorArchV3(props: MobileEditorArchV3Props): JSX.Element {
             taskDecisionProvider={Promise.resolve(TaskDecisionProvider())}
             media={{
               provider: MediaProvider,
-              picker: new MobilePicker(),
+              picker: props.mediaPicker,
             }}
           >
             <EditorContext editorActions={props.editorActions}>
