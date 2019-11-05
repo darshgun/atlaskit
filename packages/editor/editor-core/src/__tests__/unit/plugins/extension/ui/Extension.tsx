@@ -4,11 +4,15 @@ import {
   ProviderFactory,
   ExtensionHandlers,
   ExtensionParams,
+  DefaultExtensionProvider,
+  combineExtensionProviders,
 } from '@atlaskit/editor-common';
 import { macroProvider, extensionData } from '@atlaskit/editor-test-helpers';
+import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
 
 import Extension from '../../../../../plugins/extension/ui/Extension';
 import ExtensionComponent from '../../../../../plugins/extension/ui/Extension/ExtensionComponent';
+import Loadable from 'react-loadable';
 
 const macroProviderPromise = Promise.resolve(macroProvider);
 const providerFactory = ProviderFactory.create({
@@ -47,7 +51,9 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     );
     const component = extension.find(ExtensionComponent);
 
-    expect(component.prop('macroProvider')).toBe(macroProviderPromise);
+    expect(component.prop('providers').macroProvider).toBe(
+      macroProviderPromise,
+    );
     extension.unmount();
   });
 
@@ -184,6 +190,8 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     expect(component.find(InlineCompontent).text()).toEqual(
       'Hello inlineExtension!',
     );
+
+    extension.unmount();
   });
 
   it('should pass the correct content to extension', () => {
@@ -235,5 +243,75 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     expect(component.find(ExtensionCompontent).text()).toEqual(
       'Hello extension!',
     );
+
+    extension.unmount();
+  });
+
+  it('should use the extension handler from the provider in case there is no other available', async () => {
+    const ExtensionHandlerComponent = ({ extensionParams }) => {
+      return <div>From extension provider: {extensionParams.content}</div>;
+    };
+
+    const macroManifest = createFakeExtensionManifest(
+      'fake confluence macro',
+      'fake.confluence',
+      ['expand'],
+    );
+
+    const FakeES6Module = {
+      __esModule: true,
+      default: ExtensionHandlerComponent,
+    };
+    macroManifest.modules.nodes[0].render = () =>
+      Promise.resolve(FakeES6Module);
+
+    const confluenceMacrosExtensionProvider = new DefaultExtensionProvider([
+      macroManifest,
+    ]);
+
+    const providerFactory = ProviderFactory.create({
+      macroProvider: macroProviderPromise,
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    const extensionNode = {
+      type: {
+        name: 'extension',
+      },
+      attrs: {
+        extensionType: 'fake.confluence-extension',
+        extensionKey: 'expand',
+        text: 'Hello extension!',
+        parameters: {},
+      },
+    } as any;
+
+    const extension = mount(
+      <Extension
+        editorView={
+          {
+            state: {
+              doc: {},
+            },
+          } as any
+        }
+        providerFactory={providerFactory}
+        node={extensionNode}
+        handleContentDOMRef={noop}
+        extensionHandlers={{}}
+      />,
+    );
+
+    await Loadable.preloadAll();
+
+    extension.update();
+
+    expect(extension.find(ExtensionHandlerComponent).text()).toEqual(
+      'From extension provider: Hello extension!',
+    );
+
+    extension.unmount();
   });
 });

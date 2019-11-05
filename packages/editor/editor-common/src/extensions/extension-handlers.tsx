@@ -1,19 +1,18 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable, { LoadingComponentProps } from 'react-loadable';
 
 import {
   ExtensionProvider,
   ExtensionType,
   ExtensionKey,
   ExtensionParams,
-  ExtensionHandlers,
 } from './types';
 
-export const getManifestNode = async (
+export async function getManifestNode(
   extensionProvider: ExtensionProvider,
   extensionType: ExtensionType,
   extensionKey: ExtensionKey,
-) => {
+) {
   const manifest = await extensionProvider.getExtension(extensionType);
 
   if (!manifest) {
@@ -29,14 +28,23 @@ export const getManifestNode = async (
   }
 
   return node;
-};
+}
 
-export const getNodeRenderer = (
+function ExtensionLoading(props: LoadingComponentProps) {
+  if (props.error || props.timedOut) {
+    console.error('Error rendering extension', props.error);
+    return <div>Error loading the extension!</div>;
+  } else {
+    return null;
+  }
+}
+
+export function getNodeRenderer<T>(
   extensionProvider: ExtensionProvider,
   extensionType: ExtensionType,
   extensionKey: ExtensionKey,
-) => {
-  return Loadable<{ extensionParams: ExtensionParams<{ text: string }> }, any>({
+) {
+  return Loadable<{ extensionParams: ExtensionParams<T> }, any>({
     loader: () => {
       return getManifestNode(
         extensionProvider,
@@ -44,27 +52,6 @@ export const getNodeRenderer = (
         extensionKey,
       ).then(node => node.render());
     },
-    loading: () => null,
+    loading: ExtensionLoading,
   });
-};
-
-// export const getExtensionHandlers = async (
-//   extensionProvider: ExtensionProvider,
-// ): Promise<ExtensionHandlers> => {
-//   const manifests = await extensionProvider.getExtensions();
-
-//   return manifests.reduce<ExtensionHandlers>((acc, extension) => {
-//     return {
-//       ...acc,
-//       [extension.key]: (extensionParams: ExtensionParams<{ text: string }>) => {
-//         const NodeRenderer = getNodeRenderer(
-//           extensionProvider,
-//           extension.key,
-//           extensionParams.extensionKey,
-//         );
-
-//         return <NodeRenderer extensionParams={extensionParams} />;
-//       },
-//     };
-//   }, {});
-// };
+}

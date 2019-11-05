@@ -29,6 +29,7 @@ export interface Props {
 export interface State {
   extensionProvider?: ExtensionProvider;
   macroProvider?: MacroProvider;
+  extensionHandlersFromProvider?: ExtensionHandlers;
 }
 
 export default class ExtensionComponent extends Component<Props, State> {
@@ -88,28 +89,28 @@ export default class ExtensionComponent extends Component<Props, State> {
         return null;
     }
   }
-  private handleProviders = (providers: Providers) => {
+
+  private setStateFromPromise = (
+    stateKey: keyof State,
+    promise: Promise<any>,
+  ) => {
+    promise &&
+      promise.then(p => {
+        if (!this.mounted) {
+          return;
+        }
+
+        this.setState({
+          [stateKey]: p,
+        });
+      });
+  };
+
+  private handleProviders = async (providers: Providers) => {
     const { macroProvider, extensionProvider } = providers;
 
-    macroProvider.then(p => {
-      if (!this.mounted) {
-        return;
-      }
-
-      this.setState(state => ({
-        macroProvider: p,
-      }));
-    });
-
-    extensionProvider.then(p => {
-      if (!this.mounted) {
-        return;
-      }
-
-      this.setState(state => ({
-        extensionProvider: p,
-      }));
-    });
+    this.setStateFromPromise('macroProvider', macroProvider);
+    this.setStateFromPromise('extensionProvider', extensionProvider);
   };
 
   private handleSelectExtension = (hasBody: boolean) => {
@@ -170,20 +171,20 @@ export default class ExtensionComponent extends Component<Props, State> {
       content: text,
     };
 
-    const extensionHandlerV2 =
-      this.state.extensionProvider &&
-      getNodeRenderer(
-        this.state.extensionProvider,
-        extensionType,
-        extensionKey,
-      );
-
-    if (extensionHandlerV2) {
-      const NodeRenderer = extensionHandlerV2;
-      return <NodeRenderer extensionParams={extensionParams} />;
-    }
-
     if (!extensionHandlers || !extensionHandlers[extensionType]) {
+      const extensionHandlerFromProvider =
+        this.state.extensionProvider &&
+        getNodeRenderer(
+          this.state.extensionProvider,
+          extensionType,
+          extensionKey,
+        );
+
+      if (extensionHandlerFromProvider) {
+        const NodeRenderer = extensionHandlerFromProvider;
+        return <NodeRenderer extensionParams={extensionParams} />;
+      }
+
       return;
     }
 

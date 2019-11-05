@@ -1,16 +1,12 @@
+import React from 'react';
 import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
 import combineExtensionProviders from '../../combine-extension-providers';
 import DefaultExtensionProvider from '../../default-extension-provider';
-import {
-  ExtensionHandlers,
-  ExtensionHandler,
-  ExtensionProvider,
-} from '../../types';
+import { ExtensionHandlers, ExtensionProvider } from '../../types';
 
-import {
-  getExtensionHandlers,
-  getManifestNode,
-} from '../../extension-handlers';
+import { getNodeRenderer, getManifestNode } from '../../extension-handlers';
+import Loadable from 'react-loadable';
+import { shallow } from 'enzyme';
 
 describe('extension-handlers', () => {
   let extensionHandlers: ExtensionHandlers;
@@ -32,46 +28,98 @@ describe('extension-handlers', () => {
       new DefaultExtensionProvider([confluenceMacros]),
       new DefaultExtensionProvider([forgeExtensions]),
     ]);
-
-    extensionHandlers = await getExtensionHandlers(extensionProvider);
   });
 
-  describe('getExtensionHandlers', () => {
-    test('should return a map containing all manifest keys (extension type)', () => {
-      expect(extensionHandlers['fake.confluence-extension']).toBeDefined();
-      expect(extensionHandlers['fake.forge-extension']).toBeDefined();
+  describe('getNodeRenderer', () => {
+    test('should return a react component synchronously, passing down the extension node, which will eventually reolve to the extension handler', async () => {
+      const NodeRenderer = getNodeRenderer(
+        extensionProvider,
+        'fake.confluence-extension',
+        'expand',
+      );
+
+      const extensionParams = {
+        extensionKey: 'expand',
+        extensionType: 'fake.confluence-extension',
+        parameters: {
+          text: 'inside out',
+        },
+      };
+
+      const wrapper = shallow(
+        <NodeRenderer extensionParams={extensionParams} />,
+      );
+
+      expect(NodeRenderer.name).toBe('LoadableComponent');
+      // LoadableComponent renders a component with isLoading = true
+      expect(wrapper.props().isLoading).toBe(true);
+
+      await Loadable.preloadAll();
+
+      wrapper.update();
+
+      // After the update, LoadableComponent is removed and our extension is rendered
+      expect(wrapper.props().isLoading).not.toBeDefined();
+      expect(wrapper.props().extensionParams).toEqual(extensionParams);
     });
 
-    describe('when an extension handler is called', () => {
-      test('should return a react component synchronously, passing down the extension node', () => {
-        const extensionHandler = extensionHandlers[
-          'fake.confluence-extension'
-        ] as ExtensionHandler<any>;
+    describe('once the node resolves to a component', () => {
+      test('should render error message if extension type is not found', async () => {
+        const NodeRenderer = getNodeRenderer(
+          extensionProvider,
+          'fake.unknown-extension',
+          'expand',
+        );
 
-        expect(
-          extensionHandler(
-            {
-              extensionKey: 'expand',
-              extensionType: 'fake.confluence-extension',
-              parameters: {
-                text: 'inside out',
-              },
-            },
-            {},
+        const extensionParams = {
+          extensionKey: 'expand',
+          extensionType: 'fake.unknown-extension',
+          parameters: {
+            text: 'inside out',
+          },
+        };
+
+        const wrapper = shallow(
+          <NodeRenderer extensionParams={extensionParams} />,
+        );
+
+        await expect(Loadable.preloadAll()).rejects.toEqual(
+          new Error(`Extension with key "fake.unknown-extension" not found!`),
+        );
+
+        wrapper.update();
+
+        expect(wrapper.dive().text()).toEqual('Error loading the extension!');
+      });
+
+      test('should render error message if extension key is not found', async () => {
+        const NodeRenderer = getNodeRenderer(
+          extensionProvider,
+          'fake.confluence-extension',
+          'answer-to-life',
+        );
+
+        const extensionParams = {
+          extensionKey: 'answer-to-life',
+          extensionType: 'fake.confluence-extension',
+          parameters: {
+            text: 'inside out',
+          },
+        };
+
+        const wrapper = shallow(
+          <NodeRenderer extensionParams={extensionParams} />,
+        );
+
+        await expect(Loadable.preloadAll()).rejects.toEqual(
+          new Error(
+            `Node with key "answer-to-life" not found on extension "fake.confluence-extension"!`,
           ),
-        ).toMatchInlineSnapshot(`
-          <LoadableComponent
-            ext={
-              Object {
-                "extensionKey": "expand",
-                "extensionType": "fake.confluence-extension",
-                "parameters": Object {
-                  "text": "inside out",
-                },
-              }
-            }
-          />
-        `);
+        );
+
+        wrapper.update();
+
+        expect(wrapper.dive().text()).toEqual('Error loading the extension!');
       });
     });
   });
