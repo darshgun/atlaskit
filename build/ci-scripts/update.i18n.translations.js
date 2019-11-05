@@ -68,6 +68,7 @@ const pull = async ({ packagePath, maintainers, targetBranch = 'master' }) => {
   try {
     // Add content and create pull request
     await changeset.createChangeset(
+      // $FlowFixMe - type issue
       [{ name: `@atlaskit/${packageName}`, type: 'patch' }],
       message,
     );

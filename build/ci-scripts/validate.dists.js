@@ -67,6 +67,7 @@ async function validateAllPackages(packages, { distType }) {
   const results = await Promise.all(
     packages.map(pkg => validatePackage(pkg, { distType })),
   );
+  // $FlowFixMe - concat
   const errors = [].concat(...results);
   return errors;
 }

@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const prettyBytes = require('pretty-bytes');
 
 function formatSizeDiff(diff, colors = ['red', 'green']) {
+  // $FlowFixMe - Indexer is wrong for Chalk
   return chalk[diff > 0 ? colors[0] : colors[1]](
     `${diff > 0 ? '+' : ''}${prettyBytes(diff)}`,
   );
@@ -15,7 +16,7 @@ function formatFileStats(fileStats) {
   ].join(' ');
 }
 
-function printReport(stats, level = 1) {
+function printReport(stats /*: Array<Object>*/, level /*: number*/ = 1) {
   stats.forEach(group => {
     if (!group.stats.length) return;
 

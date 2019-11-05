@@ -41,6 +41,7 @@ bolt.getWorkspaces().then(workspaces => {
 
   changedPackagesInfo.forEach(pkg => {
     const packageJsonPath = path.join(pkg.dir, 'package.json');
+    // $FlowFixMe - Object issue with JSON.parse maybe using JSON.sringify
     const pkgJson = JSON.parse(fs.readFileSync(packageJsonPath));
     let pkgJsonDirty = false;
     Object.entries(pkgJson.dependencies).forEach(([depName]) => {

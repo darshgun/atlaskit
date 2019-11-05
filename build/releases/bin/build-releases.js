@@ -30,7 +30,13 @@ const getFlagValue = flagName => {
   throw new Error(`unknown option for ${flagName}: ${value}`);
 };
 
-const opts = { cwd: process.cwd() };
+const opts = {
+  cwd: process.cwd(),
+  commit: undefined,
+  noChangelog: undefined,
+  skipCI: undefined,
+  public: undefined,
+};
 
 switch (command) {
   case 'initialize':

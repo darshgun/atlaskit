@@ -11,7 +11,7 @@ jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/git');
 jest.mock('@atlaskit/build-utils/logger');
 jest.mock('../../../changeset/parseChangesetCommit');
-
+// $FlowFixMe - mock
 git.tag.mockImplementation(() => Promise.resolve(true));
 // we want to keep other bolt commands still running so our tests are more e2e
 // NOTE: This is pretty terrible. Quite obviously bolt is not going to return these results
@@ -36,6 +36,7 @@ const simpleChangeset2 = {
 };
 
 const mockUnpublishedChangesetCommits = commits => {
+  // $FlowFixMe - mock
   git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
     Promise.resolve(commits),
   );
@@ -46,11 +47,13 @@ describe('running release', () => {
 
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
+    // $FlowFixMe - console
     console.error = jest.fn();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    // $FlowFixMe - console
     console.error = consoleError;
   });
 

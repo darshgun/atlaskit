@@ -26,7 +26,10 @@ const changesetOptions = {
   A summary message you wrote, indented
 */
 
-const getReleaseLine = async (changeset, versionType) => {
+const getReleaseLine = async (
+  changeset /*: Object*/,
+  versionType /*: string */,
+) => {
   const indentedSummary = changeset.summary
     .split('\n')
     .map(l => `  ${l}`.trimRight())
@@ -44,7 +47,10 @@ const getReleaseLine = async (changeset, versionType) => {
   - dependencyA@1.0.1
   - dependencyb@1.2.0
 */
-const getDependencyReleaseLine = async (changesets, dependenciesUpdated) => {
+const getDependencyReleaseLine = async (
+  changesets /*: Object*/,
+  dependenciesUpdated /*: Object*/,
+) => {
   if (dependenciesUpdated.length === 0) return '';
 
   const changesetLinks = changesets.map(

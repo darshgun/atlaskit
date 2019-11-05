@@ -28,7 +28,7 @@ const {
 const { returnMissingPkgBasedOn } = require('./utils/error.js');
 
 const targetBranch = process.env.TARGET_BRANCH || 'master';
-const bitbucketBranch = process.env.BITBUCKET_BRANCH;
+const bitbucketBranch = process.env.BITBUCKET_BRANCH || 'master';
 
 function fWriteStats(pathTo, content) {
   fs.writeFileSync(
@@ -69,12 +69,12 @@ function webpackCompilerRun(configs) {
 }
 
 module.exports = async function main(
-  filePath,
-  isAnalyze,
-  isJson,
-  isLint,
-  updateSnapshot,
-  s3,
+  filePath /*: string */,
+  isAnalyze /*: boolean */,
+  isJson /*: boolean */,
+  isLint /*: boolean */,
+  updateSnapshot /*: boolean */,
+  s3 /*: boolean */,
 ) {
   const measureOutputPath = path.join(filePath, '.measure-output');
   const sanitizedFilePath = filePath.replace('/', '__');
@@ -192,6 +192,7 @@ module.exports = async function main(
    * - node_modules bundle: includes all external dependencies
    * - package groups bundles: e.g. core, media, editor, etc...
    */
+  // $FlowFixMe - type issue
   const mainConfig = await createWebpackConfig({
     outputDir: measureCompiledOutputPath,
     entryPoint: { main: filePath },
@@ -207,6 +208,7 @@ module.exports = async function main(
    * Config for a combined build. Used to better approximate bundle
    * size since gzip size is highly affected by the size of the input.
    */
+  // $FlowFixMe - type issue
   const combinedConfig = await createWebpackConfig({
     outputDir: measureCompiledOutputPath,
     entryPoint: { combined_sync: filePath },
@@ -283,6 +285,7 @@ module.exports = async function main(
   }
   if (!isLint || !results.passedBundleSizeCheck) {
     printHowToReadStats();
+    // $FlowFixMe - Array on Object
     printReport(prepareForPrint(joinedStatsGroups, results.statsWithDiff));
   }
 

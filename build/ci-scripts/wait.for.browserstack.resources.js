@@ -6,7 +6,7 @@ const util = require('util');
  * It checks the number of build running in BS and if the number is greater than the X limit, it will retry after Y time.
  * The goal is to prevent Browserstack to be hammered and reduce the number of timeout for users.
  * */
-const numberOfTries = process.env.BS_RETRY || 3;
+const numberOfTries = Number(process.env.BS_RETRY) || 3;
 const percentageOfSessionsAllowed =
   Number(process.env.BS_SESSIONS_ALLOWED) || 50; // This number represents the percentage of sessions allowed.
 const user = process.env.BROWSERSTACK_USERNAME || '';

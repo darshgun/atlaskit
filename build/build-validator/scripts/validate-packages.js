@@ -37,7 +37,9 @@ function spawnPromise(cmd, args, opts /*: Object */ = {}) {
         error = new Error(`Process was terminated with ${signal}`);
       }
       if (error) {
+        // $FlowFixMe - code & signal
         error.code = code;
+        // $FlowFixMe - code & signal
         error.signal = signal;
         reject(error);
       } else {
@@ -133,6 +135,8 @@ async function main(pkgName /*: string */, opts /*: Object */) {
   }
   // Compare all
   // Fetch deps first in parallel
+  // TODO: Discuss with MB as changing the fucntions will break the logic.
+  // $FlowFixMe - undefined for a string
   await fetchNpmDeps(undefined, {
     force: opts.refetch,
   });

@@ -23,6 +23,7 @@ describe('Delete old docker image', () => {
   });
   test('should not be called when the localVersion is undefined', async () => {
     const localVersion = undefined;
+    // $FlowFixMe - localVersion cannot be undefined but we are testing an edge case
     const isLatest = await isLatestVersion(localVersion);
     expect(isLatest).toBe(false);
   });

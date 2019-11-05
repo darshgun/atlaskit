@@ -119,13 +119,15 @@ async function main() {
 
   if (releases.length === 0) {
     if (changesetsPresent) {
+      // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
       document.body.innerHTML = noReleaseEmtpyChangesetMessage;
     } else {
+      // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
       document.body.innerHTML = noChangesetMessage;
     }
     return;
   }
-
+  // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
   document.body.innerHTML = releasedPackagesMessage(
     releases,
     shouldWarnAboutChangesetsV2,
@@ -136,5 +138,6 @@ try {
   main();
 } catch (e) {
   console.error('error in changeset', e);
+  // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
   document.body.innerHTML = errorLoadingChangesetMessage;
 }

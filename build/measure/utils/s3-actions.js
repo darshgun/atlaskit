@@ -47,7 +47,11 @@ function isAWSAccessible() {
  * This does not use S3 commands instead uses http get to fetch ratchet file from S3.
  * This is designed to enable local dev loop without AWS credentials to access data on S3.
  **/
-async function downloadFromS3ForLocal(downloadToFolder, branch, packageName) {
+async function downloadFromS3ForLocal(
+  downloadToFolder /*: string */,
+  branch /*: string */,
+  packageName /*: string */,
+) {
   const ratchetFile = `${packageName}-bundle-size-ratchet.json`;
   const output = `${downloadToFolder}/${ratchetFile}`;
   const rachetFileUrl = `http://s3-${BUCKET_REGION}.amazonaws.com/${BUCKET_NAME}/${branch}/bundleSize/${ratchetFile}`;
@@ -71,7 +75,11 @@ async function downloadFromS3ForLocal(downloadToFolder, branch, packageName) {
   }
 }
 
-function downloadFromS3(downloadToFolder, branch, packageName) {
+function downloadFromS3(
+  downloadToFolder /*: string */,
+  branch /*: string */,
+  packageName /*: string */,
+) {
   if (!isAWSAccessible()) {
     process.exit(1);
   }
@@ -100,7 +108,7 @@ function downloadFromS3(downloadToFolder, branch, packageName) {
   }
 }
 
-function uploadToS3(pathToFile, branch) {
+function uploadToS3(pathToFile /*: string */, branch /*: string */) {
   if (!isAWSAccessible()) {
     process.exit(1);
   }

@@ -94,13 +94,14 @@ async function createChangeset(
 
     releases.push({ name: pkg, type });
   }
-
+  // $FlowFixMe - fix logger
   logger.log(
     'Please enter a summary for this change (this will be in the changelogs)',
   );
 
   let summary = await cli.askQuestion('Summary');
   while (summary.length === 0) {
+    // $FlowFixMe - fix logger
     logger.error('A summary is required for the changelog! 😪');
     summary = await cli.askQuestion('Summary');
   }
@@ -211,7 +212,9 @@ async function getPackagesToRelease(changedPackages, allPackages) {
 
   if (packagesToRelease.length === 0) {
     do {
+      // $FlowFixMe - fix logger
       logger.error('You must select at least one package to release');
+      // $FlowFixMe - fix logger
       logger.error('(You most likely hit enter instead of space!)');
 
       packagesToRelease = await askInitialReleaseQuestion(defaultInquirerList);

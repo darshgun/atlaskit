@@ -15,6 +15,6 @@ type Config = {
 };
 */
 
-// $FlowFixMe
+// $FlowFixMe - tidy does not exist
 module.exports = tidy = (config /*: Config */) =>
   fs.emptyDir(config.processedDir).then(() => fs.emptyDir(config.destDir));

@@ -7,10 +7,12 @@ async function main() {
   const cwd = process.cwd();
   const paths = fromEntries(
     Object.entries(mapping)
+      // $FlowFixMe - better types
       .filter(([, path]) => path.includes('/packages/'))
       .map(([moduleName, modulePath]) => {
         const modulePattern = moduleName.replace('/index', '');
         const resolutionPath = modulePath
+          // $FlowFixMe - better types
           .replace('/index', '/')
           .replace(/(\.tsx?|\.js)$/, '');
 

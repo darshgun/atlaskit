@@ -81,6 +81,9 @@ function validateOptions(commitHash /*:string */, options /*: Object */ = {}) {
 // returns a function used for logging or doing nothing (depending on shouldLog)
 // i.e const logAlways = createLogger(true);
 // const logInDebugMode = createLogger(flags.debug);
+
+// TODO: To discuss with MB
+// eslint-disable-next-line no-unused-vars
 const createLogger = shouldLog => {
   if (shouldLog) {
     return message => {
@@ -168,8 +171,8 @@ async function _installFromCommit(
   commitHash /*: string */ = '',
   options /*: Object */ = {},
 ) {
-  const log = createLogger(true);
-  const verboseLog = createLogger(options.verbose);
+  const { log } = options;
+  const { verboseLog } = options;
 
   verboseLog('Running with options:');
   verboseLog({ ...options, commitHash });
@@ -215,6 +218,7 @@ async function _installFromCommit(
         try {
           await spawndamnit(engine, cmdArgs, {
             stdio: 'inherit',
+            // $FlowFixMe - isTTY is not in $Stream
             shell: process.stdout.isTTY,
           });
         } catch (err) {

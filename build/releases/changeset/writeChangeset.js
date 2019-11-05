@@ -14,7 +14,7 @@ const getID = data => {
   return hash.digest('hex');
 };
 
-async function writeChangeset(changesetData, opts) {
+async function writeChangeset(changesetData /*: Object*/, opts /*: Object*/) {
   const cwd = opts.cwd || process.cwd();
 
   const { summary, ...jsonData } = changesetData;

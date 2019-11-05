@@ -47,6 +47,7 @@ function createRelease(
   allPackages /*: Array<Object> */,
 ) {
   // First, combine all the changeset.releases into one useful array
+  // $FlowFixMe -type issue
   const flattenedChangesets = flattenChangesets(changesets);
 
   const allReleases = flattenedChangesets

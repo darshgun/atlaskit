@@ -18,10 +18,13 @@ jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/git');
 jest.mock('../../../changeset/parseChangesetCommit');
 jest.mock('@atlaskit/build-utils/logger');
-
+// $FlowFixMe - mock
 git.add.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.commit.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.push.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.tag.mockImplementation(() => Promise.resolve(true));
 
 const simpleChangeset = {
@@ -52,11 +55,13 @@ describe('running version in a simple project', () => {
 
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
+    // $FlowFixMe - fix console
     console.error = jest.fn();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    // $FlowFixMe - fix console
     console.error = consoleError;
   });
 
@@ -64,6 +69,7 @@ describe('running version in a simple project', () => {
     it('should warn if no changeset commits exist', async () => {
       await writeEmptyChangeset(cwd);
       await versionCommand({ cwd });
+      // $FlowFixMe - fix logger
       const loggerWarnCalls = logger.warn.mock.calls;
       expect(loggerWarnCalls.length).toEqual(1);
       expect(loggerWarnCalls[0][0]).toEqual(

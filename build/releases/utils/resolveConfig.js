@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 // @flow
 const path = require('path');
 const fs = require('fs-extra');
@@ -6,7 +7,7 @@ const logger = require('@atlaskit/build-utils/logger');
 
 const getChangesetBase = require('./getChangesetBase');
 
-async function resolveConfig(config) {
+async function resolveConfig(config /*: Object*/) {
   const changesetBase = await getChangesetBase(config.cwd);
 
   const configPath = path.resolve(changesetBase, 'config.js');
@@ -14,10 +15,11 @@ async function resolveConfig(config) {
 
   if (hasConfigFile) {
     try {
-      // eslint-disable-next-line import/no-dynamic-require
+      // $StringLitteral
       const loadedConfig = require(configPath);
       return loadedConfig;
     } catch (error) {
+      // $FlowFixMe - fix logger
       logger.error('There was an error reading your changeset config', error);
       throw error;
     }

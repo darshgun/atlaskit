@@ -55,7 +55,7 @@ async function main() {
   let targetBranch = '';
 
   do {
-    // $FlowFixMe
+    // $FlowFixMe - fix logger
     debugLog(`Fetching...${endpoint}`);
     response = await httpGetRequest(endpoint);
     if (!response || !response.values) {

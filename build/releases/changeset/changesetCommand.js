@@ -17,7 +17,7 @@ const resolveUserConfig = require('../utils/resolveConfig');
 const getChangesetBase = require('../utils/getChangesetBase');
 const { printIntroBanner, printConfirmationMessage } = require('./messages');
 
-async function run(opts) {
+async function run(opts /*: Object */) {
   printIntroBanner();
   const userConfig = await resolveUserConfig({ cwd: opts.cwd });
   const userchangesetOptions =
@@ -43,7 +43,7 @@ async function run(opts) {
   const changePackagesName = changedPackages.map(pkg => pkg.name);
   const newChangeset = await createChangeset(changePackagesName, config);
   printConfirmationMessage(newChangeset);
-
+  // $FlowFixMe -type issue
   const confirmChangeset = await cli.askConfirm(
     'Is this your desired changeset?',
   );
@@ -53,8 +53,10 @@ async function run(opts) {
     if (config.commit) {
       await git.add(path.resolve(changesetBase, changesetID));
       await git.commit(`CHANGESET: ${changesetID}. ${newChangeset.summary}`);
+      // $FlowFixMe - fix logger
       logger.log(green('Changeset added and committed'));
     } else {
+      // $FlowFixMe - fix logger
       logger.log(green('Changeset added! - you can now commit it'));
     }
   }

@@ -16,6 +16,7 @@ const checkTransifexEnvVar = () => {
 
 const transifex = new Transifex({
   project_slug: TRANSIFEX_PROJECT_NAME,
+  // $FlowFixMe - undefined var
   credential: `api:${TRANSIFEX_API_TOKEN}`,
 });
 

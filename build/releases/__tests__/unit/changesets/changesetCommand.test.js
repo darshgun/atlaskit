@@ -21,7 +21,9 @@ jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/packages');
 jest.mock('@atlaskit/build-utils/git');
 jest.mock('../../../changeset/writeChangeset');
+// $FlowFixMe - type missing
 writeChangeset.mockImplementation(() => Promise.resolve('abcdefg'));
+// $FlowFixMe - type missing
 git.commit.mockImplementation(async () => Promise.resolve(true));
 
 // This is some sad flow hackery
@@ -47,11 +49,16 @@ type mockResponses = {
 const mockUserResponses = (mockResponses: mockResponses) => {
   const summary = mockResponses.summary || 'summary message mock';
   const shouldCommit = mockResponses.shouldCommit || 'n';
+  // $FlowFixMe - type missing
   askCheckboxPlus.mockReturnValueOnce(Object.keys(mockResponses.releases));
+
   Object.entries(mockResponses.releases).forEach(([pkg, type]) =>
+    // $FlowFixMe - type missing
     askList.mockReturnValueOnce(type),
   );
+  // $FlowFixMe - type missing
   askQuestion.mockReturnValueOnce(summary);
+  // $FlowFixMe - type missing
   askConfirm.mockReturnValueOnce(shouldCommit);
 };
 
@@ -71,6 +78,7 @@ describe('Changesets', () => {
       releases: [{ name: 'pkg-a', type: 'patch' }],
       dependents: [],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -91,6 +99,7 @@ describe('Changesets', () => {
         { name: 'pinned-dep', type: 'patch', dependencies: ['depended-upon'] },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -112,6 +121,7 @@ describe('Changesets', () => {
         { name: 'tilde-dep', type: 'patch', dependencies: ['depended-upon'] },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -134,6 +144,7 @@ describe('Changesets', () => {
         { name: 'tilde-dep', type: 'patch', dependencies: ['depended-upon'] },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -156,6 +167,7 @@ describe('Changesets', () => {
         { name: 'pkg-c', type: 'patch', dependencies: ['pkg-b'] },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -179,6 +191,7 @@ describe('Changesets', () => {
         { name: 'pkg-b', type: 'patch', dependencies: ['pkg-c', 'pkg-a'] },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });

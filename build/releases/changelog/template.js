@@ -11,7 +11,11 @@ async function getReleaseLines(changesets, releaseName, config) {
 }
 
 // release is the package and version we are releasing
-async function generateMarkdownTemplate(release, releaseObject, config) {
+async function generateMarkdownTemplate(
+  release /*: Object */,
+  releaseObject /*: Object */,
+  config /*: Object */,
+) {
   // NOTE: The release object we receive here has more information than the ones in release commit
   // messages
   const { changesets, releases } = releaseObject;

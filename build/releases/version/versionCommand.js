@@ -84,10 +84,11 @@ async function run(opts /*: Object*/) {
   const publishCommit = createReleaseCommit(releaseObj, config.skipCI);
 
   if (unreleasedChangesets.length === 0) {
+    // $FlowFixMe - fix logger
     logger.warn('No unreleased changesets found, exiting.');
     return;
   }
-
+  // $FlowFixMe - fix logger
   logger.log(publishCommit);
 
   await bumpReleasedPackages(releaseObj, allPackages, config);
@@ -113,8 +114,10 @@ async function run(opts /*: Object*/) {
 
   // This double negative is bad, but cleaner than the alternative
   if (!noChangelogFlag) {
+    // $FlowFixMe - fix logger
     logger.log('Updating changelogs...');
     // Now update the changelogs
+    // $FlowFixMe - property iterator is missing
     const changelogPaths = await updateChangelog(releaseObj, config);
     if (config.commit) {
       for (const changelogPath of changelogPaths) {
@@ -122,22 +125,24 @@ async function run(opts /*: Object*/) {
       }
     }
   }
-
+  // $FlowFixMe - fix logger
   logger.log('Removing changesets...');
 
   // This should then reset the changesets folder to a blank state
   removeFolders(changesetBase);
   if (config.commit) {
     await git.add(changesetBase);
-
+    // $FlowFixMe - fix logger
     logger.log('Committing changes...');
     // TODO: Check if there are any unstaged changed before committing and throw
     // , as it means something went super-odd.
     await git.commit(publishCommit);
   } else {
+    // $FlowFixMe - fix logger
     logger.log(
       'All files have been updated. Review them and commit at your leisure',
     );
+    // $FlowFixMe - fix logger
     logger.warn(
       'If you alter version changes in package.jsons, make sure to run bolt before publishing to ensure the repo is in a valid state',
     );

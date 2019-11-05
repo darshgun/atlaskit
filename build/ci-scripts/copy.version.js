@@ -32,10 +32,10 @@ async function copyVersionJson(pkg, project) {
     );
   }
 }
-
+// TODO: Fix with MB
 async function main(
   pkgName? /*: string */,
-  { cwd /*: string */ } /* Object */ = {},
+  { cwd } /*: { cwd: string } */ = {},
 ) {
   const project = await bolt.getProject({ cwd });
   // We always use `onlyFs` to restrict execution to the packages dir regardless of whether packageName is present

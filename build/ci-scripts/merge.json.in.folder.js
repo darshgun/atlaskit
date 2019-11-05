@@ -26,6 +26,7 @@ const mergeJSONFiles = () => {
 
   const jsonFiles = files.reduce((acc, filename) => {
     if (filename.includes('.json')) {
+      // $FlowFixMe - Object issue with JSON.parse maybe using JSON.sringify
       const content = JSON.parse(fs.readFileSync(path.join(input, filename)));
       acc.push(...content);
     }

@@ -41,8 +41,9 @@ function buildFs(
   let item = findInDir(curDir, seg);
   if (item && item.type === 'file') return curDir;
   if (!restSegments || !restSegments.length)
+    // $FlowFixMe - type issue
     return appendToDir(curDir, file(seg, path.join(curDir.path, seg)));
-
+  // $FlowFixMe - type issue
   item = buildFs(item || dir(seg, path.join(curDir.path, seg)), restSegments);
   return appendToDir(curDir, item);
 }

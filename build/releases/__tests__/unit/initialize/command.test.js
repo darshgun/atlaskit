@@ -14,10 +14,12 @@ const getPaths = cwd => ({
 
 describe('Initialize', () => {
   beforeEach(() => {
+    // $FlowFixMe - console log
     console.log = jest.fn();
   });
   afterEach(() => {
     jest.clearAllMocks();
+    // $FlowFixMe - console log
     console.log = consoleLog;
   });
   it('should initialize in a project without a .changeset folder', async () => {

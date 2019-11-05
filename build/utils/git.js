@@ -14,7 +14,10 @@ async function getCommitsSince(ref /*: string */) {
   return gitCmd.stdout.trim().split('\n');
 }
 
-async function getChangedFilesSince(ref /*: string */, fullPath = false) {
+async function getChangedFilesSince(
+  ref /*: string */,
+  fullPath /*:boolean*/ = false,
+) {
   // First we need to find the commit where we diverged from `ref` at using `git merge-base`
   let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
   const divergedAt = cmd.stdout.trim();
@@ -25,7 +28,9 @@ async function getChangedFilesSince(ref /*: string */, fullPath = false) {
   return files.map(file => path.resolve(file));
 }
 
-async function getChangedChangesetFilesSinceMaster(fullPath = false) {
+async function getChangedChangesetFilesSinceMaster(
+  fullPath /*:boolean*/ = false,
+) {
   const ref = await getMasterRef();
   // First we need to find the commit where we diverged from `ref` at using `git merge-base`
   let cmd = await spawn('git', ['merge-base', ref, 'HEAD']);
@@ -75,7 +80,7 @@ async function commit(message /*: string */) {
   return gitCmd.code === 0;
 }
 
-async function push(args = []) {
+async function push(args /*: Array<any>*/ = []) {
   const gitCmd = await spawn('git', ['push', ...args]);
   return gitCmd.code === 0;
 }
@@ -88,7 +93,7 @@ async function tag(tagStr /*: string */) {
   return gitCmd.code === 0;
 }
 
-async function rebase(maxAttempts = 3) {
+async function rebase(maxAttempts /*: number*/ = 3) {
   let attempts = 0;
   let rebased = false;
   let lastError = {};
@@ -117,7 +122,7 @@ async function rebase(maxAttempts = 3) {
 
 // We expose this as a combined command because we want to be able to do both commands
 // atomically
-async function rebaseAndPush(maxAttempts = 3) {
+async function rebaseAndPush(maxAttempts /*: number*/ = 3) {
   let attempts = 0;
   let pushed = false;
   let lastError = {};
@@ -256,6 +261,7 @@ async function getUnpublishedChangesetCommits(since /*: any */) {
   const changesetCommits = await getAllChangesetCommits(since);
   // to find unpublished commits, we'll go through them one by one and compare them to all release
   // commits and see if there are any that dont have a release commit that matches them
+  // $FlowFixMe - because of the type of changeset commits
   const unpublishedCommits = changesetCommits.filter(cs => {
     return !releaseCommits.find(publishCommit => {
       // release commits have references to the changesets that they come from
