@@ -26,11 +26,14 @@ import {
 } from './providers';
 import MobilePicker from './editor/MobileMediaPicker';
 
+// Expose WebBridge instance for use by native side
+const bridge = new WebBridgeImpl();
+window.bridge = bridge;
+
 function main(window: Window, document: Document) {
   const params = new URLSearchParams(window.location.search);
   const mode = determineMode(params.get('mode'));
 
-  const bridge = new WebBridgeImpl();
   const actions = bridge.editorActions;
 
   const analyticsClient = analyticsBridgeClient(event => {
