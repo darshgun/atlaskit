@@ -13,7 +13,7 @@ import throttle from 'lodash.throttle';
 import { OverflowProviderProps } from './types';
 
 const THROTTLE_INTERVAL = 100;
-const ITEM_APPROX_MINWIDTH = 60;
+const ITEM_APPROX_MINWIDTH = 50;
 const calculateHash = (w: number, n: number) => w + '#' + n;
 
 const OverflowContext = createContext({
