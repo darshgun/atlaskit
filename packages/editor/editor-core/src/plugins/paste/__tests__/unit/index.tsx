@@ -49,12 +49,12 @@ import {
 import { TextSelection, Transaction } from 'prosemirror-state';
 import { uuid } from '@atlaskit/adf-schema';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { setMacroProvider, MacroAttributes } from '../../../../plugins/macro';
+import { setMacroProvider, MacroAttributes } from '../../../macro';
 import { EditorView } from 'prosemirror-view';
-import { ACTION_SUBJECT_ID } from '../../../../plugins/analytics';
-import { CardProvider } from '../../../../plugins/card';
-import { GapCursorSelection, Side } from '../../../../plugins/gap-cursor';
-import { EditorProps } from '../../../..';
+import { ACTION_SUBJECT_ID } from '../../../analytics';
+import { CardProvider } from '../../../card';
+import { GapCursorSelection, Side } from '../../../gap-cursor';
+import { EditorProps } from '@atlaskit/editor-core';
 
 // @ts-ignore
 import { __serializeForClipboard } from 'prosemirror-view';
@@ -1169,7 +1169,7 @@ describe('paste plugins', () => {
       it('inserts inline card when FF for resolving links over extensions is enabled', async () => {
         const macroProvider = Promise.resolve(new MockMacroProvider({}));
         const { editorView } = editor(
-          doc(p('{<>}')),
+          doc(p('{<}Hello world{>}')),
           extensionProps({ resolveBeforeMacros: ['jira'] }),
         );
 
