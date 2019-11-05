@@ -2,7 +2,7 @@ import { Database } from 'kakapo';
 import uuidV4 from 'uuid/v4';
 
 import { ClientBasedAuth } from '@atlaskit/media-core';
-import { MediaCollection } from '@atlaskit/media-store';
+import { MediaCollection } from '@atlaskit/media-client';
 
 import { createCollection } from './collection';
 import { CollectionItem, createCollectionItem } from './collection-item';

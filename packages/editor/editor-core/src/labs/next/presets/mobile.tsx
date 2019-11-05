@@ -1,14 +1,9 @@
+// #region Imports
 import * as React from 'react';
-import { EditorPresetProps } from './types';
-import { PresetProvider } from '../Editor';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { MentionProvider } from '@atlaskit/mention/resource';
+
 import {
-  pastePlugin,
-  blockTypePlugin,
-  clearMarksOnChangeToEmptyDocumentPlugin,
-  hyperlinkPlugin,
-  textFormattingPlugin,
-  widthPlugin,
-  unsupportedContentPlugin,
   tablesPlugin,
   codeBlockPlugin,
   panelPlugin,
@@ -27,20 +22,14 @@ import {
   insertBlockPlugin,
   basePlugin,
   placeholderPlugin,
-  editorDisabledPlugin,
-  typeAheadPlugin,
-  floatingToolbarPlugin,
-  gapCursorPlugin,
   annotationPlugin,
 } from '../../../plugins';
-import { MentionProvider } from '@atlaskit/mention/resource';
 import { MediaProvider, CustomMediaPicker } from '../../../plugins/media';
-import { EmojiProvider } from '@atlaskit/emoji';
-import {
-  removeExcludes,
-  enableExperimental,
-  ExperimentalPluginMap,
-} from './utils';
+import { PresetProvider } from '../Editor';
+import { EditorPresetProps } from './types';
+import { useDefaultPreset } from './default';
+import { getPluginsFromPreset } from './utils';
+// #endregion
 
 interface EditorPresetMobileProps {
   children?: React.ReactNode;
@@ -53,87 +42,63 @@ interface EditorPresetMobileProps {
   };
 }
 
-export function EditorPresetMobile({
-  children,
+export function useMobilePreset({
   mentionProvider,
   emojiProvider,
   media,
   placeholder,
-  excludes,
-  experimental,
 }: EditorPresetMobileProps & EditorPresetProps) {
-  let plugins = [
-    pastePlugin(),
-    blockTypePlugin(),
-    clearMarksOnChangeToEmptyDocumentPlugin(),
-    hyperlinkPlugin(),
-    textFormattingPlugin({}),
-    widthPlugin(),
-    tablesPlugin({
-      tableOptions: { allowControls: false },
-    }),
-    codeBlockPlugin(),
-    panelPlugin(),
-    listsPlugin(),
-    textColorPlugin(),
-    extensionPlugin(),
-    rulePlugin(),
-    datePlugin(),
-    layoutPlugin(),
-    statusPlugin({ menuDisabled: false, useInlineWrapper: true }),
-    tasksAndDecisionsPlugin(),
-    insertBlockPlugin({}),
-    placeholderPlugin({ placeholder }),
-    editorDisabledPlugin(),
-    typeAheadPlugin(),
-    floatingToolbarPlugin(),
-    gapCursorPlugin(),
-    annotationPlugin(),
-    cardPlugin(),
-  ];
+  const [preset] = useDefaultPreset();
+
+  preset.push(
+    [basePlugin, { allowScrollGutter: () => document.body }],
+    [tablesPlugin, { tableOptions: { allowControls: false } }],
+    codeBlockPlugin,
+    panelPlugin,
+    listsPlugin,
+    textColorPlugin,
+    extensionPlugin,
+    rulePlugin,
+    datePlugin,
+    layoutPlugin,
+    [statusPlugin, { menuDisabled: false, useInlineWrapper: true }],
+    tasksAndDecisionsPlugin,
+    insertBlockPlugin,
+    [placeholderPlugin, { placeholder }],
+    annotationPlugin,
+    cardPlugin,
+  );
 
   if (mentionProvider) {
-    plugins.push(
-      mentionsPlugin({
-        useInlineWrapper: true,
-      }),
-    );
+    preset.push([mentionsPlugin, { useInlineWrapper: true }]);
   }
 
   if (emojiProvider) {
-    plugins.push(
-      emojiPlugin({
-        useInlineWrapper: true,
-      }),
-    );
+    preset.push([emojiPlugin, { useInlineWrapper: true }]);
   }
 
   if (media) {
-    plugins.push(
-      mediaPlugin(
-        {
-          provider: media.provider,
-          customMediaPicker: media.picker,
-          allowMediaSingle: true,
-        },
-        {
-          allowMarkingUploadsAsIncomplete: true,
-        },
-      ),
-    );
+    preset.push([
+      mediaPlugin,
+      {
+        provider: media.provider,
+        customMediaPicker: media.picker,
+        allowMediaSingle: true,
+      },
+      // TODO: ED-7891 Align media plugin constructor with other plugins
+      // { allowMarkingUploadsAsIncomplete: true },
+    ]);
   }
 
-  const experimentalMap: ExperimentalPluginMap = new Map();
-  plugins = removeExcludes(plugins, excludes);
-  plugins = enableExperimental(plugins, experimental, experimentalMap);
+  return [preset];
+}
 
-  // Add plugins that cannot be excluded for this preset.
-  plugins.push(
-    unsupportedContentPlugin(),
-    basePlugin({
-      allowScrollGutter: () => document.body,
-    }),
-  );
+export function EditorPresetMobile(
+  props: EditorPresetMobileProps & EditorPresetProps,
+) {
+  const { children, excludes, experimental } = props;
+  const [preset] = useMobilePreset(props);
+  const plugins = getPluginsFromPreset(preset, excludes, experimental);
 
   return <PresetProvider value={plugins}>{children}</PresetProvider>;
 }

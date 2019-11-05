@@ -1,5 +1,11 @@
 # @atlaskit/share
 
+## 0.6.14
+
+- Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
+  - @atlaskit/util-data-test@13.0.1
+  - @atlaskit/util-service-support@5.0.0
+
 ## 0.6.13
 
 ### Patch Changes

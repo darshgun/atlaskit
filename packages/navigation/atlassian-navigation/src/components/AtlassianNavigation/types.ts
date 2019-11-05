@@ -20,5 +20,6 @@ export type AtlassianNavigationProps = {
 export type NavigationSkeletonProps = {
   primaryItemsCount?: number;
   secondaryItemsCount?: number;
+  showSiteName?: boolean;
   theme?: NavigationTheme;
 };

@@ -13,3 +13,23 @@ export function prefixConsoleLog(prefix: string): () => void {
     console.log = oldConsoleLog;
   };
 }
+
+/**
+ * Creates an object spy that logs out the method and args of any method called on it
+ */
+export function createSpyObject<
+  T = {
+    [prop: string]: any;
+  }
+>(objName: string): T {
+  return new Proxy(
+    {},
+    {
+      get(target: any, prop: string) {
+        return (...args: any[]) => {
+          console.log(`Called ${objName}.${prop}(${args})`);
+        };
+      },
+    },
+  );
+}

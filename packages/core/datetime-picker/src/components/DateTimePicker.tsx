@@ -75,6 +75,12 @@ export interface Props extends WithAnalyticsEventsProps {
   /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
   spacing?: Spacing;
   locale: string;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+   *  - `{testId}--datepicker--container` wrapping element of date-picker
+   *  - `{testId}--timepicker--container` wrapping element of time-picker
+   **/
+  testId?: string;
 }
 
 interface State {
@@ -303,6 +309,7 @@ class DateTimePicker extends React.Component<Props, State> {
       times,
       timeFormat,
       locale,
+      testId,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getSafeState();
     const icon: React.ReactNode =
@@ -351,6 +358,7 @@ class DateTimePicker extends React.Component<Props, State> {
             selectProps={mergedDatePickerSelectProps}
             value={dateValue}
             locale={locale}
+            testId={testId && `${testId}--datepicker`}
             {...datePickerProps}
           />
         </FlexItem>
@@ -365,6 +373,7 @@ class DateTimePicker extends React.Component<Props, State> {
             times={times}
             timeFormat={timeFormat}
             locale={locale}
+            testId={testId && `${testId}--timepicker`}
             {...timePickerProps}
           />
         </FlexItem>

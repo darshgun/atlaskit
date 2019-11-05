@@ -100,6 +100,7 @@ export const jiraPrimaryItems = [
     onClick={(...args: any[]) => {
       console.log('Projects click', ...args);
     }}
+    isSelected
   >
     Projects
   </NavigationButton>,

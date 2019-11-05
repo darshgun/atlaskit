@@ -1,5 +1,4 @@
-// @ts-ignore: unused variable
-import { css, Styles, StyledComponentClass } from 'styled-components';
+import { css } from 'styled-components';
 import {
   blockquoteSharedStyles,
   headingsSharedStyles,

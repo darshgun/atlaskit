@@ -14,7 +14,7 @@ import Spinner from '@atlaskit/spinner';
 import { DefaultCoverWrapper, AudioCover } from '../../../../../newgen/styled';
 import { ErrorMessage } from '../../../../../newgen/error';
 import Button from '@atlaskit/button';
-import { Auth } from '@atlaskit/media-store';
+import { Auth } from '@atlaskit/media-core';
 
 const token = 'some-token';
 const clientId = 'some-client-id';

@@ -1,5 +1,13 @@
 # @atlaskit/branch-deploy-product-integrator
 
+## 1.2.0
+
+### Minor Changes
+
+- [minor][9bb012c1c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9bb012c1c9):
+
+  Replace slashes with dashes in branch name created in products. This ensures certain product integrations don't fail while allowing Atlaskit branche names to have slashes.
+
 ## 1.1.0
 
 ### Minor Changes

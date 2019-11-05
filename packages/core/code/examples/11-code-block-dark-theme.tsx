@@ -21,8 +21,18 @@ const exampleCodeBlock = `  // React component
 
 export default function Component() {
   return (
-    <AtlaskitThemeProvider mode="dark">
-      <AkCodeBlock language="java" text={exampleCodeBlock} />
-    </AtlaskitThemeProvider>
+    <>
+      <AtlaskitThemeProvider mode="dark">
+        <AkCodeBlock language="java" text={exampleCodeBlock} />
+      </AtlaskitThemeProvider>
+
+      <AtlaskitThemeProvider mode="dark">
+        <AkCodeBlock
+          language="java"
+          text={exampleCodeBlock}
+          highlight="2,5-7,12-15"
+        />
+      </AtlaskitThemeProvider>
+    </>
   );
 }

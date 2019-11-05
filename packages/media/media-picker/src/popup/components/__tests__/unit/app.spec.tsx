@@ -146,7 +146,6 @@ describe('App', () => {
       const dropzoneMediaClient = new MediaClient({
         authProvider: mediaClient.config.authProvider,
         userAuthProvider: mediaClient.config.authProvider,
-        cacheSize: mediaClient.config.cacheSize,
       });
 
       const wrapper = mount(element);

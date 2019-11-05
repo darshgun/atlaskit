@@ -12,16 +12,16 @@ import {
   PluginState,
   pluginKey,
 } from '../../../../../plugins/collab-edit/plugin';
-import { collabEditProvider } from '../../../../../../example-helpers/mock-collab-provider';
 
 import Avatars from '../../../../../plugins/collab-edit/ui/avatars';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
+import { createMockCollabEditProvider } from '@atlaskit/synchrony-test-helpers';
 
 describe('collab-edit | Avatars', () => {
   const createEditor = createEditorFactory<PluginState>();
 
   const providerFactory = ProviderFactory.create({
-    collabEditProvider: collabEditProvider('rick'),
+    collabEditProvider: createMockCollabEditProvider('rick'),
   });
 
   const editor = (doc: any) =>

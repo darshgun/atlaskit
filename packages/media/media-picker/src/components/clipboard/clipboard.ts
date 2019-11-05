@@ -2,7 +2,6 @@ import {
   CreateUIAnalyticsEvent,
   withAnalyticsContext,
   withAnalyticsEvents,
-  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 
 import {
@@ -19,7 +18,6 @@ import {
 import { ANALYTICS_MEDIA_CHANNEL } from '../media-picker-analytics-error-boundary';
 import { ClipboardConfig } from '../types';
 import { appendTimestamp } from '../../util/appendTimestamp';
-
 import {
   name as packageName,
   version as packageVersion,
@@ -42,10 +40,9 @@ export interface ClipboardOwnProps {
   config: ClipboardConfig;
 }
 
-export type ClipboardProps = LocalUploadComponentBaseProps &
-  WithAnalyticsEventsProps & {
-    config: ClipboardConfig;
-  };
+export type ClipboardProps = LocalUploadComponentBaseProps & {
+  config: ClipboardConfig;
+};
 
 const defaultConfig: ClipboardConfig = { uploadParams: {} };
 
@@ -104,9 +101,9 @@ class ClipboardImpl {
         actionSubject: 'clipboard',
         action,
         attributes: {
+          packageName,
           fileCount: files.length,
-          fileAttributes: files.map(({ file: { name, type, size } }) => ({
-            fileName: name,
+          fileAttributes: files.map(({ file: { type, size } }) => ({
             fileMimetype: type,
             fileSize: size,
           })),
@@ -167,7 +164,9 @@ export class ClipboardBase extends LocalUploadComponentReact<ClipboardProps> {
 }
 
 export const Clipboard = withAnalyticsContext({
-  componentName: 'clipboard',
-  packageName,
-  packageVersion,
+  attributes: {
+    componentName: 'clipboard',
+    packageName,
+    packageVersion,
+  },
 })(withAnalyticsEvents()(ClipboardBase));

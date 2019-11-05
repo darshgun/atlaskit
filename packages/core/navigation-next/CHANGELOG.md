@@ -1,5 +1,18 @@
 # @atlaskit/navigation-next
 
+## 7.0.2
+
+### Patch Changes
+
+- [patch][1450c5f1f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1450c5f1f5):
+
+  Fix resize not working on FF when connected to an external monitor
+
+## 7.0.1
+
+- Updated dependencies [48640192dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48640192dc):
+  - @atlaskit/atlassian-navigation@0.5.0
+
 ## 7.0.0
 
 ### Major Changes

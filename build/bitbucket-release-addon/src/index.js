@@ -2,15 +2,20 @@ import queryString from 'query-string';
 import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
 import yaml from 'js-yaml';
 
-import getCommits from './get-commits';
-import getChangesets from './get-changesets';
-import { legacyChangesetRepos, v2ChangesetRepos } from './config';
+import getChangesetsFromCommits from './get-commits';
+import getChangesetsFromFiles from './get-changesets';
+import { legacyChangesetRepos } from './config';
 
 const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
   <p><strong>Warning:</strong> No packages will be released with this PR</p>
-  <p>If this was not intentional make sure you have run \`bolt changeset\` if you are trying to release packages.</p>
+  <p>It is now a requirement that all PRs <strong>must</strong> include a changeset.</p>
+  <p>Run \`yarn changeset\` to create one, or \`yarn changeset:empty\` to create an empty one that releases nothing.</p>
   <p>See <a href="https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/docs/guides/07-releasing-packages.md" target="_parent">this guide</a> for more details.</p>
+</div>`;
 
+const noReleaseEmtpyChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
+  <p><strong>Warning:</strong> No packages will be released with this PR because an empty changeset exists</p>
+  <p>If this is a mistake, please delete the empty changeset and run \`yarn changeset\` again</p>
 </div>`;
 const errorLoadingChangesetMessage = `<div style="color: red; border: 2px solid; padding: 10px; border-radius: 10px; display: inline-block;">
 <p>Error loading changesets for this PR</p>
@@ -22,7 +27,7 @@ function releasesToHtmlList(releases) {
   </ul>`;
 }
 
-const releasedPackagesMessage = (releases, v2) => {
+const releasedPackagesMessage = (releases, shouldWarnAboutChangesetsV2) => {
   const majorReleases = releases.filter(release => release.type === 'major');
   const minorReleases = releases.filter(release => release.type === 'minor');
   const patchReleases = releases.filter(release => release.type === 'patch');
@@ -40,7 +45,7 @@ const releasedPackagesMessage = (releases, v2) => {
       ? `<h3>🛠 Patch Releases</h3>${releasesToHtmlList(patchReleases)}`
       : '';
 
-  const dependentsWarningSection = v2
+  const dependentsWarningSection = shouldWarnAboutChangesetsV2
     ? `<p style="color: red;">Warning: Dependents can not currently be displayed by the Release Addon when using Changesets V2.<br>
          <text style="color: rgb(80, 95, 121)">You can check these manually by running <strong>yarn changeset status</strong> in your terminal.</text></p>
          <p style="color: rgb(80, 95, 121)">For any questions, please see the <strong>#atlaskit-build</strong> room.</p>`
@@ -54,50 +59,81 @@ const releasedPackagesMessage = (releases, v2) => {
   </div>`;
 };
 
-const yamlToReleases = changesets =>
-  changesets
+const yamlToReleases = changesets => {
+  if (!changesets || changesets.length === 0) return [];
+  return changesets
     .map(changeset => {
-      const result = /\s*---([^]*?)\n\s*---\n([^]+)/.exec(changeset);
-      const [, roughReleases] = result;
-      const yamlStuff = yaml.safeLoad(roughReleases);
-      return Object.entries(yamlStuff).map(([name, type]) => ({ name, type }));
+      let lines = changeset.split('\n');
+      let yamlStr = '';
+      if (lines[0] !== '---') return null; // if we don't have a frontmatter block, skip this file
+      let lineIdx = 1; // skip the first line, we know it is '---'
+      while (lines[lineIdx] !== '---') {
+        yamlStr += lines[lineIdx];
+        lineIdx += 1;
+      }
+      if (yamlStr.length === 0) return [];
+      const yamlObj = yaml.safeLoad(yamlStr);
+      return Object.entries(yamlObj).map(([name, type]) => ({ name, type }));
     })
+    .filter(Boolean)
     .flat();
+};
 
 const {
-  user,
-  repo,
+  repoName, // repoName is the full repo path (i.e atlassian/atlaskit-mk-2)
   pullrequestid,
-  repoid,
   sourcehash,
   destinationhash,
+  repoid,
 } = queryString.parse(window.location.search);
 
-// Only retrieve one type of changesets. Legacy commit changesets and v2 changesets (md files with yaml frontmatter)
-// are only supported in repos defined in config.js
-const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
-const v2 = v2ChangesetRepos.indexOf(repoid) >= 0;
+async function main() {
+  // Only retrieve one type of changesets. Legacy commit changesets
+  // are only supported in repos defined in config.js
+  const legacy = legacyChangesetRepos.indexOf(repoid) >= 0;
 
-const changesetPromise = legacy
-  ? getCommits(user, repo, pullrequestid)
-  : getChangesets(user, repo, sourcehash, destinationhash, v2);
-
-changesetPromise
-  .then(changesets => {
-    if (!changesets || changesets.length === 0) {
-      document.body.innerHTML = noChangesetMessage;
-      return;
+  const releases = [];
+  let changesetsPresent = false;
+  let shouldWarnAboutChangesetsV2 = false;
+  if (legacy) {
+    const changesets = await getChangesetsFromCommits(repoName, pullrequestid);
+    releases.push(...flattenChangesets(changesets));
+  } else {
+    const { v1changesets, v2changesets } = await getChangesetsFromFiles(
+      repoName,
+      sourcehash,
+      destinationhash,
+    );
+    if (v1changesets.length) {
+      releases.push(...flattenChangesets(v1changesets));
     }
+    if (v2changesets.length) {
+      shouldWarnAboutChangesetsV2 = true;
+      releases.push(...yamlToReleases(v2changesets));
+    }
+    if (v1changesets.length + v2changesets.length > 0) {
+      changesetsPresent = true;
+    }
+  }
 
-    // Changesets will be in text form (from the markdown file) if V2
-    // Otherwise in the JSON format that needs to be flattened
-    const releases = v2
-      ? yamlToReleases(changesets)
-      : flattenChangesets(changesets);
+  if (releases.length === 0) {
+    if (changesetsPresent) {
+      document.body.innerHTML = noReleaseEmtpyChangesetMessage;
+    } else {
+      document.body.innerHTML = noChangesetMessage;
+    }
+    return;
+  }
 
-    document.body.innerHTML = releasedPackagesMessage(releases, v2);
-  })
-  .catch(e => {
-    console.error('error in changeset', e);
-    document.body.innerHTML = errorLoadingChangesetMessage;
-  });
+  document.body.innerHTML = releasedPackagesMessage(
+    releases,
+    shouldWarnAboutChangesetsV2,
+  );
+}
+
+try {
+  main();
+} catch (e) {
+  console.error('error in changeset', e);
+  document.body.innerHTML = errorLoadingChangesetMessage;
+}

@@ -346,16 +346,24 @@ export function getDiscoverSectionLinks({
   isDiscoverMoreForEveryoneEnabled,
   isEmceeLinkEnabled,
   product,
+  canManagePermission,
+  canAddProducts,
 }: {
   isDiscoverMoreForEveryoneEnabled: boolean;
   isEmceeLinkEnabled: boolean;
   product?: Product;
+  canManagePermission: boolean;
+  canAddProducts: boolean;
 }) {
   const discoverLinks: SwitcherItemType[] = [];
   const discoverMoreLink =
     isDiscoverMoreForEveryoneEnabled &&
     getDiscoverMoreLink(DiscoverFilledGlyph);
-  const emceeLink = isEmceeLinkEnabled && getEmceeLink(product);
+
+  const emceeLink =
+    (canManagePermission || canAddProducts) &&
+    isEmceeLinkEnabled &&
+    getEmceeLink(product);
 
   if (discoverMoreLink) {
     discoverLinks.push(discoverMoreLink);
