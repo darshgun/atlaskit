@@ -124,6 +124,7 @@ export default function mobileEditor(props: Props) {
               allowBreakout: true,
             }}
             allowAnalyticsGASV3={true}
+            UNSAFE_allowExpand={true}
             taskDecisionProvider={Promise.resolve(TaskDecisionProvider())}
             {...props}
           />
