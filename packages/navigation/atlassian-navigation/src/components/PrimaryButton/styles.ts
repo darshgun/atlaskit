@@ -65,11 +65,12 @@ export const isHighlightedCSS = (
 
   '&:after': {
     position: 'absolute',
-    bottom: '0',
+    bottom: 0,
+    left: gridSize / 2,
+    right: gridSize / 2,
     content: isHighlighted ? '""' : '',
     height: gridSize / 2,
     backgroundColor: primaryButton.selected.color,
-    width: `calc(100% - ${gridSize}px)`,
     borderTopLeftRadius: 1,
     borderTopRightRadius: 1,
   },
