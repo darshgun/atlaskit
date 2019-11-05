@@ -444,25 +444,6 @@ export const getRecentLinkItems = (
     }));
 };
 
-// Design decision from
-// https://hello.atlassian.net/wiki/spaces/~kgalek/pages/563815188/Join+from+Atlassian+switcher%3A+design+so+far
-const MAX_JOINABLE_SITES = 3;
-
-export const getRelevantJoinableSites = (
-  joinableSites: JoinableSite[] = [],
-): JoinableSite[] => {
-  return joinableSites.filter(
-    site =>
-      // always display if there is only one joinable site
-      // as relevance data is not availalbe for single joinable site
-      joinableSites.length === 1 ||
-      (site.products &&
-      site.products.length && // at least one joinable product
-      (site.users && site.users.length) && // at least one collaborator
-        site.relevance > 0), // has a relevance score
-  );
-};
-
 export const getLabelAndIconByProductKey = (
   productKey: ProductKey,
 ): { label: string; icon: React.ComponentType<any> } => {
@@ -505,33 +486,35 @@ export const getLabelAndIconByProductKey = (
   }
 };
 
+// Design decision from
+// https://hello.atlassian.net/wiki/spaces/~kgalek/pages/563815188/Join+from+Atlassian+switcher%3A+design+so+far
+const MAX_JOINABLE_SITES = 3;
+
 export const getJoinableSiteLinks = (
   joinableSites: JoinableSite[] = [],
 ): JoinableSiteItemType[] => {
-  return getRelevantJoinableSites(joinableSites)
-    .slice(0, MAX_JOINABLE_SITES)
-    .map(
-      (site: JoinableSite, index: number): JoinableSiteItemType => {
-        const [defaultProduct]: ProductKey[] = site.products;
-        const { label, icon } = getLabelAndIconByProductKey(defaultProduct);
-        return {
-          key: site.cloudId,
-          label,
-          description: site.displayName,
-          Icon: createIcon(icon, { size: 'small' }),
-          href: site.url,
-          users: site.users.map(
-            (user: JoinableSiteUser): AvatarPropTypes => ({
-              name: user.displayName,
-              src: user.avatarUrl,
-              appearance: 'circle',
-              size: 'small',
-              enableTooltip: true,
-            }),
-          ),
-          cloudId: site.cloudId,
-          productType: TO_WORKLENS_PRODUCT_KEY[defaultProduct],
-        };
-      },
-    );
+  return joinableSites.slice(0, MAX_JOINABLE_SITES).map(
+    (site: JoinableSite, index: number): JoinableSiteItemType => {
+      const [defaultProduct]: ProductKey[] = site.products;
+      const { label, icon } = getLabelAndIconByProductKey(defaultProduct);
+      return {
+        key: site.cloudId,
+        label,
+        description: site.displayName,
+        Icon: createIcon(icon, { size: 'small' }),
+        href: site.url,
+        users: site.users.map(
+          (user: JoinableSiteUser): AvatarPropTypes => ({
+            name: user.displayName,
+            src: user.avatarUrl,
+            appearance: 'circle',
+            size: 'small',
+            enableTooltip: true,
+          }),
+        ),
+        cloudId: site.cloudId,
+        productType: TO_WORKLENS_PRODUCT_KEY[defaultProduct],
+      };
+    },
+  );
 };
