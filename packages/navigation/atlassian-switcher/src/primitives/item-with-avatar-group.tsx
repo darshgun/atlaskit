@@ -49,7 +49,7 @@ class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
           <ThemedItem
             description={description}
             icon={icon}
-            avatarGroup={
+            elemAfter={
               <AvatarGroup
                 appearance="stack"
                 data={users}
