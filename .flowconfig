@@ -1,6 +1,4 @@
 [ignore]
-.*/build/webdriver-runner/wd-wrapper.js
-.*/build/jest-config/.*
 .*/build/karma-config/.*
 .*/node_modules/styled-components/.*
 .*/website/dist/sandbox/.*

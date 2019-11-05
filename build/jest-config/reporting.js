@@ -2,8 +2,9 @@
 const sendLogs = require('@atlaskit/analytics-reporting');
 
 module.exports = {
-  reportLongRunningTests(tests, threshold) {
+  reportLongRunningTests(tests /*: string[] */, threshold /*: number*/) {
     return sendLogs(
+      // $FlowFixMe - type issue
       JSON.stringify({
         events: tests.map(result => {
           return {
@@ -11,7 +12,9 @@ module.exports = {
             server: process.env.CI ? 'master' : 'test',
             product: 'atlaskit',
             properties: {
+              // $FlowFixMe - type issue
               timeTaken: result.timeTaken,
+              // $FlowFixMe - type issue
               testFilePath: result.testFilePath,
               threshold,
             },

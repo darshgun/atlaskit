@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable no-multi-assign */
 /**
  * Forked the code of `jest-environment-jsdom-fourteen` into this file.
  * (https://github.com/ianschmitz/jest-environment-jsdom-fourteen/blob/master/src/index.ts)
@@ -52,10 +53,10 @@ function getMockedEventListeners(global) {
 }
 
 class JSDOMEnvironment {
-  constructor(config, opts /*: Object */ = {}) {
+  constructor(config /*: Object */, opts /*: Object */ = {}) {
     const { testEnvironmentOptions, testURL } = config;
     const { resources, resourceLoaderOptions } = testEnvironmentOptions;
-
+    // $FlowFixMe - type issue
     this.dom = new JSDOM('<!DOCTYPE html>', {
       pretendToBeVisual: true,
       runScripts: 'dangerously',
@@ -67,7 +68,7 @@ class JSDOMEnvironment {
           : resources,
     });
 
-    // eslint-disable-next-line no-multi-assign
+    // $FlowFixMe - type issue
     const global = (this.global = this.dom.window.document.defaultView);
 
     if (!global) {
@@ -91,12 +92,14 @@ class JSDOMEnvironment {
 
     global.addEventListener(
       'error',
+      // $FlowFixMe - type issue
       (this.errorEventListener = errorEventListener),
     );
     global.addEventListener = addEventListener;
     global.removeEventListener = removeEventListener;
-
+    // $FlowFixMe - type issue
     this.moduleMocker = new mock.ModuleMocker(global);
+    // $FlowFixMe - type issue
     this.fakeTimers = new JestFakeTimers({
       config,
       global,
@@ -109,18 +112,23 @@ class JSDOMEnvironment {
   }
 
   setup() {
+    // $FlowFixMe - type issue
     return this.Promise.resolve();
   }
 
   // @see https://github.com/ianschmitz/jest-environment-jsdom-fourteen/blob/v0.1.0/src/index.ts#L86
   teardown() {
+    // $FlowFixMe - type issue
     if (this.fakeTimers) {
       this.fakeTimers.dispose();
     }
-
+    // $FlowFixMe - type issue
     if (this.global) {
+      // $FlowFixMe - type issue
       if (this.errorEventListener) {
+        // $FlowFixMe - type issue
         this.global.removeEventListener('error', this.errorEventListener);
+        // $FlowFixMe - type issue
         this.errorEventListener = undefined;
       }
 
@@ -128,16 +136,20 @@ class JSDOMEnvironment {
       Object.defineProperty(this.global, 'document', { value: null });
       this.global.close();
     }
-
+    // $FlowFixMe - type issue
     this.dom = undefined;
+    // $FlowFixMe - type issue
     this.global = undefined;
+    // $FlowFixMe - type issue
     this.fakeTimers = undefined;
+    // $FlowFixMe - type issue
     this.moduleMocker = undefined;
 
     return Promise.resolve();
   }
 
-  runScript(script) {
+  runScript(script /*:any */) {
+    // $FlowFixMe - type issue
     if (this.dom) {
       return this.dom.runVMScript(script);
     }
