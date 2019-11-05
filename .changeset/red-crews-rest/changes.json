@@ -1,0 +1,6 @@
+{
+  "releases": [
+    { "name": "@atlaskit/atlassian-notifications", "type": "patch" }
+  ],
+  "dependents": []
+}
