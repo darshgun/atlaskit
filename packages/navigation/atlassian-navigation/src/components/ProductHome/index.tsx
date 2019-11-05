@@ -50,12 +50,16 @@ export const ProductHome = ({
 };
 
 export const CustomProductHome = (props: CustomProductHomeProps) => {
-  const { iconAlt, iconUrl, logoAlt, logoUrl, onClick } = props;
+  const { iconAlt, iconUrl, logoAlt, logoUrl, onClick, siteTitle } = props;
+  const theme = useTheme();
 
   return (
-    <div css={containerCSS} onClick={onClick}>
-      <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
-      <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
-    </div>
+    <Fragment>
+      <div css={containerCSS} onClick={onClick}>
+        <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
+        <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
+      </div>
+      {siteTitle && <div css={siteTitleCSS(theme)}>{siteTitle}</div>}
+    </Fragment>
   );
 };

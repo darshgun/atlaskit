@@ -20,11 +20,15 @@ import atlassianIconUrl from './assets/atlassian-icon.png';
 import atlassianLogoUrl from './assets/atlassian-logo.png';
 
 export const BitbucketProductHome = () => (
-  <ProductHome icon={BitbucketIcon} logo={BitbucketLogo} />
+  <ProductHome siteTitle="Extranet" icon={BitbucketIcon} logo={BitbucketLogo} />
 );
 
 export const ConfluenceProductHome = () => (
-  <ProductHome icon={ConfluenceIcon} logo={ConfluenceLogo} />
+  <ProductHome
+    siteTitle="Extranet"
+    icon={ConfluenceIcon}
+    logo={ConfluenceLogo}
+  />
 );
 
 export const JiraProductHome = () => (
@@ -32,21 +36,30 @@ export const JiraProductHome = () => (
 );
 
 export const JiraServiceDeskProductHome = () => (
-  <ProductHome icon={JiraServiceDeskIcon} logo={JiraServiceDeskLogo} />
+  <ProductHome
+    siteTitle="Extranet"
+    icon={JiraServiceDeskIcon}
+    logo={JiraServiceDeskLogo}
+  />
 );
 
 export const JiraSoftwareProductHome = () => (
-  <ProductHome icon={JiraSoftwareIcon} logo={JiraSoftwareLogo} />
+  <ProductHome
+    siteTitle="Extranet"
+    icon={JiraSoftwareIcon}
+    logo={JiraSoftwareLogo}
+  />
 );
 
 export const OpsGenieProductHome = () => (
-  <ProductHome icon={OpsGenieIcon} logo={OpsGenieLogo} />
+  <ProductHome siteTitle="Extranet" icon={OpsGenieIcon} logo={OpsGenieLogo} />
 );
 
 export const DefaultProductHome = JiraProductHome;
 
 export const DefaultCustomProductHome = () => (
   <CustomProductHome
+    siteTitle="Extranet"
     iconAlt="Custom icon"
     iconUrl={atlassianIconUrl}
     logoAlt="Custom logo"
