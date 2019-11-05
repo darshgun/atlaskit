@@ -48,7 +48,6 @@ describe('Renderer - React/Nodes/TaskItem', () => {
           attributes: {
             localId: 'task-1',
             objectAri: '',
-            containerAri: '',
             userContext: 'document',
           },
         }),
@@ -72,7 +71,6 @@ describe('Renderer - React/Nodes/TaskItem', () => {
           attributes: {
             localId: 'task-1',
             objectAri: '',
-            containerAri: '',
             userContext: 'document',
           },
         }),

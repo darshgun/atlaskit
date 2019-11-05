@@ -21,11 +21,11 @@ import {
   mapResponseToBlob,
   MediaFileArtifacts,
   getArtifactUrl,
-  // checkWebpSupport,
 } from '..';
+import { FILE_CACHE_MAX_AGE } from '../constants';
 
 const defaultImageOptions: MediaStoreGetFileImageParams = {
-  'max-age': 3600,
+  'max-age': FILE_CACHE_MAX_AGE,
   allowAnimated: true,
   mode: 'crop',
 };
@@ -263,7 +263,11 @@ export class MediaStore {
     const auth = await this.config.authProvider({ collectionName });
 
     return createUrl(`${auth.baseUrl}/file/${id}/binary`, {
-      params: { dl: true, collection: collectionName },
+      params: {
+        dl: true,
+        collection: collectionName,
+        'max-age': FILE_CACHE_MAX_AGE,
+      },
       auth,
     });
   };
@@ -281,7 +285,7 @@ export class MediaStore {
     const auth = await this.config.authProvider({ collectionName });
 
     return createUrl(`${auth.baseUrl}${artifactUrl}`, {
-      params: { collection: collectionName },
+      params: { collection: collectionName, 'max-age': FILE_CACHE_MAX_AGE },
       auth,
     });
   };

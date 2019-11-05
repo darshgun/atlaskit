@@ -19,6 +19,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import { B100 } from '@atlaskit/theme/colors';
+import { gridSize } from '@atlaskit/theme/constants';
 import { Appearance, Spacing, SelectProps } from '../types';
 import {
   name as packageName,
@@ -91,6 +92,11 @@ export interface Props extends WithAnalyticsEventsProps {
   /** Placeholder text displayed in input */
   placeholder?: string;
   locale: string;
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+   *  - `{testId}--container` wrapping element of time-picker
+   **/
+  testId?: string;
 }
 
 interface State {
@@ -289,7 +295,11 @@ class TimePicker extends React.Component<Props, State> {
       name,
       selectProps,
       spacing,
+      testId,
     } = this.props;
+    const ICON_PADDING = 2;
+    const BORDER_WIDTH = 2;
+
     const { value = '', isOpen } = this.getSafeState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
@@ -312,7 +322,11 @@ class TimePicker extends React.Component<Props, State> {
     };
 
     return (
-      <div {...innerProps} ref={this.setContainerRef}>
+      <div
+        {...innerProps}
+        ref={this.setContainerRef}
+        data-testid={testId && `${testId}--container`}
+      >
         <input name={name} type="hidden" value={value} />
         <SelectComponent
           autoFocus={autoFocus}
@@ -351,12 +365,18 @@ class TimePicker extends React.Component<Props, State> {
                   : 'auto',
               },
             }),
+            indicatorsContainer: (base: CSSObject): CSSObject => ({
+              ...base,
+              paddingLeft: icon ? ICON_PADDING : 0,
+              paddingRight: icon ? gridSize() - BORDER_WIDTH : 0,
+            }),
           })}
           value={labelAndValue}
           spacing={spacing}
           dropdownIndicatorIcon={icon}
           fixedLayerRef={this.containerRef}
           validationState={validationState}
+          testId={testId}
           {...otherSelectProps}
         />
       </div>

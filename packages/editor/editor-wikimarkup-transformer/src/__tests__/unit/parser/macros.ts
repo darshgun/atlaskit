@@ -66,6 +66,15 @@ describe('JIRA wiki markup - Macros', () => {
 this is a text as well{panel}`,
     ],
     [
+      'should lift attachment node when it is inside macro',
+      `{panel}this is a text
+[^attachment-file11.txt] [^attachment-file12.txt] [^attachment-file13.txt]
+
+[^attachment-file21.txt] [^attachment-file22.txt] [^attachment-file23.txt]
+[^attachment-file31.txt] [^attachment-file32.txt] [^attachment-file33.txt]text[^attachment-file41.txt] [^attachment-file42.txt] [^attachment-file43.txt]
+this is a text as well{panel}`,
+    ],
+    [
       'should render rule node if it is on the top level',
       `this is a text
 ----
@@ -102,6 +111,15 @@ this is a text as well`,
 {quote}`,
     ],
     [
+      'should lift attachment node when it is inside quote',
+      `{quote}this is text inside a quote
+[^attachment-file11.txt] [^attachment-file12.txt] [^attachment-file13.txt]
+
+[^attachment-file21.txt] [^attachment-file22.txt] [^attachment-file23.txt]
+[^attachment-file31.txt] [^attachment-file32.txt] [^attachment-file33.txt]text[^attachment-file41.txt] [^attachment-file42.txt] [^attachment-file43.txt]
+this is text at end of a quote{quote}`,
+    ],
+    [
       'should render {anchor} as empty string',
       `You cannot see this {anchor:here}`,
     ],
@@ -130,6 +148,24 @@ red
       `{panEl:bgColor=red}
 red
 {panEl}`,
+    ],
+    [
+      '[CS-1470] noformat macro converts to code node with no language',
+      `{noformat}preformatted
+text
+with
+linebreaks{noformat}`,
+    ],
+    [
+      '[CS-1470] code macro converts to code node with xml language',
+      `{code:xml}<test attr='value'><nested/></test>{code}`,
+    ],
+    [
+      '[CS-1470] code macro converts to code node with java language',
+      `{code:java}
+      public static main(String test) {
+        System.out.print("test");
+     }{code}`,
     ],
   ];
 

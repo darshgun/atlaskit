@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher-vanilla
 
+## 2.1.5
+
+### Patch Changes
+
+- [patch][ce21161796](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce21161796):
+
+  Fix some types that were being transpiled to 'any'
+
+## 2.1.4
+
+### Patch Changes
+
+- [patch][6bc87c7501](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bc87c7501):
+
+  Split mockEndpoints into a separate package
+
 ## 2.1.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 import { Observable } from 'rxjs/Observable';
-import { AuthProvider, FileState } from '@atlaskit/media-core';
+import { AuthProvider } from '@atlaskit/media-core';
 import {
   UploadableFileUpfrontIds,
   uploadFile,
@@ -14,6 +14,7 @@ import {
   UploadingFileState,
   MediaClient,
   getFileStreamsCache,
+  FileState,
 } from '../..';
 
 const getOrInsertSpy = jest.spyOn(getFileStreamsCache(), 'getOrInsert');
@@ -259,7 +260,7 @@ describe('MediaClient', () => {
       controller = new UploadController();
     });
 
-    it('should call media-store uploadFile with given arguments', () => {
+    it('should call media-client uploadFile with given arguments', () => {
       const mediaClient = createMediaClient();
       const file: UploadableFile = {} as any;
       uploadFileMock.mockImplementation((_, __, ___, callbacks) => {

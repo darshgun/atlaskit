@@ -156,7 +156,9 @@ export default function<P, D>(
       this.fireOperationalEvent({
         action: 'failed',
         actionSubjectId: name,
-        reason: errorToReason(error),
+        attributes: {
+          reason: errorToReason(error),
+        },
       });
     }
 

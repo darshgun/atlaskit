@@ -3,14 +3,15 @@ import HelpArticle from '@atlaskit/help-article';
 
 import { LoadingRectangle } from '../styled';
 
-type HelpArticleType = typeof HelpArticle.defaultProps;
-
 export interface Props {
   isLoading?: boolean;
+  title?: string;
+  body?: string;
+  titleLinkUrl?: string;
 }
 
-const ArticleContent = (props: Props & HelpArticleType) => {
-  const { isLoading, title, body, titleLinkUrl } = props;
+const ArticleContent = (props: Props) => {
+  const { isLoading = false, title = '', body = '', titleLinkUrl = '' } = props;
 
   return isLoading ? (
     <>
@@ -25,10 +26,6 @@ const ArticleContent = (props: Props & HelpArticleType) => {
   ) : (
     <HelpArticle title={title} body={body} titleLinkUrl={titleLinkUrl} />
   );
-};
-
-ArticleContent.defaultProps = {
-  isLoading: false,
 };
 
 export default ArticleContent;

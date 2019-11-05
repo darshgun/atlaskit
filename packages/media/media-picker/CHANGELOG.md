@@ -1,12 +1,199 @@
 # @atlaskit/media-picker
 
+## 49.0.0
+
+### Patch Changes
+
+- [patch][46718eff4c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46718eff4c):
+
+  All components emit upload analytics events now, not only popup- [patch][e5945305be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5945305be):
+
+  adding user timing api to get operations spent time
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-viewer@44.0.1
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-editor@37.0.1
+  - @atlaskit/media-core@31.0.0
+
+## 48.0.0
+
+### Major Changes
+
+- [major][c3e65f1b9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e65f1b9e):
+
+  ## Breaking change
+
+  > remove deprecated "context" property from media components in favor of "mediaClientConfig"
+
+  This affects all public media UI components:
+
+  - Card
+  - Filmstrip
+  - SmartMediaEditor
+  - MediaImage
+  - Dropzone
+  - Clipboard
+  - Browser
+  - MediaPicker
+  - MediaViewer
+
+  **Before**:
+
+  ```
+  import {ContextFactory} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+
+  const context = ContextFactory.creat({
+    authProvider: () => Promise.resolve({})
+  })
+
+  const mediaPicker = MediaPicker(context);
+
+  <Card context={context}>
+  <SmartMediaEditor context={context}>
+  <Filmstrip context={context}>
+  <MediaImage context={context}>
+  <Dropzone context={context}>
+  <Clipboard context={context}>
+  <Browser context={context}>
+  <MediaViewer context={context}>
+  ```
+
+  **Now**:
+
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+  ```
+
+const mediaClientConfig: MediaClientConfig = {
+authProvider: () => Promise.resolve({})
+}
+
+const mediaPicker = MediaPicker(mediaClientConfig);
+
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
+
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+
+**FABDODGEM-13 Editor Damask Release** - [Internal post](http://go.atlassian.com/damask-release)
+
+**BREAKING CHANGES**
+
+- **Media:** Removed deprecated "context" property from media components in favor of "mediaClientConfig". This affects all public media UI components.
+  - https://product-fabric.atlassian.net/browse/MS-2038
+- **Tasks & Decisions:** Removed containerAri for task-decisions components.
+  - https://product-fabric.atlassian.net/browse/ED-7631
+- **Renderer:** Adapts to task-decision changes.
+- **Editor Mobile Bridge:** Adapts to task-decision changes.
+- **Util Data Test:** Adapts to task-decision changes.
+
+---
+
+**Affected Editor Components:**
+
+tables, media, mobile, emoji, tasks & decisions, analytics
+
+**Editor**
+
+- Support nested actions in stage-0 schema; Change DOM representation of actions
+  - https://product-fabric.atlassian.net/browse/ED-7674
+- Updated i18n translations
+  - https://product-fabric.atlassian.net/browse/ED-7750
+- Improved analytics & crash reporting (via a new error boundary)
+  - https://product-fabric.atlassian.net/browse/ED-7766
+  - https://product-fabric.atlassian.net/browse/ED-7806
+- Improvements to heading anchor links.
+  - https://product-fabric.atlassian.net/browse/ED-7849
+  - https://product-fabric.atlassian.net/browse/ED-7860
+- Copy/Paste improvements
+  - https://product-fabric.atlassian.net/browse/ED-7840
+  - https://product-fabric.atlassian.net/browse/ED-7849
+- Fixes for the selection state of Smart links.
+  - https://product-fabric.atlassian.net/browse/ED-7602?src=confmacro
+- Improvements for table resizing & column creation.
+  - https://product-fabric.atlassian.net/browse/ED-7698
+  - https://product-fabric.atlassian.net/browse/ED-7319
+  - https://product-fabric.atlassian.net/browse/ED-7799
+
+**Mobile**
+
+- GASv3 Analytics Events are now relayed from the web to the native context, ready for dispatching.
+  - https://product-fabric.atlassian.net/browse/FM-2502
+- Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
+  - https://product-fabric.atlassian.net/browse/FM-2370
+
+**Media**
+
+- Improved analytics
+  - https://product-fabric.atlassian.net/browse/MS-2036
+  - https://product-fabric.atlassian.net/browse/MS-2145
+  - https://product-fabric.atlassian.net/browse/MS-2416
+  - https://product-fabric.atlassian.net/browse/MS-2487
+- Added shouldOpenMediaViewer property to renderer
+  - https://product-fabric.atlassian.net/browse/MS-2393
+- Implemented analytics for file copy
+  - https://product-fabric.atlassian.net/browse/MS-2036
+- New `media-viewed` event dispatched when media is interacted with via the media card or viewer.
+  - https://product-fabric.atlassian.net/browse/MS-2284
+- Support for `alt` text attribute on media image elements.
+  - https://product-fabric.atlassian.net/browse/ED-7776
+
+**i18n-tools**
+
+Bumped dependencies.
+
+### Minor Changes
+
+- [minor][7015d48ba4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7015d48ba4):
+
+MS-2145: added GASv3 events for media browser & clipboard
+
+### Patch Changes
+
+- [patch][1c6d97bbb1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1c6d97bbb1):
+
+Fix media-picker dialog min-height when downsizing- [patch][ee3d05ef82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee3d05ef82):
+
+Adding provider for selected items in media-picker when inserting files
+
+- Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
+- @atlaskit/media-card@66.0.0
+- @atlaskit/media-core@30.0.17
+- @atlaskit/media-editor@37.0.0
+- @atlaskit/media-store@12.0.14
+- @atlaskit/media-test-helpers@25.2.0
+- @atlaskit/media-viewer@44.0.0
+- @atlaskit/media-client@3.0.0
+
 ## 47.1.7
 
 ### Patch Changes
 
 - [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
 
-  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
 
 ## 47.1.6
 
@@ -14,7 +201,7 @@
 
 - [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
 
-  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+Updated version of analytics-next to fix potential incompatibilities with TS 3.6
 
 ## 47.1.5
 
@@ -22,74 +209,75 @@
 
 - [patch][65ada7f318](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65ada7f318):
 
-  **FABDODGEM-12 Editor Cashmere Release**
+**FABDODGEM-12 Editor Cashmere Release**
 
-  - [Internal post](https://go.atlassian.com/cashmere-release)
+- [Internal post](http://go.atlassian.com/cashmere-release)
 
-  **Affected editor components:**
+**Affected editor components:**
 
-  tables, media, mobile, text color, emoji, copy/paste, analytics
+tables, media, mobile, text color, emoji, copy/paste, analytics
 
-  **Performance**
+**Performance**
 
-  - Async import for code blocks and task items on renderer
-    - https://product-fabric.atlassian.net/browse/ED-7155
+- Async import for code blocks and task items on renderer
+  - https://product-fabric.atlassian.net/browse/ED-7155
 
-  **Table**
+**Table**
 
-  - Add support to sort tables that contains smart links
-    - https://product-fabric.atlassian.net/browse/ED-7449
-  - Scale table when changing to full width mode
-    - https://product-fabric.atlassian.net/browse/ED-7724
+- Add support to sort tables that contains smart links
+  - https://product-fabric.atlassian.net/browse/ED-7449
+- Scale table when changing to full width mode
+  - https://product-fabric.atlassian.net/browse/ED-7724
 
-  **Text color**
+**Text color**
 
-  - Update text color toolbar with right color when text is inside a list, panel, etc.
-    - https://product-fabric.atlassian.net/browse/FM-1752
+- Update text color toolbar with right color when text is inside a list, panel, etc.
+  - https://product-fabric.atlassian.net/browse/FM-1752
 
 **Mobile** - Implement undo/redo interface on Hybrid Editor - https://product-fabric.atlassian.net/browse/FM-2393
 
 **Copy and Paste**
 
-    - Support copy & paste when missing context-id attr
-      - https://product-fabric.atlassian.net/browse/MS-2344
-    - Right click + copy image fails the second time that is pasted
-      - https://product-fabric.atlassian.net/browse/MS-2324
-    - Copying a never touched image for the first time from editor fails to paste
-      - https://product-fabric.atlassian.net/browse/MS-2338
-    - Implement analytics when a file is copied
-      - https://product-fabric.atlassian.net/browse/MS-2036
+- Support copy & paste when missing context-id attr
+  - https://product-fabric.atlassian.net/browse/MS-2344
+- Right click + copy image fails the second time that is pasted
+  - https://product-fabric.atlassian.net/browse/MS-2324
+- Copying a never touched image for the first time from editor fails to paste
+  - https://product-fabric.atlassian.net/browse/MS-2338
+- Implement analytics when a file is copied
+  - https://product-fabric.atlassian.net/browse/MS-2036
 
 **Media**
 
 - Add analytics events and error reporting [NEW BIG FEATURE]
-  - https://product-fabric.atlassian.net/browse/MS-2275
-  - https://product-fabric.atlassian.net/browse/MS-2329
-  - https://product-fabric.atlassian.net/browse/MS-2330
-  - https://product-fabric.atlassian.net/browse/MS-2331
-  - https://product-fabric.atlassian.net/browse/MS-2332
-  - https://product-fabric.atlassian.net/browse/MS-2390
+- https://product-fabric.atlassian.net/browse/MS-2275
+- https://product-fabric.atlassian.net/browse/MS-2329
+- https://product-fabric.atlassian.net/browse/MS-2330
+- https://product-fabric.atlassian.net/browse/MS-2331
+- https://product-fabric.atlassian.net/browse/MS-2332
+- https://product-fabric.atlassian.net/browse/MS-2390
 - Fixed issue where we can’t insert same file from MediaPicker twice
-  - https://product-fabric.atlassian.net/browse/MS-2080
+- https://product-fabric.atlassian.net/browse/MS-2080
 - Disable upload of external files to media
-  - https://product-fabric.atlassian.net/browse/MS-2372
+- https://product-fabric.atlassian.net/browse/MS-2372
 
 **Notable Bug Fixes**
 
-    - Implement consistent behaviour for rule and mediaSingle on insertion
-      - Feature Flag:
-        - allowNewInsertionBehaviour - [default: true]
-      - https://product-fabric.atlassian.net/browse/ED-7503
-    - Fixed bug where we were showing table controls on mobile.
-      - https://product-fabric.atlassian.net/browse/ED-7690
-    - Fixed bug where editor crashes after unmounting react component.
-      - https://product-fabric.atlassian.net/browse/ED-7318
-    - Fixed bug where custom emojis are not been showed on the editor
-      - https://product-fabric.atlassian.net/browse/ED-7726
+- Implement consistent behaviour for rule and mediaSingle on insertion
+  - Feature Flag:
+    - allowNewInsertionBehaviour - [default: true]
+  - https://product-fabric.atlassian.net/browse/ED-7503
+- Fixed bug where we were showing table controls on mobile.
+  - https://product-fabric.atlassian.net/browse/ED-7690
+- Fixed bug where editor crashes after unmounting react component.
+  - https://product-fabric.atlassian.net/browse/ED-7318
+- Fixed bug where custom emojis are not been showed on the editor
+
+  - https://product-fabric.atlassian.net/browse/ED-7726
 
 - [patch][3addfe526a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3addfe526a):
 
-  Adding provider for selected items in media-picker when inserting files
+Adding provider for selected items in media-picker when inserting files
 
 ## 47.1.4
 
@@ -97,11 +285,11 @@
 
 - [patch][b3d01a57df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3d01a57df):
 
-  Download max res image and prioritise existing preview over representations- [patch][c1eba314f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1eba314f4):
+Download max res image and prioritise existing preview over representations- [patch][c1eba314f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1eba314f4):
 
-  MS-2080 Fix inserting same file twice by removing observable piping as it makes a client's file observable emit new tenant's observable's events.- [patch][d886971e8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d886971e8a):
+MS-2080 Fix inserting same file twice by removing observable piping as it makes a client's file observable emit new tenant's observable's events.- [patch][d886971e8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d886971e8a):
 
-  Move objectToQueryString to media-client and use it from there
+Move objectToQueryString to media-client and use it from there
 
 ## 47.1.3
 
@@ -109,19 +297,19 @@
 
 - [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
 
-  Update all the theme imports in media to use multi entry points
+Update all the theme imports in media to use multi entry points
 
 ## 47.1.2
 
 - Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
-  - @atlaskit/media-client@2.1.2
-  - @atlaskit/media-core@30.0.14
-  - @atlaskit/media-editor@36.3.1
-  - @atlaskit/media-store@12.0.12
-  - @atlaskit/media-test-helpers@25.1.1
-  - @atlaskit/media-viewer@43.4.1
-  - @atlaskit/media-card@65.0.0
-  - @atlaskit/analytics-listeners@6.2.0
+- @atlaskit/media-client@2.1.2
+- @atlaskit/media-core@30.0.14
+- @atlaskit/media-editor@36.3.1
+- @atlaskit/media-store@12.0.12
+- @atlaskit/media-test-helpers@25.1.1
+- @atlaskit/media-viewer@43.4.1
+- @atlaskit/media-card@65.0.0
+- @atlaskit/analytics-listeners@6.2.0
 
 ## 47.1.1
 
@@ -129,13 +317,13 @@
 
 - [patch][aa23bf2bc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aa23bf2bc5):
 
-  Emit processed state when file gets copied
+Emit processed state when file gets copied
 
-  Fixes CEMS-244:
+Fixes CEMS-244:
 
-  Currently some properties are missing after a file get’s copied (inserted from MediaPicker) and when the user tries to see on MediaViewer, the preview fails to load.
+Currently some properties are missing after a file get’s copied (inserted from MediaPicker) and when the user tries to see on MediaViewer, the preview fails to load.
 
-  It happens for files that require artifacts, like documents or videos
+It happens for files that require artifacts, like documents or videos
 
 ## 47.1.0
 
@@ -143,10 +331,10 @@
 
 - [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
 
-  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
 
-  More information about the deprecation of lifecycles methods can be found here:
-  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+More information about the deprecation of lifecycles methods can be found here:
+https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
 
 ## 47.0.5
 
@@ -154,7 +342,7 @@
 
 - [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
 
-  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
 
 ## 47.0.4
 
@@ -162,7 +350,7 @@
 
 - [patch][0d7d459f1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0d7d459f1a):
 
-  Fixes type errors which were incompatible with TS 3.6
+Fixes type errors which were incompatible with TS 3.6
 
 ## 47.0.3
 
@@ -170,18 +358,18 @@
 
 - [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
 
-  Upgraded Typescript to 3.3.x
+Upgraded Typescript to 3.3.x
 
 ## 47.0.2
 
 - Updated dependencies [3624730f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3624730f44):
-  - @atlaskit/media-client@2.0.2
-  - @atlaskit/media-core@30.0.11
-  - @atlaskit/media-editor@36.2.10
-  - @atlaskit/media-store@12.0.9
-  - @atlaskit/media-test-helpers@25.0.2
-  - @atlaskit/media-viewer@43.3.2
-  - @atlaskit/media-card@64.0.0
+- @atlaskit/media-client@2.0.2
+- @atlaskit/media-core@30.0.11
+- @atlaskit/media-editor@36.2.10
+- @atlaskit/media-store@12.0.9
+- @atlaskit/media-test-helpers@25.0.2
+- @atlaskit/media-viewer@43.3.2
+- @atlaskit/media-card@64.0.0
 
 ## 47.0.1
 
@@ -189,7 +377,7 @@
 
 - [patch][adeb756c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adeb756c78):
 
-  Changing async import to check for AnalyticsErrorBoundary integration
+Changing async import to check for AnalyticsErrorBoundary integration
 
 ## 47.0.0
 
@@ -197,7 +385,7 @@
 
 - [major][6879d7d01e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6879d7d01e):
 
-  Removed `public` property from Media Picker's `upload-end` event. It has not been used by anything anyway and it's a legacy from the times where we didn't have upfront id so is now redundant.
+Removed `public` property from Media Picker's `upload-end` event. It has not been used by anything anyway and it's a legacy from the times where we didn't have upfront id so is now redundant.
 
 ## 46.0.10
 
@@ -205,38 +393,38 @@
 
 - [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
 
-  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
 
-  **Breaking changes**
+**Breaking changes**
 
-  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
-  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+- `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+- `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
 
-  **Breaking changes to TypeScript annotations**
+**Breaking changes to TypeScript annotations**
 
-  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
-  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
-  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
-  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
-  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
-  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
-  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
-  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
-  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
-  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
-  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+- `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+- `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+- Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+- Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+- Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+- Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+- Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+- Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+- Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+- Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+- Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
 
 ## 46.0.9
 
 - Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
-  - @atlaskit/media-card@63.3.11
-  - @atlaskit/media-client@2.0.1
-  - @atlaskit/media-core@30.0.10
-  - @atlaskit/media-editor@36.2.9
-  - @atlaskit/media-store@12.0.8
-  - @atlaskit/media-viewer@43.2.10
-  - @atlaskit/media-ui@11.5.2
-  - @atlaskit/media-test-helpers@25.0.0
+- @atlaskit/media-card@63.3.11
+- @atlaskit/media-client@2.0.1
+- @atlaskit/media-core@30.0.10
+- @atlaskit/media-editor@36.2.9
+- @atlaskit/media-store@12.0.8
+- @atlaskit/media-viewer@43.2.10
+- @atlaskit/media-ui@11.5.2
+- @atlaskit/media-test-helpers@25.0.0
 
 ## 46.0.8
 
@@ -244,7 +432,7 @@
 
 - [patch][1439241943](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1439241943):
 
-  Adding error boundary in media picker dropzone
+Adding error boundary in media picker dropzone
 
 ## 46.0.7
 
@@ -252,7 +440,7 @@
 
 - [patch][d3ccc2e47f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d3ccc2e47f):
 
-  Fix media picker's dropzone analytics event by including the necessary eventType key
+Fix media picker's dropzone analytics event by including the necessary eventType key
 
 ## 46.0.6
 
@@ -260,7 +448,7 @@
 
 - [patch][15290ac8ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15290ac8ad):
 
-  Fix issue where popup media-picker doesn't throw upload-end event
+Fix issue where popup media-picker doesn't throw upload-end event
 
 ## 46.0.5
 
@@ -268,7 +456,7 @@
 
 - [patch][7c762529af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c762529af):
 
-  Move @types/bricks.js from dependencies to devDependencies.
+Move @types/bricks.js from dependencies to devDependencies.
 
 ## 46.0.4
 
@@ -276,18 +464,18 @@
 
 - [patch][116236c249](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/116236c249):
 
-  Instrument analytics for media-picker's dropzone draggedInto, draggedOut and droppedInto actions
+Instrument analytics for media-picker's dropzone draggedInto, draggedOut and droppedInto actions
 
 ## 46.0.3
 
 - Updated dependencies [ee804f3eeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee804f3eeb):
-  - @atlaskit/media-card@63.3.9
-  - @atlaskit/media-core@30.0.9
-  - @atlaskit/media-editor@36.2.7
-  - @atlaskit/media-store@12.0.6
-  - @atlaskit/media-test-helpers@24.3.5
-  - @atlaskit/media-viewer@43.2.8
-  - @atlaskit/media-client@2.0.0
+- @atlaskit/media-card@63.3.9
+- @atlaskit/media-core@30.0.9
+- @atlaskit/media-editor@36.2.7
+- @atlaskit/media-store@12.0.6
+- @atlaskit/media-test-helpers@24.3.5
+- @atlaskit/media-viewer@43.2.8
+- @atlaskit/media-client@2.0.0
 
 ## 46.0.2
 
@@ -295,7 +483,7 @@
 
 - [patch][da814b8ebc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da814b8ebc):
 
-  Bump media-picker to fix the master bbranch where bitbucket and npm are out of sync.
+Bump media-picker to fix the master bbranch where bitbucket and npm are out of sync.
 
 ## 46.0.1
 
@@ -303,7 +491,7 @@
 
 - [patch][6744fe7753](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6744fe7753):
 
-  Adding dispatch for failure errors in media picker
+Adding dispatch for failure errors in media picker
 
 ## 46.0.0
 
@@ -311,7 +499,7 @@
 
 - [major][4e8f6f609f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e8f6f609f):
 
-  Remove three fields from MediaFile interface: upfrontId, userUpfrontId and userOccurrenceKey.
+Remove three fields from MediaFile interface: upfrontId, userUpfrontId and userOccurrenceKey.
 
 ## 45.0.9
 
@@ -319,7 +507,7 @@
 
 - [patch][688f2957ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/688f2957ca):
 
-  Fixes various TypeScript errors which were previously failing silently
+Fixes various TypeScript errors which were previously failing silently
 
 ## 45.0.8
 
@@ -327,7 +515,7 @@
 
 - [patch][a58828c9e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a58828c9e2):
 
-  Fix analytics for insert files button and annotate file button
+Fix analytics for insert files button and annotate file button
 
 ## 45.0.7
 
@@ -335,13 +523,13 @@
 
 - [patch][e29ffdb057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e29ffdb057):
 
-  update docs to latest component state (React + Popup), improve information
+update docs to latest component state (React + Popup), improve information
 
 ## 45.0.6
 
 - Updated dependencies [7e9d653278](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e9d653278):
-  - @atlaskit/media-card@63.3.7
-  - @atlaskit/toggle@8.0.0
+- @atlaskit/media-card@63.3.7
+- @atlaskit/toggle@8.0.0
 
 ## 45.0.5
 
@@ -349,7 +537,7 @@
 
 - [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
 
-  Consume analytics-next ts type definitions as an ambient declaration.
+Consume analytics-next ts type definitions as an ambient declaration.
 
 ## 45.0.4
 
@@ -357,7 +545,7 @@
 
 - [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
 
-  bugfix, fixes missing version.json file
+bugfix, fixes missing version.json file
 
 ## 45.0.3
 
@@ -365,14 +553,14 @@
 
 - [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
 
-  In this PR, we are:
+In this PR, we are:
 
-  - Re-introducing dist build folders
-  - Adding back cjs
-  - Replacing es5 by cjs and es2015 by esm
-  - Creating folders at the root for entry-points
-  - Removing the generation of the entry-points at the root
-    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+- Re-introducing dist build folders
+- Adding back cjs
+- Replacing es5 by cjs and es2015 by esm
+- Creating folders at the root for entry-points
+- Removing the generation of the entry-points at the root
+  Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
 
 ## 45.0.2
 
@@ -380,17 +568,17 @@
 
 - [patch][6a072313bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a072313bf):
 
-  Fixing analytics for upload handlers in media-picker- [patch][50d3fb94a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d3fb94a6):
+Fixing analytics for upload handlers in media-picker- [patch][50d3fb94a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d3fb94a6):
 
-  Fixing analytics for upload handlers in @atlaskit/media-picker
+Fixing analytics for upload handlers in @atlaskit/media-picker
 
 ## 45.0.1
 
 - Updated dependencies [790e66bece](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/790e66bece):
-  - @atlaskit/button@13.0.11
-  - @atlaskit/modal-dialog@10.0.10
-  - @atlaskit/media-test-helpers@24.3.1
-  - @atlaskit/select@10.0.0
+- @atlaskit/button@13.0.11
+- @atlaskit/modal-dialog@10.0.10
+- @atlaskit/media-test-helpers@24.3.1
+- @atlaskit/select@10.0.0
 
 ## 45.0.0
 
@@ -398,104 +586,114 @@
 
 - [major][e754b5f85e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e754b5f85e):
 
-  Media Picker Dropone component is now migrated to React.
+Media Picker Dropone component is now migrated to React.
 
-  - Previous vanilla js API:
+- Previous vanilla js API:
 
-  ```
-  // instantiation
-  const dropzone = await new MediaPicker('dropzone', context, pickerConfig).init();
+```
 
-  // subscribe to upload events
-  dropzone.on('uploads-start', onUploadsStart);
-  dropzone.on('upload-preview-update', onUploadPreviewUpdate);
-  dropzone.on('upload-status-update', onUploadStatusUpdate);
-  dropzone.on('upload-processing', onUploadProcessing);
-  dropzone.on('upload-end', onUploadEnd);
-  dropzone.on('upload-error', onUploadError);
-  ```
+// instantiation
+const dropzone = await new MediaPicker('dropzone', context, pickerConfig).init();
 
+// subscribe to upload events
+dropzone.on('uploads-start', onUploadsStart);
+dropzone.on('upload-preview-update', onUploadPreviewUpdate);
+dropzone.on('upload-status-update', onUploadStatusUpdate);
+dropzone.on('upload-processing', onUploadProcessing);
+dropzone.on('upload-end', onUploadEnd);
+dropzone.on('upload-error', onUploadError);
 
-    // activate/deactivate dropone
-    dropzone.activate();
-    dropzone.deactivate();
+```
 
-    // cancel ongoing upload
-    dropzone.cancel(uploadId);
+// activate/deactivate dropone
+dropzone.activate();
+dropzone.deactivate();
 
-    // when we want to dispose the component
-    dropzone.teardown();
-    ```
+// cancel ongoing upload
+dropzone.cancel(uploadId);
 
-    - New React API:
+// when we want to dispose the component
+dropzone.teardown();
 
-    ```
-    class DropzoneConsumer extends React.Component {
-      render() {
-        return (
-          <Dropzone
-            config={config}
-            context={context}
-            onProcessing={onProcessing}
-            onError={onError}
-            onPreviewUpdate={onPreviewUpdate}
-          />
-        )
-      }
-    }
-    ```
+```
 
-    Notes on new API:
+- New React API:
 
-    - old `MediaPicker` constructor does not recieve `pickerType` as first parameter anymore, since the only component left to migrate to react is `popup`.
-    Meaning that if before we were doing:
-     ```
-     new MediaPicker('popup', context, config)
-     ```
-    now we will need to just do
-     ```
-     new MediaPicker(context, config)
-     ```
+```
 
-    - No need to explicitly teardown the component. Unmounting the component will do the work
+class DropzoneConsumer extends React.Component {
+render() {
+return (
+<Dropzone
+          config={config}
+          context={context}
+          onProcessing={onProcessing}
+          onError={onError}
+          onPreviewUpdate={onPreviewUpdate}
+        />
+)
+}
+}
 
-    - `onCancelFn` is a workaround to cancel an ongoing upload. Refer to its type definitions for more info. Before we were saving a ref and calling `ref.cancel()`.
+```
 
-    Basically if we render `Dropzone` component in isolation (meaning, not inside another react component), we will need to do something like:
+Notes on new API:
 
-    ```
-    const saveCancelUploadFn = (cancel) => this.cancelUpload = cancel;
+- old `MediaPicker` constructor does not recieve `pickerType` as first parameter anymore, since the only component left to migrate to react is `popup`.
+Meaning that if before we were doing:
+```
 
-    ...
+new MediaPicker('popup', context, config)
 
-    <Dropzone
-      onCancelFn={(cancel) => saveCancelUploadFn(cancel)}
-      config={config}
-      context={context}
-      onProcessing={onProcessing}
-      onError={onError}
-      onPreviewUpdate={onPreviewUpdate}
-    />
-    ```
+```
+now we will need to just do
+```
 
-    At a later point we will just need to call `this.cancelUpload` function in that example, in order to cancel an ongoing upload if needed.
+new MediaPicker(context, config)
+
+```
+
+- No need to explicitly teardown the component. Unmounting the component will do the work
+
+- `onCancelFn` is a workaround to cancel an ongoing upload. Refer to its type definitions for more info. Before we were saving a ref and calling `ref.cancel()`.
+
+Basically if we render `Dropzone` component in isolation (meaning, not inside another react component), we will need to do something like:
+
+```
+
+const saveCancelUploadFn = (cancel) => this.cancelUpload = cancel;
+
+...
+
+<Dropzone
+onCancelFn={(cancel) => saveCancelUploadFn(cancel)}
+config={config}
+context={context}
+onProcessing={onProcessing}
+onError={onError}
+onPreviewUpdate={onPreviewUpdate}
+/>
+
+```
+
+At a later point we will just need to call `this.cancelUpload` function in that example, in order to cancel an ongoing upload if needed.
 
 ## 44.0.1
 
 - Updated dependencies [06326ef3f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06326ef3f7):
-  - @atlaskit/docs@8.1.3
-  - @atlaskit/button@13.0.9
-  - @atlaskit/dropdown-menu@8.0.8
-  - @atlaskit/flag@12.0.10
-  - @atlaskit/modal-dialog@10.0.7
-  - @atlaskit/select@9.1.8
-  - @atlaskit/toggle@7.0.3
-  - @atlaskit/media-card@63.3.1
-  - @atlaskit/media-editor@36.2.1
-  - @atlaskit/media-test-helpers@24.1.2
-  - @atlaskit/media-ui@11.4.1
-  - @atlaskit/media-viewer@43.1.3
-  - @atlaskit/icon@19.0.0
+- @atlaskit/docs@8.1.3
+- @atlaskit/button@13.0.9
+- @atlaskit/dropdown-menu@8.0.8
+- @atlaskit/flag@12.0.10
+- @atlaskit/modal-dialog@10.0.7
+- @atlaskit/select@9.1.8
+- @atlaskit/toggle@7.0.3
+- @atlaskit/media-card@63.3.1
+- @atlaskit/media-editor@36.2.1
+- @atlaskit/media-test-helpers@24.1.2
+- @atlaskit/media-ui@11.4.1
+- @atlaskit/media-viewer@43.1.3
+- @atlaskit/icon@19.0.0
 
 ## 44.0.0
 
@@ -503,39 +701,42 @@
 
 - [major][5f4afa52a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f4afa52a9):
 
-  Media Picker Browser component is now migrated to React.
+Media Picker Browser component is now migrated to React.
 
-  - Previous vanilla js API:
+- Previous vanilla js API:
 
-  ```
-  // instantiation
-  const browser = await new MediaPicker('browser', context, pickerConfig).init();
+```
 
-  // subscribe to upload events
-  this.mpBrowser.on('uploads-start', onUploadsStart);
-  this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
-  this.mpBrowser.on('upload-status-update', onUploadStatusUpdate);
-  this.mpBrowser.on('upload-processing', onUploadProcessing);
-  this.mpBrowser.on('upload-end', onUploadEnd);
-  this.mpBrowser.on('upload-error', onUploadError);
+// instantiation
+const browser = await new MediaPicker('browser', context, pickerConfig).init();
 
-  // open the native file browser
-  browser.browse();
+// subscribe to upload events
+this.mpBrowser.on('uploads-start', onUploadsStart);
+this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
+this.mpBrowser.on('upload-status-update', onUploadStatusUpdate);
+this.mpBrowser.on('upload-processing', onUploadProcessing);
+this.mpBrowser.on('upload-end', onUploadEnd);
+this.mpBrowser.on('upload-error', onUploadError);
 
-  // cancel ongoing upload
-  browse.cancel(uploadId);
+// open the native file browser
+browser.browse();
 
-  // when we want to dispose the component
-  browser.teardown();
-  ```
+// cancel ongoing upload
+browse.cancel(uploadId);
 
-  - New React API:
+// when we want to dispose the component
+browser.teardown();
 
-  ```
-  class BrowserConsumer etends React.Component {
-    render() {
-      return (
-        <Browser
+```
+
+- New React API:
+
+```
+
+class BrowserConsumer etends React.Component {
+render() {
+return (
+<Browser
           isOpen={this.props.isOpen}
           config={config}
           context={context}
@@ -543,38 +744,41 @@
           onError={onError}
           onPreviewUpdate={onPreviewUpdate}
         />
-      )
-    }
-  }
-  ```
+)
+}
+}
 
-  Notes on new API:
+```
 
-  - No need to explicitly teardown the component. Unmounting the component will do the work
-  - `onBrowseFn` and `onCancelFn` are workarounds to open the file browser and cancel an ongoing upload. Refer to its type definitions for more info.
-    Before we were saving a ref and call `ref.browse()` or `ref.cancel()`.
-  - In some cases you will need to provide either `onBrowserFn` or `onCancelFn` in order to open the file browser or to cancel an ongoing upload programatically.
-    Typically this will be needed when this component is being rendered outside a react component, and we cannot take advantage of using `isOpen` directly.
-    A good example of this can be seen in -> https://bitbucket.org/atlassian/atlaskit-mk-2/src/d7a2e4a8fb8e35b841d751f5ecccff188c955c7a/packages/editor/editor-core/src/plugins/media/index.tsx#lines-178 where `BrowserMediaPickerWrapper` is rendered.
+Notes on new API:
 
-  Basically if we render `Browser` component in isolation (meaning, not inside another react component), we will need to do something like:
+- No need to explicitly teardown the component. Unmounting the component will do the work
+- `onBrowseFn` and `onCancelFn` are workarounds to open the file browser and cancel an ongoing upload. Refer to its type definitions for more info.
+  Before we were saving a ref and call `ref.browse()` or `ref.cancel()`.
+- In some cases you will need to provide either `onBrowserFn` or `onCancelFn` in order to open the file browser or to cancel an ongoing upload programatically.
+  Typically this will be needed when this component is being rendered outside a react component, and we cannot take advantage of using `isOpen` directly.
+  A good example of this can be seen in -> https://bitbucket.org/atlassian/atlaskit-mk-2/src/d7a2e4a8fb8e35b841d751f5ecccff188c955c7a/packages/editor/editor-core/src/plugins/media/index.tsx#lines-178 where `BrowserMediaPickerWrapper` is rendered.
 
-  ```
-  const saveOpenBrowserFunction = (browse) => this.openBrowser = browse;
+Basically if we render `Browser` component in isolation (meaning, not inside another react component), we will need to do something like:
 
-  ...
+```
 
-  <Browser
-    onBrowseFn={(browse) => saveOpenBrowserFunction(browse)}
-    config={config}
-    context={context}
-    onProcessing={onProcessing}
-    onError={onError}
-    onPreviewUpdate={onPreviewUpdate}
-  />
-  ```
+const saveOpenBrowserFunction = (browse) => this.openBrowser = browse;
 
-  At a later point we will just need to call `this.openBrowser` function in that example, in order to open the native File browser. Same applies to `onCancelFn`.
+...
+
+<Browser
+onBrowseFn={(browse) => saveOpenBrowserFunction(browse)}
+config={config}
+context={context}
+onProcessing={onProcessing}
+onError={onError}
+onPreviewUpdate={onPreviewUpdate}
+/>
+
+````
+
+At a later point we will just need to call `this.openBrowser` function in that example, in order to open the native File browser. Same applies to `onCancelFn`.
 
 ## 43.1.2
 
@@ -582,24 +786,24 @@
 
 - [patch][a964d9cfa5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a964d9cfa5):
 
-  Emit event in globalMediaEventListener as well
+Emit event in globalMediaEventListener as well
 
 ## 43.1.1
 
 - Updated dependencies [cfc3c8adb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cfc3c8adb3):
-  - @atlaskit/docs@8.1.2
-  - @atlaskit/button@13.0.8
-  - @atlaskit/dropdown-menu@8.0.4
-  - @atlaskit/flag@12.0.4
-  - @atlaskit/modal-dialog@10.0.4
-  - @atlaskit/select@9.1.5
-  - @atlaskit/toggle@7.0.1
-  - @atlaskit/media-card@63.1.5
-  - @atlaskit/media-editor@36.1.1
-  - @atlaskit/media-test-helpers@24.0.3
-  - @atlaskit/media-ui@11.2.8
-  - @atlaskit/media-viewer@43.1.1
-  - @atlaskit/icon@18.0.0
+- @atlaskit/docs@8.1.2
+- @atlaskit/button@13.0.8
+- @atlaskit/dropdown-menu@8.0.4
+- @atlaskit/flag@12.0.4
+- @atlaskit/modal-dialog@10.0.4
+- @atlaskit/select@9.1.5
+- @atlaskit/toggle@7.0.1
+- @atlaskit/media-card@63.1.5
+- @atlaskit/media-editor@36.1.1
+- @atlaskit/media-test-helpers@24.0.3
+- @atlaskit/media-ui@11.2.8
+- @atlaskit/media-viewer@43.1.1
+- @atlaskit/icon@18.0.0
 
 ## 43.1.0
 
@@ -607,19 +811,19 @@
 
 - [minor][86e884c38d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86e884c38d):
 
-  MediaPicker constuctro suports mediaClientConfig as second argument
+MediaPicker constuctro suports mediaClientConfig as second argument
 
 ## 43.0.4
 
 - [patch][e5c40a4a52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5c40a4a52):
 
-  - use existing file state for tenant file if there is one
+- use existing file state for tenant file if there is one
 
 ## 43.0.3
 
 - [patch][b0ef06c685](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0ef06c685):
 
-  - This is just a safety release in case anything strange happened in in the previous one. See Pull Request #5942 for details
+- This is just a safety release in case anything strange happened in in the previous one. See Pull Request #5942 for details
 
 ## 43.0.2
 
@@ -627,80 +831,80 @@
 - Updated dependencies [06c5cccf9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06c5cccf9d):
 - Updated dependencies [9ecfef12ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ecfef12ac):
 - Updated dependencies [9cbd059bfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cbd059bfa):
-  - @atlaskit/button@13.0.4
-  - @atlaskit/flag@12.0.2
-  - @atlaskit/select@9.1.2
-  - @atlaskit/media-card@63.1.0
-  - @atlaskit/media-editor@36.0.0
-  - @atlaskit/media-ui@11.2.5
-  - @atlaskit/media-viewer@43.0.2
-  - @atlaskit/spinner@12.0.0
-  - @atlaskit/icon@17.1.2
-  - @atlaskit/modal-dialog@10.0.0
-  - @atlaskit/media-core@30.0.3
-  - @atlaskit/media-store@12.0.2
-  - @atlaskit/media-test-helpers@24.0.0
+- @atlaskit/button@13.0.4
+- @atlaskit/flag@12.0.2
+- @atlaskit/select@9.1.2
+- @atlaskit/media-card@63.1.0
+- @atlaskit/media-editor@36.0.0
+- @atlaskit/media-ui@11.2.5
+- @atlaskit/media-viewer@43.0.2
+- @atlaskit/spinner@12.0.0
+- @atlaskit/icon@17.1.2
+- @atlaskit/modal-dialog@10.0.0
+- @atlaskit/media-core@30.0.3
+- @atlaskit/media-store@12.0.2
+- @atlaskit/media-test-helpers@24.0.0
 
 ## 43.0.1
 
 - Updated dependencies [238b65171f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/238b65171f):
-  - @atlaskit/flag@12.0.0
+- @atlaskit/flag@12.0.0
 
 ## 43.0.0
 
 - [major][051800806c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/051800806c):
 
-  -
+-
 
-  - MediaPicker Clipboard component is now a React Component
+- MediaPicker Clipboard component is now a React Component
 
-  These changes provide a new React api for Clipboard component. First one to be delivered, coming next we are going to ship Browser, Dropzone and Popup.
+These changes provide a new React api for Clipboard component. First one to be delivered, coming next we are going to ship Browser, Dropzone and Popup.
 
-  Previous plain javascript API usage:
+Previous plain javascript API usage:
 
-  ```typescript
-  // instanciate MediaPicker clipboard
-  const clipboardMediaPicker = await new MediaPicker(
-    'clipboard'
-    context,
-    config,
-  );
+```typescript
+// instanciate MediaPicker clipboard
+const clipboardMediaPicker = await new MediaPicker(
+  'clipboard'
+  context,
+  config,
+);
 
-  // usage
-  clipboardMediaPicker.on('uploads-start', onUploadsStart);
-  clipboardMediaPicker.on('upload-preview-update', onUploadPreviewUpdate);
-  clipboardMediaPicker.on('upload-status-update', onUploadStatusUpdate);
-  clipboardMediaPicker.on('upload-processing', onUploadProcessing);
-  clipboardMediaPicker.on('upload-end', onUploadEnd);
-  clipboardMediaPicker.on('upload-error', onUploadError);
+// usage
+clipboardMediaPicker.on('uploads-start', onUploadsStart);
+clipboardMediaPicker.on('upload-preview-update', onUploadPreviewUpdate);
+clipboardMediaPicker.on('upload-status-update', onUploadStatusUpdate);
+clipboardMediaPicker.on('upload-processing', onUploadProcessing);
+clipboardMediaPicker.on('upload-end', onUploadEnd);
+clipboardMediaPicker.on('upload-error', onUploadError);
 
-  // activation / deactivation programatically
-  clipboardMediaPicker.activate();
-  clipboardMediaPicker.deactivate();
-  ```
+// activation / deactivation programatically
+clipboardMediaPicker.activate();
+clipboardMediaPicker.deactivate();
+````
 
-  With the new React API we benefit from:
+With the new React API we benefit from:
 
-  - No need to programatically activate/deactivate. We will just render the Clipboard component or not.
-  - Event handlers are provided by react props
-  - We don't need to use a MediaPicker constructor and specifiy which flavour we want (in this case 'clipboard'). We can basically `import { Clipboard } from '@atlaskit/media-picker'` directly and use it right away.
+- No need to programatically activate/deactivate. We will just render the Clipboard component or not.
+- Event handlers are provided by react props
+- We don't need to use a MediaPicker constructor and specifiy which flavour we want (in this case 'clipboard'). We can basically `import { Clipboard } from '@atlaskit/media-picker'` directly and use it right away.
 
-  Example of new API:
+Example of new API:
 
-  ```typescript
-  import { Clipboard } from '@atlaskit/media-picker';
+```typescript
+import { Clipboard } from '@atlaskit/media-picker';
 
-  <Clipboard
-    context={context}
-    config={config}
-    onError={handleUploadError}
-    onPreviewUpdate={handleUploadPreviewUpdate}
-    onProcessing={handleReady}
-  />;
-  ```
+<Clipboard
+  context={context}
+  config={config}
+  onError={handleUploadError}
+  onPreviewUpdate={handleUploadPreviewUpdate}
+  onProcessing={handleReady}
+/>;
+```
 
-  This is the first component we migrate fully and integrates seamlessly with the Editor. Follow up on this ticket to see what will be the next steps on this new API:
-  https://product-fabric.atlassian.net/browse/MS-1942
+This is the first component we migrate fully and integrates seamlessly with the Editor. Follow up on this ticket to see what will be the next steps on this new API:
+https://product-fabric.atlassian.net/browse/MS-1942
 
 ## 42.0.2
 

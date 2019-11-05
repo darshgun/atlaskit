@@ -107,24 +107,13 @@ describe('GlobalQuickSearch', () => {
 
   describe('Autocomplete', () => {
     let fireAutocompleteRenderedEventSpy: jest.SpyInstance<
-      (
-        duration: number,
-        searchSessionId: string,
-        query: string,
-        autocompleteText: string,
-        queryVersion: number,
-        fromCache: boolean,
-        createAnalyticsEvent?: CreateAnalyticsEventFn,
-      ) => void
+      void,
+      [number, string, string, string, number, boolean, CreateAnalyticsEventFn?]
     >;
 
     let fireAutocompleteCompletedEventSpy: jest.SpyInstance<
-      (
-        searchSessionId: string,
-        query: string,
-        completedText: string,
-        createAnalyticsEvent?: CreateAnalyticsEventFn,
-      ) => void
+      void,
+      [string, string, string, CreateAnalyticsEventFn?]
     >;
 
     beforeEach(() => {
@@ -266,28 +255,31 @@ describe('GlobalQuickSearch', () => {
   describe('Search result events', () => {
     const searchSessionId = 'random-session-id';
     let fireHighlightEventSpy: jest.SpyInstance<
-      (
-        eventData: AnalyticsHelper.KeyboardControlEvent,
-        searchSessionId: string,
-        referralContextIdentifiers?: ReferralContextIdentifiers,
-        createAnalyticsEvent?: CreateAnalyticsEventFn | undefined,
-      ) => void
+      void,
+      [
+        AnalyticsHelper.KeyboardControlEvent,
+        string,
+        ReferralContextIdentifiers?,
+        CreateAnalyticsEventFn?
+      ]
     >;
     let fireSearchResultSelectedEventSpy: jest.SpyInstance<
-      (
-        eventData: AnalyticsHelper.SelectedSearchResultEvent,
-        searchSessionId: string,
-        referralContextIdentifiers?: ReferralContextIdentifiers,
-        createAnalyticsEvent?: CreateAnalyticsEventFn | undefined,
-      ) => void
+      void,
+      [
+        AnalyticsHelper.SelectedSearchResultEvent,
+        string,
+        ReferralContextIdentifiers?,
+        CreateAnalyticsEventFn?
+      ]
     >;
     let fireAdvancedSearchSelectedEventSpy: jest.SpyInstance<
-      (
-        eventData: AnalyticsHelper.AdvancedSearchSelectedEvent,
-        searchSessionId: string,
-        referralContextIdentifiers?: ReferralContextIdentifiers,
-        createAnalyticsEvent?: CreateAnalyticsEventFn | undefined,
-      ) => void
+      void,
+      [
+        AnalyticsHelper.SelectedSearchResultEvent,
+        string,
+        ReferralContextIdentifiers?,
+        CreateAnalyticsEventFn?
+      ]
     >;
     beforeEach(() => {
       fireHighlightEventSpy = jest.spyOn(

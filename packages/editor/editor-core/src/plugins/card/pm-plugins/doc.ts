@@ -143,7 +143,7 @@ export const replaceQueuedUrlWithCard = (
       const nodeType = cardAdf.type === inlineCard ? 'inlineCard' : 'blockCard';
       const [, , domainName] = url.split('/');
 
-      addAnalytics(tr, {
+      addAnalytics(editorState, tr, {
         action: ACTION.INSERTED,
         actionSubject: ACTION_SUBJECT.DOCUMENT,
         actionSubjectId: ACTION_SUBJECT_ID.SMART_LINK,

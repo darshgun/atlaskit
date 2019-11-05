@@ -242,7 +242,7 @@ describe('@atlaskit/tree - Tree', () => {
 
   describe('#onPointerMove', () => {
     it('calculates horizontal level based on the horizontal position', () => {
-      (getBox as jest.Mock<{}>).mockReturnValue({
+      ((getBox as Function) as jest.Mock<{}>).mockReturnValue({
         contentBox: {
           left: 120,
         },

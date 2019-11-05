@@ -10,19 +10,19 @@ import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 
 import {
-  InitData,
-  RemoteData,
-  ConnectionData,
-  PresenceData,
-  TelepointerData,
-  SendableSelection,
+  CollabEventInitData,
+  CollabEventRemoteData,
+  CollabEventConnectionData,
+  CollabeEventPresenceData,
+  CollabEventTelepointerData,
+  CollabSendableSelection,
   CollabEditOptions,
 } from './types';
 
 import { replaceDocument } from './utils';
 
 export const handleInit = (
-  initData: InitData,
+  initData: CollabEventInitData,
   view: EditorView,
   options?: CollabEditOptions,
   providerFactory?: ProviderFactory,
@@ -48,7 +48,7 @@ export const handleInit = (
 };
 
 export const handleConnection = (
-  connectionData: ConnectionData,
+  connectionData: CollabEventConnectionData,
   view: EditorView,
 ) => {
   const {
@@ -58,7 +58,7 @@ export const handleConnection = (
 };
 
 export const handlePresence = (
-  presenceData: PresenceData,
+  presenceData: CollabeEventPresenceData,
   view: EditorView,
 ) => {
   const {
@@ -68,7 +68,7 @@ export const handlePresence = (
 };
 
 export const applyRemoteData = (
-  remoteData: RemoteData,
+  remoteData: CollabEventRemoteData,
   view: EditorView,
   options?: CollabEditOptions,
 ) => {
@@ -128,7 +128,7 @@ export const applyRemoteSteps = (
 };
 
 export const handleTelePointer = (
-  telepointerData: TelepointerData,
+  telepointerData: CollabEventTelepointerData,
   view: EditorView,
 ) => {
   const {
@@ -147,7 +147,7 @@ function isNodeSelection(selection: Selection) {
 
 export const getSendableSelection = (
   selection: Selection,
-): SendableSelection => {
+): CollabSendableSelection => {
   /**
    * <kbd>CMD + A</kbd> triggers a AllSelection
    * <kbd>escape</kbd> triggers a NodeSelection

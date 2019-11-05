@@ -81,14 +81,14 @@ export class ItemViewerBase extends React.Component<Props, State> {
     this.init(this.props);
   }
 
-  private onViewerLoaded = async (payload: ViewerLoadPayload) => {
+  private onImageViewerLoaded = async (payload: ViewerLoadPayload) => {
     const { item } = this.state;
     // the item.whenFailed case is handled in the "init" method
-    item.whenSuccessful(async file => {
-      if (file.status === 'processed') {
+    item.whenSuccessful(async fileState => {
+      if (fileState.status === 'processed') {
         const { identifier } = this.props;
         if (payload.status === 'success') {
-          this.fireAnalytics(mediaFileLoadSucceededEvent(file));
+          this.fireAnalytics(mediaFileLoadSucceededEvent(fileState));
         } else if (payload.status === 'error' && isFileIdentifier(identifier)) {
           const id =
             typeof identifier.id === 'string'
@@ -97,8 +97,8 @@ export class ItemViewerBase extends React.Component<Props, State> {
           this.fireAnalytics(
             mediaFileLoadFailedEvent(
               id,
-              payload.errorMessage || 'Viewer error',
-              file,
+              payload.errorMessage || 'ImageViewer error',
+              fileState,
             ),
           );
         }
@@ -118,6 +118,18 @@ export class ItemViewerBase extends React.Component<Props, State> {
         mediaFileLoadFailedEvent(fileState.id, 'Playback failed', fileState),
       );
     }
+  };
+
+  private onDocError = (fileState: FileState) => (error: Error) => {
+    const processedFileState =
+      fileState.status === 'processed' ? fileState : undefined;
+    this.fireAnalytics(
+      mediaFileLoadFailedEvent(
+        fileState.id,
+        `${error.name}: ${error.message}`,
+        processedFileState,
+      ),
+    );
   };
 
   private renderFileState(item: FileState) {
@@ -145,7 +157,9 @@ export class ItemViewerBase extends React.Component<Props, State> {
 
     switch (item.mediaType) {
       case 'image':
-        return <ImageViewer onLoad={this.onViewerLoaded} {...viewerProps} />;
+        return (
+          <ImageViewer onLoad={this.onImageViewerLoaded} {...viewerProps} />
+        );
       case 'audio':
         return (
           <AudioViewer
@@ -165,7 +179,13 @@ export class ItemViewerBase extends React.Component<Props, State> {
           />
         );
       case 'doc':
-        return <DocViewer {...viewerProps} />;
+        return (
+          <DocViewer
+            onSuccess={this.onCanPlay(item)}
+            onError={this.onDocError(item)}
+            {...viewerProps}
+          />
+        );
       default:
         return this.renderError('unsupported', item);
     }
@@ -203,6 +223,7 @@ export class ItemViewerBase extends React.Component<Props, State> {
           case 'processing':
             return this.renderFileState(item);
           case 'failed-processing':
+            return this.renderError('failedProcessing', item);
           case 'error':
             return this.renderError('previewFailed', item);
           default:

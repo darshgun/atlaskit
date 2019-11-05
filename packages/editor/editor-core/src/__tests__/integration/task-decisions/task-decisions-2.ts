@@ -28,7 +28,7 @@ BrowserTestCase(
     await gotoEditor(browser);
     await browser.waitFor(editable);
     await browser.type(editable, '[] ');
-    await browser.waitForSelector('ol');
+    await browser.waitForSelector('div[data-node-type="actionList"]');
     await browser.paste(editable);
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
@@ -49,7 +49,7 @@ BrowserTestCase(
     await gotoEditor(browser);
     await browser.waitFor(editable);
     await browser.type(editable, '[] ');
-    await browser.waitForSelector('ol');
+    await browser.waitForSelector('div[data-node-type="actionList"]');
     await browser.paste(editable);
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
@@ -66,8 +66,10 @@ BrowserTestCase(
     const browser = new Page(client);
     await gotoEditor(browser);
     await browser.click(loadActionButton);
-    await browser.waitForSelector('ol span + div');
-    await browser.click('ol span + div');
+    await browser.waitForSelector(
+      'div[data-node-type="actionList"] span + div',
+    );
+    await browser.click('div[data-node-type="actionList"] span + div');
     await browser.type(editable, 'adding action');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
@@ -82,7 +84,7 @@ BrowserTestCase(
     await gotoEditor(browser);
     await browser.waitFor(editable);
     await browser.type(editable, '[] ');
-    await browser.waitForSelector('ol');
+    await browser.waitForSelector('div[data-node-type="actionList"]');
     await insertMentionUsingClick(browser, '0');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);

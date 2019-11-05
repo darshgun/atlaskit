@@ -7,12 +7,26 @@ describe('Popup', () => {
   const defaultProps = {
     content: () => <div>content</div>,
     isOpen: false,
-    trigger: (props: TriggerProps) => <button {...props}>trigger</button>,
+    trigger: (props: TriggerProps) => (
+      <button
+        {...props}
+        // @ts-ignore
+        ref={props.ref}
+      >
+        trigger
+      </button>
+    ),
   };
 
   it('renders the trigger correctly when the popup is not open', () => {
     const trigger = (props: TriggerProps) => (
-      <button {...props}>trigger</button>
+      <button
+        {...props}
+        // @ts-ignore
+        ref={props.ref}
+      >
+        trigger
+      </button>
     );
     const { getByText } = render(
       <Popup {...defaultProps} isOpen={false} trigger={trigger} />,
@@ -31,7 +45,13 @@ describe('Popup', () => {
 
   it('renders the trigger correctly when the popup is open', () => {
     const trigger = (props: TriggerProps) => (
-      <button {...props}>trigger</button>
+      <button
+        {...props}
+        // @ts-ignore
+        ref={props.ref}
+      >
+        trigger
+      </button>
     );
     const { getByText } = render(
       <Popup {...defaultProps} isOpen trigger={trigger} />,
@@ -137,31 +157,6 @@ describe('Popup', () => {
 
     expect(queryByText('popup component')).toBeInTheDocument();
     expect(queryByText('content')).toBeInTheDocument();
-  });
-
-  it('does not call onOpen when the popup is not open', () => {
-    const onOpen = jest.fn();
-    render(<Popup {...defaultProps} isOpen={false} onOpen={onOpen} />);
-
-    expect(onOpen).not.toHaveBeenCalled();
-  });
-
-  it('calls onOpen when the popup is open', () => {
-    const onOpen = jest.fn();
-    render(<Popup {...defaultProps} isOpen onOpen={onOpen} />);
-
-    expect(onOpen).toHaveBeenCalledTimes(1);
-  });
-
-  it('calls onOpen when the popup is opened', () => {
-    const onOpen = jest.fn();
-    const { rerender } = render(
-      <Popup {...defaultProps} isOpen={false} onOpen={onOpen} />,
-    );
-
-    rerender(<Popup {...defaultProps} isOpen onOpen={onOpen} />);
-
-    expect(onOpen).toHaveBeenCalledTimes(1);
   });
 
   it('does not call onClose after pressing escape when the popup is not open', () => {

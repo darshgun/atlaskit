@@ -4,7 +4,7 @@ import Portal from '@atlaskit/portal';
 import { ModalTransitionConsumer } from './ModalTransition';
 import StackConsumer from './StackConsumer';
 
-import { AppearanceType, KeyboardOrMouseEvent, ButtonOnClick } from '../types';
+import { AppearanceType, KeyboardOrMouseEvent, ActionProps } from '../types';
 
 import Modal from './Modal';
 import { WidthNames } from '../shared-variables';
@@ -14,10 +14,7 @@ export interface WrapperProps extends WithAnalyticsEventsProps {
   /**
     Buttons to render in the footer
   */
-  actions?: Array<{
-    onClick?: ButtonOnClick;
-    text?: string;
-  }>;
+  actions?: Array<ActionProps>;
   /**
     Appearance of the primary action. Also adds an icon to the heading, if provided.
   */

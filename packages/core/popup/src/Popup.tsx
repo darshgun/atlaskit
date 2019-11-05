@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { FC, forwardRef, memo, useState, useEffect } from 'react';
+import { FC, forwardRef, memo, useState } from 'react';
 import { layers } from '@atlaskit/theme/constants';
 import { Manager, Popper, Reference } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
@@ -20,48 +20,48 @@ export const Popup: FC<PopupProps> = memo(
     boundariesElement,
     isOpen,
     id,
+    offset,
     placement,
     shouldFlip = true,
     testId,
-    content,
+    content: Content,
     trigger,
-    onOpen,
     onClose,
     popupComponent: PopupContainer = DefaultPopupComponent,
     zIndex = layers.layer(),
   }: PopupProps) => {
-    const [popupRef, setPopupRef] = useState<HTMLDivElement>();
-    const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement>();
+    const [popupRef, setPopupRef] = useState<HTMLDivElement | null>(null);
+    const [triggerRef, setTriggerRef] = useState<HTMLElement | null>(null);
+    const [initialFocusRef, setInitialFocusRef] = useState<HTMLElement | null>(
+      null,
+    );
 
     useFocusManager({ initialFocusRef, popupRef });
-    useCloseManager({ isOpen, onClose, popupRef });
-
-    useEffect(
-      () => {
-        if (isOpen) {
-          onOpen && onOpen();
-        }
-      },
-      [isOpen, onOpen],
-    );
+    useCloseManager({ isOpen, onClose, popupRef, triggerRef });
 
     return (
       <div css={containerCSS}>
         <Manager>
           <Reference>
-            {({ ref }) =>
-              trigger({
-                ref,
+            {({ ref }) => {
+              return trigger({
+                ref: (node: HTMLElement | null) => {
+                  if (node) {
+                    ref(node);
+                    setTriggerRef(node);
+                  }
+                },
                 'aria-controls': id,
                 'aria-expanded': isOpen,
                 'aria-haspopup': true,
-              })
-            }
+              });
+            }}
           </Reference>
           {isOpen && (
             <Portal zIndex={zIndex}>
               <Popper
                 placement={placement || 'auto'}
+                offset={offset}
                 modifiers={{
                   flip: {
                     enabled: shouldFlip || true,
@@ -83,15 +83,15 @@ export const Popup: FC<PopupProps> = memo(
                       tabIndex={-1}
                     >
                       <RepositionOnUpdate
-                        content={content}
+                        content={Content}
                         scheduleUpdate={scheduleUpdate}
                       >
-                        {content({
-                          scheduleUpdate,
-                          isOpen,
-                          onClose,
-                          setInitialFocusRef,
-                        })}
+                        <Content
+                          scheduleUpdate={scheduleUpdate}
+                          isOpen={isOpen}
+                          onClose={onClose}
+                          setInitialFocusRef={setInitialFocusRef}
+                        />
                       </RepositionOnUpdate>
                     </PopupContainer>
                   );

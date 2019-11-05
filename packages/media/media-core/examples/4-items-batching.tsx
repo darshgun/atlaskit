@@ -9,16 +9,15 @@ import {
   animatedFileId,
 } from '@atlaskit/media-test-helpers';
 import uuid from 'uuid';
-import { FileState } from '../src';
 import { FileStateWrapper } from '../example-helpers/styled';
-import { getMediaClient } from '@atlaskit/media-client';
+import { getMediaClient, FileState } from '@atlaskit/media-client';
 
 export interface ExampleState {
   fileStates: { [id: string]: FileState };
 }
 
 const mediaClientConfig = createStorybookMediaClientConfig();
-const mediaClient = getMediaClient({ mediaClientConfig });
+const mediaClient = getMediaClient(mediaClientConfig);
 
 class Example extends Component<{}, ExampleState> {
   state: ExampleState = {

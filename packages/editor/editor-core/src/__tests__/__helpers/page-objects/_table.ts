@@ -18,6 +18,7 @@ import {
 import { animationFrame } from '../../__helpers/page-objects/_editor';
 import { isVisualRegression } from '../utils';
 import { Page } from 'puppeteer';
+import { RESIZE_HANDLE_AREA_DECORATION_GAP } from '../../../plugins/table/types';
 
 export const tableSelectors = {
   contextualMenu: `.${ClassName.CONTEXTUAL_MENU_BUTTON}`,
@@ -341,6 +342,34 @@ export const resizeColumn = async (
   page: any,
   { colIdx, amount, row = 1 }: ResizeColumnOpts,
 ) => {
+  const queryTableCell = getSelectorForTableCell({ row, cell: colIdx });
+  const cell = await getBoundingRect(page, queryTableCell);
+
+  await page.mouse.move(cell.left + cell.width, cell.top + 5);
+  await page.waitForSelector(
+    `${queryTableCell} .${ClassName.RESIZE_HANDLE_DECORATION}`,
+  );
+
+  const cellResizeeHandle = await getBoundingRect(
+    page,
+    `${queryTableCell} .${ClassName.RESIZE_HANDLE_DECORATION}`,
+  );
+
+  const columnEndPosition = cellResizeeHandle.left;
+
+  // Move to the right edge of the cell.
+  await page.mouse.move(columnEndPosition, cellResizeeHandle.top);
+
+  // Resize
+  await page.mouse.down();
+  await page.mouse.move(columnEndPosition + amount, cellResizeeHandle.top);
+  await page.mouse.up();
+};
+
+export const grabAndMoveColumnResing = async (
+  page: any,
+  { colIdx, amount, row = 1 }: ResizeColumnOpts,
+) => {
   let cell = await getBoundingRect(
     page,
     getSelectorForTableCell({ row, cell: colIdx }),
@@ -354,22 +383,30 @@ export const resizeColumn = async (
   // Resize
   await page.mouse.down();
   await page.mouse.move(columnEndPosition + amount, cell.top);
-  await page.mouse.up();
 };
 
 export const grabResizeHandle = async (
   page: any,
   { colIdx, row = 1 }: { colIdx: number; row: number },
 ) => {
-  let cell = await getBoundingRect(
-    page,
-    getSelectorForTableCell({ row, cell: colIdx }),
+  const queryTableCell = getSelectorForTableCell({ row, cell: colIdx });
+  const cell = await getBoundingRect(page, queryTableCell);
+
+  // We need to move the mouse first, giving time to prosemirror catch the event
+  // and add the decorations
+  await page.mouse.move(
+    cell.left + cell.width - RESIZE_HANDLE_AREA_DECORATION_GAP,
+    cell.top + 5,
   );
+  await animationFrame(page);
 
-  const columnEndPosition = cell.left + cell.width;
+  // then we grab the resize handle
+  await page.mouse.move(cell.left + cell.width, cell.top + 5);
+  await animationFrame(page);
 
-  // Move to the right edge of the cell.
-  await page.mouse.move(columnEndPosition, cell.top);
+  await page.waitForSelector(
+    `${queryTableCell} .${ClassName.RESIZE_HANDLE_DECORATION}`,
+  );
 
   await page.mouse.down();
 };

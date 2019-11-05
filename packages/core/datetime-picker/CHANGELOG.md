@@ -1,5 +1,21 @@
 # @atlaskit/datetime-picker
 
+## 9.2.0
+
+### Minor Changes
+
+- [minor][c423fbf5eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c423fbf5eb):
+
+  Adding an optional prop `testId` that will set the attribute value `data-testid`. It will help products to write better integration and end to end tests.
+
+## 9.1.0
+
+### Minor Changes
+
+- [minor][17a07074e8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17a07074e8):
+
+  Fix padding to be consistent with other Atlaskit form fields. This change includes removing padding from around the icon itself, and adding padding to the icon container, as well as altering the padding around the input container.
+
 ## 9.0.1
 
 ### Patch Changes

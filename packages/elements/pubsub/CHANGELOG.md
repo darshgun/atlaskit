@@ -1,5 +1,10 @@
 # @atlaskit/pubsub
 
+## 5.0.7
+
+- Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
+  - @atlaskit/util-service-support@5.0.0
+
 ## 5.0.6
 
 ### Patch Changes

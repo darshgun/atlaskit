@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { ProcessedFileState } from '@atlaskit/media-client';
-import { Spinner } from '../../../../../newgen/loading';
-import { DocViewer, Props } from '../../../../../newgen/viewers/doc/index';
+import {
+  globalMediaEventEmitter,
+  MediaViewedEventPayload,
+  ProcessedFileState,
+} from '@atlaskit/media-client';
 import {
   mountWithIntlContext,
   fakeMediaClient,
+  expectFunctionToHaveBeenCalledWith,
+  nextTick,
 } from '@atlaskit/media-test-helpers';
+import { Spinner } from '../../../../../newgen/loading';
+import { DocViewer, Props } from '../../../../../newgen/viewers/doc/index';
 import { BaseState } from '../../../../../newgen/viewers/base-viewer';
 import { Content } from '../../../../../newgen/content';
 
@@ -17,6 +23,7 @@ function createFixture(
 ) {
   const mediaClient = fakeMediaClient();
   const onClose = jest.fn(() => fetchPromise);
+  const onError = jest.fn();
 
   jest
     .spyOn(mediaClient.file, 'getArtifactURL')
@@ -32,10 +39,11 @@ function createFixture(
       item={item}
       mediaClient={mediaClient}
       collectionName={collectionName}
+      onError={onError}
     />,
   );
   (el as any).instance()['fetch'] = jest.fn();
-  return { mediaClient, el, onClose };
+  return { mediaClient, el, onClose, onError };
 }
 
 const item: ProcessedFileState = {
@@ -55,16 +63,38 @@ const item: ProcessedFileState = {
 };
 
 describe('DocViewer', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+  beforeEach(() => {
+    jest.spyOn(globalMediaEventEmitter, 'emit');
   });
 
-  it('assigns a document content when successful', async () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  const getSuccessDocument = async () => {
     const fetchPromise = Promise.resolve();
     const { el } = createFixture(fetchPromise, item);
-    await (el as any).instance()['init']();
+    await nextTick();
+    await nextTick();
+    await nextTick();
+    return el;
+  };
 
+  it('assigns a document content when successful', async () => {
+    const el = await getSuccessDocument();
     expect(el.state().content.status).toEqual('SUCCESSFUL');
+  });
+
+  it('triggers media-viewed when successful', async () => {
+    await getSuccessDocument();
+    expect(globalMediaEventEmitter.emit).toHaveBeenCalledTimes(1);
+    expectFunctionToHaveBeenCalledWith(globalMediaEventEmitter.emit, [
+      'media-viewed',
+      {
+        fileId: 'some-id',
+        viewingLevel: 'full',
+      } as MediaViewedEventPayload,
+    ]);
   });
 
   it('shows an indicator while loading', async () => {
@@ -87,5 +117,17 @@ describe('DocViewer', () => {
     expect(
       (mediaClient.file.getArtifactURL as jest.Mock).mock.calls[0][2],
     ).toEqual(collectionName);
+  });
+
+  it('should call onError when an error happens', async () => {
+    const fetchPromise = Promise.resolve();
+    const { el, onError } = createFixture(
+      fetchPromise,
+      item,
+      undefined,
+      Promise.reject('some error'),
+    );
+    await (el as any).instance()['init']();
+    expect(onError).toBeCalledWith('some error');
   });
 });

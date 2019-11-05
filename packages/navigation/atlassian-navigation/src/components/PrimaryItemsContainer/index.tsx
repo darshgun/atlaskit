@@ -17,6 +17,7 @@ import { PrimaryItemsContainerProps } from './types';
 export const PrimaryItemsContainer = ({
   moreLabel,
   items,
+  create: Create,
 }: PrimaryItemsContainerProps) => {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const { updateWidth, visibleItems, overflowItems } = useOverflowController(
@@ -64,6 +65,7 @@ export const PrimaryItemsContainer = ({
           trigger={trigger}
         />
       )}
+      {Create && <Create />}
       <WidthDetector
         containerStyle={widthDetectorContainerStyle}
         onResize={updateWidth}

@@ -67,7 +67,7 @@ function createIndentationCommandWithAnalytics(
   return (state, dispatch) => {
     return indentationCommand(
       state,
-      createAnalyticsDispatch(getAndResetAttrsChanges, dispatch),
+      createAnalyticsDispatch(getAndResetAttrsChanges, state, dispatch),
     );
   };
 }

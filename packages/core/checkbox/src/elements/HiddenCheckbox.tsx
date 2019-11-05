@@ -14,7 +14,11 @@ export interface HiddenCheckboxProps extends React.HTMLProps<HTMLInputElement> {
   name?: string;
   required?: boolean;
   attributesFn: (
-    props: { disabled?: boolean; checked?: boolean; required?: boolean },
+    props: {
+      disabled?: boolean;
+      checked?: boolean;
+      required?: boolean;
+    },
   ) => Record<string, any>;
   /** A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests */
   testId?: string;

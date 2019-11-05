@@ -1,4 +1,9 @@
 import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+
+import {
   LocalUploadComponentReact,
   LocalUploadComponentBaseProps,
 } from '../localUploadReact';
@@ -11,26 +16,19 @@ import {
 } from '../types';
 
 import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  WithAnalyticsEventsProps,
-} from '@atlaskit/analytics-next';
-
-import {
   name as packageName,
   version as packageVersion,
 } from '../../version.json';
 
 import { ANALYTICS_MEDIA_CHANNEL } from '../media-picker-analytics-error-boundary';
 
-export type DropzoneProps = LocalUploadComponentBaseProps &
-  WithAnalyticsEventsProps & {
-    config: DropzoneConfig;
-    onDrop?: () => void;
-    onDragEnter?: (payload: DropzoneDragEnterEventPayload) => void;
-    onDragLeave?: (payload: DropzoneDragLeaveEventPayload) => void;
-    onCancelFn?: (cancel: (uploadId: string) => void) => void;
-  };
+export type DropzoneProps = LocalUploadComponentBaseProps & {
+  config: DropzoneConfig;
+  onDrop?: () => void;
+  onDragEnter?: (payload: DropzoneDragEnterEventPayload) => void;
+  onDragLeave?: (payload: DropzoneDragLeaveEventPayload) => void;
+  onCancelFn?: (cancel: (uploadId: string) => void) => void;
+};
 
 function dragContainsFiles(event: DragEvent): boolean {
   if (!event.dataTransfer) {
@@ -208,6 +206,7 @@ export class DropzoneBase extends LocalUploadComponentReact<
         actionSubject: 'dropzone',
         action,
         attributes: {
+          packageName,
           fileCount,
         },
       });
@@ -221,7 +220,9 @@ export class DropzoneBase extends LocalUploadComponentReact<
 }
 
 export const Dropzone = withAnalyticsContext({
-  componentName: 'dropzone',
-  packageName,
-  packageVersion,
+  attributes: {
+    componentName: 'dropzone',
+    packageName,
+    packageVersion,
+  },
 })(withAnalyticsEvents()(DropzoneBase));

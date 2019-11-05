@@ -5,6 +5,7 @@ node_modules
 coverage
 dist
 flow-typed
+.yarn
 
 # the docs template
 docs/templates/**
@@ -30,9 +31,15 @@ packages/core/icon-priority/glyph/**
 packages/core/icon-priority/cjs/**
 packages/core/icon-priority/utils/**
 
+# adf-utils manual entry-points
+packages/editor/adf-utils/*.ts
+packages/editor/adf-utils/*.js
+
 # flow tests
 packages/**/__tests__/flow/
 
-# tmp
-build
-website
+# Build folder
+# https://jdog.jira-dev.com/browse/AFP-500
+# Lint new TS files by only ignoring JS
+# Negated ignore patterns didn't work to first ignore build and THEN only include ts files
+build/**/*.js

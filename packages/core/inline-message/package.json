@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-message",
-  "version": "10.0.15",
+  "version": "10.1.0",
   "description": "A React component for displaying a clickable message which triggers an inline dialog",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -40,7 +40,6 @@
     "@atlaskit/visual-regression": "^0.1.3",
     "@atlaskit/webdriver-runner": "^0.1.5",
     "@testing-library/react": "^8.0.1",
-    "jest-in-case": "^1.0.2",
     "enzyme": "^3.7.0",
     "react-dom": "^16.8.0"
   },

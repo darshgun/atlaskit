@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
 import { Card, CardAction } from '@atlaskit/media-card';
-import { MediaCollectionItem } from '@atlaskit/media-store';
 import {
   asMock,
   fakeIntl,
@@ -16,7 +15,11 @@ import {
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import { InfiniteScroll } from '@atlaskit/media-ui';
-import { MediaClient } from '@atlaskit/media-client';
+import {
+  MediaClient,
+  MediaCollectionItem,
+  RECENTS_COLLECTION,
+} from '@atlaskit/media-client';
 import {
   State,
   SelectedItem,
@@ -49,13 +52,16 @@ import { SpinnerWrapper, Wrapper } from '../../styled';
 import { LocalBrowserButton } from '../../../../views/upload/uploadButton';
 import { menuDelete } from '../../../editor/phrases';
 import { LocalUploadFileMetadata } from '../../../../../domain/local-upload';
-import { Browser } from '../../../../../../components/browser/browser';
+import { BrowserBase } from '../../../../../../components/browser/browser';
 
 const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
 );
-const createBrowserRef = (mediaClient: MediaClient): RefObject<Browser> => ({
-  current: new Browser({ config: {} as any, mediaClient }),
+
+const createBrowserRef = (
+  mediaClient: MediaClient,
+): RefObject<BrowserBase> => ({
+  current: new BrowserBase({ config: {} as any, mediaClient }),
 });
 
 const createConnectedComponent = (
@@ -514,7 +520,9 @@ describe('<UploadView />', () => {
       simulateThresholdReached(component);
 
       expect(mediaClient.collection.loadNextPage).toHaveBeenCalledTimes(1);
-      expect(mediaClient.collection.loadNextPage).toBeCalledWith('recents');
+      expect(mediaClient.collection.loadNextPage).toBeCalledWith(
+        RECENTS_COLLECTION,
+      );
     });
 
     it('should render loading next page state if next page is being loaded', async () => {

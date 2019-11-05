@@ -7,7 +7,7 @@ import {
   createLocalizationProvider,
   LocalizationProvider,
 } from '@atlaskit/locale';
-import { borderRadius, layers } from '@atlaskit/theme/constants';
+import { borderRadius, layers, gridSize } from '@atlaskit/theme/constants';
 import { N20, B100 } from '@atlaskit/theme/colors';
 import { e200 } from '@atlaskit/theme/elevation';
 import {
@@ -30,7 +30,7 @@ import {
   placeholderDatetime,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
-import { SelectProps, Appearance, Spacing } from '../types.js';
+import { SelectProps, Appearance, Spacing } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
 export interface Props extends WithAnalyticsEventsProps {
@@ -85,6 +85,12 @@ export interface Props extends WithAnalyticsEventsProps {
   placeholder?: string;
   /** Locale used to format the the date and calendar. See [DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) */
   locale: string;
+
+  /**
+   * A `testId` prop is provided for specified elements, which is a unique string that appears as a data attribute `data-testid` in the rendered code, serving as a hook for automated tests
+   *  - `{testId}--container` wrapping element of date-picker
+   **/
+  testId?: string;
 }
 
 interface State {
@@ -146,6 +152,7 @@ const Menu = ({
           selected={[selectProps.calendarValue]}
           innerProps={innerProps}
           locale={selectProps.calendarLocale}
+          testId={selectProps.testId}
         />
       </StyledMenu>
     }
@@ -444,7 +451,11 @@ class DatePicker extends React.Component<Props, State> {
       selectProps,
       spacing,
       locale,
+      testId,
     } = this.props;
+    const BORDER_WIDTH = 2;
+    const ICON_PADDING = 2;
+
     const { value, view, isOpen, inputValue } = this.getSafeState();
     const dropDownIcon = appearance === 'subtle' || hideIcon ? null : icon;
     const { styles: selectStyles = {} } = selectProps;
@@ -471,6 +482,7 @@ class DatePicker extends React.Component<Props, State> {
         onInput={this.onSelectInput}
         onKeyDown={this.onSelectKeyDown}
         ref={this.getContainerRef}
+        data-testid={testId && `${testId}--container`}
       >
         <input name={name} type="hidden" value={value} />
         <Select
@@ -495,6 +507,11 @@ class DatePicker extends React.Component<Props, State> {
               ...controlStyles,
               ...disabledStyle,
             }),
+            indicatorsContainer: (base: CSSObject): CSSObject => ({
+              ...base,
+              paddingLeft: ICON_PADDING,
+              paddingRight: gridSize() - BORDER_WIDTH,
+            }),
           })}
           placeholder={this.getPlaceholder()}
           value={
@@ -507,6 +524,7 @@ class DatePicker extends React.Component<Props, State> {
           {...calendarProps}
           spacing={spacing}
           validationState={isInvalid ? 'error' : 'default'}
+          testId={testId}
         />
       </div>
     );

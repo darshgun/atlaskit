@@ -35,6 +35,7 @@ export interface CustomLink {
   key: string;
   label: string;
   link: string;
+  local: boolean;
 }
 
 export enum Permissions {
@@ -44,6 +45,7 @@ export enum Permissions {
 }
 
 export enum Product {
+  BITBUCKET = 'bitbucket',
   CONFLUENCE = 'confluence',
   HOME = 'home',
   JIRA = 'jira',
@@ -59,6 +61,8 @@ export enum Feature {
   isDiscoverMoreForEveryoneEnabled = 'isDiscoverMoreForEveryoneEnabled',
   // EMCEE stands for Embedded Marketplace with in the product
   isEmceeLinkEnabled = 'isEmceeLinkEnabled',
+  // Enable Discover section - group suggested product links in Discover section
+  isDiscoverSectionEnabled = 'isDiscoverSectionEnabled',
 }
 
 export type FeatureFlagProps = {
@@ -72,6 +76,8 @@ export type FeatureFlagProps = {
   isDiscoverMoreForEveryoneEnabled?: boolean;
   // Enable Embedded Marketplace within the product.
   isEmceeLinkEnabled?: boolean;
+  // Enable Discover section - group suggested product links in Discover section
+  isDiscoverSectionEnabled?: boolean;
 };
 
 export type FeatureMap = { [key in Feature]: boolean };

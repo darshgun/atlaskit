@@ -32,7 +32,7 @@ describe('MultiValueContainer', () => {
   const shallowValueContainer = (props: any) =>
     shallow(<MultiValueContainer selectProps={selectProps} {...props} />);
 
-  test.each([
+  test.each<[string | undefined, number[], boolean]>([
     ['add more people...', selectProps.value, false],
     ['Enter more...', selectProps.value, true],
     ['add more people...', selectProps.options, false],

@@ -1,12 +1,197 @@
 # @atlaskit/media-viewer
 
+## 44.0.1
+
+### Patch Changes
+
+- [patch][39291ce416](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39291ce416):
+
+  Removing unnecessary `preventRaceCondition` method in MVNG- [patch][1e4b33e998](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e4b33e998):
+
+  Fix analytic error reporting for aborted requests in MV- [patch][bae3b3e06d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bae3b3e06d):
+
+  Add analytic events to DocViewer in MediaViewer- [patch][e35dfc7b5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e35dfc7b5f):
+
+  adding user timing api to get operations spent time
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-core@31.0.0
+
+## 44.0.0
+
+### Major Changes
+
+- [major][c3e65f1b9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e65f1b9e):
+
+  ## Breaking change
+
+  > remove deprecated "context" property from media components in favor of "mediaClientConfig"
+
+  This affects all public media UI components:
+
+  - Card
+  - Filmstrip
+  - SmartMediaEditor
+  - MediaImage
+  - Dropzone
+  - Clipboard
+  - Browser
+  - MediaPicker
+  - MediaViewer
+
+  **Before**:
+
+  ```
+  import {ContextFactory} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+
+  const context = ContextFactory.creat({
+    authProvider: () => Promise.resolve({})
+  })
+
+  const mediaPicker = MediaPicker(context);
+
+  <Card context={context}>
+  <SmartMediaEditor context={context}>
+  <Filmstrip context={context}>
+  <MediaImage context={context}>
+  <Dropzone context={context}>
+  <Clipboard context={context}>
+  <Browser context={context}>
+  <MediaViewer context={context}>
+  ```
+
+  **Now**:
+
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+  ```
+
+const mediaClientConfig: MediaClientConfig = {
+authProvider: () => Promise.resolve({})
+}
+
+const mediaPicker = MediaPicker(mediaClientConfig);
+
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
+
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+
+**FABDODGEM-13 Editor Damask Release** - [Internal post](http://go.atlassian.com/damask-release)
+
+**BREAKING CHANGES**
+
+- **Media:** Removed deprecated "context" property from media components in favor of "mediaClientConfig". This affects all public media UI components.
+  - https://product-fabric.atlassian.net/browse/MS-2038
+- **Tasks & Decisions:** Removed containerAri for task-decisions components.
+  - https://product-fabric.atlassian.net/browse/ED-7631
+- **Renderer:** Adapts to task-decision changes.
+- **Editor Mobile Bridge:** Adapts to task-decision changes.
+- **Util Data Test:** Adapts to task-decision changes.
+
+---
+
+**Affected Editor Components:**
+
+tables, media, mobile, emoji, tasks & decisions, analytics
+
+**Editor**
+
+- Support nested actions in stage-0 schema; Change DOM representation of actions
+  - https://product-fabric.atlassian.net/browse/ED-7674
+- Updated i18n translations
+  - https://product-fabric.atlassian.net/browse/ED-7750
+- Improved analytics & crash reporting (via a new error boundary)
+  - https://product-fabric.atlassian.net/browse/ED-7766
+  - https://product-fabric.atlassian.net/browse/ED-7806
+- Improvements to heading anchor links.
+  - https://product-fabric.atlassian.net/browse/ED-7849
+  - https://product-fabric.atlassian.net/browse/ED-7860
+- Copy/Paste improvements
+  - https://product-fabric.atlassian.net/browse/ED-7840
+  - https://product-fabric.atlassian.net/browse/ED-7849
+- Fixes for the selection state of Smart links.
+  - https://product-fabric.atlassian.net/browse/ED-7602?src=confmacro
+- Improvements for table resizing & column creation.
+  - https://product-fabric.atlassian.net/browse/ED-7698
+  - https://product-fabric.atlassian.net/browse/ED-7319
+  - https://product-fabric.atlassian.net/browse/ED-7799
+
+**Mobile**
+
+- GASv3 Analytics Events are now relayed from the web to the native context, ready for dispatching.
+  - https://product-fabric.atlassian.net/browse/FM-2502
+- Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
+  - https://product-fabric.atlassian.net/browse/FM-2370
+
+**Media**
+
+- Improved analytics
+  - https://product-fabric.atlassian.net/browse/MS-2036
+  - https://product-fabric.atlassian.net/browse/MS-2145
+  - https://product-fabric.atlassian.net/browse/MS-2416
+  - https://product-fabric.atlassian.net/browse/MS-2487
+- Added shouldOpenMediaViewer property to renderer
+  - https://product-fabric.atlassian.net/browse/MS-2393
+- Implemented analytics for file copy
+  - https://product-fabric.atlassian.net/browse/MS-2036
+- New `media-viewed` event dispatched when media is interacted with via the media card or viewer.
+  - https://product-fabric.atlassian.net/browse/MS-2284
+- Support for `alt` text attribute on media image elements.
+  - https://product-fabric.atlassian.net/browse/ED-7776
+
+**i18n-tools**
+
+Bumped dependencies.
+
+### Minor Changes
+
+- [minor][eeb47666dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eeb47666dd):
+
+Emit `media-viewed` event through `globalMediaEventEmitter` when media is viewed, played or downloaded via media card or media viewer.
+
+### Patch Changes
+
+- [patch][38e5144a42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38e5144a42):
+
+Add failedProcessing error event + fix passing file attributes to mediaPreviewFailedEvent
+
+- Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
+- @atlaskit/media-card@66.0.0
+- @atlaskit/media-core@30.0.17
+- @atlaskit/media-store@12.0.14
+- @atlaskit/media-test-helpers@25.2.0
+- @atlaskit/media-client@3.0.0
+
 ## 43.4.5
 
 ### Patch Changes
 
 - [patch][35d2229b2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35d2229b2a):
 
-  Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
+Adding missing license to packages and update to Copyright 2019 Atlassian Pty Ltd.
 
 ## 43.4.4
 
@@ -14,7 +199,7 @@
 
 - [patch][a2d0043716](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d0043716):
 
-  Updated version of analytics-next to fix potential incompatibilities with TS 3.6
+Updated version of analytics-next to fix potential incompatibilities with TS 3.6
 
 ## 43.4.3
 
@@ -22,7 +207,7 @@
 
 - [patch][b3d01a57df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3d01a57df):
 
-  Download max res image and prioritise existing preview over representations
+Download max res image and prioritise existing preview over representations
 
 ## 43.4.2
 
@@ -30,16 +215,16 @@
 
 - [patch][fc79969f86](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc79969f86):
 
-  Update all the theme imports in media to use multi entry points
+Update all the theme imports in media to use multi entry points
 
 ## 43.4.1
 
 - Updated dependencies [af72468517](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af72468517):
-  - @atlaskit/media-client@2.1.2
-  - @atlaskit/media-core@30.0.14
-  - @atlaskit/media-store@12.0.12
-  - @atlaskit/media-test-helpers@25.1.1
-  - @atlaskit/media-card@65.0.0
+- @atlaskit/media-client@2.1.2
+- @atlaskit/media-core@30.0.14
+- @atlaskit/media-store@12.0.12
+- @atlaskit/media-test-helpers@25.1.1
+- @atlaskit/media-card@65.0.0
 
 ## 43.4.0
 
@@ -47,10 +232,10 @@
 
 - [minor][c6efb2f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6efb2f5b6):
 
-  Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
+Prefix the legacy lifecycle methods with UNSAFE\_\* to avoid warning in React 16.9+
 
-  More information about the deprecation of lifecycles methods can be found here:
-  https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
+More information about the deprecation of lifecycles methods can be found here:
+https://reactjs.org/blog/2018/03/29/react-v-16-3.html#component-lifecycle-changes
 
 ## 43.3.4
 
@@ -58,7 +243,7 @@
 
 - [patch][097b696613](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/097b696613):
 
-  Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
+Components now depend on TS 3.6 internally, in order to fix an issue with TS resolving non-relative imports as relative imports
 
 ## 43.3.3
 
@@ -66,16 +251,16 @@
 
 - [patch][ecca4d1dbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4d1dbb):
 
-  Upgraded Typescript to 3.3.x
+Upgraded Typescript to 3.3.x
 
 ## 43.3.2
 
 - Updated dependencies [3624730f44](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3624730f44):
-  - @atlaskit/media-client@2.0.2
-  - @atlaskit/media-core@30.0.11
-  - @atlaskit/media-store@12.0.9
-  - @atlaskit/media-test-helpers@25.0.2
-  - @atlaskit/media-card@64.0.0
+- @atlaskit/media-client@2.0.2
+- @atlaskit/media-core@30.0.11
+- @atlaskit/media-store@12.0.9
+- @atlaskit/media-test-helpers@25.0.2
+- @atlaskit/media-card@64.0.0
 
 ## 43.3.1
 
@@ -83,7 +268,7 @@
 
 - [patch][adeb756c78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/adeb756c78):
 
-  Changing async import to check for AnalyticsErrorBoundary integration
+Changing async import to check for AnalyticsErrorBoundary integration
 
 ## 43.3.0
 
@@ -91,7 +276,7 @@
 
 - [minor][97768e61e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/97768e61e2):
 
-  Adding Error Boundary for MediaViewer component
+Adding Error Boundary for MediaViewer component
 
 ## 43.2.11
 
@@ -99,36 +284,36 @@
 
 - [patch][926b43142b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926b43142b):
 
-  Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
+Analytics-next has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No behavioural changes.
 
-  **Breaking changes**
+**Breaking changes**
 
-  - `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
-  - `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
+- `withAnalyticsForSumTypeProps` alias has been removed, please use `withAnalyticsEvents`
+- `AnalyticsContextWrappedComp` alias has been removed, please use `withAnalyticsContext`
 
-  **Breaking changes to TypeScript annotations**
+**Breaking changes to TypeScript annotations**
 
-  - `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
-  - `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
-  - Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
-  - Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
-  - Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
-  - Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
-  - Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
-  - Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
-  - Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
-  - Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
-  - Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
+- `withAnalyticsEvents` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+- `withAnalyticsContext` now infers proptypes automatically, consumers no longer need to provide props as a generic type.
+- Type `WithAnalyticsEventProps` has been renamed to `WithAnalyticsEventsProps` to match source code
+- Type `CreateUIAnalyticsEventSignature` has been renamed to `CreateUIAnalyticsEvent` to match source code
+- Type `UIAnalyticsEventHandlerSignature` has been renamed to `UIAnalyticsEventHandler` to match source code
+- Type `AnalyticsEventsPayload` has been renamed to `AnalyticsEventPayload`
+- Type `ObjectType` has been removed, please use `Record<string, any>` or `[key: string]: any`
+- Type `UIAnalyticsEventInterface` has been removed, please use `UIAnalyticsEvent`
+- Type `AnalyticsEventInterface` has been removed, please use `AnalyticsEvent`
+- Type `CreateAndFireEventFunction` removed and should now be inferred by TypeScript
+- Type `AnalyticsEventUpdater` removed and should now be inferred by TypeScript
 
 ## 43.2.10
 
 - Updated dependencies [69586b5353](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/69586b5353):
-  - @atlaskit/media-card@63.3.11
-  - @atlaskit/media-client@2.0.1
-  - @atlaskit/media-core@30.0.10
-  - @atlaskit/media-store@12.0.8
-  - @atlaskit/media-ui@11.5.2
-  - @atlaskit/media-test-helpers@25.0.0
+- @atlaskit/media-card@63.3.11
+- @atlaskit/media-client@2.0.1
+- @atlaskit/media-core@30.0.10
+- @atlaskit/media-store@12.0.8
+- @atlaskit/media-ui@11.5.2
+- @atlaskit/media-test-helpers@25.0.0
 
 ## 43.2.9
 
@@ -136,16 +321,16 @@
 
 - [patch][6ad542fe85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6ad542fe85):
 
-  Adding try/catch in async imports for @atlaskit/media-avatar-picker, @atlaskit/media-card, @atlaskit/media-editor, @atlaskit/media-viewer
+Adding try/catch in async imports for @atlaskit/media-avatar-picker, @atlaskit/media-card, @atlaskit/media-editor, @atlaskit/media-viewer
 
 ## 43.2.8
 
 - Updated dependencies [ee804f3eeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee804f3eeb):
-  - @atlaskit/media-card@63.3.9
-  - @atlaskit/media-core@30.0.9
-  - @atlaskit/media-store@12.0.6
-  - @atlaskit/media-test-helpers@24.3.5
-  - @atlaskit/media-client@2.0.0
+- @atlaskit/media-card@63.3.9
+- @atlaskit/media-core@30.0.9
+- @atlaskit/media-store@12.0.6
+- @atlaskit/media-test-helpers@24.3.5
+- @atlaskit/media-client@2.0.0
 
 ## 43.2.7
 
@@ -153,7 +338,7 @@
 
 - [patch][e5acd6d0d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5acd6d0d5):
 
-  Hardcode color in MediaViewer loader to reduce initial bundle size
+Hardcode color in MediaViewer loader to reduce initial bundle size
 
 ## 43.2.6
 
@@ -161,7 +346,7 @@
 
 - [patch][82a76462a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82a76462a4):
 
-  Pinning pdfjs version to known good
+Pinning pdfjs version to known good
 
 ## 43.2.5
 
@@ -169,7 +354,7 @@
 
 - [patch][0b662ba2e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b662ba2e0):
 
-  Use Inactivity Detector component for hiding controls
+Use Inactivity Detector component for hiding controls
 
 ## 43.2.4
 
@@ -177,7 +362,7 @@
 
 - [patch][9f8ab1084b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f8ab1084b):
 
-  Consume analytics-next ts type definitions as an ambient declaration.
+Consume analytics-next ts type definitions as an ambient declaration.
 
 ## 43.2.3
 
@@ -185,9 +370,9 @@
 
 - [patch][6742fbf2cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6742fbf2cc):
 
-  bugfix, fixes missing version.json file- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
+bugfix, fixes missing version.json file- [patch][bbff8a7d87](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bbff8a7d87):
 
-  Fixes bug, missing version.json file
+Fixes bug, missing version.json file
 
 ## 43.2.2
 
@@ -195,14 +380,14 @@
 
 - [patch][18dfac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18dfac7332):
 
-  In this PR, we are:
+In this PR, we are:
 
-  - Re-introducing dist build folders
-  - Adding back cjs
-  - Replacing es5 by cjs and es2015 by esm
-  - Creating folders at the root for entry-points
-  - Removing the generation of the entry-points at the root
-    Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
+- Re-introducing dist build folders
+- Adding back cjs
+- Replacing es5 by cjs and es2015 by esm
+- Creating folders at the root for entry-points
+- Removing the generation of the entry-points at the root
+  Please see this [ticket](https://product-fabric.atlassian.net/browse/BUILDTOOLS-118) or this [page](https://hello.atlassian.net/wiki/spaces/FED/pages/452325500/Finishing+Atlaskit+multiple+entry+points) for further details
 
 ## 43.2.1
 
@@ -210,19 +395,19 @@
 
 - [patch][d0db01b410](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0db01b410):
 
-  TypeScript users of withAnalyticsEvents and withAnalyticsContext are now required to provide props as a generic type. This is so that TypeScript can correctly calculate the props and defaultProps of the returned component.
+TypeScript users of withAnalyticsEvents and withAnalyticsContext are now required to provide props as a generic type. This is so that TypeScript can correctly calculate the props and defaultProps of the returned component.
 
-  Before:
+Before:
 
-  ```typescript
-  withAnalyticsEvents()(Button) as ComponentClass<Props>;
-  ```
+```typescript
+withAnalyticsEvents()(Button) as ComponentClass<Props>;
+```
 
-  After:
+After:
 
-  ```typescript
-  withAnalyticsEvents<Props>()(Button);
-  ```
+```typescript
+withAnalyticsEvents<Props>()(Button);
+```
 
 ## 43.2.0
 

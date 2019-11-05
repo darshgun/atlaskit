@@ -1,5 +1,184 @@
 # @atlaskit/media-client
 
+## 4.0.1
+
+### Patch Changes
+
+- [patch][c0da69b4dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c0da69b4dc):
+
+  [MS-2626] Fix objectToQueryString when there is an object using null as value
+
+## 4.0.0
+
+### Minor Changes
+
+- [minor][cbe5316ac9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cbe5316ac9):
+
+  http failures now return Error instances rather than the Response- [minor][51dfee6d35](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51dfee6d35):
+
+  Image, Binary and Artifact files will be cached for 30 days
+
+### Patch Changes
+
+- [patch][436b46929e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/436b46929e):
+
+  Removed auth credentials from query params in GET requests. Now they are being sent in the heder to help on browser caching.
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-core@31.0.0
+
+## 3.0.1
+
+### Patch Changes
+
+- [patch][f1bbcf3847](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1bbcf3847):
+
+  dont log id when is not a valid uuid in FileFetcher getFileState
+
+## 3.0.0
+
+### Major Changes
+
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+
+**FABDODGEM-13 Editor Damask Release** - [Internal post](http://go.atlassian.com/damask-release)
+
+**BREAKING CHANGES**
+
+- **Media:** Removed deprecated "context" property from media components in favor of "mediaClientConfig". This affects all public media UI components.
+  - https://product-fabric.atlassian.net/browse/MS-2038
+- **Tasks & Decisions:** Removed containerAri for task-decisions components.
+  - https://product-fabric.atlassian.net/browse/ED-7631
+- **Renderer:** Adapts to task-decision changes.
+- **Editor Mobile Bridge:** Adapts to task-decision changes.
+- **Util Data Test:** Adapts to task-decision changes.
+
+---
+
+**Affected Editor Components:**
+
+tables, media, mobile, emoji, tasks & decisions, analytics
+
+**Editor**
+
+- Support nested actions in stage-0 schema; Change DOM representation of actions
+  - https://product-fabric.atlassian.net/browse/ED-7674
+- Updated i18n translations
+  - https://product-fabric.atlassian.net/browse/ED-7750
+- Improved analytics & crash reporting (via a new error boundary)
+  - https://product-fabric.atlassian.net/browse/ED-7766
+  - https://product-fabric.atlassian.net/browse/ED-7806
+- Improvements to heading anchor links.
+  - https://product-fabric.atlassian.net/browse/ED-7849
+  - https://product-fabric.atlassian.net/browse/ED-7860
+- Copy/Paste improvements
+  - https://product-fabric.atlassian.net/browse/ED-7840
+  - https://product-fabric.atlassian.net/browse/ED-7849
+- Fixes for the selection state of Smart links.
+  - https://product-fabric.atlassian.net/browse/ED-7602?src=confmacro
+- Improvements for table resizing & column creation.
+  - https://product-fabric.atlassian.net/browse/ED-7698
+  - https://product-fabric.atlassian.net/browse/ED-7319
+  - https://product-fabric.atlassian.net/browse/ED-7799
+
+**Mobile**
+
+- GASv3 Analytics Events are now relayed from the web to the native context, ready for dispatching.
+  - https://product-fabric.atlassian.net/browse/FM-2502
+- Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
+  - https://product-fabric.atlassian.net/browse/FM-2370
+
+**Media**
+
+- Improved analytics
+  - https://product-fabric.atlassian.net/browse/MS-2036
+  - https://product-fabric.atlassian.net/browse/MS-2145
+  - https://product-fabric.atlassian.net/browse/MS-2416
+  - https://product-fabric.atlassian.net/browse/MS-2487
+- Added shouldOpenMediaViewer property to renderer
+  - https://product-fabric.atlassian.net/browse/MS-2393
+- Implemented analytics for file copy
+  - https://product-fabric.atlassian.net/browse/MS-2036
+- New `media-viewed` event dispatched when media is interacted with via the media card or viewer.
+  - https://product-fabric.atlassian.net/browse/MS-2284
+- Support for `alt` text attribute on media image elements.
+  - https://product-fabric.atlassian.net/browse/ED-7776
+
+**i18n-tools**
+
+Bumped dependencies.
+
+- [major][e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
+
+  ## Breaking change
+
+  > remove Context related method and types from public api in favour of mediaClientConfig
+
+  ### Removed
+
+  ```
+  * WithContextOrMediaClientConfig
+  * WithContextOrMediaClientConfigProps
+  ```
+
+  ### Added
+
+  ```
+  * WithMediaClientConfig
+  * WithMediaClientConfigProps
+  ```
+
+  ### Changed
+
+  **getMediaClient**
+
+  - Before
+
+  > works with passing either mediaClientConfig or context
+
+  ```
+  import {getMediaClient} from '@atlaskit/media-client'
+
+  const mediaClientFromMediaClientConfig = getMediaClient({
+    mediaClientConfig: {
+      authProvider: () => Promise.resolve()
+    }
+  })
+
+  const mediaClientFromContext = getMediaClient({
+    context: {
+      authProvider: () => Promise.resolve()
+    }
+  })
+  ```
+
+  - Now
+
+  > only accepts mediaClientConfig as the only param
+
+  ```
+  import {getMediaClient} from '@atlaskit/media-client'
+
+  const mediaClient = getMediaClient({
+    authProvider: () => Promise.resolve()
+  })
+  ```
+
+### Minor Changes
+
+- [minor][0b62e854d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b62e854d7):
+
+  New event `media-viewed` with type `UploadEventPayloadMap` is added to `globalMediaEventEmitter`- [minor][550d260bfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/550d260bfc):
+
+  Introducing support for alt-text in media.
+
+- Updated dependencies [c3e65f1b9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e65f1b9e):
+  - @atlaskit/media-core@30.0.17
+  - @atlaskit/media-test-helpers@25.2.0
+  - @atlaskit/media-card@66.0.0
+
 ## 2.3.2
 
 ### Patch Changes
@@ -24,7 +203,7 @@
 
   **FABDODGEM-12 Editor Cashmere Release**
 
-  - [Internal post](https://go.atlassian.com/cashmere-release)
+  - [Internal post](http://go.atlassian.com/cashmere-release)
 
   **Affected editor components:**
 

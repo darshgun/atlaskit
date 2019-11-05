@@ -13,23 +13,6 @@ import {
 } from '../internal/analytics';
 import { SuccessHandler } from '../internal/actions';
 
-// See https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
-// https://developer.mozilla.org/en-US/docs/Web/API/Event/returnValue
-interface UnloadEvent extends Event {
-  returnValue: any;
-}
-
-// This is a stop-gap for preventing the user from losing their work. Eventually
-// this will be replaced with drafts/auto-save functionality
-function beforeUnloadHandler(e: UnloadEvent) {
-  // The beforeUnload dialog is implemented inconsistently.
-  // The following is the most cross-browser approach.
-  const confirmationMessage =
-    'You have an unsaved comment. Are you sure you want to leave without saving?';
-  e.returnValue = confirmationMessage; // Gecko, Trident, Chrome 34+
-  return confirmationMessage; // Gecko, WebKit, Chrome <34
-}
-
 export interface Props extends SharedProps {
   id?: string;
   localId?: string;
@@ -118,6 +101,8 @@ export default class Conversation extends React.PureComponent<Props, State> {
       allowFeedbackAndHelpButtons,
       portal,
       canModerateComments,
+      renderAdditionalCommentActions,
+      renderAfterComment,
     } = this.props;
 
     if (!conversation) {
@@ -145,7 +130,12 @@ export default class Conversation extends React.PureComponent<Props, State> {
         onUserClick={onUserClick}
         dataProviders={dataProviders}
         renderComment={props => (
-          <Comment {...props} canModerateComment={canModerateComments} />
+          <Comment
+            {...props}
+            canModerateComment={canModerateComments}
+            renderAdditionalCommentActions={renderAdditionalCommentActions}
+            renderAfterComment={renderAfterComment}
+          />
         )}
         renderEditor={renderEditor}
         objectId={objectId}
@@ -180,6 +170,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       placeholder,
       disableScrollTo,
       allowFeedbackAndHelpButtons,
+      showBeforeUnloadWarning,
     } = this.props;
     const isInline = !!meta;
     const hasConversation = !!conversation;
@@ -200,6 +191,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
           placeholder={placeholder}
           disableScrollTo={disableScrollTo}
           allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
+          showBeforeUnloadWarning={showBeforeUnloadWarning}
         />
       );
     }
@@ -330,24 +322,6 @@ export default class Conversation extends React.PureComponent<Props, State> {
       );
     }
   };
-
-  componentDidUpdate() {
-    if (!this.props.showBeforeUnloadWarning) {
-      return;
-    }
-
-    if (this.state.openEditorCount === 0) {
-      window.removeEventListener('beforeunload', beforeUnloadHandler);
-    } else if (this.state.openEditorCount === 1) {
-      window.addEventListener('beforeunload', beforeUnloadHandler);
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.props.showBeforeUnloadWarning) {
-      window.removeEventListener('beforeunload', beforeUnloadHandler);
-    }
-  }
 
   render() {
     return (

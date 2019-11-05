@@ -62,6 +62,10 @@ describe('JIRA wiki markup - Lists', () => {
       "Steps to reproduce:\r\n* Type something\r\n* Type @\r\n* Type few letters\r\n* mention mark disappears \r\n\r\nExpected:\r\n* Mention mark doesn't disappear",
     ],
     [
+      'should break out the media group but merge separate media groups into single media group if only separated by space',
+      `* This is a media group [^file1.pdf] [^file2.pdf] [^file3.pdf] [^file4.pdf] and text after it [^file5.pdf] [^file6.pdf] [^file7.pdf] [^file8.pdf]`,
+    ],
+    [
       'should break out the media group',
       `* This is a media group [^file.pdf] and text after it`,
     ],

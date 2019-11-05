@@ -2,10 +2,10 @@
 
 module.exports = {
   'packages/core/navigation-next/src': {
-    statements: 64,
-    branches: 64,
-    functions: 64,
-    lines: 64,
+    statements: 60,
+    branches: 60,
+    functions: 60,
+    lines: 60,
   },
   'packages/core/global-navigation/src': {
     statements: 80,
@@ -42,12 +42,6 @@ module.exports = {
     branches: 62,
     functions: 68,
     lines: 76,
-  },
-  'packages/media/media-store/src': {
-    statements: 81,
-    branches: 69,
-    functions: 79,
-    lines: 81,
   },
   'packages/media/media-ui/src': {
     statements: 77,

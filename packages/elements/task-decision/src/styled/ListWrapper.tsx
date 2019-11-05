@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, ClassAttributes, OlHTMLAttributes, ComponentClass } from 'react';
+import { HTMLAttributes, ClassAttributes, OlHTMLAttributes, ComponentClass, BaseHTMLAttributes } from 'react';
 
-const ListWrapper: ComponentClass<OlHTMLAttributes<{}>> = styled.ol`
+const WrapperStyles = `
   /*
     Increasing specificity with double ampersand to ensure these rules take
     priority over the global styles applied to 'ol' elements.
@@ -14,4 +14,16 @@ const ListWrapper: ComponentClass<OlHTMLAttributes<{}>> = styled.ol`
   }
 `;
 
-export default ListWrapper;
+const TaskListWrapper: ComponentClass<
+  HTMLAttributes<HTMLDivElement>
+> = styled.div`
+  ${WrapperStyles}
+`;
+
+const DecisionListWrapper: ComponentClass<
+  HTMLAttributes<HTMLOListElement>
+> = styled.ol`
+  ${WrapperStyles}
+`;
+
+export { TaskListWrapper, DecisionListWrapper };

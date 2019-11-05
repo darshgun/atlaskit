@@ -1,12 +1,19 @@
 import * as React from 'react';
 import uuidV4 from 'uuid/v4';
 import { Subscription } from 'rxjs/Subscription';
+
 import {
   intlShape,
   IntlProvider,
   injectIntl,
   InjectedIntlProps,
 } from 'react-intl';
+
+import {
+  withAnalyticsContext,
+  withAnalyticsEvents,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
 
 import {
   MediaClient,
@@ -21,9 +28,15 @@ import Spinner from '@atlaskit/spinner';
 
 import EditorView from './editorView/editorView';
 import { Blanket, SpinnerWrapper } from './styled';
-import { fileToBase64 } from '../util';
+import { fileToBase64, fireAnalyticsEvent } from '../util';
 import ErrorView from './editorView/errorView/errorView';
-import { Dimensions } from '../common';
+import { CancelInputType, Dimensions, ShapeParameters, Tool } from '../common';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../version.json';
+import { start, end } from 'perf-marks';
 
 export const convertFileNameToPng = (fileName?: string) => {
   if (!fileName) {
@@ -57,7 +70,7 @@ export interface SmartMediaEditorState {
 }
 
 export class SmartMediaEditor extends React.Component<
-  SmartMediaEditorProps & InjectedIntlProps,
+  SmartMediaEditorProps & InjectedIntlProps & WithAnalyticsEventsProps,
   SmartMediaEditorState
 > {
   fileName?: string;
@@ -201,6 +214,7 @@ export class SmartMediaEditor extends React.Component<
       onFinish,
       intl: { formatMessage },
     } = this.props;
+    const { hasBeenEdited } = this.state;
 
     const { collectionName } = identifier;
     const uploadableFile: UploadableFile = {
@@ -240,6 +254,22 @@ export class SmartMediaEditor extends React.Component<
       mediaItemType: 'file',
       occurrenceKey,
     };
+
+    start('MediaEditor.MediaAnnotation.Uploaded');
+
+    fireAnalyticsEvent(
+      {
+        eventType: 'ui',
+        action: 'clicked',
+        actionSubject: 'button',
+        actionSubjectId: 'saveButton',
+        attributes: {
+          annotated: hasBeenEdited,
+        },
+      },
+      this.props.createAnalyticsEvent,
+    );
+
     const uploadingFileStateSubscription = uploadingFileState.subscribe({
       next: fileState => {
         if (fileState.status === 'processing') {
@@ -247,6 +277,27 @@ export class SmartMediaEditor extends React.Component<
             if (onFinish) {
               onFinish(newFileIdentifier);
             }
+            const { duration } = end('MediaEditor.MediaAnnotation.Uploaded');
+
+            fireAnalyticsEvent(
+              {
+                eventType: 'track',
+                action: 'uploaded',
+                actionSubject: 'media',
+                actionSubjectId: id,
+                attributes: {
+                  status: 'success',
+                  fileStatus: fileState.status,
+                  fileMediatype: fileState.mediaType,
+                  fileMimetype: fileState.mimeType,
+                  fileSize: fileState.size,
+                  uploadDurationMsec: duration,
+                  annotated: hasBeenEdited,
+                },
+              },
+              this.props.createAnalyticsEvent,
+            );
+
             this.uploadFileUnsubscribeTimeoutId = window.setTimeout(
               () => uploadingFileStateSubscription.unsubscribe(),
               0,
@@ -261,6 +312,24 @@ export class SmartMediaEditor extends React.Component<
             () => uploadingFileStateSubscription.unsubscribe(),
             0,
           );
+
+          const { duration } = end('MediaEditor.MediaAnnotation.Uploaded');
+          fireAnalyticsEvent(
+            {
+              eventType: 'track',
+              action: 'uploaded',
+              actionSubject: 'media',
+              actionSubjectId: id,
+              attributes: {
+                status: 'fail',
+                failReason: formatMessage(messages.could_not_save_image),
+                fileStatus: fileState.status,
+                uploadDurationMsec: duration,
+                annotated: hasBeenEdited,
+              },
+            },
+            this.props.createAnalyticsEvent,
+          );
         }
       },
     });
@@ -269,8 +338,20 @@ export class SmartMediaEditor extends React.Component<
     }
   };
 
-  private onAnyEdit = () => {
+  private onAnyEdit = (tool: Tool, shapeParameters: ShapeParameters) => {
     const { hasBeenEdited } = this.state;
+
+    fireAnalyticsEvent(
+      {
+        eventType: 'ui',
+        action: 'annotated',
+        actionSubject: 'annotation',
+        actionSubjectId: tool,
+        attributes: shapeParameters,
+      },
+      this.props.createAnalyticsEvent,
+    );
+
     if (!hasBeenEdited) {
       this.setState({ hasBeenEdited: true });
     }
@@ -282,7 +363,22 @@ export class SmartMediaEditor extends React.Component<
 
   private closeAnyway = () => {
     const { onClose } = this.props;
+    const { hasBeenEdited } = this.state;
     this.closeConfirmationDialog();
+
+    fireAnalyticsEvent(
+      {
+        eventType: 'ui',
+        action: 'clicked',
+        actionSubject: 'button',
+        actionSubjectId: 'confirmCancelButton',
+        attributes: {
+          annotated: hasBeenEdited,
+        },
+      },
+      this.props.createAnalyticsEvent,
+    );
+
     if (onClose) {
       onClose();
     }
@@ -322,9 +418,24 @@ export class SmartMediaEditor extends React.Component<
     return null;
   };
 
-  onCancel = () => {
+  onCancel = (input: CancelInputType) => {
     const { hasBeenEdited } = this.state;
     const { onClose } = this.props;
+
+    fireAnalyticsEvent(
+      {
+        eventType: 'ui',
+        action: 'clicked',
+        actionSubject: 'button',
+        actionSubjectId: 'cancelButton',
+        attributes: {
+          annotated: hasBeenEdited,
+          input,
+        },
+      },
+      this.props.createAnalyticsEvent,
+    );
+
     if (hasBeenEdited) {
       this.setState({ closeIntent: true });
     } else if (onClose) {
@@ -385,7 +496,7 @@ export class SmartMediaEditor extends React.Component<
     return (
       <Blanket onClick={this.clickShellNotPass}>
         {this.renderDeleteConfirmation()}
-        <Shortcut keyCode={27} handler={this.onCancel} />
+        <Shortcut keyCode={27} handler={() => this.onCancel('esc')} />
         {content}
       </Blanket>
     );
@@ -394,7 +505,10 @@ export class SmartMediaEditor extends React.Component<
 
 export default class extends React.Component<SmartMediaEditorProps> {
   render() {
-    const Component = injectIntl(SmartMediaEditor);
+    const Component = withAnalyticsContext({
+      packageName,
+      packageVersion,
+    })(withAnalyticsEvents()(injectIntl(SmartMediaEditor)));
     const content = <Component {...this.props} />;
     return this.context.intl ? (
       content

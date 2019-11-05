@@ -1,6 +1,4 @@
-// @ts-ignore: unused variable
-// prettier-ignore
-import { css, Styles, StyledComponentClass } from 'styled-components';
+import { css } from 'styled-components';
 import { colors, gridSize } from '@atlaskit/theme';
 import {
   columnLayoutSharedStyle,

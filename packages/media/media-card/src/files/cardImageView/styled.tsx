@@ -92,7 +92,9 @@ export const ProgressBarWrapper = styled.div`
 `;
 
 export const Overlay = styled.div`
-  ${absolute()} ${size()} border-radius: inherit;
+  ${absolute()} 
+  ${size()} 
+  border-radius: inherit;
   background-color: rgba(9, 30, 66, 0.5);
 `;
 

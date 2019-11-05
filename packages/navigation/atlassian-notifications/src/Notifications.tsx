@@ -1,9 +1,8 @@
 /** @jsx jsx */
-import Spinner from '@atlaskit/spinner';
 import { jsx } from '@emotion/core';
-import { Fragment, useEffect, useState, useRef, SyntheticEvent } from 'react';
+import { useEffect, useState, useRef, SyntheticEvent } from 'react';
 
-import { iframeCSS, spinnerCSS } from './styles';
+import { iframeCSS } from './styles';
 import { NotificationsProps } from './types';
 import { getNotificationsSrc } from './utils';
 
@@ -41,20 +40,13 @@ export const Notifications = (props: NotificationsProps) => {
   };
 
   return (
-    <Fragment>
-      {loading && (
-        <div css={spinnerCSS}>
-          <Spinner size="large" isCompleting={!loading} />
-        </div>
-      )}
-      <iframe
-        {...iframeProps}
-        css={iframeCSS({ loading })}
-        data-testid={testId}
-        onLoad={onLoad}
-        ref={ref}
-        src={getNotificationsSrc({ locale, product })}
-      />
-    </Fragment>
+    <iframe
+      {...iframeProps}
+      css={iframeCSS({ loading })}
+      data-testid={testId}
+      onLoad={onLoad}
+      ref={ref}
+      src={getNotificationsSrc({ locale, product })}
+    />
   );
 };

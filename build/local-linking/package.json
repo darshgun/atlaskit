@@ -1,0 +1,26 @@
+{
+  "name": "@atlaskit/local-linking",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Link atlaskit components into other repos",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "scripts": {
+    "link-pkg": "ts-node link-pkg.ts"
+  },
+  "dependencies": {
+    "@atlaskit/build-utils": "^2.3.0",
+    "bolt": "^0.24.3",
+    "chalk": "^2.1.0",
+    "fs-extra": "^4.0.2",
+    "meow": "^5.0.0",
+    "ts-node": "^6.1.1",
+    "yalc": "Blasz/yalc#copy-dir-fix-0.4"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^4.0.0",
+    "@types/node": "^11.11.7",
+    "@types/strip-ansi": "^5.2.1",
+    "jest-fixtures": "^0.5.0"
+  }
+}

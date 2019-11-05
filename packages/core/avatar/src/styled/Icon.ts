@@ -6,7 +6,8 @@ import { BORDER_WIDTH } from './constants';
 
 interface OuterProps {
   size?: SizeType;
-  bgColor?: string | (() => unknown);
+  bgColor?: string | (() => any);
+  children?: React.ReactNode;
 }
 
 export const Outer = withTheme(styled.span<OuterProps>`

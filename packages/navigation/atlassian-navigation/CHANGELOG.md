@@ -1,5 +1,26 @@
 # @atlaskit/atlassian-navigation
 
+## 0.5.1
+
+### Patch Changes
+
+- [patch][5eb3d1fc75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5eb3d1fc75):
+
+  Removed spinner from the notifications package (handled by the iframe content instead)
+
+## 0.5.0
+
+### Minor Changes
+
+- [minor][48640192dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48640192dc):
+
+  Adds support for white nav. Repositions how the components are displayed. Changes to the theming API to support white nav. Add support for showing site name
+
+## 0.4.9
+
+- Updated dependencies [6e0bcc75ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e0bcc75ac):
+  - @atlaskit/popup@0.2.0
+
 ## 0.4.8
 
 ### Patch Changes

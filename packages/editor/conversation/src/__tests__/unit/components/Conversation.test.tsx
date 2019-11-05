@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   mockConversation,
   MOCK_USERS,
@@ -7,7 +8,6 @@ import {
 import Conversation from '../../../components/Conversation';
 import Editor from '../../../components/Editor';
 import CommentContainer from '../../../containers/Comment';
-import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 
 const objectId = 'ari:cloud:platform::conversation/demo';
 const { comments } = mockConversation;
@@ -40,43 +40,6 @@ describe('Conversation', () => {
     it('should render comments if any', () => {
       // @ts-ignore
       expect(conversation.find(CommentContainer).length).toBe(comments.length);
-    });
-  });
-
-  describe('beforeUnload behavior', () => {
-    let conversationWithWarning: ShallowWrapper;
-
-    beforeEach(() => {
-      window.addEventListener = jest.fn();
-      window.removeEventListener = jest.fn();
-    });
-
-    beforeAll(() => {
-      conversationWithWarning = shallow(
-        <Conversation
-          {...defaultProps}
-          objectId={objectId}
-          conversation={mockConversation}
-          comments={comments}
-          user={user}
-          isExpanded={true}
-          showBeforeUnloadWarning={true}
-        />,
-      );
-    });
-
-    it('should add a beforeunload event listener when an editor is open', () => {
-      conversationWithWarning.setState({ openEditorCount: 1 });
-      conversationWithWarning.update();
-      expect(window.addEventListener).toHaveBeenCalled();
-    });
-
-    it('should remove the beforeunload event listener when no editors are opened', () => {
-      conversationWithWarning.setState({ openEditorCount: 1 });
-      conversationWithWarning.update();
-      conversationWithWarning.setState({ openEditorCount: 0 });
-      conversationWithWarning.update();
-      expect(window.removeEventListener).toHaveBeenCalled();
     });
   });
 
@@ -139,6 +102,30 @@ describe('Conversation', () => {
           />,
         );
         expect(conversation.find(Editor).length).toBe(0);
+      });
+    });
+
+    describe('beforeUnload behavior', () => {
+      let editor: ShallowWrapper;
+
+      beforeEach(() => {
+        window.addEventListener = jest.fn();
+        window.removeEventListener = jest.fn();
+      });
+
+      const props = {
+        showBeforeUnloadWarning: true,
+      };
+
+      beforeAll(() => {
+        editor = shallow(<Editor {...props} />);
+      });
+
+      it('should remove the beforeunload event listener when set showBeforeUnloadWarning as False', () => {
+        editor.setProps({ showBeforeUnloadWarning: false });
+        editor.update();
+
+        expect(window.removeEventListener).toHaveBeenCalled();
       });
     });
   });

@@ -29,7 +29,7 @@ export class BlockCardComponent extends React.PureComponent<SmartCardProps> {
 
   onResolve = (data: { url?: string; title?: string }) => {
     const { getPos, view } = this.props;
-    if (!getPos) {
+    if (!getPos || typeof getPos === 'boolean') {
       return;
     }
 

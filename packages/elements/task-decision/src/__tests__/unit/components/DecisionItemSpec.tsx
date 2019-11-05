@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import DecisionItem from '../../../components/DecisionItem';
-import { AttributionWrapper, ContentWrapper } from '../../../styled/Item';
+import { ContentWrapper } from '../../../styled/Item';
 import { Placeholder } from '../../../styled/Placeholder';
-import { getParticipants } from '../_test-data';
 
 describe('<DecisionItem/>', () => {
   it('should render children', () => {
@@ -44,24 +43,6 @@ describe('<DecisionItem/>', () => {
         </DecisionItem>,
       );
       expect(component.find(Placeholder).length).toEqual(0);
-    });
-  });
-
-  describe('attribution', () => {
-    const users = getParticipants(2);
-    const user1 = users[0];
-    const user2 = users[1];
-
-    it('Creator and lastUpdater, done, inline - no attribution', () => {
-      const component = mount(
-        <DecisionItem
-          appearance="inline"
-          creator={user1}
-          lastUpdater={user2}
-        />,
-      );
-      const attributionWrapper = component.find(AttributionWrapper);
-      expect(attributionWrapper.length).toEqual(0);
     });
   });
 });

@@ -1,5 +1,21 @@
 # @atlaskit/modal-dialog
 
+## 10.3.5
+
+### Patch Changes
+
+- [patch][b39742b616](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b39742b616):
+
+  fixed type for the actions props
+
+## 10.3.4
+
+### Patch Changes
+
+- [patch][f86839ca4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f86839ca4e):
+
+  @atlaskit/portal had an issue in IE11 and this is fixed in 3.1.2
+
 ## 10.3.3
 
 ### Patch Changes

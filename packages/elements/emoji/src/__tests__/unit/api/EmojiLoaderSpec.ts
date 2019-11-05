@@ -16,8 +16,22 @@ const header = (code: string | number): SecurityOptions => ({
   },
 });
 
-const getSecurityHeader = (call: any) =>
-  call[1].headers.get(defaultSecurityHeader);
+type MockFetchResponse = Array<
+  | string
+  | {
+      headers: any;
+      credentials: string;
+      request: any;
+      identifier: string;
+      isUnmatched: any;
+    }
+>;
+
+const getSecurityHeader = (call: MockFetchResponse) => {
+  const data = call[1];
+  if (typeof data === 'string') return undefined;
+  return data.headers[defaultSecurityHeader];
+};
 
 const defaultSecurityCode = '10804';
 const defaultAltScaleParam = 'altScale=XHDPI';
@@ -157,7 +171,7 @@ describe('EmojiLoader', () => {
         const secondCall = fetchMock.lastCall('auth2');
         // eslint-disable-next-line
         expect(secondCall).not.toBeUndefined();
-        expect(getSecurityHeader(secondCall)).toEqual('666');
+        expect(getSecurityHeader(secondCall)).toEqual(666);
 
         checkOrder([...providerData1], emojiResponse.emojis);
       });

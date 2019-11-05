@@ -20,7 +20,7 @@ const centerBreakoutButtonQuery = `div[aria-label="${
 
 BrowserTestCase(
   'breakout: should be able to switch to wide mode',
-  { skip: [] },
+  {},
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 
@@ -43,7 +43,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'breakout: should be able to switch to full-width mode',
-  { skip: [] },
+  {},
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
 

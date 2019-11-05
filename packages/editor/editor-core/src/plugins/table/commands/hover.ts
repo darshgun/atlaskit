@@ -6,9 +6,10 @@ import {
   updatePluginStateDecorations,
   createCellHoverDecoration,
   createControlsHoverDecoration,
+  createColumnLineResize,
   getMergedCellsPositions,
 } from '../utils';
-import { TableDecorations, Cell } from '../types';
+import { TableDecorations, Cell, CellColumnPositioning } from '../types';
 // #endregion
 
 // #region Utils
@@ -153,6 +154,32 @@ export const clearHoverSelection = () =>
         state,
         [],
         TableDecorations.ALL_CONTROLS_HOVER,
+      ),
+    },
+  }));
+
+export const showResizeHandleLine = (
+  cellColumnPositioning: CellColumnPositioning,
+) =>
+  createCommand(state => ({
+    type: 'SHOW_RESIZE_HANDLE_LINE',
+    data: {
+      decorationSet: updatePluginStateDecorations(
+        state,
+        createColumnLineResize(state.selection, cellColumnPositioning),
+        TableDecorations.COLUMN_RESIZING_HANDLE_LINE,
+      ),
+    },
+  }));
+
+export const hideResizeHandleLine = () =>
+  createCommand(state => ({
+    type: 'HIDE_RESIZE_HANDLE_LINE',
+    data: {
+      decorationSet: updatePluginStateDecorations(
+        state,
+        [],
+        TableDecorations.COLUMN_RESIZING_HANDLE_LINE,
       ),
     },
   }));
