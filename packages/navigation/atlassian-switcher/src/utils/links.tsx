@@ -6,7 +6,6 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import SettingsGlyph from '@atlaskit/icon/glyph/settings';
 import MarketplaceGlyph from '@atlaskit/icon/glyph/marketplace';
 
-import { AvatarPropTypes } from '@atlaskit/avatar';
 import {
   BitbucketIcon,
   ConfluenceIcon,
@@ -30,6 +29,7 @@ import {
   CurrentSite,
   JoinableSite,
   JoinableSiteUser,
+  AvatarPropTypes,
 } from '../types';
 import messages from './messages';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';

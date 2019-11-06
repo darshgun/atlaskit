@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { AvatarPropTypes } from '@atlaskit/avatar';
 import AvatarGroup from '@atlaskit/avatar-group';
 
+import { AvatarPropTypes } from '../types';
 import {
   createAndFireNavigationEvent,
   withAnalyticsEvents,

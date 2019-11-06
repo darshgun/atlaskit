@@ -159,6 +159,14 @@ export interface JoinableSiteUser {
   relevance?: number;
 }
 
+export interface JoinableSiteUserAvatarPropTypes {
+  name: string;
+  src: string;
+  appearance: string;
+  size: string;
+  enableTooltip: boolean;
+}
+
 export interface JoinableSite {
   cloudId: string;
   displayName: string;
