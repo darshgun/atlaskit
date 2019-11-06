@@ -34,7 +34,7 @@
     "deep-equal": "^1.0.1",
     "exenv": "^1.2.2",
     "pdfjs-dist": "2.0.489",
-    "perf-marks": "^1.0.1",
+    "perf-marks": "^1.5.0",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {

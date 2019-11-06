@@ -50,9 +50,13 @@ interface BasePayload {
 type AdditionalPayloadAttributes =
   | {}
   | {
-      status: 'success' | 'fail';
+      status: 'success';
       uploadDurationMsec: number;
-      failReason?: any;
+    }
+  | {
+      status: 'fail';
+      uploadDurationMsec: number;
+      failReason: any;
     };
 
 type AnalyticsPayload = GasCorePayload &
@@ -168,14 +172,11 @@ export class LocalUploadComponentReact<
 
     const { duration = -1 } = end(`MediaPicker.fireUpload.${id}`);
     this.createAndFireAnalyticsEvent({
-      ...basePayload(
-        { size, type },
-        {
-          status: 'fail',
-          failReason: payload.error.description,
-          uploadDurationMsec: duration,
-        },
-      ),
+      ...basePayload({ size, type }, {
+        status: 'fail',
+        failReason: payload.error.description,
+        uploadDurationMsec: duration,
+      } as AdditionalPayloadAttributes),
       action: 'uploaded',
       eventType: TRACK_EVENT_TYPE,
     });
