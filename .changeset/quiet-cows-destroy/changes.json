@@ -1,0 +1,6 @@
+{
+  "releases": [
+    { "name": "@atlaskit/global-navigation", "type": "patch" }
+  ],
+  "dependents": []
+}
