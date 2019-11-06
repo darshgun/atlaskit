@@ -62,7 +62,7 @@ export const themes: Themes = [
           boxShadow: '0 0 0 2px #2684FF',
         },
         hover: {
-          color: '#42526E',
+          color: '#0052CC',
           backgroundColor: 'rgba(222, 235, 255, 0.9)',
           boxShadow: '',
         },
@@ -94,7 +94,7 @@ export const themes: Themes = [
           boxShadow: '0 0 0 2px #2684FF',
         },
         hover: {
-          color: '#344563',
+          color: '#0052CC',
           backgroundColor: 'rgba(222, 235, 255, 0.9)',
           boxShadow: '0 0 0 2px transparent',
         },

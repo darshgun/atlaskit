@@ -104,10 +104,16 @@ export const messages = defineMessages({
     defaultMessage: 'Link copied to clipboard',
     description: 'Default text for the copied link message',
   },
-  capabilitiesInfoMessage: {
-    id: 'fabric.elements.share.form.capabilities.info.message',
+  infoMessagePendingInvite: {
+    id: 'fabric.elements.share.form.info.message.pending.invite',
     defaultMessage: 'Your invite will be sent to an admin for approval',
-    description: 'Default text for capabilities info',
+    description:
+      'Info text when at least one invite will be sent to an admin for approval',
+  },
+  infoMessageDirectInvite: {
+    id: 'fabric.elements.share.form.info.message.direct.invite',
+    defaultMessage: 'People without access will be sent an invitation to join',
+    description: 'Info text when invitees will invited directly',
   },
   shareFailureIconLabel: {
     id: 'fabric.elements.share.failure.icon.label',

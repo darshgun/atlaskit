@@ -1,6 +1,7 @@
 export { generateTheme } from './themeGenerator';
 export { ThemeProvider } from './ThemeProvider';
 export { atlassianTheme, defaultTheme } from './themes';
+export { _itemTheme } from './_itemTheme';
 export {
   CreateCSS,
   IconButtonCSS,
@@ -15,3 +16,4 @@ export {
   GenerateThemeArgs,
 } from './types';
 export { useTheme } from './useTheme';
+export { hexToRGBA } from './themeHelpers';

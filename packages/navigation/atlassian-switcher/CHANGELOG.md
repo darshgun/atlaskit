@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.8
+
+### Patch Changes
+
+- [patch][60d6636f32](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60d6636f32):
+
+  Fixing types for the switcher HOCs
+
 ## 4.6.7
 
 ### Patch Changes

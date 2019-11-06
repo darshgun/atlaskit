@@ -21,7 +21,7 @@ export const searchIconSkeletonCSS = searchIconCSS;
 
 export const searchInputContainerCSS = {
   marginLeft: '20px',
-  paddingRight: `${gridSize}px`,
+  marginRight: `${gridSize}px`,
   position: 'relative' as const,
   ...actionSectionDesktopCSS,
 };
