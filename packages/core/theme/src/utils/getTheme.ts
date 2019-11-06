@@ -1,5 +1,9 @@
-import { DEFAULT_THEME_MODE } from '../constants';
 import { Theme, ThemeProps } from '../types';
+
+// ideally this would be fetched from ../constants but that causes a
+// circular dep loop. This will be refactored as part of a breaking
+// change in the future.
+const DEFAULT_THEME_MODE = 'light'
 
 // Resolves the different types of theme objects in the current API
 export default function getTheme(props?: ThemeProps): Theme {
