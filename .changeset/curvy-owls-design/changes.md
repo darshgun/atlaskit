@@ -1,1 +1,0 @@
-Use explicit imports in `NavigationProvider` to reduce the size of the `NavigationProvider` entry point
