@@ -63,7 +63,7 @@ import { getDefaultMediaClientConfig } from '@atlaskit/media-test-helpers/fakeMe
 describe('paste plugins', () => {
   const createEditor = createEditorFactory();
   let providerFactory: ProviderFactory;
-  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent>;
+  let createAnalyticsEvent: jest.MockInstance<UIAnalyticsEvent, any>;
 
   const editor = (doc: any, props: Partial<EditorProps> = {}) => {
     const contextIdentifierProvider = storyContextIdentifierProviderFactory();
