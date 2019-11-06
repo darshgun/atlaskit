@@ -7,6 +7,11 @@ import { State } from '../../domain';
 import { isHandleCloudFetchingEventAction } from '../../actions/handleCloudFetchingEvent';
 import { MediaFile } from '../../../types';
 import { HandlerResult } from '.';
+import {
+  FailurePayload,
+  SuccessPayload,
+} from '../../../components/localUploadReact';
+import { RemoteUploadFailPayload } from '../../tools/websocket/upload/wsUploadEvents';
 
 const commonPayload = {
   actionSubject: 'mediaUpload',
@@ -47,7 +52,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             fileAttributes: fileAttributes(file),
             status: 'success',
             uploadDurationMsec,
-          },
+          } as SuccessPayload,
           eventType: TRACK_EVENT_TYPE,
         },
       ];
@@ -60,7 +65,8 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
             fileAttributes: fileAttributes(file),
             status: 'fail',
             uploadDurationMsec,
-          },
+            failReason: (payload as RemoteUploadFailPayload).description,
+          } as FailurePayload,
           eventType: TRACK_EVENT_TYPE,
         },
       ];
