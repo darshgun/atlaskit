@@ -4,7 +4,8 @@ import { Component, useState } from 'react';
 import Popup from '@atlaskit/popup';
 import Spinner from '@atlaskit/spinner';
 import AtlassianSwitcher from '@atlaskit/atlassian-switcher';
-import { IconButton } from '../../src/components/IconButton';
+
+import { AppSwitcher } from '../../src';
 import {
   mockEndpoints,
   REQUEST_FAST,
@@ -13,7 +14,6 @@ import {
   withAnalyticsLogger,
   withIntlProvider,
 } from '../../../atlassian-switcher/examples/helpers';
-import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 
 const spinnerCSS = {
   display: 'flex',
@@ -101,10 +101,9 @@ export const SwitcherPopup = () => {
       isOpen={isOpen}
       onClose={onClose}
       trigger={triggerProps => (
-        <IconButton
+        <AppSwitcher
           onClick={onClick}
-          tooltip="Show more..."
-          icon={<AppSwitcherIcon label={''} />}
+          tooltip="Switch to..."
           {...triggerProps}
         />
       )}

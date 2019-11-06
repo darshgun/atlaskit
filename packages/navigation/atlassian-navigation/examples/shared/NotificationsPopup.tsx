@@ -20,7 +20,7 @@ const NotificationsContent = () => (
   <div css={wrapperCSS}>
     <NotificationsIframe
       // url="https://start.stg.atlassian.com/notificationsDrawer/iframe.html?scope=user&product=uchi&locale=en"
-      url="https://start.stg.atlassian.com/notificationsDrawer/iframe.html"
+      _url="https://start.stg.atlassian.com/notificationsDrawer/iframe.html"
       locale="en"
       product="jira"
       testId="jira-notifications"
