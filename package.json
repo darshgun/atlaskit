@@ -98,6 +98,7 @@
     "@types/fetch-mock": "^6.0.3",
     "@types/flushable": "^1.0.1",
     "@types/fs-extra": "^4.0.0",
+    "@types/html-webpack-plugin": "^3.2.1",
     "@types/jest": "^24.0.18",
     "@types/json5": "^0.0.30",
     "@types/lodash.chunk": "^4.2.3",

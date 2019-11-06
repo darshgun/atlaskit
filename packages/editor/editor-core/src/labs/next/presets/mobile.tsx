@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention/resource';
+import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
 import {
   tablesPlugin,
@@ -37,6 +38,7 @@ interface EditorPresetMobileProps {
   placeholder?: string;
   mentionProvider?: Promise<MentionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
+  taskDecisionProvider?: Promise<TaskDecisionProvider>;
   media?: {
     provider?: Promise<MediaProvider>;
     picker?: CustomMediaPicker;
