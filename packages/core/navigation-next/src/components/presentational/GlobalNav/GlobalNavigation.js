@@ -21,6 +21,8 @@ const THROTTLE_INTERVAL = 100;
 export default class GlobalNavigation extends Component<GlobalNavigationProps> {
   throttledListener = throttle(this.listener, THROTTLE_INTERVAL);
 
+  vh = 0;
+
   listener() {
     this.vh = window.innerHeight * 0.01;
     // $FlowFixMe - document.documentElement will be HTMLElement, not null
