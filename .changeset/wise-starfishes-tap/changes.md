@@ -1,1 +1,0 @@
-global-navigation height resizes for mobile browsers
