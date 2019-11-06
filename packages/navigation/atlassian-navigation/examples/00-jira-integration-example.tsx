@@ -237,7 +237,11 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 const primaryItems = [
   <PrimaryButton href="#">Home</PrimaryButton>,
   <PrimaryDropdown content={ProjectsContent} text="Projects" />,
-  <PrimaryDropdown isHighlighted content={FiltersContent} text="Filters &amp; issues" />,
+  <PrimaryDropdown
+    isHighlighted
+    content={FiltersContent}
+    text="Filters &amp; issues"
+  />,
   <PrimaryDropdown content={DashboardsContent} text="Dashboards" />,
   <PrimaryDropdown content={AppsContent} text="Apps" />,
 ];
