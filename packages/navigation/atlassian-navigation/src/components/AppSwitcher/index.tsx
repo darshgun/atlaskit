@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
 import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 
 import { IconButton } from '../IconButton';
 import { AppSwitcherProps } from './types';
 
-export const AppSwitcher = (props: AppSwitcherProps) => {
-  const { tooltip, ...iconButtonProps } = props;
+export const AppSwitcher = forwardRef(
+  (props: AppSwitcherProps, ref: Ref<any>) => {
+    const { tooltip, ...iconButtonProps } = props;
 
-  return (
-    <IconButton
-      icon={<AppSwitcherIcon label={tooltip} />}
-      tooltip={tooltip}
-      {...iconButtonProps}
-    />
-  );
-};
+    return (
+      <IconButton
+        icon={<AppSwitcherIcon label={tooltip} />}
+        tooltip={tooltip}
+        ref={ref}
+        {...iconButtonProps}
+      />
+    );
+  },
+);

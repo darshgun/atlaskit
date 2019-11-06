@@ -8,6 +8,10 @@ import * as colors from '@atlaskit/theme/colors';
 
 import type { ItemTheme } from '../types';
 
+// TEMPORARY
+// if you change the themeNamespace below, ensure you also change it
+// in @atlaskit/atlassian/navigation/src/theme/_itemTheme.ts
+// https://ecosystem.atlassian.net/browse/DS-6794
 export const themeNamespace = '@atlaskit-shared-theme/item';
 
 // Used for Group titles and Item descriptions

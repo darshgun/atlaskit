@@ -63,15 +63,17 @@ export const isHighlightedCSS = (
   height: '100%',
   position: 'relative',
 
-  '&:after': {
-    position: 'absolute',
-    bottom: 0,
-    left: gridSize / 2,
-    right: gridSize / 2,
-    content: isHighlighted ? '""' : '',
-    height: gridSize / 2,
-    backgroundColor: primaryButton.selected.color,
-    borderTopLeftRadius: 1,
-    borderTopRightRadius: 1,
-  },
+  ...(isHighlighted && {
+    '&:after': {
+      position: 'absolute',
+      bottom: 0,
+      left: gridSize / 2,
+      right: gridSize / 2,
+      content: '""',
+      height: gridSize / 2,
+      backgroundColor: primaryButton.selected.color,
+      borderTopLeftRadius: 1,
+      borderTopRightRadius: 1,
+    },
+  }),
 });

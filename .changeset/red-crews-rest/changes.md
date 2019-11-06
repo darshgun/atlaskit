@@ -1,0 +1,1 @@
+Adding a private _url prop for notifications to enable testing/examples

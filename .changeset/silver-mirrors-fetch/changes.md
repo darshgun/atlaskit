@@ -1,0 +1,1 @@
+Fixing types for the switcher HOCs
