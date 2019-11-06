@@ -1,0 +1,1 @@
+Fix withMediaClient to allow external files to work when mediaClientConfig is not defined
