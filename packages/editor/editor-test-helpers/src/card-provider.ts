@@ -25,4 +25,4 @@ export class EditorTestCardProvider extends EditorCardProvider {
 }
 
 export const cardProvider = new EditorTestCardProvider();
-export const cardProviderStaging = new EditorTestCardProvider('prod');
+export const cardProviderStaging = new EditorTestCardProvider('staging');
