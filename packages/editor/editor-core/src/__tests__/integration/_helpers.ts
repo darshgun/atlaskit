@@ -16,6 +16,15 @@ import { TableCssClassName } from '../../plugins/table/types';
  * And, don't get too fancy with it ;)
  */
 export const getDocFromElement = (el: any) => el.pmViewDesc.node.toJSON();
+
+export const expectToMatchDocument = async (page: any, testName: string) => {
+  const doc = await page.browser.execute(() => {
+    return (window as any).__documentToJSON();
+  });
+
+  expect(doc).toMatchCustomDocSnapshot(testName);
+};
+
 export const editable = '.ProseMirror';
 export const LONG_WAIT_FOR = 5000;
 export const typeAheadPicker = '.fabric-editor-typeahead';
