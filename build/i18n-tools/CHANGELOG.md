@@ -1,5 +1,13 @@
 # @atlaskit/i18n-tools
 
+## 0.6.1
+
+### Patch Changes
+
+- [patch][f081cdac54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f081cdac54):
+
+  Upgrade prettier from 1.14 to 1.18
+
 ## 0.6.0
 
 ### Minor Changes

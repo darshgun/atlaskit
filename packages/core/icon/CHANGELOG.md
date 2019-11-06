@@ -1,5 +1,13 @@
 # @atlaskit/icon
 
+## 19.0.9
+
+### Patch Changes
+
+- [patch][f081cdac54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f081cdac54):
+
+  Upgrade prettier from 1.14 to 1.18
+
 ## 19.0.8
 
 ### Patch Changes
