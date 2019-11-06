@@ -53,60 +53,51 @@ export const renderExtension = (
   );
 };
 
-class Extension extends React.Component<Props & OverflowShadowProps> {
-  renderContent = (result?: JSX.Element | ADNode[] | null) => {
-    const {
-      serializer,
-      rendererContext,
-      text,
-      layout = 'default',
-      handleRef,
-      shadowClassNames,
-    } = this.props;
-
-    try {
-      switch (true) {
-        case result && React.isValidElement(result):
-          // Return the result directly if it's a valid JSX.Element
-          return renderExtension(result, layout, {
-            handleRef,
-            shadowClassNames,
-          });
-        case !!result:
-          // We expect it to be Atlassian Document here
-          const nodes = Array.isArray(result) ? result : [result];
-          return renderNodes(
-            nodes as ADNode[],
-            serializer,
-            rendererContext.schema,
-            'div',
-          );
-      }
-    } catch (e) {
-      /** We don't want this error to block renderer */
-      /** We keep rendering the default content */
-    }
-    // Always return default content if anything goes wrong
-    return renderExtension(text || 'extension', layout, {
-      handleRef,
-      shadowClassNames,
-    });
-  };
-
-  render() {
-    const { providers } = this.props;
-
-    if (!providers) {
-      return this.renderContent();
-    }
-
-    return (
-      <ExtensionRenderer {...this.props} type="extension">
-        {({ result }) => this.renderContent(result)}
-      </ExtensionRenderer>
-    );
-  }
-}
+const Extension: React.StatelessComponent<
+  Props & OverflowShadowProps
+> = props => {
+  const {
+    serializer,
+    rendererContext,
+    text,
+    layout = 'default',
+    handleRef,
+    shadowClassNames,
+  } = props;
+  return (
+    <ExtensionRenderer {...props} type="extension">
+      {({ result }) => {
+        try {
+          switch (true) {
+            case result && React.isValidElement(result):
+              // Return the result directly if it's a valid JSX.Element
+              return renderExtension(result, layout, {
+                handleRef,
+                shadowClassNames,
+              });
+            case !!result:
+              // We expect it to be Atlassian Document here
+              const nodes = Array.isArray(result) ? result : [result];
+              return renderNodes(
+                nodes as ADNode[],
+                serializer,
+                rendererContext.schema,
+                'div',
+              );
+          }
+        } catch (e) {
+          /** We don't want this error to block renderer */
+          /** We keep rendering the default content */
+        }
+        // Always return default content if anything goes wrong
+        return renderExtension(text || 'extension', layout, {
+          handleRef,
+          shadowClassNames,
+        });
+      }}
+    </ExtensionRenderer>
+  );
+};
 
 export default overflowShadow(Extension, {
   overflowSelector: `.${RendererCssClassName.EXTENSION_OVERFLOW_CONTAINER}`,

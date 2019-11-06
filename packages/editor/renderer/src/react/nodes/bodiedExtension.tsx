@@ -23,50 +23,37 @@ export interface Props {
   layout?: ExtensionLayout;
 }
 
-export default class BodiedExtension extends React.Component<Props> {
-  renderContent = (result?: JSX.Element | ADNode[] | null) => {
-    const {
-      serializer,
-      rendererContext,
-      children,
-      layout = 'default',
-    } = this.props;
+const BodiedExtension: React.StatelessComponent<Props> = props => {
+  const { serializer, rendererContext, children, layout = 'default' } = props;
 
-    try {
-      switch (true) {
-        case result && React.isValidElement(result):
-          // Return the content directly if it's a valid JSX.Element
-          return renderExtension(result, layout);
-        case !!result:
-          // We expect it to be Atlassian Document here
-          const nodes = Array.isArray(result) ? result : [result];
-          return renderNodes(
-            nodes as ADNode[],
-            serializer,
-            rendererContext.schema,
-            'div',
-          );
-      }
-    } catch (e) {
-      /** We don't want this error to block renderer */
-      /** We keep rendering the default content */
-    }
+  return (
+    <ExtensionRenderer {...props} type="bodiedExtension">
+      {({ result }) => {
+        try {
+          switch (true) {
+            case result && React.isValidElement(result):
+              // Return the content directly if it's a valid JSX.Element
+              return renderExtension(result, layout);
+            case !!result:
+              // We expect it to be Atlassian Document here
+              const nodes = Array.isArray(result) ? result : [result];
+              return renderNodes(
+                nodes as ADNode[],
+                serializer,
+                rendererContext.schema,
+                'div',
+              );
+          }
+        } catch (e) {
+          /** We don't want this error to block renderer */
+          /** We keep rendering the default content */
+        }
 
-    // Always return default content if anything goes wrong
-    return renderExtension(children, layout);
-  };
+        // Always return default content if anything goes wrong
+        return renderExtension(children, layout);
+      }}
+    </ExtensionRenderer>
+  );
+};
 
-  render() {
-    const { providers } = this.props;
-
-    if (!providers) {
-      return this.renderContent();
-    }
-
-    return (
-      <ExtensionRenderer {...this.props} type="bodiedExtension">
-        {({ result }) => this.renderContent(result)}
-      </ExtensionRenderer>
-    );
-  }
-}
+export default BodiedExtension;
