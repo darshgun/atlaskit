@@ -119,22 +119,26 @@ client.getBooleanValue('my.detailed.boolean.flag', {
     myAttribute1: 'whatever',
     myAttribute2: 2,
     myAttribute3: true,
-  }
+  },
 });
 ```
 
 If you are firing the exposure event manually, the 3rd argument (optional) includes the custom attributes. This object accepts strings, numbers or booleans. Reserved attributes can't be used, like `flagKey`, `reason`, `ruleId` or `value`.
 
 ```javascript
-client.trackExposure('my.detailed.boolean.flag', {
-  value: true,
-  explanation: {
-    kind: 'RULE_MATCH',
-    ruleId: 'aaaa-vbbbb-ccccc'
-  }
-}, {
-  myAttribute1: 'whatever',
-  myAttribute2: 2,
-  myAttribute3: true,
-});
+client.trackExposure(
+  'my.detailed.boolean.flag',
+  {
+    value: true,
+    explanation: {
+      kind: 'RULE_MATCH',
+      ruleId: 'aaaa-vbbbb-ccccc',
+    },
+  },
+  {
+    myAttribute1: 'whatever',
+    myAttribute2: 2,
+    myAttribute3: true,
+  },
+);
 ```

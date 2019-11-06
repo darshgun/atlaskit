@@ -20,6 +20,7 @@ A couple of steps are required to set linting integration within vscode.
 
 1. Download the stylelint vscode extension: <https://marketplace.visualstudio.com/items?itemName=shinnn.stylelint>
 2. Add the following rules to your vscode workspace settings (or user settings if you prefer):
+
 ```
 {
   "css.validate": false,
@@ -31,6 +32,7 @@ A couple of steps are required to set linting integration within vscode.
   ],
 }
 ```
+
 3. Reload your window
 
 The additionalDocumentSelectors setting is required to make stylelint run in javascript and typescript files.
@@ -41,11 +43,12 @@ Below are some common linting issues that may be hard to track down due to minor
 
 ### Unknown word - CssSyntaxError
 
-This error will most often be accompanied with a line number that is incorrect. The most likely cause for this will be non-primary/incorrect usage of the styled-components [css](https://www.styled-components.com/docs/api#css) helper function. 
+This error will most often be accompanied with a line number that is incorrect. The most likely cause for this will be non-primary/incorrect usage of the styled-components [css](https://www.styled-components.com/docs/api#css) helper function.
 
 Although styled-components will allow css tagged template literals to work in more places than they need to be used, the linter has trouble with this.
 
 #### Option 1 - Change css body to declare property name and values
+
 The linter requires the css function's template literal to contain both a property and a value rather than just a value.
 For example,
 
@@ -124,25 +127,24 @@ const Header = styled.div`
     p.showKeyline ? css`0 ${keylineHeight}px 0 0 ${keylineColor}` : 'none'};
   ...
 `;
- ```
+```
 
- Technically, the box-shadow declaration could be abstracted into a function which included the property name but lets pretend that we could not do that for some reason. Perhaps we just want inline arrow functions.
+Technically, the box-shadow declaration could be abstracted into a function which included the property name but lets pretend that we could not do that for some reason. Perhaps we just want inline arrow functions.
 
- We can change it to:
+We can change it to:
 
- ```
+```
 const Header = styled.div`
-  ...
-  box-shadow: ${p =>
-    p.showKeyline ? `0 ${keylineHeight}px 0 0 ${keylineColor(p)}` : 'none'};
-  ...
+ ...
+ box-shadow: ${p =>
+   p.showKeyline ? `0 ${keylineHeight}px 0 0 ${keylineColor(p)}` : 'none'};
+ ...
 `;
- ```
+```
 
- We're now just calling the keylineColor function directly with the props that were passed in to the outer function interpolation.
+We're now just calling the keylineColor function directly with the props that were passed in to the outer function interpolation.
 
-
-###  Missed semicolon CssSyntaxError
+### Missed semicolon CssSyntaxError
 
 This error is pretty self-explanatory, a semi-colon is missing at the end of a css declaration. This will now result in malformed css in styled components >= 2 (until [this styled-components commit](https://github.com/styled-components/styled-components/commit/0fb244f9ac41505801ad817d89794ade355201af) is released so these need to be addressed.
 
@@ -186,4 +188,3 @@ Some rules have been disabled via the stylelint-config-styled-components and sty
 We have also manually disabled some rules in our [.stylelintrc](../../.stylelintrc) that we thought didn't add value or would have required a lot of change to existing code.
 
 Finally, some rules didn't work well with typescript so we have disabled them for now although they may be fixed in a future update, see <https://www.styled-components.com/docs/tooling#known-issues>.
-

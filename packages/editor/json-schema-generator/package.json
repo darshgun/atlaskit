@@ -21,11 +21,11 @@
     "@types/json5": "^0.0.30",
     "@types/meow": "^5.0.0",
     "@types/mkdirp": "^0.5.2",
-    "@types/prettier": "^1.15.2",
+    "@types/prettier": "^1.18.3",
     "json5": "^2.1.0",
     "meow": "^5.0.0",
     "mkdirp": "^0.5.1",
-    "prettier": "^1.14.3",
+    "prettier": "^1.18.2",
     "ts-node": "^6.1.1",
     "typescript": "~3.6.2"
   },

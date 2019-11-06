@@ -1,10 +1,9 @@
-
 # Calendar
 
 The calendar component displays a simple calendar that can be:
 
-* Used to display a calendar of dates.
-* Composed with other components to build a datepicker.
+- Used to display a calendar of dates.
+- Composed with other components to build a datepicker.
 
 ## Installation
 

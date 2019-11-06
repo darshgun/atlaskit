@@ -30,4 +30,4 @@ in this package. Make sure to rebuild the `reduced-ui-pack` sprite as outlined i
 the README.md file included within that package.
 
 If your icon is used only in a specific context or product, place it in
-  `/icon/src/icons/subfolder` and it will be namespaced appropriately.
+`/icon/src/icons/subfolder` and it will be namespaced appropriately.

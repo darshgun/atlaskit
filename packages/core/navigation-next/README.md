@@ -1,5 +1,4 @@
-Navigation-next
-========
+# Navigation-next
 
 # Entrypoints
 
