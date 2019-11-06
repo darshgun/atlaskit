@@ -57,7 +57,7 @@
     "@atlaskit/logo": "^12.1.8",
     "@atlaskit/media-core": "^31.0.0",
     "@atlaskit/media-test-helpers": "^25.2.2",
-    "@atlaskit/navigation-next": "^7.0.0",
+    "@atlaskit/navigation-next": "^7.0.4",
     "@atlaskit/profilecard": "^12.3.3",
     "@atlaskit/util-data-test": "^13.0.0",
     "@atlaskit/visual-regression": "^0.1.3",
