@@ -1,5 +1,13 @@
 # @atlaskit/share
 
+## 0.6.15
+
+### Patch Changes
+
+- [patch][08bd743fa1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08bd743fa1):
+
+  Show invite message for admins and trusted users sharing to an email
+
 ## 0.6.14
 
 - Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):
