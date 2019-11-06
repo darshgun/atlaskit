@@ -1,1 +1,0 @@
-Preventing circular dep within theme
