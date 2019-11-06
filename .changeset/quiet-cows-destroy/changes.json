@@ -1,9 +1,6 @@
 {
   "releases": [
-    { "name": "@atlaskit/feedback-collector", "type": "patch" },
-    { "name": "@atlaskit/global-navigation", "type": "patch" },
-    { "name": "@atlaskit/renderer", "type": "patch" },
-    { "name": "@atlaskit/global-search", "type": "patch" }
+    { "name": "@atlaskit/global-navigation", "type": "patch" }
   ],
   "dependents": []
 }
