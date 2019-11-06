@@ -847,7 +847,7 @@ describe('card', () => {
           doc(p('hello', inlineCard(inlineCardAdf.attrs)(), ' ')),
         );
       });
-      it('should replace selection with inline card  and add a white space', function() {
+      it('should replace selection with inline card and add a white space', function() {
         const { editorView } = editor(doc(p('{<}hello{>}')));
 
         const { state, dispatch } = editorView;
