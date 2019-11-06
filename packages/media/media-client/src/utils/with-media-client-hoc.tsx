@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MediaClientConfig } from '@atlaskit/media-core';
 import { MediaClient } from '../client/media-client';
+import { Identifier } from '../identifier';
 
 export interface WithMediaClientConfig {
   mediaClientConfig: MediaClientConfig;
@@ -8,6 +9,7 @@ export interface WithMediaClientConfig {
 
 export interface WithMediaClient {
   mediaClient: MediaClient;
+  identifier?: Identifier;
 }
 
 const mediaClientsMap = new Map<MediaClientConfig, MediaClient>();
@@ -24,6 +26,19 @@ export const getMediaClient = (
     mediaClientsMap.set(mediaClientConfig, mediaClient);
   }
   return mediaClient;
+};
+
+const createEmptyMediaClient = (): MediaClient => {
+  const emptyConfig: MediaClientConfig = {
+    authProvider: () =>
+      Promise.resolve({
+        clientId: '',
+        token: '',
+        baseUrl: '',
+      }),
+  };
+
+  return new MediaClient(emptyConfig);
 };
 
 export type WithMediaClientConfigProps<P extends WithMediaClient> = Omit<
@@ -44,12 +59,14 @@ export const withMediaClient: WithMediaClientFunction = <
   return class extends React.Component<WithMediaClientConfigProps<P>> {
     render() {
       const props = this.props;
-      return (
-        <Component
-          {...props as any}
-          mediaClient={getMediaClient(this.props.mediaClientConfig)}
-        />
-      );
+      const { mediaClientConfig, identifier } = props;
+      const isExternalIdentifier =
+        identifier && identifier.mediaItemType === 'external-image';
+      const mediaClient: MediaClient = isExternalIdentifier
+        ? createEmptyMediaClient()
+        : getMediaClient(mediaClientConfig);
+
+      return <Component {...props as any} mediaClient={mediaClient} />;
     }
   };
 };
