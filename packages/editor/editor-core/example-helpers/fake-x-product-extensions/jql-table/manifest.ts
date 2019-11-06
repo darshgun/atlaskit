@@ -26,7 +26,6 @@ const manifest: ExtensionManifest = {
     nodes: [
       {
         key: 'jql-table',
-        type: 'block',
         insert: () => import('./adf-node'),
         render: () => import('./extension-handler'),
       },

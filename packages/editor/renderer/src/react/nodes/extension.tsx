@@ -2,20 +2,23 @@ import * as React from 'react';
 import { RendererContext } from '..';
 import { renderNodes, Serializer } from '../..';
 import { ExtensionLayout } from '@atlaskit/adf-schema';
+import ExtensionRenderer from '../../ui/ExtensionRenderer';
+
 import {
   ADNode,
   calcBreakoutWidth,
   ExtensionHandlers,
-  getExtensionRenderer,
   overflowShadow,
   OverflowShadowProps,
   WidthConsumer,
+  ProviderFactory,
 } from '@atlaskit/editor-common';
 import { RendererCssClassName } from '../../consts';
 
 export interface Props {
   serializer: Serializer<any>;
   extensionHandlers?: ExtensionHandlers;
+  providers: ProviderFactory;
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;
@@ -50,42 +53,28 @@ export const renderExtension = (
   );
 };
 
-const Extension: React.StatelessComponent<Props & OverflowShadowProps> = ({
-  serializer,
-  extensionHandlers,
-  rendererContext,
-  extensionType,
-  extensionKey,
-  text,
-  parameters,
-  layout = 'default',
-  handleRef,
-  shadowClassNames,
-}) => {
-  try {
-    if (extensionHandlers && extensionHandlers[extensionType]) {
-      const render = getExtensionRenderer(extensionHandlers[extensionType]);
-      const content = render(
-        {
-          type: 'extension',
-          extensionKey,
-          extensionType,
-          parameters,
-          content: text,
-        },
-        rendererContext.adDoc,
-      );
+class Extension extends React.Component<Props & OverflowShadowProps> {
+  renderContent = (result?: JSX.Element | ADNode[] | null) => {
+    const {
+      serializer,
+      rendererContext,
+      text,
+      layout = 'default',
+      handleRef,
+      shadowClassNames,
+    } = this.props;
 
+    try {
       switch (true) {
-        case content && React.isValidElement(content):
-          // Return the content directly if it's a valid JSX.Element
-          return renderExtension(content, layout, {
+        case result && React.isValidElement(result):
+          // Return the result directly if it's a valid JSX.Element
+          return renderExtension(result, layout, {
             handleRef,
             shadowClassNames,
           });
-        case !!content:
+        case !!result:
           // We expect it to be Atlassian Document here
-          const nodes = Array.isArray(content) ? content : [content];
+          const nodes = Array.isArray(result) ? result : [result];
           return renderNodes(
             nodes as ADNode[],
             serializer,
@@ -93,17 +82,31 @@ const Extension: React.StatelessComponent<Props & OverflowShadowProps> = ({
             'div',
           );
       }
+    } catch (e) {
+      /** We don't want this error to block renderer */
+      /** We keep rendering the default content */
     }
-  } catch (e) {
-    /** We don't want this error to block renderer */
-    /** We keep rendering the default content */
+    // Always return default content if anything goes wrong
+    return renderExtension(text || 'extension', layout, {
+      handleRef,
+      shadowClassNames,
+    });
+  };
+
+  render() {
+    const { providers } = this.props;
+
+    if (!providers) {
+      return this.renderContent();
+    }
+
+    return (
+      <ExtensionRenderer {...this.props} type="extension">
+        {({ result }) => this.renderContent(result)}
+      </ExtensionRenderer>
+    );
   }
-  // Always return default content if anything goes wrong
-  return renderExtension(text || 'extension', layout, {
-    handleRef,
-    shadowClassNames,
-  });
-};
+}
 
 export default overflowShadow(Extension, {
   overflowSelector: `.${RendererCssClassName.EXTENSION_OVERFLOW_CONTAINER}`,

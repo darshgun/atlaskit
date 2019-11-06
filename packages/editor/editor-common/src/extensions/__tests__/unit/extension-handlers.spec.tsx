@@ -2,14 +2,13 @@ import React from 'react';
 import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
 import combineExtensionProviders from '../../combine-extension-providers';
 import DefaultExtensionProvider from '../../default-extension-provider';
-import { ExtensionHandlers, ExtensionProvider } from '../../types';
+import { ExtensionProvider } from '../../types';
 
 import { getNodeRenderer, getManifestNode } from '../../extension-handlers';
 import Loadable from 'react-loadable';
 import { shallow } from 'enzyme';
 
 describe('extension-handlers', () => {
-  let extensionHandlers: ExtensionHandlers;
   let extensionProvider: ExtensionProvider;
 
   beforeEach(async () => {

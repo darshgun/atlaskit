@@ -39,7 +39,6 @@ export type ExtensionModule = {
 
 export type ExtensionModuleNode = {
   key: ExtensionKey;
-  type: string;
   insert: () => AsyncESModule<ADFEntity>;
   render: () => AsyncESModule<ReactNode>;
 };
