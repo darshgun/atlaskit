@@ -36,7 +36,7 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
       title={
         <Unknown
           defaultMessage="Join"
-          description="The header of \\"Join\\" section"
+          description="Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators."
           id="fabric.atlassianSwitcher.join"
         />
       }
@@ -95,7 +95,7 @@ exports[`Switcher should render sections with headers by default 1`] = `
       title={
         <Unknown
           defaultMessage="Join"
-          description="The header of \\"Join\\" section"
+          description="Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators."
           id="fabric.atlassianSwitcher.join"
         />
       }
