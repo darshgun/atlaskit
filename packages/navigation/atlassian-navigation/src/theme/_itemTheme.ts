@@ -2,11 +2,15 @@
 // copied from @atlaskit/droplist/src/theme/item-theme.js
 // temporary fix until we have a menu item component
 
-import { itemThemeNamespace } from '@atlaskit/item';
 import { themed } from '@atlaskit/theme/components';
 import { gridSize } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
 import { multiply } from '@atlaskit/theme/math';
+
+// TEMPORARY
+// copied from @atlaskit/item/src/util/theme.js
+// https://ecosystem.atlassian.net/browse/DS-6794
+const itemThemeNamespace = '@atlaskit-shared-theme/item';
 
 const dropdownPadding = {
   bottom: gridSize,

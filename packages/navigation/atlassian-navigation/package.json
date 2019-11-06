@@ -19,7 +19,6 @@
     "@atlaskit/analytics-namespaced-context": "^4.1.9",
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/icon": "^19.0.4",
-    "@atlaskit/item": "^10.1.6",
     "@atlaskit/popup": "^0.2.0",
     "@atlaskit/theme": "^9.2.4",
     "@atlaskit/tooltip": "^15.1.1",
@@ -45,10 +44,10 @@
     "@atlaskit/spinner": "*",
     "jest-emotion": "^10.0.10",
     "react": "^16.8.0",
-    "react-intl": "^2.6.0"
+    "react-intl": "^2.6.0",
+    "styled-components": "^3.2.6"
   },
   "peerDependencies": {
-    "react": "^16.8.0",
-    "styled-components": "^3.2.6"
+    "react": "^16.8.0"
   }
 }
