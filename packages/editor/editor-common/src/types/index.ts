@@ -15,7 +15,7 @@ export interface Transformer<T> {
   parse(content: T): Node;
 }
 
-// TODO [ED-8005]: add other known providers like emoji, mention, etc
+// TODO [ED-8005]: add other known providers like mention, etc
 export interface Providers {
   mediaProvider?: Promise<MediaProvider>;
   emojiProvider?: Promise<EmojiProvider>;
