@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Sõnumi lisamine',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Sisestage nimi, rühm, meeskond või meil',
+  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+    'Sisesta nimi, meeskond või e-posti aadress',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Sisesta nimi või meeskond',
   'fabric.elements.share.form.user-picker.add-more': 'Sisesta veel',
   'fabric.elements.share.form.user-picker.validation.required':
     'Valige vähemalt üks kasutaja, rühm, meeskond või meil.',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    'Vali vähemalt üks kasutaja, meeskond või e-posti aadress.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Saad kutsuda vaid {domains} e-posti aadressiga inimesi. Teiste kutsumiseks võta ühendust lehe administraatoriga.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

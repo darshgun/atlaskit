@@ -14,6 +14,7 @@ import {
   ConfigResponseMode,
   FieldChildrenArgs,
   MessageDescriptor,
+  ProductName,
 } from '../types';
 import {
   allowEmails,
@@ -29,14 +30,15 @@ export type Props = {
   loadOptions?: LoadOptions;
   defaultValue?: OptionData[];
   config?: ConfigResponse;
-  // capabilitiesInfoMessage?: React.ReactNode; // FIXME remove or deprecate?
   infoMessagePendingInvite?: React.ReactNode;
   infoMessageDirectInvite?: React.ReactNode;
   isLoading?: boolean;
+  product?: ProductName;
 };
 
 type GetPlaceHolderMessageDescriptor = (
   mode: ConfigResponseMode | '',
+  product?: ProductName,
 ) => MessageDescriptor;
 
 type GetNoOptionMessageDescriptor = (
@@ -94,9 +96,12 @@ const getNoOptionsMessage = (
 
 const getPlaceHolderMessageDescriptor: GetPlaceHolderMessageDescriptor = (
   mode: ConfigResponseMode | '',
+  product: ProductName = 'confluence',
 ) =>
   mode === 'EXISTING_USERS_ONLY'
     ? messages.userPickerExistingUserOnlyPlaceholder
+    : product === 'jira'
+    ? messages.userPickerGenericPlaceholderJira
     : messages.userPickerGenericPlaceholder;
 
 export class UserPickerField extends React.Component<Props> {
@@ -136,7 +141,7 @@ export class UserPickerField extends React.Component<Props> {
   };
 
   render() {
-    const { defaultValue, config, isLoading } = this.props;
+    const { defaultValue, config, isLoading, product } = this.props;
     const configMode = (config && config!.mode) || '';
 
     return (
@@ -159,7 +164,10 @@ export class UserPickerField extends React.Component<Props> {
                     width="100%"
                     placeholder={
                       <FormattedMessage
-                        {...getPlaceHolderMessageDescriptor(configMode)}
+                        {...getPlaceHolderMessageDescriptor(
+                          configMode,
+                          product,
+                        )}
                       />
                     }
                     addMoreMessage={addMore as string}
@@ -175,7 +183,13 @@ export class UserPickerField extends React.Component<Props> {
               )}
               {!valid && error === REQUIRED && (
                 <ErrorMessage>
-                  <FormattedMessage {...messages.userPickerRequiredMessage} />
+                  {product === 'jira' ? (
+                    <FormattedMessage
+                      {...messages.userPickerRequiredMessageJira}
+                    />
+                  ) : (
+                    <FormattedMessage {...messages.userPickerRequiredMessage} />
+                  )}
                 </ErrorMessage>
               )}
             </>

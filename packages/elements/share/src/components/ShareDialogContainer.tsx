@@ -28,6 +28,7 @@ import {
   OriginTracing,
   OriginTracingFactory,
   ProductId,
+  ProductName,
   RenderCustomTriggerButton,
   ShareButtonStyle,
   TooltipPosition,
@@ -126,6 +127,10 @@ export type Props = {
   useUrlShortener?: boolean;
   /** Action that will be performed by the recipient when he/she receives the notification. */
   shareeAction?: 'view' | 'edit';
+  /** Optional, this prop can be `jira` or `confluence`. Default value is `confluence`
+   * We use this prop to control different text messages in UI.
+   */
+  product: ProductName;
 };
 
 export type State = {
@@ -139,8 +144,8 @@ export type State = {
 const memoizedFormatCopyLink: (
   origin: OriginTracing,
   link: string,
-) => string = memoizeOne(
-  (origin: OriginTracing, link: string): string => origin.addToUrl(link),
+) => string = memoizeOne((origin: OriginTracing, link: string): string =>
+  origin.addToUrl(link),
 );
 
 function getCurrentPageUrl(): string {
@@ -164,6 +169,7 @@ export class ShareDialogContainerInternal extends React.Component<
   static defaultProps = {
     useUrlShortener: false,
     shareeAction: 'view' as 'view' | 'edit',
+    product: 'confluence',
   };
 
   constructor(props: Props) {
@@ -445,6 +451,7 @@ export class ShareDialogContainerInternal extends React.Component<
       triggerButtonTooltipPosition,
       bottomMessage,
       shareeAction,
+      product,
     } = this.props;
     const { isFetchingConfig } = this.state;
     return (
@@ -476,6 +483,7 @@ export class ShareDialogContainerInternal extends React.Component<
                 <FormattedMessage {...messages.inviteTriggerButtonText} />
               )
             }
+            product={product}
           />
         </MessagesIntlProvider>
       </ErrorBoundary>

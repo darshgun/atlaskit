@@ -1,10 +1,10 @@
 import memoizeOne from 'memoize-one';
-import { ProductId } from '../types';
+import { ProductId, ProductName } from '../types';
 
 export interface ShortenRequest {
   path: string;
   cloudId: string;
-  product: 'jira' | 'confluence';
+  product: ProductName;
 }
 
 export interface ShortenResponse {

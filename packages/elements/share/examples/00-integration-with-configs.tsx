@@ -7,7 +7,11 @@ import { IntlProvider } from 'react-intl';
 import styled from 'styled-components';
 import App from '../example-helpers/AppWithFlag';
 import RestrictionMessage from '../example-helpers/RestrictionMessage';
-import { ShareDialogContainer, ShareDialogContainerProps } from '../src';
+import {
+  ProductName,
+  ShareDialogContainer,
+  ShareDialogContainerProps,
+} from '../src';
 import {
   Comment,
   ConfigResponse,
@@ -151,6 +155,7 @@ type ExampleState = {
   escapeOnKeyPress: boolean;
   restrictionMessage: boolean;
   useUrlShortener: boolean;
+  product: ProductName;
 };
 
 type State = ConfigResponse & Partial<ShareDialogContainerProps> & ExampleState;
@@ -194,6 +199,7 @@ export default class Example extends React.Component<{}, State> {
     triggerButtonAppearance: triggerButtonAppearanceOptions[0].value,
     triggerButtonStyle: triggerButtonStyleOptions[0].value,
     triggerButtonTooltipPosition: triggerButtonTooltipPositionOptions[0].value,
+    product: 'confluence',
   };
 
   key: number = 0;
@@ -251,6 +257,7 @@ export default class Example extends React.Component<{}, State> {
       triggerButtonAppearance,
       triggerButtonStyle,
       triggerButtonTooltipPosition,
+      product,
       restrictionMessage,
       useUrlShortener,
     } = this.state;
@@ -291,6 +298,7 @@ export default class Example extends React.Component<{}, State> {
                     restrictionMessage ? <RestrictionMessage /> : null
                   }
                   useUrlShortener={useUrlShortener}
+                  product={product}
                 />
               </WrapperWithMarginTop>
               <h4>Options</h4>
@@ -420,6 +428,24 @@ export default class Example extends React.Component<{}, State> {
                     onChange={(option: any) =>
                       this.setState({
                         triggerButtonTooltipPosition: option.value,
+                      })
+                    }
+                  />
+                </WrapperWithMarginTop>
+                <WrapperWithMarginTop>
+                  Product
+                  <Select
+                    value={{
+                      label: product,
+                      value: product,
+                    }}
+                    options={[
+                      { label: 'confluence', value: 'confluence' },
+                      { label: 'jira', value: 'jira' },
+                    ]}
+                    onChange={(option: any) =>
+                      this.setState({
+                        product: option.value,
                       })
                     }
                   />

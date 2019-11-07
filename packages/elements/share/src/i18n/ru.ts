@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Введите сообщение',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Введите имя, группу, команду или адрес эл. почты',
+  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+    'Укажите имя, название команды или адрес эл. почты',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Укажите имя или название команды',
   'fabric.elements.share.form.user-picker.add-more': 'Добавляйте еще',
   'fabric.elements.share.form.user-picker.validation.required':
     'Выберите хотя бы 1 пользователя, группу, команду или адрес эл. почты.',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    'Выберите хотя бы одного пользователя, команду или адрес эл. почты.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Вы можете приглашать только людей с адресами {domains}. Чтобы пригласить других пользователей, обратитесь к администратору сайта.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

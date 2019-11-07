@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Voeg een bericht toe',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Voer naam, groep, team of e-mailadres in',
+  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+    'Voer een naam, team of e-mailadres in',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Voer een naam of team in',
   'fabric.elements.share.form.user-picker.add-more': 'Meer invoeren',
   'fabric.elements.share.form.user-picker.validation.required':
     'Selecteer minimaal één gebruiker, groep, team of e-mailadres.',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    'Selecteer minimaal één gebruiker, team of e-mailadres.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Je kunt alleen personen uitnodigen die een e-mailadres van {domains} hebben. Neem contact op met je sitebeheerder als je anderen wilt uitnodigen.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

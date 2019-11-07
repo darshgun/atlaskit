@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Legg til en melding',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Skriv inn navn, gruppe, team eller e-post',
+  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+    'Skriv inn navn, team eller e-post',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Skriv inn navn eller team',
   'fabric.elements.share.form.user-picker.add-more': 'Legg til mer',
   'fabric.elements.share.form.user-picker.validation.required':
     'Velg minst én bruker, gruppe, team eller e-post.',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    'Velg minst én gruppe, et team eller en e-postadresse.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Du kan bare invitere folk med e-postadresser som tilhører {domains}. Ta kontakt med sideadministratoren for å invitere andre.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

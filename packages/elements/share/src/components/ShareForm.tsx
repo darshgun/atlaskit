@@ -13,6 +13,7 @@ import {
   ConfigResponse,
   DialogContentState,
   FormChildrenArgs,
+  ProductName,
 } from '../types';
 import { CommentField } from './CommentField';
 import CopyLinkButton from './CopyLinkButton';
@@ -38,7 +39,7 @@ export const FromWrapper = styled.div`
   [class^='FormHeader__FormHeaderWrapper'] {
     h1:first-child {
       ${typography.h500()}
-      
+
       > span {
         /* jira has a class override font settings on h1 > span in gh-custom-field-pickers.css */
         font-size: inherit !important;
@@ -73,7 +74,6 @@ export type ShareData = {
 };
 
 export type Props = {
-  capabilitiesInfoMessage?: React.ReactNode;
   config?: ConfigResponse;
   copyLink: string;
   isSharing?: boolean;
@@ -86,6 +86,7 @@ export type Props = {
   onDismiss?: (data: ShareData) => void;
   defaultValue?: DialogContentState;
   isFetchingConfig?: boolean;
+  product?: ProductName;
 };
 
 export type InternalFormProps = FormChildrenArgs<ShareData> &
@@ -146,12 +147,12 @@ class InternalForm extends React.PureComponent<InternalFormProps> {
       formProps,
       title,
       loadOptions,
-      capabilitiesInfoMessage,
       onLinkCopy,
       copyLink,
       defaultValue,
       config,
       isFetchingConfig,
+      product,
     } = this.props;
     return (
       <FromWrapper>
@@ -161,9 +162,9 @@ class InternalForm extends React.PureComponent<InternalFormProps> {
             <UserPickerField
               loadOptions={loadOptions}
               defaultValue={defaultValue && defaultValue.users}
-              capabilitiesInfoMessage={capabilitiesInfoMessage}
               config={config}
               isLoading={isFetchingConfig}
+              product={product}
             />
             {config && config.allowComment && (
               <CommentField
@@ -197,5 +198,6 @@ export const ShareForm: React.StatelessComponent<Props> = props => (
 
 ShareForm.defaultProps = {
   isSharing: false,
+  product: 'confluence',
   onSubmit: () => {},
 };

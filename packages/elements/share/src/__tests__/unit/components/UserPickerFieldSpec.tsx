@@ -52,13 +52,7 @@ describe('UserPickerField', () => {
 
     expect(field.find(ErrorMessage).exists()).toBeFalsy();
 
-    const userPicker = renderProp(
-      formattedMessageAddMore,
-      'children',
-      'add more',
-    ).find(UserPicker);
-    expect(userPicker).toHaveLength(1);
-    expect(userPicker.props()).toMatchObject({
+    const expectProps = {
       fieldId: 'share',
       addMoreMessage: 'add more',
       onChange: fieldProps.onChange,
@@ -68,7 +62,50 @@ describe('UserPickerField', () => {
       ),
       loadOptions: expect.any(Function),
       isLoading: mockIsLoading,
-    });
+    };
+
+    let userPicker = renderProp(
+      formattedMessageAddMore,
+      'children',
+      'add more',
+    ).find(UserPicker);
+    expect(userPicker).toHaveLength(1);
+    expect(userPicker.props()).toMatchObject(expectProps);
+  });
+
+  it('should render UserPicker when product is `jira`', () => {
+    const fieldProps = {
+      onChange: jest.fn(),
+      value: [],
+    };
+    const loadOptions = jest.fn();
+    const mockIsLoading = true;
+    const field = renderUserPicker(
+      { loadOptions, isLoading: mockIsLoading, product: 'jira' },
+      { fieldProps, meta: { valid: true } },
+    );
+    expect(field.find(ErrorMessage).exists()).toBeFalsy();
+
+    const expectProps = {
+      fieldId: 'share',
+      addMoreMessage: 'add more',
+      onChange: fieldProps.onChange,
+      value: fieldProps.value,
+      placeholder: (
+        <FormattedMessage {...messages.userPickerGenericPlaceholderJira} />
+      ),
+      loadOptions: expect.any(Function),
+      isLoading: mockIsLoading,
+    };
+
+    const formattedMessageAddMore = field.find(FormattedMessage);
+    const userPicker = renderProp(
+      formattedMessageAddMore,
+      'children',
+      'add more',
+    ).find(UserPicker);
+    expect(userPicker).toHaveLength(1);
+    expect(userPicker.props()).toMatchObject(expectProps);
   });
 
   it('should set defaultValue', () => {
@@ -136,6 +173,29 @@ describe('UserPickerField', () => {
       const message = errorMessage.find(FormattedMessage);
       expect(message).toHaveLength(1);
       expect(message.props()).toMatchObject(messages.userPickerRequiredMessage);
+    });
+
+    it('should display required message when product is `jira`', () => {
+      const fieldProps = {
+        onChange: jest.fn(),
+        value: [],
+      };
+      const loadOptions = jest.fn();
+      const errorMessage = renderUserPicker(
+        { loadOptions, product: 'jira' },
+        {
+          fieldProps,
+          meta: { valid: false },
+          error: REQUIRED,
+        },
+      ).find(ErrorMessage);
+
+      expect(errorMessage).toHaveLength(1);
+      const message = errorMessage.find(FormattedMessage);
+      expect(message).toHaveLength(1);
+      expect(message.props()).toMatchObject(
+        messages.userPickerRequiredMessageJira,
+      );
     });
   });
 
