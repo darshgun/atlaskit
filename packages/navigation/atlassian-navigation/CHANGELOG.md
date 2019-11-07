@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.6.1
+
+### Patch Changes
+
+- [patch][042a5d87ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/042a5d87ea):
+
+  Reduced unnecessary deps for navigation, and added temp \_itemTheme export to style dropdown-menu items
+
 ## 0.6.0
 
 ### Minor Changes
