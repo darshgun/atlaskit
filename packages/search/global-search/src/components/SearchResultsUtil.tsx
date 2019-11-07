@@ -23,8 +23,8 @@ export const isAdvancedSearchResult = (resultId: string) =>
   ].some(advancedResultId => advancedResultId === resultId);
 
 export function getConfluenceAdvancedSearchLink(query?: string) {
-  const queryString = query ? `?queryString=${encodeURIComponent(query)}` : '';
-  return `/wiki/dosearchsite.action${queryString}`;
+  const queryString = query ? `?text=${encodeURIComponent(query)}` : '';
+  return `/wiki/search${queryString}`;
 }
 
 type Props = {
@@ -95,7 +95,7 @@ export function isEmpty<T>(array: Array<T>) {
 export function handlePromiseError<T>(
   promise: Promise<T>,
   defaultValue: T,
-  errorHandler?: ((reason: any) => T | void),
+  errorHandler?: (reason: any) => T | void,
 ): Promise<T> {
   return promise.catch(error => {
     try {
