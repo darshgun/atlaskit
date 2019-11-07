@@ -172,9 +172,7 @@ export class MediaPluginState {
 
       assert(
         this.mediaProvider.viewMediaClientConfig,
-        `MediaProvider promise did not resolve to a valid instance of MediaProvider - ${
-          this.mediaProvider
-        }`,
+        `MediaProvider promise did not resolve to a valid instance of MediaProvider - ${this.mediaProvider}`,
       );
     } catch (err) {
       const wrappedError = new Error(

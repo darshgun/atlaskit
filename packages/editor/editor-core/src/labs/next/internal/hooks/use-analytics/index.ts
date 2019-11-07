@@ -15,12 +15,10 @@ export function useAnalyticsHandler(
 ) {
   // handleAnalyticsEvent – must always be the same so we can unsubscribe from events properly.
   const handleAnalyticsEvent = React.useCallback<
-    (
-      payloadChannel: {
-        payload: AnalyticsEventPayload;
-        channel?: string;
-      },
-    ) => void
+    (payloadChannel: {
+      payload: AnalyticsEventPayload;
+      channel?: string;
+    }) => void
   >(
     payload => {
       const handleAnalyticsEvent =

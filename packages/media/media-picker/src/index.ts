@@ -7,8 +7,12 @@ export async function MediaPicker(
   pickerConfig: PopupConfig,
 ): Promise<Popup> {
   const [{ PopupImpl }, { getMediaClient }] = await Promise.all([
-    import(/* webpackChunkName:"@atlaskit-internal_media-picker-popup" */ './components/popup'),
-    import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
+    import(
+      /* webpackChunkName:"@atlaskit-internal_media-picker-popup" */ './components/popup'
+    ),
+    import(
+      /* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'
+    ),
   ]);
 
   const mediaClient = getMediaClient(mediaClientConfig);

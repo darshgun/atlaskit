@@ -4,7 +4,7 @@ export type UploadEventMap = {
   readonly [K in keyof UploadEventPayloadMap]: {
     readonly name: K;
     readonly data: UploadEventPayloadMap[K];
-  }
+  };
 };
 
 export type UploadEventName = keyof UploadEventMap;
