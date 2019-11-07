@@ -1,1 +1,0 @@
-Bump @atlaskit/navigation-next to ^7.0.4
