@@ -1,3 +1,3 @@
-import { MenuItem } from '../src';
+import { Item } from '../src';
 
-export default MenuItem;
+export default Item;
