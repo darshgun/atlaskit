@@ -28,8 +28,10 @@
     "@atlaskit/button": "^13.1.6",
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/logo": "^12.1.8",
+    "@atlaskit/section-message": "^4.0.12",
     "@atlaskit/theme": "^9.2.2",
     "@testing-library/react": "^8.0.1",
+    "raf-stub": "^2.0.1",
     "react-dom": "^16.8.0"
   },
   "keywords": [
