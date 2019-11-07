@@ -34,7 +34,7 @@ async function writeEntryPointsPathInPkgJson(
 async function createEntryPointsDirWithPkgJson(opts /*: Object */ = {}) {
   const { cwd = process.cwd(), packageName, errorOnExistingDirs = true } = opts;
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
-  const packages = await getPackagesInfo(cwd);
+  const packages = await getPackagesInfo(cwd, opts);
   const pkgContents = packages
     .filter(
       pkg =>

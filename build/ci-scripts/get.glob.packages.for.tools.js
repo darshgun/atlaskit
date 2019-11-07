@@ -32,7 +32,7 @@ async function main(toolNames /*: string[] */, opts /*: Object */ = {}) {
     return filterFn;
   });
 
-  const packages = await getPackagesInfo(cwd);
+  const packages = await getPackagesInfo(cwd, opts);
   const relativePaths = packages
     .filter(pkg => filters.every(filter => filter(pkg)))
     .map(pkg => pkg.relativeDir);

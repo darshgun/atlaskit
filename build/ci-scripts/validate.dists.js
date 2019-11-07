@@ -122,9 +122,7 @@ function validateDistContents(src, dist) {
       );
       if (!correspondingDir) {
         errors.push(
-          `Directory "${dist.relativeDir}/${
-            srcFile.name
-          }" is missing - sourced from "${src.relativeDir}/${srcFile.name}"`,
+          `Directory "${dist.relativeDir}/${srcFile.name}" is missing - sourced from "${src.relativeDir}/${srcFile.name}"`,
         );
       }
     } else if (srcFile.isFile() && srcFile.name.match(fileRegex)) {
@@ -134,11 +132,7 @@ function validateDistContents(src, dist) {
       );
       if (!compiledFile) {
         errors.push(
-          `File "${
-            dist.relativeDir
-          }/${compiledFilename}" is missing - sourced from "${
-            src.relativeDir
-          }/${srcFile.name}"`,
+          `File "${dist.relativeDir}/${compiledFilename}" is missing - sourced from "${src.relativeDir}/${srcFile.name}"`,
         );
       }
       if (srcFile.name.match(/\.tsx?$/)) {
@@ -149,11 +143,7 @@ function validateDistContents(src, dist) {
         );
         if (!declarationFile) {
           errors.push(
-            `Declaration file "${
-              dist.relativeDir
-            }/${declarationFilename}" is missing for "${src.relativeDir}/${
-              srcFile.name
-            }"`,
+            `Declaration file "${dist.relativeDir}/${declarationFilename}" is missing for "${src.relativeDir}/${srcFile.name}"`,
           );
         }
       }
@@ -171,7 +161,7 @@ function hasCjsEsmBuild(pkg) {
 
 async function main(opts /*: Object */ = {}) {
   const { cwd = process.cwd(), packageName, distType } = opts;
-  const packagesInfo = await getPackagesInfo(cwd);
+  const packagesInfo = await getPackagesInfo(cwd, opts);
 
   /* We only want to check packages that ship cjs + esm */
   const browserPackages = packagesInfo.filter(

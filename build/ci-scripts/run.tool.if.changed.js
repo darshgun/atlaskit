@@ -45,6 +45,7 @@ const { getChangedPackagesSinceMaster } = require('../utils/packages');
   });
 
   const [packages, changedPackages] = await Promise.all([
+    // $FlowFixMe - opts need to be optional
     getPackagesInfo(cwd),
     getChangedPackagesSinceMaster(),
   ]);
