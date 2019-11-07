@@ -76,7 +76,7 @@ class MultiPopupSelectExample extends Component<{}, State> {
           }}
         >
           <PopupSelect
-            {...defaults as any}
+            {...(defaults as any)}
             controlShouldRenderValue={controlShouldRenderValue}
             backspaceRemovesValue
             closeMenuOnSelect={false}

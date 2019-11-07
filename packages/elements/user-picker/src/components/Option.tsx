@@ -50,5 +50,5 @@ const dataOption = ({
 };
 
 export const Option: FC<OptionProps> = props => (
-  <components.Option {...props as any}>{dataOption(props)}</components.Option>
+  <components.Option {...(props as any)}>{dataOption(props)}</components.Option>
 );

@@ -543,9 +543,9 @@ class FullPageRendererExample extends React.Component<Props, State> {
   };
 
   private loadLocale = async (locale: string) => {
-    const localeData = await import(`react-intl/locale-data/${this.getLocalTag(
-      locale,
-    )}`);
+    const localeData = await import(
+      `react-intl/locale-data/${this.getLocalTag(locale)}`
+    );
     addLocaleData(localeData.default);
     const messages = await import(`../src/i18n/${locale}`);
     this.setState({ locale, messages: messages.default });

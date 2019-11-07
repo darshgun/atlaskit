@@ -19,7 +19,7 @@ export class Input extends React.Component<Props> {
     const { selectProps } = this.props;
     return (
       <components.Input
-        {...this.props as any}
+        {...(this.props as any)}
         innerRef={this.props.innerRef}
         isDisabled={selectProps && selectProps.disableInput}
         onKeyPress={this.handleKeyPress}

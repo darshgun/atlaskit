@@ -107,7 +107,7 @@ export class MultiValueContainer extends React.PureComponent<Props, State> {
     return (
       <components.ValueContainer
         // TODO: Remove any and pass correct types to component
-        {...valueContainerProps as any}
+        {...(valueContainerProps as any)}
         ref={this.containerRef}
       >
         {this.renderChildren()}

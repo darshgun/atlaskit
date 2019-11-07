@@ -60,12 +60,7 @@ export interface PopupSelectProps<Option = OptionType>
   footer?: ReactNode;
   popperProps?: PopperPropsNoChildren;
   searchThreshold?: number;
-  target: (
-    options: {
-      ref: any;
-      isOpen: boolean;
-    },
-  ) => ReactNode;
+  target: (options: { ref: any; isOpen: boolean }) => ReactNode;
 }
 
 interface State {

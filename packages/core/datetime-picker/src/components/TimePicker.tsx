@@ -123,7 +123,7 @@ const FixedLayerMenu = ({ selectProps, ...rest }: { selectProps: any }) => (
     containerRef={selectProps.fixedLayerRef}
     content={
       <components.Menu
-        {...rest as MenuProps<OptionType>}
+        {...(rest as MenuProps<OptionType>)}
         menuShouldScrollIntoView={false}
       />
     }

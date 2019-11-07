@@ -51,7 +51,7 @@ const DropdownIndicator = () => (
 const Control: FC<ControlProps<any>> = ({ innerRef, innerProps, ...props }) => (
   <div ref={innerRef} css={{ padding: '8px 8px 4px' }}>
     <components.Control
-      {...props as ControlProps<any>}
+      {...(props as ControlProps<any>)}
       innerProps={innerProps}
     />
   </div>
