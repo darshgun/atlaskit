@@ -234,6 +234,7 @@ const editorProps = ({
   UNSAFE_cards: {
     provider: Promise.resolve(cardProviderStaging),
   },
+  UNSAFE_allowExpand: true,
   allowTemplatePlaceholders: { allowInserting: true },
   media: {
     provider: mediaProvider,
