@@ -28,7 +28,7 @@ function appendToDir(
 ) {
   if (findInDir(directory, child.id)) return directory;
   // eslint-disable-next-line no-param-reassign
-  directory.children = [].concat(dir.directory, child);
+  directory.children = [].concat(directory.children, child);
   return directory;
 }
 
