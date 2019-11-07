@@ -16,3 +16,7 @@ export interface ItemProps {
   description?: string;
   isDisabled?: boolean;
 }
+
+export interface LinkItemProps extends ItemProps {
+  href: string;
+}

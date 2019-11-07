@@ -60,7 +60,7 @@ export const descriptionCSS = {
 };
 export const contentCSSWrapper = {
   display: 'flex',
-  // padding: `0 ${gridSize / 2}px`,
+  alignItems: 'center',
 };
 
 /* Item variations */

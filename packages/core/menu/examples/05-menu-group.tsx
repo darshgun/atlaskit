@@ -25,9 +25,15 @@ export default () => {
       <MenuGroup maxHeight={300}>
         <Section>
           <HeadingItem>Heading</HeadingItem>
-          <LinkItem href="#">Item link</LinkItem>
-          <LinkItem href="#">Item link</LinkItem>
-          <LinkItem href="#">Item link</LinkItem>
+          <LinkItem elemBefore="hi" elemAfter="bye" href="#">
+            Item link
+          </LinkItem>
+          <LinkItem elemBefore="hi" elemAfter="bye" href="#">
+            Item link
+          </LinkItem>
+          <LinkItem elemBefore="hi" elemAfter="bye" href="#">
+            Item link
+          </LinkItem>
         </Section>
         <Section isScrollable shouldShowSeparator>
           <HeadingItem>Heading</HeadingItem>
