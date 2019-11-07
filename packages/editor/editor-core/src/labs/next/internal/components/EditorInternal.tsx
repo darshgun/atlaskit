@@ -9,6 +9,7 @@ import { EditorProps } from '../editor-props-type';
 import { EditorSharedConfigProvider } from '../context/shared-config';
 import { useEditor } from '../hooks/use-editor';
 import { EditorContentProvider } from './EditorContent';
+import ProviderFactory from '@atlaskit/editor-common/src/providerFactory';
 
 export function EditorInternal(
   {
@@ -21,6 +22,7 @@ export function EditorInternal(
     popupsMountPoint,
     popupsBoundariesElement,
     popupsScrollableElement,
+    providerFactory,
     onChange,
     onDestroy,
     onMount,
@@ -47,6 +49,7 @@ export function EditorInternal(
     transformer,
     defaultValue,
 
+    providerFactory: providerFactory,
     plugins,
 
     portalProviderAPI,
@@ -93,4 +96,5 @@ EditorInternal.contextTypes = {
 
 export type EditorPropsExtended = EditorProps & {
   portalProviderAPI: PortalProviderAPI;
+  providerFactory: ProviderFactory;
 };

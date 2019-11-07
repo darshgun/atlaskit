@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
-import { EditorActions } from '../src';
+import { EditorActions, MentionProvider } from '../src';
 import { EditorProps } from '../src/types/editor-props';
 
 /**
@@ -10,6 +10,29 @@ import { EditorProps } from '../src/types/editor-props';
  */
 import { EditorPresetMobile } from '../src/labs/next/presets/mobile';
 import { Mobile as MobileEditor } from '../src/labs/next/mobile';
+import { MentionDescription } from '@atlaskit/mention/types';
+import ProviderFactory from '@atlaskit/editor-common/src/providerFactory';
+
+class MentionProviderImpl implements MentionProvider {
+  filter(_query?: string): void {}
+  recordMentionSelection(_mention: MentionDescription): void {}
+  shouldHighlightMention(_mention: MentionDescription): boolean {
+    return false;
+  }
+  isFiltering(_query: string): boolean {
+    return false;
+  }
+  subscribe(): void {}
+  unsubscribe(_key: string): void {}
+}
+
+// Initialize Providers
+const providerFactory = new ProviderFactory();
+
+providerFactory.setProvider(
+  'mentionProvider',
+  Promise.resolve(new MentionProviderImpl()),
+);
 
 export const SaveAndCancelButtons = (props: {
   editorActions?: EditorActions;
@@ -54,7 +77,10 @@ export default function Example(props: EditorProps) {
   return (
     <Wrapper>
       <Content>
-        <EditorPresetMobile placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
+        <EditorPresetMobile
+          placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule."
+          providerFactory={providerFactory}
+        >
           <MobileEditor {...props} />
         </EditorPresetMobile>
       </Content>

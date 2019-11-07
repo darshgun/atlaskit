@@ -12,6 +12,7 @@ import {
 } from './internal/context/shared-config';
 import { EditorContent } from './internal/components/EditorContent';
 import { EditorProps } from './internal/editor-props-type';
+import { useProviderFactory } from './internal/context/provider-factory-context';
 
 /**
  * Main Editor component. Use in combination with `EditorContent` and a `Preset`.
@@ -29,6 +30,7 @@ import { EditorProps } from './internal/editor-props-type';
  */
 function Editor(props: EditorProps) {
   const plugins = usePresetContext();
+  const providerFactory = useProviderFactory();
 
   return (
     <IntlProvider locale="en">
@@ -39,6 +41,7 @@ function Editor(props: EditorProps) {
               {...props}
               plugins={plugins.length ? plugins : props.plugins}
               portalProviderAPI={portalProviderAPI}
+              providerFactory={providerFactory}
               onAnalyticsEvent={props.onAnalyticsEvent}
             />
             <PortalRenderer portalProviderAPI={portalProviderAPI} />

@@ -1,7 +1,6 @@
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EventDispatcher,
   createDispatch,
@@ -14,12 +13,14 @@ import {
 import { processRawValue } from '../../../../../utils';
 import { PortalProviderAPI } from '../../../../../ui/PortalProvider';
 import { EditorSharedConfig } from '../../context/shared-config';
-import { EditorProps } from '../../editor-props-type';
+import { EditorPropsExtended } from '../../components/EditorInternal';
 
 export function createEditor({
   context,
   onAnalyticsEvent,
   transformer,
+
+  providerFactory, // use provided factory or create an empty one
 
   plugins,
   portalProviderAPI,
@@ -39,7 +40,6 @@ export function createEditor({
   }
 
   const eventDispatcher = new EventDispatcher();
-  const providerFactory = new ProviderFactory();
   const dispatch = createDispatch(eventDispatcher);
   const editorConfig = processPluginsList(plugins || [], {});
   const schema = createSchema(editorConfig);
@@ -110,9 +110,10 @@ export function createEditor({
 }
 
 export type CreateEditorParams = Pick<
-  EditorProps,
+  EditorPropsExtended,
   | 'defaultValue'
   | 'plugins'
+  | 'providerFactory'
   | 'popupsMountPoint'
   | 'popupsBoundariesElement'
   | 'popupsScrollableElement'
