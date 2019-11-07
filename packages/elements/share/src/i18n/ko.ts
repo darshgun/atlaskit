@@ -12,7 +12,7 @@ export default {
   'fabric.elements.share.form.comment.placeholder': '메시지 추가',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     '이름, 그룹, 팀 또는 이메일 입력',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+  'fabric.elements.share.form.user-picker.placeholder.jira':
     '이름, 팀 또는 이메일 입력',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     '이름 또는 팀 입력',

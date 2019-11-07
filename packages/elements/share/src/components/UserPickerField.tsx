@@ -33,7 +33,7 @@ export type Props = {
   infoMessagePendingInvite?: React.ReactNode;
   infoMessageDirectInvite?: React.ReactNode;
   isLoading?: boolean;
-  product?: ProductName;
+  product: ProductName;
 };
 
 type GetPlaceHolderMessageDescriptor = (
@@ -97,12 +97,16 @@ const getNoOptionsMessage = (
 const getPlaceHolderMessageDescriptor: GetPlaceHolderMessageDescriptor = (
   mode: ConfigResponseMode | '',
   product: ProductName = 'confluence',
-) =>
-  mode === 'EXISTING_USERS_ONLY'
+) => {
+  const placeholderMessage = {
+    jira: messages.userPickerGenericPlaceholderJira,
+    confluence: messages.userPickerGenericPlaceholder,
+  };
+
+  return mode === 'EXISTING_USERS_ONLY'
     ? messages.userPickerExistingUserOnlyPlaceholder
-    : product === 'jira'
-    ? messages.userPickerGenericPlaceholderJira
-    : messages.userPickerGenericPlaceholder;
+    : placeholderMessage[product];
+};
 
 export class UserPickerField extends React.Component<Props> {
   private loadOptions = (search?: string) => {
@@ -143,6 +147,10 @@ export class UserPickerField extends React.Component<Props> {
   render() {
     const { defaultValue, config, isLoading, product } = this.props;
     const configMode = (config && config!.mode) || '';
+    const requireMessage = {
+      jira: messages.userPickerRequiredMessageJira,
+      confluence: messages.userPickerRequiredMessage,
+    };
 
     return (
       <Field name="users" validate={validate} defaultValue={defaultValue}>
@@ -183,13 +191,7 @@ export class UserPickerField extends React.Component<Props> {
               )}
               {!valid && error === REQUIRED && (
                 <ErrorMessage>
-                  {product === 'jira' ? (
-                    <FormattedMessage
-                      {...messages.userPickerRequiredMessageJira}
-                    />
-                  ) : (
-                    <FormattedMessage {...messages.userPickerRequiredMessage} />
-                  )}
+                  <FormattedMessage {...requireMessage[product]} />
                 </ErrorMessage>
               )}
             </>

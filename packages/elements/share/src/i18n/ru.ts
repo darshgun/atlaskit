@@ -12,8 +12,8 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Введите сообщение',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Введите имя, группу, команду или адрес эл. почты',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
-    'Укажите имя, название команды или адрес эл. почты',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    'Введите имя, команду или адрес эл. почты',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Укажите имя или название команды',
   'fabric.elements.share.form.user-picker.add-more': 'Добавляйте еще',

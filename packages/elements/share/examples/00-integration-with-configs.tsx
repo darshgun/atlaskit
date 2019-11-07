@@ -443,7 +443,7 @@ export default class Example extends React.Component<{}, State> {
                       { label: 'confluence', value: 'confluence' },
                       { label: 'jira', value: 'jira' },
                     ]}
-                    onChange={(option: any) =>
+                    onChange={(option: { value: ProductName }) =>
                       this.setState({
                         product: option.value,
                       })

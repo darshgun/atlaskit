@@ -86,7 +86,7 @@ export type Props = {
   onDismiss?: (data: ShareData) => void;
   defaultValue?: DialogContentState;
   isFetchingConfig?: boolean;
-  product?: ProductName;
+  product: ProductName;
 };
 
 export type InternalFormProps = FormChildrenArgs<ShareData> &

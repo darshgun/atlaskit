@@ -38,6 +38,7 @@ describe('ShareForm', () => {
           title="some title"
           config={config}
           submitButtonLabel={submitButtonLabel}
+          product="confluence"
         />,
       );
 
@@ -91,7 +92,12 @@ describe('ShareForm', () => {
       const mockLink = 'link';
       const loadOptions = jest.fn();
       const wrapper = shallow(
-        <ShareForm copyLink={mockLink} loadOptions={loadOptions} isSharing />,
+        <ShareForm
+          copyLink={mockLink}
+          loadOptions={loadOptions}
+          isSharing
+          product="confluence"
+        />,
       );
 
       const akForm = wrapper.find<any>(Form);
@@ -113,6 +119,7 @@ describe('ShareForm', () => {
           loadOptions={loadOptions}
           shareError={mockShareError}
           isSharing
+          product="confluence"
         />,
       );
 
@@ -137,6 +144,7 @@ describe('ShareForm', () => {
           copyLink={mockLink}
           loadOptions={loadOptions}
           isFetchingConfig
+          product="confluence"
         />,
       );
 
@@ -158,6 +166,7 @@ describe('ShareForm', () => {
           copyLink="link"
           loadOptions={jest.fn()}
           shareError={mockShareError}
+          product="confluence"
         />,
       );
 
@@ -207,6 +216,7 @@ describe('ShareForm', () => {
         title="some title"
         defaultValue={defaultValue}
         config={config}
+        product="confluence"
       />,
     );
     const formProps = {};

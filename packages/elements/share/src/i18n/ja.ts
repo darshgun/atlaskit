@@ -12,7 +12,7 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'メッセージを追加',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     '名前、グループ、チーム、メールを入力',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+  'fabric.elements.share.form.user-picker.placeholder.jira':
     '名前、チーム、または E メールを入力',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     '名前またはチームを入力',

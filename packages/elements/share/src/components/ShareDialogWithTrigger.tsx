@@ -76,7 +76,7 @@ export type Props = {
   triggerButtonTooltipText?: React.ReactNode;
   bottomMessage?: React.ReactNode;
   submitButtonLabel?: React.ReactNode;
-  product?: ProductName;
+  product: ProductName;
 };
 
 const ShareButtonWrapper = styled.div`

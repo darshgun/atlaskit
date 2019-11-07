@@ -12,8 +12,8 @@ export default {
   'fabric.elements.share.form.comment.placeholder': '添加消息',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     '输入用户名、组、团队或电子邮件',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
-    '输入姓名、团队或电子邮箱',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    '输入用户名、团队或电子邮件',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     '输入名称或团队',
   'fabric.elements.share.form.user-picker.add-more': '输入更多',

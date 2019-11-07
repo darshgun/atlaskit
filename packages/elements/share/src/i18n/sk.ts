@@ -12,7 +12,7 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Pridať správu',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Zadajte meno, skupinu, tím alebo e-mail',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+  'fabric.elements.share.form.user-picker.placeholder.jira':
     'Zadajte meno, tím alebo e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Zadajte meno alebo tím',

@@ -12,7 +12,7 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Sõnumi lisamine',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Sisestage nimi, rühm, meeskond või meil',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+  'fabric.elements.share.form.user-picker.placeholder.jira':
     'Sisesta nimi, meeskond või e-posti aadress',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Sisesta nimi või meeskond',

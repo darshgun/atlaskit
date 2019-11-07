@@ -40,7 +40,7 @@ describe('UserPickerField', () => {
     const loadOptions = jest.fn();
     const mockIsLoading = true;
     const field = renderUserPicker(
-      { loadOptions, isLoading: mockIsLoading },
+      { loadOptions, isLoading: mockIsLoading, product: 'confluence' },
       { fieldProps, meta: { valid: true } },
     );
 
@@ -64,7 +64,7 @@ describe('UserPickerField', () => {
       isLoading: mockIsLoading,
     };
 
-    let userPicker = renderProp(
+    const userPicker = renderProp(
       formattedMessageAddMore,
       'children',
       'add more',
@@ -112,7 +112,11 @@ describe('UserPickerField', () => {
     const defaultValue: OptionData[] = [];
     const loadOptions = jest.fn();
     const component = shallowWithIntl(
-      <UserPickerField loadOptions={loadOptions} defaultValue={defaultValue} />,
+      <UserPickerField
+        loadOptions={loadOptions}
+        defaultValue={defaultValue}
+        product="confluence"
+      />,
     );
     expect(component.find(Field).prop('defaultValue')).toBe(defaultValue);
   });
@@ -124,7 +128,7 @@ describe('UserPickerField', () => {
       value: [],
     };
     const field = renderUserPicker(
-      { loadOptions },
+      { loadOptions, product: 'confluence' },
       { fieldProps, meta: { valid: true } },
     );
     const formattedMessageAddMore = field.find(FormattedMessage);
@@ -146,7 +150,7 @@ describe('UserPickerField', () => {
     ])('should return "%s" when called with %p', (expected, value) => {
       const loadOptions = jest.fn();
       const component = shallowWithIntl(
-        <UserPickerField loadOptions={loadOptions} />,
+        <UserPickerField loadOptions={loadOptions} product="confluence" />,
       );
       const validate = component.prop('validate');
       expect(validate(value)).toEqual(expected);
@@ -161,7 +165,7 @@ describe('UserPickerField', () => {
       };
       const loadOptions = jest.fn();
       const errorMessage = renderUserPicker(
-        { loadOptions },
+        { loadOptions, product: 'confluence' },
         {
           fieldProps,
           meta: { valid: false },
@@ -214,6 +218,7 @@ describe('UserPickerField', () => {
         {
           loadOptions,
           config,
+          product: 'confluence',
         },
         {
           fieldProps,

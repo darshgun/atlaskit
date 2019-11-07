@@ -12,7 +12,7 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Adicionar uma mensagem',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Introduza o nome, grupo, equipa ou e-mail',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+  'fabric.elements.share.form.user-picker.placeholder.jira':
     'Introduza o nome, equipa ou e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Introduza o nome ou equipa',

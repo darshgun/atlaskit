@@ -130,7 +130,7 @@ export type Props = {
   /** Optional, this prop can be `jira` or `confluence`. Default value is `confluence`
    * We use this prop to control different text messages in UI.
    */
-  product: ProductName;
+  product?: ProductName;
 };
 
 export type State = {

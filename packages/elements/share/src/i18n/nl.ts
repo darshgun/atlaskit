@@ -12,7 +12,7 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Voeg een bericht toe',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Voer naam, groep, team of e-mailadres in',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+  'fabric.elements.share.form.user-picker.placeholder.jira':
     'Voer een naam, team of e-mailadres in',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Voer een naam of team in',

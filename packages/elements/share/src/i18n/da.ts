@@ -12,7 +12,7 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'TIlføj en meddelelse',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Indtast navn, gruppe, team eller e-mail',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
+  'fabric.elements.share.form.user-picker.placeholder.jira':
     'Indtast navn, team eller e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Indtast navn eller team',

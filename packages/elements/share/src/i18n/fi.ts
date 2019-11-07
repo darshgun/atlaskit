@@ -12,8 +12,8 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Lisää viesti',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Syötä nimi, ryhmä, tiimi tai sähköpostiosoite',
-  'fabric.elements.share.form.user-picker.placeholder.generic.jira':
-    'Anna nimi, tiimi tai sähköpostiosoite',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    'Syötä nimi, tiimi tai sähköpostiosoite',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Anna nimi tai tiimi',
   'fabric.elements.share.form.user-picker.add-more': 'Syötä lisää',
