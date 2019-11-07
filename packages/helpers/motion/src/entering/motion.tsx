@@ -95,37 +95,34 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
   const delay = isExiting ? 0 : staggered.delay;
   const direction = isExiting ? 'exiting' : 'entering';
 
-  useEffect(
-    () => {
-      if (isPaused) {
-        return;
-      }
+  useEffect(() => {
+    if (isPaused) {
+      return;
+    }
 
-      const timeoutId = setTimeout(
-        () => {
-          if (direction === 'exiting') {
-            onExitFinished && onExitFinished();
-          }
+    const timeoutId = setTimeout(
+      () => {
+        if (direction === 'exiting') {
+          onExitFinished && onExitFinished();
+        }
 
-          onFinishMotion && onFinishMotion(direction);
-        },
-        isExiting ? duration * 0.5 : duration + delay,
-      );
+        onFinishMotion && onFinishMotion(direction);
+      },
+      isExiting ? duration * 0.5 : duration + delay,
+    );
 
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    },
-    [
-      onExitFinished,
-      onFinishMotion,
-      direction,
-      isExiting,
-      duration,
-      delay,
-      isPaused,
-    ],
-  );
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [
+    onExitFinished,
+    onFinishMotion,
+    direction,
+    isExiting,
+    duration,
+    delay,
+    isPaused,
+  ]);
 
   return (
     <ClassNames>
