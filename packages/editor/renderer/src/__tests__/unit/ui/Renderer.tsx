@@ -135,6 +135,16 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
       renderer = initRenderer();
       expect(renderer.find('TruncatedWrapper')).toHaveLength(0);
     });
+
+    it('should truncate and adjust fade out if fadeoutHeight prop is defined', () => {
+      renderer = initRenderer(initialDoc, {
+        truncated: true,
+        maxHeight: 100,
+        fadeOutHeight: 50,
+      });
+      expect(renderer.find('TruncatedWrapper')).toHaveLength(1);
+      expect(renderer.find('TruncatedWrapper').props().fadeHeight).toEqual(50);
+    });
   });
 
   describe('Analytics', () => {
@@ -220,9 +230,7 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
       },
     ];
     appearances.forEach(appearance => {
-      it(`adds appearance to analytics events for ${
-        appearance.appearance
-      } renderer`, () => {
+      it(`adds appearance to analytics events for ${appearance.appearance} renderer`, () => {
         renderer = initRendererWithAnalytics({
           appearance: appearance.appearance,
         });
