@@ -34,7 +34,7 @@ async function copyVersionJson(pkg, project) {
 }
 // TODO: Fix with MB
 async function main(
-  pkgName? /*: string */,
+  pkgName /*: string */,
   { cwd } /*: { cwd: string } */ = {},
 ) {
   const project = await bolt.getProject({ cwd });
@@ -46,6 +46,7 @@ async function main(
 }
 
 if (require.main === module) {
+  // $FlowFixMe - pkgName can be undefined but ? is not eslint
   main().catch(e => {
     console.error(e);
     process.exit(1);
