@@ -92,7 +92,7 @@ export default class ExtensionComponent extends Component<Props, State> {
 
   private setStateFromPromise = (
     stateKey: keyof State,
-    promise: Promise<any>,
+    promise?: Promise<any>,
   ) => {
     promise &&
       promise.then(p => {
@@ -106,7 +106,7 @@ export default class ExtensionComponent extends Component<Props, State> {
       });
   };
 
-  private handleProviders = async (providers: Providers) => {
+  private handleProviders = (providers: Providers) => {
     const { macroProvider, extensionProvider } = providers;
 
     this.setStateFromPromise('macroProvider', macroProvider);
