@@ -7,10 +7,9 @@ import { defaultSchema } from '@atlaskit/adf-schema';
 import {
   ProviderFactory,
   ExtensionHandlers,
-  DefaultExtensionProvider,
   combineExtensionProviders,
 } from '@atlaskit/editor-common';
-import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/src/extensions';
+import { createFakeExtensionProvider } from '@atlaskit/editor-test-helpers/src/extensions';
 import Loadable from 'react-loadable';
 
 describe('Renderer - React/Nodes/Extension', () => {
@@ -193,28 +192,15 @@ describe('Renderer - React/Nodes/Extension', () => {
   });
 
   it('should be able to render extensions with the extension provider', async () => {
-    // const ExtensionHandlerComponent = jest.fn();
-    const ExtensionHandlerComponent = ({ extensionParams }) => {
+    const ExtensionHandlerComponent = ({ extensionParams }: any) => {
       return <div>From extension provider: {extensionParams.content}</div>;
     };
 
-    const macroManifest = createFakeExtensionManifest(
-      'fake confluence macro',
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
       'fake.confluence',
-      ['expand'],
+      'macro',
+      ExtensionHandlerComponent,
     );
-
-    const FakeES6Module = {
-      __esModule: true,
-      default: ExtensionHandlerComponent,
-    };
-
-    macroManifest.modules.nodes[0].render = () =>
-      Promise.resolve(FakeES6Module);
-
-    const confluenceMacrosExtensionProvider = new DefaultExtensionProvider([
-      macroManifest,
-    ]);
 
     const providers = ProviderFactory.create({
       extensionProvider: Promise.resolve(
@@ -229,7 +215,7 @@ describe('Renderer - React/Nodes/Extension', () => {
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
         extensionType="fake.confluence-extension"
-        extensionKey="expand"
+        extensionKey="macro"
         text="Hello extension"
       />,
     );

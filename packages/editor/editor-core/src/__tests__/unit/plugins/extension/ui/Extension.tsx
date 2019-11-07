@@ -4,11 +4,10 @@ import {
   ProviderFactory,
   ExtensionHandlers,
   ExtensionParams,
-  DefaultExtensionProvider,
   combineExtensionProviders,
 } from '@atlaskit/editor-common';
 import { macroProvider, extensionData } from '@atlaskit/editor-test-helpers';
-import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
+import { createFakeExtensionProvider } from '@atlaskit/editor-test-helpers/extensions';
 
 import Extension from '../../../../../plugins/extension/ui/Extension';
 import ExtensionComponent from '../../../../../plugins/extension/ui/Extension/ExtensionComponent';
@@ -248,26 +247,15 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
   });
 
   it('should use the extension handler from the provider in case there is no other available', async () => {
-    const ExtensionHandlerComponent = ({ extensionParams }) => {
+    const ExtensionHandlerComponent = ({ extensionParams }: any) => {
       return <div>From extension provider: {extensionParams.content}</div>;
     };
 
-    const macroManifest = createFakeExtensionManifest(
-      'fake confluence macro',
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
       'fake.confluence',
-      ['expand'],
+      'expand',
+      ExtensionHandlerComponent,
     );
-
-    const FakeES6Module = {
-      __esModule: true,
-      default: ExtensionHandlerComponent,
-    };
-    macroManifest.modules.nodes[0].render = () =>
-      Promise.resolve(FakeES6Module);
-
-    const confluenceMacrosExtensionProvider = new DefaultExtensionProvider([
-      macroManifest,
-    ]);
 
     const providerFactory = ProviderFactory.create({
       macroProvider: macroProviderPromise,

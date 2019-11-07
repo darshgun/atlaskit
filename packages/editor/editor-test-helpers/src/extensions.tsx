@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { ExtensionHandlers, ExtensionParams } from '@atlaskit/editor-common';
+import {
+  ExtensionHandlers,
+  ExtensionParams,
+  DefaultExtensionProvider,
+  ExtensionType,
+  ExtensionKey,
+} from '@atlaskit/editor-common';
 import { ExtensionManifest } from '@atlaskit/editor-common';
 
 const FakeExtension = ({
@@ -194,3 +200,28 @@ export const createFakeExtensionManifest = (
     })),
   },
 });
+
+export const createFakeExtensionProvider = (
+  extensionType: ExtensionType,
+  extensionKey: ExtensionKey,
+  extensionHandler: (...args: any) => JSX.Element,
+) => {
+  const macroManifest = createFakeExtensionManifest(
+    'fake extension provider',
+    extensionType,
+    [extensionKey],
+  );
+
+  const FakeES6Module = {
+    __esModule: true,
+    default: extensionHandler,
+  };
+
+  macroManifest.modules.nodes[0].render = () => Promise.resolve(FakeES6Module);
+
+  const confluenceMacrosExtensionProvider = new DefaultExtensionProvider([
+    macroManifest,
+  ]);
+
+  return confluenceMacrosExtensionProvider;
+};
