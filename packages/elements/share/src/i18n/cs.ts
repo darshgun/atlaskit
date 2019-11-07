@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Přidat zprávu',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Zadejte jméno, skupinu, tým nebo e-mail',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    'Zadejte jméno, tým nebo e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Zadejte jméno nebo tým',
   'fabric.elements.share.form.user-picker.add-more': 'Zadejte více',
   'fabric.elements.share.form.user-picker.validation.required':
     'Vyberte alespoň jednoho uživatele, skupinu, tým nebo e-mail.',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    'Vyberte alespoň jednoho uživatele, tým nebo e-mail.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Můžete pozvat pouze lidi s e-mailem v doméně {domains}. Chcete-li pozvat jiné lidi, obraťte se na svého administrátora.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

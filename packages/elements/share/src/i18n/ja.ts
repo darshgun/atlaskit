@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'メッセージを追加',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     '名前、グループ、チーム、メールを入力',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    '名前、チーム、または E メールを入力',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     '名前またはチームを入力',
   'fabric.elements.share.form.user-picker.add-more': 'さらに追加',
   'fabric.elements.share.form.user-picker.validation.required':
     'ユーザー、グループ、チーム、メールから少なくとも 1 つ選択してください。',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    '少なくともユーザー、チームまたはメールを 1 つ選択してください。',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     '{domains} のメール アドレスを使用しているユーザーのみを招待できます。その他のユーザーを招待するには、サイト管理者にお問い合わせください。',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

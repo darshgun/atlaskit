@@ -39,7 +39,7 @@
     "@atlaskit/theme": "^9.2.4",
     "@atlaskit/tooltip": "^15.1.1",
     "@babel/runtime": "^7.0.0",
-    "blueimp-load-image": "^2.19.0",
+    "blueimp-load-image": "2.19.0",
     "bytes": "^2.4.0",
     "exenv": "^1.2.2",
     "lodash.debounce": "^4.0.8",

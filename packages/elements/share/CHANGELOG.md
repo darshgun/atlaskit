@@ -1,5 +1,13 @@
 # @atlaskit/share
 
+## 0.7.0
+
+### Minor Changes
+
+- [minor][4e487b59a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e487b59a1):
+
+  Add new optional prop "product" to control different messages between Jira and Confluence
+
 ## 0.6.15
 
 ### Patch Changes
