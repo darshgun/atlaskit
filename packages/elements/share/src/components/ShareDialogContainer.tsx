@@ -127,7 +127,8 @@ export type Props = {
   useUrlShortener?: boolean;
   /** Action that will be performed by the recipient when he/she receives the notification. */
   shareeAction?: 'view' | 'edit';
-  /** Optional, this prop can be `jira` or `confluence`. Default value is `confluence`
+  /**
+   * Optional, this prop can be `jira` or `confluence`. Default value is `confluence`.
    * We use this prop to control different text messages in UI.
    */
   product?: ProductName;
