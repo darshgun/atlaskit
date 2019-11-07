@@ -13,7 +13,8 @@ import throttle from 'lodash.throttle';
 import { OverflowProviderProps } from './types';
 
 const THROTTLE_INTERVAL = 100;
-const ITEM_APPROX_MINWIDTH = 60;
+// approx width of "More" button
+const ITEM_APPROX_MINWIDTH = 66;
 const calculateHash = (w: number, n: number) => w + '#' + n;
 
 const OverflowContext = createContext({

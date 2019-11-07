@@ -37,7 +37,7 @@ import {
 } from './analytics';
 import ShareButton from './ShareButton';
 import { ShareForm } from './ShareForm';
-import { showInviteWarning } from './utils';
+import { showAdminNotifiedFlag } from './utils';
 
 type DialogState = {
   isDialogOpen: boolean;
@@ -142,7 +142,10 @@ export class ShareDialogWithTriggerInternal extends React.PureComponent<
   ) => {
     const { formatMessage } = this.props.intl;
     const flags: Array<Flag> = [];
-    const shouldShowAdminNotifiedFlag = showInviteWarning(config, data.users);
+    const shouldShowAdminNotifiedFlag = showAdminNotifiedFlag(
+      config,
+      data.users,
+    );
 
     if (shouldShowAdminNotifiedFlag) {
       flags.push({

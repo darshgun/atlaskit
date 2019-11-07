@@ -298,22 +298,28 @@ class HelpContextProviderImplementation extends React.Component<
         }
 
         // get the article
-        this.props.onGetArticle(articleId).then(article => {
-          if (article) {
-            // add the article value to the last historyItem
-            // and update the state of the last historyItem to done
-            updateNewLastItem(uid, {
-              state: REQUEST_STATE.done,
-              article: article,
-            });
-          } else {
-            // If we don't get any article, set the state of
-            // the last historyItem to error
-            updateNewLastItem(uid, { state: REQUEST_STATE.error });
-          }
+        this.props.onGetArticle(articleId).then(
+          article => {
+            if (article) {
+              // add the article value to the last historyItem
+              // and update the state of the last historyItem to done
+              updateNewLastItem(uid, {
+                state: REQUEST_STATE.done,
+                article: article,
+              });
+            } else {
+              // If we don't get any article, set the state of
+              // the last historyItem to error
+              updateNewLastItem(uid, { state: REQUEST_STATE.error });
+            }
 
-          clearTimeout(this.requestLoadingTimeout);
-        });
+            clearTimeout(this.requestLoadingTimeout);
+          },
+          () => {
+            updateNewLastItem(uid, { state: REQUEST_STATE.error });
+            clearTimeout(this.requestLoadingTimeout);
+          },
+        );
       } catch (error) {
         updateNewLastItem(uid, { state: REQUEST_STATE.error });
         clearTimeout(this.requestLoadingTimeout);

@@ -1,6 +1,6 @@
 import { gridSize } from '@atlaskit/theme/constants';
 
-const leftMarginSize = gridSize() / 2;
+const margin = `0 ${gridSize() / 2}px`;
 
 export const containerCSS = {
   alignItems: 'stretch',
@@ -11,7 +11,7 @@ export const containerCSS = {
   overflow: 'hidden',
   '& > *': {
     flexShrink: 0,
-    marginLeft: leftMarginSize,
+    margin,
   },
 };
 

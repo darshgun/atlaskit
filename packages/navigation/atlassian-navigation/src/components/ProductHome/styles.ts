@@ -61,7 +61,7 @@ export const productLogoCSS = {
   },
 };
 
-export const siteNameCSS = ({
+export const siteTitleCSS = ({
   mode: {
     navigation: { color },
     productHome: { borderRight },
@@ -72,12 +72,12 @@ export const siteNameCSS = ({
   alignItems: 'center',
 
   paddingRight: gridSize * 3,
-  marginRight: gridSize * 1.5,
+  marginRight: gridSize / 2,
   borderRight: borderRight,
 });
 
-export const siteNameSkeletonCSS = (theme: NavigationTheme) => ({
-  ...siteNameCSS(theme),
+export const siteTitleSkeletonCSS = (theme: NavigationTheme) => ({
+  ...siteTitleCSS(theme),
   ...skeletonCSS(theme),
   width: gridSize * 5,
   backgroundColor: 'transparent',

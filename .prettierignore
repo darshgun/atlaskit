@@ -4,6 +4,7 @@ dist
 node_modules
 .yarn
 .*/packages/core/logo/src
+build/releases/__fixtures__
 packages/core/icon/cjs
 packages/core/icon/glyph
 packages/core/icon/utils
