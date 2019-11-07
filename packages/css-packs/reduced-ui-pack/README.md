@@ -40,8 +40,14 @@ element.
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="node_modules/@atlaskit/css-reset/dist/bundle.css" />
-    <link rel="stylesheet" href="node_modules/reduced-ui-pack/dist/bundle.css" />
+    <link
+      rel="stylesheet"
+      href="node_modules/@atlaskit/css-reset/dist/bundle.css"
+    />
+    <link
+      rel="stylesheet"
+      href="node_modules/reduced-ui-pack/dist/bundle.css"
+    />
   </head>
   <body>
     <!-- ... -->

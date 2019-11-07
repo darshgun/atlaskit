@@ -63,7 +63,7 @@
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/drawer": "^5.0.13",
     "@atlaskit/i18n-tools": "^0.6.0",
-    "@atlaskit/navigation-next": "^7.0.0",
+    "@atlaskit/navigation-next": "^7.0.4",
     "@atlaskit/global-navigation": "^8.0.4",
     "@atlaskit/page": "^11.0.9",
     "@atlaskit/quick-search": "^7.8.1",

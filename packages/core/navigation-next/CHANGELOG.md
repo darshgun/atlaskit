@@ -1,5 +1,13 @@
 # @atlaskit/navigation-next
 
+## 7.1.0
+
+### Minor Changes
+
+- [minor][d8b3e9833e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8b3e9833e):
+
+  global-navigation height resizes for mobile browsers
+
 ## 7.0.4
 
 ### Patch Changes
