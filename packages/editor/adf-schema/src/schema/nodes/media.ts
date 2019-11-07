@@ -7,7 +7,7 @@ export type DisplayType = 'file' | 'thumbnail';
 export type DefaultAttributes<T> = {
   [P in keyof T]: {
     default?: T[P] | null;
-  }
+  };
 };
 
 /**

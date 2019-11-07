@@ -242,9 +242,7 @@ export const insertMedia = async (
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
-  const openMediaPopup = `[aria-label="${
-    insertBlockMessages.filesAndImages.defaultMessage
-  }"]`;
+  const openMediaPopup = `[aria-label="${insertBlockMessages.filesAndImages.defaultMessage}"]`;
 
   // wait for media button in toolbar and click it
   await browser.waitForSelector(openMediaPopup);
@@ -283,9 +281,7 @@ export const insertBlockMenuItem = async (
     menuSelector = `[aria-label="${menuTitle}"]`;
   } else {
     // Open insert menu and try to look the menu there
-    const openInsertBlockMenuSelector = `[aria-label="${
-      insertBlockMessages.insertMenu.defaultMessage
-    }"]`;
+    const openInsertBlockMenuSelector = `[aria-label="${insertBlockMessages.insertMenu.defaultMessage}"]`;
 
     await browser.click(openInsertBlockMenuSelector);
 
@@ -514,9 +510,7 @@ export const doubleClickResizeHandle = async (
 
 export const selectColumns = async (page: any, indexes: number[]) => {
   for (let i = 0, count = indexes.length; i < count; i++) {
-    const controlSelector = `.${
-      TableCssClassName.COLUMN_CONTROLS_DECORATIONS
-    }[data-start-index="${indexes[i]}"]`;
+    const controlSelector = `.${TableCssClassName.COLUMN_CONTROLS_DECORATIONS}[data-start-index="${indexes[i]}"]`;
     await page.waitForSelector(controlSelector);
     if (i > 0) {
       await page.browser.keys(['Shift']);

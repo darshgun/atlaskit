@@ -12,9 +12,7 @@ export class UploadPreview extends React.Component<PreviewData> {
   getPreviewInfo(preview: Preview): string | null {
     if ('scaleFactor' in preview) {
       const imgPreview = preview as ImagePreview;
-      return `${imgPreview.dimensions.width} x ${
-        imgPreview.dimensions.height
-      } @${imgPreview.scaleFactor}x`;
+      return `${imgPreview.dimensions.width} x ${imgPreview.dimensions.height} @${imgPreview.scaleFactor}x`;
     } else {
       return null;
     }

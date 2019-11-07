@@ -307,7 +307,7 @@ async function loadExampleUrl(
 // Here we check for both scenarios and if discovered we return an error message.
 async function validateExampleLoaded(page /*:any*/) {
   return await page.evaluate(() => {
-    const doc = document /* as any*/;
+    const doc = document; /* as any*/
     const renderedContent = doc.querySelector('#examples > div:first-child');
     if (renderedContent && !renderedContent.children.length) {
       const message = renderedContent.innerText || '';
