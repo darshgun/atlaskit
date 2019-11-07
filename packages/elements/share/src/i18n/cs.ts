@@ -20,7 +20,7 @@ export default {
   'fabric.elements.share.form.user-picker.validation.required':
     'Vyberte alespoň jednoho uživatele, skupinu, tým nebo e-mail.',
   'fabric.elements.share.form.user-picker.validation.required.jira':
-    'Vyberte aspoň jednoho uživatele, tým nebo e-mail.',
+    'Vyberte alespoň jednoho uživatele, tým nebo e-mail.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Můžete pozvat pouze lidi s e-mailem v doméně {domains}. Chcete-li pozvat jiné lidi, obraťte se na svého administrátora.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':
