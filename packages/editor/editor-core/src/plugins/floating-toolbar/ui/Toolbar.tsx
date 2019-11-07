@@ -43,8 +43,8 @@ const ToolbarContainer = styled.div`
     0 4px 8px -2px rgba(9, 30, 66, 0.25);
   padding: ${akGridSize / 2}px ${akGridSize}px;
   display: flex;
-  box-sizing: border-box;
   line-height: 1;
+  box-sizing: border-box;
   ${(props: { hasCompactLeftPadding: boolean }) =>
     props.hasCompactLeftPadding ? `padding-left: ${akGridSize / 2}px` : ''};
   & > div {
