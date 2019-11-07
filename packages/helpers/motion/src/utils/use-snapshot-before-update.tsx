@@ -1,15 +1,15 @@
-import { useRef } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 
 /**
  * This hook tries to emulate the getSnapshotBeforeUpdate lifecycle method.
  */
 export const useSnapshotBeforeUpdate = (cb: Function) => {
-  const renderCount = useRef(0);
-
-  // We only consider it an update after the first render.
-  if (renderCount.current > 0) {
+  const isFirstRender = useRef(true);
+  if (!isFirstRender.current) {
     cb();
-  } else {
-    renderCount.current += 1;
   }
+
+  useLayoutEffect(() => {
+    isFirstRender.current = false;
+  }, []);
 };

@@ -3,7 +3,7 @@
  * Will return `true` if the current user prefers reduced motion.
  * This is generally set through OS preferences/settings.
  */
-export const isReducedMotion = () => {
+export const isReducedMotion = (): boolean => {
   const { matches } = window.matchMedia('(prefers-reduced-motion: reduce)');
   return matches;
 };

@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { render } from '@testing-library/react';
+import { replaceRaf } from 'raf-stub';
 import { useResizingHeight } from '../../resizing/height';
 import { isReducedMotion } from '../../utils/accessibility';
 import { mediumDurationMs } from '../../utils/durations';
@@ -7,11 +8,11 @@ import { easeInOut } from '../../utils/curves';
 
 jest.mock('../../utils/accessibility');
 
-Object.assign(window, {
-  requestAnimationFrame: (cb: any) => {
-    setTimeout(cb);
-  },
-});
+replaceRaf();
+
+const nextFrame = () => {
+  (window.requestAnimationFrame as any).step();
+};
 
 const Container = forwardRef<HTMLElement, { id: string; height: number }>(
   ({ id, height, ...props }, ref) => {
@@ -95,13 +96,12 @@ describe('<ResizingHeight />', () => {
   });
 
   it('should set the new height after two frames so the DOM can flush changes', () => {
-    jest.useFakeTimers();
     const { getByTestId, rerender } = render(<TestComponent height={100} />);
     rerender(<TestComponent height={500} />);
 
-    jest.runOnlyPendingTimers();
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
+    // Two ticks to start the motion.
+    nextFrame();
+    nextFrame();
 
     expect(getByTestId('element').style).toMatchObject({
       height: '500px',
@@ -113,9 +113,10 @@ describe('<ResizingHeight />', () => {
     const { getByTestId, rerender } = render(<TestComponent height={100} />);
     rerender(<TestComponent height={500} />);
 
-    jest.runOnlyPendingTimers();
-    jest.runOnlyPendingTimers();
-    jest.runOnlyPendingTimers();
+    // Two ticks to start the motion.
+    nextFrame();
+    nextFrame();
+    // Run the timeout to cleanup the motion.
     jest.runOnlyPendingTimers();
     jest.useRealTimers();
 
@@ -126,13 +127,17 @@ describe('<ResizingHeight />', () => {
     jest.useFakeTimers();
     const { rerender, unmount } = render(<TestComponent height={100} />);
     rerender(<TestComponent height={500} />);
-    jest.runOnlyPendingTimers();
-    jest.runOnlyPendingTimers();
+    // Two ticks to start the motion.
+    nextFrame();
+    nextFrame();
 
     unmount();
 
     expect(() => {
-      jest.runOnlyPendingTimers();
+      // Two ticks to start the motion.
+      nextFrame();
+      nextFrame();
+      // Run the timeout so we cleanup the motion.
       jest.runOnlyPendingTimers();
       jest.useRealTimers();
     }).not.toThrow();

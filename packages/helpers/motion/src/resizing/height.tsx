@@ -3,7 +3,8 @@ import { isReducedMotion } from '../utils/accessibility';
 import { mediumDurationMs } from '../utils/durations';
 import { easeInOut } from '../utils/curves';
 import { useSnapshotBeforeUpdate } from '../utils/use-snapshot-before-update';
-import { useSetTimeout } from '../utils/timer-hooks';
+import { useSetTimeout, useRequestAnimationFrame } from '../utils/timer-hooks';
+import { useElementRef } from '../utils/use-element-ref';
 
 interface ResizingHeightOpts {
   /**
@@ -42,27 +43,30 @@ export const useResizingHeight = ({
   timingFunction: calcTimingFunction = () => easeInOut,
 }: ResizingHeightOpts = {}) => {
   const prevDimensions = useRef<Dimensions>();
-  const childRef = useRef<HTMLElement>();
-  const setTimeout = useSetTimeout();
+  const [element, setElementRef] = useElementRef();
+  // We cleanup on the next effect to prevent the previous timeout being called during
+  // the next motion - as now the timeout has essentially been extended!
+  const setTimeout = useSetTimeout({ cleanup: 'next-effect' });
+  const requestAnimationFrame = useRequestAnimationFrame();
 
   useSnapshotBeforeUpdate(() => {
-    if (isReducedMotion() || !childRef.current) {
+    if (isReducedMotion() || !element) {
       return;
     }
 
-    prevDimensions.current = childRef.current.getBoundingClientRect();
+    prevDimensions.current = element.getBoundingClientRect();
   });
 
   useLayoutEffect(() => {
-    if (isReducedMotion() || !childRef.current || !prevDimensions.current) {
+    if (isReducedMotion() || !element || !prevDimensions.current) {
       return;
     }
 
     // We might already be animating.
     // Because of that we need to expand to the destination height first.
-    childRef.current.setAttribute('style', '');
+    element.setAttribute('style', '');
 
-    const nextDimensions = childRef.current.getBoundingClientRect();
+    const nextDimensions = element.getBoundingClientRect();
     if (nextDimensions.height === prevDimensions.current.height) {
       return;
     }
@@ -84,30 +88,30 @@ export const useResizingHeight = ({
         duration,
       ),
     };
-    Object.assign(childRef.current.style, newStyles);
+    Object.assign(element.style, newStyles);
 
     // We split this over two animation frames so the DOM has enough time to flush the changes.
     // We are deliberately not skipping this frame if another render happens - if we do the motion doesn't finish properly.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        if (!childRef.current) {
+        if (!element) {
           return;
         }
 
-        childRef.current.style.height = `${nextDimensions.height}px`;
+        element.style.height = `${nextDimensions.height}px`;
 
         setTimeout(() => {
-          if (!childRef.current) {
+          if (!element) {
             return;
           }
 
-          childRef.current.setAttribute('style', '');
+          element.setAttribute('style', '');
         }, duration);
       });
     });
   });
 
-  return { ref: childRef as React.MutableRefObject<any> };
+  return { ref: setElementRef };
 };
 
 /**
