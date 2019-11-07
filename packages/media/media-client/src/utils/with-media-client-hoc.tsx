@@ -66,7 +66,7 @@ export const withMediaClient: WithMediaClientFunction = <
         ? createEmptyMediaClient()
         : getMediaClient(mediaClientConfig);
 
-      return <Component {...props as any} mediaClient={mediaClient} />;
+      return <Component {...(props as any)} mediaClient={mediaClient} />;
     }
   };
 };
