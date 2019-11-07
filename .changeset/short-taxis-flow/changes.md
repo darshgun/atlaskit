@@ -1,0 +1,1 @@
+handle rejected getArticle promises
