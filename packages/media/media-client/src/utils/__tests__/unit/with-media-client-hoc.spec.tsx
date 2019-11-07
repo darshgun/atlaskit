@@ -47,4 +47,23 @@ describe('withMediaClient', () => {
       .props().mediaClient;
     expect(mediaClient1).toBe(mediaClient2);
   });
+
+  it('should use empty mediaClient for external identifiers', async () => {
+    const Wrapper = withMediaClient(DummyComponent);
+    // Intentionally pass undefined mediaClientConfig to simulate external identifier usage
+    const component = mount(
+      <Wrapper
+        mediaClientConfig={undefined as any}
+        identifier={{ mediaItemType: 'external-image', dataURI: 'hehe' }}
+      />,
+    );
+    const mediaClient = component.find<WithMediaClient>(DummyComponent).props()
+      .mediaClient;
+    expect(mediaClient).not.toBeUndefined();
+    expect(await mediaClient.config.authProvider()).toEqual({
+      clientId: '',
+      token: '',
+      baseUrl: '',
+    });
+  });
 });
