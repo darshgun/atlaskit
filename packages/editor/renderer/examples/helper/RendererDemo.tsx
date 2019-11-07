@@ -251,11 +251,11 @@ export default class RendererDemo extends React.Component<
     );
   }
 
-  private toggleTruncated() {
+  private toggleTruncated = () => {
     this.setState(prevState => ({
       truncated: !prevState.truncated,
     }));
-  }
+  };
 
   private renderRenderer(additionalRendererProps: any) {
     const { shouldUseEventHandlers } = this.state;
@@ -337,7 +337,7 @@ export default class RendererDemo extends React.Component<
     }
   }
 
-  private renderText() {
+  private renderText = () => {
     if (this.props.serializer !== 'text') {
       return null;
     }
@@ -354,7 +354,7 @@ export default class RendererDemo extends React.Component<
     } catch (ex) {
       return null;
     }
-  }
+  };
 
   private toggleSidebar = () => {
     this.setState(prevState => ({ showSidebar: !prevState.showSidebar }));
