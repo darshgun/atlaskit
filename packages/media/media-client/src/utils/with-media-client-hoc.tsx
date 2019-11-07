@@ -58,6 +58,7 @@ export const withMediaClient: WithMediaClientFunction = <
 ) => {
   return class extends React.Component<WithMediaClientConfigProps<P>> {
     render() {
+      // TODO MS-1552: clean up after we move mediaClientConfig into FileIdentifier
       const props = this.props;
       const { mediaClientConfig, identifier } = props;
       const isExternalIdentifier =
