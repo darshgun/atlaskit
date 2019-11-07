@@ -6,7 +6,7 @@ import React, {
   Ref,
   useContext,
 } from 'react';
-import { useUniqueId } from '../utils/random';
+import { useUniqueId } from '../utils/use-unique-id';
 
 interface StaggeredEntranceProps {
   /**

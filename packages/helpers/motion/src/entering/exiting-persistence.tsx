@@ -81,16 +81,23 @@ const wrapChildWithContextProvider = (
   );
 };
 
+const childrenToObj = (children: ElementWithKey[]) => {
+  return children.reduce<{ [key: string]: ElementWithKey }>((acc, child) => {
+    acc[child.key] = child;
+    return acc;
+  }, {});
+};
+
 const spliceNewElementsIntoPrevious = (
   current: ElementWithKey[],
   previous: ElementWithKey[],
 ): ElementWithKey[] => {
   const splicedChildren: ElementWithKey[] = previous.concat([]);
+  const previousMap = childrenToObj(previous);
 
   for (let i = 0; i < current.length; i++) {
     const child = current[i];
-    // TODO: Can we do this better than a find()?
-    const childIsNew = !previous.find(x => x.key === child.key);
+    const childIsNew = !previousMap[child.key];
 
     if (childIsNew) {
       // This will insert the new element after the previous element.
@@ -99,13 +106,6 @@ const spliceNewElementsIntoPrevious = (
   }
 
   return splicedChildren;
-};
-
-const childrenToObj = (children: ElementWithKey[]) => {
-  return children.reduce<{ [key: string]: ElementWithKey }>((acc, child) => {
-    acc[child.key] = child;
-    return acc;
-  }, {});
 };
 
 /**
