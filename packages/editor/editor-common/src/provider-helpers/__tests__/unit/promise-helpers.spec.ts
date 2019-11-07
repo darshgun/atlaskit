@@ -54,7 +54,7 @@ describe('promise-helpers', () => {
 
     test('should reject with the last error if all promises have rejected', async () => {
       const a = rejectsIn(10, 'a');
-      const b = rejectsIn(15, 'b');
+      const b = rejectsIn(30, 'b');
       const c = rejectsIn(11, 'c');
 
       return expect(waitForFirstFulfilledPromise([a, b, c])).rejects.toEqual(

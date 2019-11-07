@@ -283,8 +283,6 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
 
     extension.update();
 
-    console.log(extension.html());
-
     expect(extension.text()).toEqual(
       'Bodied extension from extension provider: body',
     );

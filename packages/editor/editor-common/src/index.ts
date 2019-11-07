@@ -3,7 +3,6 @@ export * from './utils';
 export {
   Transformer,
   SortOrder,
-  // Collab Types
   CollabEditProvider,
   CollabEvent,
   CollabEventData,

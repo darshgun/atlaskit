@@ -34,6 +34,7 @@ export async function extractItemsFromExtensionProvider(
         onClick: async (editorActions: EditorActions) => {
           const node = item.node && (await item.node.insert()).default;
           if (!node) {
+            // eslint-disable-next-line no-console
             console.error('no node available');
             return;
           }

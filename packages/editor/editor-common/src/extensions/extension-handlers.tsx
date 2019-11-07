@@ -32,6 +32,7 @@ export async function getManifestNode(
 
 function ExtensionLoading(props: LoadingComponentProps) {
   if (props.error || props.timedOut) {
+    // eslint-disable-next-line no-console
     console.error('Error rendering extension', props.error);
     return <div>Error loading the extension!</div>;
   } else {
