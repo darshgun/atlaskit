@@ -3,7 +3,7 @@
 Currently xregexp library is big in bundles and the idea is to use it at compilation time rather than runtime.
 Basically the idea is to transpile the regex scripts to full unicode character ranges using the xregexp library at compilation time.
 
-This is was implemented through a typescript custom transformer. 
+This is was implemented through a typescript custom transformer.
 
 ## Dependencies
 
@@ -35,6 +35,7 @@ npm install
 npm run dist:delete
 npm run sample
 ```
+
 Check the output for the generated regex unicode in dist/sample.js.
 
 ## HOWTO: compile your Xregexp expression

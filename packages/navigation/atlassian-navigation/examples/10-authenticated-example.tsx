@@ -1,25 +1,25 @@
 import React from 'react';
 
-import { DefaultAppSwitcher } from './shared/AppSwitcher';
 import { DefaultCreate } from './shared/Create';
-import { DefaultHelp } from './shared/Help';
-import { DefaultNotifications } from './shared/Notifications';
 import { defaultPrimaryItems } from './shared/PrimaryItems';
 import { DefaultProductHome } from './shared/ProductHome';
-import { DefaultProfile } from './shared/Profile';
 import { DefaultSearch } from './shared/Search';
 import { DefaultSettings } from './shared/Settings';
 import { AtlassianNavigation } from '../src';
+import { ProfilePopup } from './shared/ProfilePopup';
+import { SwitcherPopup } from './shared/SwitcherPopup';
+import { HelpPopup } from './shared/HelpPopup';
+import { NotificationsPopup } from './shared/NotificationsPopup';
 
 const AuthenticatedExample = () => (
   <AtlassianNavigation
     primaryItems={defaultPrimaryItems}
-    renderAppSwitcher={DefaultAppSwitcher}
+    renderAppSwitcher={SwitcherPopup}
     renderCreate={DefaultCreate}
-    renderHelp={DefaultHelp}
-    renderNotifications={DefaultNotifications}
+    renderHelp={HelpPopup}
+    renderNotifications={NotificationsPopup}
     renderProductHome={DefaultProductHome}
-    renderProfile={DefaultProfile}
+    renderProfile={ProfilePopup}
     renderSearch={DefaultSearch}
     renderSettings={DefaultSettings}
   />

@@ -1,5 +1,13 @@
 # @atlaskit/theme
 
+## 9.2.7
+
+### Patch Changes
+
+- [patch][c3dc8235f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3dc8235f2):
+
+  Preventing circular dep within theme
+
 ## 9.2.6
 
 ### Patch Changes

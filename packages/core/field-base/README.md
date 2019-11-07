@@ -3,11 +3,12 @@
 This component contains all the common behaviour and styles for fields
 
 FieldBase provides an Atlassian Design Guidelines compatible implementation for:
-* Labels: spacing, margins, accessibility.
-* Fields: sizing, borders, colors, wrapping behaviour, hover/focus states.
-* Validation: styles (built in validation coming soon!)
 
-FieldBase components *will* work by themselves, but are really meant to be extended into a full field component.
+- Labels: spacing, margins, accessibility.
+- Fields: sizing, borders, colors, wrapping behaviour, hover/focus states.
+- Validation: styles (built in validation coming soon!)
+
+FieldBase components _will_ work by themselves, but are really meant to be extended into a full field component.
 
 ## Installation
 

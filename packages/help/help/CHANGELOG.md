@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.20.12
+
+### Patch Changes
+
+- [patch][bf5be91872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf5be91872):
+
+  handle rejected getArticle promises
+
 ## 0.20.11
 
 ### Patch Changes

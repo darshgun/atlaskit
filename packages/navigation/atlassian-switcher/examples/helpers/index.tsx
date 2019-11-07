@@ -95,7 +95,11 @@ const onAnalyticsEvent = (event: UIAnalyticsEvent, channel?: string) => {
   );
 };
 
-export const AnalyticsLogger = ({ children }: { children: any }) => {
+export const AnalyticsLogger = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   return (
     <AnalyticsListener channel="*" onEvent={onAnalyticsEvent}>
       {children}
@@ -103,17 +107,17 @@ export const AnalyticsLogger = ({ children }: { children: any }) => {
   );
 };
 
-export const withAnalyticsLogger = (WrappedComponent: React.ReactType) => (
-  props: object,
-) => (
+export const withAnalyticsLogger = <Props extends Object>(
+  WrappedComponent: React.ComponentType<Props>,
+) => (props: Props) => (
   <AnalyticsLogger>
     <WrappedComponent {...props} />
   </AnalyticsLogger>
 );
 
-export const withIntlProvider = (WrappedComponent: React.ReactType) => (
-  props: object,
-) => (
+export const withIntlProvider = <Props extends Object>(
+  WrappedComponent: React.ComponentType<Props>,
+) => (props: Props) => (
   <IntlProvider>
     <WrappedComponent {...props} />
   </IntlProvider>

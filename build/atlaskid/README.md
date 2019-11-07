@@ -14,8 +14,8 @@ Access to Atlaskid is controlled by the "Atlaskit Build" team. You can message t
 
 Nobody has access to merge anymore, all merges must go through Atlaskid. If you don't see a "land" button in your PRs you either:
 
-* Don't have write permission in the repo (your BB account is not set up correctly)
-* You don't have access to Atlaskid (your name is not in the "allowed_users" list [here](https://atlaskit-atlaskid.us-west-1.staging.public.atl-paas.net/current-state/)).
+- Don't have write permission in the repo (your BB account is not set up correctly)
+- You don't have access to Atlaskid (your name is not in the "allowed_users" list [here](https://atlaskit-atlaskid.us-west-1.staging.public.atl-paas.net/current-state/)).
 
 Talk to the Fabric Build room if you need this.
 
@@ -27,11 +27,11 @@ Your PR should now say that it is in the queue. You can see the current queue [h
 
 If you can see three green builds but your PR has still not merged (and you don't see it in the current "running" build on Landkid) then something has gone wrong during the actual merge. This might be:
 
-* Someone removed an approval at the time the bot tried to merge
-* You may have had open tasks when the bot tried to merge
-* You may have pushed changes before the bot was able to merge
-* BB may not have fired the webhook required to tell landkid to merge
-* Landkid may have restarted unexpectedly and dropped your build
+- Someone removed an approval at the time the bot tried to merge
+- You may have had open tasks when the bot tried to merge
+- You may have pushed changes before the bot was able to merge
+- BB may not have fired the webhook required to tell landkid to merge
+- Landkid may have restarted unexpectedly and dropped your build
 
 All of these situations should be able to be fixed by hitting land again (after getting approvals, closing tasks, etc).
 
@@ -41,17 +41,17 @@ If this happens again, contact the "Fabric Build" room for them to investigate.
 
 There are some helpers scripts that can be run here:
 
-* `yarn get-state` - outputs the current state of landkid (queue, allowed to merge, lock state, etc)
-* `yarn pause` - pauses any new builds from landking, but allows queues to empty (usually used if an important build is landing, or we are upgrading service)
-* `yarn pause -- "Some sort of reason"` - pauses server also showing a custom reason for why builds are paused. Reason is visible in PR screen and in `/current-state`
-* `yarn unpause` - unpauses builds
-* `yarn fix-locked` - used to fix a specific issue that we've hit a few times where the `locked` flag is true but no builds are running.
-  * This essentially just runs `unlock` and `next()`, two debugging functions we've left in so that we dont have to redeploy if things go wrong.
-* `yarn release` - will deploy a new version of atlaskid to production.
-  * **This should only be used if you know what you are doing**
-  * This will bump the tag number, pause builds, wait for the queue to empty, build a new docker image, push image to docker repository and then deploy the app to micros
-  * You will need access to the private docker repository and micros and be logged in to both to do this.
-  * Once the release is done, there can sometimes a short period where the old instance will stay alive (up to an hour).
+- `yarn get-state` - outputs the current state of landkid (queue, allowed to merge, lock state, etc)
+- `yarn pause` - pauses any new builds from landking, but allows queues to empty (usually used if an important build is landing, or we are upgrading service)
+- `yarn pause -- "Some sort of reason"` - pauses server also showing a custom reason for why builds are paused. Reason is visible in PR screen and in `/current-state`
+- `yarn unpause` - unpauses builds
+- `yarn fix-locked` - used to fix a specific issue that we've hit a few times where the `locked` flag is true but no builds are running.
+  - This essentially just runs `unlock` and `next()`, two debugging functions we've left in so that we dont have to redeploy if things go wrong.
+- `yarn release` - will deploy a new version of atlaskid to production.
+  - **This should only be used if you know what you are doing**
+  - This will bump the tag number, pause builds, wait for the queue to empty, build a new docker image, push image to docker repository and then deploy the app to micros
+  - You will need access to the private docker repository and micros and be logged in to both to do this.
+  - Once the release is done, there can sometimes a short period where the old instance will stay alive (up to an hour).
     To verify if there is an old version running you can run
     ```
     micros service:show atlaskit-atlaskid -e stg-west
@@ -106,15 +106,14 @@ I'll write more docs around this next time we are making a major change, so that
 
 ### DDEV
 
-* deployed [here](https://atlaskit-atlaskid.ap-southeast-2.dev.public.atl-paas.net/).
-* logs [here](https://splunk.paas-inf.net/en-US/app/search/search?q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dddev%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&earliest=-15m&latest=now&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517375378.26745_4DCAA4A3-284A-4537-9FEC-85A2DF05C4ED)
+- deployed [here](https://atlaskit-atlaskid.ap-southeast-2.dev.public.atl-paas.net/).
+- logs [here](https://splunk.paas-inf.net/en-US/app/search/search?q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dddev%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&earliest=-15m&latest=now&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517375378.26745_4DCAA4A3-284A-4537-9FEC-85A2DF05C4ED)
 
 ### PROD
 
-* deployed [here](https://atlaskit-atlaskid.us-west-1.staging.public.atl-paas.net/)
-* logs [here](https://splunk.paas-inf.net/en-GB/app/search/search?earliest=-15m&latest=now&q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dstg-west%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&display.events.fields=%5B%22message%22%2C%20%22m.sv%22%5D&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517460620.41659_E7788A4C-2494-4763-81E0-36C703BBF35D)
+- deployed [here](https://atlaskit-atlaskid.us-west-1.staging.public.atl-paas.net/)
+- logs [here](https://splunk.paas-inf.net/en-GB/app/search/search?earliest=-15m&latest=now&q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dstg-west%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&display.events.fields=%5B%22message%22%2C%20%22m.sv%22%5D&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517460620.41659_E7788A4C-2494-4763-81E0-36C703BBF35D)
 
 ### Report to show 500 errors from builds with their retrys
 
 [Report to show 500 errors from builds with their retrys](https://splunk.paas-inf.net/en-GB/app/search/report?sid=1533094344.15292_4DCAA4A3-284A-4537-9FEC-85A2DF05C4ED&s=%2FservicesNS%2Flbatchelor%2Fsearch%2Fsaved%2Fsearches%2FLandkid%20Build%20Failures)
-

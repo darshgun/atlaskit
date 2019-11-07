@@ -1,5 +1,5 @@
 jest.mock('../../../components/utils', () => ({
-  showInviteWarning: jest.fn(),
+  getInviteWarningType: jest.fn(),
   allowEmails: jest.fn(),
   isValidEmailUsingConfig: jest.fn(),
 }));
@@ -14,7 +14,7 @@ import {
   REQUIRED,
   UserPickerField,
 } from '../../../components/UserPickerField';
-import { allowEmails, showInviteWarning } from '../../../components/utils';
+import { allowEmails, getInviteWarningType } from '../../../components/utils';
 import { messages } from '../../../i18n';
 import { ConfigResponse } from '../../../types';
 import { renderProp } from '../_testUtils';
@@ -28,7 +28,7 @@ describe('UserPickerField', () => {
     );
 
   afterEach(() => {
-    (showInviteWarning as jest.Mock).mockClear();
+    (getInviteWarningType as jest.Mock).mockClear();
     (allowEmails as jest.Mock).mockClear();
   });
 
@@ -183,31 +183,34 @@ describe('UserPickerField', () => {
       );
     });
 
-    it('should call showInviteWarning function', () => {
+    it('should call getInviteWarningType function', () => {
       const { fieldProps, config } = setUpInviteWarningTest();
 
-      expect(showInviteWarning).toHaveBeenCalledTimes(1);
-      expect(showInviteWarning).toHaveBeenCalledWith(config, fieldProps.value);
+      expect(getInviteWarningType).toHaveBeenCalledTimes(1);
+      expect(getInviteWarningType).toHaveBeenCalledWith(
+        config,
+        fieldProps.value,
+      );
     });
 
-    it('should not display warning message if showInviteWarning returns false', () => {
-      (showInviteWarning as jest.Mock).mockReturnValueOnce(false);
+    it('should not display warning message if getInviteWarningType returns null', () => {
+      (getInviteWarningType as jest.Mock).mockReturnValueOnce(false);
       const { component } = setUpInviteWarningTest();
 
-      expect(showInviteWarning).toHaveBeenCalledTimes(1);
+      expect(getInviteWarningType).toHaveBeenCalledTimes(1);
       expect(component.find(HelperMessage)).toHaveLength(0);
     });
 
     it('should display warning message if showInviteWarning returns true', () => {
-      (showInviteWarning as jest.Mock).mockReturnValueOnce(true);
+      (getInviteWarningType as jest.Mock).mockReturnValueOnce('ADMIN');
       const { component } = setUpInviteWarningTest();
 
-      expect(showInviteWarning).toHaveBeenCalledTimes(1);
+      expect(getInviteWarningType).toHaveBeenCalledTimes(1);
       const helperMessage = component.find(HelperMessage);
       expect(helperMessage).toHaveLength(1);
       const message = helperMessage.find(FormattedMessage);
       expect(message).toHaveLength(1);
-      expect(message.props()).toMatchObject(messages.capabilitiesInfoMessage);
+      expect(message.props()).toMatchObject(messages.infoMessagePendingInvite);
     });
   });
 });

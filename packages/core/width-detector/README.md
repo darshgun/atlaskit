@@ -7,10 +7,10 @@ This is a utility component that informs the child function of the available wid
 ```sh
 yarn add @atlaskit/width-detector
 ```
+
 ## Usage
 
 Detailed docs and example usage can be found [here](https://atlaskit.atlassian.com/packages/core/width-detector).
-
 
 ## Acknowledgements
 
