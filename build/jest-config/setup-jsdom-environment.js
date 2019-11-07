@@ -53,6 +53,14 @@ function getMockedEventListeners(global) {
 }
 
 class JSDOMEnvironment {
+  // dom /*: any */;
+
+  // errorEventListener /*: any */;
+
+  // moduleMocker /*: any */;
+
+  // fakeTimers /*: any */;
+
   constructor(config /*: Object */, opts /*: Object */ = {}) {
     const { testEnvironmentOptions, testURL } = config;
     const { resources, resourceLoaderOptions } = testEnvironmentOptions;
@@ -67,7 +75,6 @@ class JSDOMEnvironment {
           ? new ResourceLoader(resourceLoaderOptions)
           : resources,
     });
-
     // $FlowFixMe - type issue
     const global = (this.global = this.dom.window.document.defaultView);
 
@@ -111,9 +118,9 @@ class JSDOMEnvironment {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   setup() {
-    // $FlowFixMe - type issue
-    return this.Promise.resolve();
+    return Promise.resolve();
   }
 
   // @see https://github.com/ianschmitz/jest-environment-jsdom-fourteen/blob/v0.1.0/src/index.ts#L86
@@ -122,11 +129,10 @@ class JSDOMEnvironment {
     if (this.fakeTimers) {
       this.fakeTimers.dispose();
     }
-    // $FlowFixMe - type issue
+    // $FlowFixMe -type issue
     if (this.global) {
       // $FlowFixMe - type issue
       if (this.errorEventListener) {
-        // $FlowFixMe - type issue
         this.global.removeEventListener('error', this.errorEventListener);
         // $FlowFixMe - type issue
         this.errorEventListener = undefined;
@@ -138,7 +144,7 @@ class JSDOMEnvironment {
     }
     // $FlowFixMe - type issue
     this.dom = undefined;
-    // $FlowFixMe - type issue
+    // $FlowFixMe
     this.global = undefined;
     // $FlowFixMe - type issue
     this.fakeTimers = undefined;

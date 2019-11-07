@@ -9,6 +9,8 @@ import data from './SITE_DATA';
 import NAV_DATA from './NAV_DATA';
 import * as fs from './utils/fs';
 
+console.log('Nav data', NAV_DATA);
+
 const productPackages = ['bitbucket', 'jira', 'trello'];
 
 const siteData: Directory = data;
@@ -17,6 +19,7 @@ export default siteData;
 const dirs = fs.getDirectories(data.children);
 
 function isInternal(groupId: string, pkgId: string) {
+  console.log(groupId, pkgId, NAV_DATA[groupId]);
   const pkgInfo = NAV_DATA[groupId].find(
     (a: { name: string }) => a.name === pkgId,
   );

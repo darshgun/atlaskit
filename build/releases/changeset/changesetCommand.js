@@ -43,8 +43,9 @@ async function run(opts /*: Object */) {
   const changePackagesName = changedPackages.map(pkg => pkg.name);
   const newChangeset = await createChangeset(changePackagesName, config);
   printConfirmationMessage(newChangeset);
-  // $FlowFixMe - log issue
+
   const confirmChangeset = await cli.askConfirm(
+    // $FlowFixMe - log issue
     'Is this your desired changeset?',
   );
 
