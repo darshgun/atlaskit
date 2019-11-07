@@ -24,6 +24,13 @@ export interface EnteringMotionProps {
   isPaused?: boolean;
 
   /**
+   * Will callback when the motion has finished in the particular direction.
+   * If it finished entering direction will be `entering`.
+   * And vice versa for `exiting`.
+   */
+  onFinish?: (direction: Direction) => void;
+
+  /**
    * Children as `function`.
    * Will be passed `props` for you to hook up.
    * The `direction` arg can be used to know if the motion is `entering` or `exiting`.
@@ -80,10 +87,11 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
   enteringAnimation,
   exitingAnimation,
   isPaused,
+  onFinish: onFinishMotion,
   duration = largeDurationMs,
 }: InternalEnteringMotionProps) => {
   const staggered = useStaggeredEntrance();
-  const { isExiting, onFinish } = useExitingPersistence();
+  const { isExiting, onFinish: onExitFinished } = useExitingPersistence();
   const delay = isExiting ? 0 : staggered.delay;
   const direction = isExiting ? 'exiting' : 'entering';
 
@@ -93,15 +101,30 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
         return;
       }
 
-      const timeoutId = setTimeout(() => {
-        onFinish && onFinish();
-      }, duration + delay);
+      const timeoutId = setTimeout(
+        () => {
+          if (direction === 'exiting') {
+            onExitFinished && onExitFinished();
+          }
+
+          onFinishMotion && onFinishMotion(direction);
+        },
+        isExiting ? duration * 0.5 : duration + delay,
+      );
 
       return () => {
         clearTimeout(timeoutId);
       };
     },
-    [onFinish, isExiting, duration, delay, isPaused],
+    [
+      onExitFinished,
+      onFinishMotion,
+      direction,
+      isExiting,
+      duration,
+      delay,
+      isPaused,
+    ],
   );
 
   return (
@@ -119,7 +142,7 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
               animationTimingFunction: animationTimingFunction(direction),
               animationDelay: `${delay}ms`,
               animationFillMode: isExiting ? 'forwards' : 'backwards',
-              animationDuration: `${duration}ms`,
+              animationDuration: `${isExiting ? duration * 0.5 : duration}ms`,
               animationPlayState:
                 staggered.isReady || !isPaused ? 'running' : 'paused',
               ...prefersReducedMotion(),
