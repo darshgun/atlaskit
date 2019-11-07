@@ -191,47 +191,7 @@ describe('Renderer - React/Nodes/Extension', () => {
     extension.unmount();
   });
 
-  it('should be able to render extensions with the extension provider', async () => {
-    const ExtensionHandlerComponent = ({ extensionParams }: any) => {
-      return <div>From extension provider: {extensionParams.content}</div>;
-    };
-
-    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
-      'fake.confluence',
-      'macro',
-      ExtensionHandlerComponent,
-    );
-
-    const providers = ProviderFactory.create({
-      extensionProvider: Promise.resolve(
-        combineExtensionProviders([confluenceMacrosExtensionProvider]),
-      ),
-    });
-
-    const extension = mount(
-      <Extension
-        providers={providers}
-        serializer={serializer}
-        extensionHandlers={extensionHandlers}
-        rendererContext={rendererContext}
-        extensionType="fake.confluence-extension"
-        extensionKey="macro"
-        text="Hello extension"
-      />,
-    );
-
-    await Loadable.preloadAll();
-
-    extension.update();
-
-    expect(extension.text()).toEqual(
-      'From extension provider: Hello extension',
-    );
-
-    extension.unmount();
-  });
-
-  it('should prioritize extension handlers (sync) over extension provider', async () => {
+  describe('extension providers', () => {
     const ExtensionHandlerFromProvider = ({ extensionParams }: any) => (
       <div>Extension provider: {extensionParams.content}</div>
     );
@@ -248,26 +208,76 @@ describe('Renderer - React/Nodes/Extension', () => {
       ),
     });
 
-    const extensionHandlers: ExtensionHandlers = {
-      'fake.confluence-extension': (extensionParams: any) => (
-        <div>Extension handler: {extensionParams.content}</div>
-      ),
-    };
+    it('should be able to render extensions with the extension provider', async () => {
+      const extension = mount(
+        <Extension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence-extension"
+          extensionKey="macro"
+          text="Hello extension"
+        />,
+      );
 
-    const extension = mount(
-      <Extension
-        providers={providers}
-        serializer={serializer}
-        extensionHandlers={extensionHandlers}
-        rendererContext={rendererContext}
-        extensionType="fake.confluence-extension"
-        extensionKey="macro"
-        text="Hello extension"
-      />,
-    );
+      await Loadable.preloadAll();
 
-    expect(extension.text()).toEqual('Extension handler: Hello extension');
+      extension.update();
 
-    extension.unmount();
+      expect(extension.text()).toEqual('Extension provider: Hello extension');
+
+      extension.unmount();
+    });
+
+    it('should prioritize extension handlers (sync) over extension provider', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence-extension': (extensionParams: any) => (
+          <div>Extension handler: {extensionParams.content}</div>
+        ),
+      };
+
+      const extension = mount(
+        <Extension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence-extension"
+          extensionKey="macro"
+          text="Hello extension"
+        />,
+      );
+
+      expect(extension.text()).toEqual('Extension handler: Hello extension');
+
+      extension.unmount();
+    });
+
+    it('should fallback to extension provider if not handled by extension handler', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence-extension': (extensionParams: any) => null,
+      };
+
+      const extension = mount(
+        <Extension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence-extension"
+          extensionKey="macro"
+          text="Hello extension"
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.text()).toEqual('Extension provider: Hello extension');
+
+      extension.unmount();
+    });
   });
 });

@@ -171,7 +171,14 @@ export default class ExtensionComponent extends Component<Props, State> {
       content: text,
     };
 
-    if (!extensionHandlers || !extensionHandlers[extensionType]) {
+    let result;
+
+    if (extensionHandlers && extensionHandlers[extensionType]) {
+      const render = getExtensionRenderer(extensionHandlers[extensionType]);
+      result = render(extensionParams, editorView.state.doc);
+    }
+
+    if (!result) {
       const extensionHandlerFromProvider =
         this.state.extensionProvider &&
         getNodeRenderer(
@@ -184,12 +191,8 @@ export default class ExtensionComponent extends Component<Props, State> {
         const NodeRenderer = extensionHandlerFromProvider;
         return <NodeRenderer extensionParams={extensionParams} />;
       }
-
-      return;
     }
 
-    const render = getExtensionRenderer(extensionHandlers[extensionType]);
-
-    return render(extensionParams, editorView.state.doc);
+    return result;
   };
 }

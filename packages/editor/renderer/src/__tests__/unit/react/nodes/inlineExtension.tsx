@@ -182,61 +182,14 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
     extension.unmount();
   });
 
-  it('should be able to render extensions with the extension provider', async () => {
-    const ExtensionHandlerComponent = ({ extensionParams }: any) => {
-      return (
-        <span>
-          Inline macro from extension provider:{' '}
-          {extensionParams.parameters.words}
-        </span>
-      );
-    };
-
-    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
-      'fake.confluence',
-      'inline-macro',
-      ExtensionHandlerComponent,
-    );
-
-    const providers = ProviderFactory.create({
-      extensionProvider: Promise.resolve(
-        combineExtensionProviders([confluenceMacrosExtensionProvider]),
-      ),
-    });
-
-    const extension = mount(
-      <InlineExtension
-        providers={providers}
-        serializer={serializer}
-        extensionHandlers={extensionHandlers}
-        rendererContext={rendererContext}
-        extensionType="fake.confluence-extension"
-        extensionKey="inline-macro"
-        parameters={{
-          words: 'lorem ipsum',
-        }}
-      />,
-    );
-
-    await Loadable.preloadAll();
-
-    extension.update();
-
-    expect(extension.text()).toEqual(
-      'Inline macro from extension provider: lorem ipsum',
-    );
-
-    extension.unmount();
-  });
-
-  it('should prioritize extension handlers (sync) over extension provider', async () => {
+  describe('extension providers', () => {
     const ExtensionHandlerFromProvider = ({ extensionParams }: any) => (
       <div>Extension provider: {extensionParams.parameters.words}</div>
     );
 
     const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
       'fake.confluence',
-      'macro',
+      'inline-macro',
       ExtensionHandlerFromProvider,
     );
 
@@ -246,28 +199,82 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
       ),
     });
 
-    const extensionHandlers: ExtensionHandlers = {
-      'fake.confluence-extension': (extensionParams: any) => (
-        <div>Extension handler: {extensionParams.parameters.words}</div>
-      ),
-    };
+    it('should be able to render extensions with the extension provider', async () => {
+      const extension = mount(
+        <InlineExtension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence-extension"
+          extensionKey="inline-macro"
+          parameters={{
+            words: 'lorem ipsum',
+          }}
+        />,
+      );
 
-    const extension = mount(
-      <InlineExtension
-        providers={providers}
-        serializer={serializer}
-        extensionHandlers={extensionHandlers}
-        rendererContext={rendererContext}
-        extensionType="fake.confluence-extension"
-        extensionKey="inline-macro"
-        parameters={{
-          words: 'lorem ipsum',
-        }}
-      />,
-    );
+      await Loadable.preloadAll();
 
-    expect(extension.text()).toEqual('Extension handler: lorem ipsum');
+      extension.update();
 
-    extension.unmount();
+      expect(extension.text()).toEqual('Extension provider: lorem ipsum');
+
+      extension.unmount();
+    });
+
+    it('should prioritize extension handlers (sync) over extension provider', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence-extension': (extensionParams: any) => (
+          <div>Extension handler: {extensionParams.parameters.words}</div>
+        ),
+      };
+
+      const extension = mount(
+        <InlineExtension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence-extension"
+          extensionKey="inline-macro"
+          parameters={{
+            words: 'lorem ipsum',
+          }}
+        />,
+      );
+
+      expect(extension.text()).toEqual('Extension handler: lorem ipsum');
+
+      extension.unmount();
+    });
+
+    it('should fallback to extension provider if not handled by extension handlers', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence-extension': (extensionParams: any) => null,
+      };
+
+      const extension = mount(
+        <InlineExtension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence-extension"
+          extensionKey="inline-macro"
+          parameters={{
+            words: 'lorem ipsum',
+          }}
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.text()).toEqual('Extension provider: lorem ipsum');
+
+      extension.unmount();
+    });
   });
 });

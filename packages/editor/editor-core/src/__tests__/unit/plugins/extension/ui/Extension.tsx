@@ -185,8 +185,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
       />,
     );
 
-    const component = extension.find(ExtensionComponent);
-    expect(component.find(InlineCompontent).text()).toEqual(
+    expect(extension.find(InlineCompontent).text()).toEqual(
       'Hello inlineExtension!',
     );
 
@@ -238,17 +237,16 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
       />,
     );
 
-    const component = extension.find(ExtensionComponent);
-    expect(component.find(ExtensionCompontent).text()).toEqual(
+    expect(extension.find(ExtensionCompontent).text()).toEqual(
       'Hello extension!',
     );
 
     extension.unmount();
   });
 
-  it('should use the extension handler from the provider in case there is no other available', async () => {
+  describe('extension provider', () => {
     const ExtensionHandlerComponent = ({ extensionParams }: any) => {
-      return <div>From extension provider: {extensionParams.content}</div>;
+      return <div>Extension provider: {extensionParams.content}</div>;
     };
 
     const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
@@ -276,30 +274,104 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
       },
     } as any;
 
-    const extension = mount(
-      <Extension
-        editorView={
-          {
-            state: {
-              doc: {},
-            },
-          } as any
-        }
-        providerFactory={providerFactory}
-        node={extensionNode}
-        handleContentDOMRef={noop}
-        extensionHandlers={{}}
-      />,
-    );
+    it('should use the extension handler from the provider in case there is no other available', async () => {
+      const extension = mount(
+        <Extension
+          editorView={
+            {
+              state: {
+                doc: {},
+              },
+            } as any
+          }
+          providerFactory={providerFactory}
+          node={extensionNode}
+          handleContentDOMRef={noop}
+          extensionHandlers={{}}
+        />,
+      );
 
-    await Loadable.preloadAll();
+      await Loadable.preloadAll();
 
-    extension.update();
+      extension.update();
 
-    expect(extension.find(ExtensionHandlerComponent).text()).toEqual(
-      'From extension provider: Hello extension!',
-    );
+      expect(extension.find(ExtensionHandlerComponent).text()).toEqual(
+        'Extension provider: Hello extension!',
+      );
 
-    extension.unmount();
+      extension.unmount();
+    });
+
+    it('should prioritize extension handlers (sync) over extension providers', async () => {
+      const ExtensionCompontent = ({
+        node,
+      }: {
+        node: ExtensionParams<any>;
+      }) => <div>Extension handler: {node.content}</div>;
+
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence-extension': ext => {
+          if (ext.extensionKey === 'expand') {
+            return <ExtensionCompontent node={ext} />;
+          }
+
+          return null;
+        },
+      };
+
+      const extension = mount(
+        <Extension
+          editorView={
+            {
+              state: {
+                doc: {},
+              },
+            } as any
+          }
+          providerFactory={providerFactory}
+          node={extensionNode}
+          handleContentDOMRef={noop}
+          extensionHandlers={extensionHandlers}
+        />,
+      );
+
+      expect(extension.find(ExtensionCompontent).text()).toEqual(
+        'Extension handler: Hello extension!',
+      );
+
+      extension.unmount();
+    });
+
+    it('should fallback to extension provider in case extension handlers do not handle it', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence-extension': (extensionParams: any) => null,
+      };
+
+      const extension = mount(
+        <Extension
+          editorView={
+            {
+              state: {
+                doc: {},
+              },
+            } as any
+          }
+          providerFactory={providerFactory}
+          node={extensionNode}
+          handleContentDOMRef={noop}
+          extensionHandlers={extensionHandlers}
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.find(ExtensionHandlerComponent).text()).toEqual(
+        'Extension provider: Hello extension!',
+      );
+
+      extension.unmount();
+    });
   });
 });
