@@ -444,7 +444,12 @@ describe('analyticsProcessing middleware', () => {
         description: 'id1 failed',
         uploadId: 'upid1',
       }),
-      makePayloadForTrackFileConversion(testFile1, 'cloudMedia', 'fail'),
+      makePayloadForTrackFileConversion(
+        testFile1,
+        'cloudMedia',
+        'fail',
+        'id1 failed',
+      ),
       {
         remoteUploads: {
           upid1: {
