@@ -233,7 +233,6 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
   });
 
   it('should be able to render extensions with the extension provider', async () => {
-    // const ExtensionHandlerComponent = jest.fn();
     const ExtensionHandlerComponent = ({ extensionParams }: any) => {
       return (
         <div>
@@ -273,6 +272,46 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
     expect(extension.text()).toEqual(
       'Bodied extension from extension provider: body',
     );
+
+    extension.unmount();
+  });
+
+  it('should prioritize extension handlers (sync) over extension provider', async () => {
+    const ExtensionHandlerFromProvider = ({ extensionParams }: any) => (
+      <div>Extension provider: {extensionParams.content}</div>
+    );
+
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
+      'fake.confluence',
+      'expand',
+      ExtensionHandlerFromProvider,
+    );
+
+    const providers = ProviderFactory.create({
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    const extensionHandlers: ExtensionHandlers = {
+      'fake.confluence-extension': (extensionParams: any) => (
+        <div>Extension handler: {extensionParams.content}</div>
+      ),
+    };
+
+    const extension = mount(
+      <BodiedExtension
+        providers={providers}
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="fake.confluence-extension"
+        extensionKey="expand"
+        content="body"
+      />,
+    );
+
+    expect(extension.text()).toEqual('Extension handler: body');
 
     extension.unmount();
   });

@@ -228,4 +228,46 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
 
     extension.unmount();
   });
+
+  it('should prioritize extension handlers (sync) over extension provider', async () => {
+    const ExtensionHandlerFromProvider = ({ extensionParams }: any) => (
+      <div>Extension provider: {extensionParams.parameters.words}</div>
+    );
+
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
+      'fake.confluence',
+      'macro',
+      ExtensionHandlerFromProvider,
+    );
+
+    const providers = ProviderFactory.create({
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    const extensionHandlers: ExtensionHandlers = {
+      'fake.confluence-extension': (extensionParams: any) => (
+        <div>Extension handler: {extensionParams.parameters.words}</div>
+      ),
+    };
+
+    const extension = mount(
+      <InlineExtension
+        providers={providers}
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="fake.confluence-extension"
+        extensionKey="inline-macro"
+        parameters={{
+          words: 'lorem ipsum',
+        }}
+      />,
+    );
+
+    expect(extension.text()).toEqual('Extension handler: lorem ipsum');
+
+    extension.unmount();
+  });
 });

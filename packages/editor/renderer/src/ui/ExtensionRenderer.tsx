@@ -81,7 +81,12 @@ export default class ExtensionRenderer extends React.Component<Props, State> {
     let result = null;
 
     try {
-      if (extensionProvider) {
+      if (extensionHandlers && extensionHandlers[extensionType]) {
+        const render = getExtensionRenderer(extensionHandlers[extensionType]);
+        result = render(extensionParams, rendererContext.adDoc);
+      }
+
+      if (!result && extensionProvider) {
         const NodeRenderer = getNodeRenderer(
           extensionProvider,
           extensionType,
@@ -89,9 +94,6 @@ export default class ExtensionRenderer extends React.Component<Props, State> {
         );
 
         result = <NodeRenderer extensionParams={extensionParams} />;
-      } else if (extensionHandlers && extensionHandlers[extensionType]) {
-        const render = getExtensionRenderer(extensionHandlers[extensionType]);
-        result = render(extensionParams, rendererContext.adDoc);
       }
     } catch (e) {
       /** We don't want this error to block renderer */

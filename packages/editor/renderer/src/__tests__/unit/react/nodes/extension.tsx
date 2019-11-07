@@ -230,4 +230,44 @@ describe('Renderer - React/Nodes/Extension', () => {
 
     extension.unmount();
   });
+
+  it('should prioritize extension handlers (sync) over extension provider', async () => {
+    const ExtensionHandlerFromProvider = ({ extensionParams }: any) => (
+      <div>Extension provider: {extensionParams.content}</div>
+    );
+
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
+      'fake.confluence',
+      'macro',
+      ExtensionHandlerFromProvider,
+    );
+
+    const providers = ProviderFactory.create({
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    const extensionHandlers: ExtensionHandlers = {
+      'fake.confluence-extension': (extensionParams: any) => (
+        <div>Extension handler: {extensionParams.content}</div>
+      ),
+    };
+
+    const extension = mount(
+      <Extension
+        providers={providers}
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="fake.confluence-extension"
+        extensionKey="macro"
+        text="Hello extension"
+      />,
+    );
+
+    expect(extension.text()).toEqual('Extension handler: Hello extension');
+
+    extension.unmount();
+  });
 });
