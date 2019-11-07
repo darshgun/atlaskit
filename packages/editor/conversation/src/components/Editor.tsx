@@ -239,10 +239,6 @@ export default class Editor extends React.Component<Props, State> {
       onCancel: this.onCancel,
       onChange: debounce(() => this.onChange(actions), 250),
       defaultValue,
-      // TODO: should we default to this?
-      media: {
-        allowMediaSingle: true,
-      },
       allowHelpDialog: allowFeedbackAndHelpButtons,
       feedbackInfo: allowFeedbackAndHelpButtons
         ? {
