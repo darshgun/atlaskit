@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': '添加消息',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     '输入用户名、组、团队或电子邮件',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    '输入用户名、团队或电子邮件',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     '输入名称或团队',
   'fabric.elements.share.form.user-picker.add-more': '输入更多',
   'fabric.elements.share.form.user-picker.validation.required':
     '请至少选择一个用户、组、团队或电子邮件。',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    '至少选择一个用户，团队或邮箱。',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     '仅可邀请使用 {domains} 电子邮箱地址的人员。请联系站点管理员，以邀请其他人。',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

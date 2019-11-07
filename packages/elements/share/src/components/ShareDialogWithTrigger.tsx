@@ -21,6 +21,7 @@ import {
   Flag,
   OBJECT_SHARED,
   OriginTracing,
+  ProductName,
   RenderCustomTriggerButton,
   ShareButtonStyle,
   ShareError,
@@ -75,6 +76,7 @@ export type Props = {
   triggerButtonTooltipText?: React.ReactNode;
   bottomMessage?: React.ReactNode;
   submitButtonLabel?: React.ReactNode;
+  product: ProductName;
 };
 
 const ShareButtonWrapper = styled.div`
@@ -363,6 +365,7 @@ export class ShareDialogWithTriggerInternal extends React.PureComponent<
       config,
       bottomMessage,
       submitButtonLabel,
+      product,
     } = this.props;
 
     // for performance purposes, we may want to have a loadable content i.e. ShareForm
@@ -391,6 +394,7 @@ export class ShareDialogWithTriggerInternal extends React.PureComponent<
                     onLinkCopy={this.handleCopyLink}
                     isFetchingConfig={isFetchingConfig}
                     submitButtonLabel={submitButtonLabel}
+                    product={product}
                   />
                 </InlineDialogFormWrapper>
                 {bottomMessage ? (

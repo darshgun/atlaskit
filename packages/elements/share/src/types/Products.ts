@@ -6,3 +6,5 @@ export type ProductId =
   | 'jira-servicedesk'
   | 'jira-software'
   | 'trello';
+
+export type ProductName = 'jira' | 'confluence';

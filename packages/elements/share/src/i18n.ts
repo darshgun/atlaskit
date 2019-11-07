@@ -26,6 +26,13 @@ export const messages = defineMessages({
     defaultMessage: 'Enter name, group, team or email',
     description: 'Generic placeholder for the user picker field in Share form.',
   },
+  userPickerGenericPlaceholderJira: {
+    id: 'fabric.elements.share.form.user-picker.placeholder.jira',
+    defaultMessage: 'Enter name, team or email',
+    description:
+      'Generic placeholder for the user picker field in Share form. ' +
+      'This message is used only for Jira product because Jira does not have Group concept.',
+  },
   userPickerExistingUserOnlyPlaceholder: {
     id: 'fabric.elements.share.form.user-picker.placeholder.existingUserOnly',
     defaultMessage: 'Enter name or team',
@@ -43,6 +50,13 @@ export const messages = defineMessages({
     defaultMessage: 'Select at least one user, group, team or email.',
     description:
       'Required error message for the user picker field in Share form.',
+  },
+  userPickerRequiredMessageJira: {
+    id: 'fabric.elements.share.form.user-picker.validation.required.jira',
+    defaultMessage: 'Select at least one user, team or email.',
+    description:
+      'Required error message for the user picker field in Share form. ' +
+      'This message is used only for Jira product because Jira does not have Group concept.',
   },
   userPickerDomainBasedUserOnlyNoOptionsMessage: {
     id: 'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly',
