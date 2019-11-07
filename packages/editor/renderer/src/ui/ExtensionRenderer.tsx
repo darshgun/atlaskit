@@ -17,7 +17,7 @@ export interface Props {
   type: 'extension' | 'inlineExtension' | 'bodiedExtension';
   serializer: Serializer<any>;
   extensionHandlers?: ExtensionHandlers;
-  providers: ProviderFactory;
+  providers?: ProviderFactory;
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;

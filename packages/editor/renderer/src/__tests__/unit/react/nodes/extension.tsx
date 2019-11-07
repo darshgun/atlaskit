@@ -4,9 +4,17 @@ import Extension from '../../../../react/nodes/extension';
 import { RendererContext } from '../../../../react';
 import ReactSerializer from '../../../../react';
 import { defaultSchema } from '@atlaskit/adf-schema';
-import { ExtensionHandlers } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  ExtensionHandlers,
+  DefaultExtensionProvider,
+  combineExtensionProviders,
+} from '@atlaskit/editor-common';
+import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/src/extensions';
+import Loadable from 'react-loadable';
 
 describe('Renderer - React/Nodes/Extension', () => {
+  const providerFactory = ProviderFactory.create({});
   const extensionHandlers: ExtensionHandlers = {
     'com.atlassian.fabric': (param: any) => {
       switch (param.extensionKey) {
@@ -74,6 +82,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should be able to fall back to default content', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -95,6 +104,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should be able to render React.Element from extensionHandler', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -115,6 +125,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should be able to render Atlassian Document from extensionHandler', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -135,6 +146,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should render the default content if extensionHandler throws an exception', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -160,6 +172,7 @@ describe('Renderer - React/Nodes/Extension', () => {
 
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -175,6 +188,59 @@ describe('Renderer - React/Nodes/Extension', () => {
       parameters: undefined,
       content: undefined,
     });
+
+    extension.unmount();
+  });
+
+  it('should be able to render extensions with the extension provider', async () => {
+    // const ExtensionHandlerComponent = jest.fn();
+    const ExtensionHandlerComponent = ({ extensionParams }) => {
+      return <div>From extension provider: {extensionParams.content}</div>;
+    };
+
+    const macroManifest = createFakeExtensionManifest(
+      'fake confluence macro',
+      'fake.confluence',
+      ['expand'],
+    );
+
+    const FakeES6Module = {
+      __esModule: true,
+      default: ExtensionHandlerComponent,
+    };
+
+    macroManifest.modules.nodes[0].render = () =>
+      Promise.resolve(FakeES6Module);
+
+    const confluenceMacrosExtensionProvider = new DefaultExtensionProvider([
+      macroManifest,
+    ]);
+
+    const providers = ProviderFactory.create({
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    const extension = mount(
+      <Extension
+        providers={providers}
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="fake.confluence-extension"
+        extensionKey="expand"
+        text="Hello extension"
+      />,
+    );
+
+    await Loadable.preloadAll();
+
+    extension.update();
+
+    expect(extension.text()).toEqual(
+      'From extension provider: Hello extension',
+    );
 
     extension.unmount();
   });

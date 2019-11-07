@@ -5,9 +5,17 @@ import BodiedExtension from '../../../../react/nodes/bodiedExtension';
 import { RendererContext } from '../../../../react';
 import ReactSerializer from '../../../../react';
 import { defaultSchema } from '@atlaskit/adf-schema';
-import { ExtensionHandlers } from '@atlaskit/editor-common';
+import {
+  ExtensionHandlers,
+  DefaultExtensionProvider,
+  ProviderFactory,
+  combineExtensionProviders,
+} from '@atlaskit/editor-common';
+import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/src/extensions';
+import Loadable from 'react-loadable';
 
 describe('Renderer - React/Nodes/BodiedExtension', () => {
+  const providerFactory = ProviderFactory.create({});
   const extensionHandlers: ExtensionHandlers = {
     'com.atlassian.fabric': (param: any) => {
       switch (param.extensionKey) {
@@ -77,6 +85,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
   it('should be able to fall back to default content', () => {
     const extension = mount(
       <BodiedExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -99,6 +108,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
   it('should be able to render React.Element from extensionHandler', () => {
     const extension = mount(
       <BodiedExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -119,6 +129,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
   it('should be able to render Atlassian Document from extensionHandler', () => {
     const extension = mount(
       <BodiedExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -139,6 +150,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
   it('should render the default content if extensionHandler throws an exception', () => {
     const extension = mount(
       <BodiedExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -172,6 +184,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
     ];
     const extension = mount(
       <BodiedExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -200,6 +213,7 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
 
     const extension = mount(
       <BodiedExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -215,6 +229,65 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
       parameters: undefined,
       content: undefined,
     });
+
+    extension.unmount();
+  });
+
+  it('should be able to render extensions with the extension provider', async () => {
+    // const ExtensionHandlerComponent = jest.fn();
+    const ExtensionHandlerComponent = ({ extensionParams }) => {
+      return (
+        <div>
+          Bodied extension from extension provider: {extensionParams.content}
+        </div>
+      );
+    };
+
+    const macroManifest = createFakeExtensionManifest(
+      'fake confluence macro',
+      'fake.confluence',
+      ['expand'],
+    );
+
+    const FakeES6Module = {
+      __esModule: true,
+      default: ExtensionHandlerComponent,
+    };
+
+    macroManifest.modules.nodes[0].render = () =>
+      Promise.resolve(FakeES6Module);
+
+    const confluenceMacrosExtensionProvider = new DefaultExtensionProvider([
+      macroManifest,
+    ]);
+
+    const providers = ProviderFactory.create({
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    const extension = mount(
+      <BodiedExtension
+        providers={providers}
+        serializer={serializer}
+        extensionHandlers={extensionHandlers}
+        rendererContext={rendererContext}
+        extensionType="fake.confluence-extension"
+        extensionKey="expand"
+        content="body"
+      />,
+    );
+
+    await Loadable.preloadAll();
+
+    extension.update();
+
+    console.log(extension.html());
+
+    expect(extension.text()).toEqual(
+      'Bodied extension from extension provider: body',
+    );
 
     extension.unmount();
   });
