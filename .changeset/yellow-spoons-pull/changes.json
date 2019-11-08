@@ -1,0 +1,8 @@
+{
+  "releases": [
+    { "name": "@atlaskit/theme", "type": "patch" },
+    { "name": "@atlaskit/share", "type": "patch" },
+    { "name": "@atlaskit/atlassian-switcher", "type": "patch" }
+  ],
+  "dependents": []
+}
