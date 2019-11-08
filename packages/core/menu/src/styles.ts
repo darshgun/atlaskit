@@ -1,6 +1,7 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { fontSize, fontSizeSmall } from '@atlaskit/theme/constants';
 import { N800, N20, N30, subtleHeading } from '@atlaskit/theme/colors';
+import { CSSObject } from '@emotion/core';
 
 const gridSize = gridSizeFn();
 
@@ -50,14 +51,14 @@ export const contentCSS = {
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
   lineHeight: `${16 / fontSize()}`,
-};
+} as CSSObject;
 export const elemBeforeCSS = { flexGrow: 0, marginRight: gridSize };
 export const elemAfterCSS = { flexGrow: 0, marginLeft: gridSize };
 export const descriptionCSS = {
   textAlign: 'left',
   color: '#343434',
   fontSize: fontSizeSmall(),
-};
+} as CSSObject;
 export const contentCSSWrapper = {
   display: 'flex',
   alignItems: 'center',
@@ -76,7 +77,7 @@ export const itemHeadingCSS = {
   color: subtleHeading(),
   marginLeft: 4,
   marginTop: 8,
-};
+} as CSSObject;
 
 export const skeletonHeadingItemCSS = {
   ...itemHeadingCSS,
@@ -88,7 +89,7 @@ export const skeletonHeadingItemCSS = {
     display: 'block',
     content: '""',
   },
-};
+} as CSSObject;
 
 export const itemSkeletonCSS = {
   ...itemCSS,
@@ -101,10 +102,10 @@ export const itemSkeletonCSS = {
     display: 'block',
     content: '""',
   },
-};
+} as CSSObject;
 
 /* Item Group */
-export const menuGroupCSS = (maxHeight?: string | number) => ({
+export const menuGroupCSS = (maxHeight?: string | number): CSSObject => ({
   display: 'flex',
   flexDirection: 'column',
   overflow: 'auto',
@@ -114,7 +115,7 @@ export const menuGroupCSS = (maxHeight?: string | number) => ({
 export const sectionCSS = (
   isScrollable?: boolean,
   shouldShowSeparator?: boolean,
-) => ({
+): CSSObject => ({
   display: 'flex',
   flexDirection: 'column',
   ...(isScrollable

@@ -38,18 +38,24 @@ export default () => {
       <MenuGroup maxHeight={500}>
         <Section>
           <HeadingItem>Items with elemBefore and elemAfter</HeadingItem>
-          <LinkItem elemBefore={<EditorSearchIcon />} href="#">
-            Item link
-          </LinkItem>
-          <LinkItem elemBefore={<EmojiCustomIcon />} href="#">
-            Item link
-          </LinkItem>
-          <LinkItem elemAfter={<StarIcon />} href="#">
+          <LinkItem
+            elemBefore={<EditorSearchIcon label="Search Icon" />}
+            href="#"
+          >
             Item link
           </LinkItem>
           <LinkItem
-            elemBefore={<Blog24Icon />}
-            elemAfter={<ArrowRightCircleIcon />}
+            elemBefore={<EmojiCustomIcon label="Create Icon" />}
+            href="#"
+          >
+            Item link
+          </LinkItem>
+          <LinkItem elemAfter={<StarIcon label="Star icon" />} href="#">
+            Item link
+          </LinkItem>
+          <LinkItem
+            elemBefore={<Blog24Icon label="Quote icon" />}
+            elemAfter={<ArrowRightCircleIcon label="Right arrow" />}
             href="#"
           >
             Item link

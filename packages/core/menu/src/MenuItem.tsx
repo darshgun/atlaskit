@@ -15,13 +15,18 @@ import {
 } from './styles';
 import { ItemProps, LinkItemProps } from './types';
 
-export const HeadingItem = props => <div css={itemHeadingCSS} {...props} />;
-export const SkeletonHeadingItem = props => (
-  <div css={skeletonHeadingItemCSS} {...props} />
+export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
+  <div css={itemHeadingCSS}>{children}</div>
 );
-export const SkeletonItem = props => <div css={itemSkeletonCSS} {...props} />;
+export const SkeletonHeadingItem = () => <div css={skeletonHeadingItemCSS} />;
+export const SkeletonItem = () => <div css={itemSkeletonCSS} />;
 
-const ItemBase = ({ elemBefore, elemAfter, children, description }) => {
+const ItemBase = ({
+  elemBefore,
+  elemAfter,
+  children,
+  description,
+}: ItemProps) => {
   return (
     <Fragment>
       <div css={contentCSSWrapper}>
