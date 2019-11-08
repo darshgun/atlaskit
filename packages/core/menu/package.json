@@ -21,6 +21,8 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/icon": "^19.0.8",
+    "@atlaskit/icon-object": "^5.0.0",
     "@atlaskit/theme": "^9.2.6",
     "@babel/runtime": "^7.0.0",
     "@emotion/core": "^10.0.9",

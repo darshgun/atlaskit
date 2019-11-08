@@ -6,9 +6,16 @@ import React from 'react';
 //   LinkItem,
 //   HeadingItem,
 //   SkeletonItem,
+// SkeletonHeadingItem,
 // } from '../src';
 
 // Temporarily imported from here until all components are ready.
+import StarIcon from '@atlaskit/icon/glyph/star';
+import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
+import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
+import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
+import Blog24Icon from '@atlaskit/icon-object/glyph/blog/24';
+
 import {
   Item,
   LinkItem,
@@ -30,19 +37,26 @@ export default () => {
     >
       <MenuGroup maxHeight={500}>
         <Section>
-          <HeadingItem>Heading</HeadingItem>
-          <LinkItem elemBefore="hi" elemAfter="bye" href="#">
+          <HeadingItem>Items with elemBefore and elemAfter</HeadingItem>
+          <LinkItem elemBefore={<EditorSearchIcon />} href="#">
             Item link
           </LinkItem>
-          <LinkItem elemBefore="hi" elemAfter="bye" href="#">
+          <LinkItem elemBefore={<EmojiCustomIcon />} href="#">
             Item link
           </LinkItem>
-          <LinkItem elemBefore="hi" elemAfter="bye" href="#">
+          <LinkItem elemAfter={<StarIcon />} href="#">
+            Item link
+          </LinkItem>
+          <LinkItem
+            elemBefore={<Blog24Icon />}
+            elemAfter={<ArrowRightCircleIcon />}
+            href="#"
+          >
             Item link
           </LinkItem>
         </Section>
         <Section isScrollable shouldShowSeparator>
-          <HeadingItem>Heading</HeadingItem>
+          <HeadingItem>Scrollable section with separator</HeadingItem>
           <Item elemBefore="hi" elemAfter="bye">
             Item
           </Item>
