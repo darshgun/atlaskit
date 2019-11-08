@@ -49,10 +49,11 @@ type Auth = {
   password: string;
 };
 
-async function triggerProductBuild(
+function branchBuildRequest(
   planUrl: string,
   branchName: string,
   auth: Auth,
+  method: 'GET' | 'PUT',
 ) {
   const branchPlanUrl = `${planUrl}/branch/${branchName}?os_authType=basic&vcsBranch=${branchName}&cleanupEnabled=true`;
   const credentials = Buffer.from(`${auth.username}:${auth.password}`).toString(
@@ -62,33 +63,41 @@ async function triggerProductBuild(
     Accept: 'application/json',
     Authorization: `Basic ${credentials}`,
   };
-  let planBranchExists = false;
-  try {
-    const response = await fetch(branchPlanUrl, {
-      method: 'GET',
-      headers,
-    });
-    if (response.ok) {
-      planBranchExists = true;
-    }
-  } catch (e) {
-    // An error here means an error occurred while fetching, e.g. network. We can ignore this.
-  }
 
-  if (planBranchExists) {
-    // Nothing to do here
+  return fetch(branchPlanUrl, {
+    method,
+    headers,
+  });
+}
+
+async function triggerProductBuild(
+  planUrl: string,
+  branchName: string,
+  auth: Auth,
+) {
+  const existingBranchBuild = await branchBuildRequest(
+    planUrl,
+    branchName,
+    auth,
+    'GET',
+  );
+  if (existingBranchBuild.ok) {
+    // No need to create a branch build since one already exists
     return;
   }
 
-  const response = await fetch(branchPlanUrl, {
-    method: 'PUT',
-    headers,
-  });
-  if (!response.ok) {
-    const payload = await response.json();
+  const newBranchBuild = await branchBuildRequest(
+    planUrl,
+    branchName,
+    auth,
+    'PUT',
+  );
+
+  if (!newBranchBuild.ok) {
+    const payload = await newBranchBuild.json();
     throw Error(
       `Could not create branch build in product - Status code: ${
-        response.status
+        newBranchBuild.status
       } - ${JSON.stringify(payload)}`,
     );
   }
