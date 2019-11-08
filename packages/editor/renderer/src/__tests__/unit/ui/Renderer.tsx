@@ -230,9 +230,7 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
       },
     ];
     appearances.forEach(appearance => {
-      it(`adds appearance to analytics events for ${
-        appearance.appearance
-      } renderer`, () => {
+      it(`adds appearance to analytics events for ${appearance.appearance} renderer`, () => {
         renderer = initRendererWithAnalytics({
           appearance: appearance.appearance,
         });
