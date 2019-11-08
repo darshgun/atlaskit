@@ -13,39 +13,10 @@ export interface Props {
   onArticleRenderDone?(): void;
 }
 
-/**
- * Set iframe content
- * NOTE: I need to inject the content this way because I need to use srcDoc polyfill for IE11 and
- * old versions of Edge
- */
-const setIframeContent = (
-  iframeRef: React.RefObject<HTMLIFrameElement>,
-  body: string = '',
-  onArticleRenderBegin?: () => void,
-) => {
-  const currentIframe: HTMLIFrameElement | null = iframeRef.current;
-
-  if (!currentIframe) {
-    return;
-  }
-
-  if (currentIframe !== null && currentIframe.contentWindow !== null) {
-    if (currentIframe.contentWindow.document.body) {
-      srcDoc.set(
-        currentIframe,
-        `<style>${resetCSS}</style><div style="overflow-x: hidden;">${body}</div>`,
-      );
-
-      if (onArticleRenderBegin) {
-        onArticleRenderBegin();
-      }
-    }
-  }
-};
-
 export const ArticleBody = (props: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [articleHeight, setArticleHeight] = useState('auto');
+  const { onArticleRenderBegin } = props;
 
   /**
    * Set article height
@@ -84,7 +55,37 @@ export const ArticleBody = (props: Props) => {
    * resize the iframe based on the new content
    */
   useEffect(() => {
-    setIframeContent(iframeRef, props.body, props.onArticleRenderBegin);
+    /**
+     * Set iframe content
+     * NOTE: I need to inject the content this way because I need to use srcDoc polyfill for IE11 and
+     * old versions of Edge
+     */
+    const setIframeContent = (
+      iframeRef: React.RefObject<HTMLIFrameElement>,
+      body: string = '',
+      onArticleRenderBegin?: () => void,
+    ) => {
+      const currentIframe: HTMLIFrameElement | null = iframeRef.current;
+
+      if (!currentIframe) {
+        return;
+      }
+
+      if (currentIframe !== null && currentIframe.contentWindow !== null) {
+        if (currentIframe.contentWindow.document.body) {
+          srcDoc.set(
+            currentIframe,
+            `<style>${resetCSS}</style><div style="overflow-x: hidden;">${body}</div>`,
+          );
+
+          if (onArticleRenderBegin) {
+            onArticleRenderBegin();
+          }
+        }
+      }
+    };
+
+    setIframeContent(iframeRef, props.body, onArticleRenderBegin);
     resizeIframe(iframeRef);
   }, [props.body]);
 
