@@ -16,7 +16,6 @@ export interface Props {
 export const ArticleBody = (props: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [articleHeight, setArticleHeight] = useState('auto');
-  const { onArticleRenderBegin } = props;
 
   /**
    * Set article height
@@ -85,9 +84,9 @@ export const ArticleBody = (props: Props) => {
       }
     };
 
-    setIframeContent(iframeRef, props.body, onArticleRenderBegin);
+    setIframeContent(iframeRef, props.body, props.onArticleRenderBegin);
     resizeIframe(iframeRef);
-  }, [props.body]);
+  }, [props.body, props.onArticleRenderBegin]);
 
   /**
    * When the window is resized, resize the iframe
