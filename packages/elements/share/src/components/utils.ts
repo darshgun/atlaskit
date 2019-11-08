@@ -65,7 +65,9 @@ export const showAdminNotifiedFlag = (
   selectedUsers: Value,
 ): boolean => getInviteWarningType(config, selectedUsers) === 'ADMIN';
 
-const extracUsersByEmail = (users: Value): Email[] => {
+const extractUsersByEmail = (users: Value): Email[] => {
+  if (users == null) return [];
+
   return Array.isArray(users) ? users.filter(isEmail) : [users].filter(isEmail);
 };
 
@@ -81,7 +83,7 @@ export const getInviteWarningType = (
 ): InviteWarningType | null => {
   if (config && selectedUsers) {
     const mode: ConfigResponseMode = config.mode;
-    const selectedEmails: Email[] = extracUsersByEmail(selectedUsers);
+    const selectedEmails: Email[] = extractUsersByEmail(selectedUsers);
 
     if (!selectedEmails.length) {
       return null;
