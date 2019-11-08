@@ -82,7 +82,7 @@ async function triggerProductBuild(
     'GET',
   );
   if (existingBranchBuild.ok) {
-    // No need to create a branch build since one already exists
+    console.log('Branch build already exists, no need to trigger');
     return;
   }
 
@@ -94,13 +94,36 @@ async function triggerProductBuild(
   );
 
   if (!newBranchBuild.ok) {
-    const payload = await newBranchBuild.json();
+    const payload = await newBranchBuild.text();
     throw Error(
       `Could not create branch build in product - Status code: ${
         newBranchBuild.status
       } - ${JSON.stringify(payload)}`,
     );
   }
+}
+
+async function commitAndPush(
+  git: SimpleGit,
+  commitMessage: string,
+  authorEmail: string,
+  branchName: string,
+) {
+  await git.add(['./']);
+
+  const status = await git.status();
+  if (status && status.staged.length === 0) {
+    console.log('Nothing to commit');
+    return;
+  }
+
+  await git.commit(commitMessage, [
+    '--author',
+    `BOT Atlaskit branch deploy integrator <${authorEmail}>`,
+  ]);
+  await git.push('origin', branchName);
+
+  console.log('Committed and pushed changes');
 }
 
 export async function run() {
@@ -187,12 +210,15 @@ export async function run() {
   }
 
   if (branchExists) {
+    console.log(`Pulling existing branch ${branchName}`);
     await git.checkout(branchName);
     await git.pull('origin', branchName);
   } else {
+    console.log(`Checking out new branch ${branchName}`);
     await git.checkoutBranch(branchName, 'origin/master');
   }
 
+  console.log(`Installing packages branch deployed from ${atlaskitCommitHash}`);
   await installFromCommit(atlaskitCommitHash, {
     engine: packageEngine,
     cmd: cmd,
@@ -202,8 +228,6 @@ export async function run() {
     extraArgs,
     dryRun,
   });
-
-  await git.add(['./']);
 
   const commitInfo = await (await fetch(
     `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/commit/${atlaskitCommitHash}`,
@@ -224,22 +248,20 @@ https://bitbucket.org/atlassian/atlaskit-mk-2/branch/${cli.flags.atlaskitBranchN
 This commit was auto-generated.
   `;
 
-  await git.commit(commitMessage, [
-    '--author',
-    `BOT Atlaskit branch deploy integrator <${authorEmail}>`,
-  ]);
-  await git.push('origin', branchName);
+  console.log('Pushing branch deployed versions');
+  await commitAndPush(git, commitMessage, authorEmail, branchName);
 
   if (dedupe) {
     console.log(chalk.yellow('Running yarn-deduplicate'));
     await exec('yarn yarn-deduplicate yarn.lock');
-    await git.add(['./']);
 
-    await git.commit(`Deduplicated yarn.lock file`, [
-      '--author',
-      `BOT Atlaskit branch deploy integrator <${authorEmail}>`,
-    ]);
-    await git.push('origin', branchName);
+    console.log('Pushing deduped yarn.lock');
+    await commitAndPush(
+      git,
+      'Deduplicated yarn.lock file',
+      authorEmail,
+      branchName,
+    );
   }
 
   if (productCiPlanUrl) {
@@ -249,9 +271,17 @@ This commit was auto-generated.
         'Missing $PRODUCT_CI_USERNAME and/or $PRODUCT_CI_PASSWORD environment variables',
       );
     }
-    await triggerProductBuild(productCiPlanUrl, branchName, {
-      username: PRODUCT_CI_USERNAME,
-      password: PRODUCT_CI_PASSWORD,
-    });
+
+    console.log(
+      `Triggering product build on ${productCiPlanUrl} for ${branchName}`,
+    );
+    if (!dryRun) {
+      await triggerProductBuild(productCiPlanUrl, branchName, {
+        username: PRODUCT_CI_USERNAME,
+        password: PRODUCT_CI_PASSWORD,
+      });
+    }
   }
+
+  console.log('Branch deploy product integrator success!');
 }
