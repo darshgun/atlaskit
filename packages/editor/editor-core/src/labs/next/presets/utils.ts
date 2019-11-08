@@ -60,10 +60,9 @@ export const processPluginPreset = (preset: PluginsPreset) => {
 
 export const addExcludesFromProviderFactory = (
   providerFactory: ProviderFactory,
-  _excludes: EditorPresetProps['excludes'] = new Set(),
+  excludes: EditorPresetProps['excludes'] = new Set(),
 ) => {
-  const excludes = new Set(_excludes);
-
+  // TODO: Should I make this function pure?
   if (!providerFactory.hasProvider('mentionProvider')) {
     excludes.add('mention');
   }
