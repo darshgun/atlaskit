@@ -33,7 +33,7 @@ export {
   ProviderFactory,
   WithProviders,
   Providers,
-  MediaProvider
+  MediaProvider,
 } from './provider-factory';
 
 export { combineProviders } from './provider-helpers';
