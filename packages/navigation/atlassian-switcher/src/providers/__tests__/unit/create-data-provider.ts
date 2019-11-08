@@ -12,8 +12,6 @@ describe('create-data-provider', () => {
 
   describe('createProvider', () => {
     test('should return a fetch method and a provider component', () => {
-      console.log('===', createProviderWithCustomFetchData);
-
       const provider = createProvider('my-provider', '/gateway/api/content');
       expect(provider).toHaveProperty('fetchMethod');
       expect(provider).toHaveProperty('ProviderComponent');

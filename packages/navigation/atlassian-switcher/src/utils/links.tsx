@@ -29,7 +29,7 @@ import {
   CurrentSite,
   JoinableSite,
   JoinableSiteUser,
-  AvatarPropTypes,
+  JoinableSiteUserAvatarPropTypes,
 } from '../types';
 import messages from './messages';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
@@ -53,7 +53,7 @@ export type SwitcherItemType = {
 
 export type JoinableSiteItemType = SwitcherItemType & {
   cloudId: string;
-  users: AvatarPropTypes[];
+  users: JoinableSiteUserAvatarPropTypes[];
 };
 
 export type RecentItemType = SwitcherItemType & {
@@ -512,7 +512,7 @@ export const getJoinableSiteLinks = (
         Icon: createIcon(icon, { size: 'small' }),
         href: site.url,
         users: site.users.map(
-          (user: JoinableSiteUser): AvatarPropTypes => ({
+          (user: JoinableSiteUser): JoinableSiteUserAvatarPropTypes => ({
             name: user.displayName,
             src: user.avatarUrl,
             appearance: 'circle',
