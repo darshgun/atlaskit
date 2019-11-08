@@ -104,14 +104,12 @@ export const table: TokenParser = ({ input, position, schema, context }) => {
       case processState.BUFFER: {
         const length = parseNewlineOnly(substring);
         if (length) {
-          var charsBefore = '';
-          for (var i = index - 1 + length; i >= 0; --i) {
-            const char = input.charAt(i);
-            if (char === '|') {
-              break;
-            }
-            charsBefore = char + charsBefore;
-          }
+          // Calculate the index of the end of the current cell,
+          // upto and including the new line
+          const endIndex = index - 1 + length;
+          // Calculate the index of the start of the current cell
+          const startIndex = input.lastIndexOf('|', endIndex) + 1;
+          const charsBefore = input.substring(startIndex, endIndex);
           if (charsBefore === '' || charsBefore.match(EMPTY_LINE_REGEXP)) {
             currentState = processState.CLOSE_ROW;
           } else {
