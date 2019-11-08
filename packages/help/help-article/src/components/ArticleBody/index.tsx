@@ -85,7 +85,7 @@ export const ArticleBody = (props: Props) => {
   useEffect(() => {
     setIframeContent(iframeRef, props.body);
     resizeIframe(iframeRef);
-  }, [props.body]);
+  }, [props.body, iframeRef]);
 
   /**
    * When the window is resized, resize the iframe
@@ -115,6 +115,8 @@ export const ArticleBody = (props: Props) => {
     return () => {
       window.removeEventListener('resize', onWindowResize);
     };
+    // We only want this effect to run once - on initial mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return props.body ? (
