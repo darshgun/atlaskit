@@ -7,6 +7,10 @@ import debounce from 'lodash.debounce';
 export interface Props {
   // Article Content
   body?: string;
+  // Function executed when the article rendering begins
+  onArticleRenderBegin?(): void;
+  // Function executed when the article rendering finishes
+  onArticleRenderDone?(): void;
 }
 
 export const ArticleBody = (props: Props) => {
@@ -16,7 +20,10 @@ export const ArticleBody = (props: Props) => {
   /**
    * Set article height
    */
-  const resizeIframe = (iframeRef: React.RefObject<HTMLIFrameElement>) => {
+  const resizeIframe = (
+    iframeRef: React.RefObject<HTMLIFrameElement>,
+    onArticleRenderDone?: () => void,
+  ) => {
     const currentIframe: HTMLIFrameElement | null = iframeRef.current;
 
     if (!currentIframe) {
@@ -32,6 +39,10 @@ export const ArticleBody = (props: Props) => {
         const contentHeight: number = iframeContent.scrollHeight;
         currentIframe.style.height = contentHeight + 'px';
         setArticleHeight(`${contentHeight}px`);
+
+        if (onArticleRenderDone) {
+          onArticleRenderDone();
+        }
       }
     }
 
@@ -59,6 +70,10 @@ export const ArticleBody = (props: Props) => {
           currentIframe,
           `<style>${resetCSS}</style><div style="overflow-x: hidden;">${body}</div>`,
         );
+
+        if (props.onArticleRenderBegin) {
+          props.onArticleRenderBegin();
+        }
       }
     }
   };
@@ -67,13 +82,10 @@ export const ArticleBody = (props: Props) => {
    * When the article changes, update the content of the iframe and
    * resize the iframe based on the new content
    */
-  useEffect(
-    () => {
-      setIframeContent(iframeRef, props.body);
-      resizeIframe(iframeRef);
-    },
-    [props.body],
-  );
+  useEffect(() => {
+    setIframeContent(iframeRef, props.body);
+    resizeIframe(iframeRef);
+  }, [props.body]);
 
   /**
    * When the window is resized, resize the iframe
@@ -95,7 +107,7 @@ export const ArticleBody = (props: Props) => {
     if (currentIframe !== null && currentIframe.contentWindow !== null) {
       if (currentIframe.contentWindow.document.body) {
         currentIframe.onload = () => {
-          resizeIframe(iframeRef);
+          resizeIframe(iframeRef, props.onArticleRenderDone);
         };
       }
     }
