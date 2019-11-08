@@ -14,6 +14,7 @@ import {
   ConfigResponseMode,
   FieldChildrenArgs,
   MessageDescriptor,
+  ProductName,
 } from '../types';
 import {
   allowEmails,
@@ -29,14 +30,15 @@ export type Props = {
   loadOptions?: LoadOptions;
   defaultValue?: OptionData[];
   config?: ConfigResponse;
-  // capabilitiesInfoMessage?: React.ReactNode; // FIXME remove or deprecate?
   infoMessagePendingInvite?: React.ReactNode;
   infoMessageDirectInvite?: React.ReactNode;
   isLoading?: boolean;
+  product: ProductName;
 };
 
 type GetPlaceHolderMessageDescriptor = (
   mode: ConfigResponseMode | '',
+  product?: ProductName,
 ) => MessageDescriptor;
 
 type GetNoOptionMessageDescriptor = (
@@ -94,10 +96,17 @@ const getNoOptionsMessage = (
 
 const getPlaceHolderMessageDescriptor: GetPlaceHolderMessageDescriptor = (
   mode: ConfigResponseMode | '',
-) =>
-  mode === 'EXISTING_USERS_ONLY'
+  product: ProductName = 'confluence',
+) => {
+  const placeholderMessage = {
+    jira: messages.userPickerGenericPlaceholderJira,
+    confluence: messages.userPickerGenericPlaceholder,
+  };
+
+  return mode === 'EXISTING_USERS_ONLY'
     ? messages.userPickerExistingUserOnlyPlaceholder
-    : messages.userPickerGenericPlaceholder;
+    : placeholderMessage[product];
+};
 
 export class UserPickerField extends React.Component<Props> {
   private loadOptions = (search?: string) => {
@@ -136,8 +145,12 @@ export class UserPickerField extends React.Component<Props> {
   };
 
   render() {
-    const { defaultValue, config, isLoading } = this.props;
+    const { defaultValue, config, isLoading, product } = this.props;
     const configMode = (config && config!.mode) || '';
+    const requireMessage = {
+      jira: messages.userPickerRequiredMessageJira,
+      confluence: messages.userPickerRequiredMessage,
+    };
 
     return (
       <Field name="users" validate={validate} defaultValue={defaultValue}>
@@ -159,7 +172,10 @@ export class UserPickerField extends React.Component<Props> {
                     width="100%"
                     placeholder={
                       <FormattedMessage
-                        {...getPlaceHolderMessageDescriptor(configMode)}
+                        {...getPlaceHolderMessageDescriptor(
+                          configMode,
+                          product,
+                        )}
                       />
                     }
                     addMoreMessage={addMore as string}
@@ -175,7 +191,7 @@ export class UserPickerField extends React.Component<Props> {
               )}
               {!valid && error === REQUIRED && (
                 <ErrorMessage>
-                  <FormattedMessage {...messages.userPickerRequiredMessage} />
+                  <FormattedMessage {...requireMessage[product]} />
                 </ErrorMessage>
               )}
             </>

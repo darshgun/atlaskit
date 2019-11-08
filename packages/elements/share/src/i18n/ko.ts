@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': '메시지 추가',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     '이름, 그룹, 팀 또는 이메일 입력',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    '이름, 팀 또는 이메일 입력',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     '이름 또는 팀 입력',
   'fabric.elements.share.form.user-picker.add-more': '더 입력하세요',
   'fabric.elements.share.form.user-picker.validation.required':
     '사용자, 그룹, 팀 또는 이메일을 하나 이상 선택하세요.',
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    '사용자, 팀 또는 이메일을 최소한 하나 선택하십시오.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     '{domains} 이메일 주소로만 사용자를 초대할 수 있습니다. 사이트 관리자에게 문의하여 다른 사람을 초대하세요.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

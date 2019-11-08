@@ -36,7 +36,7 @@ interface FadeInProps {
   isPaused?: boolean;
 
   /**
-   * Children as function.
+   * Children as `function`.
    * Will be passed `props` for you to hook up.
    */
   children: (props: { className: string; ref: Ref<any> }) => JSX.Element;

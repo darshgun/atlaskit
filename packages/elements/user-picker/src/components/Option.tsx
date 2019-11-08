@@ -1,5 +1,5 @@
 import { components } from '@atlaskit/select';
-import * as React from 'react';
+import React, { FC } from 'react';
 import { Option as OptionType } from '../types';
 import { EmailOption } from './EmailOption';
 import { TeamOption } from './TeamOption';
@@ -49,6 +49,6 @@ const dataOption = ({
   return null;
 };
 
-export const Option: React.StatelessComponent<OptionProps> = props => (
-  <components.Option {...props}>{dataOption(props)}</components.Option>
+export const Option: FC<OptionProps> = props => (
+  <components.Option {...(props as any)}>{dataOption(props)}</components.Option>
 );

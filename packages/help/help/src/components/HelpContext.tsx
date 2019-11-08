@@ -390,7 +390,10 @@ class HelpContextProviderImplementation extends React.Component<
   };
 
   isDefaultContent = (): boolean => {
-    return this.state.defaultContent !== undefined;
+    return (
+      this.state.defaultContent !== undefined ||
+      this.state.defaultContent !== null
+    );
   };
 
   getCurrentArticle = () => {

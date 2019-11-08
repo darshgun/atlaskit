@@ -1,10 +1,11 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { Component, CSSProperties } from 'react';
-import Button, { ButtonGroup, Theme as ButtonTheme, ButtonProps } from '../src';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
-import Select from '@atlaskit/select';
+import Select, { OptionType, ValueType } from '@atlaskit/select';
 import * as colors from '@atlaskit/theme/colors';
+
+import Button, { ButtonGroup, Theme as ButtonTheme, ButtonProps } from '../src';
 
 interface ThemeProps {
   mode?: any;
@@ -29,7 +30,7 @@ const ThemedButton = (props: ButtonProps) => (
   />
 );
 
-const options = [
+const options: OptionType[] = [
   { value: 'light', label: 'Light Theme' },
   { value: 'dark', label: 'Dark Mode' },
 ];
@@ -89,7 +90,7 @@ export default class extends Component {
             }}
             options={options}
             defaultValue={mode}
-            onChange={(mode: { ['key']: string }) => this.setState({ mode })}
+            onChange={(mode: ValueType<OptionType>) => this.setState({ mode })}
           />
         </div>
       </div>

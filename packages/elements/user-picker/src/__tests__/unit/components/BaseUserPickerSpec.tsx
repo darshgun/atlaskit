@@ -909,7 +909,7 @@ describe('BaseUserPicker', () => {
       input.simulate('keyDown', { keyCode: 40 });
       input.simulate('keyDown', { keyCode: 38 });
       input.simulate('keyDown', { keyCode: 13 });
-      component.find<any>(Select).prop('onChange')(
+      component.find(Select).prop('onChange')(
         optionToSelectableOption(options[0]),
         {
           action: 'select-option',
@@ -949,7 +949,7 @@ describe('BaseUserPicker', () => {
       input.simulate('keyDown', { keyCode: 40 });
       input.simulate('keyDown', { keyCode: 40 });
       input.simulate('keyDown', { keyCode: 38 });
-      component.find<any>(Select).prop('onChange')(
+      component.find(Select).prop('onChange')(
         optionToSelectableOption(options[0]),
         {
           action: 'select-option',
@@ -984,7 +984,7 @@ describe('BaseUserPicker', () => {
     it('should trigger cleared event', () => {
       const input = component.find('input');
       input.simulate('focus');
-      component.find<any>(Select).prop('onChange')(
+      component.find(Select).prop('onChange')(
         optionToSelectableOption(options[0]),
         {
           action: 'clear',
@@ -1015,7 +1015,7 @@ describe('BaseUserPicker', () => {
       component.setProps({ isMulti: true });
       const input = component.find('input');
       input.simulate('focus');
-      component.find<any>(Select).prop('onChange')([], {
+      component.find(Select).prop('onChange')([], {
         action: 'remove-value',
         removedValue: optionToSelectableOption(options[0]),
       });
@@ -1043,7 +1043,7 @@ describe('BaseUserPicker', () => {
       component.setProps({ isMulti: true });
       const input = component.find('input');
       input.simulate('focus');
-      component.find<any>(Select).prop('onChange')([], {
+      component.find(Select).prop('onChange')([], {
         action: 'pop-value',
         removedValue: undefined,
       });

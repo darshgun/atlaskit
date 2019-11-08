@@ -2,7 +2,7 @@ import Calendar, { CalendarClassType, ArrowKeys } from '@atlaskit/calendar';
 import pick from 'lodash.pick';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
-import styled, { CSSObject } from '@emotion/styled';
+import styled from '@emotion/styled';
 import {
   createLocalizationProvider,
   LocalizationProvider,
@@ -18,7 +18,7 @@ import {
 } from '@atlaskit/analytics-next';
 // eslint-disable-next-line no-restricted-imports
 import { format, isValid, parse, lastDayOfMonth } from 'date-fns';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import {
   name as packageName,
   version as packageVersion,
@@ -379,7 +379,7 @@ class DatePicker extends React.Component<Props, State> {
     }
   };
 
-  getSubtleControlStyles = (isOpen: boolean): CSSObject => ({
+  getSubtleControlStyles = (isOpen: boolean) => ({
     border: `2px solid ${isOpen ? B100 : `transparent`}`,
     backgroundColor: 'transparent',
     padding: '1px',
@@ -461,7 +461,9 @@ class DatePicker extends React.Component<Props, State> {
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
       appearance === 'subtle' ? this.getSubtleControlStyles(isOpen) : {};
-    const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
+    const disabledStyle: CSSProperties = isDisabled
+      ? { pointerEvents: 'none' }
+      : {};
 
     const calendarProps = {
       calendarContainerRef: this.containerRef,
@@ -502,12 +504,12 @@ class DatePicker extends React.Component<Props, State> {
             Menu,
           }}
           styles={mergeStyles(selectStyles, {
-            control: (base: CSSObject) => ({
+            control: base => ({
               ...base,
               ...controlStyles,
               ...disabledStyle,
             }),
-            indicatorsContainer: (base: CSSObject): CSSObject => ({
+            indicatorsContainer: base => ({
               ...base,
               paddingLeft: ICON_PADDING,
               paddingRight: gridSize() - BORDER_WIDTH,
