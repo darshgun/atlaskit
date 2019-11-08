@@ -8,7 +8,7 @@ import {
   ExtensionParams,
 } from './types';
 
-export async function getManifestNode(
+export async function getExtensionModuleNode(
   extensionProvider: ExtensionProvider,
   extensionType: ExtensionType,
   extensionKey: ExtensionKey,
@@ -23,7 +23,7 @@ export async function getManifestNode(
 
   if (!node) {
     throw new Error(
-      `Node with key "${extensionKey}" not found on extension "${extensionType}"!`,
+      `Node with key "${extensionKey}" not found on manifest for extension type "${extensionType}"!`,
     );
   }
 
@@ -47,7 +47,7 @@ export function getNodeRenderer<T>(
 ) {
   return Loadable<{ extensionParams: ExtensionParams<T> }, any>({
     loader: () => {
-      return getManifestNode(
+      return getExtensionModuleNode(
         extensionProvider,
         extensionType,
         extensionKey,

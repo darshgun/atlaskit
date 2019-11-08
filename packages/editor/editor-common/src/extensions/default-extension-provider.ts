@@ -1,18 +1,14 @@
 import { ExtensionManifest, ExtensionProvider } from './types';
 
 export default class DefaultExtensionProvider implements ExtensionProvider {
-  private manifests: ExtensionManifest[] | Promise<ExtensionManifest[]>;
+  private manifestsPromise: Promise<ExtensionManifest[]>;
 
   constructor(manifests: ExtensionManifest[] | Promise<ExtensionManifest[]>) {
-    this.manifests = manifests;
-  }
-
-  private async getManifests(): Promise<ExtensionManifest[]> {
-    return Promise.resolve(this.manifests);
+    this.manifestsPromise = Promise.resolve(manifests);
   }
 
   async getExtension(key: string) {
-    const extension = (await this.getManifests()).find(
+    const extension = (await this.manifestsPromise).find(
       manifest => manifest.key === key,
     );
 
@@ -24,11 +20,11 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
   }
 
   async getExtensions() {
-    return await this.getManifests();
+    return await this.manifestsPromise;
   }
 
   async search(keyword: string) {
-    const extensions = (await this.getManifests()).filter(manifest =>
+    const extensions = (await this.manifestsPromise).filter(manifest =>
       manifest.title.includes(keyword),
     );
     return extensions;

@@ -4,7 +4,10 @@ import combineExtensionProviders from '../../combine-extension-providers';
 import DefaultExtensionProvider from '../../default-extension-provider';
 import { ExtensionProvider } from '../../types';
 
-import { getNodeRenderer, getManifestNode } from '../../extension-handlers';
+import {
+  getNodeRenderer,
+  getExtensionModuleNode,
+} from '../../extension-handlers';
 import Loadable from 'react-loadable';
 import { shallow } from 'enzyme';
 
@@ -112,7 +115,7 @@ describe('extension-handlers', () => {
 
         await expect(Loadable.preloadAll()).rejects.toEqual(
           new Error(
-            `Node with key "answer-to-life" not found on extension "fake.confluence-extension"!`,
+            `Node with key "answer-to-life" not found on manifest for extension type "fake.confluence-extension"!`,
           ),
         );
 
@@ -123,9 +126,9 @@ describe('extension-handlers', () => {
     });
   });
 
-  describe('getManifestNode', () => {
+  describe('getExtensionModuleNode', () => {
     test('should return the manifest node when found', async () => {
-      const node = await getManifestNode(
+      const node = await getExtensionModuleNode(
         extensionProvider,
         'fake.confluence-extension',
         'expand',
@@ -135,7 +138,11 @@ describe('extension-handlers', () => {
 
     test('should throw if extension type is not found', () => {
       return expect(
-        getManifestNode(extensionProvider, 'fake.unknown-extension', 'expand'),
+        getExtensionModuleNode(
+          extensionProvider,
+          'fake.unknown-extension',
+          'expand',
+        ),
       ).rejects.toEqual(
         new Error(`Extension with key "fake.unknown-extension" not found!`),
       );
@@ -143,14 +150,14 @@ describe('extension-handlers', () => {
 
     test('should throw if extension key is not found', () => {
       return expect(
-        getManifestNode(
+        getExtensionModuleNode(
           extensionProvider,
           'fake.confluence-extension',
           'answer-to-life',
         ),
       ).rejects.toEqual(
         new Error(
-          `Node with key "answer-to-life" not found on extension "fake.confluence-extension"!`,
+          `Node with key "answer-to-life" not found on manifest for extension type "fake.confluence-extension"!`,
         ),
       );
     });
