@@ -609,3 +609,11 @@ pipelines:
             - bolt workspaces exec --no-bail --ignore "@atlaskit/{css-reset,email-renderer}" --only-fs "packages/*/*" --serial -- bash -c 'bolt p run build:clean $(grep name.*@atlaskit package.json | cut -d \" -f 4)'
             # Validate packages will produce false positives and is for manual analysis so we always return true
             - yarn validate-packages || true
+    merge-master:
+      - step:
+          name: Merges master into the target branch
+          script:
+            - source ./build-setup.sh
+            - git fetch origin master
+            - git merge origin/master
+            - git push origin HEAD
