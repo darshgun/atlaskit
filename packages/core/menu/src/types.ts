@@ -1,10 +1,12 @@
-export type MenuGroup = {
+export type MenuGroupProps = {
   maxHeight?: number | string;
+  children: React.ReactNode;
 };
 
-export type Section = {
+export type SectionProps = {
   isScrollable?: boolean;
   shouldShowSeparator?: boolean;
+  children: React.ReactNode;
 };
 
 export interface ItemProps {

@@ -1,6 +1,6 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { fontSize, fontSizeSmall } from '@atlaskit/theme/constants';
-import { N800, N20, N30 } from '@atlaskit/theme/colors';
+import { N800, N20, N30, subtleHeading } from '@atlaskit/theme/colors';
 
 const gridSize = gridSizeFn();
 
@@ -71,6 +71,23 @@ export const linkItemCSS = {
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
+  fontSize: fontSizeSmall(),
+  fontWeight: 500,
+  color: subtleHeading(),
+  marginLeft: 4,
+  marginTop: 8,
+};
+
+export const skeletonHeadingItemCSS = {
+  ...itemHeadingCSS,
+  '&::after': {
+    backgroundColor: N20,
+    height: 12,
+    padding: 4,
+    width: 'calc(30% - 8px)',
+    display: 'block',
+    content: '""',
+  },
 };
 
 export const itemSkeletonCSS = {

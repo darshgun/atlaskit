@@ -9,7 +9,13 @@ import React from 'react';
 // } from '../src';
 
 // Temporarily imported from here until all components are ready.
-import { Item, LinkItem, HeadingItem, SkeletonItem } from '../src/MenuItem';
+import {
+  Item,
+  LinkItem,
+  HeadingItem,
+  SkeletonItem,
+  SkeletonHeadingItem,
+} from '../src/MenuItem';
 import { MenuGroup, Section } from '../src/Group';
 
 export default () => {
@@ -62,11 +68,12 @@ export default () => {
           <Item elemBefore="hi" elemAfter="bye">
             Item
           </Item>
+          <Item elemBefore="hi" elemAfter="bye">
+            Item
+          </Item>
         </Section>
         <Section>
-          <HeadingItem>Footer</HeadingItem>
-          <SkeletonItem />
-          <SkeletonItem />
+          <SkeletonHeadingItem />
           <SkeletonItem />
           <SkeletonItem />
         </Section>

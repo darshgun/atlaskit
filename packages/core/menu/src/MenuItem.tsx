@@ -5,6 +5,7 @@ import {
   linkItemCSS,
   itemCSS,
   itemHeadingCSS,
+  skeletonHeadingItemCSS,
   itemSkeletonCSS,
   elemBeforeCSS,
   elemAfterCSS,
@@ -15,6 +16,9 @@ import {
 import { ItemProps, LinkItemProps } from './types';
 
 export const HeadingItem = props => <div css={itemHeadingCSS} {...props} />;
+export const SkeletonHeadingItem = props => (
+  <div css={skeletonHeadingItemCSS} {...props} />
+);
 export const SkeletonItem = props => <div css={itemSkeletonCSS} {...props} />;
 
 const ItemBase = ({ elemBefore, elemAfter, children, description }) => {
