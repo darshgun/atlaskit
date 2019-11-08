@@ -19,7 +19,6 @@ import { parseToken } from './';
 */
 const CELL_REGEXP = /^([ \t]*)([|]+)([ \t]*)/;
 const EMPTY_LINE_REGEXP = /^[ \t]*\r?\n/;
-const EMPTY_CELL_REGEXP = /^([ \t]+)/;
 
 const processState = {
   END_TABLE: 2,
