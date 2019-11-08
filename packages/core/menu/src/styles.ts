@@ -43,7 +43,7 @@ const baseItemCSS = {
 export const itemCSS = {
   ...buttonOverrides,
   ...baseItemCSS,
-};
+} as CSSObject;
 
 /* Item subcomponents */
 export const contentCSS = {
@@ -71,7 +71,7 @@ export const contentCSSWrapper = {
 export const linkItemCSS = {
   ...anchorOverrides,
   ...baseItemCSS,
-};
+} as CSSObject;
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
