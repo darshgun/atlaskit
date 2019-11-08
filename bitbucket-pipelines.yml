@@ -614,6 +614,6 @@ pipelines:
           name: Merges master into the target branch
           script:
             - source ./build-setup.sh
-            - git fetch master
+            - git fetch origin master
             - git merge origin/master
             - git push origin HEAD
