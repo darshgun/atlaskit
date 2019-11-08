@@ -815,6 +815,10 @@
         "../../core/select/src/Select",
         "./packages/core/select/src/Select"
       ],
+      "@atlaskit/select/types": [
+        "../../core/select/src/types",
+        "./packages/core/select/src/types"
+      ],
       "@atlaskit/single-select": [
         "../../core/single-select/src/",
         "./packages/core/single-select/src/"

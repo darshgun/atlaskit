@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { match } from 'react-router';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -11,7 +11,7 @@ import Button from '@atlaskit/button';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Flag, { FlagGroup } from '@atlaskit/flag';
-import Select from '@atlaskit/select';
+import Select, { ValueType, OptionType } from '@atlaskit/select';
 import Tooltip from '@atlaskit/tooltip';
 import { colors } from '@atlaskit/theme';
 
@@ -79,9 +79,10 @@ function PackageSelector(props: any) {
         }}
         options={packagesSelectOptions}
         placeholder="Select Package"
-        onChange={(value: string, { action }: { action: string }) =>
-          action === 'select-option' && props.onSelected(value)
-        }
+        onChange={(
+          option: ValueType<OptionType>,
+          { action }: { action: string },
+        ) => action === 'select-option' && props.onSelected(option)}
         value={selectedPackageItem}
       />
     </Control>
@@ -115,21 +116,22 @@ function ExampleSelector(props: any) {
     <Control>
       <Select
         styles={{
-          container: (styles: object) => ({
+          container: (styles: CSSProperties) => ({
             ...styles,
             flex: '1 1 0px',
             minWidth: '300px',
           }),
-          control: (styles: object) => ({
+          control: (styles: CSSProperties) => ({
             ...styles,
             backgroundColor: '#fff',
           }),
         }}
         options={examplesSelectItems}
         placeholder="Select Example"
-        onChange={(value: string, { action }: { action: string }) =>
-          action === 'select-option' && props.onSelected(value)
-        }
+        onChange={(
+          option: ValueType<OptionType>,
+          { action }: { action: string },
+        ) => action === 'select-option' && props.onSelected(option)}
         value={selectedExampleItem}
       />
     </Control>

@@ -3,7 +3,7 @@ import { components } from '@atlaskit/select';
 
 export type Props = {
   selectProps?: { disableInput?: boolean };
-  innerRef: (ref: HTMLInputElement) => void;
+  innerRef: (ref: React.Ref<HTMLInputElement>) => void;
 };
 
 export class Input extends React.Component<Props> {
@@ -19,9 +19,9 @@ export class Input extends React.Component<Props> {
     const { selectProps } = this.props;
     return (
       <components.Input
-        {...this.props}
+        {...(this.props as any)}
         innerRef={this.props.innerRef}
-        disabled={selectProps && selectProps.disableInput}
+        isDisabled={selectProps && selectProps.disableInput}
         onKeyPress={this.handleKeyPress}
       />
     );

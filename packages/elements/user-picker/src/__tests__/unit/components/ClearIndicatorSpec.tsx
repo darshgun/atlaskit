@@ -16,7 +16,7 @@ describe('ClearIndicator', () => {
     });
 
     const { onMouseDown } = component
-      .find(components.ClearIndicator)
+      .find(components.ClearIndicator!)
       .prop('innerProps');
 
     onMouseDown();
@@ -31,7 +31,7 @@ describe('ClearIndicator', () => {
     });
 
     const { onMouseDown } = component
-      .find(components.ClearIndicator)
+      .find(components.ClearIndicator!)
       .prop('innerProps');
     const stopPropagation = jest.fn();
     onMouseDown({ stopPropagation });
@@ -45,7 +45,7 @@ describe('ClearIndicator', () => {
     });
 
     const { onMouseDown } = component
-      .find(components.ClearIndicator)
+      .find(components.ClearIndicator!)
       .prop('innerProps');
     const stopPropagation = jest.fn();
     onMouseDown({ stopPropagation });
