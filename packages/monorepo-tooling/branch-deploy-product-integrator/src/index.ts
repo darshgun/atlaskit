@@ -81,7 +81,7 @@ async function triggerProductBuild(
     auth,
     'GET',
   );
-  if (existingBranchBuild.ok) {
+  if (existingBranchBuild.status === 200) {
     console.log('Branch build already exists, no need to trigger');
     return;
   }
@@ -93,7 +93,7 @@ async function triggerProductBuild(
     'PUT',
   );
 
-  if (!newBranchBuild.ok) {
+  if (newBranchBuild.status !== 200) {
     const payload = await newBranchBuild.text();
     throw Error(
       `Could not create branch build in product - Status code: ${
