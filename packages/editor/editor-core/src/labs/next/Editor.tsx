@@ -12,7 +12,7 @@ import {
 } from './internal/context/shared-config';
 import { EditorContent } from './internal/components/EditorContent';
 import { EditorProps } from './internal/editor-props-type';
-import { useProviderFactory } from './internal/context/provider-factory-context';
+import { useProviderFactory } from '@atlaskit/editor-common/provider-factory';
 
 /**
  * Main Editor component. Use in combination with `EditorContent` and a `Preset`.

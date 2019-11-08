@@ -28,11 +28,10 @@ import {
 } from '../../../plugins';
 import { MediaProvider, CustomMediaPicker } from '../../../plugins/media';
 import { PresetProvider } from '../Editor';
-import { ProviderFactoryProvider } from '../internal/context/provider-factory-context';
 import { EditorPresetProps } from './types';
 import { useDefaultPreset } from './default';
-import { getPluginsFromPreset } from './utils';
-import ProviderFactory from '@atlaskit/editor-common/src/providerFactory';
+import { addExcludesFromProviderFactory, getPluginsFromPreset } from './utils';
+import { useProviderFactory } from '@atlaskit/editor-common/provider-factory';
 // #endregion
 
 interface EditorPresetMobileProps {
@@ -112,11 +111,13 @@ export function EditorPresetMobile(
 ) {
   const { children, excludes, experimental } = props;
   const [preset] = useMobilePreset(props);
-  const plugins = getPluginsFromPreset(preset, excludes, experimental);
+  const providerFactory = useProviderFactory();
 
-  return (
-    <ProviderFactoryProvider value={props.providerFactory || new ProviderFactory()}>
-      <PresetProvider value={plugins}>{children}</PresetProvider>
-    </ProviderFactoryProvider>
+  const plugins = getPluginsFromPreset(
+    preset,
+    addExcludesFromProviderFactory(providerFactory, excludes),
+    experimental,
   );
+
+  return <PresetProvider value={plugins}>{children}</PresetProvider>;
 }
