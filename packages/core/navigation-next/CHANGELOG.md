@@ -1,5 +1,35 @@
 # @atlaskit/navigation-next
 
+## 7.1.1
+
+- Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+  - @atlaskit/inline-dialog@12.1.5
+  - @atlaskit/modal-dialog@10.3.6
+  - @atlaskit/select@11.0.0
+  - @atlaskit/button@13.3.4
+  - @atlaskit/logo@12.2.2
+
+## 7.1.0
+
+### Minor Changes
+
+- [minor][d8b3e9833e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8b3e9833e):
+
+  global-navigation height resizes for mobile browsers
+
+## 7.0.4
+
+### Patch Changes
+
+- [patch][ab32a88243](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab32a88243):
+
+  Use explicit imports in `NavigationProvider` to reduce the size of the `NavigationProvider` entry point
+
+## 7.0.3
+
+- Updated dependencies [355e7ca2ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/355e7ca2ea):
+  - @atlaskit/atlassian-navigation@0.6.0
+
 ## 7.0.2
 
 ### Patch Changes

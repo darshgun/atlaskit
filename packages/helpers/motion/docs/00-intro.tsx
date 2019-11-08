@@ -19,8 +19,9 @@ export default md`
 
   ### Quick links
 
-  - [Variables](/packages/helpers/motion/docs/variables)
   - [Entering motions](/packages/helpers/motion/docs/entering-motions)
+  - [Resizing motions](/packages/helpers/motion/docs/resizing-motions)
+  - [Variables](/packages/helpers/motion/docs/variables)
   - [Accessibility](/packages/helpers/motion/docs/accessibility)
 
   ## Library Considerations
@@ -43,7 +44,7 @@ export default md`
 
   Every component in this library will not render markup,
   they will just pass down \`props\` for you to wire up.
-  Because of this the majority of _motion components_ will utilise children as props or hooks.
+  Because of this the majority of _motion atoms will utilise children as props or hooks.
 
   <br />
 
@@ -55,7 +56,7 @@ export default md`
 
   ### Motion abstractions
 
-  We want you to use abstractions (components) to power your motion and to not worry about underlying tech.
+  We want you to use abstractions (atoms) to power your motion and to not worry about underlying tech.
   We _also_ want a consistent experience across our products.
   Need a particular motion that doesn't exist yet?
 

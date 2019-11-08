@@ -251,8 +251,8 @@ export default class Toolbar extends Component<Props> {
                       scrollableElement={popupsScrollableElement}
                       defaultValue={item.defaultValue}
                       placeholder={item.placeholder}
-                      onChange={(selected: SelectOption) =>
-                        dispatchCommand(item.onChange(selected))
+                      onChange={selected =>
+                        dispatchCommand(item.onChange(selected as SelectOption))
                       }
                     />
                   );

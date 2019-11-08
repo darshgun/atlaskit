@@ -1,8 +1,8 @@
-import React from 'react';
-import Select from '@atlaskit/select';
+import React, { FC } from 'react';
+import Select, { ValueType, OptionType, StylesConfig } from '@atlaskit/select';
 
-const styles = {
-  container: (base: any) => ({
+const styles: StylesConfig = {
+  container: base => ({
     ...base,
     margin: '8px',
     width: '160px',
@@ -26,10 +26,10 @@ const options = [
 ];
 
 interface Props {
-  onChange: ({ label, value }: { label: string; value: number }) => any;
+  onChange: (option: ValueType<OptionType>) => void;
 }
 
-const BeforeItemsSelect = ({ onChange }: Props) => (
+const BeforeItemsSelect: FC<Props> = ({ onChange }) => (
   <Select
     styles={styles}
     options={options}
@@ -39,7 +39,7 @@ const BeforeItemsSelect = ({ onChange }: Props) => (
   />
 );
 
-const AfterItemsSelect = ({ onChange }: Props) => (
+const AfterItemsSelect: FC<Props> = ({ onChange }) => (
   <Select
     styles={styles}
     options={options}

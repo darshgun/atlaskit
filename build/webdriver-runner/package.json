@@ -8,7 +8,7 @@
     "@atlaskit/analytics-reporting": "0.1.1",
     "@atlaskit/webpack-config": "^2.0.15",
     "bolt-query": "^1.1.4",
-    "browserstack-local": "^1.4.0",
+    "browserstack-local": "^1.4.2",
     "loader-utils": "^1.1.0",
     "lodash.get": "^4.4.2",
     "meow": "^5.0.0",

@@ -1,6 +1,6 @@
 # Analytics
 
-__Note__: This package may be soon deprecated in favor of  ```@atlaskit/analytics-next```.
+**Note**: This package may be soon deprecated in favor of `@atlaskit/analytics-next`.
 
 Fire analytics events from React Components and then decorate and listen for them.
 

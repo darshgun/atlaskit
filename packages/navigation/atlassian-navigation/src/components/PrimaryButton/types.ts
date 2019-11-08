@@ -1,8 +1,8 @@
 import { ButtonProps } from '@atlaskit/button/types';
 
 export type PrimaryButtonProps = Omit<ButtonProps, 'appearance'> & {
-  /** Prop used to highlight the button is it is selected */
-  isSelected?: boolean;
+  /** Prop used to highlight the button is it is the active item */
+  isHighlighted?: boolean;
   /**  */
   testId?: string;
   /** A string to render as a tooltip */

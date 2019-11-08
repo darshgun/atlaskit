@@ -2,9 +2,12 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { UIController, ViewController } from '../index';
+
 import { CONTENT_NAV_WIDTH } from '../common/constants';
+import { UIController } from '../ui-controller';
 import type { UIControllerCacheShape } from '../ui-controller/types';
+import { ViewController } from '../view-controller';
+
 import type { NavigationProviderProps } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';

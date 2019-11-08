@@ -18,6 +18,7 @@ interface StaggeredEntranceProps {
   /**
    * Number of columns the children elements will be displayed over.
    * Use `"responsive"` to have it calculate dynamically on the client side.
+
    * **NOTE:** This has a big caveat that the elements will be invisible until the client side Javascript executes.
    * If you have a fixed grid or list, set this to a specific number.
    * Defaults to `"responsive"`.

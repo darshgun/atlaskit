@@ -44,6 +44,7 @@ export { SignInProps } from './components/SignIn/types';
 export { useOverflowStatus } from './controllers/overflow';
 
 export {
+  _itemTheme,
   atlassianTheme,
   Colors,
   CreateCSS,

@@ -37,7 +37,6 @@ You can add a ticket through the appropriate channel:
 
 - **Notifications**: [#notificationsplatform][#notificationsplatform]
 
-
 # Open source contribution model
 
 We want to keep this model very simple. At its core, we make the assumption that developers looking to contribute will look at the [`README.md`][readme] and thus be directed to the [`CONTRIBUTING.md`][contributing]. Both of these files are widely known as convention in open source projects and we think that developers will be able to direct themselves there.

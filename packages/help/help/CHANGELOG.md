@@ -1,5 +1,21 @@
 ## 0.1.0
 
+## 0.20.13
+
+### Patch Changes
+
+- [patch][35236f6049](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35236f6049):
+
+  Don't render DefaultContent if is Null
+
+## 0.20.12
+
+### Patch Changes
+
+- [patch][bf5be91872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf5be91872):
+
+  handle rejected getArticle promises
+
 ## 0.20.11
 
 ### Patch Changes

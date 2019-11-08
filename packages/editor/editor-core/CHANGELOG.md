@@ -1,5 +1,18 @@
 # @atlaskit/editor-core
 
+## 114.0.4
+
+### Patch Changes
+
+- [patch][30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+
+  @atlaskit/select has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 114.0.3
+
+- Updated dependencies [4e487b59a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e487b59a1):
+  - @atlaskit/share@0.7.0
+
 ## 114.0.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @atlaskit/media-client
 
+## 4.1.0
+
+### Minor Changes
+
+- [minor][ed9aafe0e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed9aafe0e2):
+
+  Fix withMediaClient to allow external files to work when mediaClientConfig is not defined
+
 ## 4.0.1
 
 ### Patch Changes

@@ -48,7 +48,7 @@ describe('ShareDialogWithTrigger', () => {
       shareContentType: 'page',
       showFlags: mockShowFlags,
       createAnalyticsEvent: mockCreateAnalyticsEvent,
-
+      product: 'confluence',
       ...overrides,
     };
 
