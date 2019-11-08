@@ -28,9 +28,7 @@ export const buildMenuItem = (
 
   if (!node) {
     throw new Error(
-      `The node "${extensionModule.key}" was not found on extension "${
-        manifest.key
-      }"`,
+      `The node "${extensionModule.key}" was not found on extension "${manifest.key}"`,
     );
   }
   return {

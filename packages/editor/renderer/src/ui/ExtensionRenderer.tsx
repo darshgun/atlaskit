@@ -25,9 +25,11 @@ export interface Props {
   parameters?: any;
   content?: any;
   layout?: ExtensionLayout;
-  children: (
-    { result }: { result?: JSX.Element | ADNode[] | null },
-  ) => JSX.Element;
+  children: ({
+    result,
+  }: {
+    result?: JSX.Element | ADNode[] | null;
+  }) => JSX.Element;
 }
 
 export interface State {
