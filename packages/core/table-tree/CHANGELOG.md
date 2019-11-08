@@ -1,5 +1,11 @@
 # @atlaskit/table-tree
 
+## 7.1.3
+
+- Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+  - @atlaskit/select@11.0.0
+  - @atlaskit/button@13.3.4
+
 ## 7.1.2
 
 ### Patch Changes
