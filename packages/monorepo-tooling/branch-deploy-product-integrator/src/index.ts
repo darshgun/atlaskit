@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import meow from 'meow';
-import simpleGit from 'simple-git/promise';
+import simpleGit, { SimpleGit } from 'simple-git/promise';
 import util from 'util';
 import childProcess from 'child_process';
-import { createSpyObject } from '@atlaskit/build-utils/logging';
+import { debugMock } from './util';
 
 //@ts-ignore
 import installFromCommit from '@atlaskit/branch-installer';
@@ -168,7 +168,7 @@ export async function run() {
     cli.showHelp(2);
   }
 
-  const git = dryRun ? createSpyObject('git') : simpleGit('./');
+  const git = dryRun ? (debugMock('git') as SimpleGit) : simpleGit('./');
   const branchName = createBranchName(atlaskitBranchName, branchPrefix);
 
   const remote = await git.listRemote(['--get-url']);
