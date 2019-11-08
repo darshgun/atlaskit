@@ -13,6 +13,36 @@ export interface Props {
   onArticleRenderDone?(): void;
 }
 
+/**
+ * Set iframe content
+ * NOTE: I need to inject the content this way because I need to use srcDoc polyfill for IE11 and
+ * old versions of Edge
+ */
+const setIframeContent = (
+  iframeRef: React.RefObject<HTMLIFrameElement>,
+  body: string = '',
+  onArticleRenderBegin?: () => void,
+) => {
+  const currentIframe: HTMLIFrameElement | null = iframeRef.current;
+
+  if (!currentIframe) {
+    return;
+  }
+
+  if (currentIframe !== null && currentIframe.contentWindow !== null) {
+    if (currentIframe.contentWindow.document.body) {
+      srcDoc.set(
+        currentIframe,
+        `<style>${resetCSS}</style><div style="overflow-x: hidden;">${body}</div>`,
+      );
+
+      if (onArticleRenderBegin) {
+        onArticleRenderBegin();
+      }
+    }
+  }
+};
+
 export const ArticleBody = (props: Props) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [articleHeight, setArticleHeight] = useState('auto');
@@ -50,42 +80,13 @@ export const ArticleBody = (props: Props) => {
   };
 
   /**
-   * Set iframe content
-   * NOTE: I need to inject the content this way because I need to use srcDoc polyfill for IE11 and
-   * old versions of Edge
-   */
-  const setIframeContent = (
-    iframeRef: React.RefObject<HTMLIFrameElement>,
-    body: string = '',
-  ) => {
-    const currentIframe: HTMLIFrameElement | null = iframeRef.current;
-
-    if (!currentIframe) {
-      return;
-    }
-
-    if (currentIframe !== null && currentIframe.contentWindow !== null) {
-      if (currentIframe.contentWindow.document.body) {
-        srcDoc.set(
-          currentIframe,
-          `<style>${resetCSS}</style><div style="overflow-x: hidden;">${body}</div>`,
-        );
-
-        if (props.onArticleRenderBegin) {
-          props.onArticleRenderBegin();
-        }
-      }
-    }
-  };
-
-  /**
    * When the article changes, update the content of the iframe and
    * resize the iframe based on the new content
    */
   useEffect(() => {
-    setIframeContent(iframeRef, props.body);
+    setIframeContent(iframeRef, props.body, props.onArticleRenderBegin);
     resizeIframe(iframeRef);
-  }, [props.body, iframeRef]);
+  }, [props.body]);
 
   /**
    * When the window is resized, resize the iframe
