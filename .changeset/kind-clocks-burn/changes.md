@@ -1,0 +1,1 @@
+Fix branch installer trying to install packages when none exist
