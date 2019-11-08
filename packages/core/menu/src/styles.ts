@@ -15,6 +15,9 @@ const anchorOverrides = {
 };
 
 const baseItemCSS = {
+  display: 'block',
+  width: '100%',
+  boxSizing: 'border-box',
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
@@ -52,8 +55,8 @@ export const contentCSS = {
   whiteSpace: 'nowrap',
   lineHeight: `${16 / fontSize()}`,
 } as CSSObject;
-export const elemBeforeCSS = { flexGrow: 0, marginRight: gridSize };
-export const elemAfterCSS = { flexGrow: 0, marginLeft: gridSize };
+export const elemBeforeCSS = { flexShrink: 0, marginRight: gridSize };
+export const elemAfterCSS = { flexShrink: 0, marginLeft: gridSize };
 export const descriptionCSS = {
   textAlign: 'left',
   color: '#343434',
@@ -106,8 +109,6 @@ export const itemSkeletonCSS = {
 
 /* Item Group */
 export const menuGroupCSS = (maxHeight?: string | number): CSSObject => ({
-  display: 'flex',
-  flexDirection: 'column',
   overflow: 'auto',
   maxHeight,
 });
