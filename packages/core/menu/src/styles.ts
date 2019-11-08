@@ -75,6 +75,15 @@ export const itemHeadingCSS = {
 
 export const itemSkeletonCSS = {
   ...itemCSS,
+  pointerEvents: 'none',
+  '&::after': {
+    backgroundColor: N20,
+    height: 20,
+    padding: 4,
+    width: 'calc(100% - 8px)',
+    display: 'block',
+    content: '""',
+  },
 };
 
 /* Item Group */
@@ -97,5 +106,5 @@ export const sectionCSS = (
         overflow: 'auto',
       }
     : { flexShrink: 0 }),
-  ...(shouldShowSeparator && { borderBottom: '1px solid' }),
+  ...(shouldShowSeparator && { borderBottom: `1px solid ${N30}` }),
 });

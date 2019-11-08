@@ -32,6 +32,11 @@ const ItemBase = ({ elemBefore, elemAfter, children, description }) => {
 
 export const Item = (props: ItemProps) => {
   const { elemBefore, elemAfter, children, description } = props;
+
+  if (!children) {
+    return null;
+  }
+
   return (
     <button type="button" css={itemCSS}>
       <ItemBase
@@ -47,6 +52,11 @@ export const Item = (props: ItemProps) => {
 
 export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
   const { elemBefore, elemAfter, children, description, ...others } = rest;
+
+  if (!children) {
+    return null;
+  }
+
   return (
     <a css={linkItemCSS} href={href} {...others}>
       <ItemBase

@@ -22,7 +22,7 @@ export default () => {
         borderRadius: '4px',
       }}
     >
-      <MenuGroup maxHeight={300}>
+      <MenuGroup maxHeight={500}>
         <Section>
           <HeadingItem>Heading</HeadingItem>
           <LinkItem elemBefore="hi" elemAfter="bye" href="#">
