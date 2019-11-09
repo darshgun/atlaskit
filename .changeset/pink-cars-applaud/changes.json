@@ -1,0 +1,8 @@
+{
+  "releases": [
+    { "name": "@atlaskit/editor-bitbucket-transformer", "type": "patch" },
+    { "name": "@atlaskit/editor-core", "type": "patch" },
+    { "name": "@atlaskit/editor-markdown-transformer", "type": "patch" }
+  ],
+  "dependents": []
+}
