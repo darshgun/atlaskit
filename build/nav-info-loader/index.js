@@ -58,8 +58,9 @@ module.exports = async function boltNavLoader() {
   for (const workspace of workspaces) {
     // eslint-disable-next-line no-continue
     if (!files.includes(workspace.relativeDir)) continue;
-
-    const [team, name] = workspace.relativeDir.split(path.sep);
+    // Strangely, this eslint error, creates some webpack issue to load the websie.
+    // eslint-disable-next-line no-unused-vars
+    const [a, team, name] = workspace.relativeDir.split(path.sep);
     if (!packages[team]) packages[team] = [];
 
     const info = {
