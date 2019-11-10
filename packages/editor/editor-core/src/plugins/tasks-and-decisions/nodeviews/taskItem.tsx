@@ -11,10 +11,7 @@ import { ReactNodeView, ForwardRef, getPosHandler } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import WithPluginState from '../../../ui/WithPluginState';
-import {
-  stateKey as taskPluginKey,
-  TaskDecisionPluginState,
-} from '../pm-plugins/main';
+import { stateKey as taskPluginKey } from '../pm-plugins/main';
 import { getPosHandlerNode } from '../../../nodeviews/ReactNodeView';
 
 export interface Props {
