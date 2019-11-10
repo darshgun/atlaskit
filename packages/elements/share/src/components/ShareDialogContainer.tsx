@@ -484,7 +484,7 @@ export class ShareDialogContainerInternal extends React.Component<
                 <FormattedMessage {...messages.inviteTriggerButtonText} />
               )
             }
-            product={product}
+            product={product!}
           />
         </MessagesIntlProvider>
       </ErrorBoundary>

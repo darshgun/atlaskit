@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectProps } from '../types';
+import { IndicatorProps } from '@atlaskit/select';
 
 export const ClearIndicator = null;
 
@@ -36,15 +36,10 @@ export function padToTwo(number: number) {
   return number <= 99 ? `0${number}`.slice(-2) : `${number}`;
 }
 
-type Props = {
-  selectProps: SelectProps;
-};
-
-export const DropdownIndicator = (props: Props): React.ReactNode => {
+export const DropdownIndicator = (props: IndicatorProps<any>) => {
   // Wanted to use React.Component<{}> but that was having issues
   // https://github.com/basarat/typescript-book/blob/master/docs/jsx/react.md#react-jsx-tip-accept-a-component-that-can-act-on-props-and-be-rendered-using-jsx
-  const Icon: React.ComponentClass<{}> | React.StatelessComponent<{}> =
-    props.selectProps.dropdownIndicatorIcon;
+  const Icon = props.selectProps.dropdownIndicatorIcon;
   return Icon ? <Icon /> : null;
 };
 

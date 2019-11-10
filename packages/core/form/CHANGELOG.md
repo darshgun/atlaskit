@@ -1,5 +1,14 @@
 # @atlaskit/form
 
+## 6.3.2
+
+- Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+  - @atlaskit/calendar@9.2.1
+  - @atlaskit/modal-dialog@10.3.6
+  - @atlaskit/select@11.0.0
+  - @atlaskit/button@13.3.4
+  - @atlaskit/datetime-picker@9.2.1
+
 ## 6.3.1
 
 ### Patch Changes

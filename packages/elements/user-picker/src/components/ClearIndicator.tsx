@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { components } from '@atlaskit/select';
+import { components, IndicatorProps } from '@atlaskit/select';
 import Tooltip from '@atlaskit/tooltip';
 
-export class ClearIndicator extends React.PureComponent<any> {
+export class ClearIndicator extends React.PureComponent<IndicatorProps<any>> {
   private handleMouseDown = (event: React.MouseEvent) => {
     if (event && event.type === 'mousedown' && event.button !== 0) {
       return;

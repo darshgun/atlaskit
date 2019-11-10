@@ -1,24 +1,21 @@
-import { components } from '@atlaskit/select';
 import * as React from 'react';
 import styled from 'styled-components';
+import { components, ValueContainerProps } from '@atlaskit/select';
 import { SizeableAvatar } from './SizeableAvatar';
 import { BORDER_PADDING } from './styles';
-import { Option } from '../types';
+import { User, Option } from '../types';
 
 const PlaceholderIconContainer = styled.div`
   padding-left: ${BORDER_PADDING}px;
   line-height: 0;
 `;
 
-const showUserAvatar = (inputValue: string, value?: Option) =>
+const showUserAvatar = (inputValue?: string, value?: Option<User>) =>
   value && value.data && inputValue === value.label;
 
-type Props = {
-  hasValue: boolean;
-  selectProps: any;
-};
-
-export class SingleValueContainer extends React.Component<Props> {
+export class SingleValueContainer extends React.Component<
+  ValueContainerProps<Option<User>>
+> {
   private renderAvatar = () => {
     const {
       hasValue,
@@ -30,7 +27,9 @@ export class SingleValueContainer extends React.Component<Props> {
         <SizeableAvatar
           appearance={appearance}
           src={
-            showUserAvatar(inputValue, value) ? value.data.avatarUrl : undefined
+            showUserAvatar(inputValue, value as Option<User>)
+              ? (value as Option<User>).data.avatarUrl
+              : undefined
           }
         />
       );

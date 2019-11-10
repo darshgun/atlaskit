@@ -1,6 +1,6 @@
 import * as React from 'react';
 import memoizeOne from 'memoize-one';
-import { PopupSelect } from '@atlaskit/select';
+import { PopupSelect, ValueType } from '@atlaskit/select';
 import Trigger from './Trigger';
 import { Palette, Color } from '../types';
 import * as components from './components';
@@ -82,8 +82,8 @@ export class ColorPickerWithoutAnalytics extends React.Component<Props> {
     return undefined;
   };
 
-  onChange = (option: Color) => {
-    this.props.onChange(option.value, this.changeAnalyticsCaller());
+  onChange = (option: ValueType<Color>) => {
+    this.props.onChange((option as Color).value, this.changeAnalyticsCaller());
   };
 
   render() {
@@ -97,8 +97,8 @@ export class ColorPickerWithoutAnalytics extends React.Component<Props> {
     const fullLabel = `${label}, ${value.label} selected`;
 
     return (
-      <PopupSelect
-        target={({ ref, isOpen }: { ref: any; isOpen: boolean }) => (
+      <PopupSelect<Color>
+        target={({ ref, isOpen }) => (
           <ColorCardWrapper innerRef={ref}>
             <Trigger {...value} label={fullLabel} expanded={isOpen} />
           </ColorCardWrapper>

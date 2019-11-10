@@ -6,7 +6,7 @@ import { NodeType, Node } from 'prosemirror-model';
 import { Command } from '../../types';
 import { ButtonAppearance } from './ui/Button';
 import { DropdownOptions, RenderOptionsPropsT } from './ui/Dropdown';
-import { SelectOptions, SelectOption } from './ui/Select';
+import { SelectOption } from './ui/Select';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import React from 'react';
 import { DispatchAnalyticsEvent } from '../analytics';
@@ -55,7 +55,7 @@ export type FloatingToolbarCustom = {
 
 export type FloatingToolbarSelect<T> = {
   type: 'select';
-  options: SelectOptions<T>;
+  options: SelectOption[];
   hidden?: boolean;
   hideExpandIcon?: boolean;
   defaultValue?: SelectOption;

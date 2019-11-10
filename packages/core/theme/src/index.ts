@@ -6,9 +6,10 @@ import * as math from './utils/math';
 import getTheme from './utils/getTheme';
 import themed from './utils/themed';
 import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
+import { ThemedValue } from './types';
 
 const typedColors: Record<string, string> = colors as any;
-const typedElevation: Record<string, string> = elevation as any;
+const typedElevation: Record<string, ThemedValue<string>> = elevation as any;
 
 export {
   typedColors as colors,
