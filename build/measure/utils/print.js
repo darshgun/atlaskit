@@ -1,15 +1,15 @@
 // @flow
 function processJoinedStats(
-  measureGroups /*: Object */,
+  measureGroups /*: Array<Object> */,
   stats /*: Array<Object> */,
 ) {
+  // $FlowFixMe - type issue
   return measureGroups
     .map(group => ({
       ...group,
       stats: group.stats
         .reduce((acc, statDecl) => {
           if (statDecl.group) {
-            // $FlowFixMe - type issue
             acc.push(...processJoinedStats([statDecl], stats));
           } else {
             acc.push(stats[statDecl.id]);
@@ -21,12 +21,15 @@ function processJoinedStats(
     .filter(gr => gr.stats.length);
 }
 
-function prepareForPrint(measureGroups /*: Object */, stats /*: Object */) {
+function prepareForPrint(
+  measureGroups /*: Array<Object> */,
+  stats /*: Array<Object> */,
+) {
   const joinedStats = stats.reduce((acc, stat) => {
     acc[stat.id] = stat;
     return acc;
   }, {});
-
+  // $FlowFixMe - type issue
   return processJoinedStats(measureGroups, joinedStats);
 }
 

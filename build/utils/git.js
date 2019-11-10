@@ -1,4 +1,5 @@
 // @flow
+// $FlowFixMe - There is a type issue with projector spawn.
 const spawn = require('projector-spawn');
 const path = require('path');
 

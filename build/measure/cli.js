@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // @flow
+/* eslint-disable no-shadow */
 const meow = require('meow');
 const chalk = require('chalk');
 const bolt = require('bolt');
@@ -63,19 +64,17 @@ if (paths && paths.length > 0) {
   logInvalidUse('No paths specified, no packages to measure');
 }
 
-async function resolvePaths(pathsParam) {
+async function resolvePaths(paths) {
   const workspaces = await bolt.getWorkspaces();
   return workspaces
     .filter(ws =>
-      pathsParam.some(path =>
-        minimatch(ws.dir, `**/${path}`, { matchBase: true }),
-      ),
+      paths.some(path => minimatch(ws.dir, `**/${path}`, { matchBase: true })),
     )
     .map(ws => ws.dir);
 }
 
-async function executeMeasure(pathsParam, cParam, errors = [], results = []) {
-  const path = pathsParam.pop();
+async function executeMeasure(paths, cParam, errors = [], results = []) {
+  const path = paths.pop();
 
   try {
     const result = await measure(

@@ -76,6 +76,7 @@ module.exports = async function main(
   updateSnapshot /*: boolean */,
   s3 /*: boolean */,
 ) {
+  console.log(filePath);
   const measureOutputPath = path.join(filePath, '.measure-output');
   const sanitizedFilePath = filePath.replace('/', '__');
   const measureCompiledOutputPath = path.join(
@@ -285,7 +286,6 @@ module.exports = async function main(
   }
   if (!isLint || !results.passedBundleSizeCheck) {
     printHowToReadStats();
-    // $FlowFixMe - Array on Object
     printReport(prepareForPrint(joinedStatsGroups, results.statsWithDiff));
   }
 

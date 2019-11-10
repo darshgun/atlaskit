@@ -1,6 +1,7 @@
 // @flow
 const fetch = require('node-fetch');
 const path = require('path');
+// $FlowFixMe - There is a type issue with projector spawn.
 const spawn = require('projector-spawn');
 const changeset = require('../utils/changeset');
 const git = require('../utils/git');
