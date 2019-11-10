@@ -12,7 +12,7 @@ export type LocaleSelectProps = {
   onLocaleChange: (locale: Locale) => void;
 };
 
-export const defaultLocales: Array<Locale> = [
+export const defaultLocales: Locale[] = [
   { value: 'en-AU', label: 'English (Australia)' },
   { value: 'en-GB', label: 'English (United Kingdom)' },
   { value: 'en-US', label: 'English (United States)' },
@@ -52,10 +52,10 @@ export default class LocaleSelect extends Component<LocaleSelectProps> {
     const { locales, defaultLocale, onLocaleChange } = this.props;
 
     return (
-      <Select
+      <Select<Locale>
         options={locales}
         defaultValue={defaultLocale}
-        onChange={onLocaleChange}
+        onChange={locale => onLocaleChange(locale as Locale)}
         styles={{
           container: (css: any) => ({ ...css, width: 300, margin: '0.5em 0' }),
           dropdownIndicator: (css: any) => ({ ...css, paddingLeft: 0 }),

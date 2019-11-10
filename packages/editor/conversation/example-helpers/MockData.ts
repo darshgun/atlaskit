@@ -119,6 +119,47 @@ export const mockInlineComment: Comment = {
   },
 };
 
+export const mockMediaComment: Comment = {
+  localId: 'mock-media-comment-local',
+  commentId: 'mock-media-comment',
+  conversationId: 'mock-media-conversation',
+  createdBy: MOCK_USERS[3],
+  createdAt: Date.now(),
+  document: {
+    adf: {
+      version: 1,
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'External media',
+            },
+          ],
+        },
+        {
+          type: 'mediaSingle',
+          attrs: {
+            layout: 'center',
+          },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'external',
+                url:
+                  'https://upload.wikimedia.org/wikipedia/en/a/aa/Bart_Simpson_200px.png',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
 export const mockReplyComment: Comment = {
   commentId: 'mock-reply-comment-1',
   parentId: 'mock-comment-1',
@@ -156,6 +197,13 @@ export const mockInlineConversation: Conversation = {
   conversationId: 'mock-inline-conversation',
   objectId: 'ari:cloud:platform::conversation/demo',
   comments: [mockInlineComment],
+  meta: { name: 'main.js', lineNumber: 3 },
+};
+
+export const mockMediaConversation: Conversation = {
+  conversationId: 'mock-media-conversation',
+  objectId: 'ari:cloud:platform::conversation/demo',
+  comments: [mockMediaComment],
   meta: { name: 'main.js', lineNumber: 3 },
 };
 

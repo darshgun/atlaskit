@@ -1,5 +1,13 @@
 # @atlaskit/media-ui
 
+## 11.7.1
+
+### Patch Changes
+
+- [patch][955e23d516](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/955e23d516):
+
+  fix blueimp-load-image to 2.19.0 version
+
 ## 11.7.0
 
 ### Minor Changes

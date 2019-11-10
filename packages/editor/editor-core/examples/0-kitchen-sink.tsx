@@ -70,7 +70,13 @@ const Controls = styled.div`
   }
 `;
 
-const appearanceOptions = [
+interface AppearanceOptions {
+  label: string;
+  value: EditorAppearance;
+  description: string;
+}
+
+const appearanceOptions: AppearanceOptions[] = [
   {
     label: 'Full page',
     value: 'full-page',
@@ -299,15 +305,15 @@ class FullPageRendererExample extends React.Component<Props, State> {
           render={actions => (
             <div>
               <Controls>
-                <Select
+                <Select<AppearanceOptions>
                   formatOptionLabel={formatAppearanceOption}
                   options={appearanceOptions}
                   defaultValue={appearanceOptions.find(
                     opt => opt.value === this.state.appearance,
                   )}
-                  onChange={(opt: { value: EditorAppearance }) => {
+                  onChange={opt => {
                     this.setState({
-                      appearance: opt.value,
+                      appearance: (opt as AppearanceOptions).value,
                     });
                   }}
                   styles={selectStyles}
@@ -537,9 +543,9 @@ class FullPageRendererExample extends React.Component<Props, State> {
   };
 
   private loadLocale = async (locale: string) => {
-    const localeData = await import(`react-intl/locale-data/${this.getLocalTag(
-      locale,
-    )}`);
+    const localeData = await import(
+      `react-intl/locale-data/${this.getLocalTag(locale)}`
+    );
     addLocaleData(localeData.default);
     const messages = await import(`../src/i18n/${locale}`);
     this.setState({ locale, messages: messages.default });

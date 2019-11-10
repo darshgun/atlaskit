@@ -3,19 +3,20 @@ import { Input } from './Input';
 
 export type Props = {
   selectProps: { disableInput?: boolean };
-  innerRef: (ref: HTMLInputElement) => void;
+  innerRef: (ref: React.Ref<HTMLInputElement>) => void;
 };
 
 export class PopupInput extends React.Component<Props> {
-  private ref: HTMLInputElement | null = null;
+  private ref: React.Ref<HTMLInputElement> = null;
 
   componentDidMount() {
     if (this.ref) {
+      // @ts-ignore
       this.ref.select();
     }
   }
 
-  private handleInnerRef = (ref: HTMLInputElement) => {
+  private handleInnerRef = (ref: React.Ref<HTMLInputElement>) => {
     this.ref = ref;
     if (this.props.innerRef) {
       this.props.innerRef(ref);
