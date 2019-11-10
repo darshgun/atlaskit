@@ -111,15 +111,13 @@ export function ruleWithAnalytics(
 
 export type FireAnalyticsEvent = (
   createAnalyticsEvent?: CreateUIAnalyticsEvent | undefined,
-) => (
-  {
-    payload,
-    channel,
-  }: {
-    payload: AnalyticsEventPayload;
-    channel?: string | undefined;
-  },
-) => void | undefined;
+) => ({
+  payload,
+  channel,
+}: {
+  payload: AnalyticsEventPayload;
+  channel?: string | undefined;
+}) => void | undefined;
 
 export const fireAnalyticsEvent: FireAnalyticsEvent = createAnalyticsEvent => ({
   payload,

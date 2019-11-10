@@ -33,6 +33,7 @@ export type EditorProps = {
   onDestroy?: () => void;
 };
 
-export type AnalyticsEventHandler = (
-  data: { payload: Record<string, any>; [key: string]: any },
-) => void;
+export type AnalyticsEventHandler = (data: {
+  payload: Record<string, any>;
+  [key: string]: any;
+}) => void;

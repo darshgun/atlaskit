@@ -43,7 +43,9 @@ export class BrowserLoader extends React.PureComponent<
   async UNSAFE_componentWillMount() {
     if (!this.state.Browser) {
       const [mediaClient, browserModule] = await Promise.all([
-        import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
+        import(
+          /* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'
+        ),
         import(/* webpackChunkName:"@atlaskit-internal_Browser" */ './browser'),
       ]);
 

@@ -10,7 +10,7 @@ export type TestCase = [
   typeof taskList | typeof decisionList,
   typeof taskItem | typeof decisionItem,
   object,
-  object
+  object,
 ];
 
 export const ListTypes: TestCase[] = [

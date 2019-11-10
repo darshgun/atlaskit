@@ -43,23 +43,20 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
 
   const onMount = props.onMount;
 
-  React.useEffect(
-    () => {
-      if (editorSharedConfig) {
-        editorActions._privateRegisterEditor(
-          editorSharedConfig.editorView,
-          editorSharedConfig.eventDispatcher,
-        );
+  React.useEffect(() => {
+    if (editorSharedConfig) {
+      editorActions._privateRegisterEditor(
+        editorSharedConfig.editorView,
+        editorSharedConfig.eventDispatcher,
+      );
 
-        if (onMount) {
-          onMount(editorActions);
-        }
-
-        return () => editorActions._privateUnregisterEditor();
+      if (onMount) {
+        onMount(editorActions);
       }
-    },
-    [editorSharedConfig, editorActions, onMount],
-  );
+
+      return () => editorActions._privateUnregisterEditor();
+    }
+  }, [editorSharedConfig, editorActions, onMount]);
 
   return (
     <WidthProvider>

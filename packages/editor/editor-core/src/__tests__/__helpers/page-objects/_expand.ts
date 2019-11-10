@@ -7,9 +7,7 @@ export const selectors = {
   expand,
   nestedExpand,
   expandToggle: `${expand} .${expandClassNames.icon} [role="button"]`,
-  nestedExpandToggle: `${nestedExpand} .${
-    expandClassNames.icon
-  } [role="button"]`,
+  nestedExpandToggle: `${nestedExpand} .${expandClassNames.icon} [role="button"]`,
   expandTitleInput: `${expand} .${expandClassNames.titleInput}`,
   nestedExpandTitleInput: `${nestedExpand} .${expandClassNames.titleInput}`,
 };
