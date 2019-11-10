@@ -70,7 +70,11 @@ export {
   toggleEm,
   toggleStrong,
 } from './plugins/text-formatting/commands/text-formatting';
-export { insertBlockType, setBlockType } from './plugins/block-type/commands';
+export {
+  insertBlockType,
+  insertBlockTypesWithAnalytics,
+  setBlockType,
+} from './plugins/block-type/commands';
 export { createTable } from './plugins/table/commands';
 export { insertTaskDecision } from './plugins/tasks-and-decisions/commands';
 export { EventDispatcher } from './event-dispatcher';
@@ -96,6 +100,13 @@ export {
 } from './plugins/hyperlink/commands';
 export { historyPluginKey, HistoryPluginState } from './plugins/history';
 export { setKeyboardHeight } from './plugins/mobile-scroll/commands';
+export {
+  INPUT_METHOD,
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+  EVENT_TYPE,
+} from './plugins/analytics';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';

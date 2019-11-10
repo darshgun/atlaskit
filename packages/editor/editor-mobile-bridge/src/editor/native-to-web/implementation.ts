@@ -20,7 +20,7 @@ import {
   StatusState,
   updateStatus,
   commitStatusPicker,
-  insertBlockType,
+  insertBlockTypesWithAnalytics,
   setBlockType,
   createTable,
   insertTaskDecision,
@@ -34,6 +34,7 @@ import {
   setLinkText,
   clearEditorContent,
   setKeyboardHeight,
+  INPUT_METHOD,
 } from '@atlaskit/editor-core';
 import { EditorView } from 'prosemirror-view';
 import { EditorViewWithComposition } from '../../types';
@@ -276,13 +277,22 @@ export default class WebBridgeImpl extends WebBridge
 
     switch (type) {
       case 'blockquote':
-        insertBlockType('blockquote')(state, dispatch);
+        insertBlockTypesWithAnalytics('blockquote', INPUT_METHOD.INSERT_MENU)(
+          state,
+          dispatch,
+        );
         return;
       case 'codeblock':
-        insertBlockType('codeblock')(state, dispatch);
+        insertBlockTypesWithAnalytics('codeblock', INPUT_METHOD.INSERT_MENU)(
+          state,
+          dispatch,
+        );
         return;
       case 'panel':
-        insertBlockType('panel')(state, dispatch);
+        insertBlockTypesWithAnalytics('panel', INPUT_METHOD.INSERT_MENU)(
+          state,
+          dispatch,
+        );
         return;
       case 'action':
         insertTaskDecision(this.editorView, 'taskList');

@@ -84,6 +84,7 @@ type FormatBlockQuoteAEP = FormatAEP<
   {
     inputMethod:
       | INPUT_METHOD.TOOLBAR
+      | INPUT_METHOD.INSERT_MENU
       | INPUT_METHOD.KEYBOARD
       | INPUT_METHOD.FORMATTING
       | INPUT_METHOD.QUICK_INSERT;
