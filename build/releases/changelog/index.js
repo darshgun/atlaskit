@@ -23,9 +23,7 @@ async function updateChangelog(
     if (!pkg) {
       // $FlowFixMe - fix logger
       logger.warn(
-        `While writing changelog, could not find workspace ${
-          release.name
-        } in project.`,
+        `While writing changelog, could not find workspace ${release.name} in project.`,
       );
     }
     const changelogPath = path.join(pkg.dir, 'CHANGELOG.md');

@@ -73,9 +73,7 @@ axios
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
-      const olderRunningPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/addon/pipelines/home#!/results/${
-        olderRunningPipelines[0].uuid
-      }`;
+      const olderRunningPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
       console.log(
         `Another master branch is already running: ${olderRunningPipelineURL}`,
       );

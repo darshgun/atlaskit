@@ -193,9 +193,7 @@ async function _installFromCommit(
   packages.forEach(pkg => {
     if (manifest[pkg]) {
       log(`Notice: Installing branch-deploy for: ${pkg}`);
-      const tarUrl = `${CDN_URL_BASE}/${commitHash}/dists/${
-        manifest[pkg].tarFile
-      }`;
+      const tarUrl = `${CDN_URL_BASE}/${commitHash}/dists/${manifest[pkg].tarFile}`;
       cmdArgs.push(`${pkg}@${tarUrl}`);
     }
   });
