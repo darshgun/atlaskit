@@ -27,6 +27,7 @@
     "@atlaskit/theme": "^9.2.6",
     "@babel/runtime": "^7.0.0",
     "@emotion/core": "^10.0.9",
+    "@types/react-select": "^3.0.8",
     "focus-trap": "^2.4.5",
     "memoize-one": "^5.1.0",
     "react-fast-compare": "^2.0.1",
