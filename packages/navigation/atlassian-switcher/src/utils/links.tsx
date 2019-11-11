@@ -505,17 +505,21 @@ export const getJoinableSiteLinks = (
 
   for (let site of joinableSites) {
     for (let productKey in site.products) {
-      const users = site.products[productKey] || [];
-      const { label, icon } = getLabelAndIconByProductKey(
-        productKey as ProductKey,
-      );
+      const users: JoinableSiteUser[] = site.products[productKey] || [];
+      const productType: WorklensProductType =
+        TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey];
+      const {
+        label,
+        Icon,
+        href,
+      }: AvailableProductDetails = AVAILABLE_PRODUCT_DATA_MAP[productType];
 
       joinableSiteLinks.push({
         key: site.cloudId,
         label,
         description: site.displayName,
-        Icon: createIcon(icon, { size: 'small' }),
-        href: site.url,
+        Icon,
+        href,
         users: users.map(
           (user: JoinableSiteUser): JoinableSiteUserAvatarPropTypes => ({
             name: user.displayName,
@@ -526,7 +530,7 @@ export const getJoinableSiteLinks = (
           }),
         ),
         cloudId: site.cloudId,
-        productType: TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey],
+        productType,
       });
 
       if (joinableSiteLinks.length >= MAX_JOINABLE_SITES) {
