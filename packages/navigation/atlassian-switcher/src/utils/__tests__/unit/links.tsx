@@ -1,12 +1,4 @@
 import {
-  ConfluenceIcon,
-  JiraSoftwareIcon,
-  JiraServiceDeskIcon,
-  JiraCoreIcon,
-  OpsGenieIcon,
-} from '@atlaskit/logo';
-
-import {
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
