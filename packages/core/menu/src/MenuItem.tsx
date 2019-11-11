@@ -31,10 +31,14 @@ const ItemBase = ({
     <Fragment>
       <div css={contentCSSWrapper}>
         {elemBefore && <span css={elemBeforeCSS}>{elemBefore}</span>}
-        {children && <span css={contentCSS}>{children}</span>}
+        {children && (
+          <span css={contentCSS}>
+            {children}
+            {description && <span css={descriptionCSS}>{description}</span>}
+          </span>
+        )}
         {elemAfter && <span css={elemAfterCSS}>{elemAfter}</span>}
       </div>
-      {description && <div css={descriptionCSS}>{description}</div>}
     </Fragment>
   );
 };

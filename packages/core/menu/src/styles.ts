@@ -69,10 +69,21 @@ export const contentCSS = {
   outline: 'none',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+  display: 'flex',
+  flexDirection: 'column',
   lineHeight: `${(gridSize * 2) / fontSize()}`,
 } as CSSObject;
-export const elemBeforeCSS = { flexShrink: 0, marginRight: gridSize };
-export const elemAfterCSS = { flexShrink: 0, marginLeft: gridSize };
+
+export const elemBeforeCSS = {
+  display: 'flex',
+  flexShrink: 0,
+  marginRight: gridSize,
+};
+export const elemAfterCSS = {
+  display: 'flex',
+  flexShrink: 0,
+  marginLeft: gridSize,
+};
 export const descriptionCSS = {
   textAlign: 'left',
   color: '#343434',
