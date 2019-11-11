@@ -1,5 +1,14 @@
 # @atlaskit/build-utils
 
+## 2.4.0
+
+### Minor Changes
+
+- [minor][a41507a34d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a41507a34d):
+
+  Add createSpyObject function to build-utils/logging
+  Add bitbucket utils under build-utils/bitbucket
+
 ## 2.3.0
 
 ### Minor Changes
