@@ -32,7 +32,6 @@ describe('gap-cursor: composition events', () => {
         allowExtension: true,
         allowPanel: true,
         allowRule: true,
-        allowCodeBlocks: true,
         allowTasksAndDecisions: true,
         allowTables: true,
         media: { allowMediaSingle: true },

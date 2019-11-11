@@ -66,9 +66,7 @@ class TransformerPanels extends React.PureComponent<Props, State> {
         <div id="editor">
           <Editor
             appearance="comment"
-            allowCodeBlocks={true}
             allowTextColor={true}
-            allowLists={true}
             allowRule={true}
             allowTables={{
               allowColumnResizing: true,

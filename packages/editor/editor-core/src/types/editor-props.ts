@@ -8,7 +8,6 @@ import {
   ContextIdentifierProvider,
   ExtensionHandlers,
   ErrorReportingHandler,
-  MediaProvider,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
 import { MentionProvider } from '@atlaskit/mention/resource';
@@ -27,8 +26,7 @@ import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit/types';
-import { CodeBlockOptions } from '../plugins/code-block';
-import { CardProvider, CardOptions } from '../plugins/card/types';
+import { CardOptions } from '../plugins/card/types';
 import { QuickInsertOptions } from '../plugins/quick-insert/types';
 import { AutoformattingProvider } from '../plugins/custom-autoformat/types';
 import { AnnotationProvider } from '../plugins/annotation/types';
@@ -88,7 +86,6 @@ export interface EditorProps {
   contentComponents?: ReactComponents;
   primaryToolbarComponents?: ReactComponents;
   secondaryToolbarComponents?: ReactComponents;
-  addonToolbarComponents?: ReactComponents;
   allowAnalyticsGASV3?: boolean;
   // Configure allowed blocks in the editor, currently only supports `heading`, `blockquote`, `hardBreak` and `codeBlock`.
   allowBlockType?: { exclude?: Array<AllowedBlockTypes> };
@@ -103,12 +100,6 @@ export interface EditorProps {
 
   // Enables horizontal rules.
   allowRule?: boolean;
-
-  // Enables code blocks. This is different to inline code, it is a block element and support languages.
-  allowCodeBlocks?: boolean | CodeBlockOptions;
-
-  // Enables bullet and numbered lists.
-  allowLists?: boolean;
 
   // Enables text colour. Ew are you sure you want to enable this?
   allowTextColor?: boolean | TextColorPluginConfig;
@@ -141,7 +132,6 @@ export interface EditorProps {
   allowExtension?: boolean | ExtensionConfig;
 
   allowConfluenceInlineComment?: boolean;
-  allowPlaceholderCursor?: boolean;
 
   // Enable placeholder text which is handy for things like a template editor.
   // Placeholder text is an inline text element that is removed when a user clicks on it.
@@ -216,14 +206,12 @@ export interface EditorProps {
 
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<MentionProvider>;
-  mediaProvider?: Promise<MediaProvider>;
 
   // Allows you to define custom autoformatting rules.
   autoformattingProvider?: Promise<AutoformattingProvider>;
 
   // This is temporary for Confluence. **Please do not use**.
   macroProvider?: Promise<MacroProvider>;
-  cardProvider?: Promise<CardProvider>;
 
   // Set if you want to wait for media file uploads before save.
   waitForMediaUpload?: boolean;

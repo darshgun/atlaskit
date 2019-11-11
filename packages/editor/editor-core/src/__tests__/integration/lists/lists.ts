@@ -57,7 +57,7 @@ BrowserTestCase(
   { skip: ['ie', 'edge', 'safari', 'firefox'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowLists: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.click(editable);
     await insertList(page, KEY.CONTROL, 'number');
     await insertList(page, KEY.CONTROL, 'bullet');
@@ -72,7 +72,7 @@ BrowserTestCase(
   { skip: ['ie', 'edge', 'chrome', 'firefox'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowLists: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.click(editable);
     await insertList(page, KEY.META, 'number');
     await insertList(page, KEY.META, 'bullet');
@@ -107,7 +107,6 @@ BrowserTestCase(
       media: {
         allowMediaSingle: true,
       },
-      allowLists: true,
       defaultValue: floatsAdf,
       shouldFocus: true,
     });

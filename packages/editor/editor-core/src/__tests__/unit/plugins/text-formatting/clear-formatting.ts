@@ -50,9 +50,7 @@ describe('clear-formatting', () => {
       editorProps: {
         analyticsHandler: trackEvent,
         allowAnalyticsGASV3: true,
-        allowCodeBlocks: true,
         allowTextColor: true,
-        allowLists: true,
         allowPanel: true,
       },
       createAnalyticsEvent,

@@ -38,8 +38,6 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       pluginKey,
       editorProps: {
         allowPanel: true,
-        allowLists: true,
-        allowCodeBlocks: true,
       },
     });
 
@@ -220,9 +218,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       HEADING_5,
       HEADING_6,
     ].forEach(blockType => {
-      it(`should trigger analyticsService.trackEvent when ${
-        blockType.title.defaultMessage
-      } is clicked`, () => {
+      it(`should trigger analyticsService.trackEvent when ${blockType.title.defaultMessage} is clicked`, () => {
         toolbarOption
           .find(Item)
           .filterWhere(

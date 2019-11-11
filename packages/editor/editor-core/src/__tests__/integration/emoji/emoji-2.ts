@@ -31,7 +31,7 @@ BrowserTestCase(
   { skip: ['ie'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowLists: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.type(editable, '* ');
     await insertEmoji(page, 'smile');
     await page.waitForSelector(emojiItem('smile'), 1000);
@@ -45,7 +45,7 @@ BrowserTestCase(
   { skip: ['ie'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowLists: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.type(editable, '1. ');
     await insertEmoji(page, 'a');
     await page.waitForSelector(emojiItem('a'), 1000);
@@ -60,7 +60,7 @@ BrowserTestCase(
   { skip: ['safari', 'ie', 'edge'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowLists: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.type(editable, 'this ');
     await insertEmoji(page, 'joy');
     await page.waitForSelector(emojiItem('joy'), 1000);

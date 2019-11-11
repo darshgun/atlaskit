@@ -42,7 +42,6 @@ describe('text-formatting', () => {
       doc,
       editorProps: {
         analyticsHandler: trackEvent,
-        allowCodeBlocks: true,
         allowAnalyticsGASV3: true,
         mentionProvider: new Promise(() => {}),
       },

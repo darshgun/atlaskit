@@ -79,7 +79,6 @@ describe('ToolbarTextColor', () => {
         analyticsHandler: analyticsHandler as any,
         allowAnalyticsGASV3: true,
         allowTextColor: true,
-        allowCodeBlocks: true,
       },
       pluginKey,
       createAnalyticsEvent: createAnalyticsEvent as any,

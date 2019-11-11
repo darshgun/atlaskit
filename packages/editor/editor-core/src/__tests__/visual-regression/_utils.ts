@@ -76,11 +76,9 @@ async function visualiseInvisibleElements(page: any) {
 function getEditorProps(appearance: Appearance) {
   const enableAllEditorProps = {
     allowPanel: true,
-    allowLists: true,
     allowTextColor: true,
     allowTextAlignment: true,
     quickInsert: true,
-    allowCodeBlocks: { enableKeybindingsForIDE: true },
     allowTables: {
       advanced: true,
     },

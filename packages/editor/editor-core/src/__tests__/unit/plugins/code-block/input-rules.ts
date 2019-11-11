@@ -18,8 +18,6 @@ describe('inputrules', () => {
       doc,
       editorProps: {
         allowPanel: true,
-        allowLists: true,
-        allowCodeBlocks: true,
         textFormatting: {
           disableCode: true,
         },

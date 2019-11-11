@@ -25,7 +25,6 @@ describe('hyperlink', () => {
       editorProps: {
         analyticsHandler: trackEvent,
         allowAnalyticsGASV3: true,
-        allowCodeBlocks: true,
       },
       createAnalyticsEvent,
     });

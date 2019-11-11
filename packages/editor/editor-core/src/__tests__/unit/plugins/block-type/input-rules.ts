@@ -36,7 +36,6 @@ describe('inputrules', () => {
       editorProps: {
         analyticsHandler: trackEvent as any,
         allowAnalyticsGASV3: true,
-        allowCodeBlocks: true,
         allowIndentation: true,
       },
       createAnalyticsEvent,

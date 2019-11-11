@@ -70,8 +70,6 @@ class TransformerPanels extends React.PureComponent<Props, State> {
         <div id="editor">
           <Editor
             appearance="comment"
-            allowCodeBlocks={true}
-            allowLists={true}
             allowRule={true}
             allowTables={true}
             emojiProvider={emojiProvider}

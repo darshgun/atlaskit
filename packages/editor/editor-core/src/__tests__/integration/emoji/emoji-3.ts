@@ -60,7 +60,7 @@ BrowserTestCase(
   { skip: ['safari', 'ie', 'edge'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowCodeBlocks: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.type(editable, '```');
     await page.waitForSelector('pre', 1000);
     await page.type(editable, ':smile:');

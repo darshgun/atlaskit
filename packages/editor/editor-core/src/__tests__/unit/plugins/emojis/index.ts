@@ -50,7 +50,6 @@ describe('emojis', () => {
       editorProps: {
         allowAnalyticsGASV3: true,
         emojiProvider: new Promise(() => {}),
-        allowLists: true,
       },
       providerFactory,
       pluginKey: emojiPluginKey,

@@ -34,9 +34,7 @@ describe('media-files', () => {
       editorProps: {
         media: {},
         mentionProvider: Promise.resolve(new MockMentionResource({})),
-        allowCodeBlocks: true,
         allowRule: true,
-        allowLists: true,
         allowPanel: true,
       },
     });
