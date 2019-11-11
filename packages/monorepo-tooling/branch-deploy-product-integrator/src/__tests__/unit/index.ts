@@ -2,6 +2,7 @@ jest.enableAutomock();
 import simpleGit from 'simple-git/promise';
 import { run } from '../../index';
 import fetch from 'node-fetch';
+import * as gitUtil from '../../lib/git';
 
 jest.unmock('../../index');
 
@@ -36,20 +37,14 @@ describe('Branch deploy product integrator', () => {
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
   });
   it('should create a new branch in product if one does not exist', async () => {
-    mockSimpleGit.mockImplementation(() => ({
-      ...mockGitMethods,
-      revparse: () => {
-        throw Error();
-      },
-    }));
-    expect(mockGitMethods.checkoutBranch).not.toHaveBeenCalled();
+    expect(gitUtil.checkoutOrCreate).not.toHaveBeenCalled();
     await run({
       atlaskitBranchName: 'foo',
       atlaskitCommitHash: 'abcdef123456',
     });
-    expect(mockGitMethods.checkoutBranch).toHaveBeenCalledWith(
+    expect(gitUtil.checkoutOrCreate).toHaveBeenCalledWith(
+      mockGitMethods,
       'atlaskit-branch-deploy-foo',
-      'origin/master',
     );
   });
   it.skip('should reuse existing branch in product if one exists', () => {});

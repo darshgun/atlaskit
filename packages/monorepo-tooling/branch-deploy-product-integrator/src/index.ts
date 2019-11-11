@@ -3,12 +3,14 @@ import meow from 'meow';
 import simpleGit, { SimpleGit } from 'simple-git/promise';
 import util from 'util';
 import childProcess from 'child_process';
-import { debugMock, ValidationError, Default } from './util';
+import { debugMock, ValidationError, Default } from './lib/util';
 
 //@ts-ignore
 import installFromCommit from '@atlaskit/branch-installer';
 
 import fetch from 'node-fetch';
+import { triggerProductBuild } from './lib/ci';
+import { commitAndPush, checkoutOrCreate, isInsideRepo } from './lib/git';
 
 const exec = util.promisify(childProcess.exec);
 
@@ -68,88 +70,6 @@ function createBranchName(atlaskitBranchName: string, prefix: string) {
   return `${prefix}${atlaskitBranchName}`.replace(/\//g, '-');
 }
 
-type Auth = {
-  username: string;
-  password: string;
-};
-
-function branchBuildRequest(
-  planUrl: string,
-  branchName: string,
-  auth: Auth,
-  method: 'GET' | 'PUT',
-) {
-  const branchPlanUrl = `${planUrl}/branch/${branchName}?os_authType=basic&vcsBranch=${branchName}&cleanupEnabled=true`;
-  const credentials = Buffer.from(`${auth.username}:${auth.password}`).toString(
-    'base64',
-  );
-  const headers = {
-    Accept: 'application/json',
-    Authorization: `Basic ${credentials}`,
-  };
-
-  return fetch(branchPlanUrl, {
-    method,
-    headers,
-  });
-}
-
-async function triggerProductBuild(
-  planUrl: string,
-  branchName: string,
-  auth: Auth,
-) {
-  const existingBranchBuild = await branchBuildRequest(
-    planUrl,
-    branchName,
-    auth,
-    'GET',
-  );
-  if (existingBranchBuild.status === 200) {
-    console.log('Branch build already exists, no need to trigger');
-    return;
-  }
-
-  const newBranchBuild = await branchBuildRequest(
-    planUrl,
-    branchName,
-    auth,
-    'PUT',
-  );
-
-  if (newBranchBuild.status !== 200) {
-    const payload = await newBranchBuild.text();
-    throw Error(
-      `Could not create branch build in product - Status code: ${
-        newBranchBuild.status
-      } - ${JSON.stringify(payload)}`,
-    );
-  }
-}
-
-async function commitAndPush(
-  git: SimpleGit,
-  commitMessage: string,
-  authorEmail: string,
-  branchName: string,
-) {
-  await git.add(['./']);
-
-  const status = await git.status();
-  if (status && status.staged.length === 0) {
-    console.log('Nothing to commit');
-    return;
-  }
-
-  await git.commit(commitMessage, [
-    '--author',
-    `BOT Atlaskit branch deploy integrator <${authorEmail}>`,
-  ]);
-  await git.push('origin', branchName);
-
-  console.log('Committed and pushed changes');
-}
-
 function validateArgs(flags: Flags): flags is Flags {
   const {
     atlaskitBranchName,
@@ -197,29 +117,13 @@ export async function run(userFlags: UserFlags, extraArgs: string[] = []) {
   const git = dryRun ? (debugMock('git') as SimpleGit) : simpleGit('./');
   const branchName = createBranchName(atlaskitBranchName, branchPrefix);
 
-  const remote = await git.listRemote(['--get-url']);
+  const insideAtlaskit = await isInsideRepo(git, 'atlassian/atlaskit-mk-2');
 
-  if (!dryRun && remote.indexOf('atlassian/atlaskit-mk-2') > -1) {
+  if (insideAtlaskit && !dryRun) {
     throw new Error('Working path should not be the Atlaskit repo!');
   }
 
-  let branchExists;
-
-  try {
-    await git.revparse(['--verify', `origin/${branchName}`]);
-    branchExists = true;
-  } catch (error) {
-    branchExists = false;
-  }
-
-  if (branchExists) {
-    console.log(`Pulling existing branch ${branchName}`);
-    await git.checkout(branchName);
-    await git.pull('origin', branchName);
-  } else {
-    console.log(`Checking out new branch ${branchName}`);
-    await git.checkoutBranch(branchName, 'origin/master');
-  }
+  await checkoutOrCreate(git, branchName);
 
   console.log(`Installing packages branch deployed from ${atlaskitCommitHash}`);
   await installFromCommit(atlaskitCommitHash, {
