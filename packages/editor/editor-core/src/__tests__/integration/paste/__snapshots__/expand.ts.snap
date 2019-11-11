@@ -659,6 +659,9 @@ exports[`expand.ts: table with nestedExpand pasted inside an expand 1`] = `
 Object {
   "content": Array [
     Object {
+      "type": "paragraph",
+    },
+    Object {
       "attrs": Object {
         "__expanded": true,
         "title": "title",

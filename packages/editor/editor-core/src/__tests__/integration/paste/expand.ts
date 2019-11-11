@@ -216,7 +216,8 @@ BrowserTestCase(
       defaultValue: JSON.stringify(documentWithExpand),
     });
 
-    await page.click(expandSelector);
+    await page.waitForSelector(expandSelector);
+    await page.click(`${expandSelector} p`);
     await page.paste();
     await page.waitForSelector(nestedExpandSelector);
 
