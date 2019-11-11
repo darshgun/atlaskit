@@ -14,6 +14,7 @@ import {
   CustomLinksResponse,
   RecentContainersResponse,
   RecommendationsEngineResponse,
+  JoinableSitesResponse,
 } from '../../types';
 
 describe('map-results-to-switcher-props', () => {
@@ -32,6 +33,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.hasLoadedCritical).toEqual(true);
@@ -58,6 +60,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.hasLoadedCritical).toEqual(true);
@@ -84,6 +87,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.hasLoadedCritical).toEqual(true);
@@ -108,6 +112,7 @@ describe('map-results-to-switcher-props', () => {
           isDiscoverSectionEnabled: false,
         },
         asCompletedProvider<AvailableProductsResponse>({ sites: [] }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.hasLoadedCritical).toEqual(true);
@@ -140,6 +145,7 @@ describe('map-results-to-switcher-props', () => {
             generateSite('site10', [WorklensProductType.JIRA_SOFTWARE, 10]),
           ],
         }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.licensedProductLinks).toMatchObject([
@@ -215,6 +221,7 @@ describe('map-results-to-switcher-props', () => {
             generateSite(cloudId, [WorklensProductType.JIRA_SOFTWARE, 0]),
           ],
         }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.licensedProductLinks).toMatchObject([
@@ -270,6 +277,7 @@ describe('map-results-to-switcher-props', () => {
             generateSite('bitbucket', [WorklensProductType.BITBUCKET, 0]),
           ],
         }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.licensedProductLinks).toMatchObject([
@@ -302,6 +310,7 @@ describe('map-results-to-switcher-props', () => {
             generateSite('bitbucket', [WorklensProductType.BITBUCKET, 0]),
           ],
         }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.licensedProductLinks).toMatchObject([
@@ -339,6 +348,7 @@ describe('map-results-to-switcher-props', () => {
             ),
           ],
         }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
       );
 
       expect(props.licensedProductLinks).toMatchObject([
@@ -384,6 +394,7 @@ describe('map-results-to-switcher-props', () => {
         asCompletedProvider<AvailableProductsResponse>({
           sites: [generateSite('site40', [WorklensProductType.CONFLUENCE, 40])],
         }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
         Product.CONFLUENCE,
       );
 
@@ -418,6 +429,7 @@ describe('map-results-to-switcher-props', () => {
         asCompletedProvider<AvailableProductsResponse>({
           sites: [generateSite('site40', [WorklensProductType.CONFLUENCE, 40])],
         }),
+        asCompletedProvider<JoinableSitesResponse>({ sites: [] }),
         Product.CONFLUENCE,
       );
 

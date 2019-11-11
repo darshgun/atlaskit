@@ -5,5 +5,18 @@ import { Create } from '../../src';
 const onClick = (...args: any[]) => {
   console.log('create click', ...args);
 };
+const StyledTooltip = () => (
+  <span>
+    Create
+    <span style={{ color: 'orange' }}> [c]</span>
+  </span>
+);
 
-export const DefaultCreate = () => <Create onClick={onClick} text="Create" />;
+export const DefaultCreate = () => (
+  <Create
+    buttonTooltip={<StyledTooltip />}
+    iconButtonTooltip="Create button"
+    onClick={onClick}
+    text="Create"
+  />
+);

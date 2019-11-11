@@ -5,26 +5,60 @@ describe('create-data-provider', () => {
   jest.doMock('../../../utils/fetch', () => ({ fetchJson }));
   jest.doMock('../../../utils/with-cached', () => ({ withCached }));
 
-  const { createProvider } = require('../../create-data-provider');
+  const {
+    createProvider,
+    createProviderWithCustomFetchData,
+  } = require('../../create-data-provider');
 
-  test('should return a fetch method and a provider component', () => {
-    const provider = createProvider('my-provider', '/gateway/api/content');
-    expect(provider).toHaveProperty('fetchMethod');
-    expect(provider).toHaveProperty('ProviderComponent');
+  describe('createProvider', () => {
+    test('should return a fetch method and a provider component', () => {
+      const provider = createProvider('my-provider', '/gateway/api/content');
+      expect(provider).toHaveProperty('fetchMethod');
+      expect(provider).toHaveProperty('ProviderComponent');
+    });
+
+    test('should request data from the endpoint provided when the provider was created', () => {
+      const providerA = createProvider(
+        'my-provider-a',
+        'http://my-api/content',
+      );
+      providerA.fetchMethod();
+
+      expect(fetchJson).toBeCalledWith('http://my-api/content');
+
+      const providerB = createProvider(
+        'my-provider-a',
+        '/gateway/my-api/content',
+      );
+      providerB.fetchMethod();
+
+      expect(fetchJson).toBeCalledWith('/gateway/my-api/content');
+    });
   });
 
-  test('should request data from the endpoint provided when the provider was created', () => {
-    const providerA = createProvider('my-provider-a', 'http://my-api/content');
-    providerA.fetchMethod();
+  describe('createProviderWithCustomFetchData', () => {
+    let fetchData: jest.Mock;
 
-    expect(fetchJson).toBeCalledWith('http://my-api/content');
+    beforeEach(() => {
+      fetchData = jest.fn().mockResolvedValue(true);
+    });
 
-    const providerB = createProvider(
-      'my-provider-a',
-      '/gateway/my-api/content',
-    );
-    providerB.fetchMethod();
+    test('should return a fetch method and a provider component', () => {
+      const provider = createProviderWithCustomFetchData(
+        'my-provider',
+        fetchData,
+      );
+      expect(provider).toHaveProperty('fetchMethod');
+      expect(provider).toHaveProperty('ProviderComponent');
+    });
 
-    expect(fetchJson).toBeCalledWith('/gateway/my-api/content');
+    test('should invoke the promise when the provider was created', () => {
+      const provider = createProviderWithCustomFetchData(
+        'my-provider',
+        fetchData,
+      );
+      provider.fetchMethod();
+      expect(fetchData).toBeCalled();
+    });
   });
 });

@@ -1,6 +1,7 @@
 describe('utils/prefetch', () => {
   const prefetchAll = jest.fn();
   const prefetchAvailableProducts = jest.fn();
+  const prefetchJoinableSites = jest.fn();
   const prefetchSwitcherBundles = jest.fn();
 
   jest.doMock('../../providers/instance-data-providers', () => ({
@@ -9,6 +10,9 @@ describe('utils/prefetch', () => {
   jest.doMock('../../providers/products-data-provider', () => ({
     prefetchAvailableProducts,
   }));
+  jest.doMock('../../providers/joinable-sites-data-provider', () => ({
+    prefetchJoinableSites,
+  }));
   jest.doMock('../../utils/prefetch-bundles', () => prefetchSwitcherBundles);
 
   const { prefetch } = require('../../prefetch');
@@ -16,6 +20,7 @@ describe('utils/prefetch', () => {
   beforeEach(() => {
     prefetchAll.mockReset();
     prefetchAvailableProducts.mockReset();
+    prefetchJoinableSites.mockReset();
     prefetchSwitcherBundles.mockReset();
   });
 
@@ -46,5 +51,10 @@ describe('utils/prefetch', () => {
   it('should prefetch available products', () => {
     prefetch({});
     expect(prefetchAvailableProducts).toHaveBeenCalledTimes(1);
+  });
+
+  it('should prefetch joinable sites', () => {
+    prefetch({});
+    expect(prefetchJoinableSites).toHaveBeenCalledTimes(1);
   });
 });

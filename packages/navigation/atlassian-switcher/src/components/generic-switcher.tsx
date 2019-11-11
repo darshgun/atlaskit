@@ -13,6 +13,10 @@ import {
   AvailableProductsProvider,
   AvailableProductsDataProvider,
 } from '../providers/products-data-provider';
+import {
+  JoinableSitesProvider,
+  JoinableSitesDataProvider,
+} from '../providers/joinable-sites-data-provider';
 import { WithTheme } from '../theme/types';
 
 type GenericSwitcherProps = WithTheme & {
@@ -23,28 +27,36 @@ type GenericSwitcherProps = WithTheme & {
   onDiscoverMoreClicked: DiscoverMoreCallback;
   product: Exclude<Product, Product.JIRA | Product.CONFLUENCE>;
   availableProductsDataProvider?: AvailableProductsDataProvider;
+  joinableSitesDataProvider?: JoinableSitesDataProvider;
 };
 
 export default (props: GenericSwitcherProps) => (
-  <AvailableProductsProvider
-    availableProductsDataProvider={props.availableProductsDataProvider}
+  <JoinableSitesProvider
+    joinableSitesDataProvider={props.joinableSitesDataProvider}
   >
-    {availableProducts => (
-      <CommonDataProvider
-        cloudId={props.cloudId}
-        disableRecentContainers={props.features.disableRecentContainers}
+    {joinableSites => (
+      <AvailableProductsProvider
+        availableProductsDataProvider={props.availableProductsDataProvider}
       >
-        {providerResults => {
-          const switcherLinks = mapResultsToSwitcherProps(
-            props.cloudId,
-            providerResults,
-            props.features,
-            availableProducts,
-            props.product,
-          );
-          return <Switcher {...props} {...switcherLinks} />;
-        }}
-      </CommonDataProvider>
+        {availableProducts => (
+          <CommonDataProvider
+            cloudId={props.cloudId}
+            disableRecentContainers={props.features.disableRecentContainers}
+          >
+            {providerResults => {
+              const switcherLinks = mapResultsToSwitcherProps(
+                props.cloudId,
+                providerResults,
+                props.features,
+                availableProducts,
+                joinableSites,
+                props.product,
+              );
+              return <Switcher {...props} {...switcherLinks} />;
+            }}
+          </CommonDataProvider>
+        )}
+      </AvailableProductsProvider>
     )}
-  </AvailableProductsProvider>
+  </JoinableSitesProvider>
 );
