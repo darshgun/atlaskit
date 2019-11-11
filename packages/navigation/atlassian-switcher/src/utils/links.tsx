@@ -28,6 +28,7 @@ import {
   ProvisionedProducts,
   CurrentSite,
   JoinableSite,
+  JoinableSiteProduct,
   JoinableSiteUser,
   JoinableSiteUserAvatarPropTypes,
 } from '../types';
@@ -501,17 +502,20 @@ const MAX_JOINABLE_SITES = 3;
 export const getJoinableSiteLinks = (
   joinableSites: JoinableSite[] = [],
 ): JoinableSiteItemType[] => {
-  return joinableSites.slice(0, MAX_JOINABLE_SITES).map(
-    (site: JoinableSite, index: number): JoinableSiteItemType => {
-      const [defaultProduct]: ProductKey[] = site.products;
-      const { label, icon } = getLabelAndIconByProductKey(defaultProduct);
-      return {
+  let joinableSiteLinks = [];
+
+  for (let site of joinableSites) {
+    for (let productKey in site.products) {
+      const users = site.products[productKey] || [];
+      const { label, icon } = getLabelAndIconByProductKey(productKey);
+
+      joinableSiteLinks.push({
         key: site.cloudId,
         label,
         description: site.displayName,
         Icon: createIcon(icon, { size: 'small' }),
         href: site.url,
-        users: site.users.map(
+        users: users.map(
           (user: JoinableSiteUser): JoinableSiteUserAvatarPropTypes => ({
             name: user.displayName,
             src: user.avatarUrl,
@@ -521,8 +525,14 @@ export const getJoinableSiteLinks = (
           }),
         ),
         cloudId: site.cloudId,
-        productType: TO_WORKLENS_PRODUCT_KEY[defaultProduct],
-      };
-    },
-  );
+        productType: TO_WORKLENS_PRODUCT_KEY[productKey],
+      });
+
+      if (joinableSiteLinks.length >= MAX_JOINABLE_SITES) {
+        return joinableSiteLinks;
+      }
+    }
+  }
+
+  return joinableSiteLinks;
 };
