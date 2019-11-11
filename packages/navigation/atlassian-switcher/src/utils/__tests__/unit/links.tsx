@@ -10,7 +10,6 @@ import {
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
-  getLabelAndIconByProductKey,
   getJoinableSiteLinks,
 } from '../../links';
 import {
@@ -215,39 +214,6 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result).toHaveLength(0);
-    });
-  });
-
-  describe('getLabelAndIconByProductKey', () => {
-    it('should return a map of label and icon by product key', () => {
-      expect(getLabelAndIconByProductKey(ProductKey.CONFLUENCE)).toMatchObject({
-        label: 'Confluence',
-        icon: ConfluenceIcon,
-      });
-
-      expect(getLabelAndIconByProductKey(ProductKey.JIRA_CORE)).toMatchObject({
-        label: 'Jira Core',
-        icon: JiraCoreIcon,
-      });
-
-      expect(
-        getLabelAndIconByProductKey(ProductKey.JIRA_SERVICE_DESK),
-      ).toMatchObject({
-        label: 'Jira Service Desk',
-        icon: JiraServiceDeskIcon,
-      });
-
-      expect(
-        getLabelAndIconByProductKey(ProductKey.JIRA_SOFTWARE),
-      ).toMatchObject({
-        label: 'Jira Software',
-        icon: JiraSoftwareIcon,
-      });
-
-      expect(getLabelAndIconByProductKey(ProductKey.OPSGENIE)).toMatchObject({
-        label: 'Opsgenie',
-        icon: OpsGenieIcon,
-      });
     });
   });
 

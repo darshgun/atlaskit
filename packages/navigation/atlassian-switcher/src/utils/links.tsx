@@ -452,48 +452,6 @@ export const getRecentLinkItems = (
     }));
 };
 
-export const getLabelAndIconByProductKey = (
-  productKey: ProductKey,
-): { label: string; icon: React.ComponentType<any> } => {
-  switch (productKey) {
-    case 'confluence.ondemand':
-      return {
-        label: 'Confluence',
-        icon: ConfluenceIcon,
-      };
-
-    case 'jira-core.ondemand':
-      return {
-        label: 'Jira Core',
-        icon: JiraCoreIcon,
-      };
-
-    case 'jira-servicedesk.ondemand':
-      return {
-        label: 'Jira Service Desk',
-        icon: JiraServiceDeskIcon,
-      };
-
-    case 'jira-software.ondemand':
-      return {
-        label: 'Jira Software',
-        icon: JiraSoftwareIcon,
-      };
-
-    case 'opsgenie':
-      return {
-        label: 'Opsgenie',
-        icon: OpsGenieIcon,
-      };
-
-    default:
-      return {
-        label: 'Jira Software',
-        icon: JiraSoftwareIcon,
-      };
-  }
-};
-
 // Design decision from
 // https://hello.atlassian.net/wiki/spaces/~kgalek/pages/563815188/Join+from+Atlassian+switcher%3A+design+so+far
 const MAX_JOINABLE_SITES = 3;
