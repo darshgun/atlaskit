@@ -1,14 +1,17 @@
 import { mount, shallow } from 'enzyme';
 import { ReactSerializer } from '../../../index';
 import { defaultSchema as schema } from '@atlaskit/adf-schema';
-import { Heading } from '../../../react/nodes';
+import { Heading, MediaSingle } from '../../../react/nodes';
 import { Emoji } from '../../../react/nodes';
 
 import * as doc from '../../__fixtures__/hello-world.adf.json';
 import * as headingDoc from '../../__fixtures__/heading-doc.adf.json';
+import * as mediaDoc from '../../__fixtures__/media.adf.json';
+import { expectToEqual } from '../../../../../../media/media-test-helpers/src';
 
 const docFromSchema = schema.nodeFromJSON(doc);
 const headingDocFromSchema = schema.nodeFromJSON(headingDoc);
+const mediaDocFromSchema = schema.nodeFromJSON(mediaDoc);
 
 describe('Renderer - ReactSerializer', () => {
   beforeAll(async () => {
@@ -149,6 +152,50 @@ describe('Renderer - ReactSerializer', () => {
       expect(sortedMarks[0].type.name).toEqual('strong');
       expect(sortedMarks[1].type.name).toEqual('strike');
       expect(sortedMarks[2].type.name).toEqual('underline');
+    });
+  });
+
+  describe('media', () => {
+    it('has correct shouldOpenMediaViewer value when default is true', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {
+        shouldOpenMediaViewer: true,
+      });
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(mediaDocFromSchema.content) as any,
+      );
+
+      expect(
+        reactDoc
+          .find('LoadableComponent')
+          .first()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(true);
+      expect(
+        reactDoc
+          .find('LoadableComponent')
+          .last()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(false);
+    });
+
+    it('has correct shouldOpenMediaViewer value when default is undefined', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {});
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(mediaDocFromSchema.content) as any,
+      );
+
+      expect(
+        reactDoc
+          .find('LoadableComponent')
+          .first()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(undefined);
+      expect(
+        reactDoc
+          .find('LoadableComponent')
+          .last()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(false);
     });
   });
 
