@@ -629,7 +629,8 @@ export const toggleList = (
   if (
     !fromNode ||
     fromNode.type.name !== listType ||
-    (!endNode || endNode.type.name !== listType)
+    !endNode ||
+    endNode.type.name !== listType
   ) {
     return toggleListCommandWithAnalytics(inputMethod, listType)(
       state,

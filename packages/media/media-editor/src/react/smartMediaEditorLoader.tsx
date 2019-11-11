@@ -32,8 +32,12 @@ export default class AsyncSmartMediaEditor extends React.PureComponent<
     if (!this.state.SmartMediaEditor) {
       try {
         const [mediaClient, smartEditorModule] = await Promise.all([
-          import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
-          import(/* webpackChunkName:"@atlaskit-internal_smart-media-editor" */ './smartMediaEditor'),
+          import(
+            /* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'
+          ),
+          import(
+            /* webpackChunkName:"@atlaskit-internal_smart-media-editor" */ './smartMediaEditor'
+          ),
         ]);
         AsyncSmartMediaEditor.SmartMediaEditor = mediaClient.withMediaClient(
           smartEditorModule.default,

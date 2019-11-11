@@ -15,9 +15,8 @@ export interface IconWrapperProps {
   type: string;
 }
 
-export const IconWrapper: ComponentClass<
-  HTMLAttributes<{}> & IconWrapperProps
-> = styled.div`
+export const IconWrapper: ComponentClass<HTMLAttributes<{}> &
+  IconWrapperProps> = styled.div`
   display: inline-flex;
   color: ${({ type }: IconWrapperProps) =>
     typeToColorMap[type] || typeToColorMap.unknown};

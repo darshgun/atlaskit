@@ -4,9 +4,9 @@ import { colors, gridSize, borderRadius } from '@atlaskit/theme';
 
 const akGridSize = gridSize() + 'px';
 
-export const ButtonGroup: ComponentClass<
-  HTMLAttributes<{}> & { width?: 'small' | 'large' }
-> = styled.span`
+export const ButtonGroup: ComponentClass<HTMLAttributes<{}> & {
+  width?: 'small' | 'large';
+}> = styled.span`
   display: inline-flex;
   align-items: center;
 
@@ -23,9 +23,9 @@ export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
   margin: 0 8px;
 `;
 
-export const Wrapper: ComponentClass<
-  HTMLAttributes<{}> & { isSmall?: boolean }
-> = styled.span`
+export const Wrapper: ComponentClass<HTMLAttributes<{}> & {
+  isSmall?: boolean;
+}> = styled.span`
   display: flex;
   align-items: center;
 
@@ -42,9 +42,7 @@ export const Wrapper: ComponentClass<
     isSmall ? '40px' : 'auto'};
 `;
 
-export const ExpandIconWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.span`
+export const ExpandIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   margin-left: -8px;
 `;
 
@@ -106,8 +104,6 @@ export const Shortcut = styled.div`
   align-self: flex-end;
 `;
 
-export const ClickSelectWrapper: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.span`
+export const ClickSelectWrapper: React.ComponentClass<React.HTMLAttributes<{}>> = styled.span`
   user-select: all;
 `;

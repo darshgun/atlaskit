@@ -66,9 +66,7 @@ export default class Example extends PureComponent<{}, State> {
     }
 
     if (err) {
-      textMessage = `Error occured while fetching the latest JSON schema for Atlassian Document Format: ${
-        err.message
-      }`;
+      textMessage = `Error occured while fetching the latest JSON schema for Atlassian Document Format: ${err.message}`;
     } else if (fetchingSchema) {
       textMessage =
         'Fetching latest JSON schema for Atlassian Document Format. Please wait...';

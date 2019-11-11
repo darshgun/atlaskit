@@ -23,9 +23,7 @@ export interface DropdownOptionT<T> {
 export type DropdownOptions<T> =
   | Array<DropdownOptionT<T>>
   | {
-      render: ((
-        props: RenderOptionsPropsT<T>,
-      ) => React.ReactElement<any> | null);
+      render: (props: RenderOptionsPropsT<T>) => React.ReactElement<any> | null;
       height: number;
       width: number;
     };

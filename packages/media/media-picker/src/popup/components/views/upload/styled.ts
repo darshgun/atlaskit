@@ -38,9 +38,7 @@ export const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   text-align: center;
 `;
 
-export const DropzoneContentWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const DropzoneContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: block;
   float: left;
   position: relative;
@@ -49,9 +47,8 @@ export const DropzoneContentWrapper: ComponentClass<
   transform: translate(-50%, -50%);
 `;
 
-export const DropzoneContainer: ComponentClass<
-  HTMLAttributes<{}> & IsEmptyProps
-> = styled.div`
+export const DropzoneContainer: ComponentClass<HTMLAttributes<{}> &
+  IsEmptyProps> = styled.div`
   box-sizing: border-box;
   border: 2px dashed #cfd4db;
   border-image-source: url('${borderIcon}');
@@ -62,9 +59,7 @@ export const DropzoneContainer: ComponentClass<
     isEmpty ? 'height: calc(100% - 4px);' : 'height: 211px;'}
 `;
 
-export const RecentUploadsTitle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const RecentUploadsTitle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 25px 10px 5px 0;
   font-size: 20px;
   color: #071d43;

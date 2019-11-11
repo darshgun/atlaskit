@@ -10,12 +10,12 @@ export class CardWithURLRenderer extends React.PureComponent<CardProps> {
   static CardContent: typeof CardWithUrlContentType | null = null;
 
   static moduleImporter(target: CardWithURLRenderer) {
-    import(/* webpackChunkName:"@atlaskit-internal-smartcard-urlcardcontent" */ './component').then(
-      module => {
-        CardWithURLRenderer.CardContent = module.LazyCardWithUrlContent;
-        target.forceUpdate();
-      },
-    );
+    import(
+      /* webpackChunkName:"@atlaskit-internal-smartcard-urlcardcontent" */ './component'
+    ).then(module => {
+      CardWithURLRenderer.CardContent = module.LazyCardWithUrlContent;
+      target.forceUpdate();
+    });
   }
 
   componentDidMount() {

@@ -100,7 +100,7 @@ We have moved the priority icons to its own package.
 The following icons have been removed from \`@atlaskit/icons\`. They can be imported from \`@atlaskit/icon-priority\` going
 forward. The icons are:
 
-${<Table changedValues={priorityIconLocation} />}
+${(<Table changedValues={priorityIconLocation} />)}
 
 
 
@@ -157,17 +157,17 @@ ${(
 
 These icons are named incorrectly in atlaskit, so we're taking the opportunity of a breaking change to switch these around.
 
-${<h2 id="logo">Product Logo Icons</h2>}
+${(<h2 id="logo">Product Logo Icons</h2>)}
 
 The following icons have been removed from \`@atlaskit/icons\`. They can be imported from \`@atlaskit/logo\` going
 forward. The icons are:
 
-${<Table changedValues={logoLocation} />}
+${(<Table changedValues={logoLocation} />)}
 
 In addition to being moved, the move to logo comes with a change to how
 the sizing prop will affect these icons:
 
-${<SizeTable />}
+${(<SizeTable />)}
 
 Logos are set up to handle gradients as first class citizens, with \`gradientStart\` and \`gradientStop\` props. For
 the most part you can rely on inheritance and will not need to provide these props.
@@ -198,7 +198,7 @@ ${code`
 />
 `}
 
-${<h2 id="object">Object Icons</h2>}
+${(<h2 id="object">Object Icons</h2>)}
 
 Similarly, object icons use different svgs for different sizes, and so are incompatible
 with the architecture of the \`@altaskit/icon\` package. As such, they are
@@ -223,7 +223,7 @@ Other notable differences for object icons are:
 - They can be required at only two sizes (16px and 24px)
 - Their colors are fixed
 
-${<h2 id="file-type">File-type Icons</h2>}
+${(<h2 id="file-type">File-type Icons</h2>)}
 
 Similarly, file-type icons use different svgs for different sizes, and so are incompatible
 with the architecture of the \`@altaskit/icon\` package. As such, they are
@@ -246,7 +246,7 @@ Other notable differences for file-type icons are:
 - The largest size of these icons is not square, unlike all other icons
 - Their colors are fixed
 
-${<h2 id="explanation">Why these changes?</h2>}
+${(<h2 id="explanation">Why these changes?</h2>)}
 
 The icons package was architected with several implicit decisions that defined
 what icons are:

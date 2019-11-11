@@ -6,9 +6,7 @@ import { BuildInlineProps } from './types';
 import { extractInlineViewPropsFromDocument } from './extractPropsFromDocument';
 import { CONFLUENCE_GENERATOR_ID } from './constants';
 
-export const buildTextDocumentIcon: BuildInlineProps<
-  InlineCardResolvedViewProps
-> = json => {
+export const buildTextDocumentIcon: BuildInlineProps<InlineCardResolvedViewProps> = json => {
   if (json.generator && json.generator['@id'] === CONFLUENCE_GENERATOR_ID) {
     return { icon: <ConfluencePageIcon label="Confluence" /> };
   }

@@ -3,9 +3,7 @@ import styled, { ThemedOuterStyledProps } from 'styled-components';
 import { HTMLAttributes, ComponentClass, LiHTMLAttributes } from 'react';
 import { N20, N40, B400, B50 } from '@atlaskit/theme/colors';
 
-export const FilmStripViewWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const FilmStripViewWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   padding: 3px 0;
   border-radius: 3px;
@@ -19,17 +17,15 @@ export const FilmStripViewWrapper: ComponentClass<
   }
 `;
 
-export const FilmStripListWrapper: ComponentClass<
-  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
-> = styled.div`
+export const FilmStripListWrapper: ComponentClass<HTMLAttributes<{}> &
+  ThemedOuterStyledProps<{}, {}>> = styled.div`
   width: inherit;
   overflow: hidden;
   padding: 2px 0;
 `;
 
-export const FilmStripList: ComponentClass<
-  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
-> = styled.ul`
+export const FilmStripList: ComponentClass<HTMLAttributes<{}> &
+  ThemedOuterStyledProps<{}, {}>> = styled.ul`
   margin: 0;
   padding: 0;
   transition-property: transform;
@@ -38,9 +34,7 @@ export const FilmStripList: ComponentClass<
   display: inline-block;
 `;
 
-export const FilmStripListItem: ComponentClass<
-  LiHTMLAttributes<{}>
-> = styled.li`
+export const FilmStripListItem: ComponentClass<LiHTMLAttributes<{}>> = styled.li`
   list-style-type: none;
   margin: 0;
   padding: 0 4px;

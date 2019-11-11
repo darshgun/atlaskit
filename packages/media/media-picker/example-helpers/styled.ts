@@ -29,25 +29,20 @@ export const PopupHeader: ComponentClass<HTMLAttributes<{}>> = styled.div`
   }
 `;
 
-export const PopupEventsWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const PopupEventsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   overflow: auto;
 `;
 
 export interface PreviewImageProps {
   fadedOut: boolean;
 }
-export const PreviewImage: ComponentClass<
-  ImgHTMLAttributes<{}> & PreviewImageProps
-> = styled.img`
+export const PreviewImage: ComponentClass<ImgHTMLAttributes<{}> &
+  PreviewImageProps> = styled.img`
   width: 300px;
   ${({ fadedOut }: PreviewImageProps) => `opacity: ${fadedOut ? 0.3 : 1};`};
 `;
 
-export const PreviewImageWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const PreviewImageWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
   margin-right: 15px;
 `;
@@ -62,9 +57,8 @@ export const InfoWrapper: ComponentClass<HTMLAttributes<{}>> = styled.pre`
   text-align: center;
 `;
 
-export const DropzoneContainer: ComponentClass<
-  HTMLAttributes<{}> & ThemedOuterStyledProps<DropzoneContainerProps, {}>
-> = styled.div`
+export const DropzoneContainer: ComponentClass<HTMLAttributes<{}> &
+  ThemedOuterStyledProps<DropzoneContainerProps, {}>> = styled.div`
   width: 600px;
   min-height: 500px;
   border: 1px dashed transparent;
@@ -77,17 +71,13 @@ export const DropzoneContainer: ComponentClass<
       : ''};
 `;
 
-export const DropzoneConfigOptions: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div``;
+export const DropzoneConfigOptions: ComponentClass<HTMLAttributes<{}>> = styled.div``;
 
 export const DropzoneRoot: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
 `;
 
-export const DropzoneContentWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const DropzoneContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   min-height: 200px;
 `;
@@ -102,9 +92,7 @@ export const PreviewsTitle: ComponentClass<HTMLAttributes<{}>> = styled.h1`
   width: 100%;
 `;
 
-export const ProgressCircleWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const ProgressCircleWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: calc(50% - 50px);
   left: calc(50% - 50px);
@@ -124,9 +112,8 @@ export interface ClipboardContainerProps {
   isWindowFocused: boolean;
 }
 
-export const ClipboardContainer: ComponentClass<
-  HTMLAttributes<{}> & ClipboardContainerProps
-> = styled.div`
+export const ClipboardContainer: ComponentClass<HTMLAttributes<{}> &
+  ClipboardContainerProps> = styled.div`
   padding: 10px;
   min-height: 400px;
 
@@ -134,13 +121,9 @@ export const ClipboardContainer: ComponentClass<
     isWindowFocused ? `1px dashed gray` : `1px dashed transparent`};
 `;
 
-export const UploadingFilesWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div``;
+export const UploadingFilesWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div``;
 
-export const FileProgress: ComponentClass<
-  ProgressHTMLAttributes<{}>
-> = styled.progress`
+export const FileProgress: ComponentClass<ProgressHTMLAttributes<{}>> = styled.progress`
   width: 400px;
 `;
 

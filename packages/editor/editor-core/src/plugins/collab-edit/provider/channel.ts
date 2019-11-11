@@ -48,9 +48,7 @@ export class Channel {
       };
     } catch (err) {
       logger(
-        `Collab-Edit: Document "${
-          this.config.docId
-        }" does not exist. Creating one locally.`,
+        `Collab-Edit: Document "${this.config.docId}" does not exist. Creating one locally.`,
       );
       return {
         doc: {},

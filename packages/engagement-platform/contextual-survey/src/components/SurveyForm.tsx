@@ -58,12 +58,9 @@ export default ({
   const hasAutoFilledCanContactRef = useRef(false);
 
   const expandedAreaRef = useRef<HTMLDivElement>(null);
-  const onScoreSelect = useCallback(
-    () => {
-      setExpanded(true);
-    },
-    [setExpanded],
-  );
+  const onScoreSelect = useCallback(() => {
+    setExpanded(true);
+  }, [setExpanded]);
 
   // On the first type the user types some feedback we auto select
   // the option for allowing feedback. This automatic selection only

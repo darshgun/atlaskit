@@ -100,9 +100,7 @@ export default class BitbucketServerReporter implements GitReporter {
   }
 
   insightsReportUrl(reportKey: string) {
-    return `${this.baseUrl}/rest/insights/latest/projects/${
-      this.project
-    }/repos/${this.repo}/commits/${this.commit}/reports/${reportKey}`;
+    return `${this.baseUrl}/rest/insights/latest/projects/${this.project}/repos/${this.repo}/commits/${this.commit}/reports/${reportKey}`;
   }
 
   request(url: string, method = 'GET', body: object | null): Promise<Response> {
@@ -134,9 +132,7 @@ export default class BitbucketServerReporter implements GitReporter {
 
     if (!response.ok) {
       const responseText = await response.text();
-      const message = `Failed to publish report: ${
-        response.status
-      }\n${responseText}`;
+      const message = `Failed to publish report: ${response.status}\n${responseText}`;
       throw new Error(message);
     }
   }
@@ -152,9 +148,7 @@ export default class BitbucketServerReporter implements GitReporter {
 
     if (!response.ok) {
       const responseText = await response.text();
-      const message = `Failed to publish annotations: ${
-        response.status
-      }\n${responseText}`;
+      const message = `Failed to publish annotations: ${response.status}\n${responseText}`;
       throw new Error(message);
     }
 
@@ -165,9 +159,7 @@ export default class BitbucketServerReporter implements GitReporter {
     start = 0,
     limit = 25,
   ): Promise<PullRequestsApiResult> {
-    const fetchUrl = `${this.baseUrl}/rest/api/1.0/projects/${
-      this.project
-    }/repos/${this.repo}/pull-requests?limit=${limit}&start=${start}`;
+    const fetchUrl = `${this.baseUrl}/rest/api/1.0/projects/${this.project}/repos/${this.repo}/pull-requests?limit=${limit}&start=${start}`;
 
     const pullRequestsResponse = await this.request(fetchUrl, undefined, null);
 

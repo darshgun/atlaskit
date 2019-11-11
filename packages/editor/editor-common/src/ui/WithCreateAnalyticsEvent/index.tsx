@@ -9,9 +9,7 @@ export type Props = {
   render: (createAnalyticsEvent?: CreateUIAnalyticsEvent) => React.ReactNode;
 };
 
-export const WithCreateAnalyticsEvent: React.ComponentType<
-  Props
-> = withAnalyticsEvents()(
+export const WithCreateAnalyticsEvent: React.ComponentType<Props> = withAnalyticsEvents()(
   class WithCreateAnalyticsEvent extends React.Component<
     Props & WithAnalyticsEventsProps
   > {

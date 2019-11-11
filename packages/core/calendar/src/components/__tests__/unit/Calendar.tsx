@@ -90,7 +90,10 @@ cases(
     expect(e.preventDefault).toHaveBeenCalled();
     expect(mock).toHaveBeenCalledWith(createEventData('2000-01-01'));
   },
-  [{ name: 'Enter', key: 'Enter' }, { name: 'Space', key: ' ' }],
+  [
+    { name: 'Enter', key: 'Enter' },
+    { name: 'Space', key: ' ' },
+  ],
 );
 
 test('handleClickDay()', () => {

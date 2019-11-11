@@ -33,7 +33,7 @@ export interface GiphyResponse {
       id: string;
       slug: string;
       images: { fixed_width: GiphyImage; original: GiphyImage };
-    }
+    },
   ];
   pagination: {
     total_count: number;

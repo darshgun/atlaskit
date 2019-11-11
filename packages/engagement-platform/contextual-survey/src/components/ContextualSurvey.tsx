@@ -98,12 +98,9 @@ export default ({
 
   // using a ref so that we don't break all of our caches if a consumer is using an arrow function
   const onDismissRef = useRef<(args: OnDismissArgs) => void>(onDismiss);
-  useEffect(
-    () => {
-      onDismissRef.current = onDismiss;
-    },
-    [onDismiss],
-  );
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
 
   const tryClearTimeout = useCallback(() => {
     const id: Optional<number> = autoDisappearTimeoutRef.current;
@@ -115,15 +112,12 @@ export default ({
   }, []);
 
   // Cleanup any auto dismiss after dismiss
-  useEffect(
-    () => {
-      return function unmount() {
-        tryClearTimeout();
-        tryDismiss(DismissTrigger.Unmount);
-      };
-    },
-    [tryClearTimeout, tryDismiss],
-  );
+  useEffect(() => {
+    return function unmount() {
+      tryClearTimeout();
+      tryDismiss(DismissTrigger.Unmount);
+    };
+  }, [tryClearTimeout, tryDismiss]);
 
   const onSurveySubmit = useCallback<
     React.ComponentProps<typeof SurveyForm>['onSubmit']
@@ -185,33 +179,30 @@ export default ({
   );
 
   // Start the auto disappear when we are finished
-  useEffect(
-    () => {
-      // Already dismissed
-      if (isDismissedRef.current) {
-        return;
-      }
+  useEffect(() => {
+    // Already dismissed
+    if (isDismissedRef.current) {
+      return;
+    }
 
-      // Timeout already scheduled
-      if (autoDisappearTimeoutRef.current) {
-        return;
-      }
+    // Timeout already scheduled
+    if (autoDisappearTimeoutRef.current) {
+      return;
+    }
 
-      if (
-        [
-          'SIGN_UP_SUCCESS',
-          'POST_SURVEY_NO_CONSENT',
-          'POST_SURVEY_HAS_SIGN_UP',
-        ].includes(currentStep)
-      ) {
-        autoDisappearTimeoutRef.current = window.setTimeout(
-          () => tryDismiss(DismissTrigger.AutoDismiss),
-          AUTO_DISAPPEAR_DURATION,
-        );
-      }
-    },
-    [currentStep, tryDismiss],
-  );
+    if (
+      [
+        'SIGN_UP_SUCCESS',
+        'POST_SURVEY_NO_CONSENT',
+        'POST_SURVEY_HAS_SIGN_UP',
+      ].includes(currentStep)
+    ) {
+      autoDisappearTimeoutRef.current = window.setTimeout(
+        () => tryDismiss(DismissTrigger.AutoDismiss),
+        AUTO_DISAPPEAR_DURATION,
+      );
+    }
+  }, [currentStep, tryDismiss]);
 
   useEscapeToDismiss({ onDismiss: () => tryDismiss(DismissTrigger.Manual) });
 
@@ -243,14 +234,11 @@ export default ({
     return null;
   })();
 
-  const manualDismiss = useCallback(
-    () => {
-      // clear any pending timers
-      tryClearTimeout();
-      tryDismiss(DismissTrigger.Manual);
-    },
-    [tryDismiss, tryClearTimeout],
-  );
+  const manualDismiss = useCallback(() => {
+    // clear any pending timers
+    tryClearTimeout();
+    tryDismiss(DismissTrigger.Manual);
+  }, [tryDismiss, tryClearTimeout]);
 
   return <SurveyContainer onDismiss={manualDismiss}>{content}</SurveyContainer>;
 };

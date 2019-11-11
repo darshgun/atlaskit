@@ -129,7 +129,10 @@ export class MemoryReactionsStore implements ReactionsStore {
     ari: string,
     emojiId: string,
   ) => (updater: Updater<ReactionSummary>) => {
-    this.withReadyReaction(containerAri, ari)(reactionState => {
+    this.withReadyReaction(
+      containerAri,
+      ari,
+    )(reactionState => {
       let found = false;
       const reactions = reactionState.reactions.map(reaction => {
         if (reaction.emojiId === emojiId) {
@@ -206,7 +209,10 @@ export class MemoryReactionsStore implements ReactionsStore {
     notReactedCallback?: Updater<ReactionSummary>,
   ) {
     return (containerAri: string, ari: string, emojiId: string) => {
-      this.withReadyReaction(containerAri, ari)(reactionsState => {
+      this.withReadyReaction(
+        containerAri,
+        ari,
+      )(reactionsState => {
         const reaction: ReactionSummary = reactionsState.reactions.find(
           utils.byEmojiId(emojiId),
         ) || {
@@ -223,10 +229,11 @@ export class MemoryReactionsStore implements ReactionsStore {
         const updatedReaction = callback(reaction);
         if (updatedReaction && !(updatedReaction instanceof Function)) {
           return utils.readyState(
-            reactionsState.reactions.map(utils.updateByEmojiId(
-              emojiId,
-              updatedReaction,
-            ) as ((reaction: ReactionSummary) => ReactionSummary)),
+            reactionsState.reactions.map(
+              utils.updateByEmojiId(emojiId, updatedReaction) as (
+                reaction: ReactionSummary,
+              ) => ReactionSummary,
+            ),
           );
         }
         return;
@@ -247,28 +254,26 @@ export class MemoryReactionsStore implements ReactionsStore {
     this.client.deleteReaction(containerAri, ari, emojiId);
   };
 
-  getReactions = batchByKey(
-    (containerAri: string, aris: string[][]): void => {
-      this.client
-        .getReactions(containerAri, aris.reduce(utils.flattenAris))
-        .then((value: Reactions) => {
-          Object.keys(value).map(ari => {
-            const reactionsState = this.getReactionsState(containerAri, ari);
-            const reactions =
-              reactionsState && reactionsState.status === ReactionStatus.ready
-                ? reactionsState.reactions
-                : undefined;
-            this.setReactions(
-              containerAri,
-              ari,
-              utils.readyState(
-                value[ari].sort(utils.getReactionsSortFunction(reactions)),
-              ),
-            );
-          });
+  getReactions = batchByKey((containerAri: string, aris: string[][]): void => {
+    this.client
+      .getReactions(containerAri, aris.reduce(utils.flattenAris))
+      .then((value: Reactions) => {
+        Object.keys(value).map(ari => {
+          const reactionsState = this.getReactionsState(containerAri, ari);
+          const reactions =
+            reactionsState && reactionsState.status === ReactionStatus.ready
+              ? reactionsState.reactions
+              : undefined;
+          this.setReactions(
+            containerAri,
+            ari,
+            utils.readyState(
+              value[ari].sort(utils.getReactionsSortFunction(reactions)),
+            ),
+          );
         });
-    },
-  );
+      });
+  });
 
   toggleReaction = this.withReaction(this.doRemoveReaction, this.doAddReaction);
   addReaction = this.withReaction(this.flash, this.doAddReaction);

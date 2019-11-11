@@ -22,7 +22,7 @@
     "listr": "^0.14.2",
     "meow": "^5.0.0",
     "mkdirp": "^0.5.1",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "traduki-lite": "^1.0.1",
     "transifex": "^1.5.0"
   }

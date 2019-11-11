@@ -318,11 +318,11 @@ describe('card', () => {
 
       test('rejects', async () => {
         const { dispatch } = view;
-        provider = new class implements CardProvider {
+        provider = new (class implements CardProvider {
           resolve(): Promise<any> {
             return Promise.reject('error').catch(() => {});
           }
-        }();
+        })();
 
         dispatch(setProvider(provider)(view.state.tr));
 

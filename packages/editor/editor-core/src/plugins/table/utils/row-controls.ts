@@ -33,7 +33,8 @@ export const getRowHeights = (tableRef: HTMLTableElement): number[] => {
 export const isRowDeleteButtonVisible = (selection: Selection): boolean => {
   if (
     !isTableSelected(selection) &&
-    (selection instanceof CellSelection && selection.isRowSelection())
+    selection instanceof CellSelection &&
+    selection.isRowSelection()
   ) {
     return true;
   }

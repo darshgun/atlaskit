@@ -139,18 +139,15 @@ export class FileFetcherImpl implements FileFetcher {
   // Returns an array of the same length as the keys filled with file items
   private batchLoadingFunc = async (keys: DataloaderKey[]) => {
     const nonCollectionName = '__media-single-file-collection__';
-    const fileIdsByCollection = keys.reduce(
-      (prev, next) => {
-        const collectionName = next.collection || nonCollectionName;
-        const fileIds = prev[collectionName] || [];
+    const fileIdsByCollection = keys.reduce((prev, next) => {
+      const collectionName = next.collection || nonCollectionName;
+      const fileIds = prev[collectionName] || [];
 
-        fileIds.push(next.id);
-        prev[collectionName] = fileIds;
+      fileIds.push(next.id);
+      prev[collectionName] = fileIds;
 
-        return prev;
-      },
-      {} as { [collectionName: string]: string[] },
-    );
+      return prev;
+    }, {} as { [collectionName: string]: string[] });
     const items: ResponseFileItem[] = [];
 
     await Promise.all(

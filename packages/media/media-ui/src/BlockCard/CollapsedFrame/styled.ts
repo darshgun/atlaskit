@@ -55,9 +55,8 @@ function selected({ isSelected }: FrameProps) {
     : '';
 }
 
-export const Wrapper: React.ComponentClass<
-  FrameProps & HTMLAttributes<{}>
-> = styled.div`
+export const Wrapper: React.ComponentClass<FrameProps &
+  HTMLAttributes<{}>> = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;

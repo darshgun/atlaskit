@@ -48,7 +48,7 @@ export const getIconForFileType = (
     loading: () => null,
   }) as any; // because we're using dynamic loading here, TS will not be able to infer the type
 
-  return <Icon label={label} /> as React.ReactNode;
+  return (<Icon label={label} />) as React.ReactNode;
 };
 
 export const getLabelForFileType = (

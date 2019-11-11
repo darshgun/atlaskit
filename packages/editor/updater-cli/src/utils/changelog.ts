@@ -4,26 +4,23 @@ import chalk from 'chalk';
 import link from 'terminal-link';
 
 function printLogDetails(log: Log) {
-  return log.details.reduce(
-    (acc, detail) => {
-      if (detail.link) {
-        acc.push(
-          md(detail.text) +
-            chalk.dim(
-              link(
-                ` [${detail.link}]`,
-                `https://product-fabric.atlassian.net/browse/${detail.link}`,
-              ),
+  return log.details.reduce((acc, detail) => {
+    if (detail.link) {
+      acc.push(
+        md(detail.text) +
+          chalk.dim(
+            link(
+              ` [${detail.link}]`,
+              `https://product-fabric.atlassian.net/browse/${detail.link}`,
             ),
-        );
-      } else {
-        acc.push(md(detail.text));
-      }
+          ),
+      );
+    } else {
+      acc.push(md(detail.text));
+    }
 
-      return acc;
-    },
-    [] as Array<string>,
-  );
+    return acc;
+  }, [] as Array<string>);
 }
 
 function md(str: string) {
@@ -89,85 +86,82 @@ function parseChangelog(raw: string): Log[] {
   return raw
     .replace(/[\n\r\s]## /g, `${splitToken}## `)
     .split(splitToken)
-    .reduce(
-      (all, log) => {
-        const match = log.match(/\d+\.\d+\.\d+/);
-        const v = match ? match[0] : null;
-        if (!v) {
-          return all;
-        }
+    .reduce((all, log) => {
+      const match = log.match(/\d+\.\d+\.\d+/);
+      const v = match ? match[0] : null;
+      if (!v) {
+        return all;
+      }
 
-        const version = coerce(v);
-        if (!version) {
-          return all;
-        }
+      const version = coerce(v);
+      if (!version) {
+        return all;
+      }
 
-        const isPatch = version.patch !== 0;
-        const isMinor = version.minor !== 0 && !isPatch;
-        const isMajor = version.major !== 0 && !isMinor && !isPatch;
-        const type = isMajor ? 'major' : isMinor ? 'minor' : 'patch';
+      const isPatch = version.patch !== 0;
+      const isMinor = version.minor !== 0 && !isPatch;
+      const isMajor = version.major !== 0 && !isMinor && !isPatch;
+      const type = isMajor ? 'major' : isMinor ? 'minor' : 'patch';
 
-        const lines = log.split('\n');
-        const details: { link?: string; text: string }[] = [];
-        const updated: string[] = [];
-        let isIndented = false;
+      const lines = log.split('\n');
+      const details: { link?: string; text: string }[] = [];
+      const updated: string[] = [];
+      let isIndented = false;
 
-        lines.forEach(line => {
-          const text = line
-            .trim()
-            .replace(/^-(\s)?(\[(major|minor|patch)\])?/, '')
-            .replace(
-              /\[(.*?)\](\(https:\/\/bitbucket\.org\/atlassian\/atlaskit-mk-2\/commits\/\1\)):?/,
-              '',
-            )
-            .trim();
+      lines.forEach(line => {
+        const text = line
+          .trim()
+          .replace(/^-(\s)?(\[(major|minor|patch)\])?/, '')
+          .replace(
+            /\[(.*?)\](\(https:\/\/bitbucket\.org\/atlassian\/atlaskit-mk-2\/commits\/\1\)):?/,
+            '',
+          )
+          .trim();
 
-          if (
-            !(
-              !text ||
-              text.substr(0, 2) === '##' ||
-              text.indexOf('Updated dependencies') !== -1
-            )
-          ) {
-            if (line.substr(4, 10) === '@atlaskit/') {
-              updated.push(line.substring(4, line.lastIndexOf('@')));
+        if (
+          !(
+            !text ||
+            text.substr(0, 2) === '##' ||
+            text.indexOf('Updated dependencies') !== -1
+          )
+        ) {
+          if (line.substr(4, 10) === '@atlaskit/') {
+            updated.push(line.substring(4, line.lastIndexOf('@')));
+          } else {
+            const match = isJiraTicket(text);
+            const isList = line.trim().substr(0, 1) === '-';
+
+            if (!isList) {
+              isIndented = true;
+            }
+
+            if (match) {
+              details.push({
+                link: match[0],
+                text: `${isIndented ? '  ' : ''}- ${capitalize(
+                  text
+                    .replace(jiraRegex, '')
+                    .trim()
+                    .replace(/^(:|-)?/, '')
+                    .trim(),
+                )}`,
+              });
             } else {
-              const match = isJiraTicket(text);
-              const isList = line.trim().substr(0, 1) === '-';
-
-              if (!isList) {
-                isIndented = true;
-              }
-
-              if (match) {
-                details.push({
-                  link: match[0],
-                  text: `${isIndented ? '  ' : ''}- ${capitalize(
-                    text
-                      .replace(jiraRegex, '')
-                      .trim()
-                      .replace(/^(:|-)?/, '')
-                      .trim(),
-                  )}`,
-                });
-              } else {
-                details.push({
-                  text: !isList ? `  ${text}` : `- ${capitalize(text)}`,
-                });
-              }
+              details.push({
+                text: !isList ? `  ${text}` : `- ${capitalize(text)}`,
+              });
             }
           }
-        });
+        }
+      });
 
-        return all.concat({
-          type,
-          version,
-          details,
-          updated,
-        });
-      },
-      [] as Log[],
-    );
+      return all.concat({
+        type,
+        version,
+        details,
+        updated,
+      });
+    }, [] as Log[]);
 }
 
 export async function getChangelog(

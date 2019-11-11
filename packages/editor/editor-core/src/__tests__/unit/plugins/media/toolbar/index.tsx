@@ -352,9 +352,9 @@ describe('media', () => {
           editorView,
         ).find(item => item.type === 'custom') as FloatingToolbarCustom;
 
-        const annotationToolbar = shallow(annotateToolbarComponent.render(
-          editorView,
-        ) as ReactElement<any>);
+        const annotationToolbar = shallow(
+          annotateToolbarComponent.render(editorView) as ReactElement<any>,
+        );
         expect(annotationToolbar.instance()).toBeInstanceOf(AnnotationToolbar);
       });
 
