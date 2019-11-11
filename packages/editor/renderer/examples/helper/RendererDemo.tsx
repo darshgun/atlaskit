@@ -32,6 +32,7 @@ import { renderDocument, TextSerializer } from '../../src';
 
 import Sidebar, { getDefaultShowSidebarState } from './NavigationNext';
 import { RendererAppearance } from '../../src/ui/Renderer/types';
+import { MentionProvider } from '@atlaskit/mention/types';
 
 const { getMockProfileClient: getMockProfileClientUtil } = profilecardUtils;
 const MockProfileClient = getMockProfileClientUtil(
@@ -43,7 +44,7 @@ const mentionProvider = Promise.resolve({
   shouldHighlightMention(mention: { id: string }) {
     return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
   },
-});
+} as MentionProvider);
 
 const mediaProvider = storyMediaProviderFactory();
 
