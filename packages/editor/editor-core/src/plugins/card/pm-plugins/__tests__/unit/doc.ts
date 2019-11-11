@@ -5,6 +5,7 @@ import {
   a,
   blockquote,
   table,
+  inlineCard,
   th,
   tr,
   td,
@@ -25,21 +26,19 @@ import {
 import { EditorView } from 'prosemirror-view';
 import { Fragment, Slice, Node } from 'prosemirror-model';
 
-import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
-import { CardProvider, CardPluginState } from '../../../../plugins/card/types';
-import {
-  setProvider,
-  queueCards,
-} from '../../../../plugins/card/pm-plugins/actions';
+import { pluginKey } from '../../main';
+import { CardProvider, CardPluginState } from '../../../types';
+import { setProvider, queueCards } from '../../actions';
 
-import { setTextSelection } from '../../../../utils';
-import {
-  queueCardsFromChangedTr,
-  shouldReplace,
-} from '../../../../plugins/card/pm-plugins/doc';
-import { INPUT_METHOD } from '../../../../plugins/analytics';
+import { setTextSelection } from '../../../../../utils';
+import { insertCard, queueCardsFromChangedTr, shouldReplace } from '../../doc';
+import { INPUT_METHOD } from '../../../../analytics';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { createCardRequest, setupProvider, ProviderWrapper } from './_helpers';
+import {
+  createCardRequest,
+  setupProvider,
+  ProviderWrapper,
+} from '../../../../../__tests__/unit/plugins/card/_helpers';
 
 const inlineCardAdf = {
   type: 'inlineCard',
@@ -53,6 +52,7 @@ const inlineCardAdf = {
     },
   },
 };
+
 const atlassianUrl = 'http://www.atlassian.com/';
 const googleUrl = 'http://www.google.com/';
 
@@ -830,6 +830,33 @@ describe('card', () => {
         );
 
         expect(shouldReplace(textNode)).toBe(false);
+      });
+    });
+
+    describe('#insertCard', () => {
+      const getInlineCardNode = (editorView: EditorView): Node =>
+        inlineCard(inlineCardAdf.attrs)()(editorView.state.schema);
+      it('should insert adf node and add a white space', function() {
+        const { editorView } = editor(doc(p('hello{<>}')));
+
+        const { state, dispatch } = editorView;
+        const inlineCardNode = getInlineCardNode(editorView);
+        dispatch(insertCard(state.tr, inlineCardNode, editorView.state.schema));
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p('hello', inlineCard(inlineCardAdf.attrs)(), ' ')),
+        );
+      });
+      it('should replace selection with inline card and add a white space', function() {
+        const { editorView } = editor(doc(p('{<}hello{>}')));
+
+        const { state, dispatch } = editorView;
+        const inlineCardNode = getInlineCardNode(editorView);
+        dispatch(insertCard(state.tr, inlineCardNode, editorView.state.schema));
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(p(inlineCard(inlineCardAdf.attrs)(), ' ')),
+        );
       });
     });
   });

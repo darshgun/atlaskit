@@ -1,0 +1,1 @@
+ED-7850 Fix bug where card inserted by paste (but intercepted by macro) wasn't replacing the content
