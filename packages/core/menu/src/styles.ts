@@ -13,7 +13,7 @@ import { CSSObject } from '@emotion/core';
 const gridSize = gridSizeFn();
 
 const buttonOverrides = {
-  backgroundColor: 'unset',
+  backgroundColor: 'transparent',
   border: 'none',
   outline: 'none',
 };
@@ -33,13 +33,9 @@ const baseItemCSS = (isDisabled: boolean): CSSObject => ({
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
-  // Revisit these styles.
-  // Leaving them here as reminder to clean them up
-  // display: 'block',
-  // width: '100%',
-  // boxSizing: 'border-box',
-  // display: 'flex',
-  // flexDirection: 'column',
+  display: 'block',
+  width: '100%',
+  boxSizing: 'border-box',
   '&:hover': {
     color: N800,
     backgroundColor: N20,
