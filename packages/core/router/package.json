@@ -1,0 +1,39 @@
+{
+  "name": "@atlaskit/router",
+  "version": "0.0.0",
+  "description": "SPA Router",
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "license": "Apache-2.0",
+  "module": "",
+  "main": "",
+  "types": "",
+  "atlaskit:src": "src/index.js",
+  "sideEffects": false,
+  "author": "Atlassian Pty Ltd",
+  "atlaskit": {
+    "name": "Router",
+    "team": "AFP"
+  },
+  "dependencies": {
+    "history": "4.10.1",
+    "lodash.debounce": "^4.0.8",
+    "lodash.noop": "^3.0.1",
+    "lodash.pick": "^4.4.0",
+    "path-to-regexp": "^3.1.0",
+    "query-string": "^4.3.2",
+    "react-sweet-state": "^1.1.1",
+    "url-parse": "^1.4.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "devDependencies": {
+    "enzyme": "^3.7.0"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "router"
+  ]
+}

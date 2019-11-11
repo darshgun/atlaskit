@@ -3490,6 +3490,11 @@
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
 
+"@types/history@^4.7.3":
+  version "4.7.3"
+  resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.3.tgz#856c99cdc1551d22c22b18b5402719affec9839a"
+  integrity sha512-cS5owqtwzLN5kY+l+KgKdRJ/Cee8tlmQoGQuIE9tWnSmS3JMKzmxo2HIAk2wODMifGwO20d62xZQLYz+RLfXmw==
+
 "@types/html-minifier@*":
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/@types/html-minifier/-/html-minifier-3.5.3.tgz#5276845138db2cebc54c789e0aaf87621a21e84f"
@@ -3583,6 +3588,13 @@
 "@types/lodash.flow@^3.5.6":
   version "3.5.6"
   resolved "https://registry.yarnpkg.com/@types/lodash.flow/-/lodash.flow-3.5.6.tgz#ecbdae376e610313ac6361430f2f59a8dc9a813f"
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash.noop@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.npmjs.org/@types/lodash.noop/-/lodash.noop-3.0.6.tgz#2be7ceeabe21af841c76b57b6ff12bb04b7ad21f"
+  integrity sha512-cleVuzJRs1YQXkxgnFzo/GlSlXOiD83VZW9oibsm1+gKXF3ioXFzBDZPpwTJCxh9lB/D+zodEvZtqeolhuPKZg==
   dependencies:
     "@types/lodash" "*"
 
@@ -16807,6 +16819,11 @@ lodash.merge@^4.4.0, lodash.merge@^4.6.0, lodash.merge@^4.6.1:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
 
+lodash.noop@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.noop/-/lodash.noop-3.0.1.tgz#38188f4d650a3a474258439b96ec45b32617133c"
+  integrity sha1-OBiPTWUKOkdCWEObluxFsyYXEzw=
+
 lodash.pairs@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash.pairs/-/lodash.pairs-3.0.1.tgz#bbe08d5786eeeaa09a15c91ebf0dcb7d2be326a9"
@@ -19585,6 +19602,11 @@ path-to-regexp@^2.2.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-2.4.0.tgz#35ce7f333d5616f1c1e1bfe266c3aba2e5b2e704"
 
+path-to-regexp@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-3.1.0.tgz#f45a9cc4dc6331ae8f131e0ce4fde8607f802367"
+  integrity sha512-PtHLisEvUOepjc+sStXxJ/pDV/s5UBTOKWJY2SOz3e6E/iN/jLknY9WL72kTwRrwXDUbZTEAtSnJbz2fF127DA==
+
 path-type@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-1.1.0.tgz#59c44f7ee491da704da415da5a4070ba4f8fe441"
@@ -21738,6 +21760,11 @@ react-side-effect@^1.1.0:
   dependencies:
     exenv "^1.2.1"
     shallowequal "^1.0.1"
+
+react-sweet-state@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-sweet-state/-/react-sweet-state-1.1.1.tgz#1c890099741ed94f96eb43b84bb4de90756cd4f0"
+  integrity sha512-Bi5F+C88gmNPpCrufGPXABepoIY/PP4yfyu1BonHzxxmJ0LCcHvbhHAtYbUOEmQf3/xizCtX8GlmSuvqDAQw2A==
 
 react-syntax-highlighter@^10.0.1:
   version "10.0.1"
