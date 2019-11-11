@@ -1,9 +1,17 @@
 import { Device, snapshot, initFullPageEditorWithAdf } from '../_utils';
 import { waitForLoadedBackgroundImages } from '@atlaskit/visual-regression/helper';
-import { expandADF } from './__fixtures__/expand-adf';
+import {
+  expandADF,
+  tableMediaADF,
+  nestedExpandOverflowInTable,
+} from './__fixtures__/expand-adf';
 import { selectors } from '../../__helpers/page-objects/_expand';
 import { Page } from '../../__helpers/page-objects/_types';
 import { emojiReadySelector } from '../../__helpers/page-objects/_emoji';
+import {
+  clickFirstCell,
+  tableSelectors,
+} from '../../__helpers/page-objects/_table';
 
 const hideTooltip = async (page: Page) => {
   // Hide the tooltip
@@ -51,5 +59,20 @@ describe('Expand: full-page', () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
     await page.click(selectors.nestedExpandToggle);
     await page.click(selectors.expandTitleInput);
+  });
+
+  test('table row controls should not be cut off and media doesnt overflow the expand', async () => {
+    await initFullPageEditorWithAdf(page, tableMediaADF, Device.LaptopMDPI);
+    await clickFirstCell(page);
+    await page.waitForSelector(tableSelectors.firstRowControl);
+    await page.click(tableSelectors.firstRowControl);
+  });
+
+  test('expands should hide their overflow content', async () => {
+    await initFullPageEditorWithAdf(
+      page,
+      nestedExpandOverflowInTable,
+      Device.LaptopMDPI,
+    );
   });
 });

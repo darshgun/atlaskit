@@ -1,0 +1,1 @@
+ED-8017: Fix expand overflow issues with tables and text

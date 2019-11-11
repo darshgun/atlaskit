@@ -15,6 +15,7 @@ export const expandStyles = css`
   .${expandClassNames.prefix} {
     ${sharedExpandStyles.ContainerStyles}
     margin-top: ${blockNodesVerticalMargin}rem;
+    overflow: hidden;
 
     td > & {
       margin-top: 0;
