@@ -1,7 +1,11 @@
 import { ADFEntity } from '@atlaskit/adf-utils';
 import { ReactNode } from 'react';
 
-type ModuleKey = string;
+export type ExtensionModuleKey = string;
+
+export type ExtensionType = string;
+
+export type ExtensionKey = string;
 
 export type Icon = () => Promise<any>;
 
@@ -9,12 +13,8 @@ export type Icons = {
   [dimensions: string]: Icon;
 };
 
-export type ExtensionType = string;
-
-export type ExtensionKey = string;
-
 export type ExtensionManifest = {
-  key: ExtensionType;
+  type: ExtensionType;
   title: string;
   description: string;
   icons: Icons;
@@ -34,7 +34,7 @@ export type ExtensionModule = {
   icon?: Icon;
   priority?: number;
   keywords?: Array<string>;
-  target: ModuleKey;
+  target: ExtensionKey;
 };
 
 export type ExtensionModuleNode = {

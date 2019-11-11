@@ -3,20 +3,22 @@ import { createFakeExtensionManifest } from '../../../../../editor-test-helpers/
 
 describe('menu-helpers', () => {
   describe('getItemsFromCapability', () => {
-    const awesomeExtension = createFakeExtensionManifest('awesome', 'awesome', [
-      'awesome-list',
-      'awesome-item',
-    ]);
+    const confluenceAwesomeMacro = createFakeExtensionManifest({
+      title: 'Awesome macro',
+      type: 'confluence.macro',
+      extensionKeys: ['awesome-list', 'awesome-item'],
+    });
 
-    const amazingExtension = createFakeExtensionManifest('amazing', 'amazing', [
-      'amazing-list',
-      'amazing-item',
-    ]);
+    const confluenceAmazingMacro = createFakeExtensionManifest({
+      title: 'Amazing macros',
+      type: 'confluence.macro',
+      extensionKeys: ['amazing-list', 'amazing-item'],
+    });
 
     test('should return all the extensions from a given capability', async () => {
       const insertMenuItems = getItemsFromModule(
-        [awesomeExtension, amazingExtension],
-        'insertMenu',
+        [confluenceAwesomeMacro, confluenceAmazingMacro],
+        'quickInsert',
         item => item.key,
       );
 

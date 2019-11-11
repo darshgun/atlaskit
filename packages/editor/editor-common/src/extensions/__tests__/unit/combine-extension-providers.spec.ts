@@ -4,32 +4,39 @@ import combineExtensionProviders from '../../combine-extension-providers';
 import { ExtensionProvider } from '../../types';
 
 describe('combine-extension-providers', () => {
-  const awesomeExtension = createFakeExtensionManifest('awesome', 'awesome', [
-    'awesome-list',
-    'awesome-item',
-  ]);
+  const confluenceAwesomeMacro = createFakeExtensionManifest({
+    title: 'Awesome macro',
+    type: 'confluence.macro',
+    extensionKeys: ['awesome'],
+  });
 
-  const amazingExtension = createFakeExtensionManifest('amazing', 'amazing', [
-    'amazing-list',
-    'amazing-item',
-  ]);
+  const forgeAmazingExtension = createFakeExtensionManifest({
+    title: 'Amazing extensions',
+    type: 'atlassian.forge',
+    extensionKeys: ['amazing'],
+  });
 
-  const dumbExtension = createFakeExtensionManifest('dumb', 'dumb', [
-    'dumb-list',
-    'dumb-item',
-  ]);
+  const confluenceDumbMacro = createFakeExtensionManifest({
+    title: 'Dumb macro',
+    type: 'confluence.macro',
+    extensionKeys: ['dumb'],
+  });
 
-  const mehhExtension = createFakeExtensionManifest('mehh', 'mehh', [
-    'mehh-list',
-    'mehh-item',
-  ]);
+  const forgeMehhExtension = createFakeExtensionManifest({
+    title: 'Mehh extensions',
+    type: 'atlassian.forge',
+    extensionKeys: ['mehh'],
+  });
 
   let combinedExtensionProvider: ExtensionProvider;
 
   beforeEach(() => {
     combinedExtensionProvider = combineExtensionProviders([
-      new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
-      new DefaultExtensionProvider([dumbExtension, mehhExtension]),
+      new DefaultExtensionProvider([
+        confluenceAwesomeMacro,
+        confluenceDumbMacro,
+      ]),
+      new DefaultExtensionProvider([forgeAmazingExtension, forgeMehhExtension]),
     ]);
   });
 
@@ -41,50 +48,65 @@ describe('combine-extension-providers', () => {
 
   test('should be able to recover all extensions', async () => {
     expect(await combinedExtensionProvider.getExtensions()).toEqual([
-      awesomeExtension,
-      amazingExtension,
-      dumbExtension,
-      mehhExtension,
+      confluenceAwesomeMacro,
+      confluenceDumbMacro,
+      forgeAmazingExtension,
+      forgeMehhExtension,
     ]);
   });
 
-  test('should be able to get an extension by key', async () => {
+  test('should be able to get an extension by title and key', async () => {
     expect(
-      await combinedExtensionProvider.getExtension('awesome-extension'),
-    ).toBe(awesomeExtension);
-    expect(await combinedExtensionProvider.getExtension('dumb-extension')).toBe(
-      dumbExtension,
-    );
-    expect(await combinedExtensionProvider.getExtension('mehh-extension')).toBe(
-      mehhExtension,
-    );
+      await combinedExtensionProvider.getExtension(
+        'confluence.macro',
+        'awesome',
+      ),
+    ).toBe(confluenceAwesomeMacro);
+
+    expect(
+      await combinedExtensionProvider.getExtension('confluence.macro', 'dumb'),
+    ).toBe(confluenceDumbMacro);
+
+    expect(
+      await combinedExtensionProvider.getExtension(
+        'atlassian.forge',
+        'amazing',
+      ),
+    ).toBe(forgeAmazingExtension);
+
+    expect(
+      await combinedExtensionProvider.getExtension('atlassian.forge', 'mehh'),
+    ).toBe(forgeMehhExtension);
   });
 
   test('should reject the promise if extension is not found', () => {
     return expect(
-      combinedExtensionProvider.getExtension('unknown-extension'),
+      combinedExtensionProvider.getExtension('unknown-type', 'unknown-key'),
     ).rejects.toEqual(
-      new Error('Extension with key "unknown-extension" not found!'),
+      new Error(
+        'Extension with type "unknown-type" and key "unknown-key" not found!',
+      ),
     );
   });
 
   test('should be able to search through the available extensions', async () => {
     expect(await combinedExtensionProvider.search('awes')).toEqual([
-      awesomeExtension,
+      confluenceAwesomeMacro,
     ]);
     expect(await combinedExtensionProvider.search('a')).toEqual([
-      awesomeExtension,
-      amazingExtension,
+      confluenceAwesomeMacro,
+      confluenceDumbMacro,
+      forgeAmazingExtension,
     ]);
     expect(await combinedExtensionProvider.search('amaz')).toEqual([
-      amazingExtension,
+      forgeAmazingExtension,
     ]);
     expect(await combinedExtensionProvider.search('dum')).toEqual([
-      dumbExtension,
+      confluenceDumbMacro,
     ]);
     expect(await combinedExtensionProvider.search('me')).toEqual([
-      awesomeExtension,
-      mehhExtension,
+      confluenceAwesomeMacro,
+      forgeMehhExtension,
     ]);
     expect(await combinedExtensionProvider.search('none')).toEqual([]);
   });
@@ -92,89 +114,68 @@ describe('combine-extension-providers', () => {
   test('should work even if the provider is a promise', async () => {
     const providers = combineExtensionProviders([
       Promise.resolve(
-        new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
+        new DefaultExtensionProvider([
+          confluenceAwesomeMacro,
+          confluenceDumbMacro,
+        ]),
       ),
 
-      new DefaultExtensionProvider([dumbExtension, mehhExtension]),
+      new DefaultExtensionProvider([forgeAmazingExtension, forgeMehhExtension]),
     ]);
 
     expect(await providers.getExtensions()).toEqual([
-      awesomeExtension,
-      amazingExtension,
-      dumbExtension,
-      mehhExtension,
+      confluenceAwesomeMacro,
+      confluenceDumbMacro,
+      forgeAmazingExtension,
+      forgeMehhExtension,
     ]);
 
-    expect(await providers.getExtension('awesome-extension')).toBe(
-      awesomeExtension,
+    expect(await providers.getExtension('confluence.macro', 'awesome')).toBe(
+      confluenceAwesomeMacro,
     );
 
     expect(await providers.search('me')).toEqual([
-      awesomeExtension,
-      mehhExtension,
+      confluenceAwesomeMacro,
+      forgeMehhExtension,
     ]);
   });
 
   describe('should deal with failures', () => {
-    const asyncExtension1 = createFakeExtensionManifest('async1', 'async1', [
-      'async1-list',
-      'async1-item',
-    ]);
-
-    const asyncExtension2 = createFakeExtensionManifest('async2', 'async2', [
-      'async2-list',
-      'async2-item',
-    ]);
-
-    const asyncExtension3 = createFakeExtensionManifest('async3', 'async3', [
-      'async3-list',
-      'async3-item',
-    ]);
-
-    const asyncExtension4 = createFakeExtensionManifest('async4', 'async4', [
-      'async4-list',
-      'async4-item',
-    ]);
-
     let providers: DefaultExtensionProvider[];
 
     beforeEach(() => {
       providers = [
-        new DefaultExtensionProvider([asyncExtension1]),
-        new DefaultExtensionProvider([asyncExtension2]),
-        new DefaultExtensionProvider([asyncExtension3]),
-        new DefaultExtensionProvider([asyncExtension4]),
-        new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
+        new DefaultExtensionProvider([confluenceAwesomeMacro]),
+        new DefaultExtensionProvider([confluenceDumbMacro]),
+        new DefaultExtensionProvider([forgeAmazingExtension]),
+        new DefaultExtensionProvider([forgeMehhExtension]),
       ];
     });
 
     test('should discard failed providers and return all valid results', async () => {
       const combinedProviders = combineExtensionProviders([
-        Promise.resolve(new DefaultExtensionProvider([asyncExtension1])),
-        Promise.reject(new DefaultExtensionProvider([asyncExtension2])),
-        Promise.resolve(new DefaultExtensionProvider([asyncExtension3])),
-        Promise.reject(new DefaultExtensionProvider([asyncExtension4])),
-        Promise.resolve(
-          new DefaultExtensionProvider([awesomeExtension, amazingExtension]),
-        ),
+        Promise.resolve(new DefaultExtensionProvider([confluenceAwesomeMacro])),
+        Promise.reject(new DefaultExtensionProvider([confluenceDumbMacro])),
+        Promise.resolve(new DefaultExtensionProvider([forgeAmazingExtension])),
+        Promise.reject(new DefaultExtensionProvider([forgeMehhExtension])),
       ]);
 
       expect(await combinedProviders.getExtensions()).toEqual([
-        asyncExtension1,
-        asyncExtension3,
-        awesomeExtension,
-        amazingExtension,
+        confluenceAwesomeMacro,
+        forgeAmazingExtension,
       ]);
 
-      expect(await combinedProviders.getExtension('awesome-extension')).toBe(
-        awesomeExtension,
-      );
+      expect(
+        await combinedProviders.getExtension('confluence.macro', 'awesome'),
+      ).toBe(confluenceAwesomeMacro);
 
-      expect(await combinedProviders.search('me')).toEqual([awesomeExtension]);
+      expect(await combinedProviders.search('me')).toEqual([
+        confluenceAwesomeMacro,
+      ]);
 
-      expect(await combinedProviders.search('async')).toEqual([
-        asyncExtension1,
-        asyncExtension3,
+      expect(await combinedProviders.search('e')).toEqual([
+        confluenceAwesomeMacro,
+        forgeAmazingExtension,
       ]);
     });
 
@@ -185,38 +186,39 @@ describe('combine-extension-providers', () => {
       const combinedProviders = combineExtensionProviders(providers);
 
       expect(await combinedProviders.getExtensions()).toEqual([
-        asyncExtension2,
-        asyncExtension4,
-        awesomeExtension,
-        amazingExtension,
+        confluenceDumbMacro,
+        forgeMehhExtension,
       ]);
     });
 
     test('getExtension should fail if no result is found', async () => {
       const combinedProviders = combineExtensionProviders(providers);
 
-      providers[4].getExtension = jest.fn().mockRejectedValue('error');
+      providers[0].getExtension = jest.fn().mockRejectedValue('error');
 
       return expect(
-        combinedProviders.getExtension('awesome-extension'),
+        combinedProviders.getExtension('confluence.macro', 'awesome'),
       ).rejects.toEqual(
-        new Error('Extension with key "awesome-extension" not found!'),
+        new Error(
+          'Extension with type "confluence.macro" and key "awesome" not found!',
+        ),
       );
     });
 
     test('search should discard failures and return valid results', async () => {
       const combinedProviders = combineExtensionProviders(providers);
 
-      providers[4].search = jest.fn().mockRejectedValue('error');
-
-      expect(await combinedProviders.search('me')).toEqual([]);
-
       providers[0].search = jest.fn().mockRejectedValue('error');
+
+      expect(await combinedProviders.search('me')).toEqual([
+        forgeMehhExtension,
+      ]);
+
+      providers[1].search = jest.fn().mockRejectedValue('error');
       providers[3].search = jest.fn().mockRejectedValue('error');
 
-      expect(await combinedProviders.search('async')).toEqual([
-        asyncExtension2,
-        asyncExtension3,
+      expect(await combinedProviders.search('e')).toEqual([
+        forgeAmazingExtension,
       ]);
     });
   });

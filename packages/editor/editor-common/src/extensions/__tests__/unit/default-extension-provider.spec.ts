@@ -2,56 +2,64 @@ import DefaultExtensionProvider from '../../default-extension-provider';
 import { createFakeExtensionManifest } from '@atlaskit/editor-test-helpers/extensions';
 
 describe('default-extension-provider', () => {
-  const awesomeExtension = createFakeExtensionManifest('awesome', 'awesome', [
-    'awesome-list',
-    'awesome-item',
-  ]);
+  const confluenceAwesomeMacro = createFakeExtensionManifest({
+    title: 'Awesome macro',
+    type: 'confluence.macro',
+    extensionKeys: ['awesome'],
+  });
 
-  const amazingExtension = createFakeExtensionManifest('amazing', 'amazing', [
-    'amazing-list',
-    'amazing-item',
-  ]);
+  const confluenceAmazingMacro = createFakeExtensionManifest({
+    title: 'Amazing macros',
+    type: 'confluence.macro',
+    extensionKeys: ['amazing'],
+  });
 
   let extensionProvider: DefaultExtensionProvider;
 
   beforeEach(() => {
     extensionProvider = new DefaultExtensionProvider([
-      awesomeExtension,
-      amazingExtension,
+      confluenceAwesomeMacro,
+      confluenceAmazingMacro,
     ]);
   });
 
   test('should be able to recover all extensions', async () => {
     expect(await extensionProvider.getExtensions()).toEqual([
-      awesomeExtension,
-      amazingExtension,
+      confluenceAwesomeMacro,
+      confluenceAmazingMacro,
     ]);
   });
 
-  test('should be able to get an extension by key', async () => {
-    expect(await extensionProvider.getExtension('awesome-extension')).toBe(
-      awesomeExtension,
-    );
-    expect(await extensionProvider.getExtension('amazing-extension')).toBe(
-      amazingExtension,
-    );
+  test('should be able to get an extension by type and key', async () => {
+    expect(
+      await extensionProvider.getExtension('confluence.macro', 'awesome'),
+    ).toBe(confluenceAwesomeMacro);
+    expect(
+      await extensionProvider.getExtension('confluence.macro', 'amazing'),
+    ).toBe(confluenceAmazingMacro);
   });
 
-  test('should fail if not able to get an extension by key', () => {
+  test('should fail if not able to get an extension by type or key', () => {
     return expect(
-      extensionProvider.getExtension('unknown-extension'),
+      extensionProvider.getExtension('unknown-type', 'unknown-key'),
     ).rejects.toEqual(
-      new Error('Extension with key "unknown-extension" not found!'),
+      new Error(
+        'Extension with type "unknown-type" and key "unknown-key" not found!',
+      ),
     );
   });
 
-  test('should be able to search through the available extensions', async () => {
-    expect(await extensionProvider.search('awes')).toEqual([awesomeExtension]);
-    expect(await extensionProvider.search('a')).toEqual([
-      awesomeExtension,
-      amazingExtension,
+  test('should be able to search through the available extensions (case insensitive)', async () => {
+    expect(await extensionProvider.search('awes')).toEqual([
+      confluenceAwesomeMacro,
     ]);
-    expect(await extensionProvider.search('amaz')).toEqual([amazingExtension]);
+    expect(await extensionProvider.search('a')).toEqual([
+      confluenceAwesomeMacro,
+      confluenceAmazingMacro,
+    ]);
+    expect(await extensionProvider.search('amaz')).toEqual([
+      confluenceAmazingMacro,
+    ]);
     expect(await extensionProvider.search('none')).toEqual([]);
   });
 });

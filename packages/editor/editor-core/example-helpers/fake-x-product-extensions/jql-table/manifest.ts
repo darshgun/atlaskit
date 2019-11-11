@@ -1,8 +1,9 @@
 import { ExtensionManifest } from '@atlaskit/editor-common';
 
 const manifest: ExtensionManifest = {
-  title: 'JQL table',
-  key: 'jql-table-extension',
+  title: 'Jira',
+  type: 'fancy.extensions',
+  key: 'jira',
   description: 'Jira results in a table',
   icons: {
     '16': () => import('@atlaskit/icon/glyph/editor/code'),

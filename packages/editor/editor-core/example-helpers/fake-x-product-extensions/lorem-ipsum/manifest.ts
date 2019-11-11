@@ -2,7 +2,7 @@ import { ExtensionManifest } from '@atlaskit/editor-common';
 
 const manifest: ExtensionManifest = {
   title: 'Lorem ipsum',
-  key: 'fake.lorem.ipsum',
+  type: 'fake.lorem.ipsum',
   description: 'Inline extension demo',
   icons: {
     '16': () => import('@atlaskit/icon/glyph/editor/code'),

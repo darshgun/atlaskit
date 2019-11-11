@@ -1,4 +1,9 @@
-import { ExtensionManifest, ExtensionProvider } from './types';
+import {
+  ExtensionManifest,
+  ExtensionProvider,
+  ExtensionType,
+  ExtensionKey,
+} from './types';
 
 export default class DefaultExtensionProvider implements ExtensionProvider {
   private manifestsPromise: Promise<ExtensionManifest[]>;
@@ -7,13 +12,19 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
     this.manifestsPromise = Promise.resolve(manifests);
   }
 
-  async getExtension(key: string) {
-    const extension = (await this.manifestsPromise).find(
-      manifest => manifest.key === key,
+  async getExtension(type: ExtensionType, key: ExtensionKey) {
+    const manifests = (await this.manifestsPromise).filter(
+      manifest => manifest.type === type,
+    );
+
+    const extension = manifests.find(manifest =>
+      manifest.modules.nodes.find(node => node.key === key),
     );
 
     if (!extension) {
-      throw new Error(`Extension with key "${key}" not found!`);
+      throw new Error(
+        `Extension with type "${type}" and key "${key}" not found!`,
+      );
     }
 
     return extension;
@@ -25,7 +36,7 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
 
   async search(keyword: string) {
     const extensions = (await this.manifestsPromise).filter(manifest =>
-      manifest.title.includes(keyword),
+      manifest.title.toLowerCase().includes(keyword.toLowerCase()),
     );
     return extensions;
   }

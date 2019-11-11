@@ -215,7 +215,7 @@ describe('Renderer - React/Nodes/Extension', () => {
           serializer={serializer}
           extensionHandlers={extensionHandlers}
           rendererContext={rendererContext}
-          extensionType="fake.confluence-extension"
+          extensionType="fake.confluence"
           extensionKey="macro"
           text="Hello extension"
         />,
@@ -232,7 +232,7 @@ describe('Renderer - React/Nodes/Extension', () => {
 
     it('should prioritize extension handlers (sync) over extension provider', async () => {
       const extensionHandlers: ExtensionHandlers = {
-        'fake.confluence-extension': (extensionParams: any) => (
+        'fake.confluence': (extensionParams: any) => (
           <div>Extension handler: {extensionParams.content}</div>
         ),
       };
@@ -243,7 +243,7 @@ describe('Renderer - React/Nodes/Extension', () => {
           serializer={serializer}
           extensionHandlers={extensionHandlers}
           rendererContext={rendererContext}
-          extensionType="fake.confluence-extension"
+          extensionType="fake.confluence"
           extensionKey="macro"
           text="Hello extension"
         />,
@@ -256,7 +256,7 @@ describe('Renderer - React/Nodes/Extension', () => {
 
     it('should fallback to extension provider if not handled by extension handler', async () => {
       const extensionHandlers: ExtensionHandlers = {
-        'fake.confluence-extension': (extensionParams: any) => null,
+        'fake.confluence': (extensionParams: any) => null,
       };
 
       const extension = mount(
@@ -265,7 +265,7 @@ describe('Renderer - React/Nodes/Extension', () => {
           serializer={serializer}
           extensionHandlers={extensionHandlers}
           rendererContext={rendererContext}
-          extensionType="fake.confluence-extension"
+          extensionType="fake.confluence"
           extensionKey="macro"
           text="Hello extension"
         />,

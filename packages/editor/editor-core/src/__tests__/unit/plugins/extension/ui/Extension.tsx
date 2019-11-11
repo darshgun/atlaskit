@@ -267,7 +267,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
         name: 'extension',
       },
       attrs: {
-        extensionType: 'fake.confluence-extension',
+        extensionType: 'fake.confluence',
         extensionKey: 'expand',
         text: 'Hello extension!',
         parameters: {},
@@ -310,7 +310,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
       }) => <div>Extension handler: {node.content}</div>;
 
       const extensionHandlers: ExtensionHandlers = {
-        'fake.confluence-extension': ext => {
+        'fake.confluence': ext => {
           if (ext.extensionKey === 'expand') {
             return <ExtensionCompontent node={ext} />;
           }
@@ -344,7 +344,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
 
     it('should fallback to extension provider in case extension handlers do not handle it', async () => {
       const extensionHandlers: ExtensionHandlers = {
-        'fake.confluence-extension': (extensionParams: any) => null,
+        'fake.confluence': (extensionParams: any) => null,
       };
 
       const extension = mount(

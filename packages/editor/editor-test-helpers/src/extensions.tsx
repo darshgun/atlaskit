@@ -157,30 +157,34 @@ export const extensionHandlers: ExtensionHandlers = {
 const createFakeModule = (content: any) => () =>
   Promise.resolve({ default: content });
 
-export const createFakeExtensionManifest = (
-  title: string,
-  key: string,
-  nodeKeys: string[],
-): ExtensionManifest => ({
+export const createFakeExtensionManifest = ({
   title,
-  key: `${key}-extension`,
-  description: 'Jira results in a table',
+  type,
+  extensionKeys,
+}: {
+  title: string;
+  type: ExtensionType;
+  extensionKeys: ExtensionKey[];
+}): ExtensionManifest => ({
+  title,
+  type,
+  description: `${title} extension`,
   icons: {
     '16': createFakeModule({}),
     '48': createFakeModule({}),
   },
   modules: {
-    quickInsert: nodeKeys.map(key => ({ key, target: key })),
-    insertMenu: nodeKeys.map(key => ({ key, target: key })),
-    nodes: nodeKeys.map(nodeKey => ({
-      key: nodeKey,
+    quickInsert: extensionKeys.map(key => ({ key, target: key })),
+    insertMenu: extensionKeys.map(key => ({ key, target: key })),
+    nodes: extensionKeys.map(key => ({
+      key,
       type: 'block',
       insert: createFakeModule({
         type: 'extension',
         attrs: {
           extensionType: 'com.atlassian.confluence.macro.core',
-          extensionKey: nodeKey,
-          text: `${name} - ${nodeKey} - demo`,
+          extensionKey: key,
+          text: `${name} - ${key} - demo`,
           parameters: {
             macroParams: {},
             macroMetadata: {
@@ -206,11 +210,11 @@ export const createFakeExtensionProvider = (
   extensionKey: ExtensionKey,
   extensionHandler: (...args: any) => JSX.Element,
 ) => {
-  const macroManifest = createFakeExtensionManifest(
-    'fake extension provider',
-    extensionType,
-    [extensionKey],
-  );
+  const macroManifest = createFakeExtensionManifest({
+    title: 'fake extension provider',
+    type: extensionType,
+    extensionKeys: [extensionKey],
+  });
 
   const FakeES6Module = {
     __esModule: true,

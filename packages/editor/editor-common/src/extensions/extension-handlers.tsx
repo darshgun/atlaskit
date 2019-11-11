@@ -13,17 +13,16 @@ export async function getExtensionModuleNode(
   extensionType: ExtensionType,
   extensionKey: ExtensionKey,
 ) {
-  const manifest = await extensionProvider.getExtension(extensionType);
-
-  if (!manifest) {
-    throw new Error(`Extension with key "${extensionType}" not found!`);
-  }
+  const manifest = await extensionProvider.getExtension(
+    extensionType,
+    extensionKey,
+  );
 
   const node = manifest.modules.nodes.find(node => node.key === extensionKey);
 
   if (!node) {
     throw new Error(
-      `Node with key "${extensionKey}" not found on manifest for extension type "${extensionType}"!`,
+      `Node with key "${extensionKey}" not found on manifest for extension type "${extensionType}" and key "${extensionKey}"!`,
     );
   }
 

@@ -1,5 +1,6 @@
-import { ExtensionProvider } from './types';
+import { ExtensionProvider, ExtensionKey } from './types';
 import { combineProviders } from '../provider-helpers';
+import { ExtensionType } from '../../../editor-core/src';
 
 /**
  * Allow to run methods from the `ExtensionProvider` interface across all providers seamlessly.
@@ -17,8 +18,8 @@ export default (
       return invokeList('getExtensions');
     },
 
-    getExtension(key: string) {
-      return invokeSingle('getExtension', [key]);
+    getExtension(type: ExtensionType, key: ExtensionKey) {
+      return invokeSingle('getExtension', [type, key]);
     },
 
     search(keyword: string) {

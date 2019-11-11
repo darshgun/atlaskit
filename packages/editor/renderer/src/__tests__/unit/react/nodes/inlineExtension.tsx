@@ -206,7 +206,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
           serializer={serializer}
           extensionHandlers={extensionHandlers}
           rendererContext={rendererContext}
-          extensionType="fake.confluence-extension"
+          extensionType="fake.confluence"
           extensionKey="inline-macro"
           parameters={{
             words: 'lorem ipsum',
@@ -225,7 +225,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
 
     it('should prioritize extension handlers (sync) over extension provider', async () => {
       const extensionHandlers: ExtensionHandlers = {
-        'fake.confluence-extension': (extensionParams: any) => (
+        'fake.confluence': (extensionParams: any) => (
           <div>Extension handler: {extensionParams.parameters.words}</div>
         ),
       };
@@ -236,7 +236,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
           serializer={serializer}
           extensionHandlers={extensionHandlers}
           rendererContext={rendererContext}
-          extensionType="fake.confluence-extension"
+          extensionType="fake.confluence"
           extensionKey="inline-macro"
           parameters={{
             words: 'lorem ipsum',
@@ -251,7 +251,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
 
     it('should fallback to extension provider if not handled by extension handlers', async () => {
       const extensionHandlers: ExtensionHandlers = {
-        'fake.confluence-extension': (extensionParams: any) => null,
+        'fake.confluence': (extensionParams: any) => null,
       };
 
       const extension = mount(
@@ -260,7 +260,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
           serializer={serializer}
           extensionHandlers={extensionHandlers}
           rendererContext={rendererContext}
-          extensionType="fake.confluence-extension"
+          extensionType="fake.confluence"
           extensionKey="inline-macro"
           parameters={{
             words: 'lorem ipsum',

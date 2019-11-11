@@ -15,20 +15,27 @@ describe('extension-handlers', () => {
   let extensionProvider: ExtensionProvider;
 
   beforeEach(async () => {
-    const confluenceMacros = createFakeExtensionManifest(
-      'fake confluence macro',
-      'fake.confluence',
-      ['expand', 'table-of-contents'],
-    );
-    const forgeExtensions = createFakeExtensionManifest(
-      'fake forge extension',
-      'fake.forge',
-      ['rsvp', 'days-until'],
-    );
+    const confluenceExpandMacro = createFakeExtensionManifest({
+      title: 'Expand macro',
+      type: 'confluence.macro',
+      extensionKeys: ['expand'],
+    });
+
+    const confluenceTOCMacro = createFakeExtensionManifest({
+      title: 'Table of contents macro',
+      type: 'confluence.macro',
+      extensionKeys: ['toc'],
+    });
+
+    const forgeAmazingExtension = createFakeExtensionManifest({
+      title: 'Answer to life',
+      type: 'atlassian.forge',
+      extensionKeys: ['answer-to-life'],
+    });
 
     extensionProvider = combineExtensionProviders([
-      new DefaultExtensionProvider([confluenceMacros]),
-      new DefaultExtensionProvider([forgeExtensions]),
+      new DefaultExtensionProvider([confluenceExpandMacro, confluenceTOCMacro]),
+      new DefaultExtensionProvider([forgeAmazingExtension]),
     ]);
   });
 
@@ -36,13 +43,13 @@ describe('extension-handlers', () => {
     test('should return a react component synchronously, passing down the extension node, which will eventually reolve to the extension handler', async () => {
       const NodeRenderer = getNodeRenderer(
         extensionProvider,
-        'fake.confluence-extension',
+        'confluence.macro',
         'expand',
       );
 
       const extensionParams = {
         extensionKey: 'expand',
-        extensionType: 'fake.confluence-extension',
+        extensionType: 'confluence.macro',
         parameters: {
           text: 'inside out',
         },
@@ -66,44 +73,16 @@ describe('extension-handlers', () => {
     });
 
     describe('once the node resolves to a component', () => {
-      test('should render error message if extension type is not found', async () => {
-        const NodeRenderer = getNodeRenderer(
-          extensionProvider,
-          'fake.unknown-extension',
-          'expand',
-        );
-
-        const extensionParams = {
-          extensionKey: 'expand',
-          extensionType: 'fake.unknown-extension',
-          parameters: {
-            text: 'inside out',
-          },
-        };
-
-        const wrapper = shallow(
-          <NodeRenderer extensionParams={extensionParams} />,
-        );
-
-        await expect(Loadable.preloadAll()).rejects.toEqual(
-          new Error(`Extension with key "fake.unknown-extension" not found!`),
-        );
-
-        wrapper.update();
-
-        expect(wrapper.dive().text()).toEqual('Error loading the extension!');
-      });
-
       test('should render error message if extension key is not found', async () => {
         const NodeRenderer = getNodeRenderer(
           extensionProvider,
-          'fake.confluence-extension',
-          'answer-to-life',
+          'confluence.macro',
+          'unknown',
         );
 
         const extensionParams = {
-          extensionKey: 'answer-to-life',
-          extensionType: 'fake.confluence-extension',
+          extensionKey: 'unknown',
+          extensionType: 'confluence.macro',
           parameters: {
             text: 'inside out',
           },
@@ -115,7 +94,7 @@ describe('extension-handlers', () => {
 
         await expect(Loadable.preloadAll()).rejects.toEqual(
           new Error(
-            `Node with key "answer-to-life" not found on manifest for extension type "fake.confluence-extension"!`,
+            `Extension with type "confluence.macro" and key "unknown" not found!`,
           ),
         );
 
@@ -130,7 +109,7 @@ describe('extension-handlers', () => {
     test('should return the manifest node when found', async () => {
       const node = await getExtensionModuleNode(
         extensionProvider,
-        'fake.confluence-extension',
+        'confluence.macro',
         'expand',
       );
       expect(Object.keys(node)).toEqual(['key', 'type', 'insert', 'render']);
@@ -138,13 +117,11 @@ describe('extension-handlers', () => {
 
     test('should throw if extension type is not found', () => {
       return expect(
-        getExtensionModuleNode(
-          extensionProvider,
-          'fake.unknown-extension',
-          'expand',
-        ),
+        getExtensionModuleNode(extensionProvider, 'fake.type', 'expand'),
       ).rejects.toEqual(
-        new Error(`Extension with key "fake.unknown-extension" not found!`),
+        new Error(
+          `Extension with type "fake.type" and key "expand" not found!`,
+        ),
       );
     });
 
@@ -152,12 +129,12 @@ describe('extension-handlers', () => {
       return expect(
         getExtensionModuleNode(
           extensionProvider,
-          'fake.confluence-extension',
-          'answer-to-life',
+          'confluence.macro',
+          'unknown',
         ),
       ).rejects.toEqual(
         new Error(
-          `Node with key "answer-to-life" not found on manifest for extension type "fake.confluence-extension"!`,
+          `Extension with type "confluence.macro" and key "unknown" not found!`,
         ),
       );
     });
