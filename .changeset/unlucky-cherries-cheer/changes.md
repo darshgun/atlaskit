@@ -1,1 +1,0 @@
-Create Menu package and expose `Item` and `LinkItem` components
