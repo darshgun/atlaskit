@@ -3,6 +3,10 @@ export const documentWithExpand = {
   type: 'doc',
   content: [
     {
+      type: 'paragraph',
+      content: [],
+    },
+    {
       type: 'expand',
       attrs: {
         title: 'title',
