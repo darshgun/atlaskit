@@ -14,20 +14,10 @@ export interface Props {
   body?: string;
   // URL used as href value of the Article Title. If is undefined, the title will a regular H2 tag instead of a link
   titleLinkUrl?: string;
-  // Function executed when the article rendering begins
-  onArticleRenderBegin?(): void;
-  // Function executed when the article rendering finishes
-  onArticleRenderDone?(): void;
 }
 
 const HelpArticle = (props: Props) => {
-  const {
-    title = '',
-    body,
-    titleLinkUrl,
-    onArticleRenderBegin,
-    onArticleRenderDone,
-  } = props;
+  const { title = '', body, titleLinkUrl } = props;
 
   return (
     <ArticleContentInner>
@@ -46,11 +36,7 @@ const HelpArticle = (props: Props) => {
           )}
         </ArticleContentTitle>
       )}
-      <ArticleBody
-        body={body}
-        onArticleRenderBegin={onArticleRenderBegin}
-        onArticleRenderDone={onArticleRenderDone}
-      />
+      <ArticleBody body={body} />
     </ArticleContentInner>
   );
 };
