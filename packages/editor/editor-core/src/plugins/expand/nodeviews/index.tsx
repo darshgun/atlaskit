@@ -177,10 +177,11 @@ export class ExpandNodeView implements NodeView {
     if (target === this.input) {
       event.stopPropagation();
       const { state, dispatch } = this.view;
-      updateExpandTitle(target.value, this.getPos(), this.node.type)(
-        state,
-        dispatch,
-      );
+      updateExpandTitle(
+        target.value,
+        this.getPos(),
+        this.node.type,
+      )(state, dispatch);
     }
   };
 
