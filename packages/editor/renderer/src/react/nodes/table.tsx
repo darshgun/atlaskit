@@ -222,9 +222,7 @@ export class TableContainer extends React.Component<
 
     return (
       <div
-        className={`${TableSharedCssClassName.TABLE_CONTAINER} ${
-          this.props.shadowClassNames
-        }`}
+        className={`${TableSharedCssClassName.TABLE_CONTAINER} ${this.props.shadowClassNames}`}
         data-layout={layout}
         ref={this.props.handleRef}
         style={{ width: calcTableWidth(layout, renderWidth, false) }}

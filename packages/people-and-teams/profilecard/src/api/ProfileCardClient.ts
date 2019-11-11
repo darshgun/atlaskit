@@ -28,9 +28,7 @@ export const modifyResponse = (
     data.remoteWeekdayIndex &&
     data.remoteWeekdayIndex !== localWeekdayIndex
   ) {
-    data.remoteTimeString = `${data.remoteWeekdayString} ${
-      data.remoteTimeString
-    }`;
+    data.remoteTimeString = `${data.remoteWeekdayString} ${data.remoteTimeString}`;
   }
 
   return {

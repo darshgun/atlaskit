@@ -7,7 +7,7 @@ describe('Autocomplete-util', () => {
 
   const testData: [
     (string[] | undefined),
-    (string | string[] | undefined)
+    (string | string[] | undefined),
   ][] = [
     // autocomplete array, expected autocomplete text
     [undefined, undefined],

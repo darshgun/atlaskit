@@ -21,21 +21,15 @@ type PopupExampleProps = {
 const PopupExample: FC<PopupExampleProps> = ({ name }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onClick = useCallback(
-    () => {
-      console.log('onClick', name);
-      setIsOpen(!isOpen);
-    },
-    [isOpen, name, setIsOpen],
-  );
+  const onClick = useCallback(() => {
+    console.log('onClick', name);
+    setIsOpen(!isOpen);
+  }, [isOpen, name, setIsOpen]);
 
-  const onClose = useCallback(
-    () => {
-      console.log('onClose', name);
-      setIsOpen(false);
-    },
-    [name, setIsOpen],
-  );
+  const onClose = useCallback(() => {
+    console.log('onClose', name);
+    setIsOpen(false);
+  }, [name, setIsOpen]);
 
   return (
     <Popup

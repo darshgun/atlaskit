@@ -221,7 +221,7 @@ export default class WithNavigation extends React.Component<Props, State> {
         <DefaultQuickSearchWrapper
           context={currentContext}
           //@ts-ignore
-          {...presetConfig[this.state.currentConfig] || {}}
+          {...(presetConfig[this.state.currentConfig] || {})}
           {...this.props}
         />
       </LocaleIntlProvider>

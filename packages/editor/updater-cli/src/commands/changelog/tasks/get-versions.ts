@@ -23,9 +23,7 @@ export const getVersionsTask: Task<
 
     if (!currentVersion) {
       throw new Error(
-        `Package "${
-          params.packageName
-        }" is not listed in projects dependencies/devDependencies`,
+        `Package "${params.packageName}" is not listed in projects dependencies/devDependencies`,
       );
     }
 

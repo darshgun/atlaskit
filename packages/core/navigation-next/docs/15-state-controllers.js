@@ -15,11 +15,11 @@ ${<H>NavigationProvider</H>}
 The \`NavigationProvider\` facilitates sharing state throughout the application using Context. It should wrap the root of your application, and the \`LayoutManager\` component will not work unless it's the descendant of a \`NavigationProvider\`.
 
 ${(
-    <Props
-      heading="NavigationProvider props"
-      props={require('!!extract-react-types-loader!../src/provider/NavigationProvider')}
-    />
-  )}
+  <Props
+    heading="NavigationProvider props"
+    props={require('!!extract-react-types-loader!../src/provider/NavigationProvider')}
+  />
+)}
 
 ${<Hr />}
 
@@ -298,62 +298,62 @@ The library also provides some pre-composed selector functions, along with some 
 Selectors are higher-order wrappers around the \`walkView\` function which abstract common item selection logic.
 
 ${(
-    <table>
-      <thead>
-        <tr>
-          <td>
-            <strong>Function</strong>
-          </td>
-          <td>
-            <strong>Signature</strong>
-          </td>
-          <td>
-            <strong>Description</strong>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>findId</td>
-          <td>
-            <code>{`string => Modifier => View => View`}</code>
-          </td>
-          <td>
-            Select the item in the view with the given <code>id</code>.
-          </td>
-        </tr>
-        <tr>
-          <td>matchId</td>
-          <td>
-            <code>{`RegExp => Modifier => View => View`}</code>
-          </td>
-          <td>
-            Select the items in the view with <code>id</code>s that match the
-            given regular expression.
-          </td>
-        </tr>
-        <tr>
-          <td>findLegacyId</td>
-          <td>
-            <code>{`string => Modifier => View => View`}</code>
-          </td>
-          <td>
-            Select the item in the view with the given <code>legacyId</code>.
-          </td>
-        </tr>
-        <tr>
-          <td>matchLegacyId</td>
-          <td>
-            <code>{`RegExp => Modifier => View => View`}</code>
-          </td>
-          <td>
-            Select the items in the view with <code>legacyId</code>s that match
-            the given regular expression.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  )}
+  <table>
+    <thead>
+      <tr>
+        <td>
+          <strong>Function</strong>
+        </td>
+        <td>
+          <strong>Signature</strong>
+        </td>
+        <td>
+          <strong>Description</strong>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>findId</td>
+        <td>
+          <code>{`string => Modifier => View => View`}</code>
+        </td>
+        <td>
+          Select the item in the view with the given <code>id</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>matchId</td>
+        <td>
+          <code>{`RegExp => Modifier => View => View`}</code>
+        </td>
+        <td>
+          Select the items in the view with <code>id</code>s that match the
+          given regular expression.
+        </td>
+      </tr>
+      <tr>
+        <td>findLegacyId</td>
+        <td>
+          <code>{`string => Modifier => View => View`}</code>
+        </td>
+        <td>
+          Select the item in the view with the given <code>legacyId</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>matchLegacyId</td>
+        <td>
+          <code>{`RegExp => Modifier => View => View`}</code>
+        </td>
+        <td>
+          Select the items in the view with <code>legacyId</code>s that match
+          the given regular expression.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+)}
 
 Example usage:
 
@@ -371,65 +371,65 @@ const myReducer = viewData => {
 Modifiers are functions which can be configured to perform a common kind of modification to an item.
 
 ${(
-    <table>
-      <thead>
-        <tr>
-          <td>
-            <strong>Function</strong>
-          </td>
-          <td>
-            <strong>Signature</strong>
-          </td>
-          <td>
-            <strong>Description</strong>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>removeItem</td>
-          <td>
-            <code>{`Item => null`}</code>
-          </td>
-          <td>Remove the selected item from the view.</td>
-        </tr>
-        <tr>
-          <td>insertBefore</td>
-          <td>
-            <code>{`Item[] => Item => Item[]`}</code>
-          </td>
-          <td>Insert the given array of items before the selected item.</td>
-        </tr>
-        <tr>
-          <td>insertAfter</td>
-          <td>
-            <code>{`Item[] => Item => Item[]`}</code>
-          </td>
-          <td>Insert the given array of items after the selected item.</td>
-        </tr>
-        <tr>
-          <td>prependChildren</td>
-          <td>
-            <code>{`Item[] => Item => Item`}</code>
-          </td>
-          <td>
-            Insert the given array of items at the start of the selected{' '}
-            {`item's`} <code>items</code> property.
-          </td>
-        </tr>
-        <tr>
-          <td>appendChildren</td>
-          <td>
-            <code>{`Item[] => Item => Item`}</code>
-          </td>
-          <td>
-            Insert the given array of items at the end of the selected{' '}
-            {`item's`} <code>items</code> property.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  )}
+  <table>
+    <thead>
+      <tr>
+        <td>
+          <strong>Function</strong>
+        </td>
+        <td>
+          <strong>Signature</strong>
+        </td>
+        <td>
+          <strong>Description</strong>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>removeItem</td>
+        <td>
+          <code>{`Item => null`}</code>
+        </td>
+        <td>Remove the selected item from the view.</td>
+      </tr>
+      <tr>
+        <td>insertBefore</td>
+        <td>
+          <code>{`Item[] => Item => Item[]`}</code>
+        </td>
+        <td>Insert the given array of items before the selected item.</td>
+      </tr>
+      <tr>
+        <td>insertAfter</td>
+        <td>
+          <code>{`Item[] => Item => Item[]`}</code>
+        </td>
+        <td>Insert the given array of items after the selected item.</td>
+      </tr>
+      <tr>
+        <td>prependChildren</td>
+        <td>
+          <code>{`Item[] => Item => Item`}</code>
+        </td>
+        <td>
+          Insert the given array of items at the start of the selected{' '}
+          {`item's`} <code>items</code> property.
+        </td>
+      </tr>
+      <tr>
+        <td>appendChildren</td>
+        <td>
+          <code>{`Item[] => Item => Item`}</code>
+        </td>
+        <td>
+          Insert the given array of items at the end of the selected {`item's`}{' '}
+          <code>items</code> property.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+)}
 
 Example usage:
 

@@ -10,12 +10,10 @@ import UIAnalyticsEvent from './UIAnalyticsEvent';
 import { AnalyticsEventPayload } from './AnalyticsEvent';
 
 export interface AnalyticsContextConsumerProps<Props> {
-  children: (
-    props: {
-      createAnalyticsEvent: CreateUIAnalyticsEvent;
-      patchedEventProps: CreateEventMap;
-    },
-  ) => React.ReactNode;
+  children: (props: {
+    createAnalyticsEvent: CreateUIAnalyticsEvent;
+    patchedEventProps: CreateEventMap;
+  }) => React.ReactNode;
   createEventMap: CreateEventMap;
   wrappedComponentProps: Props;
 }

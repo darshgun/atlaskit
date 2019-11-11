@@ -15,7 +15,7 @@ export { MentionDescription };
 export type MentionProviderFunctions = {
   [Key in keyof MentionProvider]: MentionProvider[Key] extends Function
     ? MentionProvider[Key]
-    : never
+    : never;
 };
 
 /**

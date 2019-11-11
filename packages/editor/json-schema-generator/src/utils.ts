@@ -36,7 +36,7 @@ export type LiteralType = {
     | number
     | ts.PseudoBigInt
     ? PrimitiveType
-    : ts.LiteralType[k]
+    : ts.LiteralType[k];
 };
 export function extractLiteralValue(typ: ts.Type): PrimitiveType {
   /* eslint-disable no-bitwise */

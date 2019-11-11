@@ -19,15 +19,13 @@ interface CommonDataProviderProps {
   cloudId?: string;
   disableRecentContainers: boolean;
   recommendationsFeatureFlags?: RecommendationsFeatureFlags;
-  children: (
-    props: {
-      recentContainers: ProviderResult<RecentContainersResponse>;
-      managePermission: ProviderResult<boolean>;
-      addProductsPermission: ProviderResult<boolean>;
-      isXFlowEnabled: ProviderResult<boolean>;
-      productRecommendations: ProviderResult<RecommendationsEngineResponse>;
-    },
-  ) => React.ReactElement<any>;
+  children: (props: {
+    recentContainers: ProviderResult<RecentContainersResponse>;
+    managePermission: ProviderResult<boolean>;
+    addProductsPermission: ProviderResult<boolean>;
+    isXFlowEnabled: ProviderResult<boolean>;
+    productRecommendations: ProviderResult<RecommendationsEngineResponse>;
+  }) => React.ReactElement<any>;
 }
 
 export default ({

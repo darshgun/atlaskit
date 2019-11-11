@@ -69,9 +69,7 @@ describe('tasks and decisions', () => {
         );
       });
 
-      it(`should fire v3 analytics event when ${
-        scenario.name
-      } inserted`, () => {
+      it(`should fire v3 analytics event when ${scenario.name} inserted`, () => {
         expect(createAnalyticsEvent).toHaveBeenCalledWith({
           action: 'inserted',
           actionSubject: 'document',

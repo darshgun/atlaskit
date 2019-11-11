@@ -708,13 +708,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
 
       check(
         'with relative table and colspan',
-        `<table class="relative-table wrapped" style="width: ${table1WidthPct}%;"><colgroup><col style="width: ${
-          table1ColumnPct[0]
-        }%;" /><col style="width: ${
-          table1ColumnPct[1]
-        }%;" /><col style="width: ${
-          table1ColumnPct[2]
-        }%;" /></colgroup><tbody><tr><th>1</th><th>2</th><th>3</th></tr><tr><td colspan="2"><br />asd</td><td>asd</td></tr><tr><td>d</td><td colspan="2">asd</td></tr></tbody></table>`,
+        `<table class="relative-table wrapped" style="width: ${table1WidthPct}%;"><colgroup><col style="width: ${table1ColumnPct[0]}%;" /><col style="width: ${table1ColumnPct[1]}%;" /><col style="width: ${table1ColumnPct[2]}%;" /></colgroup><tbody><tr><th>1</th><th>2</th><th>3</th></tr><tr><td colspan="2"><br />asd</td><td>asd</td></tr><tr><td>d</td><td colspan="2">asd</td></tr></tbody></table>`,
         doc(
           table()(
             tr(
@@ -750,13 +744,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
 
       check(
         'with numbering column and background colors',
-        `<table class="relative-table wrapped" style="width: ${table2WidthPct}%;"><colgroup><col /><col style="width: ${
-          table2ColumnPct[0]
-        }%;" /><col style="width: ${
-          table2ColumnPct[1]
-        }%;" /><col style="width: ${
-          table2ColumnPct[2]
-        }%;" /></colgroup><tbody><tr><th class="numberingColumn"><br /></th><th>one</th><th>two</th><th>three</th></tr><tr><td class="numberingColumn">1</td><td>14</td><td>2</td><td>3</td></tr><tr><td class="numberingColumn">2</td><td><br /></td><td class="highlight-green" data-highlight-colour="green">5</td><td class="highlight-green" data-highlight-colour="green"><p>6</p></td></tr><tr><td class="numberingColumn" colspan="1">3</td><td colspan="1"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td></tr><tr><th class="numberingColumn">123</th><th colspan="1">qwe</th><th colspan="1"><br /></th><th colspan="1"><p><br /></p></th></tr><tr><td class="numberingColumn" colspan="1">4</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn" colspan="1">5</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">6</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">7</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr></tbody></table>`,
+        `<table class="relative-table wrapped" style="width: ${table2WidthPct}%;"><colgroup><col /><col style="width: ${table2ColumnPct[0]}%;" /><col style="width: ${table2ColumnPct[1]}%;" /><col style="width: ${table2ColumnPct[2]}%;" /></colgroup><tbody><tr><th class="numberingColumn"><br /></th><th>one</th><th>two</th><th>three</th></tr><tr><td class="numberingColumn">1</td><td>14</td><td>2</td><td>3</td></tr><tr><td class="numberingColumn">2</td><td><br /></td><td class="highlight-green" data-highlight-colour="green">5</td><td class="highlight-green" data-highlight-colour="green"><p>6</p></td></tr><tr><td class="numberingColumn" colspan="1">3</td><td colspan="1"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td><td class="highlight-blue" colspan="1" data-highlight-colour="blue"><br /></td></tr><tr><th class="numberingColumn">123</th><th colspan="1">qwe</th><th colspan="1"><br /></th><th colspan="1"><p><br /></p></th></tr><tr><td class="numberingColumn" colspan="1">4</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn" colspan="1">5</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">6</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr><tr><td class="numberingColumn highlight-red" colspan="1" data-highlight-colour="red">7</td><td colspan="1"><br /></td><td colspan="1"><br /></td><td colspan="1"><br /></td></tr></tbody></table>`,
         doc(
           table({ isNumberColumnEnabled: true })(
             tr(
@@ -874,9 +862,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
           languageName => {
             check(
               `with language "${languageName}"`,
-              `<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">${
-                LANGUAGE_MAP[languageName]
-              }</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
+              `<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">${LANGUAGE_MAP[languageName]}</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
               doc(
                 code_block({ language: LANGUAGE_MAP[languageName] })(
                   'some code',
@@ -1073,21 +1059,13 @@ describe('ConfluenceTransformer: encode - parse:', () => {
       keyof typeof macroParams
     >).map(
       key =>
-        `<ac:parameter ac:name="${key}">${
-          macroParams[key].value
-        }</ac:parameter>`,
+        `<ac:parameter ac:name="${key}">${macroParams[key].value}</ac:parameter>`,
     );
 
     describe('inlineExtension', () => {
       checkFromCxhtmlToADF(
         'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="2" ac:macro-id="${
-          macroMetadata.macroId.value
-        }">${paramsAsCXHTML}<fab:placeholder-url>${
-          macroMetadata.placeholder[0].data.url
-        }</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
+        `<ac:structured-macro ac:name="${attrs.extensionKey}" ac:schema-version="2" ac:macro-id="${macroMetadata.macroId.value}">${paramsAsCXHTML}<fab:placeholder-url>${macroMetadata.placeholder[0].data.url}</fab:placeholder-url><fab:display-type>INLINE</fab:display-type></ac:structured-macro>`,
         doc(p(inlineExtension(attrs)())),
       );
 
@@ -1103,13 +1081,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     describe('bodyless', () => {
       checkFromCxhtmlToADF(
         'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="2" ac:macro-id="${
-          macroMetadata.macroId.value
-        }">${paramsAsCXHTML}<fab:placeholder-url>${
-          macroMetadata.placeholder[0].data.url
-        }</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
+        `<ac:structured-macro ac:name="${attrs.extensionKey}" ac:schema-version="2" ac:macro-id="${macroMetadata.macroId.value}">${paramsAsCXHTML}<fab:placeholder-url>${macroMetadata.placeholder[0].data.url}</fab:placeholder-url><fab:display-type>BLOCK</fab:display-type></ac:structured-macro>`,
         doc(extension(attrs)()),
       );
     });
@@ -1117,13 +1089,7 @@ describe('ConfluenceTransformer: encode - parse:', () => {
     describe('bodiedExtension', () => {
       checkFromCxhtmlToADF(
         'basic',
-        `<ac:structured-macro ac:name="${
-          attrs.extensionKey
-        }" ac:schema-version="2" ac:macro-id="${
-          macroMetadata.macroId.value
-        }">${paramsAsCXHTML}<fab:placeholder-url>${
-          macroMetadata.placeholder[0].data.url
-        }</fab:placeholder-url>
+        `<ac:structured-macro ac:name="${attrs.extensionKey}" ac:schema-version="2" ac:macro-id="${macroMetadata.macroId.value}">${paramsAsCXHTML}<fab:placeholder-url>${macroMetadata.placeholder[0].data.url}</fab:placeholder-url>
           <fab:display-type>BLOCK</fab:display-type>
           <ac:rich-text-body><p>little<strong>piggy</strong></p></ac:rich-text-body>
         </ac:structured-macro>`,

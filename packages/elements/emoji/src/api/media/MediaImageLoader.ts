@@ -129,9 +129,7 @@ export default class MediaImageLoader {
           return response.blob().then(blob => this.readBlob(blob));
         }
         throw new Error(
-          `Unable to load media image. Status=${response.status} ${
-            response.statusText
-          }`,
+          `Unable to load media image. Status=${response.status} ${response.statusText}`,
         );
       });
     });

@@ -31,9 +31,7 @@ export default class StoredDuplicateLimitedQueue<
   constructor(options: StoredQueueOptions) {
     super(options);
     this.storage = options.storage;
-    this.prefixedStorageKey = `${options.storagePrefix}.${
-      StoredDuplicateLimitedQueue.storageKey
-    }`;
+    this.prefixedStorageKey = `${options.storagePrefix}.${StoredDuplicateLimitedQueue.storageKey}`;
     this.load();
   }
 
@@ -68,9 +66,7 @@ export default class StoredDuplicateLimitedQueue<
         this.bulkEnqueue(items);
       } catch (e) {
         debug(
-          `Error parsing the queue stored as ${
-            this.prefixedStorageKey
-          } key from storage`,
+          `Error parsing the queue stored as ${this.prefixedStorageKey} key from storage`,
           e,
         );
       }

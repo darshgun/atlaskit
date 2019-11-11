@@ -7,9 +7,7 @@ import {
   mountEditor,
 } from '../../__helpers/testing-example-helpers';
 
-const changeFormatting = `[aria-label="${
-  blockTypeMessages.textStyles.defaultMessage
-}"]`;
+const changeFormatting = `[aria-label="${blockTypeMessages.textStyles.defaultMessage}"]`;
 const input = 'helloworld';
 
 // https://product-fabric.atlassian.net/browse/ED-4531

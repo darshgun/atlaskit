@@ -62,7 +62,7 @@ export class TaskWrapper<C = any, P = any> {
 
   format(
     text: PrintableOutput,
-    formatter: ((text: string) => string) = item => chalk.dim(`→ ${item}`),
+    formatter: (text: string) => string = item => chalk.dim(`→ ${item}`),
   ): PrintableOutput {
     if (Array.isArray(text)) {
       return text.map(item => {

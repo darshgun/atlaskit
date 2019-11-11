@@ -62,32 +62,26 @@ export interface EditorViewProps {
   portalProviderAPI: PortalProviderAPI;
   allowAnalyticsGASV3?: boolean;
   disabled?: boolean;
-  render?: (
-    props: {
-      editor: JSX.Element;
-      view?: EditorView;
-      config: EditorConfig;
-      eventDispatcher: EventDispatcher;
-      transformer?: Transformer<string>;
-      dispatchAnalyticsEvent: DispatchAnalyticsEvent;
-    },
-  ) => JSX.Element;
-  onEditorCreated: (
-    instance: {
-      view: EditorView;
-      config: EditorConfig;
-      eventDispatcher: EventDispatcher;
-      transformer?: Transformer<string>;
-    },
-  ) => void;
-  onEditorDestroyed: (
-    instance: {
-      view: EditorView;
-      config: EditorConfig;
-      eventDispatcher: EventDispatcher;
-      transformer?: Transformer<string>;
-    },
-  ) => void;
+  render?: (props: {
+    editor: JSX.Element;
+    view?: EditorView;
+    config: EditorConfig;
+    eventDispatcher: EventDispatcher;
+    transformer?: Transformer<string>;
+    dispatchAnalyticsEvent: DispatchAnalyticsEvent;
+  }) => JSX.Element;
+  onEditorCreated: (instance: {
+    view: EditorView;
+    config: EditorConfig;
+    eventDispatcher: EventDispatcher;
+    transformer?: Transformer<string>;
+  }) => void;
+  onEditorDestroyed: (instance: {
+    view: EditorView;
+    config: EditorConfig;
+    eventDispatcher: EventDispatcher;
+    transformer?: Transformer<string>;
+  }) => void;
 }
 
 function handleEditorFocus(view: EditorView): number | undefined {
@@ -110,12 +104,10 @@ export default class ReactEditorView<T = {}> extends React.Component<
   editorState: EditorState;
   errorReporter: ErrorReporter;
   dispatch: Dispatch;
-  analyticsEventHandler!: (
-    payloadChannel: {
-      payload: AnalyticsEventPayload;
-      channel?: string;
-    },
-  ) => void;
+  analyticsEventHandler!: (payloadChannel: {
+    payload: AnalyticsEventPayload;
+    channel?: string;
+  }) => void;
 
   static contextTypes = {
     getAtlaskitAnalyticsEventHandlers: PropTypes.func,

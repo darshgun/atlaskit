@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type Shared<A, B> = {
-  [P in Extract<keyof A, keyof B>]?: A[P] extends B[P] ? B[P] : never
+  [P in Extract<keyof A, keyof B>]?: A[P] extends B[P] ? B[P] : never;
 } &
   { [P in Extract<keyof B, keyof A>]?: B[P] extends A[P] ? A[P] : never };
 

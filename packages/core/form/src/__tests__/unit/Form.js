@@ -17,12 +17,9 @@ describe('Form', () => {
     const MyFormComponent = ({ onFormSubmit }) => {
       const [myValue, setMyValue] = useState(null);
 
-      const handleSubbmit = useCallback(
-        () => {
-          onFormSubmit(myValue);
-        },
-        [myValue, onFormSubmit],
-      );
+      const handleSubbmit = useCallback(() => {
+        onFormSubmit(myValue);
+      }, [myValue, onFormSubmit]);
 
       return (
         <Form onSubmit={handleSubbmit}>

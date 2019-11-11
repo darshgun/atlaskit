@@ -27,7 +27,6 @@ export const KeyboardShortcut: ComponentClass<
     selected?: boolean;
   }
 > = styled(Shortcut)`
-  ${props =>
-    props.selected ? `color: ${colors.N400};` : ''}
+  ${props => (props.selected ? `color: ${colors.N400};` : '')}
   margin-left: 16px;
 `;

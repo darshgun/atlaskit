@@ -248,7 +248,7 @@ export const changeImageAlignment = (align?: AlignmentState): Command => (
 
 export const createToggleBlockMarkOnRange = <T = object>(
   markType: MarkType,
-  getAttrs: ((prevAttrs?: T, node?: PMNode) => T | undefined | false),
+  getAttrs: (prevAttrs?: T, node?: PMNode) => T | undefined | false,
   allowedBlocks?:
     | Array<NodeType>
     | ((schema: Schema, node: PMNode, parent: PMNode) => boolean),
@@ -302,7 +302,7 @@ export const createToggleBlockMarkOnRange = <T = object>(
  */
 export const toggleBlockMark = <T = object>(
   markType: MarkType,
-  getAttrs: ((prevAttrs?: T, node?: PMNode) => T | undefined | false),
+  getAttrs: (prevAttrs?: T, node?: PMNode) => T | undefined | false,
   allowedBlocks?:
     | Array<NodeType>
     | ((schema: Schema, node: PMNode, parent: PMNode) => boolean),

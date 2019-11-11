@@ -62,9 +62,7 @@ const logEvToConsole = throttle((ev: SyntheticEvent) => {
   if (ev.type && ev.currentTarget) {
     ev.persist();
     console.log(
-      `"${ev.type}" event triggered on Item with text "${
-        ev.currentTarget.textContent
-      }"`,
+      `"${ev.type}" event triggered on Item with text "${ev.currentTarget.textContent}"`,
     );
   }
 }, 250);

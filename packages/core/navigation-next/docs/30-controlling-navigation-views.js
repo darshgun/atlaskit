@@ -19,13 +19,13 @@ If you've followed the previous guide you'll know how to use the UI components t
 We refer to each state the navigation can be in as a 'view'. As an example, here are some of Jira's navigation 'views':
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/views-example')}
-      title="Navigation views"
-      id="views-example"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/views-example')}
+    title="Navigation views"
+    id="views-example"
+    path="/views-controller"
+  />
+)}
 
 ${<H>Representing a view as data</H>}
 
@@ -116,13 +116,13 @@ So there's some complexity in managing the state of the product and container na
 We provide a state manager to help you handle this, and a wrapped version of the \`LayoutManager\` which connects to this state container and takes care of rendering the product and container navigation.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/layoutmanagerwithviewcontroller')}
-      title="LayoutManagerWithViewController"
-      id="layoutmanagerwithviewcontroller"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/layoutmanagerwithviewcontroller')}
+    title="LayoutManagerWithViewController"
+    id="layoutmanagerwithviewcontroller"
+    path="/views-controller"
+  />
+)}
 
 We haven't set a view yet, so the component will simply render a skeleton. Let's give it a view to display!
 
@@ -160,26 +160,26 @@ Let's update our app to add and set a navigation view. A 'view' is an object wit
 We call \`navigationViewController.addView(myView)\` to register that view. We then call \`navigationViewController.setView(myView.id)\` to set it as the active view.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/add-and-set-view')}
-      title="Adding and setting a view"
-      id="add-and-set-view"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/add-and-set-view')}
+    title="Adding and setting a view"
+    id="add-and-set-view"
+    path="/views-controller"
+  />
+)}
 
 ${<H>Transitioning between views</H>}
 
 Let's add a Project issues view to our navigation. Now when we click on the 'Issues and filters' item the view will update. Clicking the 'Back to Jira' item will take us back again.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/update-view')}
-      title="Transitioning between views"
-      id="update-view"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/update-view')}
+    title="Transitioning between views"
+    id="update-view"
+    path="/views-controller"
+  />
+)}
 
 So how is this working? There are a few things going on.
 
@@ -226,13 +226,13 @@ ${<H>Updating the view on route changes</H>}
 Let's add some routing to our app. In this example we'll use \`react-router\`.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/adding-routes')}
-      title="Adding routing to our app"
-      id="adding-routes"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/adding-routes')}
+    title="Adding routing to our app"
+    id="adding-routes"
+    path="/views-controller"
+  />
+)}
 
 Clicking on the 'Dashboards' item in the product home view will change the route to \`'/'\`. Clicking on the 'Search issues' item in the product issues view will change the route to \`'/issues'\`. If we reload the app on the Issues and filters route it should initialise with the product issues view active. Let's look at how we did this.
 
@@ -332,13 +332,13 @@ ${<H>Asynchronous views</H>}
 What if your view needs some data to render, but you don't want to fetch that data until you know you need to render the view? The view controller supports returning a Promise from the \`getItems\` function, which will put your navigation into a temporary loading state. Let's make our product issues view asynchronous.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/asynchronous-views')}
-      title="Asynchronous views"
-      id="asynchronous-views"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/asynchronous-views')}
+    title="Asynchronous views"
+    id="asynchronous-views"
+    path="/views-controller"
+  />
+)}
 
 As you can see, the current view will hang around until the new active view has finished loading, at which point the transition will be performed. If an Item's \`goTo\` property matches the ID of the incoming view, the renderer will automatically display a spinner as well!
 
@@ -347,13 +347,13 @@ ${<H>Container views</H>}
 So far we've only been dealing with 'product' navigation. When we enter a 'container' we bring in another layer of navigation:
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/container-views')}
-      title="Container views"
-      id="container-views"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/container-views')}
+    title="Container views"
+    id="container-views"
+    path="/views-controller"
+  />
+)}
 
 Here's what changed:
 
@@ -365,13 +365,13 @@ ${<H>Using reducers</H>}
 You may run into situations in your application where one part of the app wants to affect a view without directly editing its \`getItems\` function. The view controller exposes a mechanism for 'reducing' the items in a view before they're rendered.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/views-controller/reducing-views')}
-      title="Container views"
-      id="reducing-views"
-      path="/views-controller"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/views-controller/reducing-views')}
+    title="Container views"
+    id="reducing-views"
+    path="/views-controller"
+  />
+)}
 
 In this example we imagine that the Growth team wants to add a Lozenge to one of the items to see if it increases click-through rates. They could have modified the \`getItems\` function directly, but this quickly becomes quite messy. By using a 'reducer' they can keep their experimental code isolated and easy to remove. Here's how it works:
 
@@ -439,17 +439,17 @@ ${code`render() {
 &nbsp;
 
 ${(
-    <SectionMessage
-      appearance="warning"
-      title="Reducers should only be used as an escape hatch."
-    >
-      Recommended uses for this feature are pretty much limited to experiments
-      and legacy (non-React) integrations. If {`you're`} trying to create a
-      stateful view, either control the state externally and pass arguments to
-      the <code>getItems</code> function, or use a custom item in the view which
-      manages some internal state.
-    </SectionMessage>
-  )}
+  <SectionMessage
+    appearance="warning"
+    title="Reducers should only be used as an escape hatch."
+  >
+    Recommended uses for this feature are pretty much limited to experiments and
+    legacy (non-React) integrations. If {`you're`} trying to create a stateful
+    view, either control the state externally and pass arguments to the{' '}
+    <code>getItems</code> function, or use a custom item in the view which
+    manages some internal state.
+  </SectionMessage>
+)}
 
 `}</ContentsProvider>
 );
