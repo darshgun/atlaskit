@@ -53,6 +53,7 @@ export const Create = ({
         onClick={onClick}
         tooltip={iconButtonTooltip}
         theme={getCreateButtonTheme(theme)}
+        aria-label={text}
       />
     </div>
   );
