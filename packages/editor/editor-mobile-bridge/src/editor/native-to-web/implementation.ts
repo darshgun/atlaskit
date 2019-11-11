@@ -10,20 +10,20 @@ import {
   outdentList,
   toggleOrderedList,
   toggleBulletList,
-  toggleSuperscript,
-  toggleSubscript,
-  toggleStrike,
-  toggleCode,
-  toggleUnderline,
-  toggleEm,
-  toggleStrong,
+  toggleSuperscriptWithAnalytics,
+  toggleSubscriptWithAnalytics,
+  toggleStrikeWithAnalytics,
+  toggleCodeWithAnalytics,
+  toggleUnderlineWithAnalytics,
+  toggleEmWithAnalytics,
+  toggleStrongWithAnalytics,
   StatusState,
-  updateStatus,
+  updateStatusWithAnalytics,
   commitStatusPicker,
   insertBlockTypesWithAnalytics,
-  setBlockType,
+  setBlockTypeWithAnalytics,
   createTable,
-  insertTaskDecision,
+  insertTaskDecisionWithAnalytics,
   changeColor,
   TypeAheadItem,
   selectItem as selectTypeAheadItem,
@@ -66,43 +66,61 @@ export default class WebBridgeImpl extends WebBridge
 
   onBoldClicked() {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleStrong()(this.editorView.state, this.editorView.dispatch);
+      toggleStrongWithAnalytics()(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
   onItalicClicked() {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleEm()(this.editorView.state, this.editorView.dispatch);
+      toggleEmWithAnalytics()(this.editorView.state, this.editorView.dispatch);
     }
   }
 
   onUnderlineClicked() {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleUnderline()(this.editorView.state, this.editorView.dispatch);
+      toggleUnderlineWithAnalytics()(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
   onCodeClicked() {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleCode()(this.editorView.state, this.editorView.dispatch);
+      toggleCodeWithAnalytics()(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
   onStrikeClicked() {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleStrike()(this.editorView.state, this.editorView.dispatch);
+      toggleStrikeWithAnalytics()(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
   onSuperClicked() {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleSuperscript()(this.editorView.state, this.editorView.dispatch);
+      toggleSuperscriptWithAnalytics()(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
   onSubClicked() {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleSubscript()(this.editorView.state, this.editorView.dispatch);
+      toggleSubscriptWithAnalytics()(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
@@ -114,7 +132,7 @@ export default class WebBridgeImpl extends WebBridge
 
   onStatusUpdate(text: string, color: StatusColor, uuid: string) {
     if (this.statusBridgeState && this.editorView) {
-      updateStatus({
+      updateStatusWithAnalytics({
         text,
         color,
         localId: uuid,
@@ -199,7 +217,7 @@ export default class WebBridgeImpl extends WebBridge
   onBlockSelected(blockType: string) {
     if (this.editorView) {
       const { state, dispatch } = this.editorView;
-      setBlockType(blockType)(state, dispatch);
+      setBlockTypeWithAnalytics(blockType)(state, dispatch);
     }
   }
 
@@ -295,10 +313,10 @@ export default class WebBridgeImpl extends WebBridge
         );
         return;
       case 'action':
-        insertTaskDecision(this.editorView, 'taskList');
+        insertTaskDecisionWithAnalytics(this.editorView, 'taskList');
         return;
       case 'decision':
-        insertTaskDecision(this.editorView, 'decisionList');
+        insertTaskDecisionWithAnalytics(this.editorView, 'decisionList');
         return;
       case 'table':
         createTable(state, dispatch);
