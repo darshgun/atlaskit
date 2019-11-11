@@ -11,7 +11,7 @@ import StarIcon from '@atlaskit/icon/glyph/star';
 
 const ItemVariants = () => {
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <HeadingItem>This is a heading Item</HeadingItem>
       <ButtonItem>Regular Item</ButtonItem>
       <ButtonItem elemBefore={<EmojiCustomIcon label="Icon before" />}>
@@ -35,7 +35,7 @@ const ItemVariants = () => {
       </LinkItem>
       <SkeletonHeadingItem />
       <SkeletonItem />
-    </>
+    </div>
   );
 };
 
