@@ -3,7 +3,7 @@ import meow from 'meow';
 import simpleGit, { SimpleGit } from 'simple-git/promise';
 import util from 'util';
 import childProcess from 'child_process';
-import { debugMock } from './util';
+import { debugMock, ValidationError, Default } from './util';
 
 //@ts-ignore
 import installFromCommit from '@atlaskit/branch-installer';
@@ -11,6 +11,30 @@ import installFromCommit from '@atlaskit/branch-installer';
 import fetch from 'node-fetch';
 
 const exec = util.promisify(childProcess.exec);
+
+const defaultFlags = {
+  branchPrefix: 'atlaskit-branch-deploy-',
+  // Need to tighten default string type to 'upgrade'
+  cmd: 'upgrade' as 'upgrade',
+  dedupe: false,
+  dryRun: false,
+  packageEngine: 'yarn',
+  packages: 'all',
+};
+
+type Flags = {
+  atlaskitBranchName: string;
+  atlaskitCommitHash: string;
+  branchPrefix: string;
+  cmd: 'add' | 'upgrade';
+  dedupe: boolean;
+  dryRun: boolean;
+  packageEngine: string;
+  packages: string;
+  productCiPlanUrl?: string;
+};
+
+type UserFlags = Default<Flags, keyof typeof defaultFlags>;
 
 // prettier-ignore
 const HELP_MSG = `
@@ -126,44 +150,7 @@ async function commitAndPush(
   console.log('Committed and pushed changes');
 }
 
-export async function run() {
-  const cli = meow(HELP_MSG, {
-    flags: {
-      branchPrefix: {
-        type: 'string',
-        default: 'atlaskit-branch-deploy-',
-      },
-      atlaskitBranchName: {
-        type: 'string',
-      },
-      packageEngine: {
-        type: 'string',
-        default: 'yarn',
-      },
-      atlaskitCommitHash: {
-        type: 'string',
-      },
-      packages: {
-        type: 'string',
-        default: 'all',
-      },
-      dedupe: {
-        type: 'boolean',
-        default: false,
-      },
-      cmd: {
-        type: 'string',
-        default: 'upgrade',
-      },
-      dryRun: {
-        type: 'boolean',
-        default: false,
-      },
-      productCiPlanUrl: {
-        type: 'string',
-      },
-    },
-  });
+function validateArgs(flags: Flags): flags is Flags {
   const {
     atlaskitBranchName,
     atlaskitCommitHash,
@@ -175,21 +162,37 @@ export async function run() {
     dryRun,
     productCiPlanUrl,
     ...rest
-  } = cli.flags;
-  const extraArgs = cli.input;
-
+  } = flags;
   if (!atlaskitBranchName || !atlaskitCommitHash) {
-    console.error(
-      chalk.red('Missing atlaskitBranchName or atlaskitCommitHash'),
+    throw new ValidationError(
+      'Missing atlaskitBranchName or atlaskitCommitHash',
     );
-    cli.showHelp(2);
   }
 
   const invalidFlags = Object.keys(rest);
   if (invalidFlags.length > 0) {
-    console.error(chalk.red(`Invalid flags: ${invalidFlags}`));
-    cli.showHelp(2);
+    throw new ValidationError(`Invalid flags: ${invalidFlags}`);
   }
+
+  return true;
+}
+
+export async function run(userFlags: UserFlags, extraArgs: string[] = []) {
+  const flags = { ...defaultFlags, ...userFlags };
+  if (!validateArgs(flags)) {
+    return;
+  }
+  const {
+    atlaskitBranchName,
+    atlaskitCommitHash,
+    branchPrefix,
+    packageEngine,
+    packages,
+    dedupe,
+    cmd,
+    dryRun,
+    productCiPlanUrl,
+  } = flags;
 
   const git = dryRun ? (debugMock('git') as SimpleGit) : simpleGit('./');
   const branchName = createBranchName(atlaskitBranchName, branchPrefix);
@@ -243,9 +246,9 @@ export async function run() {
   }
 
   // prettier-ignore
-  const commitMessage = `Upgraded to Atlaskit changes on branch ${cli.flags.atlaskitBranchName}
+  const commitMessage = `Upgraded to Atlaskit changes on branch ${atlaskitBranchName}
 
-https://bitbucket.org/atlassian/atlaskit-mk-2/branch/${cli.flags.atlaskitBranchName}
+https://bitbucket.org/atlassian/atlaskit-mk-2/branch/${atlaskitBranchName}
 
 This commit was auto-generated.
   `;
@@ -286,4 +289,47 @@ This commit was auto-generated.
   }
 
   console.log('Branch deploy product integrator success!');
+}
+
+if (require.main === module) {
+  const cli = meow(HELP_MSG, {
+    flags: {
+      branchPrefix: {
+        type: 'string',
+      },
+      atlaskitBranchName: {
+        type: 'string',
+      },
+      packageEngine: {
+        type: 'string',
+      },
+      atlaskitCommitHash: {
+        type: 'string',
+      },
+      packages: {
+        type: 'string',
+      },
+      dedupe: {
+        type: 'boolean',
+      },
+      cmd: {
+        type: 'string',
+      },
+      dryRun: {
+        type: 'boolean',
+      },
+      productCiPlanUrl: {
+        type: 'string',
+      },
+    },
+  });
+
+  run(cli.flags as UserFlags, cli.input).catch(e => {
+    if (e instanceof ValidationError) {
+      console.error(chalk.red(e.message));
+      cli.showHelp(2);
+    }
+    console.error(chalk.red(e));
+    process.exit(1);
+  });
 }
