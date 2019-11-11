@@ -5,4 +5,5 @@ export { Providers, MediaProvider } from './providerFactory/types';
 export {
   ProviderFactoryProvider,
   useProviderFactory,
+  useProvider,
 } from './providerFactory/context';

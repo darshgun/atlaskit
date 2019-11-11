@@ -1,8 +1,5 @@
 // #region Imports
 import * as React from 'react';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention/resource';
-import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
 import {
   tablesPlugin,
@@ -22,36 +19,32 @@ import {
   tasksAndDecisionsPlugin,
   insertBlockPlugin,
   basePlugin,
-  placeholderPlugin,
   annotationPlugin,
+  placeholderPlugin,
   mobileScrollPlugin,
 } from '../../../plugins';
-import { MediaProvider, CustomMediaPicker } from '../../../plugins/media';
+import { CustomMediaPicker, MediaProvider } from '../../../plugins/media';
 import { PresetProvider } from '../Editor';
 import { EditorPresetProps } from './types';
 import { useDefaultPreset } from './default';
 import { addExcludesFromProviderFactory, getPluginsFromPreset } from './utils';
-import { useProviderFactory } from '@atlaskit/editor-common/provider-factory';
+import { useProviderFactory, useProvider } from '@atlaskit/editor-common/provider-factory';
+
 // #endregion
 
 interface EditorPresetMobileProps {
   children?: React.ReactNode;
   placeholder?: string;
-  mentionProvider?: Promise<MentionProvider>;
-  emojiProvider?: Promise<EmojiProvider>;
-  taskDecisionProvider?: Promise<TaskDecisionProvider>;
   media?: {
-    provider?: Promise<MediaProvider>;
     picker?: CustomMediaPicker;
   };
 }
 
 export function useMobilePreset({
-  mentionProvider,
-  emojiProvider,
   media,
   placeholder,
 }: EditorPresetMobileProps & EditorPresetProps) {
+  const mediaProvider = useProvider<Promise<MediaProvider>>('mediaProvider');
   const [preset] = useDefaultPreset();
 
   preset.push(
@@ -80,21 +73,16 @@ export function useMobilePreset({
     annotationPlugin,
     cardPlugin,
     mobileScrollPlugin,
+    // This would be exclude if the provider doesnt exist in the factory
+    [mentionsPlugin, { useInlineWrapper: true }],
+    [emojiPlugin, { useInlineWrapper: true }],
   );
-
-  if (mentionProvider) {
-    preset.push([mentionsPlugin, { useInlineWrapper: true }]);
-  }
-
-  if (emojiProvider) {
-    preset.push([emojiPlugin, { useInlineWrapper: true }]);
-  }
 
   if (media) {
     preset.push([
       mediaPlugin,
       {
-        provider: media.provider,
+        provider: mediaProvider,
         customMediaPicker: media.picker,
         allowMediaSingle: true,
       },
