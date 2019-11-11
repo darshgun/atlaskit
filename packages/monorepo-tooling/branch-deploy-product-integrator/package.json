@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/branch-deploy-product-integrator",
   "version": "1.2.0",
-  "description": "TODO",
+  "description": "Installs branch deployed atlaskit packages into products to run product CI.",
   "license": "Apache-2.0",
   "sideEffects": false,
   "bin": {
@@ -23,8 +23,8 @@
     "@types/url-parse": "^1.4.3",
     "@yarnpkg/lockfile": "^1.1.0",
     "chalk": "^2.1.0",
-    "isomorphic-fetch": "^2.2.1",
     "meow": "^5.0.0",
+    "node-fetch": "^2.2.0",
     "simple-git": "^1.115.0",
     "tslib": "^1.9.3",
     "yarn-deduplicate": "^1.0.5"
