@@ -106,9 +106,7 @@ const InsertButton = ({
   return (
     <div className={floatingButtonClassName}>
       <div
-        className={`${ClassName.CONTROLS_INSERT_BUTTON_WRAP} ${
-          ClassName.CONTROLS_INSERT_ROW
-        }`}
+        className={`${ClassName.CONTROLS_INSERT_BUTTON_WRAP} ${ClassName.CONTROLS_INSERT_ROW}`}
       >
         {content}
       </div>

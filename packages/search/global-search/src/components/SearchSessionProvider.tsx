@@ -39,7 +39,7 @@ export function injectSearchSession<T>(
 
             return (
               <Component
-                {...this.props as T}
+                {...(this.props as T)}
                 searchSessionId={this.searchSessionId}
               />
             );

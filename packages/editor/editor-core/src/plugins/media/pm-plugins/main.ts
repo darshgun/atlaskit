@@ -573,10 +573,11 @@ export class MediaPluginState {
       return;
     }
 
-    return updateMediaNodeAttrs(id, attrs, isMediaSingle)(
-      view.state,
-      view.dispatch,
-    );
+    return updateMediaNodeAttrs(
+      id,
+      attrs,
+      isMediaSingle,
+    )(view.state, view.dispatch);
   };
 
   private collectionFromProvider(): string | undefined {

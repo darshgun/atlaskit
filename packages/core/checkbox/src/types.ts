@@ -37,13 +37,11 @@ export type DefaultsType = {
     component: React.ComponentType<IconProps>;
   };
   HiddenCheckbox: {
-    attributesFn: (
-      props: {
-        disabled?: boolean;
-        checked?: boolean;
-        required?: boolean;
-      },
-    ) => Record<string, any>;
+    attributesFn: (props: {
+      disabled?: boolean;
+      checked?: boolean;
+      required?: boolean;
+    }) => Record<string, any>;
   };
 };
 
@@ -75,13 +73,11 @@ export type OverridesType = {
     component?: React.ComponentType<Readonly<IconProps>>;
   };
   HiddenCheckbox?: {
-    attributesFn?: (
-      props: {
-        disabled?: boolean;
-        checked?: boolean;
-        required?: boolean;
-      },
-    ) => Record<string, any>;
+    attributesFn?: (props: {
+      disabled?: boolean;
+      checked?: boolean;
+      required?: boolean;
+    }) => Record<string, any>;
   };
 };
 

@@ -712,8 +712,6 @@ export class CardBase extends Component<
   This Context provides data needed to build packageHierarchy in Atlaskit Analytics Listener and Media Analytics Listener.
   This data is not added to the final GASv3 payload
 */
-export const Card: React.ComponentType<
-  CardWithAnalyticsEventsProps
-> = withAnalyticsContext(getBaseAnalyticsContext())(
-  withAnalyticsEvents()(CardBase),
-);
+export const Card: React.ComponentType<CardWithAnalyticsEventsProps> = withAnalyticsContext(
+  getBaseAnalyticsContext(),
+)(withAnalyticsEvents()(CardBase));

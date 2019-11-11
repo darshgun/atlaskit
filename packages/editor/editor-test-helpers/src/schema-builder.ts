@@ -274,15 +274,12 @@ export const slice = (...content: BuilderContent[]) =>
 export const clean = (content: BuilderContentFn) => (schema: Schema) => {
   const node = content(schema);
   if (Array.isArray(node)) {
-    return node.reduce(
-      (acc, next) => {
-        if (next instanceof Node) {
-          acc.push(Node.fromJSON(schema, next.toJSON()));
-        }
-        return acc;
-      },
-      [] as Node[],
-    );
+    return node.reduce((acc, next) => {
+      if (next instanceof Node) {
+        acc.push(Node.fromJSON(schema, next.toJSON()));
+      }
+      return acc;
+    }, [] as Node[]);
   }
   return node instanceof Node
     ? Node.fromJSON(schema, node.toJSON())

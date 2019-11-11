@@ -28,9 +28,7 @@ export default class TreeItem extends Component<Props> {
     if (snapshot.dropAnimation) {
       transitions.push(
         // @ts-ignore
-        `padding-left ${snapshot.dropAnimation.duration}s ${
-          snapshot.dropAnimation.curve
-        }`,
+        `padding-left ${snapshot.dropAnimation.duration}s ${snapshot.dropAnimation.curve}`,
       );
     }
     const transition = transitions.join(', ');

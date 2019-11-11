@@ -73,7 +73,7 @@ const loadUserOptions = (searchText?: string): OptionData[] => {
     }))
     .filter((user: UserData) => {
       const searchTextInLowerCase = searchText.toLowerCase();
-      const propertyToMatch: (KeysOfType<UserData, string | undefined>)[] = [
+      const propertyToMatch: KeysOfType<UserData, string | undefined>[] = [
         'id',
         'name',
         'publicName',

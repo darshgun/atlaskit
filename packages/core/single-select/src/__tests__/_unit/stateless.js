@@ -77,7 +77,10 @@ describe(name, () => {
       const selectItems = [
         {
           heading: 'test',
-          items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
         },
       ];
       const select = mount(<StatelessSelect items={selectItems} isOpen />);
@@ -90,11 +93,17 @@ describe(name, () => {
       const selectItems = [
         {
           heading: 'group 1',
-          items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
         },
         {
           heading: 'group 2',
-          items: [{ value: 3, content: '3' }, { value: 4, content: '4' }],
+          items: [
+            { value: 3, content: '3' },
+            { value: 4, content: '4' },
+          ],
         },
       ];
       const select = mount(
@@ -108,11 +117,17 @@ describe(name, () => {
       const selectItems = [
         {
           heading: 'group 1',
-          items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
         },
         {
           heading: 'group 2',
-          items: [{ value: 3, content: '3' }, { value: 4, content: '4' }],
+          items: [
+            { value: 3, content: '3' },
+            { value: 4, content: '4' },
+          ],
         },
       ];
       const select = mount(

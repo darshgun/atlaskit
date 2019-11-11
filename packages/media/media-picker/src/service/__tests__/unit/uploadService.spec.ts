@@ -108,9 +108,9 @@ describe('UploadService', () => {
         .spyOn(userMediaClient.file, 'touchFiles')
         .mockResolvedValue(touchedFiles);
       const userMediaClientUpload = jest.spyOn(userMediaClient.file, 'upload');
-      userMediaClientUpload.mockReturnValue(defaultUploadMock as Observable<
-        FileState
-      >);
+      userMediaClientUpload.mockReturnValue(
+        defaultUploadMock as Observable<FileState>,
+      );
 
       return { uploadService, filesAddedPromise, mediaClient, userMediaClient };
     } else {

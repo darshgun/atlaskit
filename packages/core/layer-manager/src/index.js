@@ -1,9 +1,7 @@
 // @flow
 
 export { default } from './components/LayerManager';
-export {
-  default as withContextFromProps,
-} from './components/withContextFromProps';
+export { default as withContextFromProps } from './components/withContextFromProps';
 export { default as withRenderTarget } from './components/withRenderTarget';
 export { default as FocusLock } from './components/FocusLock';
 export { default as Portal } from './components/Portal';

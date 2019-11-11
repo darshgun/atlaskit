@@ -2,7 +2,7 @@ import * as React from 'react';
 import { md, code, Example, AtlassianInternalWarning } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   \`notification-log-client\` is a fetch client implementation for making API calls to notification-log service.
 

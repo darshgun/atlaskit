@@ -45,12 +45,9 @@ export default function useEscapeToDismiss({ onDismiss }: Args) {
 
   // Defensively accounting for consumer passing in a new function
   // each time. We just want to call the latest one
-  useEffect(
-    () => {
-      onDismissRef.current = onDismiss;
-    },
-    [onDismiss],
-  );
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
 
   useEffect(() => {
     let unbind: () => void;

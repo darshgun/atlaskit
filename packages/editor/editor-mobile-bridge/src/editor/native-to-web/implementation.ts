@@ -59,7 +59,7 @@ export default class WebBridgeImpl extends WebBridge
   blockFormatBridgeState: BlockTypeState | null = null;
   listBridgeState: ListsState | null = null;
   mentionsPluginState: MentionPluginState | null = null;
-  editorView: EditorView & EditorViewWithComposition | null = null;
+  editorView: (EditorView & EditorViewWithComposition) | null = null;
   transformer: JSONTransformer = new JSONTransformer();
   editorActions: EditorActions = new EditorActions();
   mediaPicker: CustomMediaPicker | undefined;

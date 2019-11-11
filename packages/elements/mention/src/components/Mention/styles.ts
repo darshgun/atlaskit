@@ -34,9 +34,8 @@ const getStyle = (
   return typeof obj === 'string' ? obj : obj(props);
 };
 
-export const MentionStyle: ComponentClass<
-  HTMLAttributes<{}> & MentionStyleProps
-> = styled.span`
+export const MentionStyle: ComponentClass<HTMLAttributes<{}> &
+  MentionStyleProps> = styled.span`
   ${(props: MentionStyleProps) => `
   display: inline;
   background: ${getStyle(props, 'background')};

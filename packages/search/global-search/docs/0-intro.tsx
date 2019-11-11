@@ -2,7 +2,7 @@ import * as React from 'react';
 import { md, code, Props, AtlassianInternalWarning } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
   
   A search component that connects to the Atlassian cross-product search backend.
 

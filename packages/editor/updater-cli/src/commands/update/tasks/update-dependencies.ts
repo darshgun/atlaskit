@@ -22,6 +22,9 @@ export const updateDependenciesTask: UpdateTask = {
     await yarn();
 
     task.progress('deduplicating yarn.lock...');
-    await deduplicate(resolveToCwd('yarn.lock'), deps.map(pkg => pkg.name));
+    await deduplicate(
+      resolveToCwd('yarn.lock'),
+      deps.map(pkg => pkg.name),
+    );
   },
 };

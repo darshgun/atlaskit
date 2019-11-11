@@ -12,13 +12,10 @@ export function getUpdated(logs: Log[], currentVersion: string): string[] {
           log =>
             satisfies(log.version, `>${currentVersion}`) && log.updated.length,
         )
-        .reduce(
-          (acc, cur) => {
-            acc = acc.concat(cur.updated);
-            return acc;
-          },
-          [] as string[],
-        ),
+        .reduce((acc, cur) => {
+          acc = acc.concat(cur.updated);
+          return acc;
+        }, [] as string[]),
     ).values(),
   ) as string[];
 }
@@ -60,16 +57,10 @@ export const showChangelogTask: ChangeLogTasks = {
     const noChanges =
       !majorChanges.length && !minorChanges.length && !patchChanges.length;
     if (noChanges && !updated.length) {
-      return `🧐 Looks like nothing changed! You're probably already on ${
-        ctx.targetVersion
-      } of "${params.packageName}".`;
+      return `🧐 Looks like nothing changed! You're probably already on ${ctx.targetVersion} of "${params.packageName}".`;
     } else if (noChanges && updated.length) {
       return [
-        `👍 No changes were made in "${
-          params.packageName
-        }" between ${sourceVersion} and ${
-          ctx.targetVersion
-        }. It has been bumped due to changes made in the following packages:`,
+        `👍 No changes were made in "${params.packageName}" between ${sourceVersion} and ${ctx.targetVersion}. It has been bumped due to changes made in the following packages:`,
         updated.map((pkg: string) => chalk.bold(`  - ${pkg}`)),
       ];
     }

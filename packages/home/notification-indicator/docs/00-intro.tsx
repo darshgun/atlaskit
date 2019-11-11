@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   \`\`\`NotificationIndicator\`\`\` is a React component that wraps an existing @atlaskit/badge component with
   additional functionalities:

@@ -218,9 +218,10 @@ export function handlePastePreservingMarks(slice: Slice): Command {
         orderedList,
       )(slice)
     ) {
-      const transformedSlice = applyTextMarksToSlice(schema, selectionMarks)(
-        slice,
-      );
+      const transformedSlice = applyTextMarksToSlice(
+        schema,
+        selectionMarks,
+      )(slice);
 
       const tr = closeHistory(state.tr)
         .replaceSelection(transformedSlice)

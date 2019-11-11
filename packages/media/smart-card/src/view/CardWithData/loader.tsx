@@ -7,12 +7,12 @@ export class CardWithDataRenderer extends React.PureComponent<CardProps> {
   static CardContent: typeof CardWithDataContentType | null = null;
 
   static moduleImporter(target: CardWithDataRenderer) {
-    import(/* webpackChunkName:"@atlaskit-internal-smartcard-datacardcontent" */ './component').then(
-      module => {
-        CardWithDataRenderer.CardContent = module.CardWithDataContent;
-        target.forceUpdate();
-      },
-    );
+    import(
+      /* webpackChunkName:"@atlaskit-internal-smartcard-datacardcontent" */ './component'
+    ).then(module => {
+      CardWithDataRenderer.CardContent = module.CardWithDataContent;
+      target.forceUpdate();
+    });
   }
 
   componentDidMount() {

@@ -46,9 +46,7 @@ export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
   transition: opacity 0.3s;
 `;
 
-export const PlaceholderFallback: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const PlaceholderFallback: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: inline-flex;
   align-items: center;
   -moz-user-select: none;
@@ -58,9 +56,7 @@ export const PlaceholderFallback: ComponentClass<
   }
 `;
 
-export const PlaceholderFallbackParams: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.span`
+export const PlaceholderFallbackParams: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: inline-block;
   max-width: 200px;
   margin-left: 5px;

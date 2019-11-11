@@ -30,16 +30,13 @@ export interface TransformProps {
   transform?: string;
 }
 
-export const ImagePlacerWrapper: ComponentClass<
-  ColorProps & HTMLAttributes<{}>
-> = styled.div`
+export const ImagePlacerWrapper: ComponentClass<ColorProps &
+  HTMLAttributes<{}>> = styled.div`
   background-color: ${(props: ColorProps) => props.backgroundColor};
   display: inline-block;
 `;
 
-export const ImagePlacerErrorWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const ImagePlacerErrorWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background-color: ${R500};
   color: white;
   width: 100%;
@@ -53,9 +50,9 @@ export type ContainerWrapperProps = MarginProps &
   ColorProps &
   HTMLAttributes<{}>;
 
-export const ContainerWrapper: ComponentClass<
+export const ContainerWrapper: ComponentClass<ContainerWrapperProps> = styled.div.attrs<
   ContainerWrapperProps
-> = styled.div.attrs<ContainerWrapperProps>({
+>({
   style: ({ width, height, margin }: ContainerWrapperProps) => ({
     width: width !== undefined ? width! + margin * 2 : 0,
     height: height !== undefined ? height! + margin * 2 : 0,
@@ -99,9 +96,7 @@ export interface MarginWrapperProps {
   size: number;
 }
 
-export const MarginWrapperSquare: ComponentClass<
-  MarginWrapperProps
-> = styled.div`
+export const MarginWrapperSquare: ComponentClass<MarginWrapperProps> = styled.div`
   position: absolute;
   border: 1px dotted white;
   left: 0;
@@ -113,9 +108,7 @@ export const MarginWrapperSquare: ComponentClass<
   height: ${({ height }) => height}px;
 `;
 
-export const MarginWrapperCircle: ComponentClass<
-  MarginWrapperProps
-> = styled.div`
+export const MarginWrapperCircle: ComponentClass<MarginWrapperProps> = styled.div`
   position: absolute;
   overflow: hidden;
   left: 0px;

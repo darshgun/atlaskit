@@ -16,9 +16,13 @@ interface AnimationProps {
   onExited?: (node: HTMLElement) => void;
   onEntered?: (node: HTMLElement, isAppearing: boolean) => void;
   stackIndex?: number;
-  children: (
-    { fade, slide }: { fade: Object; slide: Object },
-  ) => React.ReactNode;
+  children: ({
+    fade,
+    slide,
+  }: {
+    fade: Object;
+    slide: Object;
+  }) => React.ReactNode;
 }
 
 type statusValues = 'entering' | 'entered' | 'exiting' | 'exited';

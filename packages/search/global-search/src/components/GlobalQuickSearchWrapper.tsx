@@ -363,9 +363,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
         />
       );
     } else {
-      const errorMessage = `Invalid product type, product ${
-        this.props.context
-      } is unsupported`;
+      const errorMessage = `Invalid product type, product ${this.props.context} is unsupported`;
 
       if (logger) {
         logger.safeError(errorMessage);

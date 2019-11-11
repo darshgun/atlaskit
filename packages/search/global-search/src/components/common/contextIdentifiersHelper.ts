@@ -122,10 +122,14 @@ export const attachJiraContextIdentifiers = (
       href = addQueryParam(href, 'searchContainerId', result.containerId);
     }
 
-    href = addQueryParam(href, 'searchContentType', result.contentType.replace(
-      'jira-',
-      '',
-    ) as JiraResultQueryParams['searchContentType']);
+    href = addQueryParam(
+      href,
+      'searchContentType',
+      result.contentType.replace(
+        'jira-',
+        '',
+      ) as JiraResultQueryParams['searchContentType'],
+    );
 
     href = addQueryParam(href, 'searchObjectId', result.resultId);
 

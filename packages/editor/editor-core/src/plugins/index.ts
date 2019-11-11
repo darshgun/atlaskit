@@ -1,9 +1,7 @@
 export { default as basePlugin } from './base';
 export { default as blockTypePlugin } from './block-type';
 export { pluginKey as blockPluginStateKey, BlockTypeState } from './block-type';
-export {
-  default as clearMarksOnChangeToEmptyDocumentPlugin,
-} from './clear-marks-on-change-to-empty-document';
+export { default as clearMarksOnChangeToEmptyDocumentPlugin } from './clear-marks-on-change-to-empty-document';
 export { default as codeBlockPlugin } from './code-block';
 export { default as collabEditPlugin, CollabEditProvider } from './collab-edit';
 export { default as datePlugin } from './date';

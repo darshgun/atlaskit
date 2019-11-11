@@ -29,7 +29,7 @@ export default function withActivityProvider<Props>(
       return (
         <WrappedComponent
           activityProvider={activityProvider as any}
-          {...props as Props}
+          {...(props as Props)}
         />
       );
     };

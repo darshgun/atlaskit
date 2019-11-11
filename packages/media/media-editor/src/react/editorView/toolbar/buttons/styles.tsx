@@ -28,16 +28,12 @@ export const ColorSample: ComponentClass<HTMLAttributes<{}>> = styled.div`
   box-sizing: border-box;
 `;
 
-export const DropdownLeftIconWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const DropdownLeftIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-right: -6px;
   margin-left: -8px;
 `;
 
-export const DropdownRightIconWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const DropdownRightIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-right: -10px;
   margin-left: -8px;
 `;

@@ -48,21 +48,18 @@ export function processPluginsList(
   /**
    * First pass to collect pluginsOptions
    */
-  const pluginsOptions = plugins.reduce(
-    (acc, plugin) => {
-      if (plugin.pluginsOptions) {
-        Object.keys(plugin.pluginsOptions).forEach(pluginName => {
-          if (!acc[pluginName]) {
-            acc[pluginName] = [];
-          }
-          acc[pluginName].push(plugin.pluginsOptions![pluginName]);
-        });
-      }
+  const pluginsOptions = plugins.reduce((acc, plugin) => {
+    if (plugin.pluginsOptions) {
+      Object.keys(plugin.pluginsOptions).forEach(pluginName => {
+        if (!acc[pluginName]) {
+          acc[pluginName] = [];
+        }
+        acc[pluginName].push(plugin.pluginsOptions![pluginName]);
+      });
+    }
 
-      return acc;
-    },
-    {} as PluginsOptions,
-  );
+    return acc;
+  }, {} as PluginsOptions);
 
   /**
    * Process plugins
@@ -112,22 +109,16 @@ export function processPluginsList(
 
 export function createSchema(editorConfig: EditorConfig) {
   const marks = fixExcludes(
-    editorConfig.marks.sort(sortByOrder('marks')).reduce(
-      (acc, mark) => {
-        acc[mark.name] = mark.mark;
-        return acc;
-      },
-      {} as { [nodeName: string]: MarkSpec },
-    ),
+    editorConfig.marks.sort(sortByOrder('marks')).reduce((acc, mark) => {
+      acc[mark.name] = mark.mark;
+      return acc;
+    }, {} as { [nodeName: string]: MarkSpec }),
   );
   const nodes = sanitizeNodes(
-    editorConfig.nodes.sort(sortByOrder('nodes')).reduce(
-      (acc, node) => {
-        acc[node.name] = node.node;
-        return acc;
-      },
-      {} as { [nodeName: string]: NodeSpec },
-    ),
+    editorConfig.nodes.sort(sortByOrder('nodes')).reduce((acc, node) => {
+      acc[node.name] = node.node;
+      return acc;
+    }, {} as { [nodeName: string]: NodeSpec }),
     marks,
   );
 

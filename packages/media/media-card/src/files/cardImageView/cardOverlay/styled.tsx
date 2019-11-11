@@ -24,9 +24,8 @@ export interface OverlayProps {
   noHover?: boolean;
 }
 
-export const TickBox: ComponentClass<
-  HTMLAttributes<{}> & OverlayProps
-> = styled.div`
+export const TickBox: ComponentClass<HTMLAttributes<{}> &
+  OverlayProps> = styled.div`
   ${size(14)} ${transition()} background-color: ${rgba('#ffffff', 0.5)};
   position: absolute;
   top: 8px;
@@ -48,9 +47,8 @@ export const TickBox: ComponentClass<
   }
 `;
 
-export const Overlay: ComponentClass<
-  HTMLAttributes<{}> & OverlayProps
-> = styled.div`
+export const Overlay: ComponentClass<HTMLAttributes<{}> &
+  OverlayProps> = styled.div`
   ${size()} ${absolute()} ${borderRadius} display: flex;
   justify-content: space-between;
   flex-direction: column;

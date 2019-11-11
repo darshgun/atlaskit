@@ -32,8 +32,7 @@ export const Div = styled.div<TargetProps>`
   z-index: ${layers.spotlight() + 1};
 
   ${p => (p.bgColor ? `background-color: ${p.bgColor};` : null)}
-  ${p =>
-    p.radius ? `border-radius: ${p.radius}px;` : null}
+  ${p => (p.radius ? `border-radius: ${p.radius}px;` : null)}
 `;
 
 export const TargetInner = styled(Div)`

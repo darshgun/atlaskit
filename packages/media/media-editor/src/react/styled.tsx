@@ -16,34 +16,29 @@ export interface LineWidthFrontCircleProps {
 export const blanketColor = N700A;
 const overlayZindex = layers.modal();
 
-export const MediaEditorContainer: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const MediaEditorContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: 0;
 `;
 MediaEditorContainer.displayName = 'MediaEditorContainer';
 
-export const OutputArea: ComponentClass<
-  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
-> = styled.div`
+export const OutputArea: ComponentClass<HTMLAttributes<{}> &
+  ThemedOuterStyledProps<{}, {}>> = styled.div`
   position: absolute;
   overflow: hidden;
 `;
 OutputArea.displayName = 'OutputArea';
 
-export const DrawingCanvas: ComponentClass<
-  CanvasHTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
-> = styled.canvas`
+export const DrawingCanvas: ComponentClass<CanvasHTMLAttributes<{}> &
+  ThemedOuterStyledProps<{}, {}>> = styled.canvas`
   position: absolute;
   left: 0;
   top: 0;
 `;
 DrawingCanvas.displayName = 'DrawingCanvas';
 
-export const SupplementaryCanvas: ComponentClass<
-  CanvasHTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
-> = styled.canvas`
+export const SupplementaryCanvas: ComponentClass<CanvasHTMLAttributes<{}> &
+  ThemedOuterStyledProps<{}, {}>> = styled.canvas`
   position: absolute;
   display: none;
   left: 0;
@@ -53,9 +48,8 @@ SupplementaryCanvas.displayName = 'SupplementaryCanvas';
 
 // TODO Check with transparent canvas, because DefaultKeyboardInput makes the text area visible to get focus.
 // https://jira.atlassian.com/browse/FIL-4059
-export const HiddenTextArea: ComponentClass<
-  TextareaHTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
-> = styled.textarea`
+export const HiddenTextArea: ComponentClass<TextareaHTMLAttributes<{}> &
+  ThemedOuterStyledProps<{}, {}>> = styled.textarea`
   position: absolute;
   display: block;
   visibility: hidden; /* display:none won't allow to get the keyboard focus */
@@ -69,9 +63,8 @@ export const HiddenTextArea: ComponentClass<
 `;
 HiddenTextArea.displayName = 'HiddenTextArea';
 
-export const HiddenTextHelperDiv: ComponentClass<
-  HTMLAttributes<{}> & ThemedOuterStyledProps<{}, {}>
-> = styled.div`
+export const HiddenTextHelperDiv: ComponentClass<HTMLAttributes<{}> &
+  ThemedOuterStyledProps<{}, {}>> = styled.div`
   position: absolute;
   display: block;
   visibility: hidden; /* display:none won't allow us to call getClientBoundingRect() for children */
@@ -105,9 +98,7 @@ export const ColorSquare: ComponentClass<HTMLAttributes<{}>> = styled.div`
 `;
 ColorSquare.displayName = 'ColorSquare';
 
-export const LineWidthBackCircle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const LineWidthBackCircle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -117,9 +108,8 @@ export const LineWidthBackCircle: ComponentClass<
 `;
 LineWidthBackCircle.displayName = 'LineWidthBackCircle';
 
-export const LineWidthFrontCircle: ComponentClass<
-  HTMLAttributes<{}> & LineWidthFrontCircleProps
-> = styled.div`
+export const LineWidthFrontCircle: ComponentClass<HTMLAttributes<{}> &
+  LineWidthFrontCircleProps> = styled.div`
   width: ${(props: LineWidthFrontCircleProps) =>
     props.width ? `${props.width}px` : '0'};
   height: ${(props: LineWidthFrontCircleProps) =>

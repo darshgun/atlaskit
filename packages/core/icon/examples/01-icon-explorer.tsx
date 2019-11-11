@@ -210,9 +210,7 @@ class IconAllExample extends Component<{}, State> {
         ))}
       </IconExplorerGrid>
     ) : (
-      <NoIcons>{`Sorry, we couldn't find any icons matching "${
-        this.state.query
-      }".`}</NoIcons>
+      <NoIcons>{`Sorry, we couldn't find any icons matching "${this.state.query}".`}</NoIcons>
     );
   };
 

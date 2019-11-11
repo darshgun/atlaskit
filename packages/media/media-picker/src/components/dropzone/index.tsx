@@ -40,9 +40,15 @@ export class DropzoneLoader extends React.PureComponent<
           dropzoneModule,
           mediaPickerErrorBoundaryModule,
         ] = await Promise.all([
-          import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
-          import(/* webpackChunkName:"@atlaskit-internal_Dropzone" */ './dropzone'),
-          import(/* webpackChunkName:"@atlaskit-internal_MediaPickerErrorBoundary" */ '../media-picker-analytics-error-boundary'),
+          import(
+            /* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'
+          ),
+          import(
+            /* webpackChunkName:"@atlaskit-internal_Dropzone" */ './dropzone'
+          ),
+          import(
+            /* webpackChunkName:"@atlaskit-internal_MediaPickerErrorBoundary" */ '../media-picker-analytics-error-boundary'
+          ),
         ]);
 
         DropzoneLoader.Dropzone = mediaClient.withMediaClient(

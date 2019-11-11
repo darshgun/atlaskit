@@ -159,9 +159,10 @@ export const insertMediaSingleNode = (
 
   const { state, dispatch } = view;
   const grandParent = state.selection.$from.node(-1);
-  const node = createMediaSingleNode(state.schema, collection)(
-    mediaState as MediaSingleState,
-  );
+  const node = createMediaSingleNode(
+    state.schema,
+    collection,
+  )(mediaState as MediaSingleState);
   const shouldSplit =
     grandParent && grandParent.type.validContent(Fragment.from(node));
   let fileExtension: string | undefined;

@@ -58,27 +58,29 @@ export async function getFlatDependenciesList(
   exclude: Array<string> = [],
   depth: number = 1,
 ): Promise<DependenciesList> {
-  const dependencies = (await Promise.all(
-    packages.map(async pkg => {
-      const rawDeps = await getDependencies(
-        pkg.name,
-        (semver as any).coerce(pkg.version),
-      );
+  const dependencies = (
+    await Promise.all(
+      packages.map(async pkg => {
+        const rawDeps = await getDependencies(
+          pkg.name,
+          (semver as any).coerce(pkg.version),
+        );
 
-      if (!rawDeps) {
-        return [];
-      }
+        if (!rawDeps) {
+          return [];
+        }
 
-      return [
-        ...Object.entries<string>(rawDeps.dependencies || {}).filter(
-          ([name]) => exclude.indexOf(name) === -1,
-        ),
-        ...Object.entries<string>(rawDeps.peerDependencies || {}).filter(
-          ([name]) => exclude.indexOf(name) === -1,
-        ),
-      ];
-    }),
-  )).reduce((acc, item) => acc.concat(item), []);
+        return [
+          ...Object.entries<string>(rawDeps.dependencies || {}).filter(
+            ([name]) => exclude.indexOf(name) === -1,
+          ),
+          ...Object.entries<string>(rawDeps.peerDependencies || {}).filter(
+            ([name]) => exclude.indexOf(name) === -1,
+          ),
+        ];
+      }),
+    )
+  ).reduce((acc, item) => acc.concat(item), []);
 
   if (depth > 0) {
     return postProcessDependeciesList([

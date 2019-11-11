@@ -78,10 +78,11 @@ describe('Media plugin commands', () => {
         ),
       );
 
-      updateMediaNodeAttrs(testMediaFileId, newDimensions, true)(
-        editorView.state,
-        editorView.dispatch,
-      );
+      updateMediaNodeAttrs(
+        testMediaFileId,
+        newDimensions,
+        true,
+      )(editorView.state, editorView.dispatch);
 
       expect(editorView.state.doc).toEqualDocument(
         doc(

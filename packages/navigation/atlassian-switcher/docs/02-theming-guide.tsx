@@ -10,7 +10,7 @@ export default md`
   - secondaryTextColor: background color used on passive hover state for top level and default background for child items
 
   ### Spec
-  ${<img src={details} />}
+  ${(<img src={details} />)}
 
   ### Usage
   ${code`

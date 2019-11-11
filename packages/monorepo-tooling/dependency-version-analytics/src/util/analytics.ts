@@ -116,9 +116,7 @@ export async function sendAnalytics(
       {
         type: 'confirm',
         name: 'continue',
-        message: `Are you sure you want to send ${
-          eventsToSend.length
-        } historical analytics events to '${analyticsEnv}' env for product '${product}?`,
+        message: `Are you sure you want to send ${eventsToSend.length} historical analytics events to '${analyticsEnv}' env for product '${product}?`,
         default: false,
       },
     ]);

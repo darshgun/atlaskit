@@ -229,10 +229,12 @@ export async function run() {
     dryRun,
   });
 
-  const commitInfo = await (await fetch(
-    `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/commit/${atlaskitCommitHash}`,
-    {},
-  )).json();
+  const commitInfo = await (
+    await fetch(
+      `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/commit/${atlaskitCommitHash}`,
+      {},
+    )
+  ).json();
   const emailRegex = /^.*<([A-z]+@atlassian.com)>$/;
 
   let authorEmail = 'no-reply@atlassian.com';

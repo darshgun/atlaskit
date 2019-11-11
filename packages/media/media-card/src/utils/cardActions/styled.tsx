@@ -11,9 +11,9 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(Root)`
   line-height: 0;
 `;
 
-export const CardActionButton: ComponentClass<
-  HTMLAttributes<HTMLDivElement>
-> = styled.div`
+export const CardActionButton: ComponentClass<HTMLAttributes<
+  HTMLDivElement
+>> = styled.div`
   ${center} ${borderRadius} ${size(26)} color: ${N500};
 
   &:hover {

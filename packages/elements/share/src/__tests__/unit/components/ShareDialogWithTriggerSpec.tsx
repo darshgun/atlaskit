@@ -256,9 +256,9 @@ describe('ShareDialogWithTrigger', () => {
       });
       wrapper.setState({ isDialogOpen: true });
 
-      const ShareFormProps = shallow(wrapper
-        .find(InlineDialog)
-        .prop('content') as any)
+      const ShareFormProps = shallow(
+        wrapper.find(InlineDialog).prop('content') as any,
+      )
         .find(ShareForm)
         .props();
       expect(ShareFormProps.title).toEqual('Share this page');
@@ -676,9 +676,9 @@ describe('ShareDialogWithTrigger', () => {
       });
       wrapper.setState({ isDialogOpen: true });
 
-      const content = shallow(wrapper
-        .find(InlineDialog)
-        .prop('content') as any);
+      const content = shallow(
+        wrapper.find(InlineDialog).prop('content') as any,
+      );
       expect(content.contains('Some message')).toBeTruthy();
     });
   });
