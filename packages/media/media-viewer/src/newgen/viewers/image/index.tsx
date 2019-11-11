@@ -15,7 +15,6 @@ import { AnalyticViewerProps } from '../../analytics/item-viewer';
 import { BaseViewer } from '../base-viewer';
 
 export type ObjectUrl = string;
-export const REQUEST_CANCELLED = 'request_cancelled';
 
 export type ImageViewerProps = AnalyticViewerProps & {
   mediaClient: MediaClient;
@@ -47,13 +46,6 @@ export class ImageViewer extends BaseViewer<
   }
 
   private cancelImageFetch?: () => void;
-
-  // This method is spied on by some test cases, so don't rename or remove it.
-  public preventRaceCondition() {
-    // Calling setState might introduce a race condition, because the app has
-    // already transitioned to a different state. To avoid this we're not doing
-    // anything.
-  }
 
   protected async init() {
     const { item: file, mediaClient, collectionName } = this.props;
@@ -102,13 +94,12 @@ export class ImageViewer extends BaseViewer<
         content: Outcome.successful({ objectUrl, orientation }),
       });
     } catch (err) {
-      if (err.message === REQUEST_CANCELLED) {
-        this.preventRaceCondition();
-      } else {
+      if (!isAbortedRequestError(err)) {
         this.setState({
           content: Outcome.failed(createError('previewFailed', err, file)),
         });
-        this.props.onLoad({ status: 'error', errorMessage: err.message });
+        const errorMessage = err.message || err.name;
+        this.props.onLoad({ status: 'error', errorMessage });
       }
     }
   }
@@ -153,3 +144,7 @@ export class ImageViewer extends BaseViewer<
     });
   };
 }
+
+const isAbortedRequestError = (error: Error): boolean => {
+  return error.message === 'request_cancelled' || error.name === 'AbortError';
+};

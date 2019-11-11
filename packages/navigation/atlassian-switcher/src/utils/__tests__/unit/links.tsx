@@ -10,10 +10,7 @@ import {
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
-  getLabelAndIconByProductKey,
   getJoinableSiteLinks,
-  getRelevantJoinableSites,
-  JoinableSiteItemType,
 } from '../../links';
 import {
   Product,
@@ -217,92 +214,6 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result).toHaveLength(0);
-    });
-  });
-
-  describe('getLabelAndIconByProductKey', () => {
-    it('should return a map of label and icon by product key', () => {
-      expect(getLabelAndIconByProductKey(ProductKey.CONFLUENCE)).toMatchObject({
-        label: 'Confluence',
-        icon: ConfluenceIcon,
-      });
-
-      expect(getLabelAndIconByProductKey(ProductKey.JIRA_CORE)).toMatchObject({
-        label: 'Jira Core',
-        icon: JiraCoreIcon,
-      });
-
-      expect(
-        getLabelAndIconByProductKey(ProductKey.JIRA_SERVICE_DESK),
-      ).toMatchObject({
-        label: 'Jira Service Desk',
-        icon: JiraServiceDeskIcon,
-      });
-
-      expect(
-        getLabelAndIconByProductKey(ProductKey.JIRA_SOFTWARE),
-      ).toMatchObject({
-        label: 'Jira Software',
-        icon: JiraSoftwareIcon,
-      });
-
-      expect(getLabelAndIconByProductKey(ProductKey.OPSGENIE)).toMatchObject({
-        label: 'Opsgenie',
-        icon: OpsGenieIcon,
-      });
-    });
-  });
-
-  describe('getRelevantJoinableSites', () => {
-    it('should return an array', () => {
-      const result = getRelevantJoinableSites([]);
-      expect(Array.isArray(result)).toBe(true);
-    });
-
-    it('should not return any site with no products', () => {
-      const result = getRelevantJoinableSites(
-        mockJoinableSites.sites.map(site =>
-          Object.assign({}, site, { products: [] }),
-        ),
-      );
-      expect(result.length).toBe(0);
-    });
-
-    it('should not return any site with no users', () => {
-      const result = getRelevantJoinableSites(
-        mockJoinableSites.sites.map(site =>
-          Object.assign({}, site, { users: [] }),
-        ),
-      );
-      expect(result.length).toBe(0);
-    });
-
-    it('should not return any site with 0 relevance score', () => {
-      const result = getRelevantJoinableSites(
-        mockJoinableSites.sites.map(site =>
-          Object.assign({}, site, { relevance: 0 }),
-        ),
-      );
-      expect(result.length).toBe(0);
-    });
-
-    it('should always return the site if there is only one item', () => {
-      const oneSite = mockJoinableSites.sites.slice(0, 1);
-
-      let result: JoinableSiteItemType[] = getJoinableSiteLinks(
-        oneSite.map(site => Object.assign({}, site, { products: [] })),
-      );
-      expect(result.length).toBe(1);
-
-      result = getJoinableSiteLinks(
-        oneSite.map(site => Object.assign({}, site, { users: [] })),
-      );
-      expect(result.length).toBe(1);
-
-      result = getJoinableSiteLinks(
-        oneSite.map(site => Object.assign({}, site, { relevance: 0 })),
-      );
-      expect(result.length).toBe(1);
     });
   });
 

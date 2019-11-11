@@ -1,5 +1,25 @@
 # @atlaskit/media-viewer
 
+## 44.0.1
+
+### Patch Changes
+
+- [patch][39291ce416](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39291ce416):
+
+  Removing unnecessary `preventRaceCondition` method in MVNG- [patch][1e4b33e998](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e4b33e998):
+
+  Fix analytic error reporting for aborted requests in MV- [patch][bae3b3e06d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bae3b3e06d):
+
+  Add analytic events to DocViewer in MediaViewer- [patch][e35dfc7b5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e35dfc7b5f):
+
+  adding user timing api to get operations spent time
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-core@31.0.0
+
 ## 44.0.0
 
 ### Major Changes
@@ -38,7 +58,6 @@
   })
 
   const mediaPicker = MediaPicker(context);
-  ```
 
   <Card context={context}>
   <SmartMediaEditor context={context}>
@@ -50,37 +69,37 @@
   <MediaViewer context={context}>
   ```
 
-**Now**:
+  **Now**:
 
-````
-import {MediaClientConfig} from '@atlaskit/media-core';
-import {Card} from '@atlaskit/media-card'
-import {SmartMediaEditor} from '@atlaskit/media-editor'
-import {Filmstrip} from '@atlaskit/media-filmstrip'
-import {MediaImage} from '@atlaskit/media-image'
-import {MediaViewer} from '@atlaskit/media-viewer'
-import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
-
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+  ```
 
 const mediaClientConfig: MediaClientConfig = {
-  authProvider: () => Promise.resolve({})
+authProvider: () => Promise.resolve({})
 }
 
 const mediaPicker = MediaPicker(mediaClientConfig);
 
-<Card mediaClientConfig={mediaClientConfig}>
-<SmartMediaEditor mediaClientConfig={mediaClientConfig}>
-<Filmstrip mediaClientConfig={mediaClientConfig}>
-<MediaImage mediaClientConfig={mediaClientConfig}>
-<Dropzone mediaClientConfig={mediaClientConfig}>
-<Clipboard mediaClientConfig={mediaClientConfig}>
-<Browser mediaClientConfig={mediaClientConfig}>
-<MediaViewer mediaClientConfig={mediaClientConfig}>
-```- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
 
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
 
-**FABDODGEM-13 Editor Damask Release**
-  - [Internal post](http://go.atlassian.com/damask-release)
+**FABDODGEM-13 Editor Damask Release** - [Internal post](http://go.atlassian.com/damask-release)
 
 **BREAKING CHANGES**
 
@@ -92,7 +111,7 @@ const mediaPicker = MediaPicker(mediaClientConfig);
 - **Editor Mobile Bridge:** Adapts to task-decision changes.
 - **Util Data Test:** Adapts to task-decision changes.
 
------
+---
 
 **Affected Editor Components:**
 
@@ -127,7 +146,6 @@ tables, media, mobile, emoji, tasks & decisions, analytics
 - Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
   - https://product-fabric.atlassian.net/browse/FM-2370
 
-
 **Media**
 
 - Improved analytics
@@ -150,14 +168,16 @@ Bumped dependencies.
 
 ### Minor Changes
 
-- [minor] [eeb47666dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eeb47666dd):
+- [minor][eeb47666dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eeb47666dd):
 
 Emit `media-viewed` event through `globalMediaEventEmitter` when media is viewed, played or downloaded via media card or media viewer.
+
 ### Patch Changes
 
-- [patch] [38e5144a42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38e5144a42):
+- [patch][38e5144a42](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38e5144a42):
 
 Add failedProcessing error event + fix passing file attributes to mediaPreviewFailedEvent
+
 - Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
 - @atlaskit/media-card@66.0.0
 - @atlaskit/media-core@30.0.17
@@ -381,7 +401,7 @@ Before:
 
 ```typescript
 withAnalyticsEvents()(Button) as ComponentClass<Props>;
-````
+```
 
 After:
 

@@ -25,6 +25,74 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Macros [CS-1470] code macro converts to code node with java language 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "language": "java",
+        "uniqueId": null,
+      },
+      "content": Array [
+        Object {
+          "text": "public static main(String test) {
+        System.out.print(\\"test\\");
+     }",
+          "type": "text",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros [CS-1470] code macro converts to code node with xml language 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "language": "xml",
+        "uniqueId": null,
+      },
+      "content": Array [
+        Object {
+          "text": "<test attr='value'><nested/></test>",
+          "type": "text",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros [CS-1470] noformat macro converts to code node with no language 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "language": null,
+        "uniqueId": null,
+      },
+      "content": Array [
+        Object {
+          "text": "preformatted
+text
+with
+linebreaks",
+          "type": "text",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Macros should collapse and join outer macros 1`] = `
 Object {
   "content": Array [
@@ -1083,7 +1151,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "language": "java",
+        "language": null,
         "uniqueId": null,
       },
       "content": Array [
@@ -1430,7 +1498,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "language": "java",
+        "language": null,
         "uniqueId": null,
       },
       "content": Array [

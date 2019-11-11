@@ -22,14 +22,15 @@ export const getIconButtonTheme = ({
   props: ThemeProps,
 ): ThemeTokens => {
   const { buttonStyles, spinnerStyles } = current(props);
+
   return {
     buttonStyles: {
       ...buttonStyles,
-      borderRadius: 100,
+      borderRadius: 4,
       display: 'flex',
+      margin: '0 2px',
+      padding: 4,
       height: 'auto',
-      marginLeft: margin.left,
-      padding: padding.all,
       ...iconButton.default,
       ':hover': iconButton.hover,
       ':focus': iconButton.focus,
@@ -49,9 +50,9 @@ export const iconButtonSkeletonCSS = (
   { marginLeft, marginRight, size }: IconButtonSkeletonProps,
 ) => ({
   borderRadius: '50%',
-  marginLeft: typeof marginLeft === 'number' ? marginLeft : `${margin.left}px`,
+  marginLeft: typeof marginLeft === 'number' ? marginLeft : margin.left,
   marginRight: typeof marginRight === 'number' ? marginRight : 0,
-  width: typeof size === 'number' ? size : `${buttonHeight}px}`,
-  height: typeof size === 'number' ? size : `${buttonHeight}px`,
+  width: typeof size === 'number' ? size : buttonHeight,
+  height: typeof size === 'number' ? size : buttonHeight,
   ...skeletonCSS(theme),
 });

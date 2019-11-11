@@ -27,6 +27,19 @@ const standardCards = [
     ),
   },
 ];
+const cardWithContextId = [
+  {
+    title: 'Image with parameter',
+    content: (
+      <Card
+        identifier={successIdentifier}
+        mediaClientConfig={mediaClientConfig}
+        appearance="image"
+        contextId="some-id"
+      />
+    ),
+  },
+];
 
 // errors
 const errorCards = [
@@ -160,6 +173,7 @@ export default () => (
     <div style={{ margin: '20px 40px' }}>
       <h3>Standard</h3>
       <StoryList>{standardCards}</StoryList>
+      <StoryList>{cardWithContextId}</StoryList>
 
       <h3>Error</h3>
       <StoryList>{errorCards}</StoryList>

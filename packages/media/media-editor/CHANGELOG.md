@@ -1,5 +1,18 @@
 # @atlaskit/media-editor
 
+## 37.0.1
+
+### Patch Changes
+
+- [patch][a8fa1fe895](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a8fa1fe895):
+
+  adding user timing api to get operations spent time
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/media-card@66.0.1
+
 ## 37.0.0
 
 ### Major Changes
@@ -38,7 +51,6 @@
   })
 
   const mediaPicker = MediaPicker(context);
-  ```
 
   <Card context={context}>
   <SmartMediaEditor context={context}>
@@ -50,37 +62,37 @@
   <MediaViewer context={context}>
   ```
 
-**Now**:
+  **Now**:
 
-````
-import {MediaClientConfig} from '@atlaskit/media-core';
-import {Card} from '@atlaskit/media-card'
-import {SmartMediaEditor} from '@atlaskit/media-editor'
-import {Filmstrip} from '@atlaskit/media-filmstrip'
-import {MediaImage} from '@atlaskit/media-image'
-import {MediaViewer} from '@atlaskit/media-viewer'
-import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
-
+  ```
+  import {MediaClientConfig} from '@atlaskit/media-core';
+  import {Card} from '@atlaskit/media-card'
+  import {SmartMediaEditor} from '@atlaskit/media-editor'
+  import {Filmstrip} from '@atlaskit/media-filmstrip'
+  import {MediaImage} from '@atlaskit/media-image'
+  import {MediaViewer} from '@atlaskit/media-viewer'
+  import {Dropzone, Clipboard, Browser, MediaPicker} from '@atlaskit/media-picker';
+  ```
 
 const mediaClientConfig: MediaClientConfig = {
-  authProvider: () => Promise.resolve({})
+authProvider: () => Promise.resolve({})
 }
 
 const mediaPicker = MediaPicker(mediaClientConfig);
 
-<Card mediaClientConfig={mediaClientConfig}>
-<SmartMediaEditor mediaClientConfig={mediaClientConfig}>
-<Filmstrip mediaClientConfig={mediaClientConfig}>
-<MediaImage mediaClientConfig={mediaClientConfig}>
-<Dropzone mediaClientConfig={mediaClientConfig}>
-<Clipboard mediaClientConfig={mediaClientConfig}>
-<Browser mediaClientConfig={mediaClientConfig}>
-<MediaViewer mediaClientConfig={mediaClientConfig}>
-```- [major] [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
+  <Card mediaClientConfig={mediaClientConfig}>
+  <SmartMediaEditor mediaClientConfig={mediaClientConfig}>
+  <Filmstrip mediaClientConfig={mediaClientConfig}>
+  <MediaImage mediaClientConfig={mediaClientConfig}>
+  <Dropzone mediaClientConfig={mediaClientConfig}>
+  <Clipboard mediaClientConfig={mediaClientConfig}>
+  <Browser mediaClientConfig={mediaClientConfig}>
+  <MediaViewer mediaClientConfig={mediaClientConfig}>
+  ```
 
+- [major][ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):
 
-**FABDODGEM-13 Editor Damask Release**
-  - [Internal post](http://go.atlassian.com/damask-release)
+**FABDODGEM-13 Editor Damask Release** - [Internal post](http://go.atlassian.com/damask-release)
 
 **BREAKING CHANGES**
 
@@ -92,7 +104,7 @@ const mediaPicker = MediaPicker(mediaClientConfig);
 - **Editor Mobile Bridge:** Adapts to task-decision changes.
 - **Util Data Test:** Adapts to task-decision changes.
 
------
+---
 
 **Affected Editor Components:**
 
@@ -127,7 +139,6 @@ tables, media, mobile, emoji, tasks & decisions, analytics
 - Hybrid Renderer Recycler view now handles invalid ADF nodes gracefully.
   - https://product-fabric.atlassian.net/browse/FM-2370
 
-
 **Media**
 
 - Improved analytics
@@ -150,9 +161,10 @@ Bumped dependencies.
 
 ### Minor Changes
 
-- [minor] [8de3256372](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8de3256372):
+- [minor][8de3256372](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8de3256372):
 
 implemented analytics for annotation editor
+
 - Updated dependencies [e7b5c917de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7b5c917de):
 - @atlaskit/media-card@66.0.0
 - @atlaskit/media-store@12.0.14
@@ -971,4 +983,7 @@ This replaces the implementation inside the existing `media` plugin. The new `me
 
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
 - [patch] bump icon dependency [da14956](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da14956)
-````
+
+```
+
+```

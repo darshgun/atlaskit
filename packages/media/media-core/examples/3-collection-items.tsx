@@ -4,8 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Card } from '@atlaskit/media-card';
 import Button from '@atlaskit/button';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
+import { FileIdentifier } from '@atlaskit/media-client';
 import { createUserMediaClient } from '@atlaskit/media-test-helpers';
-import { FileIdentifier } from '../src';
 import { CardsWrapper, Header } from '../example-helpers/styled';
 
 const mediaClient = createUserMediaClient();

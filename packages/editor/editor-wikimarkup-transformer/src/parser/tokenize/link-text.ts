@@ -13,7 +13,7 @@ export const linkText: TokenParser = ({ input, position, schema }) => {
 
   // Remove mailto:
   const textRepresentation = match[1] === 'mailto:' ? match[2] : match[0];
-  const url = unescape(match[0]);
+  const url = decodeURI(unescape(match[0]));
 
   if (!isSafeUrl(url)) {
     return fallback(input, position);

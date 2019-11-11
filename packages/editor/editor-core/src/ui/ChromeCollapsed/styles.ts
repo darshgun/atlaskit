@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, InputHTMLAttributes, ComponentClass } from 'react';
+import { InputHTMLAttributes, ComponentClass } from 'react';
 import { akEditorSubtleAccent } from '../../styles';
 import { borderRadius, colors } from '@atlaskit/theme';
 

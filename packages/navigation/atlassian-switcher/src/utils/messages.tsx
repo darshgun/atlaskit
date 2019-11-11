@@ -140,7 +140,8 @@ const messages = defineMessages({
   join: {
     id: 'fabric.atlassianSwitcher.join',
     defaultMessage: 'Join',
-    description: 'The header of "Join" section',
+    description:
+      'Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators.',
   },
 });
 

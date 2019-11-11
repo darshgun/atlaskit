@@ -1,5 +1,38 @@
 # @atlaskit/renderer
 
+## 53.0.0
+
+### Patch Changes
+
+- [patch][e47220a6b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e47220a6b2):
+
+  ED-5450: remove most of ts-ignores from editor packages- [patch][0e10be832e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e10be832e):
+
+  ## Remove media-core Context usage from MediaCard node in order to use MediaClientConfig
+
+  > this is not a breaking change
+
+  Renderer public remains the same since the `ProviderFactory` type has not direct contract with media
+
+- Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):
+  - @atlaskit/editor-test-helpers@10.1.3
+  - @atlaskit/media-client@4.0.0
+  - @atlaskit/media-filmstrip@36.0.0
+  - @atlaskit/media-test-helpers@25.2.2
+  - @atlaskit/editor-json-transformer@6.3.5
+  - @atlaskit/task-decision@16.0.2
+  - @atlaskit/editor-common@41.2.1
+  - @atlaskit/media-card@66.0.1
+  - @atlaskit/media-core@31.0.0
+
+## 52.0.1
+
+### Patch Changes
+
+- [patch][846d2fbcbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/846d2fbcbb):
+
+  ED-7932 Fixed copy to clipboard in IE 11
+
 ## 52.0.0
 
 ### Major Changes

@@ -8,6 +8,7 @@ import { EditorView, NodeView } from 'prosemirror-view';
 import ReactNodeView, {
   ForwardRef,
   getPosHandler,
+  getPosHandlerNode,
 } from '../../../nodeviews/ReactNodeView';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { generateColgroup } from '../pm-plugins/table-resizing/utils';
@@ -67,12 +68,14 @@ const toDOM = (node: PmNode, props: Props) => {
 export default class TableView extends ReactNodeView<Props> {
   private table: HTMLElement | undefined;
   private observer?: MutationObserver;
+  getPos: getPosHandlerNode;
 
   constructor(props: Props) {
     super(props.node, props.view, props.getPos, props.portalProviderAPI, props);
 
     const MutObserver = (window as any).MutationObserver;
     this.observer = MutObserver && new MutObserver(this.handleMutation);
+    this.getPos = props.getPos;
   }
 
   getContentDOM() {
@@ -244,7 +247,7 @@ export const createTableView = (
     view,
     allowColumnResizing,
     portalProviderAPI,
-    getPos,
+    getPos: getPos as getPosHandlerNode,
     options,
   }).init();
 };

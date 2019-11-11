@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/pubsub",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "config": {
     "access": "public"
   },
@@ -18,7 +18,7 @@
   "maintainers": [],
   "license": "Apache-2.0",
   "dependencies": {
-    "@atlaskit/util-service-support": "^4.0.9",
+    "@atlaskit/util-service-support": "^5.0.0",
     "eventemitter2": "^4.1.0",
     "pubnub": "^4.20.3",
     "tslib": "^1.9.3"

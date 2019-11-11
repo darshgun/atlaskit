@@ -1,28 +1,36 @@
-import { JoinableSiteDataSource } from '../../default-joinable-sites-provider';
+import { JoinableSiteDataFetcher } from '../../default-joinable-sites-provider';
 
 describe('default-joinabble-sites-provider', () => {
-  const createProvider = jest.fn();
+  const createProviderWithCustomFetchData = jest.fn();
 
-  jest.doMock('../../create-data-provider', () => ({ createProvider }));
+  jest.doMock('../../create-data-provider', () => ({
+    createProviderWithCustomFetchData,
+  }));
 
   test('should create a provider using the internal url (/gateway) by default', () => {
     const {
       createJoinableSitesProvider,
-      defaultDataSource,
+      defaultFetchData,
     } = require('../../default-joinable-sites-provider');
     createJoinableSitesProvider();
-    expect(createProvider).toBeCalledWith('joinableSites', defaultDataSource);
+    expect(createProviderWithCustomFetchData).toBeCalledWith(
+      'joinableSites',
+      defaultFetchData,
+    );
   });
 
   test('should allow to create a provider with custom endpoint url', () => {
     const {
       createJoinableSitesProvider,
     } = require('../../default-joinable-sites-provider');
-    const promise: JoinableSiteDataSource = () =>
+    const promise: JoinableSiteDataFetcher = () =>
       new Promise(resolve => ({
         sites: [],
       }));
     createJoinableSitesProvider(promise);
-    expect(createProvider).toBeCalledWith('joinableSites', promise);
+    expect(createProviderWithCustomFetchData).toBeCalledWith(
+      'joinableSites',
+      promise,
+    );
   });
 });

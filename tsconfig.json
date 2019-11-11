@@ -31,6 +31,7 @@
   },
   "files": [
     "./typings/atlaskit.d.ts",
+    "./typings/atlassian.d.ts",
     "./typings/blueimp-load-image.d.ts",
     "./typings/calendar-base.d.ts",
     "./typings/deep-equal.d.ts",
@@ -58,6 +59,7 @@
     "./typings/pdfjs-dist.d.ts",
     "./typings/png-chunks-extract.d.ts",
     "./typings/postis.d.ts",
+    "./typings/prettier-nested-imports.d.ts",
     "./typings/pretty-data.d.ts",
     "./typings/prosemirror-dev-tools.d.ts",
     "./typings/prosemirror-markdown.d.ts",

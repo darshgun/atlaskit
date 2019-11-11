@@ -4,22 +4,20 @@ function commitsToValues(response) {
   return response.values;
 }
 
-function commitUrl(user, repo, pullrequestid) {
-  return `/2.0/repositories/${user}/${repo}/pullrequests/${pullrequestid}/commits`;
+function commitUrl(repoName, pullrequestid) {
+  return `/2.0/repositories/${repoName}/pullrequests/${pullrequestid}/commits`;
 }
 
-function getCommits(user, repo, pullrequestid, urlNext) {
+function getCommits(repoName, pullrequestid, urlNext) {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
       request({
-        url: urlNext || commitUrl(user, repo, pullrequestid, urlNext),
+        url: urlNext || commitUrl(repoName, pullrequestid, urlNext),
         success(response) {
           if (response.next) {
-            getCommits(user, repo, pullrequestid, response.next).then(
-              commits => {
-                resolve(commitsToValues(response).concat(commits));
-              },
-            );
+            getCommits(repoName, pullrequestid, response.next).then(commits => {
+              resolve(commitsToValues(response).concat(commits));
+            });
           } else {
             resolve(commitsToValues(response));
           }
@@ -32,8 +30,8 @@ function getCommits(user, repo, pullrequestid, urlNext) {
   });
 }
 
-export default function getCommitsThenParse(user, repo, pullrequestid) {
-  return getCommits(user, repo, pullrequestid).then(commits =>
+export default function getChangesetsFromCommits(repoName, pullrequestid) {
+  return getCommits(repoName, pullrequestid).then(commits =>
     commits
       .map(commit => commit.message)
       .filter(commit => !!commit.match(/^CHANGESET: .+?\n/))

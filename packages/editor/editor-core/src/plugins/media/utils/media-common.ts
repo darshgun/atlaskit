@@ -1,4 +1,3 @@
-import { MediaClientConfig } from '@atlaskit/media-core';
 import { deleteSelection, splitBlock } from 'prosemirror-commands';
 import {
   Node as PMNode,
@@ -24,7 +23,7 @@ import {
   isImage,
 } from '../../../utils';
 import { ProsemirrorGetPosHandler } from '../../../nodeviews';
-import { MediaProvider, MediaState } from '../types';
+import { MediaState } from '../types';
 import { mapSlice } from '../../../utils/slice';
 import {
   walkUpTreeUntil,
@@ -231,41 +230,6 @@ export const copyOptionalAttrsFromMediaState = (
         node.attrs[key] = attrValue;
       }
     });
-};
-
-/**
- * Customer can define either deprecated Context or MediaClientConfig object directly. All internal
- * API are being switched to MediaClientConfig exclusively.
- * This utility helps to retrieve MediaClientConfig object from media Provider no matter what customer
- * has provided.
- */
-export const getViewMediaClientConfigFromMediaProvider = async (
-  mediaProvider: MediaProvider,
-): Promise<MediaClientConfig> => {
-  if (mediaProvider.viewContext) {
-    return (await mediaProvider.viewContext).config;
-  } else {
-    // We can use ! here since XOR would not allow MediaProvider object created without one of the properties.
-    return mediaProvider.viewMediaClientConfig!;
-  }
-};
-
-/**
- * Customer can define either deprecated Context or MediaClientConfig object directly. All internal
- * API are being switched to MediaClientConfig exclusively.
- * This utility helps to retrieve MediaClientConfig object from media Provider no matter what customer
- * has provided.
- */
-export const getUploadMediaClientConfigFromMediaProvider = async (
-  mediaProvider: MediaProvider,
-): Promise<MediaClientConfig | undefined> => {
-  if (mediaProvider.uploadContext) {
-    return (await mediaProvider.uploadContext).config;
-  } else if (mediaProvider.uploadMediaClientConfig) {
-    return mediaProvider.uploadMediaClientConfig;
-  } else {
-    return;
-  }
 };
 
 export const transformSliceToCorrectMediaWrapper = (

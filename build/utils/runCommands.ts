@@ -97,6 +97,7 @@ function listenForSuccess({
     onWatchSuccess &&
     !(watchFirstSuccessCondition || watchSuccessCondition)
   ) {
+    // eslint-disable-next-line no-throw-literal
     throw 'Must provide either watchSuccessCondition or watchFirstSuccessCondition with onWatchSuccess';
   } else if (!onWatchSuccess) {
     return () => {};

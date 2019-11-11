@@ -1,7 +1,5 @@
 import * as React from 'react';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { ComponentType, Consumer, Provider } from 'react';
+import { ComponentType } from 'react';
 import { Fragment, Mark, MarkType, Node, Schema } from 'prosemirror-model';
 import { Serializer } from '../';
 import { RendererAppearance } from '../ui/Renderer/types';

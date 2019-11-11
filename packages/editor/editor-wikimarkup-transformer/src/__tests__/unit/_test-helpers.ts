@@ -54,3 +54,16 @@ export function checkParseEncodeRoundTrips(
   //   expect(roundTripped).toEqualDocument(node);
   // });
 }
+
+export const adf2wiki = (node: Node) => {
+  const transformer = new WikiMarkupTransformer();
+  const wiki = transformer.encode(node);
+  const adf = transformer.parse(wiki).toJSON();
+  expect(adf).toEqual(node.toJSON());
+};
+export const wiki2adf = (wiki: string) => {
+  const transformer = new WikiMarkupTransformer();
+  const adf = transformer.parse(wiki);
+  const roundtripped = transformer.encode(adf);
+  expect(roundtripped).toEqual(wiki);
+};

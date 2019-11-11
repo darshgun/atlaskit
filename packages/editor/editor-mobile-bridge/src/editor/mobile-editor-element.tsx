@@ -13,8 +13,6 @@ import {
   GasPurePayload,
   GasPureScreenEventPayload,
 } from '@atlaskit/analytics-gas-types';
-
-// @ts-ignore
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
@@ -35,9 +33,6 @@ import { cardClient, cardProvider } from '../providers/cardProvider';
 import { analyticsBridgeClient } from '../analytics-client';
 
 const params = parseLocationSearch();
-// @ts-ignore
-// eslint-disable-next-line no-redeclare
-import { AtlaskitThemeProvider } from '@atlaskit/theme';
 
 export const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl());
 

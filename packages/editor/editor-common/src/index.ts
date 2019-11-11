@@ -8,6 +8,17 @@ export {
   ExtensionHandlers,
   Transformer,
   SortOrder,
+  // Collab Types
+  CollabEditProvider,
+  CollabEvent,
+  CollabEventData,
+  CollabEventConnectionData,
+  CollabEventInitData,
+  CollabParticipant,
+  CollabeEventPresenceData,
+  CollabEventRemoteData,
+  CollabSendableSelection,
+  CollabEventTelepointerData, // End Collab Types
 } from './types';
 
 export * from './contextIdentifier';

@@ -29,6 +29,10 @@ const HELP_MSG = `
      ${chalk.yellow('--')} Any arguments after -- will be appended to the upgrade command
 `;
 
+function createBranchName(atlaskitBranchName: string, prefix: string) {
+  return `${prefix}${atlaskitBranchName}`.replace(/\//g, '-');
+}
+
 export async function run() {
   const cli = meow(HELP_MSG, {
     flags: {
@@ -77,7 +81,7 @@ export async function run() {
   const extraArgs = cli.input;
 
   const git = dryRun ? debugMock('git') : simpleGit('./');
-  const branchName = `${branchPrefix}${atlaskitBranchName}`;
+  const branchName = createBranchName(atlaskitBranchName, branchPrefix);
 
   const remote = await git.listRemote(['--get-url']);
 

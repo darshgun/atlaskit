@@ -5,7 +5,7 @@ import { ProviderFactory, ExtensionHandlers } from '@atlaskit/editor-common';
 import { ReactNodeView } from '../../../nodeviews';
 import Extension from '../ui/Extension';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import { ForwardRef } from '../../../nodeviews/ReactNodeView';
+import { ForwardRef, getPosHandler } from '../../../nodeviews/ReactNodeView';
 import { ZeroWidthSpace } from '../../../utils';
 
 export interface Props {
@@ -15,12 +15,18 @@ export interface Props {
 }
 
 class ExtensionNode extends ReactNodeView {
-  ignoreMutation(mutation: MutationRecord) {
+  ignoreMutation(
+    mutation: MutationRecord | { type: 'selection'; target: Element },
+  ) {
     // Extensions can perform async operations that will change the DOM.
     // To avoid having their tree rebuilt, we need to ignore the mutation
     // for atom based extensions if its not a layout, we need to give
     // children a chance to recalc
-    return this.node.type.isAtom || mutation.attributeName !== 'data-layout';
+    return (
+      this.node.type.isAtom ||
+      (mutation.type !== 'selection' &&
+        mutation.attributeName !== 'data-layout')
+    );
   }
 
   getContentDOM() {
@@ -60,7 +66,7 @@ export default function ExtensionNodeView(
   providerFactory: ProviderFactory,
   extensionHandlers: ExtensionHandlers,
 ) {
-  return (node: PmNode, view: EditorView, getPos: () => number): NodeView => {
+  return (node: PmNode, view: EditorView, getPos: getPosHandler): NodeView => {
     return new ExtensionNode(node, view, getPos, portalProviderAPI, {
       providerFactory,
       extensionHandlers,

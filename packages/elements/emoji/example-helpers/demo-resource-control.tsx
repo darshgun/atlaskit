@@ -9,6 +9,7 @@ import {
 export function getEmojiConfig() {
   let emojiConfig;
   try {
+    // eslint-disable-next-line import/no-unresolved
     emojiConfig = require('../local-config')['default'];
   } catch (e) {
     emojiConfig = require('../local-config-example')['default'];

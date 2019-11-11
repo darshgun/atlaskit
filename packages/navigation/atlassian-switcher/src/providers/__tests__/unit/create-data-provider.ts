@@ -5,9 +5,12 @@ describe('create-data-provider', () => {
   jest.doMock('../../../utils/fetch', () => ({ fetchJson }));
   jest.doMock('../../../utils/with-cached', () => ({ withCached }));
 
-  const { createProvider } = require('../../create-data-provider');
+  const {
+    createProvider,
+    createProviderWithCustomFetchData,
+  } = require('../../create-data-provider');
 
-  describe('by url', () => {
+  describe('createProvider', () => {
     test('should return a fetch method and a provider component', () => {
       const provider = createProvider('my-provider', '/gateway/api/content');
       expect(provider).toHaveProperty('fetchMethod');
@@ -33,23 +36,29 @@ describe('create-data-provider', () => {
     });
   });
 
-  describe('by promise', () => {
-    let promise: jest.Mock;
+  describe('createProviderWithCustomFetchData', () => {
+    let fetchData: jest.Mock;
 
     beforeEach(() => {
-      promise = jest.fn().mockResolvedValue(true);
+      fetchData = jest.fn().mockResolvedValue(true);
     });
 
     test('should return a fetch method and a provider component', () => {
-      const provider = createProvider('my-provider', promise);
+      const provider = createProviderWithCustomFetchData(
+        'my-provider',
+        fetchData,
+      );
       expect(provider).toHaveProperty('fetchMethod');
       expect(provider).toHaveProperty('ProviderComponent');
     });
 
     test('should invoke the promise when the provider was created', () => {
-      const provider = createProvider('my-provider', promise);
+      const provider = createProviderWithCustomFetchData(
+        'my-provider',
+        fetchData,
+      );
       provider.fetchMethod();
-      expect(promise).toBeCalled();
+      expect(fetchData).toBeCalled();
     });
   });
 });

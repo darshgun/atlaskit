@@ -1,10 +1,11 @@
-import { Auth, AuthProvider, getFileStreamsCache } from '@atlaskit/media-core';
+import { Auth, AuthProvider } from '@atlaskit/media-core';
 import {
   ResponseFileItem,
   MediaFile,
   RECENTS_COLLECTION,
   globalMediaEventEmitter,
   MediaViewedEventPayload,
+  getFileStreamsCache,
 } from '../..';
 import * as MediaClientModule from '../..';
 import uuid from 'uuid';
@@ -197,7 +198,7 @@ describe('FileFetcher', () => {
 
       fileFetcher.getFileState('invalid-id').subscribe({
         error(error) {
-          expect(error).toEqual('invalid-id is not a valid file id');
+          expect(error).toEqual('invalid id was passed to getFileState');
           done();
         },
       });

@@ -1,13 +1,19 @@
-import { createProvider, ExportedDataProvider } from './create-data-provider';
+import {
+  createProviderWithCustomFetchData,
+  ExportedDataProvider,
+} from './create-data-provider';
 import { JoinableSitesResponse } from '../types';
 
-export type JoinableSiteDataSource = () => Promise<JoinableSitesResponse>;
+export type JoinableSiteDataFetcher = () => Promise<JoinableSitesResponse>;
 
-export const defaultDataSource: JoinableSiteDataSource = () =>
+export const defaultFetchData: JoinableSiteDataFetcher = () =>
   Promise.resolve({ sites: [] });
 
 export const createJoinableSitesProvider = (
-  dataSource: JoinableSiteDataSource = defaultDataSource,
+  fetchData: JoinableSiteDataFetcher = defaultFetchData,
 ): ExportedDataProvider<JoinableSitesResponse> => {
-  return createProvider<JoinableSitesResponse>('joinableSites', dataSource);
+  return createProviderWithCustomFetchData<JoinableSitesResponse>(
+    'joinableSites',
+    fetchData,
+  );
 };

@@ -13,8 +13,8 @@ type HandleClick = (
   pos: number,
   event: MouseEvent,
 ) => boolean;
-let handleClick: HandleClick = textFormattingCursorPlugin.spec!.props
-  .handleClick;
+let handleClick: HandleClick = textFormattingCursorPlugin.spec!.props!
+  .handleClick!;
 
 describe('text-formatting', () => {
   const createEditor = createEditorFactory();

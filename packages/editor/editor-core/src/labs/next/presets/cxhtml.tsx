@@ -1,14 +1,8 @@
+// #region Imports
 import * as React from 'react';
-import { EditorPresetProps } from './types';
-import { PresetProvider } from '../Editor';
+import { MentionProvider } from '@atlaskit/mention/resource';
+
 import {
-  pastePlugin,
-  blockTypePlugin,
-  clearMarksOnChangeToEmptyDocumentPlugin,
-  hyperlinkPlugin,
-  textFormattingPlugin,
-  widthPlugin,
-  unsupportedContentPlugin,
   quickInsertPlugin,
   tablesPlugin,
   codeBlockPlugin,
@@ -30,18 +24,13 @@ import {
   insertBlockPlugin,
   basePlugin,
   placeholderPlugin,
-  editorDisabledPlugin,
-  typeAheadPlugin,
-  floatingToolbarPlugin,
-  gapCursorPlugin,
 } from '../../../plugins';
-import { MentionProvider } from '@atlaskit/mention/resource';
 import { MediaProvider } from '../../../plugins/media';
-import {
-  removeExcludes,
-  enableExperimental,
-  ExperimentalPluginMap,
-} from './utils';
+import { PresetProvider } from '../Editor';
+import { EditorPresetProps } from './types';
+import { useDefaultPreset } from './default';
+import { getPluginsFromPreset } from './utils';
+// #endregion
 
 interface EditorPresetCXHTMLProps {
   children?: React.ReactNode;
@@ -50,76 +39,68 @@ interface EditorPresetCXHTMLProps {
   mediaProvider?: Promise<MediaProvider>;
 }
 
-export function EditorPresetCXHTML({
-  children,
+export function useCXHTMLPreset({
   mentionProvider,
   mediaProvider,
   placeholder,
-  excludes,
-  experimental,
 }: EditorPresetCXHTMLProps & EditorPresetProps) {
-  let plugins = [
-    pastePlugin(),
-    blockTypePlugin(),
-    clearMarksOnChangeToEmptyDocumentPlugin(),
-    hyperlinkPlugin(),
-    textFormattingPlugin({}),
-    widthPlugin(),
-    quickInsertPlugin(),
-    tablesPlugin({
-      tableOptions: { advanced: true },
-    }),
-    codeBlockPlugin(),
-    panelPlugin(),
-    listsPlugin(),
-    textColorPlugin(),
-    breakoutPlugin(),
-    jiraIssuePlugin(),
-    extensionPlugin(),
-    rulePlugin(),
-    datePlugin(),
-    layoutPlugin(),
-    indentationPlugin(),
-    cardPlugin(),
-    statusPlugin({ menuDisabled: false }),
-    tasksAndDecisionsPlugin(),
-    insertBlockPlugin({}),
-    placeholderPlugin({ placeholder }),
-    editorDisabledPlugin(),
-    typeAheadPlugin(),
-    floatingToolbarPlugin(),
-    gapCursorPlugin(),
-  ];
+  const [preset] = useDefaultPreset();
+
+  preset.push(
+    [
+      basePlugin,
+      {
+        allowInlineCursorTarget: true,
+        allowScrollGutter: () =>
+          document.querySelector('.fabric-editor-popup-scroll-parent'),
+      },
+    ],
+    quickInsertPlugin,
+    [tablesPlugin, { tableOptions: { advanced: true } }],
+    codeBlockPlugin,
+    panelPlugin,
+    listsPlugin,
+    textColorPlugin,
+    breakoutPlugin,
+    jiraIssuePlugin,
+    extensionPlugin,
+    rulePlugin,
+    datePlugin,
+    layoutPlugin,
+    indentationPlugin,
+    cardPlugin,
+    [statusPlugin, { menuDisabled: false }],
+    tasksAndDecisionsPlugin,
+    insertBlockPlugin,
+    [placeholderPlugin, { placeholder }],
+  );
 
   if (mentionProvider) {
-    plugins.push(mentionsPlugin());
+    preset.push(mentionsPlugin);
   }
 
   if (mediaProvider) {
-    plugins.push(
-      mediaPlugin({
+    preset.push([
+      mediaPlugin,
+      {
         provider: mediaProvider,
         allowMediaSingle: true,
         allowMediaGroup: true,
         allowAnnotation: true,
         allowResizing: true,
-      }),
-    );
+      },
+    ]);
   }
 
-  const experimentalMap: ExperimentalPluginMap = new Map();
-  plugins = removeExcludes(plugins, excludes);
-  plugins = enableExperimental(plugins, experimental, experimentalMap);
+  return [preset];
+}
 
-  // Add plugins that cannot be excluded for this preset.
-  plugins.push(
-    unsupportedContentPlugin(),
-    basePlugin({
-      allowInlineCursorTarget: true,
-      allowScrollGutter: () =>
-        document.querySelector('.fabric-editor-popup-scroll-parent'),
-    }),
-  );
+export function EditorPresetCXHTML(
+  props: EditorPresetCXHTMLProps & EditorPresetProps,
+) {
+  const { children, excludes, experimental } = props;
+  const [preset] = useCXHTMLPreset(props);
+  const plugins = getPluginsFromPreset(preset, excludes, experimental);
 
   return <PresetProvider value={plugins}>{children}</PresetProvider>;
 }

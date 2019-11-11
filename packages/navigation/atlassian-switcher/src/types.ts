@@ -156,17 +156,28 @@ export interface AvailableProductsResponse {
 export interface JoinableSiteUser {
   avatarUrl: string;
   displayName: string;
-  relevance: number;
+  relevance?: number;
+}
+
+export interface JoinableSiteUserAvatarPropTypes {
+  name: string;
+  src: string;
+  appearance: 'circle';
+  size: 'small';
+  enableTooltip: boolean;
+}
+
+export interface JoinableSiteProduct {
+  [key: string]: JoinableSiteUser[];
 }
 
 export interface JoinableSite {
   cloudId: string;
   displayName: string;
-  products: ProductKey[];
-  relevance: number;
+  products: JoinableSiteProduct;
   url: string;
-  users: JoinableSiteUser[];
   avatarUrl?: string;
+  relevance?: number;
 }
 
 export interface JoinableSitesResponse {

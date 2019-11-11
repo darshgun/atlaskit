@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "include": [
-    "*.ts",
+    "**/*.ts",
     "typings/*.ts"
   ],
   "compilerOptions": {
@@ -9,7 +9,8 @@
     "module": "commonjs",
     "target": "es2018",
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "typeRoots": [
       "../../typings",

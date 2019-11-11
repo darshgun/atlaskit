@@ -35,6 +35,7 @@
   "devDependencies": {
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/util-data-test": "^13.0.0",
+    "mkdirp": "^0.5.1",
     "react": "^16.8.0",
     "rimraf": "^2.6.3",
     "svgexport": "^0.3.2",

@@ -23,6 +23,7 @@ function createFixture(
 ) {
   const mediaClient = fakeMediaClient();
   const onClose = jest.fn(() => fetchPromise);
+  const onError = jest.fn();
 
   jest
     .spyOn(mediaClient.file, 'getArtifactURL')
@@ -38,10 +39,11 @@ function createFixture(
       item={item}
       mediaClient={mediaClient}
       collectionName={collectionName}
+      onError={onError}
     />,
   );
   (el as any).instance()['fetch'] = jest.fn();
-  return { mediaClient, el, onClose };
+  return { mediaClient, el, onClose, onError };
 }
 
 const item: ProcessedFileState = {
@@ -115,5 +117,17 @@ describe('DocViewer', () => {
     expect(
       (mediaClient.file.getArtifactURL as jest.Mock).mock.calls[0][2],
     ).toEqual(collectionName);
+  });
+
+  it('should call onError when an error happens', async () => {
+    const fetchPromise = Promise.resolve();
+    const { el, onError } = createFixture(
+      fetchPromise,
+      item,
+      undefined,
+      Promise.reject('some error'),
+    );
+    await (el as any).instance()['init']();
+    expect(onError).toBeCalledWith('some error');
   });
 });

@@ -4,6 +4,7 @@ import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Button from '@atlaskit/button';
+
 import Tree, {
   mutateTree,
   moveItemOnTree,

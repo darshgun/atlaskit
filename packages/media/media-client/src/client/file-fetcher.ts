@@ -4,11 +4,8 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { publishReplay } from 'rxjs/operators/publishReplay';
 import uuid from 'uuid/v4';
 import Dataloader from 'dataloader';
-import {
-  AuthProvider,
-  authToOwner,
-  ProcessingFileState,
-} from '@atlaskit/media-core';
+import { ProcessingFileState } from '../models/file-state';
+import { AuthProvider, authToOwner } from '@atlaskit/media-core';
 import {
   MediaStore,
   UploadableFile,
@@ -181,7 +178,7 @@ export class FileFetcherImpl implements FileFetcher {
   ): Observable<FileState> {
     if (!isValidId(id)) {
       return Observable.create((observer: Observer<FileState>) => {
-        observer.error(`${id} is not a valid file id`);
+        observer.error('invalid id was passed to getFileState');
       });
     }
 

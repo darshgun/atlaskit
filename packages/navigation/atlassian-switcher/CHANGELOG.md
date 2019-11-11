@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.6.7
+
+### Patch Changes
+
+- [patch][95d6aac929](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95d6aac929):
+
+  Fix a bug where basic users are seeing Browse Marketplace link.
+
 ## 4.6.6
 
 - Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):

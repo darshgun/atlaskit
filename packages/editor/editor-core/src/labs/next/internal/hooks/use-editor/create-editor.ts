@@ -1,5 +1,6 @@
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EventDispatcher,
@@ -17,6 +18,8 @@ import { EditorProps } from '../../editor-props-type';
 
 export function createEditor({
   context,
+  createAnalyticsEvent,
+  transformer,
 
   plugins,
   portalProviderAPI,
@@ -39,6 +42,7 @@ export function createEditor({
   const dispatch = createDispatch(eventDispatcher);
   const editorConfig = processPluginsList(plugins || [], {});
   const schema = createSchema(editorConfig);
+  const transformerInstance = transformer && transformer(schema);
   const pmPlugins = createPMPlugins({
     editorConfig,
     schema,
@@ -50,13 +54,13 @@ export function createEditor({
     reactContext: () => context,
     dispatchAnalyticsEvent: () => {},
   });
-
   const state = EditorState.create({
     schema,
     plugins: pmPlugins,
-    doc: processRawValue(schema, defaultValue),
+    doc: transformerInstance
+      ? transformerInstance.parse(defaultValue)
+      : processRawValue(schema, defaultValue),
   });
-
   const editorView = new EditorView(
     { mount: ref },
     {
@@ -73,6 +77,9 @@ export function createEditor({
 
   return {
     editorView,
+
+    transformer: transformerInstance,
+    createAnalyticsEvent,
 
     eventDispatcher,
     dispatch,
@@ -99,8 +106,10 @@ export type CreateEditorParams = Pick<
   | 'popupsScrollableElement'
   | 'onChange'
   | 'disabled'
+  | 'transformer'
 > & {
   context: any;
   ref?: HTMLDivElement | null;
   portalProviderAPI: PortalProviderAPI;
+  createAnalyticsEvent?: CreateUIAnalyticsEvent;
 };

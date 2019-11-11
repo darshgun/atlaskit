@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { defaultDataSource } from '../../default-joinable-sites-provider';
+import { defaultFetchData } from '../../default-joinable-sites-provider';
 import {
   JoinableSitesProvider,
   prefetchJoinableSites,
@@ -9,7 +9,7 @@ import {
 
 import { JoinableSitesResponse } from '../../../types';
 
-import { createProvider } from '../../create-data-provider';
+import { createProviderWithCustomFetchData } from '../../create-data-provider';
 
 describe('joinable-sites-data-providers', () => {
   test('should render using the default provider', () => {
@@ -20,10 +20,9 @@ describe('joinable-sites-data-providers', () => {
   });
 
   test('should render using a custom provider', () => {
-    const customProvider = createProvider<JoinableSitesResponse>(
-      'my-joinble-sites-provider',
-      defaultDataSource,
-    );
+    const customProvider = createProviderWithCustomFetchData<
+      JoinableSitesResponse
+    >('my-joinble-sites-provider', defaultFetchData);
     const wrapper = shallow(
       <JoinableSitesProvider joinableSitesDataProvider={customProvider}>
         {items => items}

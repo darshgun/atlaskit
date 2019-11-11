@@ -53,13 +53,13 @@ pipelines:
               # Change into a glob pattern (removing brackets, spaces and quotes).
               - export CHANGED_PACKAGES_GLOB=$(echo "$CHANGED_PACKAGES" | sed 's/[][" ]//g')
               - node build/ci-scripts/branch-deploys/update.changed.packages.deps.to.cdn.js
-              # We add in the extra braces and a trailing comma in case we only have one package
+              # We add in the extra braces and a trailing comma in case we only have one package.
               - bolt ws exec --only-fs="{$CHANGED_PACKAGES_GLOB,}" -- npm pack
               - mkdir -p dists/
               - node build/ci-scripts/branch-deploys/copy.built.tgzs.to.dists.dir.js
               - for file in dists/*; do node build/ci-scripts/upload.build.artefact.for.commit.js $file dists/; done
-              # Need to check that we definitely have a changeset present, error with a message if not
-              - yarn changeset status || (echo "\033[0;31m ~ Please run yarn changeset:empty to create an empty changeset ~" && false)
+              # Need to check that we definitely have a changeset present, error with a message if not.
+              - yarn changeset status || (echo "Please run yarn changeset:empty to create an empty changeset" && false)
             artifacts:
               - dists/manifest.json
             after-script:
@@ -91,12 +91,10 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --frozen-lockfile
+              - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
               - bolt measure:dependents:s3
               - node build/ci-scripts/merge.json.in.folder.js .currentBundleSize
               - if [ -e ".currentBundleSize/merged.json" ]; then node build/ci-scripts/upload.build.artefact.for.commit.js .currentBundleSize/merged.json; fi
-            artifacts:
-              # Remove this adding for debugging
-              - .currentBundleSize/**
             after-script:
               - yarn send:stepFailureEvents
             caches:
@@ -464,6 +462,13 @@ pipelines:
             - node ./wait.until.no.master.build.running.js
           after-script:
             - yarn send:buildEvents
+            # Only execute the below if successful
+            - test $BITBUCKET_EXIT_CODE -eq 0
+            - bolt install --frozen-lockfile
+            - cd build/scheduled-releases
+            - yarn update-pr "$BITBUCKET_COMMIT" "$BITBUCKET_REPO_FULL_NAME"
+          caches:
+            - node
 
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install node_modules.
@@ -489,9 +494,9 @@ pipelines:
             - node
 
     # This build allow to deploy branch dists to easily tests new version of components into consumers / products code base.
-    deploy-branch-build-dists:
+    branch-deploy:
       - step:
-          name: Deploy branch build dists
+          name: Branch deploy
           script:
             - source ./build-setup.sh
             - bolt install --frozen-lockfile
@@ -510,19 +515,15 @@ pipelines:
           caches:
             - node
 
-    # This is a custom build step that merges master branch then upload ratchet files to S3 on a scheduled basis.
-    # It is broken to multiple steps to gain speed and avoid OOM issues.
     push-bundle-size-to-s3:
       - parallel:
           - step:
               name: Bundle size update for editor-part-1 packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - git fetch origin $BITBUCKET_BRANCH && git checkout $BITBUCKET_BRANCH && git checkout - && git merge $BITBUCKET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - node build/ci-scripts/get.pkgs.in.team.js editor-part-1| xargs -n1 -P2 yarn measure --updateSnapshot --s3
-              artifacts:
-                - .masterBundleSize/**
               after-script:
                 - yarn send:bundleSize
               caches:
@@ -531,11 +532,9 @@ pipelines:
               name: Bundle size update for editor-part-2 packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - git fetch origin $BITBUCKET_BRANCH && git checkout $BITBUCKET_BRANCH && git checkout - && git merge $BITBUCKET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - node build/ci-scripts/get.pkgs.in.team.js editor-part-2| xargs -n1 -P2 yarn measure --updateSnapshot --s3
-              artifacts:
-                - .masterBundleSize/**
               after-script:
                 - yarn send:bundleSize
               caches:
@@ -544,11 +543,9 @@ pipelines:
               name: Bundle size update for core packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - git fetch origin $BITBUCKET_BRANCH && git checkout $BITBUCKET_BRANCH && git checkout - && git merge $BITBUCKET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - node build/ci-scripts/get.pkgs.in.team.js core| xargs -n1 -P2 yarn measure --updateSnapshot --s3
-              artifacts:
-                - .masterBundleSize/**
               after-script:
                 - yarn send:bundleSize
               caches:
@@ -557,11 +554,9 @@ pipelines:
               name: Bundle size update for media packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - git fetch origin $BITBUCKET_BRANCH && git checkout $BITBUCKET_BRANCH && git checkout - && git merge $BITBUCKET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - node build/ci-scripts/get.pkgs.in.team.js media| xargs -n1 -P2 yarn measure --updateSnapshot --s3
-              artifacts:
-                - .masterBundleSize/**
               after-script:
                 - yarn send:bundleSize
               caches:
@@ -570,12 +565,10 @@ pipelines:
               name: Bundle size update for all other packages
               script:
                 - source ./build-setup.sh
-                - git merge master --no-edit
+                - git fetch origin $BITBUCKET_BRANCH && git checkout $BITBUCKET_BRANCH && git checkout - && git merge $BITBUCKET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
                 - export input=elements,bitbucket,css-packs,growth,help,helpers,home,jira,navigation,people-and-teams,search,teamwork-ecosystem,engagement-platform,server
                 - node build/ci-scripts/get.pkgs.in.team.js $input| xargs -n1 -P2 yarn measure --updateSnapshot --s3
-              artifacts:
-                - .masterBundleSize/**
               after-script:
                 - yarn send:bundleSize
               caches:

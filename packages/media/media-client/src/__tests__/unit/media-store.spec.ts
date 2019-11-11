@@ -22,6 +22,7 @@ import {
   MediaFileArtifacts,
   checkWebpSupport,
 } from '../..';
+import { FILE_CACHE_MAX_AGE } from '../../constants';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
@@ -273,11 +274,15 @@ describe('MediaStore', () => {
         return mediaStore.getFile(fileId, params).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${baseUrl}/file/${fileId}?client=${clientId}&collection=${collectionName}&token=${token}`,
+            `${baseUrl}/file/${fileId}?collection=${collectionName}`,
           );
           expect(fetchMock.lastOptions()).toEqual(
             expect.objectContaining({
               method: 'GET',
+              headers: {
+                'X-Client-Id': clientId,
+                Authorization: `Bearer ${token}`,
+              },
             }),
           );
           expect(authProvider).toHaveBeenCalledWith({ collectionName });
@@ -370,12 +375,14 @@ describe('MediaStore', () => {
         return mediaStore.getCollection(collectionName).then(response => {
           expect(response).toEqual({ data });
           expect(fetchMock.lastUrl()).toEqual(
-            `${baseUrl}/collection/${collectionName}?client=${clientId}&token=${token}`,
+            `${baseUrl}/collection/${collectionName}`,
           );
           expect(fetchMock.lastOptions()).toEqual({
             method: 'GET',
             headers: {
               Accept: 'application/json',
+              'X-Client-Id': clientId,
+              Authorization: `Bearer ${token}`,
             },
           });
           expect(authProvider).toHaveBeenCalledWith({ collectionName });
@@ -408,12 +415,14 @@ describe('MediaStore', () => {
           .then(response => {
             expect(response).toEqual({ data });
             expect(fetchMock.lastUrl()).toEqual(
-              `${baseUrl}/collection/some-collection-name/items?client=${clientId}&details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc&token=${token}`,
+              `${baseUrl}/collection/some-collection-name/items?details=full&inclusiveStartKey=some-inclusive-start-key&limit=10&sortDirection=desc`,
             );
             expect(fetchMock.lastOptions()).toEqual({
               method: 'GET',
               headers: {
                 Accept: 'application/json',
+                'X-Client-Id': clientId,
+                Authorization: `Bearer ${token}`,
               },
             });
             expect(authProvider).toHaveBeenCalledWith({ collectionName });
@@ -540,11 +549,11 @@ describe('MediaStore', () => {
       });
 
       it('should fail if error status is returned', () => {
-        const error = {
+        const errorBody = {
           error: 'something wrong',
         };
         fetchMock.mock(`begin:${baseUrl}/upload/createWithFiles`, {
-          body: error,
+          body: errorBody,
           status: 403,
         });
 
@@ -555,9 +564,10 @@ describe('MediaStore', () => {
           result => {
             expect(result).not.toBeDefined();
           },
-          async (response: Response) => {
-            const reason = await response.json();
-            expect(reason).toEqual(error);
+          async error => {
+            expect(error.message).toEqual(
+              'network error 403: {"error":"something wrong"}',
+            );
           },
         );
       });
@@ -602,7 +612,7 @@ describe('MediaStore', () => {
         const url = await mediaStore.getFileImageURL('1234');
 
         expect(url).toEqual(
-          `${baseUrl}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+          `${baseUrl}/file/1234/image?allowAnimated=true&client=some-client-id&max-age=${FILE_CACHE_MAX_AGE}&mode=crop&token=some-token`,
         );
       });
     });
@@ -618,7 +628,7 @@ describe('MediaStore', () => {
 
         const image = await mediaStore.getImage('123');
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=crop&token=some-token`,
+          `${baseUrl}/file/123/image?allowAnimated=true&max-age=${FILE_CACHE_MAX_AGE}&mode=crop`,
         );
         expect(image).toBeInstanceOf(Blob);
       });
@@ -637,7 +647,7 @@ describe('MediaStore', () => {
           upscale: true,
         });
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
+          `${baseUrl}/file/123/image?allowAnimated=true&max-age=${FILE_CACHE_MAX_AGE}&mode=full-fit&upscale=true&version=2`,
         );
       });
 
@@ -660,7 +670,7 @@ describe('MediaStore', () => {
           true,
         );
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&height=4096&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2&width=4096`,
+          `${baseUrl}/file/123/image?allowAnimated=true&height=4096&max-age=${FILE_CACHE_MAX_AGE}&mode=full-fit&upscale=true&version=2&width=4096`,
         );
       });
 
@@ -685,7 +695,7 @@ describe('MediaStore', () => {
           true,
         );
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&height=4096&max-age=3600&mode=crop&token=some-token&upscale=true&version=2&width=4096`,
+          `${baseUrl}/file/123/image?allowAnimated=true&height=4096&max-age=${FILE_CACHE_MAX_AGE}&mode=crop&upscale=true&version=2&width=4096`,
         );
       });
 
@@ -802,7 +812,7 @@ describe('MediaStore', () => {
 
         const image = await mediaStore.getImageMetadata('123');
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image/metadata?client=some-client-id&token=some-token`,
+          `${baseUrl}/file/123/image/metadata`,
         );
         expect(image).toEqual(data);
       });
@@ -820,7 +830,7 @@ describe('MediaStore', () => {
           collection: 'my-collection',
         });
         expect(fetchMock.lastUrl()).toEqual(
-          `${baseUrl}/file/123/image/metadata?client=some-client-id&collection=my-collection&token=some-token`,
+          `${baseUrl}/file/123/image/metadata?collection=my-collection`,
         );
       });
     });
@@ -834,7 +844,7 @@ describe('MediaStore', () => {
 
       it('should return file url', () => {
         expect(url).toEqual(
-          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&token=some-token`,
+          `${baseUrl}/file/1234/binary?client=some-client-id&collection=some-collection-name&dl=true&max-age=${FILE_CACHE_MAX_AGE}&token=some-token`,
         );
       });
 
@@ -859,7 +869,7 @@ describe('MediaStore', () => {
         );
 
         expect(url).toEqual(
-          `${baseUrl}/sd-video?client=some-client-id&collection=some-collection&token=some-token`,
+          `${baseUrl}/sd-video?client=some-client-id&collection=some-collection&max-age=${FILE_CACHE_MAX_AGE}&token=some-token`,
         );
       });
 

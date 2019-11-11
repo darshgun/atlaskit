@@ -53,6 +53,10 @@ another one is here and it should* not be applied`,
 https://app.datadoghq.com/screen/282018/product-fabric-adf-service?tv_mode=true#close`,
     ],
     [
+      'should not double url-encode text links',
+      'text http://example.com/query=some%20text%20with%20encoded%20space text',
+    ],
+    [
       '[CS-576] should allow {color} macro in formatters',
       'This is _{color:red}*Strong Red and Italic*{color}_',
     ],

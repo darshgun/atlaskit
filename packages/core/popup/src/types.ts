@@ -11,7 +11,7 @@ import {
 import { Placement } from '@atlaskit/popper';
 
 export type TriggerProps = {
-  ref: any;
+  ref: Ref<HTMLElement>;
   'aria-controls'?: string;
   'aria-expanded': boolean;
   'aria-haspopup': boolean;
@@ -21,10 +21,11 @@ export type ContentProps = {
   scheduleUpdate(): void;
   isOpen: boolean;
   onClose: (() => void) | undefined;
-  setInitialFocusRef: Dispatch<SetStateAction<HTMLElement | undefined>>;
+  setInitialFocusRef: Dispatch<SetStateAction<HTMLElement | null>>;
 };
 
-export type PopupRef = HTMLDivElement | undefined;
+export type PopupRef = HTMLDivElement | null;
+export type TriggerRef = HTMLElement | null;
 
 export type PopupComponentProps = {
   children: ReactNode;
@@ -59,18 +60,19 @@ export type PopupProps = {
   /** Component used to anchor the popup to your content. Usually a button used to open the popup */
   trigger: FC<TriggerProps>;
   /** The container displayed in the portal that wraps the content. Use to override the default white background with rounded corners */
-  popupComponent?: FC<PopupComponentProps>;
+  popupComponent?: ComponentType<PopupComponentProps>;
   /** Optional override for the z-index for the react portal */
   zIndex?: number;
 };
 
 export type CloseManagerHook = Pick<PopupProps, 'isOpen' | 'onClose'> & {
   popupRef: PopupRef;
+  triggerRef: TriggerRef;
 };
 
 export type FocusManagerHook = {
   popupRef: PopupRef;
-  initialFocusRef: HTMLElement | undefined;
+  initialFocusRef: HTMLElement | null;
 };
 
 export type RepositionOnUpdateProps = {

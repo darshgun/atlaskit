@@ -15,10 +15,10 @@ import {
   applyRemoteData,
 } from './actions';
 import {
-  Participant,
-  ConnectionData,
-  PresenceData,
-  TelepointerData,
+  CollabParticipant,
+  CollabEventConnectionData,
+  CollabeEventPresenceData,
+  CollabEventTelepointerData,
 } from './types';
 import { Participants, ReadOnlyParticipants } from './participants';
 import { findPointers, createTelepointers } from './utils';
@@ -98,7 +98,7 @@ export const createPlugin = (
           ) {
             const selection = getSendableSelection(newState.selection);
 
-            const message: TelepointerData = {
+            const message: CollabEventTelepointerData = {
               type: 'telepointer',
               selection,
               sessionId,
@@ -111,7 +111,7 @@ export const createPlugin = (
             // can go before it.
             clearTimeout(messageTimeoutId);
             messageTimeoutId = window.setTimeout(
-              (data: TelepointerData) => sendMessage(data),
+              (data: CollabEventTelepointerData) => sendMessage(data),
               0,
               message,
             );
@@ -266,9 +266,11 @@ export class PluginState {
   apply(tr: Transaction) {
     let { decorationSet, participants, sid, isReady } = this;
 
-    const presenceData = tr.getMeta('presence') as PresenceData;
-    const telepointerData = tr.getMeta('telepointer') as TelepointerData;
-    const sessionIdData = tr.getMeta('sessionId') as ConnectionData;
+    const presenceData = tr.getMeta('presence') as CollabeEventPresenceData;
+    const telepointerData = tr.getMeta(
+      'telepointer',
+    ) as CollabEventTelepointerData;
+    const sessionIdData = tr.getMeta('sessionId') as CollabEventConnectionData;
     let collabInitialised = tr.getMeta('collabInitialised');
 
     if (typeof collabInitialised !== 'boolean') {
@@ -284,7 +286,7 @@ export class PluginState {
 
     if (presenceData) {
       const {
-        joined = [] as Participant[],
+        joined = [] as CollabParticipant[],
         left = [] as { sessionId: string }[],
       } = presenceData;
 

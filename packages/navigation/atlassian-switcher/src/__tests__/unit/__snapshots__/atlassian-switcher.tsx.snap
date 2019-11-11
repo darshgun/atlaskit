@@ -83,7 +83,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
           },
           "join": Object {
             "defaultMessage": "Join",
-            "description": "The header of \\"Join\\" section",
+            "description": "Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators.",
             "id": "fabric.atlassianSwitcher.join",
           },
           "login": Object {
@@ -221,7 +221,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             },
             "join": Object {
               "defaultMessage": "Join",
-              "description": "The header of \\"Join\\" section",
+              "description": "Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators.",
               "id": "fabric.atlassianSwitcher.join",
             },
             "login": Object {
