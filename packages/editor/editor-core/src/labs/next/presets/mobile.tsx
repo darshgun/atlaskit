@@ -73,9 +73,10 @@ export function useMobilePreset({
     annotationPlugin,
     cardPlugin,
     mobileScrollPlugin,
-    // This would be exclude if the provider doesnt exist in the factory
+    // Begin -> This would be exclude if the provider doesnt exist in the factory
     [mentionsPlugin, { useInlineWrapper: true }],
     [emojiPlugin, { useInlineWrapper: true }],
+    // End
   );
 
   if (media) {
