@@ -18,9 +18,10 @@ export type AddOptionAvatarProps = {
   size?: 'small' | 'large';
 };
 
-export const AddOptionAvatar: React.StatelessComponent<
-  AddOptionAvatarProps
-> = ({ size, label }) => (
+export const AddOptionAvatar: React.StatelessComponent<AddOptionAvatarProps> = ({
+  size,
+  label,
+}) => (
   <AddOptionAvatarWrapper>
     <InviteTeamIcon label={label} size={size} primaryColor="white" />
   </AddOptionAvatarWrapper>

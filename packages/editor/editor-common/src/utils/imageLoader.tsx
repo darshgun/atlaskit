@@ -3,9 +3,10 @@ import { Component, ComponentType } from 'react';
 
 export interface ImageLoaderProps {
   url?: string;
-  onExternalImageLoaded?: (
-    dimensions: { width: number; height: number },
-  ) => void;
+  onExternalImageLoaded?: (dimensions: {
+    width: number;
+    height: number;
+  }) => void;
   imageStatus?: ImageStatus;
 }
 

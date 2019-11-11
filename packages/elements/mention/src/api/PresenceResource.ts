@@ -346,9 +346,7 @@ export class DefaultPresenceParser implements PresenceParser {
       } catch (e) {
         // eslint-disable-next-line no-console
         console.error(
-          `Failed to parse presence's stateMetadata for user with id ${
-            presence.userId
-          }: ${presence.stateMetadata}`,
+          `Failed to parse presence's stateMetadata for user with id ${presence.userId}: ${presence.stateMetadata}`,
         );
         // eslint-disable-next-line no-console
         console.error(e);

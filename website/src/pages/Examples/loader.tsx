@@ -71,7 +71,9 @@ export default class ExamplesIFrame extends React.Component<{}, State> {
     if (ENABLE_ANALYTICS_GASV3) {
       try {
         /* eslint-disable import/no-unresolved */
-        const analyticsWebClientModule = await import(/*webpackChunkName: "@atlassiansox/analytics-web-client" */ '@atlassiansox/analytics-web-client');
+        const analyticsWebClientModule = await import(
+          /*webpackChunkName: "@atlassiansox/analytics-web-client" */ '@atlassiansox/analytics-web-client'
+        );
 
         const {
           default: AnalyticsWebClient,

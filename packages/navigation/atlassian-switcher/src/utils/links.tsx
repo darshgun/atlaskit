@@ -27,6 +27,9 @@ import {
   Product,
   ProvisionedProducts,
   CurrentSite,
+  JoinableSite,
+  JoinableSiteUser,
+  JoinableSiteUserAvatarPropTypes,
 } from '../types';
 import messages from './messages';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
@@ -46,6 +49,11 @@ export type SwitcherItemType = {
   childItems?: SwitcherChildItem[];
   productType?: WorklensProductType;
   analyticsAttributes?: { [key: string]: string };
+};
+
+export type JoinableSiteItemType = SwitcherItemType & {
+  cloudId: string;
+  users: JoinableSiteUserAvatarPropTypes[];
 };
 
 export type RecentItemType = SwitcherItemType & {
@@ -91,7 +99,7 @@ type AvailableProductDetails = Pick<
 >;
 
 export const AVAILABLE_PRODUCT_DATA_MAP: {
-  [productKey in WorklensProductType]: AvailableProductDetails
+  [productKey in WorklensProductType]: AvailableProductDetails;
 } = {
   [WorklensProductType.BITBUCKET]: {
     label: 'Bitbucket',
@@ -442,4 +450,52 @@ export const getRecentLinkItems = (
       type: customLink.type,
       description: getObjectTypeLabel(customLink.type),
     }));
+};
+
+// Design decision from
+// https://hello.atlassian.net/wiki/spaces/~kgalek/pages/563815188/Join+from+Atlassian+switcher%3A+design+so+far
+const MAX_JOINABLE_SITES = 3;
+
+export const getJoinableSiteLinks = (
+  joinableSites: JoinableSite[] = [],
+): JoinableSiteItemType[] => {
+  let joinableSiteLinks = [];
+
+  for (let site of joinableSites) {
+    for (let productKey in site.products) {
+      const users: JoinableSiteUser[] = site.products[productKey] || [];
+      const productType: WorklensProductType =
+        TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey];
+      const {
+        label,
+        Icon,
+        href,
+      }: AvailableProductDetails = AVAILABLE_PRODUCT_DATA_MAP[productType];
+
+      joinableSiteLinks.push({
+        key: site.cloudId,
+        label,
+        description: site.displayName,
+        Icon,
+        href,
+        users: users.map(
+          (user: JoinableSiteUser): JoinableSiteUserAvatarPropTypes => ({
+            name: user.displayName,
+            src: user.avatarUrl,
+            appearance: 'circle' as 'circle',
+            size: 'small' as 'small',
+            enableTooltip: true,
+          }),
+        ),
+        cloudId: site.cloudId,
+        productType,
+      });
+
+      if (joinableSiteLinks.length >= MAX_JOINABLE_SITES) {
+        return joinableSiteLinks;
+      }
+    }
+  }
+
+  return joinableSiteLinks;
 };

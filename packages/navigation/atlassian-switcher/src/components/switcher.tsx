@@ -11,9 +11,14 @@ import {
   Skeleton,
   TryLozenge,
   FormattedMessage,
+  ItemWithAvatarGroup,
 } from '../primitives';
 
-import { SwitcherItemType, RecentItemType } from '../utils/links';
+import {
+  SwitcherItemType,
+  RecentItemType,
+  JoinableSiteItemType,
+} from '../utils/links';
 import {
   analyticsAttributes,
   NavigationAnalyticsContext,
@@ -44,6 +49,7 @@ export type SwitcherProps = {
   suggestedProductLinks: SwitcherItemType[];
   fixedLinks: SwitcherItemType[];
   adminLinks: SwitcherItemType[];
+  joinableSiteLinks?: JoinableSiteItemType[];
   recentLinks: RecentItemType[];
   customLinks: SwitcherItemType[];
   manageLink?: string;
@@ -150,11 +156,14 @@ export default class Switcher extends React.Component<SwitcherProps> {
       ...adminLinks,
     ];
 
+    const joinableSiteLinks = this.props.joinableSiteLinks || [];
+
     const itemsCount =
       switchToLinks.length +
       recentLinks.length +
       customLinks.length +
-      discoverSectionLinks.length;
+      discoverSectionLinks.length +
+      joinableSiteLinks.length;
 
     const firstContentArrived = Boolean(licensedProductLinks.length);
 
@@ -184,6 +193,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 suggestedProducts: suggestedProductLinks.map(item => item.key),
                 adminLinks: adminLinks.map(item => item.key),
                 fixedLinks: fixedLinks.map(item => item.key),
+                joinableSiteLinks: joinableSiteLinks.map(item => item.key),
                 numberOfSites,
               }}
             />
@@ -350,6 +360,37 @@ export default class Switcher extends React.Component<SwitcherProps> {
               ))}
             </Section>
           )}
+          <Section
+            sectionId="join"
+            title={<FormattedMessage {...messages.join} />}
+          >
+            {joinableSiteLinks.map(
+              (
+                { cloudId, description, href, Icon, label, productType, users },
+                groupIndex: number,
+              ) => (
+                <NavigationAnalyticsContext
+                  key={groupIndex}
+                  data={getItemAnalyticsContext(
+                    groupIndex,
+                    cloudId,
+                    'join',
+                    href,
+                    productType,
+                  )}
+                >
+                  <ItemWithAvatarGroup
+                    icon={<Icon theme="product" />}
+                    description={description}
+                    users={users}
+                    href={href}
+                  >
+                    {label}
+                  </ItemWithAvatarGroup>
+                </NavigationAnalyticsContext>
+              ),
+            )}
+          </Section>
           <Section
             sectionId="recent"
             title={

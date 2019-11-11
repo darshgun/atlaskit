@@ -44,13 +44,9 @@ describe(`${name}/schema codeBlock node`, () => {
         });
 
         DEFAULT_LANGUAGES.forEach(language => {
-          it(`extracts language "${
-            language.name
-          }" from data-language attribute`, () => {
+          it(`extracts language "${language.name}" from data-language attribute`, () => {
             const doc = fromHTML(
-              `<pre data-language='${
-                language.name
-              }'><span>window.alert("hello");<span></pre>`,
+              `<pre data-language='${language.name}'><span>window.alert("hello");<span></pre>`,
               schema,
             );
 
@@ -139,13 +135,9 @@ describe(`${name}/schema codeBlock node`, () => {
       });
 
       DEFAULT_LANGUAGES.forEach(language => {
-        it(`extracts language attribute from class "language-${
-          language.name
-        }"`, () => {
+        it(`extracts language attribute from class "language-${language.name}"`, () => {
           const doc = fromHTML(
-            `<div class="codehilite language-${
-              language.name
-            }"><pre><span>window.alert("hello");<span></pre></div>`,
+            `<div class="codehilite language-${language.name}"><pre><span>window.alert("hello");<span></pre></div>`,
             schema,
           );
           const codeBlock = doc.firstChild!;

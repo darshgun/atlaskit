@@ -7,18 +7,25 @@ export interface SwitcherItemProps extends WithAnalyticsEventsProps {
   children: React.ReactNode;
   icon: React.ReactNode;
   description?: React.ReactNode;
+  elemAfter?: React.ReactNode;
   onClick?: Function;
   href?: string;
+  target?: string;
   isDisabled?: boolean;
   onKeyDown?: any;
 }
 
 export default class SwitcherItem extends React.Component<SwitcherItemProps> {
   render() {
-    const { icon, description, ...rest } = this.props;
+    const { icon, description, elemAfter, ...rest } = this.props;
     return (
       <FadeIn>
-        <Item elemBefore={icon} description={description} {...rest} />
+        <Item
+          description={description}
+          elemBefore={icon}
+          elemAfter={elemAfter}
+          {...rest}
+        />
       </FadeIn>
     );
   }

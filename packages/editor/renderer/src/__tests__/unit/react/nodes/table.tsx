@@ -672,19 +672,30 @@ describe('Renderer - React/Nodes/Table', () => {
         ),
         attrs: { isNumberColumnEnabled: true },
       };
-      const TableRowWithOriginalPos: React.FunctionComponent<
-        React.ComponentProps<typeof TableRow> & { originalIndex: number }
-      > = ({ originalIndex, ...tableRowProps }) => {
+      const TableRowWithOriginalPos: React.FunctionComponent<React.ComponentProps<
+        typeof TableRow
+      > & { originalIndex: number }> = ({
+        originalIndex,
+        ...tableRowProps
+      }) => {
         return <TableRow {...tableRowProps} />;
       };
 
       test.each<[Map<string, string>, number[]]>([
         [
-          new Map([[trelloUrl, 'a'], [atlassianUrl, 'c'], [bitbucketUrl, 'b']]),
+          new Map([
+            [trelloUrl, 'a'],
+            [atlassianUrl, 'c'],
+            [bitbucketUrl, 'b'],
+          ]),
           [1, 2, 4, 3],
         ],
         [
-          new Map([[trelloUrl, 'c'], [atlassianUrl, 'a'], [bitbucketUrl, 'b']]),
+          new Map([
+            [trelloUrl, 'c'],
+            [atlassianUrl, 'a'],
+            [bitbucketUrl, 'b'],
+          ]),
           [1, 3, 4, 2],
         ],
       ])(

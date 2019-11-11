@@ -72,7 +72,7 @@ export default function withDimensions<
           refWidth={refWidth}
           refHeight={refHeight}
           innerRef={this.innerRef}
-          {...this.props as WrappedComponentProps}
+          {...(this.props as WrappedComponentProps)}
         />
       );
     }

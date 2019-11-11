@@ -31,19 +31,13 @@ export const PrimaryItemsContainer = ({
     [overflowItems],
   );
 
-  const onMoreClick = useCallback(
-    () => {
-      setIsMoreOpen(!isMoreOpen);
-    },
-    [isMoreOpen, setIsMoreOpen],
-  );
+  const onMoreClick = useCallback(() => {
+    setIsMoreOpen(!isMoreOpen);
+  }, [isMoreOpen, setIsMoreOpen]);
 
-  const onMoreClose = useCallback(
-    () => {
-      setIsMoreOpen(false);
-    },
-    [setIsMoreOpen],
-  );
+  const onMoreClose = useCallback(() => {
+    setIsMoreOpen(false);
+  }, [setIsMoreOpen]);
 
   const trigger = useCallback(
     (triggerProps: TriggerProps) => (

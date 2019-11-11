@@ -312,9 +312,11 @@ describe('BitbucketTransformer: serializer', () => {
     it('surrounded with other block elements keeps empty line between', () => {
       expect(
         markdownSerializer.serialize(
-          doc(p('para'), ul(li(p('foo')), li(p('bar'))), p('baz'))(
-            defaultSchema,
-          ),
+          doc(
+            p('para'),
+            ul(li(p('foo')), li(p('bar'))),
+            p('baz'),
+          )(defaultSchema),
         ),
       ).toEqual('para\n\n* foo\n* bar\n\nbaz');
     });
@@ -404,9 +406,11 @@ describe('BitbucketTransformer: serializer', () => {
     it('surrounded with other block elements keeps empty line between', () => {
       expect(
         markdownSerializer.serialize(
-          doc(p('para'), ol(li(p('foo')), li(p('bar'))), p('baz'))(
-            defaultSchema,
-          ),
+          doc(
+            p('para'),
+            ol(li(p('foo')), li(p('bar'))),
+            p('baz'),
+          )(defaultSchema),
         ),
       ).toEqual('para\n\n1. foo\n2. bar\n\nbaz');
     });

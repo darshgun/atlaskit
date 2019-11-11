@@ -15,16 +15,18 @@ export class EditorCardProvider implements CardProvider {
   async resolve(url: string, appearance: CardAppearance): Promise<any> {
     try {
       const constructedUrl = `${this.resolverUrl}/check`;
-      const result: ORSCheckResponse = await (await fetch(constructedUrl, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Origin: this.baseUrl,
-        },
-        body: JSON.stringify({ resourceUrl: url }),
-      })).json();
+      const result: ORSCheckResponse = await (
+        await fetch(constructedUrl, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Origin: this.baseUrl,
+          },
+          body: JSON.stringify({ resourceUrl: url }),
+        })
+      ).json();
 
       if (result && result.isSupported) {
         return {
@@ -37,9 +39,7 @@ export class EditorCardProvider implements CardProvider {
     } catch (e) {
       // eslint-disable-next-line
       console.warn(
-        `Error when trying to check Smart Card url "${url} - ${
-          e.prototype.name
-        } ${e.message}`,
+        `Error when trying to check Smart Card url "${url} - ${e.prototype.name} ${e.message}`,
         e,
       );
     }

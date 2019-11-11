@@ -45,7 +45,10 @@ export class MobileSmartCardClient extends Client {
       JSON.stringify({ url }),
     )
       .submit()
-      .then(response => response, error => error);
+      .then(
+        response => response,
+        error => error,
+      );
   }
 }
 

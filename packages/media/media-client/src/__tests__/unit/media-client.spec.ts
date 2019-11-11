@@ -309,9 +309,9 @@ describe('MediaClient', () => {
       };
       (mediaClient as any).mediaStore = fakeStore;
       (mediaClient.file as any).mediaStore = fakeStore;
-      const touchFilesResult: Promise<
-        MediaStoreResponse<TouchedFiles>
-      > = Promise.resolve({
+      const touchFilesResult: Promise<MediaStoreResponse<
+        TouchedFiles
+      >> = Promise.resolve({
         data: {
           created: [
             {

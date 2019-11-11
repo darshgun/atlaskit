@@ -11,14 +11,12 @@ interface ControlledState {
 interface ControlledProps {
   initialValue?: string;
   initialIsOpen?: boolean;
-  children: (
-    value: {
-      value: string;
-      onValueChange: (value: string) => void;
-      isOpen: boolean;
-      onBlur: () => void;
-    },
-  ) => React.ReactNode;
+  children: (value: {
+    value: string;
+    onValueChange: (value: string) => void;
+    isOpen: boolean;
+    onBlur: () => void;
+  }) => React.ReactNode;
 }
 
 class Controlled extends React.Component<ControlledProps, ControlledState> {

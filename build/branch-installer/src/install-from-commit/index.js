@@ -176,17 +176,19 @@ async function _installFromCommit(commitHash = '', options = {}) {
       ? await getInstalledAtlaskitDependencies()
       : options.packages.split(',');
 
+  const packagesToInstall = packages.filter(pkg => manifest[pkg]);
+  if (packagesToInstall.length === 0) {
+    log('No packages to install.');
+    return;
+  }
+
   const { engine, cmd } = options;
   const cmdArgs = [cmd, ...options.extraArgs]; // args that we'll pass to the engine ('add'/'upgrade' pkgName@url pkgName@url)
 
-  packages.forEach(pkg => {
-    if (manifest[pkg]) {
-      log(`Notice: Installing branch-deploy for: ${pkg}`);
-      const tarUrl = `${CDN_URL_BASE}/${commitHash}/dists/${
-        manifest[pkg].tarFile
-      }`;
-      cmdArgs.push(`${pkg}@${tarUrl}`);
-    }
+  packagesToInstall.forEach(pkg => {
+    log(`Notice: Installing branch-deploy for: ${pkg}`);
+    const tarUrl = `${CDN_URL_BASE}/${commitHash}/dists/${manifest[pkg].tarFile}`;
+    cmdArgs.push(`${pkg}@${tarUrl}`);
   });
 
   if (options.dryRun) {

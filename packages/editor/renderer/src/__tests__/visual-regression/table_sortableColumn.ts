@@ -17,9 +17,7 @@ const initRenderer = async (page: Page, adf: any) => {
 };
 
 const getSortableColumnSelector = (nth: number) =>
-  `tr:first-of-type .${
-    RendererCssClassName.SORTABLE_COLUMN
-  }:nth-of-type(${nth})`;
+  `tr:first-of-type .${RendererCssClassName.SORTABLE_COLUMN}:nth-of-type(${nth})`;
 
 describe('Snapshot Test: Table sorting', () => {
   let page: Page;

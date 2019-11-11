@@ -129,6 +129,6 @@ const App = () => (
   This table shows all the component interactions that are instrumented. All events
   additionally include \`packageName\` and \`packageVersion\` in their payloads.
 
-  ${<InstrumentedTable packages={instrumentedComponents} />}
+  ${(<InstrumentedTable packages={instrumentedComponents} />)}
 
 `;

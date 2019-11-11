@@ -63,7 +63,10 @@ function getReportMap(
     if (currentVersions) {
       currentVersions.add(version);
     } else {
-      reportMap.set(name, new Set<string>([version]));
+      reportMap.set(
+        name,
+        new Set<string>([version]),
+      );
     }
   });
 

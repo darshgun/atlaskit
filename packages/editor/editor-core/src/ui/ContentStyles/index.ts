@@ -36,9 +36,10 @@ import { linkStyles } from '../../plugins/hyperlink/styles';
 import { extensionStyles } from '../../plugins/extension/ui/styles';
 import { expandStyles } from '../../plugins/expand/ui/styles';
 
-const ContentStyles: ComponentClass<
-  HTMLAttributes<{}> & { theme: any; allowAnnotation?: boolean }
-> = styled.div`
+const ContentStyles: ComponentClass<HTMLAttributes<{}> & {
+  theme: any;
+  allowAnnotation?: boolean;
+}> = styled.div`
   /* Hack for ie11 that is being used in code block.
    * https://bitbucket.org/atlassian/atlaskit/src/ad09f6361109ece1aab316c8cbd8116ffb7963ef/packages/editor-core/src/schema/nodes/code-block.ts?fileviewer=file-view-default#code-block.ts-110
    */

@@ -399,7 +399,10 @@ describe('ShareDialogContainer', () => {
           title: mockShareTitle,
           type: mockShareContentType,
         },
-        [{ type: 'user', id: 'id' }, { type: 'user', email: 'mock@email.com' }],
+        [
+          { type: 'user', id: 'id' },
+          { type: 'user', email: 'mock@email.com' },
+        ],
         {
           productId: mockProductId,
           atlOriginId: wrapper.instance().getFormShareOriginTracing().id,
@@ -425,7 +428,10 @@ describe('ShareDialogContainer', () => {
           title: mockShareTitle,
           type: mockShareContentType,
         },
-        [{ type: 'user', id: 'id' }, { type: 'user', email: 'mock@email.com' }],
+        [
+          { type: 'user', id: 'id' },
+          { type: 'user', email: 'mock@email.com' },
+        ],
         {
           productId: mockProductId,
           atlOriginId: wrapper.instance().getFormShareOriginTracing().id,

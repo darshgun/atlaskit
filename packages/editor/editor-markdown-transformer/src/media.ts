@@ -60,7 +60,10 @@ function createRule() {
     const createMediaTokens = (url: string) => {
       const mediaSingleOpen = new State.Token('media_single_open', '', 1);
       const media = new State.Token('media', '', 0);
-      media.attrs = [['url', getUrl(url)], ['type', 'external']];
+      media.attrs = [
+        ['url', getUrl(url)],
+        ['type', 'external'],
+      ];
       const mediaSingleClose = new State.Token('media_single_close', '', -1);
 
       return [mediaSingleOpen, media, mediaSingleClose];

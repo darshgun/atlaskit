@@ -21,7 +21,7 @@ interface CardProps {
   isDraggable?: boolean;
   isDragging?: boolean;
   isHovering?: boolean;
-  ref: ((ref: HTMLElement | null) => any);
+  ref: (ref: HTMLElement | null) => any;
 }
 
 const Card = styled.div<CardProps>`

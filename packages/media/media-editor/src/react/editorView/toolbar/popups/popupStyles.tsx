@@ -4,9 +4,7 @@ import { HTMLAttributes, ComponentClass } from 'react';
 
 // TODO Extract common part from these:
 
-export const LineWidthPopupContainer: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const LineWidthPopupContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-wrap: wrap;
   right: 270px;
@@ -14,9 +12,7 @@ export const LineWidthPopupContainer: ComponentClass<
   margin: -28px -20px; // Compensation for default big padding that inline dialog comes with
 `;
 
-export const ColorPopupContentWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const ColorPopupContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 144px;
@@ -24,9 +20,7 @@ export const ColorPopupContentWrapper: ComponentClass<
   margin: -16px -24px; // Compensation for default big padding that inline dialog comes with
 `;
 
-export const ShapePopupContentWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const ShapePopupContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 128px;

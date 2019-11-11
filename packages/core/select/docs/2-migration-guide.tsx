@@ -42,7 +42,7 @@ export default md`
   <a name="prop-upgrade-table"></a>
   ## Prop upgrade table:
 
-  ${<PropChanges data={propChanges} />}
+  ${(<PropChanges data={propChanges} />)}
 
   <a name="validation"></a>
   ## Validation

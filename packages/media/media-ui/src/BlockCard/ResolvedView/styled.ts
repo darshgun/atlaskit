@@ -70,9 +70,8 @@ export interface ThumbnailProps {
   src: string;
 }
 
-export const Thumbnail: ComponentClass<
-  HTMLAttributes<{}> & ThumbnailProps
-> = styled.div`
+export const Thumbnail: ComponentClass<HTMLAttributes<{}> &
+  ThumbnailProps> = styled.div`
   ${borderRadius} ${size(48)} float: right;
   margin: 4px 0 12px 12px;
   background-color: ${N30};

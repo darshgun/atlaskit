@@ -8,7 +8,7 @@ export default md`This component is a wrapper around the \`GlobalNav\` primitive
 
 If you are building an application that isn't an Atlassian product and you want to configure the global navigation area in a unique way, use [the component exported by \`navigation-next\`](/packages/core/navigation-next/docs/ui-components#globalnav).
 
-${<Hr />}
+${(<Hr />)}
 
 ## Usage
 

@@ -30,7 +30,7 @@ export class Image {
   private dimensions: ImageDimensions | null = null;
 
   private eventListeners: Partial<
-    Record<keyof HTMLElementEventMap, Set<((...args: any) => void)>>
+    Record<keyof HTMLElementEventMap, Set<(...args: any) => void>>
   > = {};
 
   private onEvents: Partial<
@@ -67,7 +67,7 @@ export class Image {
 
   addEventListener<K extends keyof HTMLElementEventMap>(
     eventName: K,
-    cb: ((...args: any) => void),
+    cb: (...args: any) => void,
   ) {
     let eventSet = this.eventListeners[eventName];
     if (!eventSet) {
@@ -79,7 +79,7 @@ export class Image {
 
   removeEventListener<K extends keyof HTMLElementEventMap>(
     eventName: K,
-    cb: ((...args: any) => void),
+    cb: (...args: any) => void,
   ) {
     let eventSet = this.eventListeners[eventName];
     if (!eventSet) {

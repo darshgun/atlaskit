@@ -5,8 +5,8 @@ export type PrimaryButtonProps = Omit<ButtonProps, 'appearance'> & {
   isHighlighted?: boolean;
   /**  */
   testId?: string;
-  /** A string to render as a tooltip */
-  tooltip?: string;
+  /** A string or React Node to render as a tooltip */
+  tooltip?: React.ReactNode;
 };
 
 export type PrimaryButtonSkeletonProps = {

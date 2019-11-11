@@ -1,5 +1,3 @@
 // @flow
 
-export {
-  default as LayoutManagerWithViewController,
-} from './components/connected/LayoutManagerWithViewController';
+export { default as LayoutManagerWithViewController } from './components/connected/LayoutManagerWithViewController';

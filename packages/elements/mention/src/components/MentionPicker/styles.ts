@@ -15,16 +15,13 @@ export interface MentionPickerStyleProps {
   visible?: boolean | string;
 }
 
-export const MentionPickerStyle: ComponentClass<
-  HTMLAttributes<{}> & MentionPickerStyleProps
-> = styled.div`
+export const MentionPickerStyle: ComponentClass<HTMLAttributes<{}> &
+  MentionPickerStyleProps> = styled.div`
   display: ${(props: MentionPickerStyleProps) =>
     props.visible ? 'block' : 'none'};
 `;
 
-export const MentionPickerInfoStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const MentionPickerInfoStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background: #fff;
   color: ${colors.N100};
   border: 1px solid ${noDialogContainerBorderColor};

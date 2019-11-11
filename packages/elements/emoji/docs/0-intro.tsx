@@ -6,7 +6,7 @@ import SimpleEmojiExample from '../examples/00-simple-emoji';
 const SimpleEmojiSource = require('!!raw-loader!../examples/00-simple-emoji');
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   The main purpose of the emoji package is to provide multiple components for selecting from a list of provided emojis and rendering them.
 

@@ -1,5 +1,14 @@
 # @atlaskit/atlassian-navigation
 
+## 0.6.2
+
+### Patch Changes
+
+- [patch][02d05ff668](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02d05ff668):
+
+  - Fix types for the tooltip prop to allow React components.
+  - Introduce `buttonTooltip` and `iconButtonTooltip` to configure tooltip for create button.
+
 ## 0.6.1
 
 ### Patch Changes

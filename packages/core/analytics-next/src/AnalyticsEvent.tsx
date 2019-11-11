@@ -1,8 +1,8 @@
 export type AnalyticsEventPayload = Record<string, any>;
 
-type AnalyticsEventCallback = ((
+type AnalyticsEventCallback = (
   payload: AnalyticsEventPayload,
-) => AnalyticsEventPayload);
+) => AnalyticsEventPayload;
 
 type AnalyticsEventUpdater = AnalyticsEventPayload | AnalyticsEventCallback;
 

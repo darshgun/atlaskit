@@ -31,18 +31,16 @@ export const RowStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   vertical-align: middle;
 `;
 
-export const AvatarStyle: ComponentClass<
-  HTMLAttributes<{}> & AvatarSectionStyleProps
-> = styled.span`
+export const AvatarStyle: ComponentClass<HTMLAttributes<{}> &
+  AvatarSectionStyleProps> = styled.span`
   position: relative;
   flex: initial;
   opacity: ${(props: AvatarSectionStyleProps) =>
     props.restricted ? '0.5' : 'inherit'};
 `;
 
-export const NameSectionStyle: ComponentClass<
-  HTMLAttributes<{}> & NameSectionStyleProps
-> = styled.div`
+export const NameSectionStyle: ComponentClass<HTMLAttributes<{}> &
+  NameSectionStyleProps> = styled.div`
   flex: 1;
   min-width: 0;
   margin-left: 14px;
@@ -58,9 +56,8 @@ export const FullNameStyle: ComponentClass<HTMLAttributes<{}>> = styled.span`
   color: ${colors.N900};
 `;
 
-export const InfoSectionStyle: ComponentClass<
-  HTMLAttributes<{}> & InfoSectionStyleProps
-> = styled.div`
+export const InfoSectionStyle: ComponentClass<HTMLAttributes<{}> &
+  InfoSectionStyleProps> = styled.div`
   display: flex;
   flex-direction: column;
   text-align: right;
@@ -82,9 +79,8 @@ export const TimeStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   font-size: 12px;
 `;
 
-export const MentionItemStyle: ComponentClass<
-  HTMLAttributes<{}> & MentionItemStyleProps
-> = styled.div`
+export const MentionItemStyle: ComponentClass<HTMLAttributes<{}> &
+  MentionItemStyleProps> = styled.div`
   background-color: ${(props: MentionItemStyleProps) =>
     props.selected ? colors.N30 : 'transparent'};
   display: block;
@@ -95,9 +91,7 @@ export const MentionItemStyle: ComponentClass<
   cursor: pointer;
 `;
 
-export const AccessSectionStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const AccessSectionStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding-left: 5px;
   color: ${colors.N500};
 `;

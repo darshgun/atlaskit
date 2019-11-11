@@ -30,9 +30,7 @@ export class PullRequestClient {
     prId: number,
     opts: SortFilterOpts,
   ): Promise<PaginatedPrComments> {
-    let endpoint = `${baseApiUrl}/repositories/${
-      this.repoFullName
-    }/pullrequests/${prId}/comments`;
+    let endpoint = `${baseApiUrl}/repositories/${this.repoFullName}/pullrequests/${prId}/comments`;
     if (opts) {
       const query = queryString.stringify(opts);
       if (query) {
@@ -47,9 +45,7 @@ export class PullRequestClient {
   }
 
   async addComment(prId: number, text: string): Promise<PrComment> {
-    let endpoint = `${baseApiUrl}/repositories/${
-      this.repoFullName
-    }/pullrequests/${prId}/comments`;
+    let endpoint = `${baseApiUrl}/repositories/${this.repoFullName}/pullrequests/${prId}/comments`;
 
     const response = await axios.post<PrComment>(
       endpoint,
@@ -66,9 +62,7 @@ export class PullRequestClient {
     return response.data;
   }
   async deleteComment(prId: number, comment: PrComment) {
-    let endpoint = `${baseApiUrl}/repositories/${
-      this.repoFullName
-    }/pullrequests/${prId}/comments/${comment.id}`;
+    let endpoint = `${baseApiUrl}/repositories/${this.repoFullName}/pullrequests/${prId}/comments/${comment.id}`;
 
     const response = await axios.delete(endpoint, { auth: this.auth });
 

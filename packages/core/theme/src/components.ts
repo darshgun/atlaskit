@@ -6,9 +6,7 @@
 
 export { default as getTheme } from './utils/getTheme';
 export { default as themed } from './utils/themed';
-export {
-  default as AtlaskitThemeProvider,
-} from './components/AtlaskitThemeProvider';
+export { default as AtlaskitThemeProvider } from './components/AtlaskitThemeProvider';
 
 export { GlobalThemeTokens } from './types';
 export { default as Appearance } from './components/Appearance';

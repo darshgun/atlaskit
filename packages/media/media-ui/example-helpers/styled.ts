@@ -33,9 +33,7 @@ export const Code: ComponentClass = styled.code`
   font-size: 80%;
 `;
 
-export const CloseButton: ComponentClass<
-  ButtonHTMLAttributes<{}>
-> = styled.button`
+export const CloseButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled.button`
   position: absolute;
   top: 5px;
   right: 5px;

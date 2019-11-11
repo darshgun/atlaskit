@@ -37,16 +37,12 @@ BrowserTestCase(
     await quickInsert(page, 'Action item');
 
     // Select button wrapper from last row
-    const controlSelector = `.${ClassName.ROW_CONTROLS_WRAPPER} .${
-      ClassName.ROW_CONTROLS_BUTTON_WRAP
-    }:last-child .${ClassName.CONTROLS_BUTTON}`;
+    const controlSelector = `.${ClassName.ROW_CONTROLS_WRAPPER} .${ClassName.ROW_CONTROLS_BUTTON_WRAP}:last-child .${ClassName.CONTROLS_BUTTON}`;
     await page.waitForSelector(controlSelector);
     await page.click(controlSelector);
 
     // Click on delete row button
-    const deleteButtonSelector = `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP} .${
-      ClassName.CONTROLS_DELETE_BUTTON
-    }`;
+    const deleteButtonSelector = `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP} .${ClassName.CONTROLS_DELETE_BUTTON}`;
     await page.waitForVisible(deleteButtonSelector);
     await page.click(deleteButtonSelector);
 

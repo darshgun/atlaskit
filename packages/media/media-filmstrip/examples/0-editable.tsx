@@ -22,9 +22,8 @@ const Separator: ComponentClass<HTMLAttributes<{}>> = styled.hr`
   border: 1px solid #ccc;
 `;
 
-const ControlLabel: ComponentClass<
-  HTMLAttributes<{}> & LabelHTMLAttributes<{}>
-> = styled.label`
+const ControlLabel: ComponentClass<HTMLAttributes<{}> &
+  LabelHTMLAttributes<{}>> = styled.label`
   display: block;
   margin-top: 1em;
   font-weight: bold;

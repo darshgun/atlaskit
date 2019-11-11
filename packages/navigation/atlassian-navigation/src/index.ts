@@ -1,7 +1,5 @@
 export { AtlassianNavigation } from './components/AtlassianNavigation';
-export {
-  AtlassianNavigationProps,
-} from './components/AtlassianNavigation/types';
+export { AtlassianNavigationProps } from './components/AtlassianNavigation/types';
 
 export { AppSwitcher } from './components/AppSwitcher';
 export { AppSwitcherProps } from './components/AppSwitcher/types';
@@ -19,9 +17,7 @@ export { PrimaryButton } from './components/PrimaryButton';
 export { PrimaryButtonProps } from './components/PrimaryButton/types';
 
 export { PrimaryDropdownButton } from './components/PrimaryDropdownButton';
-export {
-  PrimaryDropdownButtonProps,
-} from './components/PrimaryDropdownButton/types';
+export { PrimaryDropdownButtonProps } from './components/PrimaryDropdownButton/types';
 
 export { CustomProductHome, ProductHome } from './components/ProductHome';
 export {
