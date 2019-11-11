@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/select",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "description": "React component which allows selection of item(s) from a dropdown list.",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -27,6 +27,7 @@
     "@atlaskit/theme": "^9.2.6",
     "@babel/runtime": "^7.0.0",
     "@emotion/core": "^10.0.9",
+    "@types/react-select": "^3.0.8",
     "focus-trap": "^2.4.5",
     "memoize-one": "^5.1.0",
     "react-fast-compare": "^2.0.1",
