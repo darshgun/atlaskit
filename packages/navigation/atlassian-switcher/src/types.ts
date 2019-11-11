@@ -162,13 +162,13 @@ export interface JoinableSiteUser {
 export interface JoinableSiteUserAvatarPropTypes {
   name: string;
   src: string;
-  appearance: string;
-  size: string;
+  appearance: 'circle';
+  size: 'small';
   enableTooltip: boolean;
 }
 
 export interface JoinableSiteProduct {
-  [key: ProductKey]: JoinableSiteUser[];
+  [key: string]: JoinableSiteUser[];
 }
 
 export interface JoinableSite {

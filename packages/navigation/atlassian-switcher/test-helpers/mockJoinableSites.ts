@@ -1,5 +1,3 @@
-import { ProductKey } from '../src/types';
-
 export default {
   sites: [
     {

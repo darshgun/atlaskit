@@ -28,7 +28,6 @@ import {
   ProvisionedProducts,
   CurrentSite,
   JoinableSite,
-  JoinableSiteProduct,
   JoinableSiteUser,
   JoinableSiteUserAvatarPropTypes,
 } from '../types';
@@ -507,7 +506,9 @@ export const getJoinableSiteLinks = (
   for (let site of joinableSites) {
     for (let productKey in site.products) {
       const users = site.products[productKey] || [];
-      const { label, icon } = getLabelAndIconByProductKey(productKey);
+      const { label, icon } = getLabelAndIconByProductKey(
+        productKey as ProductKey,
+      );
 
       joinableSiteLinks.push({
         key: site.cloudId,
@@ -519,13 +520,13 @@ export const getJoinableSiteLinks = (
           (user: JoinableSiteUser): JoinableSiteUserAvatarPropTypes => ({
             name: user.displayName,
             src: user.avatarUrl,
-            appearance: 'circle',
-            size: 'small',
+            appearance: 'circle' as 'circle',
+            size: 'small' as 'small',
             enableTooltip: true,
           }),
         ),
         cloudId: site.cloudId,
-        productType: TO_WORKLENS_PRODUCT_KEY[productKey],
+        productType: TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey],
       });
 
       if (joinableSiteLinks.length >= MAX_JOINABLE_SITES) {

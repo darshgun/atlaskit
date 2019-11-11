@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import AvatarGroup from '@atlaskit/avatar-group';
 
-import { AvatarPropTypes } from '../types';
+import { JoinableSiteUserAvatarPropTypes } from '../types';
 import {
   createAndFireNavigationEvent,
   withAnalyticsEvents,
@@ -21,7 +21,7 @@ export interface ItemWithAvatarGroupProps extends WithAnalyticsEventsProps {
   isDisabled?: boolean;
   onKeyDown?: any;
   onItemClick?: Function;
-  users?: AvatarPropTypes[];
+  users?: JoinableSiteUserAvatarPropTypes[];
 }
 
 const Wrapper = styled.div`

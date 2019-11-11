@@ -12,7 +12,6 @@ import {
   getSuggestedProductLink,
   getLabelAndIconByProductKey,
   getJoinableSiteLinks,
-  JoinableSiteItemType,
 } from '../../links';
 import {
   Product,
