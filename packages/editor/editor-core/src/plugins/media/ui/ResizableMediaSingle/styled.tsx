@@ -10,6 +10,7 @@ export const Wrapper: React.ComponentClass<
   & > div {
     ${MediaSingleDimensionHelper};
     position: relative;
+    clear: both;
 
     > div {
       position: absolute;

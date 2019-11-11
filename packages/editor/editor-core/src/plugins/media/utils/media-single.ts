@@ -236,14 +236,19 @@ export function transformSliceForMedia(slice: Slice, schema: Schema) {
     bulletList,
     orderedList,
     media,
+    expand,
   } = schema.nodes;
 
   return (selection: Selection) => {
     let newSlice = slice;
     if (
-      hasParentNodeOfType([layoutSection, table, bulletList, orderedList])(
-        selection,
-      )
+      hasParentNodeOfType([
+        layoutSection,
+        table,
+        bulletList,
+        orderedList,
+        expand,
+      ])(selection)
     ) {
       newSlice = mapSlice(newSlice, node =>
         node.type.name === 'mediaSingle'

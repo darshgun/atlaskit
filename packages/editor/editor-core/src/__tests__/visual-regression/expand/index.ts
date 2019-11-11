@@ -1,9 +1,13 @@
 import { Device, snapshot, initFullPageEditorWithAdf } from '../_utils';
-import { waitForLoadedBackgroundImages } from '@atlaskit/visual-regression/helper';
+import {
+  waitForLoadedBackgroundImages,
+  waitForLoadedImageElements,
+} from '@atlaskit/visual-regression/helper';
 import {
   expandADF,
   tableMediaADF,
   nestedExpandOverflowInTable,
+  wrappingMediaADF,
 } from './__fixtures__/expand-adf';
 import { selectors } from '../../__helpers/page-objects/_expand';
 import { Page } from '../../__helpers/page-objects/_types';
@@ -37,42 +41,59 @@ describe('Expand: full-page', () => {
   });
 
   describe.each(['default', 'wide', 'full-width'])('Breakout: %s', mode => {
-    test(`should render a ${mode} collapsed top level expand`, async () => {
+    it(`should render a ${mode} collapsed top level expand`, async () => {
       await initFullPageEditorWithAdf(page, expandADF(mode), Device.LaptopMDPI);
     });
   });
 
-  test('should collapse the top level expand on click', async () => {
+  it('should collapse the top level expand on click', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
     await hideTooltip(page);
     await page.click(selectors.expandToggle);
   });
 
-  test('should render a border on hover of a collapsed top level expand', async () => {
+  it('should render a border on hover of a collapsed top level expand', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
     await hideTooltip(page);
     await page.click(selectors.expandToggle);
     await page.hover(selectors.expandTitleInput);
   });
 
-  test('should collapse a nested expand on click', async () => {
+  it('should collapse a nested expand on click', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
     await page.click(selectors.nestedExpandToggle);
     await page.click(selectors.expandTitleInput);
   });
 
-  test('table row controls should not be cut off and media doesnt overflow the expand', async () => {
+  it('table row controls should not be cut off', async () => {
     await initFullPageEditorWithAdf(page, tableMediaADF, Device.LaptopMDPI);
     await clickFirstCell(page);
     await page.waitForSelector(tableSelectors.firstRowControl);
     await page.click(tableSelectors.firstRowControl);
   });
 
-  test('expands should hide their overflow content', async () => {
+  it('expands should hide their overflow content', async () => {
     await initFullPageEditorWithAdf(
       page,
       nestedExpandOverflowInTable,
       Device.LaptopMDPI,
     );
+  });
+});
+
+// This block is seperate as Puppeteer has some
+// issues screenshotting the expand with wrapped media.
+describe('Expand: Media', () => {
+  let page: Page;
+
+  beforeAll(async () => {
+    // @ts-ignore
+    page = global.page;
+  });
+
+  it.only('should allow wrapped media to flow correctly', async () => {
+    await initFullPageEditorWithAdf(page, wrappingMediaADF, Device.LaptopMDPI);
+
+    await snapshot(page);
   });
 });
