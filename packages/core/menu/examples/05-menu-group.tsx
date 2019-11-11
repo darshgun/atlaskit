@@ -44,10 +44,7 @@ export default () => {
           <LinkItem elemAfter={<StarIcon label="Star icon" />} href="#">
             Item link
           </LinkItem>
-          <LinkItem
-            elemBefore={<Blog24Icon label="Quote icon" />}
-            href="#"
-          >
+          <LinkItem elemBefore={<Blog24Icon label="Quote icon" />} href="#">
             Item link Item link Item link Item link Item link Item link Item
             link Item link Item link Item link Item link Item link Item link
             Item link Item link Item link Item link Item link Item link
