@@ -101,7 +101,9 @@ export const toggleExpandExpanded = (
       },
       node.marks,
     );
-    dispatch(tr);
+    // `isRemote` meta prevents this step from being
+    // sync'd between sessions in collab edit
+    dispatch(tr.setMeta('isRemote', true));
   }
   return true;
 };

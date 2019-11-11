@@ -1,8 +1,5 @@
 import { Device, snapshot, initFullPageEditorWithAdf } from '../_utils';
-import {
-  waitForLoadedBackgroundImages,
-  waitForLoadedImageElements,
-} from '@atlaskit/visual-regression/helper';
+import { waitForLoadedBackgroundImages } from '@atlaskit/visual-regression/helper';
 import {
   expandADF,
   tableMediaADF,
@@ -43,17 +40,20 @@ describe('Expand: full-page', () => {
   describe.each(['default', 'wide', 'full-width'])('Breakout: %s', mode => {
     it(`should render a ${mode} collapsed top level expand`, async () => {
       await initFullPageEditorWithAdf(page, expandADF(mode), Device.LaptopMDPI);
+      await page.waitForSelector(selectors.expand);
     });
   });
 
   it('should collapse the top level expand on click', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
+    await page.waitForSelector(selectors.expand);
     await hideTooltip(page);
     await page.click(selectors.expandToggle);
   });
 
   it('should render a border on hover of a collapsed top level expand', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
+    await page.waitForSelector(selectors.expand);
     await hideTooltip(page);
     await page.click(selectors.expandToggle);
     await page.hover(selectors.expandTitleInput);
@@ -61,12 +61,14 @@ describe('Expand: full-page', () => {
 
   it('should collapse a nested expand on click', async () => {
     await initFullPageEditorWithAdf(page, expandADF(), Device.LaptopMDPI);
+    await page.waitForSelector(selectors.expand);
     await page.click(selectors.nestedExpandToggle);
     await page.click(selectors.expandTitleInput);
   });
 
   it('table row controls should not be cut off', async () => {
     await initFullPageEditorWithAdf(page, tableMediaADF, Device.LaptopMDPI);
+    await page.waitForSelector(selectors.expand);
     await clickFirstCell(page);
     await page.waitForSelector(tableSelectors.firstRowControl);
     await page.click(tableSelectors.firstRowControl);
@@ -91,9 +93,10 @@ describe('Expand: Media', () => {
     page = global.page;
   });
 
-  it.only('should allow wrapped media to flow correctly', async () => {
+  it('should allow wrapped media to flow correctly', async () => {
     await initFullPageEditorWithAdf(page, wrappingMediaADF, Device.LaptopMDPI);
-
+    await page.waitForSelector(selectors.expand);
+    await page.click(`${selectors.expand} p`);
     await snapshot(page);
   });
 });
