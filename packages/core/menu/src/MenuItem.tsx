@@ -56,7 +56,11 @@ export const ButtonItem = (props: ItemProps) => {
   const Tag = isDisabled ? 'span' : 'button';
 
   return (
-    <Tag type="button" css={itemCSS(isDisabled)} {...others}>
+    <Tag
+      type={isDisabled ? undefined : 'button'}
+      css={itemCSS(isDisabled)}
+      {...others}
+    >
       <ItemBase
         elemBefore={elemBefore}
         elemAfter={elemAfter}
