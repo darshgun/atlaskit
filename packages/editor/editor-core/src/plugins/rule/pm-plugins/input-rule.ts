@@ -42,9 +42,10 @@ export const createHorizontalRule = (
      **/
     tr = state.tr.replaceWith(start, end, Fragment.empty);
 
-    tr = safeInsert(state.schema.nodes.rule.createChecked(), tr.selection.from)(
-      tr,
-    );
+    tr = safeInsert(
+      state.schema.nodes.rule.createChecked(),
+      tr.selection.from,
+    )(tr);
   }
 
   if (!tr) {

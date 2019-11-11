@@ -41,33 +41,30 @@ const filterContent = (
   schema?: Schema,
   breakBetweenBlocks?: boolean,
 ) => {
-  return content.reduce(
-    (acc, node) => {
-      if (types.has(node.type)) {
-        if (node.content) {
-          acc.push({
-            ...node,
-            content: filterContent(node.content, types),
-          });
-        } else if (node.type === 'text') {
-          filterText(acc, node);
-        } else {
-          acc.push(node);
-        }
-      } else if (node.content) {
-        if (breakBetweenBlocks && acc.length > 0 && isBlockNode(node, schema)) {
-          // Seperate blocks with hard breaks
-          acc.push({
-            type: 'hardBreak',
-          });
-        }
-        filterContent(node.content, types).forEach(child => acc.push(child));
+  return content.reduce((acc, node) => {
+    if (types.has(node.type)) {
+      if (node.content) {
+        acc.push({
+          ...node,
+          content: filterContent(node.content, types),
+        });
+      } else if (node.type === 'text') {
+        filterText(acc, node);
+      } else {
+        acc.push(node);
       }
+    } else if (node.content) {
+      if (breakBetweenBlocks && acc.length > 0 && isBlockNode(node, schema)) {
+        // Seperate blocks with hard breaks
+        acc.push({
+          type: 'hardBreak',
+        });
+      }
+      filterContent(node.content, types).forEach(child => acc.push(child));
+    }
 
-      return acc;
-    },
-    [] as JSONNode[],
-  );
+    return acc;
+  }, [] as JSONNode[]);
 };
 
 export const filterContentByType = (

@@ -320,7 +320,7 @@ const props = {
 };
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   The Conversation component is a drop-in component for adding conversations in any context. It is the front-end part of the \`Conversation Service\` and together they make up \`Conversations as a Service\`.
 
@@ -366,6 +366,6 @@ export default md`
     />
   )}
 
-  ${<Props props={props} />}
+  ${(<Props props={props} />)}
 
 `;

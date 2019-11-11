@@ -9,7 +9,9 @@ const sizes = {
 
 const getSize = (props: IconWrapperProps) => {
   if (props.size) {
-    return `height: ${sizes[props.size].height}; width: ${sizes[props.size].width};`;
+    return `height: ${sizes[props.size].height}; width: ${
+      sizes[props.size].width
+    };`;
   }
   return null;
 };

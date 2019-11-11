@@ -155,9 +155,8 @@ export const MediaSingleDimensionHelper = ({
   }
 `;
 
-const Wrapper: React.ComponentClass<
-  HTMLAttributes<{}> & WrapperProps
-> = styled.div`
+const Wrapper: React.ComponentClass<HTMLAttributes<{}> &
+  WrapperProps> = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
 

@@ -6,11 +6,11 @@ import { code, md, Props } from '@atlaskit/docs';
 import { Contents, ContentsProvider, H, Hr } from './shared';
 
 export default (
-  <ContentsProvider>{md`${<Contents />}
+  <ContentsProvider>{md`${(<Contents />)}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>NavigationProvider</H>}
+${(<H>NavigationProvider</H>)}
 
 The \`NavigationProvider\` facilitates sharing state throughout the application using Context. It should wrap the root of your application, and the \`LayoutManager\` component will not work unless it's the descendant of a \`NavigationProvider\`.
 
@@ -21,9 +21,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>UI controller</H>}
+${(<H>UI controller</H>)}
 
 The UI controller manages the visual state of the navigation component. To see this feature in action, [check out this guide](/packages/core/navigation-next/docs/composing-your-navigation#managing-the-ui-state).
 
@@ -77,9 +77,9 @@ class MyComponentBase extends Component {
 }
 const MyComponent = withNavigationUIController(MyComponentBase);`}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>View controller</H>}
+${(<H>View controller</H>)}
 
 The view controller manages which set of items should be rendered in the navigation. For an in-depth walk-through of how to use this feature, [check out this guide](/packages/core/navigation-next/docs/controlling-navigation-views).
 
@@ -187,9 +187,9 @@ class MyComponentBase extends Component {
 }
 const MyComponent = withNavigationViewController(MyComponentBase);`}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Items Renderer</H>}
+${(<H>Items Renderer</H>)}
 
 The items renderer is used to render the data representation of your view items for you. If using the \`LayoutManagerWithViewController\` component, you do not need to use the renderer as it is taken care of for you. However, if using directly you can use two different variants, depending on whether you wish to enable flow checking for it or not.
 
@@ -277,9 +277,9 @@ When typing custom components, you must adhere to the same rules as built-in vie
 
 Unfortunately, inline component types cannot be typechecked individually like custom component types since they share the same \`type\` property of \`'InlineComponent'\`.
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Reducer utility functions</H>}
+${(<H>Reducer utility functions</H>)}
 
 The library exposes a number of utility functions for composing a reducer.
 

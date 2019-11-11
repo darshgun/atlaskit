@@ -41,7 +41,8 @@ export const getColumnsWidths = (
 export const isColumnDeleteButtonVisible = (selection: Selection): boolean => {
   if (
     !isTableSelected(selection) &&
-    (selection instanceof CellSelection && selection.isColSelection())
+    selection instanceof CellSelection &&
+    selection.isColSelection()
   ) {
     return true;
   }

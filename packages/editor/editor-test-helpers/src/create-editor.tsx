@@ -168,10 +168,12 @@ export default function createEditorFactoryForTests<T = any>() {
           const headCell = findCellClosestToPos(doc.resolve(refs['cell>']));
           if (anchorCell && headCell) {
             dispatch(
-              tr.setSelection(new CellSelection(
-                doc.resolve(anchorCell.pos),
-                doc.resolve(headCell.pos),
-              ) as any),
+              tr.setSelection(
+                new CellSelection(
+                  doc.resolve(anchorCell.pos),
+                  doc.resolve(headCell.pos),
+                ) as any,
+              ),
             );
           }
         }

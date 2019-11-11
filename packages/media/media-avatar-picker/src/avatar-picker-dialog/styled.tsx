@@ -2,9 +2,7 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 
-export const AvatarPickerViewWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const AvatarPickerViewWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,9 +25,7 @@ export const CroppingWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   }
 `;
 
-export const ModalFooterButtons: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const ModalFooterButtons: ComponentClass<HTMLAttributes<{}>> = styled.div`
   text-align: right;
   width: 100%;
 

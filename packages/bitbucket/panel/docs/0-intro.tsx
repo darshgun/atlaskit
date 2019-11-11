@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-${<AtlassianInternalWarning />}
+${(<AtlassianInternalWarning />)}
 
 This panel component is designed hold content and expand and collapse with user interaction. It animates its opening and closing.
 

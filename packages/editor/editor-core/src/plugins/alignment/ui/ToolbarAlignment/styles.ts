@@ -22,8 +22,6 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   }
 `;
 
-export const ExpandIconWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.span`
+export const ExpandIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   margin-left: -8px;
 `;

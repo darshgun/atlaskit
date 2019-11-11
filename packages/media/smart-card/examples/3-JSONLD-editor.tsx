@@ -66,9 +66,11 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Page>
             <Grid>
               <GridColumn>
-                {this.renderExamplesSwitcher(Object.keys(
-                  mockedExamples,
-                ) as Array<keyof typeof mockedExamples>)}
+                {this.renderExamplesSwitcher(
+                  Object.keys(mockedExamples) as Array<
+                    keyof typeof mockedExamples
+                  >,
+                )}
                 <hr />
                 <h6>
                   <code>appearance="block"</code>

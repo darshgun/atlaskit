@@ -96,7 +96,7 @@ const Items = () => (
       </DrawerItem>
       <DrawerItem
         {...commonProps}
-        elemBefore={(<BoardIcon label="Board icon" /> as unknown) as Node}
+        elemBefore={((<BoardIcon label="Board icon" />) as unknown) as Node}
       >
         Item with elemBefore
       </DrawerItem>

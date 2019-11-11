@@ -257,9 +257,8 @@ export interface IconWrapperProps {
   type: MediaType;
 }
 
-export const IconWrapper: ComponentClass<
-  HTMLAttributes<{}> & IconWrapperProps
-> = styled.div`
+export const IconWrapper: ComponentClass<HTMLAttributes<{}> &
+  IconWrapperProps> = styled.div`
   display: inline-flex;
   color: ${({ type }: IconWrapperProps) =>
     mediaTypeIconColors[type] || mediaTypeIconColors.unknown};

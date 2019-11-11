@@ -40,49 +40,70 @@ describe('HighlightText', () => {
     it(
       'should highlight multiple parts',
       testTemplate({
-        highlights: [{ start: 0, end: 1 }, { start: 3, end: 4 }],
+        highlights: [
+          { start: 0, end: 1 },
+          { start: 3, end: 4 },
+        ],
       })('<b>So</b>m<b>e </b>text'),
     );
 
     it(
       'should not duplicate text with overlapping intervals',
       testTemplate({
-        highlights: [{ start: 0, end: 3 }, { start: 2, end: 4 }],
+        highlights: [
+          { start: 0, end: 3 },
+          { start: 2, end: 4 },
+        ],
       })('<b>Some </b>text'),
     );
 
     it(
       'should render with out of order highlights',
       testTemplate({
-        highlights: [{ start: 5, end: 7 }, { start: 0, end: 2 }],
+        highlights: [
+          { start: 5, end: 7 },
+          { start: 0, end: 2 },
+        ],
       })('<b>Som</b>e <b>tex</b>t'),
     );
 
     it(
       'should not break with contained intervals',
       testTemplate({
-        highlights: [{ start: 0, end: 5 }, { start: 1, end: 4 }],
+        highlights: [
+          { start: 0, end: 5 },
+          { start: 1, end: 4 },
+        ],
       })('<b>Some t</b>ext'),
     );
 
     it(
       'should join contiguous intervals',
       testTemplate({
-        highlights: [{ start: 0, end: 2 }, { start: 3, end: 5 }],
+        highlights: [
+          { start: 0, end: 2 },
+          { start: 3, end: 5 },
+        ],
       })('<b>Some t</b>ext'),
     );
 
     it(
       'should not break with interval out of bounds',
       testTemplate({
-        highlights: [{ start: -1, end: 2 }, { start: 5, end: 15 }],
+        highlights: [
+          { start: -1, end: 2 },
+          { start: 5, end: 15 },
+        ],
       })('<b>Som</b>e <b>text</b>'),
     );
 
     it(
       'should highlight all text with two contiguous out bounds intervals',
       testTemplate({
-        highlights: [{ start: -1, end: 3 }, { start: 4, end: 15 }],
+        highlights: [
+          { start: -1, end: 3 },
+          { start: 4, end: 15 },
+        ],
       })('<b>Some text</b>'),
     );
 

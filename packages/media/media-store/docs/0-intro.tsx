@@ -2,7 +2,7 @@ import * as React from 'react';
 import { md, code, Example, AtlassianInternalWarning } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   This package is the Media Store API Web Client Library.
 

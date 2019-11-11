@@ -5,9 +5,7 @@ import ProjectDefaultIcon from '@atlaskit/icon/glyph/people-group';
 import { BuildInlineProps } from './types';
 import { extractInlineViewPropsFromDocument } from './extractPropsFromDocument';
 
-export const buildProjectIcon: BuildInlineProps<
-  InlineCardResolvedViewProps
-> = json => {
+export const buildProjectIcon: BuildInlineProps<InlineCardResolvedViewProps> = json => {
   if (json.icon && json.icon.url) {
     return { icon: json.icon.url };
   }

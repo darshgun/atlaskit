@@ -1,5 +1,3 @@
 // @flow
 
-export {
-  default as SkeletonContainerView,
-} from './components/presentational/SkeletonContainerView';
+export { default as SkeletonContainerView } from './components/presentational/SkeletonContainerView';

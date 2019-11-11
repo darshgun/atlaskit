@@ -10,9 +10,9 @@ export default (
   <ContentsProvider>{md`
 If you're wondering how to manage the state of your navigation, this guide is for you. It will introduce you to some of the more advanced concepts in \`navigation-next\`.
 
-${<Contents listType="ol" />}
+${(<Contents listType="ol" />)}
 
-${<H>Navigation views</H>}
+${(<H>Navigation views</H>)}
 
 If you've followed the previous guide you'll know how to use the UI components to compose a navigation. If your navigation is simple and will never change as the user navigates around your app, that's all you'll ever need to know. But what if we do want to change the state of our navigation?
 
@@ -27,7 +27,7 @@ ${(
   />
 )}
 
-${<H>Representing a view as data</H>}
+${(<H>Representing a view as data</H>)}
 
 Representing a view as a Javascript array makes them really easy to work with. Let's start by taking the Product home view above and turning it into JSON.
 
@@ -102,7 +102,7 @@ A few things to note:
 * A view is expected to be an array of Sections. Sections should not be nested. As well as the generic \`Section\` component, the renderer includes two pre-configured Section components - \`HeaderSection\` and \`MenuSection\` - which we recommend using to get the correct spacing and scrolling behaviour in your navigation.
 * You can find a complete [list of the in-built item types here](/packages/core/navigation-next/docs/state-controllers#built-in-view-item-types).
 
-${<H>A smart LayoutManager</H>}
+${(<H>A smart LayoutManager</H>)}
 
 Let's have a quick refresher on the LayoutManager component. It takes the following props:
 
@@ -126,7 +126,7 @@ ${(
 
 We haven't set a view yet, so the component will simply render a skeleton. Let's give it a view to display!
 
-${<H>Managing the navigation state</H>}
+${(<H>Managing the navigation state</H>)}
 
 The View state controller contains the active view, and methods for adding and activating views. Since we often want to read this state or perform these actions in lifecycle methods it's easiest to use a higher-order component to access the state container.
 
@@ -168,7 +168,7 @@ ${(
   />
 )}
 
-${<H>Transitioning between views</H>}
+${(<H>Transitioning between views</H>)}
 
 Let's add a Project issues view to our navigation. Now when we click on the 'Issues and filters' item the view will update. Clicking the 'Back to Jira' item will take us back again.
 
@@ -221,7 +221,7 @@ ${code`// 'product/home' menu section
 
 We've assigned each section a unique \`id\` prop. Because the 'product/issues' menu is conceptually a 'child' of the 'product/home' section, we set its \`parentId\` to 'product/home'. Finally, we need to give both sections a shared \`nestedGroupKey\`, which tells the renderer that it should perform a transition animation when one of these sections is replaced by another.
 
-${<H>Updating the view on route changes</H>}
+${(<H>Updating the view on route changes</H>)}
 
 Let's add some routing to our app. In this example we'll use \`react-router\`.
 
@@ -327,7 +327,7 @@ export default () => (
 
 We've introduced an important concept here - navigation decomposition. There's no reason that all possible views should be known and registered at a central point in your application. It's an encouraged pattern for each 'sub-app' in a large application to register and set their own views dynamically. This becomes especially important when you start thinking about splitting your bundle based on the route.
 
-${<H>Asynchronous views</H>}
+${(<H>Asynchronous views</H>)}
 
 What if your view needs some data to render, but you don't want to fetch that data until you know you need to render the view? The view controller supports returning a Promise from the \`getItems\` function, which will put your navigation into a temporary loading state. Let's make our product issues view asynchronous.
 
@@ -342,7 +342,7 @@ ${(
 
 As you can see, the current view will hang around until the new active view has finished loading, at which point the transition will be performed. If an Item's \`goTo\` property matches the ID of the incoming view, the renderer will automatically display a spinner as well!
 
-${<H>Container views</H>}
+${(<H>Container views</H>)}
 
 So far we've only been dealing with 'product' navigation. When we enter a 'container' we bring in another layer of navigation:
 
@@ -360,7 +360,7 @@ Here's what changed:
 1. We added a view called \`'project/home'\` with the \`'container'\` type. We register this view along with the rest of the views in our App's \`componentDidMount\` method.
 2. We created a new component for the projects route, which sets the \`project/home\` view when it mounts. We added a \`Link\` to this route in the Dashboards component.
 
-${<H>Using reducers</H>}
+${(<H>Using reducers</H>)}
 
 You may run into situations in your application where one part of the app wants to affect a view without directly editing its \`getItems\` function. The view controller exposes a mechanism for 'reducing' the items in a view before they're rendered.
 

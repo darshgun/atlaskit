@@ -22,7 +22,10 @@ describe(`${name} - stateless`, () => {
     const selectItems: Array<GroupType> = [
       {
         heading: 'test',
-        items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
+        items: [
+          { value: 1, content: '1' },
+          { value: 2, content: '2' },
+        ],
       },
     ];
 

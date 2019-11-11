@@ -504,7 +504,8 @@ export default class ReactEditorView<T = {}> extends React.Component<
 
       if (
         this.props.editorProps.shouldFocus &&
-        (view.props.editable && view.props.editable(view.state))
+        view.props.editable &&
+        view.props.editable(view.state)
       ) {
         this.focusTimeoutId = handleEditorFocus(view);
       }

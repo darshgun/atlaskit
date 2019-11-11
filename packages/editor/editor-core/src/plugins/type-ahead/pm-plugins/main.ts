@@ -378,9 +378,9 @@ export function defaultActionHandler({
     }
 
     if ((typeAheadItems as Promise<Array<TypeAheadItem>>).then) {
-      itemsLoader = createItemsLoader(typeAheadItems as Promise<
-        Array<TypeAheadItem>
-      >);
+      itemsLoader = createItemsLoader(
+        typeAheadItems as Promise<Array<TypeAheadItem>>,
+      );
       typeAheadItems = pluginState.items;
     }
   } catch (e) {}

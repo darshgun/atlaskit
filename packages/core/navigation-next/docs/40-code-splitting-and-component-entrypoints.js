@@ -8,11 +8,11 @@ import { ContentsProvider, H } from './shared';
 export default (
   <ContentsProvider>{md`
 
-  ${<H>Entrypoints</H>}
+  ${(<H>Entrypoints</H>)}
 
   These are entrypoints for specific components to be used carefully by the consumers. If you're using one of these entrypoints we are assuming you know what you are doing. So it means that code-splitting and tree-shaking should be done on the consumer/product side.
 
-  ${<H>Creating an entrypoint</H>}
+  ${(<H>Creating an entrypoint</H>)}
 
   You just need to create a file in the root of \`src\` folder exporting your component and it will be available for your consumers after publish. By default all the entrypoints are using \`esm\` bundles.
 
@@ -32,7 +32,7 @@ export default (
 
   `}
 
-  ${<H>How to use it</H>}
+  ${(<H>How to use it</H>)}
 
   ${code`
   import { LayoutManagerWithViewController } from '@atlaskit/navigation-next/LayoutManagerWithViewController';

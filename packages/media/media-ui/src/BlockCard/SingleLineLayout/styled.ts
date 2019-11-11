@@ -1,9 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-export const Wrapper: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.div`
+export const Wrapper: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -24,9 +22,7 @@ export const Left: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   }
 `;
 
-export const Middle: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.div`
+export const Middle: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

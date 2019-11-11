@@ -174,8 +174,5 @@ export const withSortableColumn = (WrapperComponent: React.ElementType) => {
   };
 };
 
-export const TableHeader = compose(
-  withSortableColumn,
-  withCellProps,
-)('th');
+export const TableHeader = compose(withSortableColumn, withCellProps)('th');
 export const TableCell = withCellProps('td');
