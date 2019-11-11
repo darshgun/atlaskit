@@ -143,7 +143,9 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
         fadeOutHeight: 50,
       });
       expect(renderer.find('TruncatedWrapper')).toHaveLength(1);
-      expect(renderer.find('TruncatedWrapper').props().fadeHeight).toEqual(50);
+      expect(
+        (renderer.find('TruncatedWrapper').props() as any).fadeHeight,
+      ).toEqual(50);
     });
   });
 

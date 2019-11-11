@@ -523,16 +523,24 @@ export default class Comment extends React.Component<Props, State> {
           key="reactions"
           providers={['emojiProvider', 'reactionsStore']}
           providerFactory={dataProviders}
-          renderNode={({ emojiProvider, reactionsStore }) => (
-            <Reactions>
-              <ConnectedReactionsView
-                store={reactionsStore}
-                containerAri={objectId}
-                ari={commentAri}
-                emojiProvider={emojiProvider}
-              />
-            </Reactions>
-          )}
+          renderNode={({ emojiProvider, reactionsStore }) => {
+            if (
+              typeof emojiProvider === 'undefined' ||
+              typeof reactionsStore === 'undefined'
+            ) {
+              return null;
+            }
+            return (
+              <Reactions>
+                <ConnectedReactionsView
+                  store={reactionsStore}
+                  containerAri={objectId}
+                  ari={commentAri}
+                  emojiProvider={emojiProvider}
+                />
+              </Reactions>
+            );
+          }}
         />,
       ];
     }
