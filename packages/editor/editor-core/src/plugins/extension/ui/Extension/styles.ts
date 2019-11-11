@@ -51,6 +51,7 @@ export const PlaceholderFallback: ComponentClass<
 > = styled.div`
   display: inline-flex;
   align-items: center;
+  -moz-user-select: none;
 
   & > img {
     margin: 0 4px;
