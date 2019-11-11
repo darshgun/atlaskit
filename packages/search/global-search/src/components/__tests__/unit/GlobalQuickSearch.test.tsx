@@ -260,7 +260,7 @@ describe('GlobalQuickSearch', () => {
         AnalyticsHelper.KeyboardControlEvent,
         string,
         ReferralContextIdentifiers?,
-        CreateAnalyticsEventFn?
+        CreateAnalyticsEventFn?,
       ]
     >;
     let fireSearchResultSelectedEventSpy: jest.SpyInstance<
@@ -269,7 +269,7 @@ describe('GlobalQuickSearch', () => {
         AnalyticsHelper.SelectedSearchResultEvent,
         string,
         ReferralContextIdentifiers?,
-        CreateAnalyticsEventFn?
+        CreateAnalyticsEventFn?,
       ]
     >;
     let fireAdvancedSearchSelectedEventSpy: jest.SpyInstance<
@@ -278,7 +278,7 @@ describe('GlobalQuickSearch', () => {
         AnalyticsHelper.SelectedSearchResultEvent,
         string,
         ReferralContextIdentifiers?,
-        CreateAnalyticsEventFn?
+        CreateAnalyticsEventFn?,
       ]
     >;
     beforeEach(() => {

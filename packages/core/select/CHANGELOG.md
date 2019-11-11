@@ -1,5 +1,13 @@
 # @atlaskit/select
 
+## 11.0.1
+
+### Patch Changes
+
+- [patch][b9e23d337a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e23d337a):
+
+  @types/react-select is now explicitly listed as a dependency
+
 ## 11.0.0
 
 ### Major Changes

@@ -100,9 +100,7 @@ describe.skip('Snapshot Test: table resizing', () => {
     it('should preserve the selection after resizing', async () => {
       await clickFirstCell(page);
 
-      const controlSelector = `.${
-        ClassName.COLUMN_CONTROLS_DECORATIONS
-      }[data-start-index="0"]`;
+      const controlSelector = `.${ClassName.COLUMN_CONTROLS_DECORATIONS}[data-start-index="0"]`;
 
       await page.waitForSelector(controlSelector);
       await page.click(controlSelector);

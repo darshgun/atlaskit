@@ -9,7 +9,9 @@ import { BaseViewer } from '../base-viewer';
 import { getObjectUrlFromFileState } from '../../utils/getObjectUrlFromFileState';
 
 const moduleLoader = () =>
-  import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
+  import(
+    /* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer'
+  );
 
 const componentLoader: () => Promise<ComponentClass<RendererProps>> = () =>
   moduleLoader().then(module => module.PDFRenderer);

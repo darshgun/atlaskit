@@ -201,9 +201,7 @@ export default class FeedbackCollector extends Component<Props> {
     // Don't dispatch unless we have suitable props (allows tests to pass through empty strings and avoid redundant network calls)
     if (this.props.embeddableKey && this.props.requestTypeId) {
       fetch(
-        `https://jsd-widget.atlassian.com/api/embeddable/${
-          this.props.embeddableKey
-        }/request?requestTypeId=${this.props.requestTypeId}`,
+        `https://jsd-widget.atlassian.com/api/embeddable/${this.props.embeddableKey}/request?requestTypeId=${this.props.requestTypeId}`,
         {
           method: 'POST',
           headers: {

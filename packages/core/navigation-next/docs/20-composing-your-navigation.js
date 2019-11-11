@@ -33,13 +33,13 @@ ${code`
 The \`LayoutManager\` will position these layers and handle UI state concerns such as resizing, expanding, and collapsing out of the box. This state container can be accessed via context and we will explore how this works later on. For now, it means we'll need one more component before we can render anything - the \`NavigationProvider\`. With this, we can render the bare bones of an Atlassian application:
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/getting-started/layoutmanager')}
-      title="The LayoutManager component"
-      id="layoutmanager"
-      path="/getting-started"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/getting-started/layoutmanager')}
+    title="The LayoutManager component"
+    id="layoutmanager"
+    path="/getting-started"
+  />
+)}
 
 ${<H>Configuring the global navigation</H>}
 
@@ -60,13 +60,13 @@ const MyGlobalNavigation = () => (
 We can then plug this component into our \`LayoutManager\` to render the global layer.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/getting-started/configuring-the-global-navigation')}
-      title="Configuring the global navigation"
-      id="configuring-the-global-navigation"
-      path="/getting-started"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/getting-started/configuring-the-global-navigation')}
+    title="Configuring the global navigation"
+    id="configuring-the-global-navigation"
+    path="/getting-started"
+  />
+)}
 
 ${<H>Composing the product navigation</H>}
 
@@ -112,26 +112,26 @@ Read the [component props docs](/packages/core/navigation-next/docs/ui-component
 Putting it all together we can now render a somewhat complete navigation!
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/getting-started/composing-the-product-navigation')}
-      title="Composing the product navigation"
-      id="composing-the-product-navigation"
-      path="/getting-started"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/getting-started/composing-the-product-navigation')}
+    title="Composing the product navigation"
+    id="composing-the-product-navigation"
+    path="/getting-started"
+  />
+)}
 
 ${<H>Composing the container navigation</H>}
 
 The container layer can be composed using the same primitives as the product layer. Let's add a few items to it so that we can see the full navigation in action.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/getting-started/composing-the-container-navigation')}
-      title="Composing the container navigation"
-      id="composing-the-container-navigation"
-      path="/getting-started"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/getting-started/composing-the-container-navigation')}
+    title="Composing the container navigation"
+    id="composing-the-container-navigation"
+    path="/getting-started"
+  />
+)}
 
 ${<H>Managing the UI state</H>}
 
@@ -154,13 +154,13 @@ const ExpandToggleButton = () => (
 This component provides its children with access to the state of the navigation, along with methods which can be called to modify the state. It will re-render whenever the state changes. This container manages behaviours such as collapsing, expanding, and resizing. Read [the component's documentation](/packages/core/navigation-next/docs/state-controllers#ui-controller) for a complete list of methods and properties.
 
 ${(
-    <IframeExample
-      source={require('!!raw-loader!./examples/getting-started/managing-the-ui-state')}
-      title="Managing the UI state"
-      id="managing-the-ui-state"
-      path="/getting-started"
-    />
-  )}
+  <IframeExample
+    source={require('!!raw-loader!./examples/getting-started/managing-the-ui-state')}
+    title="Managing the UI state"
+    id="managing-the-ui-state"
+    path="/getting-started"
+  />
+)}
 
 ${<H>Theming</H>}
 

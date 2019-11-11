@@ -109,16 +109,13 @@ export default () => {
   const [isOpen, setIsOpen] = useState(false);
   const [buttonWidth, setButtonWidth] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  useEffect(
-    () => {
-      if (isOpen) {
-        window.setTimeout(() => setIsLoaded(true), 600);
-      } else {
-        setIsLoaded(false);
-      }
-    },
-    [isOpen],
-  );
+  useEffect(() => {
+    if (isOpen) {
+      window.setTimeout(() => setIsLoaded(true), 600);
+    } else {
+      setIsLoaded(false);
+    }
+  }, [isOpen]);
   const position = positions[idx];
 
   const setPosition = () => {

@@ -4,7 +4,9 @@ import { colors } from '@atlaskit/theme';
 
 // Normal .className gets overridden by input[type=text] hence this hack to produce input.className
 export const Input: ComponentClass<
-  InputHTMLAttributes<{}> & { innerRef?: any }
+  InputHTMLAttributes<{}> & {
+    innerRef?: any;
+  }
 > = styled.input`
   input& {
     background: transparent;

@@ -7,7 +7,9 @@ import { borderRadius, gridSize, colors, themed } from '@atlaskit/theme';
 const akGridSize = gridSize();
 
 export const ContentWrapper: ComponentClass<
-  HTMLAttributes<{}> & { innerRef?: any }
+  HTMLAttributes<{}> & {
+    innerRef?: any;
+  }
 > = styled.div`
   margin: 0;
   word-wrap: break-word;

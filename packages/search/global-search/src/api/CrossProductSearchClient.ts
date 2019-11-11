@@ -45,22 +45,22 @@ type ConfluenceContainerResults = Scope.ConfluenceSpace;
  * Eventually we want all the scopes to be typed in some way
  */
 export type TypePeopleResults = {
-  [S in PeopleScopes]: PeopleResults | undefined
+  [S in PeopleScopes]: PeopleResults | undefined;
 };
 
 export type TypeConfluenceObjectResults = {
-  [S in ConfluenceObjectScopes]: ConfluenceObjectResults | undefined
+  [S in ConfluenceObjectScopes]: ConfluenceObjectResults | undefined;
 };
 
 export type TypeConfluenceContainerResults = {
-  [S in ConfluenceContainerResults]: Results | undefined
+  [S in ConfluenceContainerResults]: Results | undefined;
 };
 
 /**
  * Temporary type as we start typing all our results
  */
 export type GenericResults = {
-  [S in Exclude<Scope, PeopleScopes>]: Results | undefined
+  [S in Exclude<Scope, PeopleScopes>]: Results | undefined;
 };
 
 /**

@@ -58,11 +58,7 @@ const sliderTrackStyle = css<TrackProps>`
 `;
 
 const sliderTrackDisabledStyle = css<TrackProps>`
-  ${props =>
-    getBackgroundGradient(
-      props.track.disabled,
-      props.valuePercent,
-    )}
+  ${props => getBackgroundGradient(props.track.disabled, props.valuePercent)}
   cursor: not-allowed;
 `;
 

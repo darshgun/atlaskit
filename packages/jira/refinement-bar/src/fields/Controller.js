@@ -39,9 +39,7 @@ export default class FieldController {
 
   getInitialValue: InitialValueSignature = () => {
     throw Error(
-      `Missing \`getInitialValue\` method in the "${
-        this.type.name
-      }" controller.`,
+      `Missing \`getInitialValue\` method in the "${this.type.name}" controller.`,
     );
   };
 

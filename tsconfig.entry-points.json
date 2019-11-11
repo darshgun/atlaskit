@@ -551,6 +551,26 @@
         "../../core/lozenge/src/theme",
         "./packages/core/lozenge/src/theme"
       ],
+      "@atlaskit/menu/Group": [
+        "../../core/menu/src/Group",
+        "./packages/core/menu/src/Group"
+      ],
+      "@atlaskit/menu": [
+        "../../core/menu/src/",
+        "./packages/core/menu/src/"
+      ],
+      "@atlaskit/menu/MenuItem": [
+        "../../core/menu/src/MenuItem",
+        "./packages/core/menu/src/MenuItem"
+      ],
+      "@atlaskit/menu/styles": [
+        "../../core/menu/src/styles",
+        "./packages/core/menu/src/styles"
+      ],
+      "@atlaskit/menu/types": [
+        "../../core/menu/src/types",
+        "./packages/core/menu/src/types"
+      ],
       "@atlaskit/modal-dialog": [
         "../../core/modal-dialog/src/",
         "./packages/core/modal-dialog/src/"
@@ -918,6 +938,10 @@
       "@atlaskit/textfield/types": [
         "../../core/textfield/src/types",
         "./packages/core/textfield/src/types"
+      ],
+      "@atlaskit/theme/color-palettes": [
+        "../../core/theme/src/color-palettes",
+        "./packages/core/theme/src/color-palettes"
       ],
       "@atlaskit/theme/colors": [
         "../../core/theme/src/colors",

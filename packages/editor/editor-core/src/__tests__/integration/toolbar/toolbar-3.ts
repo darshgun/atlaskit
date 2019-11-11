@@ -13,9 +13,7 @@ const clear = `span=${messages.clearFormatting.defaultMessage}`;
 // https://product-fabric.atlassian.net/browse/ED-4531
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `toolbar-3.ts: should be able to select Clear Formatting on toolbar for ${
-      editor.name
-    } editor`,
+    `toolbar-3.ts: should be able to select Clear Formatting on toolbar for ${editor.name} editor`,
     { skip: ['ie', 'safari'] },
     async (client: any, testName: string) => {
       const page = await goToEditorTestingExample(client);

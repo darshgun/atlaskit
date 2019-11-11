@@ -28,9 +28,7 @@ interface Timeout {
 type TransitionStates = 'entering' | 'entered' | 'exiting';
 
 const defaultStyle = (timeout: Timeout) => ({
-  transition: `transform ${timeout.enter}ms ${easing}, opacity ${
-    timeout.enter
-  }ms linear`,
+  transition: `transform ${timeout.enter}ms ${easing}, opacity ${timeout.enter}ms linear`,
   opacity: 0,
 });
 
@@ -41,9 +39,7 @@ const transitionStyle = (
 ) => {
   const transitions: { [key in TransitionStates]: any } = {
     entering: {
-      transform: `translate3d(${horizontalOffset[position]}px, ${
-        verticalOffset[position]
-      }px, 0)`,
+      transform: `translate3d(${horizontalOffset[position]}px, ${verticalOffset[position]}px, 0)`,
     },
     entered: {
       opacity: 1,

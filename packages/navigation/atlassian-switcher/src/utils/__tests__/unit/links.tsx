@@ -2,6 +2,7 @@ import {
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
+  getJoinableSiteLinks,
 } from '../../links';
 import {
   Product,
@@ -11,6 +12,7 @@ import {
 } from '../../../types';
 
 import { resolveRecommendations } from '../../../providers/recommendations';
+import mockJoinableSites from '../../../../test-helpers/mockJoinableSites';
 
 const generateProvisionedProducts = (
   activeProducts: WorklensProductType[],
@@ -204,6 +206,22 @@ describe('utils/links', () => {
         suggestedProducts,
       );
       expect(result).toHaveLength(0);
+    });
+  });
+
+  describe('getJoinableSiteLinks', () => {
+    it('should return an array', () => {
+      const result = getJoinableSiteLinks([]);
+      expect(Array.isArray(result)).toBe(true);
+    });
+
+    it('should return 3 items at maximum', () => {
+      const result = getJoinableSiteLinks(
+        mockJoinableSites.sites.map(site =>
+          Object.assign({}, site, { relevance: 10 }),
+        ),
+      );
+      expect(result.length).toBe(3);
     });
   });
 });

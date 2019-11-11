@@ -7,9 +7,7 @@ import {
 
 [comment].forEach(editor => {
   BrowserTestCase(
-    `insert-and-delete-mediaGroup.ts: Inserts and deletes media group on ${
-      editor.name
-    }`,
+    `insert-and-delete-mediaGroup.ts: Inserts and deletes media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
     async (client: any) => {
       const page = await goToEditorTestingExample(client);

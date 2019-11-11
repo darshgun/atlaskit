@@ -123,7 +123,9 @@ class ToolbarBlockType extends React.PureComponent<
         >
           {!isSmall && (
             <ButtonContent>
-              <FormattedMessage {...blockTypeTitles[0] || NORMAL_TEXT.title} />
+              <FormattedMessage
+                {...(blockTypeTitles[0] || NORMAL_TEXT.title)}
+              />
               <div style={{ overflow: 'hidden', height: 0 }}>
                 {longestDropdownMenuItem}
               </div>

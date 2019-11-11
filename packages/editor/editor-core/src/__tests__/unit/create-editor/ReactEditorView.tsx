@@ -294,7 +294,9 @@ describe(name, () => {
 
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(
           'atlaskit.fabric.editor.invalidtransaction',
-          { documents: JSON.stringify(documents) },
+          {
+            documents: JSON.stringify(documents),
+          },
         );
       });
 

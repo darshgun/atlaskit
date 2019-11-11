@@ -91,19 +91,17 @@ export type Token = TextToken | PMNodeToken;
 
 export type TokenErrCallback = (err: Error, tokenType: string) => void;
 
-export type TokenParser = (
-  {
-    input,
-    position,
-    schema,
-    context,
-  }: {
-    input: string;
-    position: number;
-    schema: Schema;
-    context: Context;
-  },
-) => Token;
+export type TokenParser = ({
+  input,
+  position,
+  schema,
+  context,
+}: {
+  input: string;
+  position: number;
+  schema: Schema;
+  context: Context;
+}) => Token;
 
 const tokenToTokenParserMapping: {
   [key: string]: TokenParser;

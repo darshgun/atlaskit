@@ -28,8 +28,10 @@ export default class AsyncAvatarPickerDialog extends React.PureComponent<
   async UNSAFE_componentWillMount() {
     if (!this.state.AvatarPickerDialog) {
       try {
-        const module = await import(/* webpackChunkName:"@atlaskit-internal_media-avatar-picker" */
-        '.');
+        const module = await import(
+          /* webpackChunkName:"@atlaskit-internal_media-avatar-picker" */
+          '.'
+        );
         AsyncAvatarPickerDialog.AvatarPickerDialog = module.AvatarPickerDialog;
         this.setState({ AvatarPickerDialog: module.AvatarPickerDialog });
       } catch (error) {

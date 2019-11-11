@@ -44,9 +44,15 @@ export default class AsyncMediaViewer extends React.PureComponent<
           mediaViewerModule,
           mediaViewerErrorBoundaryModule,
         ] = await Promise.all([
-          import(/* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'),
-          import(/* webpackChunkName:"@atlaskit-internal_media-viewer" */ './media-viewer'),
-          import(/* webpackChunkName:"@atlaskit-internal_MediaPickerErrorBoundary" */ './media-viewer-analytics-error-boundary'),
+          import(
+            /* webpackChunkName:"@atlaskit-media-client" */ '@atlaskit/media-client'
+          ),
+          import(
+            /* webpackChunkName:"@atlaskit-internal_media-viewer" */ './media-viewer'
+          ),
+          import(
+            /* webpackChunkName:"@atlaskit-internal_MediaPickerErrorBoundary" */ './media-viewer-analytics-error-boundary'
+          ),
         ]);
 
         const MediaViewerWithClient = mediaClient.withMediaClient(

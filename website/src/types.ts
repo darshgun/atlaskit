@@ -65,6 +65,6 @@ export type Window = {
 };
 
 export type MobileNavProps =
-  | RouteComponentProps & { closeNav: () => void }
+  | (RouteComponentProps & { closeNav: () => void })
   | {}
   | any;

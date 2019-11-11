@@ -94,7 +94,9 @@ describe('Table analytic events', () => {
     it('should fire v2 analytics', () => {
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.quickinsert.select',
-        { item: 'Table' },
+        {
+          item: 'Table',
+        },
       );
     });
 

@@ -112,7 +112,7 @@ describe('QuickSearchContainer', () => {
       CreateAnalyticsEventFn,
       ABTest,
       ReferralContextIdentifiers?,
-      boolean?
+      boolean?,
     ]
   >;
   let firePostQueryShownEventSpy: jest.SpyInstance<
@@ -125,7 +125,7 @@ describe('QuickSearchContainer', () => {
       { [filter: string]: boolean },
       CreateAnalyticsEventFn,
       ABTest,
-      ReferralContextIdentifiers?
+      ReferralContextIdentifiers?,
     ]
   >;
   let fireExperimentExposureEventSpy: jest.SpyInstance<

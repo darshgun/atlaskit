@@ -47,9 +47,7 @@ describe('Snapshot Test: Nested table inside layouts', () => {
   // want one size above and one below dynamic text sizing breakpoint (1265px)
   [deviceViewPorts[Device.LaptopHiDPI], { width: 1260, height: 800 }].forEach(
     viewport => {
-      describe(`${viewport.width}x${
-        viewport.height
-      }: resizing table when changing layout`, () => {
+      describe(`${viewport.width}x${viewport.height}: resizing table when changing layout`, () => {
         beforeEach(async () => {
           await initEditor(viewport);
         });

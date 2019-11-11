@@ -11,3 +11,4 @@ export { default as ManageButton } from './manage-button';
 export { default as Skeleton } from './skeleton';
 export { default as TryLozenge } from './try-lozenge';
 export { default as FormattedMessage } from './formatted-message';
+export { default as ItemWithAvatarGroup } from './item-with-avatar-group';

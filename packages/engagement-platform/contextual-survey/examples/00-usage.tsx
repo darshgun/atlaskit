@@ -9,12 +9,9 @@ import { gridSize } from '@atlaskit/theme/constants';
 export default function BasicUsage() {
   const [showSurvey, setShowSurvey] = useState(false);
   const [hasUserAnswered, setHasUserAnswered] = useState(false);
-  const onClick = useCallback(
-    () => {
-      setShowSurvey(true);
-    },
-    [setShowSurvey],
-  );
+  const onClick = useCallback(() => {
+    setShowSurvey(true);
+  }, [setShowSurvey]);
 
   const onDismiss = useCallback(
     (args: OnDismissArgs) => {

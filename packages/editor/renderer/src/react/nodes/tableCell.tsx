@@ -110,9 +110,7 @@ export const withSortableColumn = (WrapperComponent: React.ElementType) => {
       let className = RendererCssClassName.SORTABLE_COLUMN;
 
       if (!onSorting) {
-        className = `${className} ${
-          RendererCssClassName.SORTABLE_COLUMN_NOT_ALLOWED
-        }`;
+        className = `${className} ${RendererCssClassName.SORTABLE_COLUMN_NOT_ALLOWED}`;
       }
 
       return (
@@ -124,9 +122,7 @@ export const withSortableColumn = (WrapperComponent: React.ElementType) => {
           <>
             {children}
             <figure
-              className={`${
-                RendererCssClassName.SORTABLE_COLUMN_ICON
-              } ${sortOrderedClassName}`}
+              className={`${RendererCssClassName.SORTABLE_COLUMN_ICON} ${sortOrderedClassName}`}
             >
               <SortingIcon
                 isSortingAllowed={!!onSorting}

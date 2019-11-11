@@ -6,7 +6,9 @@ import { borderRadius } from '@atlaskit/theme';
 import { scrollableMaxHeight } from '../../shared-styles';
 
 export const ScrollableStyle: ComponentClass<
-  HTMLAttributes<{}> & { innerRef?: any }
+  HTMLAttributes<{}> & {
+    innerRef?: any;
+  }
 > = styled.div`
   display: block;
   overflow-x: hidden;

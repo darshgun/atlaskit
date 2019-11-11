@@ -4,12 +4,12 @@ import { Mark as PMMark } from 'prosemirror-model';
 
 export type InputRuleWithHandler = InputRule & { handler: InputRuleHandler };
 
-export type InputRuleHandler = ((
+export type InputRuleHandler = (
   state: EditorState,
   match: Array<string>,
   start: number,
   end: number,
-) => Transaction | null);
+) => Transaction | null;
 
 export function defaultInputRuleHandler(
   inputRule: InputRuleWithHandler,

@@ -53,15 +53,13 @@ export interface State {
 }
 
 export type Props = {
-  renderEditor: (
-    props: {
-      disabled: boolean;
-      mentionProvider?: Promise<MentionProvider>;
-      emojiProvider?: Promise<EmojiProvider>;
-      activityProvider?: Promise<ActivityProvider> | MockActivityResource;
-      onChange: (view: EditorView) => void;
-    },
-  ) => React.ReactChild;
+  renderEditor: (props: {
+    disabled: boolean;
+    mentionProvider?: Promise<MentionProvider>;
+    emojiProvider?: Promise<EmojiProvider>;
+    activityProvider?: Promise<ActivityProvider> | MockActivityResource;
+    onChange: (view: EditorView) => void;
+  }) => React.ReactChild;
 };
 
 export default class ToolsDrawer extends React.Component<Props, State> {

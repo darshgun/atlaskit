@@ -298,9 +298,7 @@ export class Engine {
   ): void {
     if (!method(this.ve)) {
       this.config.onCoreError(
-        `Could not perform '${description}'. Reason: '${
-          this.ve.failureReason
-        }'`,
+        `Could not perform '${description}'. Reason: '${this.ve.failureReason}'`,
       );
     }
   }

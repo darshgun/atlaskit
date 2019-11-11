@@ -21,8 +21,10 @@ export default class AsyncEditorView extends React.PureComponent<
   async UNSAFE_componentWillMount() {
     if (!this.state.EditorView) {
       try {
-        const module = await import(/* webpackChunkName:"@atlaskit-internal_media-editor-view" */
-        './editorView');
+        const module = await import(
+          /* webpackChunkName:"@atlaskit-internal_media-editor-view" */
+          './editorView'
+        );
         AsyncEditorView.EditorView = module.default;
         this.setState({ EditorView: module.default });
       } catch (error) {

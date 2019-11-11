@@ -35,7 +35,9 @@ export interface State {
 }
 
 const SelectWrapper: ComponentClass<
-  HTMLAttributes<{}> & { width: number }
+  HTMLAttributes<{}> & {
+    width: number;
+  }
 > = styled.div`
   width: ${props => props.width}px;
 `;

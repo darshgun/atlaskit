@@ -137,6 +137,12 @@ const messages = defineMessages({
     defaultMessage: 'Modern incident management',
     description: 'Text displayed under Opsgenie product recommendation.',
   },
+  join: {
+    id: 'fabric.atlassianSwitcher.join',
+    defaultMessage: 'Join',
+    description:
+      'Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators.',
+  },
 });
 
 export const SwitchToTooltipText = (

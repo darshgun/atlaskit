@@ -5,7 +5,9 @@ import { colors, gridSize, borderRadius } from '@atlaskit/theme';
 const akGridSize = gridSize() + 'px';
 
 export const ButtonGroup: ComponentClass<
-  HTMLAttributes<{}> & { width?: 'small' | 'large' }
+  HTMLAttributes<{}> & {
+    width?: 'small' | 'large';
+  }
 > = styled.span`
   display: inline-flex;
   align-items: center;
@@ -24,7 +26,9 @@ export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
 `;
 
 export const Wrapper: ComponentClass<
-  HTMLAttributes<{}> & { isSmall?: boolean }
+  HTMLAttributes<{}> & {
+    isSmall?: boolean;
+  }
 > = styled.span`
   display: flex;
   align-items: center;

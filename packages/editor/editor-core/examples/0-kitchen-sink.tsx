@@ -43,7 +43,9 @@ const Column: React.ComponentClass<React.HTMLAttributes<{}> & {}> = styled.div`
 `;
 
 const EditorColumn: React.ComponentClass<
-  React.HTMLAttributes<{}> & { vertical: boolean }
+  React.HTMLAttributes<{}> & {
+    vertical: boolean;
+  }
 > = styled.div`
   flex: 1;
   ${p =>
