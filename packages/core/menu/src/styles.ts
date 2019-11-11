@@ -67,11 +67,16 @@ export const contentCSS = {
   textAlign: 'left',
   overflow: 'hidden',
   outline: 'none',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
   display: 'flex',
   flexDirection: 'column',
   lineHeight: `${(gridSize * 2) / fontSize()}`,
+} as CSSObject;
+
+export const truncateCSS = {
+  display: 'block',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 } as CSSObject;
 
 export const elemBeforeCSS = {

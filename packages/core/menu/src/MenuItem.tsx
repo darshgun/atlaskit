@@ -11,6 +11,7 @@ import {
   elemAfterCSS,
   descriptionCSS,
   contentCSS,
+  truncateCSS,
   contentCSSWrapper,
 } from './styles';
 import { ButtonItemProps, LinkItemProps } from './types';
@@ -33,7 +34,7 @@ const ItemBase = ({
         {elemBefore && <span css={elemBeforeCSS}>{elemBefore}</span>}
         {children && (
           <span css={contentCSS}>
-            {children}
+            <span css={truncateCSS}>{children}</span>
             {description && <span css={descriptionCSS}>{description}</span>}
           </span>
         )}
