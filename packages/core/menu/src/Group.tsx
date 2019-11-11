@@ -8,8 +8,8 @@ export const MenuGroup = ({ maxHeight, ...rest }: MenuGroupProps) => (
 );
 export const Section = ({
   isScrollable,
-  shouldShowSeparator,
+  hasSeparator,
   ...rest
 }: SectionProps) => (
-  <div css={sectionCSS(isScrollable, shouldShowSeparator)} {...rest} />
+  <div css={sectionCSS(isScrollable, hasSeparator)} {...rest} />
 );

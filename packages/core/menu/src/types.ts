@@ -5,7 +5,7 @@ export type MenuGroupProps = {
 
 export type SectionProps = {
   isScrollable?: boolean;
-  shouldShowSeparator?: boolean;
+  hasSeparator?: boolean;
   children: React.ReactNode;
 };
 

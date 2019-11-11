@@ -1,29 +1,19 @@
 import React from 'react';
-// import {
-//   MenuGroup,
-//   Section,
-//   Item,
-//   LinkItem,
-//   HeadingItem,
-//   SkeletonItem,
-// SkeletonHeadingItem,
-// } from '../src';
-
-// Temporarily imported from here until all components are ready.
-import StarIcon from '@atlaskit/icon/glyph/star';
-import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
-import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
-import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
-import Blog24Icon from '@atlaskit/icon-object/glyph/blog/24';
-
 import {
-  Item,
+  MenuGroup,
+  Section,
+  ButtonItem,
   LinkItem,
   HeadingItem,
   SkeletonItem,
   SkeletonHeadingItem,
-} from '../src/MenuItem';
-import { MenuGroup, Section } from '../src/Group';
+} from '../src';
+
+// Temporarily imported from here until all components are ready.
+import StarIcon from '@atlaskit/icon/glyph/star';
+import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
+import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
+import Blog24Icon from '@atlaskit/icon-object/glyph/blog/24';
 
 export default () => {
   return (
@@ -47,50 +37,52 @@ export default () => {
           <LinkItem
             elemBefore={<EmojiCustomIcon label="Create Icon" />}
             href="#"
+            isDisabled
           >
-            Item link
+            Item disabled link
           </LinkItem>
           <LinkItem elemAfter={<StarIcon label="Star icon" />} href="#">
             Item link
           </LinkItem>
           <LinkItem
             elemBefore={<Blog24Icon label="Quote icon" />}
-            elemAfter={<ArrowRightCircleIcon label="Right arrow" />}
             href="#"
           >
-            Item link
+            Item link Item link Item link Item link Item link Item link Item
+            link Item link Item link Item link Item link Item link Item link
+            Item link Item link Item link Item link Item link Item link
           </LinkItem>
         </Section>
-        <Section isScrollable shouldShowSeparator>
+        <Section isScrollable hasSeparator>
           <HeadingItem>Scrollable section with separator</HeadingItem>
-          <Item elemBefore="hi" elemAfter="bye">
+          <ButtonItem elemBefore="hi" elemAfter="bye">
             Item
-          </Item>
-          <Item elemBefore="hi" elemAfter="bye">
+          </ButtonItem>
+          <ButtonItem elemBefore="hi" elemAfter="bye">
             Item
-          </Item>
-          <Item
+          </ButtonItem>
+          <ButtonItem
             elemBefore="hi"
             elemAfter="bye"
             description="Some textual description"
           >
             Item
-          </Item>
-          <Item elemBefore="hi" elemAfter="bye">
+          </ButtonItem>
+          <ButtonItem elemBefore="hi" elemAfter="bye">
             Item
-          </Item>
-          <Item elemBefore="hi" elemAfter="bye">
+          </ButtonItem>
+          <ButtonItem elemBefore="hi" elemAfter="bye">
             Item
-          </Item>
-          <Item elemBefore="hi" elemAfter="bye">
+          </ButtonItem>
+          <ButtonItem elemBefore="hi" elemAfter="bye">
             Item
-          </Item>
-          <Item elemBefore="hi" elemAfter="bye">
+          </ButtonItem>
+          <ButtonItem elemBefore="hi" elemAfter="bye">
             Item
-          </Item>
-          <Item elemBefore="hi" elemAfter="bye">
+          </ButtonItem>
+          <ButtonItem elemBefore="hi" elemAfter="bye">
             Item
-          </Item>
+          </ButtonItem>
         </Section>
         <Section>
           <SkeletonHeadingItem />

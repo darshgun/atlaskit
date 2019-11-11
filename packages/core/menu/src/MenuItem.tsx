@@ -39,15 +39,24 @@ const ItemBase = ({
   );
 };
 
-export const Item = (props: ItemProps) => {
-  const { elemBefore, elemAfter, children, description } = props;
+export const ButtonItem = (props: ItemProps) => {
+  const {
+    elemBefore,
+    elemAfter,
+    children,
+    description,
+    isDisabled = false,
+    ...others
+  } = props;
 
   if (!children) {
     return null;
   }
 
+  const Tag = isDisabled ? 'span' : 'button';
+
   return (
-    <button type="button" css={itemCSS}>
+    <Tag type="button" css={itemCSS(isDisabled)} {...others}>
       <ItemBase
         elemBefore={elemBefore}
         elemAfter={elemAfter}
@@ -55,19 +64,32 @@ export const Item = (props: ItemProps) => {
       >
         {children}
       </ItemBase>
-    </button>
+    </Tag>
   );
 };
 
 export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
-  const { elemBefore, elemAfter, children, description, ...others } = rest;
+  const {
+    elemBefore,
+    elemAfter,
+    children,
+    description,
+    isDisabled = false,
+    ...others
+  } = rest;
 
   if (!children) {
     return null;
   }
 
+  const Tag = isDisabled ? 'span' : 'a';
+
   return (
-    <a css={linkItemCSS} href={href} {...others}>
+    <Tag
+      css={linkItemCSS(isDisabled)}
+      href={isDisabled ? undefined : href}
+      {...others}
+    >
       <ItemBase
         elemBefore={elemBefore}
         elemAfter={elemAfter}
@@ -75,6 +97,6 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
       >
         {children}
       </ItemBase>
-    </a>
+    </Tag>
   );
 };

@@ -1,6 +1,13 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { fontSize, fontSizeSmall } from '@atlaskit/theme/constants';
-import { N800, N20, N30, subtleHeading } from '@atlaskit/theme/colors';
+import {
+  N800,
+  N0,
+  N200,
+  N20,
+  N30,
+  subtleHeading,
+} from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
 
 const gridSize = gridSizeFn();
@@ -14,13 +21,25 @@ const anchorOverrides = {
   color: 'currentColor',
 };
 
-const baseItemCSS = {
-  display: 'block',
-  width: '100%',
-  boxSizing: 'border-box',
+const disabledStyles = {
+  cursor: 'not-allowed',
+  '&, &:hover, &:focus, &:active': {
+    backgroundColor: N0,
+    color: N200,
+  },
+};
+
+const baseItemCSS = (isDisabled: boolean): CSSObject => ({
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
+  // Revisit these styles.
+  // Leaving them here as reminder to clean them up
+  // display: 'block',
+  // width: '100%',
+  // boxSizing: 'border-box',
+  // display: 'flex',
+  // flexDirection: 'column',
   '&:hover': {
     color: N800,
     backgroundColor: N20,
@@ -38,12 +57,13 @@ const baseItemCSS = {
   '::-moz-focus-inner': {
     border: 0,
   },
-};
+  ...(isDisabled && disabledStyles),
+});
 
-export const itemCSS = {
+export const itemCSS = (isDisabled: boolean): CSSObject => ({
   ...buttonOverrides,
-  ...baseItemCSS,
-} as CSSObject;
+  ...baseItemCSS(isDisabled),
+});
 
 /* Item subcomponents */
 export const contentCSS = {
@@ -53,7 +73,7 @@ export const contentCSS = {
   outline: 'none',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-  lineHeight: `${16 / fontSize()}`,
+  lineHeight: `${(gridSize * 2) / fontSize()}`,
 } as CSSObject;
 export const elemBeforeCSS = { flexShrink: 0, marginRight: gridSize };
 export const elemAfterCSS = { flexShrink: 0, marginLeft: gridSize };
@@ -68,27 +88,28 @@ export const contentCSSWrapper = {
 };
 
 /* Item variations */
-export const linkItemCSS = {
+export const linkItemCSS = (isDisabled: boolean): CSSObject => ({
   ...anchorOverrides,
-  ...baseItemCSS,
-} as CSSObject;
+  ...baseItemCSS(isDisabled),
+});
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
   fontSize: fontSizeSmall(),
   fontWeight: 500,
   color: subtleHeading(),
-  marginLeft: 4,
-  marginTop: 8,
+  marginLeft: gridSize / 2,
+  marginTop: gridSize,
 } as CSSObject;
 
 export const skeletonHeadingItemCSS = {
   ...itemHeadingCSS,
   '&::after': {
     backgroundColor: N20,
-    height: 12,
-    padding: 4,
-    width: 'calc(30% - 8px)',
+    height: gridSize * 1.5,
+    padding: gridSize / 2,
+    margin: `${gridSize / 2}px 0`,
+    width: `calc(30% - ${gridSize / 2}px)`,
     display: 'block',
     content: '""',
   },
@@ -99,9 +120,10 @@ export const itemSkeletonCSS = {
   pointerEvents: 'none',
   '&::after': {
     backgroundColor: N20,
-    height: 20,
-    padding: 4,
-    width: 'calc(100% - 8px)',
+    height: gridSize * 2.5,
+    padding: gridSize / 2,
+    margin: gridSize / 2,
+    width: `calc(100% - ${gridSize * 3})`,
     display: 'block',
     content: '""',
   },
@@ -109,13 +131,15 @@ export const itemSkeletonCSS = {
 
 /* Item Group */
 export const menuGroupCSS = (maxHeight?: string | number): CSSObject => ({
+  display: 'flex',
+  flexDirection: 'column',
   overflow: 'auto',
   maxHeight,
 });
 
 export const sectionCSS = (
   isScrollable?: boolean,
-  shouldShowSeparator?: boolean,
+  hasSeparator?: boolean,
 ): CSSObject => ({
   display: 'flex',
   flexDirection: 'column',
@@ -125,5 +149,5 @@ export const sectionCSS = (
         overflow: 'auto',
       }
     : { flexShrink: 0 }),
-  ...(shouldShowSeparator && { borderBottom: `1px solid ${N30}` }),
+  ...(hasSeparator && { borderBottom: `1px solid ${N30}` }),
 });
