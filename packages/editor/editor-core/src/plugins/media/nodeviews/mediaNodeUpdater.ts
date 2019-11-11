@@ -122,10 +122,11 @@ export class MediaNodeUpdater {
 
     if (attrsChanged) {
       // TODO [MS-2258]: we should pass this.props.isMediaSingle and remove hardcoded "true"
-      updateAllMediaNodesAttrs(attrs.id, newAttrs, true)(
-        this.props.view.state,
-        this.props.view.dispatch,
-      );
+      updateAllMediaNodesAttrs(
+        attrs.id,
+        newAttrs,
+        true,
+      )(this.props.view.state, this.props.view.dispatch);
     }
   };
 

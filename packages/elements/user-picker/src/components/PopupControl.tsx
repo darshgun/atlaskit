@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { Label } from '@atlaskit/field-base';
-import { components } from '@atlaskit/select';
+import { components, ControlProps } from '@atlaskit/select';
 import styled from 'styled-components';
-
-interface Props {
-  selectProps: { popupTitle: string };
-}
 
 const ControlWrapper = styled.div`
   display: flex;
@@ -13,7 +9,7 @@ const ControlWrapper = styled.div`
   padding: 0px 8px 8px;
 `;
 
-export class PopupControl extends React.PureComponent<Props> {
+export class PopupControl extends React.PureComponent<ControlProps<any>> {
   render() {
     const {
       selectProps: { popupTitle },

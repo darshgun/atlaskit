@@ -56,9 +56,7 @@ describe('layout actions', () => {
     layouts.forEach(currentLayout => {
       layouts.forEach(newLayout => {
         if (currentLayout.name !== newLayout.name) {
-          it(`handles switching from "${currentLayout.name}" to "${
-            newLayout.name
-          }"`, () => {
+          it(`handles switching from "${currentLayout.name}" to "${newLayout.name}"`, () => {
             ({ editorView } = editor(
               doc(buildLayoutForWidths(currentLayout.widths, true)),
             ));

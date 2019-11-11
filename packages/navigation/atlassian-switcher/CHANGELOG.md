@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher
 
+## 4.7.0
+
+### Minor Changes
+
+- [minor][004b30d3d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/004b30d3d8):
+
+  Added Join section, and its data provider, and added createProviderWithCustomFetchData method
+
+## 4.6.9
+
+### Patch Changes
+
+- [patch][ea75c17b3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea75c17b3a):
+
+  internal typescript fixes
+
 ## 4.6.8
 
 ### Patch Changes

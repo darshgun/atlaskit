@@ -14,9 +14,8 @@ export interface MentionListStyleProps {
   empty?: boolean;
 }
 
-export const MentionListStyle: ComponentClass<
-  HTMLAttributes<{}> & MentionListStyleProps
-> = styled.div`
+export const MentionListStyle: ComponentClass<HTMLAttributes<{}> &
+  MentionListStyleProps> = styled.div`
   display: ${(props: MentionListStyleProps) =>
     props.empty ? 'none' : 'block'};
 

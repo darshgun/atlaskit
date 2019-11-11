@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-${<AtlassianInternalWarning />}
+${(<AtlassianInternalWarning />)}
 
   This component provides a component to select, drag and resize image avatars. It also provides a default list of predefined avatars.
 

@@ -192,7 +192,7 @@ export class Header extends React.Component<Props & InjectedIntlProps, State> {
     const message = mediaTypeTranslationMap[mediaType || 'unknown'];
 
     // Defaulting to unknown again since backend has more mediaTypes than the current supported ones
-    return <FormattedMessage {...message || messages.unknown} />;
+    return <FormattedMessage {...(message || messages.unknown)} />;
   };
 
   private getMediaIcon = (mediaType?: MediaType) => {

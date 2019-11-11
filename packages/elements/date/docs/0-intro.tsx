@@ -18,7 +18,7 @@ const CustomFormatSource = require('!!raw-loader!../examples/02-custom-format');
 const DateProps = require('!!extract-react-types-loader!../src/components/Date');
 
 export default md`
-${<AtlassianInternalWarning />}
+${(<AtlassianInternalWarning />)}
 
 This component is the implementation of the Date element in React.
 
@@ -35,7 +35,7 @@ This component is the implementation of the Date element in React.
     />
   )}
 
-  ${<Props props={DateProps} />}
+  ${(<Props props={DateProps} />)}
 
   ### You can also use Date lozenge
   Lozenge is available in the [ADG3 Lozenge colors](https://atlassian.design/guidelines/product/components/lozenges).

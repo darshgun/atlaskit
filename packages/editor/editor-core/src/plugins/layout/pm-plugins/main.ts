@@ -130,9 +130,10 @@ export default (
         if (layoutState.pos !== null) {
           return DecorationSet.create(
             state.doc,
-            getNodeDecoration(layoutState.pos, state.doc.nodeAt(
+            getNodeDecoration(
               layoutState.pos,
-            ) as Node),
+              state.doc.nodeAt(layoutState.pos) as Node,
+            ),
           );
         }
         return undefined;

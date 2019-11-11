@@ -51,28 +51,25 @@ type MarkWithContent = Partial<Mark<any>> & {
 };
 
 function mergeMarks(marksAndNodes: Array<MarkWithContent | Node>) {
-  return marksAndNodes.reduce(
-    (acc, markOrNode) => {
-      const prev = (acc.length && acc[acc.length - 1]) || null;
+  return marksAndNodes.reduce((acc, markOrNode) => {
+    const prev = (acc.length && acc[acc.length - 1]) || null;
 
-      if (
-        markOrNode.type instanceof MarkType &&
-        prev &&
-        prev.type instanceof MarkType &&
-        Array.isArray(prev.content) &&
-        isSameMark(prev as Mark, markOrNode as Mark)
-      ) {
-        prev.content = mergeMarks(
-          prev.content.concat((markOrNode as MarkWithContent).content),
-        );
-      } else {
-        acc.push(markOrNode);
-      }
+    if (
+      markOrNode.type instanceof MarkType &&
+      prev &&
+      prev.type instanceof MarkType &&
+      Array.isArray(prev.content) &&
+      isSameMark(prev as Mark, markOrNode as Mark)
+    ) {
+      prev.content = mergeMarks(
+        prev.content.concat((markOrNode as MarkWithContent).content),
+      );
+    } else {
+      acc.push(markOrNode);
+    }
 
-      return acc;
-    },
-    [] as Array<MarkWithContent | Node>,
-  );
+    return acc;
+  }, [] as Array<MarkWithContent | Node>);
 }
 
 export default class ReactSerializer implements Serializer<JSX.Element> {
@@ -206,9 +203,9 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       return (mark as any).text;
     }
 
-    const content = ((mark as any).content || []).map(
-      (child: Mark, index: number) => this.serializeMark(child, index),
-    );
+    const content = (
+      (mark as any).content || []
+    ).map((child: Mark, index: number) => this.serializeMark(child, index));
     return this.renderMark(
       markToReact(mark),
       this.getMarkProps(mark),
@@ -383,18 +380,15 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           return node;
         }
 
-        return nodeMarks.reverse().reduce(
-          (acc, mark) => {
-            const { eq } = mark;
+        return nodeMarks.reverse().reduce((acc, mark) => {
+          const { eq } = mark;
 
-            return {
-              ...mark,
-              eq,
-              content: [acc],
-            };
-          },
-          node as any,
-        );
+          return {
+            ...mark,
+            eq,
+            content: [acc],
+          };
+        }, node as any);
       }),
     ) as Mark[];
   }

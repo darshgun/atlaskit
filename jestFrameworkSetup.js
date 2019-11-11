@@ -273,18 +273,20 @@ const toEqualDocument = (equals, utils, expand) => (actual, expected) => {
 /* eslint-disable no-undef */
 expect.extend({
   toEqualDocument(actual, expected) {
-    return toEqualDocument(this.equals, this.utils, this.expand)(
-      actual,
-      expected,
-    );
+    return toEqualDocument(
+      this.equals,
+      this.utils,
+      this.expand,
+    )(actual, expected);
   },
 
   toEqualDocumentAndSelection(actual, expected) {
     const { doc: actualDoc, selection: actualSelection } = actual;
-    const docComparison = toEqualDocument(this.equals, this.utils, this.expand)(
-      actualDoc,
-      expected,
-    );
+    const docComparison = toEqualDocument(
+      this.equals,
+      this.utils,
+      this.expand,
+    )(actualDoc, expected);
     if (!docComparison.pass) {
       return docComparison;
     }

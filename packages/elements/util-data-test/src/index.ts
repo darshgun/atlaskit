@@ -22,9 +22,7 @@ export {
   MockMentionResource,
   MockMentionConfig,
 } from './mention/MockMentionResource';
-export {
-  MockMentionResourceWithInfoHints,
-} from './mention/MockMentionResourceWithInfoHints';
+export { MockMentionResourceWithInfoHints } from './mention/MockMentionResourceWithInfoHints';
 
 export { profilecard, mention, emoji, taskDecision, userPickerData };
 

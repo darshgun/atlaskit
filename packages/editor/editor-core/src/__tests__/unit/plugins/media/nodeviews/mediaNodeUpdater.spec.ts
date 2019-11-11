@@ -30,12 +30,12 @@ describe('MediaNodeUpdater', () => {
     jest.spyOn(commands, 'updateMediaNodeAttrs').mockReturnValue(() => true);
     jest.spyOn(commands, 'replaceExternalMedia').mockReturnValue(() => true);
 
-    const contextIdentifierProvider: Promise<
-      ContextIdentifierProvider
-    > = Promise.resolve({
-      containerId: '',
-      objectId: 'object-id',
-    });
+    const contextIdentifierProvider: Promise<ContextIdentifierProvider> = Promise.resolve(
+      {
+        containerId: '',
+        objectId: 'object-id',
+      },
+    );
     const viewMediaClientConfig = getDefaultMediaClientConfig();
     const authFromContext = Promise.resolve({
       clientId: 'auth-context-client-id',

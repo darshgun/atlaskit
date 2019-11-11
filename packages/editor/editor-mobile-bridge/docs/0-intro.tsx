@@ -2,7 +2,7 @@ import * as React from 'react';
 import { md, Example, code, AtlassianInternalWarning } from '@atlaskit/docs';
 
 export default md`
-${<AtlassianInternalWarning />}
+${(<AtlassianInternalWarning />)}
 
 This component is an integration layer between @atlaskit/editor-core and native iOS and Android editors.
 

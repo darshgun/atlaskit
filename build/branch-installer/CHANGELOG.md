@@ -1,5 +1,13 @@
 # @atlaskit/branch-installer
 
+## 0.3.1
+
+### Patch Changes
+
+- [patch][7dfaaab0de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7dfaaab0de):
+
+  Fix branch installer trying to install packages when none exist
+
 ## 0.3.0
 
 ### Minor Changes

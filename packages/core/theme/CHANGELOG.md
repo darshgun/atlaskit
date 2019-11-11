@@ -1,5 +1,13 @@
 # @atlaskit/theme
 
+## 9.2.8
+
+### Patch Changes
+
+- [patch][ea75c17b3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea75c17b3a):
+
+  internal typescript fixes
+
 ## 9.2.7
 
 ### Patch Changes

@@ -14,15 +14,15 @@ const WrapperStyles = `
   }
 `;
 
-const TaskListWrapper: ComponentClass<
-  HTMLAttributes<HTMLDivElement>
-> = styled.div`
+const TaskListWrapper: ComponentClass<HTMLAttributes<
+  HTMLDivElement
+>> = styled.div`
   ${WrapperStyles}
 `;
 
-const DecisionListWrapper: ComponentClass<
-  HTMLAttributes<HTMLOListElement>
-> = styled.ol`
+const DecisionListWrapper: ComponentClass<HTMLAttributes<
+  HTMLOListElement
+>> = styled.ol`
   ${WrapperStyles}
 `;
 

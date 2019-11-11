@@ -18,7 +18,9 @@ import { LoadingItem } from './EmojiPickerVirtualItems';
 import * as styles from './styles';
 
 const emojiPickerModuleLoader = () =>
-  import(/* webpackChunkName:"@atlaskit-internal_emojiPickerComponent" */ './EmojiPickerComponent');
+  import(
+    /* webpackChunkName:"@atlaskit-internal_emojiPickerComponent" */ './EmojiPickerComponent'
+  );
 
 const emojiPickerLoader: () => Promise<ComponentClass<ComponentProps>> = () =>
   emojiPickerModuleLoader().then(module => module.default);

@@ -410,7 +410,10 @@ describe('<Navigation />', () => {
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
               mockCreateAnalyticsEvent,
-              { isCollapsed: false, trigger: 'chevron' },
+              {
+                isCollapsed: false,
+                trigger: 'chevron',
+              },
             );
           });
 
@@ -432,7 +435,10 @@ describe('<Navigation />', () => {
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
               mockCreateAnalyticsEvent,
-              { isCollapsed: false, trigger: 'resizerClick' },
+              {
+                isCollapsed: false,
+                trigger: 'resizerClick',
+              },
             );
           });
 
@@ -451,7 +457,10 @@ describe('<Navigation />', () => {
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
               mockCreateAnalyticsEvent,
-              { isCollapsed: false, trigger: 'resizerDrag' },
+              {
+                isCollapsed: false,
+                trigger: 'resizerDrag',
+              },
             );
           });
 
@@ -490,7 +499,10 @@ describe('<Navigation />', () => {
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
               mockCreateAnalyticsEvent,
-              { isCollapsed: true, trigger: 'chevron' },
+              {
+                isCollapsed: true,
+                trigger: 'chevron',
+              },
             );
           });
 
@@ -512,7 +524,10 @@ describe('<Navigation />', () => {
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
               mockCreateAnalyticsEvent,
-              { isCollapsed: true, trigger: 'resizerClick' },
+              {
+                isCollapsed: true,
+                trigger: 'resizerClick',
+              },
             );
           });
 
@@ -531,7 +546,10 @@ describe('<Navigation />', () => {
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
             expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
               mockCreateAnalyticsEvent,
-              { isCollapsed: true, trigger: 'resizerDrag' },
+              {
+                isCollapsed: true,
+                trigger: 'resizerDrag',
+              },
             );
           });
 

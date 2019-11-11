@@ -12,4 +12,5 @@ declare type Varargs = (
   | undefined
   | null
   | void
-  | {})[];
+  | {}
+)[];

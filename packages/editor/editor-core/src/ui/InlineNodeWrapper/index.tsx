@@ -17,9 +17,7 @@ export function createMobileInlineDomRef() {
   return domRef;
 }
 
-export const InlineNodeInnerWrapper: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.span`
+export const InlineNodeInnerWrapper: React.ComponentClass<React.HTMLAttributes<{}>> = styled.span`
   display: block;
 `;
 

@@ -102,11 +102,11 @@ describe('Mobile MediaProvider', () => {
     };
     mediaClient = fakeMediaClient();
     asMockReturnValue(getMediaClient, mediaClient);
-    asMock(withMediaClient).mockImplementation(
-      (Component: React.ComponentType) => (props: any) => (
-        <Component {...props} mediaClient={mediaClient} />
-      ),
-    );
+    asMock(
+      withMediaClient,
+    ).mockImplementation((Component: React.ComponentType) => (props: any) => (
+      <Component {...props} mediaClient={mediaClient} />
+    ));
     asMockReturnValue(mediaClient.file.getFileState, of(testFileState));
 
     promisedMediaProvider = Promise.resolve({

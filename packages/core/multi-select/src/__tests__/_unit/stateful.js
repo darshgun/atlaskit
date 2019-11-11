@@ -32,7 +32,10 @@ describe(`${name} - smart`, () => {
       const items: Array<GroupType> = [
         {
           heading: 'test',
-          items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
         },
       ];
       const wrapper = mount(
@@ -84,7 +87,10 @@ describe(`${name} - smart`, () => {
     const items: Array<GroupType> = [
       {
         heading: 'test',
-        items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
+        items: [
+          { value: 1, content: '1' },
+          { value: 2, content: '2' },
+        ],
       },
     ];
 

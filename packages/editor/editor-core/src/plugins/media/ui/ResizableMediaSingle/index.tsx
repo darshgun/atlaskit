@@ -333,9 +333,9 @@ export default class ResizableMediaSingle extends React.Component<
       enable[side] =
         ['full-width', 'wide', 'center']
           .concat(`wrap-${oppositeSide}` as MediaSingleLayout)
-          .concat(`align-${
-            imageAlignmentMap[oppositeSide]
-          }` as MediaSingleLayout)
+          .concat(
+            `align-${imageAlignmentMap[oppositeSide]}` as MediaSingleLayout,
+          )
           .indexOf(layout) > -1;
 
       if (side === 'left' && this.insideInlineLike) {

@@ -1,5 +1,13 @@
 # @atlaskit/website
 
+## 5.2.8
+
+### Patch Changes
+
+- [patch][30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+
+  @atlaskit/select has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 5.2.7
 
 ### Patch Changes

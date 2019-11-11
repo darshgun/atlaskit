@@ -239,7 +239,7 @@ export class UsageFrequencyComparator implements EmojiComparator {
 }
 
 type KeysOfType<T, TProp> = {
-  [P in keyof T]: T[P] extends (TProp | undefined) ? P : never
+  [P in keyof T]: T[P] extends TProp | undefined ? P : never;
 }[keyof T];
 
 /**

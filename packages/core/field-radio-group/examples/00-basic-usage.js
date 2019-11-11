@@ -21,9 +21,7 @@ export default class BasicExample extends PureComponent<void, State> {
 
   onRadioChange = (event: any) => {
     this.setState({
-      onRadioChangeResult: `onRadioChange called with value: ${
-        event.target.value
-      }`,
+      onRadioChangeResult: `onRadioChange called with value: ${event.target.value}`,
     });
   };
 

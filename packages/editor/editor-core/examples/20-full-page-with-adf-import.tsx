@@ -143,9 +143,7 @@ export default class Example extends React.Component<any, State> {
       let url = `${origin + pathname}?${query}adf=${adfString}`;
       if (url.length > 2000) {
         url = `Warning:
-        The generated url is ${
-          url.length
-        } characters which exceeds the 2000 character limit for safe urls. It _may_ not work in all browsers.
+        The generated url is ${url.length} characters which exceeds the 2000 character limit for safe urls. It _may_ not work in all browsers.
         Reduce the complexity of the document to reduce the url length if you're having problems.
 
 ${url}`;

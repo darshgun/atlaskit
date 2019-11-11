@@ -1,5 +1,12 @@
 # @atlaskit/calendar
 
+## 9.2.1
+
+- Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+  - @atlaskit/select@11.0.0
+  - @atlaskit/button@13.3.4
+  - @atlaskit/locale@1.0.2
+
 ## 9.2.0
 
 ### Minor Changes

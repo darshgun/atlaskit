@@ -136,9 +136,7 @@ describe(name, () => {
         },
       ];
       appearances.forEach(appearance => {
-        it(`adds appearance analytics context to all editor events for ${
-          appearance.appearance
-        } editor`, done => {
+        it(`adds appearance analytics context to all editor events for ${appearance.appearance} editor`, done => {
           // editor fires an editor started event that should trigger the listener from
           // just mounting the component
           mount(

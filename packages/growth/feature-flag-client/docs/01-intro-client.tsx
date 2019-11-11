@@ -2,7 +2,7 @@ import React from 'react';
 import { code, md, Example, AtlassianInternalWarning } from '@atlaskit/docs';
 
 export default md`
-${<AtlassianInternalWarning />}
+${(<AtlassianInternalWarning />)}
 
   This client makes it easy to work with feature flags and dark features.
   By using it, exposure events will be fired automatically allowing analysis of important metrics out of the box.

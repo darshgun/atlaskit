@@ -33,9 +33,7 @@ function createPlugin(createAnalyticsEvent?: CreateUIAnalyticsEvent) {
               payload.action !== ACTION.INSERTED &&
               payload.action !== ACTION.DELETED
             ) {
-              const measureName = `${payload.actionSubject}:${payload.action}:${
-                payload.actionSubjectId
-              }`;
+              const measureName = `${payload.actionSubject}:${payload.action}:${payload.actionSubjectId}`;
               measureRender(measureName, duration => {
                 fireAnalyticsEvent(createAnalyticsEvent)({
                   payload: extendPayload(payload, duration),

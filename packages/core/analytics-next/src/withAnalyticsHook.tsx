@@ -41,7 +41,7 @@ const withAnalyticsHook = (createEventMap?: CreateEventMap) => <
 
       return (
         <WrappedComponent
-          {...props as any}
+          {...(props as any)}
           {...patchedEventProps}
           createAnalyticsEvent={createAnalyticsEvent}
           ref={ref}

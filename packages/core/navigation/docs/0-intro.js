@@ -116,6 +116,6 @@ ${(
   `}
   
 
-  ${<Props props={require('!!extract-react-types-loader!../src')} />}
+  ${(<Props props={require('!!extract-react-types-loader!../src')} />)}
 
 `;

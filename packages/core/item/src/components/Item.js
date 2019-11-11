@@ -221,7 +221,7 @@ export default class Item extends Component<Props, {}> {
         target={this.props.target}
         title={this.props.title}
         innerRef={patchedInnerRef}
-        {...dnd && dnd.draggableProps}
+        {...(dnd && dnd.draggableProps)}
         {...dragHandleProps}
         {...patchedEventHandlers}
         {...otherProps}

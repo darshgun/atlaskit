@@ -10,13 +10,13 @@ import {
 import { Hr } from './shared';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   ### 🛠 [Upgrade guide](/packages/media/media-image/docs/upgrade-guide)
 
   View this guide to help upgrade breaking changes between major versions of media-image.
 
-  ${<Hr />}
+  ${(<Hr />)}
 
   This package exports \`MediaImage\` component using
   [render prop pattern](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce).

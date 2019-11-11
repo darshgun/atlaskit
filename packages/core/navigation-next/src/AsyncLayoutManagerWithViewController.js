@@ -1,5 +1,3 @@
 // @flow
 
-export {
-  default as AsyncLayoutManagerWithViewController,
-} from './components/connected/AsyncLayoutManagerWithViewController';
+export { default as AsyncLayoutManagerWithViewController } from './components/connected/AsyncLayoutManagerWithViewController';

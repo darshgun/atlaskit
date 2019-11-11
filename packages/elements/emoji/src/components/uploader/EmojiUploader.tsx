@@ -16,7 +16,9 @@ import {
 } from '@atlaskit/analytics-next';
 
 const emojiUploadModuleLoader = () =>
-  import(/* webpackChunkName:"@atlaskit-internal_emojiUploadComponent" */ './EmojiUploadComponent');
+  import(
+    /* webpackChunkName:"@atlaskit-internal_emojiUploadComponent" */ './EmojiUploadComponent'
+  );
 
 const emojiUploadLoader: () => Promise<ComponentClass<ComponentProps>> = () =>
   emojiUploadModuleLoader().then(module => module.default);

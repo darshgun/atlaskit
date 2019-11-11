@@ -784,18 +784,15 @@ class ToolbarInsertBlock extends React.PureComponent<
     name: 'action' | 'decision',
     inputMethod: TOOLBAR_MENU_TYPE,
   ) =>
-    withAnalytics(
-      `atlassian.fabric.${name}.trigger.button`,
-      (): boolean => {
-        const { editorView } = this.props;
-        if (!editorView) {
-          return false;
-        }
-        const listType = name === 'action' ? 'taskList' : 'decisionList';
-        insertTaskDecision(editorView, listType, inputMethod);
-        return true;
-      },
-    );
+    withAnalytics(`atlassian.fabric.${name}.trigger.button`, (): boolean => {
+      const { editorView } = this.props;
+      if (!editorView) {
+        return false;
+      }
+      const listType = name === 'action' ? 'taskList' : 'decisionList';
+      insertTaskDecision(editorView, listType, inputMethod);
+      return true;
+    });
 
   private insertHorizontalRule = withAnalytics(
     'atlassian.editor.format.horizontalrule.button',

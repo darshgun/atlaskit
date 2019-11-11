@@ -141,9 +141,7 @@ class Example extends React.Component<{}, ExampleState> {
                     &nbsp;
                     <a href={example.url}>
                       {example.description ||
-                        `${example.provider} ${example.visibility} ${
-                          example.type
-                        }`}
+                        `${example.provider} ${example.visibility} ${example.type}`}
                     </a>
                   </p>
                 ))}

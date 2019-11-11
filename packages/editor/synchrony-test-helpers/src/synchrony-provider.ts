@@ -29,8 +29,12 @@ export default async function createSynchronyProvider(
   let cljs: CLJSModule;
   try {
     [provider, cljs] = await Promise.all([
-      import(/*webpackChunkName: "@atlassian/prosemirror-synchrony-plugin/collab-provider" */ '@atlassian/prosemirror-synchrony-plugin/build/collab-provider'),
-      import(/*webpackChunkName: "@atlassian/prosemirror-synchrony-plugin/collab-provider" */ '@atlassian/prosemirror-synchrony-plugin/build/cljs'),
+      import(
+        /*webpackChunkName: "@atlassian/prosemirror-synchrony-plugin/collab-provider" */ '@atlassian/prosemirror-synchrony-plugin/build/collab-provider'
+      ),
+      import(
+        /*webpackChunkName: "@atlassian/prosemirror-synchrony-plugin/collab-provider" */ '@atlassian/prosemirror-synchrony-plugin/build/cljs'
+      ),
     ]);
   } catch (error) {
     // eslint-disable-next-line no-console

@@ -94,7 +94,9 @@ describe('Table analytic events', () => {
     it('should fire v2 analytics', () => {
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.editor.quickinsert.select',
-        { item: 'Table' },
+        {
+          item: 'Table',
+        },
       );
     });
 
@@ -667,10 +669,11 @@ describe('Table analytic events', () => {
   describe('row deleted', () => {
     beforeEach(() => {
       const { editorView } = editor(defaultTable);
-      deleteRowsWithAnalytics(INPUT_METHOD.CONTEXT_MENU, secondRow, true)(
-        editorView.state,
-        editorView.dispatch,
-      );
+      deleteRowsWithAnalytics(
+        INPUT_METHOD.CONTEXT_MENU,
+        secondRow,
+        true,
+      )(editorView.state, editorView.dispatch);
     });
 
     it('should fire v2 analytics', () => {
