@@ -6,7 +6,7 @@ export type IconButtonProps = Omit<
 > & {
   icon: ButtonProps['iconBefore'];
   testId?: string;
-  tooltip: string;
+  tooltip: React.ReactNode;
 };
 
 export type IconButtonSkeletonProps = {

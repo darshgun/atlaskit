@@ -1,0 +1,2 @@
+- Fix types for the tooltip prop to allow React components.
+- Introduce `buttonTooltip` and `iconButtonTooltip` to configure tooltip for create button.
