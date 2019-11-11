@@ -13,7 +13,7 @@ import {
   contentCSS,
   contentCSSWrapper,
 } from './styles';
-import { ItemProps, LinkItemProps } from './types';
+import { ButtonItemProps, LinkItemProps } from './types';
 
 export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
   <div css={itemHeadingCSS}>{children}</div>
@@ -26,7 +26,7 @@ const ItemBase = ({
   elemAfter,
   children,
   description,
-}: ItemProps) => {
+}: ButtonItemProps) => {
   return (
     <Fragment>
       <div css={contentCSSWrapper}>
@@ -39,7 +39,7 @@ const ItemBase = ({
   );
 };
 
-export const ButtonItem = (props: ItemProps) => {
+export const ButtonItem = (props: ButtonItemProps) => {
   const {
     elemBefore,
     elemAfter,

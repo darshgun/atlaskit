@@ -9,7 +9,7 @@ export type SectionProps = {
   children: React.ReactNode;
 };
 
-export interface ItemProps {
+export interface ButtonItemProps {
   elemBefore?: React.ReactNode;
   elemAfter?: React.ReactNode;
   onClick?: (event: React.MouseEvent | React.KeyboardEvent) => void;
@@ -19,6 +19,6 @@ export interface ItemProps {
   children: React.ReactNode;
 }
 
-export interface LinkItemProps extends ItemProps {
+export interface LinkItemProps extends ButtonItemProps {
   href: string;
 }
