@@ -45,9 +45,7 @@ describe('@atlaskit/editore-core/utils', () => {
         media: {
           allowMediaSingle: true,
         },
-        allowCodeBlocks: true,
         allowPanel: true,
-        allowLists: true,
         allowTasksAndDecisions: true,
         mentionProvider: Promise.resolve(new MockMentionResource({})),
       },

@@ -177,7 +177,6 @@ const inlineCommentEditor = (
   <Editor
     appearance="chromeless"
     annotationProvider={{}}
-    allowLists={true}
     defaultValue={adf}
     onChange={onChange}
   />
@@ -296,7 +295,7 @@ import { ExampleInlineCommentComponent } from '@atlaskit/editor-test-helpers';
 
 class MyEditor extends React.Component {
   render() {
-    return <Editor 
+    return <Editor
             // ... other providers and props here
             annotationProvider={{
               component: ExampleInlineCommentComponent,

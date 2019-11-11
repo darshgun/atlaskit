@@ -48,7 +48,6 @@ describe('typeAhead main plugin', () => {
   it('should disable type ahead inside code blocks', () => {
     const { editorView } = createEditor({
       doc: doc(code_block()('{<>}')),
-      editorProps: { allowCodeBlocks: true },
     });
     const pluginState = typeAheadPluginKey.getState(editorView.state);
     expect(pluginState.isAllowed).toBe(false);

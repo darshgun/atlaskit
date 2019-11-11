@@ -67,8 +67,6 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
           quickInsert={{
             provider: this.quickInsertProviderPromise,
           }}
-          allowCodeBlocks={{ enableKeybindingsForIDE: true }}
-          allowLists={true}
           allowTextColor={true}
           allowTables={{
             advanced: true,

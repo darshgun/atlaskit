@@ -29,7 +29,6 @@ describe('image-upload', () => {
       doc,
       editorProps: {
         legacyImageUploadProvider: Promise.resolve(() => {}),
-        allowCodeBlocks: true,
         media: {
           allowMediaSingle: true,
         },

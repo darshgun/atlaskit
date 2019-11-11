@@ -102,9 +102,7 @@ export default function CommentWithJiraCardsExample() {
             placeholder="What do you want to say?"
             shouldFocus={true}
             quickInsert={true}
-            allowCodeBlocks={true}
             allowTextColor={true}
-            allowLists={true}
             allowRule={true}
             allowTables={true}
             allowHelpDialog={true}

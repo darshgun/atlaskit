@@ -47,7 +47,6 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, {
       appearance: fullpage.appearance,
-      allowLists: true,
     });
 
     await page.type(editable, '* ');
@@ -67,7 +66,6 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, {
       appearance: fullpage.appearance,
-      allowLists: true,
     });
 
     await page.type(editable, '1. ');

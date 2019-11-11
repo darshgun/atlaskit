@@ -14,7 +14,6 @@ describe('Breakout Commands: set-breakout-mode', () => {
     const { editorView } = createEditor({
       doc: doc(code_block()('Hel{<>}lo')),
       editorProps: {
-        allowCodeBlocks: true,
         allowBreakout: true,
         appearance: 'full-page',
       },
@@ -31,7 +30,6 @@ describe('Breakout Commands: set-breakout-mode', () => {
     const { editorView } = createEditor({
       doc: doc(p('Hel{<>}lo')),
       editorProps: {
-        allowCodeBlocks: true,
         allowBreakout: true,
         appearance: 'full-page',
       },
@@ -46,7 +44,6 @@ describe('Breakout Commands: set-breakout-mode', () => {
     const { editorView } = createEditor({
       doc: doc(breakout({ mode: 'wide' })(code_block()('Hel{<>}lo'))),
       editorProps: {
-        allowCodeBlocks: true,
         allowBreakout: true,
         appearance: 'full-page',
       },

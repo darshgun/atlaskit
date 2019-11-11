@@ -72,7 +72,6 @@ describe('media', () => {
         },
         allowExtension: true,
         allowLayouts: true,
-        allowLists: true,
         allowTables: true,
         allowAnalyticsGASV3: true,
         analyticsHandler: jest.fn(),

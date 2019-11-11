@@ -29,6 +29,7 @@ const mockPlugins: { [name: string]: jest.Mock } = {
   historyPlugin: jest.fn(),
   sharedContextPlugin: jest.fn(),
   iOSScrollPlugin: jest.fn(),
+  listsPlugin: jest.fn(),
 };
 jest.mock('../../../plugins', () => mockPlugins);
 

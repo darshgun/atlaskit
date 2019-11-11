@@ -42,7 +42,6 @@ describe('hyperlink commands', () => {
     return createEditor({
       doc,
       editorProps: {
-        allowCodeBlocks: true,
         allowAnalyticsGASV3: true,
         UNSAFE_cards: {
           provider: Promise.resolve(cardProvider),

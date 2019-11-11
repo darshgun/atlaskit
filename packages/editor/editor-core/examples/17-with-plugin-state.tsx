@@ -59,7 +59,7 @@ export default function Example() {
             <Editor
               analyticsHandler={analyticsHandler}
               disabled={disabled}
-              mediaProvider={mediaProvider}
+              media={{ provider: mediaProvider }}
               mentionProvider={mentionProvider}
               onChange={onChange}
               onSave={SAVE_ACTION}

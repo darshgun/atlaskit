@@ -22,7 +22,9 @@ export default class Example extends React.Component {
     return (
       <div id="editor">
         <Editor
-          cardProvider={Promise.resolve(cardProvider)}
+          UNSAFE_cards={{
+            provider: Promise.resolve(cardProvider),
+          }}
           mediaProvider={storyMediaProviderFactory({
             collectionName: 'InitialCollectionForTesting',
             includeUserAuthProvider: true,

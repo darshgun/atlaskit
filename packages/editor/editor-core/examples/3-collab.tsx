@@ -216,7 +216,6 @@ const editorProps = ({
   appearance: 'full-page',
   analyticsHandler,
   allowAnalyticsGASV3: true,
-  allowCodeBlocks: true,
   allowBreakout: true,
   allowLayouts: {
     allowBreakout: true,
@@ -224,7 +223,6 @@ const editorProps = ({
   },
   allowRule: true,
   allowStatus: true,
-  allowLists: true,
   allowTextColor: true,
   allowDate: true,
   allowPanel: true,
