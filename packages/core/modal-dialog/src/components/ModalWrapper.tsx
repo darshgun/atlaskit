@@ -9,6 +9,8 @@ import { AppearanceType, KeyboardOrMouseEvent, ActionProps } from '../types';
 import Modal from './Modal';
 import { WidthNames } from '../shared-variables';
 import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
+import { FooterComponentProps } from './Footer';
+import { HeaderComponentProps } from './Header';
 
 export interface WrapperProps extends WithAnalyticsEventsProps {
   /**
@@ -35,8 +37,8 @@ export interface WrapperProps extends WithAnalyticsEventsProps {
     - Container: wrapper around Header, Body and Footer components.
   */
   components?: {
-    Header?: React.ElementType;
-    Footer?: React.ElementType;
+    Header?: React.ElementType<HeaderComponentProps>;
+    Footer?: React.ElementType<FooterComponentProps>;
     Body?: React.ElementType;
     Container?: React.ElementType;
   };
@@ -47,11 +49,11 @@ export interface WrapperProps extends WithAnalyticsEventsProps {
   /**
     Deprecated, use components prop: Component to render the footer of the modal, replaces internal implementation.
   */
-  footer?: React.ElementType;
+  footer?: React.ElementType<FooterComponentProps>;
   /**
     Deprecated, use components prop: Component to render the header of the modal, replaces internal implementation.
   */
-  header?: React.ElementType;
+  header?: React.ElementType<HeaderComponentProps>;
   /**
     The modal title; rendered in the header.
   */

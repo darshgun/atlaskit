@@ -5,7 +5,7 @@ import React from 'react';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 
-import { AppearanceType } from '../types';
+import { AppearanceType, KeyboardOrMouseEvent } from '../types';
 import {
   Header,
   Title,
@@ -25,20 +25,24 @@ const TitleIcon = ({ appearance }: { appearance?: 'danger' | 'warning' }) => {
   );
 };
 
-export interface HeaderProps {
-  /** Appearance of the primary button. Also adds an icon to the heading, if provided. */
-  appearance?: AppearanceType;
+export interface HeaderProps extends HeaderComponentProps {
   /**
     Boolean OR Function indicating which element to focus when the component mounts
     TRUE will automatically find the first "tabbable" element within the modal
     Providing a function should return the element you want to focus
   */
   /** Component to render the header of the modal. */
-  component?: React.ElementType;
+  component?: React.ElementType<HeaderComponentProps>;
+}
+
+export interface HeaderComponentProps {
+  /** Appearance of the primary button. Also adds an icon to the heading, if provided. */
+  appearance?: AppearanceType;
+
   /** The modal heading */
   heading?: React.ReactNode;
   /** Function to close the dialog */
-  onClose: Function;
+  onClose: (e: KeyboardOrMouseEvent) => void;
   /** Whether or not to display a line under the header */
   showKeyline?: boolean;
   /**
