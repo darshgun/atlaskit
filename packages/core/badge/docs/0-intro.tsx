@@ -3,13 +3,12 @@ import { code, md, Example, Props } from '@atlaskit/docs';
 
 export default md`
   Badges are visual indicators for **numeric values** such as tallies and scores.
-  They're commonly used before and after the label of the thing they're
-  quantifying.
+  They're commonly used before and after the label of the thing they're quantifying.
 
-  They must be used singly after a single item name, and have only numbers.
   For **non-numeric** status information please use a [lozenge](/packages/core/lozenge).
 
-  Make sure to compose with a [tooltip](/packages/core/tooltip) when needing to provide extra context, for example indicating units.
+  Make sure to compose with a [tooltip](/packages/core/tooltip) when needing to provide extra context,
+  for example indicating units.
 
   ## Usage
 
