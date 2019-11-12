@@ -1,5 +1,8 @@
 import React, { Component, ElementType, ReactNode } from 'react';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, {
+  HeaderComponentProps,
+  FooterComponentProps,
+} from '@atlaskit/modal-dialog';
 import Button, { Theme as ButtonTheme } from '@atlaskit/button';
 import {
   Actions as ModalActions,
@@ -19,9 +22,9 @@ type Props = {
   /** Path to the the your image */
   image?: string;
   /** Optional element rendered above the body */
-  header?: ElementType;
+  header?: ElementType<HeaderComponentProps>;
   /** Optional element rendered below the body */
-  footer?: ElementType;
+  footer?: ElementType<FooterComponentProps>;
   /** Heading text rendered above the body */
   heading?: string;
 };

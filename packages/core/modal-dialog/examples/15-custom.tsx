@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import Lorem from 'react-lorem-component';
 
@@ -9,7 +9,8 @@ import InlineDialog from '@atlaskit/inline-dialog';
 import { colors } from '@atlaskit/theme';
 
 import ModalDialog, { ModalFooter, ModalTransition } from '../src';
-import { ActionProps } from '../src/types';
+import { HeaderComponentProps } from '../src/components/Header';
+import { FooterComponentProps } from '../src/components/Footer';
 
 const defaults = ['header', 'footer', 'both', 'neither'];
 const custom = ['custom header', 'custom body', 'custom footer'];
@@ -36,7 +37,7 @@ const headerStyles: React.CSSProperties = {
   paddingTop: 170,
   position: 'relative',
 };
-const Header = ({ onClose }: { onClose: ActionProps['onClick'] }) => (
+const Header: FC<HeaderComponentProps> = ({ onClose }) => (
   <div style={headerStyles}>
     <span style={{ position: 'absolute', right: 0, top: 4 }}>
       <Button onClick={onClose} appearance="link">
@@ -68,15 +69,11 @@ const Body = React.forwardRef<
   );
 });
 
-interface FooterProps {
-  onClose: ActionProps['onClick'];
-  showKeyline: boolean;
-}
 interface FooterState {
   isOpen: boolean;
 }
 
-class Footer extends React.Component<FooterProps, FooterState> {
+class Footer extends React.Component<FooterComponentProps, FooterState> {
   state = { isOpen: false };
 
   open = () => this.setState({ isOpen: true });
