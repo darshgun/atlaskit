@@ -29,13 +29,10 @@ export const sortByPreviousPosition = (
   reactions: ReactionSummary[],
 ): ReactionSummarySortFunction => {
   type Indexes = { [emojiId: string]: number };
-  const indexes: Indexes = reactions.reduce(
-    (map, reaction, index) => {
-      map[reaction.emojiId] = index;
-      return map;
-    },
-    {} as Indexes,
-  );
+  const indexes: Indexes = reactions.reduce((map, reaction, index) => {
+    map[reaction.emojiId] = index;
+    return map;
+  }, {} as Indexes);
 
   const getPosition = ({ emojiId }: ReactionSummary) =>
     indexes[emojiId] === undefined ? reactions.length : indexes[emojiId];

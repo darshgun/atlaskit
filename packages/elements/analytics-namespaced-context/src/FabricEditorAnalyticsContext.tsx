@@ -20,9 +20,6 @@ type FabricEditorAnalyticsContextProps = Props & {
   };
 };
 
-export const FabricEditorAnalyticsContext: StatelessComponent<
+export const FabricEditorAnalyticsContext: StatelessComponent<FabricEditorAnalyticsContextProps> = createNamespaceContext<
   FabricEditorAnalyticsContextProps
-> = createNamespaceContext<FabricEditorAnalyticsContextProps>(
-  EDITOR_CONTEXT,
-  'FabricEditorAnalyticsContext',
-);
+>(EDITOR_CONTEXT, 'FabricEditorAnalyticsContext');

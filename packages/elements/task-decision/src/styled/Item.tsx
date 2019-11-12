@@ -6,11 +6,9 @@ import { borderRadius, gridSize, colors, themed } from '@atlaskit/theme';
 
 const akGridSize = gridSize();
 
-export const ContentWrapper: ComponentClass<
-  HTMLAttributes<{}> & {
-    innerRef?: any;
-  }
-> = styled.div`
+export const ContentWrapper: ComponentClass<HTMLAttributes<{}> & {
+  innerRef?: any;
+}> = styled.div`
   margin: 0;
   word-wrap: break-word;
   min-width: 0;
@@ -38,8 +36,6 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   border: 1px solid: ${themed({ light: 'none', dark: colors.DN60 })};
 `;
 
-export const ParticipantWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const ParticipantWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin: -2px 8px;
 `;

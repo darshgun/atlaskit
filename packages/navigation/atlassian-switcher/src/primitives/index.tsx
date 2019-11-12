@@ -1,7 +1,5 @@
 export { default as SwitcherThemedItem } from './themed-item';
-export {
-  default as SwitcherThemedItemWithEvents,
-} from './themed-item-with-events';
+export { default as SwitcherThemedItemWithEvents } from './themed-item-with-events';
 export { default as SwitcherThemedChildItem } from './themed-child-item';
 export { default as SwitcherItem } from './item';
 export { default as SwitcherItemWithDropdown } from './item-with-dropdown';

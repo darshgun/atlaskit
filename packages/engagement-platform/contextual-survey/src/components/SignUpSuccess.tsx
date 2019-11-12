@@ -5,7 +5,7 @@ import SuccessContainer from './SuccessContainer';
 
 interface Props {}
 
-export default ({  }: Props) => (
+export default ({}: Props) => (
   <SuccessContainer>
     <h1
       css={css`

@@ -304,14 +304,14 @@ describe('QuickSearchContainer', () => {
       let eagerResolveFn = () => {};
       let lazyResolveFn = () => {};
 
-      const eagerRecentItemsPromise: Promise<
-        ResultsWithTiming<GenericResultMap>
-      > = new Promise(resolve => {
+      const eagerRecentItemsPromise: Promise<ResultsWithTiming<
+        GenericResultMap
+      >> = new Promise(resolve => {
         eagerResolveFn = () => resolve({ results: recentItems as any });
       });
-      const lazyLoadedRecentItemsPromise: Promise<
-        Partial<GenericResultMap>
-      > = new Promise(resolve => {
+      const lazyLoadedRecentItemsPromise: Promise<Partial<
+        GenericResultMap
+      >> = new Promise(resolve => {
         lazyResolveFn = () => resolve(lazyLoadedRecentItems as any);
       });
 

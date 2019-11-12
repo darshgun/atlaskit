@@ -6,27 +6,24 @@ export type TagInfo = {
 };
 
 export function getTags(tagInfo: ts.JSDocTagInfo[]): TagInfo {
-  return tagInfo.reduce(
-    (obj, { name, text = '' }) => {
-      // TODO: Fix any
-      let val: any = text;
-      if (/^\d+$/.test(text)) {
-        // Number
-        val = +text;
-      } else if (text[0] === '"') {
-        // " wrapped string
-        val = JSON.parse(text);
-      } else if (text === 'true') {
-        val = true;
-      } else if (text === 'false') {
-        val = false;
-      }
-      // TODO: Fix any
-      (obj as any)[name] = val;
-      return obj;
-    },
-    {} as TagInfo,
-  );
+  return tagInfo.reduce((obj, { name, text = '' }) => {
+    // TODO: Fix any
+    let val: any = text;
+    if (/^\d+$/.test(text)) {
+      // Number
+      val = +text;
+    } else if (text[0] === '"') {
+      // " wrapped string
+      val = JSON.parse(text);
+    } else if (text === 'true') {
+      val = true;
+    } else if (text === 'false') {
+      val = false;
+    }
+    // TODO: Fix any
+    (obj as any)[name] = val;
+    return obj;
+  }, {} as TagInfo);
 }
 
 export type PrimitiveType = number | boolean | string;

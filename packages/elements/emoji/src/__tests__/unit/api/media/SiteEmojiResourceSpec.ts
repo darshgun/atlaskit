@@ -40,9 +40,7 @@ class TestSiteEmojiResource extends SiteEmojiResource {
 }
 
 describe('SiteEmojiResource', () => {
-  let getMediaClientSpy: jest.SpyInstance<
-    typeof MediaClientModule['getMediaClient']
-  >;
+  let getMediaClientSpy: jest.SpyInstance<typeof MediaClientModule['getMediaClient']>;
 
   beforeEach(() => {
     // @ts-ignore This violated type definition upgrade of @types/jest to v24.0.18 & ts-jest v24.1.0.
