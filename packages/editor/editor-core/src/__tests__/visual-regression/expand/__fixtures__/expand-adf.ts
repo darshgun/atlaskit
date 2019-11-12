@@ -507,25 +507,6 @@ export const tableMediaADF = {
             },
           ],
         },
-        {
-          type: 'mediaSingle',
-          attrs: {
-            width: 50,
-            layout: 'wrap-right',
-          },
-          content: [
-            {
-              type: 'media',
-              attrs: {
-                type: 'external',
-                width: 320,
-                height: 320,
-                url:
-                  'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
-              },
-            },
-          ],
-        },
       ],
     },
     {
@@ -614,6 +595,62 @@ export const nestedExpandOverflowInTable = {
     {
       type: 'paragraph',
       content: [],
+    },
+  ],
+};
+
+export const wrappingMediaADF = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'expand',
+      attrs: {
+        title: 'Hello media',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [],
+        },
+        {
+          type: 'mediaSingle',
+          attrs: {
+            width: 50,
+            layout: 'wrap-right',
+          },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'external',
+                width: 320,
+                height: 320,
+                url:
+                  'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
+              },
+            },
+          ],
+        },
+        {
+          type: 'mediaSingle',
+          attrs: {
+            layout: 'center',
+          },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'external',
+                width: 320,
+                height: 320,
+                url:
+                  'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
+              },
+            },
+          ],
+        },
+      ],
     },
   ],
 };

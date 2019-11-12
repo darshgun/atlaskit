@@ -9,6 +9,7 @@ export const Wrapper: React.ComponentClass<React.HTMLAttributes<{}> &
   & > div {
     ${MediaSingleDimensionHelper};
     position: relative;
+    clear: both;
 
     > div {
       position: absolute;
