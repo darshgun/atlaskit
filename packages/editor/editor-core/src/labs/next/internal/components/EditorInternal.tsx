@@ -54,9 +54,7 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
         onMount(editorActions);
       }
 
-      return () => {
-        editorActions._privateUnregisterEditor();
-      };
+      return () => editorActions._privateUnregisterEditor();
     }
   }, [editorSharedConfig, editorActions, onMount]);
 

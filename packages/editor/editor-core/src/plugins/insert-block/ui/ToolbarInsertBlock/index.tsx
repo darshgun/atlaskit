@@ -878,6 +878,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       onInsertMacroFromMacroBrowser,
       macroProvider,
       handleImageUpload,
+      expandEnabled,
     } = this.props;
 
     switch (item.value.name) {
@@ -911,9 +912,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       case 'decision':
         this.insertTaskDecision(item.value.name, inputMethod)();
         break;
-      case 'expand':
-        this.insertExpand();
-        break;
+
       case 'horizontalrule':
         this.insertHorizontalRule(inputMethod);
         break;
@@ -938,6 +937,17 @@ class ToolbarInsertBlock extends React.PureComponent<
       case 'status':
         this.createStatus(inputMethod);
         break;
+
+      // https://product-fabric.atlassian.net/browse/ED-8053
+      // It's expected to fall through to default
+      // @ts-ignore
+      case 'expand':
+        if (expandEnabled) {
+          this.insertExpand();
+          break;
+        }
+
+      // eslint-disable-next-line no-fallthrough
       default:
         if (item && item.onClick) {
           item.onClick(editorActions);
