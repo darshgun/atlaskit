@@ -137,7 +137,6 @@ export const itemSkeletonCSS = (
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
-  width,
 
   // Stagger alternate skeleton items if no width is passed
   ...(!width && {
@@ -168,6 +167,7 @@ export const itemSkeletonCSS = (
     height: gridSize * 1.75,
     borderRadius: 3,
     flexGrow: 1,
+    width,
   },
 });
 
