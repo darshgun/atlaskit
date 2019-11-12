@@ -201,6 +201,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
       return;
     }
 
+    this.removeKeyboardListeners();
     this.targetRef.addEventListener('focus', this.handleMouseOver);
     this.targetRef.addEventListener('blur', this.handleMouseLeave);
   };
