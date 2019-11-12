@@ -9,7 +9,7 @@ interface Props {
   max?: number;
 }
 
-const Format: FC<Props> = props => {
+const Format: FC<Props> = (props: Props) => {
   let formatted: number | string = '';
   let { children = 0, max = 0 } = props;
 

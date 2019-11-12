@@ -2,67 +2,43 @@ import React from 'react';
 import { code, md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  Badges are visual indicators for numeric values such as tallies and scores.
+  Badges are visual indicators for **numeric values** such as tallies and scores.
   They're commonly used before and after the label of the thing they're
   quantifying.
 
   They must be used singly after a single item name, and have only numbers.
+  For **non-numeric** status information please use a [lozenge](/packages/core/lozenge).
 
-  * Use lozenges for statuses.
-  * Use labels to call out tags and high-visibility attributes.
-  * Use a tooltip if you want to indicate units.
+  Make sure to compose with a [tooltip](/packages/core/tooltip) when needing to provide extra context, for example indicating units.
 
   ## Usage
 
-  The \`default\` export gives you full badge functionality and automatically formats the number you priovide it.
+  This component gives you the full badge functionality and automatically formats the number you provide in \`children\`.
+  For more fine-grained control have a look at the [composing](/packages/core/badge/docs/composing) docs.
 
 ${code`
-  import Badge from '@atlaskit/badge';
+import Badge from '@atlaskit/badge';
 
-  // Displays: 99+
-  <Badge>{1000}</Badge>
+// Displays: 99+
+<Badge>{1000}</Badge>
 
-  // Displays: 999+
-  <Badge max={999}>{1000}</Badge>
+// Displays: 999+
+<Badge max={999}>{1000}</Badge>
 `}
 
-  ## Container
-
-  The named \`Container\` export retains the styling of a normal badge, but without formatting. This means you can compose in whatever information you need to.
-
-${code`
-  import { Container } from '@atlaskit/badge';
-
-  // Displays: <em>Something</em>
-  <Container><em>Something</em></Container>
-
-`}
-
-  _Beware that putting arbitrary content inside of a badge might cause it to take on an unitended look._
-
-  ## Format
-
-  The \`Format\` export can be used to compose your own badge together, or if you need the badge style formatting somewhere else.
-
-  ${code`
-  import { Container, Format } from '@atlaskit/badge';
-
-  // Displays: <em>999+</em>
-  <Container><em><Format>{1000}</Format></em></Container>
-`}
-
-  ${(
-    <Example
-      packageName="@atlaskit/badge"
-      Component={require('../examples/0-basic').default}
-      title="Basic"
-      source={require('!!raw-loader!../examples/0-basic')}
-    />
-  )}
+${(
+  <Example
+    highlight="4,31-33,37,41,45,49,53,57,61,65,69-71"
+    packageName="@atlaskit/badge"
+    Component={require('../examples/0-basic').default}
+    title="Basic"
+    source={require('!!raw-loader!../examples/0-basic')}
+  />
+)}
 
   ${(
     <Props
-      heading="Badge Props"
+      heading="Props"
       props={require('!!extract-react-types-loader!../src/components')}
     />
   )}
