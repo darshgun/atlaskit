@@ -20,8 +20,12 @@ export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
   <div css={itemHeadingCSS}>{children}</div>
 );
 export const SkeletonHeadingItem = () => <div css={skeletonHeadingItemCSS} />;
-export const SkeletonItem = ({ hasAvatar, hasIcon }: SkeletonItemProps) => (
-  <div css={itemSkeletonCSS(hasAvatar, hasIcon)} />
+export const SkeletonItem = ({
+  hasAvatar,
+  hasIcon,
+  width,
+}: SkeletonItemProps) => (
+  <div css={itemSkeletonCSS(hasAvatar, hasIcon, width)} />
 );
 
 const ItemBase = ({

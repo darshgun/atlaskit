@@ -131,18 +131,23 @@ export const skeletonHeadingItemCSS = {
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
+  width?: string | number,
 ): CSSObject => ({
   ...itemCSS(false),
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
-  // Stagger alternate skeleton items
-  '&:nth-of-type(n + 1)': {
-    width: '40%',
-  },
-  '&:nth-child(2n)': {
-    width: '60%',
-  },
+  width,
+
+  // Stagger alternate skeleton items if no width is passed
+  ...(!width && {
+    '&:nth-of-type(n + 1)': {
+      width: '40%',
+    },
+    '&:nth-child(2n)': {
+      width: '60%',
+    },
+  }),
 
   // Icon and Avatar styles
   ...((hasAvatar || hasIcon) && {
