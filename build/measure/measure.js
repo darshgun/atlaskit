@@ -76,7 +76,6 @@ module.exports = async function main(
   updateSnapshot /*: boolean */,
   s3 /*: boolean */,
 ) {
-  console.log(filePath);
   const measureOutputPath = path.join(filePath, '.measure-output');
   const sanitizedFilePath = filePath.replace('/', '__');
   const measureCompiledOutputPath = path.join(
