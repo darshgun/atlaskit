@@ -54,7 +54,7 @@ export const useResource = (
           query,
           location,
         });
-      }, [actions, resource]),
+      }, [actions, resource, route, match, query, location]),
     },
   ];
 };
