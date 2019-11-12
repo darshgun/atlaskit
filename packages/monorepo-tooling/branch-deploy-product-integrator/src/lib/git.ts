@@ -47,5 +47,5 @@ export async function checkoutOrCreate(git: SimpleGit, branchName: string) {
 export async function isInsideRepo(git: SimpleGit, repoName: string) {
   const remote = await git.listRemote(['--get-url']);
 
-  return remote.indexOf('atlassian/atlaskit-mk-2') > -1;
+  return remote.indexOf(repoName) > -1;
 }
