@@ -140,11 +140,23 @@ export const itemSkeletonCSS = (
 
   // Stagger alternate skeleton items if no width is passed
   ...(!width && {
-    '&:nth-of-type(n + 1)': {
-      width: '40%',
+    '&:nth-child(1n)::after': {
+      flexBasis: '70%',
     },
-    '&:nth-child(2n)': {
-      width: '60%',
+    '&:nth-child(2n)::after': {
+      flexBasis: '50%',
+    },
+    '&:nth-child(3n)::after': {
+      flexBasis: '60%',
+    },
+    '&:nth-child(4n)::after': {
+      flexBasis: '90%',
+    },
+    '&:nth-child(5n)::after': {
+      flexBasis: '35%',
+    },
+    '&:nth-child(6n)::after': {
+      flexBasis: '77%',
     },
   }),
 
@@ -166,8 +178,7 @@ export const itemSkeletonCSS = (
     backgroundColor: N20,
     height: gridSize * 1.75,
     borderRadius: 3,
-    flexGrow: 1,
-    width,
+    flexBasis: '100%' || width,
   },
 });
 
@@ -191,5 +202,5 @@ export const sectionCSS = (
         overflow: 'auto',
       }
     : { flexShrink: 0 }),
-  ...(hasSeparator && { borderBottom: `1px solid ${N30}` }),
+  ...(hasSeparator && { borderTop: `1px solid ${N30}` }),
 });
