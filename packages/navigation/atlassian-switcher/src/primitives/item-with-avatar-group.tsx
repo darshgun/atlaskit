@@ -21,8 +21,8 @@ export interface ItemWithAvatarGroupProps extends WithAnalyticsEventsProps {
   isDisabled?: boolean;
   onKeyDown?: any;
   onItemClick?: Function;
-  onClick?: Function;
   users?: JoinableSiteUserAvatarPropTypes[];
+  target?: string;
 }
 
 const Wrapper = styled.div`
@@ -41,18 +41,8 @@ const Wrapper = styled.div`
 const noop = () => {};
 
 class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
-  onClick = (event: React.SyntheticEvent) => {
-    const { onItemClick, onClick, href } = this.props;
-    onItemClick && onItemClick();
-
-    if (onClick) {
-      event.preventDefault();
-      onClick(href);
-    }
-  };
-
   render() {
-    const { icon, description, users = [], onClick, ...rest } = this.props;
+    const { icon, description, users = [], onItemClick, ...rest } = this.props;
 
     return (
       <FadeIn>
@@ -69,8 +59,7 @@ class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
                 onMoreClick={noop}
               />
             }
-            onClick={this.onClick}
-            target={onClick ? '' : '_new'}
+            onClick={onItemClick}
             {...rest}
           />
         </Wrapper>

@@ -390,7 +390,13 @@ export default class Switcher extends React.Component<SwitcherProps> {
                     description={description}
                     users={users}
                     href={href}
-                    onClick={onJoinableSiteClicked}
+                    onItemClick={(event: React.SyntheticEvent) => {
+                      if (onJoinableSiteClicked) {
+                        event.preventDefault();
+                        onJoinableSiteClicked(href);
+                      }
+                    }}
+                    target={onJoinableSiteClicked ? '' : '_new'}
                   >
                     {label}
                   </ItemWithAvatarGroup>
