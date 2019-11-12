@@ -1,1 +1,0 @@
-Make ProviderFactory interface to understand MediaProvider

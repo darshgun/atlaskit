@@ -1,5 +1,18 @@
 # @atlaskit/editor-cq-transformer
 
+## 7.3.7
+
+### Patch Changes
+
+- [patch][6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+
+  Provide standard empty adf when provided with empty wikimarkup/markdown/jira/cxhtml/prosemirror
+
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+  - @atlaskit/editor-core@114.1.0
+  - @atlaskit/editor-test-helpers@10.2.0
+  - @atlaskit/editor-common@42.0.0
+
 ## 7.3.6
 
 ### Patch Changes

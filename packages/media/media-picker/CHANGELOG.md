@@ -1,5 +1,96 @@
 # @atlaskit/media-picker
 
+## 50.0.0
+
+### Major Changes
+
+- [major][ae6408e1e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae6408e1e4):
+
+  # Move public types to media-picker/types entry point
+
+  We moved all the public types/interfaces into a new entry point **@atlaskit/media-picker/types**.
+  This is a breaking change only if you are using Typescript in your project. To update:
+
+  ## Before
+
+  ```typescript
+  import {
+    PopupUploadEventPayloadMap,
+    BrowserConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    Popup,
+    PopupConfig,
+    PopupConstructor,
+    UploadsStartEventPayload,
+    UploadStatusUpdateEventPayload,
+    UploadPreviewUpdateEventPayload,
+    UploadProcessingEventPayload,
+    UploadEndEventPayload,
+    UploadErrorEventPayload,
+    UploadEventPayloadMap,
+    isImagePreview,
+    MediaFile,
+    MediaProgress,
+    MediaError,
+    ImagePreview,
+    Preview,
+    NonImagePreview,
+    Popup,
+    UploadParams,
+    BrowserConfig,
+    PopupConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    PopupConstructor,
+  } from '@atlaskit/media-picker';
+  ```
+
+  ## After
+
+  ```typescript
+  import {
+    PopupUploadEventPayloadMap,
+    BrowserConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    Popup,
+    PopupConfig,
+    PopupConstructor,
+    UploadsStartEventPayload,
+    UploadStatusUpdateEventPayload,
+    UploadPreviewUpdateEventPayload,
+    UploadProcessingEventPayload,
+    UploadEndEventPayload,
+    UploadErrorEventPayload,
+    UploadEventPayloadMap,
+    isImagePreview,
+    MediaFile,
+    MediaProgress,
+    MediaError,
+    ImagePreview,
+    Preview,
+    NonImagePreview,
+    Popup,
+    UploadParams,
+    BrowserConfig,
+    PopupConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    PopupConstructor,
+  } from '@atlaskit/media-picker/types';
+  ```
+
+### Patch Changes
+
+- [patch][a4517c2de6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4517c2de6):
+
+  Pin perf-marks package, as it contains invalid es5 in latest release
+
+- [patch][5b2c89203e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b2c89203e):
+
+  Fix linting errors from prettier upgrade
+
 ## 49.0.1
 
 ### Patch Changes

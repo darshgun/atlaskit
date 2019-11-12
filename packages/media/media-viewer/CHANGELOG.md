@@ -1,5 +1,21 @@
 # @atlaskit/media-viewer
 
+## 44.0.2
+
+### Patch Changes
+
+- [patch][a4517c2de6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4517c2de6):
+
+  Pin perf-marks package, as it contains invalid es5 in latest release
+
+- [patch][b967e41a6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b967e41a6b):
+
+  Add empty file example to media-viewer
+
+- [patch][82b76468de](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82b76468de):
+
+  Rename all data-test-id attributes to data-testid
+
 ## 44.0.1
 
 ### Patch Changes

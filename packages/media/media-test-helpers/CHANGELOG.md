@@ -1,5 +1,16 @@
 # @atlaskit/media-test-helpers
 
+## 25.2.4
+
+### Patch Changes
+
+- [patch][b967e41a6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b967e41a6b):
+
+  Add empty file example to media-viewer
+
+- Updated dependencies [ae6408e1e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae6408e1e4):
+  - @atlaskit/media-picker@50.0.0
+
 ## 25.2.3
 
 - Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):

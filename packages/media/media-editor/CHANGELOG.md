@@ -1,5 +1,13 @@
 # @atlaskit/media-editor
 
+## 37.0.2
+
+### Patch Changes
+
+- [patch][a4517c2de6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4517c2de6):
+
+  Pin perf-marks package, as it contains invalid es5 in latest release
+
 ## 37.0.1
 
 ### Patch Changes

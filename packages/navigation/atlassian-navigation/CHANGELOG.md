@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.6.3
+
+### Patch Changes
+
+- [patch][8e8366be2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e8366be2c):
+
+      Update IconButton types from string to React.ReactNode.
+
 ## 0.6.2
 
 ### Patch Changes

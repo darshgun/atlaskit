@@ -1,5 +1,13 @@
 # @atlaskit/visual-regression
 
+## 0.1.4
+
+### Patch Changes
+
+- [patch][08f612548d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08f612548d):
+
+  Export new internal api loadPage
+
 ## 0.1.3
 
 ### Patch Changes

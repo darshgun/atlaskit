@@ -1,5 +1,33 @@
 # @atlaskit/adf-schema
 
+## 4.3.0
+
+### Minor Changes
+
+- [minor][a484cc35c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a484cc35c8):
+
+  ED-7911: external media will now be uploaded to media service
+
+- [minor][f1a06fc2fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a06fc2fd):
+
+  ED-7876 Add expand and nestedExpand to stage-0 schema
+
+  Adds two new nodes `expand` and `nestedExpand` to the stage-0 schema.
+
+- [minor][ae42b1ba1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae42b1ba1e):
+
+  Adf schema changes (for stage-0) to support alt text on media nodes.
+  `editor-core` changes are wrapped under the editor prop `UNSAFE_allowAltTextOnImages`. There is no alt text implementation yet, so the user won't be able to add alt text to images just yet.
+
+### Patch Changes
+
+- [patch][5b2c89203e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b2c89203e):
+
+  Fix linting errors from prettier upgrade
+
+- Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+  - @atlaskit/editor-json-transformer@7.0.0
+
 ## 4.2.0
 
 ### Minor Changes
