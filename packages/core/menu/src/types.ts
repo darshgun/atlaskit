@@ -22,3 +22,8 @@ export interface ButtonItemProps {
 export interface LinkItemProps extends ButtonItemProps {
   href: string;
 }
+
+export type SkeletonItemProps = {
+  hasAvatar?: boolean;
+  hasIcon?: boolean;
+};

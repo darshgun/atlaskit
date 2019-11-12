@@ -116,30 +116,55 @@ export const itemHeadingCSS = {
 
 export const skeletonHeadingItemCSS = {
   ...itemHeadingCSS,
+  padding: gridSize / 2,
   '&::after': {
     backgroundColor: N20,
-    height: gridSize * 1.5,
-    padding: gridSize / 2,
+    height: gridSize * 1.75,
     margin: `${gridSize / 2}px 0`,
-    width: `calc(30% - ${gridSize / 2}px)`,
+    width: `calc(20% - ${gridSize / 2}px)`,
+    borderRadius: 3,
     display: 'block',
     content: '""',
   },
 } as CSSObject;
 
-export const itemSkeletonCSS = {
-  ...itemCSS,
+export const itemSkeletonCSS = (
+  hasAvatar?: boolean,
+  hasIcon?: boolean,
+): CSSObject => ({
+  ...itemCSS(false),
   pointerEvents: 'none',
-  '&::after': {
-    backgroundColor: N20,
-    height: gridSize * 2.5,
-    padding: gridSize / 2,
-    margin: gridSize / 2,
-    width: `calc(100% - ${gridSize * 3})`,
-    display: 'block',
-    content: '""',
+  display: 'flex',
+  alignItems: 'center',
+  // Stagger alternate skeleton items
+  '&:nth-of-type(n + 1)': {
+    width: '40%',
   },
-} as CSSObject;
+  '&:nth-child(2n)': {
+    width: '60%',
+  },
+
+  // Icon and Avatar styles
+  ...((hasAvatar || hasIcon) && {
+    '&::before': {
+      content: '""',
+      backgroundColor: N20,
+      marginRight: gridSize,
+      width: gridSize * 3,
+      height: gridSize * 3,
+      borderRadius: hasAvatar ? '100%' : 3,
+    },
+  }),
+
+  // Skeleton text
+  '&::after': {
+    content: '""',
+    backgroundColor: N20,
+    height: gridSize * 1.75,
+    borderRadius: 3,
+    flexGrow: 1,
+  },
+});
 
 /* Item Group */
 export const menuGroupCSS = (maxHeight?: string | number): CSSObject => ({
