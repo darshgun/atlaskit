@@ -14,6 +14,7 @@ import { processRawValue } from '../../../../../utils';
 import { PortalProviderAPI } from '../../../../../ui/PortalProvider';
 import { EditorSharedConfig } from '../../context/shared-config';
 import { EditorPropsExtended } from '../../components/EditorInternal';
+import ProviderFactory from '@atlaskit/editor-common/src/providerFactory';
 
 export function createEditor({
   context,
@@ -113,7 +114,6 @@ export type CreateEditorParams = Pick<
   EditorPropsExtended,
   | 'defaultValue'
   | 'plugins'
-  | 'providerFactory'
   | 'popupsMountPoint'
   | 'popupsBoundariesElement'
   | 'popupsScrollableElement'
@@ -125,6 +125,7 @@ export type CreateEditorParams = Pick<
 > & {
   context: any;
   ref?: HTMLDivElement | null;
+  providerFactory: ProviderFactory;
   portalProviderAPI: PortalProviderAPI;
   createAnalyticsEvent?: CreateUIAnalyticsEvent;
 };

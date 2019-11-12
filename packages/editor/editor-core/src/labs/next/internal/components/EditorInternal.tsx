@@ -9,7 +9,7 @@ import { EditorProps } from '../editor-props-type';
 import { EditorSharedConfigProvider } from '../context/shared-config';
 import { useEditor } from '../hooks/use-editor';
 import { EditorContentProvider } from './EditorContent';
-import ProviderFactory from '@atlaskit/editor-common/src/providerFactory';
+import { useProviderFactory } from '@atlaskit/editor-common/provider-factory';
 
 export function EditorInternal(
   {
@@ -22,7 +22,6 @@ export function EditorInternal(
     popupsMountPoint,
     popupsBoundariesElement,
     popupsScrollableElement,
-    providerFactory,
     onChange,
     onDestroy,
     onMount,
@@ -38,7 +37,8 @@ export function EditorInternal(
     () => maybeEditorActions || new EditorActions(),
     [maybeEditorActions],
   );
-
+  // Get the provider factory from context
+  const providerFactory = useProviderFactory();
   const [editorSharedConfig, mountEditor] = useEditor({
     context,
     editorActions,
@@ -49,7 +49,6 @@ export function EditorInternal(
     transformer,
     defaultValue,
 
-    providerFactory: providerFactory,
     plugins,
 
     portalProviderAPI,
@@ -59,6 +58,8 @@ export function EditorInternal(
 
     onChange,
     onDestroy,
+
+    providerFactory,
   });
 
   React.useEffect(() => {
@@ -96,5 +97,4 @@ EditorInternal.contextTypes = {
 
 export type EditorPropsExtended = EditorProps & {
   portalProviderAPI: PortalProviderAPI;
-  providerFactory: ProviderFactory;
 };
