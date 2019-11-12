@@ -28,7 +28,9 @@ import {
 
 const DatePicker = Loadable({
   loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-editor-datepicker" */ './ui/DatePicker'),
+    import(
+      /* webpackChunkName:"@atlaskit-internal-editor-datepicker" */ './ui/DatePicker'
+    ),
   loading: () => null,
 });
 

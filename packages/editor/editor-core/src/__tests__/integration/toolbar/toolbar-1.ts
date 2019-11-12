@@ -13,27 +13,15 @@ const input = 'helloworld ';
 // https://product-fabric.atlassian.net/browse/ED-4531
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `toolbar-1.ts: should be able to select normal text, bold, italics, underline style for ${
-      editor.name
-    } editor`,
+    `toolbar-1.ts: should be able to select normal text, bold, italics, underline style for ${editor.name} editor`,
     { skip: ['ie', 'safari', 'edge'] },
     async (client: any, testName: string) => {
-      const bold = `[aria-label="${
-        textFormattingMessages.bold.defaultMessage
-      }"]`;
-      const italic = `[aria-label="${
-        textFormattingMessages.italic.defaultMessage
-      }"]`;
-      const changeFormatting = `[aria-label="${
-        blockTypeToolbarMessages.textStyles.defaultMessage
-      }"]`;
+      const bold = `[aria-label="${textFormattingMessages.bold.defaultMessage}"]`;
+      const italic = `[aria-label="${textFormattingMessages.italic.defaultMessage}"]`;
+      const changeFormatting = `[aria-label="${blockTypeToolbarMessages.textStyles.defaultMessage}"]`;
       const normalText = `span=${blockTypeMessages.normal.defaultMessage}`;
-      const more = `[aria-label="${
-        advancedTextFormattingMessages.moreFormatting.defaultMessage
-      }"]`;
-      const underline = `span=${
-        advancedTextFormattingMessages.underline.defaultMessage
-      }`;
+      const more = `[aria-label="${advancedTextFormattingMessages.moreFormatting.defaultMessage}"]`;
+      const underline = `span=${advancedTextFormattingMessages.underline.defaultMessage}`;
       const page = await goToEditorTestingExample(client);
       await mountEditor(page, { appearance: editor.appearance });
 

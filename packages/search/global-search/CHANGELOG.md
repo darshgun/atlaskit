@@ -1,5 +1,13 @@
 # @atlaskit/global-search
 
+## 12.3.0
+
+### Minor Changes
+
+- [minor][236de4c57e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/236de4c57e):
+
+  Changing redirect to Confluence Advanced Search
+
 ## 12.2.6
 
 - Updated dependencies [42a92cad4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a92cad4e):

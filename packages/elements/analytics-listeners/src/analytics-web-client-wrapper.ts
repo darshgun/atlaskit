@@ -65,9 +65,7 @@ export const sendEvent = (
 
       default:
         logger.error(
-          `cannot map eventType ${
-            event.eventType
-          } to an analytics-web-client function`,
+          `cannot map eventType ${event.eventType} to an analytics-web-client function`,
         );
     }
   } else {

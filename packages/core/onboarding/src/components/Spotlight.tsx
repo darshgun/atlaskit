@@ -43,9 +43,10 @@ export interface Props {
   /** The background color of the element being highlighted */
   targetBgColor?: string;
   /** Function to fire when a user clicks on the cloned target */
-  targetOnClick?: (
-    eventData: { event: MouseEvent<HTMLElement>; target?: string },
-  ) => void;
+  targetOnClick?: (eventData: {
+    event: MouseEvent<HTMLElement>;
+    target?: string;
+  }) => void;
   /** The border-radius of the element being highlighted */
   targetRadius?: number;
   /** Alternative element to render than the wrapped target */

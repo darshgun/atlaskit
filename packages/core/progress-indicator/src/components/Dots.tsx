@@ -23,12 +23,10 @@ interface Props extends WithAnalyticsEventsProps {
   /** The aria-label text applied to each indicator, appended by the index */
   ariaLabel?: string;
   /** Function called when an indicator is selected */
-  onSelect?: (
-    eventData: {
-      event: React.MouseEvent<HTMLButtonElement>;
-      index: number;
-    },
-  ) => unknown;
+  onSelect?: (eventData: {
+    event: React.MouseEvent<HTMLButtonElement>;
+    index: number;
+  }) => unknown;
   /** Which indicator is currently selected */
   selectedIndex: number;
   /** Corresponds to the width & height of each indicator */

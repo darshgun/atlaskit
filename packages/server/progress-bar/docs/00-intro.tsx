@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
   
   The progress bar is used to display progress of some process.
 

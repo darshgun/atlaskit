@@ -36,10 +36,11 @@ export const selectCurrentItem = (
     );
   }
 
-  return selectItem(typeAheadHandler, items[currentIndex], mode)(
-    state,
-    dispatch,
-  );
+  return selectItem(
+    typeAheadHandler,
+    items[currentIndex],
+    mode,
+  )(state, dispatch);
 };
 
 export const selectSingleItemOrDismiss = (

@@ -26,9 +26,8 @@ export interface ImageWrapperProps {
   url: string;
 }
 
-export const ImageWrapper: ComponentClass<
-  HTMLAttributes<{}> & ImageWrapperProps
-> = styled.div`
+export const ImageWrapper: ComponentClass<HTMLAttributes<{}> &
+  ImageWrapperProps> = styled.div`
   position: absolute;
   top: 0;
   right: 0;

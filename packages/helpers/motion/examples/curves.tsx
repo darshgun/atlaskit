@@ -8,17 +8,17 @@ export default () => md`
 import { easeIn } from '@atlaskit/motion';
   `}
 
-  ${<MovesRightBlock curve={easeIn} duration={1000} />}
+  ${(<MovesRightBlock curve={easeIn} duration={1000} />)}
 
   ${code`
 import { easeInOut } from '@atlaskit/motion';
   `}
 
-  ${<MovesRightBlock curve={easeInOut} duration={1000} />}
+  ${(<MovesRightBlock curve={easeInOut} duration={1000} />)}
 
   ${code`
 import { easeOut } from '@atlaskit/motion';
   `}
 
-  ${<MovesRightBlock curve={easeOut} duration={1000} />}
+  ${(<MovesRightBlock curve={easeOut} duration={1000} />)}
 `;

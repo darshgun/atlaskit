@@ -100,7 +100,6 @@ export const jiraPrimaryItems = [
     onClick={(...args: any[]) => {
       console.log('Projects click', ...args);
     }}
-    isSelected
   >
     Projects
   </NavigationButton>,
@@ -108,6 +107,7 @@ export const jiraPrimaryItems = [
     onClick={(...args: any[]) => {
       console.log('Issues click', ...args);
     }}
+    isHighlighted
   >
     Filters
   </NavigationButton>,

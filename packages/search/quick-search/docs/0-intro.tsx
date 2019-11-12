@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   This is a barebones quick-search component that can render different types of search results.
   

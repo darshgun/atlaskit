@@ -131,7 +131,8 @@ export default class Popup extends React.Component<Props, State> {
     return (
       !target ||
       (document.body.contains(target) &&
-        (popup.offsetParent && !popup.offsetParent.contains(target!))) ||
+        popup.offsetParent &&
+        !popup.offsetParent.contains(target!)) ||
       (overflowScrollParent &&
         !overflowScrollParent.contains(popup.offsetParent))
     );

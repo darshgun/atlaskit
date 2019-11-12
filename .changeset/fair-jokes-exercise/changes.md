@@ -1,1 +1,0 @@
-Added Join section, and its data provider, and added createProviderWithCustomFetchData method

@@ -288,9 +288,7 @@ export const createResizeHandleDecoration = (
     const position = cellPos + cellNode.nodeSize - 1;
 
     return Decoration.widget(position, element, {
-      key: `${
-        TableDecorations.COLUMN_RESIZING_HANDLE
-      }_${rowIndex}_${columnIndex}`,
+      key: `${TableDecorations.COLUMN_RESIZING_HANDLE}_${rowIndex}_${columnIndex}`,
     });
   };
 
@@ -321,9 +319,7 @@ export const createResizeHandleDecoration = (
         class: ClassName.LAST_ITEM_IN_CELL,
       },
       {
-        key: `${TableDecorations.LAST_CELL_ELEMENT}_${
-          cellColumnPositioning.left
-        }_${cellColumnPositioning.right}`,
+        key: `${TableDecorations.LAST_CELL_ELEMENT}_${cellColumnPositioning.left}_${cellColumnPositioning.right}`,
       },
     );
   };
@@ -460,9 +456,7 @@ export const createColumnLineResize = (
           class: ClassName.WITH_RESIZE_LINE,
         },
         {
-          key: `${TableDecorations.COLUMN_RESIZING_HANDLE_LINE}_${
-            cellColumnPositioning.right
-          }_${index}`,
+          key: `${TableDecorations.COLUMN_RESIZING_HANDLE_LINE}_${cellColumnPositioning.right}_${index}`,
         },
       );
     })

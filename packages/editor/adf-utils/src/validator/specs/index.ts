@@ -14,12 +14,8 @@ export { default as indentation } from './indentation';
 export { default as annotation } from './annotation';
 export { default as paragraph } from './paragraph';
 export { default as paragraph_with_no_marks } from './paragraph_with_no_marks';
-export {
-  default as paragraph_with_alignment,
-} from './paragraph_with_alignment';
-export {
-  default as paragraph_with_indentation,
-} from './paragraph_with_indentation';
+export { default as paragraph_with_alignment } from './paragraph_with_alignment';
+export { default as paragraph_with_indentation } from './paragraph_with_indentation';
 export { default as bulletList } from './bulletList';
 export { default as media } from './media';
 export { default as mediaSingle } from './mediaSingle';
@@ -32,9 +28,7 @@ export { default as orderedList } from './orderedList';
 export { default as heading } from './heading';
 export { default as heading_with_no_marks } from './heading_with_no_marks';
 export { default as heading_with_alignment } from './heading_with_alignment';
-export {
-  default as heading_with_indentation,
-} from './heading_with_indentation';
+export { default as heading_with_indentation } from './heading_with_indentation';
 export { default as panel } from './panel';
 export { default as blockquote } from './blockquote';
 export { default as rule } from './rule';

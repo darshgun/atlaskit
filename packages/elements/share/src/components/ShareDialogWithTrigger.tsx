@@ -21,6 +21,7 @@ import {
   Flag,
   OBJECT_SHARED,
   OriginTracing,
+  ProductName,
   RenderCustomTriggerButton,
   ShareButtonStyle,
   ShareError,
@@ -37,7 +38,7 @@ import {
 } from './analytics';
 import ShareButton from './ShareButton';
 import { ShareForm } from './ShareForm';
-import { showInviteWarning } from './utils';
+import { showAdminNotifiedFlag } from './utils';
 
 type DialogState = {
   isDialogOpen: boolean;
@@ -75,6 +76,7 @@ export type Props = {
   triggerButtonTooltipText?: React.ReactNode;
   bottomMessage?: React.ReactNode;
   submitButtonLabel?: React.ReactNode;
+  product: ProductName;
 };
 
 const ShareButtonWrapper = styled.div`
@@ -142,7 +144,10 @@ export class ShareDialogWithTriggerInternal extends React.PureComponent<
   ) => {
     const { formatMessage } = this.props.intl;
     const flags: Array<Flag> = [];
-    const shouldShowAdminNotifiedFlag = showInviteWarning(config, data.users);
+    const shouldShowAdminNotifiedFlag = showAdminNotifiedFlag(
+      config,
+      data.users,
+    );
 
     if (shouldShowAdminNotifiedFlag) {
       flags.push({
@@ -360,6 +365,7 @@ export class ShareDialogWithTriggerInternal extends React.PureComponent<
       config,
       bottomMessage,
       submitButtonLabel,
+      product,
     } = this.props;
 
     // for performance purposes, we may want to have a loadable content i.e. ShareForm
@@ -388,6 +394,7 @@ export class ShareDialogWithTriggerInternal extends React.PureComponent<
                     onLinkCopy={this.handleCopyLink}
                     isFetchingConfig={isFetchingConfig}
                     submitButtonLabel={submitButtonLabel}
+                    product={product}
                   />
                 </InlineDialogFormWrapper>
                 {bottomMessage ? (

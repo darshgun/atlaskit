@@ -7,9 +7,8 @@ export interface ImageProps {
   size: number;
 }
 
-export const Image: ComponentClass<
-  ImgHTMLAttributes<{}> & ImageProps
-> = styled.img`
+export const Image: ComponentClass<ImgHTMLAttributes<{}> &
+  ImageProps> = styled.img`
   ${({ size }: ImageProps) => csssize(size)} ${borderRadius};
 
   /* hide the alt text when the image cannot be found */

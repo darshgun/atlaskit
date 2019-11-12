@@ -23,14 +23,22 @@ export const getPrimaryButtonTheme = ({
   props: ThemeProps,
 ) => {
   const { buttonStyles, spinnerStyles } = current(props);
+
   return {
     buttonStyles: {
       ...buttonStyles,
       ...primaryButton.default,
-      padding: 0,
+      ...(props.isSelected && primaryButton.active),
+      fontWeight: 500,
+      padding: '0 4px',
       ':hover': primaryButton.hover,
       ':focus': primaryButton.focus,
-      ':active': primaryButton.active,
+      // :active doesn't work in FF, becasue we do a
+      // e.preventDefault() on mouse down in Button.
+      // '&&' is required to add more CSS specificity
+      '&&': {
+        ...(props.state === 'active' && primaryButton.active),
+      },
     },
     spinnerStyles,
   };
@@ -44,16 +52,28 @@ export const primaryButtonSkeletonCSS = (theme: NavigationTheme) => ({
   ...skeletonCSS(theme),
 });
 
-export const isSelectedCSS = (
+export const isHighlightedCSS = (
   { mode: { primaryButton } }: NavigationTheme,
-  isSelected?: boolean,
+  isHighlighted?: boolean,
 ): CSSObject => ({
-  alignItems: 'center',
-  borderTop: `${gridSize / 2}px solid transparent`,
-  borderBottom: isSelected
-    ? `${gridSize / 2}px solid ${primaryButton.selected.color}`
-    : `${gridSize / 2}px solid transparent`,
-  boxSizing: 'border-box',
   display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
   height: '100%',
+  position: 'relative',
+
+  ...(isHighlighted && {
+    '&:after': {
+      position: 'absolute',
+      bottom: 0,
+      left: gridSize / 2,
+      right: gridSize / 2,
+      content: '""',
+      height: gridSize / 2,
+      backgroundColor: primaryButton.selected.color,
+      borderTopLeftRadius: 1,
+      borderTopRightRadius: 1,
+    },
+  }),
 });

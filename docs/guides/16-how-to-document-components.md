@@ -10,9 +10,11 @@ The documentation for a package on the `atlaskit.atlassian.com` website consists
 ## The Pages
 
 ### Main page
+
 Exists: Always
 
 #### Header
+
 Header content is automatically generated. The links come from the package.json information, and extrapolating from them. The changelog info is pulled from the changelog md file at the package root. All packages have a link to examples.
 
 - link to examples modal
@@ -25,6 +27,7 @@ Header content is automatically generated. The links come from the package.json 
 - button to full changelog explorer
 
 #### Content
+
 The main content below the header. This is pulled from a JS file exporting a react component. The first file found in the `docs` subdirectory of the component will be used for the main page.
 
 We expect the main page to contain:
@@ -33,13 +36,14 @@ We expect the main page to contain:
 - A simple example of how to use the component
 - The props documentation.
 
-*Note*: It is recommended to add a section message at the top of the description if your component is designed for internal Atlassian development and / or if the component is in developer preview. Please refer to the documentation [template](https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/docs/templates/0-intro-template.js).
+_Note_: It is recommended to add a section message at the top of the description if your component is designed for internal Atlassian development and / or if the component is in developer preview. Please refer to the documentation [template](https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/docs/templates/0-intro-template.js).
 
 Some components are either too complicated to explain all their concepts on a single docs page, or export enough components that each should be given their own page.
 
 See information on the `docs/` folder below for information on how to create these.
 
 ### Sub-pages
+
 Exists: As needed
 
 Sub-pages within docs exist when a single document will be too unwieldy. Common reasons to use sub-pages are:
@@ -51,6 +55,7 @@ Sub-pages within docs exist when a single document will be too unwieldy. Common 
 See information on the `docs/` folder below for information on how to create these.
 
 ### Examples (modal, explorer, isolated)
+
 Exists: Always
 
 Examples are displayed in three different formats:
@@ -80,7 +85,6 @@ For example, a package folder that looks like:
 will generate two pages of documentation. The 'main' page of the documentation will be generated from the first file it finds, in this case, `my-component/docs/0-introduction.js`. The second docs file will create a sub-page named 'Complex Use Case'. Sup-pages strip trailing numbers but otherwise use the file's name to generate the name of the documentation page. We strip numbers so that you can use numbering to order your documentation pages.
 
 Only `.js` files directly within the docs folder are used. Sub-directories are not added.
-
 
 ### Writing a file in docs
 
@@ -119,6 +123,7 @@ ${<Props
 />}
 `
 ```
+
 #### Documentation template
 
 A documentation file template to use as a starter is available [here](https://bitbucket.org/atlassian/atlaskit-mk-2/src/master/docs/templates/0-intro-template.js).
@@ -186,7 +191,6 @@ export default () => (
     <Button>Fourth Button</Button>
   </ButtonGroup>
 );
-
 ```
 
 ### Quick gotcha: pointing at src, not the component.

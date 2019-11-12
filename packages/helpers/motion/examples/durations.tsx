@@ -25,7 +25,7 @@ import { smallDurationMs } from '@atlaskit/motion';
 import { mediumDurationMs } from '@atlaskit/motion';
   `}
 
-  ${<MovesRightBlock curve={easeOut} duration={mediumDurationMs} />}
+  ${(<MovesRightBlock curve={easeOut} duration={mediumDurationMs} />)}
 
   ${code`
 import { largeDurationMs } from '@atlaskit/motion';

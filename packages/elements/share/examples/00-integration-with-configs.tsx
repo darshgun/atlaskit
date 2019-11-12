@@ -1,24 +1,29 @@
+import * as React from 'react';
+import { IntlProvider } from 'react-intl';
+import styled from 'styled-components';
 import Select from '@atlaskit/select';
 import { ToggleStateless as Toggle } from '@atlaskit/toggle';
 import { OptionData } from '@atlaskit/user-picker';
 import { userPickerData } from '@atlaskit/util-data-test';
-import * as React from 'react';
-import { IntlProvider } from 'react-intl';
-import styled from 'styled-components';
+import { ButtonAppearances } from '@atlaskit/button';
+
 import App from '../example-helpers/AppWithFlag';
 import RestrictionMessage from '../example-helpers/RestrictionMessage';
-import { ShareDialogContainer, ShareDialogContainerProps } from '../src';
+import { ProductName, ShareDialogContainer } from '../src';
 import {
   Comment,
   ConfigResponse,
   ConfigResponseMode,
   Content,
+  DialogPlacement,
   KeysOfType,
   MetaData,
   OriginTracing,
   RenderCustomTriggerButton,
+  ShareButtonStyle,
   ShareClient,
   ShareResponse,
+  TooltipPosition,
   User,
 } from '../src/types';
 import {
@@ -68,7 +73,7 @@ const loadUserOptions = (searchText?: string): OptionData[] => {
     }))
     .filter((user: UserData) => {
       const searchTextInLowerCase = searchText.toLowerCase();
-      const propertyToMatch: (KeysOfType<UserData, string | undefined>)[] = [
+      const propertyToMatch: KeysOfType<UserData, string | undefined>[] = [
         'id',
         'name',
         'publicName',
@@ -85,10 +90,12 @@ const loadUserOptions = (searchText?: string): OptionData[] => {
     });
 };
 
-const dialogPlacementOptions: Array<{
+interface DialogPlacementOption {
   label: string;
   value: State['dialogPlacement'];
-}> = [
+}
+
+const dialogPlacementOptions: Array<DialogPlacementOption> = [
   { label: 'bottom-end', value: 'bottom-end' },
   { label: 'bottom', value: 'bottom' },
   { label: 'bottom-start', value: 'bottom-start' },
@@ -103,7 +110,12 @@ const dialogPlacementOptions: Array<{
   { label: 'left-end', value: 'left-end' },
 ];
 
-const modeOptions: Array<{ label: string; value: ConfigResponseMode }> = [
+interface ModeOption {
+  label: string;
+  value: ConfigResponseMode;
+}
+
+const modeOptions: Array<ModeOption> = [
   { label: 'Existing users only', value: 'EXISTING_USERS_ONLY' },
   { label: 'Invite needs approval', value: 'INVITE_NEEDS_APPROVAL' },
   { label: 'Only domain based invite', value: 'ONLY_DOMAIN_BASED_INVITE' },
@@ -111,10 +123,12 @@ const modeOptions: Array<{ label: string; value: ConfigResponseMode }> = [
   { label: 'Anyone', value: 'ANYONE' },
 ];
 
-const triggerButtonAppearanceOptions: Array<{
+interface TriggerButtonAppearanceOption {
   label: string;
   value: State['triggerButtonAppearance'];
-}> = [
+}
+
+const triggerButtonAppearanceOptions: Array<TriggerButtonAppearanceOption> = [
   { label: 'default', value: 'default' },
   { label: 'danger', value: 'danger' },
   { label: 'link', value: 'link' },
@@ -124,19 +138,23 @@ const triggerButtonAppearanceOptions: Array<{
   { label: 'warning', value: 'warning' },
 ];
 
-const triggerButtonStyleOptions: Array<{
+interface TriggerButtonStyleOption {
   label: string;
   value: State['triggerButtonStyle'];
-}> = [
+}
+
+const triggerButtonStyleOptions: Array<TriggerButtonStyleOption> = [
   { label: 'icon-only', value: 'icon-only' },
   { label: 'icon-with-text', value: 'icon-with-text' },
   { label: 'text-only', value: 'text-only' },
 ];
 
-const triggerButtonTooltipPositionOptions: Array<{
+interface TriggerPositionOption {
   label: string;
   value: State['triggerButtonTooltipPosition'];
-}> = [
+}
+
+const triggerButtonTooltipPositionOptions: Array<TriggerPositionOption> = [
   { label: 'top', value: 'top' },
   { label: 'left', value: 'left' },
   { label: 'bottom', value: 'bottom' },
@@ -151,9 +169,15 @@ type ExampleState = {
   escapeOnKeyPress: boolean;
   restrictionMessage: boolean;
   useUrlShortener: boolean;
+  product: ProductName;
 };
 
-type State = ConfigResponse & Partial<ShareDialogContainerProps> & ExampleState;
+type State = ConfigResponse & {
+  dialogPlacement: DialogPlacement;
+  triggerButtonAppearance: ButtonAppearances;
+  triggerButtonStyle: ShareButtonStyle;
+  triggerButtonTooltipPosition: TooltipPosition;
+} & ExampleState;
 
 const renderCustomTriggerButton: RenderCustomTriggerButton = ({ onClick }) => (
   <button onClick={onClick}>Custom Button</button>
@@ -194,6 +218,7 @@ export default class Example extends React.Component<{}, State> {
     triggerButtonAppearance: triggerButtonAppearanceOptions[0].value,
     triggerButtonStyle: triggerButtonStyleOptions[0].value,
     triggerButtonTooltipPosition: triggerButtonTooltipPositionOptions[0].value,
+    product: 'confluence',
   };
 
   key: number = 0;
@@ -251,6 +276,7 @@ export default class Example extends React.Component<{}, State> {
       triggerButtonAppearance,
       triggerButtonStyle,
       triggerButtonTooltipPosition,
+      product,
       restrictionMessage,
       useUrlShortener,
     } = this.state;
@@ -291,6 +317,7 @@ export default class Example extends React.Component<{}, State> {
                     restrictionMessage ? <RestrictionMessage /> : null
                   }
                   useUrlShortener={useUrlShortener}
+                  product={product}
                 />
               </WrapperWithMarginTop>
               <h4>Options</h4>
@@ -385,7 +412,7 @@ export default class Example extends React.Component<{}, State> {
                 </WrapperWithMarginTop>
                 <WrapperWithMarginTop>
                   Trigger Button Style
-                  <Select
+                  <Select<TriggerButtonStyleOption>
                     value={{
                       label: triggerButtonStyle,
                       value: triggerButtonStyle,
@@ -398,7 +425,7 @@ export default class Example extends React.Component<{}, State> {
                 </WrapperWithMarginTop>
                 <WrapperWithMarginTop>
                   Trigger Button Appearance
-                  <Select
+                  <Select<TriggerButtonAppearanceOption>
                     value={{
                       label: triggerButtonAppearance,
                       value: triggerButtonAppearance,
@@ -411,7 +438,7 @@ export default class Example extends React.Component<{}, State> {
                 </WrapperWithMarginTop>
                 <WrapperWithMarginTop>
                   Trigger Button Tooltip Position
-                  <Select
+                  <Select<TriggerPositionOption>
                     value={{
                       label: triggerButtonTooltipPosition,
                       value: triggerButtonTooltipPosition,
@@ -420,6 +447,24 @@ export default class Example extends React.Component<{}, State> {
                     onChange={(option: any) =>
                       this.setState({
                         triggerButtonTooltipPosition: option.value,
+                      })
+                    }
+                  />
+                </WrapperWithMarginTop>
+                <WrapperWithMarginTop>
+                  Product
+                  <Select
+                    value={{
+                      label: product,
+                      value: product,
+                    }}
+                    options={[
+                      { label: 'confluence', value: 'confluence' },
+                      { label: 'jira', value: 'jira' },
+                    ]}
+                    onChange={(option: any) =>
+                      this.setState({
+                        product: option.value,
                       })
                     }
                   />

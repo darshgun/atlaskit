@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import {
   containerSkeletonCSS,
   productIconSkeletonCSS,
-  siteNameSkeletonCSS,
+  siteTitleSkeletonCSS,
   productLogoSkeletonCSS,
 } from './styles';
 
@@ -23,7 +23,7 @@ export const ProductHomeSkeleton = ({
         <div css={productLogoSkeletonCSS(theme)} />
         <div css={productIconSkeletonCSS(theme)} />
       </div>
-      {showSiteName && <div css={siteNameSkeletonCSS(theme)} />}
+      {showSiteName && <div css={siteTitleSkeletonCSS(theme)} />}
     </Fragment>
   );
 };

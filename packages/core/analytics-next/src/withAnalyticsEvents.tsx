@@ -33,7 +33,7 @@ const withAnalyticsEvents = (createEventMap?: CreateEventMap) => <
       >
         {({ createAnalyticsEvent, patchedEventProps }) => (
           <WrappedComponent
-            {...props as any}
+            {...(props as any)}
             {...patchedEventProps}
             createAnalyticsEvent={createAnalyticsEvent}
             ref={ref}

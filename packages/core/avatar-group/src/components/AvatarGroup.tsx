@@ -83,7 +83,7 @@ export default class AvatarGroup extends Component<Props> {
         count={total - max}
         isStack={appearance === 'stack'}
         size={size}
-        {...props as any}
+        {...(props as any)}
       />
     );
 

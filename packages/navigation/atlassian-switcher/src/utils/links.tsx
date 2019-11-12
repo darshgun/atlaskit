@@ -99,7 +99,7 @@ type AvailableProductDetails = Pick<
 >;
 
 export const AVAILABLE_PRODUCT_DATA_MAP: {
-  [productKey in WorklensProductType]: AvailableProductDetails
+  [productKey in WorklensProductType]: AvailableProductDetails;
 } = {
   [WorklensProductType.BITBUCKET]: {
     label: 'Bitbucket',

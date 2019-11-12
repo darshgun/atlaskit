@@ -156,7 +156,7 @@ const assertConfluenceNoRecentActivity = (element: JSX.Element) => {
   expect(type).toBe(FormattedHTMLMessage);
   expect(props).toMatchObject({
     id: 'global_search.no_recent_activity_body',
-    values: { url: '/wiki/dosearchsite.action' },
+    values: { url: '/wiki/search' },
   } as {});
 };
 const assertNoRecentActivityComponent = (
@@ -401,7 +401,7 @@ const getPreQueryResults = (sessionId: string, product: QuickSearchContext) =>
             query?: string;
             enableIssueKeySmartMode?: boolean;
             isJiraPeopleProfilesEnabled?: boolean;
-          }
+          },
         ]
       >;
       const wrapper = renderComponent(product);

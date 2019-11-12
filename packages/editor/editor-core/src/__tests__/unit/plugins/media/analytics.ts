@@ -82,9 +82,7 @@ describe('Media Analytics', () => {
 
     const mediaPickers = [{ picker: 'popup', inputMethod: 'cloudPicker' }];
     mediaPickers.forEach(mediaPicker => {
-      it(`should fire analytics event when inserted via ${
-        mediaPicker.picker
-      }`, () => {
+      it(`should fire analytics event when inserted via ${mediaPicker.picker}`, () => {
         insertMedia(imageFile, mediaPicker.picker);
         expect(createAnalyticsEvent).toHaveBeenCalledWith({
           action: 'inserted',

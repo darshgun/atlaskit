@@ -12,11 +12,15 @@ export default {
   'fabric.elements.share.form.comment.placeholder': 'Aggiungi un messaggio',
   'fabric.elements.share.form.user-picker.placeholder.generic':
     'Inserisci nome, gruppo, team o e-mail',
+  'fabric.elements.share.form.user-picker.placeholder.jira':
+    'Inserisci nome, team o e-mail',
   'fabric.elements.share.form.user-picker.placeholder.existingUserOnly':
     'Inserisci nome o team',
   'fabric.elements.share.form.user-picker.add-more': 'Inerisci altri elementi',
   'fabric.elements.share.form.user-picker.validation.required':
     "Seleziona almeno un utente, un gruppo, un team o un'e-mail.",
+  'fabric.elements.share.form.user-picker.validation.required.jira':
+    'Seleziona almeno un utente, un team o un’e-mail.',
   'fabric.elements.share.form.user-picker.no-options.domainBasedUserOnly':
     'Puoi invitare solo le persone con indirizzi e-mail {domains}. Contatta l’amministratore del sito per invitare altre persone.',
   'fabric.elements.share.form.user-picker.no-options.existingUserOnly':

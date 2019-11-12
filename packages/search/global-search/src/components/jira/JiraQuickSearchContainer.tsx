@@ -424,9 +424,7 @@ export class JiraQuickSearchContainer extends React.Component<
     if (this.props.features.disableJiraPreQueryPeopleSearch) {
       return Promise.resolve([]);
     } else {
-      const peoplePromise: Promise<
-        Result[]
-      > = this.props.peopleSearchClient.getRecentPeople();
+      const peoplePromise: Promise<Result[]> = this.props.peopleSearchClient.getRecentPeople();
       return handlePromiseError<Result[]>(
         peoplePromise,
         [] as Result[],

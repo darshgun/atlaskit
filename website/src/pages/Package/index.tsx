@@ -126,7 +126,7 @@ export default function LoadData({
         <FourOhFour />
       ) : (
         <Package
-          {...props as PackageData}
+          {...(props as PackageData)}
           pkgId={pkgId}
           groupId={groupId}
           urlIsExactMatch={match.isExact}

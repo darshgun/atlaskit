@@ -142,7 +142,7 @@ export default function withPseudoState<Props extends WithPseudoStateProps>(
           ref={this.setComponent}
           {...this.state}
           {...this.props}
-          {...this.state.isInteractive && {
+          {...(this.state.isInteractive && {
             onBlur: this.onBlur,
             onFocus: this.onFocus,
             onMouseLeave: this.onMouseLeave,
@@ -151,7 +151,7 @@ export default function withPseudoState<Props extends WithPseudoStateProps>(
             onMouseDown: this.onMouseDown,
             onKeyDown: this.onKeyDown,
             onKeyUp: this.onKeyUp,
-          }}
+          })}
         />
       );
     }

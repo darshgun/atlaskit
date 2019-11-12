@@ -98,7 +98,7 @@ export interface Format {
   imageEnabled?: boolean;
 }
 
-export const formatting: ((intl: InjectedIntl) => Format[]) = ({
+export const formatting: (intl: InjectedIntl) => Format[] = ({
   formatMessage,
 }) => [
   {
@@ -329,7 +329,7 @@ const shortcutNamesWithoutKeymap: string[] = [
   'quickInsert',
 ];
 
-const otherFormatting: ((intl: InjectedIntl) => Format[]) = ({
+const otherFormatting: (intl: InjectedIntl) => Format[] = ({
   formatMessage,
 }) => [
   {
@@ -368,7 +368,7 @@ const imageAutoFormat: Format = {
   ),
 };
 
-const quickInsertAutoFormat: ((intl: InjectedIntl) => Format) = ({
+const quickInsertAutoFormat: (intl: InjectedIntl) => Format = ({
   formatMessage,
 }) => ({
   name: formatMessage(messages.quickInsert),

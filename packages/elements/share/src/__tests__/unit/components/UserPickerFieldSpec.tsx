@@ -1,5 +1,5 @@
 jest.mock('../../../components/utils', () => ({
-  showInviteWarning: jest.fn(),
+  getInviteWarningType: jest.fn(),
   allowEmails: jest.fn(),
   isValidEmailUsingConfig: jest.fn(),
 }));
@@ -14,7 +14,7 @@ import {
   REQUIRED,
   UserPickerField,
 } from '../../../components/UserPickerField';
-import { allowEmails, showInviteWarning } from '../../../components/utils';
+import { allowEmails, getInviteWarningType } from '../../../components/utils';
 import { messages } from '../../../i18n';
 import { ConfigResponse } from '../../../types';
 import { renderProp } from '../_testUtils';
@@ -28,7 +28,7 @@ describe('UserPickerField', () => {
     );
 
   afterEach(() => {
-    (showInviteWarning as jest.Mock).mockClear();
+    (getInviteWarningType as jest.Mock).mockClear();
     (allowEmails as jest.Mock).mockClear();
   });
 
@@ -40,7 +40,7 @@ describe('UserPickerField', () => {
     const loadOptions = jest.fn();
     const mockIsLoading = true;
     const field = renderUserPicker(
-      { loadOptions, isLoading: mockIsLoading },
+      { loadOptions, isLoading: mockIsLoading, product: 'confluence' },
       { fieldProps, meta: { valid: true } },
     );
 
@@ -52,13 +52,7 @@ describe('UserPickerField', () => {
 
     expect(field.find(ErrorMessage).exists()).toBeFalsy();
 
-    const userPicker = renderProp(
-      formattedMessageAddMore,
-      'children',
-      'add more',
-    ).find(UserPicker);
-    expect(userPicker).toHaveLength(1);
-    expect(userPicker.props()).toMatchObject({
+    const expectProps = {
       fieldId: 'share',
       addMoreMessage: 'add more',
       onChange: fieldProps.onChange,
@@ -68,14 +62,61 @@ describe('UserPickerField', () => {
       ),
       loadOptions: expect.any(Function),
       isLoading: mockIsLoading,
-    });
+    };
+
+    const userPicker = renderProp(
+      formattedMessageAddMore,
+      'children',
+      'add more',
+    ).find(UserPicker);
+    expect(userPicker).toHaveLength(1);
+    expect(userPicker.props()).toMatchObject(expectProps);
+  });
+
+  it('should render UserPicker when product is `jira`', () => {
+    const fieldProps = {
+      onChange: jest.fn(),
+      value: [],
+    };
+    const loadOptions = jest.fn();
+    const mockIsLoading = true;
+    const field = renderUserPicker(
+      { loadOptions, isLoading: mockIsLoading, product: 'jira' },
+      { fieldProps, meta: { valid: true } },
+    );
+    expect(field.find(ErrorMessage).exists()).toBeFalsy();
+
+    const expectProps = {
+      fieldId: 'share',
+      addMoreMessage: 'add more',
+      onChange: fieldProps.onChange,
+      value: fieldProps.value,
+      placeholder: (
+        <FormattedMessage {...messages.userPickerGenericPlaceholderJira} />
+      ),
+      loadOptions: expect.any(Function),
+      isLoading: mockIsLoading,
+    };
+
+    const formattedMessageAddMore = field.find(FormattedMessage);
+    const userPicker = renderProp(
+      formattedMessageAddMore,
+      'children',
+      'add more',
+    ).find(UserPicker);
+    expect(userPicker).toHaveLength(1);
+    expect(userPicker.props()).toMatchObject(expectProps);
   });
 
   it('should set defaultValue', () => {
     const defaultValue: OptionData[] = [];
     const loadOptions = jest.fn();
     const component = shallowWithIntl(
-      <UserPickerField loadOptions={loadOptions} defaultValue={defaultValue} />,
+      <UserPickerField
+        loadOptions={loadOptions}
+        defaultValue={defaultValue}
+        product="confluence"
+      />,
     );
     expect(component.find(Field).prop('defaultValue')).toBe(defaultValue);
   });
@@ -87,7 +128,7 @@ describe('UserPickerField', () => {
       value: [],
     };
     const field = renderUserPicker(
-      { loadOptions },
+      { loadOptions, product: 'confluence' },
       { fieldProps, meta: { valid: true } },
     );
     const formattedMessageAddMore = field.find(FormattedMessage);
@@ -109,7 +150,7 @@ describe('UserPickerField', () => {
     ])('should return "%s" when called with %p', (expected, value) => {
       const loadOptions = jest.fn();
       const component = shallowWithIntl(
-        <UserPickerField loadOptions={loadOptions} />,
+        <UserPickerField loadOptions={loadOptions} product="confluence" />,
       );
       const validate = component.prop('validate');
       expect(validate(value)).toEqual(expected);
@@ -124,7 +165,7 @@ describe('UserPickerField', () => {
       };
       const loadOptions = jest.fn();
       const errorMessage = renderUserPicker(
-        { loadOptions },
+        { loadOptions, product: 'confluence' },
         {
           fieldProps,
           meta: { valid: false },
@@ -136,6 +177,29 @@ describe('UserPickerField', () => {
       const message = errorMessage.find(FormattedMessage);
       expect(message).toHaveLength(1);
       expect(message.props()).toMatchObject(messages.userPickerRequiredMessage);
+    });
+
+    it('should display required message when product is `jira`', () => {
+      const fieldProps = {
+        onChange: jest.fn(),
+        value: [],
+      };
+      const loadOptions = jest.fn();
+      const errorMessage = renderUserPicker(
+        { loadOptions, product: 'jira' },
+        {
+          fieldProps,
+          meta: { valid: false },
+          error: REQUIRED,
+        },
+      ).find(ErrorMessage);
+
+      expect(errorMessage).toHaveLength(1);
+      const message = errorMessage.find(FormattedMessage);
+      expect(message).toHaveLength(1);
+      expect(message.props()).toMatchObject(
+        messages.userPickerRequiredMessageJira,
+      );
     });
   });
 
@@ -154,6 +218,7 @@ describe('UserPickerField', () => {
         {
           loadOptions,
           config,
+          product: 'confluence',
         },
         {
           fieldProps,
@@ -183,31 +248,34 @@ describe('UserPickerField', () => {
       );
     });
 
-    it('should call showInviteWarning function', () => {
+    it('should call getInviteWarningType function', () => {
       const { fieldProps, config } = setUpInviteWarningTest();
 
-      expect(showInviteWarning).toHaveBeenCalledTimes(1);
-      expect(showInviteWarning).toHaveBeenCalledWith(config, fieldProps.value);
+      expect(getInviteWarningType).toHaveBeenCalledTimes(1);
+      expect(getInviteWarningType).toHaveBeenCalledWith(
+        config,
+        fieldProps.value,
+      );
     });
 
-    it('should not display warning message if showInviteWarning returns false', () => {
-      (showInviteWarning as jest.Mock).mockReturnValueOnce(false);
+    it('should not display warning message if getInviteWarningType returns null', () => {
+      (getInviteWarningType as jest.Mock).mockReturnValueOnce(false);
       const { component } = setUpInviteWarningTest();
 
-      expect(showInviteWarning).toHaveBeenCalledTimes(1);
+      expect(getInviteWarningType).toHaveBeenCalledTimes(1);
       expect(component.find(HelperMessage)).toHaveLength(0);
     });
 
     it('should display warning message if showInviteWarning returns true', () => {
-      (showInviteWarning as jest.Mock).mockReturnValueOnce(true);
+      (getInviteWarningType as jest.Mock).mockReturnValueOnce('ADMIN');
       const { component } = setUpInviteWarningTest();
 
-      expect(showInviteWarning).toHaveBeenCalledTimes(1);
+      expect(getInviteWarningType).toHaveBeenCalledTimes(1);
       const helperMessage = component.find(HelperMessage);
       expect(helperMessage).toHaveLength(1);
       const message = helperMessage.find(FormattedMessage);
       expect(message).toHaveLength(1);
-      expect(message.props()).toMatchObject(messages.capabilitiesInfoMessage);
+      expect(message.props()).toMatchObject(messages.infoMessagePendingInvite);
     });
   });
 });

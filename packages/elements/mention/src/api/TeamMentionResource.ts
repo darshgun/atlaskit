@@ -225,9 +225,7 @@ export default class TeamMentionResource extends MentionResource
     const { teamLinkResolver } = this.teamMentionConfig;
     const mentions: MentionDescription[] = result.map((team: Team) => {
       let teamLink: string = '';
-      const defaultTeamLink = `${window.location.origin}/people/team/${
-        team.id
-      }`;
+      const defaultTeamLink = `${window.location.origin}/people/team/${team.id}`;
       if (typeof teamLinkResolver === 'function') {
         teamLink = teamLinkResolver(team.id);
       }

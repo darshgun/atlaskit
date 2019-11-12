@@ -10,7 +10,7 @@ describe('ClearIndicator', () => {
       selectProps: {},
     });
 
-    expect(component.prop('disabled')).toBeFalsy();
+    expect(component.prop('isDisabled')).toBeFalsy();
   });
 
   it('should be disabled if disableInput select prop is passed in', () => {
@@ -18,13 +18,13 @@ describe('ClearIndicator', () => {
       selectProps: { disableInput: true },
     });
 
-    expect(component.prop('disabled')).toBeTruthy();
+    expect(component.prop('isDisabled')).toBeTruthy();
   });
 
   it('should fire event.preventDefault() only on `Enter` key pressed', () => {
     const noop = () => {};
     const mockedProps = {
-      innerRef: (ref: HTMLInputElement) => {},
+      innerRef: (ref: React.Ref<HTMLInputElement>) => {},
       getStyles: noop,
       cx: noop,
     };

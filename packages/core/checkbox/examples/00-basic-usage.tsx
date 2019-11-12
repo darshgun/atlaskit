@@ -12,9 +12,7 @@ const BasicUsageExample = class extends PureComponent<void, State> {
 
   onChange = (event: any) => {
     this.setState({
-      onChangeResult: `onChange called with value: ${
-        event.target.value
-      } isChecked: ${event.target.checked}`,
+      onChangeResult: `onChange called with value: ${event.target.value} isChecked: ${event.target.checked}`,
     });
   };
 

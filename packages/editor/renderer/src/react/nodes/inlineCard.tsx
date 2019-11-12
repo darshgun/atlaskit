@@ -16,9 +16,8 @@ interface InlineCardProps {
   portal?: HTMLElement;
 }
 
-const InlineCard: React.FunctionComponent<
-  InlineCardProps & WithSmartCardStorageProps
-> = props => {
+const InlineCard: React.FunctionComponent<InlineCardProps &
+  WithSmartCardStorageProps> = props => {
   const { url, data, eventHandlers, portal } = props;
   const handler = getEventHandler(eventHandlers, 'smartCard');
   const onClick =

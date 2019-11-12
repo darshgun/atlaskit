@@ -5,14 +5,12 @@ import { DatePicker, DateTimePicker, TimePicker } from '../src';
 interface Props {
   initialValue?: string;
   initialIsOpen?: boolean;
-  children: (
-    value: {
-      value: string;
-      onValueChange: (value: string) => void;
-      isOpen: boolean;
-      onBlur: () => void;
-    },
-  ) => React.ReactNode;
+  children: (value: {
+    value: string;
+    onValueChange: (value: string) => void;
+    isOpen: boolean;
+    onBlur: () => void;
+  }) => React.ReactNode;
 }
 
 interface State {

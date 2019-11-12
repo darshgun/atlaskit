@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
   
   Turns a URL into a card with JSON-LD metadata sourced from either:
 

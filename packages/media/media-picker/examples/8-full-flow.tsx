@@ -12,7 +12,7 @@ import {
   globalMediaEventEmitter,
 } from '@atlaskit/media-client';
 import Button from '@atlaskit/button';
-import Select from '@atlaskit/select';
+import Select, { ValueType } from '@atlaskit/select';
 import { SelectWrapper, OptionsWrapper } from '../example-helpers/styled';
 import {
   MediaPicker,
@@ -29,7 +29,12 @@ addGlobalEventEmitterListeners();
 const userMediaClientConfig = createUploadMediaClientConfig();
 const tenantMediaClientConfig = createStorybookMediaClientConfig();
 
-const dataSourceOptions = [
+interface DataSourceOption {
+  label: string;
+  value: DataSourceType;
+}
+
+const dataSourceOptions: DataSourceOption[] = [
   { label: 'List', value: 'list' },
   { label: 'Collection', value: 'collection' },
 ];
@@ -152,9 +157,11 @@ export default class Example extends React.Component<{}, State> {
     });
   };
 
-  private onDataSourceChange = (event: { value: DataSourceType }) => {
+  private onDataSourceChange = (option: ValueType<DataSourceOption>) => {
+    if (!option) return;
+
     this.setState({
-      dataSourceType: event.value,
+      dataSourceType: (option as DataSourceOption).value,
     });
   };
 

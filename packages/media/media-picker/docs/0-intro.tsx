@@ -6,7 +6,7 @@ import popup from './popup.png';
 const CreateImage = (filename: string) => <img src={filename} />;
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   # Documentation
 

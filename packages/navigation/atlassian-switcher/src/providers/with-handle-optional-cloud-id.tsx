@@ -27,7 +27,9 @@ function withHandleOptionalCloudId<P extends DataProviderProps<U>, U>(
     const { cloudId, children } = props;
 
     if (cloudId) {
-      return <ProviderComponent {...props as P}>{children}</ProviderComponent>;
+      return (
+        <ProviderComponent {...(props as P)}>{children}</ProviderComponent>
+      );
     } else {
       const resultComplete: ResultComplete<U> = {
         status: Status.COMPLETE,

@@ -8,9 +8,7 @@ import { selectByIndex } from '../commands/select-item';
 import { setCurrentIndex } from '../commands/set-current-index';
 import { TypeAheadItem } from '../types';
 
-export const TypeAheadContent: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.div`
+export const TypeAheadContent: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   background: ${colors.N0};
   border-radius: ${borderRadius()}px;
   box-shadow: 0 0 1px ${colors.N60A}, 0 4px 8px -2px ${colors.N50A};

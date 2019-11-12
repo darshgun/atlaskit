@@ -45,9 +45,7 @@ export const IconTitleWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   hyphens: auto;
 `;
 
-export const IconTitleHeadNoBreakWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.span`
+export const IconTitleHeadNoBreakWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   overflow-wrap: break-word;
   min-width: 8ch;
 `;

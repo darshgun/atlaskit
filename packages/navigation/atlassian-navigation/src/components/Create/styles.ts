@@ -33,9 +33,15 @@ export const getCreateButtonTheme = ({ mode: { create } }: NavigationTheme) => (
     buttonStyles: {
       ...buttonStyles,
       ...create.default,
+      fontWeight: 500,
       ':hover': create.hover,
       ':focus': create.focus,
-      ':active': create.active,
+      // :active doesn't work in FF, becasue we do a
+      // e.preventDefault() on mouse down in Button.
+      // '&&' is required to add more CSS specificity
+      '&&': {
+        ...(props.state === 'active' && create.active),
+      },
     },
     spinnerStyles,
   };

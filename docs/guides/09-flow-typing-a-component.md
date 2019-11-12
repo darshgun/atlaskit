@@ -2,7 +2,7 @@
 
 Related reading:
 
-* [Using Flow with React](https://flow.org/en/docs/react/)
+- [Using Flow with React](https://flow.org/en/docs/react/)
 
 The documentation linked above is an awesome resource. Really, it is worth a read.
 The sections below will highlight a few of the things we feel are important.

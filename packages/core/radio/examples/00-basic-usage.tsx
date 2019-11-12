@@ -26,9 +26,7 @@ export default class BasicExample extends PureComponent<{}, State> {
 
   onChange = (event: SyntheticEvent<HTMLInputElement>) => {
     this.setState({
-      onChangeResult: `onChange called with value: ${
-        event.currentTarget.value
-      }`,
+      onChangeResult: `onChange called with value: ${event.currentTarget.value}`,
     });
   };
 

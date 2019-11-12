@@ -3,7 +3,7 @@ import { gridSize, createTheme } from '@atlaskit/theme';
 import { ThemeProps, ThemeTokens, ThemingPublicApi } from './types';
 
 export const defaultThemingColors: ThemingPublicApi = {
-  primaryTextColor: colors.text,
+  primaryTextColor: colors.text(),
   secondaryTextColor: colors.N200,
   primaryHoverBackgroundColor: colors.N30,
   secondaryHoverBackgroundColor: colors.N20,

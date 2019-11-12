@@ -28,9 +28,7 @@ it('should render the icon', () => {
 
 it('should append the url encoded query', () => {
   const wrapper = render({ query: 'test query' });
-  expect(wrapper.prop('href')).toEqual(
-    '/wiki/dosearchsite.action?queryString=test%20query',
-  );
+  expect(wrapper.prop('href')).toEqual('/wiki/search?text=test%20query');
 });
 
 it('should call onClick', () => {

@@ -38,7 +38,7 @@ export const createProviderWithCustomFetchData = <T>(
   name: string,
   fetchData: () => Promise<T>,
 ): DataProvider<T> => {
-  const fetchMethod = withCached((param: object) => fetchData<T>());
+  const fetchMethod = withCached((param: object) => fetchData());
 
   return {
     fetchMethod,

@@ -16,9 +16,7 @@ const linkText2 = 'FAB-983';
 // Floating toolbar is not showin up on IE and edge
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
-    `hyperlink-1.ts: Link:create link using toolbar,unlinkify ${
-      editor.name
-    } editor`,
+    `hyperlink-1.ts: Link:create link using toolbar,unlinkify ${editor.name} editor`,
     {
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },

@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   \`\`\`<AtlassianSwitcher />\`\`\` is a React app that can be rendered into a container that will show users:
 

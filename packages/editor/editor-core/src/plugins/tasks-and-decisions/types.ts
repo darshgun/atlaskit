@@ -17,13 +17,11 @@ export type ContextData = {
   userContext: USER_CONTEXT;
 };
 
-export type AddItemTransactionCreator = (
-  opts: {
-    state: EditorState;
-    tr: Transaction;
-    list: NodeType;
-    item: NodeType;
-    listLocalId: string;
-    itemLocalId: string;
-  },
-) => Transaction | null;
+export type AddItemTransactionCreator = (opts: {
+  state: EditorState;
+  tr: Transaction;
+  list: NodeType;
+  item: NodeType;
+  listLocalId: string;
+  itemLocalId: string;
+}) => Transaction | null;

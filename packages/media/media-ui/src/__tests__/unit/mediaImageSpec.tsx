@@ -21,8 +21,14 @@ interface SetupParams {
 describe('MediaImage', () => {
   const originalGetBoundingClientRect = Element.prototype.getBoundingClientRect;
   const dimensionsMap = {
-    isImageMoreLandscapyThanContainer: [[2000, 1000], [500, 500]],
-    isImageMorePortraityThanContainer: [[100, 200], [500, 500]],
+    isImageMoreLandscapyThanContainer: [
+      [2000, 1000],
+      [500, 500],
+    ],
+    isImageMorePortraityThanContainer: [
+      [100, 200],
+      [500, 500],
+    ],
   };
   const defaultTransform = {
     transform: 'translate(-50%, -50%)',
