@@ -1,1 +1,0 @@
-Added onArticleRenderBegin and onArticleRenderDone props
