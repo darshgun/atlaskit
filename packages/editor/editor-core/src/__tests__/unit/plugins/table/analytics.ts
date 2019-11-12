@@ -669,10 +669,11 @@ describe('Table analytic events', () => {
   describe('row deleted', () => {
     beforeEach(() => {
       const { editorView } = editor(defaultTable);
-      deleteRowsWithAnalytics(INPUT_METHOD.CONTEXT_MENU, secondRow, true)(
-        editorView.state,
-        editorView.dispatch,
-      );
+      deleteRowsWithAnalytics(
+        INPUT_METHOD.CONTEXT_MENU,
+        secondRow,
+        true,
+      )(editorView.state, editorView.dispatch);
     });
 
     it('should fire v2 analytics', () => {

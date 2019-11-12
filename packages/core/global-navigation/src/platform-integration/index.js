@@ -1,5 +1,3 @@
 // @flow
 
-export {
-  default,
-} from './notification/components/notification-drawer-contents';
+export { default } from './notification/components/notification-drawer-contents';

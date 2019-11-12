@@ -78,10 +78,12 @@ const handleBlur = (
     case 'text': {
       if (text && url) {
         return activeLinkMark.type === 'INSERT'
-          ? insertLink(activeLinkMark.from, activeLinkMark.to, url, text)(
-              view.state,
-              view.dispatch,
-            )
+          ? insertLink(
+              activeLinkMark.from,
+              activeLinkMark.to,
+              url,
+              text,
+            )(view.state, view.dispatch)
           : setLinkText(text, (activeLinkMark as EditInsertedState).pos)(
               view.state,
               view.dispatch,
@@ -212,10 +214,11 @@ export const getToolbarConfig: FloatingToolbarHandler = (
                     providerFactory={providerFactory}
                     onSubmit={(href, text, inputMethod) => {
                       isEditLink(activeLinkMark)
-                        ? updateLink(href, text, activeLinkMark.pos)(
-                            view.state,
-                            view.dispatch,
-                          )
+                        ? updateLink(
+                            href,
+                            text,
+                            activeLinkMark.pos,
+                          )(view.state, view.dispatch)
                         : insertLinkWithAnalytics(
                             inputMethod,
                             activeLinkMark.from,

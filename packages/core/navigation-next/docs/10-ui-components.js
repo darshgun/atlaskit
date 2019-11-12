@@ -8,11 +8,11 @@ import { Contents, ContentsProvider, H, Hr } from './shared';
 export default (
   <ContentsProvider>
     {md`
-${<Contents />}
+${(<Contents />)}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>BackItem</H>}
+${(<H>BackItem</H>)}
 
 BackItem is a pre-configured version of [ConnectedItem](#connecteditem) that is used to navigate back to a parent view.
 Its text prop defaults to 'Back' and its before prop defaults to an ArrowLeftCircle icon. See [ConnectedItem](#connecteditem) for props.
@@ -26,9 +26,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>ConnectedItem</H>}
+${(<H>ConnectedItem</H>)}
 
 ConnectedItem is an Item that will render a [GoToItem](#gotoitem) if goTo prop is provided, otherwise it will render an [Item](#item).
 
@@ -39,9 +39,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>ContainerHeader</H>}
+${(<H>ContainerHeader</H>)}
 
 The ContainerHeader is intended to be used in the container navigation layer for a project, space, etc. It is essentially an Item with some custom styles applied to it and has an almost identical props interface. The only difference is that the ContainerHeader does not accept a spacing prop.
 
@@ -58,9 +58,9 @@ ${(
 
 See [Item](#item).
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>GlobalItem</H>}
+${(<H>GlobalItem</H>)}
 
 GlobalItems are rendered inside the global navigation layer.
 
@@ -80,9 +80,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>GlobalNav</H>}
+${(<H>GlobalNav</H>)}
 
 If you're building an Atlassian product you probably don't want to use this component directly. Please take a look at the [@atlaskit/global-navigation component](/packages/core/global-navigation) instead.
 
@@ -95,9 +95,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>GlobalNavigationSkeleton</H>}
+${(<H>GlobalNavigationSkeleton</H>)}
 
 Renders a skeleton view to be used with the GlobalNavigation component.
 
@@ -119,9 +119,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>GoToItem</H>}
+${(<H>GoToItem</H>)}
 
 GoToItem is a special [Item](#item) that when clicked will cause a transition to the view specified by the 'goTo' prop. You will need to ensure that both the view you're
 transitioning from and to use the same [MenuSection](#menusection) component instance with the correct 'id' and parentId' props so that the transition animation works correctly.
@@ -135,9 +135,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Group</H>}
+${(<H>Group</H>)}
 
 A useful component for rendering a group of Items with a heading and a separator. The heading and separator will only be rendered if the Group has children.
 
@@ -159,9 +159,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>GroupHeading</H>}
+${(<H>GroupHeading</H>)}
 
 The heading for a group of items.
 
@@ -172,9 +172,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>HeaderSection</H>}
+${(<H>HeaderSection</H>)}
 
 A section for the header of your nav view. Applies some minor styling to the standard section component.
 
@@ -194,9 +194,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Item</H>}
+${(<H>Item</H>)}
 
 ${(
   <Example
@@ -214,9 +214,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>ItemAvatar</H>}
+${(<H>ItemAvatar</H>)}
 
 The ItemAvatar is a useful wrapper around Atlaskit's Avatar component, which will update its background color based on the state of the Item that it's in. It's intended to be used inside the before or after props of an Item, and you need to pass through the provided item state.
 
@@ -227,9 +227,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>LayoutManager</H>}
+${(<H>LayoutManager</H>)}
 
 The LayoutManager is the entrypoint to navigation. It is in charge of laying out the global, product, and container layers of navigation, along with your page content. Read the [Getting Started guide](/packages/core/navigation-next/docs/composing-your-navigation) for for information.
 
@@ -240,9 +240,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>MenuSection</H>}
+${(<H>MenuSection</H>)}
 
 A section for the main part of your nav view that enables animation into and out of nested views. Applies some minor styling to the standard section component and allows
 scrolling of content when there are too many items to display. If using directly, take care to ensure you share the same MenuSection component across
@@ -264,9 +264,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Section</H>}
+${(<H>Section</H>)}
 
 The product or container navigation layers can be separated into Sections - a navigation is essentially a flat array of Sections. Within a Section, use Groups for further levels of division.
 
@@ -291,9 +291,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>SortableContext</H>}
+${(<H>SortableContext</H>)}
 
 Adds the ability to drag-and-drop items within a section. You must compose [SortableGroup](#sortablegroup) and [SortableItem](#sortableitem) components to achieve drag-and-drop behaviour.
 
@@ -313,9 +313,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>SortableItem</H>}
+${(<H>SortableItem</H>)}
 
 Sortable items are draggable versions of [Items](#item) and should be used within a [SortableGroup](#sortablegroup) that is inside a [SortableContext](#sortablecontext).
 Takes the same props as [Item](#item) as well as some additional props documented below.
@@ -327,9 +327,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>SortableGroup</H>}
+${(<H>SortableGroup</H>)}
 
 Sortable groups are used to represent droppable areas within [SortableContext](#sortablecontext). The items within this group must be [SortableItems](#sortableitem) to achieve drag-and-drop behaviour.
 Takes the same props as [Group](#group) as well as some additional props documented below.
@@ -341,9 +341,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>SectionHeading</H>}
+${(<H>SectionHeading</H>)}
 
 The SectionHeading is meant to be used at the top of a nested menu section. There should only be one of these used per view, as opposed to GroupHeadings.
 
@@ -354,15 +354,15 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Separator</H>}
+${(<H>Separator</H>)}
 
 Separates a group of items. This component takes no props.
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>SkeletonContainerView</H>}
+${(<H>SkeletonContainerView</H>)}
 
 Renders a skeleton view. The \`LayoutManagerWithViewController\` will automatically render a skeleton when there is no active view data to display, so you should only need to use this component directly if you're using custom view rendering logic.
 
@@ -384,9 +384,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Switcher</H>}
+${(<H>Switcher</H>)}
 
 The Switcher component should be used within container navigation for switching projects or boards.
 
@@ -414,7 +414,7 @@ ${(
   />
 )}
 
-${<H>Changing Switcher styles</H>}
+${(<H>Changing Switcher styles</H>)}
 
 The switcher component takes a styles prop which can be used to override the default styles.
 
@@ -430,9 +430,9 @@ ${(
   />
 )}
 
-${<Hr />}
+${(<Hr />)}
 
-${<H>Wordmark</H>}
+${(<H>Wordmark</H>)}
 
 Renders the provided icon or logo wordmark component with relevant padding.
 

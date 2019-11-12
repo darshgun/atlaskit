@@ -15,11 +15,9 @@ export interface Props {
   uuid: string;
 }
 
-const Container: React.ComponentClass<
-  React.HTMLAttributes<{}> & {
-    height?: string;
-  }
-> = styled.div`
+const Container: React.ComponentClass<React.HTMLAttributes<{}> & {
+  height?: string;
+}> = styled.div`
   height: ${props => (props.height ? props.height : 'auto')};
   border: 1px solid #ddd;
   margin: 16px 0;

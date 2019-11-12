@@ -53,7 +53,10 @@ test('display options with group inside Menu (when menu is Open)', () => {
   const options = [
     {
       label: 'test',
-      options: [{ value: 1, label: '1' }, { value: 2, label: '2' }],
+      options: [
+        { value: 1, label: '1' },
+        { value: 2, label: '2' },
+      ],
     },
   ];
   const atlaskitSelectWrapper = mount(
@@ -68,11 +71,17 @@ test('to only render groups with at least one match when filtering', () => {
   const options = [
     {
       label: 'group 1',
-      options: [{ value: 1, label: '1' }, { value: 2, label: '2' }],
+      options: [
+        { value: 1, label: '1' },
+        { value: 2, label: '2' },
+      ],
     },
     {
       label: 'group 2',
-      options: [{ value: 3, label: '3' }, { value: 4, label: '4' }],
+      options: [
+        { value: 3, label: '3' },
+        { value: 4, label: '4' },
+      ],
     },
   ];
   const atlaskitSelectWrapper = mount(
@@ -88,11 +97,17 @@ test('not render any groups when there is not a single match when filtering', ()
   const options = [
     {
       label: 'group 1',
-      options: [{ value: 1, label: '1' }, { value: 2, label: '2' }],
+      options: [
+        { value: 1, label: '1' },
+        { value: 2, label: '2' },
+      ],
     },
     {
       label: 'group 2',
-      options: [{ value: 3, label: '3' }, { value: 4, label: '4' }],
+      options: [
+        { value: 3, label: '3' },
+        { value: 4, label: '4' },
+      ],
     },
   ];
   const atlaskitSelectWrapper = mount(

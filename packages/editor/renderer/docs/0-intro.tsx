@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-${<AtlassianInternalWarning />}
+${(<AtlassianInternalWarning />)}
 
 This component provides a renderer for ADF documents.
 

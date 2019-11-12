@@ -9,9 +9,9 @@ export default (
   <ContentsProvider>{md`
 This guide will introduce you to many of the components exported by \`navigation-next\`, and will walk you through composing a simple navigation.
 
-${<Contents listType="ol" />}
+${(<Contents listType="ol" />)}
 
-${<H>The LayoutManager component</H>}
+${(<H>The LayoutManager component</H>)}
 
 If you've read the [Conceptual Model documentation](https://product-fabric.atlassian.net/wiki/spaces/NAV/pages/675251320/Navigation+conceptual+model+for+V2) you'll understand that the user interface of an Atlassian application is made up of a series of metaphorical 'layers'. These are, in order from lowest to highest, the global layer, the product layer, the container layer, and the page layer.
 
@@ -41,7 +41,7 @@ ${(
   />
 )}
 
-${<H>Configuring the global navigation</H>}
+${(<H>Configuring the global navigation</H>)}
 
 As we begin composing the navigation we might as well start at the bottom - the global layer. Conceptually this layer is universal across every Atlassian product. In practice there will be some product-specific items in this area, and some of the actions will be contextual, but for the most part our customers should get a very consistent experience here no matter what Atlassian product they're using. To facilitate this consistency we provide a pre-configured \`@atlaskit/global-navigation\` component which accepts a simple set of props and will compose the global navigation layer for you. You can find the full props interface in the documentation for that component, but for now let's simply render the product icon.
 
@@ -68,7 +68,7 @@ ${(
   />
 )}
 
-${<H>Composing the product navigation</H>}
+${(<H>Composing the product navigation</H>)}
 
 Let's move on to the next part of our navigation - the product area. This area will always contain the product layer. Depending on the part of the application we're in there may also be a container layer as well. The \`containerNavigation\` prop is nullable, so we'll remove it for now. We'll also create a component to render something in the product area.
 
@@ -120,7 +120,7 @@ ${(
   />
 )}
 
-${<H>Composing the container navigation</H>}
+${(<H>Composing the container navigation</H>)}
 
 The container layer can be composed using the same primitives as the product layer. Let's add a few items to it so that we can see the full navigation in action.
 
@@ -133,7 +133,7 @@ ${(
   />
 )}
 
-${<H>Managing the UI state</H>}
+${(<H>Managing the UI state</H>)}
 
 If you try you'll notice that you can expand, collapse, and resize your navigation right now, and this state will be controlled by the component. What if we want to manage or respond to this state somewhere in our application? Introducing the \`UIControllerSubscriber\`.
 
@@ -162,7 +162,7 @@ ${(
   />
 )}
 
-${<H>Theming</H>}
+${(<H>Theming</H>)}
 
 The current implementation of theming in \`@atlaskit/navigation-next\` is experimental and is likely to change soon. We'll add documentation and guides once the API has stabilised.
 `}</ContentsProvider>

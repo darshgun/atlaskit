@@ -175,29 +175,26 @@ class ToolbarBlockType extends React.PureComponent<
       intl: { formatMessage },
     } = this.props;
     const { currentBlockType, availableBlockTypes } = this.props.pluginState;
-    const items = availableBlockTypes.reduce(
-      (acc, blockType, blockTypeNo) => {
-        const isActive = currentBlockType === blockType;
-        const tagName = blockType.tagName || 'p';
-        acc.push({
-          content: (
-            <BlockTypeMenuItem tagName={tagName} selected={isActive}>
-              {createElement(tagName, {}, formatMessage(blockType.title))}
-            </BlockTypeMenuItem>
-          ),
-          value: blockType,
-          key: `${blockType.name}-${blockTypeNo}`,
-          elemAfter: (
-            <KeyboardShortcut selected={isActive}>
-              {tooltip(findKeymapByDescription(blockType.title.defaultMessage))}
-            </KeyboardShortcut>
-          ),
-          isActive,
-        });
-        return acc;
-      },
-      [] as Array<DropdownItem>,
-    );
+    const items = availableBlockTypes.reduce((acc, blockType, blockTypeNo) => {
+      const isActive = currentBlockType === blockType;
+      const tagName = blockType.tagName || 'p';
+      acc.push({
+        content: (
+          <BlockTypeMenuItem tagName={tagName} selected={isActive}>
+            {createElement(tagName, {}, formatMessage(blockType.title))}
+          </BlockTypeMenuItem>
+        ),
+        value: blockType,
+        key: `${blockType.name}-${blockTypeNo}`,
+        elemAfter: (
+          <KeyboardShortcut selected={isActive}>
+            {tooltip(findKeymapByDescription(blockType.title.defaultMessage))}
+          </KeyboardShortcut>
+        ),
+        isActive,
+      });
+      return acc;
+    }, [] as Array<DropdownItem>);
     return [{ items }];
   };
 

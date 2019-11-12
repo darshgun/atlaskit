@@ -257,9 +257,10 @@ describe('table plugin -> transforms -> delete rows', () => {
           );
           const { state, dispatch } = editorView;
           dispatch(
-            deleteRows(getSelectionRect(state.selection)!, isHeaderRowRequired)(
-              state.tr,
-            ),
+            deleteRows(
+              getSelectionRect(state.selection)!,
+              isHeaderRowRequired,
+            )(state.tr),
           );
           expect(editorView.state.doc).toEqualDocument(
             doc(

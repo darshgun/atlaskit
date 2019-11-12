@@ -376,9 +376,9 @@ const TableWithShadows = overflowShadow(TableContainer, {
   overflowSelector: `.${TableSharedCssClassName.TABLE_NODE_WRAPPER}`,
 });
 
-const TableWithWidth: React.FunctionComponent<
-  React.ComponentProps<typeof TableWithShadows>
-> = props => (
+const TableWithWidth: React.FunctionComponent<React.ComponentProps<
+  typeof TableWithShadows
+>> = props => (
   <WidthConsumer>
     {({ width }) => {
       const renderWidth =

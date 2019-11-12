@@ -21,9 +21,9 @@ describe('Renderer - ReactSerializer', () => {
   describe('serializeFragment', () => {
     it('should render document', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {});
-      const reactDoc = mount(reactSerializer.serializeFragment(
-        docFromSchema.content,
-      ) as any);
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(docFromSchema.content) as any,
+      );
 
       const root = reactDoc.find('div');
       const paragraph = root.find('p');
@@ -155,9 +155,9 @@ describe('Renderer - ReactSerializer', () => {
   describe('Heading IDs', () => {
     it('should render headings with unique ids based on node content', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {});
-      const reactDoc = shallow(reactSerializer.serializeFragment(
-        headingDocFromSchema.content,
-      ) as any);
+      const reactDoc = shallow(
+        reactSerializer.serializeFragment(headingDocFromSchema.content) as any,
+      );
 
       const headings = reactDoc.find(Heading);
       expect(headings.at(0).prop('headingId')).toEqual('Heading-1');
@@ -178,9 +178,9 @@ describe('Renderer - ReactSerializer', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {
         disableHeadingIDs: true,
       });
-      const reactDoc = shallow(reactSerializer.serializeFragment(
-        headingDocFromSchema.content,
-      ) as any);
+      const reactDoc = shallow(
+        reactSerializer.serializeFragment(headingDocFromSchema.content) as any,
+      );
 
       const headings = reactDoc.find(Heading);
       expect(headings.at(0).prop('headingId')).toEqual(undefined);
@@ -275,9 +275,9 @@ describe('Renderer - ReactSerializer', () => {
     it('should add an extra column for numbered rows', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {});
       const tableFromSchema = schema.nodeFromJSON(tableDoc);
-      const reactDoc = mount(reactSerializer.serializeFragment(
-        tableFromSchema.content,
-      ) as any);
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(tableFromSchema.content) as any,
+      );
 
       expect(reactDoc.find('table').prop('data-number-column')).toEqual(true);
       expect(reactDoc.find('table[data-number-column]').length).toEqual(1);

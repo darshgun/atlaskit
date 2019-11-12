@@ -8,9 +8,8 @@ export interface AvatarImageProps {
   isSelected: boolean;
 }
 
-const AvatarImage: ComponentClass<
-  ImgHTMLAttributes<{}> & AvatarImageProps
-> = styled.img`
+const AvatarImage: ComponentClass<ImgHTMLAttributes<{}> &
+  AvatarImageProps> = styled.img`
   border-radius: ${borderRadius()};
   cursor: pointer;
   ${({ isSelected }: AvatarImageProps) =>
@@ -21,23 +20,19 @@ const AvatarImage: ComponentClass<
       : ''};
 `;
 
-export const LargeAvatarImage: ComponentClass<
-  ImgHTMLAttributes<{}> & AvatarImageProps
-> = styled(AvatarImage)`
+export const LargeAvatarImage: ComponentClass<ImgHTMLAttributes<{}> &
+  AvatarImageProps> = styled(AvatarImage)`
   width: ${gridSize() * 9}px;
   height: ${gridSize() * 9}px;
 `;
 
-export const SmallAvatarImage: ComponentClass<
-  ImgHTMLAttributes<{}> & AvatarImageProps
-> = styled(AvatarImage)`
+export const SmallAvatarImage: ComponentClass<ImgHTMLAttributes<{}> &
+  AvatarImageProps> = styled(AvatarImage)`
   width: ${gridSize() * 5}px;
   height: ${gridSize() * 5}px;
 `;
 
-export const PredefinedAvatarViewWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const PredefinedAvatarViewWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ul {
     display: flex;
     flex-flow: row wrap;

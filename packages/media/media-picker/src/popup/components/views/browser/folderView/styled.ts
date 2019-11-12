@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import { HTMLAttributes, ComponentClass, LiHTMLAttributes } from 'react';
 import * as colors from '@atlaskit/theme/colors';
 
-export const FolderViewerWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const FolderViewerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -21,9 +19,7 @@ export const SpinnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   flex: 1;
 `;
 
-export const FolderViewerContent: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.ul`
+export const FolderViewerContent: ComponentClass<HTMLAttributes<{}>> = styled.ul`
   /* Take up all of the available space between header and footer */
   flex: 1;
 
@@ -41,9 +37,8 @@ export interface SelectableProps {
   isSelected?: boolean;
 }
 
-export const FolderViewerRow: ComponentClass<
-  LiHTMLAttributes<{}> & SelectableProps
-> = styled.li`
+export const FolderViewerRow: ComponentClass<LiHTMLAttributes<{}> &
+  SelectableProps> = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,9 +78,8 @@ export const FileIcon: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: 32px;
 `;
 
-export const FileName: ComponentClass<
-  HTMLAttributes<{}> & SelectableProps
-> = styled.div`
+export const FileName: ComponentClass<HTMLAttributes<{}> &
+  SelectableProps> = styled.div`
   padding-left: 17px;
   vertical-align: middle;
   overflow: hidden;
@@ -108,9 +102,7 @@ export const FileSize: ComponentClass<HTMLAttributes<{}>> = styled.div`
   padding: 0 0 0 10px;
 `;
 
-export const SelectedFileIconWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const SelectedFileIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   color: ${colors.B400} !important;
   right: 23px;
   top: 12px;

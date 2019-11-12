@@ -299,9 +299,16 @@ export default class Cards extends React.Component {
     if (columnCount === 1) {
       return [[0, 1, 2, 3, 4, 5]];
     } else if (columnCount === 2) {
-      return [[0, 2], [1, 3, 4, 5]];
+      return [
+        [0, 2],
+        [1, 3, 4, 5],
+      ];
     }
-    return [[0, 3], [1, 4], [2, 5]];
+    return [
+      [0, 3],
+      [1, 4],
+      [2, 5],
+    ];
   };
 
   render() {

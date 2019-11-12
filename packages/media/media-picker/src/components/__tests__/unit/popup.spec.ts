@@ -37,9 +37,9 @@ describe('MediaPickerPopup', () => {
       const expectedUploadParams: UploadParams = {
         collection: '',
       };
-      expect((mediaPicker as any)[
-        'tenantUploadParams'
-      ] as UploadParams).toEqual(expectedUploadParams);
+      expect(
+        (mediaPicker as any)['tenantUploadParams'] as UploadParams,
+      ).toEqual(expectedUploadParams);
     });
 
     it('merges uploadParams with the defaults when they are supplied', () => {
@@ -51,9 +51,9 @@ describe('MediaPickerPopup', () => {
         uploadParams: newUploadParams,
       });
 
-      expect((mediaPicker as any)[
-        'tenantUploadParams'
-      ] as UploadParams).toEqual({
+      expect(
+        (mediaPicker as any)['tenantUploadParams'] as UploadParams,
+      ).toEqual({
         collection: 'hello-world',
       });
     });

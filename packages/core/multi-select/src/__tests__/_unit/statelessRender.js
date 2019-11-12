@@ -159,15 +159,24 @@ describe(`${name} - stateless`, () => {
       const itemsIn3Groups: Array<GroupType> = [
         {
           heading: 'group 1',
-          items: [{ value: 1, content: '1' }, { value: 2, content: '2' }],
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
         },
         {
           heading: 'group 2',
-          items: [{ value: 3, content: '3' }, { value: 4, content: '4' }],
+          items: [
+            { value: 3, content: '3' },
+            { value: 4, content: '4' },
+          ],
         },
         {
           heading: 'group 3',
-          items: [{ value: 5, content: '5' }, { value: 6, content: '6' }],
+          items: [
+            { value: 5, content: '5' },
+            { value: 6, content: '6' },
+          ],
         },
       ];
 
