@@ -51,7 +51,7 @@ import {
   waitForAllPickersInitialised,
   testCollectionName,
   temporaryFileId,
-} from './_utils';
+} from '../../../../__tests__/unit/plugins/media/_utils';
 import { MediaAttributes, MediaSingleAttributes } from '@atlaskit/adf-schema';
 import { ReactWrapper } from 'enzyme';
 import { ClipboardWrapper } from '../../../../plugins/media/ui/MediaPicker/ClipboardWrapper';
@@ -129,6 +129,72 @@ describe('Media plugin', () => {
   });
 
   describe('editor', () => {
+    describe('All uploads finished', () => {
+      let mediaPluginState: MediaPluginState;
+      const foo = {
+        id: '1',
+        fileMimeType: 'image/jpeg',
+        fileName: 'foo.jpg',
+        fileSize: 100,
+        dimensions: {
+          height: 100,
+          width: 100,
+        },
+      };
+      beforeEach(() => {
+        ({ pluginState: mediaPluginState } = editor(doc(p(''))));
+      });
+
+      it('should be false when an image is inserted', function() {
+        mediaPluginState.insertFile(foo, () => {});
+
+        expect(mediaPluginState.allUploadsFinished).toBe(false);
+      });
+
+      it('should be true when an inserted file is ready', async () => {
+        mediaPluginState.insertFile(foo, listener => {
+          listener({ status: 'ready', id: 'dummy-id' });
+        });
+
+        await mediaPluginState.waitForPendingTasks();
+
+        expect(mediaPluginState.allUploadsFinished).toBe(true);
+      });
+
+      describe('update and dispatch', () => {
+        let updateAndDispatchSpy: jest.SpyInstance;
+        beforeEach(() => {
+          updateAndDispatchSpy = jest.spyOn(
+            mediaPluginState,
+            'updateAndDispatch',
+          );
+        });
+
+        afterEach(() => {
+          updateAndDispatchSpy.mockRestore();
+        });
+
+        it('should invoke it with allUploadsFinished false when an image is inserted', function() {
+          mediaPluginState.insertFile(foo, () => {});
+
+          expect(updateAndDispatchSpy).toHaveBeenCalledWith({
+            allUploadsFinished: false,
+          });
+        });
+
+        it('should invoke it with allUploadsFinished true when an inserted image is ready', async () => {
+          mediaPluginState.insertFile(foo, listener => {
+            listener({ status: 'ready', id: 'dummy-id' });
+          });
+
+          await mediaPluginState.waitForPendingTasks();
+
+          expect(updateAndDispatchSpy).toHaveBeenCalledWith({
+            allUploadsFinished: false,
+          });
+        });
+      });
+    });
     describe('when all of the files are images', () => {
       it('inserts single medias', async () => {
         const { editorView, pluginState } = editor(doc(p('')));
