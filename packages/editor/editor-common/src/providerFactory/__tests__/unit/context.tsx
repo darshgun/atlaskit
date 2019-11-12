@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { useProvider, ProviderFactoryProvider } from '../../context';
 import ProviderFactory from '../../index';
 import { create, act, ReactTestRenderer } from 'react-test-renderer';
+import { MediaProvider } from '@atlaskit/editor-common/provider-factory';
 
-function Child() {
+const Child: FunctionComponent<{
+  mediaProvider: Promise<MediaProvider> | undefined;
+}> = () => {
   return <div />;
-}
+};
+
 function TestUseProvider() {
   const mediaProvider = useProvider('mediaProvider');
   return <Child mediaProvider={mediaProvider} />;
@@ -96,7 +100,7 @@ describe('useProvider', () => {
       testRenderer = setup(providerFactory);
     });
 
-    const child = testRenderer.root.findByType(Child);
+    const child = testRenderer!.root.findByType(Child);
     expect(child.props.mediaProvider).resolves.toBe(mediaProvider);
   });
 });
