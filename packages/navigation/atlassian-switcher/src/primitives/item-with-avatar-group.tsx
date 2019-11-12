@@ -41,14 +41,18 @@ const Wrapper = styled.div`
 const noop = () => {};
 
 class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
-  onClick = () => {
+  onClick = (event: React.SyntheticEvent) => {
     const { onItemClick, onClick, href } = this.props;
     onItemClick && onItemClick();
-    onClick && onClick(href);
+
+    if (onClick) {
+      event.preventDefault();
+      onClick(href);
+    }
   };
 
   render() {
-    const { icon, description, users = [], href, ...rest } = this.props;
+    const { icon, description, users = [], onClick, ...rest } = this.props;
 
     return (
       <FadeIn>
@@ -66,7 +70,7 @@ class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
               />
             }
             onClick={this.onClick}
-            target="_new"
+            target={onClick ? '' : '_new'}
             {...rest}
           />
         </Wrapper>
