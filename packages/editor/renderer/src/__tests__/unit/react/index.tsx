@@ -9,11 +9,13 @@ import * as headingDoc from '../../__fixtures__/heading-doc.adf.json';
 import * as mediaDoc from '../../__fixtures__/media.adf.json';
 import * as mediaFragment from '../../__fixtures__/media-fragment.json';
 import * as mediaGroupFragment from '../../__fixtures__/media-group-fragment.json';
+import * as linkDoc from '../../__fixtures__/links.adf.json';
 import { nextTick } from '../../../../../../media/media-test-helpers/src';
 
 const docFromSchema = schema.nodeFromJSON(doc);
 const headingDocFromSchema = schema.nodeFromJSON(headingDoc);
 const mediaDocFromSchema = schema.nodeFromJSON(mediaDoc);
+const linksDocFromSchema = schema.nodeFromJSON(linkDoc);
 
 const getMedia = (wrapper: ReactWrapper) => {
   return wrapper.findWhere(
@@ -266,7 +268,7 @@ describe('Renderer - ReactSerializer', () => {
       });
     });
 
-    it('node has correct shouldOpenMediaViewer value when default is undefined', () => {
+    it('node has correct shouldOpenMediaViewer value when default is true', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {
         shouldOpenMediaViewer: true,
       });
@@ -304,6 +306,34 @@ describe('Renderer - ReactSerializer', () => {
           .last()
           .prop('shouldOpenMediaViewer'),
       ).toEqual(false);
+    });
+  });
+
+  describe('link mark', () => {
+    it('has correct isMediaLink value when link mark is applied on media', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {});
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(linksDocFromSchema.content) as any,
+      );
+      expect(
+        reactDoc
+          .find('Link')
+          .first()
+          .prop('isMediaLink'),
+      ).toEqual(true);
+    });
+
+    it('has correct isMediaLink value when link mark is not applied on media', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {});
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(linksDocFromSchema.content) as any,
+      );
+      expect(
+        reactDoc
+          .find('Link')
+          .last()
+          .prop('isMediaLink'),
+      ).toBeFalsy();
     });
   });
 

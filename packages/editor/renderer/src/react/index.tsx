@@ -182,7 +182,9 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
             .reduce((acc, mark) => {
               return this.renderMark(
                 markToReact(mark),
-                this.getMarkProps(mark),
+                node.type.name === 'mediaSingle'
+                  ? this.getMediaMarkProps(mark)
+                  : this.getMarkProps(mark),
                 `${mark.type.name}-${index}`,
                 acc,
               );
@@ -195,6 +197,14 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
 
     return this.renderNode(target, props, key, content);
   }
+
+  private getMediaMarkProps = (mark: Mark) =>
+    mark.type.name === 'link'
+      ? {
+          ...this.getMarkProps(mark),
+          isMediaLink: true,
+        }
+      : this.getMarkProps(mark);
 
   private serializeTextWrapper(content: Node[]) {
     return ReactSerializer.buildMarkStructure(content).map((mark, index) =>

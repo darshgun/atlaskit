@@ -7,12 +7,27 @@ import { getEventHandler } from '../../utils';
 
 export const defaultMediaLinkOpacity = '0.8';
 
+interface StyledAnchorProps {
+  isMediaLink: boolean;
+}
+
 const StyledAnchor = styled.a`
+  ${(props: StyledAnchorProps) =>
+    props.isMediaLink
+      ? `pointer-events: none;
+         cursor: default;`
+      : ''}
   color: ${colors.B400};
 
   & > .${mediaSingleClassName} {
     opacity: 1;
     transition: opacity 0.2s ease-in-out;
+    ${(props: StyledAnchorProps) =>
+      props.isMediaLink
+        ? `pointer-events: all;
+           cursor: pointer;`
+        : ''}
+
   }
 
   &:hover {
@@ -31,6 +46,7 @@ export default function Link(
     href: string;
     target?: string;
     eventHandlers?: EventHandlers;
+    isMediaLink?: boolean;
   } & React.Props<any>,
 ) {
   const { href, target, eventHandlers } = props;
@@ -55,6 +71,7 @@ export default function Link(
         }
       }}
       {...anchorProps}
+      isMediaLink={props.isMediaLink}
     >
       {props.children}
     </StyledAnchor>
