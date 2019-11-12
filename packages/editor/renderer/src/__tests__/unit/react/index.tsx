@@ -1,13 +1,12 @@
 import { mount, shallow } from 'enzyme';
 import { ReactSerializer } from '../../../index';
 import { defaultSchema as schema } from '@atlaskit/adf-schema';
-import { Heading, MediaSingle } from '../../../react/nodes';
+import { Heading } from '../../../react/nodes';
 import { Emoji } from '../../../react/nodes';
 
 import * as doc from '../../__fixtures__/hello-world.adf.json';
 import * as headingDoc from '../../__fixtures__/heading-doc.adf.json';
 import * as mediaDoc from '../../__fixtures__/media.adf.json';
-import { expectToEqual } from '../../../../../../media/media-test-helpers/src';
 
 const docFromSchema = schema.nodeFromJSON(doc);
 const headingDocFromSchema = schema.nodeFromJSON(headingDoc);
