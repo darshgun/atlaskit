@@ -3,23 +3,6 @@ import { isKeyboardEvent, isModifiedEvent } from '../../../common/utils/event';
 import { KeyboardEvent, MouseEvent } from 'react';
 
 type LinkNavigationEvent = MouseEvent | KeyboardEvent;
-// | KeyboardEvent<HTMLButtonElement>
-// | KeyboardEvent<HTMLAnchorElement>
-// | MouseEvent<HTMLButtonElement>
-// | MouseEvent<HTMLAnchorElement>;
-// | SyntheticEvent<HTMLAnchorElement, KeyboardEvent>;
-
-// type LinkPressArgs = {|
-//   target?: string,
-//   routerActions: {|
-//     push: (href: string) => void,
-//     replace: (href: string) => void,
-//   |},
-//   replace: boolean,
-//   href: string,
-//   location: Location,
-//   onClick?: (e: LinkNavigationEvent) => void,
-// |};
 
 type LinkPressArgs = {
   target?: string;

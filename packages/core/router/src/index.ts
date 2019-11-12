@@ -22,29 +22,29 @@ export {
   getRouteContext,
 } from './common/utils';
 
-// export type {
-//   Location,
-//   Route,
-//   Routes,
-//   Match,
-//   MatchedRoute,
-//   RouteResource,
-//   RouteContext,
-//   RouterStoreContext,
-//   ResourceStoreData,
-//   HistoryBlocker,
-//   Navigation,
-//   NavigationType,
-//   NavigationRenderUpdater,
-//   NavigationStatics,
-// } from './src/common/types';
+export {
+  Location,
+  Route,
+  Routes,
+  Match,
+  MatchedRoute,
+  RouteResource,
+  RouteContext,
+  RouterStoreContext,
+  ResourceStoreData,
+  HistoryBlocker,
+  Navigation,
+  NavigationType,
+  NavigationRenderUpdater,
+  NavigationStatics,
+} from './common/types';
 
-// export type {
-//   RouterActionsType,
-//   RouterActionPush,
-//   RouterActionReplace,
-//   RouterSubscriberProps,
-// } from './src/controllers/router-store/types';
+export {
+  RouterActionsType,
+  RouterActionPush,
+  RouterActionReplace,
+  RouterSubscriberProps,
+} from './controllers/router-store/types';
 
 export {
   mockRouteContextProp,

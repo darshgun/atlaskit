@@ -11,13 +11,7 @@ export type Location = {
   pathname: string;
   search: string;
   hash: string;
-  // state?: LocationStateShape;
-  // key?: string;
 };
-
-// export interface BrowserHistory<LocationState = null> extends History {
-//   location: Omit<Location<LocationShape>, 'state'>;
-// }
 
 export type BrowserHistory = Omit<
   History,

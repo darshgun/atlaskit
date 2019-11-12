@@ -24,7 +24,6 @@ const HistoryMock = {
 };
 
 describe('Router Actions Component', () => {
-  // window.location.assign = jest.fn();
   window.history.replaceState = jest.fn();
   window.history.back = jest.fn();
   window.history.forward = jest.fn();

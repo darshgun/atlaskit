@@ -175,27 +175,12 @@ type State = EntireRouterState;
 
 type Actions = AllRouterActions;
 
-// export const RouterStore = createStore<EntireRouterState, AllRouterActions>({
-//   initialState: INITIAL_STATE,
-//   actions,
-//   name: 'router',
-// });
 export const RouterStore = createStore<State, Actions>({
   initialState: INITIAL_STATE,
   actions,
   name: 'router',
 });
 
-// export const RouterContainer = createContainer<EntireRouterState, AllRouterActions, ContainerProps>(
-//   RouterStore,
-//   {
-//       displayName: 'RouterContainer',
-//       onInit: () => ({ dispatch }, props) => {
-//           dispatch(actions.bootstrapStore(props));
-//           !props.isStatic && dispatch(actions.requestRouteResources());
-//       },
-//   },
-// );
 export const RouterContainer = createContainer<State, Actions, ContainerProps>(
   RouterStore,
   {
@@ -207,22 +192,10 @@ export const RouterContainer = createContainer<State, Actions, ContainerProps>(
   },
 );
 
-// export const RouterSubscriber = createSubscriber<EntireRouterState, AllRouterActions>(RouterStore, {
-//   displayName: 'RouterSubscriber',
-// });
 export const RouterSubscriber = createSubscriber<State, Actions>(RouterStore, {
   displayName: 'RouterSubscriber',
 });
 
-// export const RouterActionsSubscriber = createSubscriber<
-//     EntireRouterState,
-//     AllRouterActions,
-//     void,
-//     {||},
-// >(RouterStore, {
-//     displayName: 'RouterActionsSubscriber',
-//     selector: null,
-// });
 export const RouterActionsSubscriber = createSubscriber<
   State,
   Actions,
@@ -233,14 +206,6 @@ export const RouterActionsSubscriber = createSubscriber<
   selector: null,
 });
 
-// export const RouteResourceEnabledSubscriber = createSubscriber<
-//     EntireRouterState,
-//     any,
-//     boolean,
-//     {||},
-// >(RouterStore, {
-//     selector: state => Boolean(state.route && state.route.resources),
-// });
 export const RouteResourceEnabledSubscriber = createSubscriber<
   State,
   Actions,
@@ -252,7 +217,6 @@ export const RouteResourceEnabledSubscriber = createSubscriber<
 export const useRouterStore = createHook<EntireRouterState, AllRouterActions>(
   RouterStore,
 );
-// export const useRouterStore = createHook(RouterStore);
 
 export const useRouterStoreStatic = createHook<
   EntireRouterState,
@@ -261,9 +225,6 @@ export const useRouterStoreStatic = createHook<
 >(RouterStore, {
   selector: null,
 });
-// export const useRouterStoreStatic = createHook(RouterStore, {
-//   selector: null,
-// });
 
 export const getRouterStore = () =>
   // @ts-ignore calling `getStore` without providing a scopeId

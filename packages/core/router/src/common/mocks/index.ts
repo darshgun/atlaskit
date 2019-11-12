@@ -1,17 +1,3 @@
-// import type {
-//   RouteContext,
-//   Location,
-//   Match,
-//   Query,
-//   HistoryAction,
-//   Route,
-//   Routes,
-//   MatchedRoute,
-//   RouteResourceResponse,
-//   RouterStoreContext,
-//   ResourceStoreContext,
-// } from '../types';
-
 export const mockLocation = {
   pathname: 'pathname',
   search: 'search',

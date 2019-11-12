@@ -1,5 +1,3 @@
-// @flow
-
 import { Location } from '../../common/types';
 
 export type RedirectProps = {

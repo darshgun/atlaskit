@@ -1,7 +1,6 @@
 import React from 'react';
 import { createMemoryHistory, createLocation } from 'history';
 
-// import { ResourceStoreData } from '../../common/types'; << TODO
 import { MemoryRouter, MemoryRouterProps } from '../memory-router';
 import { getResourceStore } from '../resource-store';
 import { getRouterStore } from '../router-store';
