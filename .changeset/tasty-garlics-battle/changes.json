@@ -1,8 +1,0 @@
-{
-  "releases": [
-    { "name": "@atlaskit/modal-dialog", "type": "minor" },
-    { "name": "@atlaskit/onboarding", "type": "patch" },
-    { "name": "@atlaskit/website", "type": "patch" }
-  ],
-  "dependents": []
-}

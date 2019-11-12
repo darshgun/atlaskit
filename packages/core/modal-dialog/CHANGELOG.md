@@ -1,5 +1,13 @@
 # @atlaskit/modal-dialog
 
+## 10.4.0
+
+### Minor Changes
+
+- [minor][1ed27f5f85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ed27f5f85):
+
+  Adds prop types for Header / Footer render props.
+
 ## 10.3.6
 
 - Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
