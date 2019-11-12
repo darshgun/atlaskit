@@ -8,7 +8,11 @@ export const SignIn = (props: SignInProps) => {
   const { tooltip, ...iconButtonProps } = props;
   return (
     <IconButton
-      icon={<SignInIcon label={tooltip} />}
+      icon={
+        <SignInIcon
+          label={typeof tooltip === 'string' ? tooltip : 'Sign-in Icon'}
+        />
+      }
       tooltip={tooltip}
       {...iconButtonProps}
     />
