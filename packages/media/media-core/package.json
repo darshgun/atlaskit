@@ -21,7 +21,6 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-client": "^4.0.0",
     "eventemitter2": "^4.1.0",
     "lru-fast": "^0.2.2",
     "tslib": "^1.9.3",

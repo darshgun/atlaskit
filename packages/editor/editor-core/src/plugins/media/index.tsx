@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { media, mediaGroup, mediaSingle } from '@atlaskit/adf-schema';
+import { MediaProvider } from '@atlaskit/editor-common';
+import {
+  media,
+  mediaGroup,
+  mediaSingle,
+  mediaWithAltText,
+} from '@atlaskit/adf-schema';
 import {
   EditorPlugin,
   EditorAppearance,
@@ -14,13 +20,15 @@ import {
   createPlugin as createMediaEditorPlugin,
   pluginKey as mediaEditorPluginKey,
 } from './pm-plugins/media-editor';
+import { createPlugin as createMediaAltTextPlugin } from './pm-plugins/alt-text';
+import keymapMediaAltTextPlugin from './pm-plugins/alt-text/keymap';
 import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import keymapPlugin from './pm-plugins/keymap';
 import linkingPlugin from './pm-plugins/linking';
 import ToolbarMedia from './ui/ToolbarMedia';
 import { ReactMediaGroupNode } from './nodeviews/mediaGroup';
 import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
-import { CustomMediaPicker, MediaProvider, MediaEditorState } from './types';
+import { CustomMediaPicker, MediaEditorState } from './types';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { floatingToolbar } from './toolbar';
 
@@ -50,6 +58,8 @@ export interface MediaOptions {
   allowResizingInTables?: boolean;
   allowAnnotation?: boolean;
   allowLinking?: boolean;
+  // This enables the option to add an alt-text attribute to images contained in the Editor.
+  UNSAFE_allowAltTextOnImages?: boolean;
 }
 
 export interface MediaSingleOptions {
@@ -75,14 +85,19 @@ const mediaPlugin = (
   name: 'media',
 
   nodes() {
+    const {
+      allowMediaGroup = true,
+      allowMediaSingle = false,
+      UNSAFE_allowAltTextOnImages = false,
+    } = options || {};
+
+    const mediaNode = UNSAFE_allowAltTextOnImages ? mediaWithAltText : media;
+
     return [
       { name: 'mediaGroup', node: mediaGroup },
       { name: 'mediaSingle', node: mediaSingle },
-      { name: 'media', node: media },
+      { name: 'media', node: mediaNode },
     ].filter(node => {
-      const { allowMediaGroup = true, allowMediaSingle = false } =
-        options || {};
-
       if (node.name === 'mediaGroup') {
         return allowMediaGroup;
       }
@@ -156,6 +171,17 @@ const mediaPlugin = (
 
     if (options && options.allowAnnotation) {
       pmPlugins.push({ name: 'mediaEditor', plugin: createMediaEditorPlugin });
+    }
+
+    if (options && options.UNSAFE_allowAltTextOnImages) {
+      pmPlugins.push({
+        name: 'mediaAltText',
+        plugin: createMediaAltTextPlugin,
+      });
+      pmPlugins.push({
+        name: 'mediaAltTextKeymap',
+        plugin: ({ schema }) => keymapMediaAltTextPlugin(schema),
+      });
     }
 
     if (options && options.allowLinking) {

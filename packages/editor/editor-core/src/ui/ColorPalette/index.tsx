@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import chromatism from 'chromatism';
 import Color from './Color';
 
 import { ColorPaletteWrapper } from './styles';
 import { PaletteColor } from './Palettes/type';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
+import * as colors from '@atlaskit/theme/colors';
 
 export interface Props {
   palette: PaletteColor[];
@@ -12,7 +14,19 @@ export interface Props {
   onClick: (value: string) => void;
   cols?: number;
   className?: string;
-  checkMarkColor?: string;
+}
+
+/**
+ * For a given color pick the color from a list of colors with
+ * the highest contrast
+ *
+ * @param color color string, suppports HEX, RGB, RGBA etc.
+ * @return Highest contrast color in pool
+ */
+export function getContrastColor(color: string, pool: string[]): string {
+  return pool.sort(
+    (a, b) => chromatism.difference(b, color) - chromatism.difference(a, color),
+  )[0];
 }
 
 class ColorPalette extends PureComponent<Props & InjectedIntlProps, any> {
@@ -23,7 +37,6 @@ class ColorPalette extends PureComponent<Props & InjectedIntlProps, any> {
       onClick,
       selectedColor,
       className,
-      checkMarkColor,
       intl: { formatMessage },
     } = this.props;
 
@@ -40,7 +53,7 @@ class ColorPalette extends PureComponent<Props & InjectedIntlProps, any> {
             label={message ? formatMessage(message) : label}
             onClick={onClick}
             isSelected={value === selectedColor}
-            checkMarkColor={checkMarkColor}
+            checkMarkColor={getContrastColor(value, [colors.N0, colors.N500])}
           />
         ))}
       </ColorPaletteWrapper>

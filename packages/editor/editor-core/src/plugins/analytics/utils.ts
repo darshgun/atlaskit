@@ -109,14 +109,19 @@ export function ruleWithAnalytics(
   };
 }
 
-export const fireAnalyticsEvent = (
-  createAnalyticsEvent?: CreateUIAnalyticsEvent,
+export type FireAnalyticsEvent = (
+  createAnalyticsEvent?: CreateUIAnalyticsEvent | undefined,
 ) => ({
   payload,
-  channel = editorAnalyticsChannel,
+  channel,
 }: {
   payload: AnalyticsEventPayload;
-  channel?: string;
+  channel?: string | undefined;
+}) => void | undefined;
+
+export const fireAnalyticsEvent: FireAnalyticsEvent = createAnalyticsEvent => ({
+  payload,
+  channel = editorAnalyticsChannel,
 }) => {
   return createAnalyticsEvent && createAnalyticsEvent(payload).fire(channel);
 };

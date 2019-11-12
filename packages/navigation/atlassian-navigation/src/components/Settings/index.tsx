@@ -9,7 +9,11 @@ export const Settings = (props: SettingsProps) => {
 
   return (
     <IconButton
-      icon={<SettingsIcon label={tooltip} />}
+      icon={
+        <SettingsIcon
+          label={typeof tooltip === 'string' ? tooltip : 'Settings Icon'}
+        />
+      }
       tooltip={tooltip}
       {...iconButtonProps}
     />

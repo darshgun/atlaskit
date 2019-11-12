@@ -75,10 +75,10 @@ export default class ExampleEditorComponent extends React.Component<
         <FullPageExample
           {...this.props}
           collabEdit={{
-            provider: createCollabEditProvider(
-              this.collabSessionId,
+            provider: createCollabEditProvider({
+              userId: this.collabSessionId,
               defaultDoc,
-            ),
+            }),
             inviteToEditComponent: InviteToEditButton,
           }}
           disabled={this.state.disabled}

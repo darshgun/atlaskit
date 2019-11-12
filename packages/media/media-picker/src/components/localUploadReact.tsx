@@ -10,9 +10,10 @@ import {
   UploadsStartEventPayload,
   UploadStatusUpdateEventPayload,
   UploadEventPayloadMap,
-} from '../domain/uploadEvent';
+  UploadParams,
+  MediaFile,
+} from '../types';
 import { UploadComponent } from './component';
-import { UploadParams } from '../domain/config';
 import { UploadServiceImpl } from '../service/uploadServiceImpl';
 import { LocalUploadConfig } from './types';
 import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
@@ -23,7 +24,6 @@ import {
   GasCorePayload,
 } from '@atlaskit/analytics-gas-types';
 import { name as packageName } from '../version.json';
-import { MediaFile } from '../domain/file';
 import { ANALYTICS_MEDIA_CHANNEL } from './media-picker-analytics-error-boundary';
 
 export type LocalUploadComponentBaseProps = {

@@ -12,6 +12,7 @@ export enum ACTION {
   VIEWED = 'viewed',
   SORT_COLUMN = 'sortedColumn',
   SORT_COLUMN_NOT_ALLOWED = 'sortColumnNotAllowed',
+  TOGGLE_EXPAND = 'toggleExpand',
 }
 
 export enum ACTION_SUBJECT {
@@ -19,6 +20,8 @@ export enum ACTION_SUBJECT {
   BUTTON = 'button',
   ANCHOR_LINK = 'anchorLink',
   TABLE = 'table',
+  EXPAND = 'expand',
+  NESTED_EXPAND = 'nestedExpand',
 }
 
 export enum ACTION_SUBJECT_ID {

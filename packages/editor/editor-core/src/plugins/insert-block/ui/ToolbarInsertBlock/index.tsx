@@ -20,6 +20,7 @@ import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import DateIcon from '@atlaskit/icon/glyph/editor/date';
 import StatusIcon from '@atlaskit/icon/glyph/status';
+import ExpandNodeIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
 import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
 import HorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
@@ -58,6 +59,7 @@ import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
 import { insertLayoutColumnsWithAnalytics } from '../../../layout/actions';
 import { insertTaskDecision } from '../../../tasks-and-decisions/commands';
+import { insertExpand } from '../../../expand/commands';
 import { Command } from '../../../../types';
 import { showLinkToolbar } from '../../../hyperlink/commands';
 import { insertMentionQuery } from '../../../mentions/commands/insert-mention-query';
@@ -139,6 +141,16 @@ export const messages = defineMessages({
     id: 'fabric.editor.table.description',
     defaultMessage: 'Insert a table',
     description: 'Inserts a table in the document',
+  },
+  expand: {
+    id: 'fabric.editor.expand',
+    defaultMessage: 'Expand',
+    description: 'Inserts an expand in the document',
+  },
+  expandDescription: {
+    id: 'fabric.editor.expand.description',
+    defaultMessage: 'Insert an expand',
+    description: 'Inserts an expand in the document',
   },
   decision: {
     id: 'fabric.editor.decision',
@@ -242,6 +254,7 @@ export interface Props {
   horizontalRuleEnabled?: boolean;
   placeholderTextEnabled?: boolean;
   layoutSectionEnabled?: boolean;
+  expandEnabled?: boolean;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -515,6 +528,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       placeholderTextEnabled,
       horizontalRuleEnabled,
       layoutSectionEnabled,
+      expandEnabled,
       intl: { formatMessage },
     } = this.props;
     let items: any[] = [];
@@ -639,6 +653,15 @@ class ToolbarInsertBlock extends React.PureComponent<
         elemBefore: <HorizontalRuleIcon label={labelHorizontalRule} />,
         elemAfter: <Shortcut>---</Shortcut>,
         shortcut: '---',
+      });
+    }
+
+    if (expandEnabled && this.props.editorView.state.schema.nodes.expand) {
+      const labelExpand = formatMessage(messages.expand);
+      items.push({
+        content: labelExpand,
+        value: { name: 'expand' },
+        elemBefore: <ExpandNodeIcon label={labelExpand} />,
       });
     }
 
@@ -815,6 +838,11 @@ class ToolbarInsertBlock extends React.PureComponent<
     },
   );
 
+  private insertExpand = (): boolean => {
+    const { state, dispatch } = this.props.editorView;
+    return insertExpand(state, dispatch);
+  };
+
   private insertBlockType = (itemName: string) =>
     withAnalytics(`atlassian.editor.format.${itemName}.button`, () => {
       const { editorView, onInsertBlockType } = this.props;
@@ -850,6 +878,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       onInsertMacroFromMacroBrowser,
       macroProvider,
       handleImageUpload,
+      expandEnabled,
     } = this.props;
 
     switch (item.value.name) {
@@ -883,6 +912,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       case 'decision':
         this.insertTaskDecision(item.value.name, inputMethod)();
         break;
+
       case 'horizontalrule':
         this.insertHorizontalRule(inputMethod);
         break;
@@ -907,6 +937,17 @@ class ToolbarInsertBlock extends React.PureComponent<
       case 'status':
         this.createStatus(inputMethod);
         break;
+
+      // https://product-fabric.atlassian.net/browse/ED-8053
+      // It's expected to fall through to default
+      // @ts-ignore
+      case 'expand':
+        if (expandEnabled) {
+          this.insertExpand();
+          break;
+        }
+
+      // eslint-disable-next-line no-fallthrough
       default:
         if (item && item.onClick) {
           item.onClick(editorActions);

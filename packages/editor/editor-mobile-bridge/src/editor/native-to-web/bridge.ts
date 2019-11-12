@@ -29,4 +29,5 @@ export default interface NativeToWebBridge {
   scrollToSelection(): void;
   undo(): void;
   redo(): void;
+  setKeyboardControlsHeight(height: string): void;
 }

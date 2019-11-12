@@ -2,6 +2,9 @@ import { browser } from '@atlaskit/editor-common';
 import { EditorView } from 'prosemirror-view';
 import { TestingEditorView } from './types/prosemirror';
 import keyCodes from './key-codes';
+import { Schema } from 'prosemirror-model';
+import { RefsNode } from './schema-builder';
+import { EditorFactory } from './selection';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.
@@ -59,3 +62,14 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
   // throw new Error(error.message || error.name);
   // }
 }
+
+export const testKeymap = (
+  editorFactory: EditorFactory,
+  before: (schema: Schema) => RefsNode,
+  after: (schema: Schema) => RefsNode,
+  keys: string[],
+) => {
+  const { editorView } = editorFactory(before);
+  keys.forEach(key => sendKeyToPm(editorView, key));
+  expect(editorView.state).toEqualDocumentAndSelection(after);
+};

@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { MediaFile } from '../../domain/file';
+import { MediaFile } from '../../types';
 
 export const FINALIZE_UPLOAD = 'FINALIZE_UPLOAD';
 

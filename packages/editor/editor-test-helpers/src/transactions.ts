@@ -57,3 +57,7 @@ export function insert(
   view.dispatch(tr);
   return offsetRefs(refs, from);
 }
+
+export function scrollIntoView(view: EditorView) {
+  view.dispatch(view.state.tr.scrollIntoView());
+}

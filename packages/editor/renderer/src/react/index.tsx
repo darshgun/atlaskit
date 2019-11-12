@@ -44,6 +44,7 @@ export interface ConstructorParams {
   allowColumnSorting?: boolean;
   fireAnalyticsEvent?: (event: AnalyticsEventPayload) => void;
   shouldOpenMediaViewer?: boolean;
+  UNSAFE_allowAltTextOnImages?: boolean;
 }
 
 type MarkWithContent = Partial<Mark<any>> & {
@@ -86,6 +87,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private allowColumnSorting?: boolean;
   private fireAnalyticsEvent?: (event: AnalyticsEventPayload) => void;
   private shouldOpenMediaViewer?: boolean;
+  private UNSAFE_allowAltTextOnImages?: boolean;
 
   constructor({
     providers,
@@ -100,6 +102,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     allowColumnSorting,
     fireAnalyticsEvent,
     shouldOpenMediaViewer,
+    UNSAFE_allowAltTextOnImages,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
@@ -113,6 +116,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.allowColumnSorting = allowColumnSorting;
     this.fireAnalyticsEvent = fireAnalyticsEvent;
     this.shouldOpenMediaViewer = shouldOpenMediaViewer;
+    this.UNSAFE_allowAltTextOnImages = UNSAFE_allowAltTextOnImages;
   }
 
   private resetState() {
@@ -269,6 +273,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return {
       ...this.getProps(node),
       shouldOpenMediaViewer: this.shouldOpenMediaViewer,
+      UNSAFE_allowAltTextOnImages: this.UNSAFE_allowAltTextOnImages,
     };
   }
 
@@ -286,6 +291,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       allowHeadingAnchorLinks: this.allowHeadingAnchorLinks,
       rendererAppearance: this.appearance,
       fireAnalyticsEvent: this.fireAnalyticsEvent,
+      nodeType: node.type.name,
       ...node.attrs,
     };
   }

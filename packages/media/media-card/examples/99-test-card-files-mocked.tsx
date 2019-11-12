@@ -41,7 +41,7 @@ const standardCards = [
   {
     title: 'Image',
     content: (
-      <div className="e2e-card-standard">
+      <div data-testid="media-card-standard">
         <Card
           identifier={successIdentifier}
           mediaClientConfig={mediaClientConfig}
@@ -55,7 +55,7 @@ const cardWithContextId = [
   {
     title: 'Image with parameter',
     content: (
-      <div className="e2e-card-with-context-id">
+      <div data-testid="media-card-with-context-id">
         <Card
           identifier={successIdentifier}
           mediaClientConfig={mediaClientConfig}

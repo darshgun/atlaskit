@@ -57,7 +57,11 @@ export const Search = (props: SearchProps) => {
       <SearchComponent onClick={iconButtonProps.onClick} text={text} />
       <IconButton
         css={searchIconCSS}
-        icon={<SearchIcon label={tooltip} />}
+        icon={
+          <SearchIcon
+            label={typeof tooltip === 'string' ? tooltip : 'Search Icon'}
+          />
+        }
         tooltip={tooltip}
         {...iconButtonProps}
       />

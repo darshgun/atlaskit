@@ -15,6 +15,9 @@ import {
   ACTION_ERROR,
   ERROR_MESSAGE_OAUTH,
   ERROR_MESSAGE_FATAL,
+  ANALYTICS_RESOLVING,
+  ANALYTICS_ERROR,
+  ANALYTICS_FALLBACK,
 } from './constants';
 import { CardAppearance } from '../../view/Card';
 import {
@@ -33,6 +36,7 @@ import {
 } from '../../utils/analytics';
 import { useSmartLinkContext } from '../context';
 import { JsonLd } from '../../client/types';
+import { FetchError } from '../../client/errors';
 
 export function useSmartCardActions(
   url: string,
@@ -72,6 +76,7 @@ export function useSmartCardActions(
       setTimeout(() => {
         if (!isCompleted) {
           dispatch(cardAction(ACTION_RESOLVING, { url: resourceUrl }));
+          dispatchAnalytics(unresolvedEvent(ANALYTICS_RESOLVING, definitionId));
         }
       }, config.maxLoadingDelay);
     }
@@ -102,7 +107,7 @@ export function useSmartCardActions(
         handleResolvedLinkError(resourceUrl, error);
       }
     } else {
-      dispatchAnalytics(resolvedEvent(definitionId));
+      dispatchAnalytics(resolvedEvent(definitionId, true));
       isCompleted = true;
     }
   }
@@ -111,29 +116,36 @@ export function useSmartCardActions(
     const nextDefinitionId = response && getDefinitionId(response);
     const nextStatus = response ? getStatus(response) : 'fatal';
 
-    // Dispatch analytics.
+    // If we require authorization & do not have an authFlow available,
+    // throw an error and render as a normal blue link.
+    if (nextStatus === 'unauthorized' && config.authFlow !== 'oauth2') {
+      handleResolvedLinkError(
+        resourceUrl,
+        new FetchError('fallback', ERROR_MESSAGE_OAUTH),
+      );
+      return;
+    }
+    // Handle any other errors
+    if (nextStatus === 'fatal') {
+      handleResolvedLinkError(
+        resourceUrl,
+        new FetchError('fallback', ERROR_MESSAGE_FATAL),
+      );
+      return;
+    }
+
+    // Dispatch Analytics and resolved card action - including unauthorized states.
+    dispatch(cardAction(ACTION_RESOLVED, { url: resourceUrl }, response));
     if (nextStatus === 'resolved') {
       dispatchAnalytics(resolvedEvent(nextDefinitionId));
     } else {
       dispatchAnalytics(unresolvedEvent(nextStatus, nextDefinitionId));
-      // If we require authorization & do not have an authFlow available,
-      // throw an error and render as a normal blue link.
-      if (nextStatus === 'unauthorized' && config.authFlow !== 'oauth2') {
-        handleResolvedLinkError(resourceUrl, ERROR_MESSAGE_OAUTH);
-        return;
-      }
-      if (nextStatus === 'fatal') {
-        handleResolvedLinkError(resourceUrl, ERROR_MESSAGE_FATAL);
-        return;
-      }
     }
-
-    dispatch(cardAction(ACTION_RESOLVED, { url: resourceUrl }, response));
   }
 
   function handleResolvedLinkError(resourceUrl: string, error: any) {
     const errorKind: string = error && error.kind;
-
+    const nextDefinitionId = details && getDefinitionId(details);
     // Handle FatalErrors (completely failed to resolve data).
     if (errorKind === 'fatal') {
       // If there's no previous data in the store for this URL, then bail
@@ -146,8 +158,10 @@ export function useSmartCardActions(
       // simply fallback to the previous data.
       if (status === 'resolved') {
         dispatch(cardAction(ACTION_RESOLVED, { url: resourceUrl }, details));
+        dispatchAnalytics(resolvedEvent(nextDefinitionId, true));
       }
-      // Handle AuthErrors (user did not have access to resource).
+      // Handle AuthErrors (user did not have access to resource) -
+      // Missing AAID in ASAP claims, or missing UserContext, or 403 from downstream
     } else if (errorKind === 'auth') {
       dispatch(
         cardAction(
@@ -164,8 +178,18 @@ export function useSmartCardActions(
           },
         ),
       );
+      dispatchAnalytics(unresolvedEvent(ANALYTICS_ERROR, nextDefinitionId));
     } else {
-      dispatch(cardAction(ACTION_ERROR, { url: resourceUrl }, error));
+      // Fallback to blue link with smart link formatting for any other errors
+      const errMessage = error && error.message;
+      dispatch(cardAction(ACTION_ERROR, { url: resourceUrl }, errMessage));
+      if (errorKind === 'fallback') {
+        dispatchAnalytics(
+          unresolvedEvent(ANALYTICS_FALLBACK, nextDefinitionId),
+        );
+      } else {
+        dispatchAnalytics(unresolvedEvent(ANALYTICS_ERROR, nextDefinitionId));
+      }
     }
   }
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
 import { EditorActions } from '../src';
+import { EditorProps } from '../src/types/editor-props';
 
 /**
  * arch next imports
@@ -49,12 +50,12 @@ export const Content: any = styled.div`
 `;
 Content.displayName = 'Content';
 
-export default function Example() {
+export default function Example(props: EditorProps) {
   return (
     <Wrapper>
       <Content>
         <EditorPresetMobile placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
-          <MobileEditor />
+          <MobileEditor {...props} />
         </EditorPresetMobile>
       </Content>
     </Wrapper>

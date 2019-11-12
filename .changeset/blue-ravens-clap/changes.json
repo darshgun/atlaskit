@@ -1,0 +1,4 @@
+{
+  "releases": [{ "name": "@atlaskit/renderer", "type": "minor" }, { "name": "@atlaskit/editor-core", "type": "minor" }, { "name": "@atlaskit/editor-common", "type": "minor" }],
+  "dependents": []
+}

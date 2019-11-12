@@ -105,7 +105,7 @@ class MediaNode extends Component<MediaNodeProps> {
       contextIdentifierProvider,
     } = this.props;
 
-    const { id, type, collection, url } = node.attrs;
+    const { id, type, collection, url, alt } = node.attrs;
 
     if (
       type !== 'external' &&
@@ -149,6 +149,7 @@ class MediaNode extends Component<MediaNodeProps> {
         useInlinePlayer={allowLazyLoading}
         isLazy={allowLazyLoading}
         contextId={contextId}
+        alt={alt}
       />
     );
   }

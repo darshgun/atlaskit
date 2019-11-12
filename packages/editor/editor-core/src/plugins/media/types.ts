@@ -1,6 +1,8 @@
 import { FileIdentifier } from '@atlaskit/media-client';
 import { MediaClientConfig } from '@atlaskit/media-core';
-import { MediaFile, UploadParams } from '@atlaskit/media-picker';
+import { UploadParams, MediaFile } from '@atlaskit/media-picker/types';
+import { EditorView } from 'prosemirror-view';
+import { NodeType } from 'prosemirror-model';
 
 export type MediaStateStatus =
   | 'unknown'
@@ -30,29 +32,6 @@ export interface MediaState {
   publicId?: string;
   contextId?: string;
 }
-
-export interface FeatureFlags {}
-
-export type MediaProvider = {
-  uploadParams?: UploadParams;
-
-  /**
-   * (optional) Used for creating new uploads and finalizing files.
-   * NOTE: We currently don't accept MediaClientConfig, because we need config properties
-   *       to initialize
-   */
-  uploadMediaClientConfig?: MediaClientConfig;
-
-  /**
-   * (optional) For any additional feature to be enabled
-   */
-  featureFlags?: FeatureFlags;
-
-  /**
-   * Used for displaying Media Cards and downloading files.
-   */
-  viewMediaClientConfig: MediaClientConfig;
-};
 
 export type Listener = (data: any) => void;
 
@@ -104,3 +83,9 @@ export type MediaEditorAction =
   | CloseMediaEditor
   | UploadAnnotation
   | SetMediaMediaClientConfig;
+
+export type MediaToolbarBaseConfig = {
+  title: string;
+  getDomRef?: (view: EditorView) => HTMLElement | undefined;
+  nodeType: NodeType | NodeType[];
+};

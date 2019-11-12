@@ -41,6 +41,8 @@ import {
   inlineCard,
   blockCard,
   status,
+  expand,
+  nestedExpand,
 } from './schema-builder';
 
 export const createText: Function = (txt: string) => (schema: Schema) =>
@@ -101,6 +103,10 @@ export const pmNodeFactory: object = {
     inlineCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
   blockCard: () =>
     blockCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
+  expand: (content: any) =>
+    expand({ title: 'Give this expand a title...' })(content),
+  nestedExpand: (content: any) =>
+    nestedExpand({ title: 'Give this expand a title...' })(content),
 };
 
 export const pmNodeBuilder: object = {

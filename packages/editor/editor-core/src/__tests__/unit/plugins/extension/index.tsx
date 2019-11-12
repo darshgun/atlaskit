@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtensionHandlers } from '@atlaskit/editor-common';
+import { ExtensionHandlers, ProviderFactory } from '@atlaskit/editor-common';
 import {
   doc,
   createEditorFactory,
@@ -38,6 +38,9 @@ describe('extension', () => {
   const createEditor = createEditorFactory();
 
   const editor = (doc: any, extensionHandlers?: ExtensionHandlers) => {
+    const providerFactory = ProviderFactory.create({
+      macroProvider: macroProviderPromise,
+    });
     return createEditor({
       doc,
       editorProps: {
@@ -47,6 +50,7 @@ describe('extension', () => {
         media: { allowMediaSingle: true },
         extensionHandlers,
       },
+      providerFactory,
     });
   };
 

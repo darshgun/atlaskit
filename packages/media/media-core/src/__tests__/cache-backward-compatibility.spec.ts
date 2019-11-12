@@ -1,16 +1,3 @@
-import {
-  ErrorFileState,
-  FilePreview,
-  FileState,
-  MediaFileArtifacts,
-  MediaRepresentations,
-  MediaType,
-  ProcessedFileState,
-  ProcessingFailedState,
-  ProcessingFileState,
-  UploadingFileState,
-} from '@atlaskit/media-client';
-
 /**
  *  This test is a safety net that should prevent us from making any forward and backward breaking
  *  changes in ANYTHING inside FileState interface. This interface is what being stored in media-core
@@ -22,9 +9,9 @@ import {
  */
 
 describe('Cached Value Backward Compatibility', () => {
-  const mediaTypes: MediaType[] = ['image', 'audio', 'doc', 'video', 'unknown'];
+  const mediaTypes = ['image', 'audio', 'doc', 'video', 'unknown'];
 
-  const filePreviews: FilePreview[] = [
+  const filePreviews = [
     {
       value: 'some-value',
     },
@@ -43,14 +30,14 @@ describe('Cached Value Backward Compatibility', () => {
     },
   ];
 
-  const representationss: MediaRepresentations[] = [
+  const representationss = [
     {},
     {
       image: { something: 'random' },
     },
   ];
 
-  const mediaFileArtifactss: MediaFileArtifacts[] = [
+  const mediaFileArtifactss: any[] = [
     {},
     {
       'video_1280.mp4': {
@@ -78,15 +65,9 @@ describe('Cached Value Backward Compatibility', () => {
     },
   ];
 
-  const verifyMediaTypeProperty = (
-    base:
-      | UploadingFileState
-      | ProcessingFileState
-      | ProcessedFileState
-      | ProcessingFailedState,
-  ) => {
+  const verifyMediaTypeProperty = (base: Object) => {
     mediaTypes.forEach(mediaType => {
-      const fileState: FileState = {
+      const fileState = {
         ...base,
         mediaType,
       };
@@ -97,11 +78,9 @@ describe('Cached Value Backward Compatibility', () => {
     });
   };
 
-  const verifyRepresentationsProperty = (
-    base: ProcessingFileState | ProcessedFileState | ProcessingFailedState,
-  ) => {
+  const verifyRepresentationsProperty = (base: Object) => {
     representationss.forEach(representations => {
-      const fileState: FileState = {
+      const fileState = {
         ...base,
         representations,
       };
@@ -112,15 +91,9 @@ describe('Cached Value Backward Compatibility', () => {
     });
   };
 
-  const verifyPreviewProperty = (
-    base:
-      | UploadingFileState
-      | ProcessingFileState
-      | ProcessedFileState
-      | ProcessingFailedState,
-  ) => {
+  const verifyPreviewProperty = (base: Object) => {
     filePreviews.forEach(preview => {
-      const fileState: FileState = {
+      const fileState = {
         ...base,
         preview,
       };
@@ -129,7 +102,7 @@ describe('Cached Value Backward Compatibility', () => {
         preview,
       });
 
-      const fileState2: FileState = {
+      const fileState2 = {
         ...base,
         preview: Promise.resolve(preview),
       };
@@ -141,11 +114,9 @@ describe('Cached Value Backward Compatibility', () => {
     });
   };
 
-  const verifyArtifactsProperty = (
-    base: ProcessingFileState | ProcessedFileState | ProcessingFailedState,
-  ) => {
+  const verifyArtifactsProperty = (base: Object) => {
     mediaFileArtifactss.forEach(artifacts => {
-      const fileState: FileState = {
+      const fileState = {
         ...base,
         artifacts,
       };
@@ -158,7 +129,7 @@ describe('Cached Value Backward Compatibility', () => {
 
   describe('with UploadingFileState', () => {
     it('should not be broken', () => {
-      const uploadingFileState: UploadingFileState = {
+      const uploadingFileState = {
         status: 'uploading',
         id: 'some-id',
         name: 'some-name',
@@ -168,7 +139,7 @@ describe('Cached Value Backward Compatibility', () => {
         mimeType: 'some-mime-type',
       };
 
-      const uploadFileStateWithOptionalFields: UploadingFileState = {
+      const uploadFileStateWithOptionalFields = {
         ...uploadingFileState,
         occurrenceKey: 'some-occurrence-key',
         preview: filePreviews[0],
@@ -181,7 +152,7 @@ describe('Cached Value Backward Compatibility', () => {
 
   describe('with ProcessingFileState', () => {
     it('should not be broken', () => {
-      const processingFileState: ProcessingFileState = {
+      const processingFileState = {
         status: 'processing',
         id: 'some-id',
         name: 'some-name',
@@ -189,7 +160,7 @@ describe('Cached Value Backward Compatibility', () => {
         mimeType: 'some-mime-type',
         mediaType: 'image',
       };
-      const processingFileStateWithOptionalFields: ProcessingFileState = {
+      const processingFileStateWithOptionalFields = {
         ...processingFileState,
         occurrenceKey: 'some-occurrence-key',
         preview: filePreviews[0],
@@ -206,7 +177,7 @@ describe('Cached Value Backward Compatibility', () => {
 
   describe('with ProcessedFileState', () => {
     it('should not be broken', () => {
-      const processedFileState: ProcessedFileState = {
+      const processedFileState = {
         status: 'processed',
         id: 'some-id',
         name: 'some-name',
@@ -215,7 +186,7 @@ describe('Cached Value Backward Compatibility', () => {
         mediaType: 'image',
         artifacts: mediaFileArtifactss[0],
       };
-      const processedFileStateWithOptionalFields: ProcessedFileState = {
+      const processedFileStateWithOptionalFields = {
         ...processedFileState,
         occurrenceKey: 'some-occurrence-key',
         preview: filePreviews[0],
@@ -231,7 +202,7 @@ describe('Cached Value Backward Compatibility', () => {
 
   describe('with ProcessingFailedState', () => {
     it('should not be broken', () => {
-      const processingFailedState: ProcessingFailedState = {
+      const processingFailedState = {
         status: 'failed-processing',
         id: 'some-id',
         name: 'some-name',
@@ -240,7 +211,7 @@ describe('Cached Value Backward Compatibility', () => {
         mediaType: 'image',
         artifacts: { someObject: true },
       };
-      const processingFailedStateWithOptionalFields: ProcessingFailedState = {
+      const processingFailedStateWithOptionalFields = {
         ...processingFailedState,
         occurrenceKey: 'some-occurrence-key',
         preview: filePreviews[0],
@@ -254,11 +225,11 @@ describe('Cached Value Backward Compatibility', () => {
 
   describe('with ErrorFileState', () => {
     it('should not be broken', () => {
-      const errorFileState: ErrorFileState = {
+      const errorFileState = {
         status: 'error',
         id: 'some-id',
       };
-      const errorFileStateStateWithOptionalFields: ErrorFileState = {
+      const errorFileStateStateWithOptionalFields = {
         ...errorFileState,
         occurrenceKey: 'some-occurrence-key',
         message: 'some-message',

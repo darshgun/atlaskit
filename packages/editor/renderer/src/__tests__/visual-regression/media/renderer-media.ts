@@ -8,7 +8,7 @@ import { Page } from 'puppeteer';
 const devices = [
   // TODO: ED-7455
   // Device.LaptopHiDPI,
-  Device.LaptopMDPI,
+  // Device.LaptopMDPI,
   Device.iPad,
   Device.iPadPro,
   Device.iPhonePlus,

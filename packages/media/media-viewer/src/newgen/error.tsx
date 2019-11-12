@@ -162,7 +162,7 @@ export class ErrorMessage extends React.Component<
     );
 
     return (
-      <ErrorMessageWrapper>
+      <ErrorMessageWrapper data-testid="media-viewer-error">
         {errorMessage}
         {this.props.children}
       </ErrorMessageWrapper>

@@ -13,10 +13,6 @@
         ]
       },
       {
-        "type": "paragraph",
-        "content": []
-      },
-      {
         "type": "codeBlock",
         "attrs": {},
         "content": [
@@ -33,10 +29,6 @@
             }
           }
         ]
-      },
-      {
-        "type": "paragraph",
-        "content": []
       },
       {
         "type": "codeBlock",

@@ -480,6 +480,10 @@ if (process.env.VISUAL_REGRESSION) {
   jasmine.getEnv().addReporter(screenshotReporter);
 
   beforeAll(async () => {
+    // Start a new collab page
+    if (global.synchronyUrl) {
+      global.collabPage = await global.browser.newPage();
+    }
     global.page = await global.browser.newPage();
     screenshotReporter.reset(global.page);
   }, jasmine.DEFAULT_TIMEOUT_INTERVAL);
@@ -487,6 +491,10 @@ if (process.env.VISUAL_REGRESSION) {
   afterAll(async () => {
     await screenshotReporter.waitForPendingScreenshots();
     await global.page.close();
+    // Close collab page
+    if (global.synchronyUrl && global.collabPage) {
+      global.collabPage = await global.collabPage.close();
+    }
     await global.browser.disconnect();
   });
 

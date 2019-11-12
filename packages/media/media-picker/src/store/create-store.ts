@@ -28,7 +28,8 @@ import { handleCloudFetchingEvent } from '../popup/middleware/handleCloudFetchin
 import searchGiphy from '../popup/middleware/searchGiphy';
 import hidePopupMiddleware from '../popup/middleware/hidePopup';
 import sendUploadEventMiddleware from '../popup/middleware/sendUploadEvent';
-import { PopupConfig, PopupUploadEventEmitter } from '../components/types';
+import { PopupUploadEventEmitter } from '../components/types';
+import { PopupConfig } from '../types';
 import analyticsProcessing from '../popup/middleware/analyticsProcessing';
 import { removeFileFromRecents } from '../popup/middleware/removeFileFromRecents';
 

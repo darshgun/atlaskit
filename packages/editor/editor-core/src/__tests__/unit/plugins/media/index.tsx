@@ -41,10 +41,8 @@ import {
   alignAttributes,
 } from '../../../../plugins/media/utils/media-single';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
-import {
-  Clipboard,
-  UploadPreviewUpdateEventPayload,
-} from '@atlaskit/media-picker';
+import { Clipboard } from '@atlaskit/media-picker';
+import { UploadPreviewUpdateEventPayload } from '@atlaskit/media-picker/types';
 import { waitUntil } from '@atlaskit/media-test-helpers';
 import {
   temporaryMedia,

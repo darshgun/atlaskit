@@ -2,8 +2,8 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 
 import { gotoCardFilesMockedPage } from '../_pages/card-files-mocked-page';
 
-const cardStandardSelector = '.e2e-card-standard';
-const cardWithContextIdSelector = '.e2e-card-with-context-id';
+const cardStandardSelector = '[data-testid="media-card-standard"]';
+const cardWithContextIdSelector = '[data-testid="media-card-with-context-id"]';
 
 BrowserTestCase('MediaCard - load image', {}, async client => {
   const page = await gotoCardFilesMockedPage(client);
