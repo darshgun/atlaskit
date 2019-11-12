@@ -8,7 +8,7 @@ In Jira we use the `StaticRouter` in SSR, and the `Router` on the client.
 // entry.js
 
 import { getTenantContext } from 'common/utils';
-import { Router, createHistory } from 'spa-router';
+import { Router, createHistory } from '@atlaskit/router';
 
 import { App } from 'spa';
 import { routes } from 'spa/routes';
@@ -36,7 +36,7 @@ export const AppRouter = () => (
 // entry-ssr.js
 
 import { getTenantContext } from 'common/utils';
-import { StaticRouter } from 'spa-router';
+import { StaticRouter } from '@atlaskit/router';
 
 import { SpaApp } from 'spa';
 import { routes } from 'spa/routes';
@@ -61,7 +61,7 @@ export const AppRouter = () => (
 ## Memory Router
 
 ```js
-import { MemoryRouter, RouteSubscriber } from 'spa-router';
+import { MemoryRouter, RouteSubscriber } from '@atlaskit/router';
 
 import { App } from 'spa';
 

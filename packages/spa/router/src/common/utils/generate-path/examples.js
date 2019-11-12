@@ -2,7 +2,7 @@
 // // /* eslint-disable */
 
 // import React from 'react';
-// import { generatePath } from '@atlassian/spa-router';
+// import { generatePath } from '@atlaskit/router';
 // import { withName } from '@atlassian/jira-common/src/util/storybook';
 
 // const Pass = () => <span style={{ color: 'green' }}>PASS</span>;

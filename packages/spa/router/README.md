@@ -18,7 +18,7 @@ A basic implementation of the router is not too far removed from other popular r
 // entry.js
 
 import { getTenantContext } from 'common/utils';
-import { Router, createHistory } from 'spa-router';
+import { Router, createHistory } from '@atlaskit/router';
 
 import { App } from 'spa';
 import { routes } from 'spa/routes';
@@ -111,7 +111,7 @@ It is worth noting that you cannot have both `getData` and `getDataLoader` on th
 Example of using `createResource` using `getData`:
 
 ```js
-import { createResource } from 'spa-router';
+import { createResource } from '@atlaskit/router';
 import { ROUTE_RESOURCE_TYPE_DIRECTORIES_PROJECTS } from 'spa/routes/resources';
 import { getProjectsDirectoryData } from 'spa-apps/projects-directory';
 
@@ -157,7 +157,7 @@ export default loadMyData;
 
 // resource.js
 
-import { createResource } from 'spa-router';
+import { createResource } from '@atlaskit/router';
 import { ROUTE_RESOURCE_TYPE_DIRECTORIES_PROJECTS } from 'spa/routes/resources';
 import { getProjectsDirectoryData } from 'spa-apps/projects-directory';
 
@@ -183,7 +183,7 @@ export const projectsDirectoryResource = createResource({
 // entry.js
 
 import { getTenantContext } from 'common/utils';
-import { Router, createHistory } from 'spa-router';
+import { Router, createHistory } from '@atlaskit/router';
 
 import { App } from 'spa';
 import { routes } from 'spa/routes';
@@ -214,7 +214,7 @@ Both components provde both `routerState` for reading the current router state, 
 for modifying router state.
 
 ```js
-import type { Query, Route, Match, HistoryAction } from 'spa-router';
+import type { Query, Route, Match, HistoryAction } from '@atlaskit/router';
 
 type RouterState = {
   location: Location,
@@ -236,7 +236,7 @@ type RouterActions = {|
 ## RouterSubscriber component
 
 ```js
-import { RouterSubscriber } from 'spa-router';
+import { RouterSubscriber } from '@atlaskit/router';
 
 import { MyComponent } from 'my-component';
 
@@ -252,7 +252,7 @@ export const MyRouteComponent = () => (
 ## useRouter hook
 
 ```js
-import { useRouter, RouterSubscriber, withRouter } from 'spa-router';
+import { useRouter, RouterSubscriber, withRouter } from '@atlaskit/router';
 
 export const MyRouteComponent = () => {
   const [routerState, routerActions] = useRouter();
@@ -278,7 +278,7 @@ its children.
 | history  | BrowserHistory |
 
 ```js
-import { withRouter } from 'spa-router';
+import { withRouter } from '@atlaskit/router';
 
 export const WithRouterHocExample = withRouter(MyComponent);
 
@@ -308,8 +308,8 @@ type RouterActionsType = {
 Router actions can be accessed through a hook.
 
 ```js
-import { useRouter, RouterActions, withRouter } from 'spa-router';
-import { Href } from 'spa-router';
+import { useRouter, RouterActions, withRouter } from '@atlaskit/router';
+import { Href } from '@atlaskit/router';
 import { MyComponent } from 'my-component';
 
 export const HooksExample = () => {
@@ -340,7 +340,7 @@ export const RenderPropsExample = () => (
 ## Link
 
 ```js
-import { Link } from 'spa-router';
+import { Link } from '@atlaskit/router';
 
 export const LinkExample = ({ href = '/' }) => {
   const handleClick = () => console.log('click');
@@ -356,7 +356,7 @@ export const LinkExample = ({ href = '/' }) => {
 ## Redirect
 
 ```js
-import { Redirect, useResource } from 'spa-router';
+import { Redirect, useResource } from '@atlaskit/router';
 import { userResource } from 'spa/routes/resources';
 import { Profile } from 'spa/user';
 

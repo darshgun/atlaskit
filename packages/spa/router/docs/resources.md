@@ -40,7 +40,7 @@ type RouteResource = {|
 Resources should be created using the `createResource` function.
 
 ```js
-import { createResource } from 'spa-router';
+import { createResource } from '@atlaskit/router';
 import { ROUTE_RESOURCE_TYPE_DIRECTORIES_PROJECTS } from 'spa/routes/resources';
 import { getProjectsDirectoryData } from 'spa-apps/projects-directory';
 
@@ -71,7 +71,7 @@ export const projectsDirectoryResource = createResource({
 It is worth noting that how you handle errors in `getData` can have a subtle effects.
 
 ```js
-import { createResourceError } from 'spa-router';
+import { createResourceError } from '@atlaskit/router';
 
 // Example of a getData function that is used to retrieve admin info
 const getData = async (routerContext, resourceContext) => {
@@ -116,7 +116,7 @@ const getData = async (routerContext, resourceContext) => {
 You can also pass an optional second argument to `createResourceError`
 
 ```js
-import { createResourceError } from 'spa-router';
+import { createResourceError } from '@atlaskit/router';
 
 // Example of a getData function that is used to retrieve admin info
 const getData = async (routerContext, resourceContext) => {
@@ -198,7 +198,7 @@ configuration.
 ### Using hooks
 
 ```js
-import { useResource } from 'spa-router';
+import { useResource } from '@atlaskit/router';
 import { projectsDirectoryResource } from 'spa/routes/resources';
 import { ProjectsDirectoryView } from 'spa-apps/projects-directory';
 import { useTenantContext } from 'spa/common/hooks';
@@ -219,7 +219,7 @@ export const UseResourceExample = () => {
 ### Using the ResourceSubscriber
 
 ```js
-import { ResourceSubscriber } from 'spa-router';
+import { ResourceSubscriber } from '@atlaskit/router';
 import { projectsDirectoryResource } from 'spa/routes/resources';
 import { ProjectsDirectoryView } from 'spa-apps/projects-directory';
 import { useTenantContext } from 'spa/common/hooks';
@@ -251,7 +251,7 @@ Example using hooks
 
 ```js
 import { useCallback } from 'react';
-import { useResource } from 'spa-router';
+import { useResource } from '@atlaskit/router';
 import { projectsDirectoryResource } from 'spa/routes/resources';
 import { ProjectsDirectoryView } from 'spa-apps/projects-directory';
 import { useTenantContext } from 'spa/common/hooks';
@@ -289,7 +289,7 @@ export const UpdateResourceExample = () => {
 Examples using `ResourceSubscriber`
 
 ```js
-import { ResourceSubscriber } from 'spa-router';
+import { ResourceSubscriber } from '@atlaskit/router';
 import { projectsDirectoryResource } from 'spa/routes/resources';
 import { ProjectsDirectoryView } from 'spa-apps/projects-directory';
 import { useTenantContext } from 'spa/common/hooks';
@@ -336,7 +336,7 @@ Example using hooks
 
 ```js
 import { useCallback } from 'react';
-import { useResource } from 'spa-router';
+import { useResource } from '@atlaskit/router';
 import { projectsDirectoryResource } from 'spa/routes/resources';
 import { ProjectsDirectoryView } from 'spa-apps/projects-directory';
 import { useTenantContext } from 'spa/common/hooks';
@@ -359,7 +359,7 @@ export const RefreshResourceExample = () => {
 Example using the ResourceSubscriber
 
 ```js
-import { ResourceSubscriber } from 'spa-router';
+import { ResourceSubscriber } from '@atlaskit/router';
 import { projectsDirectoryResource } from 'spa/routes/resources';
 import { ProjectsDirectoryView } from 'spa-apps/projects-directory';
 import { useTenantContext } from 'spa/common/hooks';
