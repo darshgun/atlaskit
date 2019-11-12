@@ -35,5 +35,6 @@
     "atlaskit",
     "react",
     "router"
-  ]
+  ],
+  "private": true
 }
