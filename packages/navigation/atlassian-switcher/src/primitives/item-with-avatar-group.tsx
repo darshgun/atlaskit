@@ -23,6 +23,7 @@ export interface ItemWithAvatarGroupProps extends WithAnalyticsEventsProps {
   onItemClick?: Function;
   users?: JoinableSiteUserAvatarPropTypes[];
   target?: string;
+  rel?: string;
 }
 
 const Wrapper = styled.div`

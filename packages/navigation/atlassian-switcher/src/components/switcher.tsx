@@ -396,7 +396,8 @@ export default class Switcher extends React.Component<SwitcherProps> {
                         onJoinableSiteClicked(href);
                       }
                     }}
-                    target={onJoinableSiteClicked ? undefined : '_new'}
+                    target={onJoinableSiteClicked ? undefined : '_blank'}
+                    rel={onJoinableSiteClicked ? undefined : 'noreferrer'}
                   >
                     {label}
                   </ItemWithAvatarGroup>
