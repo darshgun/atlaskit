@@ -1,34 +1,34 @@
 import {
-  doc,
-  createEditorFactory,
-  p,
   a,
   blockquote,
-  table,
-  inlineCard,
-  th,
-  tr,
-  td,
-  ul,
-  panel,
   bodiedExtension,
+  cleanOne,
+  createAnalyticsEventMock,
+  createEditorFactory,
+  decisionItem,
+  decisionList,
+  defaultSchema,
+  doc,
+  inlineCard,
+  insertText,
+  li,
+  p,
+  panel,
+  table,
   taskItem,
   taskList,
-  decisionList,
-  decisionItem,
-  li,
-  insertText,
-  createAnalyticsEventMock,
-  defaultSchema,
+  td,
   text,
-  cleanOne,
+  th,
+  tr,
+  ul,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import { Fragment, Slice, Node } from 'prosemirror-model';
+import { Fragment, Node, Slice } from 'prosemirror-model';
 
 import { pluginKey } from '../../main';
-import { CardProvider, CardPluginState } from '../../../types';
-import { setProvider, queueCards } from '../../actions';
+import { CardPluginState, CardProvider } from '../../../types';
+import { queueCards, setProvider } from '../../actions';
 
 import { setTextSelection } from '../../../../../utils';
 import { insertCard, queueCardsFromChangedTr, shouldReplace } from '../../doc';
@@ -36,8 +36,8 @@ import { INPUT_METHOD } from '../../../../analytics';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   createCardRequest,
-  setupProvider,
   ProviderWrapper,
+  setupProvider,
 } from '../../../../../__tests__/unit/plugins/card/_helpers';
 
 const inlineCardAdf = {

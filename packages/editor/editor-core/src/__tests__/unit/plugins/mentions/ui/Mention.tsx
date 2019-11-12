@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { ResourcedMention } from '@atlaskit/mention/element';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import Mention from '../../../../../plugins/mentions/ui/Mention';
+import { MentionProvider } from '@atlaskit/mention/types';
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
 // eslint-disable-next-line no-console
@@ -28,7 +29,7 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
   });
 
   it('should not render ResourcedMentionWithProfilecard if profilecardProvider is not set', () => {
-    const mentionProvider = Promise.resolve({});
+    const mentionProvider = Promise.resolve({} as MentionProvider);
     const providerFactory = ProviderFactory.create({ mentionProvider });
 
     const mention = mount(
@@ -43,7 +44,7 @@ describe('@atlaskit/editor-core/ui/Mention', () => {
   });
 
   it('should pass provider into resourced mention', () => {
-    const mentionProvider = Promise.resolve({});
+    const mentionProvider = Promise.resolve({} as MentionProvider);
     const providerFactory = ProviderFactory.create({ mentionProvider });
 
     const mention = mount(
