@@ -96,8 +96,7 @@ describe('request', () => {
       });
       const response = await request(url);
       expect(response.status).toBe(200);
-      // @ts-ignore: Property '_bodyText' does not exist on type 'Response'.
-      expect(response._bodyText).toBe(
+      expect(await response.text()).toBe(
         '{"status":300,"__redirectUrl":"http://other-url"}',
       );
       expect(fetchMock.calls().length).toEqual(1); // meaning it didn't retry because it shouldn't retry on 3xx
@@ -133,20 +132,20 @@ describe('request', () => {
     it('should retry on >= http 500', async () => {
       let requestCount = 0;
       fetchMock
-        .get(
+        .mock(
           // the type here should be fetchMock.MockRequest but the authors of this library forgot to export it
           () => !!++requestCount && requestCount < 3,
           {
             status: 500,
           },
-          { name: 'fails' },
+          { method: 'GET', name: 'fails' },
         )
-        .get(
+        .mock(
           () => requestCount === 3,
           {
             status: 200,
           },
-          { name: 'succeeds' },
+          { method: 'GET', name: 'succeeds' },
         );
 
       const response = await request(url, {
@@ -163,20 +162,20 @@ describe('request', () => {
       let error;
 
       fetchMock
-        .get(
+        .mock(
           // the type here should be fetchMock.MockRequest but the authors of this library forgot to export it
           () => !!++requestCount && requestCount < 3,
           {
             status: 500,
           },
-          { name: 'fails' },
+          { method: 'GET', name: 'fails' },
         )
-        .get(
+        .mock(
           () => requestCount === 3,
           {
             status: 400,
           },
-          { name: 'succeeds' },
+          { method: 'GET', name: 'succeeds' },
         );
 
       try {

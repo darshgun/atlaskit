@@ -476,6 +476,11 @@ describe('MediaStore', () => {
     });
 
     describe('getImage', () => {
+      const lastOptionsHeaders = () => {
+        const lastOptions = fetchMock.lastOptions();
+        return (lastOptions && lastOptions.headers) || {};
+      };
+
       it('should return file image preview', async () => {
         fetchMock.mock(`begin:${baseUrl}/file`, {
           body: {
@@ -569,7 +574,7 @@ describe('MediaStore', () => {
 
         await mediaStore.getImage('123');
 
-        expect(fetchMock.lastOptions()!.headers).toHaveProperty(
+        expect(lastOptionsHeaders()).toHaveProperty(
           'accept',
           'image/webp,image/*,*/*;q=0.8',
         );
@@ -586,7 +591,7 @@ describe('MediaStore', () => {
 
         await mediaStore.getImage('123');
 
-        expect(fetchMock.lastOptions()!.headers).not.toHaveProperty('accept');
+        expect(lastOptionsHeaders()).not.toHaveProperty('accept');
       });
     });
 
