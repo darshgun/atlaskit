@@ -1,26 +1,32 @@
 import { ImageMetadata } from '@atlaskit/media-client';
+import { ServiceName } from '../../../domain';
 export interface RemoteUploadStartPayload {
   uploadId: string;
+  serviceName: ServiceName;
 }
 
 export interface RemoteUploadProgressPayload {
   uploadId: string;
   bytes: number;
   fileSize: number;
+  serviceName: ServiceName;
 }
 
 export interface RemoteUploadEndPayload {
   fileId: string;
   uploadId: string;
+  serviceName: ServiceName;
 }
 
 export interface RemoteUploadFailPayload {
   uploadId: string;
   description: string;
+  serviceName: ServiceName;
 }
 
 export interface NotifyMetadataPayload {
   uploadId: string;
+  serviceName: ServiceName;
   metadata: ImageMetadata;
 }
 

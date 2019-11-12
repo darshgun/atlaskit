@@ -9,6 +9,7 @@ import {
   isRemoteUploadErrorData,
   isNotifyMetadata,
 } from '../wsMessageData';
+import { ServiceName } from '../../../domain';
 
 export type DispatchUploadEvent<T extends keyof WsUploadEvents> = (
   event: T,
@@ -20,6 +21,7 @@ export class RemoteUploadActivity implements WsActivity {
 
   constructor(
     private readonly uploadId: string,
+    private readonly serviceName: ServiceName,
     private readonly dispatchEvent: DispatchUploadEvent<keyof WsUploadEvents>,
   ) {}
 
@@ -31,6 +33,7 @@ export class RemoteUploadActivity implements WsActivity {
     if (isRemoteUploadStartData(data)) {
       this.dispatchEvent('RemoteUploadStart', {
         uploadId: data.uploadId,
+        serviceName: this.serviceName,
       });
       this.notifyActivityStarted();
     } else if (isRemoteUploadProgressData(data)) {
@@ -38,11 +41,13 @@ export class RemoteUploadActivity implements WsActivity {
         uploadId: data.uploadId,
         bytes: data.currentAmount,
         fileSize: data.totalAmount,
+        serviceName: this.serviceName,
       });
     } else if (isRemoteUploadEndData(data)) {
       this.dispatchEvent('RemoteUploadEnd', {
         fileId: data.fileId,
         uploadId: data.uploadId,
+        serviceName: this.serviceName,
       });
       this.notifyActivityCompleted();
     } else if (isRemoteUploadErrorData(data)) {
@@ -51,12 +56,14 @@ export class RemoteUploadActivity implements WsActivity {
         // Will be removed after backend unifies response schema
         uploadId: (data.data && data.data.uploadId) || data.uploadId,
         description: (data.data && data.data.reason) || data.reason,
+        serviceName: this.serviceName,
       });
       this.notifyActivityCompleted();
     } else if (isNotifyMetadata(data)) {
       this.dispatchEvent('NotifyMetadata', {
         uploadId: data.uploadId,
         metadata: data.metadata,
+        serviceName: this.serviceName,
       });
     }
   }
@@ -66,6 +73,7 @@ export class RemoteUploadActivity implements WsActivity {
       this.dispatchEvent('RemoteUploadFail', {
         uploadId: this.uploadId,
         description: 'Websocket connection lost',
+        serviceName: this.serviceName,
       });
     }
   }

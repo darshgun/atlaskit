@@ -39,6 +39,8 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
+            sourceType: 'cloud',
+            serviceName: payload.serviceName,
           },
           eventType: OPERATIONAL_EVENT_TYPE,
         },
@@ -50,6 +52,8 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
+            sourceType: 'cloud',
+            serviceName: payload.serviceName,
             status: 'success',
             uploadDurationMsec,
           } as SuccessPayload,
@@ -63,6 +67,8 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
+            sourceType: 'cloud',
+            serviceName: payload.serviceName,
             status: 'fail',
             uploadDurationMsec,
             failReason: (payload as RemoteUploadFailPayload).description,

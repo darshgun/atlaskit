@@ -52,11 +52,14 @@ const attributes = {
 const makePayloadForOperationalFileUpload = (
   file: MediaFile,
   uploadType: UploadType,
+  serviceName: ServiceName,
 ): TestPayload => ({
   action: 'commenced',
   actionSubject: 'mediaUpload',
   actionSubjectId: uploadType,
   attributes: {
+    sourceType: 'cloud',
+    serviceName,
     fileAttributes: {
       fileId: file.id,
       fileSize: file.size,
@@ -72,12 +75,15 @@ const makePayloadForTrackFileConversion = (
   file: MediaFile,
   uploadType: UploadType,
   status: 'success' | 'fail',
+  serviceName: ServiceName,
   failReason?: string,
 ): TestPayload => ({
   action: 'uploaded',
   actionSubject: 'mediaUpload',
   actionSubjectId: uploadType,
   attributes: {
+    sourceType: 'cloud',
+    serviceName,
     fileAttributes: {
       fileId: file.id,
       fileSize: file.size,
@@ -416,8 +422,9 @@ describe('analyticsProcessing middleware', () => {
     verifyAnalyticsCall(
       handleCloudFetchingEvent(testFile1, 'RemoteUploadStart', {
         uploadId: 'upid1',
+        serviceName: DROPBOX,
       }),
-      makePayloadForOperationalFileUpload(testFile1, 'cloudMedia'),
+      makePayloadForOperationalFileUpload(testFile1, 'cloudMedia', DROPBOX),
     );
   });
 
@@ -426,8 +433,14 @@ describe('analyticsProcessing middleware', () => {
       handleCloudFetchingEvent(testFile1, 'RemoteUploadEnd', {
         fileId: 'id1',
         uploadId: 'upid1',
+        serviceName: DROPBOX,
       }),
-      makePayloadForTrackFileConversion(testFile1, 'cloudMedia', 'success'),
+      makePayloadForTrackFileConversion(
+        testFile1,
+        'cloudMedia',
+        'success',
+        DROPBOX,
+      ),
       {
         remoteUploads: {
           upid1: {
@@ -443,11 +456,13 @@ describe('analyticsProcessing middleware', () => {
       handleCloudFetchingEvent(testFile1, 'RemoteUploadFail', {
         description: 'id1 failed',
         uploadId: 'upid1',
+        serviceName: DROPBOX,
       }),
       makePayloadForTrackFileConversion(
         testFile1,
         'cloudMedia',
         'fail',
+        DROPBOX,
         'id1 failed',
       ),
       {
