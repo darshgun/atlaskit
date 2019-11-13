@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 0.7.0
+
+### Minor Changes
+
+- [minor][87d67944cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d67944cc):
+
+  Added onArticleRenderBegin and onArticleRenderDone props
+
 ## 0.6.3
 
 ### Patch Changes
