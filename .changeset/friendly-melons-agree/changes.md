@@ -1,0 +1,1 @@
+Style ItemSkeletons and ItemHeadings. Add the ability to add icon or avatar and configure skeleton width.
