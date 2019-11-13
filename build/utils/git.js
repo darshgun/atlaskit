@@ -2,7 +2,7 @@
 // $FlowFixMe - There is a type issue with projector spawn.
 const spawn = require('projector-spawn');
 const path = require('path');
-
+// TODO: Ask Ben C what we can remove.
 const parseChangesetCommit = require('@atlaskit/build-releases/changeset/parseChangesetCommit');
 
 async function getCommitsSince(ref /*: string */) {

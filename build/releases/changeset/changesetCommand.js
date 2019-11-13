@@ -17,6 +17,8 @@ const resolveUserConfig = require('../utils/resolveConfig');
 const getChangesetBase = require('../utils/getChangesetBase');
 const { printIntroBanner, printConfirmationMessage } = require('./messages');
 
+// TODO: Ask Ben C what we can remove.
+
 async function run(opts /*: Object */) {
   printIntroBanner();
   const userConfig = await resolveUserConfig({ cwd: opts.cwd });
