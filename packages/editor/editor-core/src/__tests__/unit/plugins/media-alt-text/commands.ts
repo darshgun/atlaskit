@@ -1,4 +1,3 @@
-import { EditorView } from 'prosemirror-view';
 import {
   createEditorFactory,
   doc,
