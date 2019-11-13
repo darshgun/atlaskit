@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.6.4
+
+### Patch Changes
+
+- [patch][1ef7f6bba9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ef7f6bba9):
+
+  Fixed nav height
+
 ## 0.6.3
 
 ### Patch Changes
