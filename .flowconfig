@@ -80,6 +80,9 @@ suppress_comment=\\(.\\|\n\\)*\\$StringLitteral
 # Show warnings when running flow as we run flow with --max-warnings=0 to fail in CI
 include_warnings=true
 
+# See https://github.com/facebook/flow/issues/7132 for why we are doing this
+sharedmemory.hash_table_pow=21
+
 [lints]
 # Disable standard linting rules so we can fail on warnings caused by 'Unused suppression' only
 # 'Unused suppression' lints cannot be specifically elevated to errors - https://github.com/facebook/flow/issues/6891
