@@ -1,15 +1,16 @@
+// @flow
 /* This helper creates the folder per entry point and add a package.json that maps the path to the entry point .*/
 const path = require('path');
 const fs = require('fs');
-const promisify = require('util').promisify;
+const { promisify } = require('util');
 const bolt = require('bolt');
 const { getPackagesInfo } = require('@atlaskit/build-utils/tools');
 
 const writeFile = promisify(fs.writeFile);
 
 async function writeEntryPointsPathInPkgJson(
-  isTs,
-  pkg,
+  isTs /*: boolean */,
+  pkg /*: Object */,
   pkgFile,
   entryPointDirName,
 ) {
@@ -30,10 +31,10 @@ async function writeEntryPointsPathInPkgJson(
   );
 }
 
-async function createEntryPointsDirWithPkgJson(opts = {}) {
+async function createEntryPointsDirWithPkgJson(opts /*: Object */ = {}) {
   const { cwd = process.cwd(), packageName, errorOnExistingDirs = true } = opts;
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
-  const packages = await getPackagesInfo(cwd);
+  const packages = await getPackagesInfo(cwd, opts);
   const pkgContents = packages
     .filter(
       pkg =>
@@ -57,7 +58,7 @@ async function createEntryPointsDirWithPkgJson(opts = {}) {
       };
     });
   const existingDirs = [];
-  for (let pkg of pkgContents) {
+  for (const pkg of pkgContents) {
     for (let pkgFile of pkg.files) {
       const isTs = pkgFile.includes('.ts');
       pkgFile = path.parse(pkgFile).name;

@@ -1,3 +1,4 @@
+// @flow
 const outdent = require('outdent');
 const parseChangesetCommit = require('../../../changeset/parseChangesetCommit');
 

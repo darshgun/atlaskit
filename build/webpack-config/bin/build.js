@@ -1,14 +1,9 @@
 #!/usr/bin/env node
 
 // @flow
-
-const minimatch = require('minimatch');
-
-const bolt = require('bolt');
 const webpack = require('webpack');
 const createConfig = require('../config');
 const { print, buildBanner } = require('../banner');
-const utils = require('../config/utils');
 
 async function runBuild() {
   const mode = 'production';
@@ -41,7 +36,8 @@ async function runBuild() {
       }
 
       const statsString = stats.toString('minimal');
-      if (statsString) console.log(statsString + '\n');
+      if (statsString) console.log(`${statsString}\n`);
+      // eslint-disable-next-line prefer-promise-reject-errors
       if (stats.hasErrors()) reject(2);
 
       resolve();

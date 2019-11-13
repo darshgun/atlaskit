@@ -35,7 +35,7 @@ const prepareData = pathToFolder => {
     if (files.length === 0 || !files) {
       return;
     }
-    let properties = [];
+    const properties = [];
     for (const file of files) {
       try {
         const content = JSON.parse(
@@ -50,6 +50,7 @@ const prepareData = pathToFolder => {
     // We flatten the data to one dimension array of bundle size object data per package.
     // See measure tool for the output or the bundle size doc on the website:
     // https://atlaskit.atlassian.com/docs/guides/bundle-size#what-is-the-most-important-information-in-a-bundle-size-measurement.
+    // eslint-disable-next-line consistent-return
     return properties.reduce((acc, val) => acc.concat(val), []);
   } catch (err) {
     console.log(`${err}`);
@@ -65,7 +66,7 @@ const prepareData = pathToFolder => {
     ),
   });
   sendToRedash(bundleSizeDataEvents)
-    .then(res => {
+    .then(() => {
       console.log(`Sent bundle size data to Redash`);
     })
     .catch(err => {

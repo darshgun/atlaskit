@@ -1,4 +1,6 @@
-export const mockConsole = console => {
+// @flow
+export const mockConsole = (console /*: any*/) => {
+  // eslint-disable-next-line no-undef
   jest.spyOn(console, 'error').mockImplementation(() => {});
 
   return () => {

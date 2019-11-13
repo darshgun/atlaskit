@@ -1,4 +1,4 @@
-const fs = require('fs');
+// @flow
 const path = require('path');
 const readline = require('readline');
 
@@ -10,34 +10,35 @@ const pWaitFor = require('p-wait-for');
 
 const config = require('../config');
 
-const baseUrl = config.baseUrl;
+const { baseUrl } = config;
 let defaultPauseReason = 'Pausing deployments - Landkid release is progress';
 const args = process.argv.slice(2);
 
 if (args.length === 1) {
+  // eslint-disable-next-line prefer-destructuring
   defaultPauseReason = args[0];
 }
 function buildDockerImage(tag) {
   const cmd = 'docker';
-  const args = [
+  const argsBuild = [
     'build',
     '-t',
     `docker.atl-paas.net/atlaskit/atlaskid:${tag}`,
     '.',
   ];
-  return execa(cmd, args, { stdio: 'inherit' });
+  return execa(cmd, argsBuild, { stdio: 'inherit' });
 }
 
 function pushDockerImage(tag) {
   const cmd = 'docker';
-  const args = ['push', `docker.atl-paas.net/atlaskit/atlaskid:${tag}`];
-  return execa(cmd, args, { stdio: 'inherit' });
+  const argsPush = ['push', `docker.atl-paas.net/atlaskit/atlaskid:${tag}`];
+  return execa(cmd, argsPush, { stdio: 'inherit' });
 }
 
 function deployToMicros() {
   const cmd = 'micros';
-  const args = ['service:deploy', 'atlaskit-atlaskid', '-e', 'stg-west'];
-  return execa(cmd, args, { stdio: 'inherit' });
+  const argsDeploy = ['service:deploy', 'atlaskit-atlaskid', '-e', 'stg-west'];
+  return execa(cmd, argsDeploy, { stdio: 'inherit' });
 }
 
 function promptConfirm(prompt = 'Confirm?: ') {
@@ -46,6 +47,7 @@ function promptConfirm(prompt = 'Confirm?: ') {
     output: process.stdout,
   });
 
+  // eslint-disable-next-line no-unused-vars
   return new Promise((resolve, reject) => {
     rl.question(prompt, answer => {
       const confirmed = answer === '' || answer === 'y' || answer === 'yes';
@@ -62,8 +64,9 @@ async function pauseBuildsIfRequired() {
   }
 
   const cmd = 'yarn';
-  const args = ['pause', '--', `${defaultPauseReason}`];
-  return execa(cmd, args, { stdio: 'inherit' });
+  const argsPause = ['pause', '--', `${defaultPauseReason}`];
+  // eslint-disable-next-line consistent-return
+  return execa(cmd, argsPause, { stdio: 'inherit' });
 }
 
 async function waitUntilNothingRunning() {
@@ -116,7 +119,6 @@ async function run() {
   await deployToMicros();
 
   console.log(chalk.green('Done'));
-  return;
 }
 
 (async () => {

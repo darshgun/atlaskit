@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+// @flow
 const changesetCommand = require('../changeset/changesetCommand');
 const versionCommand = require('../version/versionCommand');
 const publishCommand = require('../publish/publishCommand');
@@ -23,13 +23,20 @@ const getFlagValue = flagName => {
     f.toLowerCase().match(`${flagName}=?`.toLowerCase()),
   );
   if (!flag) return flag;
+  // eslint-disable-next-line no-unused-vars
   const [_, value] = flag.split('=');
   if (!value || value === 'true') return true;
   if (value === 'false') return false;
   throw new Error(`unknown option for ${flagName}: ${value}`);
 };
 
-let opts = { cwd: process.cwd() };
+const opts = {
+  cwd: process.cwd(),
+  commit: undefined,
+  noChangelog: undefined,
+  skipCI: undefined,
+  public: undefined,
+};
 
 switch (command) {
   case 'initialize':

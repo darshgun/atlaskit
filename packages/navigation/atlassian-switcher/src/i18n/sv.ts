@@ -14,9 +14,8 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Hantera lista',
   'fabric.atlassianSwitcher.jiraProject': 'Jira-projekt',
   'fabric.atlassianSwitcher.confluenceSpace': 'Confluence-utrymme',
-  'fabric.atlassianSwitcher.people': 'Personer',
   'fabric.atlassianSwitcher.administration': 'Administration',
-  'fabric.atlassianSwitcher.discoverMore': 'Upptäck mer',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
   'fabric.atlassianSwitcher.browseApps': 'Sök app på Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Något gick fel',
   'fabric.atlassianSwitcher.errorText':
@@ -29,4 +28,13 @@ export default {
     'Du har loggats ut. Logga in igen.',
   'fabric.atlassianSwitcher.login': 'Logga in',
   'fabric.atlassianSwitcher.show.more.sites': 'Visa fler webbplatser',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

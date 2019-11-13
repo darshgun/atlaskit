@@ -1,5 +1,4 @@
 // @flow
-const fetch = require('node-fetch');
 const get = require('lodash.get');
 const sendLogs = require('@atlaskit/analytics-reporting');
 /**
@@ -56,7 +55,9 @@ module.exports = {
     if (!properties.length) {
       return;
     }
+    // eslint-disable-next-line consistent-return
     return sendLogs(
+      // $FlowFixMe - return error
       JSON.stringify({
         events: properties.map(property =>
           buildEventPayload(
@@ -65,7 +66,7 @@ module.exports = {
           ),
         ),
       }),
-    ).then(res => {
+    ).then(() => {
       console.log(
         `Sent ${properties.length} inconsistent integration tests event${
           properties.length > 1 ? 's' : ''
@@ -78,7 +79,9 @@ module.exports = {
     if (!properties.length) {
       return;
     }
+    // eslint-disable-next-line consistent-return
     return sendLogs(
+      // $FlowFixMe - return error
       JSON.stringify({
         events: properties.map(property =>
           buildEventPayload(property, eventName),
@@ -94,6 +97,7 @@ module.exports = {
   },
   reportLongRunningTests(results /*: any */, threshold /*: number */) {
     return sendLogs(
+      // $FlowFixMe - return error
       JSON.stringify({
         events: results.map(result => {
           return {
@@ -110,7 +114,7 @@ module.exports = {
           };
         }),
       }),
-    ).then(res => {
+    ).then(() => {
       console.log(
         `Sent ${results.length} integration long running tests event${
           results.length > 1 ? 's' : ''

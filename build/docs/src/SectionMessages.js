@@ -1,5 +1,5 @@
 // @flow
-import React, { type ComponentType } from 'react';
+import React from 'react';
 import SectionMessage from '@atlaskit/section-message';
 
 class AtlassianInternalWarning extends React.Component<{}, {}> {

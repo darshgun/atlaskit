@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 
 /*::
 import type { Directory, File } from './types';
@@ -14,18 +14,22 @@ function file(id /*: string */, path /*: string */, rootDir /*: string */) {
   return { type: 'file', id, path, uid: nodePath.relative(rootDir, path) };
 }
 
-function findInDir(dir /*: Directory */, id /*: string */) {
-  return dir.children.find(c => c.id === id);
+function findInDir(directory /*: Directory */, id /*: string */) {
+  return directory.children.find(c => c.id === id);
 }
 
-function isDirHasFiles(dir /*: Directory */) /*: boolean */ {
-  return dir.children.some(child => child.type === 'file');
+function isDirHasFiles(directory /*: Directory */) /*: boolean */ {
+  return directory.children.some(child => child.type === 'file');
 }
 
-function appendToDir(dir /*: Directory */, child /*: Directory | File */) {
-  if (findInDir(dir, child.id)) return dir;
-  dir.children = [].concat(dir.children, child);
-  return dir;
+function appendToDir(
+  directory /*: Directory */,
+  child /*: Directory | File */,
+) {
+  if (findInDir(directory, child.id)) return directory;
+  // eslint-disable-next-line no-param-reassign
+  directory.children = [].concat(directory.children, child);
+  return directory;
 }
 
 function buildFs(

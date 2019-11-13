@@ -1,3 +1,4 @@
+// @flow
 const outdent = require('outdent');
 const generateMarkdownTemplate = require('../../../changelog/template');
 const { versionOptions } = require('../../../initialize/initial/config');

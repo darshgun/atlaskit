@@ -1,7 +1,5 @@
 // @flow
 const bolt = require('bolt');
-const fs = require('fs');
-const path = require('path');
 const { getWorkspacesSync } = require('./../../getWorkspacesSync');
 
 describe('getWorkspacesSync >', () => {

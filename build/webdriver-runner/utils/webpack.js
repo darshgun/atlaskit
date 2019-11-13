@@ -1,5 +1,4 @@
 // @flow
-'use strict';
 /*
  * util module to build webpack-dev-server for running integration test.
  * const CHANGED_PACKAGES accepts environment variable which is used to
@@ -9,7 +8,9 @@
 // Start of the hack for the issue with the webpack watcher that leads to it dying in attempt of watching files
 // in node_modules folder which contains circular symbolic links
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
+
 const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
+// eslint-disable-next-line func-names
 DirectoryWatcher.prototype.createNestedWatcher = function(
   dirPath /*: string */,
 ) {
@@ -31,7 +32,6 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
 const flattenDeep = require('lodash.flattendeep');
 const bolt = require('bolt');
 const boltQuery = require('bolt-query');
-const glob = require('glob');
 const path = require('path');
 const minimatch = require('minimatch');
 const webpack = require('webpack');
@@ -42,17 +42,12 @@ const chalk = require('chalk');
 const fs = require('fs');
 
 const createConfig = require('@atlaskit/webpack-config');
-const {
-  print,
-  devServerBanner,
-  errorMsg,
-} = require('@atlaskit/webpack-config/banner');
 const utils = require('@atlaskit/webpack-config/config/utils');
 
 const HOST = '0.0.0.0';
 const PORT = 9000;
 const WEBPACK_BUILD_TIMEOUT = 10000;
-const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
+const { CHANGED_PACKAGES } = process.env;
 
 let server;
 let config;
@@ -233,10 +228,12 @@ async function startDevServer() {
       }, WEBPACK_BUILD_TIMEOUT);
     });
 
+    // eslint-disable-next-line consistent-return
     server.listen(PORT, HOST, err => {
       if (err) {
         spinner.fail();
         console.log(chalk.red(err.stack || err));
+        // eslint-disable-next-line prefer-promise-reject-errors
         return reject(1);
       }
       server.use(

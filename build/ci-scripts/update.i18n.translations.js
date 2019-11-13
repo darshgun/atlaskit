@@ -1,5 +1,7 @@
+// @flow
 const fetch = require('node-fetch');
 const path = require('path');
+// $FlowFixMe - There is a type issue with projector spawn.
 const spawn = require('projector-spawn');
 const changeset = require('../utils/changeset');
 const git = require('../utils/git');
@@ -67,6 +69,7 @@ const pull = async ({ packagePath, maintainers, targetBranch = 'master' }) => {
   try {
     // Add content and create pull request
     await changeset.createChangeset(
+      // $FlowFixMe - type issue
       [{ name: `@atlaskit/${packageName}`, type: 'patch' }],
       message,
     );
@@ -119,8 +122,9 @@ async function createPullRequest(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization:
-          'Basic ' + Buffer.from(APP_USER + ':' + APP_KEY).toString('base64'),
+        Authorization: `Basic ${Buffer.from(`${APP_USER}:${APP_KEY}`).toString(
+          'base64',
+        )}`,
       },
       body: JSON.stringify(data),
     },
@@ -134,8 +138,8 @@ async function createPullRequest(
 
 (async () => {
   const operation = {
-    push: push,
-    pull: pull,
+    push,
+    pull,
   }[process.argv[2]];
 
   if (!operation) {

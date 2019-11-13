@@ -1,6 +1,4 @@
 //@flow
-'use strict';
-
 const devices = require('puppeteer/DeviceDescriptors');
 
 /*
@@ -9,7 +7,7 @@ const devices = require('puppeteer/DeviceDescriptors');
 
 // Connect to Chrome Dev Tools
 async function getDevToolsClient(page /*:any*/) {
-  return await page.target().createCDPSession();
+  return page.target().createCDPSession();
 }
 
 /**
@@ -38,7 +36,7 @@ async function setNetworkConnection(
     'Network.emulateNetworkConditions',
     preset || {
       // Whether network connectivity is offline
-      offline: offline,
+      offline,
       // Download speed in bytes per second
       downloadThroughput: (downloadKbps * 1024) / 8,
       // Upload speed in bytes per second

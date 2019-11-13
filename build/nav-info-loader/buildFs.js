@@ -1,4 +1,6 @@
-/* @flow */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-shadow */
+// @flow
 
 /*::
 import type { Directory, File } from './types';

@@ -2,6 +2,7 @@
 
 const karma = require('projector-karma');
 const spawn = require('spawndamnit');
+// $FlowFixMe - Karma confing is currently on .flowignore
 const { getKarmaConfig } = require('./build/karma-config');
 
 const log = (type /*: string */ = 'log') => (

@@ -26,9 +26,10 @@ exports.fn = function replaceIDs(
   placeholderStr: string,
 }*/,
 ) {
-  const placeholderStr = opts.placeholderStr;
+  const { placeholderStr } = opts;
 
   if (item.isElem('linearGradient') && item.hasAttr('id')) {
+    // eslint-disable-next-line no-param-reassign
     item.attrs.id.value += `-${placeholderStr}`;
   } else if (item.hasAttr('fill')) {
     const fillAttr = item.attr('fill');
@@ -37,6 +38,7 @@ exports.fn = function replaceIDs(
       `url(#$2-${placeholderStr})`,
     );
 
+    // eslint-disable-next-line no-param-reassign
     item.attrs.fill.value = replacedFillValue;
   }
 

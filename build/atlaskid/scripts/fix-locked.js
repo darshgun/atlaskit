@@ -1,8 +1,9 @@
+// @flow
 const axios = require('axios');
 
 const config = require('../config');
 
-const baseUrl = config.baseUrl;
+const { baseUrl } = config;
 
 (async () => {
   console.log('Unlocking...');
@@ -16,6 +17,8 @@ const baseUrl = config.baseUrl;
   console.log('Success!');
 
   console.log('Calling next()...');
+  // TODO: Ask Luke why are we calling response2
+  // eslint-disable-next-line no-unused-vars
   const response2 = await axios.post(`${baseUrl}/api/next`);
   console.log('Success!');
 

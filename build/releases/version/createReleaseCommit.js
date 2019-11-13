@@ -1,3 +1,4 @@
+// @flow
 const outdent = require('outdent');
 
 /** Publish commit message format
@@ -25,7 +26,7 @@ const outdent = require('outdent');
 
 // This data is not depended upon by the publish step, but can be useful for other tools/debugging
 // I believe it would be safe to deprecate this format
-function createReleaseCommit(releaseObj, skipCi) {
+function createReleaseCommit(releaseObj /*: Object */, skipCi? /*: Object */) {
   const numPackagesReleased = releaseObj.releases.length;
 
   const cleanReleaseObj = {};

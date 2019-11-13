@@ -1,4 +1,5 @@
-function parseChangesetCommit(commitMsg) {
+// @flow
+function parseChangesetCommit(commitMsg /*: string */) {
   const lines = commitMsg.split('\n');
   let curLine;
   let jsonStr = '';
