@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.7.1
+
+### Patch Changes
+
+- [patch][b284a6babd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b284a6babd):
+
+  Pull fresh translations
+
 ## 4.7.0
 
 ### Minor Changes
