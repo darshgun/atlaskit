@@ -1,10 +1,10 @@
-const fs = require('fs');
+// @flow
 const path = require('path');
 const npmRun = require('npm-run');
 
-const BITBUCKET_COMMIT = process.env.BITBUCKET_COMMIT;
-const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
-const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
+const { BITBUCKET_COMMIT } = process.env;
+const { AWS_ACCESS_KEY } = process.env;
+const { AWS_SECRET_KEY } = process.env;
 const BUCKET_NAME = 'atlaskit-artefacts';
 const BUCKET_REGION = 'ap-southeast-2';
 
@@ -21,7 +21,7 @@ if (process.argv.length !== 3) {
   process.exit(1);
 }
 
-const commitHash = BITBUCKET_COMMIT.substring(0, 12);
+const commitHash = BITBUCKET_COMMIT ? BITBUCKET_COMMIT.substring(0, 12) : '';
 const filePath = process.argv[2];
 const remotePathToFile = `s3://${BUCKET_NAME}/${commitHash}/${filePath}`;
 const localFileName = path.basename(filePath);

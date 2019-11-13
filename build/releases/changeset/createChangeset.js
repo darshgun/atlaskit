@@ -94,18 +94,19 @@ async function createChangeset(
 
     releases.push({ name: pkg, type });
   }
-
+  // $FlowFixMe - fix logger
   logger.log(
     'Please enter a summary for this change (this will be in the changelogs)',
   );
 
   let summary = await cli.askQuestion('Summary');
   while (summary.length === 0) {
+    // $FlowFixMe - fix logger
     logger.error('A summary is required for the changelog! 😪');
     summary = await cli.askQuestion('Summary');
   }
 
-  let pkgsToSearch = [...releases];
+  const pkgsToSearch = [...releases];
   const dependents = [];
 
   while (pkgsToSearch.length > 0) {
@@ -170,6 +171,7 @@ async function createChangeset(
   // do it until now because we didn't have the entire list of packages being released yet
   dependents.forEach(dependent => {
     const dependentPkgJSON = getPackageJSON(dependent.name);
+    // eslint-disable-next-line no-param-reassign
     dependent.dependencies = [...dependents, ...releases]
       .map(pkg => pkg.name)
       .filter(
@@ -210,7 +212,9 @@ async function getPackagesToRelease(changedPackages, allPackages) {
 
   if (packagesToRelease.length === 0) {
     do {
+      // $FlowFixMe - fix logger
       logger.error('You must select at least one package to release');
+      // $FlowFixMe - fix logger
       logger.error('(You most likely hit enter instead of space!)');
 
       packagesToRelease = await askInitialReleaseQuestion(defaultInquirerList);
@@ -238,6 +242,7 @@ function getDependencyVersionRange(dependentPkgJSON, dependencyName) {
   };
   for (const type of DEPENDENCY_TYPES) {
     const deps = dependentPkgJSON[type];
+    // eslint-disable-next-line no-continue
     if (!deps) continue;
     if (deps[dependencyName]) {
       dependencyVersionRange.depTypes.push(type);

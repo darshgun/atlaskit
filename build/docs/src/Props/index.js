@@ -1,10 +1,13 @@
+/* eslint-disable react/prop-types */
+// @flow
 import React from 'react';
 import PrettyProps from 'pretty-proptypes';
 import Button from '@atlaskit/button';
-import components from './components';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
+import components from './components';
 
+// $FlowFixMe - Button issue
 components.Button = ({ isCollapsed, ...rest }) => {
   return (
     <Button
@@ -20,6 +23,8 @@ components.Button = ({ isCollapsed, ...rest }) => {
   );
 };
 
-const Props = props => <PrettyProps components={components} {...props} />;
+const Props = (props /*: Object */) => (
+  <PrettyProps components={components} {...props} />
+);
 
 export default Props;

@@ -1,5 +1,5 @@
 //@flow
-'use strict';
+
 /*
  * Utilities helper to get workspaces sync.
  */
@@ -20,7 +20,7 @@ function getWorkspacesSync() {
     expandDirectories: false,
   });
 
-  let pkgJsonsMissingNameField /*: Array<string>*/ = [];
+  const pkgJsonsMissingNameField /*: Array<string>*/ = [];
 
   const results = folders
     .sort()

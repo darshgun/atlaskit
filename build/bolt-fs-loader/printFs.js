@@ -1,4 +1,4 @@
-/* @flow */
+// @flow
 
 /*::
 import type { Directory, File } from './types';

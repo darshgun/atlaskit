@@ -1,6 +1,8 @@
+// @flow
 const fetch = require('node-fetch');
 
-module.exports = function(body) {
+// eslint-disable-next-line func-names
+module.exports = function(body /*: Object */) {
   return fetch('https://analytics.atlassian.com/analytics/events', {
     method: 'POST',
     headers: {

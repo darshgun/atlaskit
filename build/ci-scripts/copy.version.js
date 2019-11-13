@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+// @flow
 /**
  * Copy package.json version information to a specific location in dist
  */
@@ -31,8 +32,11 @@ async function copyVersionJson(pkg, project) {
     );
   }
 }
-
-async function main(pkgName, { cwd } = {}) {
+// TODO: Fix with MB
+async function main(
+  pkgName /*: string */,
+  { cwd } /*: { cwd: string } */ = {},
+) {
   const project = await bolt.getProject({ cwd });
   // We always use `onlyFs` to restrict execution to the packages dir regardless of whether packageName is present
   const filterOpts = { only: pkgName || undefined, onlyFs: 'packages/*/*' };
@@ -42,6 +46,7 @@ async function main(pkgName, { cwd } = {}) {
 }
 
 if (require.main === module) {
+  // $FlowFixMe - pkgName can be undefined but ? is not eslint
   main().catch(e => {
     console.error(e);
     process.exit(1);

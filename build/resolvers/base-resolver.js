@@ -1,3 +1,4 @@
+// @flow
 /**
  * Base resolver, used by tool-specific resolvers.
  * This is used to make sure that packages resolve using the same algorithm as our webpack config
@@ -38,7 +39,10 @@ const wpResolver = enhancedResolve.ResolverFactory.createResolver({
  * @param {string} modulePath - The module path to be resolved
  * @param {Opts} opts - Resolver options
  */
-module.exports = function resolver(modulePath, opts) {
+module.exports = function resolver(
+  modulePath /*: string */,
+  opts /*: Object */,
+) {
   // If resolving relative paths, make sure we use resolveFrom and not resolve
   if (modulePath.startsWith('.') || modulePath.startsWith(path.sep)) {
     try {

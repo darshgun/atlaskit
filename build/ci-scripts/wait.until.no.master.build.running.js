@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @flow
 const axios = require('axios');
 const pWaitFor = require('p-wait-for');
 /*
@@ -12,7 +13,6 @@ const BUILDS_PER_PAGE = 30;
 const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER || 'atlassian';
 const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG || 'atlaskit-mk-2';
 const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines/`;
-const INTERVAL = 15000;
 
 const axiosRequestConfig = {
   params: {

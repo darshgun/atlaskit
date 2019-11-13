@@ -1,3 +1,4 @@
+// @flow
 module.exports = {
   // fallback value for stats options when an option is not defined (has precedence over local webpack defaults)
   all: undefined,

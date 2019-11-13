@@ -1,5 +1,5 @@
+/* eslint-disable global-require */
 // @flow
-'use strict';
 
 const path = require('path');
 const isReachable = require('is-reachable');
@@ -203,7 +203,7 @@ async function main() {
     await webpack.startDevServer();
   }
 
-  let client = initClient();
+  const client = initClient();
 
   client
     .startServer()

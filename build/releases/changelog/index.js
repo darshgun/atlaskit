@@ -1,15 +1,19 @@
-const generateMarkdownTemplate = require('./template');
+// @flow
 const fs = require('fs');
 const bolt = require('bolt');
 const path = require('path');
 const util = require('util');
 const logger = require('@atlaskit/build-utils/logger');
+const generateMarkdownTemplate = require('./template');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
 }
 
-async function updateChangelog(releaseObject, opts) {
+async function updateChangelog(
+  releaseObject /*: Object */,
+  opts /*: Object */,
+) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
   const udpatedChangelogs = [];
@@ -17,6 +21,7 @@ async function updateChangelog(releaseObject, opts) {
   for (const release of releaseObject.releases) {
     const pkg = allPackages.find(a => a.name === release.name);
     if (!pkg) {
+      // $FlowFixMe - fix logger
       logger.warn(
         `While writing changelog, could not find workspace ${release.name} in project.`,
       );
@@ -37,12 +42,15 @@ async function updateChangelog(releaseObject, opts) {
         await writeFile(changelogPath, `# ${pkg.name}${templateString}`);
       }
     } catch (e) {
+      // $FlowFixMe - fix logger
       logger.warn(e);
       return;
     }
+    // $FlowFixMe - fix logger
     logger.log(`Updated file ${changelogPath}`);
     udpatedChangelogs.push(changelogPath);
   }
+  // eslint-disable-next-line consistent-return
   return udpatedChangelogs;
 }
 

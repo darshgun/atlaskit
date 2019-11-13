@@ -1,10 +1,11 @@
+// @flow
 const fs = require('fs');
 const path = require('path');
 const npmRun = require('npm-run');
 
-const BITBUCKET_COMMIT = process.env.BITBUCKET_COMMIT;
-const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
-const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
+const { BITBUCKET_COMMIT } = process.env;
+const { AWS_ACCESS_KEY } = process.env;
+const { AWS_SECRET_KEY } = process.env;
 const ARGS_LENGTH_WITHOUT_OUTPUT_PATH = 3;
 const ARGS_LENGTH_WITH_OUTPUT_PATH = 4;
 const BUCKET_NAME = 'atlaskit-artefacts';
@@ -34,14 +35,14 @@ if (
   process.exit(1);
 }
 
+const pathToFile = path.resolve(process.argv[2]);
+const fileName = path.basename(pathToFile);
+const commitHash = BITBUCKET_COMMIT ? BITBUCKET_COMMIT.substring(0, 12) : '';
+let outputPath = process.argv[3] || '';
+
 if (!fs.existsSync(path.resolve(process.argv[2]))) {
   console.error(`Could not find file: ${pathToFile} from ${process.cwd()}`);
 }
-
-const pathToFile = path.resolve(process.argv[2]);
-const fileName = path.basename(pathToFile);
-const commitHash = BITBUCKET_COMMIT.substring(0, 12);
-let outputPath = process.argv[3] || '';
 
 if (outputPath && !outputPath.endsWith('/')) {
   outputPath += '/';

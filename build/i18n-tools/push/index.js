@@ -1,15 +1,17 @@
+/* eslint-disable no-param-reassign */
+// @flow
 const path = require('path');
 const Listr = require('listr');
 const globby = require('globby');
 const { msg2pot } = require('babel-plugin-react-intl-pot');
 
+const smartling = require('traduki-lite');
 const { extractMessagesFromFile, isTypeScript } = require('../utils');
 const { pushTranslations } = require('../utils/transifex');
-const smartling = require('traduki-lite');
 
 const getExtensions = type => (isTypeScript(type) ? '.ts{,x}' : '.js{,x}');
 
-function pushCommand(options) {
+function pushCommand(options /*: Object*/) {
   const {
     absPathToPackage,
     searchDir,
@@ -27,8 +29,8 @@ function pushCommand(options) {
       task: async (context, task) => {
         const files = await globby(
           [
-            '**/*' + getExtensions(type),
-            ...ignore.split(',').map(s => '!' + s),
+            `**/*${getExtensions(type)}`,
+            ...ignore.split(',').map(s => `!${s}`),
           ],
           {
             cwd: dirToSearch,
@@ -106,7 +108,7 @@ function pushCommand(options) {
     .run()
     .then(({ pot, data, smartlingData }) => {
       if (dry) {
-        console.log('\n' + pot);
+        console.log(`\n${pot}`);
       } else {
         console.log(
           `\nSuccess:\nAdded: ${data.strings_added}\nUpdated: ${

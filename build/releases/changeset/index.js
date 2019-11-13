@@ -1,3 +1,4 @@
+// @flow
 const writeChangeset = require('./writeChangeset');
 const changesetCommand = require('./changesetCommand');
 

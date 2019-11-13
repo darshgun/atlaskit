@@ -1,11 +1,8 @@
+// @flow
 import fs from 'fs';
 import path from 'path';
-const bolt = require('bolt');
 
-import {
-  writeEntryPointsPathInPkgJson,
-  createEntryPointsDirWithPkgJson,
-} from '../../createEntryPointsUtils';
+import { writeEntryPointsPathInPkgJson } from '../../createEntryPointsUtils';
 
 jest.spyOn(global.console, 'log').mockImplementation(() => {});
 
@@ -36,7 +33,7 @@ function deleteDirectory(directoryPath) {
   fs.rmdirSync(directoryPath);
 }
 
-let dirsToRemove = [];
+const dirsToRemove = [];
 describe('Entrypoints', () => {
   beforeEach(() => {
     dirsToRemove.forEach(file => deleteDirectory(file));

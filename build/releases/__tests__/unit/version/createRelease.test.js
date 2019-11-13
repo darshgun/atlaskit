@@ -1,3 +1,4 @@
+// @flow
 const createRelease = require('../../../version/createRelease');
 
 const fakeAllPackages = [

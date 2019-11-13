@@ -1,26 +1,12 @@
+// @flow
 import fs from 'fs';
 import path from 'path';
+
+import { createEntryPointsDirWithPkgJson } from '../../createEntryPointsUtils';
+
 const bolt = require('bolt');
 
-import {
-  writeEntryPointsPathInPkgJson,
-  createEntryPointsDirWithPkgJson,
-} from '../../createEntryPointsUtils';
-
 jest.spyOn(global.console, 'log').mockImplementation(() => {});
-
-const testPackagesForWrite = [
-  {
-    dir: path.join(process.cwd(), 'packages/core/badge'),
-    name: '@atlaskit/badge',
-    files: ['index', 'theme.ts', 'version.json'],
-  },
-  {
-    dir: path.join(process.cwd(), 'packages/core/avatar'),
-    name: '@atlaskit/avatar',
-    files: ['entryA', 'entryB.js', 'types.d.ts'],
-  },
-];
 
 function deleteDirectory(directoryPath) {
   if (!fs.existsSync(directoryPath)) return;
@@ -36,7 +22,7 @@ function deleteDirectory(directoryPath) {
   fs.rmdirSync(directoryPath);
 }
 
-let dirsToRemove = [];
+const dirsToRemove = [];
 describe('Entrypoints', () => {
   beforeEach(() => {
     dirsToRemove.forEach(file => deleteDirectory(file));
@@ -66,8 +52,8 @@ describe('Entrypoints', () => {
             ),
         };
       });
-    for (let pkg of pkgContents) {
-      for (let pkgFile of pkg.files) {
+    for (const pkg of pkgContents) {
+      for (const pkgFile of pkg.files) {
         const file = path.parse(pkgFile).name;
         const entryPointDirName = path.join(pkg.pkgDirPath, file);
         console.log(entryPointDirName);
@@ -78,8 +64,7 @@ describe('Entrypoints', () => {
           expect(dirContent).toContain('package.json');
         } catch (e) {
           throw new Error(
-            `${entryPointDirName} folder should exist and should contain a package.json`,
-            e,
+            `${entryPointDirName} folder should exist and should contain a package.json : ${e}`,
           );
         }
       }

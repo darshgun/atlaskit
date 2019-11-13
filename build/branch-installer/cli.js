@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-const log = console.log;
+// @flow
+
 const meow = require('meow');
 const chalk = require('chalk');
 const {
@@ -7,7 +8,7 @@ const {
   validateOptions,
 } = require('./src/install-from-commit');
 
-let cli = meow(
+const cli = meow(
   `
     Usage
         $ atlaskit-branch-installer commitHash

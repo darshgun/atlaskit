@@ -1,3 +1,4 @@
+// @flow
 module.exports = `import { PureComponent } from 'react';
 
 type State = {};

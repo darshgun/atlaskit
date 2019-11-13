@@ -1,6 +1,7 @@
+// @flow
 function isRunningInPipelines() {
-  const CI = process.env.CI;
-  const BITBUCKET_BUILD_NUMBER = process.env.BITBUCKET_BUILD_NUMBER;
+  const { CI } = process.env;
+  const { BITBUCKET_BUILD_NUMBER } = process.env;
   return !!CI && !!BITBUCKET_BUILD_NUMBER;
 }
 

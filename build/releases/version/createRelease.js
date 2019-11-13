@@ -1,3 +1,4 @@
+// @flow
 const semver = require('semver');
 const flattenChangesets = require('./flattenChangesets');
 /*
@@ -41,8 +42,12 @@ function getCurrentVersion(packageName, allPackages) {
   return pkg ? pkg.config.version : null;
 }
 
-function createRelease(changesets, allPackages) {
+function createRelease(
+  changesets /*: Array<Object> */,
+  allPackages /*: Array<Object> */,
+) {
   // First, combine all the changeset.releases into one useful array
+  // $FlowFixMe -type issue
   const flattenedChangesets = flattenChangesets(changesets);
 
   const allReleases = flattenedChangesets
