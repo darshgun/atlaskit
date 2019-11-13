@@ -1,5 +1,19 @@
 # @atlaskit/media-card
 
+## 66.1.0
+
+### Minor Changes
+
+- [minor][c23ff56fb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c23ff56fb0):
+
+  Introduced new optional prop `testId` that will be applied to `data-testid` prop on top DOM element of Card
+
+### Patch Changes
+
+- [patch][5b2c89203e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b2c89203e):
+
+  Fix linting errors from prettier upgrade
+
 ## 66.0.2
 
 ### Patch Changes

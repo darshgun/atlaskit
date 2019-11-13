@@ -116,30 +116,71 @@ export const itemHeadingCSS = {
 
 export const skeletonHeadingItemCSS = {
   ...itemHeadingCSS,
+  padding: gridSize / 2,
   '&::after': {
     backgroundColor: N20,
-    height: gridSize * 1.5,
-    padding: gridSize / 2,
+    height: gridSize * 1.75,
     margin: `${gridSize / 2}px 0`,
-    width: `calc(30% - ${gridSize / 2}px)`,
+    width: `calc(20% - ${gridSize / 2}px)`,
+    borderRadius: 3,
     display: 'block',
     content: '""',
   },
 } as CSSObject;
 
-export const itemSkeletonCSS = {
-  ...itemCSS,
+export const itemSkeletonCSS = (
+  hasAvatar?: boolean,
+  hasIcon?: boolean,
+  width?: string | number,
+): CSSObject => ({
+  ...itemCSS(false),
   pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+
+  // Stagger alternate skeleton items if no width is passed
+  ...(!width && {
+    '&:nth-child(1n)::after': {
+      flexBasis: '70%',
+    },
+    '&:nth-child(2n)::after': {
+      flexBasis: '50%',
+    },
+    '&:nth-child(3n)::after': {
+      flexBasis: '60%',
+    },
+    '&:nth-child(4n)::after': {
+      flexBasis: '90%',
+    },
+    '&:nth-child(5n)::after': {
+      flexBasis: '35%',
+    },
+    '&:nth-child(6n)::after': {
+      flexBasis: '77%',
+    },
+  }),
+
+  // Icon and Avatar styles
+  ...((hasAvatar || hasIcon) && {
+    '&::before': {
+      content: '""',
+      backgroundColor: N20,
+      marginRight: gridSize,
+      width: gridSize * 3,
+      height: gridSize * 3,
+      borderRadius: hasAvatar ? '100%' : 3,
+    },
+  }),
+
+  // Skeleton text
   '&::after': {
-    backgroundColor: N20,
-    height: gridSize * 2.5,
-    padding: gridSize / 2,
-    margin: gridSize / 2,
-    width: `calc(100% - ${gridSize * 3})`,
-    display: 'block',
     content: '""',
+    backgroundColor: N20,
+    height: gridSize * 1.75,
+    borderRadius: 3,
+    flexBasis: '100%' || width,
   },
-} as CSSObject;
+});
 
 /* Item Group */
 export const menuGroupCSS = (maxHeight?: string | number): CSSObject => ({
@@ -161,5 +202,5 @@ export const sectionCSS = (
         overflow: 'auto',
       }
     : { flexShrink: 0 }),
-  ...(hasSeparator && { borderBottom: `1px solid ${N30}` }),
+  ...(hasSeparator && { borderTop: `1px solid ${N30}` }),
 });

@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-notifications
 
+## 0.1.3
+
+### Patch Changes
+
+- [patch][0393e3f04e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0393e3f04e):
+
+  Fixing types
+
 ## 0.1.2
 
 ### Patch Changes

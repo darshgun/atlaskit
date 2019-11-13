@@ -1,5 +1,13 @@
 # @atlaskit/smart-card
 
+## 12.6.0
+
+### Minor Changes
+
+- [minor][2f5306772c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2f5306772c):
+
+  Updated analytics events and changed error handling to better support fallback onto blue links
+
 ## 12.5.11
 
 ### Patch Changes
