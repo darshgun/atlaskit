@@ -1,7 +1,6 @@
 [ignore]
 .*/node_modules/styled-components/.*
 .*/website/dist/sandbox/.*
-.*/website/.*
 .*/docs/templates/.*
 .*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
 .*/packages/elements/icon/cjs/.*
@@ -9,6 +8,8 @@
 .*/node_modules/babel-flow-types/.*
 .*/node_modules/babel-normalize-comments/.*
 .*/node_modules/extract-react-types/.*
+.*/services/website-constellation/.*
+docs.config.js
 # Older versions of button which are transitive deps may contain flow errors/warnings
 <PROJECT_ROOT>/node_modules/@atlaskit/button/.*
 .*/.git/.*
