@@ -24,21 +24,36 @@ describe('Snapshot Test: Expand', () => {
 
   test(`should render a border on hover of a collapsed top level expand`, async () => {
     await initRenderer(page, expandADF());
+    await page.waitForSelector(selectors.expand);
     await page.hover(selectors.expand);
   });
 
   test('should expand a collapsed top level expand on toggle', async () => {
     await initRenderer(page, expandADF());
+    await page.waitForSelector(selectors.expand);
     await page.click(selectors.expandToggle);
+  });
+
+  test('should have a left aligned title when wrapped', async () => {
+    await initRenderer(
+      page,
+      expandADF(
+        undefined,
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mi nisl, venenatis eget auctor vitae, venenatis quis lorem',
+      ),
+    );
+    await page.waitForSelector(selectors.expand);
   });
 
   describe.each(['default', 'wide', 'full-width'])('Breakout: %s', mode => {
     test(`should render a ${mode} collapsed top level expand`, async () => {
       await initRenderer(page, expandADF(mode));
+      await page.waitForSelector(selectors.expand);
     });
 
     test('should expand a collapsed nested expand on toggle', async () => {
       await initRenderer(page, expandADF(mode));
+      await page.waitForSelector(selectors.expand);
       await page.click(selectors.expandToggle);
       await page.click(selectors.nestedExpandToggle);
     });
