@@ -1,6 +1,7 @@
 [ignore]
 .*/node_modules/styled-components/.*
 .*/website/dist/sandbox/.*
+.*/website/.*
 .*/docs/templates/.*
 .*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
 .*/packages/elements/icon/cjs/.*
@@ -8,8 +9,18 @@
 .*/node_modules/babel-flow-types/.*
 .*/node_modules/babel-normalize-comments/.*
 .*/node_modules/extract-react-types/.*
+
+# The following things have been added as part of constellation - the docs.config.js ignore should be removed afterwards
+# Note that we will likely be restructing brisk into themes so it doesn't ddepend on atlaskit in the way that is pulling
+# in atlaskit components from npm. Talk to Ben Conolly if this is still needed by end of January 2020 as it means things
+# have not gone according to plan.
 .*/services/website-constellation/.*
-docs.config.js
+<PROJECT_ROOT>/node_modules/@atlaskit/.*
+<PROJECT_ROOT>/node_modules/graphql/.*
+<PROJECT_ROOT>/node_modules/express-graphql/.*
+<PROJECT_ROOT>/docs.config.js
+# End of things ignored because constellation
+
 # Older versions of button which are transitive deps may contain flow errors/warnings
 <PROJECT_ROOT>/node_modules/@atlaskit/button/.*
 .*/.git/.*
