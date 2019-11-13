@@ -10,10 +10,6 @@ describe('getWorkspacesSync >', () => {
     const resultsAsync = await bolt.getWorkspaces();
 
     expect(resultsSync.length).toBe(resultsAsync.length);
-
-    console.log();
-
     expect(resultsSync).toEqual(expect.arrayContaining(resultsAsync));
-    // expect(resultsSync).toStrictEqual(resultsAsync);
   });
 });
