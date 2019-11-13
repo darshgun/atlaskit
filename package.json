@@ -71,14 +71,17 @@
     "start:people-and-teams": "              yarn run website:start **/packages/people-and-teams/**",
     "start:search": "                        yarn run website:start **/packages/search/**",
     "start:trello": "                        yarn run website:start **/packages/trello/**",
-    "start:teamwork-ecosystem": "            yarn run website:start **/packages/teamwork-ecosystem/**"
+    "start:teamwork-ecosystem": "            yarn run website:start **/packages/teamwork-ecosystem/**",
+    "constellation:aliases": "               cd services/website-constellation && node write-resolution-map.js",
+    "constellation:start": "                 yarn constellation:aliases && yarn brisk dev"
   },
   "bolt": {
     "version": "^0.24.3",
     "workspaces": [
       "build/*",
       "packages/*/*",
-      "website"
+      "website",
+      "services/*"
     ]
   },
   "devDependencies": {
@@ -86,6 +89,7 @@
     "@babel/plugin-syntax-optional-catch-binding": "^7.2.0",
     "@babel/preset-typescript": "^7.1.0",
     "@babel/types": "^7.5.5",
+    "@brisk-docs/gatsby-generator": "^1.0.1",
     "@changesets/cli": "^1.2.0",
     "@emotion/babel-preset-css-prop": "^10.0.7",
     "@jest/fake-timers": "^24.8.0",
@@ -284,6 +288,7 @@
     "@emotion/core": "^10.0.9",
     "@emotion/css": "^10.0.14",
     "@emotion/styled": "^10.0.7",
+    "@mdx-js/react": "^1.5.1",
     "@sentry/browser": "^4.6.3",
     "@types/algoliasearch": "^3.30.8",
     "@types/bricks.js": "^1.8.0",
@@ -581,7 +586,9 @@
   },
   "resolutions": {
     "**/@atlaskit/theme/styled-components": "^3.2.6",
-    "**/expand-range/fill-range": "2.2.3"
+    "**/expand-range/fill-range": "2.2.3",
+    "react":"16.8.6",
+    "react-dom":"16.8.6"
   },
   "engines": {
     "node": "^10.13.0"

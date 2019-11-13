@@ -1,0 +1,9 @@
+{
+    "name": "@atlaskit/website-constellation",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "@atlaskit/multi-entry-tools": "^0.0.3",
+        "fs-extra": "^4.0.2"
+    }
+}
