@@ -3,7 +3,10 @@ const bolt = require('bolt');
 const path = require('path');
 const { exists } = require('./fs');
 
-async function getPackagesInfo(cwd /*:string*/, opts /*: Object */) {
+async function getPackagesInfo(
+  cwd /*:string*/,
+  opts /*: Object | undefined */,
+) {
   const project = await bolt.getProject({ cwd });
   const packages = await bolt.getWorkspaces({ cwd, ...opts });
 
@@ -85,7 +88,6 @@ const TOOL_NAME_TO_FILTERS /*: { [key: string]: (pkg: Object) => boolean } */ = 
 };
 
 async function getPackageDirsForTools(cwd /*: string */) {
-  // $FlowFixMe - mising opts
   const packages = await getPackagesInfo(cwd);
   const toolGroups = {};
 
