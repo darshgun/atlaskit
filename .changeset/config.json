@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@0.3.0/schema.json",
-  "changelog": "./utils.js",
+  "changelog": "./changelogFunctions.js",
   "commit": true,
   "access": "public",
   "baseBranch": "develop"
