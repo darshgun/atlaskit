@@ -20,7 +20,7 @@ const getDependencyReleaseLine = async (changesets, dependenciesUpdated) => {
   );
 
   const updatedDepenenciesList = dependenciesUpdated.map(
-    dependency => `  - ${dependency.name}@${dependency.version}`,
+    dependency => `  - ${dependency.name}@${dependency.newVersion}`,
   );
 
   return [...changesetLinks, ...updatedDepenenciesList].join('\n');
