@@ -135,6 +135,7 @@ async function main(pkgName /*: string */, opts /*: Object */) {
   }
   // Compare all
   // Fetch deps first in parallel
+  // $FlowFixMe - undefined
   await fetchNpmDeps(undefined, {
     force: opts.refetch,
   });

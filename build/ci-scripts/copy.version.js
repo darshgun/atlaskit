@@ -34,7 +34,7 @@ async function copyVersionJson(pkg, project) {
 }
 
 async function main(
-  pkgName /*: string | undefined */,
+  pkgName /*: ?string */,
   { cwd } /*: { cwd: string } */ = {},
 ) {
   const project = await bolt.getProject({ cwd });

@@ -3,10 +3,7 @@ const bolt = require('bolt');
 const path = require('path');
 const { exists } = require('./fs');
 
-async function getPackagesInfo(
-  cwd /*:string*/,
-  opts /*: Object | undefined */,
-) {
+async function getPackagesInfo(cwd /*:string*/, opts /*: ?Object */) {
   const project = await bolt.getProject({ cwd });
   const packages = await bolt.getWorkspaces({ cwd, ...opts });
 
