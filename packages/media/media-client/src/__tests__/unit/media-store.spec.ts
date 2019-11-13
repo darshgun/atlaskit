@@ -9,10 +9,8 @@ import {
   MediaUpload,
   MediaChunksProbe,
   MediaFile,
-  MediaCollection,
   MediaCollectionItems,
   MediaStoreGetFileParams,
-  EmptyFile,
   ItemsPayload,
   ImageMetadata,
   MediaStoreTouchFileBody,
@@ -216,46 +214,6 @@ describe('MediaStore', () => {
       });
     });
 
-    describe('createFileFromBinary', () => {
-      it('should POST to /file/binary endpoint with correct options', () => {
-        const body = new Blob(['Hello World!!!'], { type: 'text/plain' });
-        const params = {
-          collection: 'some-collection',
-          occurrenceKey: 'some-occurrence-key',
-          expireAfter: 123,
-          replaceFileId: 'some-replace-file-id',
-          skipConversions: true,
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/file/binary`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore.createFileFromBinary(body, params).then(response => {
-          expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(
-            `${baseUrl}/file/binary?${stringify(params)}`,
-          );
-          expect(fetchMock.lastOptions()).toEqual({
-            method: 'POST',
-            headers: {
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/json',
-              'Content-Type': 'text/plain',
-            },
-            body,
-          });
-          expect(authProvider).toHaveBeenCalledWith({
-            collectionName: params.collection,
-          });
-        });
-      });
-    });
-
     describe('getFile', () => {
       it('should GET to /file/{fileId} endpoint with correct options', () => {
         const collectionName = 'some-collection-name';
@@ -320,72 +278,6 @@ describe('MediaStore', () => {
             },
             body: JSON.stringify(body),
           });
-        });
-      });
-    });
-
-    describe('createCollection', () => {
-      it('should POST to /collection endpoint with correct options', () => {
-        const collectionName = 'some-collection-name';
-        const data: MediaCollection = {
-          name: collectionName,
-          createdAt: Date.now(),
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/collection`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore.createCollection(collectionName).then(response => {
-          expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(`${baseUrl}/collection`);
-          expect(fetchMock.lastOptions()).toEqual({
-            method: 'POST',
-            headers: {
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({ name: collectionName }),
-          });
-          expect(authProvider).toHaveBeenCalledWith({ collectionName });
-        });
-      });
-    });
-
-    describe('getCollection', () => {
-      it('should GET to /collection/{collectionName} endpoint with correct options', () => {
-        const collectionName = 'some-collection-name';
-        const data: MediaCollection = {
-          name: collectionName,
-          createdAt: Date.now(),
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/collection/${collectionName}`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore.getCollection(collectionName).then(response => {
-          expect(response).toEqual({ data });
-          expect(fetchMock.lastUrl()).toEqual(
-            `${baseUrl}/collection/${collectionName}`,
-          );
-          expect(fetchMock.lastOptions()).toEqual({
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'X-Client-Id': clientId,
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          expect(authProvider).toHaveBeenCalledWith({ collectionName });
         });
       });
     });
@@ -565,45 +457,11 @@ describe('MediaStore', () => {
             expect(result).not.toBeDefined();
           },
           async error => {
-            expect(error.message).toEqual(
-              'network error 403: {"error":"something wrong"}',
+            expect(error.message).toMatch(
+              /.*Got error code 403: {\"error\":\"something wrong\"}.*/,
             );
           },
         );
-      });
-    });
-
-    describe('createFile', () => {
-      it('should POST to /file with empty body and params', () => {
-        const data: EmptyFile = {
-          id: '1234',
-          createdAt: 999,
-        };
-
-        fetchMock.mock(`begin:${baseUrl}/file`, {
-          body: {
-            data,
-          },
-          status: 201,
-        });
-
-        return mediaStore
-          .createFile({ collection: 'some-collection' })
-          .then(response => {
-            expect(response).toEqual({ data });
-            expect(fetchMock.lastUrl()).toEqual(
-              `${baseUrl}/file?collection=some-collection`,
-            );
-            expect(fetchMock.lastOptions()).toEqual({
-              method: 'POST',
-              headers: {
-                'X-Client-Id': clientId,
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-              },
-              body: undefined,
-            });
-          });
       });
     });
 
@@ -618,6 +476,11 @@ describe('MediaStore', () => {
     });
 
     describe('getImage', () => {
+      const lastOptionsHeaders = () => {
+        const lastOptions = fetchMock.lastOptions();
+        return (lastOptions && lastOptions.headers) || {};
+      };
+
       it('should return file image preview', async () => {
         fetchMock.mock(`begin:${baseUrl}/file`, {
           body: {
@@ -711,7 +574,7 @@ describe('MediaStore', () => {
 
         await mediaStore.getImage('123');
 
-        expect(fetchMock.lastOptions().headers).toHaveProperty(
+        expect(lastOptionsHeaders()).toHaveProperty(
           'accept',
           'image/webp,image/*,*/*;q=0.8',
         );
@@ -728,9 +591,7 @@ describe('MediaStore', () => {
 
         await mediaStore.getImage('123');
 
-        expect(fetchMock.lastOptions().headers || {}).not.toHaveProperty(
-          'accept',
-        );
+        expect(lastOptionsHeaders()).not.toHaveProperty('accept');
       });
     });
 

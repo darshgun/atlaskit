@@ -1751,9 +1751,10 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/exenv/-/exenv-1.2.0.tgz#84ff936feeafc917c3c66f80b43e917f56eed00b"
 
-"@types/fetch-mock@^6.0.3":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@types/fetch-mock/-/fetch-mock-6.0.3.tgz#54ba90776293e728089bf53ba53e3c69f1c80655"
+"@types/fetch-mock@^7.3.1":
+  version "7.3.1"
+  resolved "https://registry.npmjs.org/@types/fetch-mock/-/fetch-mock-7.3.1.tgz#df7421e8bcb351b430bfbfa5c52bb353826ac94f"
+  integrity sha512-2U4vZWHNbsbK7TRmizgr/pbKe0FKopcxu+hNDtIBDiM1wvrKRItybaYj7VQ6w/hZJStU/JxRiNi5ww4YDEvKbA==
 
 "@types/filesize@^3.2.15":
   version "3.2.15"
