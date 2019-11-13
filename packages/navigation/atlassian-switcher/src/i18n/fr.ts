@@ -14,9 +14,8 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Gérer la liste',
   'fabric.atlassianSwitcher.jiraProject': 'Projet Jira',
   'fabric.atlassianSwitcher.confluenceSpace': 'Espace Confluence',
-  'fabric.atlassianSwitcher.people': 'Personnes',
   'fabric.atlassianSwitcher.administration': 'Administration',
-  'fabric.atlassianSwitcher.discoverMore': "Découvrir d'autres produits",
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
   'fabric.atlassianSwitcher.browseApps': 'Parcourir les apps du Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Une erreur est survenue',
   'fabric.atlassianSwitcher.errorText':
@@ -29,4 +28,13 @@ export default {
     'Vous avez été déconnecté. Veuillez vous reconnecter.',
   'fabric.atlassianSwitcher.login': 'Se connecter',
   'fabric.atlassianSwitcher.show.more.sites': 'Afficher plus de sites',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

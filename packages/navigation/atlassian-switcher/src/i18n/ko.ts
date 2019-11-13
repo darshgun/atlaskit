@@ -14,9 +14,8 @@ export default {
   'fabric.atlassianSwitcher.manageList': '목록 관리',
   'fabric.atlassianSwitcher.jiraProject': 'Jira 프로젝트',
   'fabric.atlassianSwitcher.confluenceSpace': 'Confluence 스페이스',
-  'fabric.atlassianSwitcher.people': '사용자',
   'fabric.atlassianSwitcher.administration': '관리',
-  'fabric.atlassianSwitcher.discoverMore': '자세히 살펴보기',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
   'fabric.atlassianSwitcher.browseApps': 'Marketplace 앱 찾아보기',
   'fabric.atlassianSwitcher.errorHeading': '문제가 발생했습니다.',
   'fabric.atlassianSwitcher.errorText':
@@ -29,4 +28,13 @@ export default {
     '로그아웃되었습니다. 다시 로그인해주세요.',
   'fabric.atlassianSwitcher.login': '로그인',
   'fabric.atlassianSwitcher.show.more.sites': '사이트 더 보기',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

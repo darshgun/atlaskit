@@ -14,9 +14,9 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Gestionați lista',
   'fabric.atlassianSwitcher.jiraProject': 'Proiect Jira',
   'fabric.atlassianSwitcher.confluenceSpace': 'Spațiu Confluence',
-  'fabric.atlassianSwitcher.people': 'Persoane',
   'fabric.atlassianSwitcher.administration': 'Administrare',
-  'fabric.atlassianSwitcher.discoverMore': 'Descoperiți mai multe',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
+  'fabric.atlassianSwitcher.browseApps': 'Browse Marketplace apps',
   'fabric.atlassianSwitcher.errorHeading': 'Ceva nu a funcționat corect',
   'fabric.atlassianSwitcher.errorText':
     'Monitorizăm erorile de acest tip, însă ne puteți contacta dacă reîmprospătarea nu îmbunătățește lucrurile',
@@ -28,4 +28,13 @@ export default {
     'V-ați deconectat. Conectați-vă din nou.',
   'fabric.atlassianSwitcher.login': 'Conectare',
   'fabric.atlassianSwitcher.show.more.sites': 'Afișare mai multe site-uri',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

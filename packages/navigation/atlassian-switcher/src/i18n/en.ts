@@ -14,9 +14,9 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Manage list',
   'fabric.atlassianSwitcher.jiraProject': 'Jira project',
   'fabric.atlassianSwitcher.confluenceSpace': 'Confluence space',
-  'fabric.atlassianSwitcher.people': 'People',
   'fabric.atlassianSwitcher.administration': 'Administration',
-  'fabric.atlassianSwitcher.discoverMore': 'Discover more',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
+  'fabric.atlassianSwitcher.browseApps': 'Browse Marketplace apps',
   'fabric.atlassianSwitcher.errorHeading': 'Something’s gone wrong',
   'fabric.atlassianSwitcher.errorText':
     'We keep track of these errors, but feel free to contact us if refreshing doesn’t fix things',
@@ -28,4 +28,13 @@ export default {
     'You’ve been logged out. Please log in again.',
   'fabric.atlassianSwitcher.login': 'Log in',
   'fabric.atlassianSwitcher.show.more.sites': 'Show more sites',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

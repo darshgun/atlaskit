@@ -14,9 +14,8 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Gerir lista',
   'fabric.atlassianSwitcher.jiraProject': 'Projeto do JIRA',
   'fabric.atlassianSwitcher.confluenceSpace': 'Espaço do Confluence',
-  'fabric.atlassianSwitcher.people': 'Pessoas',
   'fabric.atlassianSwitcher.administration': 'Administração',
-  'fabric.atlassianSwitcher.discoverMore': 'Descobrir mais',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
   'fabric.atlassianSwitcher.browseApps': 'Procurar aplicações do Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Ocorreu um erro',
   'fabric.atlassianSwitcher.errorText':
@@ -29,4 +28,13 @@ export default {
     'A sua sessão foi encerrada. Inicie sessão novamente.',
   'fabric.atlassianSwitcher.login': 'Iniciar sessão',
   'fabric.atlassianSwitcher.show.more.sites': 'Mostrar mais sites',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

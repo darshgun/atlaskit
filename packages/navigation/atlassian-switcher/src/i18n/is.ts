@@ -14,9 +14,9 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Vinna með lista',
   'fabric.atlassianSwitcher.jiraProject': 'Jira-verkefni',
   'fabric.atlassianSwitcher.confluenceSpace': 'Confluence-svæði',
-  'fabric.atlassianSwitcher.people': 'Fólk',
   'fabric.atlassianSwitcher.administration': 'Stjórnun',
-  'fabric.atlassianSwitcher.discoverMore': 'Uppgötva fleiri',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
+  'fabric.atlassianSwitcher.browseApps': 'Browse Marketplace apps',
   'fabric.atlassianSwitcher.errorHeading': 'Eitthvað fór úrskeiðis',
   'fabric.atlassianSwitcher.errorText':
     'Við fylgjumst með þessum villum en þér er velkomið að hafa samband við okkur ef þetta lagast ekki við endurnýjun.',
@@ -28,4 +28,13 @@ export default {
     'Þú hefur verið skráður út. Vinsamlegast skráðu þig inn aftur.',
   'fabric.atlassianSwitcher.login': 'Innskrán',
   'fabric.atlassianSwitcher.show.more.sites': 'Sýna fleiri vefsvæði',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };
