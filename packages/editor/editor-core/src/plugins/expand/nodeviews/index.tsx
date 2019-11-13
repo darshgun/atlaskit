@@ -142,12 +142,12 @@ export class ExpandNodeView implements NodeView {
     }
   }
 
-  private renderIcon(intl?: InjectedIntl) {
+  private renderIcon(intl?: InjectedIntl, node?: PmNode) {
     if (!this.icon) {
       return;
     }
 
-    const { __expanded } = this.node.attrs;
+    const { __expanded } = (node && node.attrs) || this.node.attrs;
     const message = __expanded
       ? expandMessages.collapseNode
       : expandMessages.expandNode;
@@ -314,7 +314,7 @@ export class ExpandNodeView implements NodeView {
     return (
       target === this.input ||
       target === this.icon ||
-      target.nodeName === 'SPAN'
+      !!closestElement(target, `.${expandClassNames.icon}`)
     );
   }
 
@@ -328,7 +328,7 @@ export class ExpandNodeView implements NodeView {
         // Instead of re-rendering the view on an expand toggle
         // we toggle a class name to hide the content and animate the chevron.
         this.dom.classList.toggle(expandClassNames.expanded);
-        this.renderIcon(this.reactContext && this.reactContext.intl);
+        this.renderIcon(this.reactContext && this.reactContext.intl, node);
       }
 
       // During a collab session the title doesn't sync with other users
