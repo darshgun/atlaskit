@@ -86,7 +86,7 @@ export const ArticleBody = (props: Props) => {
 
     setIframeContent(iframeRef, props.body, props.onArticleRenderBegin);
     resizeIframe(iframeRef);
-  }, [props.body, props.onArticleRenderBegin]);
+  }, [props.body]);
 
   /**
    * When the window is resized, resize the iframe
