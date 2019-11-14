@@ -1,5 +1,13 @@
 # @atlaskit/media-picker
 
+## 50.0.1
+
+### Patch Changes
+
+- [patch][95ee5ed122](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95ee5ed122):
+
+  Touch endpoint is now called synchronously for every file which prevents race condition on copy while preserving card insert times in editor
+
 ## 50.0.0
 
 ### Major Changes
