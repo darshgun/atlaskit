@@ -252,23 +252,16 @@ const distributeTenantFileState = async (
  * We call `/upload/createWithFiles` (touch) endpoint to create an empty file with client side
  * generated file ID that we use here as tenant file id.
  */
-export const touchSelectedFiles = (
-  selectedUploadFiles: SelectedUploadFile[],
+export const touchSelectedFile = (
+  touchFileDescriptor: TouchFileDescriptor,
   store: Store<State>,
 ) => {
-  if (selectedUploadFiles.length === 0) {
-    return;
-  }
-
   const { tenantMediaClient, config } = store.getState();
   const tenantCollection =
     config.uploadParams && config.uploadParams.collection;
 
-  const touchFileDescriptors = selectedUploadFiles.map(
-    selectedUploadFile => selectedUploadFile.touchFileDescriptor,
-  );
   return tenantMediaClient.file.touchFiles(
-    touchFileDescriptors,
+    [touchFileDescriptor],
     tenantCollection,
   );
 };
@@ -316,10 +309,7 @@ export async function importFiles(
     ),
   );
 
-  // 4. Now we touch the files
-  touchSelectedFiles(selectedUploadFiles, store);
-
-  // 5. Now, when empty file was created we can do all the necessary uploading/copy operations
+  // 4. Now, when empty file was created we can do all the necessary uploading/copy operations
   // TODO here we don't have actually guarantee that empty file was created.
   // https://product-fabric.atlassian.net/browse/MS-2165
   selectedUploadFiles.forEach(selectedUploadFile => {
@@ -329,7 +319,7 @@ export async function importFiles(
       const localUpload: LocalUpload = uploads[selectedItemId];
       const { fileId } = touchFileDescriptor;
       importFilesFromLocalUpload(
-        selectedItemId,
+        selectedUploadFile,
         fileId,
         store,
         localUpload,
@@ -351,13 +341,20 @@ export async function importFiles(
   store.dispatch(resetView());
 }
 
-export const importFilesFromLocalUpload = (
-  selectedItemId: string,
+export const importFilesFromLocalUpload = async (
+  selectedUploadFile: SelectedUploadFile,
   uploadId: string,
   store: Store<State>,
   localUpload: LocalUpload,
   replaceFileId?: string,
-): void => {
+): Promise<void> => {
+  const {
+    file: { id },
+    touchFileDescriptor,
+  } = selectedUploadFile;
+
+  await touchSelectedFile(touchFileDescriptor, store);
+
   localUpload.events.forEach(originalEvent => {
     const event = { ...originalEvent };
 
@@ -374,13 +371,13 @@ export const importFilesFromLocalUpload = (
     }
   });
 
-  store.dispatch(setEventProxy(selectedItemId, uploadId));
+  store.dispatch(setEventProxy(id, uploadId));
 };
 
-export const importFilesFromRecentFiles = (
+export const importFilesFromRecentFiles = async (
   selectedUploadFile: SelectedUploadFile,
   store: Store<State>,
-): void => {
+): Promise<void> => {
   const { file, touchFileDescriptor } = selectedUploadFile;
   const { fileId } = touchFileDescriptor;
   const source = {
@@ -388,15 +385,16 @@ export const importFilesFromRecentFiles = (
     collection: RECENTS_COLLECTION,
   };
 
-  store.dispatch(finalizeUpload(file, fileId, source, fileId));
   store.dispatch(getPreview(fileId, file, RECENTS_COLLECTION));
+  await touchSelectedFile(touchFileDescriptor, store);
+  store.dispatch(finalizeUpload(file, fileId, source, fileId));
 };
 
-export const importFilesFromRemoteService = (
+export const importFilesFromRemoteService = async (
   selectedUploadFile: SelectedUploadFile,
   store: Store<State>,
   wsConnectionHolder: WsConnectionHolder,
-): void => {
+): Promise<void> => {
   const {
     touchFileDescriptor,
     serviceName,
@@ -404,6 +402,9 @@ export const importFilesFromRemoteService = (
     file,
   } = selectedUploadFile;
   const { fileId } = touchFileDescriptor;
+
+  await touchSelectedFile(touchFileDescriptor, store);
+
   const uploadActivity = new RemoteUploadActivity(fileId, (event, payload) => {
     if (event === 'NotifyMetadata') {
       const preview = getPreviewFromMetadata(

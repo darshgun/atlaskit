@@ -9,6 +9,7 @@ import {
   observableToPromise,
   getFileStreamsCache,
   FileState,
+  TouchFileDescriptor,
 } from '@atlaskit/media-client';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { ReplaySubject } from 'rxjs';
@@ -31,7 +32,7 @@ import {
   importFiles,
   SelectedUploadFile,
   getTenantFileState,
-  touchSelectedFiles,
+  touchSelectedFile,
 } from '../../importFiles';
 import { LocalUpload, LocalUploads } from '../../../domain';
 import { finalizeUpload } from '../../../actions/finalizeUpload';
@@ -577,7 +578,7 @@ describe('importFiles middleware', () => {
         const { store } = setupResult;
 
         const { tenantMediaClient } = store.getState();
-        expect(tenantMediaClient.file.touchFiles).toBeCalledTimes(1);
+        expect(tenantMediaClient.file.touchFiles).toBeCalledTimes(4);
         expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
           [
             {
@@ -585,20 +586,35 @@ describe('importFiles middleware', () => {
               fileId: expectUUID,
               occurrenceKey: 'occurrence-key-1',
             },
+          ],
+          'tenant-collection',
+        );
+        expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
+          [
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-3',
+              occurrenceKey: 'occurrence-key-1',
             },
+          ],
+          'tenant-collection',
+        );
+        expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
+          [
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-4',
+              occurrenceKey: 'occurrence-key-1',
             },
+          ],
+          'tenant-collection',
+        );
+        expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
+          [
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-5',
+              occurrenceKey: 'occurrence-key-1',
             },
           ],
           'tenant-collection',
@@ -900,26 +916,27 @@ describe('importFiles middleware', () => {
         config: { uploadParams: { collection: 'some-collection-name' } },
       });
       const { tenantMediaClient } = store.getState();
-      await touchSelectedFiles(selectedFiles, store);
+      await Promise.all(
+        selectedFiles.map(selectedFile =>
+          touchSelectedFile(selectedFile.touchFileDescriptor, store),
+        ),
+      );
       expectFunctionToHaveBeenCalledWith(tenantMediaClient.file.touchFiles, [
         [
           {
             fileId: 'tenant-upfront-id',
           },
+        ],
+        'some-collection-name',
+      ]);
+      expectFunctionToHaveBeenCalledWith(tenantMediaClient.file.touchFiles, [
+        [
           {
             fileId: 'tenant-upfront-id-2',
           },
         ],
         'some-collection-name',
       ]);
-    });
-
-    it('should not call touchFiles if selected files are empty', async () => {
-      const selectedFiles: SelectedUploadFile[] = [];
-      const store = mockStore();
-      const { tenantMediaClient } = store.getState();
-      await touchSelectedFiles(selectedFiles, store);
-      expect(tenantMediaClient.file.touchFiles).not.toHaveBeenCalled();
     });
   });
 });
