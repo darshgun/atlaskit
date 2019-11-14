@@ -1,6 +1,6 @@
 import { EventEmitter2 } from 'eventemitter2';
 import { WsActivity, WsActivityEvents } from '../wsActivity';
-import { WsUploadEvents } from './wsUploadEvents';
+import { WsUploadEvents, RemoteUploadBasePayload } from './wsUploadEvents';
 import {
   WsUploadMessageData,
   isRemoteUploadStartData,
@@ -30,40 +30,40 @@ export class RemoteUploadActivity implements WsActivity {
       return;
     }
 
+    const basePayload: RemoteUploadBasePayload = {
+      // First try to use alternative response shape
+      // Will be removed after backend unifies response schema
+      uploadId: (data.data && data.data.uploadId) || data.uploadId,
+      serviceName: this.serviceName,
+    };
+
     if (isRemoteUploadStartData(data)) {
       this.dispatchEvent('RemoteUploadStart', {
-        uploadId: data.uploadId,
-        serviceName: this.serviceName,
+        ...basePayload,
       });
       this.notifyActivityStarted();
     } else if (isRemoteUploadProgressData(data)) {
       this.dispatchEvent('RemoteUploadProgress', {
-        uploadId: data.uploadId,
         bytes: data.currentAmount,
         fileSize: data.totalAmount,
-        serviceName: this.serviceName,
+        ...basePayload,
       });
     } else if (isRemoteUploadEndData(data)) {
       this.dispatchEvent('RemoteUploadEnd', {
         fileId: data.fileId,
-        uploadId: data.uploadId,
-        serviceName: this.serviceName,
+        ...basePayload,
       });
       this.notifyActivityCompleted();
     } else if (isRemoteUploadErrorData(data)) {
       this.dispatchEvent('RemoteUploadFail', {
-        // First try to use alternative response shape
-        // Will be removed after backend unifies response schema
-        uploadId: (data.data && data.data.uploadId) || data.uploadId,
         description: (data.data && data.data.reason) || data.reason,
-        serviceName: this.serviceName,
+        ...basePayload,
       });
       this.notifyActivityCompleted();
     } else if (isNotifyMetadata(data)) {
       this.dispatchEvent('NotifyMetadata', {
-        uploadId: data.uploadId,
         metadata: data.metadata,
-        serviceName: this.serviceName,
+        ...basePayload,
       });
     }
   }
