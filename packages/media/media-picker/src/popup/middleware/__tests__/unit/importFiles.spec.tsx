@@ -9,7 +9,6 @@ import {
   observableToPromise,
   getFileStreamsCache,
   FileState,
-  TouchFileDescriptor,
 } from '@atlaskit/media-client';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { ReplaySubject } from 'rxjs';
@@ -594,7 +593,7 @@ describe('importFiles middleware', () => {
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-1',
+              occurrenceKey: 'occurrence-key-3',
             },
           ],
           'tenant-collection',
@@ -604,7 +603,7 @@ describe('importFiles middleware', () => {
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-1',
+              occurrenceKey: 'occurrence-key-4',
             },
           ],
           'tenant-collection',
@@ -614,7 +613,7 @@ describe('importFiles middleware', () => {
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
-              occurrenceKey: 'occurrence-key-1',
+              occurrenceKey: 'occurrence-key-5',
             },
           ],
           'tenant-collection',
