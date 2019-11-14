@@ -7,6 +7,7 @@ import { Emoji } from '../../../react/nodes';
 import * as doc from '../../__fixtures__/hello-world.adf.json';
 import * as headingDoc from '../../__fixtures__/heading-doc.adf.json';
 import * as mediaDoc from '../../__fixtures__/media.adf.json';
+import * as mediaFragment from '../../__fixtures__/media-fragment.json';
 
 const docFromSchema = schema.nodeFromJSON(doc);
 const headingDocFromSchema = schema.nodeFromJSON(headingDoc);
@@ -155,6 +156,38 @@ describe('Renderer - ReactSerializer', () => {
   });
 
   describe('media', () => {
+    it('has correct shouldOpenMediaViewer value when default is true and has node has no parent', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {
+        shouldOpenMediaViewer: true,
+      });
+
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(
+          schema.nodeFromJSON(mediaFragment).content,
+        ) as any,
+      );
+
+      expect(
+        reactDoc.find('LoadableComponent').prop('shouldOpenMediaViewer'),
+      ).toEqual(true);
+    });
+
+    it('has correct shouldOpenMediaViewer value when default is false and has node has no parent', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {
+        shouldOpenMediaViewer: false,
+      });
+
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(
+          schema.nodeFromJSON(mediaFragment).content,
+        ) as any,
+      );
+
+      expect(
+        reactDoc.find('LoadableComponent').prop('shouldOpenMediaViewer'),
+      ).toEqual(false);
+    });
+
     it('has correct shouldOpenMediaViewer value when default is true', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {
         shouldOpenMediaViewer: true,
