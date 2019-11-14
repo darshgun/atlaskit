@@ -46,7 +46,6 @@ describe('media', () => {
   const { intl } = intlProvider.getChildContext();
 
   const createEditor = createEditorFactory<MediaPluginState>();
-  // const createAnalyticsEvent = jest.fn().mockReturnValue({ fire() {} });
 
   const editor = (doc: any, mediaPropsOverride: MediaOptions = {}) => {
     const contextIdentifierProvider = storyContextIdentifierProviderFactory();
@@ -65,11 +64,8 @@ describe('media', () => {
         },
       },
       providerFactory,
-      // createAnalyticsEvent,
       pluginKey: stateKey,
     });
-
-    // createAnalyticsEvent.mockClear();
     return wrapper;
   };
 
