@@ -73,6 +73,13 @@ describe('resource store', () => {
     getKey: () => key,
     getData: () => getDataPromise,
   });
+  const mockRoute = {
+    name: 'foo',
+    navigation: null,
+    path: '/foo',
+    component: () => <h1>test</h1>,
+    resources: [],
+  };
   const resolver = (resolveWith: any, delay = 0) =>
     new Promise(resolve => setTimeout(() => resolve(resolveWith), delay));
 
@@ -784,6 +791,90 @@ describe('resource store', () => {
 
         expect(slice).toEqual(mockSlice);
         expect(spy).toBeCalledTimes(0);
+      });
+    });
+  });
+
+  describe('cleanExpiredResources', () => {
+    const currentTime = 100;
+
+    const expiredResource = {
+      ...mockResource,
+      ...{
+        type: 'expiredResource',
+        getKey: () => 'expiredResourceKey',
+        getData: () => resolver('hello world', 250),
+      },
+    };
+    const cachedResource = {
+      ...mockResource,
+      ...{
+        type: 'cachedResource',
+        getKey: () => 'cachedResourceKey',
+        getData: () => resolver('hello world', 250),
+      },
+    };
+
+    beforeEach(() => {
+      jest.spyOn(global.Date, 'now').mockReturnValue(currentTime);
+      (getExpiresAt as any).mockImplementation(() => currentTime);
+      storeState.setState({
+        data: {
+          expiredResource: {
+            expiredResourceKey: {
+              data: result,
+              loading: false,
+              error: 'some error',
+              promise: getDataPromise,
+              expiresAt: 50,
+            },
+          },
+          cachedResource: {
+            cachedResourceKey: {
+              data: result,
+              loading: false,
+              error: 'some error',
+              promise: getDataPromise,
+              expiresAt: 200,
+            },
+          },
+        },
+      });
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should clear the data for expired resources', () => {
+      actions.cleanExpiredResources([expiredResource, cachedResource], {
+        route: mockRoute,
+        match: mockMatch,
+        query: {},
+        location: { pathname: '', search: '', hash: '' },
+      });
+
+      const { data } = storeState.getState();
+
+      expect(data).toEqual({
+        expiredResource: {
+          expiredResourceKey: {
+            data: null,
+            loading: false,
+            error,
+            promise: getDataPromise,
+            expiresAt: currentTime,
+          },
+        },
+        cachedResource: {
+          cachedResourceKey: {
+            data: result,
+            loading: false,
+            error: 'some error',
+            promise: getDataPromise,
+            expiresAt: 200,
+          },
+        },
       });
     });
   });

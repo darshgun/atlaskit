@@ -35,19 +35,14 @@ export const actions: Actions = {
    * Set the state of a resource in the cache.
    *
    */
-  setResourceState: (type: string, key: string, state) => ({
-    setState,
-    getState,
-  }) => {
+  setResourceState: (type, key, state) => ({ setState, getState }) => {
     const { data } = getState();
-
-    const dataForType = data && data[type] ? data[type] : {};
 
     setState({
       data: {
         ...data,
         [type]: {
-          ...dataForType,
+          ...(data[type] || {}),
           [key]: state,
         },
       },
@@ -59,8 +54,8 @@ export const actions: Actions = {
    * Also resets the expiresAt based on maxAge
    */
   updateResourceState: (type, key, maxAge, newSliceData) => ({
-    dispatch,
     getState,
+    dispatch,
   }) => {
     const { data } = getState();
 
@@ -110,7 +105,7 @@ export const actions: Actions = {
   getResourceFromRemote: (resource, routerStoreContext) => async ({
     getState,
     dispatch,
-  }): Promise<any> => {
+  }): Promise<RouteResourceResponse> => {
     const { type, getKey, getData, maxAge } = resource;
     const { setResourceState } = actions;
     const { data: resourceStoreData, context } = getState();
@@ -164,14 +159,48 @@ export const actions: Actions = {
     }
 
     return Promise.all(
-      route.resources.map(resource =>
-        dispatch(actions.getResource(resource, routerStoreContext)),
-      ),
+      dispatch(actions.requestResources(route.resources, routerStoreContext)),
     );
   },
 
   /**
+   * Cleans expired resources and resets them back to their initial state.
+   * We need to do this when transitioning into a route.
+   */
+  cleanExpiredResources: (resources, routerStoreContext) => ({
+    getState,
+    dispatch,
+  }) => {
+    const { data, context: resourceContext } = getState();
+
+    resources.forEach(resource => {
+      const { type, getKey } = resource;
+      const key = getKey(routerStoreContext, resourceContext);
+      const slice = getSliceForResource({ data }, { type, key });
+
+      if (!slice.expiresAt || slice.expiresAt < Date.now()) {
+        actions.setResourceState(type, key, {
+          ...slice,
+          data: null,
+          error: null,
+          expiresAt: getExpiresAt(0),
+        });
+      }
+    });
+  },
+
+  /**
+   * Requests a specific set of resources.
+   */
+  requestResources: (resources, routerStoreContext) => ({ dispatch }) =>
+    resources.map(resource =>
+      dispatch(actions.getResource(resource, routerStoreContext)),
+    ),
+
+  /**
    * Request resources that exist in the next route context, and do not exist in the prev route context
+   *
+   * @deprecated
    */
   requestResourcesForNextRoute: (
     prevRouterStoreContext,
@@ -197,7 +226,7 @@ export const actions: Actions = {
     });
 
     return Promise.all(
-      (nextRoute.resources || []).reduce((acc: any[], resource) => {
+      (nextRoute.resources || []).reduce((acc, resource) => {
         const resourceIdentifier = getResourceIdentifier(
           resource,
           nextRouterStoreContext,
@@ -224,7 +253,7 @@ export const actions: Actions = {
     const { data, context } = getState();
     function getNextStateValue<R = any>(
       prev: ResourceStoreData | ResourceStoreContext,
-      next: ResourceStoreData | ResourceStoreContext | undefined,
+      next: ResourceStoreData | ResourceStoreContext | typeof undefined,
     ): R {
       if (!Object.keys(prev).length && next && Object.keys(next).length) {
         return next as R;
@@ -234,7 +263,7 @@ export const actions: Actions = {
     }
     const hydratedData = transformData(
       getNextStateValue<ResourceStoreData>(data, resourceData),
-      ({ error, ...rest }: RouteResourceResponse) => ({
+      ({ error, ...rest }) => ({
         ...rest,
         error: !error ? null : deserializeError(error),
       }),
@@ -242,10 +271,7 @@ export const actions: Actions = {
 
     setState({
       data: hydratedData,
-      context: getNextStateValue<ResourceStoreContext>(
-        context,
-        resourceContext,
-      ),
+      context: getNextStateValue(context, resourceContext),
     });
   },
 
@@ -278,7 +304,7 @@ export const ResourceStore = createStore<State, Actions>({
     data: {},
     context: {},
   },
-  actions,
+  actions: actions,
   name: 'router-resources',
 });
 
