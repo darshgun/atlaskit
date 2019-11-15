@@ -124,11 +124,17 @@ export default class DrawerPrimitive extends Component<DrawerPrimitiveProps> {
       icon: Icon,
       onClose,
       onCloseComplete,
+      onOpenComplete,
       ...props
     } = this.props;
 
     return (
-      <Slide component={Wrapper} onExited={onCloseComplete} {...props}>
+      <Slide
+        component={Wrapper}
+        onExited={onCloseComplete}
+        onEntered={onOpenComplete}
+        {...props}
+      >
         <Sidebar>
           <IconWrapper
             onClick={onClose}

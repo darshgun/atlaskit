@@ -137,4 +137,21 @@ describe('Drawer primitive', () => {
       callsAfterExited: [[node]],
     });
   });
+
+  it('should call onOpenComplete when the Slide has finished entering (entered)', () => {
+    const onOpenComplete = jest.fn();
+    const props = { ...commonProps, in: true, onOpenComplete };
+    const wrapper = shallow(
+      <DrawerPrimitive {...props}>
+        <DrawerContent />
+      </DrawerPrimitive>,
+    );
+
+    const node = document.createElement('div');
+
+    const handler = wrapper.find(Slide).props().onEntered;
+    if (handler) handler(node);
+
+    expect(handler).toHaveBeenLastCalledWith();
+  });
 });
