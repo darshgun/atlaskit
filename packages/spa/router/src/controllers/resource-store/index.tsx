@@ -263,7 +263,7 @@ export const actions: Actions = {
     }
     const hydratedData = transformData(
       getNextStateValue<ResourceStoreData>(data, resourceData),
-      ({ error, ...rest }) => ({
+      ({ error, ...rest }: RouteResourceResponse) => ({
         ...rest,
         error: !error ? null : deserializeError(error),
       }),
@@ -271,7 +271,10 @@ export const actions: Actions = {
 
     setState({
       data: hydratedData,
-      context: getNextStateValue(context, resourceContext),
+      context: getNextStateValue<ResourceStoreContext>(
+        context,
+        resourceContext,
+      ),
     });
   },
 
@@ -304,7 +307,7 @@ export const ResourceStore = createStore<State, Actions>({
     data: {},
     context: {},
   },
-  actions: actions,
+  actions,
   name: 'router-resources',
 });
 
