@@ -107,9 +107,9 @@ const actions: AllRouterActions = {
 
       if (canDo) {
         const {
-          cleanExpiredResources,
-          requestResources,
-        } = getResourceStore().actions;
+          actions: { cleanExpiredResources, requestResources },
+          store,
+        } = getResourceStore();
         const nextLocationContext = {
           route: nextContext.route,
           match: nextContext.match,
@@ -124,6 +124,7 @@ const actions: AllRouterActions = {
             location: currentLocation,
           },
           nextLocationContext,
+          store.getState().context,
         );
 
         cleanExpiredResources(nextResources, nextLocationContext);

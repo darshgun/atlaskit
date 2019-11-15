@@ -492,7 +492,7 @@ describe('SPA Router store', () => {
       getResourceStore().storeState.getState().data;
     const componentRenderSpy = jest.fn();
 
-    let componentRenderStates: any[] = [];
+    let componentRenderStates: string[] = [];
 
     beforeEach(() => {
       componentRenderSpy.mockImplementation(arg =>
