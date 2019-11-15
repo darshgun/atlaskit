@@ -9,7 +9,6 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "@atlaskit/build-releases": "^3.0.6",
     "@types/node": "^11.11.7",
     "axios": "^0.18.0",
     "bitbucket-build-status": "^1.1.0",
