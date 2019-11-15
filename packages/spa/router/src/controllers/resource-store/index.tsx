@@ -226,7 +226,7 @@ export const actions: Actions = {
     });
 
     return Promise.all(
-      (nextRoute.resources || []).reduce((acc, resource) => {
+      (nextRoute.resources || []).reduce((acc: any[], resource) => {
         const resourceIdentifier = getResourceIdentifier(
           resource,
           nextRouterStoreContext,

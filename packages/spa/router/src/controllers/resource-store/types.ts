@@ -63,7 +63,7 @@ export type Actions = {
   requestResources: (
     resources: RouteResource[],
     routerStoreContext: RouterStoreContext,
-  ) => ResourceAction<Promise<RouteResourceResponse[]>>;
+  ) => ResourceAction<Promise<RouteResourceResponse>[]>;
   requestResourcesForNextRoute: (
     prevRouterStoreContext: RouterStoreContext,
     nextRouterStoreContext: RouterStoreContext,

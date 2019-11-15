@@ -7,12 +7,11 @@ describe('routeHasChanged()', () => {
   it('should return true if the route objects do not match', () => {
     expect(
       routeHasChanged(
-        // $FlowFixMe - not all properties on mock
+        // @ts-ignore - not providing all properties on mock
         {
           path: '/some-path',
           component: () => null,
         },
-        // $FlowFixMe - not all properties on mock
         {
           path: '/another-path',
           component: () => null,
@@ -25,7 +24,7 @@ describe('routeHasChanged()', () => {
     expect(
       routeHasChanged(
         null,
-        // $FlowFixMe - not all properties on mock
+        // @ts-ignore - not providing all properties on mock
         {
           path: '/another-path',
           component: () => null,
@@ -39,8 +38,7 @@ describe('routeHasChanged()', () => {
       path: '/some-path',
       component: () => null,
     };
-
-    // $FlowFixMe - not all properties on mock
+    // @ts-ignore - not providing all properties on mock
     expect(routeHasChanged(route, route)).toBeFalsy();
   });
 });
@@ -52,7 +50,7 @@ describe('routeHasResources()', () => {
       component: () => null,
       resources: [{ mock: 'resource' }],
     };
-    // $FlowFixMe - not all properties on mock
+    // @ts-ignore - not providing all properties on mock
     expect(routeHasResources(route)).toBeTruthy();
   });
 
@@ -67,7 +65,7 @@ describe('routeHasResources()', () => {
       component: () => null,
       resources: [],
     };
-    // $FlowFixMe - not all properties on mock
+    // @ts-ignore - not providing all properties on mock
     expect(routeHasResources(route)).toBeFalsy();
   });
 
@@ -76,7 +74,7 @@ describe('routeHasResources()', () => {
       path: '/some-path',
       component: () => null,
     };
-    // $FlowFixMe - not all properties on mock
+    // @ts-ignore - not providing all properties on mock
     expect(routeHasResources(route)).toBeFalsy();
   });
 });
