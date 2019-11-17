@@ -10,7 +10,6 @@ import {
   RouterSubscriber,
   INITIAL_STATE,
   getRouterStore,
-  getRouterState,
 } from '../../../../controllers/router-store';
 import { ResourceSubscriber } from '../../../../controllers/subscribers/resource';
 import { MatchedRoute, HistoryAction } from '../../../../common/types';
