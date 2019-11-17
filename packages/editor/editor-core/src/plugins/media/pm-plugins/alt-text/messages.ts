@@ -6,10 +6,20 @@ export const messages = defineMessages({
     defaultMessage: 'Alt text',
     description: 'Add an alt text for this image',
   },
+  editAltText: {
+    id: 'fabric.editor.editAltText',
+    defaultMessage: 'Edit alt text',
+    description: 'Edit an alt text for this image',
+  },
   back: {
     id: 'fabric.editor.closeAltTextEdit',
     defaultMessage: 'Back',
     description: 'Back to toolbar',
+  },
+  clear: {
+    id: 'fabric.editor.clearAltTextEdit',
+    defaultMessage: 'Clear alt text',
+    description: 'Clear alt text',
   },
   placeholder: {
     id: 'fabric.editor.placeholderAltText',
