@@ -31,17 +31,19 @@ export const ArticleBody = (props: Props) => {
     }
 
     if (currentIframe !== null && currentIframe.contentWindow !== null) {
-      const iframeContent: Element | null =
-        currentIframe.contentWindow.document.body.firstElementChild;
-      // if the iframe has content, set the height of the iframe body
-      // and of the iframe itself
-      if (iframeContent) {
-        const contentHeight: number = iframeContent.scrollHeight;
-        currentIframe.style.height = contentHeight + 'px';
-        setArticleHeight(`${contentHeight}px`);
+      if (currentIframe.contentWindow.document.body) {
+        const iframeContent: Element | null =
+          currentIframe.contentWindow.document.body.firstElementChild;
+        // if the iframe has content, set the height of the iframe body
+        // and of the iframe itself
+        if (iframeContent) {
+          const contentHeight: number = iframeContent.scrollHeight;
+          currentIframe.style.height = contentHeight + 'px';
+          setArticleHeight(`${contentHeight}px`);
 
-        if (onArticleRenderDone) {
-          onArticleRenderDone();
+          if (onArticleRenderDone) {
+            onArticleRenderDone();
+          }
         }
       }
     }
