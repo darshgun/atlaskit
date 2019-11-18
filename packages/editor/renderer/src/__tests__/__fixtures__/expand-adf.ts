@@ -1,4 +1,4 @@
-export const expandADF = (breakoutMode = 'default') => ({
+export const expandADF = (breakoutMode = 'default', title = 'Cool cheese') => ({
   version: 1,
   type: 'doc',
   content: [
@@ -17,7 +17,7 @@ export const expandADF = (breakoutMode = 'default') => ({
     {
       type: 'expand',
       attrs: {
-        title: 'Cool cheese',
+        title,
       },
       marks: [
         {
