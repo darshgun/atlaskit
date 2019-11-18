@@ -42,7 +42,7 @@
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/textfield": "^3.1.0",
     "@atlaskit/tooltip": "^15.0.14",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "fs-extra": "^4.0.2",
     "pkg-dir": "^4.2.0",
     "react-dom": "^16.8.0",

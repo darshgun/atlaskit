@@ -134,7 +134,7 @@
     "chai": "^4.1.2",
     "clipboard-polyfill": "2.4.3",
     "diff": "^4.0.1",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "fetch-mock": "^7.3.3",
     "jest-sandbox": "^1.1.1",
     "jquery": "^3.2.1",

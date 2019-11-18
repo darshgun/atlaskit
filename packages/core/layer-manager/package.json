@@ -45,7 +45,7 @@
     "@atlaskit/theme": "^9.2.4",
     "@atlaskit/tooltip": "^15.1.1",
     "@atlaskit/webdriver-runner": "^0.1.5",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "react-dom": "^16.8.0",
     "wait-for-expect": "^1.2.0"
   },

@@ -30,7 +30,7 @@
   "devDependencies": {
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/docs": "^8.1.8",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "jest-in-case": "^1.0.2",
     "react": "^16.8.0"
   },
