@@ -22,14 +22,14 @@ describe('addExcludesFromProviderFactory', () => {
         providerFactory.setProvider(providerName, Promise.resolve({}));
       });
 
-      test(`should not add ${pluginName} plugin to excludes`, () => {
+      it(`should not add ${pluginName} plugin to excludes`, () => {
         addExcludesFromProviderFactory(providerFactory, excludes);
         expect(excludes).not.toContain(pluginName);
       });
     });
 
     describe(`without ${providerName}`, () => {
-      test(`should add ${pluginName} plugin to excludes`, () => {
+      it(`should add ${pluginName} plugin to excludes`, () => {
         addExcludesFromProviderFactory(providerFactory, excludes);
         expect(excludes).toContain(pluginName);
       });
@@ -41,14 +41,14 @@ describe('addExcludesFromProviderFactory', () => {
           providerFactory.setProvider(providerName, Promise.resolve({}));
         });
 
-        test(`should keep ${pluginName} plugin into excludes`, () => {
+        it(`should keep ${pluginName} plugin into excludes`, () => {
           addExcludesFromProviderFactory(providerFactory, excludes);
           expect(excludes).not.toContain(pluginName);
         });
       });
 
       describe(`without ${providerName}`, () => {
-        test(`should keep ${pluginName} plugin into excludes`, () => {
+        it(`should keep ${pluginName} plugin into excludes`, () => {
           addExcludesFromProviderFactory(providerFactory, excludes);
           expect(excludes).toContain(pluginName);
         });

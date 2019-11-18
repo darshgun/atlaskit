@@ -43,7 +43,7 @@ describe('useProvider', () => {
     }
   });
 
-  test('should pass media provider to child after been set', () => {
+  it('should pass media provider to child after been set', () => {
     const mediaProvider = {};
     providerFactory = new ProviderFactory();
     const testRenderer = setup(providerFactory);
@@ -63,7 +63,7 @@ describe('useProvider', () => {
     expect(child.props.mediaProvider).resolves.toBe(mediaProvider);
   });
 
-  test('should unsubscribe when unmount ', () => {
+  it('should unsubscribe when unmount ', () => {
     const mediaProvider = {};
     providerFactory = new ProviderFactory();
     providerFactory.setProvider(
@@ -86,7 +86,7 @@ describe('useProvider', () => {
     );
   });
 
-  test('should pass media provider to child when already exist', () => {
+  it('should pass media provider to child when already exist', () => {
     const mediaProvider = {};
     providerFactory = new ProviderFactory();
     providerFactory.setProvider(
