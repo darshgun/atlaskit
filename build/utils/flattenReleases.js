@@ -6,7 +6,7 @@ function maxType(types) {
   return 'none';
 }
 
-function flattenReleases(changesets /*: Object*/) {
+function flattenReleases(changesets /*: Array<Object>*/) {
   const abc = changesets
     .map(changeset => [
       ...changeset.releases.map(release => ({
