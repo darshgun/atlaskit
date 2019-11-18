@@ -1,5 +1,26 @@
 # @atlaskit/editor-json-transformer
 
+## 7.0.0
+
+### Major Changes
+
+- [major][6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+
+  Provide standard empty adf when provided with empty wikimarkup/markdown/jira/cxhtml/prosemirror
+
+### Minor Changes
+
+- [minor][f1a06fc2fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a06fc2fd):
+
+  ED-7876 Add expand and nestedExpand to stage-0 schema
+
+  Adds two new nodes `expand` and `nestedExpand` to the stage-0 schema.
+
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+  - @atlaskit/editor-core@114.1.0
+  - @atlaskit/editor-test-helpers@10.2.0
+  - @atlaskit/editor-common@42.0.0
+
 ## 6.3.5
 
 - Updated dependencies [f28c191f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28c191f4a):

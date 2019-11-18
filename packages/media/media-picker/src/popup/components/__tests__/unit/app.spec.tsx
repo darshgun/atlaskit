@@ -12,13 +12,12 @@ import ConnectedApp, { App, AppDispatchProps } from '../../app';
 import UploadView from '../../views/upload/upload';
 import Browser from '../../views/browser/browser';
 import { fileUploadsStart } from '../../../actions/fileUploadsStart';
-import { UploadParams } from '../../../../domain/config';
 import { LocalBrowserButton } from '../../views/upload/uploadButton';
 import analyticsProcessing from '../../../middleware/analyticsProcessing';
 import { Dropzone } from '../../../../components/dropzone/dropzone';
 import { Browser as MediaPickerBrowser } from '../../../../components/browser/browser';
 import { Clipboard as MediaPickerClipboard } from '../../../../components/clipboard/clipboard';
-import { MediaFile } from '../../../../domain/file';
+import { MediaFile, UploadParams } from '../../../../types';
 import { AuthProvider } from '@atlaskit/media-core';
 import { MediaClient } from '@atlaskit/media-client';
 

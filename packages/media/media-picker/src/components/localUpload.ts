@@ -8,9 +8,9 @@ import {
   UploadProcessingEventPayload,
   UploadsStartEventPayload,
   UploadStatusUpdateEventPayload,
-} from '../domain/uploadEvent';
+  UploadParams,
+} from '../types';
 import { UploadComponent } from './component';
-import { UploadParams } from '../domain/config';
 import { UploadServiceImpl } from '../service/uploadServiceImpl';
 import { LocalUploadConfig } from './types';
 

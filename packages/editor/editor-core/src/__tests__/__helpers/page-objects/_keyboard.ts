@@ -18,6 +18,9 @@ type KeyboardKey =
   | 'End'
   | 'Control'
   | 'KeyZ'
+  | 'Alt'
+  | 'y'
+  | 'Meta'
   | 'Backspace';
 
 // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#keyboardpresskey-options

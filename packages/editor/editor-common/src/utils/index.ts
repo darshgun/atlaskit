@@ -1,4 +1,3 @@
-export * from './color';
 export * from './macro';
 export * from './validator';
 export { default as browser } from './browser';

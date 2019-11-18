@@ -31,7 +31,7 @@ import {
   importFiles,
   SelectedUploadFile,
   getTenantFileState,
-  touchSelectedFiles,
+  touchSelectedFile,
 } from '../../importFiles';
 import { LocalUpload, LocalUploads } from '../../../domain';
 import { finalizeUpload } from '../../../actions/finalizeUpload';
@@ -50,7 +50,7 @@ import {
 } from '../../../actions/setEventProxy';
 import { getPreview } from '../../../actions/getPreview';
 import { hidePopup } from '../../../actions/hidePopup';
-import { MediaFile } from '../../../../domain/file';
+import { MediaFile } from '../../../../types';
 import {
   isSendUploadEventAction,
   SendUploadEventAction,
@@ -577,7 +577,7 @@ describe('importFiles middleware', () => {
         const { store } = setupResult;
 
         const { tenantMediaClient } = store.getState();
-        expect(tenantMediaClient.file.touchFiles).toBeCalledTimes(1);
+        expect(tenantMediaClient.file.touchFiles).toBeCalledTimes(4);
         expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
           [
             {
@@ -585,16 +585,31 @@ describe('importFiles middleware', () => {
               fileId: expectUUID,
               occurrenceKey: 'occurrence-key-1',
             },
+          ],
+          'tenant-collection',
+        );
+        expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
+          [
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
               occurrenceKey: 'occurrence-key-3',
             },
+          ],
+          'tenant-collection',
+        );
+        expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
+          [
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
               occurrenceKey: 'occurrence-key-4',
             },
+          ],
+          'tenant-collection',
+        );
+        expect(tenantMediaClient.file.touchFiles).toBeCalledWith(
+          [
             {
               collection: 'tenant-collection',
               fileId: expectUUID,
@@ -900,26 +915,27 @@ describe('importFiles middleware', () => {
         config: { uploadParams: { collection: 'some-collection-name' } },
       });
       const { tenantMediaClient } = store.getState();
-      await touchSelectedFiles(selectedFiles, store);
+      await Promise.all(
+        selectedFiles.map(selectedFile =>
+          touchSelectedFile(selectedFile.touchFileDescriptor, store),
+        ),
+      );
       expectFunctionToHaveBeenCalledWith(tenantMediaClient.file.touchFiles, [
         [
           {
             fileId: 'tenant-upfront-id',
           },
+        ],
+        'some-collection-name',
+      ]);
+      expectFunctionToHaveBeenCalledWith(tenantMediaClient.file.touchFiles, [
+        [
           {
             fileId: 'tenant-upfront-id-2',
           },
         ],
         'some-collection-name',
       ]);
-    });
-
-    it('should not call touchFiles if selected files are empty', async () => {
-      const selectedFiles: SelectedUploadFile[] = [];
-      const store = mockStore();
-      const { tenantMediaClient } = store.getState();
-      await touchSelectedFiles(selectedFiles, store);
-      expect(tenantMediaClient.file.touchFiles).not.toHaveBeenCalled();
     });
   });
 });

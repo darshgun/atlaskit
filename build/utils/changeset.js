@@ -1,12 +1,17 @@
+// @flow
 // WARNING: This is currently a workaround until changeset is available through exposed functions.
 // It's not advised to depend on this, as it's not a complete implementation. (Dependent packages will not be generated).
 // Follow changeset GitHub ticket here: https://github.com/atlassian/changesets/issues/122
 const humanId = require('human-id');
+// $FlowFixMe - There is a type issue with projector spawn.
 const spawn = require('projector-spawn');
 const fse = require('fs-extra');
 const path = require('path');
 
-const createChangeset = async (packages, message) => {
+const createChangeset = async (
+  packages /*: string */,
+  message /*: string */,
+) => {
   const changeset = {
     releases: packages,
     dependents: [],

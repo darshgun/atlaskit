@@ -8,6 +8,7 @@ import {
   ContextIdentifierProvider,
   ExtensionHandlers,
   ErrorReportingHandler,
+  MediaProvider,
 } from '@atlaskit/editor-common';
 import { ActivityProvider } from '@atlaskit/activity';
 import { MentionProvider } from '@atlaskit/mention/resource';
@@ -16,7 +17,7 @@ import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
 import { PluginConfig as TablesPluginConfig } from '../plugins/table/types';
 import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
-import { MediaProvider, MediaState } from '../plugins/media/types';
+import { MediaState } from '../plugins/media/types';
 import { AnalyticsHandler } from '../analytics/handler';
 
 import { ImageUploadHandler } from '../plugins/image-upload/types';
@@ -181,15 +182,14 @@ export interface EditorProps {
    **/
   allowNewInsertionBehaviour?: boolean;
 
-  // This enables the option to add an alt-text attribute to images contained in the Editor.
-  UNSAFE_allowAltTextOnImages?: boolean;
-
   // Set to enable the quick insert menu i.e. '/' key trigger.
   // You can also provide your own insert menu options that will be shown in addition to the enabled
   // editor features e.g. Confluence uses this to provide its macros.
   quickInsert?: QuickInsertOptions;
 
   UNSAFE_cards?: CardOptions;
+
+  UNSAFE_allowExpand?: boolean;
 
   // Submits on the enter key. Probably useful for an inline comment editor use case.
   saveOnEnter?: boolean;

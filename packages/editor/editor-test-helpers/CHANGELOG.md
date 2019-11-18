@@ -1,5 +1,31 @@
 # @atlaskit/editor-test-helpers
 
+## 10.2.0
+
+### Minor Changes
+
+- [minor][f1a06fc2fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a06fc2fd):
+
+  ED-7876 Implement expand and nestedExpand in Editor and Renderer
+
+  A **work in progress** implementation of the new `expand` and `nestedExpand` nodes. These are currently **disabled** by default, but can be tested by enabling an editor prop.
+
+  `UNSAFE_allowExpand={true}`
+
+  Note, `expand` and `nestedExpand` are only in the `stage-0` ADF schema (as of this changeset).
+
+- [minor][1377a45225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1377a45225):
+
+  ED-7492 add support to indent actions
+
+  This version adds support for indenting actions using the keyboard shortcuts Tab and Shift-Tab. You can also unindent items by backspacing them at the start, or deleting forwards within the task.
+
+  There is no new behaviour if the feature flag (`allowNestedTasks`) is turned off.
+
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+  - @atlaskit/editor-core@114.1.0
+  - @atlaskit/editor-common@42.0.0
+
 ## 10.1.3
 
 - Updated dependencies [f28c191f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28c191f4a):

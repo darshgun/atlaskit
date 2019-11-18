@@ -94,7 +94,7 @@ export class AudioViewer extends BaseViewer<string, Props, State> {
     const useCustomAudioPlayer = !isIE();
     const isAutoPlay = previewCount === 0;
     return useCustomAudioPlayer ? (
-      <AudioPlayer>
+      <AudioPlayer data-testid="media-viewer-audio-content">
         {this.renderCover()}
         <CustomAudioPlayerWrapper>
           <CustomMediaPlayer

@@ -15,7 +15,6 @@ import {
   akEditorFullWidthLayoutWidth,
   akEditorBreakoutPadding,
 } from '../consts';
-import { PanelSharedCssClassName } from './panel';
 
 export const tableMarginTop = 24;
 export const tableMarginBottom = 16;
@@ -43,8 +42,6 @@ const tableSharedStyle = css`
     /**
      * Fix block top alignment inside table cells.
      */
-    .code-block,
-    .${PanelSharedCssClassName.PANEL_CONTAINER},
     .taskItemView-content-wrap > div,
     .decisionItemView-content-wrap > div {
       margin-top: 0;
@@ -95,6 +92,18 @@ const tableSharedStyle = css`
         padding: ${tableCellPadding}px;
         /* https://stackoverflow.com/questions/7517127/borders-not-shown-in-firefox-with-border-collapse-on-table-position-relative-o */
         background-clip: padding-box;
+
+        > *:first-child {
+          margin-top: 0;
+        }
+
+        > .ProseMirror-gapcursor.-right:first-child + * {
+          margin-top: 0;
+        }
+
+        > .ProseMirror-gapcursor:first-child + span + * {
+          margin-top: 0;
+        }
 
         th p:not(:first-of-type),
         td p:not(:first-of-type) {

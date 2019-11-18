@@ -1,5 +1,16 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.5.9
+
+- Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+  - @atlaskit/adf-schema@4.3.0
+  - @atlaskit/editor-common@42.0.0
+  - @atlaskit/editor-core@114.1.0
+  - @atlaskit/renderer@53.1.0
+  - @atlaskit/editor-json-transformer@7.0.0
+  - @atlaskit/editor-test-helpers@10.2.0
+
 ## 4.5.8
 
 - Updated dependencies [f28c191f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28c191f4a):

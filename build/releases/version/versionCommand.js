@@ -1,13 +1,16 @@
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+// @flow
 const path = require('path');
 const bolt = require('bolt');
 const logger = require('@atlaskit/build-utils/logger');
 const git = require('@atlaskit/build-utils/git');
+const fs = require('@atlaskit/build-utils/fs');
+const fse = require('fs-extra');
 const createRelease = require('./createRelease');
 const createReleaseCommit = require('./createReleaseCommit');
 const { removeFolders } = require('../utils/removeFolders');
 const updateChangelog = require('../changelog');
-const fs = require('@atlaskit/build-utils/fs');
-const fse = require('fs-extra');
 const resolveConfig = require('../utils/resolveConfig');
 const { removeEmptyFolders } = require('../utils/removeFolders');
 const getChangesetBase = require('../utils/getChangesetBase');
@@ -57,6 +60,7 @@ async function getNewFSChangesets(changesetBase) {
         'utf-8',
       );
       const jsonPath = path.join(changesetBase, changesetDir, 'changes.json');
+      // $StringLitteral
       const json = require(jsonPath);
       const commit = await git.getCommitThatAddsFile(jsonPath);
       return { ...json, summary, commit };
@@ -64,7 +68,7 @@ async function getNewFSChangesets(changesetBase) {
   return Promise.all(changesets);
 }
 
-async function run(opts) {
+async function run(opts /*: Object*/) {
   let userConfig = await resolveConfig(opts);
   userConfig =
     userConfig && userConfig.versionOptions ? userConfig.versionOptions : {};
@@ -80,10 +84,11 @@ async function run(opts) {
   const publishCommit = createReleaseCommit(releaseObj, config.skipCI);
 
   if (unreleasedChangesets.length === 0) {
+    // $FlowFixMe - fix logger
     logger.warn('No unreleased changesets found, exiting.');
     return;
   }
-
+  // $FlowFixMe - fix logger
   logger.log(publishCommit);
 
   await bumpReleasedPackages(releaseObj, allPackages, config);
@@ -109,8 +114,10 @@ async function run(opts) {
 
   // This double negative is bad, but cleaner than the alternative
   if (!noChangelogFlag) {
+    // $FlowFixMe - fix logger
     logger.log('Updating changelogs...');
     // Now update the changelogs
+    // $FlowFixMe - property iterator is missing
     const changelogPaths = await updateChangelog(releaseObj, config);
     if (config.commit) {
       for (const changelogPath of changelogPaths) {
@@ -118,22 +125,24 @@ async function run(opts) {
       }
     }
   }
-
+  // $FlowFixMe - fix logger
   logger.log('Removing changesets...');
 
   // This should then reset the changesets folder to a blank state
   removeFolders(changesetBase);
   if (config.commit) {
     await git.add(changesetBase);
-
+    // $FlowFixMe - fix logger
     logger.log('Committing changes...');
     // TODO: Check if there are any unstaged changed before committing and throw
     // , as it means something went super-odd.
     await git.commit(publishCommit);
   } else {
+    // $FlowFixMe - fix logger
     logger.log(
       'All files have been updated. Review them and commit at your leisure',
     );
+    // $FlowFixMe - fix logger
     logger.warn(
       'If you alter version changes in package.jsons, make sure to run bolt before publishing to ensure the repo is in a valid state',
     );

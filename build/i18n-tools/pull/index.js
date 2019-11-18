@@ -1,3 +1,4 @@
+// @flow
 const fs = require('fs');
 const path = require('path');
 const Listr = require('listr');
@@ -19,7 +20,7 @@ const generatedPrefix = `\n
  * DO NOT CHANGE IT BY HAND or your changes will be lost.
  */\n`;
 
-function pullCommand(options) {
+function pullCommand(options /*: Object */) {
   const { absPathToPackage, outputDir, type, project, resource } = options;
   const dirToOutput = path.join(absPathToPackage, outputDir);
   return new Listr([
@@ -37,6 +38,7 @@ function pullCommand(options) {
             `Couldn't find any language for resource "${resource}" in project "${project}"!`,
           );
         }
+        // eslint-disable-next-line no-param-reassign
         context.languages = languages;
       },
     },
@@ -59,7 +61,7 @@ function pullCommand(options) {
     {
       title: 'Creating index and languages exports',
       task: async ({ languages }) => {
-        const options = await prettier.resolveConfig(absPathToPackage);
+        const opts = await prettier.resolveConfig(absPathToPackage);
         const fileType = getExtensionForType(type);
 
         const exports = languages.map(
@@ -69,20 +71,19 @@ function pullCommand(options) {
         // Generate index.js|ts with exports
         fs.writeFileSync(
           path.join(outputDir, `index${fileType}`),
-          prettier.format(generatedPrefix + exports.join('\n'), options),
+          prettier.format(generatedPrefix + exports.join('\n'), opts),
         );
 
         // Generate languages.js|ts with export
         fs.writeFileSync(
           path.join(outputDir, `languages${fileType}`),
           prettier.format(
-            generatedPrefix +
-              `export default ${JSON.stringify(
-                languages.reduce((acc, { name, code }) => {
-                  acc[code] = name;
-                  return acc;
-                }, {}),
-              )}`,
+            `${generatedPrefix}export default ${JSON.stringify(
+              languages.reduce((acc, { name, code }) => {
+                acc[code] = name;
+                return acc;
+              }, {}),
+            )}`,
             options,
           ),
         );
@@ -109,7 +110,9 @@ function downloadLanguage(options) {
         if (!content) {
           throw new Error(`Couldn't fetch PO for language ${name}`);
         }
+        // eslint-disable-next-line no-param-reassign
         context[code] = {};
+        // eslint-disable-next-line no-param-reassign
         context[code].content = content;
       },
     },
@@ -120,18 +123,20 @@ function downloadLanguage(options) {
         if (!json) {
           throw new Error(`PO to JSON conversion failed!`);
         }
+        // eslint-disable-next-line no-param-reassign
         context[code].json = json;
       },
     },
     {
       title: 'Storing JSON',
       task: async context => {
-        const options = await prettier.resolveConfig(absPathToPackage);
+        const opts = await prettier.resolveConfig(absPathToPackage);
 
         const formattedContent = prettier.format(
-          generatedPrefix +
-            `// ${name}\nexport default ${JSON.stringify(context[code].json)}`,
-          options,
+          `${generatedPrefix}// ${name}\nexport default ${JSON.stringify(
+            context[code].json,
+          )}`,
+          opts,
         );
 
         const outputPath = path.join(

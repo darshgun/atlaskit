@@ -16,7 +16,7 @@ import {
   RemoteUploadEndPayload,
   RemoteUploadFailPayload,
 } from '../tools/websocket/upload/wsUploadEvents';
-import { MediaFile } from '../../domain/file';
+import { MediaFile } from '../../types';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
 
 type CloudFetchingEventAction = HandleCloudFetchingEventAction<

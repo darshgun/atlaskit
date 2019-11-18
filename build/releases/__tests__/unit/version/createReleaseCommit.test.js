@@ -1,3 +1,4 @@
+// @flow
 const outdent = require('outdent');
 const createRelease = require('../../../version/createRelease');
 const createReleaseCommit = require('../../../version/createReleaseCommit');

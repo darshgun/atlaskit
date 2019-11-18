@@ -1,5 +1,13 @@
 # @atlaskit/status
 
+## 0.9.17
+
+### Patch Changes
+
+- [patch][bcd4884c64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bcd4884c64):
+
+  ED-7654 Replace deprecated @atlaskit/field-text for @atlaskit/text-field
+
 ## 0.9.16
 
 - Updated dependencies [ae4f336a3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae4f336a3a):

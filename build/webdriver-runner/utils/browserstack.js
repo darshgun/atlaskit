@@ -12,6 +12,7 @@ const bsLocal = new browserstack.Local();
 
 const uniqIdentifierStamp = process.env.LOCAL_IDENTIFIER || '';
 const bsKey = process.env.BROWSERSTACK_KEY;
+// eslint-disable-next-line no-nested-ternary
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT + uniqIdentifierStamp
   : process.env.USER
@@ -21,6 +22,7 @@ const commit = process.env.BITBUCKET_COMMIT
 async function startServer() {
   const spinner = ora(chalk.cyan('Connecting to BrowserStack')).start();
   return new Promise((resolve, reject) => {
+    // eslint-disable-next-line consistent-return
     bsLocal.start({ key: bsKey, localIdentifier: commit }, error => {
       if (error) {
         spinner.fail(chalk.red('Failed to connect to BrowserStack:', error));

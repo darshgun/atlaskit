@@ -1,5 +1,13 @@
 # @atlaskit/onboarding
 
+## 9.0.5
+
+### Patch Changes
+
+- [patch][1ed27f5f85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ed27f5f85):
+
+  Adds prop types for Header / Footer render props.
+
 ## 9.0.4
 
 ### Patch Changes

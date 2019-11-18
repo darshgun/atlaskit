@@ -18,6 +18,7 @@ const mockEditorCore = {
   setLinkHref: jest.fn(() => () => mockCalls.push('setLinkHref')),
   setLinkText: jest.fn(() => () => mockCalls.push('setLinkText')),
   clearEditorContent: jest.fn(() => {}),
+  setKeyboardHeight: jest.fn(() => () => {}),
 };
 
 jest.mock('../../../../version.json', () => ({
@@ -38,6 +39,7 @@ import {
   setLinkHref,
   setLinkText,
   clearEditorContent,
+  setKeyboardHeight,
 } from '@atlaskit/editor-core';
 
 import WebBridgeImpl from '../../../../editor/native-to-web';
@@ -356,6 +358,19 @@ describe('history', () => {
   it('should call redo', () => {
     bridge.redo();
     expect(mockPmHistory.redo).toHaveBeenCalled();
+  });
+});
+
+describe('ui', () => {
+  const bridge: any = new WebBridgeImpl();
+
+  beforeEach(() => {
+    bridge.editorView = {};
+  });
+
+  it('should set keyboard height', () => {
+    bridge.setKeyboardControlsHeight('350');
+    expect(setKeyboardHeight).toHaveBeenCalledWith(350);
   });
 });
 

@@ -126,6 +126,40 @@ describe('Media', () => {
     mediaComponent.unmount();
   });
 
+  it('should render a media component with alt text if FF is on', async () => {
+    const mediaComponent = mount(
+      <Media
+        type={mediaNode.attrs.type as MediaType}
+        id={mediaNode.attrs.id}
+        collection={mediaNode.attrs.collection}
+        alt="test"
+        UNSAFE_allowAltTextOnImages={true}
+      />,
+    );
+
+    const mediaCard = mediaComponent.find(MediaCard);
+    expect(mediaCard.length).toEqual(1);
+    expect(mediaCard.prop('alt')).toBe('test');
+    mediaComponent.unmount();
+  });
+
+  it('should render a media component without alt text if FF is off', async () => {
+    const mediaComponent = mount(
+      <Media
+        type={mediaNode.attrs.type as MediaType}
+        id={mediaNode.attrs.id}
+        collection={mediaNode.attrs.collection}
+        alt="test"
+        UNSAFE_allowAltTextOnImages={true}
+      />,
+    );
+
+    const mediaCard = mediaComponent.find(MediaCard);
+    expect(mediaCard.length).toEqual(1);
+    expect(mediaCard.prop('alt')).toBe('test');
+    mediaComponent.unmount();
+  });
+
   it('should render a media component with external image', async () => {
     const mediaComponent = mount(
       <Media type="external" url="http://image.jpg" />,

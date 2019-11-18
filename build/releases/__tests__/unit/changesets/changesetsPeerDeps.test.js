@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 import {
@@ -43,14 +44,18 @@ type mockResponses = {
   dependents?: Array<dependent>,
 };
 
-const mockUserResponses = (mockResponses: mockResponses) => {
-  const summary = mockResponses.summary || 'summary message mock';
-  const shouldCommit = mockResponses.shouldCommit || 'n';
-  askCheckboxPlus.mockReturnValueOnce(Object.keys(mockResponses.releases));
-  Object.entries(mockResponses.releases).forEach(([pkg, type]) =>
+const mockUserResponses = (mockResponsesParam: mockResponses) => {
+  const summary = mockResponsesParam.summary || 'summary message mock';
+  const shouldCommit = mockResponsesParam.shouldCommit || 'n';
+  // $FlowFixMe - type missing
+  askCheckboxPlus.mockReturnValueOnce(Object.keys(mockResponsesParam.releases));
+  Object.entries(mockResponsesParam.releases).forEach(([pkg, type]) =>
+    // $FlowFixMe - type missing
     askList.mockReturnValueOnce(type),
   );
+  // $FlowFixMe - type missing
   askQuestion.mockReturnValueOnce(summary);
+  // $FlowFixMe - type missing
   askConfirm.mockReturnValueOnce(shouldCommit);
 };
 
@@ -79,6 +84,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -98,6 +104,7 @@ describe('Changesets - bumping peerDeps', () => {
       releases: [{ name: 'depended-upon', type: 'patch' }],
       dependents: [],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -122,6 +129,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -146,6 +154,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -164,6 +173,7 @@ describe('Changesets - bumping peerDeps', () => {
       releases: [{ name: 'depended-upon', type: 'patch' }],
       dependents: [],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -187,6 +197,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -210,6 +221,7 @@ describe('Changesets - bumping peerDeps', () => {
         },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });
@@ -234,6 +246,7 @@ describe('Changesets - bumping peerDeps', () => {
         { name: 'pkg-b', type: 'patch', dependencies: ['pkg-c', 'pkg-a'] },
       ],
     };
+    // $FlowFixMe - type missing
     const call = writeChangeset.mock.calls[0][0];
     expect(call).toEqual(expectedChangeset);
   });

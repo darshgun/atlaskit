@@ -70,7 +70,7 @@ export class VideoViewer extends BaseViewer<string, Props, State> {
     const useCustomVideoPlayer = !isIE();
     const isAutoPlay = previewCount === 0;
     return useCustomVideoPlayer ? (
-      <CustomVideoPlayerWrapper>
+      <CustomVideoPlayerWrapper data-testid="media-viewer-video-content">
         <CustomMediaPlayer
           type="video"
           isAutoPlay={isAutoPlay}

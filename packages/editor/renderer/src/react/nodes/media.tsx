@@ -9,6 +9,7 @@ import { MediaCard, MediaCardProps, MediaProvider } from '../../ui/MediaCard';
 
 export interface MediaProps extends MediaCardProps {
   providers?: ProviderFactory;
+  UNSAFE_allowAltTextOnImages?: boolean;
 }
 
 type Providers = {
@@ -18,12 +19,14 @@ type Providers = {
 export default class Media extends PureComponent<MediaProps, {}> {
   private renderCard = (providers: Providers = {}) => {
     const { mediaProvider, contextIdentifierProvider } = providers;
+    const { UNSAFE_allowAltTextOnImages, alt } = this.props;
 
     return (
       <MediaCard
         mediaProvider={mediaProvider}
         contextIdentifierProvider={contextIdentifierProvider}
         {...this.props}
+        alt={UNSAFE_allowAltTextOnImages ? alt : undefined}
       />
     );
   };

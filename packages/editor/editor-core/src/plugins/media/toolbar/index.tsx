@@ -1,7 +1,6 @@
 import { InjectedIntl } from 'react-intl';
 import { EditorState } from 'prosemirror-state';
 import { removeSelectedNode } from 'prosemirror-utils';
-
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 
 import commonMessages from '../../../messages';
@@ -21,6 +20,9 @@ import {
 import buildLayoutButtons from './buildMediaLayoutButtons';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { MediaLinkingState, getMediaLinkingState } from '../pm-plugins/linking';
+import { getPluginState as getMediaAltTextPluginState } from '../pm-plugins/alt-text';
+import { altTextButton, getAltTextToolbar } from './alt-text';
+import { getEditorProps } from '../../shared-context';
 
 const remove: Command = (state, dispatch) => {
   if (dispatch) {
@@ -113,19 +115,32 @@ export const floatingToolbar = (
     }
   }
 
+  const mediaAltTextPluginState = getMediaAltTextPluginState(state);
+  const editorProps = getEditorProps(state);
+  const media = editorProps && editorProps.media;
+  if (media && media.UNSAFE_allowAltTextOnImages) {
+    if (mediaAltTextPluginState.isAltTextEditorOpen) {
+      return getAltTextToolbar(baseToolbar);
+    } else {
+      toolbarButtons.push(altTextButton(intl), { type: 'separator' });
+    }
+  }
+
+  const items: Array<FloatingToolbarItem<Command>> = [
+    ...toolbarButtons,
+    {
+      type: 'button',
+      appearance: 'danger',
+      icon: RemoveIcon,
+      onMouseEnter: hoverDecoration(mediaSingle, true),
+      onMouseLeave: hoverDecoration(mediaSingle, false),
+      title: intl.formatMessage(commonMessages.remove),
+      onClick: remove,
+    },
+  ];
+
   return {
     ...baseToolbar,
-    items: [
-      ...toolbarButtons,
-      {
-        type: 'button',
-        appearance: 'danger',
-        icon: RemoveIcon,
-        onMouseEnter: hoverDecoration(mediaSingle, true),
-        onMouseLeave: hoverDecoration(mediaSingle, false),
-        title: intl.formatMessage(commonMessages.remove),
-        onClick: remove,
-      },
-    ],
+    items,
   };
 };

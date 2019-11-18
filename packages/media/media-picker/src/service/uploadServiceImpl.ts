@@ -17,13 +17,12 @@ import {
 } from '@atlaskit/media-client';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { EventEmitter2 } from 'eventemitter2';
-import { MediaFile } from '../domain/file';
+import { MediaFile, UploadParams } from '../types';
 
 import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
 import { getPreviewFromImage } from '../util/getPreviewFromImage';
-import { UploadParams } from '..';
 import { SmartMediaProgress } from '../domain/progress';
-import { MediaErrorName } from '../domain/error';
+import { MediaErrorName } from '../types';
 import {
   UploadService,
   UploadServiceEventListener,

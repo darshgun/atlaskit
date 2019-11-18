@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-default */
 // @flow
 import type { ComponentType } from 'react';
 import { default as Indent } from './Indent';

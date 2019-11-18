@@ -51,6 +51,8 @@ export default createSchema({
     'layoutColumn',
     'inlineCard',
     'blockCard',
+    'expand',
+    'nestedExpand',
     'unsupportedBlock',
     'unsupportedInline',
   ],

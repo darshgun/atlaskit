@@ -1,5 +1,5 @@
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-import { PopupUploadEventPayloadMap } from '../src/components/types';
+import { PopupUploadEventPayloadMap } from '../src/types';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 export type Event = {
@@ -19,13 +19,14 @@ export class PopupSimplePage {
   constructor(private readonly page: any) {}
 
   async clickUploadButton(): Promise<void> {
-    const selector = '.e2e-upload-button';
+    const selector = '[data-testid="media-picker-upload-button"]';
     await this.page.waitForSelector(selector);
     await this.page.click(selector);
   }
 
   async getRecentUploadCards(): Promise<RecentUploadCard[]> {
-    const selector = '.e2e-recent-upload-card';
+    const selector =
+      '[data-testid="media-picker-uploading-media-card"], [data-testid="media-picker-recent-media-card"]';
     const results = await this.page.getHTML(selector);
     return results.map((html: string) => {
       const div = document.createElement('div');
@@ -47,7 +48,7 @@ export class PopupSimplePage {
   }
 
   async clickInsertButton(): Promise<void> {
-    await this.page.click('.e2e-insert-button');
+    await this.page.click('[data-testid="media-picker-insert-button"]');
   }
 
   async getEvents(): Promise<Event[]> {

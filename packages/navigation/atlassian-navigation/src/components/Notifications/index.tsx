@@ -12,7 +12,13 @@ export const Notifications = forwardRef(
     return (
       <BadgeContainer badge={badge}>
         <IconButton
-          icon={<NotificationIcon label={tooltip} />}
+          icon={
+            <NotificationIcon
+              label={
+                typeof tooltip === 'string' ? tooltip : 'Notification Icon'
+              }
+            />
+          }
           tooltip={tooltip}
           ref={ref}
           aria-describedby={NOTIFICATIONS_BADGE_ID}

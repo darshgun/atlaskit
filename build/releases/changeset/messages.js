@@ -1,3 +1,4 @@
+// @flow
 const logger = require('@atlaskit/build-utils/logger');
 const { green, red } = require('chalk');
 const boxen = require('boxen');
@@ -24,15 +25,17 @@ function printIntroBanner() {
     borderStyle: 'double',
     align: 'center',
   });
+  // $FlowFixMe - fix logger
   logger.log(prettyMessage);
 }
 
-function printConfirmationMessage(changeset) {
+function printConfirmationMessage(changeset /*: Object */) {
   function getReleasesOfType(type) {
     return changeset.releases
       .filter(release => release.type === type)
       .map(release => release.name);
   }
+  // $FlowFixMe - fix logger
   logger.log('=== Releasing the following packages ===');
   const majorReleases = getReleasesOfType('major');
   const minorReleases = getReleasesOfType('minor');
@@ -45,16 +48,21 @@ function printConfirmationMessage(changeset) {
     .map(dep => red(dep.name));
 
   if (majorReleases.length > 0)
+    // $FlowFixMe - fix logger
     logger.log(`${green('[Major]')}\n  ${majorReleases.join(', ')}`);
   if (minorReleases.length > 0)
+    // $FlowFixMe - fix logger
     logger.log(`${green('[Minor]')}\n  ${minorReleases.join(', ')}`);
   if (patchReleases.length > 0)
+    // $FlowFixMe - fix logger
     logger.log(`${green('[Patch]')}\n  ${patchReleases.join(', ')}`);
   if (patchDependents.length > 0)
+    // $FlowFixMe - fix logger
     logger.log(
       `${green('[Dependents (patch)]')}\n  ${patchDependents.join('\n  ')}`,
     );
   if (majorDependents.length > 0)
+    // $FlowFixMe - fix logger
     logger.log(
       `${green('[Dependents (major)]')}\n  ${majorDependents.join('\n  ')}`,
     );
@@ -73,6 +81,7 @@ function printConfirmationMessage(changeset) {
       borderStyle: 'double',
       align: 'center',
     });
+    // $FlowFixMe - fix logger
     logger.log(prettyMessage);
   }
 }

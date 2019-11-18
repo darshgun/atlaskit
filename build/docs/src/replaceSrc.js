@@ -1,9 +1,11 @@
+/* eslint-disable no-useless-escape */
+// @flow
 import { replaceImports } from 'codesandboxer';
 
 const cssResetRegexString = /((?:import|export)\s*['"\`])(..\/src\/index.less)(['"\`]\s*)/;
 const srcEntryPointRegexString = /((?:import|export)[^'"\`]*['"\`])(..\/src\/)([^/]*['"\`]\s*)/;
 
-export default function replaceSrc(content, name) {
+export default function replaceSrc(content /*: string*/, name /*: string*/) {
   let replacedCode = content;
   if (name === '@atlaskit/css-reset') {
     replacedCode = replacedCode.replace(cssResetRegexString, `$1${name}$3`);

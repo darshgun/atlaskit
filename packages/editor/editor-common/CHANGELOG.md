@@ -1,5 +1,91 @@
 # @atlaskit/editor-common
 
+## 42.0.0
+
+### Major Changes
+
+- [major][70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+
+  Remove remaining color utils in editor-common in favor of adf-schema
+
+  ## Summary
+
+  The color utility exports in `@atlaskit/editor-common` have been removed as they were duplicates of color utilities in `@atlaskit/adf-schema`.
+  This also affects the secondary `@atlaskit/editor-common/color` entrypoint, which has been removed.
+  Change your imports for the following functions to point to `@atlaskit/adf-schema`:
+
+  - normalizeHexColor
+  - hexToRgb
+  - hexToRgba
+  - rgbToHex
+  - isRgb
+  - isHex
+
+  ## Example
+
+  ```ts
+  /* replace this */
+  import { normalizeHexColor } from '@atlaskit/editor-common';
+
+  /* with this */
+  import { normalizeHexColor } from '@atlaskit/adf-schema';
+  ```
+
+### Minor Changes
+
+- [minor][49703c574d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49703c574d):
+
+  Make ProviderFactory interface to understand MediaProvider
+
+- [minor][166dd996a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166dd996a8):
+
+  ED-7949: Migrate expand react component to renderer from common to avoid extra deps being added to common
+
+- [minor][3a4aa18da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a4aa18da6):
+
+  ED-7878 Add expand analytics v1
+
+- [minor][f1a06fc2fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a06fc2fd):
+
+  ED-7876 Implement expand and nestedExpand in Editor and Renderer
+
+  A **work in progress** implementation of the new `expand` and `nestedExpand` nodes. These are currently **disabled** by default, but can be tested by enabling an editor prop.
+
+  `UNSAFE_allowExpand={true}`
+
+  Note, `expand` and `nestedExpand` are only in the `stage-0` ADF schema (as of this changeset).
+
+- [minor][ae42b1ba1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae42b1ba1e):
+
+  Adf schema changes (for stage-0) to support alt text on media nodes.
+  `editor-core` changes are wrapped under the editor prop `UNSAFE_allowAltTextOnImages`. There is no alt text implementation yet, so the user won't be able to add alt text to images just yet.
+
+- [minor][1377a45225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1377a45225):
+
+  ED-7492 add support to indent actions
+
+  This version adds support for indenting actions using the keyboard shortcuts Tab and Shift-Tab. You can also unindent items by backspacing them at the start, or deleting forwards within the task.
+
+  There is no new behaviour if the feature flag (`allowNestedTasks`) is turned off.
+
+### Patch Changes
+
+- [patch][c20e926a6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c20e926a6c):
+
+  ED-7971: fix deleting of nested task lists
+
+  Upgrades prosemirror-view to 1.1.6.
+
+  See (this discussion)[https://discuss.prosemirror.net/t/collapsing-empty-nodes-on-delete/2306/4] for more details and screenshots of the behaviour it fixes.
+
+- [patch][e283b821f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e283b821f0):
+
+  ED-7980: Fixes styling of expands inside layouts (also caters for gap cursor navigation)
+
+- Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+  - @atlaskit/adf-schema@4.3.0
+  - @atlaskit/editor-json-transformer@7.0.0
+
 ## 41.2.1
 
 ### Patch Changes

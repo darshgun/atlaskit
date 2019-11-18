@@ -6,7 +6,7 @@ import {
   UploadsStartEventPayload,
   UploadStatusUpdateEventPayload,
   UploadParams,
-} from '..';
+} from '../types';
 
 export type UploadServiceEventPayloadTypes = {
   readonly 'files-added': UploadsStartEventPayload;

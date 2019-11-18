@@ -65,6 +65,13 @@ export const imageFileId = {
   mediaItemType: fileType,
   collectionName,
 };
+
+export const emptyImageFileId = {
+  id: 'aa7f7a63-2b1a-4405-b585-62e375a3b40a', // jpg image
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const smallImageFileId = {
   id: 'f251bd05-4b2d-485d-a088-57d112ca7945',
   mediaItemType: fileType,

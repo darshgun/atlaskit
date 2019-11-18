@@ -4,7 +4,7 @@ import {
   UploadsStartEventPayload,
   UploadPreviewUpdateEventPayload,
   UploadErrorEventPayload,
-} from '../src';
+} from '../src/types';
 import { PreviewsTitle, PreviewsWrapper } from './styled';
 import { PreviewData } from './types';
 

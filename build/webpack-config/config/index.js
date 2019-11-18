@@ -4,12 +4,11 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
+const moduleResolveMapBuilder = require('@atlaskit/multi-entry-tools/module-resolve-map-builder');
 const { createDefaultGlob } = require('./utils');
 const statsOptions = require('./statsOptions');
-const moduleResolveMapBuilder = require('@atlaskit/multi-entry-tools/module-resolve-map-builder');
 
 const baseCacheDir = path.resolve(
   __dirname,
@@ -377,7 +376,7 @@ function getOptimizations({ isProduction, noMinimizeFlag }) {
     // There's an interesting bug in webpack where passing *any* uglify plugin, where `minimize` is
     // false, causes webpack to use its own minimizer plugin + settings.
     minimizer: noMinimizeFlag ? undefined : [uglifyPlugin],
-    minimize: noMinimizeFlag ? false : true,
+    minimize: !noMinimizeFlag,
     splitChunks: {
       // "Maximum number of parallel requests when on-demand loading. (default in production: 5)"
       // The default value of 5 causes the webpack process to crash, reason currently unknown
@@ -391,7 +390,7 @@ function getOptimizations({ isProduction, noMinimizeFlag }) {
             if (!module.context) {
               return false;
             }
-            return /node_modules\/(react|react-dom|styled-components|prop-types|\@emotion|\@babel\/runtime)($|\/)/.test(
+            return /node_modules\/(react|react-dom|styled-components|prop-types|@emotion|@babel\/runtime)($|\/)/.test(
               module.context,
             );
           },

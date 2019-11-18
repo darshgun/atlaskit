@@ -1,5 +1,48 @@
 # @atlaskit/editor-mobile-bridge
 
+## 11.0.0
+
+### Major Changes
+
+- [major][9adaeccdc5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9adaeccdc5):
+
+  build: avoid duplicate uglification of output bundles
+
+  Replaces `UglifyjsWebpackPlugin` with webpack's default `TerserPlugin`.
+
+  While there are no API changes caused by us there are diffable changes
+  in the resulting output bundles, which might cause issues for consumers.
+
+  Extensive testing is recommended.
+
+### Minor Changes
+
+- [minor][7dac756d06](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7dac756d06):
+
+  Enable expand in mobile-bridge
+
+- [minor][f68c80d51a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68c80d51a):
+
+  FM-2211 Implement scrolling improvements to prevent user typing behind keyboard on iOS
+
+  New editor plugin IOSScroll is added into the plugins list for users on iOS mobile devices
+  This works with a new native-to-web bridge method `setKeyboardControlsHeight` to add an extra buffer to the bottom of the page when the on-screen keyboard is showing
+
+### Patch Changes
+
+- [patch][c07b9e3615](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c07b9e3615):
+
+  ED-7890 refactor: remove parseLocationSearch in favor of URLSearchParams
+
+- Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+  - @atlaskit/editor-common@42.0.0
+  - @atlaskit/editor-core@114.1.0
+  - @atlaskit/renderer@53.1.0
+  - @atlaskit/editor-json-transformer@7.0.0
+  - @atlaskit/editor-test-helpers@10.2.0
+  - @atlaskit/task-decision@16.0.3
+
 ## 10.0.1
 
 - Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):

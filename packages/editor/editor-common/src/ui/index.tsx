@@ -43,3 +43,10 @@ export {
 } from './OverflowShadow';
 
 export { WithCreateAnalyticsEvent } from './WithCreateAnalyticsEvent';
+
+export {
+  messages as expandMessages,
+  sharedExpandStyles,
+  ExpandIconWrapper,
+  ExpandTooltipWrapper,
+} from './Expand';

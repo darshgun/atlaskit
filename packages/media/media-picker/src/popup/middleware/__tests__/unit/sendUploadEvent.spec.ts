@@ -4,9 +4,9 @@ import {
 } from '@atlaskit/media-test-helpers';
 import sendUploadEventMiddleware from '../../sendUploadEvent';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
-import { MediaError } from '../../../../domain/error';
+import { MediaError } from '../../../../types';
 import { SCALE_FACTOR_DEFAULT } from '../../../../util/getPreviewFromImage';
-import { MediaFile } from '../../../../domain/file';
+import { MediaFile } from '../../../../types';
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
 // eslint-disable-next-line no-console

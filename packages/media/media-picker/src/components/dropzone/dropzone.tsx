@@ -8,13 +8,12 @@ import {
   LocalUploadComponentBaseProps,
 } from '../localUploadReact';
 
+import { DropzoneConfig } from '../../types';
 import {
-  DropzoneConfig,
   DropzoneDragEnterEventPayload,
   DropzoneDragLeaveEventPayload,
   DropzoneUploadEventPayloadMap,
 } from '../types';
-
 import {
   name as packageName,
   version as packageVersion,

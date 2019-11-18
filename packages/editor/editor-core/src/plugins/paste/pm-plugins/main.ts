@@ -12,6 +12,7 @@ import { linkifyContent } from '../../hyperlink/utils';
 import { transformSliceToRemoveOpenBodiedExtension } from '../../extension/actions';
 import { transformSliceToRemoveOpenLayoutNodes } from '../../layout/utils';
 import { getPluginState as getTablePluginState } from '../../table/pm-plugins/main';
+import { transformSliceNestedExpandToExpand } from '../../expand/utils';
 import {
   transformSliceToRemoveOpenTable,
   transformSliceToCorrectEmptyTableCells,
@@ -32,6 +33,7 @@ import {
   handlePastePreservingMarksWithAnalytics,
   handleMarkdownWithAnalytics,
   handleRichTextWithAnalytics,
+  handleExpandWithAnalytics,
 } from './analytics';
 import { PasteTypes } from '../../analytics';
 import { insideTable } from '../../../utils';
@@ -44,6 +46,8 @@ import {
   transformSliceToRemoveColumnsWidths,
   transformSliceRemoveCellBackgroundColor,
 } from '../../table/commands/misc';
+import { upgradeTextToLists, splitParagraphs } from '../../lists/transforms';
+
 export const stateKey = new PluginKey('pastePlugin');
 
 export const md = MarkdownIt('zero', { html: false });
@@ -104,8 +108,17 @@ export function createPlugin(
           return false;
         }
 
-        const text = event.clipboardData.getData('text/plain');
+        let text = event.clipboardData.getData('text/plain');
         const html = event.clipboardData.getData('text/html');
+        const uriList = event.clipboardData.getData('text/uri-list');
+
+        // Links copied from iOS Safari share button only have the text/uri-list data type
+        // ProseMirror don't do anything with this type so we want to make our own open slice
+        // with url as text content so link is pasted inline
+        if (uriList && !text && !html) {
+          text = uriList;
+          slice = new Slice(Fragment.from(schema.text(text)), 1, 1);
+        }
 
         const isPastedFile = clipboard.isPastedFile(event);
         const isPlainText = text && !html;
@@ -277,6 +290,14 @@ export function createPlugin(
             return true;
           }
 
+          if (handleExpandWithAnalytics(view, event, slice)(state, dispatch)) {
+            return true;
+          }
+
+          if (!insideTable(state)) {
+            slice = transformSliceNestedExpandToExpand(slice, state.schema);
+          }
+
           return handleRichTextWithAnalytics(
             view,
             event,
@@ -313,6 +334,11 @@ export function createPlugin(
         slice = transformSliceToCorrectMediaWrapper(slice, schema);
 
         slice = transformSliceToCorrectEmptyTableCells(slice, schema);
+
+        // this must happen before upgrading text to lists
+        slice = splitParagraphs(slice, schema);
+
+        slice = upgradeTextToLists(slice, schema);
 
         if (
           slice.content.childCount &&

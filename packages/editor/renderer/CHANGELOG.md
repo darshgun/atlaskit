@@ -1,5 +1,45 @@
 # @atlaskit/renderer
 
+## 53.1.0
+
+### Minor Changes
+
+- [minor][166dd996a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166dd996a8):
+
+  ED-7949: Migrate expand react component to renderer from common to avoid extra deps being added to common
+
+- [minor][3a4aa18da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a4aa18da6):
+
+  ED-7878 Add expand analytics v1
+
+- [minor][f1a06fc2fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a06fc2fd):
+
+  ED-7876 Implement expand and nestedExpand in Editor and Renderer
+
+  A **work in progress** implementation of the new `expand` and `nestedExpand` nodes. These are currently **disabled** by default, but can be tested by enabling an editor prop.
+
+  `UNSAFE_allowExpand={true}`
+
+  Note, `expand` and `nestedExpand` are only in the `stage-0` ADF schema (as of this changeset).
+
+### Patch Changes
+
+- [patch][e76d2904b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76d2904b4):
+
+  Adding support for alt text on editor and renderer
+
+- [patch][5b2c89203e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b2c89203e):
+
+  Fix linting errors from prettier upgrade
+
+- Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+  - @atlaskit/adf-schema@4.3.0
+  - @atlaskit/editor-common@42.0.0
+  - @atlaskit/editor-json-transformer@7.0.0
+  - @atlaskit/editor-test-helpers@10.2.0
+  - @atlaskit/task-decision@16.0.3
+
 ## 53.0.0
 
 ### Patch Changes

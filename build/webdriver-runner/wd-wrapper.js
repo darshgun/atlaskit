@@ -1,4 +1,8 @@
-const assert = require('assert').strict;
+/* eslint-disable func-names */
+/* eslint-disable consistent-return */
+/* eslint-disable no-undef */
+// @flow
+const assert = require('assert');
 
 /*
  * wrapper on top of webdriver-io apis to give a feel of puppeeteer api
@@ -8,7 +12,11 @@ const WAIT_TIMEOUT = 5000;
 const EDITOR = '.ProseMirror';
 
 export class JSHandle {
-  constructor(client, selector) {
+  browser /*: any */;
+
+  selector /*: string */;
+
+  constructor(client /*: any */, selector /*: string */) {
     this.browser = client;
     this.selector = selector;
   }
@@ -16,32 +24,36 @@ export class JSHandle {
   asElement() {
     return new ElementHandle(this.browser, this.selector);
   }
+  // TODO: Implement those methods
+  // dispose = TODO;
 
-  dispose = TODO;
-  executionContext = TODO;
-  getProperties = TODO;
-  jsonValue = TODO;
+  // executionContext = TODO;
+
+  // getProperties = TODO;
+
+  // jsonValue = TODO;
 }
 
 export class ElementHandle extends JSHandle {
-  $ = TODO;
-  $$ = TODO;
-  $x = TODO;
-  asElement = TODO;
-  boundingBox = TODO;
-  click = TODO;
-  dispose = TODO;
-  executionContext = TODO;
-  focus = TODO;
-  getProperties = TODO;
-  hover = TODO;
-  jsonValue = TODO;
-  press = TODO;
-  screenshot = TODO;
-  tap = TODO;
-  toString = TODO;
-  type = TODO;
-  uploadFile = TODO;
+  // TODO: Implement those methods
+  // $ = TODO;
+  // $$ = TODO;
+  // $x = TODO;
+  // asElement = TODO;
+  // boundingBox = TODO;
+  // click = TODO;
+  // dispose = TODO;
+  // executionContext = TODO;
+  // focus = TODO;
+  // getProperties = TODO;
+  // hover = TODO;
+  // jsonValue = TODO;
+  // press = TODO;
+  // screenshot = TODO;
+  // tap = TODO;
+  // toString = TODO;
+  // type = TODO;
+  // uploadFile = TODO;
 }
 
 const mappedKeys = {
@@ -64,24 +76,28 @@ const getMappedKey = str => {
 };
 
 export default class Page {
-  constructor(client) {
+  browser /*: any */;
+
+  selector /*: string */;
+
+  constructor(client /*:any */) {
     this.browser = client;
   }
 
-  async type(selector, text) {
+  // eslint-disable-next-line consistent-return
+  async type(selector /*: string */, text /*: string[] | string */) {
     // TODO: https://product-fabric.atlassian.net/browse/BUILDTOOLS-325
     if (this.isBrowser('chrome') && selector === EDITOR) {
       if (Array.isArray(text)) {
-        return await this.browser.sendKeys(text.map(getMappedKey));
-      } else {
-        return await this.browser.sendKeys([getMappedKey(text)]);
+        return this.browser.sendKeys(text.map(getMappedKey));
       }
+      return this.browser.sendKeys([getMappedKey(text)]);
     }
 
     const elem = await this.browser.$(selector);
 
     if (Array.isArray(text)) {
-      for (let t of text) {
+      for (const t of text) {
         await elem.addValue(t);
       }
     } else {
@@ -90,7 +106,7 @@ export default class Page {
   }
 
   // Navigation
-  goto(url) {
+  goto(url /*: string */) {
     return this.browser.url(url);
   }
 
@@ -98,10 +114,11 @@ export default class Page {
     return this.browser.refresh();
   }
 
-  async moveTo(selector, x, y) {
+  async moveTo(selector /*: string */, x /*: number */, y /*: number */) {
     if (this.isBrowser('Safari')) {
+      // eslint-disable-next-line no-unused-vars
       const bounds = await this.getBoundingRect(selector);
-      await this.SAFARI_moveTo([{ x, y }]);
+      await this.SafariMoveTo([{ x, y }]);
     } else {
       const elem = await this.browser.$(selector);
       elem.moveTo(x, y);
@@ -109,21 +126,21 @@ export default class Page {
     }
   }
 
-  async hover(selector) {
+  async hover(selector /*: string */) {
     if (this.isBrowser('Safari')) {
       const bounds = await this.getBoundingRect(selector);
 
-      await this.SAFARI_moveTo([{ x: bounds.left, y: bounds.top }]);
+      await this.SafariMoveTo([{ x: bounds.left, y: bounds.top }]);
     } else {
       const elem = await this.browser.$(selector);
       await elem.moveTo(1, 1);
-      return await this.browser.pause(500);
+      return this.browser.pause(500);
     }
   }
 
   // TODO: Remove it after the fix been merged on webdriver.io:
   // https://github.com/webdriverio/webdriverio/pull/4330
-  async SAFARI_moveTo(coords) {
+  async SafariMoveTo(coords /*: Array<Object> */) {
     const actions = coords.map(set => ({
       type: 'pointerMove',
       duration: 0,
@@ -141,8 +158,9 @@ export default class Page {
     ]);
   }
 
-  async getBoundingRect(selector) {
-    return await this.browser.execute(selector => {
+  async getBoundingRect(selector /*: string */) {
+    // eslint-disable-next-line no-shadow
+    return this.browser.execute(selector => {
       const element = document.querySelector(selector);
       const { x, y, width, height } = element.getBoundingClientRect();
       return { left: x, top: y, width, height, id: element.id };
@@ -150,21 +168,21 @@ export default class Page {
   }
 
   async title() {
-    return await this.browser.getTitle();
+    return this.browser.getTitle();
   }
 
-  async $(selector) {
+  async $(selector /*: string */) {
     const ele = await this.browser.$(selector);
 
     return ele;
   }
 
-  async $$(selector) {
+  async $$(selector /*: string */) {
     const ele = await this.browser.$$(selector);
     return ele;
   }
 
-  $eval(selector, pageFunction, param) {
+  $eval(selector /*: string */, pageFunction /*: any */, param /*: Object*/) {
     return this.browser.execute(
       `return (${pageFunction}(document.querySelector("${selector}"), ${JSON.stringify(
         param,
@@ -172,22 +190,22 @@ export default class Page {
     );
   }
 
-  async setValue(selector, text) {
+  async setValue(selector /*: string */, text /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.setValue(text);
   }
 
-  async count(selector) {
+  async count(selector /*: string */) {
     const result = await this.$$(selector);
     return result.length;
   }
 
-  async clear(selector) {
+  async clear(selector /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.clearValue();
   }
 
-  async click(selector) {
+  async click(selector /*: string */) {
     try {
       const elem = await this.browser.$(selector);
       return elem.click();
@@ -196,10 +214,10 @@ export default class Page {
     }
   }
 
-  async keys(values) {
+  async keys(values /*: string[] | string */) {
     const keys = Array.isArray(values) ? values : [values];
 
-    for (let key of keys) {
+    for (const key of keys) {
       await this.browser.keys(key);
     }
   }
@@ -209,16 +227,16 @@ export default class Page {
   }
 
   // Get
-  getProperty(selector, cssProperty) {
+  getProperty(selector /*: string */, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
   }
 
-  async getCSSProperty(selector, cssProperty) {
+  async getCSSProperty(selector /*: string */, cssProperty /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.getCSSProperty(cssProperty);
   }
 
-  async getLocation(selector, property) {
+  async getLocation(selector /*: string */, property /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.getLocation(selector, property);
   }
@@ -227,7 +245,7 @@ export default class Page {
     return this.browser.getAlertText();
   }
 
-  async getAttribute(selector, attributeName) {
+  async getAttribute(selector /*: string */, attributeName /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.getAttribute(attributeName);
   }
@@ -261,7 +279,9 @@ export default class Page {
     }
   }
 
-  backspace(selector) {
+  // eslint-disable-next-line no-unused-vars
+  backspace(selector /*: string */) {
+    // eslint-disable-next-line no-shadow
     this.browser.execute(selector => {
       return document
         .querySelector(selector)
@@ -275,23 +295,23 @@ export default class Page {
   //  keyboard.up('Shift');
 
   //will need to have wrapper for these once moved to puppeteer
-  async getText(selector) {
+  async getText(selector /*: string */) {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
     // for puppeteer
     const elem = await this.browser.$(selector);
     return elem.getText();
   }
 
-  async getValue(selector) {
+  async getValue(selector /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.getValue();
   }
 
-  async execute(func, ...args) {
+  async execute(func /*: Function */, ...args /*: any[] */) {
     return this.browser.execute(func, ...args);
   }
 
-  async executeAsync(func, ...args) {
+  async executeAsync(func /*: Function */, ...args /*: any[] */) {
     return this.browser.executeAsync(func, ...args);
   }
 
@@ -299,55 +319,56 @@ export default class Page {
     return this.browser.capabilities.browserName;
   }
 
-  isBrowser(browserName) {
+  isBrowser(browserName /*: string */) {
     return this.getBrowserName() === browserName;
   }
 
-  async getCssProperty(selector, cssProperty) {
+  async getCssProperty(selector /*: string */, cssProperty /*: string */) {
     const elem = this.browser.$(selector);
     return elem.getCssProperty(selector, cssProperty);
   }
 
-  async getElementSize(selector) {
+  async getElementSize(selector /*: string */) {
     const elem = this.browser.$(selector);
     return elem.getSize(selector);
   }
 
-  async getHTML(selector) {
+  async getHTML(selector /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.getHTML(false);
   }
 
-  async getProperty(selector, property) {
+  // eslint-disable-next-line no-dupe-class-members
+  async getProperty(selector /*: string */, property /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.getProperty(property);
   }
 
-  async isEnabled(selector) {
+  async isEnabled(selector /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.isEnabled();
   }
 
-  async isExisting(selector) {
+  async isExisting(selector /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.isExisting();
   }
 
-  async isVisible(selector) {
+  async isVisible(selector /*: string */) {
     return this.waitFor(selector);
   }
 
-  async isSelected(selector) {
+  async isSelected(selector /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.isSelected();
   }
 
-  async hasFocus(selector) {
+  async hasFocus(selector /*: string */) {
     const elem = await this.browser.$(selector);
     return elem.isFocused();
   }
 
-  log(type) {
+  log(type /*: string */) {
     return this.browser.log(type);
   }
 
@@ -366,7 +387,7 @@ export default class Page {
     return this.browser.keys(keys[0]);
   }
 
-  async copy(selector) {
+  async copy() {
     let keys;
     if (this.browser.capabilities.os === 'Windows') {
       keys = ['Control', 'c'];
@@ -393,7 +414,7 @@ export default class Page {
   // behaviour is OS specific:
   // windows moves to next paragraph up
   // osx moves to top of document
-  moveUp(selector) {
+  moveUp(selector /*: string */) {
     let control = 'Command';
     if (this.browser.capabilities.os === 'Windows') {
       control = 'Control';
@@ -408,55 +429,61 @@ export default class Page {
   }
 
   // Wait
-  async waitForSelector(selector, options = {}, reverse = false) {
+  async waitForSelector(
+    selector /*: string */,
+    options /*: Object */ = {},
+    reverse /*: boolean */ = false,
+  ) {
     const elem = await this.browser.$(selector);
     return elem.waitForExist(options.timeout || WAIT_TIMEOUT, reverse);
   }
 
-  async waitForVisible(selector, options = {}) {
+  async waitForVisible(selector /*: string */, options /*: Object */ = {}) {
     const elem = await this.browser.$(selector);
 
     return elem.waitForDisplayed(options.timeout || WAIT_TIMEOUT);
   }
 
-  async waitUntilContainsText(selector, text) {
+  async waitUntilContainsText(selector /*: string */, text /*: string */) {
     await this.waitUntil(async () => {
       const content = await this.getText(selector);
       return content.indexOf(text) !== -1;
     });
   }
 
-  waitFor(selector, ms, reverse) {
+  waitFor(selector /*: string */, ms? /*: number */, reverse? /*: boolean */) {
     return this.waitForSelector(selector, { timeout: ms }, reverse);
   }
 
-  waitUntil(predicate) {
+  waitUntil(predicate /*: any */) {
     return this.browser.waitUntil(predicate, WAIT_TIMEOUT);
   }
 
   // Window
-  setWindowSize(width, height) {
+  setWindowSize(width /*: string */, height /*: string */) {
     return this.browser.setWindowSize(width, height);
   }
 
-  chooseFile(selector, localPath) {
+  chooseFile(selector /*: string */, localPath /*: string */) {
     return this.browser.chooseFile(selector, localPath);
   }
 
-  mockDate(timestamp, timezoneOffset) {
+  mockDate(timestamp /*: string */, timezoneOffset /*: string */) {
     this.browser.execute(
       (t, tz) => {
+        // eslint-disable-next-line no-multi-assign
         const _Date = (window._Date = window.Date);
         const realDate = params => new _Date(params);
         let offset = 0;
 
         if (tz) {
-          localDateOffset = new _Date(t).getTimezoneOffset() / 60;
+          const localDateOffset = new _Date(t).getTimezoneOffset() / 60;
           offset = (tz + localDateOffset) * 3600000;
         }
 
         const mockedDate = new _Date(t + offset);
 
+        // eslint-disable-next-line no-global-assign
         Date = function(...params) {
           if (params.length > 0) {
             return realDate(...params);

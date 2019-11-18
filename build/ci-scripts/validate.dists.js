@@ -1,3 +1,4 @@
+// @flow
 /**
  * @file validate.dists
  *
@@ -66,6 +67,7 @@ async function validateAllPackages(packages, { distType }) {
   const results = await Promise.all(
     packages.map(pkg => validatePackage(pkg, { distType })),
   );
+  // $FlowFixMe - concat
   const errors = [].concat(...results);
   return errors;
 }
@@ -111,6 +113,7 @@ function validateDistContents(src, dist) {
   const errors = [];
   for (const srcFile of src.contents) {
     if (excludedSrcFiles.includes(srcFile.name)) {
+      // eslint-disable-next-line no-continue
       continue;
     }
     if (srcFile.isDirectory()) {
@@ -156,9 +159,9 @@ function hasCjsEsmBuild(pkg) {
   );
 }
 
-async function main(opts = {}) {
+async function main(opts /*: Object */ = {}) {
   const { cwd = process.cwd(), packageName, distType } = opts;
-  const packagesInfo = await getPackagesInfo(cwd);
+  const packagesInfo = await getPackagesInfo(cwd, opts);
 
   /* We only want to check packages that ship cjs + esm */
   const browserPackages = packagesInfo.filter(

@@ -21,7 +21,8 @@ import {
 } from '../example-helpers/styled';
 import { UploadPreviews } from '../example-helpers/upload-previews';
 
-import { Dropzone, DropzoneConfig, UploadsStartEventPayload } from '../src';
+import { Dropzone } from '../src';
+import { DropzoneConfig, UploadsStartEventPayload } from '../src/types';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;

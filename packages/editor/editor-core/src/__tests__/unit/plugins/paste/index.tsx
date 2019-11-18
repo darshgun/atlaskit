@@ -58,6 +58,7 @@ import { EditorProps } from '../../../..';
 
 // @ts-ignore
 import { __serializeForClipboard } from 'prosemirror-view';
+import { getDefaultMediaClientConfig } from '@atlaskit/media-test-helpers/fakeMediaClient';
 
 describe('paste plugins', () => {
   const createEditor = createEditorFactory();
@@ -69,9 +70,13 @@ describe('paste plugins', () => {
     const emojiProvider = emojiData.storyData.getEmojiResourceWithStandardAndAtlassianEmojis() as Promise<
       EmojiProvider
     >;
+    const mediaProvider = Promise.resolve({
+      viewMediaClientConfig: getDefaultMediaClientConfig(),
+    });
     providerFactory = ProviderFactory.create({
       contextIdentifierProvider,
       emojiProvider,
+      mediaProvider,
     });
     createAnalyticsEvent = createAnalyticsEventMock();
     const wrapper = createEditor({
@@ -85,6 +90,7 @@ describe('paste plugins', () => {
         allowLists: true,
         allowPanel: true,
         allowTasksAndDecisions: true,
+        allowNestedTasks: true,
         allowTables: true,
         emojiProvider,
         mentionProvider: Promise.resolve(
@@ -233,6 +239,7 @@ describe('paste plugins', () => {
                     p('"'),
                     mediaSingle({ layout: 'center' })(
                       media({
+                        __external: true,
                         url: 'http://atlassian.com',
                         type: 'external',
                       })(),
@@ -262,6 +269,7 @@ describe('paste plugins', () => {
               mediaSingle({ layout: 'center' })(
                 media({
                   type: 'external',
+                  __external: true,
                   url:
                     'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
                 })(),
@@ -315,6 +323,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
@@ -336,18 +345,21 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://res.cloudinary.com/practicaldev/image/fetch/s--dW53ZT_i--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/9w2isgu5pn9bi5k59eto.png`,
               })(),
             ),
@@ -369,6 +381,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://www.biorbyt.com/pub/media/wysiwyg/MAPK_signaling_pathway.jpg`,
               })(),
             ),
@@ -393,6 +406,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://miro.medium.com/max/1088/1*Ul-CDqf6wi-Ee8FQgmBUhQ@2x.jpeg`,
               })(),
             ),
@@ -415,6 +429,7 @@ describe('paste plugins', () => {
             mediaSingle()(
               media({
                 type: 'external',
+                __external: true,
                 url: `https://lh5.googleusercontent.com/dnPAozzy3eYppgqEafLiZl3zzWYCrrzfwKCZiQ8nyYGeB9us9npuOVj48tM1VotqVlGriXQG2x2iYnbOVxsE54vkFErZs3n-6yYlZA8nRpu3Bt2DWhEoa8pFOkiMJHHGYrYhfLkg`,
               })(),
             ),
@@ -437,6 +452,7 @@ describe('paste plugins', () => {
                   mediaSingle()(
                     media({
                       type: 'external',
+                      __external: true,
                       url: `https://lh4.googleusercontent.com/9lblWb7GLsczlSZQXUmuyJ9MLe-D8i19B1ITI-fdjV7bDMHzKWL5STuYhFTnOGJxfNa5HrWCgbQ35fr_ZMcZGpKX83ZWcSSeNAhOMVur7M1Ww3UOkWR64BDy1r-4atSedbwGCwyK`,
                     })(),
                   ),
@@ -1043,6 +1059,27 @@ describe('paste plugins', () => {
         );
       });
 
+      it('pastes nested actions into an action', () => {
+        const attrs = { localId: 'local-decision' };
+        const { editorView } = editor(
+          doc(taskList(attrs)(taskItem(attrs)('first item{<>}'))),
+        );
+
+        const html = `<meta charset='utf-8'><div data-node-type="actionList" data-task-list-local-id="pasted-list-top" style="list-style: none; padding-left: 0" data-pm-slice="2 3 [&quot;taskList&quot;,null,&quot;taskList&quot;,null,&quot;taskList&quot;,null,&quot;taskList&quot;,null]"><div data-task-local-id="pasted-task-top" data-task-state="TODO"></div><div data-task-local-id="56426a95-e500-4d42-bb2b-58f523853a49" data-task-state="TODO">top level</div><div data-node-type="actionList" data-task-list-local-id="pasted-list-nested" style="list-style: none; padding-left: 0"><div data-task-local-id="pasted-task-nested" data-task-state="TODO">nested</div></div></div>`;
+
+        dispatchPasteEvent(editorView, { html });
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList(attrs)(
+              taskItem(attrs)('first item'),
+              taskItem(attrs)('top level'),
+              taskList(attrs)(taskItem(attrs)('nested')),
+            ),
+          ),
+        );
+      });
+
       it('pastes plain text into a decision', () => {
         const { editorView, sel } = editor(doc(p('{<>}')));
         insertText(editorView, '<> ', sel);
@@ -1475,6 +1512,192 @@ describe('paste plugins', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(p(emoji({ shortName: ':yellow_star:', text: '' })())),
+      );
+    });
+  });
+
+  describe('paste link copied from iphone "share" button', () => {
+    it('should paste link', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(link({ href: uriList })(uriList))),
+      );
+    });
+
+    it('should paste link inline', () => {
+      const { editorView } = editor(doc(p('hello {<>}')));
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('hello ', link({ href: uriList })(uriList))),
+      );
+    });
+
+    it('should paste link inside action', () => {
+      const { editorView } = editor(
+        doc(
+          taskList({ localId: 'task-list-id' })(
+            taskItem({ localId: 'task-item-id' })('{<>}'),
+          ),
+        ),
+      );
+      const uriList = 'https://google.com.au';
+      dispatchPasteEvent(editorView, { 'uri-list': uriList });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          taskList({ localId: 'task-list-id' })(
+            taskItem({ localId: 'task-item-id' })(
+              link({ href: uriList })(uriList),
+            ),
+          ),
+        ),
+      );
+    });
+  });
+
+  describe('splitting paragraphs', () => {
+    it('should split simple text-based paragraphs into real paragraphs', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const plain = 'text 1\n\ntext 2\r\n\r\ntext 3';
+
+      dispatchPasteEvent(editorView, { plain });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('text 1'), p('text 2'), p('text 3')),
+      );
+    });
+
+    it('should split multi-line text-based paragraphs into real paragraphs', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const plain =
+        'text 1\nsecond line\nthird line\n\nsecond paragraph\nit good\r\nlast line';
+
+      dispatchPasteEvent(editorView, { plain });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p('text 1', hardBreak(), 'second line', hardBreak(), 'third line'),
+          p(
+            'second paragraph',
+            hardBreak(),
+            'it good',
+            hardBreak(),
+            'last line',
+          ),
+        ),
+      );
+    });
+  });
+
+  describe('converting text to list', () => {
+    it('works for a simple list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>* line 1<br />* line 2<br />* line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('maintains empty list items', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>* line 1<br />*<br />* line 3<br />* line 4';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p()), li(p('line 3')), li(p('line 4')))),
+      );
+    });
+
+    it('converts hyphen bullets', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>- line 1<br />- line 2<br />- line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts unicode bullets', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>• line 1<br />• line 2<br />• line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts mixed bulleted list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>• line 1<br />- line 2<br />* line 3';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts numbered list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>1. line 1<br />2. line 2<br />3. line 3</span>';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts markdown-style numbered list (one without ordering)', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>1. line 1<br />1. line 2<br />1. line 3</span>';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ol(li(p('line 1')), li(p('line 2')), li(p('line 3')))),
+      );
+    });
+
+    it('converts mixed numbered and bulleted list', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      const html = '<span>- line 1<br />1. line 2<br />* line 3</span>';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(ul(li(p('line 1'))), ol(li(p('line 2'))), ul(li(p('line 3')))),
+      );
+    });
+
+    it('converts a list with trailing text', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+
+      const html =
+        '<span>* line 1<br />* line 2<br />* line 3<br /><br />outside the list<br />line 2';
+
+      dispatchPasteEvent(editorView, { html });
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          ul(li(p('line 1')), li(p('line 2')), li(p('line 3'))),
+          p('outside the list', hardBreak(), 'line 2'),
+        ),
       );
     });
   });

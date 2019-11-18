@@ -1,5 +1,5 @@
+// @flow
 const editor = require('editor');
-const fs = require('fs');
 const uuid = require('uuid/v1');
 const inquirer = require('inquirer');
 const fuzzy = require('fuzzy');
@@ -15,19 +15,20 @@ inquirer.registerPrompt(
  * identifier for the name every time. This is why we are using UUIDs.
  */
 
-async function askCheckboxPlus(message, choices) {
+async function askCheckboxPlus(message /*:string */, choices /*: string[]*/) {
   const name = `CheckboxPlus-${uuid()}`;
 
   // wraps fuzzyfilter, and removes inquirer sepearators/other data invalid to
   // fuzzy.
   function fuzzySearch(answersSoFar, input) {
+    // eslint-disable-next-line consistent-return
     return new Promise(resolve => {
       if (!input) return resolve(choices);
-      var fuzzyResult = fuzzy.filter(
+      const fuzzyResult = fuzzy.filter(
         input,
         choices.filter(choice => typeof choice === 'string'),
       );
-      var data = fuzzyResult.map(element => element.original);
+      const data = fuzzyResult.map(element => element.original);
 
       resolve(data);
     });
@@ -47,7 +48,7 @@ async function askCheckboxPlus(message, choices) {
     .then(responses => responses[name]);
 }
 
-async function askQuestion(message) {
+async function askQuestion(message /*:string */) {
   const name = `Question-${uuid()}`;
 
   return inquirer
@@ -60,7 +61,8 @@ async function askQuestion(message) {
     .then(responses => responses[name]);
 }
 
-async function askAutoComplete(message) {
+// eslint-disable-next-line no-unused-vars
+async function askAutoComplete(message /*:string[] */) {
   const name = `Autocmplete-${uuid()}`;
 
   return inquirer
@@ -74,7 +76,7 @@ async function askAutoComplete(message) {
     .then(responses => responses[name]);
 }
 
-async function askConfirm(message) {
+async function askConfirm(message /*:string[] */) {
   const name = `Confirm-${uuid()}`;
 
   return inquirer
@@ -88,7 +90,7 @@ async function askConfirm(message) {
     .then(responses => responses[name]);
 }
 
-async function askList(message, choices) {
+async function askList(message /*:string */, choices /*: string[]*/) {
   const name = `List-${uuid()}`;
 
   return inquirer
@@ -103,7 +105,7 @@ async function askList(message, choices) {
     .then(responses => responses[name]);
 }
 
-async function askCheckbox(message, choices) {
+async function askCheckbox(message /*:string */, choices /*: string[]*/) {
   const name = `Checkbox-${uuid()}`;
 
   return inquirer
@@ -119,7 +121,7 @@ async function askCheckbox(message, choices) {
     .catch(e => console.log('can we do this?', e));
 }
 
-async function askEditor(pathToFile) {
+async function askEditor(pathToFile /*: string */) {
   return new Promise((resolve, reject) => {
     editor(pathToFile, code => {
       if (code === 0) resolve();

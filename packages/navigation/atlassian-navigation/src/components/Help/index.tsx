@@ -15,7 +15,7 @@ export const Help = forwardRef((props: HelpProps, ref: Ref<any>) => {
     <IconButton
       icon={
         <QuestionCircleIcon
-          label={tooltip}
+          label={typeof tooltip === 'string' ? tooltip : 'Help Icon'}
           secondaryColor={navigation.backgroundColor}
         />
       }

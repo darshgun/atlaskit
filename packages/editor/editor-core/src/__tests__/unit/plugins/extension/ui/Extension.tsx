@@ -11,6 +11,9 @@ import Extension from '../../../../../plugins/extension/ui/Extension';
 import ExtensionComponent from '../../../../../plugins/extension/ui/Extension/ExtensionComponent';
 
 const macroProviderPromise = Promise.resolve(macroProvider);
+const providerFactory = ProviderFactory.create({
+  macroProvider: macroProviderPromise,
+});
 
 describe('@atlaskit/editor-core/ui/Extension', () => {
   const node = extensionData[0] as any;
@@ -21,6 +24,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
       <Extension
         editorView={{} as any}
         node={node}
+        providerFactory={providerFactory}
         handleContentDOMRef={noop}
         extensionHandlers={{}}
       />,
@@ -32,10 +36,6 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
   });
 
   it('should pass macroProvider into ExtensionComponent', () => {
-    const providerFactory = ProviderFactory.create({
-      macroProvider: macroProviderPromise,
-    });
-
     const extension = mount(
       <Extension
         editorView={{} as any}
@@ -82,6 +82,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
           } as any
         }
         node={extensionNode}
+        providerFactory={providerFactory}
         handleContentDOMRef={noop}
         extensionHandlers={extensionHandlers}
       />,
@@ -123,6 +124,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
           } as any
         }
         node={extensionNode}
+        providerFactory={providerFactory}
         handleContentDOMRef={noop}
         extensionHandlers={extensionHandlers}
       />,
@@ -172,6 +174,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
           } as any
         }
         node={extensionNode}
+        providerFactory={providerFactory}
         handleContentDOMRef={noop}
         extensionHandlers={extensionHandlers}
       />,
@@ -222,6 +225,7 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
           } as any
         }
         node={extensionNode}
+        providerFactory={providerFactory}
         handleContentDOMRef={noop}
         extensionHandlers={extensionHandlers}
       />,

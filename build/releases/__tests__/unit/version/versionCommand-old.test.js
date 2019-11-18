@@ -1,3 +1,4 @@
+// @flow
 /*
 This file tests the old version command API that examines changesets in git history.
 
@@ -6,10 +7,10 @@ Once that method of writing changesets is removed, these tests should also be re
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 
 const path = require('path');
-const versionCommand = require('../../../version/versionCommand');
 const git = require('@atlaskit/build-utils/git');
 const fs = require('@atlaskit/build-utils/fs');
 const logger = require('@atlaskit/build-utils/logger');
+const versionCommand = require('../../../version/versionCommand');
 // avoid polluting test logs with error message in console
 const consoleError = console.error;
 
@@ -17,10 +18,13 @@ jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/git');
 jest.mock('../../../changeset/parseChangesetCommit');
 jest.mock('@atlaskit/build-utils/logger');
-
+// $FlowFixMe - mock
 git.add.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.commit.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.push.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.tag.mockImplementation(() => Promise.resolve(true));
 
 const simpleChangeset = {
@@ -45,6 +49,7 @@ const mockNoChangesetCommits = () => {
 };
 
 const mockUnpublishedChangesetCommits = commits => {
+  // $FlowFixMe - mock
   git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
     Promise.resolve(commits),
   );
@@ -55,11 +60,13 @@ describe('running version in a simple project', () => {
 
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
+    // $FlowFixMe - fix console
     console.error = jest.fn();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    // $FlowFixMe - fix console
     console.error = consoleError;
   });
 
@@ -67,6 +74,7 @@ describe('running version in a simple project', () => {
     it('should warn if no changeset commits exist', async () => {
       mockNoChangesetCommits();
       await versionCommand({ cwd });
+      // $FlowFixMe - fix logger
       const loggerWarnCalls = logger.warn.mock.calls;
       expect(loggerWarnCalls.length).toEqual(1);
       expect(loggerWarnCalls[0][0]).toEqual(
@@ -81,7 +89,7 @@ describe('running version in a simple project', () => {
       mockUnpublishedChangesetCommits([simpleChangeset2]);
 
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
 
       expect(JSON.parse(calls[0][1])).toEqual(
         expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
@@ -94,7 +102,7 @@ describe('running version in a simple project', () => {
     it('should git add the expected files (without changelog) and commit flag', async () => {
       mockUnpublishedChangesetCommits([simpleChangeset2]);
       await versionCommand({ cwd, commit: true });
-
+      // $FlowFixMe - mock
       const mocks = git.add.mock.calls;
       const pkgAConfigPath = path.join(cwd, 'packages/pkg-a/package.json');
       const pkgBConfigPath = path.join(cwd, 'packages/pkg-b/package.json');
@@ -109,6 +117,7 @@ describe('running version in a simple project', () => {
     it('should git add the expected files (with changelog)', async () => {
       mockUnpublishedChangesetCommits([simpleChangeset2]);
       await versionCommand({ cwd, changelogs: true, commit: true });
+      // $FlowFixMe - mock
       const mocks = git.add.mock.calls;
       const pkgAChangelogPath = path.join(cwd, 'packages/pkg-a/CHANGELOG.md');
       const pkgBChangelogPath = path.join(cwd, 'packages/pkg-b/CHANGELOG.md');
@@ -127,7 +136,7 @@ describe('running version in a simple project', () => {
       const spy = jest.spyOn(fs, 'writeFile');
 
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
       expect(JSON.parse(calls[0][1])).toEqual(
         expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
       );
@@ -140,7 +149,7 @@ describe('running version in a simple project', () => {
       mockUnpublishedChangesetCommits([simpleChangeset, simpleChangeset2]);
       const spy = jest.spyOn(fs, 'writeFile');
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
 
       // first call should be minor bump
       expect(JSON.parse(calls[0][1])).toEqual(

@@ -200,6 +200,7 @@ export default class Toolbar extends Component<Props> {
                       onMouseLeave={() => dispatchCommand(item.onMouseLeave)}
                       selected={item.selected}
                       disabled={item.disabled}
+                      tooltipContent={item.tooltipContent}
                     >
                       {item.showTitle && item.title}
                     </Button>

@@ -1,10 +1,11 @@
+// @flow
 const axios = require('axios');
 const queryString = require('querystring');
 
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
-const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER;
-const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG;
+const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER || '';
+const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG || '';
 
 const pipelinesCacheEndpoint = `https://api.bitbucket.org/internal/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines_caches/`;
 

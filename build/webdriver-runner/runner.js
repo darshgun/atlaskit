@@ -1,4 +1,5 @@
-'use strict';
+/* eslint-disable no-undef */
+/* eslint-disable no-param-reassign */
 // @flow
 
 /*
@@ -6,17 +7,17 @@
  * BrowserTestCase is customized wrapper over jest-test-runner handling test setup, execution and
  * teardown for webdriver tests .
  */
-
 // increase default jasmine timeout not to fail on webdriver tests as tests run can
 // take a while depending on the number of threads executing.
 
 // increase this time out to handle queuing on browserstack
+// eslint-disable-next-line no-undef
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
 const isBrowserStack = process.env.TEST_ENV === 'browserstack';
-const setupClients = require('./utils/setupClients');
 const path = require('path');
 const Queue = require('promise-queue');
 const webdriverio = require('webdriverio');
+const setupClients = require('./utils/setupClients');
 
 let clients /*: Array<?Object>*/ = [];
 
@@ -59,6 +60,7 @@ const filename = path.basename(module.parent.filename);
 const launchedDrivers = {};
 const launchedClients = [];
 
+// eslint-disable-next-line func-names
 afterAll(async function() {
   await Promise.all(launchedClients.map(endSession));
 });
@@ -86,14 +88,15 @@ function BrowserTestCase(
       return;
     }
 
-    for (let c of execClients) {
+    for (const c of execClients) {
       const client = c || {};
-      const testCode = async () => await tester(client.driver, testCase);
+      const testCode = async () => tester(client.driver, testCase);
       if (!launchedDrivers[client.browserName]) {
         launchedDrivers[client.browserName] = launchClient(client);
         launchedClients.push(client);
       }
 
+      // eslint-disable-next-line no-loop-func
       describe(client.browserName, () => {
         test.concurrent(testCase, async () => {
           // We need to wait for the driver be

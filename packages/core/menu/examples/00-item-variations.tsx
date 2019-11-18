@@ -35,6 +35,9 @@ const ItemVariants = () => {
       </LinkItem>
       <SkeletonHeadingItem />
       <SkeletonItem />
+      <SkeletonItem hasAvatar />
+      <SkeletonItem hasIcon />
+      <SkeletonItem hasIcon width="100%" />
     </div>
   );
 };

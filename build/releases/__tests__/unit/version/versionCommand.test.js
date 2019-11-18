@@ -1,13 +1,15 @@
+// @flow
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 
 const path = require('path');
-const versionCommand = require('../../../version/versionCommand');
 const git = require('@atlaskit/build-utils/git');
 const fs = require('@atlaskit/build-utils/fs');
 const logger = require('@atlaskit/build-utils/logger');
-const writeChangeset = require('../../../changeset/writeChangeset');
-const getChangesetBase = require('../../../utils/getChangesetBase');
 const fse = require('fs-extra');
+
+const writeChangeset = require('../../../changeset/writeChangeset');
+
+const versionCommand = require('../../../version/versionCommand');
 
 // avoid polluting test logs with error message in console
 const consoleError = console.error;
@@ -16,10 +18,13 @@ jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/git');
 jest.mock('../../../changeset/parseChangesetCommit');
 jest.mock('@atlaskit/build-utils/logger');
-
+// $FlowFixMe - mock
 git.add.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.commit.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.push.mockImplementation(() => Promise.resolve(true));
+// $FlowFixMe - mock
 git.tag.mockImplementation(() => Promise.resolve(true));
 
 const simpleChangeset = {
@@ -50,11 +55,13 @@ describe('running version in a simple project', () => {
 
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
+    // $FlowFixMe - fix console
     console.error = jest.fn();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
+    // $FlowFixMe - fix console
     console.error = consoleError;
   });
 
@@ -62,6 +69,7 @@ describe('running version in a simple project', () => {
     it('should warn if no changeset commits exist', async () => {
       await writeEmptyChangeset(cwd);
       await versionCommand({ cwd });
+      // $FlowFixMe - fix logger
       const loggerWarnCalls = logger.warn.mock.calls;
       expect(loggerWarnCalls.length).toEqual(1);
       expect(loggerWarnCalls[0][0]).toEqual(
@@ -76,7 +84,7 @@ describe('running version in a simple project', () => {
       await writeChangesets([simpleChangeset2], cwd);
 
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
 
       expect(JSON.parse(calls[0][1])).toEqual(
         expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
@@ -110,7 +118,7 @@ describe('running version in a simple project', () => {
 
   it.skip('should respect config file', async () => {
     // We have used the atlaskit config. Its two differences are it has skipCI and commit as true
-    let cwd2 = await copyFixtureIntoTempDir(
+    const cwd2 = await copyFixtureIntoTempDir(
       __dirname,
       'simple-project-custom-config',
     );
@@ -126,7 +134,7 @@ describe('running version in a simple project', () => {
       const spy = jest.spyOn(fs, 'writeFile');
 
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
       expect(JSON.parse(calls[0][1])).toEqual(
         expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
       );
@@ -139,7 +147,7 @@ describe('running version in a simple project', () => {
       await writeChangesets([simpleChangeset, simpleChangeset2], cwd);
       const spy = jest.spyOn(fs, 'writeFile');
       await versionCommand({ cwd });
-      const calls = spy.mock.calls;
+      const { calls } = spy.mock;
 
       // first call should be minor bump
       expect(JSON.parse(calls[0][1])).toEqual(

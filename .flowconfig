@@ -1,4 +1,5 @@
 [ignore]
+.*/build/karma-config/.*
 .*/node_modules/styled-components/.*
 .*/website/dist/sandbox/.*
 .*/website/.*
@@ -9,6 +10,7 @@
 .*/node_modules/babel-flow-types/.*
 .*/node_modules/babel-normalize-comments/.*
 .*/node_modules/extract-react-types/.*
+.*/node_modules/projector-spawn/.*
 # Older versions of button which are transitive deps may contain flow errors/warnings
 <PROJECT_ROOT>/node_modules/@atlaskit/button/.*
 .*/.git/.*

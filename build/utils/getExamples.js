@@ -1,10 +1,8 @@
 //@flow
-'use strict';
 /*
  * Utilities helper to return all the examples and filter them by packages
  */
 const boltQuery = require('bolt-query');
-const glob = require('glob');
 const path = require('path');
 
 // Get all examples for a specified package using Bolt-Query
@@ -17,7 +15,7 @@ async function getExamplesFor(
       examples: 'examples/*.+(js|ts|tsx)',
     },
   });
-  let examplesArr = [];
+  const examplesArr = [];
   project.workspaces.forEach(workspace => {
     if (workspace.pkg) {
       if (

@@ -5,6 +5,7 @@ import {
   docFileId,
   largePdfFileId,
   imageFileId,
+  emptyImageFileId,
   largeImageFileId,
   smallImageFileId,
   unknownFileId,
@@ -52,6 +53,11 @@ export const videoIdentifier: FileIdentifier = {
 export const unsupportedIdentifier: FileIdentifier = {
   ...unknownFileId,
   occurrenceKey: 'testOccurrenceKey',
+};
+
+export const emptyImage: FileIdentifier = {
+  ...emptyImageFileId,
+  occurrenceKey: 'corruptedTestOccurrenceKey',
 };
 
 export const imageItem: FileIdentifier = {

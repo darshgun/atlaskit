@@ -1,3 +1,4 @@
+// @flow
 const fetch = require('node-fetch');
 const chalk = require('chalk');
 const spawndamnit = require('spawndamnit');
@@ -5,6 +6,7 @@ const prettyjson = require('prettyjson');
 const pWaitFor = require('p-wait-for');
 const fs = require('fs');
 const util = require('util');
+
 const readFile = util.promisify(fs.readFile);
 const retry = require('async-retry');
 
@@ -31,7 +33,7 @@ async function getInstalledAtlaskitDependencies() {
     throw new Error(err);
   }
 
-  let atlaskitDependencies = flattenDeep(
+  const atlaskitDependencies = flattenDeep(
     [
       'dependencies',
       'devDependencies',
@@ -53,7 +55,7 @@ async function getInstalledAtlaskitDependencies() {
 }
 // This function needs to be shared between the cli and the main node entry point
 // so that they can print different error messages
-function validateOptions(commitHash, options = {}) {
+function validateOptions(commitHash /*:string */, options /*: Object */ = {}) {
   const errors = [];
   const { engine, cmd, timeout, interval } = options;
 
@@ -79,6 +81,9 @@ function validateOptions(commitHash, options = {}) {
 // returns a function used for logging or doing nothing (depending on shouldLog)
 // i.e const logAlways = createLogger(true);
 // const logInDebugMode = createLogger(flags.debug);
+
+// TODO: To discuss with MB
+// eslint-disable-next-line no-unused-vars
 const createLogger = shouldLog => {
   if (shouldLog) {
     return message => {
@@ -93,7 +98,7 @@ const createLogger = shouldLog => {
   return () => {};
 };
 
-async function getManifestForCommit(commitHash, options = {}) {
+async function getManifestForCommit(commitHash, options /*: Object */ = {}) {
   const manifestUrl = `${CDN_URL_BASE}/${commitHash}/dists/manifest.json`;
   const { log } = options;
   const { interval, timeout } = options;
@@ -106,24 +111,24 @@ async function getManifestForCommit(commitHash, options = {}) {
   return manifest;
 }
 
-const urlExists = async (url, options = {}) => {
+const urlExists = async (url, options /*: Object */ = {}) => {
   const { verboseLog } = options;
 
   verboseLog(`Checking if url exists: ${url}`);
 
-  let response = await fetch(url, { method: 'HEAD' });
+  const response = await fetch(url, { method: 'HEAD' });
   verboseLog(`HTTP Code ${response.status}`);
 
   return response.status === 200;
 };
 
-const fetchVerbose = async (url, options = {}) => {
+const fetchVerbose = async (url, options /*: Object */ = {}) => {
   const { verboseLog } = options;
   verboseLog(`Trying to fetch ${url}`);
 
-  let response = await fetch(url);
+  const response = await fetch(url);
   verboseLog(`HTTP Code ${response.status}`);
-  let result = await response.json();
+  const result = await response.json();
   verboseLog(result);
 
   return result;
@@ -134,7 +139,10 @@ const fetchVerbose = async (url, options = {}) => {
  * node we can throw an error that can be caught, and from the cli we can print them and correctly
  * process.exit
  */
-async function installFromCommit(fullCommitHash = '', userOptions = {}) {
+async function installFromCommit(
+  fullCommitHash /*: string */ = '',
+  userOptions /*: Object */ = {},
+) {
   const defaultOptions = {
     dryRun: false,
     verbose: false,
@@ -159,9 +167,12 @@ async function installFromCommit(fullCommitHash = '', userOptions = {}) {
   return _installFromCommit(commitHash, options);
 }
 
-async function _installFromCommit(commitHash = '', options = {}) {
-  const log = createLogger(true);
-  const verboseLog = createLogger(options.verbose);
+async function _installFromCommit(
+  commitHash /*: string */ = '',
+  options /*: Object */ = {},
+) {
+  const { log } = options;
+  const { verboseLog } = options;
 
   verboseLog('Running with options:');
   verboseLog({ ...options, commitHash });
@@ -205,10 +216,11 @@ async function _installFromCommit(commitHash = '', options = {}) {
     https://github.com/yarnpkg/yarn/issues/2629
      */
     await retry(
-      async bail => {
+      async () => {
         try {
           await spawndamnit(engine, cmdArgs, {
             stdio: 'inherit',
+            // $FlowFixMe - isTTY is not in $Stream
             shell: process.stdout.isTTY,
           });
         } catch (err) {

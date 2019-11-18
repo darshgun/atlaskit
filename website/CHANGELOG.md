@@ -1,5 +1,13 @@
 # @atlaskit/website
 
+## 5.2.9
+
+### Patch Changes
+
+- [patch][1ed27f5f85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ed27f5f85):
+
+  Adds prop types for Header / Footer render props.
+
 ## 5.2.8
 
 ### Patch Changes

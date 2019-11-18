@@ -1,3 +1,5 @@
+/* eslint-disable prefer-rest-params */
+// @flow
 const chalk = require('chalk');
 
 function log() {

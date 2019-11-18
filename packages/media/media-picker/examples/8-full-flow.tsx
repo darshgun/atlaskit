@@ -14,14 +14,14 @@ import {
 import Button from '@atlaskit/button';
 import Select, { ValueType } from '@atlaskit/select';
 import { SelectWrapper, OptionsWrapper } from '../example-helpers/styled';
+import { MediaPicker } from '../src';
 import {
-  MediaPicker,
   UploadPreviewUpdateEventPayload,
   MediaFile,
   Popup,
   UploadProcessingEventPayload,
   UploadEndEventPayload,
-} from '../src';
+} from '../src/types';
 import { addGlobalEventEmitterListeners } from '@atlaskit/media-test-helpers';
 
 addGlobalEventEmitterListeners();

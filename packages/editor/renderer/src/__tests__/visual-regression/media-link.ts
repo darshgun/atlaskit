@@ -4,7 +4,8 @@ import { Page } from 'puppeteer';
 import { defaultMediaLinkOpacity } from '../../react/marks/link';
 import { mediaSingleClassName } from '@atlaskit/editor-common';
 
-describe('media link:', () => {
+// TODO: Unskip when we fixed ED-8011
+describe.skip('media link:', () => {
   let page: Page;
 
   beforeEach(async () => {

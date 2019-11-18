@@ -1,45 +1,4 @@
-import { MediaProgress } from './progress';
-import { MediaError } from './error';
-import { Preview, isImagePreview } from './preview';
-import { MediaFile } from './file';
-
-export { isImagePreview };
-
-export type UploadsStartEventPayload = {
-  readonly files: MediaFile[];
-};
-
-export type UploadPreviewUpdateEventPayload = {
-  readonly file: MediaFile;
-  readonly preview: Preview;
-};
-
-export type UploadStatusUpdateEventPayload = {
-  readonly file: MediaFile;
-  readonly progress: MediaProgress;
-};
-
-export type UploadProcessingEventPayload = {
-  readonly file: MediaFile;
-};
-
-export type UploadEndEventPayload = {
-  readonly file: MediaFile;
-};
-
-export type UploadErrorEventPayload = {
-  readonly file: MediaFile;
-  readonly error: MediaError;
-};
-
-export type UploadEventPayloadMap = {
-  readonly 'uploads-start': UploadsStartEventPayload;
-  readonly 'upload-preview-update': UploadPreviewUpdateEventPayload;
-  readonly 'upload-status-update': UploadStatusUpdateEventPayload;
-  readonly 'upload-processing': UploadProcessingEventPayload;
-  readonly 'upload-end': UploadEndEventPayload;
-  readonly 'upload-error': UploadErrorEventPayload;
-};
+import { UploadEventPayloadMap } from '../types';
 
 export type UploadEventMap = {
   readonly [K in keyof UploadEventPayloadMap]: {

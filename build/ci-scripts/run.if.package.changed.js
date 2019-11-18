@@ -1,15 +1,17 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 // @flow
-const {
-  getChangedPackagesSinceMaster,
-  getChangedPackagesSincePublishCommit,
-} = require('../utils/packages');
-const git = require('../utils/git');
 const spawndamnit = require('spawndamnit');
 const fse = require('fs-extra');
 const path = require('path');
 const bolt = require('bolt');
+const git = require('../utils/git');
+const {
+  getChangedPackagesSinceMaster,
+  getChangedPackagesSincePublishCommit,
+} = require('../utils/packages');
 
-async function getAllFSChangesets(cwd) {
+async function getAllFSChangesets() {
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const changesetBase = path.join(projectRoot, '.changeset');
   if (!fse.existsSync(changesetBase)) {
@@ -22,16 +24,15 @@ async function getAllFSChangesets(cwd) {
     .filter(file => fse.lstatSync(path.join(changesetBase, file)).isDirectory())
     .map(changesetDir => {
       const jsonPath = path.join(changesetBase, changesetDir, 'changes.json');
-      // $ExpectError
+      // $StringLitteral
       return require(jsonPath);
     });
 }
 
-async function getNewFSChangesets(cwd) {
+async function getNewFSChangesets() {
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const paths = await git.getChangedChangesetFilesSinceMaster();
-
-  // $ExpectError
+  // $StringLitteral
   return paths.map(filePath => require(path.join(projectRoot, filePath)));
 }
 
@@ -43,12 +44,11 @@ async function getNewFSChangesets(cwd) {
  * `node build/ci-scripts/run.if.package.changed @full/package-name @another/package-name -- yarn toolName`.
  */
 (async () => {
-  let cwd = process.cwd();
-  let args = process.argv.slice(2);
+  const args = process.argv.slice(2);
 
-  let dashdashIndex = args.indexOf('--');
-  let command = args.slice(dashdashIndex + 1);
-  let packageNames = args.slice(0, dashdashIndex);
+  const dashdashIndex = args.indexOf('--');
+  const command = args.slice(dashdashIndex + 1);
+  const packageNames = args.slice(0, dashdashIndex);
 
   if (dashdashIndex < 0 || command.length === 0 || packageNames.length === 0) {
     console.error('Incorrect usage, run it like this:\n');
@@ -58,30 +58,30 @@ async function getNewFSChangesets(cwd) {
     process.exit(1);
   }
   // Take changed files since a commit or master branch
-  let branch = await git.getBranchName();
+  const branch = await git.getBranchName();
 
   // Take packages that are going to be released,
   // because using only files is not enough in cases where packages is only dependent of other package
-  let newChangesets =
+  const newChangesets =
     branch === 'master'
-      ? await getAllFSChangesets(cwd)
-      : await getNewFSChangesets(cwd);
-  let oldChangesets = await git.getUnpublishedChangesetCommits();
-  let unpublishedChangesets = oldChangesets.concat(newChangesets);
+      ? await getAllFSChangesets()
+      : await getNewFSChangesets();
+  const oldChangesets = await git.getUnpublishedChangesetCommits();
+  const unpublishedChangesets = oldChangesets.concat(newChangesets);
 
-  let packagesToRelease = unpublishedChangesets
+  const packagesToRelease = unpublishedChangesets
     .reduce(
       (acc, changeset) =>
         acc.concat(changeset.releases).concat(changeset.dependents),
       [],
     )
     .filter(change => change.type !== 'none');
-  let changedPackages =
+  const changedPackages =
     branch === 'master'
       ? await getChangedPackagesSincePublishCommit()
       : await getChangedPackagesSinceMaster();
 
-  let matched = !!changedPackages
+  const matched = !!changedPackages
     .concat(packagesToRelease)
     .find(pkg => packageNames.includes(pkg.name));
 
@@ -90,7 +90,7 @@ async function getNewFSChangesets(cwd) {
   }
 
   try {
-    let res = await spawndamnit(command[0], command.slice(1), {
+    const res = await spawndamnit(command[0], command.slice(1), {
       stdio: 'inherit',
       tty: (process.stdout && process.stdout.isTTY) || false,
     });

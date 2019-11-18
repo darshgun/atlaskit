@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 // @flow
 const babel = require('@babel/core');
 const fs = require('fs-extra');
@@ -25,14 +26,14 @@ module.exports = function(config /*: Config */) {
   console.log('Processing icon glyphs.');
 
   // Read the contents of the source directory
-  let files = glob.sync(config.glob, { cwd: config.srcDir });
+  const files = glob.sync(config.glob, { cwd: config.srcDir });
 
   return (
     Promise.all(
       files.map(filepath => {
         const wayHome = filepath
           .split('/')
-          .map(a => '..')
+          .map(() => '..')
           .concat('cjs/components/Icon')
           .join('/');
         const fileKey = filepath.replace(/\.svg$/, '');
@@ -101,4 +102,5 @@ module.exports = function(config /*: Config */) {
   );
 };
 
+// eslint-disable-next-line no-unused-expressions
 module.exports;

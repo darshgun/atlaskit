@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { md, code, Example, AtlassianInternalWarning } from '@atlaskit/docs';
+import { md, code, AtlassianInternalWarning } from '@atlaskit/docs';
 
 export default md`
   ${(<AtlassianInternalWarning />)}
@@ -35,12 +35,4 @@ const config: ContextConfig = {
 };
 const context: Context = ContextFactory.create(config);
   `}
-
-  ${(
-    <Example
-      Component={require('../examples/1-get-file').default}
-      title="Get File"
-      source={require('!!raw-loader!../examples/1-get-file')}
-    />
-  )}
 `;
