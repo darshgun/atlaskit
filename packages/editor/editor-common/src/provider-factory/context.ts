@@ -12,13 +12,13 @@ export const ProviderFactoryProvider = ProviderFactoryContext.Provider;
 export const useProviderFactory = () =>
   React.useContext(ProviderFactoryContext);
 
-export const useProvider = <P extends Promise<any>>(name: string) => {
-  const [provider, setProvider] = React.useState<P | undefined>();
+export const useProvider = <P>(name: string) => {
+  const [provider, setProvider] = React.useState<Promise<P> | undefined>();
   const providerFactory = useProviderFactory();
 
   React.useEffect(() => {
     const providerHandler: ProviderHandler = (_, provider) => {
-      setProvider(provider as P);
+      setProvider(provider as Promise<P>);
     };
 
     providerFactory.subscribe(name, providerHandler);

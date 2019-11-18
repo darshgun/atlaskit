@@ -32,8 +32,6 @@ import { PresetProvider } from '../Editor';
 import { EditorPresetProps } from './types';
 import { useDefaultPreset } from './default';
 import { addExcludesFromProviderFactory, getPluginsFromPreset } from './utils';
-import { useProviderFactory, useProvider } from '@atlaskit/editor-common/provider-factory';
-
 // #endregion
 
 interface EditorPresetMobileProps {
@@ -48,7 +46,7 @@ export function useMobilePreset({
   media,
   placeholder,
 }: EditorPresetMobileProps & EditorPresetProps) {
-  const mediaProvider = useProvider<Promise<MediaProvider>>('mediaProvider');
+  const mediaProvider = useProvider<MediaProvider>('mediaProvider');
   const [preset] = useDefaultPreset();
 
   preset.push(
