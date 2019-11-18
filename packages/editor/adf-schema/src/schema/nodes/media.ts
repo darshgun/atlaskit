@@ -92,7 +92,9 @@ interface MutableMediaAttributes extends MediaAttributes {
   [key: string]: string | number | undefined | null | boolean;
 }
 
-const createMediaSpec = (attributes: Partial<NodeSpec['attrs']>): NodeSpec => ({
+export const createMediaSpec = (
+  attributes: Partial<NodeSpec['attrs']>,
+): NodeSpec => ({
   selectable: true,
   attrs: attributes as NodeSpec['attrs'],
   parseDOM: [
