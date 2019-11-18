@@ -17,6 +17,7 @@ import {
 } from '../../plugins/analytics';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
+import { openHelp, tooltip } from '../../keymaps';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
 
@@ -81,9 +82,10 @@ const helpDialog = (): EditorPlugin => ({
     quickInsert: ({ formatMessage }) => [
       {
         title: formatMessage(messages.help),
-        description: formatMessage(messages.help),
-        keywords: ['help'],
+        description: formatMessage(messages.helpDescription),
+        keywords: ['help', '?'],
         priority: 900,
+        keyshortcut: tooltip(openHelp),
         icon: () => <QuestionCircleIcon label={formatMessage(messages.help)} />,
         action(insert, state) {
           const tr = insert('');
