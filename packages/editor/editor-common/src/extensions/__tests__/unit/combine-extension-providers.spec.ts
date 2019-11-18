@@ -40,7 +40,7 @@ describe('combine-extension-providers', () => {
     ]);
   });
 
-  test('should apply the methods from a provider in a list of providers seamlessly', async () => {
+  test('should have all the methods from an extension provider', async () => {
     expect(combinedExtensionProvider).toHaveProperty('getExtensions');
     expect(combinedExtensionProvider).toHaveProperty('getExtension');
     expect(combinedExtensionProvider).toHaveProperty('search');

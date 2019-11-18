@@ -12,6 +12,10 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
     this.manifestsPromise = Promise.resolve(manifests);
   }
 
+  getExtensions() {
+    return this.manifestsPromise;
+  }
+
   async getExtension(type: ExtensionType, key: ExtensionKey) {
     const extension = (await this.manifestsPromise).find(
       manifest => manifest.type === type && manifest.key === key,
@@ -24,10 +28,6 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
     }
 
     return extension;
-  }
-
-  async getExtensions() {
-    return await this.manifestsPromise;
   }
 
   async search(keyword: string) {
