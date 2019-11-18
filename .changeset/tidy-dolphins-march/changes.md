@@ -1,1 +1,0 @@
-ProviderFactory now includes emojiProvider type definition
