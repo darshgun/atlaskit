@@ -20,7 +20,7 @@ import HeightObserver from './height-observer';
 import {
   mediaProvider,
   mentionProvider,
-  taskDecisionProvider,
+  createTaskDecisionProvider,
   emojiProvider,
 } from '../providers';
 import { cardClient } from '../providers/cardProvider';
@@ -77,7 +77,9 @@ export default class MobileRenderer extends React.Component<
     }
     this.state = { document };
 
-    const taskDecisionProvider = taskDecisionProvider(this.handleToggleTask);
+    const taskDecisionProvider = createTaskDecisionProvider(
+      this.handleToggleTask,
+    );
 
     this.providerFactory = ProviderFactory.create({
       mediaProvider: props.mediaProvider || mediaProvider,

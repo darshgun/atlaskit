@@ -24,7 +24,7 @@ import {
 import {
   mediaProvider,
   mentionProvider,
-  taskDecisionProvider,
+  createTaskDecisionProvider,
   emojiProvider,
 } from '../providers';
 import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
@@ -125,7 +125,7 @@ export default function mobileEditor(props: Props) {
             }}
             allowAnalyticsGASV3={true}
             UNSAFE_allowExpand={true}
-            taskDecisionProvider={Promise.resolve(taskDecisionProvider())}
+            taskDecisionProvider={Promise.resolve(createTaskDecisionProvider())}
             {...props}
           />
         </AtlaskitThemeProvider>
