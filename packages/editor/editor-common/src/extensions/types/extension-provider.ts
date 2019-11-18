@@ -9,6 +9,6 @@ export interface ExtensionProvider {
   getExtension(
     type: ExtensionType,
     key: ExtensionKey,
-  ): Promise<ExtensionManifest>;
+  ): Promise<ExtensionManifest | undefined>;
   search(keyword: string): Promise<ExtensionManifest[]>;
 }

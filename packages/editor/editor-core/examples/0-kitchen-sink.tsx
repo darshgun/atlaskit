@@ -466,7 +466,6 @@ class FullPageRendererExample extends React.Component<Props, State> {
                             adfStage="stage0"
                             dataProviders={this.dataProviders}
                             eventHandlers={this.legacyMediaEventHandlers()}
-                            extensionProviders={extensionProviders}
                             appearance={
                               this.state.appearance as Exclude<
                                 EditorAppearance,

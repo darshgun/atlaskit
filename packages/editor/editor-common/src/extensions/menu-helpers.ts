@@ -70,7 +70,6 @@ export const getItemsFromModule = <T>(
 ): T[] => {
   const groupedMenuItems = getGroupedMenuItems(extensions, moduleType);
   return Object.keys(groupedMenuItems).map((key, index) => {
-    console.log(key, groupedMenuItems[key]);
     return transformFunction(groupedMenuItems[key], index);
   });
 };

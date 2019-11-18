@@ -53,9 +53,8 @@ export const renderExtension = (
   );
 };
 
-const Extension: React.StatelessComponent<
-  Props & OverflowShadowProps
-> = props => {
+const Extension: React.StatelessComponent<Props &
+  OverflowShadowProps> = props => {
   const {
     serializer,
     rendererContext,
