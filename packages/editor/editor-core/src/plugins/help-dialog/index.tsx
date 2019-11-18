@@ -27,6 +27,7 @@ export const openHelpCommand = (
   tr = tr.setMeta(pluginKey, true);
   if (dispatch) {
     dispatch(tr);
+    return true;
   }
   return false;
 };
