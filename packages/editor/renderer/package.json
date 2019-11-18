@@ -65,7 +65,7 @@
     "@types/puppeteer": "^1.12.1",
     "@types/react-loadable": "^5.4.1",
     "ajv": "^4.11.3",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "puppeteer": "1.17.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",

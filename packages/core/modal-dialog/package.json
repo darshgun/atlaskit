@@ -60,7 +60,7 @@
     "@atlaskit/webdriver-runner": "^0.1.5",
     "@testing-library/react": "^8.0.1",
     "@types/react-beautiful-dnd": "^11.0.1",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "react-beautiful-dnd": "^10.0.2",
     "react-dom": "^16.8.0",
     "react-lorem-component": "^0.12.2",
