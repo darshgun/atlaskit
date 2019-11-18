@@ -231,6 +231,11 @@ export const messages = defineMessages({
     description:
       'Opens a menu of additional items that can be inserted into your document.',
   },
+  help: {
+    id: 'fabric.editor.help',
+    defaultMessage: 'Help',
+    description: 'Opens up the help dialog',
+  },
 });
 
 export interface Props {

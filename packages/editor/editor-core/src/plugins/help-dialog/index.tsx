@@ -15,14 +15,20 @@ import {
   EVENT_TYPE,
   ACTION_SUBJECT_ID,
 } from '../../plugins/analytics';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
 
-export const openHelpCommand = (tr: Transaction, dispatch?: Function): void => {
+export const openHelpCommand = (
+  tr: Transaction,
+  dispatch?: Function,
+): boolean => {
   tr = tr.setMeta(pluginKey, true);
   if (dispatch) {
     dispatch(tr);
   }
+  return false;
 };
 
 export const closeHelpCommand = (tr: Transaction, dispatch: Function): void => {
@@ -68,6 +74,29 @@ const helpDialog = (): EditorPlugin => ({
         plugin: () => keymapPlugin(),
       },
     ];
+  },
+
+  pluginsOptions: {
+    quickInsert: ({ formatMessage }) => [
+      {
+        title: formatMessage(messages.help),
+        description: formatMessage(messages.help),
+        keywords: ['help'],
+        priority: 900,
+        icon: () => <QuestionCircleIcon label={formatMessage(messages.help)} />,
+        action(insert, state) {
+          const tr = insert('');
+          openHelpCommand(tr);
+          return addAnalytics(state, tr, {
+            action: ACTION.HELP_OPENED,
+            actionSubject: ACTION_SUBJECT.HELP,
+            actionSubjectId: ACTION_SUBJECT_ID.HELP_QUICK_INSERT,
+            attributes: { inputMethod: INPUT_METHOD.QUICK_INSERT },
+            eventType: EVENT_TYPE.UI,
+          });
+        },
+      },
+    ],
   },
 
   contentComponent({ editorView }) {
