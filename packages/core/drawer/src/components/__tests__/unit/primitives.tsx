@@ -152,6 +152,6 @@ describe('Drawer primitive', () => {
     const handler = wrapper.find(Slide).props().onEntered;
     if (handler) handler(node);
 
-    expect(handler).toHaveBeenLastCalledWith();
+    expect(handler).toHaveBeenLastCalledWith(node);
   });
 });
