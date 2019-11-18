@@ -14,7 +14,7 @@ import { EditorPresetMobile } from '../src/labs/next/presets/mobile';
 import { Mobile as MobileEditor } from '../src/labs/next/mobile';
 import ProviderFactory from '@atlaskit/editor-common/src/provider-factory/provider-factory';
 
-function createProviderFactory() {
+function initializeProviderFactory() {
   class MentionProviderImpl implements MentionProvider {
     filter(_query?: string): void {}
     recordMentionSelection(_mention: MentionDescription): void {}
@@ -78,7 +78,7 @@ export const Content: any = styled.div`
 `;
 Content.displayName = 'Content';
 
-const providerFactory = createProviderFactory();
+const providerFactory = initializeProviderFactory();
 
 export default function Example(props: EditorProps) {
   return (
