@@ -9,7 +9,7 @@ import {
   BrowserTestCase(
     `insert-and-delete-mediaGroup.ts: Inserts and deletes media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
-    async (client: any) => {
+    async (client: BrowserObject) => {
       const page = await goToEditorTestingExample(client);
       await mountEditor(page, {
         appearance: editor.appearance,

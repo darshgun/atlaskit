@@ -7,6 +7,7 @@
   "dependencies": {
     "@atlaskit/analytics-reporting": "0.1.1",
     "@atlaskit/webpack-config": "^2.0.15",
+    "@types/promise-queue": "^2.2.0",
     "bolt": "^0.24.3",
     "bolt-query": "^1.1.4",
     "browserstack-local": "^1.4.2",
