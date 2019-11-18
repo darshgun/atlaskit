@@ -273,12 +273,18 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private getMediaProps(node: Node, path: Array<Node> = []) {
     const {
       marks: { link },
+      nodes: { mediaSingle },
     } = node.type.schema;
 
     const isLinkMark = (mark: Mark) => mark.type.name === link.name;
 
-    const parentNodeHasLinkMark =
-      path.length > 0 && path[path.length - 1].marks.some(isLinkMark);
+    const parentMediaNode: Node | null =
+      path.length > 0 ? path[path.length - 1] : null;
+
+    const parentNodeHasLinkMark: boolean =
+      parentMediaNode !== null &&
+      parentMediaNode.type.name === mediaSingle.name &&
+      parentMediaNode.marks.some(isLinkMark);
 
     const shouldOpenMediaViewer =
       !parentNodeHasLinkMark && this.shouldOpenMediaViewer;
