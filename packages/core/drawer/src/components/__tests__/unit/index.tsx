@@ -183,6 +183,20 @@ describe('Drawer Transitions', () => {
     });
   });
 
+  it('should call onOpenComplete when DrawerPrimitive calls onOpenComplete', () => {
+    const onOpenComplete = jest.fn();
+    const wrapper = mount(
+      <Drawer isOpen width="wide" onOpenComplete={onOpenComplete}>
+        <code>Drawer contents</code>
+      </Drawer>,
+    );
+
+    const node = document.createElement('div');
+    const callback = wrapper.find(DrawerPrimitive).props().onOpenComplete;
+    if (callback) callback(node);
+    expect(onOpenComplete).toHaveBeenCalledWith(node);
+  });
+
   it('should call onKeyDown if user press ESC', () => {
     const onKeyDown = jest.fn();
     const event = { key: 'Escape' };
