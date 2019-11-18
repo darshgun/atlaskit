@@ -1,6 +1,6 @@
 export { WithProviders } from './provider-factory/with-providers';
 
-export { Providers, MediaProvider } from './provider-factory/types';
+export { Providers } from './provider-factory/types';
 
 export {
   ProviderFactoryProvider,
@@ -8,3 +8,4 @@ export {
   useProvider,
 } from './provider-factory/context';
 export { default as ProviderFactory } from './provider-factory/provider-factory';
+export { MediaProvider } from './provider-factory/media-provider';
