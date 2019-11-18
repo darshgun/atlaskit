@@ -3,7 +3,6 @@ function parseChangesetCommit(commitMsg /*: string */) {
   const lines = commitMsg.split('\n');
   let curLine;
   let jsonStr = '';
-
   // Throw away all the lines until we find the separator token
   do {
     curLine = lines.shift();
