@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import { useProvider, ProviderFactoryProvider } from '../../context';
 import { create, act, ReactTestRenderer } from 'react-test-renderer';
+import { useProvider, ProviderFactoryProvider } from '../../context';
 import { MediaProvider } from '../../types';
 import ProviderFactory from '../../provider-factory';
 
