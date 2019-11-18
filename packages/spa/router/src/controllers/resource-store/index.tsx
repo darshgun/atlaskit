@@ -179,12 +179,14 @@ export const actions: Actions = {
       const slice = getSliceForResource({ data }, { type, key });
 
       if (!slice.expiresAt || slice.expiresAt < Date.now()) {
-        actions.setResourceState(type, key, {
-          ...slice,
-          data: null,
-          error: null,
-          expiresAt: getExpiresAt(0),
-        });
+        dispatch(
+          actions.setResourceState(type, key, {
+            ...slice,
+            data: null,
+            error: null,
+            expiresAt: getExpiresAt(0),
+          }),
+        );
       }
     });
   },

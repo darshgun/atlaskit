@@ -10,6 +10,7 @@ import {
   RouterSubscriber,
   INITIAL_STATE,
   getRouterStore,
+  getRouterState,
 } from '../../../../controllers/router-store';
 import { ResourceSubscriber } from '../../../../controllers/subscribers/resource';
 import { MatchedRoute, HistoryAction } from '../../../../common/types';
@@ -414,6 +415,57 @@ describe('SPA Router store', () => {
     });
   });
 
+  describe('resource store interop', () => {
+    const containerProps = {
+      isStatic: false,
+      history: mockHistory,
+      routes: [],
+      resourceContext: {},
+      resourceData: {},
+      transitionBlocker: async () => true,
+    };
+
+    let children: any;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      children = jest.fn().mockReturnValue(null);
+    });
+
+    it('should hydrate the resource store state when bootstrapped', () => {
+      const resourceContext = { foo: 'bar' };
+      const resourceData = {};
+      const initialResourceStoreState = {
+        resourceContext,
+        resourceData,
+      };
+      const props = { ...containerProps, ...initialResourceStoreState };
+      const spy = jest.spyOn(getResourceStore().actions, 'hydrate');
+
+      getRouterStore().actions.bootstrapStore(props);
+
+      expect(spy).toBeCalledWith({
+        resourceContext,
+        resourceData,
+      });
+    });
+
+    it('should request route resources when the router is mounted', () => {
+      const spy = jest.spyOn(getResourceStore().actions, 'requestAllResources');
+
+      mount(
+        <MemoryRouter routes={mockRoutes}>
+          <RouterSubscriber>{children}</RouterSubscriber>
+        </MemoryRouter>,
+      );
+
+      const { route, match, query, location } = getRouterState();
+
+      expect(spy).toBeCalledTimes(1);
+      expect(spy).toBeCalledWith({ route, match, query, location });
+    });
+  });
+
   describe('history listen resource store interop', () => {
     const getResourceStoreStateData = () =>
       getResourceStore().storeState.getState().data;
@@ -434,8 +486,8 @@ describe('SPA Router store', () => {
 
     const mountAppSetInitialLocationAndGetHistoryPush = async (
       routes: any[],
-      initialLocation: any,
-    ) => {
+      initialLocation: string,
+    ): Promise<any> => {
       let historyPush = (path: string) => path;
 
       mount(
@@ -474,7 +526,7 @@ describe('SPA Router store', () => {
       maxAge: Infinity,
     });
 
-    it('should transition between routes and not render components with stale data', async () => {
+    it.only('should transition between routes and not render components with stale data', async () => {
       const ComponentA = () => (
         <ResourceSubscriber resource={resourceA}>
           {({ data, loading }) => {
