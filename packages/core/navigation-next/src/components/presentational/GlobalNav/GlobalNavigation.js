@@ -7,7 +7,6 @@
 
 import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
-import throttle from 'lodash.throttle';
 
 import {
   FirstPrimaryItemWrapper,
@@ -16,28 +15,7 @@ import {
 } from './primitives';
 import type { GlobalNavigationProps } from './types';
 
-const THROTTLE_INTERVAL = 100;
-
 export default class GlobalNavigation extends Component<GlobalNavigationProps> {
-  throttledListener = throttle(this.listener, THROTTLE_INTERVAL);
-
-  vh = 0;
-
-  listener() {
-    this.vh = window.innerHeight * 0.01;
-    // $FlowFixMe - document.documentElement will be HTMLElement, not null
-    document.documentElement.style.setProperty('--vh', `${this.vh}px`);
-  }
-
-  componentDidMount() {
-    this.listener();
-    window.addEventListener('resize', this.throttledListener);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.throttledListener);
-  }
-
   render() {
     const {
       itemComponent: ItemComponent,
@@ -45,12 +23,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
       secondaryItems,
       theme,
     } = this.props;
-    let wrapperStyles = theme.mode.globalNav({ topOffset: theme.topOffset });
-    // Fix for mobile
-    wrapperStyles = {
-      ...wrapperStyles,
-      height: `calc((var(--vh, 1vh) * 100) - ${theme.topOffset}px)`,
-    };
+    const wrapperStyles = theme.mode.globalNav({ topOffset: theme.topOffset });
 
     return (
       <NavigationAnalyticsContext

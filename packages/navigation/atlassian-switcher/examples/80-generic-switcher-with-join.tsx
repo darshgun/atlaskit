@@ -17,6 +17,10 @@ const customAvailableProductsDataProvider = createJoinableSitesProvider(
   fetchJoinableSites,
 );
 
+const onJoinableSiteClicked = (returnUrl?: string) => {
+  console.log('joinable site clicked');
+};
+
 class GenericSwitcherWithJoinExample extends React.Component {
   state = {
     isDrawerOpen: false,
@@ -58,6 +62,7 @@ class GenericSwitcherWithJoinExample extends React.Component {
             product="generic-product"
             cloudId="some-cloud-id"
             joinableSitesDataProvider={customAvailableProductsDataProvider}
+            onJoinableSiteClicked={onJoinableSiteClicked}
           />
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>
