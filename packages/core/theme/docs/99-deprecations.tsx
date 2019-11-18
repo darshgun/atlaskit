@@ -15,7 +15,7 @@ export default md`
 Here you'll find API's that are no longer supported.
 Please don't use them.
 
-${<Deprecated>AtlaskitThemeProvider</Deprecated>}
+${(<Deprecated>AtlaskitThemeProvider</Deprecated>)}
 
 Theme provider is a wrapper component that accepts a 'mode'. This mode is passed down to styled components below it, using the styled components library theme provider, while also providing some defaults.
 
@@ -41,19 +41,19 @@ ${(
   />
 )}
 
-${<Deprecated>getTheme()</Deprecated>}
+${(<Deprecated>getTheme()</Deprecated>)}
 
 Returns the current theme based on props. This has been deprecated in favour of simply accessing whatever you need using the \`Consumer\` or \`Theme\` components.
 
 _Due to the fact that this helper was never documented and is now deprecated, we will not document its usage and this only serves as a notice that it will be removed in the future._
 
-${<Deprecated>math</Deprecated>}
+${(<Deprecated>math</Deprecated>)}
 
 Exports of curried functions that do math operations in styled component primitives. They have been deprecated in favour of performing your own mathematical operations using plain JavaScript.
 
 _Due to the fact that this helper was never documented and is now deprecated, we will not document its usage and this only serves as a notice that it will be removed in the future._
 
-${<Deprecated>themed()</Deprecated>}
+${(<Deprecated>themed()</Deprecated>)}
 
 The \`themed()\` function is a way to define a theme for usage exclusively within Styled Component's primitives. Since we're moving to using React Context, this has been deprecated in favour of defining a theme with the \`Theme\` component.
 

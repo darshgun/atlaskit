@@ -24,7 +24,7 @@ ${(
   </SectionMessage>
 )}
 
-${<Experimental>Creating themes</Experimental>}
+${(<Experimental>Creating themes</Experimental>)}
 
 The \`createTheme\` function is at the heart of the theming API and is used in the global theme and reset theme. Much like React's \`createContext\`, the \`createTheme\` function returns you a \`Consumer\` and \`Provider\` that you use to get and set a theme, respectively.
 
@@ -37,7 +37,7 @@ ${(
   />
 )}
 
-${<Experimental>Theming components</Experimental>}
+${(<Experimental>Theming components</Experimental>)}
 
 Whenever you create a new theme, it provides you a context specific to that theme. When theming a component, you use this context to provide a theme for your component. It is recommended that you, at the very least, export the provider for your theme so consumers can customise the look and feel of your component.
 
@@ -50,7 +50,7 @@ ${(
   />
 )}
 
-${<Experimental>The global theme</Experimental>}
+${(<Experimental>The global theme</Experimental>)}
 
 The global theme is the \`default\` export of the theme package. It is defined by using the \`createTheme\` function, so it will give you both a \`Consumer\` and \`Provider\` for you to use or customise as you see fit.
 
@@ -63,7 +63,7 @@ ${(
   />
 )}
 
-${<Experimental>Reset</Experimental>}
+${(<Experimental>Reset</Experimental>)}
 
 The \`Reset\` component applies CSS reset styles to select descendant nodes according to the ADG.
 

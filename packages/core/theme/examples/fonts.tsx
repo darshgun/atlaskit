@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  fontSize,
-  fontSizeSmall,
-  fontFamily,
-  codeFontFamily,
-} from '@atlaskit/theme';
+import { fontSize, fontSizeSmall, fontFamily, codeFontFamily } from '../src';
 
 export default () => {
   return (

@@ -4,8 +4,8 @@ import { layers } from '../src';
 export default () => {
   return (
     <div>
-      {Object.keys(layers).map(name => (
-        <div key={name}>{`layers.${name}() // ${layers[name]()}`}</div>
+      {Object.entries(layers).map(([key, value]) => (
+        <div key={key}>{`layers.${key}() // ${value()}`}</div>
       ))}
     </div>
   );

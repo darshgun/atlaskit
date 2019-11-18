@@ -1,7 +1,12 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import color from 'color';
-import { colors, borderRadius } from '../src';
+import { colors, borderRadius, ThemedValue } from '../src';
+
+const emptyColor = (): {
+  name: string;
+  value: string | ThemedValue<string>;
+}[] => [];
 
 const colorGroups = Object.entries(colors).reduce(
   (acc, [name, value]) => {
@@ -31,15 +36,15 @@ const colorGroups = Object.entries(colors).reduce(
     return acc;
   },
   {
-    reds: [],
-    yellows: [],
-    greens: [],
-    blues: [],
-    purples: [],
-    teals: [],
-    neutrals: [],
-    darkModeNeutrals: [],
-    named: [],
+    reds: emptyColor(),
+    yellows: emptyColor(),
+    greens: emptyColor(),
+    blues: emptyColor(),
+    purples: emptyColor(),
+    teals: emptyColor(),
+    neutrals: emptyColor(),
+    darkModeNeutrals: emptyColor(),
+    named: emptyColor(),
   },
 );
 
