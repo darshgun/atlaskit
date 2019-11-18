@@ -238,8 +238,8 @@ export const messages = defineMessages({
   },
   helpDescription: {
     id: 'fabric.editor.help.description',
-    defaultMessage: 'Browse all the keyboard shorts and markdown options',
-    description: 'Browse all the keyboard shorts and markdown options',
+    defaultMessage: 'Browse all the keyboard shortcuts and markdown options',
+    description: 'Browse all the keyboard shortcuts and markdown options',
   },
 });
 

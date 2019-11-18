@@ -84,7 +84,7 @@ const helpDialog = (): EditorPlugin => ({
         title: formatMessage(messages.help),
         description: formatMessage(messages.helpDescription),
         keywords: ['help', '?'],
-        priority: 900,
+        priority: 4000,
         keyshortcut: tooltip(openHelp),
         icon: () => <QuestionCircleIcon label={formatMessage(messages.help)} />,
         action(insert, state) {
