@@ -2,8 +2,8 @@ import { ExtensionManifest } from '@atlaskit/editor-common';
 
 const manifest: ExtensionManifest = {
   title: 'Jira',
-  type: 'fancy.extensions',
-  key: 'jira',
+  type: 'com.atlassian.confluence.macro.core',
+  key: 'jql-table',
   description: 'Jira results in a table',
   icons: {
     '16': () => import('@atlaskit/icon/glyph/editor/code'),
@@ -13,24 +13,15 @@ const manifest: ExtensionManifest = {
       {
         key: 'jql-table',
         icon: () => import('@atlaskit/icon/glyph/table'),
-        target: 'jql-table',
+        target: 'default',
       },
     ],
-    insertMenu: [
-      {
-        key: 'jql-table',
-        icon: () => import('@atlaskit/icon/glyph/table'),
-        description: 'Insert a table with results from a JQL query',
-        target: 'jql-table',
-      },
-    ],
-    nodes: [
-      {
-        key: 'jql-table',
+    nodes: {
+      default: {
         insert: () => import('./adf-node'),
         render: () => import('./extension-handler'),
       },
-    ],
+    },
   },
 };
 

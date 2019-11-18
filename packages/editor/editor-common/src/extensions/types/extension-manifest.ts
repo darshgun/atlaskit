@@ -15,6 +15,7 @@ export type Icons = {
 
 export type ExtensionManifest = {
   type: ExtensionType;
+  key: ExtensionKey;
   title: string;
   description: string;
   icons: Icons;
@@ -23,8 +24,7 @@ export type ExtensionManifest = {
 
 export type ExtensionModules = {
   quickInsert?: ExtensionModule[];
-  insertMenu?: ExtensionModule[];
-  nodes: ExtensionModuleNode[];
+  nodes: ExtensionModuleNodes;
 };
 
 export type ExtensionModule = {
@@ -37,14 +37,22 @@ export type ExtensionModule = {
   target: ExtensionKey;
 };
 
+export type ExtensionModuleNodes = {
+  [key: string]: ExtensionModuleNode;
+};
+
 export type ExtensionModuleNode = {
-  key: ExtensionKey;
   insert: () => AsyncESModule<ADFEntity>;
   render: () => AsyncESModule<ReactNode>;
 };
 
 export type ExtensionModuleType = Exclude<keyof ExtensionModules, 'nodes'>;
 
-export type AsyncESModule<T> = Promise<{
+export type ESModule<T> = {
+  __esModule?: boolean;
   default: T;
-}>;
+};
+
+export type Module<T> = ESModule<T> | T;
+
+export type AsyncESModule<T> = Promise<Module<T>>;

@@ -5,13 +5,13 @@ describe('default-extension-provider', () => {
   const confluenceAwesomeMacro = createFakeExtensionManifest({
     title: 'Awesome macro',
     type: 'confluence.macro',
-    extensionKeys: ['awesome'],
+    extensionKey: 'awesome',
   });
 
   const confluenceAmazingMacro = createFakeExtensionManifest({
     title: 'Amazing macros',
     type: 'confluence.macro',
-    extensionKeys: ['amazing'],
+    extensionKey: 'amazing',
   });
 
   let extensionProvider: DefaultExtensionProvider;

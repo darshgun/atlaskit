@@ -7,25 +7,25 @@ describe('combine-extension-providers', () => {
   const confluenceAwesomeMacro = createFakeExtensionManifest({
     title: 'Awesome macro',
     type: 'confluence.macro',
-    extensionKeys: ['awesome'],
+    extensionKey: 'awesome',
   });
 
   const forgeAmazingExtension = createFakeExtensionManifest({
     title: 'Amazing extensions',
     type: 'atlassian.forge',
-    extensionKeys: ['amazing'],
+    extensionKey: 'amazing',
   });
 
   const confluenceDumbMacro = createFakeExtensionManifest({
     title: 'Dumb macro',
     type: 'confluence.macro',
-    extensionKeys: ['dumb'],
+    extensionKey: 'dumb',
   });
 
   const forgeMehhExtension = createFakeExtensionManifest({
     title: 'Mehh extensions',
     type: 'atlassian.forge',
-    extensionKeys: ['mehh'],
+    extensionKey: 'mehh',
   });
 
   let combinedExtensionProvider: ExtensionProvider;

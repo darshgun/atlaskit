@@ -168,7 +168,6 @@ const insertBlockPlugin = (options: InsertBlockOptions = {}): EditorPlugin => ({
               }
               emojiDisabled={!emojiState || !emojiState.emojiProvider}
               emojiProvider={providers.emojiProvider}
-              extensionProvider={providers.extensionProvider}
               nativeStatusSupported={options.nativeStatusSupported}
               horizontalRuleEnabled={options.horizontalRuleEnabled}
               onInsertBlockType={handleInsertBlockType}
@@ -189,7 +188,7 @@ const insertBlockPlugin = (options: InsertBlockOptions = {}): EditorPlugin => ({
     return (
       <WithProviders
         providerFactory={providerFactory}
-        providers={['emojiProvider', 'extensionProvider']}
+        providers={['emojiProvider']}
         renderNode={renderNode}
       />
     );

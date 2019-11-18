@@ -1,8 +1,8 @@
 export default {
   type: 'bodiedExtension',
   attrs: {
-    extensionType: 'fake.lorem.ipsum',
-    extensionKey: 'lorem-ipsum-3-with-body',
+    extensionType: 'com.atlassian.connect',
+    extensionKey: 'fake.lorem.ipsum:lorem-ipsum-3-with-body',
     parameters: {},
   },
   content: [

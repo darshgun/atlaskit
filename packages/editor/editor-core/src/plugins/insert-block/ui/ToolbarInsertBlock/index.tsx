@@ -27,11 +27,7 @@ import HorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji/picker';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import { EmojiId } from '@atlaskit/emoji/types';
-import {
-  Popup,
-  akEditorMenuZIndex,
-  ExtensionProvider,
-} from '@atlaskit/editor-common';
+import { Popup, akEditorMenuZIndex } from '@atlaskit/editor-common';
 
 import EditorActions from '../../../../actions';
 import {
@@ -55,7 +51,6 @@ import {
   ExpandIconWrapper,
   Shortcut,
 } from '../../../../ui/styles';
-import { extractItemsFromExtensionProvider } from '../../../../utils/extensions';
 import { BlockType } from '../../../block-type/types';
 import { MacroProvider } from '../../../macro/types';
 import { createTable } from '../../../table/commands';
@@ -261,7 +256,6 @@ export interface Props {
   placeholderTextEnabled?: boolean;
   layoutSectionEnabled?: boolean;
   expandEnabled?: boolean;
-  extensionProvider?: Promise<ExtensionProvider>;
   emojiProvider?: Promise<EmojiProvider>;
   availableWrapperBlockTypes?: BlockType[];
   linkSupported?: boolean;
@@ -286,7 +280,6 @@ export interface Props {
 export interface State {
   isOpen: boolean;
   emojiPickerOpen: boolean;
-  extensionProvidedItems: InsertMenuCustomItem[];
 }
 
 export type TOOLBAR_MENU_TYPE = INPUT_METHOD.TOOLBAR | INPUT_METHOD.INSERT_MENU;
@@ -313,36 +306,13 @@ class ToolbarInsertBlock extends React.PureComponent<
   state: State = {
     isOpen: false,
     emojiPickerOpen: false,
-    extensionProvidedItems: [],
   };
-
-  componentDidMount() {
-    if (this.props.extensionProvider) {
-      this.showMenuItemsFromExtensionProvider(this.props.extensionProvider);
-    }
-  }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     // If number of visible buttons changed, close emoji picker
     if (nextProps.buttons !== this.props.buttons) {
       this.setState({ emojiPickerOpen: false });
     }
-
-    if (
-      nextProps.extensionProvider &&
-      nextProps.extensionProvider !== this.props.extensionProvider
-    ) {
-      this.showMenuItemsFromExtensionProvider(nextProps.extensionProvider);
-    }
-  }
-
-  private async showMenuItemsFromExtensionProvider(
-    extensionProvider: Promise<ExtensionProvider>,
-  ) {
-    const items = await extractItemsFromExtensionProvider(
-      await extensionProvider,
-    );
-    this.setState({ extensionProvidedItems: items });
   }
 
   private onOpenChange = (attrs: { isOpen: boolean; open?: boolean }) => {
@@ -721,10 +691,6 @@ class ToolbarInsertBlock extends React.PureComponent<
         value: { name: 'status' },
         elemBefore: <StatusIcon label={labelStatus} />,
       });
-    }
-
-    if (this.state.extensionProvidedItems) {
-      items = items.concat(this.state.extensionProvidedItems);
     }
 
     if (insertMenuItems) {

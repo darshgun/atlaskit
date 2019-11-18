@@ -14,25 +14,27 @@ import { shallow } from 'enzyme';
 describe('extension-handlers', () => {
   let extensionProvider: ExtensionProvider;
 
+  const confluenceExpandMacro = createFakeExtensionManifest({
+    title: 'Expand macro',
+    type: 'confluence.macro',
+    extensionKey: 'expand',
+  });
+
+  const confluenceTOCMacro = createFakeExtensionManifest({
+    title: 'Table of contents macro',
+    type: 'confluence.macro',
+    extensionKey: 'toc',
+    nodeKeys: ['default', 'zone'],
+  });
+
+  const forgeAmazingExtension = createFakeExtensionManifest({
+    title: 'Answer to life',
+    type: 'atlassian.forge',
+    extensionKey: 'answer-to-life',
+    nodeKeys: ['fourtyTwo'],
+  });
+
   beforeEach(async () => {
-    const confluenceExpandMacro = createFakeExtensionManifest({
-      title: 'Expand macro',
-      type: 'confluence.macro',
-      extensionKeys: ['expand'],
-    });
-
-    const confluenceTOCMacro = createFakeExtensionManifest({
-      title: 'Table of contents macro',
-      type: 'confluence.macro',
-      extensionKeys: ['toc'],
-    });
-
-    const forgeAmazingExtension = createFakeExtensionManifest({
-      title: 'Answer to life',
-      type: 'atlassian.forge',
-      extensionKeys: ['answer-to-life'],
-    });
-
     extensionProvider = combineExtensionProviders([
       new DefaultExtensionProvider([confluenceExpandMacro, confluenceTOCMacro]),
       new DefaultExtensionProvider([forgeAmazingExtension]),
@@ -107,12 +109,37 @@ describe('extension-handlers', () => {
 
   describe('getExtensionModuleNode', () => {
     test('should return the manifest node when found', async () => {
-      const node = await getExtensionModuleNode(
-        extensionProvider,
-        'confluence.macro',
-        'expand',
-      );
-      expect(Object.keys(node)).toEqual(['key', 'type', 'insert', 'render']);
+      expect(
+        await getExtensionModuleNode(
+          extensionProvider,
+          'confluence.macro',
+          'expand',
+        ),
+      ).toEqual(confluenceExpandMacro.modules.nodes['default']);
+
+      expect(
+        await getExtensionModuleNode(
+          extensionProvider,
+          'confluence.macro',
+          'toc',
+        ),
+      ).toEqual(confluenceTOCMacro.modules.nodes['default']);
+
+      expect(
+        await getExtensionModuleNode(
+          extensionProvider,
+          'confluence.macro',
+          'toc:zone',
+        ),
+      ).toEqual(confluenceTOCMacro.modules.nodes['zone']);
+
+      expect(
+        await getExtensionModuleNode(
+          extensionProvider,
+          'atlassian.forge',
+          'answer-to-life:fourtyTwo',
+        ),
+      ).toEqual(forgeAmazingExtension.modules.nodes['fourtyTwo']);
     });
 
     test('should throw if extension type is not found', () => {

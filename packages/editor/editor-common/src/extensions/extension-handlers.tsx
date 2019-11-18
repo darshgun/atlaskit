@@ -7,18 +7,18 @@ import {
   ExtensionKey,
   ExtensionParams,
 } from './types';
+import { getExtensionKeyAndNodeKey, resolveImport } from './manifest-helpers';
 
 export async function getExtensionModuleNode(
   extensionProvider: ExtensionProvider,
   extensionType: ExtensionType,
   extensionKey: ExtensionKey,
 ) {
-  const manifest = await extensionProvider.getExtension(
-    extensionType,
-    extensionKey,
-  );
+  const [extKey, nodeKey] = getExtensionKeyAndNodeKey(extensionKey);
 
-  const node = manifest.modules.nodes.find(node => node.key === extensionKey);
+  const manifest = await extensionProvider.getExtension(extensionType, extKey);
+
+  const node = manifest.modules.nodes[nodeKey];
 
   if (!node) {
     throw new Error(
@@ -50,7 +50,7 @@ export function getNodeRenderer<T>(
         extensionProvider,
         extensionType,
         extensionKey,
-      ).then(node => node.render());
+      ).then(node => resolveImport(node.render()));
     },
     loading: ExtensionLoading,
   });

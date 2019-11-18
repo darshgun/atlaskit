@@ -4,48 +4,12 @@ import {
   ExtensionProvider,
   combineProviders,
   getItemsFromModule,
+  resolveImport,
 } from '@atlaskit/editor-common';
 import {
   QuickInsertProvider,
   QuickInsertItem,
 } from '../plugins/quick-insert/types';
-import { InsertMenuCustomItem } from '../types';
-import EditorActions from '../actions';
-
-export async function extractItemsFromExtensionProvider(
-  extensionProvider: ExtensionProvider,
-): Promise<InsertMenuCustomItem[]> {
-  const extensions = await extensionProvider.getExtensions();
-
-  const insertMenuItems = getItemsFromModule<Promise<InsertMenuCustomItem>>(
-    extensions,
-    'insertMenu',
-    async item => {
-      const Icon = Loadable<{ label: string }, any>({
-        loader: item.icon,
-        loading: () => null,
-      });
-
-      return {
-        content: item.title,
-        value: { name: item.title },
-        tooltipDescription: item.description,
-        elemBefore: <Icon label={item.title} />,
-        onClick: async (editorActions: EditorActions) => {
-          const node = item.node && (await item.node.insert()).default;
-          if (!node) {
-            // eslint-disable-next-line no-console
-            console.error('no node available');
-            return;
-          }
-          return editorActions.replaceSelection(node);
-        },
-      };
-    },
-  );
-
-  return await Promise.all(insertMenuItems);
-}
 
 export async function extensionProviderToQuickInsertProvider(
   extensionProvider: ExtensionProvider,
@@ -62,7 +26,7 @@ export async function extensionProviderToQuickInsertProvider(
             loader: item.icon,
             loading: () => null,
           });
-          const node = (await item.node.insert()).default;
+          const node = resolveImport(await item.node.insert());
 
           return {
             title: item.title,

@@ -1,5 +1,7 @@
 export * from './types';
 
+export { getExtensionKeyAndNodeKey, resolveImport } from './manifest-helpers';
+
 export {
   default as DefaultExtensionProvider,
 } from './default-extension-provider';

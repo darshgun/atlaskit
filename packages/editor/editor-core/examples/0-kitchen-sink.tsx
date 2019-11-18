@@ -11,7 +11,6 @@ import {
   ProviderFactory,
   combineExtensionProviders,
 } from '@atlaskit/editor-common';
-import { extensionHandlers } from '@atlaskit/editor-test-helpers';
 
 import enMessages from '../src/i18n/en';
 import languages from '../src/i18n/languages';

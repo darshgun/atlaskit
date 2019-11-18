@@ -13,12 +13,8 @@ export default class DefaultExtensionProvider implements ExtensionProvider {
   }
 
   async getExtension(type: ExtensionType, key: ExtensionKey) {
-    const manifests = (await this.manifestsPromise).filter(
-      manifest => manifest.type === type,
-    );
-
-    const extension = manifests.find(manifest =>
-      manifest.modules.nodes.find(node => node.key === key),
+    const extension = (await this.manifestsPromise).find(
+      manifest => manifest.type === type && manifest.key === key,
     );
 
     if (!extension) {

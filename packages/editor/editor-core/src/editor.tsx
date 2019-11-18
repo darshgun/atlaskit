@@ -205,7 +205,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-  private handleProviders(props: EditorProps) {
+  private async handleProviders(props: EditorProps) {
     const {
       emojiProvider,
       mentionProvider,

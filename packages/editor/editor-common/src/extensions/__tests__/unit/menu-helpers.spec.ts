@@ -6,27 +6,29 @@ describe('menu-helpers', () => {
     const confluenceAwesomeMacro = createFakeExtensionManifest({
       title: 'Awesome macro',
       type: 'confluence.macro',
-      extensionKeys: ['awesome-list', 'awesome-item'],
+      extensionKey: 'awesome',
+      nodeKeys: ['list', 'item'],
     });
 
     const confluenceAmazingMacro = createFakeExtensionManifest({
       title: 'Amazing macros',
       type: 'confluence.macro',
-      extensionKeys: ['amazing-list', 'amazing-item'],
+      extensionKey: 'amazing',
+      nodeKeys: ['list', 'item'],
     });
 
     test('should return all the extensions from a given capability', async () => {
-      const insertMenuItems = getItemsFromModule(
+      const quickInsertItems = getItemsFromModule(
         [confluenceAwesomeMacro, confluenceAmazingMacro],
         'quickInsert',
         item => item.key,
       );
 
-      expect(insertMenuItems).toEqual([
-        'awesome-list',
-        'awesome-item',
-        'amazing-list',
-        'amazing-item',
+      expect(quickInsertItems).toEqual([
+        'awesome:list',
+        'awesome:item',
+        'amazing:list',
+        'amazing:item',
       ]);
     });
   });
