@@ -90,6 +90,96 @@ export default class Page {
     }
   }
 
+  // This function simulates user select multiple document node by drag and drop.
+  async simulateUserSelection(
+    startSelector: Selector,
+    targetSelector: Selector,
+  ) {
+    const startBounds = await this.getBoundingRect(startSelector);
+    const targetBounds = await this.getBoundingRect(targetSelector);
+
+    // Note 1: Bound with 1 px so would not go over the elements.
+    // Note 2: Assume the content layout is from left to right and top to bottom.
+    const [startXOffset, startYOffset, targetXOffset, targetYOffset] =
+      startBounds.top > targetBounds.top
+        ? [startBounds.width - 1, startBounds.height - 1, 1, 1]
+        : [1, 1, targetBounds.width - 1, targetBounds.height - 1];
+
+    return this.simulateUserDragAndDrop(
+      Math.floor(startBounds.left + startXOffset),
+      Math.floor(startBounds.top + startYOffset),
+      Math.floor(targetBounds.left + targetXOffset),
+      Math.floor(targetBounds.top + targetYOffset),
+    );
+  }
+
+  async simulateUserDragAndDrop(
+    startX: number,
+    startY: number,
+    targetX: number,
+    targetY: number,
+    duration: number = 2000,
+  ) {
+    if (this.isBrowser('chrome')) {
+      return this.simulateUserDragAndDropChrome(
+        startX,
+        startY,
+        targetX,
+        targetY,
+      );
+    }
+
+    const moveToStart = {
+      type: 'pointerMove',
+      duration: 0,
+      x: startX,
+      y: startY,
+    };
+    const pointerDown = { type: 'pointerDown', button: 0 };
+    const pause = { type: 'pause', duration: 100 };
+    const moveToTarget = {
+      type: 'pointerMove',
+      duration,
+      x: targetX,
+      y: targetY,
+    };
+    const pointerUp = {
+      type: 'pointerUp',
+      button: 0,
+    };
+
+    return this.browser.performActions([
+      {
+        type: 'pointer',
+        id: 'finger1',
+        parameters: { pointerType: 'mouse' },
+        actions: [
+          moveToStart,
+          pause,
+          pointerDown,
+          pause,
+          moveToTarget,
+          pause,
+          pointerUp,
+          pause,
+        ],
+      },
+    ]);
+  }
+
+  async simulateUserDragAndDropChrome(
+    startX: number,
+    startY: number,
+    targetX: number,
+    targetY: number,
+  ) {
+    await this.moveTo('body', targetX, startY);
+    await this.browser.buttonDown();
+    await this.moveTo('body', targetX, targetY);
+    await this.browser.buttonUp();
+    return this.browser.pause(500);
+  }
+
   async hover(selector: Selector) {
     if (this.isBrowser('Safari')) {
       const bounds = await this.getBoundingRect(selector);

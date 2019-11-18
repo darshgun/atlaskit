@@ -1,5 +1,8 @@
 import { createCommand } from '.';
-import { isSelectionMediaSingleNode } from '../../utils/media-common';
+import {
+  isSelectionMediaSingleNode,
+  getMediaNodeFromSelection,
+} from '../../utils/media-common';
 
 export const closeMediaAltTextMenu = createCommand(state => {
   if (isSelectionMediaSingleNode(state)) {
@@ -15,13 +18,20 @@ export const openMediaAltTextMenu = createCommand(state => {
   return false;
 });
 
-export const updateAltText = (newAltText: string) =>
+export const updateAltText = (newAltText: string | null) =>
   createCommand(
-    state => {
-      return { type: 'updateAltText' };
-    },
-    tr => {
-      // tr.setNodeMarkup(pos, undefined, { alt: newAltText });
+    state =>
+      isSelectionMediaSingleNode(state) ? { type: 'updateAltText' } : false,
+    (tr, state) => {
+      const mediaNode = getMediaNodeFromSelection(state);
+      const pos = tr.selection.from + 1;
+      if (mediaNode) {
+        tr.setNodeMarkup(pos, undefined, {
+          ...mediaNode.attrs,
+          alt: newAltText,
+        });
+      }
+
       return tr;
     },
   );

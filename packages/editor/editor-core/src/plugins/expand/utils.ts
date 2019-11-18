@@ -3,8 +3,8 @@ import {
   findSelectedNodeOfType,
   findParentNodeOfType,
 } from 'prosemirror-utils';
-import { Slice, Schema } from 'prosemirror-model';
-import { mapSlice } from '../../utils/slice';
+import { Slice, Schema, Node as PMNode, Fragment } from 'prosemirror-model';
+import { mapChildren } from '../../utils/slice';
 
 export const findExpand = (state: EditorState) => {
   const { expand, nestedExpand } = state.schema.nodes;
@@ -19,15 +19,19 @@ export const transformSliceNestedExpandToExpand = (
   schema: Schema,
 ): Slice => {
   const { expand, nestedExpand } = schema.nodes;
+  const children = [] as PMNode[];
 
-  return mapSlice(slice, maybeNode => {
-    if (maybeNode.type === nestedExpand) {
-      return expand.createChecked(
-        maybeNode.attrs,
-        maybeNode.content,
-        maybeNode.marks,
-      );
+  mapChildren(slice.content, (node: PMNode) => {
+    if (node.type === nestedExpand) {
+      children.push(expand.createChecked(node.attrs, node.content, node.marks));
+    } else {
+      children.push(node);
     }
-    return maybeNode;
   });
+
+  return new Slice(
+    Fragment.fromArray(children),
+    slice.openStart,
+    slice.openEnd,
+  );
 };

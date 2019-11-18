@@ -101,7 +101,8 @@ const ContentStyles = css<StyleProps>`
     padding-top: ${expanded ? gridSize() : 0}px;
     padding-right: ${gridSize()}px;
     padding-left: ${gridSize() * 4 - gridSize() / 2}px;
-    overflow: hidden;
+    display: table;
+    display: flow-root;
 
     ${
       !expanded
@@ -144,7 +145,7 @@ const TitleInputStyles = `
 const TitleContainerStyles = `
   padding: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background: none;
   border: none;
   font-size: ${fontSize()}px;

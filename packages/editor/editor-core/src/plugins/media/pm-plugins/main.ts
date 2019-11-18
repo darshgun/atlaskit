@@ -1,7 +1,7 @@
 import assert from 'assert';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Node as PMNode, Schema, Node } from 'prosemirror-model';
+import { Node as PMNode, Node, Schema } from 'prosemirror-model';
 import { insertPoint } from 'prosemirror-transform';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import {
@@ -15,9 +15,9 @@ import { UploadParams, PopupConfig } from '@atlaskit/media-picker/types';
 import { MediaClientConfig } from '@atlaskit/media-core';
 import { MediaSingleLayout } from '@atlaskit/adf-schema';
 import {
-  ErrorReporter,
   ContextIdentifierProvider,
   MediaProvider,
+  ErrorReporter,
 } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
@@ -29,9 +29,9 @@ import { MediaPluginOptions } from '../media-plugin-options';
 import { insertMediaGroupNode } from '../utils/media-files';
 import { removeMediaNode, splitMediaGroup } from '../utils/media-common';
 import PickerFacade, {
-  PickerFacadeConfig,
   MediaStateEventListener,
   MediaStateEventSubscriber,
+  PickerFacadeConfig,
 } from '../picker-facade';
 import { MediaState, MediaStateStatus } from '../types';
 import { insertMediaSingleNode, isMediaSingle } from '../utils/media-single';
@@ -82,6 +82,7 @@ export class MediaPluginState {
   public editingMediaSinglePos?: number;
   public showEditingDialog?: boolean;
   public mediaPluginOptions?: MediaPMPluginOptions;
+  public dispatch?: Dispatch;
 
   private removeOnCloseListener: () => void = () => {};
   private openMediaPickerBrowser?: () => void;
@@ -94,10 +95,12 @@ export class MediaPluginState {
     options: MediaPluginOptions,
     reactContext: () => {},
     mediaPluginOptions?: MediaPMPluginOptions,
+    dispatch?: Dispatch,
   ) {
     this.reactContext = reactContext;
     this.options = options;
     this.mediaPluginOptions = mediaPluginOptions;
+    this.dispatch = dispatch;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
@@ -111,7 +114,7 @@ export class MediaPluginState {
 
     options.providerFactory.subscribe(
       'mediaProvider',
-      (_name, provider?: Promise<MediaProvider>) =>
+      (_name: string, provider?: Promise<MediaProvider>) =>
         this.setMediaProvider(provider),
     );
 
@@ -295,7 +298,10 @@ export class MediaPluginState {
       this.mobileUploadComplete[mediaStateWithContext.id] = false;
     }
 
-    this.allUploadsFinished = false;
+    // We need to dispatch the change to event dispatcher
+    this.updateAndDispatch({
+      allUploadsFinished: false,
+    });
 
     if (
       isMediaSingle(this.view.state.schema, mediaStateWithContext.fileMimeType)
@@ -334,7 +340,9 @@ export class MediaPluginState {
       this.pendingTask = updater(this.pendingTask);
 
       this.pendingTask.then(() => {
-        this.allUploadsFinished = true;
+        this.updateAndDispatch({
+          allUploadsFinished: true,
+        });
       });
     }
 
@@ -676,6 +684,23 @@ export class MediaPluginState {
     // Trigger state change to be able to pick it up in the decorations handler
     dispatch(state.tr);
   };
+
+  updateAndDispatch(
+    props: Partial<Pick<this, 'allowsUploads' | 'allUploadsFinished'>>,
+  ) {
+    // update plugin state
+    Object.keys(props).forEach(_key => {
+      const key = _key as keyof typeof props;
+      const value = props[key];
+      if (value !== undefined) {
+        this[key] = value;
+      }
+    });
+
+    if (this.dispatch) {
+      this.dispatch(stateKey, { ...this });
+    }
+  }
 }
 
 const createDropPlaceholder = (allowDropLine?: boolean) => {
@@ -716,6 +741,7 @@ export const createPlugin = (
           options,
           reactContext,
           mediaPluginOptions,
+          dispatch,
         );
       },
       apply(tr, pluginState: MediaPluginState) {
@@ -727,16 +753,13 @@ export const createPlugin = (
         }
 
         const meta = tr.getMeta(stateKey);
-        if (meta && dispatch) {
-          const { showMediaPicker } = pluginState;
+        if (meta) {
           const { allowsUploads } = meta;
-          dispatch(stateKey, {
-            ...pluginState,
+          pluginState.updateAndDispatch({
             allowsUploads:
               typeof allowsUploads === 'undefined'
                 ? pluginState.allowsUploads
                 : allowsUploads,
-            showMediaPicker,
           });
         }
 

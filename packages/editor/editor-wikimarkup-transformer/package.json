@@ -28,6 +28,7 @@
   "devDependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/docs": "^8.1.5",
+    "@atlaskit/mention": "^18.15.8",
     "@atlaskit/editor-common": "^42.0.0",
     "@atlaskit/editor-core": "^114.1.0",
     "@atlaskit/editor-test-helpers": "^10.2.0",

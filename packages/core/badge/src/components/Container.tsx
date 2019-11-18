@@ -2,11 +2,8 @@ import styled from 'styled-components';
 
 import { ThemeTokens } from '../theme';
 
-const Container = styled.span<{
-  backgroundColor: string;
-  textColor: string;
-}>`
-  ${(props: ThemeTokens) => `
+const Container = styled.span<ThemeTokens>`
+  ${props => `
     background-color: ${props.backgroundColor};
     color: ${props.textColor};
   `};

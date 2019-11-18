@@ -9,7 +9,6 @@ export default (
     case 'updateAltText': {
       return {
         ...state,
-        isAltTextEditorOpen: false,
       };
     }
     case 'openMediaAltTextMenu': {

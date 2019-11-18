@@ -134,9 +134,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       pluginKey: blockTypePluginKey,
       editorProps: {
         analyticsHandler: analyticsHandlerSpy,
-        allowCodeBlocks: true,
         allowLayouts: true,
-        allowLists: true,
         allowPanel: true,
         allowRule: true,
         allowTables: true,

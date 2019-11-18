@@ -73,7 +73,7 @@ describe('@atlaskit/editor-core', () => {
       beforeEach(() => {
         const editor = createEditor({
           editorProps: {
-            mediaProvider,
+            media: { provider: mediaProvider },
             waitForMediaUpload: true,
             allowTasksAndDecisions: true,
             uploadErrorHandler: () => {},
@@ -382,7 +382,7 @@ describe('@atlaskit/editor-core', () => {
       it('should resolve even when media operations are pending', async () => {
         const { editorView } = createEditor({
           editorProps: {
-            mediaProvider,
+            media: { provider: mediaProvider },
             waitForMediaUpload: false,
           },
           providerFactory,

@@ -60,6 +60,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}> & {
     ${inlineNodeSharedStyle};
   }
 
+  .ProseMirror[contenteditable=false] .taskItemView-content-wrap {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
   .ProseMirror-hideselection *::selection {
     background: transparent;
   }
@@ -80,6 +85,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}> & {
     max-width: calc(100% - 20px);
     vertical-align: top;
     word-break: break-all;
+    user-select: none;
   }
 
   .inlineCardView-content-wrap .card {
@@ -89,6 +95,7 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}> & {
 
   .blockCardView-content-wrap {
     display: inline-block;
+    user-select: none;
   }
 
   /* fix cursor alignment */

@@ -89,8 +89,8 @@ export class ExpandNodeView implements NodeView {
   view: EditorView;
   dom?: HTMLElement;
   contentDOM?: HTMLElement;
-  icon?: HTMLElement;
-  input?: HTMLElement;
+  icon?: HTMLElement | null;
+  input?: HTMLInputElement | null;
   getPos: getPosHandlerNode;
   pos: number;
   reactContext: ReactContext;
@@ -113,12 +113,12 @@ export class ExpandNodeView implements NodeView {
     this.view = view;
     this.dom = dom as HTMLElement;
     this.contentDOM = contentDOM as HTMLElement;
-    this.icon = this.dom.querySelector(
+    this.icon = this.dom.querySelector<HTMLElement>(
       `.${expandClassNames.icon}`,
-    ) as HTMLElement;
-    this.input = this.dom.querySelector(
+    );
+    this.input = this.dom.querySelector<HTMLInputElement>(
       `.${expandClassNames.titleInput}`,
-    ) as HTMLElement;
+    );
     this.renderIcon(this.reactContext.intl);
     this.initHandlers();
   }
@@ -206,6 +206,16 @@ export class ExpandNodeView implements NodeView {
         this.dom.classList.toggle(expandClassNames.expanded);
         this.renderIcon(this.reactContext && this.reactContext.intl);
       }
+
+      // During a collab session the title doesn't sync with other users
+      // since we're intentionally being less aggressive about re-rendering.
+      // We also apply a rAF to avoid abrupt continuous replacement of the title.
+      window.requestAnimationFrame(() => {
+        if (this.input && this.node.attrs.title !== this.input.value) {
+          this.input.value = this.node.attrs.title;
+        }
+      });
+
       this.node = node;
       return true;
     }

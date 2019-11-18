@@ -1,29 +1,28 @@
-import { Transaction, EditorState, NodeSelection } from 'prosemirror-state';
+import { EditorState, NodeSelection, Transaction } from 'prosemirror-state';
 
 import { pluginKey } from './main';
 import {
-  CardPluginState,
-  Request,
   CardAppearance,
+  CardPluginState,
   CardReplacementInputMethod,
+  Request,
 } from '../types';
-import { resolveCard, queueCards } from './actions';
+import { queueCards, resolveCard } from './actions';
 import { appearanceForNodeType } from '../utils';
 
 import { Command } from '../../../types';
-import { processRawValue, nodesBetweenChanged } from '../../../utils';
-import { Schema, Node, Fragment } from 'prosemirror-model';
+import { nodesBetweenChanged, processRawValue } from '../../../utils';
+import { Fragment, Node, Schema, Slice } from 'prosemirror-model';
 import { md } from '../../paste/pm-plugins/main';
 import { closeHistory } from 'prosemirror-history';
 import {
-  addAnalytics,
   ACTION,
   ACTION_SUBJECT,
   ACTION_SUBJECT_ID,
+  addAnalytics,
   EVENT_TYPE,
 } from '../../../plugins/analytics';
 import { SmartLinkNodeContext } from '../../analytics/types/smart-links';
-import { safeInsert } from 'prosemirror-utils';
 import { isSafeUrl } from '@atlaskit/adf-schema';
 
 export function shouldReplace(
@@ -65,7 +64,7 @@ export function insertCard(tr: Transaction, cardAdf: Node, schema: Schema) {
     nodes.push(schema.text(' '));
   }
 
-  return safeInsert(Fragment.fromArray(nodes))(tr);
+  return tr.replaceSelection(new Slice(Fragment.fromArray(nodes), 0, 0));
 }
 
 /**

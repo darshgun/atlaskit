@@ -129,6 +129,7 @@ export class DrawerBase extends Component<
       width,
       shouldUnmountOnExit,
       onCloseComplete,
+      onOpenComplete,
       autoFocusFirstElem,
       isFocusLockEnabled,
       shouldReturnFocus,
@@ -157,6 +158,7 @@ export class DrawerBase extends Component<
                   in={isOpen}
                   onClose={this.handleBackButtonClick}
                   onCloseComplete={onCloseComplete}
+                  onOpenComplete={onOpenComplete}
                   width={width}
                   shouldUnmountOnExit={shouldUnmountOnExit}
                 >

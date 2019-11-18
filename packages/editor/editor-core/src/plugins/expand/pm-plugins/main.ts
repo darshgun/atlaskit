@@ -7,6 +7,7 @@ import ExpandNodeView from '../nodeviews';
 import { setExpandRef } from '../commands';
 import reducer from '../reducer';
 import { findExpand } from '../utils';
+import { expandClassNames } from '../ui/class-names';
 
 export const pluginKey = new PluginKey('expandPlugin');
 
@@ -29,6 +30,15 @@ export const createPlugin = (
         expand: ExpandNodeView(reactContext),
         nestedExpand: ExpandNodeView(reactContext),
       },
+    },
+    // @see ED-8027 to follow up on this work-around
+    filterTransaction(tr) {
+      if (document && document.activeElement && tr.selectionSet) {
+        return !document.activeElement.classList.contains(
+          expandClassNames.titleInput,
+        );
+      }
+      return true;
     },
     view: (editorView: EditorView) => {
       const domAtPos = editorView.domAtPos.bind(editorView);

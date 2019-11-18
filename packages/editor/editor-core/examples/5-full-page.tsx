@@ -32,7 +32,7 @@ import WithEditorActions from './../src/ui/WithEditorActions';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
 import { TitleInput } from '../example-helpers/PageElements';
-import { EditorActions } from './../src';
+import { EditorActions, MentionProvider } from './../src';
 import withSentry from '../example-helpers/withSentry';
 import BreadcrumbsMiscActions from '../example-helpers/breadcrumbs-misc-actions';
 import {
@@ -198,8 +198,6 @@ export class ExampleEditorComponent extends React.Component<
               analyticsHandler={analyticsHandler}
               allowAnalyticsGASV3={true}
               quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-              allowCodeBlocks={{ enableKeybindingsForIDE: true }}
-              allowLists={true}
               allowTextColor={true}
               allowTables={{
                 advanced: true,
@@ -344,7 +342,7 @@ const mentionProvider = Promise.resolve({
   shouldHighlightMention(mention: { id: string }) {
     return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
   },
-});
+} as MentionProvider);
 
 const emojiProvider = emoji.storyData.getEmojiResource();
 

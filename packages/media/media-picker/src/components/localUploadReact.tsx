@@ -40,6 +40,7 @@ export type LocalUploadComponentBaseProps = {
 interface BasePayload {
   attributes: {
     packageName: string;
+    sourceType: 'local' | 'cloud';
     fileAttributes: {
       fileSize: number;
       fileMimetype: string;
@@ -47,13 +48,18 @@ interface BasePayload {
   };
 }
 
-type AdditionalPayloadAttributes =
-  | {}
-  | {
-      status: 'success' | 'fail';
-      uploadDurationMsec: number;
-      failReason?: any;
-    };
+export type FailurePayload = {
+  status: 'fail';
+  uploadDurationMsec: number;
+  failReason: any;
+};
+
+export type SuccessPayload = {
+  status: 'success';
+  uploadDurationMsec: number;
+};
+
+type AdditionalPayloadAttributes = {} | FailurePayload | SuccessPayload;
 
 type AnalyticsPayload = GasCorePayload &
   BasePayload &
@@ -69,6 +75,7 @@ const basePayload = (
   actionSubjectId: 'localMedia',
   attributes: {
     packageName,
+    sourceType: 'local',
     fileAttributes: {
       fileSize: size,
       fileMimetype: type,
@@ -151,13 +158,10 @@ export class LocalUploadComponentReact<
 
     const { duration = -1 } = end(`MediaPicker.fireUpload.${id}`);
     this.createAndFireAnalyticsEvent({
-      ...basePayload(
-        { size, type },
-        {
-          status: 'success',
-          uploadDurationMsec: duration,
-        },
-      ),
+      ...basePayload({ size, type }, {
+        status: 'success',
+        uploadDurationMsec: duration,
+      } as SuccessPayload),
       action: 'uploaded',
       eventType: TRACK_EVENT_TYPE,
     });
@@ -168,14 +172,11 @@ export class LocalUploadComponentReact<
 
     const { duration = -1 } = end(`MediaPicker.fireUpload.${id}`);
     this.createAndFireAnalyticsEvent({
-      ...basePayload(
-        { size, type },
-        {
-          status: 'fail',
-          failReason: payload.error.description,
-          uploadDurationMsec: duration,
-        },
-      ),
+      ...basePayload({ size, type }, {
+        status: 'fail',
+        failReason: payload.error.description,
+        uploadDurationMsec: duration,
+      } as FailurePayload),
       action: 'uploaded',
       eventType: TRACK_EVENT_TYPE,
     });

@@ -33,7 +33,6 @@ describe('Media plugin', () => {
           allowMediaSingle: true,
         },
         allowTables: true,
-        allowLists: true,
       },
     });
 

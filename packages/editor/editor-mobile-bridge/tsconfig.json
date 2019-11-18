@@ -4,7 +4,8 @@
     "baseUrl": "./",
     "resolveJsonModule": true,
     "declaration": false,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "module": "commonjs"
   },
   "include": [
     "./src/**/*.ts",

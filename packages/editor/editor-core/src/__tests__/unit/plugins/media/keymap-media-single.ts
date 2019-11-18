@@ -55,7 +55,6 @@ describe('mediaSingle - keymap', () => {
         mediaSingle({ layout: 'wrap-right' })(temporaryMedia),
         p('{<>}Hello World!'),
       ),
-      { allowCodeBlocks: true },
     );
 
     sendKeyToPm(editorView, 'Backspace');

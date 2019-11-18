@@ -3,6 +3,7 @@ import { JSONDocNode } from '../../../../utils/index';
 import { sanitizeNodeForPrivacy } from '../../../../utils/filter/privacy-filter';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { waitUntil } from '@atlaskit/media-test-helpers';
+import { MentionProvider } from '@atlaskit/mention/types';
 
 describe(name, () => {
   describe('Utils -> filter -> privacy-filter', () => {
@@ -117,7 +118,9 @@ describe(name, () => {
           supportsMentionNameResolving: () => true,
         };
         const providerFactory = ProviderFactory.create({
-          mentionProvider: Promise.resolve(mockMentionProvider),
+          mentionProvider: Promise.resolve(
+            (mockMentionProvider as any) as MentionProvider,
+          ),
         });
         sanitizeNodeForPrivacy(jsonDoc, providerFactory);
 

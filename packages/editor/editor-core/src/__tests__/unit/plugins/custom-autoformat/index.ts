@@ -40,7 +40,6 @@ describe('custom-autoformat', () => {
       doc,
       editorProps: {
         autoformattingProvider,
-        allowLists: true,
       },
       providerFactory,
       pluginKey,

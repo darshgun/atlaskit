@@ -71,14 +71,17 @@
     "start:people-and-teams": "              yarn run website:start **/packages/people-and-teams/**",
     "start:search": "                        yarn run website:start **/packages/search/**",
     "start:trello": "                        yarn run website:start **/packages/trello/**",
-    "start:teamwork-ecosystem": "            yarn run website:start **/packages/teamwork-ecosystem/**"
+    "start:teamwork-ecosystem": "            yarn run website:start **/packages/teamwork-ecosystem/**",
+    "constellation:aliases": "               cd services/website-constellation && node write-resolution-map.js",
+    "constellation:start": "                 yarn constellation:aliases && yarn brisk dev"
   },
   "bolt": {
     "version": "^0.24.3",
     "workspaces": [
       "build/*",
       "packages/*/*",
-      "website"
+      "website",
+      "services/*"
     ]
   },
   "devDependencies": {
@@ -86,6 +89,7 @@
     "@babel/plugin-syntax-optional-catch-binding": "^7.2.0",
     "@babel/preset-typescript": "^7.1.0",
     "@babel/types": "^7.5.5",
+    "@brisk-docs/gatsby-generator": "^1.0.1",
     "@changesets/cli": "^1.2.0",
     "@emotion/babel-preset-css-prop": "^10.0.7",
     "@jest/fake-timers": "^24.8.0",
@@ -96,13 +100,16 @@
     "@types/concurrently": "^4.1.0",
     "@types/debounce": "^1.2.0",
     "@types/enzyme": "^3.1.15",
-    "@types/fetch-mock": "^6.0.3",
+    "@types/fetch-mock": "^7.3.1",
     "@types/flushable": "^1.0.1",
     "@types/fs-extra": "^4.0.0",
+    "@types/history": "^4.7.3",
+    "@types/html-webpack-plugin": "^3.2.1",
     "@types/jest": "^24.0.18",
     "@types/json5": "^0.0.30",
     "@types/lodash.chunk": "^4.2.3",
     "@types/lodash.clonedeep": "^4.5.6",
+    "@types/lodash.noop": "^3.0.6",
     "@types/lodash.pick": "^4.4.0",
     "@types/lorem-ipsum": "^1.0.2",
     "@types/mocha": "^2.2.39",
@@ -283,6 +290,7 @@
     "@emotion/core": "^10.0.9",
     "@emotion/css": "^10.0.14",
     "@emotion/styled": "^10.0.7",
+    "@mdx-js/react": "^1.5.1",
     "@sentry/browser": "^4.6.3",
     "@types/algoliasearch": "^3.30.8",
     "@types/bricks.js": "^1.8.0",
@@ -442,6 +450,7 @@
     "lodash.last": "^3.0.0",
     "lodash.matches": "^4.6.0",
     "lodash.merge": "^4.6.1",
+    "lodash.noop": "^3.0.1",
     "lodash.pick": "^4.4.0",
     "lodash.property": "^4.4.2",
     "lodash.sample": "^4.2.1",
@@ -464,8 +473,9 @@
     "p-limit": "^2.2.1",
     "p-settle": "^3.1.0",
     "p-wait-for": "^3.1.0",
+    "path-to-regexp": "^3.1.0",
     "pdfjs-dist": "2.0.489",
-    "perf-marks": "1.0.1",
+    "perf-marks": "^1.5.0",
     "png-chunks-extract": "^1.0.0",
     "polished": "1.9.3",
     "popper.js": "^1.14.1",
@@ -521,6 +531,7 @@
     "react-router-dom": "^4.2.2",
     "react-scrolllock": "^3.0.2",
     "react-select": "^3.0.4",
+    "react-sweet-state": "^1.1.1",
     "react-syntax-highlighter": "^10.0.1",
     "react-transition-group": "^2.2.1",
     "react-uid": "^2.2.0",
@@ -583,7 +594,9 @@
   },
   "resolutions": {
     "**/@atlaskit/theme/styled-components": "^3.2.6",
-    "**/expand-range/fill-range": "2.2.3"
+    "**/expand-range/fill-range": "2.2.3",
+    "react":"16.8.6",
+    "react-dom":"16.8.6"
   },
   "engines": {
     "node": "^10.13.0"

@@ -103,17 +103,17 @@ export default function mobileEditor(props: Props) {
               allowMediaSingle: true,
             }}
             allowConfluenceInlineComment={true}
-            allowLists={true}
             onChange={() => {
               toNativeBridge.updateText(bridge.getContent());
             }}
             allowPanel={true}
-            allowCodeBlocks={true}
             allowTables={{
               allowControls: false,
             }}
             UNSAFE_cards={{
-              provider: props.cardProvider || Promise.resolve(cardProvider),
+              provider:
+                (props.UNSAFE_cards && props.UNSAFE_cards.provider) ||
+                Promise.resolve(cardProvider),
             }}
             allowExtension={true}
             allowTextColor={true}

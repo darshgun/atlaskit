@@ -281,6 +281,8 @@ const mediaPlugin = (
         allowLinking: options && options.allowLinking,
         allowAdvancedToolBarOptions:
           pluginOptions && pluginOptions.allowAdvancedToolBarOptions,
+        UNSAFE_allowAltTextOnImages:
+          options && options.UNSAFE_allowAltTextOnImages,
       }),
   },
 });

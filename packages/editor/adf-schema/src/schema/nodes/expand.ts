@@ -20,7 +20,6 @@ export const expand: NodeSpec = {
   group: 'block',
   content:
     '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | decisionList | taskList | table | blockCard | extension | unsupportedBlock)+',
-  defining: true,
   isolating: true,
   selectable: true,
   attrs: {

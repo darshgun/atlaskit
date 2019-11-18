@@ -33,10 +33,8 @@ describe('code-block', () => {
     return createEditor({
       doc,
       editorProps: {
-        allowCodeBlocks: true,
         allowAnalyticsGASV3: true,
         allowTables: true,
-        allowLists: true,
       },
       pluginKey: codeBlockPluginKey,
       createAnalyticsEvent,
