@@ -1,0 +1,1 @@
+Allow joinable products to accept a callback. This is required to support migration flow from Trello.
