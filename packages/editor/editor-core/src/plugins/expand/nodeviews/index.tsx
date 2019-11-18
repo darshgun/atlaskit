@@ -2,9 +2,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { InjectedIntl, defineMessages } from 'react-intl';
 import { EditorView, NodeView, Decoration } from 'prosemirror-view';
+import { Selection } from 'prosemirror-state';
 import { colors } from '@atlaskit/theme';
 import Tooltip from '@atlaskit/tooltip';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
+import { keyName } from 'w3c-keyname';
 import {
   Node as PmNode,
   DOMSerializer,
@@ -25,8 +27,10 @@ import {
   updateExpandTitle,
   toggleExpandExpanded,
   selectExpand,
+  deleteExpand,
 } from '../commands';
 import { expandClassNames } from '../ui/class-names';
+import { GapCursorSelection, Side } from '../../../plugins/gap-cursor';
 
 const messages = defineMessages({
   ...expandMessages,
@@ -90,6 +94,7 @@ export class ExpandNodeView implements NodeView {
   dom?: HTMLElement;
   contentDOM?: HTMLElement;
   icon?: HTMLElement | null;
+  content?: HTMLElement | null;
   input?: HTMLInputElement | null;
   getPos: getPosHandlerNode;
   pos: number;
@@ -119,6 +124,10 @@ export class ExpandNodeView implements NodeView {
     this.input = this.dom.querySelector<HTMLInputElement>(
       `.${expandClassNames.titleInput}`,
     );
+    this.content = this.dom.querySelector<HTMLDivElement>(
+      `.${expandClassNames.content}`,
+    );
+
     this.renderIcon(this.reactContext.intl);
     this.initHandlers();
   }
@@ -127,6 +136,9 @@ export class ExpandNodeView implements NodeView {
     if (this.dom) {
       this.dom.addEventListener('click', this.handleClick);
       this.dom.addEventListener('input', this.handleInput);
+    }
+    if (this.input) {
+      this.input.addEventListener('keydown', this.handleTitleKeydown);
     }
   }
 
@@ -185,6 +197,118 @@ export class ExpandNodeView implements NodeView {
     }
   };
 
+  private handleTitleKeydown = (event: KeyboardEvent) => {
+    switch (keyName(event)) {
+      case 'Enter':
+        this.toggleExpand();
+        break;
+      case 'ArrowDown':
+        if (this.node.attrs.__expanded) {
+          this.moveCursorInsideContent(event);
+        } else {
+          this.moveCursorAfterExpand(event);
+        }
+        break;
+      case 'ArrowRight':
+        this.setRightGapCursor(event);
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        this.setLeftGapCursor(event);
+        break;
+      case 'Backspace':
+        this.deleteExpand(event);
+        break;
+    }
+  };
+
+  private deleteExpand = (event: KeyboardEvent) => {
+    if (!this.input) {
+      return;
+    }
+    const { selectionStart, selectionEnd } = this.input;
+    if (selectionStart === selectionEnd && selectionStart === 0) {
+      this.moveCursorInsideContent(event);
+      deleteExpand()(this.view.state, this.view.dispatch);
+    }
+  };
+
+  private toggleExpand = () => {
+    const { state, dispatch } = this.view;
+    toggleExpandExpanded(this.getPos(), this.node.type)(state, dispatch);
+  };
+
+  private moveCursorInsideContent = (event: KeyboardEvent) => {
+    event.preventDefault();
+    const { state, dispatch } = this.view;
+    const expandPos = this.getPos();
+    if (typeof expandPos !== 'number') {
+      return;
+    }
+    const sel = Selection.findFrom(state.doc.resolve(expandPos), 1, true);
+    if (sel) {
+      // If the input has focus, ProseMirror doesn't
+      // Give PM focus back before changing our selection
+      this.view.focus();
+      dispatch(state.tr.setSelection(sel));
+    }
+  };
+
+  private moveCursorAfterExpand = (event: KeyboardEvent) => {
+    event.preventDefault();
+    const { state, dispatch } = this.view;
+    const expandPos = this.getPos();
+    if (typeof expandPos !== 'number') {
+      return;
+    }
+    const sel = Selection.findFrom(
+      state.doc.resolve(expandPos + this.node.nodeSize),
+      1,
+      true,
+    );
+    if (sel) {
+      this.view.focus();
+      dispatch(state.tr.setSelection(sel));
+    }
+  };
+
+  private setRightGapCursor = (event: KeyboardEvent) => {
+    if (!this.input) {
+      return;
+    }
+    const { value, selectionStart, selectionEnd } = this.input;
+    if (selectionStart === selectionEnd && selectionStart === value.length) {
+      const { state, dispatch } = this.view;
+      event.preventDefault();
+      this.view.focus();
+      dispatch(
+        state.tr.setSelection(
+          new GapCursorSelection(
+            state.doc.resolve(this.node.nodeSize + this.getPos()),
+            Side.RIGHT,
+          ),
+        ),
+      );
+    }
+  };
+
+  private setLeftGapCursor = (event: KeyboardEvent) => {
+    if (!this.input) {
+      return;
+    }
+    const { selectionStart, selectionEnd } = this.input;
+    if (selectionStart === selectionEnd && selectionStart === 0) {
+      event.preventDefault();
+      const { state, dispatch } = this.view;
+      this.view.focus();
+      dispatch(
+        state.tr.setSelection(
+          new GapCursorSelection(state.doc.resolve(this.getPos()), Side.LEFT),
+        ),
+      );
+    }
+  };
+
   stopEvent(event: Event) {
     const target = event.target as HTMLElement;
     return (
@@ -227,6 +351,9 @@ export class ExpandNodeView implements NodeView {
       this.dom.removeEventListener('click', this.handleClick);
       this.dom.removeEventListener('input', this.handleInput);
     }
+    if (this.input) {
+      this.input.removeEventListener('keydown', this.handleTitleKeydown);
+    }
 
     if (this.icon) {
       ReactDOM.unmountComponentAtNode(this.icon);
@@ -236,6 +363,7 @@ export class ExpandNodeView implements NodeView {
     this.contentDOM = undefined;
     this.icon = undefined;
     this.input = undefined;
+    this.content = undefined;
   }
 }
 
