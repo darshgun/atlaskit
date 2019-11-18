@@ -32,6 +32,10 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
     const { timeStarted } = remoteUpload || { timeStarted: undefined };
     const uploadDurationMsec =
       timeStarted !== undefined ? Date.now() - timeStarted : -1;
+    const commonAttributes = {
+      sourceType: 'cloud',
+      serviceName: payload.serviceName,
+    };
     if (event === 'RemoteUploadStart') {
       return [
         {
@@ -39,8 +43,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
-            sourceType: 'cloud',
-            serviceName: payload.serviceName,
+            ...commonAttributes,
           },
           eventType: OPERATIONAL_EVENT_TYPE,
         },
@@ -52,8 +55,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
-            sourceType: 'cloud',
-            serviceName: payload.serviceName,
+            ...commonAttributes,
             status: 'success',
             uploadDurationMsec,
           } as SuccessPayload,
@@ -67,8 +69,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
-            sourceType: 'cloud',
-            serviceName: payload.serviceName,
+            ...commonAttributes,
             status: 'fail',
             uploadDurationMsec,
             failReason: (payload as RemoteUploadFailPayload).description,
