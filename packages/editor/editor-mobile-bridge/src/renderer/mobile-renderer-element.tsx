@@ -18,10 +18,10 @@ import RendererBridgeImpl from './native-to-web/implementation';
 import { toNativeBridge } from './web-to-native/implementation';
 import HeightObserver from './height-observer';
 import {
-  MediaProvider,
-  MentionProvider,
-  TaskDecisionProvider,
-  EmojiProvider,
+  mediaProvider,
+  mentionProvider,
+  taskDecisionProvider,
+  emojiProvider,
 } from '../providers';
 import { cardClient } from '../providers/cardProvider';
 import {
@@ -77,13 +77,13 @@ export default class MobileRenderer extends React.Component<
     }
     this.state = { document };
 
-    const taskDecisionProvider = TaskDecisionProvider(this.handleToggleTask);
+    const taskDecisionProvider = taskDecisionProvider(this.handleToggleTask);
 
     this.providerFactory = ProviderFactory.create({
-      mediaProvider: props.mediaProvider || MediaProvider,
-      mentionProvider: Promise.resolve(MentionProvider),
+      mediaProvider: props.mediaProvider || mediaProvider,
+      mentionProvider: Promise.resolve(mentionProvider),
       taskDecisionProvider: Promise.resolve(taskDecisionProvider),
-      emojiProvider: Promise.resolve(EmojiProvider),
+      emojiProvider: Promise.resolve(emojiProvider),
     });
 
     this.containerAri = 'MOCK-containerAri';
