@@ -105,7 +105,7 @@ export const getValidContent = (
   return content.map(node => getValidNode(node, schema, adfStage));
 };
 
-const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
+const TEXT_COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/i;
 const RELATIVE_LINK = /^\//;
 
 const flattenUnknownBlockTree = (
@@ -444,14 +444,17 @@ export const getValidNode = (
         let { marks } = node;
         if (text) {
           if (marks) {
-            marks = marks.reduce((acc, mark) => {
-              const validMark = getValidMark(mark, adfStage);
-              if (validMark) {
-                acc.push(validMark);
-              }
+            marks = marks.reduce(
+              (acc, mark) => {
+                const validMark = getValidMark(mark, adfStage);
+                if (validMark) {
+                  acc.push(validMark);
+                }
 
-              return acc;
-            }, [] as ADMark[]);
+                return acc;
+              },
+              [] as ADMark[],
+            );
           }
           return marks ? { type, text, marks: marks } : { type, text };
         }
