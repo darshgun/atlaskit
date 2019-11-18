@@ -309,7 +309,8 @@ export function defaultActionHandler({
 
   if (!isAllowed && !isActive) {
     if (
-      pluginState.active === isAllowed &&
+      pluginState &&
+      pluginState.active === isActive &&
       pluginState.isAllowed === isAllowed
     ) {
       return pluginState;
