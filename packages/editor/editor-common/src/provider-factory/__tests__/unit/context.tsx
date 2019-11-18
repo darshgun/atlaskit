@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { create, act, ReactTestRenderer } from 'react-test-renderer';
 import { useProvider, ProviderFactoryProvider } from '../../context';
 import ProviderFactory from '../../provider-factory';
-import { MediaProvider } from '@atlaskit/editor-common/provider-factory';
+import { MediaProvider } from '../../media-provider';
 
 const Child: FunctionComponent<{
   mediaProvider: Promise<MediaProvider> | undefined;
