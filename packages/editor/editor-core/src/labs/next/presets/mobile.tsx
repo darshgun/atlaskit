@@ -1,5 +1,9 @@
 // #region Imports
 import * as React from 'react';
+import {
+  useProvider,
+  useProviderFactory,
+} from '@atlaskit/editor-common/provider-factory';
 
 import {
   tablesPlugin,

@@ -14,7 +14,7 @@ import { processRawValue } from '../../../../../utils';
 import { PortalProviderAPI } from '../../../../../ui/PortalProvider';
 import { EditorSharedConfig } from '../../context/shared-config';
 import { EditorPropsExtended } from '../../components/EditorInternal';
-import ProviderFactory from '@atlaskit/editor-common/src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common/provider-factory';
 
 export function createEditor({
   context,

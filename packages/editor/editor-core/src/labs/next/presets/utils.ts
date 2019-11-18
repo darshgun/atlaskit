@@ -1,7 +1,7 @@
 import { EditorPresetProps, PluginsPreset } from './types';
 import { EditorPlugin } from '../../../types';
 import { compose } from '../../../utils';
-import ProviderFactory from '@atlaskit/editor-common/src/providerFactory';
+import { ProviderFactory } from '@atlaskit/editor-common/provider-factory';
 
 export const removeExcludes = (excludes: EditorPresetProps['excludes']) => (
   plugins: EditorPlugin[],

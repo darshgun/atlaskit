@@ -4,10 +4,7 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 
 import { EditorActions, MentionProvider } from '../src';
 import { EditorProps } from '../src/types/editor-props';
-import {
-  ProviderFactoryProvider,
-  ProviderFactory,
-} from '@atlaskit/editor-common/provider-factory';
+import { ProviderFactoryProvider } from '@atlaskit/editor-common/provider-factory';
 import { MentionDescription } from '@atlaskit/mention/types';
 
 /**
@@ -15,6 +12,7 @@ import { MentionDescription } from '@atlaskit/mention/types';
  */
 import { EditorPresetMobile } from '../src/labs/next/presets/mobile';
 import { Mobile as MobileEditor } from '../src/labs/next/mobile';
+import ProviderFactory from '@atlaskit/editor-common/src/provider-factory/provider-factory';
 
 function createProviderFactory() {
   class MentionProviderImpl implements MentionProvider {

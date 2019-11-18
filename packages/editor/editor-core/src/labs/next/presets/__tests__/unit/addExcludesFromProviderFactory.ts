@@ -1,5 +1,5 @@
-import { ProviderFactory } from '@atlaskit/editor-common/provider-factory';
 import { addExcludesFromProviderFactory } from '../../utils';
+import ProviderFactory from '@atlaskit/editor-common/src/provider-factory/provider-factory';
 
 describe('addExcludesFromProviderFactory', () => {
   let providerFactory: ProviderFactory;

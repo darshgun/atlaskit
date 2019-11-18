@@ -1,9 +1,10 @@
-export { default as ProviderFactory, WithProviders } from './providerFactory';
+export { WithProviders } from './provider-factory/with-providers';
 
-export { Providers, MediaProvider } from './providerFactory/types';
+export { Providers, MediaProvider } from './provider-factory/types';
 
 export {
   ProviderFactoryProvider,
   useProviderFactory,
   useProvider,
-} from './providerFactory/context';
+} from './provider-factory/context';
+export { default as ProviderFactory } from './provider-factory/provider-factory';
