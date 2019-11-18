@@ -6,32 +6,33 @@ import {
 } from '@atlaskit/editor-common/provider-factory';
 
 import {
-  tablesPlugin,
-  codeBlockPlugin,
-  panelPlugin,
-  listsPlugin,
-  textColorPlugin,
-  extensionPlugin,
-  rulePlugin,
-  datePlugin,
-  layoutPlugin,
+  annotationPlugin,
+  basePlugin,
   cardPlugin,
-  statusPlugin,
+  codeBlockPlugin,
+  datePlugin,
+  emojiPlugin,
+  extensionPlugin,
+  insertBlockPlugin,
+  layoutPlugin,
+  listsPlugin,
   mediaPlugin,
   mentionsPlugin,
-  emojiPlugin,
-  tasksAndDecisionsPlugin,
-  insertBlockPlugin,
-  basePlugin,
-  annotationPlugin,
-  placeholderPlugin,
   mobileScrollPlugin,
+  panelPlugin,
+  placeholderPlugin,
+  rulePlugin,
+  statusPlugin,
+  tablesPlugin,
+  tasksAndDecisionsPlugin,
+  textColorPlugin,
 } from '../../../plugins';
-import { CustomMediaPicker, MediaProvider } from '../../../plugins/media';
+import { CustomMediaPicker } from '../../../plugins/media';
 import { PresetProvider } from '../Editor';
 import { EditorPresetProps } from './types';
 import { useDefaultPreset } from './default';
 import { addExcludesFromProviderFactory, getPluginsFromPreset } from './utils';
+
 // #endregion
 
 interface EditorPresetMobileProps {
@@ -46,7 +47,7 @@ export function useMobilePreset({
   media,
   placeholder,
 }: EditorPresetMobileProps & EditorPresetProps) {
-  const mediaProvider = useProvider<MediaProvider>('mediaProvider');
+  const mediaProvider = useProvider('mediaProvider');
   const [preset] = useDefaultPreset();
 
   preset.push(

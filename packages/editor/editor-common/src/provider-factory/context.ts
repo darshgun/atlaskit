@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ProviderHandler } from './types';
+import { ProviderHandler, Providers } from './types';
 import ProviderFactory from './provider-factory';
 
 const ProviderFactoryContext = React.createContext<ProviderFactory>(
@@ -12,13 +12,15 @@ export const ProviderFactoryProvider = ProviderFactoryContext.Provider;
 export const useProviderFactory = () =>
   React.useContext(ProviderFactoryContext);
 
-export const useProvider = <P>(name: string) => {
-  const [provider, setProvider] = React.useState<Promise<P> | undefined>();
+export const useProvider = <P extends string>(name: P) => {
+  const [provider, setProvider] = React.useState<
+    Providers[typeof name] | undefined
+  >();
   const providerFactory = useProviderFactory();
 
   React.useEffect(() => {
     const providerHandler: ProviderHandler = (_, provider) => {
-      setProvider(provider as Promise<P>);
+      setProvider(provider as Providers[typeof name]);
     };
 
     providerFactory.subscribe(name, providerHandler);
