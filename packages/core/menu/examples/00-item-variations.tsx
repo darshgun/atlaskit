@@ -44,22 +44,16 @@ const ItemVariants = () => {
         With both elemAfter and elemBefore prop
       </ButtonItem>
       <ButtonItem isDisabled>Disabled Item</ButtonItem>
+      <ButtonItem isSelected>Selected Item</ButtonItem>
       <ButtonItem description="Some textual description">
         Disabled Item
       </ButtonItem>
       <LinkItem href="//www.atlassian.com">
         Link item that takes you to atlassian home page
       </LinkItem>
-      <HashRouter>
-        <CustomItem
-          component={(props: any) => <CustomComponent {...props} />}
-          description="some custom text"
-          elemAfter={<StarIcon label="icon after" />}
-          elemBefore={<EmojiCustomIcon label="icon before" />}
-        >
-          I'm a react-router link rendered using CustomItem
-        </CustomItem>
-      </HashRouter>
+      <LinkItem href="//www.atlassian.com" isSelected>
+        Selected Link Item
+      </LinkItem>
       <SkeletonHeadingItem />
       <SkeletonItem />
       <SkeletonItem hasAvatar />
