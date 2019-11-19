@@ -22,35 +22,50 @@ class MVExamplePage {
     await this.page.browser.maximizeWindow();
   }
 
-  async validateNameTypeAndIcon(name: string, type: string, icon: string) {
-    await this.page.waitForSelector(`div=${name}`);
-    await this.page.waitForSelector(
-      `//div[text()='${name}']/../div/span[text()='${type}']`,
+  async validateNameSizeTypeAndIcon(
+    name: string,
+    size: string | null,
+    type: string,
+    icon: string,
+  ) {
+    await this.page.waitUntilContainsText(
+      `[data-testid="media-viewer-file-name"]`,
+      name,
     );
+    await this.page.waitUntilContainsText(
+      `div[data-testid="media-viewer-file-metadata-text"] span`,
+      type,
+    );
+    if (size) {
+      await this.page.waitUntilContainsText(
+        `div[data-testid="media-viewer-file-metadata-text"]`,
+        ` · ${size}`,
+      );
+    }
     await this.page.waitForSelector(
-      `//span[@aria-label='media-type']/ancestor::div[@type='${icon}']`,
+      `[data-testid="media-viewer-file-type-icon"][type="${icon}"]`,
     );
   }
 
   async navigateNext() {
-    await this.forceNav();
+    await this.revealNavigationControls();
     await this.page.click('[data-testid="media-viewer-navigation-next"]');
   }
 
   async navigatePrevious() {
-    await this.forceNav();
+    await this.revealNavigationControls();
     await this.page.click('[data-testid="media-viewer-navigation-prev"]');
   }
 
-  async forceNav() {
+  async revealNavigationControls() {
     await this.page.hover('img');
   }
 
-  async closeMV(closeWithEsc: boolean) {
+  async closeMediaViewer(closeWithEsc: boolean) {
     if (closeWithEsc) {
       await this.page.type('/*', 'Escape');
     } else {
-      await this.forceNav();
+      await this.revealNavigationControls();
       await this.page.click('[data-testid="media-viewer-close-button"]');
     }
     await this.page.waitForSelector(
@@ -74,29 +89,33 @@ BrowserTestCase(
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
-    await testPage.validateNameTypeAndIcon(
+    await testPage.validateNameSizeTypeAndIcon(
       'media-test-file-2.jpg',
+      '16 KB',
       'image',
       'image',
     );
 
     await testPage.navigateNext();
-    await testPage.validateNameTypeAndIcon(
+    await testPage.validateNameSizeTypeAndIcon(
       'media-test-file-3.png',
+      '88 KB',
       'image',
       'image',
     );
 
     await doNTimes(2, () => testPage.navigatePrevious());
-    await testPage.validateNameTypeAndIcon(
+    await testPage.validateNameSizeTypeAndIcon(
       'media-test-file-1.png',
+      '158 B',
       'image',
       'image',
     );
 
     await doNTimes(3, () => testPage.navigateNext());
-    await testPage.validateNameTypeAndIcon(
+    await testPage.validateNameSizeTypeAndIcon(
       'https://wac-cdn.atlassian.com/dam/jcr:616e6748-ad8c-48d9-ae93-e49019ed5259/Atlassian-horizontal-blue-rgb.svg',
+      null,
       'image',
       'image',
     );
@@ -110,7 +129,7 @@ BrowserTestCase(
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
-    await testPage.closeMV(false);
+    await testPage.closeMediaViewer(false);
   },
 );
 
@@ -121,6 +140,6 @@ BrowserTestCase(
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
-    await testPage.closeMV(true);
+    await testPage.closeMediaViewer(true);
   },
 );
