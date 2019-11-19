@@ -47,7 +47,7 @@
     "@atlaskit/webdriver-runner": "^0.1.5",
     "@testing-library/react": "^8.0.1",
     "@types/react-router-dom": "^4.3.1",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "jest-emotion": "^10.0.10",
     "jest-in-case": "^1.0.2",
     "react-dom": "^16.8.0",

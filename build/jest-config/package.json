@@ -3,15 +3,15 @@
   "version": "1.0.2",
   "private": true,
   "dependencies": {
-    "enzyme-adapter-react-16": "^1.7.0",
+    "@atlaskit/analytics-reporting": "0.1.1",
+    "@jest/fake-timers": "^24.8.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "jest-mock": "^24.8.0",
     "jest-util": "^24.5.0",
     "jsdom": "^14.0.0",
-    "raf-stub": "^2.0.1",
-    "@atlaskit/analytics-reporting": "0.1.1",
-    "@jest/fake-timers": "^24.8.0"
+    "raf-stub": "^2.0.1"
   },
   "peerDependencies": {
-    "enzyme": "^3.7.0"
+    "enzyme": "^3.10.0"
   }
 }

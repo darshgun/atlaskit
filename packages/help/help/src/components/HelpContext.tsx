@@ -46,6 +46,10 @@ export interface Props {
     event?: React.MouseEvent<HTMLElement, MouseEvent>,
     analyticsEvent?: UIAnalyticsEvent,
   ): void;
+  // Function executed when the article rendering begins
+  onArticleRenderBegin?(): void;
+  // Function executed when the article rendering finishes
+  onArticleRenderDone?(): void;
   // Default content. This prop is optional
   defaultContent?: React.ReactNode;
   // Footer content. This prop is optional
@@ -91,6 +95,8 @@ export interface HelpContextInterface {
       event?: React.MouseEvent<HTMLElement, MouseEvent>,
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
+    onArticleRenderBegin?(): void;
+    onArticleRenderDone?(): void;
     history: HistoryItem[]; // holds all the articles ID the user has navigated
     footer?: React.ReactNode;
     defaultContent?: React.ReactNode;
@@ -424,6 +430,8 @@ class HelpContextProviderImplementation extends React.Component<
             onWasHelpfulSubmit: this.props.onWasHelpfulSubmit,
             onWasHelpfulYesButtonClick: this.props.onWasHelpfulYesButtonClick,
             onWasHelpfulNoButtonClick: this.props.onWasHelpfulNoButtonClick,
+            onArticleRenderBegin: this.props.onArticleRenderBegin,
+            onArticleRenderDone: this.props.onArticleRenderDone,
             footer: this.props.footer,
             defaultContent: this.props.defaultContent,
             articleId: this.state.articleId,

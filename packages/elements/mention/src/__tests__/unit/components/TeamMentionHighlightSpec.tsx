@@ -103,7 +103,7 @@ describe('MentionHighlight', () => {
 
   it('should not show the highlight if the highlight has been closed by the user', () => {
     const highlight = render({ onClose: jest.fn() });
-    expect(highlight.html()).not.toBeNull();
+    expect(highlight.html()).not.toEqual('');
 
     const closeButton = highlight.find('button').getDOMNode();
     // make sure the click event is able to bubble
@@ -114,12 +114,14 @@ describe('MentionHighlight', () => {
     });
     closeButton.dispatchEvent(event);
 
-    expect(highlight.html()).toBeNull();
+    // because above line is an external change, need to force re-rendering
+    highlight.update();
+    expect(highlight.html()).toEqual('');
   });
 
   it('should send analytics data if the highlight has been closed by the user', () => {
     const highlight = render({ onClose: jest.fn() });
-    expect(highlight.html()).not.toBeNull();
+    expect(highlight.html()).not.toEqual('');
     highlight.find(Button).simulate('click');
     expect(mockFireAnalyticsHighlightMentionEvent).toHaveBeenCalledWith(
       TeamMentionHighlightAnalytics.ComponentNames.TEAM_MENTION_HIGHLIGHT,
@@ -131,7 +133,7 @@ describe('MentionHighlight', () => {
 
   it('should send analytics data if user clicks on highlight link', () => {
     const highlight = render({ onClose: jest.fn() });
-    expect(highlight.html()).not.toBeNull();
+    expect(highlight.html()).not.toEqual('');
     highlight.find('a').simulate('click');
     expect(mockFireAnalyticsHighlightMentionEvent).toHaveBeenCalledWith(
       TeamMentionHighlightAnalytics.ComponentNames.TEAM_MENTION_HIGHLIGHT,
@@ -162,27 +164,27 @@ describe('MentionHighlight', () => {
     mockIsTeamMentionHighlightEnabled = false;
     const highlight = render({});
 
-    expect(highlight.html()).toBeNull();
+    expect(highlight.html()).toEqual('');
 
     // after first render, ask controller to show it
     mockIsTeamMentionHighlightEnabled = true;
 
     //should still hide the highlight after re-render
     highlight.render();
-    expect(highlight.html()).toBeNull();
+    expect(highlight.html()).toEqual('');
   });
 
   it('should show highlight after re-render if the Highlight Controller asked to render it at the first mount', () => {
     const highlight = render({});
 
     // Should render in the first time
-    expect(highlight.html()).not.toBeNull();
+    expect(highlight.html()).not.toEqual('');
 
     //after first render, ask controller to hide it
     mockIsTeamMentionHighlightEnabled = false;
 
     //should still show the highlight after re-render
     highlight.render();
-    expect(highlight.html()).not.toBeNull();
+    expect(highlight.html()).not.toEqual('');
   });
 });
