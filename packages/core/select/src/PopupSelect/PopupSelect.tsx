@@ -111,7 +111,7 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
     options: [],
   };
 
-  getDerivedStateFromProps(props: PopupSelectProps<Option>, state: State) {
+  static getDerivedStateFromProps(props: PopupSelectProps, state: State) {
     const newState: Partial<State> = {};
 
     // Merge consumer and default popper props
