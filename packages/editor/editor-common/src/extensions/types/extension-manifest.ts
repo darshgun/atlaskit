@@ -1,17 +1,22 @@
 import { ADFEntity } from '@atlaskit/adf-utils';
 import { ReactNode } from 'react';
 
-export type ExtensionModuleKey = string;
-
 export type ExtensionType = string;
 
 export type ExtensionKey = string;
+
+export type ExtensionModuleKey = string;
 
 export type Icon = () => Promise<any>;
 
 export type Icons = {
   [dimensions: string]: Icon;
 };
+
+export type ExtensionNodeType =
+  | 'extension'
+  | 'inlineExtension'
+  | 'bodiedExtension';
 
 export type ExtensionManifest = {
   type: ExtensionType;
@@ -27,6 +32,18 @@ export type ExtensionModules = {
   nodes: ExtensionModuleNodes;
 };
 
+export type ExtensionModuleAction =
+  | ExtensionModuleActionObject
+  | ExtensionModuleActionHandler;
+
+export type ExtensionModuleActionObject = {
+  key: ExtensionModuleKey;
+  type: 'node';
+  parameters: any;
+};
+
+export type ExtensionModuleActionHandler = () => AsyncESModule<ADFEntity>;
+
 export type ExtensionModule = {
   key: string;
   title?: string;
@@ -34,7 +51,7 @@ export type ExtensionModule = {
   icon?: Icon;
   priority?: number;
   keywords?: Array<string>;
-  target: ExtensionKey;
+  action: ExtensionModuleAction;
 };
 
 export type ExtensionModuleNodes = {
@@ -42,7 +59,7 @@ export type ExtensionModuleNodes = {
 };
 
 export type ExtensionModuleNode = {
-  insert: () => AsyncESModule<ADFEntity>;
+  type: ExtensionNodeType;
   render: () => AsyncESModule<ReactNode>;
 };
 
@@ -56,3 +73,5 @@ export type ESModule<T> = {
 export type Module<T> = ESModule<T> | T;
 
 export type AsyncESModule<T> = Promise<Module<T>>;
+
+export type MaybeADFEntity = AsyncESModule<ADFEntity | undefined>;
