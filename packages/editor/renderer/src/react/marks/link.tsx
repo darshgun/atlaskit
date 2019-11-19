@@ -15,7 +15,8 @@ const StyledAnchor = styled.a`
   ${(props: StyledAnchorProps) =>
     props.isMediaLink
       ? `pointer-events: none;
-         cursor: default;`
+         cursor: default;
+         display: block;`
       : ''}
   color: ${colors.B400};
 
