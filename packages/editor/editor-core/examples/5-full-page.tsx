@@ -406,6 +406,7 @@ const Renderer = (props: {
     </Button>
     <ReactRenderer
       allowHeadingAnchorLinks
+      UNSAFE_allowAltTextOnImages
       adfStage="stage0"
       dataProviders={providerFactory}
       extensionHandlers={extensionHandlers}
