@@ -24,7 +24,7 @@ import {
   basePlugin,
   placeholderPlugin,
   annotationPlugin,
-  iOSScrollPlugin,
+  mobileScrollPlugin,
 } from '../../../plugins';
 import { MediaProvider, CustomMediaPicker } from '../../../plugins/media';
 import { PresetProvider } from '../Editor';
@@ -51,8 +51,6 @@ export function useMobilePreset({
   media,
   placeholder,
 }: EditorPresetMobileProps & EditorPresetProps) {
-  const isIOS = !!(window as any).webkit;
-
   const [preset] = useDefaultPreset();
 
   preset.push(
@@ -80,6 +78,7 @@ export function useMobilePreset({
     [placeholderPlugin, { placeholder }],
     annotationPlugin,
     cardPlugin,
+    mobileScrollPlugin,
   );
 
   if (mentionProvider) {
@@ -101,10 +100,6 @@ export function useMobilePreset({
       // TODO: ED-7891 Align media plugin constructor with other plugins
       // { allowMarkingUploadsAsIncomplete: true },
     ]);
-  }
-
-  if (isIOS) {
-    preset.push(iOSScrollPlugin);
   }
 
   return [preset];

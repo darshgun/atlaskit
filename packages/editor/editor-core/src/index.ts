@@ -95,7 +95,7 @@ export {
   setLinkText,
 } from './plugins/hyperlink/commands';
 export { historyPluginKey, HistoryPluginState } from './plugins/history';
-export { setKeyboardHeight } from './plugins/ios-scroll/commands';
+export { setKeyboardHeight } from './plugins/mobile-scroll/commands';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';
