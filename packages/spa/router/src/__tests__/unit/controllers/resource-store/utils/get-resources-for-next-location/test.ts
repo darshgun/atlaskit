@@ -1,5 +1,3 @@
-// @flow strict-local
-
 import { createResource } from '../../../../../../controllers/resource-utils';
 import { getResourcesForNextLocation } from '../../../../../../controllers/resource-store/utils/get-resources-for-next-location';
 
