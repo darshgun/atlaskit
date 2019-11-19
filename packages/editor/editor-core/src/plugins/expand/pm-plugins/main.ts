@@ -54,7 +54,8 @@ export const createPlugin = (
     filterTransaction(tr) {
       if (
         containsClass(document.activeElement, expandClassNames.titleInput) &&
-        tr.selectionSet
+        tr.selectionSet &&
+        (!tr.steps.length || tr.isGeneric)
       ) {
         return false;
       }
