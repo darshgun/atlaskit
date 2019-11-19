@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket-transformer",
-  "version": "6.2.7",
+  "version": "6.2.8",
   "description": "Editor Bitbucket transformer",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -20,7 +20,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/editor-common": "^42.0.0",
-    "prosemirror-markdown": "^1.2.0",
+    "@marionebl/prosemirror-markdown": "^1.4.2",
     "prosemirror-model": "^1.7.0"
   },
   "peerDependencies": {
@@ -30,7 +30,7 @@
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/adf-schema": "^4.3.0",
     "@atlaskit/docs": "^8.1.5",
-    "@atlaskit/editor-core": "^114.1.0",
+    "@atlaskit/editor-core": "^114.1.1",
     "@atlaskit/editor-test-helpers": "^10.2.0",
     "@atlaskit/emoji": "^62.5.6",
     "@atlaskit/theme": "^9.2.3",
