@@ -28,6 +28,7 @@ import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji/picker';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import { EmojiId } from '@atlaskit/emoji/types';
 import { Popup, akEditorMenuZIndex } from '@atlaskit/editor-common';
+
 import EditorActions from '../../../../actions';
 import {
   analyticsService as analytics,

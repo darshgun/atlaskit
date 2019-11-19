@@ -12,7 +12,11 @@ import {
   macroProvider,
   autoformattingProvider,
 } from '@atlaskit/editor-test-helpers';
-import { ProviderFactory } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  ExtensionProvider,
+  combineExtensionProviders,
+} from '@atlaskit/editor-common';
 
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import {
@@ -388,34 +392,44 @@ const providerFactory = ProviderFactory.create({
 const Renderer = (props: {
   document: any;
   setMode: (mode: boolean) => void;
-}) => (
-  <div
-    style={{
-      margin: '30px 0',
-    }}
-  >
-    <Button
-      appearance="primary"
-      onClick={() => props.setMode(true)}
+  extensionProviders?: ExtensionProvider[];
+}) => {
+  if (props.extensionProviders && props.extensionProviders.length > 0) {
+    providerFactory.setProvider(
+      'extensionProvider',
+      Promise.resolve(combineExtensionProviders(props.extensionProviders)),
+    );
+  }
+
+  return (
+    <div
       style={{
-        position: 'absolute',
-        right: '0',
-        margin: '0 20px',
-        zIndex: 100,
+        margin: '30px 0',
       }}
     >
-      Edit
-    </Button>
-    <ReactRenderer
-      allowHeadingAnchorLinks
-      adfStage="stage0"
-      dataProviders={providerFactory}
-      extensionHandlers={extensionHandlers}
-      document={props.document && JSON.parse(props.document)}
-      appearance="full-page"
-    />
-  </div>
-);
+      <Button
+        appearance="primary"
+        onClick={() => props.setMode(true)}
+        style={{
+          position: 'absolute',
+          right: '0',
+          margin: '0 20px',
+          zIndex: 100,
+        }}
+      >
+        Edit
+      </Button>
+      <ReactRenderer
+        allowHeadingAnchorLinks
+        adfStage="stage0"
+        dataProviders={providerFactory}
+        extensionHandlers={extensionHandlers}
+        document={props.document && JSON.parse(props.document)}
+        appearance="full-page"
+      />
+    </div>
+  );
+};
 
 export default function Example(props: EditorProps & ExampleProps) {
   const [isEditingMode, setMode] = React.useState(true);
@@ -430,7 +444,11 @@ export default function Example(props: EditorProps & ExampleProps) {
         {isEditingMode ? (
           <ExampleEditor {...props} setMode={setMode} />
         ) : (
-          <Renderer document={document} setMode={setMode} />
+          <Renderer
+            document={document}
+            setMode={setMode}
+            extensionProviders={props.extensionProviders}
+          />
         )}
       </div>
     </EditorContext>

@@ -4,11 +4,14 @@ import {
   ProviderFactory,
   ExtensionHandlers,
   ExtensionParams,
+  combineExtensionProviders,
 } from '@atlaskit/editor-common';
 import { macroProvider, extensionData } from '@atlaskit/editor-test-helpers';
+import { createFakeExtensionProvider } from '@atlaskit/editor-test-helpers/extensions';
 
 import Extension from '../../../../../plugins/extension/ui/Extension';
 import ExtensionComponent from '../../../../../plugins/extension/ui/Extension/ExtensionComponent';
+import Loadable from 'react-loadable';
 
 const macroProviderPromise = Promise.resolve(macroProvider);
 const providerFactory = ProviderFactory.create({
@@ -47,7 +50,9 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     );
     const component = extension.find(ExtensionComponent);
 
-    expect(component.prop('macroProvider')).toBe(macroProviderPromise);
+    expect(component.prop('providers').macroProvider).toBe(
+      macroProviderPromise,
+    );
     extension.unmount();
   });
 
@@ -180,10 +185,11 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
       />,
     );
 
-    const component = extension.find(ExtensionComponent);
-    expect(component.find(InlineCompontent).text()).toEqual(
+    expect(extension.find(InlineCompontent).text()).toEqual(
       'Hello inlineExtension!',
     );
+
+    extension.unmount();
   });
 
   it('should pass the correct content to extension', () => {
@@ -231,9 +237,141 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
       />,
     );
 
-    const component = extension.find(ExtensionComponent);
-    expect(component.find(ExtensionCompontent).text()).toEqual(
+    expect(extension.find(ExtensionCompontent).text()).toEqual(
       'Hello extension!',
     );
+
+    extension.unmount();
+  });
+
+  describe('extension provider', () => {
+    const ExtensionHandlerComponent = ({ extensionParams }: any) => {
+      return <div>Extension provider: {extensionParams.content}</div>;
+    };
+
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
+      'fake.confluence',
+      'expand',
+      ExtensionHandlerComponent,
+    );
+
+    const providerFactory = ProviderFactory.create({
+      macroProvider: macroProviderPromise,
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    const extensionNode = {
+      type: {
+        name: 'extension',
+      },
+      attrs: {
+        extensionType: 'fake.confluence',
+        extensionKey: 'expand',
+        text: 'Hello extension!',
+        parameters: {},
+      },
+    } as any;
+
+    it('should use the extension handler from the provider in case there is no other available', async () => {
+      const extension = mount(
+        <Extension
+          editorView={
+            {
+              state: {
+                doc: {},
+              },
+            } as any
+          }
+          providerFactory={providerFactory}
+          node={extensionNode}
+          handleContentDOMRef={noop}
+          extensionHandlers={{}}
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.find(ExtensionHandlerComponent).text()).toEqual(
+        'Extension provider: Hello extension!',
+      );
+
+      extension.unmount();
+    });
+
+    it('should prioritize extension handlers (sync) over extension providers', async () => {
+      const ExtensionCompontent = ({
+        node,
+      }: {
+        node: ExtensionParams<any>;
+      }) => <div>Extension handler: {node.content}</div>;
+
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence': ext => {
+          if (ext.extensionKey === 'expand') {
+            return <ExtensionCompontent node={ext} />;
+          }
+
+          return null;
+        },
+      };
+
+      const extension = mount(
+        <Extension
+          editorView={
+            {
+              state: {
+                doc: {},
+              },
+            } as any
+          }
+          providerFactory={providerFactory}
+          node={extensionNode}
+          handleContentDOMRef={noop}
+          extensionHandlers={extensionHandlers}
+        />,
+      );
+
+      expect(extension.find(ExtensionCompontent).text()).toEqual(
+        'Extension handler: Hello extension!',
+      );
+
+      extension.unmount();
+    });
+
+    it('should fallback to extension provider in case extension handlers do not handle it', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence': (extensionParams: any) => null,
+      };
+
+      const extension = mount(
+        <Extension
+          editorView={
+            {
+              state: {
+                doc: {},
+              },
+            } as any
+          }
+          providerFactory={providerFactory}
+          node={extensionNode}
+          handleContentDOMRef={noop}
+          extensionHandlers={extensionHandlers}
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.find(ExtensionHandlerComponent).text()).toEqual(
+        'Extension provider: Hello extension!',
+      );
+
+      extension.unmount();
+    });
   });
 });
