@@ -146,17 +146,26 @@ export default class Item extends Component<Props, {}> {
         }
       },
       onMouseDown: (event: MouseEvent) => {
+        // rbd 11.x support
+        if (dragHandleProps && dragHandleProps.onMouseDown) {
+          dragHandleProps.onMouseDown(event);
+        }
         // We want to prevent the item from getting focus when clicked
         event.preventDefault();
       },
       onKeyDown: (event: KeyboardEvent) => {
-        // if default is prevent - do not fire other handlers
-        if (event.defaultPrevented) {
+        // swallowing keyboard events on the element while dragging
+        if (isDragging) {
           return;
         }
 
-        // not allowing keyboard events on the element while dragging
-        if (isDragging) {
+        // rbd 11.x support
+        if (dragHandleProps && dragHandleProps.onKeyDown) {
+          dragHandleProps.onKeyDown(event);
+        }
+
+        // if default is prevent - do not fire other handlers
+        if (event.defaultPrevented) {
           return;
         }
 
