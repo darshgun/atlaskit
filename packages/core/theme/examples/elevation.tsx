@@ -43,18 +43,22 @@ export default class extends React.Component<Props, State> {
 
   render() {
     const { themeMode } = this.state;
+
     return (
       <AtlaskitThemeProvider mode={themeMode}>
-        <div style={{ padding: 8 }}>
-          <Button onClick={this.switchTheme}>Switch theme ({themeMode})</Button>
-        </div>
         <Wrapper>
-          <Box elevation="e100">Cards on a board</Box>
-          <Box elevation="e200">Inline dialogs</Box>
-          <Box elevation="e300">Modals</Box>
-          <Box elevation="e400">Panels</Box>
-          <Box elevation="e500">Flag messages</Box>
+          <Box elevation="e100">Cards on a board (e100)</Box>
+          <Box elevation="e200">Inline dialogs (e200)</Box>
+          <Box elevation="e300">Modals (e300)</Box>
+          <Box elevation="e400">Panels (e400)</Box>
+          <Box elevation="e500">Flag messages (e500)</Box>
         </Wrapper>
+
+        <div style={{ padding: 8, textAlign: 'center' }}>
+          <Button appearance="primary" onClick={this.switchTheme}>
+            Switch theme ({themeMode})
+          </Button>
+        </div>
       </AtlaskitThemeProvider>
     );
   }
