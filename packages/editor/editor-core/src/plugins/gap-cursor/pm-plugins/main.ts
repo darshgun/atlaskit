@@ -45,7 +45,10 @@ const plugin = new Plugin({
         }
 
         return DecorationSet.create(doc, [
-          Decoration.widget(position, node, { key: `${JSON_ID}`, side: -1 }),
+          Decoration.widget(position, node, {
+            key: `${JSON_ID}-${side}`,
+            side: -1,
+          }),
         ]);
       }
 
