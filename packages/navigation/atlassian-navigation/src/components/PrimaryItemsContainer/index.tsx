@@ -41,7 +41,11 @@ export const PrimaryItemsContainer = ({
 
   const trigger = useCallback(
     (triggerProps: TriggerProps) => (
-      <PrimaryDropdownButton onClick={onMoreClick} {...triggerProps}>
+      <PrimaryDropdownButton
+        onClick={onMoreClick}
+        isSelected={isMoreOpen}
+        {...triggerProps}
+      >
         {moreLabel}
       </PrimaryDropdownButton>
     ),
