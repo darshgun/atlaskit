@@ -2,8 +2,25 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 
+const url = getExampleUrl(
+  'media',
+  'media-viewer',
+  'mocked-viewer',
+  // @ts-ignore
+  global.__BASEURL__,
+);
 class MVExamplePage {
   constructor(private readonly page: typeof Page) {}
+
+  async init() {
+    const currentUrl = await this.page.url();
+
+    if (currentUrl !== url) {
+      await this.page.goto(url);
+    }
+
+    await this.page.browser.maximizeWindow();
+  }
 
   async validateNameTypeAndIcon(name: string, type: string, icon: string) {
     await this.page.waitForSelector(`div=${name}`);
@@ -36,6 +53,11 @@ class MVExamplePage {
       await this.forceNav();
       await this.page.click("//span[@aria-label='Close']");
     }
+    await this.page.waitForSelector(
+      "//div[@data-testid='media-viewer-image-content']",
+      {},
+      true,
+    );
   }
 }
 
@@ -49,23 +71,8 @@ BrowserTestCase(
   'media-viewer-basic.ts: Navigation should navigate back and forth',
   { skip: [] },
   async (client: any, testName: string) => {
-    const page = new Page(client);
-    const currentUrl = await page.url();
-    const url = getExampleUrl(
-      'media',
-      'media-viewer',
-      'mocked-viewer',
-      // @ts-ignore
-      global.__BASEURL__,
-    );
-
-    if (currentUrl !== url) {
-      await page.goto(url);
-    }
-
-    await page.browser.maximizeWindow();
-
-    const testPage = new MVExamplePage(page);
+    const testPage = new MVExamplePage(new Page(client));
+    await testPage.init();
 
     await testPage.validateNameTypeAndIcon(
       'media-test-file-2.jpg',
@@ -100,31 +107,10 @@ BrowserTestCase(
   'media-viewer-basic.ts: Should close on Close click',
   { skip: [] },
   async (client: any, testName: string) => {
-    const page = new Page(client);
-    const currentUrl = await page.url();
-    const url = getExampleUrl(
-      'media',
-      'media-viewer',
-      'mocked-viewer',
-      // @ts-ignore
-      global.__BASEURL__,
-    );
-
-    if (currentUrl !== url) {
-      await page.goto(url);
-    }
-
-    await page.browser.maximizeWindow();
-
-    const testPage = new MVExamplePage(page);
+    const testPage = new MVExamplePage(new Page(client));
+    await testPage.init();
 
     await testPage.closeMV(false);
-
-    await page.waitForSelector(
-      "//div[@data-testid='media-viewer-image-content']",
-      {},
-      true,
-    );
   },
 );
 
@@ -132,30 +118,9 @@ BrowserTestCase(
   'media-viewer-basic.ts: Should close on Escape press',
   { skip: [] },
   async (client: any, testName: string) => {
-    const page = new Page(client);
-    const currentUrl = await page.url();
-    const url = getExampleUrl(
-      'media',
-      'media-viewer',
-      'mocked-viewer',
-      // @ts-ignore
-      global.__BASEURL__,
-    );
-
-    if (currentUrl !== url) {
-      await page.goto(url);
-    }
-
-    await page.browser.maximizeWindow();
-
-    const testPage = new MVExamplePage(page);
+    const testPage = new MVExamplePage(new Page(client));
+    await testPage.init();
 
     await testPage.closeMV(true);
-
-    await page.waitForSelector(
-      "//div[@data-testid='media-viewer-image-content']",
-      {},
-      true,
-    );
   },
 );

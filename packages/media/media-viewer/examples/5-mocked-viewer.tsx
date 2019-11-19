@@ -59,25 +59,25 @@ const mediaClient = new MediaClient({
 });
 
 export interface State {
-  mediaViewerActive: boolean;
+  isMediaViewerActive: boolean;
 }
 export default class Example extends React.Component<{}, State> {
   state = {
-    mediaViewerActive: true,
+    isMediaViewerActive: true,
   };
 
   deactivate = () => {
-    this.setState({ mediaViewerActive: false });
+    this.setState({ isMediaViewerActive: false });
   };
 
   render() {
-    const { mediaViewerActive } = this.state;
+    const { isMediaViewerActive } = this.state;
 
     if (files.length === 0) {
       return null;
     }
 
-    if (!mediaViewerActive) {
+    if (!isMediaViewerActive) {
       return null;
     }
 
