@@ -121,3 +121,23 @@ describe('@atlaskit/editor-core/ui/RecentSearch', () => {
     );
   });
 });
+
+describe('@atlaskit/editor-core/ui/RecentSearch without a provider', () => {
+  let wrapper: ReactWrapper;
+  let onSubmit: jest.Mock;
+
+  beforeEach(async () => {
+    onSubmit = jest.fn();
+    wrapper = mountWithIntl(<RecentSearch onSubmit={onSubmit} />);
+    await timeout();
+    wrapper.update();
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
+  it('should NOT render a list of recent activity items', () => {
+    expect(wrapper.find(RecentItem)).toHaveLength(0);
+  });
+});
