@@ -25,7 +25,7 @@ import { layers } from '@atlaskit/theme';
   ### Border radius
 
   When wanting to add some rounding to an elements edges,
-  use the this.
+  use this.
 
 ${code`
 import { borderRadius } from '@atlaskit/theme';

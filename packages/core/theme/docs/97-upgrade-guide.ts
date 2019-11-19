@@ -1,7 +1,9 @@
 import { code, md } from '@atlaskit/docs';
 
 export default md`
-  ## v9 to v10 | Breaking Types & Hearts
+  ## v9.x.x to v9.3.0 | Breaking Types & Hearts
+
+  This release contains type fixes and documentation improvements.
 
   ### \`colors\` export
 
@@ -17,7 +19,7 @@ import { colors } from '@atlaskit/theme';
 
   It turns out not all colors are strings,
   some are actually functions!
-  Now the themed colors are typed correctly which will break you if you assume they were strings.
+  Now the themed colors are typed correctly which will break you if you assumed they were strings.
 
 ${code`
 import { colors } from '@atlaskit/theme';

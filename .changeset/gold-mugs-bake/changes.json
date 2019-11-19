@@ -1,6 +1,6 @@
 {
   "releases": [
-    { "name": "@atlaskit/theme", "type": "major" },
+    { "name": "@atlaskit/theme", "type": "minor" },
     { "name": "@atlaskit/analytics-reporting", "type": "patch" },
     { "name": "@atlaskit/atlaskid", "type": "patch" },
     { "name": "@atlaskit/bitbucket-releases-addon", "type": "patch" },
