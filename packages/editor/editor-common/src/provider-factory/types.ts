@@ -13,5 +13,3 @@ export interface Providers {
   extensionProvider?: Promise<ExtensionProvider>;
   [key: string]: Promise<any> | undefined;
 }
-
-export interface FeatureFlags {}
