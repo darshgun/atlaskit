@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 114.1.2
+
+### Patch Changes
+
+- [patch][f4b7363a8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4b7363a8e):
+
+  ED-8137: Fix rendering of hyperlink toolbar without any activity provider set
+
 ## 114.1.1
 
 ### Patch Changes
