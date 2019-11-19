@@ -181,7 +181,7 @@ export interface EditorProps {
 
   UNSAFE_cards?: CardOptions;
 
-  UNSAFE_allowExpand?: boolean;
+  UNSAFE_allowExpand?: boolean | { allowInsertion?: boolean };
 
   // Submits on the enter key. Probably useful for an inline comment editor use case.
   saveOnEnter?: boolean;
