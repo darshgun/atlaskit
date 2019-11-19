@@ -16,15 +16,26 @@ class MVExamplePage {
   }
 
   async navigateNext() {
+    await this.forceNav();
     await this.page.click("//span[@aria-label='Next']");
   }
 
   async navigatePrevious() {
+    await this.forceNav();
     await this.page.click("//span[@aria-label='Previous']");
   }
 
   async forceNav() {
     await this.page.hover('img');
+  }
+
+  async closeMV(closeWithEsc: boolean) {
+    if (closeWithEsc) {
+      await this.page.type('/*', 'Escape');
+    } else {
+      await this.forceNav();
+      await this.page.click("//span[@aria-label='Close']");
+    }
   }
 }
 
@@ -56,7 +67,6 @@ BrowserTestCase(
 
     const testPage = new MVExamplePage(page);
 
-    await testPage.forceNav();
     await testPage.validateNameTypeAndIcon(
       'media-test-file-2.jpg',
       'image',
@@ -82,6 +92,70 @@ BrowserTestCase(
       'https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_0.jpg',
       'image',
       'image',
+    );
+  },
+);
+
+BrowserTestCase(
+  'media-viewer-basic.ts: Should close on Close click',
+  { skip: [] },
+  async (client: any, testName: string) => {
+    const page = new Page(client);
+    const currentUrl = await page.url();
+    const url = getExampleUrl(
+      'media',
+      'media-viewer',
+      'mocked-viewer',
+      // @ts-ignore
+      global.__BASEURL__,
+    );
+
+    if (currentUrl !== url) {
+      await page.goto(url);
+    }
+
+    await page.browser.maximizeWindow();
+
+    const testPage = new MVExamplePage(page);
+
+    await testPage.closeMV(false);
+
+    await page.waitForSelector(
+      "//div[@data-testid='media-viewer-image-content']",
+      {},
+      true,
+    );
+  },
+);
+
+BrowserTestCase(
+  'media-viewer-basic.ts: Should close on Escape press',
+  { skip: [] },
+  async (client: any, testName: string) => {
+    const page = new Page(client);
+    const currentUrl = await page.url();
+    const url = getExampleUrl(
+      'media',
+      'media-viewer',
+      'mocked-viewer',
+      // @ts-ignore
+      global.__BASEURL__,
+    );
+
+    if (currentUrl !== url) {
+      await page.goto(url);
+    }
+
+    await page.browser.maximizeWindow();
+
+    const testPage = new MVExamplePage(page);
+
+    await testPage.closeMV(true);
+
+    await page.waitForSelector(
+      "//div[@data-testid='media-viewer-image-content']",
+      {},
+      true,
     );
   },
 );

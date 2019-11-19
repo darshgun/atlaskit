@@ -57,11 +57,30 @@ const mediaClient = new MediaClient({
       baseUrl: defaultBaseUrl,
     }),
 });
-export default class Example extends React.Component<{}, {}> {
+
+export interface State {
+  mediaViewerActive: boolean;
+}
+export default class Example extends React.Component<{}, State> {
+  state = {
+    mediaViewerActive: true,
+  };
+
+  deactivate = () => {
+    this.setState({ mediaViewerActive: false });
+  };
+
   render() {
+    const { mediaViewerActive } = this.state;
+
     if (files.length === 0) {
       return null;
     }
+
+    if (!mediaViewerActive) {
+      return null;
+    }
+
     return (
       <MediaViewer
         dataSource={{
@@ -89,6 +108,7 @@ export default class Example extends React.Component<{}, {}> {
         }}
         collectionName={defaultCollectionName}
         mediaClient={mediaClient}
+        onClose={this.deactivate}
       />
     );
   }
