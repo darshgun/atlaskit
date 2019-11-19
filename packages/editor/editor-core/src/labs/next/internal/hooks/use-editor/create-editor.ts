@@ -21,7 +21,7 @@ export function createEditor({
   onAnalyticsEvent,
   transformer,
 
-  providerFactory, // use provided factory or create an empty one
+  providerFactory,
 
   plugins,
   portalProviderAPI,
