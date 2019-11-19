@@ -49,7 +49,7 @@ export const PrimaryItemsContainer = ({
         {moreLabel}
       </PrimaryDropdownButton>
     ),
-    [moreLabel, onMoreClick],
+    [moreLabel, onMoreClick, isMoreOpen],
   );
 
   return (
