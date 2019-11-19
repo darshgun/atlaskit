@@ -13,12 +13,7 @@ class MVExamplePage {
   constructor(private readonly page: typeof Page) {}
 
   async init() {
-    const currentUrl = await this.page.url();
-
-    if (currentUrl !== url) {
-      await this.page.goto(url);
-    }
-
+    await this.page.goto(url);
     await this.page.browser.maximizeWindow();
   }
 
@@ -68,8 +63,9 @@ class MVExamplePage {
       await this.revealNavigationControls();
       await this.page.click('[data-testid="media-viewer-close-button"]');
     }
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.page.waitForSelector(
-      '[data-testid="media-viewer-image-content"]',
+      '[data-testid="media-viewer-popup"]',
       {},
       true,
     );
