@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 114.1.1
+
+### Patch Changes
+
+- [patch][a76c0e3081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a76c0e3081):
+
+  ED-8042 fix: bump markdown-it and prosemirror-markdown to avoid ReDoS vulnerability
+
 ## 114.1.0
 
 ### Minor Changes
