@@ -15,8 +15,6 @@ jest.mock('exenv', () => ({
   },
 }));
 
-jest.spyOn(global.console, 'error');
-
 afterEach(() => {
   jest.resetAllMocks();
 });
@@ -41,6 +39,16 @@ const App = () => (
 );
 
 test('should ssr then hydrate tree correctly', () => {
+  // we can get errors from using useLayoutEffect in ssr
+  // which won't fail in a real SSR environment
+  const realErrors = jest.fn();
+  const error = jest
+    .spyOn(global.console, 'error')
+    .mockImplementation((message: string) => {
+      if (!message.includes('useLayoutEffect')) {
+        realErrors(message);
+      }
+    });
   const canUseDom = jest.spyOn(exenv, 'canUseDOM', 'get');
 
   // server-side
@@ -56,5 +64,6 @@ test('should ssr then hydrate tree correctly', () => {
   ReactDOM.hydrate(<App />, elem);
 
   // eslint-disable-next-line no-console
-  expect(console.error).not.toBeCalled();
+  expect(realErrors).not.toBeCalled();
+  error.mockRestore();
 });
