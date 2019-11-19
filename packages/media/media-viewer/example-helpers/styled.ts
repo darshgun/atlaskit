@@ -14,3 +14,18 @@ export const ButtonList = styled.ul`
   padding-left: 0;
   list-style: none;
 `;
+
+export const MVSidebar = styled.div`
+  height: 3000px;
+  padding: 32px;
+
+  h2 {
+    color: white;
+    margin-bottom: 16px;
+  }
+
+  tbody {
+    border-bottom: none;
+    vertical-align: top;
+  }
+`;

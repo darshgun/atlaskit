@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { toIdentifier } from './utils';
 import { Spinner } from './loading';
 import { WithShowControlMethodProp } from '@atlaskit/media-ui';
+import { MediaViewerComponents } from '../components/types';
 
 export type Props = Readonly<
   {
@@ -21,6 +22,8 @@ export type Props = Readonly<
     collectionName: string;
     mediaClient: MediaClient;
     pageSize: number;
+    onNavigationChange?: (selectedItem: Identifier) => void;
+    components?: MediaViewerComponents;
   } & WithShowControlMethodProp
 >;
 
@@ -57,6 +60,7 @@ export class Collection extends React.Component<Props, State> {
       onClose,
       collectionName,
       showControls,
+      components,
     } = this.props;
 
     return this.state.items.match({
@@ -75,6 +79,7 @@ export class Collection extends React.Component<Props, State> {
             onClose={onClose}
             onNavigationChange={this.onNavigationChange}
             showControls={showControls}
+            components={components}
           />
         );
       },
@@ -125,11 +130,20 @@ export class Collection extends React.Component<Props, State> {
   }
 
   private onNavigationChange = (item: Identifier) => {
-    const { mediaClient, collectionName, pageSize } = this.props;
+    const {
+      mediaClient,
+      collectionName,
+      pageSize,
+      onNavigationChange,
+    } = this.props;
     if (this.shouldLoadNext(item)) {
       mediaClient.collection.loadNextPage(collectionName, {
         limit: pageSize,
       });
+    }
+
+    if (onNavigationChange) {
+      onNavigationChange(item);
     }
   };
 

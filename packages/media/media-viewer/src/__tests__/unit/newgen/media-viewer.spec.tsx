@@ -20,13 +20,20 @@ import {
   asMock,
 } from '@atlaskit/media-test-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { MediaViewer } from '../../../newgen/media-viewer';
-import { CloseButtonWrapper } from '../../../newgen/styled';
+import {
+  MediaViewer,
+  MediaViewerComponent,
+} from '../../../newgen/media-viewer';
+import { CloseButtonWrapper, SidebarWrapper } from '../../../newgen/styled';
 import Header from '../../../newgen/header';
 import { ItemSource } from '../../../newgen/domain';
 import { Observable } from 'rxjs';
 
-function createFixture(items: Identifier[], identifier: Identifier) {
+function createFixture(
+  items: Identifier[],
+  identifier: Identifier,
+  overrides?: any,
+) {
   const subject = new Subject<FileItem>();
   const mediaClient = fakeMediaClient();
   asMock(mediaClient.file.getFileState).mockReturnValue(Observable.never());
@@ -43,6 +50,7 @@ function createFixture(items: Identifier[], identifier: Identifier) {
         itemSource={itemSource}
         mediaClient={mediaClient}
         onClose={onClose}
+        {...overrides}
       />
     </AnalyticsListener>,
   );
@@ -53,6 +61,11 @@ describe('<MediaViewer />', () => {
   const identifier: Identifier = {
     id: 'some-id',
     occurrenceKey: 'some-custom-occurrence-key',
+    mediaItemType: 'file',
+  };
+  const identifier2: Identifier = {
+    id: 'some-id-2',
+    occurrenceKey: 'some-custom-occurrence-key-2',
     mediaItemType: 'file',
   };
 
@@ -114,6 +127,89 @@ describe('<MediaViewer />', () => {
       const closeEvent: any =
         onEvent.mock.calls[onEvent.mock.calls.length - 1][0];
       expect(closeEvent.payload.attributes.input).toEqual('escKey');
+    });
+  });
+
+  // TODO: cleanup/add more tests
+  describe('Sidebar integration', () => {
+    function MySidebarContent(props: any) {
+      return <div />;
+    }
+
+    const mockSidebarRenderer = jest
+      .fn()
+      .mockImplementation(identifier => (
+        <MySidebarContent identifier={identifier} />
+      ));
+
+    const components = { sidebarRenderer: mockSidebarRenderer };
+    const items = [identifier, identifier2];
+
+    describe('renderer', () => {
+      it('should not be visible by default', () => {
+        const { el } = createFixture(items, identifier, { components });
+        expect(el.find(SidebarWrapper).exists()).toBe(false);
+      });
+
+      it('should render sidebar with selected identifier in state', () => {
+        const { el } = createFixture(items, identifier, { components });
+        el.find(MediaViewerComponent).setState({
+          isSidebarVisible: true,
+          selectedIdentifier: identifier2,
+        });
+        expect(el.find(SidebarWrapper).exists()).toBe(true);
+        expect(mockSidebarRenderer).toHaveBeenCalledWith(identifier2);
+      });
+
+      it('should render sidebar with default selected identifier if not set in state', () => {
+        const { el } = createFixture(items, identifier, { components });
+        el.find(MediaViewerComponent).setState({
+          isSidebarVisible: true,
+        });
+        expect(el.find(SidebarWrapper).exists()).toBe(true);
+        expect(mockSidebarRenderer).toHaveBeenCalledWith(identifier);
+      });
+
+      it('should not show sidebar if components prop is not defined', () => {
+        const { el } = createFixture(items, identifier, {
+          components: undefined,
+        });
+        el.find(MediaViewerComponent).setState({
+          isSidebarVisible: true,
+          selectedIdentifier: identifier2,
+        });
+        expect(el.find(SidebarWrapper).exists()).toBe(false);
+      });
+
+      it('should not show sidebar if sidebarRenderer is not defined within the components prop', () => {
+        const { el } = createFixture(items, identifier, { components: {} });
+        el.find(MediaViewerComponent).setState({
+          isSidebarVisible: true,
+          selectedIdentifier: identifier2,
+        });
+        expect(el.find(SidebarWrapper).exists()).toBe(false);
+      });
+    });
+
+    describe('toggling visibility', () => {
+      it('should show sidebar if sidebar is currently not visible', () => {
+        const { el } = createFixture(items, identifier, { components });
+        el.find('List').prop('onSidebarButtonClick')();
+        expect(el.find(MediaViewerComponent).state('isSidebarVisible')).toBe(
+          true,
+        );
+      });
+
+      it('should hide sidebar if sidebar is currently visible', () => {
+        const { el } = createFixture(items, identifier, { components });
+        el.find(MediaViewerComponent).setState({
+          isSidebarVisible: true,
+        });
+        el.find('List').prop('onSidebarButtonClick')();
+        expect(el.find(MediaViewerComponent).state('isSidebarVisible')).toBe(
+          false,
+        );
+      });
     });
   });
 });

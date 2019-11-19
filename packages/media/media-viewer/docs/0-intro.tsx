@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-${(<AtlassianInternalWarning />)}
+${<AtlassianInternalWarning />}
 
 MediaViewer is Atlassian's powerful solution for viewing files on the web. It's both powerful and extendable yet easy-to-integrate
 

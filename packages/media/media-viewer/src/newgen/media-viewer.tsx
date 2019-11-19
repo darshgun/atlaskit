@@ -19,8 +19,9 @@ import { ItemSource, MediaViewerFeatureFlags } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
-import { Blanket } from './styled';
+import { Blanket, SidebarWrapper } from './styled';
 import { start } from 'perf-marks';
+import { MediaViewerComponents } from '../components/types';
 
 export type Props = {
   onClose?: () => void;
@@ -28,9 +29,19 @@ export type Props = {
   featureFlags?: MediaViewerFeatureFlags;
   mediaClient: MediaClient;
   itemSource: ItemSource;
+  components?: MediaViewerComponents;
 } & WithAnalyticsEventsProps;
 
-export class MediaViewerComponent extends React.Component<Props, {}> {
+export interface State {
+  isSidebarVisible: boolean;
+  selectedIdentifier?: Identifier;
+}
+
+export class MediaViewerComponent extends React.Component<Props, State> {
+  state: State = {
+    isSidebarVisible: false,
+  };
+
   static contextTypes = {
     intl: intlShape,
   };
@@ -74,11 +85,51 @@ export class MediaViewerComponent extends React.Component<Props, {}> {
     this.fireAnalytics(closedEvent(input));
   }
 
+  private toggleSidebar = () => {
+    this.setState({
+      isSidebarVisible: !this.state.isSidebarVisible,
+    });
+  };
+
+  private get defaultSelectedItem(): Identifier | undefined {
+    const { itemSource, selectedItem } = this.props;
+
+    if (itemSource.kind === 'COLLECTION') {
+      return selectedItem;
+    }
+
+    const { items } = itemSource;
+    const firstItem = items[0];
+
+    return selectedItem || firstItem;
+  }
+
+  renderSidebar = () => {
+    const { components } = this.props;
+    const { isSidebarVisible, selectedIdentifier } = this.state;
+    const sidebardSelectedIdentifier =
+      selectedIdentifier || this.defaultSelectedItem;
+
+    if (
+      sidebardSelectedIdentifier &&
+      isSidebarVisible &&
+      components &&
+      components.sidebarRenderer
+    ) {
+      return (
+        <SidebarWrapper>
+          {components.sidebarRenderer(sidebardSelectedIdentifier)}
+        </SidebarWrapper>
+      );
+    }
+  };
+
   render() {
     const content = (
       <Blanket media-test-id="media-viewer-popup">
         {<Shortcut keyCode={27} handler={this.onShortcutClosed} />}
         <Content onClose={this.onContentClose}>{this.renderContent()}</Content>
+        {this.renderSidebar()}
       </Blanket>
     );
 
@@ -89,30 +140,37 @@ export class MediaViewerComponent extends React.Component<Props, {}> {
     );
   }
 
+  private onNavigationChange = (selectedIdentifier: Identifier) => {
+    this.setState({ selectedIdentifier });
+  };
+
   private renderContent() {
-    const { selectedItem, mediaClient, onClose, itemSource } = this.props;
-    const defaultSelectedItem = selectedItem;
+    const { mediaClient, onClose, itemSource, components } = this.props;
 
     if (itemSource.kind === 'COLLECTION') {
       return (
         <Collection
           pageSize={itemSource.pageSize}
-          defaultSelectedItem={defaultSelectedItem}
+          defaultSelectedItem={this.defaultSelectedItem}
           collectionName={itemSource.collectionName}
           mediaClient={mediaClient}
           onClose={onClose}
+          components={components}
+          onNavigationChange={this.onNavigationChange}
         />
       );
     } else if (itemSource.kind === 'ARRAY') {
       const { items } = itemSource;
-      const firstItem = items[0];
 
       return (
         <List
-          defaultSelectedItem={defaultSelectedItem || firstItem}
+          defaultSelectedItem={this.defaultSelectedItem || items[0]}
           items={items}
           mediaClient={mediaClient}
           onClose={onClose}
+          components={components}
+          onNavigationChange={this.onNavigationChange}
+          onSidebarButtonClick={this.toggleSidebar}
         />
       );
     } else {

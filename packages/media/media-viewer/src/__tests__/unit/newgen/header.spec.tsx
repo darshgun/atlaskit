@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ReactWrapper } from 'enzyme';
 import { MediaType, FileState, Identifier } from '@atlaskit/media-client';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
+import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
 import {
   fakeIntl,
   fakeMediaClient,
@@ -12,6 +13,7 @@ import {
 import { Header, State as HeaderState } from '../../../newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../../newgen/styled';
 import { LeftHeader } from '../../../newgen/styled';
+import { MediaButton } from '../../../../../media-ui/src';
 
 const identifier: Identifier = {
   id: 'some-id',
@@ -380,6 +382,30 @@ describe('<Header />', () => {
       );
       el.update();
       assertDownloadButton(el, false);
+    });
+  });
+
+  describe('Sidebar button', () => {
+    it('should render sidebar button if sidebar component is present', () => {
+      const mediaClient = fakeMediaClient();
+      mediaClient.file.getFileState = () => Observable.of(processedImageState);
+      const el = mountWithIntlContext(
+        <Header
+          intl={fakeIntl}
+          mediaClient={mediaClient}
+          identifier={identifier}
+          components={{
+            sidebarRenderer: () => <div />,
+          }}
+        />,
+      );
+      el.update();
+      expect(
+        (el
+          .find(MediaButton)
+          .at(0)
+          .prop('iconBefore') as any).type,
+      ).toEqual(EditorPanelIcon);
     });
   });
 });

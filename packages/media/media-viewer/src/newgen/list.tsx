@@ -8,6 +8,7 @@ import { ItemViewer } from './item-viewer';
 import { HeaderWrapper, ListWrapper } from './styled';
 import { Navigation } from './navigation';
 import Header from './header';
+import { MediaViewerComponents } from '../components/types';
 
 export type Props = Readonly<
   {
@@ -16,6 +17,8 @@ export type Props = Readonly<
     defaultSelectedItem: Identifier;
     items: Identifier[];
     mediaClient: MediaClient;
+    components?: MediaViewerComponents;
+    onSidebarButtonClick?: () => void;
   } & WithShowControlMethodProp
 >;
 
@@ -37,7 +40,13 @@ export class List extends React.Component<Props, State> {
   }
 
   renderContent(items: Identifier[]) {
-    const { mediaClient, onClose, showControls } = this.props;
+    const {
+      mediaClient,
+      onClose,
+      showControls,
+      components,
+      onSidebarButtonClick,
+    } = this.props;
     const { selectedItem } = this.state;
 
     return (
@@ -47,6 +56,8 @@ export class List extends React.Component<Props, State> {
             mediaClient={mediaClient}
             identifier={selectedItem}
             onClose={onClose}
+            components={components}
+            onSidebarButtonClick={onSidebarButtonClick}
           />
         </HeaderWrapper>
         <ItemViewer

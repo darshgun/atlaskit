@@ -39,6 +39,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       collectionName,
       dataSource,
       pageSize,
+      components,
     } = this.props;
     const defaultPageSize = 30;
     const dataSourceWithSelectedItem = this.getDataSourceWithSelectedItem(
@@ -68,6 +69,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
           onClose={onClose}
           itemSource={itemSource}
           featureFlags={featureFlags}
+          components={components}
         />
       );
     } else if (dataSourceWithSelectedItem.collectionName) {

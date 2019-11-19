@@ -15,8 +15,10 @@ import {
   hideControlsClassName,
   messages,
   toHumanReadableMediaSize,
+  MediaButton,
 } from '@atlaskit/media-ui';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
 import { Outcome } from './domain';
 import {
   Header as HeaderWrapper,
@@ -34,11 +36,14 @@ import {
   ToolbarDownloadButton,
   DisabledToolbarDownloadButton,
 } from './download';
+import { MediaViewerComponents } from '../components/types';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly mediaClient: MediaClient;
   readonly onClose?: () => void;
+  readonly components?: MediaViewerComponents;
+  readonly onSidebarButtonClick?: () => void;
 };
 
 export type State = {
@@ -128,11 +133,27 @@ export class Header extends React.Component<Props & InjectedIntlProps, State> {
     });
   };
 
+  private renderSidebarButton = () => {
+    const { components, onSidebarButtonClick } = this.props;
+    if (components && components.sidebarRenderer) {
+      return (
+        <MediaButton
+          appearance={'toolbar' as any}
+          onClick={onSidebarButtonClick}
+          iconBefore={<EditorPanelIcon label="toggle sidebar" />}
+        />
+      );
+    }
+  };
+
   render() {
     return (
       <HeaderWrapper className={hideControlsClassName}>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
-        <RightHeader>{this.renderDownload()}</RightHeader>
+        <RightHeader>
+          {this.renderSidebarButton()}
+          {this.renderDownload()}
+        </RightHeader>
       </HeaderWrapper>
     );
   }

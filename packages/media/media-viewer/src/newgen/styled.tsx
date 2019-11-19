@@ -1,14 +1,15 @@
-// StyledComponentClass and React types are imported to prevent a typescript error caused by inferred types sourced
-// from external modules - https://github.com/styled-components/styled-components/issues/1063#issuecomment-320344957
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { StyledComponentClass } from 'styled-components';
+import styled from 'styled-components';
 import { MediaType } from '@atlaskit/media-client';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, VideoHTMLAttributes, AudioHTMLAttributes, ImgHTMLAttributes, ComponentClass, ClassAttributes } from 'react';
 import { layers, borderRadius } from '@atlaskit/theme/constants';
-import { Y200, P200, B300, DN30, DN400 } from '@atlaskit/theme/colors';
+import {
+  Y200,
+  P200,
+  B300,
+  DN30,
+  DN50,
+  DN400,
+  N0,
+} from '@atlaskit/theme/colors';
 import { ellipsis } from '@atlaskit/media-ui';
 
 const overlayZindex = layers.modal() + 10;
@@ -31,6 +32,7 @@ export const Blanket = styled.div`
   right: 0;
   background-color: ${blanketColor};
   z-index: ${overlayZindex};
+  display: flex;
 `;
 
 export const HeaderWrapper = styled.div`
@@ -56,7 +58,14 @@ export interface ContentWrapperProps {
   showControls: boolean;
 }
 
-export const ListWrapper = styled.div``;
+export const ListWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 ListWrapper.displayName = 'ListWrapper';
 
@@ -78,7 +87,7 @@ export const CloseButtonWrapper = styled.div`
 
 export const ZoomWrapper = styled.div`
   width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   height: 98px;
   background-image: linear-gradient(to top, #0e1624, rgba(14, 22, 36, 0));
@@ -120,7 +129,7 @@ export const ErrorImage = styled.img`
   user-select: none;
 `;
 
-export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
+export const Video = styled.video`
   width: 100vw;
   height: 100vh;
 `;
@@ -181,7 +190,7 @@ export const LeftHeader = styled.div`
 `;
 
 export const ImageWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   overflow: auto;
   text-align: center;
@@ -201,7 +210,7 @@ export type ImgProps = {
   shouldPixelate: boolean;
 };
 
-export const Img: ComponentClass<ImgHTMLAttributes<{}> & ImgProps> = styled.img`
+export const Img = styled.img`
   display: inline-block;
   vertical-align: middle;
   position: relative;
@@ -257,8 +266,7 @@ export interface IconWrapperProps {
   type: MediaType;
 }
 
-export const IconWrapper: ComponentClass<HTMLAttributes<{}> &
-  IconWrapperProps> = styled.div`
+export const IconWrapper = styled.div`
   display: inline-flex;
   color: ${({ type }: IconWrapperProps) =>
     mediaTypeIconColors[type] || mediaTypeIconColors.unknown};
@@ -337,4 +345,14 @@ export const CustomVideoPlayerWrapper = styled.div`
     height: 100vh;
     max-height: 100vh;
   }
+`;
+
+export const SidebarWrapper = styled.div`
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: ${DN50};
+  color: ${N0};
 `;
