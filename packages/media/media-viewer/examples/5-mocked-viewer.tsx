@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { canUseDOM } from 'exenv';
 
-import { FileIdentifier, MediaClient, MediaFile } from '@atlaskit/media-client';
+import {
+  MediaClient,
+  MediaFile,
+  ExternalImageIdentifier,
+  Identifier,
+} from '@atlaskit/media-client';
 import {
   MediaMock,
   defaultCollectionName,
@@ -65,14 +70,22 @@ export default class Example extends React.Component<{}, {}> {
     return (
       <MediaViewer
         dataSource={{
-          list: files.map(
-            ({ id }) =>
-              ({
-                id,
-                collectionName: defaultCollectionName,
-                mediaItemType: 'file',
-              } as FileIdentifier),
-          ),
+          list: files
+            .map(
+              ({ id }) =>
+                ({
+                  id,
+                  collectionName: defaultCollectionName,
+                  mediaItemType: 'file',
+                } as Identifier),
+            )
+            .concat([
+              {
+                mediaItemType: 'external-image',
+                dataURI:
+                  'https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_0.jpg',
+              } as Identifier,
+            ]),
         }}
         selectedItem={{
           id: files[1].id,

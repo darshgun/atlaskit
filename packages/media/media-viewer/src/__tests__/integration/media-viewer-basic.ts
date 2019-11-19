@@ -20,6 +20,14 @@ BrowserTestCase(
       );
     };
 
+    const navigateNext = async () => {
+      await page.click("//span[@aria-label='Next']");
+    };
+
+    const navigatePrevious = async () => {
+      await page.click("//span[@aria-label='Previous']");
+    };
+
     const page = new Page(client);
     const currentUrl = await page.url();
     const url = getExampleUrl(
@@ -39,13 +47,20 @@ BrowserTestCase(
     await page.hover('img');
     await validateNameTypeAndIcon('media-test-file-2.jpg', 'image', 'image');
 
-    await page.click("//span[@aria-label='Next']");
-
+    await navigateNext();
     await validateNameTypeAndIcon('media-test-file-3.png', 'image', 'image');
 
-    await page.click("//span[@aria-label='Previous']");
-    await page.click("//span[@aria-label='Previous']");
-
+    await navigatePrevious();
+    await navigatePrevious();
     await validateNameTypeAndIcon('media-test-file-1.png', 'image', 'image');
+
+    await navigateNext();
+    await navigateNext();
+    await navigateNext();
+    await validateNameTypeAndIcon(
+      'https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_0.jpg',
+      'image',
+      'image',
+    );
   },
 );
