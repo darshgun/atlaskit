@@ -34,12 +34,12 @@ class MVExamplePage {
 
   async navigateNext() {
     await this.forceNav();
-    await this.page.click("//span[@aria-label='Next']");
+    await this.page.click('[data-testid="media-viewer-navigation-next"]');
   }
 
   async navigatePrevious() {
     await this.forceNav();
-    await this.page.click("//span[@aria-label='Previous']");
+    await this.page.click('[data-testid="media-viewer-navigation-prev"]');
   }
 
   async forceNav() {
@@ -51,10 +51,10 @@ class MVExamplePage {
       await this.page.type('/*', 'Escape');
     } else {
       await this.forceNav();
-      await this.page.click("//span[@aria-label='Close']");
+      await this.page.click('[data-testid="media-viewer-close-button"]');
     }
     await this.page.waitForSelector(
-      "//div[@data-testid='media-viewer-image-content']",
+      '[data-testid="media-viewer-image-content"]',
       {},
       true,
     );
@@ -96,7 +96,7 @@ BrowserTestCase(
 
     await doNTimes(3, () => testPage.navigateNext());
     await testPage.validateNameTypeAndIcon(
-      'https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_0.jpg',
+      'https://wac-cdn.atlassian.com/dam/jcr:616e6748-ad8c-48d9-ae93-e49019ed5259/Atlassian-horizontal-blue-rgb.svg',
       'image',
       'image',
     );

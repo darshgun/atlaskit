@@ -73,11 +73,7 @@ export default class Example extends React.Component<{}, State> {
   render() {
     const { isMediaViewerActive } = this.state;
 
-    if (files.length === 0) {
-      return null;
-    }
-
-    if (!isMediaViewerActive) {
+    if (files.length === 0 || !isMediaViewerActive) {
       return null;
     }
 
@@ -97,7 +93,7 @@ export default class Example extends React.Component<{}, State> {
               {
                 mediaItemType: 'external-image',
                 dataURI:
-                  'https://raw.githubusercontent.com/recurser/exif-orientation-examples/master/Landscape_0.jpg',
+                  'https://wac-cdn.atlassian.com/dam/jcr:616e6748-ad8c-48d9-ae93-e49019ed5259/Atlassian-horizontal-blue-rgb.svg',
               } as Identifier,
             ]),
         }}
