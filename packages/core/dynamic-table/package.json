@@ -29,7 +29,7 @@
     "@atlaskit/type-helpers": "^4.2.2",
     "@babel/runtime": "^7.0.0",
     "prop-types": "^15.5.10",
-    "react-beautiful-dnd": "12.0.0-beta.8",
+    "react-beautiful-dnd": "^12.1.1",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {

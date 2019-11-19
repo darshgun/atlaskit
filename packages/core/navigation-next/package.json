@@ -34,7 +34,7 @@
     "deep-object-diff": "^1.1.0",
     "emotion-theming": "^10.0.7",
     "raf-schd": "^2.1.0",
-    "react-beautiful-dnd": "12.0.0-beta.8",
+    "react-beautiful-dnd": "^12.1.1",
     "react-fast-compare": "^2.0.1",
     "react-loadable": "^5.1.0",
     "react-node-resolver": "^1.0.1",

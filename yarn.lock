@@ -21638,19 +21638,6 @@ react-beautiful-dnd-next@11.0.5:
     tiny-invariant "^1.0.4"
     use-memo-one "^1.1.0"
 
-react-beautiful-dnd@12.0.0-beta.8:
-  version "12.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-12.0.0-beta.8.tgz#889a6ddc1aabb64fdc6f86c440eeeface7de5049"
-  integrity sha512-2OfqUXdBCQMY1eMi21Wt0Vn0za+l/mRqZZ/dVYpFFmZn4EADKv+xbrXl83pZJ57cmrKdr+6q8DWDIQ0D4LX8hw==
-  dependencies:
-    "@babel/runtime-corejs2" "^7.6.3"
-    css-box-model "^1.2.0"
-    memoize-one "^5.1.1"
-    raf-schd "^4.0.2"
-    react-redux "^7.1.1"
-    redux "^4.0.4"
-    use-memo-one "^1.1.1"
-
 react-beautiful-dnd@^10.0.2:
   version "10.1.1"
   resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-10.1.1.tgz#d753088d77d7632e77cf8a8935fafcffa38f574b"
@@ -21664,6 +21651,19 @@ react-beautiful-dnd@^10.0.2:
     react-redux "^5.0.7"
     redux "^4.0.1"
     tiny-invariant "^1.0.4"
+
+react-beautiful-dnd@^12.1.1:
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-12.1.1.tgz#810f9b9d94f667b15b253793e853d016a0f3f07c"
+  integrity sha512-w/mpIXMEXowc53PCEnMoFyAEYFgxMfygMK5msLo5ifJ2/CiSACLov9A79EomnPF7zno3N207QGXsraBxAJnyrw==
+  dependencies:
+    "@babel/runtime-corejs2" "^7.6.3"
+    css-box-model "^1.2.0"
+    memoize-one "^5.1.1"
+    raf-schd "^4.0.2"
+    react-redux "^7.1.1"
+    redux "^4.0.4"
+    use-memo-one "^1.1.1"
 
 react-circle@^1.0.1:
   version "1.0.1"

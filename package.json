@@ -508,7 +508,7 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-addons-text-content": "^0.0.4",
     "react-animate-height": "^2.0.5",
-    "react-beautiful-dnd": "12.0.0-beta.8",
+    "react-beautiful-dnd": "^12.1.1",
     "react-beautiful-dnd-next": "11.0.5",
     "react-codesandboxer": "^3.1.5",
     "react-deprecate": "^0.1.0",
