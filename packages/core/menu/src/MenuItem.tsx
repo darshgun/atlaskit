@@ -67,6 +67,7 @@ export const ButtonItem = (props: ButtonItemProps) => {
     children,
     description,
     isDisabled = false,
+    isSelected = false,
     ...others
   } = props;
 
@@ -79,7 +80,7 @@ export const ButtonItem = (props: ButtonItemProps) => {
   return (
     <Tag
       type={isDisabled ? undefined : 'button'}
-      css={itemCSS(isDisabled)}
+      css={itemCSS(isDisabled, isSelected)}
       {...others}
     >
       <BaseItem
@@ -100,6 +101,7 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
     children,
     description,
     isDisabled = false,
+    isSelected = false,
     ...others
   } = rest;
 
@@ -111,7 +113,7 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
 
   return (
     <Tag
-      css={linkItemCSS(isDisabled)}
+      css={linkItemCSS(isDisabled, isSelected)}
       href={isDisabled ? undefined : href}
       {...others}
     >
