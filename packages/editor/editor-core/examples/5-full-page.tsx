@@ -162,6 +162,8 @@ export interface ExampleProps {
   setMode?: (isEditing: boolean) => void;
 }
 
+const smartCardProvider = new SmartCardClient('prod');
+
 export class ExampleEditorComponent extends React.Component<
   EditorProps & ExampleProps,
   State
@@ -193,7 +195,7 @@ export class ExampleEditorComponent extends React.Component<
     return (
       <Wrapper>
         <Content>
-          <SmartCardProvider client={new SmartCardClient('prod')}>
+          <SmartCardProvider client={smartCardProvider}>
             <Editor
               analyticsHandler={analyticsHandler}
               allowAnalyticsGASV3={true}
