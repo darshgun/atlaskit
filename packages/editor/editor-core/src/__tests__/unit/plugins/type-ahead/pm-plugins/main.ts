@@ -6,6 +6,7 @@ import {
   insert,
   code_block,
   typeAheadQuery,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 import { createTypeAheadPlugin } from './_create-type-ahead-plugin';
 import { selectCurrentItem } from '../../../../../plugins/type-ahead/commands/select-item';
@@ -51,6 +52,16 @@ describe('typeAhead main plugin', () => {
     });
     const pluginState = typeAheadPluginKey.getState(editorView.state);
     expect(pluginState.isAllowed).toBe(false);
+  });
+
+  it('should not return new pluginState when selection remains inside the same node', () => {
+    const { editorView } = createEditor({
+      doc: doc(code_block()('{<>}')),
+    });
+    const pluginState = typeAheadPluginKey.getState(editorView.state);
+    sendKeyToPm(editorView, 'Enter');
+    const newPluginState = typeAheadPluginKey.getState(editorView.state);
+    expect(pluginState).toBe(newPluginState);
   });
 
   it('should dismiss type ahead when trigger has been removed', async () => {
