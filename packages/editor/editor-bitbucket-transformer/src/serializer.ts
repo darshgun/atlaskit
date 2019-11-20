@@ -1,7 +1,7 @@
 import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
-} from '@marionebl/prosemirror-markdown';
+} from 'prosemirror-markdown';
 import { Mark, Node as PMNode } from 'prosemirror-model';
 import { escapeMarkdown, stringRepeat } from './util';
 import tableNodes from './tableSerializer';
