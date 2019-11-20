@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ADF => WikiMarkup - BlockCard should convert blockcard node 1`] = `"[https://www.dropbox.com|https://www.dropbox.com|smart-link]"`;
+
+exports[`ADF => WikiMarkup - BlockCard should convert blockcard node in icft 1`] = `"[EX-522]"`;
