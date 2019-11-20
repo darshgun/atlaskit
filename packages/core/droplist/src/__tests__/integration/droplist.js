@@ -33,7 +33,7 @@ BrowserTestCase(
       }
     } else {
       // $FlowFixMe - type issue for waitSelector
-      await droplistTest.waitForSelector(droplist, 1000, true);
+      await droplistTest.waitForSelector(droplist, { timeout: 1000 }, true);
       expect(await droplistTest.isExisting(droplist)).toBe(false);
       await droplistTest.checkConsoleErrors();
     }

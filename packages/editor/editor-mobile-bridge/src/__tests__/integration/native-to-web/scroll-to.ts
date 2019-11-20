@@ -1,5 +1,5 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
-import SeleniumPage from '@atlaskit/webdriver-runner/wd-wrapper';
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { renderer, skipBrowsers as skip, callRendererBridge } from '../_utils';
 import adf from './__fixtures__/scroll-to-mention-adf.json';
 
@@ -9,10 +9,8 @@ type ScrollTestResult = {
   finalScrollY: number;
 };
 
-type Page = typeof SeleniumPage;
-
 async function loadExampleDocument(client: any): Promise<Page> {
-  const browser = new SeleniumPage(client);
+  const browser = new Page(client);
   // Set the viewport to the size of a small handheld phone (iPhone SE)
   // This aids the tests to ensure the element's we'll scroll to (within the example document)
   // are rendered off screen to begin with.
@@ -27,7 +25,7 @@ async function loadExampleDocument(client: any): Promise<Page> {
 }
 
 async function getScrollY(browser: Page): Promise<number> {
-  return await browser.execute(() => window.scrollY);
+  return browser.execute(() => window.scrollY);
 }
 
 async function checkScrollTo(

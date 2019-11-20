@@ -349,8 +349,12 @@ export default class Page {
     return elem.getValue();
   }
 
-  async execute<T>(script: string | ((...args: any[]) => T), ...args: any[]) {
-    return this.browser.execute(script, ...args);
+  async execute<T>(
+    script: string | ((...args: any[]) => T),
+    ...args: any[]
+  ): Promise<T> {
+    // TODO fix that any when we able to get newer version of webdriverio with better TS types
+    return this.browser.execute(script, ...args) as any;
   }
 
   getBrowserName() {

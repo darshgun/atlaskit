@@ -95,15 +95,15 @@ const testDocuments: { [key: string]: string } = {
         await page.waitForSelector(initSelection);
       }
 
-      await page.browser.pause(1000);
+      await page.pause(1000);
 
       await page.simulateUserSelection(startSelector, targetSelector);
 
-      await page.browser.pause(500);
+      await page.pause(500);
 
       await page.keys('Backspace');
 
-      await page.browser.pause(500);
+      await page.pause(500);
 
       const doc = await page.$eval(editable, getDocFromElement);
       expect(doc).toMatchCustomDocSnapshot(testName);

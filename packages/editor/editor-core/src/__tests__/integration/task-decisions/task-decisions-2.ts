@@ -29,7 +29,7 @@ BrowserTestCase(
     await browser.waitFor(editable);
     await browser.type(editable, '[] ');
     await browser.waitForSelector('div[data-node-type="actionList"]');
-    await browser.paste(editable);
+    await browser.paste();
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },
@@ -50,7 +50,7 @@ BrowserTestCase(
     await browser.waitFor(editable);
     await browser.type(editable, '[] ');
     await browser.waitForSelector('div[data-node-type="actionList"]');
-    await browser.paste(editable);
+    await browser.paste();
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },

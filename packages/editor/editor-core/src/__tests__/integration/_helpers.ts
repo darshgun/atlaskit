@@ -1,4 +1,5 @@
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import { Page as PuppeteerPage } from 'puppeteer';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
 import { ToolbarFeatures } from '../../../example-helpers/ToolsDrawer';
@@ -179,9 +180,13 @@ export const rerenderEditor = async (browser: any) => {
   await browser.click('.reloadEditorButton');
 };
 
+const isPage = (page: Page | PuppeteerPage): page is Page => {
+  return !!(page as any).hasCapabilities;
+};
+
 // This function assumes the media picker modal is already shown.
 export const insertMediaFromMediaPicker = async (
-  page: Page,
+  page: Page | PuppeteerPage,
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
@@ -208,38 +213,40 @@ export const insertMediaFromMediaPicker = async (
   // Wait until we have found media-cards for all inserted items.
   const mediaCardCount = get$$Length(existingMediaCards) + filenames.length;
 
-  // Workaround - we need to use different wait methods depending on where we are running.
-  if (page.hasCapabilities()) {
-    await page.waitUntil(async () => {
-      const mediaCards = await page.$$(mediaCardSelector);
+  if (isPage(page)) {
+    // Workaround - we need to use different wait methods depending on where we are running.
+    if (page.hasCapabilities()) {
+      await page.waitUntil(async () => {
+        const mediaCards = await page.$$(mediaCardSelector);
 
-      // media picker can still be displayed after inserting an image after some small time
-      // wait until it's completely disappeared before continuing
-      const insertButtons = await page.$$(insertMediaButton);
-      return (
-        get$$Length(mediaCards) === mediaCardCount &&
-        get$$Length(insertButtons) === 0
+        // media picker can still be displayed after inserting an image after some small time
+        // wait until it's completely disappeared before continuing
+        const insertButtons = await page.$$(insertMediaButton);
+        return (
+          get$$Length(mediaCards) === mediaCardCount &&
+          get$$Length(insertButtons) === 0
+        );
+      });
+    } else {
+      await page.execute(() => {
+        window.scrollBy(0, window.innerHeight);
+      });
+      await page.waitUntil(() =>
+        page.execute(
+          (mediaCardSelector: any, mediaCardCount: any) => {
+            const mediaCards = document.querySelectorAll(mediaCardSelector);
+            return mediaCards.length === mediaCardCount;
+          },
+          mediaCardSelector,
+          mediaCardCount,
+        ),
       );
-    });
-  } else {
-    await page.execute(() => {
-      window.scrollBy(0, window.innerHeight);
-    });
-    await page.waitUntil(() =>
-      page.execute(
-        (mediaCardSelector: any, mediaCardCount: any) => {
-          const mediaCards = document.querySelectorAll(mediaCardSelector);
-          return mediaCards.length === mediaCardCount;
-        },
-        mediaCardSelector,
-        mediaCardCount,
-      ),
-    );
+    }
   }
 };
 
 export const insertMedia = async (
-  page: Page,
+  page: Page | PuppeteerPage,
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
@@ -297,7 +304,7 @@ export const changeSelectedNodeLayout = async (
   layoutName: string,
 ) => {
   const buttonSelector = `div[aria-label="Floating Toolbar"] span[aria-label="${layoutName}"]`;
-  await page.waitForSelector(buttonSelector, 3000);
+  await page.waitForSelector(buttonSelector, { timeout: 3000 });
   await page.click(buttonSelector);
 };
 
