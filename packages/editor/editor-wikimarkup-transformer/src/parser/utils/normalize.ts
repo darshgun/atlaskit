@@ -4,8 +4,13 @@ import {
   createEmptyParagraphNode,
 } from '../nodes/paragraph';
 
+const WHITE_SPACE_REGEXP = /^[ \t]*$/;
+
 export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
-  return normalizeInlineNodes(normalizeMediaGroups(nodes, schema), schema);
+  return [normalizeMediaGroups, normalizeCards, normalizeInlineNodes].reduce(
+    (currentNodes, normFunc) => normFunc(currentNodes, schema),
+    nodes,
+  );
 }
 
 function normalizeInlineNodes(nodes: PMNode[], schema: Schema): PMNode[] {
@@ -35,6 +40,74 @@ function normalizeInlineNodes(nodes: PMNode[], schema: Schema): PMNode[] {
     return [createEmptyParagraphNode(schema)];
   }
   return output;
+}
+
+/**
+ * Normalize the list of the given nodes for inlineCard and blockCard.
+ * The rule is: if an inlineCard is preceded and followed by a hard break
+ * it is upgraded to a blockCard
+ * @param nodes list of nodes to normalize. Must not be null
+ * @param schema
+ */
+function normalizeCards(nodes: PMNode[], schema: Schema): PMNode[] {
+  const output: PMNode[] = [];
+  let separatorBuffer: PMNode[] = [];
+  let cardBuffer: PMNode[] = [];
+  for (const node of nodes) {
+    switch (node.type.name) {
+      case 'inlineCard':
+        if (separatorBuffer.length > 0 || output.length === 0) {
+          cardBuffer.push(node);
+          continue;
+        }
+        break;
+      case 'hardBreak':
+        if (separatorBuffer.length > 0 || output.length === 0) {
+          output.push(...separatorBuffer);
+          output.push(
+            ...cardBuffer.map(card => createBlockCardFromNode(card, schema)),
+          );
+        }
+        separatorBuffer = [node];
+        cardBuffer = [];
+        continue;
+      case 'text':
+        if ((node.text as string).match(WHITE_SPACE_REGEXP)) {
+          if (separatorBuffer.length > 0 || output.length === 0) {
+            output.push(...separatorBuffer);
+            output.push(
+              ...cardBuffer.map(card => createBlockCardFromNode(card, schema)),
+            );
+            separatorBuffer = [schema.nodes.hardBreak.createChecked()];
+            cardBuffer = [];
+            continue;
+          }
+        }
+        break;
+      default:
+        break;
+    }
+    if (separatorBuffer.length > 0) {
+      output.push(...separatorBuffer);
+      separatorBuffer = [];
+    }
+    if (cardBuffer.length > 0) {
+      output.push(...cardBuffer);
+      cardBuffer = [];
+    }
+    output.push(node);
+  }
+  if (separatorBuffer.length > 0 || output.length === 0) {
+    output.push(...separatorBuffer);
+    output.push(
+      ...cardBuffer.map(card => createBlockCardFromNode(card, schema)),
+    );
+  }
+  return output;
+}
+
+function createBlockCardFromNode(node: PMNode, schema: Schema) {
+  return schema.nodes.blockCard.createChecked(node.attrs);
 }
 
 /**
