@@ -7,13 +7,13 @@ describe('next/Editor – Analytics', () => {
   const createEditor = createEditorFactory();
 
   it('should call handleAnalyticsEvent if present', () => {
-    const handleAnalyticsEvent = jest.fn();
+    const onAnalyticsEvent = jest.fn();
     const payload = {};
 
     act(() => {
       createEditor({
         props: {
-          handleAnalyticsEvent,
+          onAnalyticsEvent,
           onMount(actions) {
             const dispatch = createDispatch(
               actions._privateGetEventDispatcher()!,
@@ -24,6 +24,6 @@ describe('next/Editor – Analytics', () => {
       });
     });
 
-    expect(handleAnalyticsEvent).toBeCalledWith(payload);
+    expect(onAnalyticsEvent).toBeCalledWith(payload);
   });
 });
