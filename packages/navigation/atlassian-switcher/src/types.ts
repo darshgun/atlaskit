@@ -208,6 +208,10 @@ export interface SwitcherChildItem {
   avatar: string | null;
 }
 
+export interface JoinableSiteClickHandler {
+  (returnUrl?: string): void;
+}
+
 export type AtlassianSwitcherProps = WithTheme & {
   // Product name used for analytics events
   product: string;
@@ -223,4 +227,6 @@ export type AtlassianSwitcherProps = WithTheme & {
   availableProductsDataProvider?: AvailableProductsDataProvider;
   // Optional custom provider for joinable sites
   joinableSitesDataProvider?: any;
+  // Optional callback provided to handle
+  onJoinableSiteClicked?: JoinableSiteClickHandler;
 } & FeatureFlagProps;

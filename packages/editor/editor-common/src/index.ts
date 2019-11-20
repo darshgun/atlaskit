@@ -1,14 +1,8 @@
 export * from './utils';
 
 export {
-  ExtensionParams,
-  ExtensionHandler,
-  UpdateExtension,
-  Extension,
-  ExtensionHandlers,
   Transformer,
   SortOrder,
-  // Collab Types
   CollabEditProvider,
   CollabEvent,
   CollabEventData,
@@ -22,6 +16,18 @@ export {
   MediaProvider,
 } from './types';
 
+export {
+  ExtensionParams,
+  ExtensionHandler,
+  UpdateExtension,
+  Extension,
+  ExtensionHandlers,
+  ExtensionManifest,
+  ExtensionProvider,
+} from './extensions/types';
+
+export * from './extensions';
+
 export * from './contextIdentifier';
 
 export {
@@ -29,6 +35,8 @@ export {
   WithProviders,
   Providers,
 } from './providerFactory';
+
+export { combineProviders } from './provider-helpers';
 
 export * from './styles';
 export * from './ui';

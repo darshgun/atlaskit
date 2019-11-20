@@ -16,7 +16,7 @@ const IconBase = styled.div<IconBaseProps>`
   height: ${4 * gridSize()}px;
   border-radius: ${gridSize()}px;
   ${({ iconElevation }) => (iconElevation ? iconElevation : '')};
-  background-color: ${({ bgColor }) => bgColor}
+  background-color: ${({ bgColor }) => bgColor};
   overflow: hidden;
 `;
 
@@ -43,8 +43,8 @@ interface IconBackgroundTheme {
 }
 
 interface IconTheme {
-  primaryColor?: string;
-  iconColor?: string;
+  primaryColor?: string | ThemedValue<string>;
+  iconColor?: string | ThemedValue<string>;
   iconElevation?: ThemedValue<string>;
   iconGradientStart?: string;
   iconGradientStop?: string;

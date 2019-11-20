@@ -1,5 +1,15 @@
 import * as React from 'react';
-import { ExtensionHandlers, ExtensionParams } from '@atlaskit/editor-common';
+import {
+  ExtensionHandlers,
+  ExtensionParams,
+  DefaultExtensionProvider,
+  ExtensionType,
+  ExtensionKey,
+} from '@atlaskit/editor-common';
+import {
+  ExtensionManifest,
+  ExtensionModuleNodes,
+} from '@atlaskit/editor-common';
 
 const FakeExtension = ({
   colour,
@@ -145,4 +155,86 @@ export const extensionHandlers: ExtensionHandlers = {
       return <button>This is a test extension</button>;
     },
   },
+};
+
+const createFakeModule = (content: any) => () =>
+  Promise.resolve({ default: content });
+
+export const createFakeExtensionManifest = ({
+  title,
+  type,
+  extensionKey,
+  nodeKeys = ['default'],
+}: {
+  title: string;
+  type: ExtensionType;
+  extensionKey: ExtensionKey;
+  nodeKeys?: string[];
+}): ExtensionManifest => ({
+  title,
+  type,
+  key: extensionKey,
+  description: `${title} extension`,
+  icons: {
+    '16': createFakeModule({}),
+    '48': createFakeModule({}),
+  },
+  modules: {
+    quickInsert: nodeKeys.map(key => ({ key, target: key })),
+    nodes: nodeKeys.reduce<ExtensionModuleNodes>((acc, key) => {
+      acc[key] = {
+        insert: createFakeModule({
+          type: 'extension',
+          attrs: {
+            extensionType: 'com.atlassian.confluence.macro.core',
+            extensionKey:
+              key === 'default' ? extensionKey : `${extensionKey}:${key}`,
+            text: `${name} - ${key} - demo`,
+            parameters: {
+              macroParams: {},
+              macroMetadata: {
+                placeholder: [
+                  {
+                    data: { url: '' },
+                    type: 'icon',
+                  },
+                ],
+              },
+            },
+          },
+        }),
+        render: createFakeModule(() => {
+          return <div>My "{name}" extension</div>;
+        }),
+      };
+
+      return acc;
+    }, {}),
+  },
+});
+
+export const createFakeExtensionProvider = (
+  extensionType: ExtensionType,
+  extensionKey: ExtensionKey,
+  extensionHandler: (...args: any) => JSX.Element,
+) => {
+  const macroManifest = createFakeExtensionManifest({
+    title: 'fake extension provider',
+    type: extensionType,
+    extensionKey,
+  });
+
+  const FakeES6Module = {
+    __esModule: true,
+    default: extensionHandler,
+  };
+
+  macroManifest.modules.nodes.default.render = () =>
+    Promise.resolve(FakeES6Module);
+
+  const confluenceMacrosExtensionProvider = new DefaultExtensionProvider([
+    macroManifest,
+  ]);
+
+  return confluenceMacrosExtensionProvider;
 };

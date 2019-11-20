@@ -34,7 +34,7 @@
     "react-dom": "^16.8.0"
   },
   "devDependencies": {
-    "enzyme": "^3.7.0"
+    "enzyme": "^3.10.0"
   },
   "keywords": [
     "atlaskit",

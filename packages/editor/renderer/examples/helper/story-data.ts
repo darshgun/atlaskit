@@ -1833,6 +1833,37 @@ map.put(3, 10);`,
       ],
     },
     {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Media single with link',
+        },
+      ],
+    },
+    {
+      type: 'mediaSingle',
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample',
+          },
+        },
+      ],
+      marks: [
+        {
+          type: 'link',
+          attrs: {
+            href: 'http://www.google.com',
+          },
+        },
+      ],
+    },
+    {
       type: 'bodiedExtension',
       attrs: {
         extensionType: 'com.atlassian.fabric',

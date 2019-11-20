@@ -31,8 +31,8 @@ import { copyMediaFileForUpload } from '../../domain/file';
 import { MediaFile } from '../../types';
 import { PopupUploadEventEmitter } from '../../components/types';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { WsNotifyMetadata } from '../tools/websocket/wsMessageData';
 import { getPreviewFromMetadata } from '../../domain/preview';
+import { NotifyMetadataPayload } from '../tools/websocket/upload/wsUploadEvents';
 
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
@@ -403,36 +403,40 @@ export const importFilesFromRemoteService = async (
   } = selectedUploadFile;
   const { fileId } = touchFileDescriptor;
 
-  const uploadActivity = new RemoteUploadActivity(fileId, (event, payload) => {
-    if (event === 'NotifyMetadata') {
-      const preview = getPreviewFromMetadata(
-        (payload as WsNotifyMetadata).metadata,
-      );
+  const uploadActivity = new RemoteUploadActivity(
+    fileId,
+    serviceName,
+    (event, payload) => {
+      if (event === 'NotifyMetadata') {
+        const preview = getPreviewFromMetadata(
+          (payload as NotifyMetadataPayload).metadata,
+        );
 
-      store.dispatch(
-        sendUploadEvent({
-          event: {
-            name: 'upload-preview-update',
-            data: {
-              file,
-              preview,
+        store.dispatch(
+          sendUploadEvent({
+            event: {
+              name: 'upload-preview-update',
+              data: {
+                file,
+                preview,
+              },
             },
-          },
-          uploadId: fileId,
-        }),
-      );
-    } else {
-      // TODO figure out the difference between this uploadId and the last MSW-405
-      const { uploadId: newUploadId } = payload;
-      const newFile: MediaFile = {
-        ...file,
-        id: newUploadId,
-        creationDate: Date.now(),
-      };
+            uploadId: fileId,
+          }),
+        );
+      } else {
+        // TODO figure out the difference between this uploadId and the last MSW-405
+        const { uploadId: newUploadId } = payload;
+        const newFile: MediaFile = {
+          ...file,
+          id: newUploadId,
+          creationDate: Date.now(),
+        };
 
-      store.dispatch(handleCloudFetchingEvent(newFile, event, payload));
-    }
-  });
+        store.dispatch(handleCloudFetchingEvent(newFile, event, payload));
+      }
+    },
+  );
 
   uploadActivity.on('Started', () => {
     store.dispatch(remoteUploadStart(fileId));

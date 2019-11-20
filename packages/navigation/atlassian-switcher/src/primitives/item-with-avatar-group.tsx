@@ -22,6 +22,8 @@ export interface ItemWithAvatarGroupProps extends WithAnalyticsEventsProps {
   onKeyDown?: any;
   onItemClick?: Function;
   users?: JoinableSiteUserAvatarPropTypes[];
+  target?: string;
+  rel?: string;
 }
 
 const Wrapper = styled.div`
@@ -59,7 +61,6 @@ class ItemWithAvatarGroup extends React.Component<ItemWithAvatarGroupProps> {
               />
             }
             onClick={onItemClick}
-            target="_new"
             {...rest}
           />
         </Wrapper>

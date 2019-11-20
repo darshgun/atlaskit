@@ -24,10 +24,15 @@ describe('RemoteUploadActivity', () => {
   const currentAmount = 123;
   const totalAmount = 456;
   const reason = 'some-reason';
+  const serviceName = 'dropbox';
 
   beforeEach(() => {
     dispatchEvent = jest.fn<DispatchUploadEvent<keyof WsUploadEvents>, []>();
-    uploadActivity = new RemoteUploadActivity(uploadId, dispatchEvent);
+    uploadActivity = new RemoteUploadActivity(
+      uploadId,
+      serviceName,
+      dispatchEvent,
+    );
 
     started = jest.fn<CallbackFunction, []>();
     completed = jest.fn<CallbackFunction, []>();
@@ -66,6 +71,7 @@ describe('RemoteUploadActivity', () => {
     expect(dispatchEvent).toHaveBeenCalledTimes(1);
     expect(dispatchEvent).toHaveBeenCalledWith('RemoteUploadStart', {
       uploadId,
+      serviceName,
     });
 
     expect(started).toHaveBeenCalledTimes(1);
@@ -85,6 +91,7 @@ describe('RemoteUploadActivity', () => {
     expect(dispatchEvent).toHaveBeenCalledTimes(1);
     expect(dispatchEvent).toHaveBeenCalledWith('RemoteUploadProgress', {
       uploadId,
+      serviceName,
       bytes: currentAmount,
       fileSize: totalAmount,
     });
@@ -103,6 +110,7 @@ describe('RemoteUploadActivity', () => {
     expect(dispatchEvent).toHaveBeenCalledWith('RemoteUploadEnd', {
       uploadId,
       fileId,
+      serviceName,
     });
 
     expect(completed).toHaveBeenCalledTimes(1);
@@ -121,6 +129,7 @@ describe('RemoteUploadActivity', () => {
     expect(dispatchEvent).toHaveBeenCalledTimes(1);
     expect(dispatchEvent).toHaveBeenCalledWith('RemoteUploadFail', {
       uploadId,
+      serviceName,
       description: reason,
     });
 
@@ -145,6 +154,7 @@ describe('RemoteUploadActivity', () => {
     expect(dispatchEvent).toHaveBeenCalledTimes(1);
     expect(dispatchEvent).toHaveBeenCalledWith('RemoteUploadFail', {
       uploadId,
+      serviceName,
       description: reason,
     });
 

@@ -415,7 +415,15 @@ export function handleExpand(slice: Slice): Command {
     });
 
     if (hasExpand && dispatch) {
-      dispatch(tr.replaceSelection(newSlice));
+      // If the slice is a subset, we can let PM replace the selection
+      // it will insert as text where it can't place the node.
+      // Otherwise we use safeInsert to insert below instead of
+      // replacing/splitting the current node.
+      if (slice.openStart > 1 && slice.openEnd > 1) {
+        dispatch(tr.replaceSelection(newSlice));
+      } else {
+        dispatch(safeInsert(newSlice.content)(tr));
+      }
       return true;
     }
 
