@@ -37,5 +37,21 @@ describe('resource utils', () => {
       await resource.getData(routerContext, {});
       expect(getDataMock).toHaveBeenCalled();
     });
+
+    it('should return a resource object with a custom maxAge', async () => {
+      const resource = createResource({
+        type: 'TEST',
+        getKey: () => '',
+        getData: () => null,
+        maxAge: 400,
+      });
+
+      expect(resource).toEqual({
+        type: expect.any(String),
+        getKey: expect.any(Function),
+        getData: expect.any(Function),
+        maxAge: 400,
+      });
+    });
   });
 });
