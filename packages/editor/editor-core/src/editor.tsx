@@ -14,6 +14,8 @@ import {
   startMeasure,
   stopMeasure,
   clearMeasure,
+  ExtensionProvider,
+  combineExtensionProviders,
 } from '@atlaskit/editor-common';
 import { Context as CardContext } from '@atlaskit/smart-card';
 import { FabricEditorAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
@@ -29,6 +31,10 @@ import { PortalProvider, PortalRenderer } from './ui/PortalProvider';
 import { nextMajorVersion } from './version-wrapper';
 import { createContextAdapter } from './nodeviews';
 import measurements from './utils/performance/measure-enum';
+import {
+  combineQuickInsertProviders,
+  extensionProviderToQuickInsertProvider,
+} from './utils/extensions';
 import {
   fireAnalyticsEvent,
   EVENT_TYPE,
@@ -199,7 +205,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-  private handleProviders(props: EditorProps) {
+  private async handleProviders(props: EditorProps) {
     const {
       emojiProvider,
       mentionProvider,
@@ -214,8 +220,10 @@ export default class Editor extends React.Component<EditorProps, {}> {
       collabEdit,
       quickInsert,
       autoformattingProvider,
+      extensionProviders,
       UNSAFE_cards,
     } = props;
+
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider(
@@ -250,10 +258,27 @@ export default class Editor extends React.Component<EditorProps, {}> {
       autoformattingProvider,
     );
 
+    let extensionProvider: ExtensionProvider | undefined;
+
+    if (extensionProviders) {
+      extensionProvider = combineExtensionProviders(extensionProviders);
+      this.providerFactory.setProvider(
+        'extensionProvider',
+        Promise.resolve(extensionProvider),
+      );
+    }
+
     if (quickInsert && typeof quickInsert !== 'boolean') {
+      const quickInsertProvider = extensionProvider
+        ? combineQuickInsertProviders([
+            quickInsert.provider,
+            extensionProviderToQuickInsertProvider(extensionProvider),
+          ])
+        : quickInsert.provider;
+
       this.providerFactory.setProvider(
         'quickInsertProvider',
-        quickInsert.provider,
+        Promise.resolve(quickInsertProvider),
       );
     }
   }

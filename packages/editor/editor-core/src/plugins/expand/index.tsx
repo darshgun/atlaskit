@@ -2,6 +2,7 @@ import * as React from 'react';
 import { expand, nestedExpand } from '@atlaskit/adf-schema';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
+import { expandKeymap } from './pm-plugins/keymap';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { IconExpand } from '../quick-insert/assets';
 import {
@@ -32,6 +33,10 @@ const expandPlugin = (): EditorPlugin => ({
         plugin: ({ dispatch, reactContext }) => {
           return createPlugin(dispatch, reactContext);
         },
+      },
+      {
+        name: 'expandKeymap',
+        plugin: expandKeymap,
       },
     ];
   },

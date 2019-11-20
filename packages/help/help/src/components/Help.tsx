@@ -41,6 +41,10 @@ export interface Props extends WithAnalyticsEventsProps {
     event?: React.MouseEvent<HTMLElement, MouseEvent>,
     analyticsEvent?: UIAnalyticsEvent,
   ): void;
+  // Function executed when the article rendering begins
+  onArticleRenderBegin?(): void;
+  // Function executed when the article rendering finishes
+  onArticleRenderDone?(): void;
   // Footer content. This prop is optional
   footer?: React.ReactNode;
   // Default content. This prop is optional

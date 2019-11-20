@@ -8,7 +8,9 @@ import {
   ContextIdentifierProvider,
   ExtensionHandlers,
   ErrorReportingHandler,
+  ExtensionProvider,
 } from '@atlaskit/editor-common';
+
 import { ActivityProvider } from '@atlaskit/activity';
 import { MentionProvider } from '@atlaskit/mention/resource';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
@@ -270,4 +272,8 @@ export interface EditorProps {
   // The nth keystroke after which an input time taken event is sent, 0 to disable it
   // default: 100
   inputSamplingLimit?: number;
+
+  // New extension API
+  // This eventually is going to replace `quickInsert.provider`, `extensionHandlers`, `macroProvider`.
+  extensionProviders?: Array<ExtensionProvider>;
 }

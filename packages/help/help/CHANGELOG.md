@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.21.0
+
+### Minor Changes
+
+- [minor][e3b6e83622](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3b6e83622):
+
+  Added onArticleRenderBegin and onArticleRenderDone props
+
 ## 0.20.14
 
 - Updated dependencies [87d67944cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d67944cc):

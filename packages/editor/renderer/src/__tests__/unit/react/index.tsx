@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, ReactWrapper } from 'enzyme';
 import { ReactSerializer } from '../../../index';
 import { defaultSchema as schema } from '@atlaskit/adf-schema';
 import { Heading } from '../../../react/nodes';
@@ -6,9 +6,21 @@ import { Emoji } from '../../../react/nodes';
 
 import * as doc from '../../__fixtures__/hello-world.adf.json';
 import * as headingDoc from '../../__fixtures__/heading-doc.adf.json';
+import * as mediaDoc from '../../__fixtures__/media.adf.json';
+import * as mediaFragment from '../../__fixtures__/media-fragment.json';
+import * as mediaGroupFragment from '../../__fixtures__/media-group-fragment.json';
+import { nextTick } from '../../../../../../media/media-test-helpers/src';
 
 const docFromSchema = schema.nodeFromJSON(doc);
 const headingDocFromSchema = schema.nodeFromJSON(headingDoc);
+const mediaDocFromSchema = schema.nodeFromJSON(mediaDoc);
+
+const getMedia = (wrapper: ReactWrapper) => {
+  return wrapper.findWhere(
+    (item: ReactWrapper) =>
+      item.is('LoadableComponent') && item.prop('nodeType') === 'media',
+  );
+};
 
 describe('Renderer - ReactSerializer', () => {
   beforeAll(async () => {
@@ -149,6 +161,149 @@ describe('Renderer - ReactSerializer', () => {
       expect(sortedMarks[0].type.name).toEqual('strong');
       expect(sortedMarks[1].type.name).toEqual('strike');
       expect(sortedMarks[2].type.name).toEqual('underline');
+    });
+  });
+
+  describe('media', () => {
+    describe('when default shouldOpenMediaViewer is false', () => {
+      it('media node has shouldOpenMediaViewer set to default value when parent is not mediaSingle', async () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: false,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaGroupFragment).content,
+          ) as any,
+        );
+
+        // Media under media group takes 2 ticks to render.
+        await nextTick();
+        await nextTick();
+        reactDoc.update();
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(false);
+      });
+
+      it('media node without parent has shouldOpenMediaViewer set to false', () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: false,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaFragment).content,
+          ) as any,
+        );
+
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(false);
+      });
+    });
+
+    describe('when default shouldOpenMediaViewer is true', () => {
+      it('media node has shouldOpenMediaViewer set to default value when parent is not mediaSingle', async () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: true,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaGroupFragment).content,
+          ) as any,
+        );
+
+        // Media under media group takes 2 ticks to render.
+        await nextTick();
+        await nextTick();
+        reactDoc.update();
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(true);
+      });
+
+      it('media without parent has shouldOpenMediaViewer set to true', () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: true,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaFragment).content,
+          ) as any,
+        );
+
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(true);
+      });
+    });
+
+    describe('when default shouldOpenMediaViewer is undefined', () => {
+      it('media node has shouldOpenMediaViewer set to undefined when parent is not mediaSingle', async () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {});
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaGroupFragment).content,
+          ) as any,
+        );
+
+        await nextTick();
+        await nextTick();
+        reactDoc.update();
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(
+          undefined,
+        );
+      });
+
+      it('media mode without parent has shouldOpenMediaViewer set to undefined', () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {});
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaFragment).content,
+          ) as any,
+        );
+
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(
+          undefined,
+        );
+      });
+    });
+
+    it('node has correct shouldOpenMediaViewer value when default is undefined', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {
+        shouldOpenMediaViewer: true,
+      });
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(mediaDocFromSchema.content) as any,
+      );
+
+      expect(
+        getMedia(reactDoc)
+          .first()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(true);
+
+      expect(
+        getMedia(reactDoc)
+          .last()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(false);
+    });
+
+    it('node has correct shouldOpenMediaViewer value when default is undefined', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {});
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(mediaDocFromSchema.content) as any,
+      );
+
+      expect(
+        getMedia(reactDoc)
+          .first()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(undefined);
+
+      expect(
+        getMedia(reactDoc)
+          .last()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(false);
     });
   });
 

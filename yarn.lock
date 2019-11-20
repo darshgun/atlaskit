@@ -2379,34 +2379,159 @@
     react-markdown "^2.5.0"
     semver "^5.4.1"
 
-"@changesets/cli@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@changesets/cli/-/cli-1.2.0.tgz#dbe304a8ae2f284730049f8fdea8b0060b09709c"
+"@changesets/apply-release-plan@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@changesets/apply-release-plan/-/apply-release-plan-0.3.1.tgz#23f48319a93a1afd8e375f1fdf35f92792f7a6d7"
+  integrity sha512-u0LwtTaHKlLyDKEVtX/cZwpKrQlNEPxE5LivrEIRmLRvpW/EddlAA6j6hxbC8/07lRUWPaOm/Q3fjGo/02Yi1g==
   dependencies:
     "@babel/runtime" "^7.4.4"
+    "@changesets/config" "^0.3.0"
+    "@changesets/get-version-range-type" "^0.1.1"
+    "@changesets/git" "^0.3.0"
+    "@changesets/types" "^0.4.0"
+    fs-extra "^7.0.1"
+    get-workspaces "^0.5.2"
+    lodash.startcase "^4.4.0"
+    outdent "^0.5.0"
+    prettier "^1.18.2"
+    resolve-from "^5.0.0"
+    semver "^5.4.1"
+
+"@changesets/assemble-release-plan@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@changesets/assemble-release-plan/-/assemble-release-plan-0.3.0.tgz#d234911a2581edcfea41818a8f7c61843544d40c"
+  integrity sha512-kHXxRrCXMBoG0uHom555/DuhShjd0sDckdN3ZKFLreXuxSOgzjGVYRymd4UIC9lbUd+5xQJRG1mRp7q50tUNgg==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@changesets/errors" "^0.1.2"
+    "@changesets/types" "^0.4.0"
+    semver "^5.4.1"
+
+"@changesets/cli@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@changesets/cli/-/cli-2.4.0.tgz#f7b6d8a7ef45d585103c5dba18361aec7f12d449"
+  integrity sha512-PL5/Ru6xCUMUQYMOjiSI/WS5t1UbAUbx9g0sKmphWbUHLMvDl4O9kR6b77345lvFHOY9Kj04aU6f82Hqhb2LwQ==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@changesets/apply-release-plan" "^0.3.1"
+    "@changesets/assemble-release-plan" "^0.3.0"
+    "@changesets/config" "^0.3.0"
+    "@changesets/errors" "^0.1.2"
+    "@changesets/get-release-plan" "^0.3.0"
+    "@changesets/git" "^0.3.0"
+    "@changesets/logger" "^0.0.3"
+    "@changesets/pre" "^0.1.1"
+    "@changesets/read" "^0.4.0"
+    "@changesets/types" "^0.4.0"
     "@types/semver" "^6.0.0"
-    "@types/uuid" "^3.4.4"
-    bolt "^0.22.1"
     boxen "^1.3.0"
     chalk "^2.1.0"
-    cli-table "^0.3.1"
-    detect-indent "^6.0.0"
     enquirer "^2.3.0"
     fs-extra "^7.0.1"
-    fuzzy "^0.1.3"
-    get-workspaces "^0.3.1"
-    globby "^9.2.0"
+    get-dependents-graph "^0.1.2"
+    get-workspaces "^0.5.2"
     human-id "^1.0.2"
-    lodash.startcase "^4.4.0"
+    is-ci "^2.0.0"
     meow "^5.0.0"
     outdent "^0.5.0"
-    pkg-dir "^4.1.0"
-    prettier "^1.14.3"
-    projector-spawn "^1.0.1"
+    p-limit "^2.2.0"
+    prettier "^1.18.2"
     semver "^5.4.1"
+    spawndamnit "^2.0.0"
     term-size "^2.1.0"
     tty-table "^2.7.0"
-    uuid "^3.3.2"
+
+"@changesets/config@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@changesets/config/-/config-0.3.0.tgz#8b1dc7fa70aaa7a794fb63f5b30281c44ee3d1a8"
+  integrity sha512-stkQp/h1e3irzT4lD/Tdvj5co3c6T891AeP/UBcb3B+N7ZnwLlAb91dQGMA2GI+JE3j8TwPXwdeK7i5eHt88bQ==
+  dependencies:
+    "@changesets/errors" "^0.1.2"
+    "@changesets/logger" "^0.0.3"
+    "@changesets/types" "^0.4.0"
+    fs-extra "^7.0.1"
+
+"@changesets/errors@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@changesets/errors/-/errors-0.1.2.tgz#5c13c7b4ce69c7ded8c52d6c6b5d622d8ecca7d8"
+  integrity sha512-9pfp6Kq+h/CXWpgEM4Y2XtxeNCopUDov6NpDIFISHI5Ipg2Jz7cweULleASWVKVi9FwjCqQwIhmREdhgSOozcQ==
+  dependencies:
+    extendable-error "^0.1.5"
+
+"@changesets/get-release-plan@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@changesets/get-release-plan/-/get-release-plan-0.3.0.tgz#c80f97cec85d5d359622b7e6dc745ef0f9b989bd"
+  integrity sha512-Nv+FAeVWTBR36Yv/jOsJ4Ob4Pb/xGPHIMFwqxEKIR3zfomiGrJY30pUb3lvRsg97IycOhj820qpv5dLbKhCJ+g==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@changesets/assemble-release-plan" "^0.3.0"
+    "@changesets/config" "^0.3.0"
+    "@changesets/pre" "^0.1.0"
+    "@changesets/read" "^0.4.0"
+    "@changesets/types" "^0.4.0"
+    get-dependents-graph "^0.1.2"
+    get-workspaces "^0.5.2"
+
+"@changesets/get-version-range-type@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@changesets/get-version-range-type/-/get-version-range-type-0.1.1.tgz#1a0872073b9ea599c7076fcb2ca89a6e56c7564a"
+  integrity sha512-c61mf/okSm3LjAfU1ximmFxG+sJck82N5mlCy3BBKfM53aJTmaX4Kg6MVsAcg/qae2R60K1fnv5EGfmaSmjCeg==
+
+"@changesets/git@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@changesets/git/-/git-0.3.0.tgz#96d8835315b629f8235c450a65ac089b753b1a35"
+  integrity sha512-ckhPre9oxm4yB9lhFIV8TW57WBkJLVsy7k4dA9Z0VvhOMyxbYABl5/wwCqBiBLBei7io8346W8QOHKAF/0iZww==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@changesets/errors" "^0.1.2"
+    "@changesets/types" "^0.4.0"
+    get-workspaces "^0.5.2"
+    spawndamnit "^2.0.0"
+
+"@changesets/logger@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@changesets/logger/-/logger-0.0.3.tgz#c39c337210076e7019377c332b9026c8450924ac"
+  integrity sha512-qJKqHwyyckHRTsfH0MjSCcI/ZFylaUotGgl0zkJ9xdnzXNXqQrrmL2/d1zDUYuzYFCN0ldK1ybYmIaxpyCGEdg==
+  dependencies:
+    chalk "^2.1.0"
+
+"@changesets/parse@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@changesets/parse/-/parse-0.3.1.tgz#0079b2d1ff30b37437aa487d0e1e0d2da3c7f35a"
+  integrity sha512-ro45JCMk+yPEbZaQOlMuVcBDAeNzoIk0BYKEcV3tIQQo4T0BFgHdsua1TII+aB24RWEuSsL8W+bwqJC5InJajw==
+  dependencies:
+    "@changesets/types" "^0.4.0"
+    js-yaml "^3.13.1"
+
+"@changesets/pre@^0.1.0", "@changesets/pre@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@changesets/pre/-/pre-0.1.1.tgz#0100bd60b99bd16dd0902835fd4a40424a70a086"
+  integrity sha512-RUq2Yv/kxPC1U4J4B+d5dzgvhmY91tGecyZjZX8QdPshDu56Pfx4yCgpbCQ2ohBnp0wNr7/2uEiJqdidMRIupA==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@changesets/errors" "^0.1.2"
+    "@changesets/types" "^0.4.0"
+    fs-extra "^7.0.1"
+    get-workspaces "^0.5.2"
+
+"@changesets/read@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@changesets/read/-/read-0.4.0.tgz#713a8e860259acdc37d35856b37f6036c3b3a825"
+  integrity sha512-Iibsi+snUbj95NOx4EMZ6yDAanNKueernDeRrEA1i4EVqnDN82DZ1Uj4HaqvTDedV+zKVlLx3j/Em9VS3HILgw==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@changesets/git" "^0.3.0"
+    "@changesets/logger" "^0.0.3"
+    "@changesets/parse" "^0.3.1"
+    "@changesets/types" "^0.4.0"
+    chalk "^2.1.0"
+    fs-extra "^7.0.1"
+    p-filter "^2.1.0"
+
+"@changesets/types@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@changesets/types/-/types-0.4.0.tgz#3413badb2c3904357a36268cb9f8c7e0afc3a804"
+  integrity sha512-TclHHKDVYQ8rJGZgVeWiF7c91yWzTTWdPagltgutelGu/Psup5PQlUq6svx7S8suj+jXcaE34yEEsfIvzXXB2Q==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
@@ -2900,6 +3025,13 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
+
+"@marionebl/prosemirror-markdown@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@marionebl/prosemirror-markdown/-/prosemirror-markdown-1.4.2.tgz#045129fdb89afb2e981acba307e7ff22f63c631e"
+  integrity sha512-hQMRzeeAW1e+e4ctxNrEKPbpmCBTh9TCSqOx5SkCnSAm6nIO9h3n6CtsCZo2uV5AFt3cQ5OVqAUUgNbGjUvyJg==
+  dependencies:
+    prosemirror-markdown "^1.4.0"
 
 "@mdx-js/loader@^0.17.5":
   version "0.17.5"
@@ -6758,43 +6890,6 @@ bolt@^0.20.6:
     typeable-promisify "^2.0.1"
     yarn "^1.6.0"
 
-bolt@^0.22.1:
-  version "0.22.6"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.22.6.tgz#3bdafdb98679828b6153ac175c946c2cf740b736"
-  dependencies:
-    array-includes "^3.0.3"
-    babel-runtime "^6.25.0"
-    chalk "^2.0.1"
-    chunkd "^1.0.0"
-    ci-parallel-vars "^1.0.0"
-    clean-stack "^1.3.0"
-    cmd-shim "^2.0.2"
-    cross-spawn "^5.1.0"
-    detect-indent "^5.0.0"
-    find-up "^2.1.0"
-    globby "^6.1.0"
-    inquirer "3.3.0"
-    is-glob "^4.0.0"
-    make-dir "^1.0.0"
-    meow "^4.0.0"
-    minimatch "^3.0.4"
-    multimatch "^2.1.0"
-    p-limit "^1.1.0"
-    parse-json "^2.2.0"
-    path-is-inside "^1.0.2"
-    pkg-up "^2.0.0"
-    project-bin-path "^1.1.0"
-    read-cmd-shim "^1.0.1"
-    read-pkg "^2.0.0"
-    rimraf "^2.6.1"
-    semver "^5.4.1"
-    slash "^1.0.0"
-    sort-object "^3.0.2"
-    task-graph-runner "^1.0.1"
-    temp-write "^3.4.0"
-    typeable-promisify "^2.0.1"
-    yarn "^1.9.4"
-
 bolt@^0.24.3:
   version "0.24.3"
   resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.24.3.tgz#425da5330aedf145b330ad1f3a779c01cd846db5"
@@ -10427,6 +10522,11 @@ entities@^1.1.1, "entities@~ 1.1.1", entities@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
 
+entities@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.0.tgz#68d6084cab1b079767540d80e56a39b423e4abf4"
+  integrity sha512-D9f7V0JSRwIxlRI2mjMqufDrRDnx8p+eEOz7aUM9SuvF8gsBzra0/6tbjl1m8eQHrZlYj6PxqE00hZ1SAIKPLw==
+
 envify@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/envify/-/envify-4.1.0.tgz#f39ad3db9d6801b4e6b478b61028d3f0b6819f7e"
@@ -11557,6 +11657,11 @@ extend@3, extend@3.0.2, extend@^3.0.0, extend@~3.0.0, extend@~3.0.2:
 extend@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.0.tgz#5a474353b9f3353ddd8176dfd37b91c83a46f1d4"
+
+extendable-error@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/extendable-error/-/extendable-error-0.1.5.tgz#122308a7097bc89a263b2c4fbf089c78140e3b6d"
+  integrity sha1-EiMIpwl7yJomOyxPvwiceBQOO20=
 
 external-editor@^2.0.4, external-editor@^2.1.0:
   version "2.2.0"
@@ -12887,6 +12992,17 @@ get-caller-file@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.2.tgz#f702e63127e7e231c160a80c1554acb70d5047e5"
 
+get-dependents-graph@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/get-dependents-graph/-/get-dependents-graph-0.1.2.tgz#c411b6b2f0ec27805bb6d9836b7c551f41952fe0"
+  integrity sha512-QVK1DdPhWx5A4dl08ULP8D+wacLtFgu0luufjJ7Mx2EEYf96cvVzZpw+fuRbPKxiWJAFO6kzgUJ91xVq+xPGDw==
+  dependencies:
+    "@changesets/types" "^0.4.0"
+    chalk "^2.1.0"
+    fs-extra "^7.0.1"
+    get-workspaces "^0.5.2"
+    semver "^5.4.1"
+
 get-func-name@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/get-func-name/-/get-func-name-2.0.0.tgz#ead774abee72e20409433a066366023dd6887a41"
@@ -12948,10 +13064,12 @@ get-value@^2.0.2, get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
 
-get-workspaces@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/get-workspaces/-/get-workspaces-0.3.1.tgz#8e0dc3ea8077725a84d2194be37410c011538536"
+get-workspaces@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/get-workspaces/-/get-workspaces-0.5.2.tgz#4fb2031ec1bdd32d3c1f3de2589ce8af5c2e24ee"
+  integrity sha512-99x72taQ9OUHhCmBS0B2WI/zwOtBOBPoyVNGs9+B0ag2GGhCjl/EaU9VQ8Zorx64TyVj1Am7bO+0J1KwDqo7OA==
   dependencies:
+    "@changesets/types" "^0.4.0"
     fs-extra "^7.0.1"
     globby "^9.2.0"
 
@@ -17330,12 +17448,13 @@ markdown-it-table@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/markdown-it-table/-/markdown-it-table-2.0.4.tgz#ca0b2482bfe7015ace6fbe73eb49ef8e0f59615d"
 
-markdown-it@^8.4.0, markdown-it@^8.4.2:
-  version "8.4.2"
-  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-8.4.2.tgz#386f98998dc15a37722aa7722084f4020bdd9b54"
+markdown-it@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-10.0.0.tgz#abfc64f141b1722d663402044e43927f1f50a8dc"
+  integrity sha512-YWOP1j7UbDNz+TumYP1kpwnP0aEa711cJjrAQrzd0UXlbJfc5aAq0F/PZHjiioqDC1NKgvIMX+o+9Bk7yuM2dg==
   dependencies:
     argparse "^1.0.7"
-    entities "~1.1.1"
+    entities "~2.0.0"
     linkify-it "^2.0.0"
     mdurl "^1.0.1"
     uc.micro "^1.0.5"
@@ -19174,6 +19293,13 @@ p-each-series@^1.0.0:
   dependencies:
     p-reduce "^1.0.0"
 
+p-filter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/p-filter/-/p-filter-2.1.0.tgz#1b1472562ae7a0f742f0f3d3d3718ea66ff9c09c"
+  integrity sha512-ZBxxZ5sL2HghephhpGAQdoskxplTwr7ICaehZwLIlfL6acuVgZPm8yBNuRAFBGEqtD/hmUeq9eqLg2ys9Xr/yw==
+  dependencies:
+    p-map "^2.0.0"
+
 p-finally@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
@@ -19860,7 +19986,7 @@ pkg-dir@^3.0.0:
   dependencies:
     find-up "^3.0.0"
 
-pkg-dir@^4.1.0, pkg-dir@^4.2.0:
+pkg-dir@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
   dependencies:
@@ -20686,11 +20812,7 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^1.14.3, prettier@^1.7.0:
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.15.1.tgz#06c67106afb1b40e74b002353b2079cc7e0e67bf"
-
-prettier@^1.19.1:
+prettier@^1.18.2, prettier@^1.19.1:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
@@ -20698,6 +20820,10 @@ prettier@^1.19.1:
 prettier@^1.5.3:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.12.1.tgz#c1ad20e803e7749faf905a409d2367e06bbe7325"
+
+prettier@^1.7.0:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.15.1.tgz#06c67106afb1b40e74b002353b2079cc7e0e67bf"
 
 pretty-bytes@^4.0.2:
   version "4.0.2"
@@ -21018,11 +21144,12 @@ prosemirror-keymap@^1.0.0, prosemirror-keymap@^1.0.1:
     prosemirror-state "^1.0.0"
     w3c-keyname "^1.1.8"
 
-prosemirror-markdown@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.2.0.tgz#8f7fae09b8b74d16304bb51254e656631c52ac6c"
+prosemirror-markdown@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.4.0.tgz#3de6b90f01adb32a655bae5255a2bd2332f21f99"
+  integrity sha512-iADBWGRS1HG5hqfAdedIDkzDDCuIaP2jKD11kqY+aRoo7+Wv3EchaviDH06aVSfUyU+gQqgGjM0cYk/+6wuRpQ==
   dependencies:
-    markdown-it "^8.4.2"
+    markdown-it "^10.0.0"
     prosemirror-model "^1.0.0"
 
 prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.7.0:
@@ -22821,6 +22948,11 @@ resolve-from@^3.0.0:
 resolve-from@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
+
+resolve-from@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-5.0.0.tgz#c35225843df8f776df21c57557bc087e9dfdfc69"
+  integrity sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==
 
 resolve-pathname@^2.2.0:
   version "2.2.0"

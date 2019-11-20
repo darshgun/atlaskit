@@ -67,7 +67,7 @@ export default () => {
             readOnly
             value={searchTerm[`s${num}`]}
             css={css`
-              ${focusRing(colors.b500, 2)};
+              ${focusRing(colors.B500, 2)};
               display: block;
               border-radius: 3px 3px 0 0;
               color: #172b4d;
