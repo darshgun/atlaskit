@@ -1,4 +1,3 @@
-// @flow
 import React, { Fragment } from 'react';
 import TextField from '@atlaskit/textfield';
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -22,7 +21,7 @@ export default () => (
       flexDirection: 'column',
     }}
   >
-    <Form
+    <Form<{ username: string; password: string; remember: boolean }>
       onSubmit={data => {
         console.log('form data', data);
         return new Promise(resolve => setTimeout(resolve, 2000)).then(() =>
@@ -54,7 +53,9 @@ export default () => (
             label="Password"
             defaultValue=""
             isRequired
-            validate={value => (value.length < 8 ? 'TOO_SHORT' : undefined)}
+            validate={value =>
+              value && value.length < 8 ? 'TOO_SHORT' : undefined
+            }
           >
             {({ fieldProps, error, valid }) => (
               <Fragment>

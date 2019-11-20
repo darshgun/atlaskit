@@ -1,17 +1,16 @@
-// @flow
 import React from 'react';
 import Button from '@atlaskit/button';
 import Form, { Field, FormFooter } from '../src';
 
-type ColorButtonProps = {
-  color: string,
-  changeHandler: Function,
-};
+interface ColorButtonProps {
+  color: string;
+  changeHandler: Function;
+}
 
-type ColorButtonsProps = {
-  colors: Array<string>,
-  changeHandler: Function,
-};
+interface ColorButtonsProps {
+  colors: Array<string>;
+  changeHandler: Function;
+}
 
 const ColorButton = ({ color, changeHandler }: ColorButtonProps) => {
   return (

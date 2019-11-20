@@ -1,17 +1,26 @@
-// @flow
 import React, { Fragment } from 'react';
 import { DateTimePicker, DatePicker } from '@atlaskit/datetime-picker';
 import Button from '@atlaskit/button';
 import Form, { Field, FormFooter, ErrorMessage } from '../src';
 
-const validateOnSubmit = data => {
+interface FormData {
+  [key: string]: string;
+  DOB: string;
+  preference: string;
+}
+
+const validateOnSubmit = (data: FormData) => {
   let errors;
   errors = requiredValidator(data, 'DOB', errors);
   errors = requiredValidator(data, 'preference', errors);
   return errors;
 };
 
-const requiredValidator = (data, key, errors) => {
+const requiredValidator = (
+  data: FormData,
+  key: string,
+  errors?: Record<string, string>,
+) => {
   if (!data[key])
     return {
       ...errors,
@@ -30,7 +39,7 @@ export default () => (
       flexDirection: 'column',
     }}
   >
-    <Form
+    <Form<FormData>
       onSubmit={data => {
         console.log('form data', data);
         return Promise.resolve(validateOnSubmit(data));

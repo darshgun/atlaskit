@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 
@@ -11,7 +10,9 @@ import ModalDialog, {
 } from '@atlaskit/modal-dialog';
 import Form, { Field, CheckboxField } from '../src';
 
-type State = { isOpen: boolean };
+interface State {
+  isOpen: boolean;
+}
 export default class AtlaskitFormDemo extends Component<{}, State> {
   state = { isOpen: false };
 
@@ -23,7 +24,7 @@ export default class AtlaskitFormDemo extends Component<{}, State> {
 
   render() {
     const { isOpen } = this.state;
-    const footer = props => (
+    const footer = (props: { showKeyline?: boolean }) => (
       <ModalFooter showKeyline={props.showKeyline}>
         <span />
         <Button appearance="primary" type="submit">

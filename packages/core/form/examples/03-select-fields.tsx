@@ -1,8 +1,16 @@
-// @flow
 import React, { Fragment } from 'react';
-import Select from '@atlaskit/select';
+import Select, { ValueType } from '@atlaskit/select';
 import Button from '@atlaskit/button';
 import Form, { Field, FormFooter, ErrorMessage } from '../src';
+
+interface OptionType {
+  label: string;
+  value: string;
+}
+interface FormTypes {
+  colors?: ValueType<OptionType>;
+  icecream?: ValueType<OptionType[]>;
+}
 
 const colors = [
   { label: 'blue', value: 'blue' },
@@ -27,26 +35,26 @@ const flavors = [
   { label: 'durian', value: 'durian' },
 ];
 
-const validateOnSubmit = data => {
+const validateOnSubmit = (data: FormTypes) => {
   let errors;
   errors = colorsValidation(data, errors);
   errors = flavorValidation(data, errors);
   return errors;
 };
 
-const colorsValidation = (data, errors) => {
-  if (data.colors) {
-    return data.colors.value === 'dog'
+const colorsValidation = (data: FormTypes, errors?: Record<string, string>) => {
+  if (data.colors && !(data.colors instanceof Array)) {
+    return (data.colors as OptionType).value === 'dog'
       ? {
           ...errors,
-          colors: `${data.colors.value} is not a color`,
+          colors: `${(data.colors as OptionType).value} is not a color`,
         }
       : errors;
   }
   return errors;
 };
 
-const flavorValidation = (data, errors) => {
+const flavorValidation = (data: FormTypes, errors?: Record<string, string>) => {
   if (data.icecream && data.icecream.length >= 3) {
     return {
       ...errors,
@@ -66,7 +74,7 @@ export default () => (
       flexDirection: 'column',
     }}
   >
-    <Form
+    <Form<FormTypes>
       onSubmit={data => {
         console.log('form data', data);
         return Promise.resolve(validateOnSubmit(data));
@@ -74,11 +82,15 @@ export default () => (
     >
       {({ formProps }) => (
         <form {...formProps}>
-          <Field name="colors" label="Select a colour" defaultValue={[]}>
+          <Field<ValueType<OptionType>>
+            name="colors"
+            label="Select a colour"
+            defaultValue={[]}
+          >
             {({ fieldProps: { id, ...rest }, error }) => (
               <Fragment>
-                <Select
-                  validationState={error ? 'error' : 'none'}
+                <Select<OptionType>
+                  validationState={error ? 'error' : 'default'}
                   inputId={id}
                   {...rest}
                   options={colors}
@@ -88,11 +100,15 @@ export default () => (
               </Fragment>
             )}
           </Field>
-          <Field name="icecream" label="Select a flavor" defaultValue={[]}>
+          <Field<ValueType<OptionType>>
+            name="icecream"
+            label="Select a flavor"
+            defaultValue={[]}
+          >
             {({ fieldProps: { id, ...rest }, error }) => (
               <Fragment>
-                <Select
-                  validationState={error ? 'error' : 'none'}
+                <Select<OptionType>
+                  validationState={error ? 'error' : 'default'}
                   inputId={id}
                   {...rest}
                   options={flavors}

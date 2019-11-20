@@ -1,4 +1,3 @@
-// @flow
 import React, { Component, Fragment } from 'react';
 import Button from '@atlaskit/button';
 import TextField from '@atlaskit/textfield';
@@ -10,9 +9,14 @@ import Form, {
   FormFooter,
 } from '../src';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+interface FormData {
+  username: string;
+  email: string;
+}
 
-const createUser = async (data: { username: string, email: string }) => {
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const createUser = async (data: FormData) => {
   await sleep(500);
   const errors = {
     username: ['jsmith', 'mchan'].includes(data.username)
@@ -29,18 +33,18 @@ const createUser = async (data: { username: string, email: string }) => {
 };
 
 export default class extends Component<{}> {
-  handleSubmit = (data: { username: string, email: string }) => {
+  handleSubmit = (data: FormData) => {
     return createUser(data);
   };
 
-  validateUsername = (value: string) => {
+  validateUsername = (value: string = '') => {
     if (value.length < 5) {
       return 'TOO_SHORT';
     }
     return undefined;
   };
 
-  validateEmail = (value: string) => {
+  validateEmail = (value: string = '') => {
     if (!value.includes('@')) {
       return 'INVALID_EMAIL';
     }
@@ -57,7 +61,7 @@ export default class extends Component<{}> {
           flexDirection: 'column',
         }}
       >
-        <Form onSubmit={this.handleSubmit}>
+        <Form<FormData> onSubmit={this.handleSubmit}>
           {({ formProps, submitting }) => (
             <form {...formProps}>
               <Field

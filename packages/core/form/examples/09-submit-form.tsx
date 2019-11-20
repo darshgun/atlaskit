@@ -1,13 +1,12 @@
-// @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import TextField from '@atlaskit/textfield';
 import TextArea from '@atlaskit/textarea';
 import Form, { Field, FormFooter } from '../src';
 
-type State = {
-  hasSubmitted: boolean,
-};
+interface State {
+  hasSubmitted: boolean;
+}
 
 export default class extends Component<void, State> {
   state = {
@@ -37,7 +36,11 @@ export default class extends Component<void, State> {
                   {({ fieldProps }) => <TextField {...fieldProps} />}
                 </Field>
 
-                <Field name="description" defaultValue="" label="Description">
+                <Field<string, HTMLTextAreaElement>
+                  name="description"
+                  defaultValue=""
+                  label="Description"
+                >
                   {({ fieldProps }) => <TextArea {...fieldProps} />}
                 </Field>
 

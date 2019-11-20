@@ -1,12 +1,11 @@
-// @flow
 import React, { Component, Fragment } from 'react';
 import Button from '@atlaskit/button';
 import TextField from '@atlaskit/textfield';
 import Form, { Field, ErrorMessage, FormFooter, HelperMessage } from '../src';
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-const createUser = async (data: { username: string, email: string }) => {
+const createUser = async (data: { username: string; email: string }) => {
   await sleep(500);
   const errors = {
     username: ['jsmith', 'mchan'].includes(data.username)
@@ -23,7 +22,7 @@ const createUser = async (data: { username: string, email: string }) => {
 };
 
 export default class extends Component<{}> {
-  handleSubmit = (data: { username: string, email: string }) => {
+  handleSubmit = (data: { username: string; email: string }) => {
     return createUser(data);
   };
 

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import Button from '@atlaskit/button';
 import TextField from '@atlaskit/textfield';
@@ -35,7 +34,11 @@ export default () => (
             )}
           </Field>
 
-          <Field name="description" defaultValue="" label="Description">
+          <Field<string, HTMLTextAreaElement>
+            name="description"
+            defaultValue=""
+            label="Description"
+          >
             {({ fieldProps }) => <TextArea {...fieldProps} />}
           </Field>
 

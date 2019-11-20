@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import Button from '@atlaskit/button';
 import { Checkbox } from '@atlaskit/checkbox';
