@@ -52,6 +52,7 @@ import {
   historyPlugin,
   sharedContextPlugin,
   expandPlugin,
+  isExpandInsertionEnabled,
   mobileScrollPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
@@ -149,7 +150,9 @@ export default function createPluginsList(
   }
 
   if (props.UNSAFE_allowExpand) {
-    plugins.push(expandPlugin());
+    plugins.push(
+      expandPlugin({ allowInsertion: isExpandInsertionEnabled(props) }),
+    );
   }
 
   if (props.media) {
@@ -316,6 +319,7 @@ export default function createPluginsList(
   plugins.push(
     insertBlockPlugin({
       allowTables: !!props.allowTables,
+      allowExpand: isExpandInsertionEnabled(props),
       insertMenuItems: props.insertMenuItems,
       horizontalRuleEnabled: props.allowRule,
       nativeStatusSupported: !statusMenuDisabled,

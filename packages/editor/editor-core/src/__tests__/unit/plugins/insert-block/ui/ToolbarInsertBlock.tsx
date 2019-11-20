@@ -139,7 +139,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         allowRule: true,
         allowTables: true,
         allowStatus: true,
-        UNSAFE_allowExpand: true,
+        UNSAFE_allowExpand: { allowInsertion: true },
         allowAnalyticsGASV3: true,
         taskDecisionProvider: Promise.resolve(
           taskDecision.getMockTaskDecisionResource(),
