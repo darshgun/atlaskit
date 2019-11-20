@@ -1,5 +1,4 @@
-// @flow
-import React, { type Node } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme/constants';
 import { h200 } from '@atlaskit/theme/typography';
@@ -9,7 +8,7 @@ import ErrorIcon from '@atlaskit/icon/glyph/error';
 import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import { FieldId } from './Field';
 
-const Message = styled.div`
+const Message = styled.div<{ error?: boolean; valid?: boolean }>`
   ${h200} font-weight: normal;
   color: ${props => {
     if (props.error) {
@@ -29,15 +28,17 @@ const IconWrapper = styled.span`
   display: flex;
 `;
 
-type Props = {
+interface Props {
   /** The content of the message */
-  children: Node,
-};
+  children: ReactNode;
+}
 
 export const HelperMessage = ({ children }: Props) => (
   <FieldId.Consumer>
     {fieldId => (
-      <Message id={fieldId ? `${fieldId}-helper` : null}>{children}</Message>
+      <Message id={fieldId ? `${fieldId}-helper` : undefined}>
+        {children}
+      </Message>
     )}
   </FieldId.Consumer>
 );
@@ -45,9 +46,9 @@ export const HelperMessage = ({ children }: Props) => (
 export const ErrorMessage = ({ children }: Props) => (
   <FieldId.Consumer>
     {fieldId => (
-      <Message error id={fieldId ? `${fieldId}-error` : null}>
+      <Message error id={fieldId ? `${fieldId}-error` : undefined}>
         <IconWrapper>
-          <ErrorIcon size="small" />
+          <ErrorIcon size="small" label="error" />
         </IconWrapper>
         {children}
       </Message>
@@ -58,9 +59,9 @@ export const ErrorMessage = ({ children }: Props) => (
 export const ValidMessage = ({ children }: Props) => (
   <FieldId.Consumer>
     {fieldId => (
-      <Message valid id={fieldId ? `${fieldId}-valid` : null}>
+      <Message valid id={fieldId ? `${fieldId}-valid` : undefined}>
         <IconWrapper>
-          <SuccessIcon size="small" />
+          <SuccessIcon size="small" label="success" />
         </IconWrapper>
         {children}
       </Message>

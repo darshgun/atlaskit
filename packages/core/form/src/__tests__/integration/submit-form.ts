@@ -1,4 +1,3 @@
-// @flow
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 
@@ -16,7 +15,7 @@ const submitFormSubmitted = 'div#submitted';
 BrowserTestCase(
   'Pressing ctrl + enter in the text area after entering input should submit the form',
   { skip: ['ie'] },
-  async client => {
+  async (client: any) => {
     const formTest = new Page(client);
     await formTest.goto(urlSubmitForm);
     await formTest.waitForSelector(submitForm);

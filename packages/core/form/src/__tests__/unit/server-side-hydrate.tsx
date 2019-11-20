@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { getExamplesFor } from '@atlaskit/build-utils/getExamples';
@@ -12,17 +11,16 @@ afterEach(() => {
 
 test('should ssr then hydrate form correctly', async () => {
   const [example] = await getExamplesFor('form');
-  // $StringLitteral
   const Example = require(example.filePath).default; // eslint-disable-line import/no-dynamic-require
 
   const elem = document.createElement('div');
-  // $FlowFixMe - Cannot call await with `ssr(...)` bound to `p.
   elem.innerHTML = await ssr(example.filePath);
 
   ReactDOM.hydrate(<Example />, elem);
   // ignore warnings caused by emotion's server-side rendering approach
+  // @ts-ignore
   // eslint-disable-next-line no-console
-  const mockCalls = console.error.mock.calls.filter(
+  const mockCalls = (console.error as jest.Mock).mock.calls.filter(
     ([f, s]) =>
       !(
         f ===
@@ -30,6 +28,5 @@ test('should ssr then hydrate form correctly', async () => {
         s === 'style'
       ),
   );
-
-  expect(mockCalls.length).toBe(0); // eslint-disable-line no-console
+  expect(mockCalls.length).toBe(0);
 });

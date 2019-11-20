@@ -1,4 +1,3 @@
-// @flow
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 
@@ -15,7 +14,7 @@ const textfieldsTextfield = 'input[name="firstname"]';
 BrowserTestCase(
   'Pressing ctrl + enter in the text area should focus on invalid field',
   { skip: ['ie'] },
-  async client => {
+  async (client: any) => {
     const formTest = new Page(client);
     await formTest.goto(urlTextfields);
     await formTest.waitForSelector(textfieldsForm);

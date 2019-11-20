@@ -1,5 +1,4 @@
-// @flow
-import React, { type Node } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme/constants';
 import { Label } from './styled/Field';
@@ -12,12 +11,12 @@ const Fieldset = styled.fieldset`
   margin-top: ${gridSize}px;
 `;
 
-type Props = {
+interface Props {
   /* Children to be rendered in the fieldset */
-  children: Node,
+  children: ReactNode;
   /* Legend of the the fieldset */
-  legend?: Node,
-};
+  legend?: ReactNode;
+}
 
 export default ({ children, legend }: Props) => (
   <Fieldset>

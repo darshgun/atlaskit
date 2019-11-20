@@ -12,7 +12,6 @@ import { messages } from '../i18n';
 import {
   ConfigResponse,
   ConfigResponseMode,
-  FieldChildrenArgs,
   MessageDescriptor,
   ProductName,
 } from '../types';
@@ -23,9 +22,11 @@ import {
 } from './utils';
 
 export const REQUIRED = 'REQUIRED';
-const validate = (value: OptionData[]) =>
-  value && value.length > 0 ? undefined : REQUIRED;
-
+const validate = (value: Value) => {
+  return value && value instanceof Array && value.length > 0
+    ? undefined
+    : REQUIRED;
+};
 export type Props = {
   loadOptions?: LoadOptions;
   defaultValue?: OptionData[];
@@ -153,8 +154,12 @@ export class UserPickerField extends React.Component<Props> {
     };
 
     return (
-      <Field name="users" validate={validate} defaultValue={defaultValue}>
-        {({ fieldProps, error, meta: { valid } }: FieldChildrenArgs<Value>) => {
+      <Field<Value>
+        name="users"
+        validate={validate}
+        defaultValue={defaultValue}
+      >
+        {({ fieldProps, error, meta: { valid } }) => {
           const inviteWarningMessage = this.getInviteWarningMessage(
             config,
             fieldProps.value,

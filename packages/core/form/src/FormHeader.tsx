@@ -1,21 +1,20 @@
-// @flow
-import React, { Component, type Node } from 'react';
+import React, { Component, ReactNode } from 'react';
 import FormHeaderWrapper, {
   FormHeaderTitle,
   FormHeaderDescription,
   FormHeaderContent,
 } from './styled/FormHeader';
 
-type Props = {
+interface Props {
   /** Header Title */
-  title?: Node,
+  title?: ReactNode;
   /** Header sub title or description */
-  description?: Node,
+  description?: ReactNode;
   /** Child contents will be rendered below the description */
-  children?: Node,
-};
+  children?: ReactNode;
+}
 
-export default class FormHeader extends Component<Props, void> {
+export default class FormHeader extends Component<Props> {
   render() {
     const { title, description, children } = this.props;
 

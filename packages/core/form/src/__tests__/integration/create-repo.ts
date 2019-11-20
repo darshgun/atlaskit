@@ -1,5 +1,3 @@
-// @flow
-
 /* Currently, this test will check if the form and its component renders into different browsers.
 Some actual functional tests need to be added:
 - Interaction with all fields
@@ -26,7 +24,7 @@ const cancelBtn = 'button[type="button"]#create-repo-cancel';
 BrowserTestCase(
   'Create repository form should render without errors',
   {},
-  async client => {
+  async (client: any) => {
     const formTest = new Page(client);
     await formTest.goto(urlFormCreateRepo);
     await formTest.waitForSelector(createForm);

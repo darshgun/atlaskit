@@ -1,18 +1,17 @@
-// @flow
-import React, { Component, type Node } from 'react';
+import React, { Component, ReactNode } from 'react';
 import FormSectionWrapper, {
   FormSectionTitle,
   FormSectionDescription,
 } from './styled/FormSection';
 
-type Props = {
+interface Props {
   /** Section Title */
-  title?: Node,
+  title?: ReactNode;
   /** Content or child components to be rendered after description */
-  children?: Node,
+  children?: ReactNode;
   /** Sub title or description of this section */
-  description?: Node,
-};
+  description?: ReactNode;
+}
 
 export default class FormSection extends Component<Props> {
   render() {

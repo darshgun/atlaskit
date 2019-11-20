@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Select from '@atlaskit/select';
+import Select, { ValueType } from '@atlaskit/select';
 import Group from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import { gridSize, fontSize } from '@atlaskit/theme';
@@ -21,12 +21,12 @@ const EditViewContainer = styled.div`
   position: relative;
 `;
 
-interface Option {
+interface OptionType {
   label: string;
   value: string;
 }
 
-const selectOptions: Option[] = [
+const selectOptions = [
   { label: 'Apple', value: 'Apple' },
   { label: 'Banana', value: 'Banana' },
   { label: 'Cherry', value: 'Cherry' },
@@ -37,7 +37,7 @@ const selectOptions: Option[] = [
 ];
 
 interface State {
-  editValue: Option[];
+  editValue: OptionType[];
 }
 
 export default class InlineEditExample extends React.Component<void, State> {
@@ -45,9 +45,11 @@ export default class InlineEditExample extends React.Component<void, State> {
     editValue: [],
   };
 
-  onConfirm = (value: Option[]) => {
+  onConfirm = (value: ValueType<OptionType>) => {
+    if (!value) return;
+
     this.setState({
-      editValue: value,
+      editValue: value as OptionType[],
     });
   };
 
@@ -58,12 +60,12 @@ export default class InlineEditExample extends React.Component<void, State> {
           padding: `${gridSize()}px ${gridSize()}px ${gridSize() * 6}px`,
         }}
       >
-        <InlineEdit
+        <InlineEdit<ValueType<OptionType>>
           defaultValue={this.state.editValue}
           label="Inline edit select"
           editView={fieldProps => (
             <EditViewContainer>
-              <Select
+              <Select<OptionType>
                 {...fieldProps}
                 options={selectOptions}
                 isMulti
@@ -78,7 +80,7 @@ export default class InlineEditExample extends React.Component<void, State> {
             ) : (
               <div style={{ padding: `${gridSize() / 2}px` }}>
                 <Group>
-                  {this.state.editValue.map((option: Option) => (
+                  {this.state.editValue.map((option: OptionType) => (
                     <Tag text={option.label} key={option.label} />
                   ))}
                 </Group>

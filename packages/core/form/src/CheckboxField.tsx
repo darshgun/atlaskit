@@ -1,45 +1,50 @@
-// @flow
-import React, { type Node } from 'react';
-import Field, { type Meta } from './Field';
+import React, { FC, ReactNode, useCallback } from 'react';
+import Field, { Meta, FieldProps } from './Field';
 
-type FieldProps = {
-  isChecked: boolean,
-  onChange: any => any,
-  onBlur: () => any,
-  onFocus: () => any,
-  value: any,
-};
+export interface CheckboxFieldProps extends FieldProps<string | undefined> {
+  isChecked: boolean;
+}
 
-type Props = {
+export interface CheckboxProps {
   /* Children to render in the field. Called with form information. */
-  children: ({
-    fieldProps: FieldProps,
-    error: any,
-    valid: boolean,
-    meta: Meta,
-  }) => Node,
+  children: (args: {
+    fieldProps: CheckboxFieldProps;
+    error?: string;
+    valid: boolean;
+    meta: Meta;
+  }) => ReactNode;
   /* The default checked state of the checkbox */
-  defaultIsChecked: boolean,
+  defaultIsChecked?: boolean;
   /* Whether the field is required for submission */
-  isRequired?: boolean,
+  isRequired?: boolean;
+  /* Whether the field is disabled */
+  isDisabled?: boolean;
   /* Label displayed above the field */
-  label?: Node,
+  label?: ReactNode;
   /* The name of the field */
-  name: string,
+  name: string;
   /* The value of the checkbox. Used as the value in the form state when the checkbox is checked */
-  value?: string,
-};
+  value?: string;
+}
 
-const CheckboxField = (props: Props) => {
+const CheckboxField: FC<CheckboxProps> = props => {
   const { children, defaultIsChecked = false, value, ...rest } = props;
+
+  // Maintains a memoised list of the default values
+  const defaultValue = useCallback(
+    (currentValue: string[] = []) =>
+      defaultIsChecked && value !== undefined
+        ? [...currentValue, value]
+        : currentValue,
+    [value, defaultIsChecked],
+  );
+
   return value !== undefined ? (
-    <Field
+    <Field<any>
       {...rest}
-      defaultValue={(currentValue = []) =>
-        defaultIsChecked ? [...currentValue, value] : currentValue
-      }
-      transform={(event: SyntheticInputEvent<>, currentValue) =>
-        event.target.checked
+      defaultValue={defaultValue}
+      transform={(event, currentValue: string[]) =>
+        event.currentTarget.checked && currentValue
           ? [...currentValue, value]
           : currentValue.filter(v => v !== value)
       }
@@ -48,7 +53,7 @@ const CheckboxField = (props: Props) => {
         children({
           fieldProps: {
             ...otherFieldProps,
-            isChecked: !!fieldValue.find(v => v === value),
+            isChecked: !!fieldValue.find((v: string) => v === value),
             value,
           },
           ...others,
@@ -56,10 +61,10 @@ const CheckboxField = (props: Props) => {
       }
     </Field>
   ) : (
-    <Field
+    <Field<any>
       {...rest}
       defaultValue={defaultIsChecked}
-      transform={(event: SyntheticInputEvent<>) => event.target.checked}
+      transform={event => event.currentTarget.checked}
     >
       {({ fieldProps: { value: fieldValue, ...otherFieldProps }, ...others }) =>
         children({
