@@ -16,10 +16,7 @@ import {
   getDefaultStateSlice,
   serializeError,
 } from '../../../../controllers/resource-store/utils';
-import {
-  getResourceStore,
-  actions as storeActions,
-} from '../../../../controllers/resource-store';
+import { getResourceStore } from '../../../../controllers/resource-store';
 import {
   Actions as ResourceStoreActions,
   State as ResourceStoreState,
