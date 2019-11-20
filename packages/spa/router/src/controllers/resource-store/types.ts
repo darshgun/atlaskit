@@ -64,10 +64,6 @@ export type Actions = {
     resources: RouteResource[],
     routerStoreContext: RouterStoreContext,
   ) => ResourceAction<Promise<RouteResourceResponse>[]>;
-  requestResourcesForNextRoute: (
-    prevRouterStoreContext: RouterStoreContext,
-    nextRouterStoreContext: RouterStoreContext,
-  ) => ResourceAction<Promise<RouteResourceResponse[]>>;
   hydrate: (
     state: HydratableState,
   ) => ({ getState, setState }: StoreActionApi<State>) => void;

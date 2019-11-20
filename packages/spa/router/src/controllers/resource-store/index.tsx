@@ -24,7 +24,6 @@ import {
   isFromSsr,
   getExpiresAt,
   setExpiresAt,
-  getResourceIdentifier,
   serializeError,
   deserializeError,
   transformData,
@@ -198,53 +197,6 @@ export const actions: Actions = {
     resources.map(resource =>
       dispatch(actions.getResource(resource, routerStoreContext)),
     ),
-
-  /**
-   * Request resources that exist in the next route context, and do not exist in the prev route context
-   *
-   * @deprecated
-   */
-  requestResourcesForNextRoute: (
-    prevRouterStoreContext,
-    nextRouterStoreContext,
-  ) => ({ getState, dispatch }) => {
-    const { route: nextRoute } = nextRouterStoreContext;
-    const { route: prevRoute } = prevRouterStoreContext;
-    const { context: resourceStoreContext } = getState();
-
-    if (!nextRoute || !nextRoute.resources) {
-      return Promise.all([]);
-    }
-
-    const prevResourceIdentifiers = (
-      (prevRoute && prevRoute.resources) ||
-      []
-    ).map(prevResource => {
-      return getResourceIdentifier(
-        prevResource,
-        prevRouterStoreContext,
-        resourceStoreContext,
-      );
-    });
-
-    return Promise.all(
-      (nextRoute.resources || []).reduce((acc: any[], resource) => {
-        const resourceIdentifier = getResourceIdentifier(
-          resource,
-          nextRouterStoreContext,
-          resourceStoreContext,
-        );
-
-        if (!prevResourceIdentifiers.includes(resourceIdentifier)) {
-          acc.push(
-            dispatch(actions.getResource(resource, nextRouterStoreContext)),
-          );
-        }
-
-        return acc;
-      }, []),
-    );
-  },
 
   /**
    * Hydrates the store with state.
