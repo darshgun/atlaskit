@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Schema } from 'prosemirror-model';
-import { defaultSchema, getSchemaBasedOnStage } from '@atlaskit/adf-schema';
+import { getSchemaBasedOnStage } from '@atlaskit/adf-schema';
 import { reduce } from '@atlaskit/adf-utils';
 import {
   ADFStage,
