@@ -17,6 +17,7 @@ import {
   Popper,
   type PopperProps,
   type PopperChildrenProps,
+  // $FlowFixMe
 } from 'react-popper';
 import { colors, gridSize, layers } from '@atlaskit/theme';
 import { jsx } from '@emotion/core';

@@ -2,13 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import Select from 'react-select';
 import createFocusTrap, { FocusTrap } from 'focus-trap';
-import {
-  Manager,
-  Reference,
-  Popper,
-  PopperProps,
-  RefHandler,
-} from 'react-popper';
+import { Manager, Reference, Popper, PopperProps } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
 import shallowEqualObjects from 'shallow-equal/objects';
 import { N80 } from '@atlaskit/theme/colors';
@@ -234,17 +228,21 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
   // Refs
   // ==============================
 
-  resolveTargetRef = (popperRef: RefHandler) => (ref: HTMLElement) => {
+  resolveTargetRef = (popperRef: React.Ref<HTMLElement>) => (
+    ref: HTMLElement,
+  ) => {
     // avoid thrashing fn calls
     if (!this.targetRef && popperRef && ref) {
       this.targetRef = ref;
-      popperRef(ref);
+      typeof popperRef === 'function' && popperRef(ref);
     }
   };
 
-  resolveMenuRef = (popperRef: RefHandler) => (ref: HTMLElement) => {
+  resolveMenuRef = (popperRef: React.Ref<HTMLElement>) => (
+    ref: HTMLElement,
+  ) => {
     this.menuRef = ref;
-    popperRef(ref);
+    typeof popperRef === 'function' && popperRef(ref);
   };
 
   getSelectRef = (ref: Select<Option>) => {

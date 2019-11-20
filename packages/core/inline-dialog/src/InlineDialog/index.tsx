@@ -90,7 +90,7 @@ class InlineDialog extends Component<Props, {}> {
             onClick={onContentClick}
             innerRef={node => {
               this.containerRef = node;
-              ref(node);
+              typeof ref === 'function' && ref(node);
             }}
             style={style}
             data-testid={testId}
@@ -108,7 +108,7 @@ class InlineDialog extends Component<Props, {}> {
             <NodeResolver
               innerRef={(node: HTMLElement) => {
                 this.triggerRef = node;
-                ref(node);
+                typeof ref === 'function' && ref(node);
               }}
             >
               {children}
