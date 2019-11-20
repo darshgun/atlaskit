@@ -69,6 +69,8 @@ const EmptyState = ({
     <Container size={size}>
       {imageUrl && (
         <Image
+          alt=""
+          role="presentation"
           src={imageUrl}
           maxWidth={maxImageWidth}
           maxHeight={maxImageHeight}
