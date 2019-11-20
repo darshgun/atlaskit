@@ -1,4 +1,4 @@
-import { MarkdownSerializerState } from '@marionebl/prosemirror-markdown';
+import { MarkdownSerializerState } from 'prosemirror-markdown';
 import { Node as PMNode } from 'prosemirror-model';
 
 const isHeaderRow = (row: PMNode): boolean =>
