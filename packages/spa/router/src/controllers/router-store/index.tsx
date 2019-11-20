@@ -15,6 +15,7 @@ import {
 } from '../../common/constants';
 import { getRouteContext } from '../../common/utils/get-route-context';
 import { getResourceStore } from '../resource-store';
+import { getResourcesForNextLocation } from '../resource-store/utils';
 
 import { EntireRouterState, AllRouterActions, ContainerProps } from './types';
 import { isExternalAbsolutePath, getRelativePath } from './utils';
@@ -105,21 +106,30 @@ const actions: AllRouterActions = {
       );
 
       if (canDo) {
-        setState({ ...nextContext, action });
-        getResourceStore().actions.requestResourcesForNextRoute(
+        const {
+          actions: { cleanExpiredResources, requestResources },
+          storeState,
+        } = getResourceStore();
+        const nextLocationContext = {
+          route: nextContext.route,
+          match: nextContext.match,
+          query: nextContext.query,
+          location,
+        };
+        const nextResources = getResourcesForNextLocation(
           {
             route: currentRoute,
             match: currentMatch,
             query: currentQuery,
             location: currentLocation,
           },
-          {
-            route: nextContext.route,
-            match: nextContext.match,
-            query: nextContext.query,
-            location,
-          },
+          nextLocationContext,
+          storeState.getState().context,
         );
+
+        cleanExpiredResources(nextResources, nextLocationContext);
+        setState({ ...nextContext, action });
+        requestResources(nextResources, nextLocationContext);
       } else {
         // because history stack already updated, in order not to mess up it up, we can only replace the route
         // using assign will push a new entry to the history stack.
