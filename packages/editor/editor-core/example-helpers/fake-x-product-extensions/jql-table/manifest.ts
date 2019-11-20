@@ -13,12 +13,26 @@ const manifest: ExtensionManifest = {
       {
         key: 'jql-table',
         icon: () => import('@atlaskit/icon/glyph/table'),
-        target: 'default',
+        action: {
+          type: 'node',
+          key: 'default',
+          parameters: {
+            macroParams: {},
+            macroMetadata: {
+              placeholder: [
+                {
+                  data: { url: '' },
+                  type: 'icon',
+                },
+              ],
+            },
+          },
+        },
       },
     ],
     nodes: {
       default: {
-        insert: () => import('./adf-node'),
+        type: 'extension',
         render: () => import('./extension-handler'),
       },
     },

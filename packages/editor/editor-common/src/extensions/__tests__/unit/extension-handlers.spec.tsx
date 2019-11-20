@@ -24,14 +24,14 @@ describe('extension-handlers', () => {
     title: 'Table of contents macro',
     type: 'confluence.macro',
     extensionKey: 'toc',
-    nodeKeys: ['default', 'zone'],
+    nodes: [{ key: 'default' }, { key: 'zone' }],
   });
 
   const forgeAmazingExtension = createFakeExtensionManifest({
     title: 'Answer to life',
     type: 'atlassian.forge',
     extensionKey: 'answer-to-life',
-    nodeKeys: ['fourtyTwo'],
+    nodes: [{ key: 'fourtyTwo' }],
   });
 
   beforeEach(async () => {

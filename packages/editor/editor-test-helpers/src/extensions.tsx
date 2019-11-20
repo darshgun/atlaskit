@@ -157,19 +157,19 @@ export const extensionHandlers: ExtensionHandlers = {
   },
 };
 
-const createFakeModule = (content: any) => () =>
-  Promise.resolve({ default: content });
+export const createFakeModule = (content: any) => () =>
+  Promise.resolve({ __esModule: true, default: content });
 
 export const createFakeExtensionManifest = ({
   title,
   type,
   extensionKey,
-  nodeKeys = ['default'],
+  nodes = [{ key: 'default' }],
 }: {
   title: string;
   type: ExtensionType;
   extensionKey: ExtensionKey;
-  nodeKeys?: string[];
+  nodes?: { key: string; parameters?: object }[];
 }): ExtensionManifest => ({
   title,
   type,
@@ -180,29 +180,17 @@ export const createFakeExtensionManifest = ({
     '48': createFakeModule({}),
   },
   modules: {
-    quickInsert: nodeKeys.map(key => ({ key, target: key })),
-    nodes: nodeKeys.reduce<ExtensionModuleNodes>((acc, key) => {
+    quickInsert: nodes.map(({ key, parameters = {} }) => ({
+      key,
+      action: {
+        key,
+        type: 'node',
+        parameters,
+      },
+    })),
+    nodes: nodes.reduce<ExtensionModuleNodes>((acc, { key }) => {
       acc[key] = {
-        insert: createFakeModule({
-          type: 'extension',
-          attrs: {
-            extensionType: 'com.atlassian.confluence.macro.core',
-            extensionKey:
-              key === 'default' ? extensionKey : `${extensionKey}:${key}`,
-            text: `${name} - ${key} - demo`,
-            parameters: {
-              macroParams: {},
-              macroMetadata: {
-                placeholder: [
-                  {
-                    data: { url: '' },
-                    type: 'icon',
-                  },
-                ],
-              },
-            },
-          },
-        }),
+        type: 'extension',
         render: createFakeModule(() => {
           return <div>My "{name}" extension</div>;
         }),

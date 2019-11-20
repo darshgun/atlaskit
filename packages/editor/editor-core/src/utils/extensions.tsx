@@ -4,7 +4,6 @@ import {
   ExtensionProvider,
   combineProviders,
   getItemsFromModule,
-  resolveImport,
 } from '@atlaskit/editor-common';
 import {
   QuickInsertProvider,
@@ -17,7 +16,7 @@ export async function extensionProviderToQuickInsertProvider(
   const extensions = await extensionProvider.getExtensions();
 
   return {
-    getItems: async () => {
+    getItems: () => {
       const quickInsertItems = getItemsFromModule<Promise<QuickInsertItem>>(
         extensions,
         'quickInsert',
@@ -26,18 +25,25 @@ export async function extensionProviderToQuickInsertProvider(
             loader: item.icon,
             loading: () => null,
           });
-          const node = resolveImport(await item.node.insert());
+
+          const node = await item.node;
 
           return {
             title: item.title,
             description: item.description,
             icon: () => <Icon label={item.title} />,
-            action: insert => insert(node),
+            action: insert => {
+              if (node) {
+                return insert(node);
+              }
+
+              return false;
+            },
           };
         },
       );
 
-      return await Promise.all(quickInsertItems);
+      return Promise.all(quickInsertItems);
     },
   };
 }
