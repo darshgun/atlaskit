@@ -136,7 +136,8 @@ export default class Item extends Component<Props, {}> {
 
     const patchedEventHandlers = {
       onClick: (event: MouseEvent) => {
-        // if default is prevent - do not fire the onClick prop
+        // rbd will use event.preventDefault() to block clicks that are used
+        // as a part of the drag and drop lifecycle.
         if (event.defaultPrevented) {
           return;
         }
@@ -155,6 +156,7 @@ export default class Item extends Component<Props, {}> {
       },
       onKeyDown: (event: KeyboardEvent) => {
         // swallowing keyboard events on the element while dragging
+        // rbd should already be doing this - but we are being really clear here
         if (isDragging) {
           return;
         }
@@ -164,7 +166,8 @@ export default class Item extends Component<Props, {}> {
           dragHandleProps.onKeyDown(event);
         }
 
-        // if default is prevent - do not fire other handlers
+        // if default is prevented - do not fire other handlers
+        // this can happen if the even is used for rbd
         if (event.defaultPrevented) {
           return;
         }
@@ -185,6 +188,7 @@ export default class Item extends Component<Props, {}> {
     const patchedInnerRef = (ref: HTMLElement | null) => {
       this.setRef(ref);
 
+      // give rbd the inner ref too
       if (dnd && dnd.innerRef) {
         dnd.innerRef(ref);
       }
