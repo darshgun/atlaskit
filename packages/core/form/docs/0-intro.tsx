@@ -1,4 +1,3 @@
-// @flow
 import React from 'react';
 import { md, code, Example } from '@atlaskit/docs';
 import { Link } from 'react-router-dom';
@@ -60,6 +59,10 @@ const MyForm = () => (
   
   The onSubmit function gets called when all fields are valid and the form gets
   submitted.
+
+  TypeScript users should pass in a type or interface that represents the structure of 
+  the form data, using the generic syntax: ${code`<Form<FormData> ... >`}. This type
+  will be applied throughout Form's internal functions and props, including onSubmit.
   
   ### The Field
   
