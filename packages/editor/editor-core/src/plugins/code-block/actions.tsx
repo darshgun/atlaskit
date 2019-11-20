@@ -26,8 +26,15 @@ export const changeLanguage = (language: string): Command => (
   // setParentNodeMarkup doesn't typecheck the attributes
   const attrs: CodeBlockAttrs = { language };
 
+  const changeLanguageTr = setParentNodeMarkup(
+    nodes.codeBlock,
+    null,
+    attrs,
+  )(tr);
+  changeLanguageTr.setMeta('scrollIntoView', false);
+
   if (dispatch) {
-    dispatch(setParentNodeMarkup(nodes.codeBlock, null, attrs)(tr));
+    dispatch(changeLanguageTr);
   }
   return true;
 };

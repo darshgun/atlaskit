@@ -31,6 +31,7 @@ const mockPlugins: { [name: string]: jest.Mock } = {
   mobileScrollPlugin: jest.fn(),
   listsPlugin: jest.fn(),
   isExpandInsertionEnabled: jest.fn(),
+  scrollIntoViewPlugin: jest.fn(),
 };
 jest.mock('../../../plugins', () => mockPlugins);
 
@@ -48,6 +49,7 @@ import {
   statusPlugin,
   historyPlugin,
   mobileScrollPlugin,
+  scrollIntoViewPlugin,
 } from '../../../plugins';
 
 import createPluginsList from '../../../create-editor/create-plugins-list';
@@ -240,6 +242,18 @@ describe('createPluginsList', () => {
     it('should not add mobileScrollPlugin to non-mobile editor', () => {
       createPluginsList({ appearance: 'full-page' });
       expect(mobileScrollPlugin).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('scrollIntoViewPlugin', () => {
+    it('should add plugin by default', () => {
+      createPluginsList({ appearance: 'full-page' });
+      expect(scrollIntoViewPlugin).toHaveBeenCalled();
+    });
+
+    it('should not add plugin if props.autoScrollIntoView === false', () => {
+      createPluginsList({ appearance: 'full-page', autoScrollIntoView: false });
+      expect(scrollIntoViewPlugin).not.toHaveBeenCalled();
     });
   });
 });

@@ -174,6 +174,12 @@ export interface EditorProps {
    **/
   allowNewInsertionBehaviour?: boolean;
 
+  /**
+   * Set this to false to opt out of the default behaviour of auto scrolling into view
+   * whenever the document is changed
+   */
+  autoScrollIntoView?: boolean;
+
   // Set to enable the quick insert menu i.e. '/' key trigger.
   // You can also provide your own insert menu options that will be shown in addition to the enabled
   // editor features e.g. Confluence uses this to provide its macros.

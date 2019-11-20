@@ -238,8 +238,9 @@ export const setPresetLayout = (layout: PresetLayout): Command => (
       },
       eventType: EVENT_TYPE.TRACK,
     });
+    tr.setMeta('scrollIntoView', false);
     if (dispatch) {
-      dispatch(tr.scrollIntoView());
+      dispatch(tr);
     }
     return true;
   }

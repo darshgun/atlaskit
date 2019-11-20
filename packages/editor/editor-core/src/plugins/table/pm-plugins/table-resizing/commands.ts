@@ -97,6 +97,7 @@ export const scaleTable = (
     tr = updateColumnWidths(resizeState, node, start)(tr);
 
     if (tr.docChanged && dispatch) {
+      tr.setMeta('scrollIntoView', false);
       dispatch(tr);
       return true;
     }
@@ -159,7 +160,7 @@ export const stopResizing = (tr?: Transaction) =>
     {
       type: 'STOP_RESIZING',
     },
-    originalTr => tr || originalTr,
+    originalTr => (tr || originalTr).setMeta('scrollIntoView', false),
   );
 
 export const setDragging = (
