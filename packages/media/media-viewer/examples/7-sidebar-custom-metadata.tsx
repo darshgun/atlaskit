@@ -12,9 +12,8 @@ import { MediaViewer } from '../src';
 
 const mediaClient = createStorybookMediaClient();
 
-// TODO: fix types
 export type State = {
-  selectedidentifier?: Identifier;
+  selectedIdentifier?: Identifier;
 };
 
 interface Attachment {
@@ -82,8 +81,8 @@ const myAttachments = [
   mockExternalImageAttachment,
 ];
 
-export default class Example extends React.Component<State, {}> {
-  state = {
+export default class Example extends React.Component<{}, State> {
+  state: State = {
     selectedIdentifier: undefined,
   };
 
@@ -110,6 +109,9 @@ export default class Example extends React.Component<State, {}> {
 
   sidebarRenderer = (selectedIdentifier: Identifier) => {
     const attachmentData = this.findAttachmentData(selectedIdentifier);
+    if (!attachmentData) {
+      return null;
+    }
 
     return <Sidebar data={attachmentData} />;
   };
@@ -164,7 +166,7 @@ const Sidebar = (props: SidebarProps) => {
             <th>{heading}</th>
           </tr>
           <tbody>
-            {values.map(v => (
+            {values.map((v: any) => (
               <tr>
                 <td>{v.key}</td>
                 <td>{v.value}</td>

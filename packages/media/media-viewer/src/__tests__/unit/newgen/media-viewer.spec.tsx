@@ -28,6 +28,7 @@ import { CloseButtonWrapper, SidebarWrapper } from '../../../newgen/styled';
 import Header from '../../../newgen/header';
 import { ItemSource } from '../../../newgen/domain';
 import { Observable } from 'rxjs';
+import { List } from '../../../newgen/list';
 
 function createFixture(
   items: Identifier[],
@@ -194,7 +195,7 @@ describe('<MediaViewer />', () => {
     describe('toggling visibility', () => {
       it('should show sidebar if sidebar is currently not visible', () => {
         const { el } = createFixture(items, identifier, { components });
-        el.find('List').prop('onSidebarButtonClick')();
+        el.find(List).prop('onSidebarButtonClick')!();
         expect(el.find(MediaViewerComponent).state('isSidebarVisible')).toBe(
           true,
         );
@@ -205,7 +206,7 @@ describe('<MediaViewer />', () => {
         el.find(MediaViewerComponent).setState({
           isSidebarVisible: true,
         });
-        el.find('List').prop('onSidebarButtonClick')();
+        el.find(List).prop('onSidebarButtonClick')!();
         expect(el.find(MediaViewerComponent).state('isSidebarVisible')).toBe(
           false,
         );
