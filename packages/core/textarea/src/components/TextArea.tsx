@@ -59,7 +59,7 @@ export interface Props extends WithAnalyticsEventsProps {
    */
   resize?: 'auto' | 'vertical' | 'horizontal' | 'smart' | 'none';
   /**
-   * Passed down to the <textarea /> element.
+   * Enables native spell check on the `textarea` element.
    */
   spellCheck?: boolean;
   /**
