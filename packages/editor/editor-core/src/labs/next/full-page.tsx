@@ -177,7 +177,7 @@ function FullPage(props: FullPageProps) {
   const [showKeyline, scrollContainerRef] = useKeyline();
 
   return (
-    <Editor {...props} handleAnalyticsEvent={handleAnalyticsEvent}>
+    <Editor {...props} onAnalyticsEvent={handleAnalyticsEvent}>
       <BaseTheme dynamicTextSizing={allowDynamicTextSizing}>
         <FullPageEditorWrapper className="akEditor">
           <MainToolbar showKeyline={showKeyline}>

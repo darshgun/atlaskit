@@ -13,6 +13,7 @@ import {
   INPUT_METHOD,
   EVENT_TYPE,
 } from '../analytics';
+import { GapCursorSelection, Side } from '../gap-cursor';
 
 export const setExpandRef = (ref?: HTMLDivElement | null): Command =>
   createCommand(
@@ -92,15 +93,28 @@ export const toggleExpandExpanded = (
   const node = state.doc.nodeAt(pos);
   if (node && node.type === nodeType && dispatch) {
     const { tr } = state;
+    const isExpandedNext = !node.attrs.__expanded;
     tr.setNodeMarkup(
       pos,
       node.type,
       {
         ...node.attrs,
-        __expanded: !node.attrs.__expanded,
+        __expanded: isExpandedNext,
       },
       node.marks,
     );
+
+    // If we're going to collapse the expand and our cursor is currently inside
+    // Move to a right gap cursor, if the toolbar is interacted (or an API),
+    // it will insert below rather than inside (which will be invisible).
+    if (isExpandedNext === false && findExpand(state)) {
+      tr.setSelection(
+        new GapCursorSelection(
+          state.doc.resolve(pos + node.nodeSize),
+          Side.RIGHT,
+        ),
+      );
+    }
     // `isRemote` meta prevents this step from being
     // sync'd between sessions in collab edit
     dispatch(tr.setMeta('isRemote', true));

@@ -454,9 +454,11 @@ pipelines:
               artifacts:
                 - imageSnapshotFailures/**
       - step:
-          name: Wait until no master is running
+          name: Wait until no master is running - except if develop
           script:
             - source ./build-setup.sh
+            - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+            - if [[ "$TARGET_BRANCH" != "master" ]]; then echo "This build does not need to wait for master build."; exit 0; fi
             - cd build/ci-scripts
             - yarn --ignore-engines
             - node ./wait.until.no.master.build.running.js

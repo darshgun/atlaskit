@@ -101,7 +101,7 @@ function getEditorProps(appearance: Appearance) {
       'Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.',
     shouldFocus: false,
     UNSAFE_cards: true,
-    UNSAFE_allowExpand: true,
+    UNSAFE_allowExpand: { allowInsertion: true },
     allowHelpDialog: true,
   };
 

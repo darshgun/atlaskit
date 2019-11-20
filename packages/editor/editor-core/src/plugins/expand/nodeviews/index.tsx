@@ -57,8 +57,15 @@ const toDOM = (node: PmNode, intl?: InjectedIntl): DOMOutputSpec => [
   },
   [
     'div',
-    // prettier-ignore
-    { 'class': expandClassNames.titleContainer, 'contenteditable': 'false' },
+    {
+      // prettier-ignore
+      'class': expandClassNames.titleContainer,
+      contenteditable: 'false',
+      // Element gains access to focus events.
+      // This is needed to prevent PM gaining access
+      // on interacting with our controls.
+      tabindex: '-1',
+    },
     // prettier-ignore
     ['div', { 'class': expandClassNames.icon }],
     [
@@ -94,8 +101,9 @@ export class ExpandNodeView implements NodeView {
   dom?: HTMLElement;
   contentDOM?: HTMLElement;
   icon?: HTMLElement | null;
-  content?: HTMLElement | null;
   input?: HTMLInputElement | null;
+  titleContainer?: HTMLElement | null;
+  content?: HTMLElement | null;
   getPos: getPosHandlerNode;
   pos: number;
   reactContext: ReactContext;
@@ -124,10 +132,12 @@ export class ExpandNodeView implements NodeView {
     this.input = this.dom.querySelector<HTMLInputElement>(
       `.${expandClassNames.titleInput}`,
     );
-    this.content = this.dom.querySelector<HTMLDivElement>(
+    this.titleContainer = this.dom.querySelector<HTMLElement>(
+      `.${expandClassNames.titleContainer}`,
+    );
+    this.content = this.dom.querySelector<HTMLElement>(
       `.${expandClassNames.content}`,
     );
-
     this.renderIcon(this.reactContext.intl);
     this.initHandlers();
   }
@@ -139,6 +149,11 @@ export class ExpandNodeView implements NodeView {
     }
     if (this.input) {
       this.input.addEventListener('keydown', this.handleTitleKeydown);
+    }
+    if (this.titleContainer) {
+      // If the user interacts in our title bar (either toggle or input)
+      // Prevent ProseMirror from getting a focus event (causes weird selection issues).
+      this.titleContainer.addEventListener('focus', this.handleFocus);
     }
   }
 
@@ -195,6 +210,10 @@ export class ExpandNodeView implements NodeView {
         this.node.type,
       )(state, dispatch);
     }
+  };
+
+  private handleFocus = (event: FocusEvent) => {
+    event.stopImmediatePropagation();
   };
 
   private handleTitleKeydown = (event: KeyboardEvent) => {
@@ -324,11 +343,18 @@ export class ExpandNodeView implements NodeView {
 
   update(node: PmNode, _decorations: Array<Decoration>) {
     if (this.node.type === node.type) {
-      if (this.node.attrs.__expanded !== node.attrs.__expanded && this.dom) {
+      if (this.node.attrs.__expanded !== node.attrs.__expanded) {
         // Instead of re-rendering the view on an expand toggle
         // we toggle a class name to hide the content and animate the chevron.
-        this.dom.classList.toggle(expandClassNames.expanded);
-        this.renderIcon(this.reactContext && this.reactContext.intl, node);
+        if (this.dom) {
+          this.dom.classList.toggle(expandClassNames.expanded);
+          this.renderIcon(this.reactContext && this.reactContext.intl, node);
+        }
+
+        if (this.content) {
+          // Disallow interaction/selection inside when collapsed.
+          this.content.setAttribute('contenteditable', node.attrs.__expanded);
+        }
       }
 
       // During a collab session the title doesn't sync with other users
@@ -355,6 +381,10 @@ export class ExpandNodeView implements NodeView {
       this.input.removeEventListener('keydown', this.handleTitleKeydown);
     }
 
+    if (this.titleContainer) {
+      this.titleContainer.removeEventListener('focus', this.handleFocus);
+    }
+
     if (this.icon) {
       ReactDOM.unmountComponentAtNode(this.icon);
     }
@@ -363,6 +393,7 @@ export class ExpandNodeView implements NodeView {
     this.contentDOM = undefined;
     this.icon = undefined;
     this.input = undefined;
+    this.titleContainer = undefined;
     this.content = undefined;
   }
 }

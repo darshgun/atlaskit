@@ -5,6 +5,7 @@ import {
   ExtensionModuleType,
   MenuItemMap,
 } from './types';
+import { resolveAction } from './manifest-helpers';
 
 export const groupBy = <T>(
   arr: T[],
@@ -22,19 +23,12 @@ export const buildMenuItem = (
   manifest: ExtensionManifest,
   extensionModule: ExtensionModule,
 ): MenuItem => {
-  const node = manifest.modules.nodes[extensionModule.target];
-
-  if (!node) {
-    throw new Error(
-      `The node "${extensionModule.key}" was not found on extension "${manifest.key}"`,
-    );
-  }
   return {
     key: `${manifest.key}:${extensionModule.key}`,
     title: extensionModule.title || manifest.title,
     description: extensionModule.description || manifest.description,
     icon: extensionModule.icon || manifest.icons['48'],
-    node,
+    node: resolveAction(extensionModule.action, manifest),
   };
 };
 
@@ -69,6 +63,7 @@ export const getItemsFromModule = <T>(
   transformFunction: (value: MenuItem, index: number) => T,
 ): T[] => {
   const groupedMenuItems = getGroupedMenuItems(extensions, moduleType);
+
   return Object.keys(groupedMenuItems).map((key, index) => {
     return transformFunction(groupedMenuItems[key], index);
   });

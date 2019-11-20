@@ -8,18 +8,23 @@ import {
   mountEditor,
 } from '../../__helpers/testing-example-helpers';
 
-const expandContentSelector = '.ak-editor-expand__content p';
+import { expandClassNames } from '../../../plugins/expand/ui/class-names';
+
+const expandContentSelector = `.${expandClassNames.content} p`;
 
 const focusExpandTitle = async (page: any) => {
-  // it doesn't focus input on click directly :(
-  await page.click(expandContentSelector);
-  await page.keys('ArrowUp');
+  await page.browser.execute((selector: string) => {
+    const input = document.querySelector('.' + selector);
+    if (input) {
+      // @ts-ignore
+      input.focus();
+    }
+  }, expandClassNames.titleInput);
 };
 
-const collapseExpand = async (page: any) => {
-  // it doesn't focus input on click directly :(
+const collapseExpandThenFocusTitle = async (page: any) => {
+  await page.click(`.${expandClassNames.icon}`);
   await focusExpandTitle(page);
-  await page.keys('Enter');
 };
 
 BrowserTestCase(
@@ -54,7 +59,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('Backspace');
 
     const doc = await page.$eval(editable, getDocFromElement);
@@ -73,7 +78,8 @@ BrowserTestCase(
       defaultValue: emptyExpandAdf,
       UNSAFE_allowExpand: true,
     });
-    await collapseExpand(page);
+
+    await collapseExpandThenFocusTitle(page);
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
@@ -92,7 +98,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('ArrowDown');
     await page.type(editable, 'abc');
 
@@ -241,7 +247,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('ArrowLeft');
     await page.keys('ArrowDown');
     await page.type(editable, 'title');
@@ -263,7 +269,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('ArrowRight');
     await page.keys('ArrowUp');
     await page.type(editable, 'title');

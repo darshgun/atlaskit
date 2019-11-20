@@ -16,42 +16,34 @@ const manifest: ExtensionManifest = {
         key: 'item',
         title: 'Awesome item',
         icon: () => import('@atlaskit/icon/glyph/tray'),
-        target: 'default',
+        action: {
+          type: 'node',
+          key: 'default',
+          parameters: {
+            item: 'a',
+          },
+        },
       },
       {
         key: 'list',
         title: 'Awesome list',
         icon: () => import('@atlaskit/icon/glyph/tray'),
-        target: 'list',
+        action: {
+          type: 'node',
+          key: 'list',
+          parameters: {
+            items: ['a', 'b', 'c', 'd'],
+          },
+        },
       },
     ],
     nodes: {
       default: {
-        insert: () =>
-          Promise.resolve({
-            type: 'inlineExtension',
-            attrs: {
-              extensionType: 'com.atlassian.forge',
-              extensionKey: 'awesome',
-              parameters: {
-                item: 'a',
-              },
-            },
-          }),
+        type: 'extension',
         render: () => import('./extension-handler'),
       },
       list: {
-        insert: () =>
-          Promise.resolve({
-            type: 'extension',
-            attrs: {
-              extensionType: 'com.atlassian.forge',
-              extensionKey: 'awesome:list',
-              parameters: {
-                items: ['a', 'b', 'c', 'd'],
-              },
-            },
-          }),
+        type: 'extension',
         render: () => import('./extension-handler'),
       },
     },
