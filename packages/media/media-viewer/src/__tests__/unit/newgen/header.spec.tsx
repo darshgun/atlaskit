@@ -394,8 +394,11 @@ describe('<Header />', () => {
           intl={fakeIntl}
           mediaClient={mediaClient}
           identifier={identifier}
-          components={{
-            sidebarRenderer: () => <div />,
+          extensions={{
+            sidebar: {
+              icon: <EditorPanelIcon label="sidebar" />,
+              renderer: () => <div />,
+            },
           }}
         />,
       );

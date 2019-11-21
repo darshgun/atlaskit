@@ -7,8 +7,11 @@ export interface MediaViewerDataSource {
   collectionName?: string;
 }
 
-export interface MediaViewerComponents {
-  sidebarRenderer?: (selectedIdentifier: Identifier) => ReactNode;
+export interface MediaViewerExtensions {
+  sidebar?: {
+    icon: ReactNode;
+    renderer: (selectedIdentifier: Identifier) => ReactNode;
+  };
 }
 
 export interface MediaViewerProps {
@@ -22,5 +25,5 @@ export interface MediaViewerProps {
   readonly onClose?: () => void;
 
   readonly featureFlags?: MediaViewerFeatureFlags;
-  readonly components?: MediaViewerComponents;
+  readonly extensions?: MediaViewerExtensions;
 }

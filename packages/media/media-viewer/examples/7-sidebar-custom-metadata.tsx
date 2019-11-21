@@ -6,6 +6,7 @@ import {
   createStorybookMediaClient,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
+import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
 import { Container, Group, MVSidebar } from '../example-helpers/styled';
 import { imageIdentifier, videoIdentifier } from '../example-helpers';
 import { MediaViewer } from '../src';
@@ -135,8 +136,11 @@ export default class Example extends React.Component<{}, State> {
             collectionName={defaultCollectionName}
             onClose={this.onClose}
             pageSize={5}
-            components={{
-              sidebarRenderer: this.sidebarRenderer,
+            extensions={{
+              sidebar: {
+                renderer: this.sidebarRenderer,
+                icon: <EditorPanelIcon label="sidebar" />,
+              },
             }}
           />
         )}

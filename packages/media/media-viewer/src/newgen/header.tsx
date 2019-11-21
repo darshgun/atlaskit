@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { ReactNode, ReactChild } from 'react';
 import {
   MediaClient,
   FileState,
@@ -18,7 +18,6 @@ import {
   MediaButton,
 } from '@atlaskit/media-ui';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
-import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
 import { Outcome } from './domain';
 import {
   Header as HeaderWrapper,
@@ -36,13 +35,13 @@ import {
   ToolbarDownloadButton,
   DisabledToolbarDownloadButton,
 } from './download';
-import { MediaViewerComponents } from '../components/types';
+import { MediaViewerExtensions } from '../components/types';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly mediaClient: MediaClient;
   readonly onClose?: () => void;
-  readonly components?: MediaViewerComponents;
+  readonly extensions?: MediaViewerExtensions;
   readonly onSidebarButtonClick?: () => void;
 };
 
@@ -134,13 +133,14 @@ export class Header extends React.Component<Props & InjectedIntlProps, State> {
   };
 
   private renderSidebarButton = () => {
-    const { components, onSidebarButtonClick } = this.props;
-    if (components && components.sidebarRenderer) {
+    const { extensions, onSidebarButtonClick } = this.props;
+    if (extensions && extensions.sidebar) {
       return (
         <MediaButton
+          testId="media-viewer-sidebar-button"
           appearance={'toolbar' as any}
           onClick={onSidebarButtonClick}
-          iconBefore={<EditorPanelIcon label="toggle sidebar" />}
+          iconBefore={extensions.sidebar.icon as ReactChild}
         />
       );
     }

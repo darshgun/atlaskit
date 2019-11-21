@@ -21,7 +21,7 @@ import { Collection } from './collection';
 import { Content } from './content';
 import { Blanket, SidebarWrapper } from './styled';
 import { start } from 'perf-marks';
-import { MediaViewerComponents } from '../components/types';
+import { MediaViewerExtensions } from '../components/types';
 
 export type Props = {
   onClose?: () => void;
@@ -29,7 +29,7 @@ export type Props = {
   featureFlags?: MediaViewerFeatureFlags;
   mediaClient: MediaClient;
   itemSource: ItemSource;
-  components?: MediaViewerComponents;
+  extensions?: MediaViewerExtensions;
 } & WithAnalyticsEventsProps;
 
 export interface State {
@@ -105,7 +105,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
   }
 
   renderSidebar = () => {
-    const { components } = this.props;
+    const { extensions } = this.props;
     const { isSidebarVisible, selectedIdentifier } = this.state;
     const sidebardSelectedIdentifier =
       selectedIdentifier || this.defaultSelectedItem;
@@ -113,12 +113,12 @@ export class MediaViewerComponent extends React.Component<Props, State> {
     if (
       sidebardSelectedIdentifier &&
       isSidebarVisible &&
-      components &&
-      components.sidebarRenderer
+      extensions &&
+      extensions.sidebar
     ) {
       return (
         <SidebarWrapper>
-          {components.sidebarRenderer(sidebardSelectedIdentifier)}
+          {extensions.sidebar.renderer(sidebardSelectedIdentifier)}
         </SidebarWrapper>
       );
     }
@@ -145,7 +145,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
   };
 
   private renderContent() {
-    const { mediaClient, onClose, itemSource, components } = this.props;
+    const { mediaClient, onClose, itemSource, extensions } = this.props;
 
     if (itemSource.kind === 'COLLECTION') {
       return (
@@ -155,7 +155,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
           collectionName={itemSource.collectionName}
           mediaClient={mediaClient}
           onClose={onClose}
-          components={components}
+          extensions={extensions}
           onNavigationChange={this.onNavigationChange}
         />
       );
@@ -168,7 +168,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
           items={items}
           mediaClient={mediaClient}
           onClose={onClose}
-          components={components}
+          extensions={extensions}
           onNavigationChange={this.onNavigationChange}
           onSidebarButtonClick={this.toggleSidebar}
         />

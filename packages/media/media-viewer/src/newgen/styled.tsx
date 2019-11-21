@@ -352,7 +352,7 @@ export const SidebarWrapper = styled.div`
   right: 0;
   width: 25%;
   height: 100vh;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: ${DN50};
   color: ${N0};
 `;

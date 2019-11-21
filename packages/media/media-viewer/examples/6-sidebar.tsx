@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
 import AkSpinner from '@atlaskit/spinner';
+import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
 import {
   ExternalImageIdentifier,
   Identifier,
@@ -98,8 +99,11 @@ export default class Example extends React.Component<{}, State> {
             collectionName={defaultCollectionName}
             onClose={this.onClose}
             pageSize={5}
-            components={{
-              sidebarRenderer: this.sidebarRenderer,
+            extensions={{
+              sidebar: {
+                renderer: this.sidebarRenderer,
+                icon: <EditorPanelIcon label="sidebar" />,
+              },
             }}
           />
         )}
