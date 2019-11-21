@@ -1,6 +1,7 @@
 import { decode } from '../../../parser/utils/url';
 
-const raw = 'https://example.com/test%2C,%20, space';
+const raw =
+  'https://example.com/test%2C,%20, space?qu ery=some%20text&query=a%20a,b b,c%2Cc#d,e%2Ce f%20g';
 const origURL = window.URL;
 const origCreateElement = document.createElement;
 
