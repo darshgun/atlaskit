@@ -264,10 +264,7 @@ export default class Page {
 
   async keys(values: string | string[]) {
     const keys = Array.isArray(values) ? values : [values];
-
-    for (let key of keys) {
-      await this.browser.keys(key);
-    }
+    return this.browser.keys(keys);
   }
 
   debug() {
