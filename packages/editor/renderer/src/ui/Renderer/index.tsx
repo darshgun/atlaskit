@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Schema } from 'prosemirror-model';
-import { defaultSchema } from '@atlaskit/adf-schema';
+import { getSchemaBasedOnStage } from '@atlaskit/adf-schema';
 import { reduce } from '@atlaskit/adf-utils';
 import {
   ADFStage,
@@ -189,12 +189,20 @@ export class Renderer extends PureComponent<Props, {}> {
     }
   };
 
+  private getSchema = () => {
+    const { schema, adfStage } = this.props;
+    if (schema) {
+      return schema;
+    }
+
+    return getSchemaBasedOnStage(adfStage);
+  };
+
   render() {
     const {
       document,
       onComplete,
       onError,
-      schema,
       appearance,
       adfStage,
       allowDynamicTextSizing,
@@ -207,7 +215,7 @@ export class Renderer extends PureComponent<Props, {}> {
       const { result, stat } = renderDocument(
         document,
         this.serializer!,
-        schema || defaultSchema,
+        this.getSchema(),
         adfStage,
       );
 

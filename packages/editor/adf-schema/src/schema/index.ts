@@ -14,7 +14,7 @@ export {
   confluenceSchema,
   confluenceSchemaWithMediaSingle,
 } from './confluence-schema';
-export { defaultSchema } from './default-schema';
+export { defaultSchema, getSchemaBasedOnStage } from './default-schema';
 
 export {
   default as createJIRASchema,
