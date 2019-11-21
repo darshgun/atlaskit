@@ -241,6 +241,14 @@ pipelines:
           caches:
             - node
 
+  # This will run the security check using SourceClear acroos the repository.
+    security-check:
+      - step:
+          script:
+            - curl -sSL https://download.sourceclear.com/ci.sh | bash
+          after-script:
+            - yarn send:buildEvents
+
     # This will run the full suite of the webdriver tests on Browserstack.
     build-webdriver:
       - step:
