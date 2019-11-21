@@ -12,6 +12,7 @@ const AvatarItemComponent = styled.div`
   overflow: hidden;
   /* IE 11 needs this prop explicitly to flex items */
   flex: 1 1 auto;
+  min-width: 100px;
 
   & > span {
     box-sizing: border-box;

@@ -95,7 +95,12 @@ export const callCallback = <U extends any[], R>(
   ...args: U
 ): R | undefined => {
   if (typeof callback === 'function') {
-    return callback(...args);
+    try {
+      //  there is mystery error in IE 11, so we need this try-catch
+      return callback(...args);
+    } catch (error) {
+      console.error('An error happening in `callCallback`: ', error);
+    }
   }
 };
 
