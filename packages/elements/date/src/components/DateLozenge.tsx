@@ -10,6 +10,7 @@ export type Props = React.HTMLProps<HTMLSpanElement> & {
 };
 
 type ColoursTuple = [string, string, string];
+
 export const resolveColors = (
   color?: Color,
 ): { light: ColoursTuple; dark: ColoursTuple } => {
@@ -19,11 +20,13 @@ export const resolveColors = (
       dark: [colors.DN70, colors.DN800, colors.DN60],
     };
   }
+  const anyColors = colors as any;
   const letter = color.toUpperCase().charAt(0);
+  // NOTE: This isn't type safe. If colors change their API this may break.
   const resolvedColors: ColoursTuple = [
-    colors[`${letter}50`],
-    colors[`${letter}500`],
-    colors[`${letter}75`],
+    anyColors[`${letter}50`],
+    anyColors[`${letter}500`],
+    anyColors[`${letter}75`],
   ];
   return {
     light: resolvedColors,

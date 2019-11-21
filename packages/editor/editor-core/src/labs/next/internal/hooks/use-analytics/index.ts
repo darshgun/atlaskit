@@ -24,7 +24,7 @@ export function useAnalyticsHandler(
       const handleAnalyticsEvent =
         editorSharedConfigRef &&
         editorSharedConfigRef.current &&
-        editorSharedConfigRef.current.handleAnalyticsEvent;
+        editorSharedConfigRef.current.dispatchAnalyticsEvent;
 
       if (!handleAnalyticsEvent) {
         return;

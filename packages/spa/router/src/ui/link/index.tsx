@@ -2,7 +2,7 @@ import React, { createElement, forwardRef } from 'react';
 import { createPath } from 'history';
 
 import { LinkProps } from '../../common/types';
-import { RouterSubscriber } from '../../controllers';
+import { RouterActions } from '../../controllers';
 
 import {
   handleNavigation,
@@ -25,8 +25,8 @@ const Link = forwardRef<HTMLButtonElement | HTMLAnchorElement, LinkProps>(
     ref,
   ) => {
     return (
-      <RouterSubscriber>
-        {({ location }, { push, replace: replaceAction }) => {
+      <RouterActions>
+        {({ push, replace: replaceAction }) => {
           const validLinkType = getValidLinkType(linkType);
           const linkProps = getPropsForElement(validLinkType, rest);
           const linkTargetProp = href || to || '';
@@ -44,7 +44,6 @@ const Link = forwardRef<HTMLButtonElement | HTMLAnchorElement, LinkProps>(
               replace,
               routerActions,
               href: linkDestination,
-              location,
             });
 
           return createElement(
@@ -60,7 +59,7 @@ const Link = forwardRef<HTMLButtonElement | HTMLAnchorElement, LinkProps>(
             children,
           );
         }}
-      </RouterSubscriber>
+      </RouterActions>
     );
   },
 );

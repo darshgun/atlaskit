@@ -24,6 +24,7 @@ import {
   quickInsertProvider,
 } from '../examples/5-full-page';
 import { Error } from './ErrorReport';
+import { ExtensionProvider } from '../../editor-common/src';
 
 export type Props = {
   actions: EditorActions;
@@ -35,6 +36,7 @@ export type Props = {
   validationTimeout?: number;
   onDocumentChanged?: (adf: any) => void;
   onDocumentValidated?: (errors?: Error[]) => void;
+  extensionProviders?: ExtensionProvider[];
 };
 
 export type State = {
@@ -58,6 +60,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
       disabled,
       primaryToolbarComponents,
       popupMountPoint,
+      extensionProviders,
     } = this.props;
     return (
       <SmartCardProvider>
@@ -89,7 +92,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
           UNSAFE_cards={{
             provider: this.cardProviderPromise,
           }}
-          UNSAFE_allowExpand={true}
+          UNSAFE_allowExpand={{ allowInsertion: true }}
           annotationProvider={{
             component: ExampleInlineCommentComponent,
           }}
@@ -107,6 +110,7 @@ export default class KitchenSinkEditor extends React.Component<Props, State> {
           }}
           insertMenuItems={customInsertMenuItems}
           extensionHandlers={extensionHandlers}
+          extensionProviders={extensionProviders}
           placeholder="Type something here, and watch it render to the side!"
           shouldFocus={true}
           defaultValue={adf}

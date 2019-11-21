@@ -1,5 +1,5 @@
 // @flow
-import parseChangesetCommit from '@atlaskit/build-releases/changeset/parseChangesetCommit';
+import parseChangesetCommit from '@atlaskit/build-utils/parseChangesetCommit';
 
 function commitsToValues(response /*: Object */) {
   return response.values;

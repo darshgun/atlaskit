@@ -2,9 +2,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { InjectedIntl, defineMessages } from 'react-intl';
 import { EditorView, NodeView, Decoration } from 'prosemirror-view';
+import { Selection } from 'prosemirror-state';
 import { colors } from '@atlaskit/theme';
 import Tooltip from '@atlaskit/tooltip';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
+import { keyName } from 'w3c-keyname';
 import {
   Node as PmNode,
   DOMSerializer,
@@ -25,8 +27,10 @@ import {
   updateExpandTitle,
   toggleExpandExpanded,
   selectExpand,
+  deleteExpand,
 } from '../commands';
 import { expandClassNames } from '../ui/class-names';
+import { GapCursorSelection, Side } from '../../../plugins/gap-cursor';
 
 const messages = defineMessages({
   ...expandMessages,
@@ -53,8 +57,15 @@ const toDOM = (node: PmNode, intl?: InjectedIntl): DOMOutputSpec => [
   },
   [
     'div',
-    // prettier-ignore
-    { 'class': expandClassNames.titleContainer, 'contenteditable': 'false' },
+    {
+      // prettier-ignore
+      'class': expandClassNames.titleContainer,
+      contenteditable: 'false',
+      // Element gains access to focus events.
+      // This is needed to prevent PM gaining access
+      // on interacting with our controls.
+      tabindex: '-1',
+    },
     // prettier-ignore
     ['div', { 'class': expandClassNames.icon }],
     [
@@ -91,6 +102,8 @@ export class ExpandNodeView implements NodeView {
   contentDOM?: HTMLElement;
   icon?: HTMLElement | null;
   input?: HTMLInputElement | null;
+  titleContainer?: HTMLElement | null;
+  content?: HTMLElement | null;
   getPos: getPosHandlerNode;
   pos: number;
   reactContext: ReactContext;
@@ -119,6 +132,12 @@ export class ExpandNodeView implements NodeView {
     this.input = this.dom.querySelector<HTMLInputElement>(
       `.${expandClassNames.titleInput}`,
     );
+    this.titleContainer = this.dom.querySelector<HTMLElement>(
+      `.${expandClassNames.titleContainer}`,
+    );
+    this.content = this.dom.querySelector<HTMLElement>(
+      `.${expandClassNames.content}`,
+    );
     this.renderIcon(this.reactContext.intl);
     this.initHandlers();
   }
@@ -128,14 +147,22 @@ export class ExpandNodeView implements NodeView {
       this.dom.addEventListener('click', this.handleClick);
       this.dom.addEventListener('input', this.handleInput);
     }
+    if (this.input) {
+      this.input.addEventListener('keydown', this.handleTitleKeydown);
+    }
+    if (this.titleContainer) {
+      // If the user interacts in our title bar (either toggle or input)
+      // Prevent ProseMirror from getting a focus event (causes weird selection issues).
+      this.titleContainer.addEventListener('focus', this.handleFocus);
+    }
   }
 
-  private renderIcon(intl?: InjectedIntl) {
+  private renderIcon(intl?: InjectedIntl, node?: PmNode) {
     if (!this.icon) {
       return;
     }
 
-    const { __expanded } = this.node.attrs;
+    const { __expanded } = (node && node.attrs) || this.node.attrs;
     const message = __expanded
       ? expandMessages.collapseNode
       : expandMessages.expandNode;
@@ -185,12 +212,128 @@ export class ExpandNodeView implements NodeView {
     }
   };
 
+  private handleFocus = (event: FocusEvent) => {
+    event.stopImmediatePropagation();
+  };
+
+  private handleTitleKeydown = (event: KeyboardEvent) => {
+    switch (keyName(event)) {
+      case 'Enter':
+        this.toggleExpand();
+        break;
+      case 'ArrowDown':
+        if (this.node.attrs.__expanded) {
+          this.moveCursorInsideContent(event);
+        } else {
+          this.moveCursorAfterExpand(event);
+        }
+        break;
+      case 'ArrowRight':
+        this.setRightGapCursor(event);
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        this.setLeftGapCursor(event);
+        break;
+      case 'Backspace':
+        this.deleteExpand(event);
+        break;
+    }
+  };
+
+  private deleteExpand = (event: KeyboardEvent) => {
+    if (!this.input) {
+      return;
+    }
+    const { selectionStart, selectionEnd } = this.input;
+    if (selectionStart === selectionEnd && selectionStart === 0) {
+      this.moveCursorInsideContent(event);
+      deleteExpand()(this.view.state, this.view.dispatch);
+    }
+  };
+
+  private toggleExpand = () => {
+    const { state, dispatch } = this.view;
+    toggleExpandExpanded(this.getPos(), this.node.type)(state, dispatch);
+  };
+
+  private moveCursorInsideContent = (event: KeyboardEvent) => {
+    event.preventDefault();
+    const { state, dispatch } = this.view;
+    const expandPos = this.getPos();
+    if (typeof expandPos !== 'number') {
+      return;
+    }
+    const sel = Selection.findFrom(state.doc.resolve(expandPos), 1, true);
+    if (sel) {
+      // If the input has focus, ProseMirror doesn't
+      // Give PM focus back before changing our selection
+      this.view.focus();
+      dispatch(state.tr.setSelection(sel));
+    }
+  };
+
+  private moveCursorAfterExpand = (event: KeyboardEvent) => {
+    event.preventDefault();
+    const { state, dispatch } = this.view;
+    const expandPos = this.getPos();
+    if (typeof expandPos !== 'number') {
+      return;
+    }
+    const sel = Selection.findFrom(
+      state.doc.resolve(expandPos + this.node.nodeSize),
+      1,
+      true,
+    );
+    if (sel) {
+      this.view.focus();
+      dispatch(state.tr.setSelection(sel));
+    }
+  };
+
+  private setRightGapCursor = (event: KeyboardEvent) => {
+    if (!this.input) {
+      return;
+    }
+    const { value, selectionStart, selectionEnd } = this.input;
+    if (selectionStart === selectionEnd && selectionStart === value.length) {
+      const { state, dispatch } = this.view;
+      event.preventDefault();
+      this.view.focus();
+      dispatch(
+        state.tr.setSelection(
+          new GapCursorSelection(
+            state.doc.resolve(this.node.nodeSize + this.getPos()),
+            Side.RIGHT,
+          ),
+        ),
+      );
+    }
+  };
+
+  private setLeftGapCursor = (event: KeyboardEvent) => {
+    if (!this.input) {
+      return;
+    }
+    const { selectionStart, selectionEnd } = this.input;
+    if (selectionStart === selectionEnd && selectionStart === 0) {
+      event.preventDefault();
+      const { state, dispatch } = this.view;
+      this.view.focus();
+      dispatch(
+        state.tr.setSelection(
+          new GapCursorSelection(state.doc.resolve(this.getPos()), Side.LEFT),
+        ),
+      );
+    }
+  };
+
   stopEvent(event: Event) {
     const target = event.target as HTMLElement;
     return (
       target === this.input ||
       target === this.icon ||
-      target.nodeName === 'SPAN'
+      !!closestElement(target, `.${expandClassNames.icon}`)
     );
   }
 
@@ -200,11 +343,18 @@ export class ExpandNodeView implements NodeView {
 
   update(node: PmNode, _decorations: Array<Decoration>) {
     if (this.node.type === node.type) {
-      if (this.node.attrs.__expanded !== node.attrs.__expanded && this.dom) {
+      if (this.node.attrs.__expanded !== node.attrs.__expanded) {
         // Instead of re-rendering the view on an expand toggle
         // we toggle a class name to hide the content and animate the chevron.
-        this.dom.classList.toggle(expandClassNames.expanded);
-        this.renderIcon(this.reactContext && this.reactContext.intl);
+        if (this.dom) {
+          this.dom.classList.toggle(expandClassNames.expanded);
+          this.renderIcon(this.reactContext && this.reactContext.intl, node);
+        }
+
+        if (this.content) {
+          // Disallow interaction/selection inside when collapsed.
+          this.content.setAttribute('contenteditable', node.attrs.__expanded);
+        }
       }
 
       // During a collab session the title doesn't sync with other users
@@ -227,6 +377,13 @@ export class ExpandNodeView implements NodeView {
       this.dom.removeEventListener('click', this.handleClick);
       this.dom.removeEventListener('input', this.handleInput);
     }
+    if (this.input) {
+      this.input.removeEventListener('keydown', this.handleTitleKeydown);
+    }
+
+    if (this.titleContainer) {
+      this.titleContainer.removeEventListener('focus', this.handleFocus);
+    }
 
     if (this.icon) {
       ReactDOM.unmountComponentAtNode(this.icon);
@@ -236,6 +393,8 @@ export class ExpandNodeView implements NodeView {
     this.contentDOM = undefined;
     this.icon = undefined;
     this.input = undefined;
+    this.titleContainer = undefined;
+    this.content = undefined;
   }
 }
 

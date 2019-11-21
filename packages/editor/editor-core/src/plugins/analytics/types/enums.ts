@@ -32,6 +32,7 @@ export enum ACTION {
   SLOW_INPUT = 'slowInput',
   UPLOAD_EXTERNAL_FAIL = 'uploadExternalFailed',
   INPUT_PERF_SAMPLING = 'inputPerfSampling',
+  HELP_OPENED = 'helpOpened',
 }
 
 export enum INPUT_METHOD {
@@ -73,6 +74,7 @@ export enum ACTION_SUBJECT {
   TABLE = 'table',
   EXPAND = 'expand',
   NESTED_EXPAND = 'nestedExpand',
+  HELP = 'help',
 }
 
 export enum ACTION_SUBJECT_ID {
@@ -80,6 +82,7 @@ export enum ACTION_SUBJECT_ID {
   ANNOTATE_BUTTON = 'annotateButton',
   BLOCK_QUOTE = 'blockQuote',
   BUTTON_HELP = 'helpButton',
+  HELP_QUICK_INSERT = 'helpQuickInsert',
   BUTTON_FEEDBACK = 'feedbackButton',
   CANCEL = 'cancel',
   CARD_INLINE = 'inlineCard',

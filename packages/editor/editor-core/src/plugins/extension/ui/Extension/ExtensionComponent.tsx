@@ -12,19 +12,24 @@ import Extension from './Extension';
 import {
   ExtensionHandlers,
   getExtensionRenderer,
+  getNodeRenderer,
+  ExtensionProvider,
+  Providers,
 } from '@atlaskit/editor-common';
 import { setNodeSelection } from '../../../../utils';
 
 export interface Props {
   editorView: EditorView;
-  macroProvider?: Promise<MacroProvider>;
+  providers: Providers;
   node: PMNode;
   handleContentDOMRef: (node: HTMLElement | null) => void;
   extensionHandlers: ExtensionHandlers;
 }
 
 export interface State {
+  extensionProvider?: ExtensionProvider;
   macroProvider?: MacroProvider;
+  extensionHandlersFromProvider?: ExtensionHandlers;
 }
 
 export default class ExtensionComponent extends Component<Props, State> {
@@ -36,9 +41,10 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { macroProvider } = this.props;
-    if (macroProvider) {
-      macroProvider.then(this.handleMacroProvider);
+    const { providers } = this.props;
+
+    if (providers) {
+      this.handleProviders(providers);
     }
   }
 
@@ -47,14 +53,10 @@ export default class ExtensionComponent extends Component<Props, State> {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { macroProvider } = nextProps;
+    const { providers } = nextProps;
 
-    if (this.props.macroProvider !== macroProvider) {
-      if (macroProvider) {
-        macroProvider.then(this.handleMacroProvider);
-      } else {
-        this.setState({ macroProvider });
-      }
+    if (providers && this.props.providers !== providers) {
+      this.handleProviders(providers);
     }
   }
 
@@ -88,10 +90,27 @@ export default class ExtensionComponent extends Component<Props, State> {
     }
   }
 
-  private handleMacroProvider = (macroProvider: MacroProvider) => {
-    if (this.mounted) {
-      this.setState({ macroProvider });
-    }
+  private setStateFromPromise = (
+    stateKey: keyof State,
+    promise?: Promise<any>,
+  ) => {
+    promise &&
+      promise.then(p => {
+        if (!this.mounted) {
+          return;
+        }
+
+        this.setState({
+          [stateKey]: p,
+        });
+      });
+  };
+
+  private handleProviders = (providers: Providers) => {
+    const { macroProvider, extensionProvider } = providers;
+
+    this.setStateFromPromise('macroProvider', macroProvider);
+    this.setStateFromPromise('extensionProvider', extensionProvider);
   };
 
   private handleSelectExtension = (hasBody: boolean) => {
@@ -137,27 +156,43 @@ export default class ExtensionComponent extends Component<Props, State> {
     const { extensionType, extensionKey, parameters, text } = node.attrs;
     const isBodiedExtension = node.type.name === 'bodiedExtension';
 
-    if (
-      !extensionHandlers ||
-      !extensionHandlers[extensionType] ||
-      isBodiedExtension
-    ) {
+    if (isBodiedExtension) {
       return;
     }
 
-    const render = getExtensionRenderer(extensionHandlers[extensionType]);
-    return render(
-      {
-        type: node.type.name as
-          | 'extension'
-          | 'inlineExtension'
-          | 'bodiedExtension',
-        extensionType,
-        extensionKey,
-        parameters,
-        content: text,
-      },
-      editorView.state.doc,
-    );
+    const extensionParams = {
+      type: node.type.name as
+        | 'extension'
+        | 'inlineExtension'
+        | 'bodiedExtension',
+      extensionType,
+      extensionKey,
+      parameters,
+      content: text,
+    };
+
+    let result;
+
+    if (extensionHandlers && extensionHandlers[extensionType]) {
+      const render = getExtensionRenderer(extensionHandlers[extensionType]);
+      result = render(extensionParams, editorView.state.doc);
+    }
+
+    if (!result) {
+      const extensionHandlerFromProvider =
+        this.state.extensionProvider &&
+        getNodeRenderer(
+          this.state.extensionProvider,
+          extensionType,
+          extensionKey,
+        );
+
+      if (extensionHandlerFromProvider) {
+        const NodeRenderer = extensionHandlerFromProvider;
+        return <NodeRenderer extensionParams={extensionParams} />;
+      }
+    }
+
+    return result;
   };
 }

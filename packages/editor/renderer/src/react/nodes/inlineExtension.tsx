@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { RendererContext } from '..';
 import { renderNodes, Serializer } from '../..';
+import ExtensionRenderer from '../../ui/ExtensionRenderer';
+
 import {
   ADNode,
   ExtensionHandlers,
-  getExtensionRenderer,
+  ProviderFactory,
 } from '@atlaskit/editor-common';
 
 export interface Props {
   serializer: Serializer<any>;
   extensionHandlers?: ExtensionHandlers;
+  providers: ProviderFactory;
   rendererContext: RendererContext;
   extensionType: string;
   extensionKey: string;
@@ -17,51 +20,37 @@ export interface Props {
   parameters?: any;
 }
 
-const InlineExtension: React.StatelessComponent<Props> = ({
-  serializer,
-  extensionHandlers,
-  rendererContext,
-  extensionType,
-  extensionKey,
-  parameters,
-  text,
-}) => {
-  try {
-    if (extensionHandlers && extensionHandlers[extensionType]) {
-      const render = getExtensionRenderer(extensionHandlers[extensionType]);
-      const content = render(
-        {
-          type: 'inlineExtension',
-          extensionKey,
-          extensionType,
-          parameters,
-          content: text,
-        },
-        rendererContext.adDoc,
-      );
+const InlineExtension: React.StatelessComponent<Props> = props => {
+  const { serializer, rendererContext, text } = props;
 
-      switch (true) {
-        case content && React.isValidElement(content):
-          // Return the content directly if it's a valid JSX.Element
-          return <span>{content}</span>;
-        case !!content:
-          // We expect it to be Atlassian Document here
-          const nodes = Array.isArray(content) ? content : [content];
-          return renderNodes(
-            nodes as ADNode[],
-            serializer,
-            rendererContext.schema,
-            'span',
-          );
-      }
-    }
-  } catch (e) {
-    /** We don't want this error to block renderer */
-    /** We keep rendering the default content */
-  }
+  return (
+    <ExtensionRenderer {...props} type="inlineExtension">
+      {({ result }) => {
+        try {
+          switch (true) {
+            case result && React.isValidElement(result):
+              // Return the result directly if it's a valid JSX.Element
+              return <span>{result}</span>;
+            case !!result:
+              // We expect it to be Atlassian Document here
+              const nodes = Array.isArray(result) ? result : [result];
+              return renderNodes(
+                nodes as ADNode[],
+                serializer,
+                rendererContext.schema,
+                'span',
+              );
+          }
+        } catch (e) {
+          /** We don't want this error to block renderer */
+          /** We keep rendering the default content */
+        }
 
-  // Always return default content if anything goes wrong
-  return <span>{text || 'inlineExtension'}</span>;
+        // Always return default content if anything goes wrong
+        return <span>{text || 'inlineExtension'}</span>;
+      }}
+    </ExtensionRenderer>
+  );
 };
 
 export default InlineExtension;

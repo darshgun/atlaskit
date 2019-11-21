@@ -2,14 +2,8 @@ import { Node } from 'prosemirror-model';
 import { UploadParams } from '@atlaskit/media-picker/types';
 import { MediaClientConfig } from '@atlaskit/media-core';
 import { EmojiProvider } from '@atlaskit/emoji/types';
-import { MentionProvider } from '@atlaskit/mention/types';
-export {
-  ExtensionParams,
-  ExtensionHandler,
-  UpdateExtension,
-  Extension,
-  ExtensionHandlers,
-} from './extension-handler';
+import { MentionProvider } from '@atlaskit/mention';
+import { ExtensionProvider } from '../extensions';
 
 export interface Transformer<T> {
   encode(node: Node): T;
@@ -21,6 +15,7 @@ export interface Providers {
   mediaProvider?: Promise<MediaProvider>;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  extensionProvider?: Promise<ExtensionProvider>;
   [key: string]: Promise<any> | undefined;
 }
 

@@ -2,7 +2,7 @@ import {
   getLinkMatch,
   normalizeUrl,
 } from '../../../../plugins/hyperlink/utils';
-import { activityProviderFactory } from '@atlaskit/editor-test-helpers';
+import { activityProviderFactory } from '@atlaskit/editor-test-helpers/activity-provider';
 import { ProviderFactory } from '@atlaskit/editor-common';
 
 /**

@@ -11,6 +11,13 @@ import { expandClassNames } from '../ui/class-names';
 
 export const pluginKey = new PluginKey('expandPlugin');
 
+function containsClass(
+  element: Element | null,
+  className: string,
+): element is Element {
+  return !!element && element.classList.contains(className);
+}
+
 const { createPluginState, createCommand, getPluginState } = pluginFactory(
   pluginKey,
   reducer,
@@ -30,13 +37,26 @@ export const createPlugin = (
         expand: ExpandNodeView(reactContext),
         nestedExpand: ExpandNodeView(reactContext),
       },
+      handleKeyDown(_view, event) {
+        return containsClass(
+          event.target as Element,
+          expandClassNames.titleContainer,
+        );
+      },
+      handleKeyPress(_view, event) {
+        return containsClass(
+          event.target as Element,
+          expandClassNames.titleContainer,
+        );
+      },
     },
     // @see ED-8027 to follow up on this work-around
     filterTransaction(tr) {
-      if (document && document.activeElement && tr.selectionSet) {
-        return !document.activeElement.classList.contains(
-          expandClassNames.titleInput,
-        );
+      if (
+        containsClass(document.activeElement, expandClassNames.titleInput) &&
+        tr.selectionSet
+      ) {
+        return false;
       }
       return true;
     },
