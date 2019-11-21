@@ -136,7 +136,6 @@ describe('<MediaViewer />', () => {
     });
   });
 
-  // TODO: cleanup/add more tests
   describe('Sidebar integration', () => {
     function MySidebarContent(props: any) {
       return <div />;

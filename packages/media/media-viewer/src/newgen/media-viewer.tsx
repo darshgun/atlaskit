@@ -157,6 +157,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
           onClose={onClose}
           extensions={extensions}
           onNavigationChange={this.onNavigationChange}
+          onSidebarButtonClick={this.toggleSidebar}
         />
       );
     } else if (itemSource.kind === 'ARRAY') {

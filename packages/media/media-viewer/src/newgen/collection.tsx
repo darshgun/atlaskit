@@ -24,6 +24,7 @@ export type Props = Readonly<
     pageSize: number;
     onNavigationChange?: (selectedItem: Identifier) => void;
     extensions?: MediaViewerExtensions;
+    onSidebarButtonClick?: () => void;
   } & WithShowControlMethodProp
 >;
 
@@ -61,6 +62,7 @@ export class Collection extends React.Component<Props, State> {
       collectionName,
       showControls,
       extensions,
+      onSidebarButtonClick,
     } = this.props;
 
     return this.state.items.match({
@@ -80,6 +82,7 @@ export class Collection extends React.Component<Props, State> {
             onNavigationChange={this.onNavigationChange}
             showControls={showControls}
             extensions={extensions}
+            onSidebarButtonClick={onSidebarButtonClick}
           />
         );
       },
