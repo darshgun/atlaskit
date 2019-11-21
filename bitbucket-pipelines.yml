@@ -241,9 +241,11 @@ pipelines:
           caches:
             - node
 
-  # This will run the security check using SourceClear acroos the repository.
+    # This will run the security check using SourceClear acroos the repository.
+    # We need to pull a new docker image to avoid installing curl.
     security-check:
       - step:
+          image: node:10
           script:
             - curl -sSL https://download.sourceclear.com/ci.sh | bash
           after-script:
