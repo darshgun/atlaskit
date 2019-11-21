@@ -167,7 +167,7 @@ export default class Item extends Component<Props, {}> {
         }
 
         // if default is prevented - do not fire other handlers
-        // this can happen if the even is used for rbd
+        // this can happen if the event is used for drag and drop by rbd
         if (event.defaultPrevented) {
           return;
         }
