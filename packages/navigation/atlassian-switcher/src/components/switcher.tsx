@@ -307,6 +307,45 @@ export default class Switcher extends React.Component<SwitcherProps> {
               </NavigationAnalyticsContext>
             ))}
           </Section>
+          <Section
+            sectionId="join"
+            title={<FormattedMessage {...messages.join} />}
+          >
+            {joinableSiteLinks.map(
+              (
+                { cloudId, description, href, Icon, label, productType, users },
+                groupIndex: number,
+              ) => (
+                <NavigationAnalyticsContext
+                  key={groupIndex}
+                  data={getItemAnalyticsContext(
+                    groupIndex,
+                    cloudId,
+                    'join',
+                    href,
+                    productType,
+                  )}
+                >
+                  <ItemWithAvatarGroup
+                    icon={<Icon theme="product" />}
+                    description={description}
+                    users={users}
+                    href={href}
+                    onItemClick={(event: React.SyntheticEvent) => {
+                      if (onJoinableSiteClicked) {
+                        event.preventDefault();
+                        onJoinableSiteClicked(href);
+                      }
+                    }}
+                    target={onJoinableSiteClicked ? undefined : '_blank'}
+                    rel={onJoinableSiteClicked ? undefined : 'noreferrer'}
+                  >
+                    {label}
+                  </ItemWithAvatarGroup>
+                </NavigationAnalyticsContext>
+              ),
+            )}
+          </Section>
           )}
           {isDiscoverSectionEnabled && (
             <Section
@@ -366,45 +405,6 @@ export default class Switcher extends React.Component<SwitcherProps> {
               ))}
             </Section>
           )}
-          <Section
-            sectionId="join"
-            title={<FormattedMessage {...messages.join} />}
-          >
-            {joinableSiteLinks.map(
-              (
-                { cloudId, description, href, Icon, label, productType, users },
-                groupIndex: number,
-              ) => (
-                <NavigationAnalyticsContext
-                  key={groupIndex}
-                  data={getItemAnalyticsContext(
-                    groupIndex,
-                    cloudId,
-                    'join',
-                    href,
-                    productType,
-                  )}
-                >
-                  <ItemWithAvatarGroup
-                    icon={<Icon theme="product" />}
-                    description={description}
-                    users={users}
-                    href={href}
-                    onItemClick={(event: React.SyntheticEvent) => {
-                      if (onJoinableSiteClicked) {
-                        event.preventDefault();
-                        onJoinableSiteClicked(href);
-                      }
-                    }}
-                    target={onJoinableSiteClicked ? undefined : '_blank'}
-                    rel={onJoinableSiteClicked ? undefined : 'noreferrer'}
-                  >
-                    {label}
-                  </ItemWithAvatarGroup>
-                </NavigationAnalyticsContext>
-              ),
-            )}
-          </Section>
           <Section
             sectionId="recent"
             title={
