@@ -68,32 +68,34 @@ describe(`${name} - Item`, () => {
       });
 
       describe('with drag and drop', () => {
-        it('should call the original onClick', () => {
-          const dnd = {
-            draggableProps: {},
-            dragHandleProps: {},
-            innerRef: () => {},
-          };
-          const onClick = jest.fn();
-          const wrapper = mount(<Item onClick={onClick} dnd={dnd} />);
+        describe('react-beautiful-dnd support 10.x - 12.x', () => {
+          it('should call the original function rbd does not prevent the click', () => {
+            const onClick = jest.fn();
+            const dnd = {
+              draggableProps: {},
+              dragHandleProps: {},
+              innerRef: () => {},
+            };
+            const wrapper = mount(<Item onClick={onClick} dnd={dnd} />);
 
-          wrapper.simulate('click');
+            wrapper.simulate('click');
 
-          expect(onClick).toHaveBeenCalled();
-        });
+            expect(onClick).toHaveBeenCalled();
+          });
 
-        it('should not call the onClick prop if the dnd prevents the default', () => {
-          const onClick = jest.fn();
-          const dnd = {
-            draggableProps: {},
-            dragHandleProps: {},
-            innerRef: () => {},
-          };
-          const wrapper = mount(<Item onClick={onClick} dnd={dnd} />);
+          it('should not call the onclick prop if the rbd prevents the click', () => {
+            const onClick = jest.fn();
+            const dnd = {
+              draggableProps: {},
+              dragHandleProps: {},
+              innerRef: () => {},
+            };
+            const wrapper = mount(<Item onClick={onClick} dnd={dnd} />);
 
-          wrapper.simulate('click', { defaultPrevented: true });
+            wrapper.simulate('click', { defaultPrevented: true });
 
-          expect(onClick).not.toHaveBeenCalled();
+            expect(onClick).not.toHaveBeenCalled();
+          });
         });
       });
     });
@@ -106,6 +108,38 @@ describe(`${name} - Item`, () => {
         wrapper.simulate('mousedown', event);
 
         expect(event.preventDefault).toHaveBeenCalled();
+      });
+
+      describe('react-beautiful-dnd 10.x and 11.x API', () => {
+        it('should fire the drag and drop handler if provided', () => {
+          const dnd = {
+            dragHandleProps: {
+              onMouseDown: jest.fn(),
+            },
+            innerRef: () => {},
+            draggableProps: {},
+          };
+          const wrapper = mount(<Item dnd={dnd} />);
+
+          wrapper.simulate('mousedown');
+
+          expect(dnd.dragHandleProps.onMouseDown).toHaveBeenCalled();
+        });
+
+        it('should call the dragHandle function even if disabled - dnd has its own disabled mechanism', () => {
+          const dnd = {
+            dragHandleProps: {
+              onMouseDown: jest.fn(),
+            },
+            innerRef: () => {},
+            draggableProps: {},
+          };
+          const wrapper = mount(<Item dnd={dnd} isDisabled />);
+
+          wrapper.simulate('mousedown');
+
+          expect(dnd.dragHandleProps.onMouseDown).toHaveBeenCalled();
+        });
       });
     });
 
@@ -137,34 +171,122 @@ describe(`${name} - Item`, () => {
       });
 
       describe('with drag and drop', () => {
-        it('should not call the original function if the dragHandle prevents the default', () => {
-          const dnd = {
-            dragHandleProps: {},
-            innerRef: () => {},
-            draggableProps: {},
-          };
-          const onKeyDown = jest.fn();
-          const wrapper = mount(<Item dnd={dnd} onKeyDown={onKeyDown} />);
+        describe('react-beautiful-dnd 12.x API', () => {
+          it('should not call the original function if the rbd prevents the default', () => {
+            const dnd = {
+              dragHandleProps: {},
+              innerRef: () => {},
+              draggableProps: {},
+            };
+            const onKeyDown = jest.fn();
+            const wrapper = mount(<Item dnd={dnd} onKeyDown={onKeyDown} />);
 
-          wrapper.simulate('keydown', { defaultPrevented: true });
+            wrapper.simulate('keydown', { defaultPrevented: true });
 
-          expect(onKeyDown).not.toHaveBeenCalled();
+            expect(onKeyDown).not.toHaveBeenCalled();
+          });
         });
 
-        it('should not call the original function if the item is dragging', () => {
-          const dnd = {
-            dragHandleProps: {},
-            innerRef: () => {},
-            draggableProps: {},
-          };
-          const onKeyDown = jest.fn();
-          const wrapper = mount(
-            <Item dnd={dnd} onKeyDown={onKeyDown} isDragging />,
-          );
+        describe('react-beautiful-dnd 10.x and 11.x API', () => {
+          it('should call the original function if no dragHandle onKeyDown is provided', () => {
+            const dnd = {
+              dragHandleProps: undefined,
+              innerRef: () => {},
+              draggableProps: {},
+            };
+            const onKeyDown = jest.fn();
+            const wrapper = mount(<Item dnd={dnd} onKeyDown={onKeyDown} />);
 
-          wrapper.simulate('keydown');
+            wrapper.simulate('keydown');
 
-          expect(onKeyDown).not.toHaveBeenCalled();
+            expect(onKeyDown).toHaveBeenCalled();
+          });
+
+          it('should execute the dragHandle function if provided', () => {
+            const dnd = {
+              dragHandleProps: {
+                onKeyDown: jest.fn(
+                  (event: KeyboardEvent) => event.preventDefault,
+                ),
+              },
+              innerRef: () => {},
+              draggableProps: {},
+            };
+            const wrapper = mount(<Item dnd={dnd} />);
+
+            wrapper.simulate('keydown');
+
+            expect(dnd.dragHandleProps.onKeyDown).toHaveBeenCalled();
+          });
+
+          it('should call the dragHandle function even if disabled - dnd has its own disabled mechanism', () => {
+            const dnd = {
+              dragHandleProps: {
+                onKeyDown: jest.fn(
+                  (event: KeyboardEvent) => event.preventDefault,
+                ),
+              },
+              innerRef: () => {},
+              draggableProps: {},
+            };
+            const wrapper = mount(<Item dnd={dnd} isDisabled />);
+
+            wrapper.simulate('keydown');
+
+            expect(dnd.dragHandleProps.onKeyDown).toHaveBeenCalled();
+          });
+
+          it('should not call the original function if the dragHandle prevents the default', () => {
+            const dnd = {
+              dragHandleProps: {
+                onKeyDown: jest.fn((event: KeyboardEvent) =>
+                  event.preventDefault(),
+                ),
+              },
+              innerRef: () => {},
+              draggableProps: {},
+            };
+            const onKeyDown = jest.fn();
+            const wrapper = mount(<Item dnd={dnd} onKeyDown={onKeyDown} />);
+
+            wrapper.simulate('keydown');
+
+            expect(onKeyDown).not.toHaveBeenCalled();
+          });
+
+          it('should not call the original function if the item is dragging', () => {
+            const dnd = {
+              dragHandleProps: {
+                onKeyDown: jest.fn(),
+              },
+              innerRef: () => {},
+              draggableProps: {},
+            };
+            const onKeyDown = jest.fn();
+            const wrapper = mount(
+              <Item dnd={dnd} onKeyDown={onKeyDown} isDragging />,
+            );
+
+            wrapper.simulate('keydown');
+
+            expect(onKeyDown).not.toHaveBeenCalled();
+          });
+
+          it('should call the original function if the dragHandle does not prevent default', () => {
+            const dnd = {
+              dragHandleProps: {
+                onKeyDown: jest.fn(),
+              },
+              innerRef: () => {},
+              draggableProps: {},
+            };
+            const onKeyDown = jest.fn();
+            const wrapper = mount(<Item dnd={dnd} onKeyDown={onKeyDown} />);
+
+            wrapper.simulate('keydown');
+
+            expect(onKeyDown).toHaveBeenCalled();
+          });
         });
       });
     });
