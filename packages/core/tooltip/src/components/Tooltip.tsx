@@ -94,6 +94,8 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
   cancelPendingSetState = () => {};
 
+  userInteraction: 'mouse' | 'keyboard' = 'mouse';
+
   state = {
     immediatelyHide: false,
     immediatelyShow: false,
@@ -104,7 +106,6 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
   componentWillUnmount() {
     this.cancelPendingSetState();
     this.removeScrollListener();
-    this.removeKeyboardListeners();
   }
 
   componentDidUpdate(_prevProps: TooltipProps, prevState: TooltipState) {
@@ -151,8 +152,13 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
   };
 
-  handleMouseOver = (e: React.MouseEvent | FocusEvent) => {
+  handleShowTooltip = (e: React.MouseEvent | FocusEvent) => {
     if (e.target === this.wrapperRef) return;
+    // If clientX exists we are interacting with the mouse.
+    // Else we are interacting with the keyboard.
+    // We use this later when rendering so we turn off the mouse positioning when interacting with keyboard.
+    this.userInteraction = 'clientX' in e ? 'mouse' : 'keyboard';
+
     // In the case where a tooltip is newly rendered but immediately becomes hovered,
     // we need to set the coordinates in the mouseOver event.
     if (!this.fakeMouseElement)
@@ -172,7 +178,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
   };
 
-  handleMouseLeave = (e: React.MouseEvent | FocusEvent) => {
+  handleHideTooltip = (e: React.MouseEvent | FocusEvent) => {
     if (e.target === this.wrapperRef) return;
     this.cancelPendingSetState();
     if (this.state.isVisible) {
@@ -196,31 +202,27 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
   };
 
-  addKeyboardListeners = () => {
-    if (!this.targetRef) {
-      return;
-    }
-
-    this.removeKeyboardListeners();
-    this.targetRef.addEventListener('focus', this.handleMouseOver);
-    this.targetRef.addEventListener('blur', this.handleMouseLeave);
+  addKeyboardListeners = (ref: HTMLElement) => {
+    ref.addEventListener('focus', this.handleShowTooltip);
+    ref.addEventListener('blur', this.handleHideTooltip);
   };
 
-  removeKeyboardListeners = () => {
-    if (!this.targetRef) {
-      return;
-    }
-
-    this.targetRef.removeEventListener('focus', this.handleMouseOver);
-    this.targetRef.removeEventListener('blur', this.handleMouseLeave);
+  removeKeyboardListeners = (ref: HTMLElement) => {
+    ref.removeEventListener('focus', this.handleShowTooltip);
+    ref.removeEventListener('blur', this.handleHideTooltip);
   };
+
+  shouldPositionTooltipNearMouse() {
+    const { position } = this.props;
+    return position === 'mouse' && this.userInteraction === 'mouse';
+  }
 
   render() {
     const {
       children,
-      content,
       position,
       mousePosition,
+      content,
       truncate,
       component: TooltipContainer,
       tag: TargetContainer,
@@ -233,14 +235,17 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
       immediatelyShow,
       immediatelyHide,
     } = this.state;
+
+    const tooltipPosition = position === 'mouse' ? mousePosition : position;
+
     return (
       /* eslint-disable jsx-a11y/mouse-events-have-key-events */
       <React.Fragment>
         {TargetContainer && (
           <TargetContainer
             onClick={this.handleMouseClick}
-            onMouseOver={this.handleMouseOver}
-            onMouseOut={this.handleMouseLeave}
+            onMouseOver={this.handleShowTooltip}
+            onMouseOut={this.handleHideTooltip}
             onMouseMove={this.handleMouseMove}
             onMouseDown={this.handleMouseDown}
             ref={(wrapperRef: HTMLElement) => {
@@ -248,9 +253,21 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
             }}
           >
             <NodeResolver
-              innerRef={(targetRef: HTMLElement | null) => {
-                this.targetRef = targetRef;
-                this.addKeyboardListeners();
+              innerRef={(ref: HTMLElement | null) => {
+                if (this.targetRef) {
+                  // If the instance property target ref is already defined
+                  // let's clean it up first.
+                  this.removeKeyboardListeners(this.targetRef);
+                }
+
+                // After maybe cleaning up let's now re-write the instance property
+                // with the new ref.
+                this.targetRef = ref;
+
+                if (ref) {
+                  // If the ref is defined let's add keyboard listeners to it!
+                  this.addKeyboardListeners(ref);
+                }
               }}
             >
               {React.Children.only(children)}
@@ -261,14 +278,14 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
         {renderTooltip && this.targetRef && this.fakeMouseElement ? (
           <Portal zIndex={layers.tooltip()}>
             <Popper
+              placement={tooltipPosition}
               referenceElement={
                 // https://github.com/FezVrasta/react-popper#usage-without-a-reference-htmlelement
                 // We are using a popper technique to pass in a faked element when we use mouse.
-                (position === 'mouse'
+                (this.shouldPositionTooltipNearMouse()
                   ? this.fakeMouseElement
                   : this.targetRef) as HTMLElement
               }
-              placement={position === 'mouse' ? mousePosition : position}
             >
               {({ ref, style, placement }) =>
                 TooltipContainer && (
@@ -288,6 +305,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
                           ...style,
                         }}
                         truncate={truncate || false}
+                        data-placement={tooltipPosition}
                         data-testid={testId}
                       >
                         {content}
