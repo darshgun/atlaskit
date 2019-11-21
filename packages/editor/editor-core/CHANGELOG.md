@@ -1,5 +1,32 @@
 # @atlaskit/editor-core
 
+## 114.1.3
+
+### Patch Changes
+
+- [patch][aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  ED-8042 upgrade prosemirror-markdown to remove ES modules workaround- Updated dependencies [aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  - @atlaskit/editor-bitbucket-transformer@6.2.9
+  - @atlaskit/editor-markdown-transformer@3.1.11
+
+## 114.1.2
+
+### Patch Changes
+
+- [patch][f4b7363a8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4b7363a8e):
+
+  ED-8137: Fix rendering of hyperlink toolbar without any activity provider set
+
+## 114.1.1
+
+### Patch Changes
+
+- [patch][a76c0e3081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a76c0e3081):
+
+  ED-8042 fix: bump markdown-it and prosemirror-markdown to avoid ReDoS vulnerability
+
 ## 114.1.0
 
 ### Minor Changes

@@ -28,17 +28,15 @@ export default class Toolbar extends React.PureComponent<Props, {}> {
       <WithProviders
         providers={['activityProvider']}
         providerFactory={providerFactory}
-        renderNode={({ activityProvider }) =>
-          activityProvider ? (
-            <HyperlinkAddToolbar
-              provider={activityProvider}
-              onSubmit={onSubmit}
-              onBlur={onBlur}
-              displayText={displayText || ''}
-              displayUrl={displayUrl}
-            />
-          ) : null
-        }
+        renderNode={({ activityProvider }) => (
+          <HyperlinkAddToolbar
+            provider={activityProvider}
+            onSubmit={onSubmit}
+            onBlur={onBlur}
+            displayText={displayText || ''}
+            displayUrl={displayUrl}
+          />
+        )}
       />
     );
   }
