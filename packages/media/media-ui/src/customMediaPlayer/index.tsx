@@ -277,6 +277,7 @@ export class CustomMediaPlayer extends Component<
       onCanPlay,
       onError,
     } = this.props;
+    const { isFullScreenEnabled } = this.state;
 
     return (
       <CustomVideoWrapper innerRef={this.saveVideoWrapperRef}>
@@ -313,7 +314,7 @@ export class CustomMediaPlayer extends Component<
                 onClick={toggleButtonAction}
               />
             );
-            const shortcuts = isShortcutEnabled && [
+            const shortcuts = (isShortcutEnabled || isFullScreenEnabled) && [
               <Shortcut
                 key="space-shortcut"
                 keyCode={keyCodes.space}
