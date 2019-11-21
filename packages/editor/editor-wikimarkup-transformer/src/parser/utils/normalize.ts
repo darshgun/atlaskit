@@ -4,8 +4,6 @@ import {
   createEmptyParagraphNode,
 } from '../nodes/paragraph';
 
-const WHITE_SPACE_REGEXP = /^[ \t]*$/;
-
 export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
   return [normalizeMediaGroups, normalizeInlineNodes].reduce(
     (currentNodes, normFunc) => normFunc(currentNodes, schema),
