@@ -13,9 +13,9 @@ export const linkText: TokenParser = ({ input, position, schema }) => {
 
   // Remove mailto:
   const textRepresentation = match[1] === 'mailto:' ? match[2] : match[0];
-  // the URL class will correctly encode any illegal characters, and
+  // parse and correctly encode any illegal characters, and
   // so no longer need to be encoded when used below
-  const url = new URL(unescape(match[0])).href;
+  const url = decode(unescape(match[0]));
 
   if (!isSafeUrl(url)) {
     return fallback(input, position);
@@ -56,4 +56,27 @@ function fallback(input: string, position: number): Token {
     text: input.substr(position, 1),
     length: 1,
   };
+}
+
+/**
+ * returns a correctly percent-encoded & sanitized url.
+ * Will fallback to using a DOM based implementation if the `URL` class
+ * doesn't exist.
+ *
+ * @param raw a 'raw' url (possibly mixed percent-encoded).
+ */
+function decode(raw: string): string {
+  if (URL) {
+    const decoded = new URL(raw);
+    // IE11 doesn't support the `href` property in the `URL` class.
+    // Fallback to the DOM below if it doesn't exist.
+    if (decoded.href) {
+      return decoded.href;
+    }
+  }
+  // no `URL` class - pollyfill using the dom to parse and
+  // decode. This should only be needed for IE11 or lower...
+  const anchor = document.createElement('a');
+  anchor.href = raw; // The DOM will parses even mixed %-encoded segments of a url when set.
+  return anchor.href;
 }
