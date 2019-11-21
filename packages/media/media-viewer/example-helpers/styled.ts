@@ -16,8 +16,9 @@ export const ButtonList = styled.ul`
 `;
 
 export const MVSidebar = styled.div`
-  height: 3000px;
+  height: calc(100vh - 64px);
   padding: 32px;
+  overflow: auto;
 
   h2 {
     color: white;
