@@ -93,7 +93,11 @@ export const hasValue = (value?: string): value is string =>
 export const callCallback = <U extends any[], R>(
   callback: ((...U: U) => R) | undefined,
   ...args: U
-): R | undefined => callback && callback(...args);
+): R | undefined => {
+  if (typeof callback === 'function') {
+    return callback(...args);
+  }
+};
 
 export const getAvatarUrl = (optionData: OptionData) => {
   if (isUser(optionData) || isTeam(optionData)) {

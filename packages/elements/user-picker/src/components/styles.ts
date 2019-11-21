@@ -5,6 +5,7 @@ import { getAvatarSize } from './utils';
 
 export const BORDER_PADDING = 6;
 export const PLACEHOLDER_PADDING = 8;
+export const INDICATOR_WIDTH = 39;
 
 export const getStyles = memoizeOne((width: string | number) => ({
   menu: (css: any, state: any) => ({
@@ -109,6 +110,14 @@ export const getStyles = memoizeOne((width: string | number) => ({
   }),
   placeholder: (css: any, state: any) => {
     const avatarSize = getAvatarSize(state.selectProps.appearance);
+
+    // fix styling in IE 11: when the position is absolute and `left` prop is not defined,
+    // IE and other browsers auto calculate value of "left" prop differently,
+    // so we want to explicitly set value for the `left` property
+    if (css.position === 'absolute' && !css.left) {
+      css.left = `${BORDER_PADDING}px`;
+    }
+
     return {
       ...css,
       paddingLeft: !state.selectProps.isMulti
@@ -156,6 +165,19 @@ export const getPopupStyles = memoizeOne(
       ...css,
       display: flip ? 'flex' : 'block',
       flexDirection: 'column-reverse',
+    }),
+    // there is not any avatar on the left of the placeholder
+    placeholder: (css: any) => ({
+      ...css,
+      paddingLeft: PLACEHOLDER_PADDING,
+      paddingTop: 2,
+      paddingRight: INDICATOR_WIDTH,
+      display: 'block',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      maxWidth: '100%',
+      margin: 0,
     }),
   }),
 );

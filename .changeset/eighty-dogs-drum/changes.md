@@ -1,1 +1,1 @@
-Fix broken style in IE 11
+Fix some broken CSS layout in IE 11
