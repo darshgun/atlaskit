@@ -9,19 +9,24 @@ export type SectionProps = {
   children: React.ReactNode;
 };
 
-export interface ButtonItemProps {
+export interface BaseItemProps {
   elemBefore?: React.ReactNode;
   elemAfter?: React.ReactNode;
   onClick?: (event: React.MouseEvent | React.KeyboardEvent) => void;
   title?: string;
   description?: string;
   isDisabled?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  href?: string;
+  component?: React.ReactNode;
 }
 
-export interface LinkItemProps extends ButtonItemProps {
-  href: string;
-}
+export type ButtonItemProps = Omit<BaseItemProps, 'component' | 'href'>;
+export type LinkItemProps = Omit<BaseItemProps, 'component'>;
+export type CustomItemProps = Omit<
+  BaseItemProps,
+  'href' | 'onClick' | 'children'
+>;
 
 export type SkeletonItemProps = {
   hasAvatar?: boolean;

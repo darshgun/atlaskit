@@ -17,6 +17,8 @@ import {
 import {
   ButtonItemProps,
   LinkItemProps,
+  BaseItemProps,
+  CustomItemProps,
   SkeletonItemProps,
   Width,
 } from './types';
@@ -35,12 +37,13 @@ export const SkeletonItem = ({
   <div css={itemSkeletonCSS(hasAvatar, hasIcon, width)} />
 );
 
-const ItemBase = ({
+const BaseItem = ({
   elemBefore,
   elemAfter,
   children,
   description,
-}: ButtonItemProps) => {
+  component,
+}: BaseItemProps) => {
   return (
     <Fragment>
       <div css={contentCSSWrapper}>
@@ -79,13 +82,13 @@ export const ButtonItem = (props: ButtonItemProps) => {
       css={itemCSS(isDisabled)}
       {...others}
     >
-      <ItemBase
+      <BaseItem
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
       >
         {children}
-      </ItemBase>
+      </BaseItem>
     </Tag>
   );
 };
@@ -112,13 +115,31 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
       href={isDisabled ? undefined : href}
       {...others}
     >
-      <ItemBase
+      <BaseItem
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
       >
         {children}
-      </ItemBase>
+      </BaseItem>
     </Tag>
+  );
+};
+
+export const CustomItem = ({ component, ...rest }: CustomItemProps) => {
+  const { elemBefore, elemAfter, description } = rest;
+  if (!component) {
+    return null;
+  }
+
+  return (
+    <span>
+      <BaseItem
+        elemBefore={elemBefore}
+        elemAfter={elemAfter}
+        description={description}
+        component={component}
+      />
+    </span>
   );
 };
