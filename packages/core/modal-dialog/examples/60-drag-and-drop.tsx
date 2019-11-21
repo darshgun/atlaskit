@@ -10,6 +10,7 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import Modal, { ModalTransition } from '../src';
+import { DroppableProvided } from 'react-beautiful-dnd';
 
 const noop = () => {};
 
@@ -24,6 +25,7 @@ interface CardProps {
 }
 
 const Card = styled.div<CardProps>`
+  user-select: none;
   background: ${colors.Y75};
   border-radius: 3px;
   cursor: ${({ isDragging }) => (isDragging ? 'grabbing' : 'pointer')};
@@ -97,7 +99,6 @@ class ItemLineCard extends React.Component<
         this.propagateClick(event);
       }
     },
-    onDragEnd: () => this.setState({ isActive: false }),
     onFocus: () => this.setState({ isFocused: true }),
     onMouseEnter: () => this.setState({ isHovering: true }),
     onMouseLeave: () => this.setState({ isHovering: false, isActive: false }),
@@ -131,10 +132,11 @@ class ItemLineCard extends React.Component<
         {(provided, snapshot) => (
           <div>
             {this.renderCard({
-              ref: (ref: HTMLElement | null) => provided.innerRef(ref),
+              ref: provided.innerRef,
               isDraggable: true,
               isDragging: snapshot.isDragging,
               ...provided.draggableProps,
+              ...provided.dragHandleProps,
               ...this.eventHandlers,
             })}
           </div>
@@ -195,9 +197,10 @@ class ItemLineCardGroup extends React.Component<ItemLineCardGroupProps> {
     this.props.onOrderChange(items, target, source.index, destination.index);
   };
 
-  renderCards(cardsProps = {}) {
+  renderList(props: { isDraggingOver: boolean; provided: DroppableProvided }) {
+    const { provided } = props;
     return (
-      <div {...cardsProps}>
+      <div ref={provided.innerRef} {...provided.droppableProps}>
         {this.props.items.map((item, index) => (
           <ItemLineCard
             key={item.id}
@@ -208,6 +211,7 @@ class ItemLineCardGroup extends React.Component<ItemLineCardGroupProps> {
             {this.props.children}
           </ItemLineCard>
         ))}
+        {provided.placeholder}
       </div>
     );
   }
@@ -217,10 +221,9 @@ class ItemLineCardGroup extends React.Component<ItemLineCardGroupProps> {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId={this.props.groupId}>
           {(provided, snapshot) =>
-            this.renderCards({
-              ref: provided.innerRef,
+            this.renderList({
               isDraggingOver: snapshot.isDraggingOver,
-              ...provided.droppableProps,
+              provided,
             })
           }
         </Droppable>
