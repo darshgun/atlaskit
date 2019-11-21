@@ -10,10 +10,10 @@ import {
   asMock,
   mountWithIntlContext,
 } from '@atlaskit/media-test-helpers';
+import { MediaButton } from '@atlaskit/media-ui';
 import { Header, State as HeaderState } from '../../../newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../../newgen/styled';
 import { LeftHeader } from '../../../newgen/styled';
-import { MediaButton } from '../../../../../media-ui/src';
 
 const identifier: Identifier = {
   id: 'some-id',

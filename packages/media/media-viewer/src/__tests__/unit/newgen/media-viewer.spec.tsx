@@ -20,6 +20,7 @@ import {
   asMock,
 } from '@atlaskit/media-test-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
+import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
 import {
   MediaViewer,
   MediaViewerComponent,
@@ -29,11 +30,15 @@ import Header from '../../../newgen/header';
 import { ItemSource } from '../../../newgen/domain';
 import { Observable } from 'rxjs';
 import { List } from '../../../newgen/list';
+import {
+  MediaViewerProps,
+  MediaViewerExtensions,
+} from '../../../components/types';
 
 function createFixture(
   items: Identifier[],
   identifier: Identifier,
-  overrides?: any,
+  overrides?: Partial<MediaViewerProps>,
 ) {
   const subject = new Subject<FileItem>();
   const mediaClient = fakeMediaClient();
@@ -143,17 +148,22 @@ describe('<MediaViewer />', () => {
         <MySidebarContent identifier={identifier} />
       ));
 
-    const components = { sidebarRenderer: mockSidebarRenderer };
+    const extensions: MediaViewerExtensions = {
+      sidebar: {
+        icon: <EditorPanelIcon label="sidebar" />,
+        renderer: mockSidebarRenderer,
+      },
+    };
     const items = [identifier, identifier2];
 
     describe('renderer', () => {
       it('should not be visible by default', () => {
-        const { el } = createFixture(items, identifier, { components });
+        const { el } = createFixture(items, identifier, { extensions });
         expect(el.find(SidebarWrapper).exists()).toBe(false);
       });
 
       it('should render sidebar with selected identifier in state', () => {
-        const { el } = createFixture(items, identifier, { components });
+        const { el } = createFixture(items, identifier, { extensions });
         el.find(MediaViewerComponent).setState({
           isSidebarVisible: true,
           selectedIdentifier: identifier2,
@@ -163,7 +173,7 @@ describe('<MediaViewer />', () => {
       });
 
       it('should render sidebar with default selected identifier if not set in state', () => {
-        const { el } = createFixture(items, identifier, { components });
+        const { el } = createFixture(items, identifier, { extensions });
         el.find(MediaViewerComponent).setState({
           isSidebarVisible: true,
         });
@@ -171,9 +181,9 @@ describe('<MediaViewer />', () => {
         expect(mockSidebarRenderer).toHaveBeenCalledWith(identifier);
       });
 
-      it('should not show sidebar if components prop is not defined', () => {
+      it('should not show sidebar if extensions prop is not defined', () => {
         const { el } = createFixture(items, identifier, {
-          components: undefined,
+          extensions: undefined,
         });
         el.find(MediaViewerComponent).setState({
           isSidebarVisible: true,
@@ -182,8 +192,8 @@ describe('<MediaViewer />', () => {
         expect(el.find(SidebarWrapper).exists()).toBe(false);
       });
 
-      it('should not show sidebar if sidebarRenderer is not defined within the components prop', () => {
-        const { el } = createFixture(items, identifier, { components: {} });
+      it('should not show sidebar if sidebarRenderer is not defined within the extensions prop', () => {
+        const { el } = createFixture(items, identifier, { extensions: {} });
         el.find(MediaViewerComponent).setState({
           isSidebarVisible: true,
           selectedIdentifier: identifier2,
@@ -194,7 +204,7 @@ describe('<MediaViewer />', () => {
 
     describe('toggling visibility', () => {
       it('should show sidebar if sidebar is currently not visible', () => {
-        const { el } = createFixture(items, identifier, { components });
+        const { el } = createFixture(items, identifier, { extensions });
         el.find(List).prop('onSidebarButtonClick')!();
         expect(el.find(MediaViewerComponent).state('isSidebarVisible')).toBe(
           true,
@@ -202,7 +212,7 @@ describe('<MediaViewer />', () => {
       });
 
       it('should hide sidebar if sidebar is currently visible', () => {
-        const { el } = createFixture(items, identifier, { components });
+        const { el } = createFixture(items, identifier, { extensions });
         el.find(MediaViewerComponent).setState({
           isSidebarVisible: true,
         });
