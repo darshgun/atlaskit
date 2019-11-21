@@ -6,6 +6,7 @@ export default md`
 
   ${(
     <Example
+      highlight="16,68,87,72,85"
       packageName="@atlaskit/motion"
       Component={require('../examples/fade-in-grid-of-elements').default}
       title="Staggered entrance with fade in"
