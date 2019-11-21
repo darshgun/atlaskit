@@ -12,13 +12,4 @@ describe('ADF => WikiMarkup - BlockCard', () => {
     );
     expect(transformer.encode(node)).toMatchSnapshot();
   });
-
-  test('should convert blockcard node with icft', () => {
-    const node = doc(
-      blockCard({
-        url: 'https://product-fabric.atlassian.net/browse/EX-522#icft=EX-522',
-      })(),
-    )(defaultSchema);
-    expect(transformer.encode(node)).toMatchSnapshot();
-  });
 });
