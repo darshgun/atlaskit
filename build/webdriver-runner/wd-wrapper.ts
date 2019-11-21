@@ -54,9 +54,8 @@ export default class Page {
     if (this.isBrowser('chrome') && selector === EDITOR) {
       if (Array.isArray(text)) {
         return this.browser.sendKeys(text.map(getMappedKey));
-      } else {
-        return this.browser.sendKeys([getMappedKey(text)]);
       }
+      return this.browser.sendKeys([getMappedKey(text)]);
     }
 
     const elem = await this.browser.$(selector);
@@ -357,6 +356,13 @@ export default class Page {
     return this.browser.execute(script, ...args) as any;
   }
 
+  async executeAsync<T>(
+    func: string | ((...args: any[]) => T),
+    ...args: any[]
+  ) {
+    return this.browser.executeAsync(func, ...args);
+  }
+
   getBrowserName() {
     return this.browser.capabilities.browserName;
   }
@@ -404,13 +410,16 @@ export default class Page {
     return elem.isFocused();
   }
 
-  // log(type) {
-  //   return this.browser.log(type);
-  // }
+  isWindowsPlatform() {
+    return (
+      this.browser.capabilities.platformName === 'Windows' ||
+      (this.browser.capabilities as any).os === 'Windows'
+    );
+  }
 
   async paste() {
     let keys;
-    if (this.browser.capabilities.platformName === 'Windows') {
+    if (this.isWindowsPlatform()) {
       keys = ['Control', 'v'];
     } else if (this.isBrowser('chrome')) {
       // Workaround for https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
@@ -425,7 +434,7 @@ export default class Page {
 
   async copy() {
     let keys;
-    if (this.browser.capabilities.platformName === 'Windows') {
+    if (this.isWindowsPlatform()) {
       keys = ['Control', 'c'];
     } else if (this.isBrowser('chrome')) {
       // https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand#Commands
@@ -434,10 +443,7 @@ export default class Page {
       keys = ['Command', 'c'];
     }
 
-    if (
-      this.browser.capabilities.platformName === 'Windows' &&
-      this.isBrowser('chrome')
-    ) {
+    if (this.isWindowsPlatform() && this.isBrowser('chrome')) {
       // For Windows we need to send a keyup signal to release Control key
       // https://webdriver.io/docs/api/browser/keys.html
       await this.browser.keys(keys);
@@ -452,10 +458,7 @@ export default class Page {
   // osx moves to top of document
   moveUp(selector: Selector) {
     let control: string = 'Command';
-    if (
-      this.browser.capabilities.platformName === 'Windows' ||
-      (this.browser.capabilities as any).os === 'Windows'
-    ) {
+    if (this.isWindowsPlatform()) {
       control = 'Control';
     }
 
