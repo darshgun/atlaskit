@@ -3,63 +3,42 @@ import WikiMarkupTransformer from '../../../index';
 describe('JIRA wiki markup - Block Card', () => {
   const testCases: Array<[string, string]> = [
     [
-      'should create Block Card if on its own line',
+      'should create Block Card between lines of text',
       `line 1 
-      [http://...|http://...|smart-link]
+      [http://...|http://...|block-link]
       line 2 `,
     ],
     [
-      'should create Block Card if nothing else in the document',
-      `[http://...|http://...|smart-link]`,
+      'should create Block Card with nothing else in the document',
+      `[http://...|http://...|block-link]`,
     ],
     [
-      'should create Block Card if nothing else in the document, file ending with new line',
-      `[http://...|http://...|smart-link]
+      'should create Block Card with whitespace on the same line',
+      ` [http://...|http://...|block-link] 
+      [http://...|http://...|block-link]`,
+    ],
+    [
+      'should create Block Card if preceded and followed by text', // This will result in the text being moved to another line
+      `
+      abc [http://...|http://...|block-link] def
       `,
     ],
     [
-      'should create Block Card if nothing else in the document, file starting with new line',
-      `
-      [http://...|http://...|smart-link]`,
+      'should create Block Cards in table',
+      `|[http://...|http://...|block-link]|`,
     ],
     [
-      'should create Block Card if only whitespace on the same line',
-      ` [http://...|http://...|smart-link] `,
+      'should create Block Cards in panel', // Block ends up outside of the panel in adf
+      `|{panel:bgColor=#deebff}test [http://...|http://...|block-link] test{panel}|`,
     ],
     [
-      'should create Block Card if only whitespace on the same line, followed by text',
-      ` [http://...|http://...|smart-link] 
-      test`,
-    ],
-    [
-      'should create Block Card if only whitespace on the same line, followed by Block Card',
-      ` [http://...|http://...|smart-link] 
-      [http://...|http://...|smart-link]`,
-    ],
-    [
-      'should create Block Card if nothing else in the table cell',
-      `[http://...|http://...|smart-link]
-      |Heading 1|Heading 2|
-      |[http://...|http://...|smart-link]|[http://...|http://...|smart-link] 
-      |`,
-    ],
-    [
-      'should create Inline Card if preceded and followed by text',
-      `
-      abc [http://...|http://...|smart-link] def
-      `,
-    ],
-    [
-      'should create Inline Card if preceded by text',
-      `
-      abc [http://...|http://...|smart-link]
-      `,
-    ],
-    [
-      'should create Inline Card if followed by text',
-      `
-      [http://...|http://...|smart-link] def
-      `,
+      'should recover existing Block Cards',
+      `|{adf:display=block}
+      {"type":"blockCard","attrs":{"url":"https://aolrich-automation.atlassian.net/browse/SOF-1"}}
+      {adf}|{adf:display=block}
+      {"type":"blockCard","attrs":{"url":"https://aolrich-automation.atlassian.net/browse/SOF-1"}}
+      {adf}|
+      [https://aolrich-automation.atlassian.net/browse/SOF-1|https://aolrich-automation.atlassian.net/browse/SOF-1|block-link]`,
     ],
   ];
 
