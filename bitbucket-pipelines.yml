@@ -525,6 +525,7 @@ pipelines:
           caches:
             - node
 
+    # This build allow to push the bundle size results as ratchet file to s3.
     push-bundle-size-to-s3:
       - parallel:
           - step:
