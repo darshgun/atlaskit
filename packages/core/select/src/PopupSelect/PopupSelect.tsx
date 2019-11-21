@@ -234,7 +234,12 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
     // avoid thrashing fn calls
     if (!this.targetRef && popperRef && ref) {
       this.targetRef = ref;
-      typeof popperRef === 'function' && popperRef(ref);
+
+      if (typeof popperRef === 'function') {
+        popperRef(ref);
+      } else {
+        (popperRef as React.MutableRefObject<HTMLElement>).current = ref;
+      }
     }
   };
 
@@ -242,7 +247,12 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
     ref: HTMLElement,
   ) => {
     this.menuRef = ref;
-    typeof popperRef === 'function' && popperRef(ref);
+
+    if (typeof popperRef === 'function') {
+      popperRef(ref);
+    } else {
+      (popperRef as React.MutableRefObject<HTMLElement>).current = ref;
+    }
   };
 
   getSelectRef = (ref: Select<Option>) => {

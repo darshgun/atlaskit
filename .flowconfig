@@ -11,7 +11,6 @@
 .*/node_modules/babel-normalize-comments/.*
 .*/node_modules/extract-react-types/.*
 .*/node_modules/projector-spawn/.*
-.*/node_modules/react-popper/.*
 
 # The following things have been added as part of constellation - the docs.config.js ignore should be removed afterwards
 # Note that we will likely be restructing brisk into themes so it doesn't ddepend on atlaskit in the way that is pulling
@@ -27,8 +26,10 @@
 # Older versions of button which are transitive deps may contain flow errors/warnings
 <PROJECT_ROOT>/node_modules/@atlaskit/button/.*
 .*/.git/.*
+
 [untyped]
 .*/node_modules/react-select
+.*/node_modules/react-popper/.*
 
 [include]
 

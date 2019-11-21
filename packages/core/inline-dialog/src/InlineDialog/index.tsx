@@ -90,7 +90,12 @@ class InlineDialog extends Component<Props, {}> {
             onClick={onContentClick}
             innerRef={node => {
               this.containerRef = node;
-              typeof ref === 'function' && ref(node);
+
+              if (typeof ref === 'function') {
+                ref(node);
+              } else {
+                (ref as React.MutableRefObject<HTMLElement>).current = node;
+              }
             }}
             style={style}
             data-testid={testId}
@@ -108,7 +113,12 @@ class InlineDialog extends Component<Props, {}> {
             <NodeResolver
               innerRef={(node: HTMLElement) => {
                 this.triggerRef = node;
-                typeof ref === 'function' && ref(node);
+
+                if (typeof ref === 'function') {
+                  ref(node);
+                } else {
+                  (ref as React.MutableRefObject<HTMLElement>).current = node;
+                }
               }}
             >
               {children}
