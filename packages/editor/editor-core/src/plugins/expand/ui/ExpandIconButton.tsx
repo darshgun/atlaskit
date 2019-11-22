@@ -12,17 +12,37 @@ import { InjectedIntl } from 'react-intl';
 import { expandClassNames } from './class-names';
 
 interface ExpandIconButtonProps {
+  allowInteractiveExpand: boolean;
   expanded: boolean;
   intl?: InjectedIntl;
 }
 
-export const ExpandIconButton = (props: ExpandIconButtonProps) => {
-  const { expanded, intl } = props;
-  const message = expanded
-    ? expandMessages.collapseNode
-    : expandMessages.expandNode;
-  const label = (intl && intl.formatMessage(message)) || message.defaultMessage;
+interface ExpandIconButtonWithLabelProps extends ExpandIconButtonProps {
+  label: string;
+}
 
+const withTooltip = (WrapperComponent: React.ElementType) => {
+  return class WithSortableColumn extends React.Component<
+    ExpandIconButtonWithLabelProps
+  > {
+    constructor(props: ExpandIconButtonWithLabelProps) {
+      super(props);
+    }
+
+    render() {
+      const { label } = this.props;
+
+      return (
+        <Tooltip content={label} position="top" tag={ExpandTooltipWrapper}>
+          <WrapperComponent {...this.props} />
+        </Tooltip>
+      );
+    }
+  };
+};
+
+const CustomButton = (props: ExpandIconButtonWithLabelProps) => {
+  const { label, allowInteractiveExpand } = props;
   const useTheme = useCallback(
     (currentTheme: any, themeProps: any) => {
       const { buttonStyles, ...rest } = currentTheme(themeProps);
@@ -44,16 +64,30 @@ export const ExpandIconButton = (props: ExpandIconButtonProps) => {
   );
 
   return (
-    <Tooltip content={label} position="top" tag={ExpandTooltipWrapper}>
-      <Button
-        appearance="subtle"
-        className={expandClassNames.iconContainer}
-        iconBefore={
-          <ChevronRightIcon label={label} primaryColor={colors.N80A} />
-        }
-        shouldFitContainer
-        theme={useTheme}
-      ></Button>
-    </Tooltip>
+    <Button
+      appearance="subtle"
+      className={expandClassNames.iconContainer}
+      iconBefore={<ChevronRightIcon label={label} primaryColor={colors.N80A} />}
+      shouldFitContainer
+      theme={useTheme}
+      isDisabled={!allowInteractiveExpand}
+    ></Button>
   );
+};
+
+const ButtonWithTooltip = withTooltip(CustomButton);
+const ButtonWithoutTooltip = CustomButton;
+
+export const ExpandIconButton = (props: ExpandIconButtonProps) => {
+  const { expanded, intl } = props;
+  const message = expanded
+    ? expandMessages.collapseNode
+    : expandMessages.expandNode;
+  const label = (intl && intl.formatMessage(message)) || message.defaultMessage;
+
+  if (props.allowInteractiveExpand) {
+    return <ButtonWithTooltip label={label} {...props} />;
+  }
+
+  return <ButtonWithoutTooltip label={label} {...props} />;
 };
