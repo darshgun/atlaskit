@@ -16,6 +16,7 @@ export interface BaseItemProps {
   title?: string;
   description?: string;
   isDisabled?: boolean;
+  isSelected?: boolean;
   children?: React.ReactNode;
   href?: string;
   component?: React.ComponentType<{ wrapperClass: string }>;

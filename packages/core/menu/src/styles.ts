@@ -21,6 +21,9 @@ const buttonOverrides = {
 const anchorOverrides = {
   color: 'currentColor',
 };
+const customItemOverrides = {
+  color: 'currentColor',
+};
 
 const disabledStyles = {
   cursor: 'not-allowed',
@@ -63,8 +66,8 @@ const baseItemCSS = (
   '::-moz-focus-inner': {
     border: 0,
   },
-  ...(isDisabled && disabledStyles),
   ...(isSelected && selectedStyles),
+  ...(isDisabled && disabledStyles),
 });
 
 export const itemCSS = (
@@ -103,11 +106,14 @@ export const elemAfterCSS = {
   flexShrink: 0,
   marginLeft: gridSize,
 };
-export const descriptionCSS = {
+export const descriptionCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
   textAlign: 'left',
-  color: '#343434',
+  color: isSelected || isDisabled ? 'currentColor' : '#343434',
   fontSize: fontSizeSmall(),
-} as CSSObject;
+});
 export const contentCSSWrapper = {
   display: 'flex',
   alignItems: 'center',
@@ -119,6 +125,14 @@ export const linkItemCSS = (
   isSelected?: boolean,
 ): CSSObject => ({
   ...anchorOverrides,
+  ...baseItemCSS(isDisabled, isSelected),
+});
+
+export const customItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
+  ...customItemOverrides,
   ...baseItemCSS(isDisabled, isSelected),
 });
 

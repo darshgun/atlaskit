@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import { jsx, ClassNames } from '@emotion/core';
 import {
   linkItemCSS,
+  customItemCSS,
   itemCSS,
   itemHeadingCSS,
   skeletonHeadingItemCSS,
@@ -20,7 +21,6 @@ import {
   BaseItemProps,
   CustomItemProps,
   SkeletonItemProps,
-  Width,
 } from './types';
 
 export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
@@ -43,6 +43,7 @@ const BaseItem = ({
   children,
   description,
   isDisabled,
+  isSelected,
 }: BaseItemProps) => {
   return (
     <Fragment>
@@ -51,7 +52,11 @@ const BaseItem = ({
         {children && (
           <span css={contentCSS}>
             <span css={truncateCSS}>{children}</span>
-            {description && <span css={descriptionCSS}>{description}</span>}
+            {description && (
+              <span css={descriptionCSS(isDisabled, isSelected)}>
+                {description}
+              </span>
+            )}
           </span>
         )}
         {elemAfter && <span css={elemAfterCSS}>{elemAfter}</span>}
@@ -87,6 +92,8 @@ export const ButtonItem = (props: ButtonItemProps) => {
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
+        isSelected={isSelected}
+        isDisabled={isDisabled}
       >
         {children}
       </BaseItem>
@@ -121,6 +128,8 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
+        isSelected={isSelected}
+        isDisabled={isDisabled}
       >
         {children}
       </BaseItem>
@@ -131,6 +140,7 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
 export const CustomItem = ({
   component: Component,
   isDisabled,
+  isSelected,
   ...rest
 }: CustomItemProps) => {
   if (!Component) {
@@ -140,8 +150,8 @@ export const CustomItem = ({
   return (
     <ClassNames>
       {({ css }) => (
-        <Component wrapperClass={css(itemCSS(isDisabled))}>
-          <BaseItem {...rest} />
+        <Component wrapperClass={css(customItemCSS(isDisabled, isSelected))}>
+          <BaseItem {...rest} isSelected={isSelected} isDisabled={isDisabled} />
         </Component>
       )}
     </ClassNames>
