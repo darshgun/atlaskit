@@ -87,6 +87,7 @@ export {
 } from './uploader';
 
 export {
+  isAbortedRequestError,
   RequestMethod,
   RequestParams,
   RequestHeaders,
