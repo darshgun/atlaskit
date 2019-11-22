@@ -262,8 +262,12 @@ export default class Page {
     }
   }
 
-  async keys(keys: string | string[]) {
-    return this.browser.keys(keys);
+  async keys(values: string | string[]) {
+    const keys = Array.isArray(values) ? values : [values];
+
+    for (let key of keys) {
+      await this.browser.keys(key);
+    }
   }
 
   debug() {
