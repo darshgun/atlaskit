@@ -229,7 +229,10 @@ export class ExampleEditorComponent extends React.Component<
               UNSAFE_cards={{
                 provider: Promise.resolve(cardProviderStaging),
               }}
-              UNSAFE_allowExpand={{ allowInsertion: true }}
+              UNSAFE_allowExpand={{
+                allowInsertion: true,
+                allowInteractiveExpand: true,
+              }}
               annotationProvider={{
                 component: ExampleInlineCommentComponent,
               }}
