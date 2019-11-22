@@ -13,8 +13,8 @@ const insertHeadings = async (page: Page, modifierKeys: string[]) => {
   await page.click(editorSelector);
 
   for (let i = 1; i <= 6; i++) {
-    await page.keys([...modifierKeys, `${i}`]);
-    await page.keys(modifierKeys); // release modifier keys
+    await page.keys([...modifierKeys, `${i}`], true);
+    await page.keys(modifierKeys, true); // release modifier keys
     await page.type(editorSelector, 'A');
     await page.keys(['Enter']);
   }
@@ -73,6 +73,9 @@ BrowserTestCase(
   { skip: ['safari', 'ie', 'edge'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
+    if (!page.isWindowsPlatform()) {
+      return;
+    }
     await mountEditor(page, { appearance: 'full-page' });
     await insertHeadings(page, [KEY.CONTROL, KEY.ALT]);
 
