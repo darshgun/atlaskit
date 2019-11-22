@@ -25,6 +25,7 @@ import {
 } from '../commands';
 import { expandClassNames } from '../ui/class-names';
 import { GapCursorSelection, Side } from '../../../plugins/gap-cursor';
+import { getEditorProps } from '../../shared-context';
 
 const messages = defineMessages({
   ...expandMessages,
@@ -101,6 +102,7 @@ export class ExpandNodeView implements NodeView {
   getPos: getPosHandlerNode;
   pos: number;
   reactContext: ReactContext;
+  allowInteractiveExpand: boolean = true;
 
   constructor(
     node: PmNode,
@@ -182,14 +184,39 @@ export class ExpandNodeView implements NodeView {
 
     const { __expanded } = (node && node.attrs) || this.node.attrs;
     ReactDOM.render(
-      <ExpandIconButton expanded={__expanded}></ExpandIconButton>,
+      <ExpandIconButton
+        allowInteractiveExpand={this.isAllowInteractiveExpandEnabled()}
+        expanded={__expanded}
+      ></ExpandIconButton>,
       this.icon,
     );
   }
 
+  private isAllowInteractiveExpandEnabled = () => {
+    const { state } = this.view;
+    const editorProps = getEditorProps(state);
+    if (!editorProps) {
+      return false;
+    }
+
+    if (typeof editorProps.UNSAFE_allowExpand === 'boolean') {
+      return true;
+    } else if (
+      typeof editorProps.UNSAFE_allowExpand === 'object' &&
+      typeof editorProps.UNSAFE_allowExpand.allowInteractiveExpand === 'boolean'
+    ) {
+      return editorProps.UNSAFE_allowExpand.allowInteractiveExpand;
+    }
+
+    return true;
+  };
+
   private handleClick = (event: Event) => {
     const target = event.target as HTMLElement;
     if (closestElement(target, `.${expandClassNames.icon}`)) {
+      if (!this.isAllowInteractiveExpandEnabled()) {
+        return;
+      }
       event.stopPropagation();
       const { state, dispatch } = this.view;
 
