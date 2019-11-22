@@ -30,7 +30,7 @@ const disabledStyles = {
   },
 };
 
-const baseItemCSS = (isDisabled: boolean): CSSObject => ({
+const baseItemCSS = (isDisabled?: boolean): CSSObject => ({
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
@@ -57,7 +57,7 @@ const baseItemCSS = (isDisabled: boolean): CSSObject => ({
   ...(isDisabled && disabledStyles),
 });
 
-export const itemCSS = (isDisabled: boolean): CSSObject => ({
+export const itemCSS = (isDisabled?: boolean): CSSObject => ({
   ...buttonOverrides,
   ...baseItemCSS(isDisabled),
 });
@@ -101,7 +101,7 @@ export const contentCSSWrapper = {
 };
 
 /* Item variations */
-export const linkItemCSS = (isDisabled: boolean): CSSObject => ({
+export const linkItemCSS = (isDisabled?: boolean): CSSObject => ({
   ...anchorOverrides,
   ...baseItemCSS(isDisabled),
 });

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { Fragment } from 'react';
-import { jsx } from '@emotion/core';
+import { jsx, ClassNames } from '@emotion/core';
 import {
   linkItemCSS,
   itemCSS,
@@ -42,7 +42,7 @@ const BaseItem = ({
   elemAfter,
   children,
   description,
-  component,
+  isDisabled,
 }: BaseItemProps) => {
   return (
     <Fragment>
@@ -126,20 +126,22 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
   );
 };
 
-export const CustomItem = ({ component, ...rest }: CustomItemProps) => {
-  const { elemBefore, elemAfter, description } = rest;
-  if (!component) {
+export const CustomItem = ({
+  component: Component,
+  isDisabled,
+  ...rest
+}: CustomItemProps) => {
+  if (!Component) {
     return null;
   }
 
   return (
-    <span>
-      <BaseItem
-        elemBefore={elemBefore}
-        elemAfter={elemAfter}
-        description={description}
-        component={component}
-      />
-    </span>
+    <ClassNames>
+      {({ css }) => (
+        <Component wrapperClass={css(itemCSS(isDisabled))}>
+          <BaseItem {...rest} />
+        </Component>
+      )}
+    </ClassNames>
   );
 };

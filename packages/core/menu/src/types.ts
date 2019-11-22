@@ -18,15 +18,12 @@ export interface BaseItemProps {
   isDisabled?: boolean;
   children?: React.ReactNode;
   href?: string;
-  component?: React.ReactNode;
+  component?: React.ComponentType<{ wrapperClass: string }>;
 }
 
 export type ButtonItemProps = Omit<BaseItemProps, 'component' | 'href'>;
 export type LinkItemProps = Omit<BaseItemProps, 'component'>;
-export type CustomItemProps = Omit<
-  BaseItemProps,
-  'href' | 'onClick' | 'children'
->;
+export type CustomItemProps = Omit<BaseItemProps, 'href'>;
 
 export type SkeletonItemProps = {
   hasAvatar?: boolean;
