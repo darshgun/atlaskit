@@ -1,6 +1,5 @@
 import React from 'react';
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
-
 import InlineEditUncontrolled from './InlineEditUncontrolled';
 import { InlineEditProps } from '../types';
 
@@ -8,7 +7,10 @@ interface State {
   isEditing: boolean;
 }
 
-class InlineEdit extends React.Component<InlineEditProps, State> {
+class InlineEdit<FieldValue = string> extends React.Component<
+  InlineEditProps<FieldValue>,
+  State
+> {
   static defaultProps = {
     startWithEditViewOpen: false,
   };
@@ -48,7 +50,7 @@ class InlineEdit extends React.Component<InlineEditProps, State> {
 
   render() {
     return (
-      <InlineEditUncontrolled
+      <InlineEditUncontrolled<FieldValue>
         {...this.props}
         defaultValue={this.props.defaultValue}
         editView={fieldProps =>
