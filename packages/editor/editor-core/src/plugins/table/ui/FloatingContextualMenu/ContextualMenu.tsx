@@ -157,13 +157,15 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
       allowColumnSorting,
       allowBackgroundColor,
       editorView: { state },
-      targetCellPosition,
       isOpen,
       selectionRect,
       intl: { formatMessage },
+      editorView,
     } = this.props;
     const items: any[] = [];
     const { isSubmenuOpen } = this.state;
+    // TargetCellPosition could be outdated: https://product-fabric.atlassian.net/browse/ED-8129
+    const { targetCellPosition } = getPluginState(editorView.state);
     if (allowBackgroundColor) {
       const node =
         isOpen && targetCellPosition

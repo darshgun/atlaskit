@@ -18,7 +18,7 @@ import {
   contextualMenuTriggerSize,
   tablePopupStyles,
 } from '../styles';
-import { pluginKey } from '../../pm-plugins/main';
+import { getPluginState, pluginKey } from '../../pm-plugins/main';
 import { PluginConfig } from '../../types';
 
 const MenuWrapper = styled.div`
@@ -57,10 +57,15 @@ const FloatingContextualMenu = ({
   scrollableElement,
   editorView,
   isOpen,
-  targetCellPosition,
   pluginConfig,
 }: Props) => {
-  if (!isOpen || !targetCellPosition) {
+  // TargetCellPosition could be outdated: https://product-fabric.atlassian.net/browse/ED-8129
+  const { targetCellPosition } = getPluginState(editorView.state);
+  if (
+    !isOpen ||
+    !targetCellPosition ||
+    editorView.state.doc.nodeSize <= targetCellPosition
+  ) {
     return null;
   }
 
