@@ -117,8 +117,10 @@ export class MediaViewerComponent extends React.Component<Props, State> {
       extensions.sidebar
     ) {
       return (
-        <SidebarWrapper>
-          {extensions.sidebar.renderer(sidebardSelectedIdentifier)}
+        <SidebarWrapper data-testid="media-viewer-sidebar">
+          {extensions.sidebar.renderer(sidebardSelectedIdentifier, {
+            close: this.toggleSidebar,
+          })}
         </SidebarWrapper>
       );
     }
@@ -146,6 +148,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
 
   private renderContent() {
     const { mediaClient, onClose, itemSource, extensions } = this.props;
+    const { isSidebarVisible } = this.state;
 
     if (itemSource.kind === 'COLLECTION') {
       return (
@@ -172,6 +175,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
           extensions={extensions}
           onNavigationChange={this.onNavigationChange}
           onSidebarButtonClick={this.toggleSidebar}
+          isSidebarVisible={isSidebarVisible}
         />
       );
     } else {

@@ -19,6 +19,7 @@ export type Props = Readonly<
     mediaClient: MediaClient;
     extensions?: MediaViewerExtensions;
     onSidebarButtonClick?: () => void;
+    isSidebarVisible?: boolean;
   } & WithShowControlMethodProp
 >;
 
@@ -46,6 +47,7 @@ export class List extends React.Component<Props, State> {
       showControls,
       extensions,
       onSidebarButtonClick,
+      isSidebarVisible,
     } = this.props;
     const { selectedItem } = this.state;
 
@@ -58,6 +60,7 @@ export class List extends React.Component<Props, State> {
             onClose={onClose}
             extensions={extensions}
             onSidebarButtonClick={onSidebarButtonClick}
+            isSidebarVisible={isSidebarVisible}
           />
         </HeaderWrapper>
         <ItemViewer

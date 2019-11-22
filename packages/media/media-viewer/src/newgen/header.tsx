@@ -43,6 +43,7 @@ export type Props = {
   readonly onClose?: () => void;
   readonly extensions?: MediaViewerExtensions;
   readonly onSidebarButtonClick?: () => void;
+  readonly isSidebarVisible?: boolean;
 };
 
 export type State = {
@@ -133,10 +134,11 @@ export class Header extends React.Component<Props & InjectedIntlProps, State> {
   };
 
   private renderSidebarButton = () => {
-    const { extensions, onSidebarButtonClick } = this.props;
+    const { extensions, isSidebarVisible, onSidebarButtonClick } = this.props;
     if (extensions && extensions.sidebar) {
       return (
         <MediaButton
+          isSelected={isSidebarVisible}
           testId="media-viewer-sidebar-button"
           appearance={'toolbar' as any}
           onClick={onSidebarButtonClick}

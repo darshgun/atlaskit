@@ -30,3 +30,9 @@ export const MVSidebar = styled.div`
     vertical-align: top;
   }
 `;
+
+export const MVSidebarHeader = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;

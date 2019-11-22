@@ -7,10 +7,17 @@ export interface MediaViewerDataSource {
   collectionName?: string;
 }
 
+export interface MediaViewerExtensionsActions {
+  close: () => void;
+}
+
 export interface MediaViewerExtensions {
   sidebar?: {
     icon: ReactNode;
-    renderer: (selectedIdentifier: Identifier) => ReactNode;
+    renderer: (
+      selectedIdentifier: Identifier,
+      actions: MediaViewerExtensionsActions,
+    ) => ReactNode;
   };
 }
 

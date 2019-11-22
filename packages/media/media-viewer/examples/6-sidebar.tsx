@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
 import AkSpinner from '@atlaskit/spinner';
 import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
+import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import {
   ExternalImageIdentifier,
   Identifier,
@@ -19,6 +20,7 @@ import {
   Container,
   Group,
   MVSidebar,
+  MVSidebarHeader,
 } from '../example-helpers/styled';
 import {
   docIdentifier,
@@ -32,7 +34,11 @@ import {
   audioItem,
   audioItemNoCover,
 } from '../example-helpers';
-import { MediaViewer, MediaViewerDataSource } from '../src';
+import {
+  MediaViewer,
+  MediaViewerDataSource,
+  MediaViewerExtensionsActions,
+} from '../src';
 
 const mediaClient = createStorybookMediaClient();
 
@@ -75,8 +81,11 @@ export default class Example extends React.Component<{}, State> {
     this.setState({ selected: undefined });
   };
 
-  sidebarRenderer = (selectedIdentifier: Identifier) => {
-    return <Sidebar identifier={selectedIdentifier} />;
+  sidebarRenderer = (
+    selectedIdentifier: Identifier,
+    actions: MediaViewerExtensionsActions,
+  ) => {
+    return <Sidebar identifier={selectedIdentifier} actions={actions} />;
   };
 
   render() {
@@ -114,10 +123,11 @@ export default class Example extends React.Component<{}, State> {
 
 interface SidebarProps {
   identifier: Identifier;
+  actions: MediaViewerExtensionsActions;
 }
 
 const Sidebar = (props: SidebarProps) => {
-  const { identifier } = props;
+  const { identifier, actions } = props;
   const [fileState, setFileState] = useState<FileState | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -187,7 +197,13 @@ const Sidebar = (props: SidebarProps) => {
 
   return (
     <MVSidebar>
-      <h2>Attachment details</h2>
+      <MVSidebarHeader>
+        <h2>Attachment details</h2>
+        <Button
+          onClick={actions.close}
+          iconBefore={<ArrowRightIcon primaryColor="white" label="return" />}
+        />
+      </MVSidebarHeader>
       {identifier.mediaItemType === 'file'
         ? renderFileState()
         : renderExternalFileState(identifier)}
