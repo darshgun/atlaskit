@@ -426,6 +426,8 @@ describe('interacting with the keyboard', () => {
     fireEvent.focus(target);
     jest.runAllTimers();
 
+    // We are testing console error logs... :)
+    // eslint-disable-next-line no-console
     expect(console.error).not.toHaveBeenCalled();
     global.console.error.mockRestore();
   });

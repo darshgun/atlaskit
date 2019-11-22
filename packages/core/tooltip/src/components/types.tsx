@@ -51,8 +51,9 @@ export interface TooltipProps extends WithAnalyticsEventsProps {
   hideTooltipOnMouseDown?: boolean;
 
   /**
-   * Where the tooltip should appear relative to the mouse. Only used when the
-   * `position` prop is set to 'mouse'
+   * Where the tooltip should appear relative to the mouse pointer.
+   * Only used when the `position` prop is set to `"mouse"`.
+   * When interacting with the target element using the keyboard will use this position against the target element instead.
    */
   mousePosition?: PositionTypeBase;
 
@@ -69,9 +70,10 @@ export interface TooltipProps extends WithAnalyticsEventsProps {
   onHide?: () => void;
 
   /**
-    Where the tooltip should appear relative to its target. If set to 'mouse',
-    tooltip will display next to the mouse instead.
-  */
+   * Where the tooltip should appear relative to its target.
+   * If set to `"mouse"` the tooltip will display next to the mouse pointer instead.
+   * Make sure to utilize the `mousePosition` if you want to customize where the tooltip will show in relation to the mouse.
+   */
   position?: PositionType;
 
   /**

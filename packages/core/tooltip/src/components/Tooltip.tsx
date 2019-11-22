@@ -152,7 +152,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
   };
 
-  handleShowTooltip = (e: React.MouseEvent | FocusEvent) => {
+  handleShowTooltip = (e: React.MouseEvent | React.FocusEvent) => {
     if (e.target === this.wrapperRef) return;
     // If clientX exists we are interacting with the mouse.
     // Else we are interacting with the keyboard.
@@ -202,16 +202,6 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
   };
 
-  addKeyboardListeners = (ref: HTMLElement) => {
-    ref.addEventListener('focus', this.handleShowTooltip);
-    ref.addEventListener('blur', this.handleHideTooltip);
-  };
-
-  removeKeyboardListeners = (ref: HTMLElement) => {
-    ref.removeEventListener('focus', this.handleShowTooltip);
-    ref.removeEventListener('blur', this.handleHideTooltip);
-  };
-
   shouldPositionTooltipNearMouse() {
     const { position } = this.props;
     return position === 'mouse' && this.userInteraction === 'mouse';
@@ -248,26 +238,15 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
             onMouseOut={this.handleHideTooltip}
             onMouseMove={this.handleMouseMove}
             onMouseDown={this.handleMouseDown}
+            onFocus={this.handleShowTooltip}
+            onBlur={this.handleHideTooltip}
             ref={(wrapperRef: HTMLElement) => {
               this.wrapperRef = wrapperRef;
             }}
           >
             <NodeResolver
               innerRef={(ref: HTMLElement | null) => {
-                if (this.targetRef) {
-                  // If the instance property target ref is already defined
-                  // let's clean it up first.
-                  this.removeKeyboardListeners(this.targetRef);
-                }
-
-                // After maybe cleaning up let's now re-write the instance property
-                // with the new ref.
                 this.targetRef = ref;
-
-                if (ref) {
-                  // If the ref is defined let's add keyboard listeners to it!
-                  this.addKeyboardListeners(ref);
-                }
               }}
             >
               {React.Children.only(children)}
