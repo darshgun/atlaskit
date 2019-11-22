@@ -69,6 +69,7 @@ export class List extends React.Component<Props, State> {
           showControls={showControls}
           onClose={onClose}
           previewCount={this.state.previewCount}
+          isSidebarVisible={isSidebarVisible}
         />
         <Navigation
           items={items}

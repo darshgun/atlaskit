@@ -10,9 +10,10 @@ import {
   DN400,
   N0,
 } from '@atlaskit/theme/colors';
-import { ellipsis } from '@atlaskit/media-ui';
+import { ellipsis, hideControlsClassName } from '@atlaskit/media-ui';
 
 const overlayZindex = layers.modal() + 10;
+const sidebarWidth = 350;
 
 export const mediaTypeIconColors = {
   image: Y200,
@@ -141,6 +142,12 @@ export const PDFWrapper = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
+
+  .${hideControlsClassName} {
+    position: fixed;
+    width: ${(props: { isSidebarVisible?: boolean }) =>
+      props.isSidebarVisible ? `calc(100% - ${sidebarWidth}px)` : '100%'};
+  }
 `;
 
 export const Arrow = styled.span`
@@ -350,7 +357,7 @@ export const CustomVideoPlayerWrapper = styled.div`
 export const SidebarWrapper = styled.div`
   top: 0;
   right: 0;
-  width: 25%;
+  width: ${sidebarWidth}px;
   height: 100vh;
   overflow: hidden;
   background-color: ${DN50};

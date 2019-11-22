@@ -53,6 +53,8 @@ export type State = {
 export default class Example extends React.Component<{}, State> {
   state: State = {};
 
+  componentDidMount = () => this.openList();
+
   private openList = () => {
     this.setState({
       selected: {
