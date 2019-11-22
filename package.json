@@ -474,7 +474,7 @@
     "p-settle": "^3.1.0",
     "p-wait-for": "^3.1.0",
     "path-to-regexp": "^3.1.0",
-    "pdfjs-dist": "2.2.228",
+    "pdfjs-dist": "2.0.943",
     "perf-marks": "^1.5.0",
     "png-chunks-extract": "^1.0.0",
     "polished": "1.9.3",

@@ -33,7 +33,7 @@
     "@atlaskit/theme": "^9.2.4",
     "deep-equal": "^1.0.1",
     "exenv": "^1.2.2",
-    "pdfjs-dist": "2.2.228",
+    "pdfjs-dist": "2.0.943",
     "perf-marks": "^1.5.0",
     "tslib": "^1.9.3"
   },
