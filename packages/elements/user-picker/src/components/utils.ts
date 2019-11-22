@@ -99,7 +99,11 @@ export const callCallback = <U extends any[], R>(
       //  there is mystery error in IE 11, so we need this try-catch
       return callback(...args);
     } catch (error) {
-      console.error('An error happening in `callCallback`: ', error);
+      // eslint-disable-next-line no-console
+      console.error(
+        '@atlassian/user-select: an error happening in `callCallback`: ',
+        error,
+      );
     }
   }
 };
