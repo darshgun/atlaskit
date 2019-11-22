@@ -172,7 +172,7 @@ export default class Page {
     targetX: number,
     targetY: number,
   ) {
-    await this.moveTo('body', targetX, startY);
+    await this.moveTo('body', startX, startY);
     await this.browser.buttonDown();
     await this.moveTo('body', targetX, targetY);
     await this.browser.buttonUp();
@@ -262,8 +262,7 @@ export default class Page {
     }
   }
 
-  async keys(values: string | string[]) {
-    const keys = Array.isArray(values) ? values : [values];
+  async keys(keys: string | string[]) {
     return this.browser.keys(keys);
   }
 
