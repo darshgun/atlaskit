@@ -26,8 +26,10 @@
 # Older versions of button which are transitive deps may contain flow errors/warnings
 <PROJECT_ROOT>/node_modules/@atlaskit/button/.*
 .*/.git/.*
+
 [untyped]
 .*/node_modules/react-select
+.*/node_modules/react-popper/.*
 
 [include]
 
