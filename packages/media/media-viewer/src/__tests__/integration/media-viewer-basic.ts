@@ -15,6 +15,12 @@ class MVExamplePage {
   async init() {
     await this.page.goto(url);
     await this.page.browser.maximizeWindow();
+    await this.page.waitForVisible('[data-testid="media-viewer-popup"]');
+    // here we use a backdoor to force-reveal controls forever
+    await this.page.executeAsync((done: any) => {
+      (window as any).forceShowControls();
+      done();
+    });
   }
 
   async validateNameSizeTypeAndIcon(
@@ -34,7 +40,7 @@ class MVExamplePage {
     if (size) {
       await this.page.waitUntilContainsText(
         `div[data-testid="media-viewer-file-metadata-text"]`,
-        ` · ${size}`,
+        `${size}`,
       );
     }
     await this.page.waitForSelector(
@@ -43,32 +49,39 @@ class MVExamplePage {
   }
 
   async navigateNext() {
-    await this.revealNavigationControls();
     await this.page.click('[data-testid="media-viewer-navigation-next"]');
+    await this.page.waitForVisible(
+      '[data-testid="media-viewer-image-content"]',
+    );
   }
 
   async navigatePrevious() {
-    await this.revealNavigationControls();
     await this.page.click('[data-testid="media-viewer-navigation-prev"]');
-  }
-
-  async revealNavigationControls() {
-    await this.page.hover('img');
   }
 
   async closeMediaViewer(closeWithEsc: boolean) {
     if (closeWithEsc) {
-      await this.page.type('/*', 'Escape');
+      await this.page.sendKeys('/*', 'Escape');
     } else {
-      await this.revealNavigationControls();
       await this.page.click('[data-testid="media-viewer-close-button"]');
     }
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    await this.page.waitForSelector(
-      '[data-testid="media-viewer-popup"]',
-      {},
-      true,
-    );
+
+    await this.page.waitUntil(async () => {
+      try {
+        const exists = await this.page.isExisting(
+          '[data-testid="media-viewer-popup"]',
+        );
+        return !exists;
+      } catch (error) {
+        // for some inexplicable reason if element doesn't exist IE11 throws instead of returning false
+        // also, disregard it's called `ie` in the config, it's returned like this from browser capabilites object
+        if (this.page.isBrowser('internet explorer')) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
   }
 }
 

@@ -18,15 +18,22 @@ let files: Array<MediaFile & { blob: Blob }> = [];
 
 if (canUseDOM) {
   (window as any).areControlsRendered = () => {
-    return !!document.querySelector('.mvng-hide-controls');
+    return !!document.querySelector('div.mvng-hide-controls');
   };
 
   (window as any).areControlsVisible = () => {
-    const controls = document.querySelector('.mvng-hide-controls');
+    const controls = document.querySelector('div.mvng-hide-controls');
     if (!controls) {
       return false;
     } else {
       return window.getComputedStyle(controls).opacity === '1';
+    }
+  };
+
+  (window as any).forceShowControls = function() {
+    const controls = document.querySelectorAll('.mvng-hide-controls');
+    for (let i = 0; i < controls.length; i++) {
+      controls[i].classList.remove('mvng-hide-controls');
     }
   };
 
@@ -82,19 +89,18 @@ export default class Example extends React.Component<{}, State> {
         dataSource={{
           list: files
             .map(
-              ({ id }) =>
-                ({
-                  id,
-                  collectionName: defaultCollectionName,
-                  mediaItemType: 'file',
-                } as Identifier),
+              ({ id }): Identifier => ({
+                id,
+                collectionName: defaultCollectionName,
+                mediaItemType: 'file',
+              }),
             )
             .concat([
               {
                 mediaItemType: 'external-image',
                 dataURI:
                   'https://wac-cdn.atlassian.com/dam/jcr:616e6748-ad8c-48d9-ae93-e49019ed5259/Atlassian-horizontal-blue-rgb.svg',
-              } as Identifier,
+              },
             ]),
         }}
         selectedItem={{

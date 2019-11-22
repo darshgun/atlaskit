@@ -594,8 +594,8 @@
   "resolutions": {
     "**/@atlaskit/theme/styled-components": "^3.2.6",
     "**/expand-range/fill-range": "2.2.3",
-    "react":"16.8.6",
-    "react-dom":"16.8.6"
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
   },
   "engines": {
     "node": "^10.13.0"

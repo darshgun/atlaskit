@@ -84,6 +84,13 @@ export default class Page {
     this.browser = client;
   }
 
+  async sendKeys(selector /*: string */, text /*: string[] | string */) {
+    if (Array.isArray(text)) {
+      return this.browser.keys(text.map(getMappedKey));
+    }
+    return this.browser.keys([getMappedKey(text)]);
+  }
+
   // eslint-disable-next-line consistent-return
   async type(selector /*: string */, text /*: string[] | string */) {
     // TODO: https://product-fabric.atlassian.net/browse/BUILDTOOLS-325
@@ -392,7 +399,11 @@ export default class Page {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
     // for puppeteer
     const elem = await this.browser.$(selector);
-    return elem.getText();
+    let text = elem.getText();
+    if (text === '' || text === undefined || text === null) {
+      text = elem.getAttribute('textContent');
+    }
+    return text;
   }
 
   async getValue(selector /*: string */) {
