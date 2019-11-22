@@ -168,7 +168,9 @@ describe('<MediaViewer />', () => {
           selectedIdentifier: identifier2,
         });
         expect(el.find(SidebarWrapper).exists()).toBe(true);
-        expect(mockSidebarRenderer).toHaveBeenCalledWith(identifier2);
+        expect(mockSidebarRenderer).toHaveBeenCalledWith(identifier2, {
+          close: expect.any(Function),
+        });
       });
 
       it('should render sidebar with default selected identifier if not set in state', () => {
@@ -177,7 +179,9 @@ describe('<MediaViewer />', () => {
           isSidebarVisible: true,
         });
         expect(el.find(SidebarWrapper).exists()).toBe(true);
-        expect(mockSidebarRenderer).toHaveBeenCalledWith(identifier);
+        expect(mockSidebarRenderer).toHaveBeenCalledWith(identifier, {
+          close: expect.any(Function),
+        });
       });
 
       it('should not show sidebar if extensions prop is not defined', () => {
