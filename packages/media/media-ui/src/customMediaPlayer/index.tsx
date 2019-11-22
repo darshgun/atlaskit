@@ -110,9 +110,12 @@ export class CustomMediaPlayer extends Component<
     simultaneousPlayManager.unsubscribe(this);
   }
 
-  onFullScreenChange = () => {
+  onFullScreenChange = (e: Event) => {
+    if (e.target !== this.videoWrapperRef) {
+      return;
+    }
     const { isFullScreenEnabled: currentFullScreenMode } = this.state;
-    const isFullScreenEnabled = getFullscreenElement() ? true : false;
+    const isFullScreenEnabled = !!getFullscreenElement();
 
     if (currentFullScreenMode !== isFullScreenEnabled) {
       this.setState({
