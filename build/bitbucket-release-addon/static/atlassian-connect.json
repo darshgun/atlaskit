@@ -58,6 +58,13 @@
                 "params": {
                   "value": "{7200c8ff-ca25-4da5-9675-79a503254a1a}"
                 }
+              },
+              {
+                "condition": "equals",
+                "target": "repository.uuid",
+                "params": {
+                  "value": "{c8e2f021-38d2-46d0-9b7a-b3f7b428f724}"
+                }
               }
             ],
             "type": "OR"
