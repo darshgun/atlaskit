@@ -17,14 +17,7 @@ const CustomComponent = ({
   ...rest
 }: {
   wrapperClass: string;
-}) => (
-  <Link
-    to="/my-route"
-    className={wrapperClass}
-    // style={{ color: 'currentColor' }}
-    {...rest}
-  />
-);
+}) => <Link to="/my-route" className={wrapperClass} {...rest} />;
 
 const ItemVariants = () => {
   return (
