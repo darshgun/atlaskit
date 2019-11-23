@@ -68,6 +68,7 @@ const baseItemCSS = (
   },
   ...(isSelected && selectedStyles),
   ...(isDisabled && disabledStyles),
+  ...(isSelected && selectedStyles),
 });
 
 export const itemCSS = (

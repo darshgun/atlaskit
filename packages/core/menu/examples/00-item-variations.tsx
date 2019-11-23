@@ -44,16 +44,21 @@ const ItemVariants = () => {
         With both elemAfter and elemBefore prop
       </ButtonItem>
       <ButtonItem isDisabled>Disabled Item</ButtonItem>
+      <ButtonItem isSelected>Selected Item</ButtonItem>
       <ButtonItem description="Some textual description">
         Item with description
       </ButtonItem>
       <LinkItem href="//www.atlassian.com">
         Link item that takes you to atlassian home page
       </LinkItem>
+      <LinkItem href="//www.atlassian.com" isSelected>
+        Selected Link Item
+      </LinkItem>
       <CustomItem
+        isDisabled
         component={({ wrapperClass }: { wrapperClass: string }) => (
           <em className={wrapperClass} tabIndex={0}>
-            Simple custom element using em tag
+            Disabled custom element using em tag
           </em>
         )}
       />

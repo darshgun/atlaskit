@@ -20,7 +20,6 @@ export interface BaseItemProps {
   children?: React.ReactNode;
   href?: string;
   component?: React.ComponentType<{ wrapperClass: string }>;
-  isSelected?: boolean;
 }
 
 export type ButtonItemProps = Omit<BaseItemProps, 'component' | 'href'>;
