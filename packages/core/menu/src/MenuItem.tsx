@@ -21,11 +21,13 @@ import {
   BaseItemProps,
   CustomItemProps,
   SkeletonItemProps,
+  Width,
 } from './types';
 
 export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
   <div css={itemHeadingCSS}>{children}</div>
 );
+
 export const SkeletonHeadingItem = ({ width }: { width?: Width }) => (
   <div css={skeletonHeadingItemCSS(width)} />
 );
