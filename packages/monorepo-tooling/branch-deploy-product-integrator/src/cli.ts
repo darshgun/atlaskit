@@ -1,15 +1,8 @@
 import chalk from 'chalk';
 import meow from 'meow';
-import {
-  push,
-  PushValidationError,
-  HELP_MSG as PUSH_HELP_MSG,
-} from './commands/push';
-import {
-  reportStatus,
-  ReportStatusValidationError,
-  HELP_MSG as REPORT_STATUS_HELP_MSG,
-} from './commands/reportStatus';
+import { ValidationError, ErrorType, Command } from './types';
+import * as push from './commands/push';
+import * as reportStatus from './commands/reportStatus';
 
 // prettier-ignore
 const HELP_MSG = `
@@ -26,7 +19,26 @@ const HELP_MSG = `
     ${chalk.yellow('--dryRun')}     Performs a dry run, does not perform actual git commands or fetch requests
 `;
 
-class ValidationError extends Error {}
+class CliValidationError extends Error implements ValidationError {
+  type: ErrorType = 'cli';
+}
+
+type CommandImpl = {
+  run: (inputs: string[], flags: {}) => void;
+  helpMsg: string;
+};
+
+const commandMap: Record<Command, CommandImpl> = {
+  push: {
+    run: (inputs: string[], flags: {}) =>
+      push.push(inputs[0], inputs[1], flags, inputs.slice(2)),
+    helpMsg: push.HELP_MSG,
+  },
+  'report-status': {
+    run: () => reportStatus.reportStatus(),
+    helpMsg: reportStatus.HELP_MSG,
+  },
+};
 
 export function run() {
   const cli = meow(HELP_MSG, {
@@ -70,34 +82,30 @@ export function run() {
   }
 
   try {
-    if (command === 'push') {
-      if (cli.flags.help) {
-        console.log(PUSH_HELP_MSG);
-        process.exit(1);
-      }
-      return push(inputs[0], inputs[1], cli.flags, inputs.slice(2));
-    } else if (command === 'report-status') {
-      if (cli.flags.help) {
-        console.log(REPORT_STATUS_HELP_MSG);
-        process.exit(1);
-      }
-      return reportStatus();
-    } else if (command == null) {
+    if (command == null) {
+      // This exits with non-zero exit status
       cli.showHelp();
-    } else {
-      throw new ValidationError('Invalid command');
+      return;
     }
+
+    if (!Object.keys(commandMap).includes(command)) {
+      throw new CliValidationError('Invalid command');
+    }
+
+    let commandImpl = commandMap[command as Command];
+    if (cli.flags.help) {
+      console.log(commandImpl.helpMsg);
+      process.exit(1);
+    }
+    return commandImpl.run(inputs, cli.flags);
   } catch (e) {
-    if (e instanceof ValidationError) {
+    if (e.type === 'cli') {
       console.error(chalk.red(e.message));
       cli.showHelp(2);
-    } else if (e instanceof PushValidationError) {
+    } else if (Object.keys(commandMap).includes(e.type)) {
+      const commandImpl = commandMap[e.type as Command];
       console.error(chalk.red(e.message));
-      console.log(PUSH_HELP_MSG);
-      process.exit(2);
-    } else if (e instanceof ReportStatusValidationError) {
-      console.error(chalk.red(e.message));
-      console.log(REPORT_STATUS_HELP_MSG);
+      console.log(commandImpl.helpMsg);
       process.exit(2);
     }
 

@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { ValidationError, ErrorType } from '../types';
 
 export const HELP_MSG = `
   🚀 Atlaskit branch deploy product integrator™ 🚀
@@ -7,6 +8,7 @@ export const HELP_MSG = `
     'report-status <result> <url>',
   )} Reports the status of the current build
 
+  ${chalk.red('This command is not implemented yet')}
 
    ${chalk.green('Options')}
      ${chalk.yellow(
@@ -27,6 +29,11 @@ export const HELP_MSG = `
     )}
 `;
 
-export class ReportStatusValidationError extends Error {}
+export class ReportStatusValidationError extends Error
+  implements ValidationError {
+  type: ErrorType = 'report-status';
+}
 
-export async function reportStatus() {}
+export async function reportStatus() {
+  console.log('Not implemented');
+}

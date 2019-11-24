@@ -10,6 +10,7 @@ import installFromCommit from '@atlaskit/branch-installer';
 import fetch from 'node-fetch';
 import { triggerProductBuild } from '../lib/ci';
 import { commitAndPush, checkoutOrCreate, isInsideRepo } from '../lib/git';
+import { ValidationError, ErrorType } from '../types';
 
 const exec = util.promisify(childProcess.exec);
 
@@ -35,7 +36,9 @@ type Flags = {
 
 type UserFlags = Default<Flags, keyof typeof defaultFlags>;
 
-export class PushValidationError extends Error {}
+export class PushValidationError extends Error implements ValidationError {
+  type: ErrorType = 'push';
+}
 
 // prettier-ignore
 export const HELP_MSG = `

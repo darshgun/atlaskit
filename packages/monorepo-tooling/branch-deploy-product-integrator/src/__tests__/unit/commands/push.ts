@@ -9,7 +9,7 @@ jest.unmock('../../../commands/push');
 const mockSimpleGit: jest.Mock = simpleGit as any;
 const mockFetch: jest.Mock = fetch as any;
 
-describe('Branch deploy product integrator', () => {
+describe('Push command', () => {
   let mockGitMethods: any;
   let consoleLogSpy: jest.SpyInstance<
     ReturnType<Console['log']>,
