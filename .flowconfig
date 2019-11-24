@@ -30,6 +30,10 @@
 [untyped]
 .*/node_modules/react-select
 .*/node_modules/react-popper/.*
+# Not compatible with this older version of flow (react hooks)
+.*/node_modules/raf-schd/.*
+.*/node_modules/react-beautiful-dnd/.*
+.*/node_modules/use-memo-one/.*
 
 [include]
 
