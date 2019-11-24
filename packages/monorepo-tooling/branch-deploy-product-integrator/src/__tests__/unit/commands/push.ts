@@ -46,6 +46,7 @@ describe('Push command', () => {
   });
   it.skip('should reuse existing branch in product if one exists', () => {});
   it.skip('should install branch deployed versions from supplied commit hash', () => {});
+  it.skip('should create a version file in the root', () => {});
   it.skip('should commit and push changes', () => {});
   it.skip('should gracefully exit if no new versions were installed', () => {});
   it.skip('should run dedupe if dedupe flag is passed', () => {});

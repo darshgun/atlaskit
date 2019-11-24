@@ -1,3 +1,4 @@
+import fs from 'fs';
 import chalk from 'chalk';
 import simpleGit, { SimpleGit } from 'simple-git/promise';
 import util from 'util';
@@ -13,6 +14,7 @@ import { commitAndPush, checkoutOrCreate, isInsideRepo } from '../lib/git';
 import { ValidationError, ErrorType } from '../types';
 
 const exec = util.promisify(childProcess.exec);
+const writeFile = util.promisify(fs.writeFile);
 
 const defaultFlags = {
   branchPrefix: 'atlaskit-branch-deploy-',
@@ -69,6 +71,12 @@ export const HELP_MSG = `
 
 function createBranchName(atlaskitBranchName: string, prefix: string) {
   return `${prefix}${atlaskitBranchName}`.replace(/\//g, '-');
+}
+
+async function createVersionFile(akCommitHash: string) {
+  const versionFileName = '.atlaskit-version';
+  const payload = { akCommitHash };
+  await writeFile(versionFileName, JSON.stringify(payload), 'utf8');
 }
 
 function validateArgs(
@@ -161,6 +169,8 @@ https://bitbucket.org/atlassian/atlaskit-mk-2/branch/${atlaskitBranchName}
 
 This commit was auto-generated.
   `;
+
+  await createVersionFile(atlaskitCommitHash);
 
   console.log('Pushing branch deployed versions');
   await commitAndPush(git, commitMessage, authorEmail, branchName);
