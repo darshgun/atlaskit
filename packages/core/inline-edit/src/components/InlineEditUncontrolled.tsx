@@ -11,11 +11,7 @@ import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import Form, { Field } from '@atlaskit/form';
 
-import {
-  InlineEditUncontrolledProps,
-  FieldChildProps,
-  FormChildProps,
-} from '../types';
+import { InlineEditUncontrolledProps } from '../types';
 import ButtonsWrapper from '../styled/ButtonsWrapper';
 import ButtonWrapper from '../styled/ButtonWrapper';
 import ReadViewContentWrapper from '../styled/ReadViewContentWrapper';
@@ -45,8 +41,8 @@ const InlineDialog = Loadable({
   loading: () => null,
 });
 
-class InlineEditUncontrolled extends React.Component<
-  InlineEditUncontrolledProps,
+class InlineEditUncontrolled<FieldValue = string> extends React.Component<
+  InlineEditUncontrolledProps<FieldValue>,
   State
 > {
   static defaultProps = {
@@ -72,7 +68,7 @@ class InlineEditUncontrolled extends React.Component<
 
   private confirmationTimeoutId: number | undefined;
 
-  componentDidUpdate(prevProps: InlineEditUncontrolledProps) {
+  componentDidUpdate(prevProps: InlineEditUncontrolledProps<FieldValue>) {
     /**
      * This logic puts the focus on the edit button after confirming using
      * the confirm button or using the keyboard to confirm, but not when
@@ -233,9 +229,7 @@ class InlineEditUncontrolled extends React.Component<
           this.props.onConfirm(data.inlineEdit)
         }
       >
-        {({
-          formProps: { onKeyDown, onSubmit, ref: formRef },
-        }: FormChildProps) => (
+        {({ formProps: { onKeyDown, onSubmit, ref: formRef } }) => (
           <form
             onKeyDown={e => {
               onKeyDown(e);
@@ -259,7 +253,7 @@ class InlineEditUncontrolled extends React.Component<
                  */
                 key="edit-view"
               >
-                {({ fieldProps, error }: FieldChildProps) => (
+                {({ fieldProps, error }) => (
                   <ContentWrapper
                     onBlur={() =>
                       this.onWrapperBlur(
@@ -314,7 +308,7 @@ class InlineEditUncontrolled extends React.Component<
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default withAnalyticsContext({
+export default (withAnalyticsContext({
   componentName: 'inlineEdit',
   packageName,
   packageVersion,
@@ -331,4 +325,5 @@ export default withAnalyticsContext({
       },
     }),
   })(InlineEditUncontrolled),
-);
+  // Props with generics cannot be inferred by analytics-next HOCs
+) as unknown) as typeof InlineEditUncontrolled;

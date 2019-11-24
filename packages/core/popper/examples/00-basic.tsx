@@ -45,7 +45,8 @@ export default () => (
             {({ ref, style, placement, outOfBoundaries }) => (
               <Popup
                 outOfBoundaries={outOfBoundaries}
-                innerRef={ref}
+                // innerRef can't be null so shortcircuit to undefined if it is.
+                innerRef={ref || undefined}
                 style={style}
                 data-placement={placement}
               >

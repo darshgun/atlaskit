@@ -3,34 +3,29 @@ import * as ReactDOM from 'react-dom';
 import { InjectedIntl, defineMessages } from 'react-intl';
 import { EditorView, NodeView, Decoration } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
-import { colors } from '@atlaskit/theme';
-import Tooltip from '@atlaskit/tooltip';
-import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
+import { ExpandIconButton } from '../ui/ExpandIconButton';
 import { keyName } from 'w3c-keyname';
 import {
   Node as PmNode,
   DOMSerializer,
   DOMOutputSpec,
 } from 'prosemirror-model';
-import {
-  expandMessages,
-  ExpandIconWrapper,
-  ExpandTooltipWrapper,
-} from '@atlaskit/editor-common';
+import { expandMessages } from '@atlaskit/editor-common';
 
 import {
   getPosHandlerNode,
   getPosHandler,
 } from '../../../nodeviews/ReactNodeView';
-import { closestElement } from '../../../utils';
+import { closestElement, isEmptyNode } from '../../../utils';
 import {
   updateExpandTitle,
   toggleExpandExpanded,
   selectExpand,
-  deleteExpand,
+  deleteExpandAtPos,
 } from '../commands';
 import { expandClassNames } from '../ui/class-names';
 import { GapCursorSelection, Side } from '../../../plugins/gap-cursor';
+import { getEditorProps } from '../../shared-context';
 
 const messages = defineMessages({
   ...expandMessages,
@@ -107,6 +102,7 @@ export class ExpandNodeView implements NodeView {
   getPos: getPosHandlerNode;
   pos: number;
   reactContext: ReactContext;
+  allowInteractiveExpand: boolean = true;
 
   constructor(
     node: PmNode,
@@ -147,6 +143,7 @@ export class ExpandNodeView implements NodeView {
       this.dom.addEventListener('click', this.handleClick);
       this.dom.addEventListener('input', this.handleInput);
     }
+
     if (this.input) {
       this.input.addEventListener('keydown', this.handleTitleKeydown);
     }
@@ -155,7 +152,30 @@ export class ExpandNodeView implements NodeView {
       // Prevent ProseMirror from getting a focus event (causes weird selection issues).
       this.titleContainer.addEventListener('focus', this.handleFocus);
     }
+
+    if (this.icon) {
+      this.icon.addEventListener('keydown', this.handleIconKeyDown);
+    }
   }
+
+  private focusTitle = () => {
+    if (this.input) {
+      this.input.focus();
+    }
+  };
+
+  private handleIconKeyDown = (event: KeyboardEvent) => {
+    switch (keyName(event)) {
+      case 'Tab':
+        event.preventDefault();
+        this.focusTitle();
+        break;
+      case 'Enter':
+        event.preventDefault();
+        this.handleClick(event);
+        break;
+    }
+  };
 
   private renderIcon(intl?: InjectedIntl, node?: PmNode) {
     if (!this.icon) {
@@ -163,30 +183,49 @@ export class ExpandNodeView implements NodeView {
     }
 
     const { __expanded } = (node && node.attrs) || this.node.attrs;
-    const message = __expanded
-      ? expandMessages.collapseNode
-      : expandMessages.expandNode;
-    const label =
-      (intl && intl.formatMessage(message)) || message.defaultMessage;
     ReactDOM.render(
-      <Tooltip content={label} position="top" tag={ExpandTooltipWrapper}>
-        <ExpandIconWrapper
-          expanded={__expanded}
-          role="button"
-          className={expandClassNames.iconContainer}
-        >
-          <ChevronRightIcon label={label} primaryColor={colors.N80A} />
-        </ExpandIconWrapper>
-      </Tooltip>,
+      <ExpandIconButton
+        allowInteractiveExpand={this.isAllowInteractiveExpandEnabled()}
+        expanded={__expanded}
+      ></ExpandIconButton>,
       this.icon,
     );
   }
 
+  private isAllowInteractiveExpandEnabled = () => {
+    const { state } = this.view;
+    const editorProps = getEditorProps(state);
+    if (!editorProps) {
+      return false;
+    }
+
+    if (typeof editorProps.UNSAFE_allowExpand === 'boolean') {
+      return true;
+    } else if (
+      typeof editorProps.UNSAFE_allowExpand === 'object' &&
+      typeof editorProps.UNSAFE_allowExpand.allowInteractiveExpand === 'boolean'
+    ) {
+      return editorProps.UNSAFE_allowExpand.allowInteractiveExpand;
+    }
+
+    return true;
+  };
+
   private handleClick = (event: Event) => {
     const target = event.target as HTMLElement;
     if (closestElement(target, `.${expandClassNames.icon}`)) {
+      if (!this.isAllowInteractiveExpandEnabled()) {
+        return;
+      }
       event.stopPropagation();
       const { state, dispatch } = this.view;
+
+      // We blur the editorView, to prevent any keyboard showing on mobile
+      // When we're interacting with the expand toggle
+      if (this.view.dom instanceof HTMLElement) {
+        this.view.dom.blur();
+      }
+
       toggleExpandExpanded(this.getPos(), this.node.type)(state, dispatch);
       return;
     }
@@ -221,12 +260,9 @@ export class ExpandNodeView implements NodeView {
       case 'Enter':
         this.toggleExpand();
         break;
+      case 'Tab':
       case 'ArrowDown':
-        if (this.node.attrs.__expanded) {
-          this.moveCursorInsideContent(event);
-        } else {
-          this.moveCursorAfterExpand(event);
-        }
+        this.moveToOutsideOfTitle(event);
         break;
       case 'ArrowRight':
         this.setRightGapCursor(event);
@@ -246,9 +282,15 @@ export class ExpandNodeView implements NodeView {
       return;
     }
     const { selectionStart, selectionEnd } = this.input;
-    if (selectionStart === selectionEnd && selectionStart === 0) {
-      this.moveCursorInsideContent(event);
-      deleteExpand()(this.view.state, this.view.dispatch);
+
+    if (selectionStart !== selectionEnd || selectionStart !== 0) {
+      return;
+    }
+
+    const { state } = this.view;
+    const expandNode = this.node;
+    if (expandNode && isEmptyNode(state.schema)(expandNode)) {
+      deleteExpandAtPos(this.getPos(), expandNode)(state, this.view.dispatch);
     }
   };
 
@@ -257,14 +299,32 @@ export class ExpandNodeView implements NodeView {
     toggleExpandExpanded(this.getPos(), this.node.type)(state, dispatch);
   };
 
-  private moveCursorInsideContent = (event: KeyboardEvent) => {
+  private moveToOutsideOfTitle = (event: KeyboardEvent) => {
     event.preventDefault();
     const { state, dispatch } = this.view;
     const expandPos = this.getPos();
     if (typeof expandPos !== 'number') {
       return;
     }
-    const sel = Selection.findFrom(state.doc.resolve(expandPos), 1, true);
+
+    let pos = expandPos;
+    if (this.isCollapsed()) {
+      pos = expandPos + this.node.nodeSize;
+    }
+    const resolvedPos = state.doc.resolve(pos);
+    if (!resolvedPos) {
+      return;
+    }
+
+    if (
+      this.isCollapsed() &&
+      resolvedPos.nodeAfter &&
+      ['expand', 'nestedExpand'].indexOf(resolvedPos.nodeAfter.type.name) > -1
+    ) {
+      return this.setRightGapCursor(event);
+    }
+
+    const sel = Selection.findFrom(resolvedPos, 1, true);
     if (sel) {
       // If the input has focus, ProseMirror doesn't
       // Give PM focus back before changing our selection
@@ -273,22 +333,8 @@ export class ExpandNodeView implements NodeView {
     }
   };
 
-  private moveCursorAfterExpand = (event: KeyboardEvent) => {
-    event.preventDefault();
-    const { state, dispatch } = this.view;
-    const expandPos = this.getPos();
-    if (typeof expandPos !== 'number') {
-      return;
-    }
-    const sel = Selection.findFrom(
-      state.doc.resolve(expandPos + this.node.nodeSize),
-      1,
-      true,
-    );
-    if (sel) {
-      this.view.focus();
-      dispatch(state.tr.setSelection(sel));
-    }
+  private isCollapsed = () => {
+    return !this.node.attrs.__expanded;
   };
 
   private setRightGapCursor = (event: KeyboardEvent) => {
@@ -386,6 +432,7 @@ export class ExpandNodeView implements NodeView {
     }
 
     if (this.icon) {
+      this.icon.removeEventListener('keydown', this.handleIconKeyDown);
       ReactDOM.unmountComponentAtNode(this.icon);
     }
 

@@ -2,6 +2,7 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { editable, getDocFromElement, fullpage } from '../_helpers';
 import emptyExpandAdf from './__fixtures__/empty-expand.json';
 import twoLineExpandAdf from './__fixtures__/two-line-expand.json';
+import doubleExpand from './__fixtures__/double-expand.json';
 
 import {
   goToEditorTestingExample,
@@ -278,3 +279,32 @@ BrowserTestCase(
     expect(doc).toMatchCustomDocSnapshot(testName);
   },
 );
+
+describe('when there is a expanded followed by another', () => {
+  describe('when both are collapsed', () => {
+    describe('and the focus are inside of the first title', () => {
+      BrowserTestCase(
+        'pressing ArrowDown should create a gap cursor on the left',
+        { skip: ['ie'] },
+        async (client: any, testName: string) => {
+          const page = await goToEditorTestingExample(client);
+
+          await mountEditor(page, {
+            appearance: fullpage.appearance,
+            defaultValue: doubleExpand,
+            UNSAFE_allowExpand: true,
+          });
+
+          await page.click(
+            '.ak-editor-expand__title-input[value="First title"]',
+          );
+          await page.keys('ArrowDown');
+          await page.keys('I am here'.split(''));
+
+          const doc = await page.$eval(editable, getDocFromElement);
+          expect(doc).toMatchCustomDocSnapshot(testName);
+        },
+      );
+    });
+  });
+});

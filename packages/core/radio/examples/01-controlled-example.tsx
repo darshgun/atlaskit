@@ -28,11 +28,7 @@ export default function ControlledExample() {
                 label="Pick a color (Checked state is duplicated between Form and Component):"
                 defaultValue={null}
               >
-                {({
-                  fieldProps: { onChange, ...rest },
-                }: {
-                  fieldProps: { onChange: (e: any) => void };
-                }) => (
+                {({ fieldProps: { onChange, ...rest } }) => (
                   <RadioGroup
                     {...rest}
                     onChange={e => {

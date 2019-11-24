@@ -10,7 +10,6 @@ declare module '@atlaskit/droplist';
 declare module '@atlaskit/feedback-collector';
 declare module '@atlaskit/field-radio-group';
 declare module '@atlaskit/field-range';
-declare module '@atlaskit/form';
 declare module '@atlaskit/global-navigation';
 // TODO - Add icon import paths to entry-points.tsconfig.json
 declare module '@atlaskit/icon/*';

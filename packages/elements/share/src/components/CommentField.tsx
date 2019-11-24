@@ -3,7 +3,7 @@ import { Field } from '@atlaskit/form';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { messages } from '../i18n';
-import { Comment, FieldChildrenArgs } from '../types';
+import { Comment } from '../types';
 
 export type Props = {
   defaultValue?: Comment;
@@ -12,8 +12,8 @@ export type Props = {
 export const CommentField: React.StatelessComponent<Props> = ({
   defaultValue,
 }) => (
-  <Field name="comment" defaultValue={defaultValue}>
-    {({ fieldProps }: FieldChildrenArgs<Comment>) => (
+  <Field<Comment> name="comment" defaultValue={defaultValue}>
+    {({ fieldProps }) => (
       <FormattedMessage {...messages.commentPlaceholder}>
         {placeholder => (
           <FieldTextArea

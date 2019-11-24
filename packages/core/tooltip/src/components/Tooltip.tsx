@@ -3,7 +3,7 @@
 import React from 'react';
 import NodeResolver from 'react-node-resolver';
 import flushable from 'flushable';
-import { Popper, Placement } from '@atlaskit/popper';
+import { Popper } from '@atlaskit/popper';
 import Portal from '@atlaskit/portal';
 import { layers } from '@atlaskit/theme/constants';
 
@@ -307,24 +307,16 @@ class Tooltip extends React.Component<TooltipProps, State> {
         {renderTooltip && this.targetRef && this.fakeMouseElement ? (
           <Portal zIndex={layers.tooltip()}>
             <Popper
-              // @ts-ignore
               referenceElement={
                 // https://github.com/FezVrasta/react-popper#usage-without-a-reference-htmlelement
                 // We are using a popper technique to pass in a faked element when we use mouse.
-                // This is fine.
-                position === 'mouse' ? this.fakeMouseElement : this.targetRef
+                (position === 'mouse'
+                  ? this.fakeMouseElement
+                  : this.targetRef) as HTMLElement
               }
               placement={position === 'mouse' ? mousePosition : position}
             >
-              {({
-                ref,
-                style,
-                placement,
-              }: {
-                ref: (elm: HTMLElement) => void;
-                style: Object;
-                placement: Placement;
-              }) =>
+              {({ ref, style, placement }) =>
                 TooltipContainer && (
                   <Animation
                     immediatelyShow={immediatelyShow}
@@ -334,7 +326,8 @@ class Tooltip extends React.Component<TooltipProps, State> {
                   >
                     {getAnimationStyles => (
                       <TooltipContainer
-                        innerRef={ref}
+                        // innerRef can't be null so shortcircuit to undefined if it is.
+                        innerRef={ref || undefined}
                         className="Tooltip"
                         style={{
                           ...getAnimationStyles(placement as PositionTypeBase),
