@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import EnteringMotion from '../../entering/motion';
-import ExitingPersistence from '../../entering/exiting-persistence';
-import StaggeredEntrance from '../../entering/staggered-entrance';
+import EnteringMotion from '../../../entering/motion';
+import ExitingPersistence from '../../../entering/exiting-persistence';
+import StaggeredEntrance from '../../../entering/staggered-entrance';
 
-jest.mock('../../utils/accessibility');
+jest.mock('../../../utils/accessibility');
 
 describe('<EnteringMotion />', () => {
   const duration = 500;
