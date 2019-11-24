@@ -23,12 +23,13 @@ class MVExamplePage {
     });
   }
 
-  async validateNameSizeTypeAndIcon(
-    name: string,
-    size: string | null,
-    type: string,
-    icon: string,
-  ) {
+  async validateMediaCard(validationParameters: {
+    name: string;
+    size: string | null;
+    type: string;
+    icon: string;
+  }) {
+    const { name, size, type, icon } = validationParameters;
     await this.page.waitUntilContainsText(
       `[data-testid="media-viewer-file-name"]`,
       name,
@@ -61,7 +62,7 @@ class MVExamplePage {
 
   async closeMediaViewer(closeWithEsc: boolean) {
     if (closeWithEsc) {
-      await this.page.sendKeys('/*', 'Escape');
+      await this.page.sendKeys('Escape');
     } else {
       await this.page.click('[data-testid="media-viewer-close-button"]');
     }
@@ -75,17 +76,13 @@ class MVExamplePage {
       } catch (error) {
         // for some inexplicable reason if element doesn't exist IE11 throws instead of returning false
         // also, disregard it's called `ie` in the config, it's returned like this from browser capabilites object
-        if (this.page.isBrowser('internet explorer')) {
-          return true;
-        } else {
-          return false;
-        }
+        return this.page.isBrowser('internet explorer');
       }
     });
   }
 }
 
-const doNTimes = async (n: number, callback: () => Promise<any>) => {
+const executeTimes = async (n: number, callback: () => Promise<any>) => {
   for (let i = 0; i < n; i++) {
     await callback();
   }
@@ -98,36 +95,37 @@ BrowserTestCase(
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
-    await testPage.validateNameSizeTypeAndIcon(
-      'media-test-file-2.jpg',
-      '16 KB',
-      'image',
-      'image',
-    );
+    await testPage.validateMediaCard({
+      name: 'media-test-file-2.jpg',
+      size: '16 KB',
+      type: 'image',
+      icon: 'image',
+    });
 
     await testPage.navigateNext();
-    await testPage.validateNameSizeTypeAndIcon(
-      'media-test-file-3.png',
-      '88 KB',
-      'image',
-      'image',
-    );
+    await testPage.validateMediaCard({
+      name: 'media-test-file-3.png',
+      size: '88 KB',
+      type: 'image',
+      icon: 'image',
+    });
 
-    await doNTimes(2, () => testPage.navigatePrevious());
-    await testPage.validateNameSizeTypeAndIcon(
-      'media-test-file-1.png',
-      '158 B',
-      'image',
-      'image',
-    );
+    await executeTimes(2, () => testPage.navigatePrevious());
+    await testPage.validateMediaCard({
+      name: 'media-test-file-1.png',
+      size: '158 B',
+      type: 'image',
+      icon: 'image',
+    });
 
-    await doNTimes(3, () => testPage.navigateNext());
-    await testPage.validateNameSizeTypeAndIcon(
-      'https://wac-cdn.atlassian.com/dam/jcr:616e6748-ad8c-48d9-ae93-e49019ed5259/Atlassian-horizontal-blue-rgb.svg',
-      null,
-      'image',
-      'image',
-    );
+    await executeTimes(3, () => testPage.navigateNext());
+    await testPage.validateMediaCard({
+      name:
+        'https://wac-cdn.atlassian.com/dam/jcr:616e6748-ad8c-48d9-ae93-e49019ed5259/Atlassian-horizontal-blue-rgb.svg',
+      size: null,
+      type: 'image',
+      icon: 'image',
+    });
   },
 );
 

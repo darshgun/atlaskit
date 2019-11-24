@@ -84,7 +84,7 @@ export default class Page {
     this.browser = client;
   }
 
-  async sendKeys(selector /*: string */, text /*: string[] | string */) {
+  async sendKeys(text /*: string[] | string */) {
     if (Array.isArray(text)) {
       return this.browser.keys(text.map(getMappedKey));
     }
