@@ -62,7 +62,7 @@ class MVExamplePage {
 
   async closeMediaViewer(closeWithEsc: boolean) {
     if (closeWithEsc) {
-      await this.page.sendKeys('Escape');
+      await this.page.keys('Escape');
     } else {
       await this.page.click('[data-testid="media-viewer-close-button"]');
     }
