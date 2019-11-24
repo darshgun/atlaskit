@@ -26,7 +26,7 @@ describe('Snapshot Test', () => {
 
   it('Motion example resizing height should match production example when adding a new element', async () => {
     await page.waitForSelector(examples);
-    for (const i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       const button = `[data-testid="button--${i}"]`;
       await page.waitForSelector(button);
       await page.click(button);
