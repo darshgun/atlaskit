@@ -549,10 +549,6 @@ export default class Page {
     };
   }
 
-  async uploadBase64File(base64Content: string): Promise<string> {
-    return await this.browser.uploadFile(base64Content);
-  }
-
   async safariCompatibleTab() {
     if (this.isBrowser('Safari')) {
       await this.keys('\ue00A\ue004');
