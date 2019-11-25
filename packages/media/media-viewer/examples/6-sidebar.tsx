@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Button from '@atlaskit/button';
 import AkSpinner from '@atlaskit/spinner';
-import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
+import DetailViewIcon from '@atlaskit/icon/glyph/detail-view';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import {
   ExternalImageIdentifier,
@@ -113,7 +113,7 @@ export default class Example extends React.Component<{}, State> {
             extensions={{
               sidebar: {
                 renderer: this.sidebarRenderer,
-                icon: <EditorPanelIcon label="sidebar" />,
+                icon: <DetailViewIcon label="sidebar" />,
               },
             }}
           />
@@ -131,7 +131,9 @@ interface SidebarProps {
 const Sidebar = (props: SidebarProps) => {
   const { identifier, actions } = props;
   const [fileState, setFileState] = useState<FileState | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<'loading' | 'succeed' | 'error'>(
+    'loading',
+  );
 
   const renderFileStateItem = <FileState, K extends keyof FileState>(
     fileState: FileState,
@@ -146,8 +148,11 @@ const Sidebar = (props: SidebarProps) => {
   };
 
   const renderFileState = () => {
-    if (isLoading) {
+    if (status === 'loading') {
       return <AkSpinner />;
+    }
+    if (status === 'error') {
+      return <div>Error loading file</div>;
     }
     if (!fileState) {
       return null;
@@ -170,7 +175,7 @@ const Sidebar = (props: SidebarProps) => {
 
   useEffect(() => {
     if (identifier.mediaItemType === 'file') {
-      setIsLoading(true);
+      setStatus('loading');
       const deferredIdentifier =
         identifier.id instanceof Promise
           ? identifier.id
@@ -181,7 +186,11 @@ const Sidebar = (props: SidebarProps) => {
           .subscribe({
             next: newFileState => {
               setFileState(newFileState);
-              setIsLoading(false);
+              setStatus('succeed');
+            },
+            error(error) {
+              console.log('sidebar error', error);
+              setStatus('error');
             },
           });
       });
