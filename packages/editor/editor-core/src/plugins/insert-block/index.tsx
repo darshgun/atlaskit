@@ -20,7 +20,6 @@ import {
   PluginState as PlaceholderPluginState,
 } from '../placeholder-text';
 import { pluginKey as layoutStateKey } from '../layout';
-import { pluginKey as expandStateKey, ExpandPluginState } from '../expand';
 import {
   pluginKey as macroStateKey,
   MacroState,
@@ -58,6 +57,7 @@ const toolbarSizeToButtons = (toolbarSize: ToolbarSize) => {
 
 export interface InsertBlockOptions {
   allowTables?: boolean;
+  allowExpand?: boolean;
   insertMenuItems?: any;
   horizontalRuleEnabled?: boolean;
   nativeStatusSupported?: boolean;
@@ -102,7 +102,6 @@ const insertBlockPlugin = (options: InsertBlockOptions = {}): EditorPlugin => ({
             imageUpload: imageUploadStateKey,
             placeholderTextState: placeholderTextStateKey,
             layoutState: layoutStateKey,
-            expandState: expandStateKey,
           }}
           render={({
             typeAheadState,
@@ -116,7 +115,6 @@ const insertBlockPlugin = (options: InsertBlockOptions = {}): EditorPlugin => ({
             imageUpload,
             placeholderTextState,
             layoutState,
-            expandState,
           }: {
             typeAheadState: TypeAheadPluginState | undefined;
             mentionState: MentionPluginState | undefined;
@@ -130,7 +128,6 @@ const insertBlockPlugin = (options: InsertBlockOptions = {}): EditorPlugin => ({
             imageUpload: ImageUploadPluginState | undefined;
             placeholderTextState: PlaceholderPluginState | undefined;
             layoutState: LayoutState | undefined;
-            expandState: ExpandPluginState | undefined;
           }) => (
             <ToolbarInsertBlock
               buttons={buttons}
@@ -150,7 +147,7 @@ const insertBlockPlugin = (options: InsertBlockOptions = {}): EditorPlugin => ({
                 placeholderTextState && placeholderTextState.allowInserting
               }
               layoutSectionEnabled={!!layoutState}
-              expandEnabled={!!expandState}
+              expandEnabled={!!options.allowExpand}
               mediaUploadsEnabled={mediaState && mediaState.allowsUploads}
               onShowMediaPicker={mediaState && mediaState.showMediaPicker}
               mediaSupported={!!mediaState}

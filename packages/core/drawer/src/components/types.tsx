@@ -65,12 +65,9 @@ export interface FocusLockProps {
 }
 
 interface DnDType {
-  draggableProps: {
-    style: Object | null;
-    'data-react-beautiful-dnd-draggable': string;
-  };
+  draggableProps: Object;
   dragHandleProps: Object | null;
-  innerRef: Function;
+  innerRef: (ref: HTMLElement | null) => void;
   placeholder?: Node;
 }
 

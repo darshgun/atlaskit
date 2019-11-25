@@ -47,7 +47,6 @@ const ValidationExample = () => (
         <hr style={{ border: 0, margin: '1em 0' }} />
         <Field
           label="City"
-          helperText="This select is successful"
           id="success"
           name="success-city"
           defaultValue={cities[0]}

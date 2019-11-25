@@ -71,19 +71,6 @@ describe('<FadeIn />', () => {
     );
   });
 
-  it('should pause the animation', () => {
-    const { getByTestId } = render(
-      <FadeIn isPaused>
-        {props => <div data-testid="element" {...props} />}
-      </FadeIn>,
-    );
-
-    expect(getByTestId('element')).toHaveStyleDeclaration(
-      'animation-play-state',
-      'paused',
-    );
-  });
-
   it('should not delay the animation by default', () => {
     const { getByTestId } = render(
       <FadeIn>{props => <div data-testid="element" {...props} />}</FadeIn>,
@@ -92,19 +79,6 @@ describe('<FadeIn />', () => {
     expect(getByTestId('element')).toHaveStyleDeclaration(
       'animation-delay',
       '0ms',
-    );
-  });
-
-  it('should delay the animation', () => {
-    const { getByTestId } = render(
-      <FadeIn delay={100}>
-        {props => <div data-testid="element" {...props} />}
-      </FadeIn>,
-    );
-
-    expect(getByTestId('element')).toHaveStyleDeclaration(
-      'animation-delay',
-      '100ms',
     );
   });
 });

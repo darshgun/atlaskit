@@ -1,5 +1,13 @@
 # @atlaskit/build-utils
 
+## 2.5.0
+
+### Minor Changes
+
+- [minor][6bce2c0290](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bce2c0290):
+
+  Fix the circular dependencies between build releases and build utils by moving flattenReleases and parseChangesetCommit to build-utils.
+
 ## 2.4.0
 
 ### Minor Changes

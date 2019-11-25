@@ -1,9 +1,18 @@
 import { keymap } from 'prosemirror-keymap';
-import { Plugin, Selection } from 'prosemirror-state';
+import {
+  Plugin,
+  Selection,
+  TextSelection,
+  NodeSelection,
+} from 'prosemirror-state';
 import * as keymaps from '../../../keymaps';
 import { GapCursorSelection, Side } from '../../gap-cursor';
 import { findExpand } from '../utils';
 import { EditorView } from 'prosemirror-view';
+import { findTypeAheadQuery } from '../../type-ahead/utils/find-query-mark';
+import { isEmptyNode } from '../../../utils';
+import { expandClassNames } from '../ui/class-names';
+import { deleteExpand } from '../commands';
 
 const focusTitle = (view: EditorView, pos: number) => {
   const dom = view.domAtPos(pos);
@@ -69,9 +78,68 @@ export function expandKeymap(): Plugin {
   );
 
   keymaps.bindKeymapWithCommand(
+    keymaps.tab.common!,
+    (state, dispatch, editorView) => {
+      const $nodeAfter = state.selection.$from.nodeAfter;
+
+      if (
+        state.selection instanceof GapCursorSelection &&
+        state.selection.side === Side.LEFT &&
+        $nodeAfter &&
+        $nodeAfter.type === state.schema.nodes.expand &&
+        editorView
+      ) {
+        const { tr } = state;
+        const pos = state.selection.from;
+
+        tr.setSelection(new NodeSelection(tr.doc.resolve(pos)));
+
+        if (dispatch) {
+          dispatch(tr);
+        }
+        return true;
+      }
+
+      if (
+        state.selection instanceof NodeSelection &&
+        state.selection.node.type === state.schema.nodes.expand &&
+        editorView &&
+        editorView.dom instanceof HTMLElement
+      ) {
+        const { from } = state.selection;
+        const expand = editorView.nodeDOM(from);
+        if (!expand || !(expand instanceof HTMLElement)) {
+          return false;
+        }
+
+        const iconContainer = expand.querySelector(
+          `.${expandClassNames.iconContainer}`,
+        ) as HTMLElement;
+
+        if (iconContainer && iconContainer.focus) {
+          const { tr } = state;
+          const pos = state.selection.from;
+          tr.setSelection(new TextSelection(tr.doc.resolve(pos)));
+          if (dispatch) {
+            dispatch(tr);
+          }
+          editorView.dom.blur();
+          iconContainer.focus();
+        }
+
+        return true;
+      }
+
+      return false;
+    },
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(
     keymaps.moveUp.common!,
     (state, dispatch, editorView) => {
-      if (!editorView) {
+      const queryMark = findTypeAheadQuery(state);
+      if ((queryMark.start !== -1 && queryMark.end !== -1) || !editorView) {
         return false;
       }
       const { selection, schema } = state;
@@ -167,16 +235,13 @@ export function expandKeymap(): Plugin {
         1,
         true,
       );
-      if (textSel && selection.$from.pos === textSel.$from.pos) {
-        if (dispatch) {
-          dispatch(
-            state.tr.delete(
-              expandNode.pos,
-              expandNode.pos + expandNode.node.nodeSize,
-            ),
-          );
-        }
-        return true;
+      if (
+        textSel &&
+        selection.$from.pos === textSel.$from.pos &&
+        isEmptyNode(state.schema)(expandNode.node) &&
+        dispatch
+      ) {
+        return deleteExpand()(state, dispatch);
       }
 
       return false;

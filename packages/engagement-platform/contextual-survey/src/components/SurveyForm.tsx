@@ -5,7 +5,12 @@ import { jsx, css } from '@emotion/core';
 import Textarea from '@atlaskit/textarea';
 import Button from '@atlaskit/button';
 import { Checkbox } from '@atlaskit/checkbox';
-import Form, { Field, FormFooter, CheckboxField } from '@atlaskit/form';
+import Form, {
+  Field,
+  FormFooter,
+  CheckboxField,
+  OnSubmitHandler,
+} from '@atlaskit/form';
 import { fontSize } from '@atlaskit/theme';
 
 import FeedbackScoreButtons from './FeedbackScoreButtons';
@@ -16,11 +21,7 @@ interface Props {
   statement?: string;
   textPlaceholder: string;
   textLabel: string;
-  onSubmit: (
-    formValues: FormValues,
-    formApi: any,
-    callback: (err?: Object) => void,
-  ) => void;
+  onSubmit: OnSubmitHandler<FormValues>;
 }
 
 type TransitionState = 'entering' | 'entered' | 'exiting' | 'exited';
@@ -86,13 +87,17 @@ export default ({
       </h1>
       {statement && <p id="contextualSurveyStatement">{statement}</p>}
       <Form onSubmit={onSubmit}>
-        {({ formProps, submitting }: any) => (
+        {({ formProps, submitting }) => (
           <form {...formProps}>
-            <Field name="feedbackScore" isDisabled={submitting} isRequired>
-              {({ fieldProps }: { fieldProps: any }) => (
+            <Field<number>
+              name="feedbackScore"
+              isDisabled={submitting}
+              isRequired
+            >
+              {({ fieldProps }) => (
                 <FeedbackScoreButtons
                   {...fieldProps}
-                  onChange={(score: number) => {
+                  onChange={score => {
                     fieldProps.onChange(score);
                     onScoreSelect();
                   }}
@@ -109,18 +114,17 @@ export default ({
                   `}
                   ref={expandedAreaRef}
                 >
-                  <Field
+                  <Field<string, HTMLTextAreaElement>
                     name="writtenFeedback"
                     defaultValue=""
                     isDisabled={submitting}
                   >
-                    {({ fieldProps }: { fieldProps: any }) => (
+                    {({ fieldProps }) => (
                       <Textarea
                         {...fieldProps}
                         aria-label={textLabel}
                         placeholder={textPlaceholder}
-                        autoFocus
-                        onChange={(event: Event) => {
+                        onChange={event => {
                           fieldProps.onChange(event);
                           onFeedbackChange();
                         }}
@@ -132,7 +136,7 @@ export default ({
                     isDisabled={submitting}
                     defaultIsChecked={canContactDefault}
                   >
-                    {({ fieldProps }: { fieldProps: any }) => (
+                    {({ fieldProps }) => (
                       <Checkbox
                         {...fieldProps}
                         label="Atlassian can contact me about this feedback"

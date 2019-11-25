@@ -358,6 +358,7 @@ class ExampleEditorComponent extends React.Component<
       allowMediaSingle: true,
       allowResizing: true,
       allowAnnotation: true,
+      UNSAFE_allowAltTextOnImages: true,
     };
 
     return (

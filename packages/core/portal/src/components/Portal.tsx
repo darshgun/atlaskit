@@ -18,10 +18,10 @@ type State = {
   portalIsMounted: boolean;
 };
 
-type LayerKey = keyof typeof layers;
+type Layers = keyof typeof layers;
 
 export type PortalEventDetail = {
-  layer: LayerKey | null;
+  layer: Layers | null;
   zIndex: number;
 };
 
@@ -39,16 +39,19 @@ const getBody = (): HTMLElement => {
   return document.body;
 };
 
-const zIndexToName: Record<number, string> = Object.keys(layers).reduce(
-  (acc: Record<number, string>, name: string) => {
-    const value: number = layers[name]();
-    acc[value] = name;
-    return acc;
-  },
-  {},
-);
+/**
+ * Reverses the name: zIndex object so we can quickly access it using the zIndex value as the key.
+ */
+const zIndexToName: Record<number, Layers> = Object.keys(layers).reduce<
+  Record<number, Layers>
+>((acc, name) => {
+  const layerName = name as Layers;
+  const value: number = layers[layerName]();
+  acc[value] = layerName;
+  return acc;
+}, {});
 
-const getLayerName = (zIndex: number): LayerKey | null => {
+const getLayerName = (zIndex: number): Layers | null => {
   return Object.prototype.hasOwnProperty.call(zIndexToName, zIndex)
     ? zIndexToName[zIndex]
     : null;

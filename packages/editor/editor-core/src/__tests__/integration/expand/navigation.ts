@@ -2,24 +2,30 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { editable, getDocFromElement, fullpage } from '../_helpers';
 import emptyExpandAdf from './__fixtures__/empty-expand.json';
 import twoLineExpandAdf from './__fixtures__/two-line-expand.json';
+import doubleExpand from './__fixtures__/double-expand.json';
 
 import {
   goToEditorTestingExample,
   mountEditor,
 } from '../../__helpers/testing-example-helpers';
 
-const expandContentSelector = '.ak-editor-expand__content p';
+import { expandClassNames } from '../../../plugins/expand/ui/class-names';
+
+const expandContentSelector = `.${expandClassNames.content} p`;
 
 const focusExpandTitle = async (page: any) => {
-  // it doesn't focus input on click directly :(
-  await page.click(expandContentSelector);
-  await page.keys('ArrowUp');
+  await page.browser.execute((selector: string) => {
+    const input = document.querySelector('.' + selector);
+    if (input) {
+      // @ts-ignore
+      input.focus();
+    }
+  }, expandClassNames.titleInput);
 };
 
-const collapseExpand = async (page: any) => {
-  // it doesn't focus input on click directly :(
+const collapseExpandThenFocusTitle = async (page: any) => {
+  await page.click(`.${expandClassNames.icon}`);
   await focusExpandTitle(page);
-  await page.keys('Enter');
 };
 
 BrowserTestCase(
@@ -54,7 +60,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('Backspace');
 
     const doc = await page.$eval(editable, getDocFromElement);
@@ -73,7 +79,8 @@ BrowserTestCase(
       defaultValue: emptyExpandAdf,
       UNSAFE_allowExpand: true,
     });
-    await collapseExpand(page);
+
+    await collapseExpandThenFocusTitle(page);
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
@@ -92,7 +99,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('ArrowDown');
     await page.type(editable, 'abc');
 
@@ -241,7 +248,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('ArrowLeft');
     await page.keys('ArrowDown');
     await page.type(editable, 'title');
@@ -263,7 +270,7 @@ BrowserTestCase(
       UNSAFE_allowExpand: true,
     });
 
-    await collapseExpand(page);
+    await collapseExpandThenFocusTitle(page);
     await page.keys('ArrowRight');
     await page.keys('ArrowUp');
     await page.type(editable, 'title');
@@ -272,3 +279,32 @@ BrowserTestCase(
     expect(doc).toMatchCustomDocSnapshot(testName);
   },
 );
+
+describe('when there is a expanded followed by another', () => {
+  describe('when both are collapsed', () => {
+    describe('and the focus are inside of the first title', () => {
+      BrowserTestCase(
+        'pressing ArrowDown should create a gap cursor on the left',
+        { skip: ['ie'] },
+        async (client: any, testName: string) => {
+          const page = await goToEditorTestingExample(client);
+
+          await mountEditor(page, {
+            appearance: fullpage.appearance,
+            defaultValue: doubleExpand,
+            UNSAFE_allowExpand: true,
+          });
+
+          await page.click(
+            '.ak-editor-expand__title-input[value="First title"]',
+          );
+          await page.keys('ArrowDown');
+          await page.keys('I am here'.split(''));
+
+          const doc = await page.$eval(editable, getDocFromElement);
+          expect(doc).toMatchCustomDocSnapshot(testName);
+        },
+      );
+    });
+  });
+});

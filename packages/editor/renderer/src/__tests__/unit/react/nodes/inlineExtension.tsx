@@ -4,9 +4,16 @@ import InlineExtension from '../../../../react/nodes/inlineExtension';
 import { RendererContext } from '../../../../react';
 import ReactSerializer from '../../../../react';
 import { defaultSchema } from '@atlaskit/adf-schema';
-import { ExtensionHandlers } from '@atlaskit/editor-common';
+import {
+  ExtensionHandlers,
+  ProviderFactory,
+  combineExtensionProviders,
+} from '@atlaskit/editor-common';
+import { createFakeExtensionProvider } from '@atlaskit/editor-test-helpers/src/extensions';
+import Loadable from 'react-loadable';
 
 describe('Renderer - React/Nodes/InlineExtension', () => {
+  const providerFactory = ProviderFactory.create({});
   const extensionHandlers: ExtensionHandlers = {
     'com.atlassian.fabric': (param: any) => {
       switch (param.extensionKey) {
@@ -65,6 +72,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
   it('should be able to fall back to default content', () => {
     const extension = mount(
       <InlineExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -86,6 +94,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
   it('should be able to render React.Element from extensionHandler', () => {
     const extension = mount(
       <InlineExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -106,6 +115,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
   it('should be able to render Atlassian Document from extensionHandler', () => {
     const extension = mount(
       <InlineExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -126,6 +136,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
   it('should render the default content if extensionHandler throws an exception', () => {
     const extension = mount(
       <InlineExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -151,6 +162,7 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
 
     const extension = mount(
       <InlineExtension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -168,5 +180,101 @@ describe('Renderer - React/Nodes/InlineExtension', () => {
     });
 
     extension.unmount();
+  });
+
+  describe('extension providers', () => {
+    const ExtensionHandlerFromProvider = ({ extensionParams }: any) => (
+      <div>Extension provider: {extensionParams.parameters.words}</div>
+    );
+
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
+      'fake.confluence',
+      'inline-macro',
+      ExtensionHandlerFromProvider,
+    );
+
+    const providers = ProviderFactory.create({
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    it('should be able to render extensions with the extension provider', async () => {
+      const extension = mount(
+        <InlineExtension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence"
+          extensionKey="inline-macro"
+          parameters={{
+            words: 'lorem ipsum',
+          }}
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.text()).toEqual('Extension provider: lorem ipsum');
+
+      extension.unmount();
+    });
+
+    it('should prioritize extension handlers (sync) over extension provider', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence': (extensionParams: any) => (
+          <div>Extension handler: {extensionParams.parameters.words}</div>
+        ),
+      };
+
+      const extension = mount(
+        <InlineExtension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence"
+          extensionKey="inline-macro"
+          parameters={{
+            words: 'lorem ipsum',
+          }}
+        />,
+      );
+
+      expect(extension.text()).toEqual('Extension handler: lorem ipsum');
+
+      extension.unmount();
+    });
+
+    it('should fallback to extension provider if not handled by extension handlers', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence': (extensionParams: any) => null,
+      };
+
+      const extension = mount(
+        <InlineExtension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence"
+          extensionKey="inline-macro"
+          parameters={{
+            words: 'lorem ipsum',
+          }}
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.text()).toEqual('Extension provider: lorem ipsum');
+
+      extension.unmount();
+    });
   });
 });

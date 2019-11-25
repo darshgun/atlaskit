@@ -13,6 +13,20 @@ import {
 import { EditorContent } from './internal/components/EditorContent';
 import { EditorProps } from './internal/editor-props-type';
 
+/**
+ * Main Editor component. Use in combination with `EditorContent` and a `Preset`.
+ * Internally it constructs `ProseMirror View` and mounts it to `EditorContent`.
+ *
+ * `EditorContent` can be wrapped to implement any layout/design requirements.
+ *
+ * ```js
+ * <Preset>
+ *   <Editor>
+ *     <EditorContent/>
+ *   </Editor>
+ * </Preset>
+ * ```
+ */
 function Editor(props: EditorProps) {
   const plugins = usePresetContext();
 
@@ -25,7 +39,7 @@ function Editor(props: EditorProps) {
               {...props}
               plugins={plugins.length ? plugins : props.plugins}
               portalProviderAPI={portalProviderAPI}
-              handleAnalyticsEvent={props.handleAnalyticsEvent}
+              onAnalyticsEvent={props.onAnalyticsEvent}
             />
             <PortalRenderer portalProviderAPI={portalProviderAPI} />
           </>

@@ -27,7 +27,7 @@ export const RetryContainer = (props: { children: React.ReactNode }) => {
 
       <Centered>
         <Button appearance="primary" onClick={increment}>
-          Re-run
+          Re-enter
         </Button>
       </Centered>
     </div>

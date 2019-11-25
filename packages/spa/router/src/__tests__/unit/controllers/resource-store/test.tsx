@@ -16,10 +16,7 @@ import {
   getDefaultStateSlice,
   serializeError,
 } from '../../../../controllers/resource-store/utils';
-import {
-  getResourceStore,
-  actions as storeActions,
-} from '../../../../controllers/resource-store';
+import { getResourceStore } from '../../../../controllers/resource-store';
 import {
   Actions as ResourceStoreActions,
   State as ResourceStoreState,
@@ -73,6 +70,13 @@ describe('resource store', () => {
     getKey: () => key,
     getData: () => getDataPromise,
   });
+  const mockRoute = {
+    name: 'foo',
+    navigation: null,
+    path: '/foo',
+    component: () => <h1>test</h1>,
+    resources: [],
+  };
   const resolver = (resolveWith: any, delay = 0) =>
     new Promise(resolve => setTimeout(() => resolve(resolveWith), delay));
 
@@ -324,90 +328,6 @@ describe('resource store', () => {
             },
           },
         });
-      });
-    });
-
-    describe('requestResourcesForNextRoute', () => {
-      const freshResource = {
-        ...mockResource,
-        ...{ type: 'HI', getData: () => resolver('hello world', 250) },
-      };
-      const freshResourceWithExistingType = {
-        ...mockResource,
-        ...{
-          type: 'BYE',
-          getKey: () => 'newKey',
-          getData: () => resolver('hello world', 250),
-        },
-      };
-      const existingResource = {
-        ...mockResource,
-        ...{ type: 'BYE', getData: () => resolver('goodbye cruel world', 500) },
-      };
-      const prevRouteWithMockedResources = {
-        resources: [existingResource],
-      };
-      const nextRouteWithMockedResources = {
-        resources: [
-          freshResource,
-          freshResourceWithExistingType,
-          existingResource,
-        ],
-      };
-
-      it('should resolve with an empty array if there is no route match', async () => {
-        const data = actions.requestResourcesForNextRoute(
-          {
-            ...mockRouterStoreContext,
-            // @ts-ignore - not providing unused route properties here
-            route: prevRouteWithMockedResources,
-          },
-          mockRouterStoreContext,
-        );
-
-        expect(data).toEqual(expect.arrayContaining([]));
-      });
-
-      it('should request the resources that are not present in the current route context', async () => {
-        storeState.setState({
-          data: {
-            BYE: {
-              key: {
-                data: 'goodbye cruel world',
-                error: null,
-                loading: false,
-                promise: resolver('hello world'),
-                expiresAt,
-              },
-            },
-          },
-        });
-
-        const spy = jest.spyOn(storeActions, 'getResource');
-        const prevRouterStoreContext = {
-          ...mockRouterStoreContext,
-          route: prevRouteWithMockedResources,
-        };
-        const nextRouterStoreContext = {
-          ...mockRouterStoreContext,
-          route: nextRouteWithMockedResources,
-        };
-
-        await actions.requestResourcesForNextRoute(
-          // @ts-ignore - not passing full config
-          prevRouterStoreContext,
-          nextRouterStoreContext,
-        );
-
-        expect(spy).toHaveBeenCalledWith(freshResource, nextRouterStoreContext);
-        expect(spy).toHaveBeenCalledWith(
-          freshResourceWithExistingType,
-          nextRouterStoreContext,
-        );
-        expect(spy).not.toHaveBeenCalledWith(
-          existingResource,
-          nextRouterStoreContext,
-        );
       });
     });
   });
@@ -784,6 +704,90 @@ describe('resource store', () => {
 
         expect(slice).toEqual(mockSlice);
         expect(spy).toBeCalledTimes(0);
+      });
+    });
+  });
+
+  describe('cleanExpiredResources', () => {
+    const currentTime = 100;
+
+    const expiredResource = {
+      ...mockResource,
+      ...{
+        type: 'expiredResource',
+        getKey: () => 'expiredResourceKey',
+        getData: () => resolver('hello world', 250),
+      },
+    };
+    const cachedResource = {
+      ...mockResource,
+      ...{
+        type: 'cachedResource',
+        getKey: () => 'cachedResourceKey',
+        getData: () => resolver('hello world', 250),
+      },
+    };
+
+    beforeEach(() => {
+      jest.spyOn(global.Date, 'now').mockReturnValue(currentTime);
+      (getExpiresAt as any).mockImplementation(() => currentTime);
+      storeState.setState({
+        data: {
+          expiredResource: {
+            expiredResourceKey: {
+              data: result,
+              loading: false,
+              error: 'some error',
+              promise: getDataPromise,
+              expiresAt: 50,
+            },
+          },
+          cachedResource: {
+            cachedResourceKey: {
+              data: result,
+              loading: false,
+              error: 'some error',
+              promise: getDataPromise,
+              expiresAt: 200,
+            },
+          },
+        },
+      });
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should clear the data for expired resources', () => {
+      actions.cleanExpiredResources([expiredResource, cachedResource], {
+        route: mockRoute,
+        match: mockMatch,
+        query: {},
+        location: { pathname: '', search: '', hash: '' },
+      });
+
+      const { data } = storeState.getState();
+
+      expect(data).toEqual({
+        expiredResource: {
+          expiredResourceKey: {
+            data: null,
+            loading: false,
+            error,
+            promise: getDataPromise,
+            expiresAt: currentTime,
+          },
+        },
+        cachedResource: {
+          cachedResourceKey: {
+            data: result,
+            loading: false,
+            error: 'some error',
+            promise: getDataPromise,
+            expiresAt: 200,
+          },
+        },
       });
     });
   });

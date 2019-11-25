@@ -20,7 +20,7 @@ interface Props {
 
 /* eslint-disable react/no-unused-prop-types */
 interface PopperProps {
-  ref: (ref: HTMLElement | null) => void;
+  ref: React.Ref<HTMLElement>;
   style: any;
   placement: {};
   scheduleUpdate: () => void;
@@ -75,7 +75,7 @@ export default class FixedLayer extends React.Component<Props> {
             return (
               // @ts-ignore: need to add `placement` onto div for popper
               <div
-                ref={ref}
+                ref={ref as React.Ref<HTMLDivElement>}
                 placement={placement}
                 style={{ ...style, zIndex: layers.dialog() }}
               >

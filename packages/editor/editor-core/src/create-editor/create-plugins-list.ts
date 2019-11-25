@@ -52,7 +52,8 @@ import {
   historyPlugin,
   sharedContextPlugin,
   expandPlugin,
-  iOSScrollPlugin,
+  isExpandInsertionEnabled,
+  mobileScrollPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { ScrollGutterPluginOptions } from '../plugins/base/pm-plugins/scroll-gutter';
@@ -120,7 +121,6 @@ export default function createPluginsList(
   createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ): EditorPlugin[] {
   const isMobile = props.appearance === 'mobile';
-  const isIOS = isMobile && !!(window as any).webkit;
   const isFullPage = fullPageCheck(props.appearance);
   const plugins = getDefaultPluginsList(props);
 
@@ -150,7 +150,9 @@ export default function createPluginsList(
   }
 
   if (props.UNSAFE_allowExpand) {
-    plugins.push(expandPlugin());
+    plugins.push(
+      expandPlugin({ allowInsertion: isExpandInsertionEnabled(props) }),
+    );
   }
 
   if (props.media) {
@@ -317,6 +319,7 @@ export default function createPluginsList(
   plugins.push(
     insertBlockPlugin({
       allowTables: !!props.allowTables,
+      allowExpand: isExpandInsertionEnabled(props),
       insertMenuItems: props.insertMenuItems,
       horizontalRuleEnabled: props.allowRule,
       nativeStatusSupported: !statusMenuDisabled,
@@ -329,10 +332,7 @@ export default function createPluginsList(
 
   if (isMobile) {
     plugins.push(historyPlugin());
-  }
-
-  if (isIOS) {
-    plugins.push(iOSScrollPlugin());
+    plugins.push(mobileScrollPlugin());
   }
 
   return plugins;

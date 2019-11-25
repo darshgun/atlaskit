@@ -1526,6 +1526,11 @@ const metaData: Record<string, Data> = {
     componentName: 'SignOutIcon',
     package: '@atlaskit/icon/glyph/sign-out',
   },
+  sprint: {
+    keywords: ['sprint', 'icon', 'core'],
+    componentName: 'SprintIcon',
+    package: '@atlaskit/icon/glyph/sprint',
+  },
   'star-filled': {
     keywords: ['star-filled', 'starfilled', 'icon', 'core'],
     componentName: 'StarFilledIcon',
@@ -1545,6 +1550,11 @@ const metaData: Record<string, Data> = {
     keywords: ['status', 'icon', 'core'],
     componentName: 'StatusIcon',
     package: '@atlaskit/icon/glyph/status',
+  },
+  stopwatch: {
+    keywords: ['stopwatch', 'icon', 'core'],
+    componentName: 'StopwatchIcon',
+    package: '@atlaskit/icon/glyph/stopwatch',
   },
   subtask: {
     keywords: ['subtask', 'issue', 'task', 'icon', 'core'],

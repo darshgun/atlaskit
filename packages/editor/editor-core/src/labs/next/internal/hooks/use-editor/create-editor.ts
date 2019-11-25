@@ -18,7 +18,7 @@ import { EditorProps } from '../../editor-props-type';
 
 export function createEditor({
   context,
-  handleAnalyticsEvent,
+  onAnalyticsEvent,
   transformer,
 
   plugins,
@@ -46,14 +46,24 @@ export function createEditor({
   const transformerInstance = transformer && transformer(schema);
   const pmPlugins = createPMPlugins({
     editorConfig,
+
     schema,
+
     dispatch,
     eventDispatcher,
+
+    // TODO: ED-8132 Useless at this point, as we've changed how props are being passed.
     props: {},
+
     portalProviderAPI: portalProviderAPI,
     providerFactory,
+
+    // Required to workaround issues with multiple react trees.
+    // Though it's kinda leaking react to outside world.
     reactContext: () => context,
-    dispatchAnalyticsEvent: () => {},
+
+    // TODO: ED-8133 Need to make types more generic otherwise it's not extensible.
+    dispatchAnalyticsEvent: onAnalyticsEvent as any,
   });
   const state = EditorState.create({
     schema,
@@ -80,7 +90,7 @@ export function createEditor({
     editorView,
 
     transformer: transformerInstance,
-    handleAnalyticsEvent,
+    dispatchAnalyticsEvent: onAnalyticsEvent,
 
     eventDispatcher,
     dispatch,
@@ -109,7 +119,7 @@ export type CreateEditorParams = Pick<
   | 'onChange'
   | 'disabled'
   | 'transformer'
-  | 'handleAnalyticsEvent'
+  | 'onAnalyticsEvent'
   | 'onDestroy'
 > & {
   context: any;

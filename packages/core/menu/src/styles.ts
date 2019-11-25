@@ -9,6 +9,7 @@ import {
   subtleHeading,
 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
+import { Width } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -114,24 +115,24 @@ export const itemHeadingCSS = {
   marginTop: gridSize,
 } as CSSObject;
 
-export const skeletonHeadingItemCSS = {
+export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   ...itemHeadingCSS,
   padding: gridSize / 2,
   '&::after': {
     backgroundColor: N20,
     height: gridSize * 1.75,
     margin: `${gridSize / 2}px 0`,
-    width: `calc(20% - ${gridSize / 2}px)`,
+    width: width || `calc(20% - ${gridSize / 2}px)`,
     borderRadius: 3,
     display: 'block',
     content: '""',
   },
-} as CSSObject;
+});
 
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
-  width?: string | number,
+  width?: Width,
 ): CSSObject => ({
   ...itemCSS(false),
   pointerEvents: 'none',
@@ -140,22 +141,22 @@ export const itemSkeletonCSS = (
 
   // Stagger alternate skeleton items if no width is passed
   ...(!width && {
-    '&:nth-child(1n)::after': {
+    '&:nth-of-type(1n)::after': {
       flexBasis: '70%',
     },
-    '&:nth-child(2n)::after': {
+    '&:nth-of-type(2n)::after': {
       flexBasis: '50%',
     },
-    '&:nth-child(3n)::after': {
+    '&:nth-of-type(3n)::after': {
       flexBasis: '60%',
     },
-    '&:nth-child(4n)::after': {
+    '&:nth-of-type(4n)::after': {
       flexBasis: '90%',
     },
-    '&:nth-child(5n)::after': {
+    '&:nth-of-type(5n)::after': {
       flexBasis: '35%',
     },
-    '&:nth-child(6n)::after': {
+    '&:nth-of-type(6n)::after': {
       flexBasis: '77%',
     },
   }),
@@ -178,7 +179,7 @@ export const itemSkeletonCSS = (
     backgroundColor: N20,
     height: gridSize * 1.75,
     borderRadius: 3,
-    flexBasis: '100%' || width,
+    flexBasis: width || '100%',
   },
 });
 

@@ -7,7 +7,7 @@ declare module '@atlaskit/field-text-area' {
     isReadOnly?: boolean;
     required?: boolean;
     isInvalid?: boolean;
-    label: string;
+    label?: string;
     name?: string;
     placeholder?: string;
     value?: string | number;

@@ -47,7 +47,14 @@ export const Popup: FC<PopupProps> = memo(
               return trigger({
                 ref: (node: HTMLElement | null) => {
                   if (node) {
-                    ref(node);
+                    if (typeof ref === 'function') {
+                      ref(node);
+                    } else {
+                      (ref as React.MutableRefObject<
+                        HTMLElement
+                      >).current = node;
+                    }
+
                     setTriggerRef(node);
                   }
                 },
@@ -76,7 +83,14 @@ export const Popup: FC<PopupProps> = memo(
                       data-placement={placement}
                       data-testid={testId}
                       ref={(node: HTMLDivElement) => {
-                        ref(node);
+                        if (typeof ref === 'function') {
+                          ref(node);
+                        } else {
+                          (ref as React.MutableRefObject<
+                            HTMLElement
+                          >).current = node;
+                        }
+
                         setPopupRef(node);
                       }}
                       style={style}
