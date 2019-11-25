@@ -11,6 +11,7 @@ const mockFetch: jest.Mock = fetch as any;
 
 describe('Push command', () => {
   let mockGitMethods: any;
+  // @ts-ignore
   let consoleLogSpy: jest.SpyInstance<
     ReturnType<Console['log']>,
     Parameters<Console['log']>
