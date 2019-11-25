@@ -44,7 +44,13 @@ export class BrowserBase extends LocalUploadComponentReact<BrowserProps> {
     }
 
     const filesArray = [].slice.call(event.target.files);
-    this.uploadService.addFiles(filesArray);
+    try {
+      this.uploadService.addFiles(filesArray);
+    } finally {
+      if (this.browserRef.current) {
+        this.browserRef.current.value = '';
+      }
+    }
   };
 
   componentDidMount() {

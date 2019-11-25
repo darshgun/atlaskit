@@ -5,15 +5,17 @@ import * as historyHelper from 'history';
 
 import { MemoryRouter } from '../../../../controllers/memory-router';
 import { getResourceStore } from '../../../../controllers/resource-store';
-
+import { createResource } from '../../../../controllers/resource-utils';
 import {
   RouterSubscriber,
   INITIAL_STATE,
   getRouterStore,
   getRouterState,
 } from '../../../../controllers/router-store';
+import { ResourceSubscriber } from '../../../../controllers/subscribers/resource';
 import { MatchedRoute, HistoryAction } from '../../../../common/types';
 import { DEFAULT_ACTION } from '../../../../common/constants';
+import { mockRoute } from '../../../../common/mocks';
 
 const mockLocation = {
   pathname: '/pathname',
@@ -48,7 +50,7 @@ const mockRoutes = [
   },
 ];
 
-const waitALilBit = () => new Promise(resolve => setTimeout(resolve));
+const nextTick = () => new Promise(resolve => setTimeout(resolve));
 
 describe('SPA Router store', () => {
   const { location } = window;
@@ -162,7 +164,7 @@ describe('SPA Router store', () => {
       );
       const { history } = children.mock.calls[0][0];
 
-      await waitALilBit();
+      await nextTick();
 
       expect(children.mock.calls[0]).toEqual([
         expect.objectContaining({
@@ -182,7 +184,7 @@ describe('SPA Router store', () => {
 
       history.push(Object.values(newLocation).join(''));
 
-      await waitALilBit();
+      await nextTick();
 
       expect(children.mock.calls[1]).toEqual([
         expect.objectContaining({
@@ -212,7 +214,7 @@ describe('SPA Router store', () => {
 
       history.push('/pathname');
 
-      await waitALilBit();
+      await nextTick();
 
       expect(children.mock.calls[1]).toEqual([
         expect.objectContaining({
@@ -223,7 +225,7 @@ describe('SPA Router store', () => {
 
       history.replace('/blah');
 
-      await waitALilBit();
+      await nextTick();
 
       expect(children.mock.calls[2]).toEqual([
         expect.objectContaining({
@@ -386,7 +388,7 @@ describe('SPA Router store', () => {
       const { history } = children.mock.calls[0][0];
       history.push(mockRoutes[1].path);
 
-      await waitALilBit();
+      await nextTick();
       expect(window.location.replace).toBeCalledWith(mockRoutes[1].path);
     });
 
@@ -408,7 +410,7 @@ describe('SPA Router store', () => {
       const { history } = children.mock.calls[0][0];
       history.replace(mockRoutes[1].path);
 
-      await waitALilBit();
+      await nextTick();
       expect(window.location.replace).toBeCalledWith(mockRoutes[1].path);
     });
   });
@@ -440,7 +442,6 @@ describe('SPA Router store', () => {
       const props = { ...containerProps, ...initialResourceStoreState };
       const spy = jest.spyOn(getResourceStore().actions, 'hydrate');
 
-      // @ts-ignore
       getRouterStore().actions.bootstrapStore(props);
 
       expect(spy).toBeCalledWith({
@@ -463,25 +464,338 @@ describe('SPA Router store', () => {
       expect(spy).toBeCalledTimes(1);
       expect(spy).toBeCalledWith({ route, match, query, location });
     });
+  });
 
-    it('should request route resources on history change', async () => {
-      const spy = jest.spyOn(
-        getResourceStore().actions,
-        'requestResourcesForNextRoute',
+  describe('history listen resource store interop', () => {
+    const getResourceStoreStateData = () =>
+      getResourceStore().storeState.getState().data;
+    const componentRenderSpy = jest.fn();
+
+    let componentRenderStates: string[] = [];
+
+    beforeEach(() => {
+      componentRenderSpy.mockImplementation(arg =>
+        componentRenderStates.push(arg),
       );
+    });
+
+    afterEach(() => {
+      defaultRegistry.stores.clear();
+      componentRenderStates = [];
+    });
+
+    const mountAppSetInitialLocationAndGetHistoryPush = async (
+      routes: any[],
+      initialLocation: string,
+    ): Promise<any> => {
+      let historyPush = (path: string) => path;
 
       mount(
-        <MemoryRouter routes={mockRoutes}>
-          <RouterSubscriber>{children}</RouterSubscriber>
+        <MemoryRouter routes={routes} location={initialLocation}>
+          <RouterSubscriber>
+            {({ route, location, query, match, action }, { push }) => {
+              historyPush = push;
+
+              return !route ? null : (
+                <route.component
+                  route={route}
+                  location={location}
+                  query={query}
+                  match={match}
+                  action={action}
+                />
+              );
+            }}
+          </RouterSubscriber>
         </MemoryRouter>,
       );
-      const { history } = children.mock.calls[0][0];
 
-      history.push('/pathname');
+      return historyPush;
+    };
 
-      await waitALilBit();
+    const resourceA = createResource({
+      type: 'TYPE_A',
+      getKey: () => 'KEY_A',
+      getData: () => Promise.resolve(`A-${Date.now()}`),
+      maxAge: 0,
+    });
+    const resourceB = createResource({
+      type: 'TYPE_B',
+      getKey: () => 'KEY_B',
+      getData: () => Promise.resolve(`B-${Date.now()}`),
+      maxAge: Infinity,
+    });
 
-      expect(spy).toHaveBeenCalledTimes(1);
+    it.only('should transition between routes and not render components with stale data', async () => {
+      const ComponentA = () => (
+        <ResourceSubscriber resource={resourceA}>
+          {({ data, loading }) => {
+            if (loading) {
+              return <div>{componentRenderSpy(`loading:A`)}</div>;
+            }
+
+            return <div>{componentRenderSpy(`data:${String(data)}`)}</div>;
+          }}
+        </ResourceSubscriber>
+      );
+
+      const ComponentB = () => (
+        <ResourceSubscriber resource={resourceB}>
+          {({ data, loading }) => {
+            if (loading) {
+              return <div>{loading}</div>;
+            }
+
+            return <div>{data}</div>;
+          }}
+        </ResourceSubscriber>
+      );
+
+      const routes = [
+        {
+          ...mockRoute,
+          path: '/foo/a',
+          component: ComponentA,
+          resources: [resourceA],
+        },
+        {
+          ...mockRoute,
+          path: '/foo/b',
+          component: ComponentB,
+          resources: [resourceB],
+        },
+      ];
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(100);
+
+      // We start at route fooA
+      const historyPush = await mountAppSetInitialLocationAndGetHistoryPush(
+        routes,
+        routes[0].path,
+      );
+
+      const { data: dataA1 } = getResourceStoreStateData().TYPE_A.KEY_A;
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(150);
+
+      // We go to route fooB
+      historyPush(routes[1].path);
+
+      await nextTick();
+      jest.spyOn(global.Date, 'now').mockReturnValue(200);
+
+      // We go back to fooA
+      historyPush(routes[0].path);
+
+      await nextTick();
+
+      const { data: dataA2 } = getResourceStoreStateData().TYPE_A.KEY_A;
+
+      expect(dataA1 === dataA2).toBeFalsy();
+      expect(componentRenderStates).toEqual([
+        'loading:A',
+        `data:${dataA1}`,
+        'data:null',
+        'loading:A',
+        `data:${dataA2}`,
+      ]);
+    });
+
+    it('should always get new data when doing full route changes and resources have expired', async () => {
+      const ComponentA = () => (
+        <ResourceSubscriber resource={resourceA}>
+          {({ data, loading }) => {
+            if (loading) {
+              return <div>{componentRenderSpy(`loading:A`)}</div>;
+            }
+
+            let message = '';
+
+            if (data === null) {
+              message = 'isNullAndCleanedByTransitionOutOfA';
+            } else {
+              message = String(data);
+            }
+
+            return <div>{componentRenderSpy(`data:${message}`)}</div>;
+          }}
+        </ResourceSubscriber>
+      );
+      const ComponentB = () => (
+        <ResourceSubscriber resource={resourceA}>
+          {({ data, loading }) => {
+            if (loading) {
+              return <div>{componentRenderSpy(`loading:B`)}</div>;
+            }
+
+            let message = '';
+
+            if (data === null) {
+              message = 'isNullAndCleanedByTransitionIntoB';
+            } else {
+              message = String(data);
+            }
+
+            return <div>{componentRenderSpy(`data:${message}`)}</div>;
+          }}
+        </ResourceSubscriber>
+      );
+      const routes = [
+        {
+          ...mockRoute,
+          path: '/foo/a',
+          component: ComponentA,
+          resources: [resourceA, resourceB],
+        },
+        {
+          ...mockRoute,
+          path: '/bar/a',
+          component: ComponentB,
+          resources: [resourceA, resourceB],
+        },
+      ];
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(100);
+
+      // We start at route fooA
+      const historyPush = await mountAppSetInitialLocationAndGetHistoryPush(
+        routes,
+        routes[0].path,
+      );
+      const { data: dataA1 } = getResourceStoreStateData().TYPE_A.KEY_A;
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(150);
+
+      // We go to routeB
+      historyPush(routes[1].path);
+
+      await nextTick();
+
+      const { data: dataA2 } = getResourceStoreStateData().TYPE_A.KEY_A;
+
+      expect(dataA1 === dataA2).toBeFalsy();
+      expect(componentRenderStates).toEqual([
+        'loading:A',
+        `data:${dataA1}`,
+        // NOTE we double up here because 2 resources are being resolved on initial render
+        // this results in setState being called twice
+        `data:${dataA1}`,
+        'data:isNullAndCleanedByTransitionOutOfA',
+        'data:isNullAndCleanedByTransitionIntoB',
+        'loading:B',
+        `data:${dataA2}`,
+      ]);
+    });
+
+    it('should not clean resources when transitioning to the same route and keys have not changed', async () => {
+      const ComponentA = () => (
+        <ResourceSubscriber resource={resourceA}>
+          {({ data, loading }) => {
+            if (loading) {
+              return <div>{componentRenderSpy(`loading:A`)}</div>;
+            }
+
+            let message = '';
+
+            if (data === null) {
+              message = 'isNullAndCleanedByTransitionIntoB';
+            } else {
+              message = String(data);
+            }
+
+            return <div>{componentRenderSpy(`data:${message}`)}</div>;
+          }}
+        </ResourceSubscriber>
+      );
+      const routes = [
+        {
+          ...mockRoute,
+          path: '/foo/a',
+          component: ComponentA,
+          resources: [resourceA],
+        },
+      ];
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(100);
+
+      // We start at route fooA
+      const historyPush = await mountAppSetInitialLocationAndGetHistoryPush(
+        routes,
+        routes[0].path,
+      );
+
+      const { data: dataA1 } = getResourceStoreStateData().TYPE_A.KEY_A;
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(150);
+
+      historyPush(`${routes[0].path}?blah`);
+
+      await nextTick();
+
+      // This means the resource was never cleaned
+      expect(
+        componentRenderStates.includes(
+          'data:isNullAndCleanedByTransitionIntoB',
+        ),
+      ).toBeFalsy();
+      expect(componentRenderStates).toEqual([
+        'loading:A',
+        `data:${dataA1}`,
+        `data:${dataA1}`,
+      ]);
+    });
+
+    it('should not refresh cached resources when transitioning on the same route', async () => {
+      const ComponentB = () => (
+        <ResourceSubscriber resource={resourceB}>
+          {({ data, loading }) => {
+            if (loading) {
+              return <div>{componentRenderSpy(`loading:B`)}</div>;
+            }
+
+            let message = '';
+
+            if (data === null) {
+              message = 'isNullAndCleanedByTransitionIntoB';
+            } else {
+              message = String(data);
+            }
+
+            return <div>{componentRenderSpy(`data:${message}`)}</div>;
+          }}
+        </ResourceSubscriber>
+      );
+
+      const routes = [
+        {
+          ...mockRoute,
+          path: '/bar/:key',
+          component: ComponentB,
+          resources: [resourceA, resourceB],
+        },
+      ];
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(100);
+
+      // We start at route fooA
+      const historyPush = await mountAppSetInitialLocationAndGetHistoryPush(
+        routes,
+        '/bar/first-key',
+      );
+
+      const { data: dataA1 } = getResourceStoreStateData().TYPE_B.KEY_B;
+
+      jest.spyOn(global.Date, 'now').mockReturnValue(150);
+
+      // We go to routeB
+      historyPush('/bar/second-key');
+
+      await nextTick();
+
+      const { data: dataA2 } = getResourceStoreStateData().TYPE_B.KEY_B;
+
+      expect(dataA1 === dataA2).toBeTruthy();
+      expect(componentRenderStates.includes('data:null')).toBeFalsy();
     });
   });
 });

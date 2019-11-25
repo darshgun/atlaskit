@@ -115,6 +115,7 @@ const ContentStyles = css<StyleProps>`
         overflow: hidden;
         clip: rect(1px, 1px, 1px, 1px);
         white-space: nowrap;
+        user-select: none;
       }
     `
         : ''
@@ -153,6 +154,8 @@ const TitleContainerStyles = `
   color: ${colors.N300A};
   overflow: hidden;
   cursor: pointer;
+  // Prevent browser selection being inside the title container
+  user-select: none;
 
   /* TODO: Fix outline for keyboard navigation */
   &:focus {

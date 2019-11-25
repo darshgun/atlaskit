@@ -94,6 +94,10 @@ export type InternalFormProps = FormChildrenArgs<ShareData> &
   InjectedIntlProps;
 
 class InternalForm extends React.PureComponent<InternalFormProps> {
+  static defaultProps = {
+    onSubmit: () => {},
+  };
+
   componentWillUnmount() {
     const { onDismiss, getValues } = this.props;
     if (onDismiss) {
@@ -184,9 +188,9 @@ class InternalForm extends React.PureComponent<InternalFormProps> {
 
 const InternalFormWithIntl = injectIntl(InternalForm);
 
-export const ShareForm: React.StatelessComponent<Props> = props => (
-  <Form onSubmit={props.onSubmit}>
-    {({ formProps, getValues }: FormChildrenArgs<ShareData>) => (
+export const ShareForm: React.FC<Props> = props => (
+  <Form<ShareData> onSubmit={props.onSubmit!}>
+    {({ formProps, getValues }) => (
       <InternalFormWithIntl
         {...props}
         formProps={formProps}

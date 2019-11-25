@@ -24,7 +24,6 @@ import {
   isFromSsr,
   getExpiresAt,
   setExpiresAt,
-  getResourceIdentifier,
   serializeError,
   deserializeError,
   transformData,
@@ -35,19 +34,14 @@ export const actions: Actions = {
    * Set the state of a resource in the cache.
    *
    */
-  setResourceState: (type: string, key: string, state) => ({
-    setState,
-    getState,
-  }) => {
+  setResourceState: (type, key, state) => ({ setState, getState }) => {
     const { data } = getState();
-
-    const dataForType = data && data[type] ? data[type] : {};
 
     setState({
       data: {
         ...data,
         [type]: {
-          ...dataForType,
+          ...(data[type] || {}),
           [key]: state,
         },
       },
@@ -59,8 +53,8 @@ export const actions: Actions = {
    * Also resets the expiresAt based on maxAge
    */
   updateResourceState: (type, key, maxAge, newSliceData) => ({
-    dispatch,
     getState,
+    dispatch,
   }) => {
     const { data } = getState();
 
@@ -110,7 +104,7 @@ export const actions: Actions = {
   getResourceFromRemote: (resource, routerStoreContext) => async ({
     getState,
     dispatch,
-  }): Promise<any> => {
+  }): Promise<RouteResourceResponse> => {
     const { type, getKey, getData, maxAge } = resource;
     const { setResourceState } = actions;
     const { data: resourceStoreData, context } = getState();
@@ -164,56 +158,45 @@ export const actions: Actions = {
     }
 
     return Promise.all(
-      route.resources.map(resource =>
-        dispatch(actions.getResource(resource, routerStoreContext)),
-      ),
+      dispatch(actions.requestResources(route.resources, routerStoreContext)),
     );
   },
 
   /**
-   * Request resources that exist in the next route context, and do not exist in the prev route context
+   * Cleans expired resources and resets them back to their initial state.
+   * We need to do this when transitioning into a route.
    */
-  requestResourcesForNextRoute: (
-    prevRouterStoreContext,
-    nextRouterStoreContext,
-  ) => ({ getState, dispatch }) => {
-    const { route: nextRoute } = nextRouterStoreContext;
-    const { route: prevRoute } = prevRouterStoreContext;
-    const { context: resourceStoreContext } = getState();
+  cleanExpiredResources: (resources, routerStoreContext) => ({
+    getState,
+    dispatch,
+  }) => {
+    const { data, context: resourceContext } = getState();
 
-    if (!nextRoute || !nextRoute.resources) {
-      return Promise.all([]);
-    }
+    resources.forEach(resource => {
+      const { type, getKey } = resource;
+      const key = getKey(routerStoreContext, resourceContext);
+      const slice = getSliceForResource({ data }, { type, key });
 
-    const prevResourceIdentifiers = (
-      (prevRoute && prevRoute.resources) ||
-      []
-    ).map(prevResource => {
-      return getResourceIdentifier(
-        prevResource,
-        prevRouterStoreContext,
-        resourceStoreContext,
-      );
-    });
-
-    return Promise.all(
-      (nextRoute.resources || []).reduce((acc: any[], resource) => {
-        const resourceIdentifier = getResourceIdentifier(
-          resource,
-          nextRouterStoreContext,
-          resourceStoreContext,
+      if (!slice.expiresAt || slice.expiresAt < Date.now()) {
+        dispatch(
+          actions.setResourceState(type, key, {
+            ...slice,
+            data: null,
+            error: null,
+            expiresAt: getExpiresAt(0),
+          }),
         );
-
-        if (!prevResourceIdentifiers.includes(resourceIdentifier)) {
-          acc.push(
-            dispatch(actions.getResource(resource, nextRouterStoreContext)),
-          );
-        }
-
-        return acc;
-      }, []),
-    );
+      }
+    });
   },
+
+  /**
+   * Requests a specific set of resources.
+   */
+  requestResources: (resources, routerStoreContext) => ({ dispatch }) =>
+    resources.map(resource =>
+      dispatch(actions.getResource(resource, routerStoreContext)),
+    ),
 
   /**
    * Hydrates the store with state.
@@ -224,7 +207,7 @@ export const actions: Actions = {
     const { data, context } = getState();
     function getNextStateValue<R = any>(
       prev: ResourceStoreData | ResourceStoreContext,
-      next: ResourceStoreData | ResourceStoreContext | undefined,
+      next: ResourceStoreData | ResourceStoreContext | typeof undefined,
     ): R {
       if (!Object.keys(prev).length && next && Object.keys(next).length) {
         return next as R;

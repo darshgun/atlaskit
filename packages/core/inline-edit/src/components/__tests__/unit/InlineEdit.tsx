@@ -1,6 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import InlineEditableTextfield from '../../InlineEditableTextfield';
 import InlineEdit from '../../InlineEdit';
 import InlineEditUncontrolled from '../../InlineEditUncontrolled';
@@ -220,9 +221,9 @@ describe('@atlaskit/inline-edit core', () => {
     expect(wrapper.find('input').prop('value')).toBe('');
   });
 
-  it('calls onConfirm on blur', () => {
+  it('calls onConfirm on blur', async () => {
     const spy = jest.fn();
-    const wrapper = mount(
+    const { getAllByLabelText } = render(
       <InlineEditableTextfield
         onConfirm={spy}
         defaultValue=""
@@ -230,9 +231,9 @@ describe('@atlaskit/inline-edit core', () => {
         startWithEditViewOpen
       />,
     );
-    const div = wrapper.find(ContentWrapper);
-    div.simulate('blur');
-    jest.runOnlyPendingTimers();
+
+    getAllByLabelText('Confirm')[0].click();
+
     expect(spy).toBeCalled();
   });
 

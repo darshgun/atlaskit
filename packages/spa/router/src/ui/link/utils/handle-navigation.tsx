@@ -1,4 +1,3 @@
-import { Location } from '../../../common/types';
 import { isKeyboardEvent, isModifiedEvent } from '../../../common/utils/event';
 import { KeyboardEvent, MouseEvent } from 'react';
 
@@ -12,7 +11,6 @@ type LinkPressArgs = {
   };
   replace: boolean;
   href: string;
-  location: Location;
   onClick?: (e: LinkNavigationEvent) => void;
 };
 

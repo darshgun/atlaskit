@@ -18,14 +18,12 @@ export default () => {
       >
         <MenuGroup maxHeight={300}>
           <Section>
-            <SkeletonHeadingItem />
-            <SkeletonItem hasAvatar />
-            <SkeletonItem hasAvatar />
-            <SkeletonItem hasAvatar />
-            <SkeletonItem hasAvatar />
-            <SkeletonItem hasAvatar />
-            <SkeletonItem hasAvatar />
-            <SkeletonItem hasAvatar />
+            <SkeletonHeadingItem width="50%" />
+            <SkeletonItem hasAvatar width="45%" />
+            <SkeletonItem hasAvatar width="45%" />
+            <SkeletonItem hasAvatar width="45%" />
+            <SkeletonItem hasAvatar width="45%" />
+            <SkeletonItem hasAvatar width="45%" />
           </Section>
           <Section hasSeparator>
             <SkeletonHeadingItem />

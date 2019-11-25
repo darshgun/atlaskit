@@ -14,3 +14,12 @@ export const getResourceIdentifier = (
 
   return `${type}/${key}`;
 };
+
+export const getResourceIdentifiers = (
+  resources: RouteResource[],
+  routerStoreContext: RouterStoreContext,
+  resourceStoreContext: ResourceStoreContext,
+): string[] =>
+  resources.map(resource =>
+    getResourceIdentifier(resource, routerStoreContext, resourceStoreContext),
+  );

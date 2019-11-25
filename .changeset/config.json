@@ -3,5 +3,5 @@
   "changelog": "./changelogFunctions.js",
   "commit": true,
   "access": "public",
-  "baseBranch": "develop"
+  "baseBranch": "origin/develop"
 }

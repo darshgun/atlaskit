@@ -47,6 +47,15 @@ describe('Empty state', () => {
     expect(wrapper.find(Image).length).toBe(1);
   });
 
+  it('should render the image as a presentational element', () => {
+    const wrapper = shallow(
+      <EmptyState header="Test header" imageUrl="test" />,
+    );
+
+    expect(wrapper.find(Image).props()).toHaveProperty('alt', '');
+    expect(wrapper.find(Image).props()).toHaveProperty('role', 'presentation');
+  });
+
   it('should render description when description prop is not empty', () => {
     const wrapper = shallow(
       <EmptyState header="Test header" description="test" />,

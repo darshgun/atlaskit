@@ -24,9 +24,9 @@ export default class extends Component<{}> {
 
   render() {
     return (
-      <Form name="validation-example" onSubmit={this.handleSubmit}>
-        {({ formProps }: any) => (
-          <form {...formProps}>
+      <Form onSubmit={this.handleSubmit}>
+        {({ formProps }) => (
+          <form {...formProps} name="validation-example">
             <FormHeader title="Validation" />
             <Field
               label="Only validates on input = open sesame"

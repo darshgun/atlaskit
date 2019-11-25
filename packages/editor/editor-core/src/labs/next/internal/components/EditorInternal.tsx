@@ -10,7 +10,24 @@ import { EditorSharedConfigProvider } from '../context/shared-config';
 import { useEditor } from '../hooks/use-editor';
 import { EditorContentProvider } from './EditorContent';
 
-export function EditorInternal(props: EditorPropsExtended, context: any) {
+export function EditorInternal(
+  {
+    onAnalyticsEvent,
+    disabled,
+    transformer,
+    defaultValue,
+    plugins,
+    portalProviderAPI,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    popupsScrollableElement,
+    onChange,
+    onDestroy,
+    onMount,
+    children,
+  }: EditorPropsExtended,
+  context: any,
+) {
   // Need to memoize editor actions otherwise in case when editor is not
   // wrapped with EditorContext every prop change triggers all hooks
   // that depend on editorActions
@@ -23,25 +40,23 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
   const [editorSharedConfig, mountEditor] = useEditor({
     context,
     editorActions,
-    handleAnalyticsEvent: props.handleAnalyticsEvent,
+    onAnalyticsEvent,
 
-    disabled: props.disabled,
+    disabled,
 
-    transformer: props.transformer,
-    defaultValue: props.defaultValue,
+    transformer,
+    defaultValue,
 
-    plugins: props.plugins,
+    plugins,
 
-    portalProviderAPI: props.portalProviderAPI,
-    popupsMountPoint: props.popupsMountPoint,
-    popupsBoundariesElement: props.popupsBoundariesElement,
-    popupsScrollableElement: props.popupsScrollableElement,
+    portalProviderAPI,
+    popupsMountPoint,
+    popupsBoundariesElement,
+    popupsScrollableElement,
 
-    onChange: props.onChange,
-    onDestroy: props.onDestroy,
+    onChange,
+    onDestroy,
   });
-
-  const onMount = props.onMount;
 
   React.useEffect(() => {
     if (editorSharedConfig) {
@@ -63,7 +78,7 @@ export function EditorInternal(props: EditorPropsExtended, context: any) {
       <EditorContext editorActions={editorActions}>
         <EditorSharedConfigProvider value={editorSharedConfig}>
           <EditorContentProvider value={mountEditor}>
-            {props.children}
+            {children}
           </EditorContentProvider>
         </EditorSharedConfigProvider>
       </EditorContext>
