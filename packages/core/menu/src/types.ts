@@ -28,5 +28,3 @@ export type SkeletonItemProps = {
   hasIcon?: boolean;
   width?: string | number;
 };
-
-export type Width = string | number;
