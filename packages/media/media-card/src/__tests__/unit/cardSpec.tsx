@@ -1503,6 +1503,7 @@ describe('Card', () => {
                   fileMediatype: 'doc',
                   fileId: 'some-random-id',
                   fileSize: 1,
+                  fileStatus: 'processed',
                 },
               },
             },
