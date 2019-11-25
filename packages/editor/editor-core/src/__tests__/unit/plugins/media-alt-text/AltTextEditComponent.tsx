@@ -9,11 +9,22 @@ jest.mock('../../../../plugins/media/pm-plugins/alt-text/commands', () => ({
 import React from 'react';
 import { mountWithIntl } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import AltTextEdit from '../../../../plugins/media/pm-plugins/alt-text/ui/AltTextEdit';
+import AltTextEdit, {
+  AltTextEditComponent,
+  AltTextEditComponentState,
+} from '../../../../plugins/media/pm-plugins/alt-text/ui/AltTextEdit';
+import { InjectedIntl } from 'react-intl';
+import {
+  CreateUIAnalyticsEvent,
+  UIAnalyticsEvent,
+} from '../../../../../../../core/analytics-next/src';
+import { ReactWrapper } from 'enzyme';
+let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
 describe('AltTextEditComponent', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    createAnalyticsEvent = jest.fn(() => ({ fire() {} } as UIAnalyticsEvent));
   });
   const mockView = jest.fn(
     () =>
@@ -37,6 +48,99 @@ describe('AltTextEditComponent', () => {
         view.dispatch,
       );
       expect(mockUpdateAltText).not.toBeCalled();
+    });
+
+    describe('fires respective alt text analytics events', () => {
+      const defaultMediaEvent = {
+        action: 'alttext.edited',
+        actionSubject: 'media',
+        actionSubjectId: 'media',
+        eventType: 'ui',
+      };
+
+      function setupWrapper(
+        value: string,
+      ): {
+        view: EditorView<any>;
+        wrapper: ReactWrapper<
+          ReactIntl.InjectedIntlProps,
+          AltTextEditComponentState,
+          any
+        >;
+      } {
+        const view = new mockView();
+        const intl = {} as InjectedIntl;
+        const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
+          <AltTextEditComponent
+            view={view}
+            value={value}
+            intl={intl}
+            createAnalyticsEvent={createAnalyticsEvent}
+          />,
+        );
+        return { view, wrapper };
+      }
+
+      it('fires cleared and edited events after clearing value and closing popup editor', () => {
+        const { wrapper } = setupWrapper('value');
+        // @ts-ignore
+        wrapper.setProps({ value: '' });
+
+        wrapper.find('button[aria-label="Back"]').simulate('click');
+        expect(createAnalyticsEvent).toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.cleared',
+        });
+        expect(createAnalyticsEvent).toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.edited',
+        });
+        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.added',
+        });
+      });
+
+      it('fires edited event after updating value and closing popup editor', () => {
+        const { wrapper } = setupWrapper('value');
+        // @ts-ignore
+        wrapper.setProps({ value: 'test changed' });
+
+        wrapper.find('button[aria-label="Back"]').simulate('click');
+        expect(createAnalyticsEvent).toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.edited',
+        });
+        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.cleared',
+        });
+        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.added',
+        });
+      });
+
+      it('fires added event after updating value and closing popup editor', () => {
+        const { wrapper } = setupWrapper('');
+
+        // @ts-ignore
+        wrapper.setProps({ value: 'value added' });
+
+        wrapper.find('button[aria-label="Back"]').simulate('click');
+        expect(createAnalyticsEvent).toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.added',
+        });
+        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.edited',
+        });
+        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+          ...defaultMediaEvent,
+          action: 'alttext.cleared',
+        });
+      });
     });
   });
 
