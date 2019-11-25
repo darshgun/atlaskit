@@ -270,7 +270,7 @@ export default class Page {
 
   async keys(values: string | string[], directCall: boolean = false) {
     if (directCall) {
-      this.browser.keys(values);
+      await this.browser.keys(values);
     } else {
       const keys = Array.isArray(values) ? values : [values];
       for (let key of keys) {
