@@ -11,7 +11,7 @@ export async function mountEditor(page: Page, props: EditorProps) {
   await page.waitForSelector('#editor-container');
   await page.$eval(
     '#editor-container',
-    (_e: any, props: EditorProps) => {
+    (_: HTMLElement | null, props?: EditorProps) => {
       (window as any).__mountEditor(props);
     },
     props,

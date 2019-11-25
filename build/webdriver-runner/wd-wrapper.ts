@@ -1,3 +1,6 @@
+// Current version of webdriverio have somewhat awkward state of type definitions.
+// You can't import specific types, but you rather import a workspace and later use `BrowserObject`
+// as a global type. This going to be fixed when we bump it's version as part of BUILDTOOLS-332
 import 'webdriverio';
 
 const assert = require('assert').strict;
@@ -42,6 +45,8 @@ const getMappedKey = (str: string) => {
 };
 const defaultWaitingOptions: WaitingOptions = { timeout: WAIT_TIMEOUT };
 
+type Done<T> = (result: T) => any;
+
 export default class Page {
   private browser: BrowserObject;
 
@@ -69,8 +74,7 @@ export default class Page {
     }
   }
 
-  // Navigation
-  goto(url?: string) {
+  goto(url: string) {
     return this.browser.url(url);
   }
 
@@ -78,7 +82,7 @@ export default class Page {
     return this.browser.refresh();
   }
 
-  async moveTo(selector: Selector, x: number, y: number) {
+  async moveTo(selector: string, x: number, y: number) {
     if (this.isBrowser('Safari')) {
       await this.getBoundingRect(selector);
       await this.SafariMoveTo([{ x, y }]);
@@ -90,10 +94,7 @@ export default class Page {
   }
 
   // This function simulates user select multiple document node by drag and drop.
-  async simulateUserSelection(
-    startSelector: Selector,
-    targetSelector: Selector,
-  ) {
+  async simulateUserSelection(startSelector: string, targetSelector: string) {
     const startBounds = await this.getBoundingRect(startSelector);
     const targetBounds = await this.getBoundingRect(targetSelector);
 
@@ -179,7 +180,7 @@ export default class Page {
     return this.browser.pause(500);
   }
 
-  async hover(selector: Selector) {
+  async hover(selector: string) {
     if (this.isBrowser('Safari')) {
       const bounds = await this.getBoundingRect(selector);
       await this.SafariMoveTo([{ x: bounds.left, y: bounds.top }]);
@@ -210,12 +211,25 @@ export default class Page {
     ]);
   }
 
-  async getBoundingRect(selector: Selector): Promise<BBoxWithId> {
-    return (await this.browser.execute(selector => {
+  async getBoundingRect(selector: string): Promise<BBoxWithId> {
+    const bbox = await this.execute((selector: string) => {
       const element = document.querySelector(selector);
-      const { x, y, width, height } = element.getBoundingClientRect();
-      return { left: x, top: y, width, height, id: element.id };
-    }, selector)) as BBoxWithId;
+      if (element) {
+        // Result of next call is ClientRect | DOMRect, one contains left/right props, other x/y
+        const { width, height, ...rest } = element.getBoundingClientRect();
+        return {
+          left: (rest as DOMRect).x || rest.left,
+          top: (rest as DOMRect).y || rest.top,
+          width,
+          height,
+          id: element.id,
+        };
+      }
+    }, selector);
+    if (!bbox) {
+      throw new Error(`${selector} couldn't been found`);
+    }
+    return bbox;
   }
 
   async title() {
@@ -228,14 +242,6 @@ export default class Page {
 
   async $$(selector: Selector) {
     return this.browser.$$(selector);
-  }
-
-  $eval(selector: Selector, pageFunction: Function, param?: any) {
-    return this.browser.execute(
-      `return (${pageFunction}(document.querySelector("${selector}"), ${JSON.stringify(
-        param,
-      )}))`,
-    );
   }
 
   async setValue(selector: Selector, text: string) {
@@ -351,18 +357,49 @@ export default class Page {
     return elem.getValue();
   }
 
-  async execute<T>(
-    script: string | ((...args: any[]) => T),
-    ...args: any[]
+  $eval<T, P>(
+    selector: string,
+    pageFunction: (element: HTMLElement | null, params?: P) => T,
+    param?: P,
   ): Promise<T> {
-    // TODO fix that any when we able to get newer version of webdriverio with better TS types
-    return this.browser.execute(script, ...args) as any;
+    return this.browser.execute(
+      `return (${pageFunction}(document.querySelector("${selector}"), ${JSON.stringify(
+        param,
+      )}))`,
+    ) as Promise<T>;
   }
 
-  async executeAsync<T>(
-    func: string | ((...args: any[]) => T),
-    ...args: any[]
-  ) {
+  async execute<T, P extends any[]>(
+    script: string | ((...args: P) => T),
+    ...args: P
+  ): Promise<T> {
+    return this.browser.execute(
+      script as string | ((...args: any[]) => T),
+      ...args,
+    ) as Promise<T>;
+  }
+
+  async executeAsync<T>(func: (done: Done<T>) => void): Promise<T>;
+  async executeAsync<A, T>(
+    func: (arg1: A, done: Done<T>) => void,
+    arg: A,
+  ): Promise<T>;
+  async executeAsync<A, B, T>(
+    func: (arg1: A, arg2: B, done: Done<T>) => void,
+    ...args: [A, B]
+  ): Promise<T>;
+  async executeAsync<A, B, C, T>(
+    func: (arg1: A, arg2: B, arg3: C, done: Done<T>) => void,
+    ...args: [A, B, C]
+  ): Promise<T>;
+  async executeAsync<A, B, C, T>(
+    func:
+      | ((done: Done<T>) => void)
+      | ((arg1: A, done: Done<T>) => void)
+      | ((arg1: A, arg2: B, done: Done<T>) => void)
+      | ((arg1: A, arg2: B, arg3: C, done: Done<T>) => void),
+    ...args: [] | [A] | [A, B] | [A, B, C]
+  ): Promise<T> {
     return this.browser.executeAsync(func, ...args);
   }
 
