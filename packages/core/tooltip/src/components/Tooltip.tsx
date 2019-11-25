@@ -21,7 +21,6 @@ import {
   FakeMouseCoordinates,
   TooltipProps,
   TooltipState,
-  PositionTypeBase,
   FakeMouseElement,
 } from './types';
 import { Tooltip as StyledTooltip } from '../styled';
@@ -86,9 +85,9 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     tag: 'div',
   };
 
-  wrapperRef?: HTMLElement | null;
+  wrapperRef: HTMLElement | null = null;
 
-  targetRef?: HTMLElement | null;
+  targetRef: HTMLElement | null = null;
 
   fakeMouseElement?: FakeMouseElement;
 
@@ -153,7 +152,10 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
   };
 
   handleShowTooltip = (e: React.MouseEvent | React.FocusEvent) => {
-    if (e.target === this.wrapperRef) return;
+    if (e.target === this.wrapperRef) {
+      return;
+    }
+
     // If clientX exists we are interacting with the mouse.
     // Else we are interacting with the keyboard.
     // We use this later when rendering so we turn off the mouse positioning when interacting with keyboard.
@@ -161,12 +163,15 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
     // In the case where a tooltip is newly rendered but immediately becomes hovered,
     // we need to set the coordinates in the mouseOver event.
-    if (!this.fakeMouseElement)
+    if (!this.fakeMouseElement) {
       this.fakeMouseElement = getMousePosition({
         left: 'clientX' in e ? e.clientX : 0,
         top: 'clientY' in e ? e.clientY : 0,
       });
+    }
+
     this.cancelPendingSetState();
+
     if (Boolean(this.props.content) && !this.state.isVisible) {
       this.cancelPendingSetState = showTooltip(immediatelyShow => {
         this.setState({
@@ -179,8 +184,12 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
   };
 
   handleHideTooltip = (e: React.MouseEvent | FocusEvent) => {
-    if (e.target === this.wrapperRef) return;
+    if (e.target === this.wrapperRef) {
+      return;
+    }
+
     this.cancelPendingSetState();
+
     if (this.state.isVisible) {
       this.cancelPendingSetState = hideTooltip(immediatelyHide => {
         this.setState({ isVisible: false, immediatelyHide });
@@ -240,7 +249,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
             onMouseDown={this.handleMouseDown}
             onFocus={this.handleShowTooltip}
             onBlur={this.handleHideTooltip}
-            ref={(wrapperRef: HTMLElement) => {
+            ref={(wrapperRef: HTMLElement | null) => {
               this.wrapperRef = wrapperRef;
             }}
           >
@@ -266,7 +275,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
                   : this.targetRef) as HTMLElement
               }
             >
-              {({ ref, style, placement }) =>
+              {({ ref, style }) =>
                 TooltipContainer && (
                   <Animation
                     immediatelyShow={immediatelyShow}
@@ -280,7 +289,7 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
                         innerRef={ref || undefined}
                         className="Tooltip"
                         style={{
-                          ...getAnimationStyles(placement as PositionTypeBase),
+                          ...getAnimationStyles(),
                           ...style,
                         }}
                         truncate={truncate || false}

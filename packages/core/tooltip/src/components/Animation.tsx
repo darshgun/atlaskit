@@ -1,24 +1,9 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
-import { PositionTypeBase } from '../types';
 
 const ENTER_DURATION = 120;
 const EXIT_DURATION = 80;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
-const distance = 8;
-
-const horizontalOffset = {
-  left: distance,
-  right: -distance,
-  top: 0,
-  bottom: 0,
-};
-const verticalOffset = {
-  bottom: -distance,
-  top: distance,
-  left: 0,
-  right: 0,
-};
 
 interface Timeout {
   enter: number;
@@ -32,36 +17,25 @@ const defaultStyle = (timeout: Timeout) => ({
   opacity: 0,
 });
 
-const transitionStyle = (
-  timeout: Timeout,
-  state: TransitionStates,
-  position: PositionTypeBase,
-) => {
+const transitionStyle = (state: TransitionStates) => {
   const transitions: { [key in TransitionStates]: any } = {
-    entering: {
-      transform: `translate3d(${horizontalOffset[position]}px, ${verticalOffset[position]}px, 0)`,
-    },
+    entering: {},
     entered: {
       opacity: 1,
     },
     exiting: {
       opacity: 0,
-      transition: `${timeout.exit}ms linear`,
-      transform: `translate3d(${horizontalOffset[position] /
-        2}px, ${verticalOffset[position] / 2}px, 0)`,
     },
   };
   return transitions[state];
 };
 
-const getStyle = (timeout: Timeout, state: TransitionStates) => (
-  position: PositionTypeBase,
-) => ({
+const getStyle = (timeout: Timeout, state: TransitionStates) => () => ({
   ...defaultStyle(timeout),
-  ...transitionStyle(timeout, state, position),
+  ...transitionStyle(state),
 });
 
-type GetAnimationStyles = (position: PositionTypeBase) => Object;
+type GetAnimationStyles = () => Object;
 
 interface AnimationProps {
   children: (getAnimationFn: GetAnimationStyles) => React.ReactNode;
@@ -79,9 +53,10 @@ const Animation = ({
   in: inProp,
 }: AnimationProps) => {
   const timeout = {
-    enter: immediatelyShow ? 1 : ENTER_DURATION,
-    exit: immediatelyHide ? 1 : EXIT_DURATION,
+    enter: immediatelyShow ? 0 : ENTER_DURATION,
+    exit: immediatelyHide ? 0 : EXIT_DURATION,
   };
+
   return (
     <Transition
       timeout={timeout}
