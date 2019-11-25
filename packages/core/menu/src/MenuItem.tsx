@@ -44,8 +44,6 @@ const BaseItem = ({
   elemAfter,
   children,
   description,
-  isDisabled,
-  isSelected,
 }: BaseItemProps) => {
   return (
     <Fragment>
@@ -54,11 +52,7 @@ const BaseItem = ({
         {children && (
           <span css={contentCSS}>
             <span css={truncateCSS}>{children}</span>
-            {description && (
-              <span css={descriptionCSS(isDisabled, isSelected)}>
-                {description}
-              </span>
-            )}
+            {description && <span css={descriptionCSS}>{description}</span>}
           </span>
         )}
         {elemAfter && <span css={elemAfterCSS}>{elemAfter}</span>}
@@ -94,8 +88,6 @@ export const ButtonItem = (props: ButtonItemProps) => {
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
-        isSelected={isSelected}
-        isDisabled={isDisabled}
       >
         {children}
       </BaseItem>
@@ -130,8 +122,6 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
-        isSelected={isSelected}
-        isDisabled={isDisabled}
       >
         {children}
       </BaseItem>
@@ -153,7 +143,7 @@ export const CustomItem = ({
     <ClassNames>
       {({ css }) => (
         <Component wrapperClass={css(customItemCSS(isDisabled, isSelected))}>
-          <BaseItem {...rest} isSelected={isSelected} isDisabled={isDisabled} />
+          <BaseItem {...rest} />
         </Component>
       )}
     </ClassNames>

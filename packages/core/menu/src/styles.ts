@@ -7,6 +7,7 @@ import {
   N20,
   N30,
   subtleHeading,
+  subtleText,
 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
 import { Width } from './types';
@@ -106,14 +107,11 @@ export const elemAfterCSS = {
   flexShrink: 0,
   marginLeft: gridSize,
 };
-export const descriptionCSS = (
-  isDisabled?: boolean,
-  isSelected?: boolean,
-): CSSObject => ({
+export const descriptionCSS = {
   textAlign: 'left',
-  color: isSelected || isDisabled ? 'currentColor' : '#343434',
+  color: subtleText(),
   fontSize: fontSizeSmall(),
-});
+} as CSSObject;
 export const contentCSSWrapper = {
   display: 'flex',
   alignItems: 'center',
