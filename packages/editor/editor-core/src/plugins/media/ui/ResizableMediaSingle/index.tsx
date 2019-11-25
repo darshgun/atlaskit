@@ -353,8 +353,7 @@ export default class ResizableMediaSingle extends React.Component<
 
     return (
       <Wrapper
-        width={width}
-        height={height}
+        ratio={((height / width) * 100).toFixed(3)}
         layout={layout}
         isResized={!!pctWidth}
         containerWidth={containerWidth || origWidth}

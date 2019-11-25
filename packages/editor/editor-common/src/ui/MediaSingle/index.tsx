@@ -47,7 +47,7 @@ export default function MediaSingle({
     <Wrapper
       layout={layout}
       width={width}
-      height={height}
+      ratio={((height / width) * 100).toFixed(3)}
       containerWidth={containerWidth}
       pctWidth={pctWidth}
       fullWidthMode={fullWidthMode}
