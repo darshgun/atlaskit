@@ -9,6 +9,8 @@ integration/e2e tests available in media-viewer:
 - \`[data-testid="media-viewer-popup"]\`: Main Media Viewer element
 - \`[data-testid="media-viewer-close-button"]\`: Close button
 - \`[data-testid="media-viewer-download-button"]\`: Download button
+- \`[data-testid="media-viewer-sidebar-button"]\`: Sidebar toggle button
+- \`[data-testid="media-viewer-sidebar-content"]\`: Sidebar content container
 - \`[data-testid="media-viewer-navigation-prev"]\`: Navigation left/previous file button
 - \`[data-testid="media-viewer-navigation-next"]\`: Navigation right/next file button
 - \`[data-testid="media-viewer-error"]\`: When media viewer can't show preview of a file, this component present
