@@ -392,7 +392,11 @@ export default class Page {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
     // for puppeteer
     const elem = await this.browser.$(selector);
-    return elem.getText();
+    let text = elem.getText();
+    if (text === '' || text === undefined || text === null) {
+      text = elem.getAttribute('textContent');
+    }
+    return text;
   }
 
   async getValue(selector /*: string */) {

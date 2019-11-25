@@ -117,7 +117,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
       extensions.sidebar
     ) {
       return (
-        <SidebarWrapper data-testid="media-viewer-sidebar">
+        <SidebarWrapper data-testid="media-viewer-sidebar-content">
           {extensions.sidebar.renderer(sidebardSelectedIdentifier, {
             close: this.toggleSidebar,
           })}
@@ -128,7 +128,7 @@ export class MediaViewerComponent extends React.Component<Props, State> {
 
   render() {
     const content = (
-      <Blanket media-test-id="media-viewer-popup">
+      <Blanket data-testid="media-viewer-popup">
         {<Shortcut keyCode={27} handler={this.onShortcutClosed} />}
         <Content onClose={this.onContentClose}>{this.renderContent()}</Content>
         {this.renderSidebar()}
