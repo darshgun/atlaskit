@@ -68,5 +68,6 @@ describe('Push command', () => {
     it.skip('should create branch build if one does not already exist', () => {});
     it.skip('should not create branch build if one already exists', () => {});
     it.skip('should error if creating branch build fails', () => {});
+    it.skip('should only run if the branch deploy was committed and pushed', () => {});
   });
 });

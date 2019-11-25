@@ -1,18 +1,20 @@
 /** Git utils */
 import { SimpleGit } from 'simple-git/promise';
 
+// Returns a boolean indicating if it committed or not
+// Returns false when there are no changes to commit
 export async function commitAndPush(
   git: SimpleGit,
   commitMessage: string,
   authorEmail: string,
   branchName: string,
-) {
+): Promise<boolean> {
   await git.add(['./']);
 
   const status = await git.status();
   if (status && status.staged.length === 0) {
     console.log('Nothing to commit');
-    return;
+    return false;
   }
 
   await git.commit(commitMessage, [
@@ -22,6 +24,8 @@ export async function commitAndPush(
   await git.push('origin', branchName);
 
   console.log('Committed and pushed changes');
+
+  return true;
 }
 
 export async function checkoutOrCreate(git: SimpleGit, branchName: string) {

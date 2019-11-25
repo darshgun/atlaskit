@@ -175,37 +175,45 @@ This commit was auto-generated.
   await createVersionFile(atlaskitCommitHash);
 
   console.log('Pushing branch deployed versions');
-  await commitAndPush(git, commitMessage, authorEmail, branchName);
+  const didCommit = await commitAndPush(
+    git,
+    commitMessage,
+    authorEmail,
+    branchName,
+  );
 
-  if (dedupe) {
-    console.log(chalk.yellow('Running yarn-deduplicate'));
-    await exec('yarn yarn-deduplicate yarn.lock');
+  // Only run the following steps if we actually committed and pushed something
+  if (didCommit) {
+    if (dedupe) {
+      console.log(chalk.yellow('Running yarn-deduplicate'));
+      await exec('yarn yarn-deduplicate yarn.lock');
 
-    console.log('Pushing deduped yarn.lock');
-    await commitAndPush(
-      git,
-      'Deduplicated yarn.lock file',
-      authorEmail,
-      branchName,
-    );
-  }
-
-  if (productCiPlanUrl) {
-    const { PRODUCT_CI_USERNAME, PRODUCT_CI_PASSWORD } = process.env;
-    if (!PRODUCT_CI_USERNAME || !PRODUCT_CI_PASSWORD) {
-      throw Error(
-        'Missing $PRODUCT_CI_USERNAME and/or $PRODUCT_CI_PASSWORD environment variables',
+      console.log('Pushing deduped yarn.lock');
+      await commitAndPush(
+        git,
+        'Deduplicated yarn.lock file',
+        authorEmail,
+        branchName,
       );
     }
 
-    console.log(
-      `Triggering product build on ${productCiPlanUrl} for ${branchName}`,
-    );
-    if (!dryRun) {
-      await triggerProductBuild(productCiPlanUrl, branchName, {
-        username: PRODUCT_CI_USERNAME,
-        password: PRODUCT_CI_PASSWORD,
-      });
+    if (productCiPlanUrl) {
+      const { PRODUCT_CI_USERNAME, PRODUCT_CI_PASSWORD } = process.env;
+      if (!PRODUCT_CI_USERNAME || !PRODUCT_CI_PASSWORD) {
+        throw Error(
+          'Missing $PRODUCT_CI_USERNAME and/or $PRODUCT_CI_PASSWORD environment variables',
+        );
+      }
+
+      console.log(
+        `Triggering product build on ${productCiPlanUrl} for ${branchName}`,
+      );
+      if (!dryRun) {
+        await triggerProductBuild(productCiPlanUrl, branchName, {
+          username: PRODUCT_CI_USERNAME,
+          password: PRODUCT_CI_PASSWORD,
+        });
+      }
     }
   }
 
