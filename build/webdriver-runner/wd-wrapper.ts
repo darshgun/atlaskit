@@ -11,8 +11,6 @@ const assert = require('assert').strict;
 const WAIT_TIMEOUT = 5000;
 const EDITOR = '.ProseMirror';
 
-type Selector = string | Function;
-
 interface BBoxWithId {
   left: number;
   top: number;
@@ -54,7 +52,7 @@ export default class Page {
     this.browser = browserObject;
   }
 
-  async type(selector: Selector, text: string | string[]) {
+  async type(selector: string, text: string | string[]) {
     // TODO: https://product-fabric.atlassian.net/browse/BUILDTOOLS-325
     if (this.isBrowser('chrome') && selector === EDITOR) {
       if (Array.isArray(text)) {
@@ -236,30 +234,30 @@ export default class Page {
     return this.browser.getTitle();
   }
 
-  async $(selector: Selector) {
+  async $(selector: string) {
     return this.browser.$(selector);
   }
 
-  async $$(selector: Selector) {
+  async $$(selector: string) {
     return this.browser.$$(selector);
   }
 
-  async setValue(selector: Selector, text: string) {
+  async setValue(selector: string, text: string) {
     const elem = await this.$(selector);
     return elem.setValue(text);
   }
 
-  async count(selector: Selector) {
+  async count(selector: string) {
     const result = await this.$$(selector);
     return result.length;
   }
 
-  async clear(selector: Selector) {
+  async clear(selector: string) {
     const elem = await this.$(selector);
     return elem.clearValue();
   }
 
-  async click(selector: Selector) {
+  async click(selector: string) {
     try {
       const elem = await this.$(selector);
       return elem.click();
@@ -270,7 +268,7 @@ export default class Page {
 
   async keys(values: string | string[], directCall: boolean = false) {
     if (directCall) {
-      return this.browser.keys(values);
+      this.browser.keys(values);
     } else {
       const keys = Array.isArray(values) ? values : [values];
       for (let key of keys) {
@@ -283,12 +281,12 @@ export default class Page {
     return this.browser.debug();
   }
 
-  async getCSSProperty(selector: Selector, cssProperty: string) {
+  async getCSSProperty(selector: string, cssProperty: string) {
     const elem = await this.$(selector);
     return elem.getCSSProperty(cssProperty);
   }
 
-  async getLocation(selector: Selector) {
+  async getLocation(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.getLocation();
   }
@@ -297,7 +295,7 @@ export default class Page {
     return this.browser.getAlertText();
   }
 
-  async getAttribute(selector: Selector, attributeName: string) {
+  async getAttribute(selector: string, attributeName: string) {
     const elem = await this.browser.$(selector);
     return elem.getAttribute(attributeName);
   }
@@ -331,7 +329,7 @@ export default class Page {
     }
   }
 
-  backspace(selector: Selector) {
+  backspace(selector: string) {
     this.browser.execute(selector => {
       return document
         .querySelector(selector)
@@ -345,14 +343,14 @@ export default class Page {
   //  keyboard.up('Shift');
 
   //will need to have wrapper for these once moved to puppeteer
-  async getText(selector: Selector) {
+  async getText(selector: string) {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
     // for puppeteer
     const elem = await this.browser.$(selector);
     return elem.getText();
   }
 
-  async getValue(selector: Selector) {
+  async getValue(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.getValue();
   }
@@ -411,50 +409,51 @@ export default class Page {
     return this.getBrowserName() === browserName;
   }
 
-  async getElementSize(selector: Selector) {
+  async getElementSize(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.getSize();
   }
 
-  async getHTML(selector: Selector) {
+  async getHTML(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.getHTML(false);
   }
 
-  async getProperty(selector: Selector, property: string) {
+  async getProperty(selector: string, property: string) {
     const elem = await this.browser.$(selector);
     return elem.getProperty(property);
   }
 
-  async isEnabled(selector: Selector) {
+  async isEnabled(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isEnabled();
   }
 
-  async isExisting(selector: Selector) {
+  async isExisting(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isExisting();
   }
 
-  async isVisible(selector: Selector) {
+  async isVisible(selector: string) {
     return this.waitFor(selector);
   }
 
-  async isSelected(selector: Selector) {
+  async isSelected(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isSelected();
   }
 
-  async hasFocus(selector: Selector) {
+  async hasFocus(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isFocused();
   }
 
   isWindowsPlatform() {
-    return (
-      this.browser.capabilities.platformName === 'Windows' ||
-      (this.browser.capabilities as any).os === 'Windows'
-    );
+    const { platformName } = this.browser.capabilities;
+    // In current version of webdriverio capabilities defined platformName,
+    // but somehow in runtime it filled with os I am not where it is coming from.
+    const { os } = this.browser.capabilities as any;
+    return platformName === 'Windows' || os === 'Windows';
   }
 
   async paste() {
@@ -496,7 +495,7 @@ export default class Page {
   // behaviour is OS specific:
   // windows moves to next paragraph up
   // osx moves to top of document
-  moveUp(selector: Selector) {
+  moveUp(selector: string) {
     let control: string = 'Command';
     if (this.isWindowsPlatform()) {
       control = 'Control';
@@ -512,7 +511,7 @@ export default class Page {
 
   // Wait
   async waitForSelector(
-    selector: Selector,
+    selector: string,
     options: WaitingOptions = defaultWaitingOptions,
     reverse = false,
   ) {
@@ -521,7 +520,7 @@ export default class Page {
   }
 
   async waitForVisible(
-    selector: Selector,
+    selector: string,
     options: WaitingOptions = defaultWaitingOptions,
   ) {
     const elem = await this.$(selector);
@@ -529,7 +528,7 @@ export default class Page {
     return elem.waitForDisplayed(options.timeout);
   }
 
-  async waitUntilContainsText(selector: Selector, text: string) {
+  async waitUntilContainsText(selector: string, text: string) {
     await this.waitUntil(async () => {
       const content = await this.getText(selector);
       return content.indexOf(text) !== -1;
@@ -537,7 +536,7 @@ export default class Page {
   }
 
   waitFor(
-    selector: Selector,
+    selector: string,
     ms: number | undefined = undefined,
     reverse: boolean = false,
   ) {
