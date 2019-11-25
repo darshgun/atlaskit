@@ -499,8 +499,13 @@ export default class Page {
     });
   }
 
-  waitFor(selector: Selector, ms: number = 0, reverse: boolean = false) {
-    return this.waitForSelector(selector, { timeout: ms }, reverse);
+  waitFor(
+    selector: Selector,
+    ms: number | undefined = undefined,
+    reverse: boolean = false,
+  ) {
+    const options = ms !== undefined ? { timeout: ms } : undefined;
+    return this.waitForSelector(selector, options, reverse);
   }
 
   waitUntil(predicate: () => boolean | Promise<boolean> | Promise<unknown>) {
