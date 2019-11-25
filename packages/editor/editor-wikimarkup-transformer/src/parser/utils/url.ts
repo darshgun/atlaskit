@@ -6,7 +6,7 @@
  * @param raw a 'raw' url (possibly mixed percent-encoded).
  */
 export function decode(raw: string): string {
-  if (URL) {
+  if (typeof URL === 'function') {
     const decoded = new URL(raw);
     // IE11 doesn't support the `href` property in the `URL` class.
     // Fallback to the DOM below if it doesn't exist.
