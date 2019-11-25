@@ -17,7 +17,10 @@ const plugin = new Plugin({
   view: () => {
     return {
       update(view: EditorView) {
-        if (view.state.selection instanceof GapCursorSelection) {
+        if (
+          view.state.selection instanceof GapCursorSelection &&
+          view.hasFocus()
+        ) {
           fixCursorAlignment(view);
         }
       },
