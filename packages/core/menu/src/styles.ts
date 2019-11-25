@@ -30,7 +30,13 @@ const disabledStyles = {
   },
 };
 
-const baseItemCSS = (isDisabled: boolean): CSSObject => ({
+const selectedStyles = {
+  color: N800,
+  backgroundColor: N20,
+  textDecoration: 'none',
+};
+
+const baseItemCSS = (isDisabled: boolean, isSelected: boolean): CSSObject => ({
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
@@ -55,11 +61,15 @@ const baseItemCSS = (isDisabled: boolean): CSSObject => ({
     border: 0,
   },
   ...(isDisabled && disabledStyles),
+  ...(isSelected && selectedStyles),
 });
 
-export const itemCSS = (isDisabled: boolean): CSSObject => ({
+export const itemCSS = (
+  isDisabled: boolean,
+  isSelected: boolean,
+): CSSObject => ({
   ...buttonOverrides,
-  ...baseItemCSS(isDisabled),
+  ...baseItemCSS(isDisabled, isSelected),
 });
 
 /* Item subcomponents */
@@ -101,9 +111,12 @@ export const contentCSSWrapper = {
 };
 
 /* Item variations */
-export const linkItemCSS = (isDisabled: boolean): CSSObject => ({
+export const linkItemCSS = (
+  isDisabled: boolean,
+  isSelected: boolean,
+): CSSObject => ({
   ...anchorOverrides,
-  ...baseItemCSS(isDisabled),
+  ...baseItemCSS(isDisabled, isSelected),
 });
 
 export const itemHeadingCSS = {
@@ -134,7 +147,7 @@ export const itemSkeletonCSS = (
   hasIcon?: boolean,
   width?: Width,
 ): CSSObject => ({
-  ...itemCSS(false),
+  ...itemCSS(false, false),
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',

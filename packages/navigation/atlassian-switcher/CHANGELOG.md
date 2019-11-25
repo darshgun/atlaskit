@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.8.1
+
+### Patch Changes
+
+- [patch][3478b25562](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3478b25562):
+
+  moved Join section above Discover section
+
 ## 4.8.0
 
 ### Minor Changes

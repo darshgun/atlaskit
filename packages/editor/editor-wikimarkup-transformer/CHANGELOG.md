@@ -1,5 +1,14 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.6.0
+
+### Minor Changes
+
+- [minor][f7a20e9f3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7a20e9f3a):
+
+  Add transformation of adf blockcard to wikimarkup compatible smart-link
+  Add logic for converting inlinecard to blockcard when it is on its own line
+
 ## 4.5.9
 
 - Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):

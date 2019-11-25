@@ -16,6 +16,7 @@ export interface ButtonItemProps {
   title?: string;
   description?: string;
   isDisabled?: boolean;
+  isSelected?: boolean;
   children: React.ReactNode;
 }
 

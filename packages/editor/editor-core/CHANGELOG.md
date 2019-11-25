@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 114.1.4
+
+### Patch Changes
+
+- [patch][3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  Make PopupSelect correctly pass props. Forcing update of @atlaskit/select for all other packages- Updated dependencies [3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  - @atlaskit/select@11.0.2
+  - @atlaskit/user-picker@4.1.5
+  - @atlaskit/media-test-helpers@25.2.5
+
+## 114.1.3
+
+### Patch Changes
+
+- [patch][aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  ED-8042 upgrade prosemirror-markdown to remove ES modules workaround- Updated dependencies [aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  - @atlaskit/editor-bitbucket-transformer@6.2.9
+  - @atlaskit/editor-markdown-transformer@3.1.11
+
 ## 114.1.2
 
 ### Patch Changes

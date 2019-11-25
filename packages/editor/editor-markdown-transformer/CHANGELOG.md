@@ -1,5 +1,15 @@
 # @atlaskit/editor-markdown-transformer
 
+## 3.1.11
+
+### Patch Changes
+
+- [patch][aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  ED-8042 upgrade prosemirror-markdown to remove ES modules workaround- Updated dependencies [aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  - @atlaskit/editor-core@114.1.3
+
 ## 3.1.10
 
 ### Patch Changes
