@@ -154,10 +154,10 @@ export class Header extends React.Component<Props & InjectedIntlProps, State> {
             {this.getMediaIcon(item.mediaType)}
           </MetadataIconWrapper>
           <MedatadataTextWrapper>
-            <MetadataFileName>
+            <MetadataFileName data-testid="media-viewer-file-name">
               {item.name || <FormattedMessage {...messages.unknown} />}
             </MetadataFileName>
-            <MetadataSubText>
+            <MetadataSubText data-testid="media-viewer-file-metadata-text">
               {this.renderFileTypeText(item.mediaType)}
               {this.renderSize(item)}
             </MetadataSubText>
