@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { render } from '@testing-library/react';
-import { StaggeredEntrance } from '../../index';
-import { useStaggeredEntrance } from '../../entering/staggered-entrance';
+import { StaggeredEntrance } from '../../../index';
+import { useStaggeredEntrance } from '../../../entering/staggered-entrance';
 
 describe('<StaggeredEntrance />', () => {
   const firstGroupDelay = '0ms';

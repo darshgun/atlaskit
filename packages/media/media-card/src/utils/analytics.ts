@@ -1,8 +1,4 @@
-import {
-  FileDetails,
-  MediaType,
-  FileProcessingStatus,
-} from '@atlaskit/media-client';
+import { FileDetails, MediaType, FileState } from '@atlaskit/media-client';
 
 import { GasCorePayload } from '@atlaskit/analytics-gas-types';
 import {
@@ -21,7 +17,7 @@ export interface MediaCardAnalyticsFileAttributes {
   fileSource: string;
   fileMediatype?: MediaType;
   fileId?: string;
-  fileStatus?: FileProcessingStatus;
+  fileStatus?: FileState['status'];
   fileSize?: number;
 }
 
@@ -48,19 +44,21 @@ export function getBaseAnalyticsContext(): GasCorePayload['attributes'] {
 
 export const getFileAttributes = (
   metadata?: FileDetails,
+  fileStatus?: FileState['status'],
 ): MediaCardAnalyticsFileAttributes => ({
   fileSource: 'mediaCard',
   fileMediatype: metadata && metadata.mediaType,
   fileId: metadata && metadata.id,
   fileSize: metadata && metadata.size,
-  fileStatus: metadata && metadata.processingStatus,
+  fileStatus,
 });
 
 export function getUIAnalyticsContext(
   actionSubjectId: string,
   metadata?: FileDetails,
+  fileStatus?: FileState['status'],
 ): MediaCardAnalyticsPayload {
-  const fileAttributes = getFileAttributes(metadata);
+  const fileAttributes = getFileAttributes(metadata, fileStatus);
 
   const currentActionSujectId =
     metadata && metadata.id ? metadata.id : actionSubjectId;

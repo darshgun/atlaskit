@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react';
 import { render } from '@testing-library/react';
 import { replaceRaf } from 'raf-stub';
-import { useResizingHeight } from '../../resizing/height';
-import { isReducedMotion } from '../../utils/accessibility';
-import { mediumDurationMs } from '../../utils/durations';
-import { easeInOut } from '../../utils/curves';
+import { useResizingHeight } from '../../../resizing/height';
+import { isReducedMotion } from '../../../utils/accessibility';
+import { mediumDurationMs } from '../../../utils/durations';
+import { easeInOut } from '../../../utils/curves';
 
-jest.mock('../../utils/accessibility');
+jest.mock('../../../utils/accessibility');
 
 replaceRaf();
 

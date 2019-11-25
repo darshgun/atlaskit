@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { easeInOut } from '../../utils/curves';
-import FadeIn from '../../entering/fade-in';
+import { easeInOut } from '../../../utils/curves';
+import FadeIn from '../../../entering/fade-in';
 
 describe('<FadeIn />', () => {
   it('should ease in for the timing curve', () => {
