@@ -214,10 +214,12 @@ export default class Page {
       const element = document.querySelector(selector);
       if (element) {
         // Result of next call is ClientRect | DOMRect, one contains left/right props, other x/y
-        const { width, height, ...rest } = element.getBoundingClientRect();
+        const rect = element.getBoundingClientRect();
+        const { left, top, width, height } = rect;
+        const { x, y } = rect as DOMRect;
         return {
-          left: (rest as DOMRect).x || rest.left,
-          top: (rest as DOMRect).y || rest.top,
+          left: x || left,
+          top: y || top,
           width,
           height,
           id: element.id,
