@@ -14,19 +14,12 @@ import {
   truncateCSS,
   contentCSSWrapper,
 } from './styles';
-import {
-  ButtonItemProps,
-  LinkItemProps,
-  SkeletonItemProps,
-  Width,
-} from './types';
+import { ButtonItemProps, LinkItemProps, SkeletonItemProps } from './types';
 
 export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
   <div css={itemHeadingCSS}>{children}</div>
 );
-export const SkeletonHeadingItem = ({ width }: { width?: Width }) => (
-  <div css={skeletonHeadingItemCSS(width)} />
-);
+export const SkeletonHeadingItem = () => <div css={skeletonHeadingItemCSS} />;
 export const SkeletonItem = ({
   hasAvatar,
   hasIcon,
