@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { render, act } from '@testing-library/react';
 import ExitingPersistence, {
   useExitingPersistence,
-} from '../../entering/exiting-persistence';
-import { isReducedMotion } from '../../utils/accessibility';
+} from '../../../entering/exiting-persistence';
+import { isReducedMotion } from '../../../utils/accessibility';
 
-jest.mock('../../utils/accessibility');
+jest.mock('../../../utils/accessibility');
 
 const Motion = (props: { id: string; color?: string }) => {
   const exiting = useExitingPersistence();

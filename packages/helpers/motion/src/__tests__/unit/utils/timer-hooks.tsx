@@ -4,7 +4,7 @@ import { replaceRaf } from 'raf-stub';
 import {
   useRequestAnimationFrame,
   useSetTimeout,
-} from '../../utils/timer-hooks';
+} from '../../../utils/timer-hooks';
 
 replaceRaf();
 
