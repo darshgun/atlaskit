@@ -44,7 +44,12 @@ const actions: AllRouterActions = {
     const { history, routes, isStatic } = initialProps;
     const routeContext = getRouteContext(history.location, routes);
 
-    setState({ ...initialProps, ...routeContext });
+    setState({
+      ...initialProps,
+      ...routeContext,
+      route: routeContext.route || DEFAULT_ROUTE,
+      match: routeContext.match || DEFAULT_MATCH,
+    });
     getResourceStore().actions.hydrate({ resourceContext, resourceData });
 
     if (!isStatic) {
@@ -111,8 +116,8 @@ const actions: AllRouterActions = {
           storeState,
         } = getResourceStore();
         const nextLocationContext = {
-          route: nextContext.route,
-          match: nextContext.match,
+          route: nextContext.route || DEFAULT_ROUTE,
+          match: nextContext.match || DEFAULT_MATCH,
           query: nextContext.query,
           location,
         };
@@ -128,7 +133,13 @@ const actions: AllRouterActions = {
         );
 
         cleanExpiredResources(nextResources, nextLocationContext);
-        setState({ ...nextContext, action });
+        setState({
+          ...nextContext,
+          ...nextContext,
+          route: nextContext.route || DEFAULT_ROUTE,
+          match: nextContext.match || DEFAULT_MATCH,
+          action,
+        });
         requestResources(nextResources, nextLocationContext);
       } else {
         // because history stack already updated, in order not to mess up it up, we can only replace the route
