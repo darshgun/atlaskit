@@ -10,11 +10,11 @@ const url = getExampleUrl(
   global.__BASEURL__,
 );
 class MVExamplePage {
-  constructor(private readonly page: typeof Page) {}
+  constructor(private readonly page: Page) {}
 
   async init() {
     await this.page.goto(url);
-    await this.page.browser.maximizeWindow();
+    await this.page.maximizeWindow();
     await this.page.waitForVisible('[data-testid="media-viewer-popup"]');
     // here we use a backdoor to force-reveal controls forever
     await this.page.executeAsync((done: any) => {
@@ -91,7 +91,7 @@ const executeTimes = async (n: number, callback: () => Promise<any>) => {
 BrowserTestCase(
   'media-viewer-basic.ts: Navigation should navigate back and forth',
   { skip: [] },
-  async (client: any, testName: string) => {
+  async (client: BrowserObject) => {
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
@@ -132,7 +132,7 @@ BrowserTestCase(
 BrowserTestCase(
   'media-viewer-basic.ts: Should close on Close click',
   { skip: [] },
-  async (client: any, testName: string) => {
+  async (client: BrowserObject) => {
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
@@ -143,7 +143,7 @@ BrowserTestCase(
 BrowserTestCase(
   'media-viewer-basic.ts: Should close on Escape press',
   { skip: [] },
-  async (client: any, testName: string) => {
+  async (client: BrowserObject) => {
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
