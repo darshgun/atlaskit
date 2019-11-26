@@ -2,7 +2,7 @@ export default {
   sites: [
     {
       cloudId: '05b02b6f-aad5-449e-b4e2-8d6a0c632e26',
-      products: {
+      users: {
         'jira-software.ondemand': [
           {
             avatarUrl:
@@ -38,7 +38,7 @@ export default {
     },
     {
       cloudId: '0b080b56-bb7f-4572-b5bc-d44c33c2d54a',
-      products: {
+      users: {
         'jira-software.ondemand': [
           {
             avatarUrl:
@@ -62,7 +62,7 @@ export default {
     },
     {
       cloudId: '0c7e15f2-f933-463b-b818-10a18fa0f173',
-      products: {
+      users: {
         'jira-software.ondemand': [
           {
             avatarUrl:
@@ -80,7 +80,7 @@ export default {
     },
     {
       cloudId: '11915d9c-23a0-4eb5-8feb-cb7446b3737e',
-      products: {
+      users: {
         'jira-software.ondemand': [
           {
             avatarUrl:
@@ -98,7 +98,7 @@ export default {
     },
     {
       cloudId: '1102cbc0-3189-4f02-9c94-756c0ffc858a',
-      products: {
+      users: {
         'jira-software.ondemand': [],
       },
       url: 'https://atl-xflow-release-332.jira-dev.com',

@@ -231,11 +231,9 @@ describe('utils/links', () => {
         (productKey, index) => {
           return Object.assign({}, mockJoinableSites.sites[index], {
             relevance: 10,
-            products: {
+            users: {
               [productKey]:
-                mockJoinableSites.sites[index].products[
-                  ProductKey.JIRA_SOFTWARE
-                ],
+                mockJoinableSites.sites[index].users[ProductKey.JIRA_SOFTWARE],
             },
           });
         },
@@ -248,7 +246,7 @@ describe('utils/links', () => {
 
         let expectUrl = siteData.url;
 
-        const productKey = Object.keys(siteData.products)[0];
+        const productKey = Object.keys(siteData.users)[0];
 
         let productData =
           AVAILABLE_PRODUCT_DATA_MAP[WorklensProductType.JIRA_SOFTWARE];

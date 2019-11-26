@@ -462,8 +462,8 @@ export const getJoinableSiteLinks = (
   let joinableSiteLinks = [];
 
   for (let site of joinableSites) {
-    for (let productKey in site.products) {
-      const users: JoinableSiteUser[] = site.products[productKey] || [];
+    for (let productKey in site.users) {
+      const users: JoinableSiteUser[] = site.users[productKey] || [];
       const productType: WorklensProductType =
         TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey];
       const {
