@@ -516,8 +516,9 @@ export default class Page {
     selector: string,
     options: WaitingOptions = defaultWaitingOptions,
     reverse = false,
-  ) {
-    const elem = await this.browser.$(selector);
+  ): Promise<boolean> {
+    const elem = await this.$(selector);
+
     return elem.waitForExist(options.timeout, reverse);
   }
 
