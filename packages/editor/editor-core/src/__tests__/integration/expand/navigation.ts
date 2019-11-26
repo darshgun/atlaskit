@@ -308,3 +308,47 @@ describe('when there is a expanded followed by another', () => {
     });
   });
 });
+
+BrowserTestCase(
+  'navigation.ts: when cursor is after a collapsed expand, pressing Backspace should focus the title',
+  { skip: ['ie', 'safari', 'firefox'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      defaultValue: emptyExpandAdf,
+      UNSAFE_allowExpand: true,
+    });
+
+    await collapseExpandThenFocusTitle(page);
+    await page.keys('ArrowDown');
+    await page.keys('Backspace');
+    await page.type(editable, 'title');
+
+    const doc = await page.$eval(editable, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'navigation.ts: when cursor is after two collapsed expands, pressing Backspace should focus the title of the first one',
+  { skip: ['ie', 'safari', 'firefox'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      defaultValue: doubleExpand,
+      UNSAFE_allowExpand: true,
+    });
+
+    await page.click('.ak-editor-expand__title-input[value="Second title"]');
+    await page.keys('ArrowDown');
+    await page.keys('Backspace');
+    await page.type(editable, 'hello');
+
+    const doc = await page.$eval(editable, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
