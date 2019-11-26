@@ -26,8 +26,8 @@ export function createPromise<T>(
   return {
     submit(): Promise<T> {
       toNativeBridge.submitPromise(name, uuid, args);
-      return holder
-        .promise.then(data => {
+      return holder.promise
+        .then(data => {
           pendingPromises.delete(uuid);
           return data;
         })
