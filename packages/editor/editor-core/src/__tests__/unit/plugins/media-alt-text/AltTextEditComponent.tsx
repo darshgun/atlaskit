@@ -192,8 +192,10 @@ describe('AltTextEditComponent', () => {
     describe('when new value is empty string', () => {
       it('should set state showClearTextButton=false', () => {
         const view = new mockView();
-        const wrapper = mountWithIntl(<AltTextEdit view={view} value="test" />);
-
+        const intl = {} as InjectedIntl;
+        const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
+          <AltTextEditComponent view={view} value={'test'} intl={intl} />,
+        );
         expect(wrapper.state('showClearTextButton')).toBeTruthy();
         const input = wrapper.find('input');
         // @ts-ignore
@@ -207,8 +209,10 @@ describe('AltTextEditComponent', () => {
     describe('when there was an empty string, and new text is nonempty', () => {
       it('should set state showClearTextButton=true', () => {
         const view = new mockView();
-        const wrapper = mountWithIntl(<AltTextEdit view={view} />);
-
+        const intl = {} as InjectedIntl;
+        const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
+          <AltTextEditComponent view={view} intl={intl} />,
+        );
         expect(wrapper.state('showClearTextButton')).toBeFalsy();
         const input = wrapper.find('input');
         // @ts-ignore
