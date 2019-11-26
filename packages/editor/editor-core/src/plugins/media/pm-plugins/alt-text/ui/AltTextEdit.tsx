@@ -109,7 +109,7 @@ export class AltTextEditComponent extends React.Component<
           <PanelTextInput
             placeholder={formatMessage(messages.placeholder)}
             defaultValue={value ? value : ''}
-            onBlur={this.dispatchCancelEvent}
+            onBlur={this.onBlurHandler}
             onCancel={this.dispatchCancelEvent}
             onChange={this.handleOnChange}
             onSubmit={this.closeMediaAltTextMenu}
@@ -134,11 +134,12 @@ export class AltTextEditComponent extends React.Component<
   }
 
   private closeMediaAltTextMenu = () => {
-    const { view, value } = this.props;
+    const { view } = this.props;
     closeMediaAltTextMenu(view.state, view.dispatch);
+  };
 
-    console.log('%c prev value', 'color:salmon', this.state.value);
-    console.log('%c new value', 'color:purple', value);
+  onBlurHandler = () => {
+    const { value } = this.props;
 
     this.setState(prevState => {
       if (!prevState.value && value) {

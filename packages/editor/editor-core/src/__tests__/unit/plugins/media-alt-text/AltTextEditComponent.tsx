@@ -35,6 +35,99 @@ describe('AltTextEditComponent', () => {
       } as { state: {}; dispatch: Function }) as EditorView),
   );
 
+  describe('fires respective alt text analytics events', () => {
+    const defaultMediaEvent = {
+      action: 'alttext.edited',
+      actionSubject: 'media',
+      actionSubjectId: 'media',
+      eventType: 'ui',
+    };
+
+    function setupWrapper(
+      value: string,
+    ): {
+      view: EditorView<any>;
+      wrapper: ReactWrapper<
+        ReactIntl.InjectedIntlProps,
+        AltTextEditComponentState,
+        any
+      >;
+    } {
+      const view = new mockView();
+      const intl = {} as InjectedIntl;
+      const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
+        <AltTextEditComponent
+          view={view}
+          value={value}
+          intl={intl}
+          createAnalyticsEvent={createAnalyticsEvent}
+        />,
+      );
+      return { view, wrapper };
+    }
+
+    it('fires cleared and edited events after clearing value and closing popup editor', () => {
+      const { wrapper } = setupWrapper('value');
+      // @ts-ignore
+      wrapper.setProps({ value: '' });
+
+      wrapper.find('input').simulate('blur');
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.cleared',
+      });
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.edited',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.added',
+      });
+    });
+
+    it('fires edited event after updating value and closing popup editor', () => {
+      const { wrapper } = setupWrapper('value');
+      // @ts-ignore
+      wrapper.setProps({ value: 'test changed' });
+
+      wrapper.find('input').simulate('blur');
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.edited',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.cleared',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.added',
+      });
+    });
+
+    it('fires added event after updating value and closing popup editor', () => {
+      const { wrapper } = setupWrapper('');
+
+      // @ts-ignore
+      wrapper.setProps({ value: 'value added' });
+
+      wrapper.find('input').simulate('blur');
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.added',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.edited',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.cleared',
+      });
+    });
+  });
+
   describe('when the back button is clicked', () => {
     it('should call the closeMediaAltText command', () => {
       const view = new mockView();
@@ -48,99 +141,6 @@ describe('AltTextEditComponent', () => {
         view.dispatch,
       );
       expect(mockUpdateAltText).not.toBeCalled();
-    });
-
-    describe('fires respective alt text analytics events', () => {
-      const defaultMediaEvent = {
-        action: 'alttext.edited',
-        actionSubject: 'media',
-        actionSubjectId: 'media',
-        eventType: 'ui',
-      };
-
-      function setupWrapper(
-        value: string,
-      ): {
-        view: EditorView<any>;
-        wrapper: ReactWrapper<
-          ReactIntl.InjectedIntlProps,
-          AltTextEditComponentState,
-          any
-        >;
-      } {
-        const view = new mockView();
-        const intl = {} as InjectedIntl;
-        const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
-          <AltTextEditComponent
-            view={view}
-            value={value}
-            intl={intl}
-            createAnalyticsEvent={createAnalyticsEvent}
-          />,
-        );
-        return { view, wrapper };
-      }
-
-      it('fires cleared and edited events after clearing value and closing popup editor', () => {
-        const { wrapper } = setupWrapper('value');
-        // @ts-ignore
-        wrapper.setProps({ value: '' });
-
-        wrapper.find('button[aria-label="Back"]').simulate('click');
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.cleared',
-        });
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.edited',
-        });
-        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.added',
-        });
-      });
-
-      it('fires edited event after updating value and closing popup editor', () => {
-        const { wrapper } = setupWrapper('value');
-        // @ts-ignore
-        wrapper.setProps({ value: 'test changed' });
-
-        wrapper.find('button[aria-label="Back"]').simulate('click');
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.edited',
-        });
-        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.cleared',
-        });
-        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.added',
-        });
-      });
-
-      it('fires added event after updating value and closing popup editor', () => {
-        const { wrapper } = setupWrapper('');
-
-        // @ts-ignore
-        wrapper.setProps({ value: 'value added' });
-
-        wrapper.find('button[aria-label="Back"]').simulate('click');
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.added',
-        });
-        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.edited',
-        });
-        expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
-          ...defaultMediaEvent,
-          action: 'alttext.cleared',
-        });
-      });
     });
   });
 
