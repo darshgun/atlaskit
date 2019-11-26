@@ -1,4 +1,5 @@
 import { EditorView } from 'prosemirror-view';
+import { ResolveResponse } from '@atlaskit/smart-card';
 
 export type EditorViewWithComposition = EditorView & {
   domObserver: {
@@ -8,15 +9,42 @@ export type EditorViewWithComposition = EditorView & {
   composing: boolean;
 };
 
-export interface ElementsConfig {
+export type PromiseName =
+  | 'getAuth'
+  | 'getConfig'
+  | 'nativeFetch'
+  | 'getAccountId'
+  | 'getResolvedLink'
+  | 'getLinkResolve';
+
+export type PromisePayload =
+  | GetAuthPayload
+  | GetConfigPayload
+  | NativeFetchPayload
+  | GetAccountIdPayload
+  | GetResolvedLinkPayload
+  | GetLinkResolvePayload;
+
+export interface GetAuthPayload {
+  baseUrl: string;
+  clientId: string;
+  token: string;
+}
+
+export interface GetConfigPayload {
   baseUrl: string;
   cloudId?: string;
 }
 
-export interface NativeFetchResponse {
+export interface NativeFetchPayload {
   response: string;
   status: number;
   statusText: string;
 }
 
-export type AccountId = string;
+export type GetAccountIdPayload = string;
+
+export type GetResolvedLinkPayload = ResolveResponse;
+
+// TODO: Check which shape this should have
+export type GetLinkResolvePayload = unknown;

@@ -6,11 +6,10 @@ import {
   MentionDescription,
   MentionResource,
 } from '@atlaskit/mention/resource';
-import { AccountId } from '../types';
 import { createPromise } from '../cross-platform-promise';
 
 function createMentionProvider() {
-  return createPromise<AccountId>('getAccountId')
+  return createPromise('getAccountId')
     .submit()
     .then(
       accountId =>

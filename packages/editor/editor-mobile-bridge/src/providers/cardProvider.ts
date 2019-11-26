@@ -2,7 +2,6 @@ import {
   EditorCardProvider,
   CardAppearance,
   Client,
-  ResolveResponse,
 } from '@atlaskit/smart-card';
 import { createPromise } from '../cross-platform-promise';
 
@@ -17,10 +16,10 @@ export class EditorMobileCardProvider extends EditorCardProvider {
      *   },
       };
      */
-    const getLinkResolve = await createPromise(
-      'getLinkResolve',
-      JSON.stringify({ url, appearance }),
-    ).submit();
+    const getLinkResolve = await createPromise('getLinkResolve', {
+      url,
+      appearance,
+    }).submit();
 
     if (typeof getLinkResolve === 'object') {
       return getLinkResolve;
@@ -40,10 +39,7 @@ export class MobileSmartCardClient extends Client {
      * https://atlaskit.atlassian.com/packages/media/smart-card/docs/client
      *
      */
-    return createPromise<ResolveResponse>(
-      'getResolvedLink',
-      JSON.stringify({ url }),
-    )
+    return createPromise('getResolvedLink', { url })
       .submit()
       .then(
         response => response,
