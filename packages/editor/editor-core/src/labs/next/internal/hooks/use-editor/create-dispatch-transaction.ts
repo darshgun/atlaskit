@@ -45,7 +45,7 @@ export function createDispatchTransaction(
         onChange(getEditorValue(editorView, transformer));
       }
     } else {
-      // If invalid document, send analytics event with its structure before and after transaction
+      // If invalid document, send analytics event with the structure of the nodes
       if (dispatch) {
         const invalidNodes = nodes
           .filter(node => !validNode(node))
