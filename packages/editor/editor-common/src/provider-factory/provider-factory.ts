@@ -1,9 +1,4 @@
-import { Providers } from '../types';
-export { WithProviders } from './withProviders';
-
-export { Providers } from '../types';
-
-export type ProviderHandler = (name: string, provider?: Promise<any>) => void;
+import { ProviderHandler, Providers } from './types';
 
 export default class ProviderFactory {
   private providers: Map<string, Promise<any>> = new Map();

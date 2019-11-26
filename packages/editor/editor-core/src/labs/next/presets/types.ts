@@ -1,7 +1,7 @@
 import { EditorPlugin } from '../../../types/editor-plugin';
 
 export interface EditorPresetProps {
-  excludes?: Array<string>;
+  excludes?: Set<string>;
   experimental?: Array<string>;
 }
 

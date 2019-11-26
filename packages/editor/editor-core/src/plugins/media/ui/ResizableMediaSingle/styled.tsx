@@ -20,7 +20,7 @@ export const Wrapper: React.ComponentClass<React.HTMLAttributes<{}> &
   & > div::after {
     content: '';
     display: block;
-    padding-bottom: ${p => (p.height / p.width) * 100}%;
+    padding-bottom: ${p => p.ratio + '%'};
 
     /* Fixes extra padding problem in Firefox */
     font-size: 0;

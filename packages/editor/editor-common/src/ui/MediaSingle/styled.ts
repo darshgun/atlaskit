@@ -118,8 +118,8 @@ function isImageAligned(layout: MediaSingleLayout): string {
 
 export interface WrapperProps {
   layout: MediaSingleLayout;
-  width: number;
-  height: number;
+  width?: number;
+  ratio: string;
   containerWidth?: number;
   pctWidth?: number;
   innerRef?: (elem: HTMLElement) => void;
@@ -143,8 +143,14 @@ export const MediaSingleDimensionHelper = ({
     max-width: 100%;
   }
   width: ${pctWidth
-    ? calcResizedWidth(layout, width, containerWidth)
-    : calcLegacyWidth(layout, width, containerWidth, fullWidthMode, isResized)};
+    ? calcResizedWidth(layout, width || 0, containerWidth)
+    : calcLegacyWidth(
+        layout,
+        width || 0,
+        containerWidth,
+        fullWidthMode,
+        isResized,
+      )};
   max-width: ${calcMaxWidth(layout, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
@@ -163,7 +169,7 @@ const Wrapper: React.ComponentClass<HTMLAttributes<{}> &
   &::after {
     content: '';
     display: block;
-    padding-bottom: ${p => (p.height / p.width) * 100}%;
+    padding-bottom: ${p => p.ratio}%;
 
     /* Fixes extra padding problem in Firefox */
     font-size: 0;

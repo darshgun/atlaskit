@@ -6,10 +6,10 @@ import MentionWithProviders from './mention-with-providers';
 import { MentionEventHandlers } from '../EventHandlers';
 import { ProfilecardProvider } from './types';
 import {
-  default as ProviderFactory,
+  ProviderFactory,
   WithProviders,
   Providers,
-} from '../../providerFactory';
+} from '../../provider-factory';
 
 export interface MentionProps {
   id: string;

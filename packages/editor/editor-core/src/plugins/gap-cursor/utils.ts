@@ -283,7 +283,10 @@ export const fixCursorAlignment = (view: EditorView) => {
   // breakout mode
   const breakoutMode = getBreakoutModeFromTargetNode(targetNode);
   const hasBreakoutEnable = /full-width|wide/i.test(breakoutMode);
-  if (hasBreakoutEnable) {
+  if (
+    hasBreakoutEnable &&
+    gapCursorRef.getAttribute('layout') !== breakoutMode
+  ) {
     gapCursorRef.setAttribute('layout', breakoutMode);
   }
 

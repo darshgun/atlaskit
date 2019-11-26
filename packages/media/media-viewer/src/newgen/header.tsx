@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { ReactNode, ReactChild } from 'react';
 import {
   MediaClient,
   FileState,
@@ -15,6 +15,7 @@ import {
   hideControlsClassName,
   messages,
   toHumanReadableMediaSize,
+  MediaButton,
 } from '@atlaskit/media-ui';
 import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Outcome } from './domain';
@@ -34,11 +35,15 @@ import {
   ToolbarDownloadButton,
   DisabledToolbarDownloadButton,
 } from './download';
+import { MediaViewerExtensions } from '../components/types';
 
 export type Props = {
   readonly identifier: Identifier;
   readonly mediaClient: MediaClient;
   readonly onClose?: () => void;
+  readonly extensions?: MediaViewerExtensions;
+  readonly onSidebarButtonClick?: () => void;
+  readonly isSidebarVisible?: boolean;
 };
 
 export type State = {
@@ -128,11 +133,29 @@ export class Header extends React.Component<Props & InjectedIntlProps, State> {
     });
   };
 
+  private renderSidebarButton = () => {
+    const { extensions, isSidebarVisible, onSidebarButtonClick } = this.props;
+    if (extensions && extensions.sidebar) {
+      return (
+        <MediaButton
+          isSelected={isSidebarVisible}
+          testId="media-viewer-sidebar-button"
+          appearance={'toolbar' as any}
+          onClick={onSidebarButtonClick}
+          iconBefore={extensions.sidebar.icon as ReactChild}
+        />
+      );
+    }
+  };
+
   render() {
     return (
       <HeaderWrapper className={hideControlsClassName}>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
-        <RightHeader>{this.renderDownload()}</RightHeader>
+        <RightHeader>
+          {this.renderSidebarButton()}
+          {this.renderDownload()}
+        </RightHeader>
       </HeaderWrapper>
     );
   }
@@ -154,10 +177,10 @@ export class Header extends React.Component<Props & InjectedIntlProps, State> {
             {this.getMediaIcon(item.mediaType)}
           </MetadataIconWrapper>
           <MedatadataTextWrapper>
-            <MetadataFileName>
+            <MetadataFileName data-testid="media-viewer-file-name">
               {item.name || <FormattedMessage {...messages.unknown} />}
             </MetadataFileName>
-            <MetadataSubText>
+            <MetadataSubText data-testid="media-viewer-file-metadata-text">
               {this.renderFileTypeText(item.mediaType)}
               {this.renderSize(item)}
             </MetadataSubText>

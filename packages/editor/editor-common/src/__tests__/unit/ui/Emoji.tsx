@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
-import ProviderFactory from '../../../providerFactory';
+import { ProviderFactory } from '../../../provider-factory';
 import Emoji from '../../../ui/Emoji';
 
 describe('Emoji', () => {
