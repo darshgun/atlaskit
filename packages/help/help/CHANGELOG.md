@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.21.1
+
+### Patch Changes
+
+- [patch][bd17edc20c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd17edc20c):
+
+  Bugfix - hide back button if therere is only one article in the history and there isn't default content
+
 ## 0.21.0
 
 ### Minor Changes
