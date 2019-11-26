@@ -38,7 +38,11 @@ describe('Snapshot Test', () => {
     await page.waitFor(500);
     // @ts-ignore custom properties on global are untyped
     const image = await takeElementScreenShot(page, menu);
-    expect(image).toMatchProdImageSnapshot();
+    // Threshold is there to avoid false-positive with the fade.
+    expect(image).toMatchProdImageSnapshot({
+      failureThreshold: '50',
+      failureThresholdType: 'pixel',
+    });
   });
 
   it('Motion example resizing height should match production example when adding 2 elements', async () => {
@@ -50,7 +54,11 @@ describe('Snapshot Test', () => {
     await page.waitFor(500);
     // @ts-ignore custom properties on global are untyped
     const image = await takeElementScreenShot(page, menu);
-    expect(image).toMatchProdImageSnapshot();
+    // Threshold is there to avoid false-positive with the fade.
+    expect(image).toMatchProdImageSnapshot({
+      failureThreshold: '50',
+      failureThresholdType: 'pixel',
+    });
   });
 
   it('Motion example resizing height should match production example when adding 3 elements', async () => {
@@ -62,7 +70,12 @@ describe('Snapshot Test', () => {
     await page.waitFor(500);
     // @ts-ignore custom properties on global are untyped
     const image = await takeElementScreenShot(page, menu);
-    expect(image).toMatchProdImageSnapshot();
+    // Threshold is there to avoid false-positive with the fade.
+    // It increased with the number of elements in the menu.
+    expect(image).toMatchProdImageSnapshot({
+      failureThreshold: '100',
+      failureThresholdType: 'pixel',
+    });
   });
 
   it('Motion example resizing height should match production example when adding 4 elements', async () => {
@@ -74,7 +87,12 @@ describe('Snapshot Test', () => {
     await page.waitFor(800);
     // @ts-ignore custom properties on global are untyped
     const image = await takeElementScreenShot(page, menu);
-    expect(image).toMatchProdImageSnapshot();
+    // Threshold is there to avoid false-positive with the fade.
+    // It increased with the number of elements in the menu.
+    expect(image).toMatchProdImageSnapshot({
+      failureThreshold: '100',
+      failureThresholdType: 'pixel',
+    });
   });
 
   it('Motion example resizing height should match production example when adding 5 elements', async () => {
@@ -86,6 +104,11 @@ describe('Snapshot Test', () => {
     await page.waitFor(800);
     // @ts-ignore custom properties on global are untyped
     const image = await takeElementScreenShot(page, menu);
-    expect(image).toMatchProdImageSnapshot();
+    // Threshold is there to avoid false-positive with the fade.
+    // It increased with the number of elements in the menu.
+    expect(image).toMatchProdImageSnapshot({
+      failureThreshold: '100',
+      failureThresholdType: 'pixel',
+    });
   });
 });
