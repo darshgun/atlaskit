@@ -73,9 +73,6 @@ BrowserTestCase(
   { skip: ['safari', 'ie', 'edge'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    if (!page.isWindowsPlatform()) {
-      return;
-    }
     await mountEditor(page, { appearance: 'full-page' });
     await insertHeadings(page, [KEY.CONTROL, KEY.ALT]);
 
