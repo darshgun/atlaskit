@@ -295,7 +295,7 @@ export const updateEditorProps = async (
 ) => {
   await page.evaluate((props: EditorProps) => {
     (window as any).__updateEditorProps(props);
-  }, newProps);
+  }, newProps as any);
 };
 
 export const clearEditor = async (page: any) => {

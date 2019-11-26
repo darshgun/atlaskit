@@ -17,7 +17,7 @@ BrowserTestCase(
     await tooltipTest.goto(urlTooltip);
     await tooltipTest.waitFor(tooltipBtn, 5000);
     await tooltipTest.hover(tooltipBtn);
-    expect(await tooltipTest.isVisible(tooltipTestId)).toBe(true);
+    await tooltipTest.waitFor(tooltipTestId, 5000);
     expect(await tooltipTest.getText(tooltipTestId)).toContain('Hello World');
   },
 );

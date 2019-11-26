@@ -1,9 +1,9 @@
-/* eslint-disable func-names */
-/* eslint-disable consistent-return */
-/* eslint-disable no-undef */
-// @flow
-const assert = require('assert');
+// Current version of webdriverio have somewhat awkward state of type definitions.
+// You can't import specific types, but you rather import a workspace and later use `BrowserObject`
+// as a global type. This going to be fixed when we bump it's version as part of BUILDTOOLS-332
+import 'webdriverio';
 
+const assert = require('assert').strict;
 /*
  * wrapper on top of webdriver-io apis to give a feel of puppeeteer api
  */
@@ -11,52 +11,19 @@ const assert = require('assert');
 const WAIT_TIMEOUT = 5000;
 const EDITOR = '.ProseMirror';
 
-export class JSHandle {
-  browser /*: any */;
-
-  selector /*: string */;
-
-  constructor(client /*: any */, selector /*: string */) {
-    this.browser = client;
-    this.selector = selector;
-  }
-
-  asElement() {
-    return new ElementHandle(this.browser, this.selector);
-  }
-  // TODO: Implement those methods
-  // dispose = TODO;
-
-  // executionContext = TODO;
-
-  // getProperties = TODO;
-
-  // jsonValue = TODO;
+interface BBoxWithId {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  id: string;
 }
 
-export class ElementHandle extends JSHandle {
-  // TODO: Implement those methods
-  // $ = TODO;
-  // $$ = TODO;
-  // $x = TODO;
-  // asElement = TODO;
-  // boundingBox = TODO;
-  // click = TODO;
-  // dispose = TODO;
-  // executionContext = TODO;
-  // focus = TODO;
-  // getProperties = TODO;
-  // hover = TODO;
-  // jsonValue = TODO;
-  // press = TODO;
-  // screenshot = TODO;
-  // tap = TODO;
-  // toString = TODO;
-  // type = TODO;
-  // uploadFile = TODO;
+interface WaitingOptions {
+  timeout: number;
 }
 
-const mappedKeys = {
+const mappedKeys: { [key: string]: string } = {
   NULL: '\ue000',
   ArrowLeft: '\ue012',
   ArrowRight: '\ue014',
@@ -71,21 +38,21 @@ const mappedKeys = {
   Command: '\ue03D',
 };
 
-const getMappedKey = str => {
+const getMappedKey = (str: string) => {
   return mappedKeys[str] || str;
 };
+const defaultWaitingOptions: WaitingOptions = { timeout: WAIT_TIMEOUT };
+
+type Done<T> = (result: T) => any;
 
 export default class Page {
-  browser /*: any */;
+  private browser: BrowserObject;
 
-  selector /*: string */;
-
-  constructor(client /*:any */) {
-    this.browser = client;
+  constructor(browserObject: BrowserObject) {
+    this.browser = browserObject;
   }
 
-  // eslint-disable-next-line consistent-return
-  async type(selector /*: string */, text /*: string[] | string */) {
+  async type(selector: string, text: string | string[]) {
     // TODO: https://product-fabric.atlassian.net/browse/BUILDTOOLS-325
     if (this.isBrowser('chrome') && selector === EDITOR) {
       if (Array.isArray(text)) {
@@ -105,8 +72,7 @@ export default class Page {
     }
   }
 
-  // Navigation
-  goto(url /*: string */) {
+  goto(url: string) {
     return this.browser.url(url);
   }
 
@@ -114,10 +80,9 @@ export default class Page {
     return this.browser.refresh();
   }
 
-  async moveTo(selector /*: string */, x /*: number */, y /*: number */) {
+  async moveTo(selector: string, x: number, y: number) {
     if (this.isBrowser('Safari')) {
-      // eslint-disable-next-line no-unused-vars
-      const bounds = await this.getBoundingRect(selector);
+      await this.getBoundingRect(selector);
       await this.SafariMoveTo([{ x, y }]);
     } else {
       const elem = await this.browser.$(selector);
@@ -127,10 +92,7 @@ export default class Page {
   }
 
   // This function simulates user select multiple document node by drag and drop.
-  async simulateUserSelection(
-    startSelector /*: string */,
-    targetSelector /*: string */,
-  ) {
+  async simulateUserSelection(startSelector: string, targetSelector: string) {
     const startBounds = await this.getBoundingRect(startSelector);
     const targetBounds = await this.getBoundingRect(targetSelector);
 
@@ -150,11 +112,11 @@ export default class Page {
   }
 
   async simulateUserDragAndDrop(
-    startX /*: number */,
-    startY /*: number */,
-    targetX /*: number */,
-    targetY /*: number */,
-    duration /*: number */ = 2000,
+    startX: number,
+    startY: number,
+    targetX: number,
+    targetY: number,
+    duration: number = 2000,
   ) {
     if (this.isBrowser('chrome')) {
       return this.simulateUserDragAndDropChrome(
@@ -162,7 +124,6 @@ export default class Page {
         startY,
         targetX,
         targetY,
-        duration,
       );
     }
 
@@ -205,24 +166,21 @@ export default class Page {
   }
 
   async simulateUserDragAndDropChrome(
-    startX /*: number */,
-    startY /*: number */,
-    targetX /*: number */,
-    targetY /*: number */,
-    duration /*: number */ = 1000,
+    startX: number,
+    startY: number,
+    targetX: number,
+    targetY: number,
   ) {
-    const elem = await this.browser.$('body');
-    await elem.moveTo(startX, startY, duration);
+    await this.moveTo('body', startX, startY);
     await this.browser.buttonDown();
-    await elem.moveTo(targetX, targetY, duration);
+    await this.moveTo('body', targetX, targetY);
     await this.browser.buttonUp();
     return this.browser.pause(500);
   }
 
-  async hover(selector /*: string */) {
+  async hover(selector: string) {
     if (this.isBrowser('Safari')) {
       const bounds = await this.getBoundingRect(selector);
-
       await this.SafariMoveTo([{ x: bounds.left, y: bounds.top }]);
     } else {
       const elem = await this.browser.$(selector);
@@ -233,7 +191,7 @@ export default class Page {
 
   // TODO: Remove it after the fix been merged on webdriver.io:
   // https://github.com/webdriverio/webdriverio/pull/4330
-  async SafariMoveTo(coords /*: Array<Object> */) {
+  async SafariMoveTo(coords: { x: number; y: number }[]) {
     const actions = coords.map(set => ({
       type: 'pointerMove',
       duration: 0,
@@ -251,67 +209,73 @@ export default class Page {
     ]);
   }
 
-  async getBoundingRect(selector /*: string */) {
-    // eslint-disable-next-line no-shadow
-    return this.browser.execute(selector => {
+  async getBoundingRect(selector: string): Promise<BBoxWithId> {
+    const bbox = await this.execute((selector: string) => {
       const element = document.querySelector(selector);
-      const { x, y, width, height } = element.getBoundingClientRect();
-      return { left: x, top: y, width, height, id: element.id };
+      if (element) {
+        // Result of next call is ClientRect | DOMRect, one contains left/right props, other x/y
+        const rect = element.getBoundingClientRect();
+        const { left, top, width, height } = rect;
+        const { x, y } = rect as DOMRect;
+        return {
+          left: x || left,
+          top: y || top,
+          width,
+          height,
+          id: element.id,
+        };
+      }
     }, selector);
+    if (!bbox) {
+      throw new Error(`${selector} couldn't been found`);
+    }
+    return bbox;
   }
 
   async title() {
     return this.browser.getTitle();
   }
 
-  async $(selector /*: string */) {
-    const ele = await this.browser.$(selector);
-
-    return ele;
+  async $(selector: string) {
+    return this.browser.$(selector);
   }
 
-  async $$(selector /*: string */) {
-    const ele = await this.browser.$$(selector);
-    return ele;
+  async $$(selector: string) {
+    return this.browser.$$(selector);
   }
 
-  $eval(selector /*: string */, pageFunction /*: any */, param /*: Object*/) {
-    return this.browser.execute(
-      `return (${pageFunction}(document.querySelector("${selector}"), ${JSON.stringify(
-        param,
-      )}))`,
-    );
-  }
-
-  async setValue(selector /*: string */, text /*: string */) {
-    const elem = await this.browser.$(selector);
+  async setValue(selector: string, text: string) {
+    const elem = await this.$(selector);
     return elem.setValue(text);
   }
 
-  async count(selector /*: string */) {
+  async count(selector: string) {
     const result = await this.$$(selector);
     return result.length;
   }
 
-  async clear(selector /*: string */) {
-    const elem = await this.browser.$(selector);
+  async clear(selector: string) {
+    const elem = await this.$(selector);
     return elem.clearValue();
   }
 
-  async click(selector /*: string */) {
+  async click(selector: string) {
     try {
-      const elem = await this.browser.$(selector);
+      const elem = await this.$(selector);
       return elem.click();
     } catch (e) {
       return e;
     }
   }
 
-  async keys(values /*: string[] | string */) {
-    const keys = Array.isArray(values) ? values : [values];
-
-    for (const key of keys) {
-      await this.browser.keys(key);
+  async keys(values: string | string[], directCall: boolean = false) {
+    if (directCall) {
+      await this.browser.keys(values);
+    } else {
+      const keys = Array.isArray(values) ? values : [values];
+      for (let key of keys) {
+        await this.browser.keys(key);
+      }
     }
   }
 
@@ -319,26 +283,21 @@ export default class Page {
     return this.browser.debug();
   }
 
-  // Get
-  getProperty(selector /*: string */, cssProperty) {
-    return this.browser.getCssProperty(selector, cssProperty);
-  }
-
-  async getCSSProperty(selector /*: string */, cssProperty /*: string */) {
-    const elem = await this.browser.$(selector);
+  async getCSSProperty(selector: string, cssProperty: string) {
+    const elem = await this.$(selector);
     return elem.getCSSProperty(cssProperty);
   }
 
-  async getLocation(selector /*: string */, property /*: string */) {
+  async getLocation(selector: string) {
     const elem = await this.browser.$(selector);
-    return elem.getLocation(selector, property);
+    return elem.getLocation();
   }
 
   getAlertText() {
     return this.browser.getAlertText();
   }
 
-  async getAttribute(selector /*: string */, attributeName /*: string */) {
+  async getAttribute(selector: string, attributeName: string) {
     const elem = await this.browser.$(selector);
     return elem.getAttribute(attributeName);
   }
@@ -357,7 +316,7 @@ export default class Page {
   }
 
   close() {
-    return this.browser.close();
+    return this.browser.closeWindow();
   }
 
   async checkConsoleErrors() {
@@ -365,16 +324,14 @@ export default class Page {
     if (this.isBrowser('chrome')) {
       const logs = await this.browser.getLogs('browser');
       if (logs.length) {
-        logs.forEach(log => {
+        logs.forEach((log: any) => {
           assert.notStrictEqual(log.level, 'SEVERE', `Error : ${log.message}`);
         });
       }
     }
   }
 
-  // eslint-disable-next-line no-unused-vars
-  backspace(selector /*: string */) {
-    // eslint-disable-next-line no-shadow
+  backspace(selector: string) {
     this.browser.execute(selector => {
       return document
         .querySelector(selector)
@@ -388,27 +345,65 @@ export default class Page {
   //  keyboard.up('Shift');
 
   //will need to have wrapper for these once moved to puppeteer
-  async getText(selector /*: string */) {
+  async getText(selector: string) {
     // replace with await page.evaluate(() => document.querySelector('p').textContent)
     // for puppeteer
     const elem = await this.browser.$(selector);
-    let text = elem.getText();
+    let text = await elem.getText();
     if (text === '' || text === undefined || text === null) {
-      text = elem.getAttribute('textContent');
+      text = await elem.getAttribute('textContent');
     }
     return text;
   }
 
-  async getValue(selector /*: string */) {
+  async getValue(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.getValue();
   }
 
-  async execute(func /*: Function */, ...args /*: any[] */) {
-    return this.browser.execute(func, ...args);
+  $eval<T, P>(
+    selector: string,
+    pageFunction: (element: HTMLElement | null, params?: P) => T,
+    param?: P,
+  ): Promise<T> {
+    return this.browser.execute(
+      `return (${pageFunction}(document.querySelector("${selector}"), ${JSON.stringify(
+        param,
+      )}))`,
+    ) as Promise<T>;
   }
 
-  async executeAsync(func /*: Function */, ...args /*: any[] */) {
+  async execute<T, P extends any[]>(
+    script: string | ((...args: P) => T),
+    ...args: P
+  ): Promise<T> {
+    return this.browser.execute(
+      script as string | ((...args: any[]) => T),
+      ...args,
+    ) as Promise<T>;
+  }
+
+  async executeAsync<T>(func: (done: Done<T>) => void): Promise<T>;
+  async executeAsync<A, T>(
+    func: (arg1: A, done: Done<T>) => void,
+    arg: A,
+  ): Promise<T>;
+  async executeAsync<A, B, T>(
+    func: (arg1: A, arg2: B, done: Done<T>) => void,
+    ...args: [A, B]
+  ): Promise<T>;
+  async executeAsync<A, B, C, T>(
+    func: (arg1: A, arg2: B, arg3: C, done: Done<T>) => void,
+    ...args: [A, B, C]
+  ): Promise<T>;
+  async executeAsync<A, B, C, T>(
+    func:
+      | ((done: Done<T>) => void)
+      | ((arg1: A, done: Done<T>) => void)
+      | ((arg1: A, arg2: B, done: Done<T>) => void)
+      | ((arg1: A, arg2: B, arg3: C, done: Done<T>) => void),
+    ...args: [] | [A] | [A, B] | [A, B, C]
+  ): Promise<T> {
     return this.browser.executeAsync(func, ...args);
   }
 
@@ -416,62 +411,60 @@ export default class Page {
     return this.browser.capabilities.browserName;
   }
 
-  isBrowser(browserName /*: string */) {
+  isBrowser(browserName: string) {
     return this.getBrowserName() === browserName;
   }
 
-  async getCssProperty(selector /*: string */, cssProperty /*: string */) {
-    const elem = this.browser.$(selector);
-    return elem.getCssProperty(selector, cssProperty);
+  async getElementSize(selector: string) {
+    const elem = await this.browser.$(selector);
+    return elem.getSize();
   }
 
-  async getElementSize(selector /*: string */) {
-    const elem = this.browser.$(selector);
-    return elem.getSize(selector);
-  }
-
-  async getHTML(selector /*: string */) {
+  async getHTML(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.getHTML(false);
   }
 
-  // eslint-disable-next-line no-dupe-class-members
-  async getProperty(selector /*: string */, property /*: string */) {
+  async getProperty(selector: string, property: string) {
     const elem = await this.browser.$(selector);
     return elem.getProperty(property);
   }
 
-  async isEnabled(selector /*: string */) {
+  async isEnabled(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isEnabled();
   }
 
-  async isExisting(selector /*: string */) {
+  async isExisting(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isExisting();
   }
 
-  async isVisible(selector /*: string */) {
+  async isVisible(selector: string) {
     return this.waitFor(selector);
   }
 
-  async isSelected(selector /*: string */) {
+  async isSelected(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isSelected();
   }
 
-  async hasFocus(selector /*: string */) {
+  async hasFocus(selector: string) {
     const elem = await this.browser.$(selector);
     return elem.isFocused();
   }
 
-  log(type /*: string */) {
-    return this.browser.log(type);
+  isWindowsPlatform() {
+    const { platformName } = this.browser.capabilities;
+    // In current version of webdriverio capabilities defined platformName,
+    // but somehow in runtime it filled with os I am not where it is coming from.
+    const { os } = this.browser.capabilities as any;
+    return platformName === 'Windows' || os === 'Windows';
   }
 
   async paste() {
     let keys;
-    if (this.browser.capabilities.os === 'Windows') {
+    if (this.isWindowsPlatform()) {
       keys = ['Control', 'v'];
     } else if (this.isBrowser('chrome')) {
       // Workaround for https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
@@ -486,19 +479,16 @@ export default class Page {
 
   async copy() {
     let keys;
-    if (this.browser.capabilities.os === 'Windows') {
+    if (this.isWindowsPlatform()) {
       keys = ['Control', 'c'];
     } else if (this.isBrowser('chrome')) {
-      // Workaround for https://bugs.chromium.org/p/chromedriver/issues/detail?id=30
-      keys = ['Control', 'Insert'];
+      // https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand#Commands
+      return await this.execute('document.execCommand("copy")');
     } else {
       keys = ['Command', 'c'];
     }
 
-    if (
-      this.browser.capabilities.os === 'Windows' &&
-      this.isBrowser('chrome')
-    ) {
+    if (this.isWindowsPlatform() && this.isBrowser('chrome')) {
       // For Windows we need to send a keyup signal to release Control key
       // https://webdriver.io/docs/api/browser/keys.html
       await this.browser.keys(keys);
@@ -511,9 +501,9 @@ export default class Page {
   // behaviour is OS specific:
   // windows moves to next paragraph up
   // osx moves to top of document
-  moveUp(selector /*: string */) {
-    let control = 'Command';
-    if (this.browser.capabilities.os === 'Windows') {
+  moveUp(selector: string) {
+    let control: string = 'Command';
+    if (this.isWindowsPlatform()) {
       control = 'Control';
     }
 
@@ -527,50 +517,55 @@ export default class Page {
 
   // Wait
   async waitForSelector(
-    selector /*: string */,
-    options /*: Object */ = {},
-    reverse /*: boolean */ = false,
+    selector: string,
+    options: WaitingOptions = defaultWaitingOptions,
+    reverse = false,
+  ): Promise<boolean> {
+    const elem = await this.$(selector);
+
+    return elem.waitForExist(options.timeout, reverse);
+  }
+
+  async waitForVisible(
+    selector: string,
+    options: WaitingOptions = defaultWaitingOptions,
   ) {
-    const elem = await this.browser.$(selector);
-    return elem.waitForExist(options.timeout || WAIT_TIMEOUT, reverse);
+    const elem = await this.$(selector);
+
+    return elem.waitForDisplayed(options.timeout);
   }
 
-  async waitForVisible(selector /*: string */, options /*: Object */ = {}) {
-    const elem = await this.browser.$(selector);
-
-    return elem.waitForDisplayed(options.timeout || WAIT_TIMEOUT);
-  }
-
-  async waitUntilContainsText(selector /*: string */, text /*: string */) {
+  async waitUntilContainsText(selector: string, text: string) {
     await this.waitUntil(async () => {
       const content = await this.getText(selector);
       return content.indexOf(text) !== -1;
     });
   }
 
-  waitFor(selector /*: string */, ms? /*: number */, reverse? /*: boolean */) {
-    return this.waitForSelector(selector, { timeout: ms }, reverse);
+  waitFor(
+    selector: string,
+    ms: number | undefined = undefined,
+    reverse: boolean = false,
+  ) {
+    const options = ms !== undefined ? { timeout: ms } : undefined;
+    return this.waitForSelector(selector, options, reverse);
   }
 
-  waitUntil(predicate /*: any */) {
-    return this.browser.waitUntil(predicate, WAIT_TIMEOUT);
+  waitUntil(predicate: () => boolean | Promise<boolean> | Promise<unknown>) {
+    // TODO This is not right. this.browser.waitUntil can't take `() => Promise<boolean>`
+    return this.browser.waitUntil(predicate as any, WAIT_TIMEOUT);
   }
 
   // Window
-  setWindowSize(width /*: string */, height /*: string */) {
+  setWindowSize(width: number, height: number) {
     return this.browser.setWindowSize(width, height);
   }
 
-  chooseFile(selector /*: string */, localPath /*: string */) {
-    return this.browser.chooseFile(selector, localPath);
-  }
-
-  mockDate(timestamp /*: string */, timezoneOffset /*: string */) {
+  mockDate(timestamp: number, timezoneOffset: number) {
     this.browser.execute(
       (t, tz) => {
-        // eslint-disable-next-line no-multi-assign
-        const _Date = (window._Date = window.Date);
-        const realDate = params => new _Date(params);
+        const _Date = ((window as any)._Date = window.Date);
+        const realDate = (params: any) => new _Date(params);
         let offset = 0;
 
         if (tz) {
@@ -580,15 +575,14 @@ export default class Page {
 
         const mockedDate = new _Date(t + offset);
 
-        // eslint-disable-next-line no-global-assign
-        Date = function(...params) {
-          if (params.length > 0) {
-            return realDate(...params);
+        (window as any).Date = function(params: any) {
+          if (params) {
+            return realDate(params);
           }
           return mockedDate;
         };
         Object.getOwnPropertyNames(_Date).forEach(property => {
-          Date[property] = _Date[property];
+          (window as any).Date[property] = (_Date as any)[property];
         });
         Date.now = () => t;
       },
@@ -598,7 +592,7 @@ export default class Page {
     return () => {
       // Teardown function
       this.browser.execute(() => {
-        window.Date = window._Date;
+        window.Date = (window as any)._Date;
       });
     };
   }
@@ -609,5 +603,17 @@ export default class Page {
     } else {
       await this.keys('\ue004');
     }
+  }
+
+  async pause(timeInMilliseconds: number = 1000) {
+    await this.browser.pause(timeInMilliseconds);
+  }
+
+  async maximizeWindow() {
+    await this.browser.maximizeWindow();
+  }
+
+  hasCapabilities() {
+    return !!this.browser.capabilities;
   }
 }

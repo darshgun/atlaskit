@@ -1,3 +1,4 @@
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import {
   editable,
@@ -16,7 +17,7 @@ import { selectors } from '../panel/_utils';
   {
     skipBrowsers: ['edge', 'ie', 'safari', 'chrome'],
     message: 'Inserts media single before paragraph',
-    setup: async (page: any) => {
+    setup: async (page: Page) => {
       await page.type(editable, 'some text');
       await page.keys(Array(9).fill('ArrowLeft'));
     },
@@ -24,14 +25,14 @@ import { selectors } from '../panel/_utils';
   {
     skipBrowsers: ['edge', 'ie', 'safari', 'firefox'],
     message: 'Inserts media single after paragraph',
-    setup: async (page: any) => {
+    setup: async (page: Page) => {
       await page.type(editable, 'some text ');
     },
   },
   {
     skipBrowsers: ['edge', 'ie', 'safari', 'chrome'],
     message: 'Inserts media single before paragraph nested in a panel',
-    setup: async (page: any) => {
+    setup: async (page: Page) => {
       await quickInsert(page, 'Info panel');
       await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
       await page.type(editable, 'some text');
@@ -41,7 +42,7 @@ import { selectors } from '../panel/_utils';
   {
     skipBrowsers: ['edge', 'ie', 'safari', 'firefox'],
     message: 'Inserts a media single after paragraph nested in a panel',
-    setup: async (page: any) => {
+    setup: async (page: Page) => {
       await quickInsert(page, 'Info panel');
       await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
       await page.type(editable, 'some text ');
@@ -51,7 +52,7 @@ import { selectors } from '../panel/_utils';
   BrowserTestCase(
     `quick-insert-mediaSingle.ts: ${message}`,
     { skip: skipBrowsers as any },
-    async (client: any, testName: string) => {
+    async (client: BrowserObject, testName: string) => {
       const page = await goToEditorTestingExample(client);
       await mountEditor(page, {
         appearance: fullpage.appearance,

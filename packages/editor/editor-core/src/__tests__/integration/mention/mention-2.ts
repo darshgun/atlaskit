@@ -45,7 +45,7 @@ BrowserTestCase(
     });
 
     await page.type(editable, 'test@');
-    await page.waitForSelector(typeAheadPicker, {}, true);
+    await page.waitForSelector(typeAheadPicker, undefined, true);
 
     expect(await page.isExisting(typeAheadPicker)).toBe(false);
   },
@@ -80,7 +80,7 @@ BrowserTestCase(
     });
 
     await page.type(editable, '@ Carolyn');
-    await page.waitForSelector(typeAheadPicker, {}, true);
+    await page.waitForSelector(typeAheadPicker, undefined, true);
 
     expect(await page.isExisting(typeAheadPicker)).toBe(false);
   },
@@ -114,7 +114,7 @@ BrowserTestCase(
     await page.type(editable, '@');
     await page.waitForSelector(typeAheadPicker);
     await page.type(editable, 'Escape');
-    await page.waitForSelector(typeAheadPicker, {}, true);
+    await page.waitForSelector(typeAheadPicker, undefined, true);
 
     expect(await page.isExisting(typeAheadPicker)).toBe(false);
   },

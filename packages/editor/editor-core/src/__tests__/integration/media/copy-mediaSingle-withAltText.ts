@@ -55,13 +55,13 @@ BrowserTestCase(
     await page.isVisible('.media-single');
     await page.waitForSelector('.ProseMirror :nth-child(1) .media-single');
     await page.click('.ProseMirror :nth-child(1) .media-single');
-    await page.copy(editable);
+    await page.copy();
 
     await page.keys(['ArrowDown']);
 
     await page.type(editable, 'pasting');
 
-    await page.paste(editable);
+    await page.paste();
 
     await page.waitForSelector('.ProseMirror :nth-child(3) .media-single');
 
