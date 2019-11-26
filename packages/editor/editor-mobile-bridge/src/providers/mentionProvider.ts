@@ -24,7 +24,16 @@ function createMentionProvider() {
             return false;
           },
         }),
-    );
+    )
+    .catch(err => {
+      // eslint-disable-next-line no-console
+      console.error(
+        `Could not construct a MentionProvider, the following exception occurred:`,
+        err,
+      );
+
+      return new MentionResource({ url: 'http://' });
+    });
 }
 
 export default createMentionProvider();

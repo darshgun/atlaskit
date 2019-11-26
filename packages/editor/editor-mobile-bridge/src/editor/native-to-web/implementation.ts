@@ -189,11 +189,16 @@ export default class WebBridgeImpl extends WebBridge
   }
 
   onPromiseResolved(uuid: string, payload: string) {
-    resolvePromise(uuid, JSON.parse(payload));
+    try {
+      resolvePromise(uuid, JSON.parse(payload));
+    } catch (err) {
+      err.message = `${err.message}. Payload: ${JSON.stringify(payload)}`;
+      rejectPromise(uuid, err);
+    }
   }
 
-  onPromiseRejected(uuid: string) {
-    rejectPromise(uuid);
+  onPromiseRejected(uuid: string, err?: Error) {
+    rejectPromise(uuid, err);
   }
 
   onBlockSelected(blockType: string) {

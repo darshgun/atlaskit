@@ -6,10 +6,10 @@ const pendingPromises: Map<string, Holder<any>> = new Map<
 >();
 export let counter: number = 0;
 
-class Holder<T> {
-  promise?: Promise<T>;
-  resolve?: (value: T) => void;
-  reject?: () => void;
+interface Holder<T> {
+  promise: Promise<T>;
+  resolve: (value: T) => void;
+  reject: (err?: Error) => void;
 }
 
 export interface SubmitPromiseToNative<T> {
@@ -26,8 +26,8 @@ export function createPromise<T>(
   return {
     submit(): Promise<T> {
       toNativeBridge.submitPromise(name, uuid, args);
-      return holder
-        .promise!.then(data => {
+      return holder.promise
+        .then(data => {
           pendingPromises.delete(uuid);
           return data;
         })
@@ -39,26 +39,28 @@ export function createPromise<T>(
   };
 }
 
-function createHolder<T>() {
-  let holder: Holder<T> = new Holder<T>();
+function createHolder<T>(): Holder<T> {
+  const holder: Partial<Holder<T>> = {};
+
   holder.promise = new Promise<T>((resolve, reject) => {
     holder.resolve = data => resolve(data);
-    holder.reject = () => reject();
+    holder.reject = err => reject(err);
   });
-  return holder;
+
+  return holder as Holder<T>;
 }
 
 export function resolvePromise<T>(uuid: string, resolution: T) {
-  let holder: Holder<T> | undefined = pendingPromises.get(uuid);
+  const holder: Holder<T> | undefined = pendingPromises.get(uuid);
   if (holder) {
-    holder.resolve!(resolution);
+    holder.resolve(resolution);
   }
 }
 
-export function rejectPromise<T>(uuid: string) {
-  let holder: Holder<T> | undefined = pendingPromises.get(uuid);
+export function rejectPromise<T>(uuid: string, err?: Error) {
+  const holder: Holder<T> | undefined = pendingPromises.get(uuid);
   if (holder) {
-    holder.reject!();
+    holder.reject(err);
   }
 }
 
