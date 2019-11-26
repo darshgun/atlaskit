@@ -33,7 +33,6 @@ export function addAnalytics(
 
   if (createAnalyticsEvent) {
     const { storedMarks } = tr;
-    console.log('%c construct analytics step', 'color: hotpink', payload);
     tr.step(
       new AnalyticsStep(
         createAnalyticsEvent,
@@ -61,8 +60,8 @@ export function withAnalytics(
     | ((state: EditorState) => AnalyticsEventPayload | undefined),
   channel?: string,
 ): HigherOrderCommand {
-  return command => (state, dispatch, view) => {
-    return command(
+  return command => (state, dispatch, view) =>
+    command(
       state,
       tr => {
         if (dispatch) {
@@ -78,7 +77,6 @@ export function withAnalytics(
       },
       view,
     );
-  };
 }
 
 export function ruleWithAnalytics(
