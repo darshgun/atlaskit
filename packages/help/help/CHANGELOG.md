@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.21.3
+
+### Patch Changes
+
+- [patch][da00b546cb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da00b546cb):
+
+  Bugfix - Hide DefaultContent if an article is fully visible
+
 ## 0.21.2
 
 ### Patch Changes
