@@ -7,7 +7,6 @@ import {
 } from '../../links';
 import {
   Product,
-  WorklensProductType,
   ProvisionedProducts,
   ProductKey,
   WorklensProductType,
@@ -260,8 +259,8 @@ describe('utils/links', () => {
         }
 
         if (
-          productKey != ProductKey.JIRA_CORE &&
-          productKey != ProductKey.JIRA_SOFTWARE
+          productKey !== ProductKey.JIRA_CORE &&
+          productKey !== ProductKey.JIRA_SOFTWARE
         ) {
           expectUrl = productData.href;
         }
