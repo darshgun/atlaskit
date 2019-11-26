@@ -242,7 +242,7 @@ pipelines:
             - node
 
     # This will run the security check using SourceClear acroos the repository.
-    # We need to pull a new docker image to avoid installing curl.
+    # We need to pull a new docker image to avoid installing curl - in this case node 10.
     security-check:
       - step:
           image: node:10
