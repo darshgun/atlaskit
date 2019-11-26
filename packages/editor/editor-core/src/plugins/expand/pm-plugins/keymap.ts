@@ -224,10 +224,28 @@ export function expandKeymap(): Plugin {
 
   keymaps.bindKeymapWithCommand(
     keymaps.backspace.common!,
-    (state, dispatch) => {
+    (state, dispatch, editorView) => {
       const { selection } = state;
+      if (!editorView || !selection.empty) {
+        return false;
+      }
+      const { expand, nestedExpand } = state.schema.nodes;
       const expandNode = findExpand(state);
-      if (!expandNode || !selection.empty) {
+      if (!expandNode) {
+        // @see ED-7977
+        const sel = Selection.findFrom(
+          state.doc.resolve(Math.max(selection.$from.pos - 1, 0)),
+          -1,
+        );
+        const expandBefore = findExpand(state, sel);
+        if (
+          expandBefore &&
+          (expandBefore.node.type === expand ||
+            expandBefore.node.type === nestedExpand) &&
+          !expandBefore.node.attrs.__expanded
+        ) {
+          return focusTitle(editorView, expandBefore.start);
+        }
         return false;
       }
       const textSel = Selection.findFrom(
