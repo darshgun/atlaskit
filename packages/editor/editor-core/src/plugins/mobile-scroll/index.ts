@@ -107,10 +107,7 @@ const createPlugin = (dispatch: Dispatch) =>
         }
 
         // scroll selection into view if viewport is now smaller
-        if (
-          newKeyboardHeight > keyboardHeight ||
-          newWindowHeight < windowHeight
-        ) {
+        if (newWindowHeight < windowHeight) {
           return newState.tr.scrollIntoView();
         }
       }
@@ -170,7 +167,7 @@ const calculateScrollValues = (
   },
   scrollMargin: {
     top: 5,
-    bottom: keyboardHeight - heightDiff,
+    bottom: keyboardHeight - heightDiff + MIN_TAP_SIZE_PX,
     left: 0,
     right: 0,
   },
