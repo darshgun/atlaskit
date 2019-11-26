@@ -11,15 +11,22 @@ import {
 } from '../../../analytics';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { withAnalytics as withV2Analytics } from '../../../../analytics';
-import { Action } from 'redux';
+
 import {
   ALT_TEXT_ACTION,
   MediaImageAltTextAEP,
 } from '../../../analytics/types/media-events';
+import {
+  OpenMediaAltTextMenu,
+  CloseMediaAltTextMenu,
+  UpdateAltText,
+} from './actions';
 
 const createCommandWithAnalytics = (
   actionType: ALT_TEXT_ACTION,
-  action: Action | ((state: Readonly<EditorState>) => Action | false),
+  action: (
+    state: Readonly<EditorState<any>>,
+  ) => false | OpenMediaAltTextMenu | CloseMediaAltTextMenu | UpdateAltText,
   transform?: (tr: Transaction, state: EditorState) => Transaction,
 ) => {
   return withAnalytics(state => {
