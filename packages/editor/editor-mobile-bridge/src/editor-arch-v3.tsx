@@ -18,13 +18,9 @@ import {
   initPluginListeners,
   destroyPluginListeners,
 } from './editor/plugin-subscription';
-import {
-  MediaProvider,
-  MentionProvider,
-  TaskDecisionProvider,
-  EmojiProvider,
-} from './providers';
+import { providerFactory } from './providers';
 import MobilePicker from './editor/MobileMediaPicker';
+import { ProviderFactoryProvider } from '@atlaskit/editor-common/provider-factory';
 
 // Expose WebBridge instance for use by native side
 const bridge = new WebBridgeImpl();
@@ -84,31 +80,29 @@ interface MobileEditorArchV3Props {
 
 function MobileEditorArchV3(props: MobileEditorArchV3Props): JSX.Element {
   return (
-    <FabricAnalyticsListeners client={props.analyticsClient}>
-      {/* Temporarily opting out of the default oauth2 flow for phase 1 of Smart Links */}
-      {/* See https://product-fabric.atlassian.net/browse/FM-2149 for details. */}
-      <SmartCardProvider client={cardClient} authFlow="disabled">
-        <AtlaskitThemeProvider mode={props.mode}>
-          <EditorPresetMobile
-            mentionProvider={Promise.resolve(MentionProvider)}
-            emojiProvider={Promise.resolve(EmojiProvider)}
-            taskDecisionProvider={Promise.resolve(TaskDecisionProvider())}
-            media={{
-              provider: MediaProvider,
-              picker: props.mediaPicker,
-            }}
-          >
-            <EditorContext editorActions={props.editorActions}>
-              <MobileEditor
-                onChange={props.onChange}
-                onDestroy={props.onDestroy}
-                onMount={props.onMount}
-              />
-            </EditorContext>
-          </EditorPresetMobile>
-        </AtlaskitThemeProvider>
-      </SmartCardProvider>
-    </FabricAnalyticsListeners>
+    <ProviderFactoryProvider value={providerFactory}>
+      <FabricAnalyticsListeners client={props.analyticsClient}>
+        {/* Temporarily opting out of the default oauth2 flow for phase 1 of Smart Links */}
+        {/* See https://product-fabric.atlassian.net/browse/FM-2149 for details. */}
+        <SmartCardProvider client={cardClient} authFlow="disabled">
+          <AtlaskitThemeProvider mode={props.mode}>
+            <EditorPresetMobile
+              media={{
+                picker: props.mediaPicker,
+              }}
+            >
+              <EditorContext editorActions={props.editorActions}>
+                <MobileEditor
+                  onChange={props.onChange}
+                  onDestroy={props.onDestroy}
+                  onMount={props.onMount}
+                />
+              </EditorContext>
+            </EditorPresetMobile>
+          </AtlaskitThemeProvider>
+        </SmartCardProvider>
+      </FabricAnalyticsListeners>
+    </ProviderFactoryProvider>
   );
 }
 

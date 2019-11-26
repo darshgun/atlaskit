@@ -1,4 +1,4 @@
-import ProviderFactory from '../../../providerFactory';
+import { ProviderFactory } from '../../../provider-factory';
 
 describe('ProviderFactory', () => {
   const provider = Promise.resolve('Hello');

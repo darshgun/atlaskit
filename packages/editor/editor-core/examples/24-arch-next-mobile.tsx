@@ -2,14 +2,44 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
-import { EditorActions } from '../src';
+import { EditorActions, MentionProvider } from '../src';
 import { EditorProps } from '../src/types/editor-props';
+import {
+  ProviderFactoryProvider,
+  ProviderFactory,
+} from '@atlaskit/editor-common/provider-factory';
+import { MentionDescription } from '@atlaskit/mention/types';
 
 /**
  * arch next imports
  */
 import { EditorPresetMobile } from '../src/labs/next/presets/mobile';
 import { Mobile as MobileEditor } from '../src/labs/next/mobile';
+
+function initializeProviderFactory() {
+  class MentionProviderImpl implements MentionProvider {
+    filter(_query?: string): void {}
+    recordMentionSelection(_mention: MentionDescription): void {}
+    shouldHighlightMention(_mention: MentionDescription): boolean {
+      return false;
+    }
+    isFiltering(_query: string): boolean {
+      return false;
+    }
+    subscribe(): void {}
+    unsubscribe(_key: string): void {}
+  }
+
+  // Initialize Providers
+  const providerFactory = new ProviderFactory();
+
+  providerFactory.setProvider(
+    'mentionProvider',
+    Promise.resolve(new MentionProviderImpl()),
+  );
+
+  return providerFactory;
+}
 
 export const SaveAndCancelButtons = (props: {
   editorActions?: EditorActions;
@@ -50,13 +80,17 @@ export const Content: any = styled.div`
 `;
 Content.displayName = 'Content';
 
+const providerFactory = initializeProviderFactory();
+
 export default function Example(props: EditorProps) {
   return (
     <Wrapper>
       <Content>
-        <EditorPresetMobile placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
-          <MobileEditor {...props} />
-        </EditorPresetMobile>
+        <ProviderFactoryProvider value={providerFactory}>
+          <EditorPresetMobile placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.">
+            <MobileEditor {...props} />
+          </EditorPresetMobile>
+        </ProviderFactoryProvider>
       </Content>
     </Wrapper>
   );
