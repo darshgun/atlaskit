@@ -477,7 +477,11 @@ export const getJoinableSiteLinks = (
         label,
         description: site.displayName,
         Icon,
-        href,
+        href:
+          productKey === ProductKey.JIRA_SOFTWARE ||
+          productKey === ProductKey.JIRA_CORE
+            ? site.url
+            : href,
         users: users.map(
           (user: JoinableSiteUser): JoinableSiteUserAvatarPropTypes => ({
             name: user.displayName,

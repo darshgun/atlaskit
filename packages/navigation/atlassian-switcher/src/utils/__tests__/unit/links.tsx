@@ -1,4 +1,5 @@
 import {
+  AVAILABLE_PRODUCT_DATA_MAP,
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
@@ -9,6 +10,7 @@ import {
   WorklensProductType,
   ProvisionedProducts,
   ProductKey,
+  WorklensProductType,
 } from '../../../types';
 
 import { resolveRecommendations } from '../../../providers/recommendations';
@@ -222,6 +224,52 @@ describe('utils/links', () => {
         ),
       );
       expect(result.length).toBe(3);
+    });
+
+    it('should use instance base url for jira products', () => {
+      const mockData = [ProductKey.JIRA_CORE, ProductKey.CONFLUENCE].map(
+        (productKey, index) => {
+          return Object.assign({}, mockJoinableSites.sites[index], {
+            relevance: 10,
+            products: {
+              [productKey]:
+                mockJoinableSites.sites[index].products[
+                  ProductKey.JIRA_SOFTWARE
+                ],
+            },
+          });
+        },
+      );
+
+      const result = getJoinableSiteLinks(mockData);
+
+      result.forEach((site, index) => {
+        const siteData = mockData[index];
+
+        let expectUrl = siteData.url;
+
+        const productKey = Object.keys(siteData.products)[0];
+
+        let productData =
+          AVAILABLE_PRODUCT_DATA_MAP[WorklensProductType.JIRA_SOFTWARE];
+
+        if (productKey === ProductKey.JIRA_CORE) {
+          productData =
+            AVAILABLE_PRODUCT_DATA_MAP[WorklensProductType.JIRA_BUSINESS];
+        } else if (productKey === ProductKey.CONFLUENCE) {
+          productData =
+            AVAILABLE_PRODUCT_DATA_MAP[WorklensProductType.CONFLUENCE];
+        }
+
+        if (
+          productKey != ProductKey.JIRA_CORE &&
+          productKey != ProductKey.JIRA_SOFTWARE
+        ) {
+          expectUrl = productData.href;
+        }
+
+        expect(site.href).toEqual(expectUrl);
+      });
     });
   });
 });
