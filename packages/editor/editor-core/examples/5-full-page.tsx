@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import * as React from 'react';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
 import Button, { ButtonGroup } from '@atlaskit/button';
+import ExamplesErrorBoundary from '../example-helpers/ExamplesErrorBoundary';
 
 import {
   cardProviderStaging,
@@ -197,108 +198,110 @@ export class ExampleEditorComponent extends React.Component<
 
   render() {
     return (
-      <Wrapper>
-        <Content>
-          <SmartCardProvider client={smartCardProvider}>
-            <Editor
-              analyticsHandler={analyticsHandler}
-              allowAnalyticsGASV3={true}
-              quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-              allowTextColor={true}
-              allowTables={{
-                advanced: true,
-                allowColumnSorting: true,
-              }}
-              allowBreakout={true}
-              allowJiraIssue={true}
-              allowUnsupportedContent={true}
-              allowPanel={true}
-              allowExtension={{
-                allowBreakout: true,
-              }}
-              allowRule={true}
-              allowDate={true}
-              allowLayouts={{
-                allowBreakout: true,
-                UNSAFE_addSidebarLayouts: true,
-              }}
-              allowTextAlignment={true}
-              allowIndentation={true}
-              allowDynamicTextSizing={true}
-              allowTemplatePlaceholders={{ allowInserting: true }}
-              UNSAFE_cards={{
-                provider: Promise.resolve(cardProviderStaging),
-              }}
-              UNSAFE_allowExpand={{
-                allowInsertion: true,
-                allowInteractiveExpand: true,
-              }}
-              annotationProvider={{
-                component: ExampleInlineCommentComponent,
-              }}
-              allowStatus={true}
-              allowNestedTasks
-              {...providers}
-              media={{
-                provider: mediaProvider,
-                allowMediaSingle: true,
-                allowResizing: true,
-                allowAnnotation: true,
-                allowLinking: true,
-                allowResizingInTables: true,
-                UNSAFE_allowAltTextOnImages: true,
-              }}
-              allowHelpDialog
-              placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule."
-              shouldFocus={false}
-              disabled={this.state.disabled}
-              defaultValue={
-                (localStorage &&
-                  localStorage.getItem(LOCALSTORAGE_defaultDocKey)) ||
-                undefined
-              }
-              contentComponents={
-                <WithEditorActions
-                  render={actions => (
-                    <>
-                      <BreadcrumbsMiscActions
-                        appearance={this.state.appearance}
-                        onFullWidthChange={this.setFullWidthMode}
+      <ExamplesErrorBoundary>
+        <Wrapper>
+          <Content>
+            <SmartCardProvider client={smartCardProvider}>
+              <Editor
+                analyticsHandler={analyticsHandler}
+                allowAnalyticsGASV3={true}
+                quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
+                allowTextColor={true}
+                allowTables={{
+                  advanced: true,
+                  allowColumnSorting: true,
+                }}
+                allowBreakout={true}
+                allowJiraIssue={true}
+                allowUnsupportedContent={true}
+                allowPanel={true}
+                allowExtension={{
+                  allowBreakout: true,
+                }}
+                allowRule={true}
+                allowDate={true}
+                allowLayouts={{
+                  allowBreakout: true,
+                  UNSAFE_addSidebarLayouts: true,
+                }}
+                allowTextAlignment={true}
+                allowIndentation={true}
+                allowDynamicTextSizing={true}
+                allowTemplatePlaceholders={{ allowInserting: true }}
+                UNSAFE_cards={{
+                  provider: Promise.resolve(cardProviderStaging),
+                }}
+                UNSAFE_allowExpand={{
+                  allowInsertion: true,
+                  allowInteractiveExpand: true,
+                }}
+                annotationProvider={{
+                  component: ExampleInlineCommentComponent,
+                }}
+                allowStatus={true}
+                allowNestedTasks
+                {...providers}
+                media={{
+                  provider: mediaProvider,
+                  allowMediaSingle: true,
+                  allowResizing: true,
+                  allowAnnotation: true,
+                  allowLinking: true,
+                  allowResizingInTables: true,
+                  UNSAFE_allowAltTextOnImages: true,
+                }}
+                allowHelpDialog
+                placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule."
+                shouldFocus={false}
+                disabled={this.state.disabled}
+                defaultValue={
+                  (localStorage &&
+                    localStorage.getItem(LOCALSTORAGE_defaultDocKey)) ||
+                  undefined
+                }
+                contentComponents={
+                  <WithEditorActions
+                    render={actions => (
+                      <>
+                        <BreadcrumbsMiscActions
+                          appearance={this.state.appearance}
+                          onFullWidthChange={this.setFullWidthMode}
+                        />
+                        <TitleInput
+                          value={this.state.title}
+                          onChange={this.handleTitleChange}
+                          innerRef={this.handleTitleRef}
+                          onFocus={this.handleTitleOnFocus}
+                          onBlur={this.handleTitleOnBlur}
+                          onKeyDown={(e: KeyboardEvent) => {
+                            this.onKeyPressed(e, actions);
+                          }}
+                        />
+                      </>
+                    )}
+                  />
+                }
+                primaryToolbarComponents={[
+                  <WithEditorActions
+                    key={1}
+                    render={actions => (
+                      <SaveAndCancelButtons
+                        editorActions={actions}
+                        setMode={this.props.setMode}
                       />
-                      <TitleInput
-                        value={this.state.title}
-                        onChange={this.handleTitleChange}
-                        innerRef={this.handleTitleRef}
-                        onFocus={this.handleTitleOnFocus}
-                        onBlur={this.handleTitleOnBlur}
-                        onKeyDown={(e: KeyboardEvent) => {
-                          this.onKeyPressed(e, actions);
-                        }}
-                      />
-                    </>
-                  )}
-                />
-              }
-              primaryToolbarComponents={[
-                <WithEditorActions
-                  key={1}
-                  render={actions => (
-                    <SaveAndCancelButtons
-                      editorActions={actions}
-                      setMode={this.props.setMode}
-                    />
-                  )}
-                />,
-              ]}
-              onSave={SAVE_ACTION}
-              insertMenuItems={customInsertMenuItems}
-              extensionHandlers={extensionHandlers}
-              {...this.props}
-              appearance={this.state.appearance}
-            />
-          </SmartCardProvider>
-        </Content>
-      </Wrapper>
+                    )}
+                  />,
+                ]}
+                onSave={SAVE_ACTION}
+                insertMenuItems={customInsertMenuItems}
+                extensionHandlers={extensionHandlers}
+                {...this.props}
+                appearance={this.state.appearance}
+              />
+            </SmartCardProvider>
+          </Content>
+        </Wrapper>
+      </ExamplesErrorBoundary>
     );
   }
   private onKeyPressed = (e: KeyboardEvent, actions: EditorActions) => {

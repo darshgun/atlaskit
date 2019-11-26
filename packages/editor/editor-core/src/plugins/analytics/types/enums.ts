@@ -14,6 +14,7 @@ export enum ACTION {
   DELETED = 'deleted',
   DISPATCHED_INVALID_TRANSACTION = 'dispatchedInvalidTransaction',
   EDITOR_MOUNTED = 'mounted',
+  EDITOR_CRASHED = 'unhandledErrorCaught',
   FORMATTED = 'formatted',
   INSERTED = 'inserted',
   INVOKED = 'invoked',
