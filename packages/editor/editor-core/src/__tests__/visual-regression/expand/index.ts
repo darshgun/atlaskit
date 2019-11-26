@@ -121,3 +121,34 @@ describe('Expand: Media', () => {
     await resizeMediaInPositionWithSnapshot(page, 0, 50);
   });
 });
+
+describe('Expand: allowInteractiveExpand', () => {
+  let page: Page;
+
+  beforeAll(async () => {
+    // @ts-ignore
+    page = global.page;
+  });
+
+  afterEach(async () => {
+    await snapshot(page, undefined, selectors.expand);
+  });
+
+  describe('when the flag is false', () => {
+    it('should disable the expand button', async () => {
+      await initFullPageEditorWithAdf(
+        page,
+        expandADF('default'),
+        Device.LaptopMDPI,
+        undefined,
+        {
+          UNSAFE_allowExpand: {
+            allowInteractiveExpand: false,
+          },
+        },
+      );
+      await page.waitForSelector(selectors.expand);
+      await page.click(selectors.expandToggle);
+    });
+  });
+});

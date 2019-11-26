@@ -59,7 +59,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "__expanded": false,
+        "__expanded": true,
         "title": "Expand title",
       },
       "content": Array [
@@ -514,7 +514,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "__expanded": false,
+        "__expanded": true,
         "title": "title",
       },
       "content": Array [
@@ -565,7 +565,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "__expanded": false,
+                    "__expanded": true,
                     "title": "title",
                   },
                   "content": Array [
@@ -809,7 +809,7 @@ Object {
               "content": Array [
                 Object {
                   "attrs": Object {
-                    "__expanded": false,
+                    "__expanded": true,
                     "title": "title",
                   },
                   "content": Array [
@@ -966,7 +966,7 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "__expanded": false,
+        "__expanded": true,
         "title": "title",
       },
       "content": Array [
