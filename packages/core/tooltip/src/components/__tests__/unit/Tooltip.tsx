@@ -1,8 +1,9 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import Portal from '@atlaskit/portal';
 import { layers } from '@atlaskit/theme/constants';
+import { render, fireEvent } from '@testing-library/react';
 import Tooltip from '../../Tooltip';
 import { Tooltip as StyledTooltip } from '../../../styled';
 import { hoveredPayload } from '../../utils/analytics-payloads';
@@ -12,7 +13,11 @@ declare var global: any;
 // Tooltip makes fairly heavy use of timers so we have to runAllTimers after
 // simulating events. Unfortunately, these timers cause enzyme's understanding of
 // the component tree to become stale so we call update to refresh that.
-const simulate = (wrapper: any, query: any, event: any) => {
+const simulate = <TWrapper extends ReactWrapper>(
+  wrapper: TWrapper,
+  query: any,
+  event: string,
+) => {
   wrapper.find(query).simulate(event);
   jest.runAllTimers();
   wrapper.update();
@@ -320,4 +325,110 @@ test('tooltip should not call setState on after unmount', () => {
   expect(() => {
     jest.runAllTimers();
   }).not.toThrowError();
+});
+
+describe('interacting with a mouse', () => {
+  it('should position tooltip to the left of the mouse', () => {
+    const { getByTestId } = render(
+      <Tooltip
+        testId="tooltip"
+        content="hello world"
+        position="mouse"
+        mousePosition="left"
+      >
+        <button data-testid="target">focus me</button>
+      </Tooltip>,
+    );
+
+    fireEvent.mouseOver(getByTestId('target'));
+    jest.runAllTimers();
+
+    expect(getByTestId('tooltip').getAttribute('data-placement')).toEqual(
+      'left',
+    );
+  });
+});
+
+describe('interacting with the keyboard', () => {
+  it('should show the tooltip when the target is focused', () => {
+    const { getByTestId } = render(
+      <Tooltip testId="tooltip" content="hello world">
+        <button data-testid="target">focus me</button>
+      </Tooltip>,
+    );
+
+    fireEvent.focus(getByTestId('target'));
+    jest.runAllTimers();
+
+    expect(getByTestId('tooltip').textContent).toEqual('hello world');
+  });
+
+  it('should hide the tooltip when the target loses focused', () => {
+    const { baseElement, getByTestId } = render(
+      <Tooltip testId="tooltip" content="hello world">
+        <button data-testid="target">focus me</button>
+      </Tooltip>,
+    );
+    fireEvent.focus(getByTestId('target'));
+    jest.runAllTimers();
+
+    fireEvent.blur(getByTestId('target'));
+    jest.runAllTimers();
+
+    expect(baseElement.querySelector('[data-testid="tooltip"]')).toBeNull();
+  });
+
+  it('should position tooltip to the bottom of target when interacting with keyboard and position is mouse', () => {
+    const { getByTestId } = render(
+      <Tooltip
+        testId="tooltip"
+        content="hello world"
+        position="mouse"
+        mousePosition="right"
+      >
+        <button data-testid="target">focus me</button>
+      </Tooltip>,
+    );
+
+    fireEvent.focus(getByTestId('target'));
+    jest.runAllTimers();
+
+    expect(getByTestId('tooltip').getAttribute('data-placement')).toEqual(
+      'right',
+    );
+  });
+
+  it('should position tooltip to the top of target when interacting with keyboard', () => {
+    const { getByTestId } = render(
+      <Tooltip testId="tooltip" content="hello world" position="left">
+        <button data-testid="target">focus me</button>
+      </Tooltip>,
+    );
+
+    fireEvent.focus(getByTestId('target'));
+    jest.runAllTimers();
+
+    expect(getByTestId('tooltip').getAttribute('data-placement')).toEqual(
+      'left',
+    );
+  });
+
+  it('should cleanup events when unmounting', () => {
+    jest.spyOn(global.console, 'error');
+    const { getByTestId, unmount } = render(
+      <Tooltip testId="tooltip" content="hello world" position="left">
+        <button data-testid="target">focus me</button>
+      </Tooltip>,
+    );
+    const target = getByTestId('target');
+
+    unmount();
+    fireEvent.focus(target);
+    jest.runAllTimers();
+
+    // We are testing console error logs... :)
+    // eslint-disable-next-line no-console
+    expect(console.error).not.toHaveBeenCalled();
+    global.console.error.mockRestore();
+  });
 });
