@@ -254,6 +254,27 @@ BrowserTestCase(
 );
 
 BrowserTestCase(
+  'editor: inserting link fires analytics events via the bridge',
+  { skip },
+  async (client: any, testName: string) => {
+    const browser = new Page(client);
+    await browser.goto(editor.path);
+    await browser.waitForSelector(editor.placeholder);
+    await callNativeBridge(
+      browser,
+      'onLinkUpdate',
+      'test-link-title',
+      'https://test.link.url',
+      INPUT_METHOD.TOOLBAR,
+    );
+
+    const trackEvents = await getBridgeTrackAnalyticsEvents(browser);
+
+    expect(trackEvents).toMatchCustomSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
   'editor: inserting block quote fires an analytics event via the bridge',
   { skip },
   async (client: any, testName: string) => {

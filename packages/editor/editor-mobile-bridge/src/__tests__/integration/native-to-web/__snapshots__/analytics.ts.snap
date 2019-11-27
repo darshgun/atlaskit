@@ -146,6 +146,31 @@ Array [
 ]
 `;
 
+exports[`editor: inserting link fires analytics events via the bridge 1`] = `
+Array [
+  Object {
+    "action": "inserted",
+    "actionSubject": "document",
+    "actionSubjectId": "link",
+    "attributes": Object {
+      "appearance": "mobile",
+      "componentName": "editorCore",
+      "inputMethod": "toolbar",
+      "packageName": "@atlaskit/editor-core",
+      "packageVersion": "999.9.9",
+    },
+    "eventType": "track",
+    "nonPrivacySafeAttributes": Object {
+      "linkDomain": "test.link.url",
+    },
+    "source": "unknown",
+    "tags": Array [
+      "fabricEditor",
+    ],
+  },
+]
+`;
+
 exports[`editor: inserting ordered list fires an analytics event via the bridge 1`] = `
 Array [
   Object {

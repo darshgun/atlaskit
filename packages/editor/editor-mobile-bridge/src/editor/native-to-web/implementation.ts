@@ -27,7 +27,7 @@ import {
   changeColor,
   TypeAheadItem,
   selectItem as selectTypeAheadItem,
-  insertLink,
+  insertLinkWithAnalytics,
   isTextAtPos,
   isLinkAtPos,
   setLinkHref,
@@ -37,6 +37,7 @@ import {
   INPUT_METHOD,
   BlockTypeInputMethod,
   InsertBlockInputMethodToolbar,
+  LinkInputMethod,
   ListInputMethod,
   TextFormattingInputMethodBasic,
   TaskDecisionInputMethod,
@@ -274,7 +275,11 @@ export default class WebBridgeImpl extends WebBridge
     }
   }
 
-  onLinkUpdate(text: string, url: string) {
+  onLinkUpdate(
+    text: string,
+    url: string,
+    inputMethod: LinkInputMethod = INPUT_METHOD.TOOLBAR,
+  ) {
     if (!this.editorView) {
       return;
     }
@@ -283,7 +288,13 @@ export default class WebBridgeImpl extends WebBridge
     const { from, to } = state.selection;
 
     if (!isTextAtPos(from)(state)) {
-      insertLink(from, to, url, text)(state, dispatch);
+      insertLinkWithAnalytics(
+        inputMethod,
+        from,
+        to,
+        url,
+        text,
+      )(state, dispatch);
       return;
     }
 

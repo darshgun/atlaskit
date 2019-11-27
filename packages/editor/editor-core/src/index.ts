@@ -81,9 +81,7 @@ export {
   InputMethod as BlockTypeInputMethod,
 } from './plugins/block-type/commands';
 export { createTable } from './plugins/table/commands';
-export {
-  insertTaskDecisionWithAnalytics,
-} from './plugins/tasks-and-decisions/commands';
+export { insertTaskDecisionWithAnalytics } from './plugins/tasks-and-decisions/commands';
 export { TaskDecisionInputMethod } from './plugins/tasks-and-decisions/types';
 export { EventDispatcher } from './event-dispatcher';
 export {
@@ -100,12 +98,13 @@ export { typeAheadPluginKey, TypeAheadPluginState } from './plugins/type-ahead';
 export { TypeAheadItem } from './plugins/type-ahead/types';
 export { selectItem } from './plugins/type-ahead/commands/select-item';
 export {
-  insertLink,
+  insertLinkWithAnalytics,
   isTextAtPos,
   isLinkAtPos,
   setLinkHref,
   setLinkText,
 } from './plugins/hyperlink/commands';
+export { LinkInputType as LinkInputMethod } from './plugins/hyperlink/ui/HyperlinkAddToolbar/HyperlinkAddToolbar';
 export { historyPluginKey, HistoryPluginState } from './plugins/history';
 export { setKeyboardHeight } from './plugins/mobile-scroll/commands';
 export {
@@ -116,9 +115,7 @@ export {
   EVENT_TYPE,
   AnalyticsEventPayload,
 } from './plugins/analytics';
-export {
-  TOOLBAR_MENU_TYPE as InsertBlockInputMethodToolbar,
-} from './plugins/insert-block/ui/ToolbarInsertBlock';
+export { TOOLBAR_MENU_TYPE as InsertBlockInputMethodToolbar } from './plugins/insert-block/ui/ToolbarInsertBlock';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';
