@@ -22,10 +22,12 @@ import {
 import { filterChildrenBetween } from '../../../utils';
 import { PANEL_TYPE } from '../../analytics';
 
-type InputMethod =
+export type InputMethod =
   | INPUT_METHOD.TOOLBAR
+  | INPUT_METHOD.INSERT_MENU
   | INPUT_METHOD.SHORTCUT
-  | INPUT_METHOD.FORMATTING;
+  | INPUT_METHOD.FORMATTING
+  | INPUT_METHOD.KEYBOARD;
 
 export function setBlockType(name: string): Command {
   return (state, dispatch) => {
@@ -188,10 +190,7 @@ export function insertBlockType(name: string): Command {
 
 export const insertBlockTypesWithAnalytics = (
   name: string,
-  inputMethod:
-    | INPUT_METHOD.TOOLBAR
-    | INPUT_METHOD.INSERT_MENU
-    | INPUT_METHOD.KEYBOARD,
+  inputMethod: InputMethod,
 ) => {
   switch (name) {
     case BLOCK_QUOTE.name:

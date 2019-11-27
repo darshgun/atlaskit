@@ -60,23 +60,31 @@ export {
   outdentList,
   toggleOrderedList,
   toggleBulletList,
+  InputMethod as ListInputMethod,
 } from './plugins/lists/commands';
 export {
-  toggleSuperscript,
-  toggleSubscript,
-  toggleStrike,
-  toggleCode,
-  toggleUnderline,
-  toggleEm,
-  toggleStrong,
+  InputMethodToolbar as TextFormattingInputMethodToolbar,
+  InputMethodBasic as TextFormattingInputMethodBasic,
+  toggleSuperscriptWithAnalytics,
+  toggleSubscriptWithAnalytics,
+  toggleStrikeWithAnalytics,
+  toggleCodeWithAnalytics,
+  toggleUnderlineWithAnalytics,
+  toggleEmWithAnalytics,
+  toggleStrongWithAnalytics,
 } from './plugins/text-formatting/commands/text-formatting';
 export {
   insertBlockType,
   insertBlockTypesWithAnalytics,
   setBlockType,
+  setBlockTypeWithAnalytics,
+  InputMethod as BlockTypeInputMethod,
 } from './plugins/block-type/commands';
 export { createTable } from './plugins/table/commands';
-export { insertTaskDecision } from './plugins/tasks-and-decisions/commands';
+export {
+  insertTaskDecisionWithAnalytics,
+} from './plugins/tasks-and-decisions/commands';
+export { TaskDecisionInputMethod } from './plugins/tasks-and-decisions/types';
 export { EventDispatcher } from './event-dispatcher';
 export {
   pluginKey as statusPluginKey,
@@ -86,7 +94,7 @@ export {
 export {
   commitStatusPicker,
   setStatusPickerAt,
-  updateStatus,
+  updateStatusWithAnalytics,
 } from './plugins/status/actions';
 export { typeAheadPluginKey, TypeAheadPluginState } from './plugins/type-ahead';
 export { TypeAheadItem } from './plugins/type-ahead/types';
@@ -106,7 +114,11 @@ export {
   ACTION_SUBJECT,
   ACTION_SUBJECT_ID,
   EVENT_TYPE,
+  AnalyticsEventPayload,
 } from './plugins/analytics';
+export {
+  TOOLBAR_MENU_TYPE as InsertBlockInputMethodToolbar,
+} from './plugins/insert-block/ui/ToolbarInsertBlock';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';
