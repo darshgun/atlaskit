@@ -46,5 +46,6 @@ export type GetAccountIdPayload = string;
 
 export type GetResolvedLinkPayload = ResolveResponse;
 
-// TODO: Check which shape this should have
+// RPC not implemented on native side pending
+// upstream work for SmartLinks v2
 export type GetLinkResolvePayload = unknown;
