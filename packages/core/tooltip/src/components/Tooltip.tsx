@@ -151,25 +151,41 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
   };
 
-  handleShowTooltip = (e: React.MouseEvent | React.FocusEvent) => {
+  handleMouseOver = (e: React.MouseEvent) => {
     if (e.target === this.wrapperRef) {
       return;
     }
 
-    // If clientX exists we are interacting with the mouse.
-    // Else we are interacting with the keyboard.
-    // We use this later when rendering so we turn off the mouse positioning when interacting with keyboard.
-    this.userInteraction = 'clientX' in e ? 'mouse' : 'keyboard';
+    this.userInteraction = 'mouse';
 
     // In the case where a tooltip is newly rendered but immediately becomes hovered,
     // we need to set the coordinates in the mouseOver event.
     if (!this.fakeMouseElement) {
       this.fakeMouseElement = getMousePosition({
-        left: 'clientX' in e ? e.clientX : 0,
-        top: 'clientY' in e ? e.clientY : 0,
+        left: e.clientX,
+        top: e.clientY,
       });
     }
 
+    this.handleShowTooltip();
+  };
+
+  handleFocus = () => {
+    this.userInteraction = 'keyboard';
+
+    // We need to fake the mouse dimensions even on focus because the code path currently assumes
+    // fake mouse element needs to exist before showing the tooltip.
+    if (!this.fakeMouseElement) {
+      this.fakeMouseElement = getMousePosition({
+        left: 0,
+        top: 0,
+      });
+    }
+
+    this.handleShowTooltip();
+  };
+
+  handleShowTooltip = () => {
     this.cancelPendingSetState();
 
     if (Boolean(this.props.content) && !this.state.isVisible) {
@@ -243,11 +259,11 @@ class Tooltip extends React.Component<TooltipProps, TooltipState> {
         {TargetContainer && (
           <TargetContainer
             onClick={this.handleMouseClick}
-            onMouseOver={this.handleShowTooltip}
+            onMouseOver={this.handleMouseOver}
             onMouseOut={this.handleHideTooltip}
             onMouseMove={this.handleMouseMove}
             onMouseDown={this.handleMouseDown}
-            onFocus={this.handleShowTooltip}
+            onFocus={this.handleFocus}
             onBlur={this.handleHideTooltip}
             ref={(wrapperRef: HTMLElement | null) => {
               this.wrapperRef = wrapperRef;
