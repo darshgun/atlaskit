@@ -4,6 +4,7 @@ import {
   B400,
   DN10A,
   N0,
+  N20,
   N40,
   N200,
   N500,
@@ -108,7 +109,7 @@ const defaultTheme: { mode: Mode } = {
         borderColor: B200,
       },
     },
-    skeleton: { backgroundColor: DN10A, opacity: 0.15 },
+    skeleton: { backgroundColor: N20, opacity: 1 },
   },
 };
 

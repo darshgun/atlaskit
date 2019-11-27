@@ -7,8 +7,10 @@ import {
   N20,
   N30,
   subtleHeading,
+  subtleText,
 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
+import { Width } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -18,6 +20,9 @@ const buttonOverrides = {
   outline: 'none',
 };
 const anchorOverrides = {
+  color: 'currentColor',
+};
+const customItemOverrides = {
   color: 'currentColor',
 };
 
@@ -35,7 +40,10 @@ const selectedStyles = {
   textDecoration: 'none',
 };
 
-const baseItemCSS = (isDisabled: boolean, isSelected: boolean): CSSObject => ({
+const baseItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
@@ -59,13 +67,13 @@ const baseItemCSS = (isDisabled: boolean, isSelected: boolean): CSSObject => ({
   '::-moz-focus-inner': {
     border: 0,
   },
-  ...(isDisabled && disabledStyles),
   ...(isSelected && selectedStyles),
+  ...(isDisabled && disabledStyles),
 });
 
 export const itemCSS = (
-  isDisabled: boolean,
-  isSelected: boolean,
+  isDisabled?: boolean,
+  isSelected?: boolean,
 ): CSSObject => ({
   ...buttonOverrides,
   ...baseItemCSS(isDisabled, isSelected),
@@ -101,7 +109,7 @@ export const elemAfterCSS = {
 };
 export const descriptionCSS = {
   textAlign: 'left',
-  color: '#343434',
+  color: subtleText(),
   fontSize: fontSizeSmall(),
 } as CSSObject;
 export const contentCSSWrapper = {
@@ -111,10 +119,18 @@ export const contentCSSWrapper = {
 
 /* Item variations */
 export const linkItemCSS = (
-  isDisabled: boolean,
-  isSelected: boolean,
+  isDisabled?: boolean,
+  isSelected?: boolean,
 ): CSSObject => ({
   ...anchorOverrides,
+  ...baseItemCSS(isDisabled, isSelected),
+});
+
+export const customItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
+  ...customItemOverrides,
   ...baseItemCSS(isDisabled, isSelected),
 });
 
@@ -127,24 +143,24 @@ export const itemHeadingCSS = {
   marginTop: gridSize,
 } as CSSObject;
 
-export const skeletonHeadingItemCSS = {
+export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   ...itemHeadingCSS,
   padding: gridSize / 2,
   '&::after': {
     backgroundColor: N20,
     height: gridSize * 1.75,
     margin: `${gridSize / 2}px 0`,
-    width: `calc(20% - ${gridSize / 2}px)`,
+    width: width || `calc(20% - ${gridSize / 2}px)`,
     borderRadius: 3,
     display: 'block',
     content: '""',
   },
-} as CSSObject;
+});
 
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
-  width?: string | number,
+  width?: Width,
 ): CSSObject => ({
   ...itemCSS(false, false),
   pointerEvents: 'none',
@@ -153,22 +169,22 @@ export const itemSkeletonCSS = (
 
   // Stagger alternate skeleton items if no width is passed
   ...(!width && {
-    '&:nth-child(1n)::after': {
+    '&:nth-of-type(1n)::after': {
       flexBasis: '70%',
     },
-    '&:nth-child(2n)::after': {
+    '&:nth-of-type(2n)::after': {
       flexBasis: '50%',
     },
-    '&:nth-child(3n)::after': {
+    '&:nth-of-type(3n)::after': {
       flexBasis: '60%',
     },
-    '&:nth-child(4n)::after': {
+    '&:nth-of-type(4n)::after': {
       flexBasis: '90%',
     },
-    '&:nth-child(5n)::after': {
+    '&:nth-of-type(5n)::after': {
       flexBasis: '35%',
     },
-    '&:nth-child(6n)::after': {
+    '&:nth-of-type(6n)::after': {
       flexBasis: '77%',
     },
   }),
@@ -191,7 +207,7 @@ export const itemSkeletonCSS = (
     backgroundColor: N20,
     height: gridSize * 1.75,
     borderRadius: 3,
-    flexBasis: '100%' || width,
+    flexBasis: width || '100%',
   },
 });
 
