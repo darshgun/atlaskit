@@ -71,13 +71,9 @@ describe('Mobile Scroll Plugin', () => {
     it('updates scroll values', () => {
       const { scrollMargin, scrollThreshold } = plugin.props;
       expect([scrollMargin, scrollThreshold]).toEqual([
-        { ...defaultScrollMargin, bottom: 350 },
+        { ...defaultScrollMargin, bottom: 394 },
         { ...defaultScrollThreshold, bottom: 394 },
       ]);
-    });
-
-    it('scrolls selection into view', () => {
-      expect(getAppendedTr().scrolledIntoView).toEqual(true);
     });
 
     describe('and window.innerHeight changes', () => {
@@ -90,7 +86,7 @@ describe('Mobile Scroll Plugin', () => {
       it('updates scroll values', () => {
         const { scrollMargin, scrollThreshold } = plugin.props;
         expect([scrollMargin, scrollThreshold]).toEqual([
-          { ...defaultScrollMargin, bottom: 550 },
+          { ...defaultScrollMargin, bottom: 594 },
           { ...defaultScrollThreshold, bottom: 594 },
         ]);
       });
@@ -112,7 +108,7 @@ describe('Mobile Scroll Plugin', () => {
     it('updates scroll values', () => {
       const { scrollMargin, scrollThreshold } = plugin.props;
       expect([scrollMargin, scrollThreshold]).toEqual([
-        { ...defaultScrollMargin, bottom: 200 },
+        { ...defaultScrollMargin, bottom: 244 },
         { ...defaultScrollThreshold, bottom: 244 },
       ]);
     });
@@ -132,13 +128,9 @@ describe('Mobile Scroll Plugin', () => {
       it('updates scroll values', () => {
         const { scrollMargin, scrollThreshold } = plugin.props;
         expect([scrollMargin, scrollThreshold]).toEqual([
-          { ...defaultScrollMargin, bottom: 550 },
+          { ...defaultScrollMargin, bottom: 594 },
           { ...defaultScrollThreshold, bottom: 594 },
         ]);
-      });
-
-      it('scrolls selection into view', () => {
-        expect(getAppendedTr().scrolledIntoView).toEqual(true);
       });
     });
   });
