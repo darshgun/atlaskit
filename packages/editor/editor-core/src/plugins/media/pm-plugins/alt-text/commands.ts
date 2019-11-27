@@ -37,12 +37,7 @@ const createCommandWithAnalytics = (
       eventType: EVENT_TYPE.UI,
     };
     return altTextAEP;
-  })(
-    withV2Analytics(
-      `atlassian.editor.format.media.altText.${actionType}`,
-      createCommand(action, transform),
-    ),
-  );
+  })(createCommand(action, transform));
 };
 
 export const closeMediaAltTextMenu = createCommandWithAnalytics(
