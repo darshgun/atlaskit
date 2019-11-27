@@ -11,13 +11,11 @@ import { TypeAheadHandler } from '../plugins/type-ahead/types';
 import { FloatingToolbarHandler } from '../plugins/floating-toolbar/types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
 import { NodeConfig, MarkConfig, EditorConfig } from './editor-config';
-import { EditorProps, EditorAppearance } from './editor-props';
+import { EditorAppearance } from './editor-props';
 import { DispatchAnalyticsEvent } from '../plugins/analytics';
 
 export type PMPluginFactoryParams = {
   schema: Schema;
-  props: EditorProps;
-  prevProps?: EditorProps;
   dispatch: Dispatch;
   eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
@@ -93,12 +91,12 @@ export interface EditorPlugin {
   /**
    * List of Nodes to add to the schema.
    */
-  nodes?: (editorProps: EditorProps) => NodeConfig[];
+  nodes?: () => NodeConfig[];
 
   /**
    * List of Marks to add to the schema.
    */
-  marks?: (editorProps: EditorProps) => MarkConfig[];
+  marks?: () => MarkConfig[];
 
   /**
    * Optional UI-component that lives inside the actual content-area (like mention-picker, floating toolbar for links, etc.)

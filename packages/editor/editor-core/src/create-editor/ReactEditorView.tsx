@@ -238,7 +238,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
         this.props.editorProps,
         props.createAnalyticsEvent,
       ),
-      props.editorProps,
     );
 
     const state = this.editorState;
@@ -247,8 +246,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
       dispatch: this.dispatch,
       errorReporter: this.errorReporter,
       editorConfig: this.config,
-      props: props.editorProps,
-      prevProps: this.props.editorProps,
       eventDispatcher: this.eventDispatcher,
       providerFactory: props.providerFactory,
       portalProviderAPI: props.portalProviderAPI,
@@ -356,7 +353,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
         undefined,
         options.props.createAnalyticsEvent,
       ),
-      options.props.editorProps,
     );
     const schema = createSchema(this.config);
 
@@ -370,7 +366,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
       dispatch: this.dispatch,
       errorReporter: this.errorReporter,
       editorConfig: this.config,
-      props: options.props.editorProps,
       eventDispatcher: this.eventDispatcher,
       providerFactory: options.props.providerFactory,
       portalProviderAPI: this.props.portalProviderAPI,

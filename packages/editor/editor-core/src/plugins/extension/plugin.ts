@@ -13,7 +13,6 @@ import ExtensionNodeView from './nodeviews/extension';
 import { findDomRefAtPos, findSelectedNodeOfType } from 'prosemirror-utils';
 import { closestElement } from '../../utils';
 import { getExtensionNode } from './utils';
-import { ExtensionConfig } from '../../types';
 
 export const pluginKey = new PluginKey('extensionPlugin');
 
@@ -32,19 +31,12 @@ export default (
   providerFactory: ProviderFactory,
   extensionHandlers: ExtensionHandlers,
   portalProviderAPI: PortalProviderAPI,
-  allowExtension?: ExtensionConfig | boolean,
+  stickToolbarToBottom?: boolean,
+  allowBreakout?: boolean,
 ) =>
   new Plugin({
     state: {
       init: () => {
-        let stickToolbarToBottom = true;
-        let allowBreakout = false;
-
-        if (typeof allowExtension === 'object') {
-          stickToolbarToBottom = !!allowExtension.stickToolbarToBottom;
-          allowBreakout = !!allowExtension.allowBreakout;
-        }
-
         return {
           element: null,
           layout: 'default',
