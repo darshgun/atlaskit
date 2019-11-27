@@ -109,6 +109,7 @@ export { typeAheadPluginKey, TypeAheadPluginState } from './plugins/type-ahead';
 export { TypeAheadItem } from './plugins/type-ahead/types';
 export { selectItem } from './plugins/type-ahead/commands/select-item';
 export {
+  insertLink,
   insertLinkWithAnalytics,
   isTextAtPos,
   isLinkAtPos,
