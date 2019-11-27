@@ -251,7 +251,9 @@ describe('utils/links', () => {
         const productKey = Object.keys(siteData.users)[0];
 
         let productData =
-          AVAILABLE_PRODUCT_DATA_MAP[TO_WORKLENS_PRODUCT_KEY[productKey]];
+          AVAILABLE_PRODUCT_DATA_MAP[
+            TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey]
+          ];
 
         if (productKey === ProductKey.CONFLUENCE) {
           expectUrl = siteData.url + productData.href;
