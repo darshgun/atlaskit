@@ -65,12 +65,19 @@ export {
 export {
   InputMethodToolbar as TextFormattingInputMethodToolbar,
   InputMethodBasic as TextFormattingInputMethodBasic,
+  toggleSuperscript,
   toggleSuperscriptWithAnalytics,
+  toggleSubscript,
   toggleSubscriptWithAnalytics,
+  toggleStrike,
   toggleStrikeWithAnalytics,
+  toggleCode,
   toggleCodeWithAnalytics,
+  toggleUnderline,
   toggleUnderlineWithAnalytics,
+  toggleEm,
   toggleEmWithAnalytics,
+  toggleStrong,
   toggleStrongWithAnalytics,
 } from './plugins/text-formatting/commands/text-formatting';
 export {
