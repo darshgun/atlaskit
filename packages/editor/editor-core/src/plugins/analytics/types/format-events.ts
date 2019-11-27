@@ -46,7 +46,10 @@ type FormatBasicAEP = FormatAEP<
 type FormatSuperSubAEP = FormatAEP<
   ACTION_SUBJECT_ID.FORMAT_SUPER | ACTION_SUBJECT_ID.FORMAT_SUB,
   {
-    inputMethod: INPUT_METHOD.TOOLBAR;
+    inputMethod:
+      | INPUT_METHOD.TOOLBAR
+      | INPUT_METHOD.SHORTCUT
+      | INPUT_METHOD.FORMATTING;
   }
 >;
 
@@ -71,8 +74,10 @@ type FormatHeadingAEP = FormatAEP<
   {
     inputMethod:
       | INPUT_METHOD.TOOLBAR
-      | INPUT_METHOD.SHORTCUT
+      | INPUT_METHOD.INSERT_MENU
+      | INPUT_METHOD.KEYBOARD
       | INPUT_METHOD.FORMATTING
+      | INPUT_METHOD.SHORTCUT
       | INPUT_METHOD.QUICK_INSERT;
     newHeadingLevel: HeadingLevelsAndNormalText;
     previousHeadingLevel?: HeadingLevelsAndNormalText;
@@ -87,6 +92,7 @@ type FormatBlockQuoteAEP = FormatAEP<
       | INPUT_METHOD.INSERT_MENU
       | INPUT_METHOD.KEYBOARD
       | INPUT_METHOD.FORMATTING
+      | INPUT_METHOD.SHORTCUT
       | INPUT_METHOD.QUICK_INSERT;
   }
 >;
