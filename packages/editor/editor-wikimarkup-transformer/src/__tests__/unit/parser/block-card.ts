@@ -9,6 +9,12 @@ describe('JIRA wiki markup - Block Card', () => {
       line 2 `,
     ],
     [
+      'should create Block Card between lines of text',
+      `line 1 
+      [http://...|http://...|block-link]
+      line 2 `,
+    ],
+    [
       'should create Block Card with nothing else in the document',
       `[http://...|http://...|smart-card]`,
     ],
