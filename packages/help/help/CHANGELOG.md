@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.21.4
+
+### Patch Changes
+
+- [patch][86198c3e5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86198c3e5d):
+
+  Bugfix - Fix voice-over accessibility issues
+
 ## 0.21.3
 
 ### Patch Changes
