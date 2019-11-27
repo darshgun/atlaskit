@@ -236,7 +236,7 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 
 const primaryItems = [
   <PrimaryButton
-    href="http://www.google.com"
+    href="http://www.atlassian.com"
     onClick={e => {
       if (e.ctrlKey || e.metaKey) {
         return;
