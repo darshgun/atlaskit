@@ -35,10 +35,15 @@ import {
   clearEditorContent,
   setKeyboardHeight,
   INPUT_METHOD,
+  BlockTypeInputMethod,
+  InsertBlockInputMethodToolbar,
+  ListInputMethod,
+  TextFormattingInputMethodBasic,
+  TaskDecisionInputMethod,
 } from '@atlaskit/editor-core';
 import { EditorView } from 'prosemirror-view';
 import { EditorViewWithComposition } from '../../types';
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import {
   undo as pmHistoryUndo,
   redo as pmHistoryRedo,
@@ -64,60 +69,77 @@ export default class WebBridgeImpl extends WebBridge
   mediaPicker: CustomMediaPicker | undefined;
   mediaMap: Map<string, Function> = new Map();
 
-  onBoldClicked() {
+  onBoldClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleStrongWithAnalytics()(
+      toggleStrongWithAnalytics({ inputMethod })(
         this.editorView.state,
         this.editorView.dispatch,
       );
     }
   }
 
-  onItalicClicked() {
+  onItalicClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleEmWithAnalytics()(this.editorView.state, this.editorView.dispatch);
-    }
-  }
-
-  onUnderlineClicked() {
-    if (this.textFormatBridgeState && this.editorView) {
-      toggleUnderlineWithAnalytics()(
+      toggleEmWithAnalytics({ inputMethod })(
         this.editorView.state,
         this.editorView.dispatch,
       );
     }
   }
 
-  onCodeClicked() {
+  onUnderlineClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleCodeWithAnalytics()(
+      toggleUnderlineWithAnalytics({ inputMethod })(
         this.editorView.state,
         this.editorView.dispatch,
       );
     }
   }
 
-  onStrikeClicked() {
+  onCodeClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleStrikeWithAnalytics()(
+      toggleCodeWithAnalytics({ inputMethod })(
         this.editorView.state,
         this.editorView.dispatch,
       );
     }
   }
 
-  onSuperClicked() {
+  onStrikeClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleSuperscriptWithAnalytics()(
+      toggleStrikeWithAnalytics({ inputMethod })(
         this.editorView.state,
         this.editorView.dispatch,
       );
     }
   }
 
-  onSubClicked() {
+  onSuperClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleSubscriptWithAnalytics()(
+      toggleSuperscriptWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
+    }
+  }
+
+  onSubClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
+    if (this.textFormatBridgeState && this.editorView) {
+      toggleSubscriptWithAnalytics({ inputMethod })(
         this.editorView.state,
         this.editorView.dispatch,
       );
@@ -130,9 +152,14 @@ export default class WebBridgeImpl extends WebBridge
 
   onMentionPickerDismissed() {}
 
-  onStatusUpdate(text: string, color: StatusColor, uuid: string) {
+  onStatusUpdate(
+    text: string,
+    color: StatusColor,
+    uuid: string,
+    inputMethod: InsertBlockInputMethodToolbar = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.statusBridgeState && this.editorView) {
-      updateStatusWithAnalytics({
+      updateStatusWithAnalytics(inputMethod, {
         text,
         color,
         localId: uuid,
@@ -214,33 +241,36 @@ export default class WebBridgeImpl extends WebBridge
     rejectPromise(uuid, err);
   }
 
-  onBlockSelected(blockType: string) {
+  onBlockSelected(
+    blockType: string,
+    inputMethod: BlockTypeInputMethod = INPUT_METHOD.INSERT_MENU,
+  ) {
     if (this.editorView) {
       const { state, dispatch } = this.editorView;
-      setBlockTypeWithAnalytics(blockType)(state, dispatch);
+      setBlockTypeWithAnalytics(blockType, inputMethod)(state, dispatch);
     }
   }
 
-  onOrderedListSelected() {
+  onOrderedListSelected(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
     if (this.listBridgeState && this.editorView) {
-      toggleOrderedList(this.editorView);
+      toggleOrderedList(this.editorView, inputMethod);
     }
   }
-  onBulletListSelected() {
+  onBulletListSelected(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
     if (this.listBridgeState && this.editorView) {
-      toggleBulletList(this.editorView);
-    }
-  }
-
-  onIndentList() {
-    if (this.listBridgeState && this.editorView) {
-      indentList()(this.editorView.state, this.editorView.dispatch);
+      toggleBulletList(this.editorView, inputMethod);
     }
   }
 
-  onOutdentList() {
+  onIndentList(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
     if (this.listBridgeState && this.editorView) {
-      outdentList()(this.editorView.state, this.editorView.dispatch);
+      indentList(inputMethod)(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
+  onOutdentList(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
+    if (this.listBridgeState && this.editorView) {
+      outdentList(inputMethod)(this.editorView.state, this.editorView.dispatch);
     }
   }
 
@@ -286,7 +316,12 @@ export default class WebBridgeImpl extends WebBridge
       .forEach(cmd => cmd(this.editorView!.state, dispatch));
   }
 
-  insertBlockType(type: string) {
+  insertBlockType(
+    type: string,
+    inputMethod: BlockTypeInputMethod = INPUT_METHOD.INSERT_MENU,
+    listLocalId?: string,
+    itemLocalId?: string,
+  ) {
     if (!this.editorView) {
       return;
     }
@@ -295,28 +330,45 @@ export default class WebBridgeImpl extends WebBridge
 
     switch (type) {
       case 'blockquote':
-        insertBlockTypesWithAnalytics('blockquote', INPUT_METHOD.INSERT_MENU)(
+        insertBlockTypesWithAnalytics('blockquote', inputMethod)(
           state,
           dispatch,
         );
         return;
       case 'codeblock':
-        insertBlockTypesWithAnalytics('codeblock', INPUT_METHOD.INSERT_MENU)(
+        insertBlockTypesWithAnalytics('codeblock', inputMethod)(
           state,
           dispatch,
         );
         return;
       case 'panel':
-        insertBlockTypesWithAnalytics('panel', INPUT_METHOD.INSERT_MENU)(
-          state,
-          dispatch,
-        );
+        insertBlockTypesWithAnalytics('panel', inputMethod)(state, dispatch);
         return;
       case 'action':
-        insertTaskDecisionWithAnalytics(this.editorView, 'taskList');
+        insertTaskDecisionWithAnalytics(
+          state,
+          'taskList',
+          inputMethod as TaskDecisionInputMethod,
+          ({ tr }: { tr: Transaction }) => {
+            return tr;
+          },
+          undefined,
+          listLocalId,
+          itemLocalId,
+        );
         return;
       case 'decision':
-        insertTaskDecisionWithAnalytics(this.editorView, 'decisionList');
+        insertTaskDecisionWithAnalytics(
+          state,
+          'decisionList',
+          inputMethod as TaskDecisionInputMethod,
+          ({ tr }: { tr: Transaction }) => {
+            return tr;
+          },
+          undefined,
+          listLocalId,
+          itemLocalId,
+        );
         return;
       case 'table':
         createTable(state, dispatch);
