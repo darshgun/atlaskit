@@ -38,7 +38,7 @@ const isLayoutSupported = (
 ) => {
   const {
     schema: {
-      nodes: { bodiedExtension, extension, layoutSection, table },
+      nodes: { bodiedExtension, extension, layoutSection, table, expand },
     },
     selection,
   } = state;
@@ -50,7 +50,9 @@ const isLayoutSupported = (
   return !!(
     (selectedExtNode.node.type === bodiedExtension ||
       (selectedExtNode.node.type === extension &&
-        !hasParentNodeOfType([bodiedExtension, table])(selection))) &&
+        !hasParentNodeOfType([bodiedExtension, table, expand].filter(Boolean))(
+          selection,
+        ))) &&
     !hasParentNodeOfType([layoutSection])(selection)
   );
 };

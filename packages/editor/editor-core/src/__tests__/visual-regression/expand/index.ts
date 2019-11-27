@@ -7,6 +7,7 @@ import {
   wrappingMediaADF,
   mediaInExpandADF,
   mediaInNestedExpandADF,
+  extensionInsideExpandADF,
 } from './__fixtures__/expand-adf';
 import { selectors } from '../../__helpers/page-objects/_expand';
 import { Page } from '../../__helpers/page-objects/_types';
@@ -16,6 +17,10 @@ import {
   tableSelectors,
 } from '../../__helpers/page-objects/_table';
 import { resizeMediaInPositionWithSnapshot } from '../../__helpers/page-objects/_media';
+import {
+  clickOnExtension,
+  waitForExtensionToolbar,
+} from '../../__helpers/page-objects/_extensions';
 
 const hideTooltip = async (page: Page) => {
   // Hide the tooltip
@@ -83,6 +88,7 @@ describe('Expand: full-page', () => {
       nestedExpandOverflowInTable,
       Device.LaptopMDPI,
     );
+    await page.waitForSelector(selectors.nestedExpand);
   });
 });
 
@@ -119,6 +125,31 @@ describe('Expand: Media', () => {
     await page.waitForSelector(selectors.nestedExpand);
     await page.click('.media-single .img-wrapper');
     await resizeMediaInPositionWithSnapshot(page, 0, 50);
+  });
+});
+
+describe('Expand: Extensions', () => {
+  let page: Page;
+
+  beforeAll(async () => {
+    // @ts-ignore
+    page = global.page;
+  });
+
+  it('should hide layout options for extensions inside expands', async () => {
+    await initFullPageEditorWithAdf(
+      page,
+      extensionInsideExpandADF,
+      Device.LaptopMDPI,
+    );
+    await page.waitForSelector(selectors.expand);
+    await clickOnExtension(
+      page,
+      'com.atlassian.confluence.macro.core',
+      'block-eh',
+    );
+    await waitForExtensionToolbar(page);
+    await snapshot(page);
   });
 });
 

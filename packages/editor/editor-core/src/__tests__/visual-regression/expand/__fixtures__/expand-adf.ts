@@ -742,3 +742,40 @@ export const mediaInNestedExpandADF = {
     },
   ],
 };
+
+export const extensionInsideExpandADF = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'expand',
+      attrs: {
+        title: '',
+      },
+      content: [
+        {
+          type: 'extension',
+          attrs: {
+            extensionType: 'com.atlassian.confluence.macro.core',
+            extensionKey: 'block-eh',
+            parameters: {
+              macroParams: {},
+              macroMetadata: {
+                placeholder: [
+                  {
+                    data: {
+                      url: '',
+                    },
+                    type: 'icon',
+                  },
+                ],
+              },
+            },
+            text: 'Block extension demo',
+            layout: 'default',
+          },
+        },
+      ],
+    },
+  ],
+};
