@@ -17,6 +17,7 @@ export function TextField(
     },
   });
 
+  //@ts-ignore: need to update to use new theme api
   return <Textfield {...textFieldProps} theme={nachosTheme} />;
 }
 

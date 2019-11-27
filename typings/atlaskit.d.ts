@@ -35,7 +35,6 @@ declare module '@atlaskit/refinement-bar';
 declare module '@atlaskit/single-select';
 declare module '@atlaskit/size-detector';
 declare module '@atlaskit/table-tree';
-declare module '@atlaskit/textfield';
 
 // Build
 declare module '@atlaskit/icon-build-process';
