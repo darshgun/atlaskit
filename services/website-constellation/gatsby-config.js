@@ -62,30 +62,11 @@ module.exports = {
               return fs.readFile(changelogPath, 'utf-8');
             },
           },
-          {
-            name: 'changelogEntries',
-            // Note that the `gatsby-node` of our app is responsible for adding the `ChangelogEntry` type
-            // This isn't a floating thing from nowhere.
-            definition: `[ChangelogEntry] @link(by: "packageName")`,
-            getFieldInfo: async ws => {
-              return ws.name;
-              // const changelogPath = path.join(ws.dir, 'CHANGELOG.md');
-              // if (!(await fs.pathExists(changelogPath))) {
-              //   return '';
-              // }
-              // const changelog = await fs.readFile(changelogPath, 'utf-8');
-              // const thingy = divideChangelog(changelog).map(c => ({
-              //   ...c,
-              //   packageName: ws.name,
-              // }));
-              // return thingy;
-            },
-          },
         ],
       },
     },
-    // {
-    //   resolve: require.resolve('@brisk-docs/gatsby-plugin'),
-    // },
+    {
+      resolve: require.resolve('@brisk-docs/gatsby-plugin'),
+    },
   ],
 };
