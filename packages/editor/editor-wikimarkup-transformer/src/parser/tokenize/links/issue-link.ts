@@ -9,7 +9,7 @@ export function issueLinkResolver(
   context: Context,
 ): PMNode[] | undefined {
   const { originalLinkText, linkTitle, notLinkBody } = link;
-  if (linkTitle === 'block-link') {
+  if (linkTitle === 'smart-card') {
     return [
       schema.nodes.blockCard.createChecked({
         url: notLinkBody,

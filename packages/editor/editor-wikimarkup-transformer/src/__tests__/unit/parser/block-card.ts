@@ -5,31 +5,31 @@ describe('JIRA wiki markup - Block Card', () => {
     [
       'should create Block Card between lines of text',
       `line 1 
-      [http://...|http://...|block-link]
+      [http://...|http://...|smart-card]
       line 2 `,
     ],
     [
       'should create Block Card with nothing else in the document',
-      `[http://...|http://...|block-link]`,
+      `[http://...|http://...|smart-card]`,
     ],
     [
       'should create Block Card with whitespace on the same line',
-      ` [http://...|http://...|block-link] 
-      [http://...|http://...|block-link]`,
+      ` [http://...|http://...|smart-card] 
+      [http://...|http://...|smart-card]`,
     ],
     [
       'should create Block Card if preceded and followed by text', // This will result in the text being moved to another line
       `
-      abc [http://...|http://...|block-link] def
+      abc [http://...|http://...|smart-card] def
       `,
     ],
     [
       'should create Block Cards in table',
-      `|[http://...|http://...|block-link]|`,
+      `|[http://...|http://...|smart-card]|`,
     ],
     [
       'should create Block Cards in panel', // Block ends up outside of the panel in adf
-      `|{panel:bgColor=#deebff}test [http://...|http://...|block-link] test{panel}|`,
+      `|{panel:bgColor=#deebff}test [http://...|http://...|smart-card] test{panel}|`,
     ],
     [
       'should recover existing Block Cards',
@@ -38,7 +38,7 @@ describe('JIRA wiki markup - Block Card', () => {
       {adf}|{adf:display=block}
       {"type":"blockCard","attrs":{"url":"https://aolrich-automation.atlassian.net/browse/SOF-1"}}
       {adf}|
-      [https://aolrich-automation.atlassian.net/browse/SOF-1|https://aolrich-automation.atlassian.net/browse/SOF-1|block-link]`,
+      [https://aolrich-automation.atlassian.net/browse/SOF-1|https://aolrich-automation.atlassian.net/browse/SOF-1|smart-card]`,
     ],
   ];
 
