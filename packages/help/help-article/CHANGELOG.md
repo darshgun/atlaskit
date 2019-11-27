@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 0.7.2
+
+### Patch Changes
+
+- [patch][c17a72abc4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c17a72abc4):
+
+  Bugfix - Added allow-popups to the sandbox attribute of the article iframe so we can open popups from within
+
 ## 0.7.1
 
 ### Patch Changes

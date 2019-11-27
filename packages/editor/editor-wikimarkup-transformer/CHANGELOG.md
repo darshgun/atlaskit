@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.6.1
+
+### Patch Changes
+
+- [patch][4aac2fe2d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aac2fe2d5):
+
+  fix up the url encoding/decoding of commas in text links
+
 ## 4.6.0
 
 ### Minor Changes

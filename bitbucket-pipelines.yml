@@ -241,6 +241,16 @@ pipelines:
           caches:
             - node
 
+    # This will run the security check using SourceClear acroos the repository.
+    # We need to pull a new docker image(node 10) to avoid installing curl.
+    security-check:
+      - step:
+          image: node:10
+          script:
+            - curl -sSL https://download.sourceclear.com/ci.sh | bash
+          after-script:
+            - yarn send:buildEvents
+
     # This will run the full suite of the webdriver tests on Browserstack.
     build-webdriver:
       - step:
@@ -517,6 +527,7 @@ pipelines:
           caches:
             - node
 
+    # This build allow to push the bundle size results as ratchet file to s3.
     push-bundle-size-to-s3:
       - parallel:
           - step:

@@ -17,3 +17,7 @@ export function debugMock(
     },
   );
 }
+
+export class ValidationError extends Error {}
+
+export type Default<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
