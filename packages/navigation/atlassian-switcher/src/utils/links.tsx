@@ -474,7 +474,7 @@ export const getJoinableSiteLinks = (
         href,
       }: AvailableProductDetails = AVAILABLE_PRODUCT_DATA_MAP[productType];
 
-      const productUrl = href;
+      let productUrl = href;
 
       if (
         productKey === ProductKey.JIRA_SOFTWARE ||
