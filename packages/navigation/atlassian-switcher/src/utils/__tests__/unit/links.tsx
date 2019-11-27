@@ -1,5 +1,6 @@
 import {
   AVAILABLE_PRODUCT_DATA_MAP,
+  TO_WORKLENS_PRODUCT_KEY,
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
@@ -226,17 +227,19 @@ describe('utils/links', () => {
     });
 
     it('should use instance base url for jira products', () => {
-      const mockData = [ProductKey.JIRA_CORE, ProductKey.CONFLUENCE].map(
-        (productKey, index) => {
-          return Object.assign({}, mockJoinableSites.sites[index], {
-            relevance: 10,
-            users: {
-              [productKey]:
-                mockJoinableSites.sites[index].users[ProductKey.JIRA_SOFTWARE],
-            },
-          });
-        },
-      );
+      const mockData = [
+        ProductKey.JIRA_CORE,
+        ProductKey.CONFLUENCE,
+        ProductKey.OPSGENIE,
+      ].map((productKey, index) => {
+        const siteData = mockJoinableSites.sites[index];
+        return Object.assign({}, siteData, {
+          relevance: 10,
+          users: {
+            [productKey]: siteData.users[ProductKey.JIRA_SOFTWARE],
+          },
+        });
+      });
 
       const result = getJoinableSiteLinks(mockData);
 
@@ -248,17 +251,11 @@ describe('utils/links', () => {
         const productKey = Object.keys(siteData.users)[0];
 
         let productData =
-          AVAILABLE_PRODUCT_DATA_MAP[WorklensProductType.JIRA_SOFTWARE];
+          AVAILABLE_PRODUCT_DATA_MAP[TO_WORKLENS_PRODUCT_KEY[productKey]];
 
-        if (productKey === ProductKey.JIRA_CORE) {
-          productData =
-            AVAILABLE_PRODUCT_DATA_MAP[WorklensProductType.JIRA_BUSINESS];
-        } else if (productKey === ProductKey.CONFLUENCE) {
-          productData =
-            AVAILABLE_PRODUCT_DATA_MAP[WorklensProductType.CONFLUENCE];
-        }
-
-        if (
+        if (productKey === ProductKey.CONFLUENCE) {
+          expectUrl = siteData.url + productData.href;
+        } else if (
           productKey !== ProductKey.JIRA_CORE &&
           productKey !== ProductKey.JIRA_SOFTWARE
         ) {
