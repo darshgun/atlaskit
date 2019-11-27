@@ -171,36 +171,38 @@ export const insertTaskDecisionWithAnalytics = (
   inputMethod: TaskDecisionInputMethod,
   addAndCreateList: AddItemTransactionCreator,
   addToList?: AddItemTransactionCreator,
+  listLocalId?: string,
+  itemLocalId?: string,
 ): Transaction | null => {
   const { schema } = state;
   const { list, item } = getListTypes(listType, schema);
   const { tr } = state;
   const { $to } = state.selection;
   const listNode = findParentNodeOfType(list)(state.selection);
-  const itemLocalId = uuid.generate() as string;
   const contextIdentifierProvider = taskDecisionStateKey.getState(state)
     .contextIdentifierProvider;
   const contextData = getContextData(contextIdentifierProvider);
-  let listLocalId;
   let insertTrCreator;
   let itemIdx;
   let listSize;
 
   if (!listNode) {
     // Not a list - convert to one.
-    listLocalId = uuid.generate() as string;
     itemIdx = 0;
     listSize = 1;
     insertTrCreator = addAndCreateList;
   } else if ($to.node().textContent.length >= 0) {
     listSize = listNode.node.childCount + 1;
-    listLocalId = listNode.node.attrs.localId;
+    listLocalId = listLocalId || listNode.node.attrs.localId;
     const listItemNode = findParentNodeOfType(item)(state.selection); // finds current item in list
     itemIdx = listItemNode
       ? state.doc.resolve(listItemNode.pos).index() + 1
       : 0;
     insertTrCreator = addToList ? addToList : addAndCreateList;
   }
+
+  listLocalId = listLocalId || (uuid.generate() as string);
+  itemLocalId = itemLocalId || (uuid.generate() as string);
 
   if (insertTrCreator) {
     let insertTr = insertTrCreator({
