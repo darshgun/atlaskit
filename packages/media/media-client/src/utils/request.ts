@@ -157,6 +157,9 @@ const wait = (timeoutInMs: number) =>
 // fetch throws TypeError for network errors
 const isNotFetchNetworkError = (e: Error): boolean => !(e instanceof TypeError);
 
+export const isAbortedRequestError = (e: Error): boolean =>
+  e.message === 'request_cancelled' || e.name === 'AbortError';
+
 async function promiseRetry<T>(
   functionToRetry: () => Promise<T>,
   overwriteOptions: Partial<RetryOptions> = {},
@@ -176,6 +179,11 @@ async function promiseRetry<T>(
     try {
       return await functionToRetry();
     } catch (err) {
+      // don't retry if request was aborted by user
+      if (isAbortedRequestError(err)) {
+        return Promise.reject(err);
+      }
+
       const isLastAttempt = i === options.attempts;
       if (
         (isNotFetchNetworkError(err) && (err as HttpError).statusCode < 500) ||

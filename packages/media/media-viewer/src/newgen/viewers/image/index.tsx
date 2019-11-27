@@ -4,6 +4,7 @@ import {
   MediaClient,
   FileItem,
   FileState,
+  isAbortedRequestError,
   isImageRepresentationReady,
 } from '@atlaskit/media-client';
 import { getOrientation } from '@atlaskit/media-ui';
@@ -94,6 +95,7 @@ export class ImageViewer extends BaseViewer<
         content: Outcome.successful({ objectUrl, orientation }),
       });
     } catch (err) {
+      // TODO : properly handle aborted requests (MS-2843)
       if (!isAbortedRequestError(err)) {
         this.setState({
           content: Outcome.failed(createError('previewFailed', err, file)),
@@ -144,7 +146,3 @@ export class ImageViewer extends BaseViewer<
     });
   };
 }
-
-const isAbortedRequestError = (error: Error): boolean => {
-  return error.message === 'request_cancelled' || error.name === 'AbortError';
-};

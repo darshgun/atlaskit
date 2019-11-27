@@ -11,26 +11,24 @@ import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
-  WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import {
   name as packageName,
   version as packageVersion,
 } from '../version.json';
 
-import { PositionType, PositionTypeBase, FakeMouseElement } from '../types';
+import {
+  FakeMouseCoordinates,
+  TooltipProps,
+  TooltipState,
+  FakeMouseElement,
+} from './types';
 import { Tooltip as StyledTooltip } from '../styled';
 import Animation from './Animation';
 
 import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
-import { StyledComponentClass } from 'styled-components';
 
 const SCROLL_OPTIONS = { capture: true, passive: true };
-
-interface FakeMouseCoordinates {
-  top: number;
-  left: number;
-}
 
 function getMousePosition(
   mouseCoordinates: FakeMouseCoordinates,
@@ -51,71 +49,6 @@ function getMousePosition(
     clientWidth: 0,
     clientHeight: 0,
   };
-}
-
-export interface TooltipProps extends WithAnalyticsEventsProps {
-  /** The content of the tooltip */
-  content: React.ReactNode;
-  /** Extend `TooltipPrimitive` to create your own tooltip and pass it as component */
-  component?: StyledComponentClass<
-    { truncate?: boolean; style?: any; className?: any },
-    any
-  >;
-  /** Time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300. */
-  delay?: number;
-  /**
-    Hide the tooltip when the click event is triggered. This should be
-    used when tooltip should be hidden if `onClick` react synthetic event
-    is triggered, which happens after `onMouseDown` event
-  */
-  hideTooltipOnClick?: boolean;
-  /**
-    Hide the tooltip when the mousedown event is triggered. This should be
-    used when tooltip should be hidden if `onMouseDown` react synthetic event
-    is triggered, which happens before `onClick` event
-  */
-  hideTooltipOnMouseDown?: boolean;
-  /**
-    Where the tooltip should appear relative to the mouse. Only used when the
-    `position` prop is set to 'mouse'
-  */
-  mousePosition?: PositionTypeBase;
-  /**
-    Function to be called when the tooltip will be shown. It is called when the
-    tooltip begins to animate in.
-  */
-  onShow?: () => void;
-  /**
-    Function to be called when the tooltip will be hidden. It is called after the
-    delay, when the tooltip begins to animate out.
-  */
-  onHide?: () => void;
-  /**
-    Where the tooltip should appear relative to its target. If set to 'mouse',
-    tooltip will display next to the mouse instead.
-  */
-  position?: PositionType;
-  /**
-    Replace the wrapping element. This accepts the name of a html tag which will
-    be used to wrap the element.
-  */
-  tag?: React.ElementType;
-  /** Show only one line of text, and truncate when too long */
-  truncate?: boolean;
-  /** Elements to be wrapped by the tooltip */
-  children: React.ReactNode;
-  /**
-   * A `testId` prop is provided for specified elements, which is a unique
-   * string that appears as a data attribute `data-testid` in the rendered code,
-   * serving as a hook for automated tests */
-  testId?: string;
-}
-
-interface State {
-  immediatelyHide: boolean;
-  immediatelyShow: boolean;
-  isVisible: boolean;
-  renderTooltip: boolean;
 }
 
 let pendingHide: flushable.FlushableOperation;
@@ -140,7 +73,7 @@ const hideTooltip = (fn: (flushed: boolean) => void, defaultDelay: number) => {
   return pendingHide.cancel;
 };
 
-class Tooltip extends React.Component<TooltipProps, State> {
+class Tooltip extends React.Component<TooltipProps, TooltipState> {
   static defaultProps: Pick<
     TooltipProps,
     'component' | 'delay' | 'mousePosition' | 'position' | 'tag'
@@ -152,15 +85,16 @@ class Tooltip extends React.Component<TooltipProps, State> {
     tag: 'div',
   };
 
-  wrapperRef?: HTMLElement;
+  wrapperRef: HTMLElement | null = null;
 
-  targetRef?: HTMLElement;
+  targetRef: HTMLElement | null = null;
 
   fakeMouseElement?: FakeMouseElement;
 
   cancelPendingSetState = () => {};
 
-  // set in mouseover/mouseout handlers
+  userInteraction: 'mouse' | 'keyboard' = 'mouse';
+
   state = {
     immediatelyHide: false,
     immediatelyShow: false,
@@ -173,7 +107,7 @@ class Tooltip extends React.Component<TooltipProps, State> {
     this.removeScrollListener();
   }
 
-  componentDidUpdate(_prevProps: TooltipProps, prevState: State) {
+  componentDidUpdate(_prevProps: TooltipProps, prevState: TooltipState) {
     if (!prevState.isVisible && this.state.isVisible) {
       if (this.props.onShow) this.props.onShow();
 
@@ -218,15 +152,42 @@ class Tooltip extends React.Component<TooltipProps, State> {
   };
 
   handleMouseOver = (e: React.MouseEvent) => {
-    if (e.target === this.wrapperRef) return;
+    if (e.target === this.wrapperRef) {
+      return;
+    }
+
+    this.userInteraction = 'mouse';
+
     // In the case where a tooltip is newly rendered but immediately becomes hovered,
     // we need to set the coordinates in the mouseOver event.
-    if (!this.fakeMouseElement)
+    if (!this.fakeMouseElement) {
       this.fakeMouseElement = getMousePosition({
         left: e.clientX,
         top: e.clientY,
       });
+    }
+
+    this.handleShowTooltip();
+  };
+
+  handleFocus = () => {
+    this.userInteraction = 'keyboard';
+
+    // We need to fake the mouse dimensions even on focus because the code path currently assumes
+    // fake mouse element needs to exist before showing the tooltip.
+    if (!this.fakeMouseElement) {
+      this.fakeMouseElement = getMousePosition({
+        left: 0,
+        top: 0,
+      });
+    }
+
+    this.handleShowTooltip();
+  };
+
+  handleShowTooltip = () => {
     this.cancelPendingSetState();
+
     if (Boolean(this.props.content) && !this.state.isVisible) {
       this.cancelPendingSetState = showTooltip(immediatelyShow => {
         this.setState({
@@ -238,9 +199,13 @@ class Tooltip extends React.Component<TooltipProps, State> {
     }
   };
 
-  handleMouseLeave = (e: React.MouseEvent) => {
-    if (e.target === this.wrapperRef) return;
+  handleHideTooltip = (e: React.MouseEvent | FocusEvent) => {
+    if (e.target === this.wrapperRef) {
+      return;
+    }
+
     this.cancelPendingSetState();
+
     if (this.state.isVisible) {
       this.cancelPendingSetState = hideTooltip(immediatelyHide => {
         this.setState({ isVisible: false, immediatelyHide });
@@ -262,12 +227,17 @@ class Tooltip extends React.Component<TooltipProps, State> {
     }
   };
 
+  shouldPositionTooltipNearMouse() {
+    const { position } = this.props;
+    return position === 'mouse' && this.userInteraction === 'mouse';
+  }
+
   render() {
     const {
       children,
-      content,
       position,
       mousePosition,
+      content,
       truncate,
       component: TooltipContainer,
       tag: TargetContainer,
@@ -280,6 +250,9 @@ class Tooltip extends React.Component<TooltipProps, State> {
       immediatelyShow,
       immediatelyHide,
     } = this.state;
+
+    const tooltipPosition = position === 'mouse' ? mousePosition : position;
+
     return (
       /* eslint-disable jsx-a11y/mouse-events-have-key-events */
       <React.Fragment>
@@ -287,16 +260,18 @@ class Tooltip extends React.Component<TooltipProps, State> {
           <TargetContainer
             onClick={this.handleMouseClick}
             onMouseOver={this.handleMouseOver}
-            onMouseOut={this.handleMouseLeave}
+            onMouseOut={this.handleHideTooltip}
             onMouseMove={this.handleMouseMove}
             onMouseDown={this.handleMouseDown}
-            ref={(wrapperRef: HTMLElement) => {
+            onFocus={this.handleFocus}
+            onBlur={this.handleHideTooltip}
+            ref={(wrapperRef: HTMLElement | null) => {
               this.wrapperRef = wrapperRef;
             }}
           >
             <NodeResolver
-              innerRef={(targetRef: HTMLElement) => {
-                this.targetRef = targetRef;
+              innerRef={(ref: HTMLElement | null) => {
+                this.targetRef = ref;
               }}
             >
               {React.Children.only(children)}
@@ -307,16 +282,16 @@ class Tooltip extends React.Component<TooltipProps, State> {
         {renderTooltip && this.targetRef && this.fakeMouseElement ? (
           <Portal zIndex={layers.tooltip()}>
             <Popper
+              placement={tooltipPosition}
               referenceElement={
                 // https://github.com/FezVrasta/react-popper#usage-without-a-reference-htmlelement
                 // We are using a popper technique to pass in a faked element when we use mouse.
-                (position === 'mouse'
+                (this.shouldPositionTooltipNearMouse()
                   ? this.fakeMouseElement
                   : this.targetRef) as HTMLElement
               }
-              placement={position === 'mouse' ? mousePosition : position}
             >
-              {({ ref, style, placement }) =>
+              {({ ref, style }) =>
                 TooltipContainer && (
                   <Animation
                     immediatelyShow={immediatelyShow}
@@ -330,10 +305,11 @@ class Tooltip extends React.Component<TooltipProps, State> {
                         innerRef={ref || undefined}
                         className="Tooltip"
                         style={{
-                          ...getAnimationStyles(placement as PositionTypeBase),
+                          ...getAnimationStyles(),
                           ...style,
                         }}
                         truncate={truncate || false}
+                        data-placement={tooltipPosition}
                         data-testid={testId}
                       >
                         {content}
