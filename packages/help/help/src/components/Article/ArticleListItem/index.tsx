@@ -34,7 +34,7 @@ type Props = {
   description?: string;
   /* Related article icon. This prop is optional (by default a DocumentFilledIcon is used) */
   icon?: React.ReactNode;
-  /* Related article href. This prop is optional (default value is ''). If is defined, when 
+  /* Related article href. This prop is optional (default value is ''). If is defined, when
   the user clicks in the related article a new tab will be open using the url defined in this prop */
   href?: string;
   /* Related article ID */
@@ -81,7 +81,7 @@ const ArticlesListItem: React.SFC<Props & Analytics> = (
           <ArticlesListItemLinkIcon>
             <ShortcutIcon
               size="small"
-              label={title}
+              label=""
               primaryColor={colors.N90}
               secondaryColor={colors.N90}
             />
