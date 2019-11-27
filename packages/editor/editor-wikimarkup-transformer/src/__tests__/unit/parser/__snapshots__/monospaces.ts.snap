@@ -195,7 +195,7 @@ Object {
             Object {
               "attrs": Object {
                 "__confluenceMetadata": null,
-                "href": "http://google.com",
+                "href": "http://google.com/",
               },
               "type": "link",
             },
@@ -255,7 +255,7 @@ Object {
             Object {
               "attrs": Object {
                 "__confluenceMetadata": null,
-                "href": "http://example.com",
+                "href": "http://example.com/",
               },
               "type": "link",
             },
@@ -290,7 +290,7 @@ Object {
             Object {
               "attrs": Object {
                 "__confluenceMetadata": null,
-                "href": "http://google.com",
+                "href": "http://google.com/",
               },
               "type": "link",
             },
