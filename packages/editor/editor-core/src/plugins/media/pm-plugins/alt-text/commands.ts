@@ -10,7 +10,6 @@ import {
   ACTION_SUBJECT_ID,
 } from '../../../analytics';
 import { EditorState, Transaction } from 'prosemirror-state';
-import { withAnalytics as withV2Analytics } from '../../../../analytics';
 
 import {
   ALT_TEXT_ACTION,
