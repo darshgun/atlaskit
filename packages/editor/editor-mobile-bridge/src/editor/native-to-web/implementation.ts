@@ -278,7 +278,7 @@ export default class WebBridgeImpl extends WebBridge
   onLinkUpdate(
     text: string,
     url: string,
-    inputMethod: LinkInputMethod = INPUT_METHOD.TOOLBAR,
+    inputMethod: LinkInputMethod = INPUT_METHOD.MANUAL,
   ) {
     if (!this.editorView) {
       return;
