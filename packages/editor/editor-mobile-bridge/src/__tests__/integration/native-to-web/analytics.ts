@@ -21,7 +21,7 @@ const getBridgeTrackAnalyticsEvents = async (browser: any) => {
     .map((outputEvent: any) => JSON.parse(outputEvent.event))
     .filter(
       (analyticsEvent: AnalyticsEventPayload) =>
-        analyticsEvent.eventType == 'track',
+        analyticsEvent.eventType === 'track',
     );
 };
 

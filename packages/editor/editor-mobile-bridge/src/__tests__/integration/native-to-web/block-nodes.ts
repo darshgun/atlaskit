@@ -9,6 +9,8 @@ import {
   skipBrowsers as skip,
 } from '../_utils';
 
+import { INPUT_METHOD } from '@atlaskit/editor-core';
+
 ['action', 'decision', 'blockquote', 'codeblock', 'panel', 'table'].forEach(
   node => {
     BrowserTestCase(
@@ -19,7 +21,12 @@ import {
 
         await navigateOrClear(browser, editor.path);
         await browser.waitForSelector(`${editable} > p`);
-        await callNativeBridge(browser, 'insertBlockType', node);
+        await callNativeBridge(
+          browser,
+          'insertBlockType',
+          node,
+          INPUT_METHOD.INSERT_MENU,
+        );
 
         const doc = await browser.$eval(editable, getDocFromElement);
         expect(doc).toMatchCustomDocSnapshot(testName);
