@@ -10,21 +10,6 @@ import {
 
 import { INPUT_METHOD, AnalyticsEventPayload } from '@atlaskit/editor-core';
 
-const getBridgeTrackAnalyticsEvents = async (browser: any) => {
-  const outputEvents = await getBridgeOutput(
-    browser,
-    'analyticsBridge',
-    'trackEvent',
-  );
-
-  return outputEvents
-    .map((outputEvent: any) => JSON.parse(outputEvent.event))
-    .filter(
-      (analyticsEvent: AnalyticsEventPayload) =>
-        analyticsEvent.eventType === 'track',
-    );
-};
-
 const callNativeBridgeFirst = async (
   browser: any,
   fnName: any,
