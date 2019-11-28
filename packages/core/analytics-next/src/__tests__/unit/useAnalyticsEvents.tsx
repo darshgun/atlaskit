@@ -99,26 +99,6 @@ describe('useAnalyticsEvents()', () => {
     });
   });
 
-  it('should log an error if there was no parent AnalyticsListener found', () => {
-    render(<Component />);
-
-    expect(console.error).toHaveBeenCalledWith(`
-@atlaskit/analytics-next
----
-No compatible <AnalyticsListener /> was found to fire this analytics event.
-Use of the useAnalyticsEvents() hook requires a parent <AnalyticsListener /> from @atlaskit/analytics-next@^6.3.0 or above.
-See: https://atlaskit.atlassian.com/packages/core/analytics-next/docs/reference#AnalyticsListener
-`);
-  });
-
-  it('should only log an error once when rendering', () => {
-    const { rerender } = render(<Component />);
-
-    rerender(<Component />);
-
-    expect(console.error).toHaveBeenCalledTimes(1);
-  });
-
   it('should log an error when firing if there was no parent AnalyticsListener found', () => {
     const { rerender } = render(<Component />);
     (console.error as jest.Mock).mockReset();
