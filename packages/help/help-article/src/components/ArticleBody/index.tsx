@@ -87,7 +87,9 @@ export const ArticleBody = (props: Props) => {
               );
 
               if (iframeContainer) {
-                const newIframe: Window = frames['help-iframe'];
+                const newIframe: Window = (frames as { [key: string]: any })[
+                  'help-iframe'
+                ] as Window;
 
                 if (newIframe !== null) {
                   const iframeDocument = newIframe.document;
