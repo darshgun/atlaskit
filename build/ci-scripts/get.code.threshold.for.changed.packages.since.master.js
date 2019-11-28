@@ -1,5 +1,5 @@
 // @flow
-const packages = require('../utils/packages');
+const packages = require('@atlaskit/build-utils/packages');
 const codeCoverageByPackage = require('./jest.codeCoverageThreshold');
 /**
  * NOTE: This prints the coverage threshold list by changed packages since master ONLY if they have been commited.
