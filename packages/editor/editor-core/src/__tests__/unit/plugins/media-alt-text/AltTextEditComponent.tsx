@@ -80,7 +80,7 @@ describe('AltTextEditComponent', () => {
       // @ts-ignore
       wrapper.setProps({ value: '' });
 
-      wrapper.find('input').simulate('blur');
+      wrapper.unmount();
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
         action: 'alttext.cleared',
@@ -100,7 +100,7 @@ describe('AltTextEditComponent', () => {
       // @ts-ignore
       wrapper.setProps({ value: 'test changed' });
 
-      wrapper.find('input').simulate('blur');
+      wrapper.unmount();
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
         action: 'alttext.edited',
@@ -121,7 +121,7 @@ describe('AltTextEditComponent', () => {
       // @ts-ignore
       wrapper.setProps({ value: 'value added' });
 
-      wrapper.find('input').simulate('blur');
+      wrapper.unmount();
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
         action: 'alttext.added',
