@@ -79,6 +79,10 @@ export class AltTextEditComponent extends React.Component<
     value: this.props.value,
   };
 
+  componentWillUnmount() {
+    this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLOSED);
+  }
+
   render() {
     const {
       intl: { formatMessage },

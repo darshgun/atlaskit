@@ -39,15 +39,12 @@ const createCommandWithAnalytics = (
   })(createCommand(action, transform));
 };
 
-export const closeMediaAltTextMenu = createCommandWithAnalytics(
-  ALT_TEXT_ACTION.CLOSED,
-  state => {
-    if (isSelectionMediaSingleNode(state)) {
-      return { type: 'closeMediaAltTextMenu' };
-    }
-    return false;
-  },
-);
+export const closeMediaAltTextMenu = createCommand(state => {
+  if (isSelectionMediaSingleNode(state)) {
+    return { type: 'closeMediaAltTextMenu' };
+  }
+  return false;
+});
 
 export const openMediaAltTextMenu = createCommandWithAnalytics(
   ALT_TEXT_ACTION.OPENED,

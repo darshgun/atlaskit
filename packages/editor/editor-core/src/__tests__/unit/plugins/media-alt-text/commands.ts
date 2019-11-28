@@ -125,17 +125,6 @@ describe('commands', () => {
         );
       });
 
-      it('fires analytics event on close alt text edit popup', () => {
-        const { editorView } = editor(defaultDoc);
-        closeMediaAltTextMenu(editorView.state, editorView.dispatch);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'alttext.closed',
-          actionSubject: 'media',
-          actionSubjectId: 'media',
-          eventType: 'ui',
-        });
-      });
-
       it('fires analytics event on open alt text edit popup', () => {
         const { editorView } = editor(defaultDoc);
         openMediaAltTextMenu(editorView.state, editorView.dispatch);

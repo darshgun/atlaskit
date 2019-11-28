@@ -66,6 +66,15 @@ describe('AltTextEditComponent', () => {
       return { view, wrapper };
     }
 
+    it('fires closed event after alt text component is removed', () => {
+      const { wrapper } = setupWrapper('value');
+      wrapper.unmount();
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.closed',
+      });
+    });
+
     it('fires cleared and edited events after clearing value and closing popup editor', () => {
       const { wrapper } = setupWrapper('value');
       // @ts-ignore
