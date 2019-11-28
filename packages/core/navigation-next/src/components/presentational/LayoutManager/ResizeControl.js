@@ -33,6 +33,7 @@ const HANDLE_WIDTH = 2;
 const shouldResetGrabArea = (width: number) => {
   return width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH;
 };
+const preventDefault = event => event.preventDefault();
 
 export const BodyDragCursor = () => (
   <Global
@@ -120,7 +121,7 @@ const Button = ({
       border: 0,
       borderRadius: '50%',
       boxShadow: `0 0 0 1px ${colors.N30A}, 0 2px 4px 1px ${colors.N30A}`,
-      color: hasHighlight ? colors.B100 : colors.N200,
+      color: hasHighlight ? 'red' : 'blue',
       cursor: 'pointer',
       height: 24,
       opacity: isVisible ? 1 : 0,
@@ -476,6 +477,7 @@ class ResizeControl extends PureComponent<Props, State> {
     const button = (
       <Button
         onClick={this.onResizerChevronClick}
+        onMouseDown={preventDefault}
         hitAreaSize={onMouseOverButtonBuffer ? 'large' : 'small'}
         // maintain styles when user is dragging
         isVisible={isCollapsed || mouseIsDown}
