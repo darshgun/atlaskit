@@ -1,15 +1,10 @@
 import { MediaProvider } from '@atlaskit/editor-core';
-import {
-  Auth,
-  AuthContext,
-  ClientBasedAuth,
-  MediaClientConfig,
-} from '@atlaskit/media-core';
+import { Auth, AuthContext, MediaClientConfig } from '@atlaskit/media-core';
 
 import { createPromise } from '../cross-platform-promise';
 
 const getMediaToken = (context?: AuthContext): Promise<Auth> =>
-  createPromise<ClientBasedAuth>(
+  createPromise(
     'getAuth',
     // if collectionName exists in media's AuthContext, pass it along
     // otherwise pass an empty string (note that undefined doesn't work well with native promises)
