@@ -79,8 +79,23 @@ export class AltTextEditComponent extends React.Component<
     value: this.props.value,
   };
 
+  prevValue: string | undefined;
+
+  componentDidMount() {
+    this.prevValue = this.props.value;
+  }
+
   componentWillUnmount() {
     this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLOSED);
+    if (!this.prevValue && this.props.value) {
+      this.fireAnalyticsEvent(ALT_TEXT_ACTION.ADDED);
+    }
+    if (this.prevValue && !this.props.value) {
+      this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLEARED);
+    }
+    if (this.prevValue && this.prevValue !== this.props.value) {
+      this.fireAnalyticsEvent(ALT_TEXT_ACTION.EDITED);
+    }
   }
 
   render() {
@@ -113,7 +128,6 @@ export class AltTextEditComponent extends React.Component<
           <PanelTextInput
             placeholder={formatMessage(messages.placeholder)}
             defaultValue={value ? value : ''}
-            onBlur={this.onBlurHandler}
             onCancel={this.dispatchCancelEvent}
             onChange={this.handleOnChange}
             onSubmit={this.closeMediaAltTextMenu}
@@ -140,25 +154,6 @@ export class AltTextEditComponent extends React.Component<
   private closeMediaAltTextMenu = () => {
     const { view } = this.props;
     closeMediaAltTextMenu(view.state, view.dispatch);
-  };
-
-  onBlurHandler = () => {
-    const { value } = this.props;
-
-    this.setState(prevState => {
-      if (!prevState.value && value) {
-        this.fireAnalyticsEvent(ALT_TEXT_ACTION.ADDED);
-      }
-      if (prevState.value && !value) {
-        this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLEARED);
-      }
-      if (prevState.value && prevState.value !== value) {
-        this.fireAnalyticsEvent(ALT_TEXT_ACTION.EDITED);
-      }
-      return {
-        value: value,
-      };
-    });
   };
 
   private fireAnalyticsEvent(actionType: ALT_TEXT_ACTION) {
