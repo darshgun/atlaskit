@@ -121,7 +121,7 @@ const Button = ({
       border: 0,
       borderRadius: '50%',
       boxShadow: `0 0 0 1px ${colors.N30A}, 0 2px 4px 1px ${colors.N30A}`,
-      color: hasHighlight ? 'red' : 'blue',
+      color: hasHighlight ? colors.B100 : colors.N200,
       cursor: 'pointer',
       height: 24,
       opacity: isVisible ? 1 : 0,
@@ -452,7 +452,6 @@ class ResizeControl extends PureComponent<Props, State> {
 
   render() {
     const {
-      didDragOpen,
       isDragging,
       mouseIsDown,
       mouseIsOverGrabArea,
@@ -471,8 +470,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
     // the button shouldn't "flip" until the drag is complete
     let ButtonIcon = ChevronLeft;
-    if (isCollapsed || (didDragOpen && isDragging)) ButtonIcon = ChevronRight;
-    if (isCollapsed && flyoutIsOpen) ButtonIcon = ChevronRight;
+    if (isCollapsed) ButtonIcon = ChevronRight;
 
     const button = (
       <Button
