@@ -72,6 +72,8 @@ export const ArticleBody = (props: Props) => {
         () => {
           ReactDOM.render(
             <ArticleFrame
+              id="help-iframe"
+              name="help-iframe"
               onLoad={() => {
                 resizeIframe(props.onArticleRenderDone);
               }}
@@ -84,17 +86,22 @@ export const ArticleBody = (props: Props) => {
               );
 
               if (iframeContainer) {
-                const newIframe: HTMLIFrameElement | null = iframeContainer.getElementsByTagName(
-                  'iframe',
-                )[0];
+                const newIframe: Window = frames['help-iframe'];
 
-                if (newIframe !== null && newIframe.contentDocument !== null) {
-                  const iframeDocument = newIframe.contentDocument;
-                  const head = iframeDocument.getElementsByTagName('head')[0];
-                  iframeDocument.body.innerHTML = body;
+                if (newIframe !== null) {
+                  const iframeDocument = newIframe.document;
+                  iframeDocument.open();
+                  iframeDocument.write(body);
+                  iframeDocument.close();
+
+                  const head =
+                    iframeDocument.head ||
+                    iframeDocument.getElementsByTagName('head')[0];
                   const style = iframeDocument.createElement('style');
                   style.innerText = resetCSS;
                   head.appendChild(style);
+
+                  resizeIframe();
 
                   if (onArticleRenderBegin) {
                     onArticleRenderBegin();
