@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import Select from 'react-select';
+import Select, { createFilter } from 'react-select';
 import createFocusTrap, { FocusTrap } from 'focus-trap';
 import { Manager, Reference, Popper, PopperProps } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
@@ -315,6 +315,9 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
       Control: showSearchControl ? mergedComponents.Control : DummyControl,
     };
 
+    // Prevent filtering when search control is hidden
+    const filterOption = !showSearchControl ? () => true : undefined;
+
     if (!portalDestination || !isOpen) return null;
 
     const popper = (
@@ -335,6 +338,7 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
                   tabSelectsValue={false}
                   menuIsOpen
                   ref={this.getSelectRef}
+                  filterOption={filterOption}
                   {...props}
                   styles={{ ...defaultStyles, ...props.styles }}
                   maxMenuHeight={this.getMaxHeight()}
