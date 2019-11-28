@@ -16,8 +16,6 @@ export interface Props {
 const iframeContainerId = 'help-iframe-container';
 
 export const ArticleBody = (props: Props) => {
-  const [articleHeight, setArticleHeight] = useState('auto');
-
   /**
    * Set article height
    */
@@ -43,8 +41,9 @@ export const ArticleBody = (props: Props) => {
           // and of the iframe itself
           if (iframeContent) {
             const contentHeight: number = iframeContent.scrollHeight;
-            currentIframe.style.height = contentHeight + 'px';
-            setArticleHeight(`${contentHeight}px`);
+            currentIframe.style.height = contentHeight + 10 + 'px';
+            currentIframe.contentWindow.document.body.style.height =
+              contentHeight + 'px';
 
             if (onArticleRenderDone) {
               onArticleRenderDone();
@@ -74,10 +73,8 @@ export const ArticleBody = (props: Props) => {
           ReactDOM.render(
             <ArticleFrame
               onLoad={() => {
-                console.log('new content - resize');
                 resizeIframe(props.onArticleRenderDone);
               }}
-              style={{ height: articleHeight }}
               sandbox="allow-same-origin allow-popups"
             />,
             document.getElementById('help-iframe-container'),
@@ -111,12 +108,7 @@ export const ArticleBody = (props: Props) => {
     };
 
     setIframeContent(props.body, props.onArticleRenderBegin);
-  }, [
-    articleHeight,
-    props.body,
-    props.onArticleRenderBegin,
-    props.onArticleRenderDone,
-  ]);
+  }, [props.body, props.onArticleRenderBegin, props.onArticleRenderDone]);
 
   /**
    * When the window is resized, resize the iframe
@@ -131,7 +123,7 @@ export const ArticleBody = (props: Props) => {
     return () => {
       window.removeEventListener('resize', onWindowResize);
     };
-  }, [articleHeight, props.onArticleRenderDone]);
+  }, [props.onArticleRenderDone]);
 
   return props.body ? <div id="help-iframe-container" /> : null;
 };
