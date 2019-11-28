@@ -49,7 +49,7 @@ export const ExpandIconWrapper = styled.div<{ expanded: boolean }>`
   }
 `;
 
-export const ExpandTooltipWrapper = styled.div`
+export const ExpandLayoutWrapper = styled.div`
   width: ${gridSize() * 3}px;
   height: ${gridSize() * 3}px;
 `;
