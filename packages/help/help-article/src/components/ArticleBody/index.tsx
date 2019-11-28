@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import resetCSS from './resetCss';
 import { ArticleFrame } from './styled';
 import debounce from 'lodash.debounce';
@@ -13,7 +13,7 @@ export interface Props {
   onArticleRenderDone?(): void;
 }
 
-const iframeContainerId = 'help-iframe-container';
+const IFRAME_CONTAINER_ID = 'help-iframe-container';
 
 export const ArticleBody = (props: Props) => {
   /**
@@ -21,7 +21,7 @@ export const ArticleBody = (props: Props) => {
    */
   const resizeIframe = (onArticleRenderDone?: () => void) => {
     const iframeContainer: HTMLElement | null = document.getElementById(
-      iframeContainerId,
+      IFRAME_CONTAINER_ID,
     );
 
     if (iframeContainer) {
@@ -35,10 +35,11 @@ export const ArticleBody = (props: Props) => {
 
       if (currentIframe !== null && currentIframe.contentWindow !== null) {
         if (currentIframe.contentWindow.document.body) {
+          //
           const iframeContent: Element | null =
             currentIframe.contentWindow.document.body.firstElementChild;
-          // if the iframe has content, set the height of the iframe body
-          // and of the iframe itself
+          /* if the iframe has content, set the height of the iframe body
+           and of the iframe itself */
           if (iframeContent) {
             const contentHeight: number = iframeContent.scrollHeight;
             currentIframe.style.height = contentHeight + 10 + 'px';
@@ -55,7 +56,7 @@ export const ArticleBody = (props: Props) => {
   };
 
   /**
-   * When the article changes, update the content of the iframe and
+   * When the article content changes, update the content of the iframe and
    * resize the iframe based on the new content
    */
   useEffect(() => {
@@ -68,7 +69,7 @@ export const ArticleBody = (props: Props) => {
     ) => {
       ReactDOM.render(
         <div></div>,
-        document.getElementById(iframeContainerId),
+        document.getElementById(IFRAME_CONTAINER_ID),
         () => {
           ReactDOM.render(
             <ArticleFrame
@@ -79,10 +80,10 @@ export const ArticleBody = (props: Props) => {
               }}
               sandbox="allow-same-origin allow-popups"
             />,
-            document.getElementById('help-iframe-container'),
+            document.getElementById(IFRAME_CONTAINER_ID),
             () => {
               const iframeContainer: HTMLElement | null = document.getElementById(
-                iframeContainerId,
+                IFRAME_CONTAINER_ID,
               );
 
               if (iframeContainer) {
@@ -117,12 +118,9 @@ export const ArticleBody = (props: Props) => {
     setIframeContent(props.body, props.onArticleRenderBegin);
   }, [props.body, props.onArticleRenderBegin, props.onArticleRenderDone]);
 
-  /**
-   * When the window is resized, resize the iframe
-   */
   useEffect(() => {
     /**
-     * Set article height with debounce
+     * Resize the iframe when the browser window resizes
      */
     const onWindowResize = debounce(() => resizeIframe(), 500);
     window.addEventListener('resize', onWindowResize);
@@ -132,7 +130,7 @@ export const ArticleBody = (props: Props) => {
     };
   }, [props.onArticleRenderDone]);
 
-  return props.body ? <div id="help-iframe-container" /> : null;
+  return props.body ? <div id={IFRAME_CONTAINER_ID} /> : null;
 };
 
 export default ArticleBody;
