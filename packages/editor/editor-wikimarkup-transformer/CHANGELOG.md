@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.6.2
+
+### Patch Changes
+
+- [patch][d396ae22c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d396ae22c2):
+
+  Rename wiki representation of blockCard from block-link to smart-card
+
 ## 4.6.1
 
 ### Patch Changes
