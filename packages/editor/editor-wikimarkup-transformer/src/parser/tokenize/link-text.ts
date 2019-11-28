@@ -3,7 +3,7 @@ import { decode } from '../utils/url';
 import { Token, TokenParser } from './';
 
 // https://www.atlassian.com
-export const LINK_TEXT_REGEXP = /^(https?:\/\/|irc:\/\/|mailto:)([\w.?\/\\#-=@]+)/;
+export const LINK_TEXT_REGEXP = /^(https?:\/\/|irc:\/\/|mailto:)([\w.?!~^\/\\#-=@]+)/;
 
 export const linkText: TokenParser = ({ input, position, schema }) => {
   const match = input.substring(position).match(LINK_TEXT_REGEXP);
