@@ -7,6 +7,7 @@ import {
   N20,
   N30,
   subtleHeading,
+  subtleText,
 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
 import { Width } from './types';
@@ -19,6 +20,9 @@ const buttonOverrides = {
   outline: 'none',
 };
 const anchorOverrides = {
+  color: 'currentColor',
+};
+const customItemOverrides = {
   color: 'currentColor',
 };
 
@@ -36,7 +40,10 @@ const selectedStyles = {
   textDecoration: 'none',
 };
 
-const baseItemCSS = (isDisabled: boolean, isSelected: boolean): CSSObject => ({
+const baseItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
@@ -60,13 +67,13 @@ const baseItemCSS = (isDisabled: boolean, isSelected: boolean): CSSObject => ({
   '::-moz-focus-inner': {
     border: 0,
   },
-  ...(isDisabled && disabledStyles),
   ...(isSelected && selectedStyles),
+  ...(isDisabled && disabledStyles),
 });
 
 export const itemCSS = (
-  isDisabled: boolean,
-  isSelected: boolean,
+  isDisabled?: boolean,
+  isSelected?: boolean,
 ): CSSObject => ({
   ...buttonOverrides,
   ...baseItemCSS(isDisabled, isSelected),
@@ -102,7 +109,7 @@ export const elemAfterCSS = {
 };
 export const descriptionCSS = {
   textAlign: 'left',
-  color: '#343434',
+  color: subtleText(),
   fontSize: fontSizeSmall(),
 } as CSSObject;
 export const contentCSSWrapper = {
@@ -112,10 +119,18 @@ export const contentCSSWrapper = {
 
 /* Item variations */
 export const linkItemCSS = (
-  isDisabled: boolean,
-  isSelected: boolean,
+  isDisabled?: boolean,
+  isSelected?: boolean,
 ): CSSObject => ({
   ...anchorOverrides,
+  ...baseItemCSS(isDisabled, isSelected),
+});
+
+export const customItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
+  ...customItemOverrides,
   ...baseItemCSS(isDisabled, isSelected),
 });
 

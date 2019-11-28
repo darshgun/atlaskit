@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/menu",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight menu component that can be used anywhere",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "@atlaskit/icon": "^19.0.8",
-    "@atlaskit/icon-object": "^5.0.0"
+    "@atlaskit/icon-object": "^5.0.0",
+    "react-router-dom": "^4.2.2"
   },
   "keywords": [
     "atlaskit",

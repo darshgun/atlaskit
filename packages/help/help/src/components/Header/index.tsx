@@ -67,7 +67,7 @@ export const HelpContent = (
                   ...rest,
                 };
               }}
-              iconBefore={<ArrowleftIcon label="back" size="medium" />}
+              iconBefore={<ArrowleftIcon label="" size="medium" />}
             >
               {formatMessage(messages.help_panel_navigation_back)}
             </Button>

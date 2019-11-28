@@ -1,8 +1,9 @@
 /** @jsx jsx */
 import { Fragment } from 'react';
-import { jsx } from '@emotion/core';
+import { jsx, ClassNames } from '@emotion/core';
 import {
   linkItemCSS,
+  customItemCSS,
   itemCSS,
   itemHeadingCSS,
   skeletonHeadingItemCSS,
@@ -17,6 +18,8 @@ import {
 import {
   ButtonItemProps,
   LinkItemProps,
+  BaseItemProps,
+  CustomItemProps,
   SkeletonItemProps,
   Width,
 } from './types';
@@ -24,6 +27,7 @@ import {
 export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
   <div css={itemHeadingCSS}>{children}</div>
 );
+
 export const SkeletonHeadingItem = ({ width }: { width?: Width }) => (
   <div css={skeletonHeadingItemCSS(width)} />
 );
@@ -35,12 +39,12 @@ export const SkeletonItem = ({
   <div css={itemSkeletonCSS(hasAvatar, hasIcon, width)} />
 );
 
-const ItemBase = ({
+const BaseItem = ({
   elemBefore,
   elemAfter,
   children,
   description,
-}: ButtonItemProps) => {
+}: BaseItemProps) => {
   return (
     <Fragment>
       <div css={contentCSSWrapper}>
@@ -80,13 +84,13 @@ export const ButtonItem = (props: ButtonItemProps) => {
       css={itemCSS(isDisabled, isSelected)}
       {...others}
     >
-      <ItemBase
+      <BaseItem
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
       >
         {children}
-      </ItemBase>
+      </BaseItem>
     </Tag>
   );
 };
@@ -114,13 +118,34 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
       href={isDisabled ? undefined : href}
       {...others}
     >
-      <ItemBase
+      <BaseItem
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
       >
         {children}
-      </ItemBase>
+      </BaseItem>
     </Tag>
+  );
+};
+
+export const CustomItem = ({
+  component: Component,
+  isDisabled,
+  isSelected,
+  ...rest
+}: CustomItemProps) => {
+  if (!Component) {
+    return null;
+  }
+
+  return (
+    <ClassNames>
+      {({ css }) => (
+        <Component wrapperClass={css(customItemCSS(isDisabled, isSelected))}>
+          <BaseItem {...rest} />
+        </Component>
+      )}
+    </ClassNames>
   );
 };
