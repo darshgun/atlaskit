@@ -9,7 +9,10 @@ export function issueLinkResolver(
   context: Context,
 ): PMNode[] | undefined {
   const { originalLinkText, linkTitle, notLinkBody } = link;
-  if (linkTitle === 'block-link') {
+  if (
+    linkTitle === 'smart-card' ||
+    linkTitle === 'block-link' // TODO: Depricated should be removed in the next major release
+  ) {
     return [
       schema.nodes.blockCard.createChecked({
         url: notLinkBody,

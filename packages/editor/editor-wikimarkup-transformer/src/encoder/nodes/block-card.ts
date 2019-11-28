@@ -7,5 +7,5 @@ export const blockCard: NodeEncoder = (node: PMNode): string => {
     return unknown(node);
   }
 
-  return `[${node.attrs.url}|${node.attrs.url}|block-link]`;
+  return `[${node.attrs.url}|${node.attrs.url}|smart-card]`;
 };
