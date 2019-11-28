@@ -6,7 +6,7 @@ import Clone from '../../Clone';
 
 // TODO: https://ecosystem.atlassian.net/browse/DS-6664
 // Those tests are randomly failing in CI but not locally...
-test.skip('should show spotlight', () => {
+test('should show spotlight', () => {
   const ref = jest.fn();
   const wrapper = mount(
     <SpotlightManager>
@@ -21,7 +21,7 @@ test.skip('should show spotlight', () => {
   expect(ref).toHaveBeenCalledWith(clone.prop('targetNode'));
 });
 
-test.skip('should spotlight different targets', () => {
+test('should spotlight different targets', () => {
   const ref = jest.fn();
   const NextButton = (props: { onClick: () => void }) => <button {...props} />;
   class SpotlightDemo extends React.Component<{}, { target: string }> {
@@ -51,7 +51,7 @@ test.skip('should spotlight different targets', () => {
   expect(ref).toHaveBeenCalledWith(clone.prop('targetNode'));
 });
 
-test.skip('should be able to render a SpotlightTarget without SpotlightManager', () => {
+test('should be able to render a SpotlightTarget without SpotlightManager', () => {
   expect(() =>
     mount(
       <SpotlightTarget name="target">
@@ -61,7 +61,7 @@ test.skip('should be able to render a SpotlightTarget without SpotlightManager',
   ).not.toThrowError();
 });
 
-test.skip('should be able to render a Spotlight without SpotlightManager', () => {
+test('should be able to render a Spotlight without SpotlightManager', () => {
   expect(() =>
     mount(
       <Spotlight>
@@ -71,7 +71,7 @@ test.skip('should be able to render a Spotlight without SpotlightManager', () =>
   ).not.toThrowError();
 });
 
-test.skip('should ensure key is set correctly on spotlight action', () => {
+test('should ensure key is set correctly on spotlight action', () => {
   jest.spyOn(console, 'error').mockImplementation(e => {
     throw new Error(e);
   });
@@ -95,7 +95,7 @@ test.skip('should ensure key is set correctly on spotlight action', () => {
   ).not.toThrowError();
 });
 
-test.skip('should set "fixed" position for the clone if the target a "fixed" position', () => {
+test('should set "fixed" position for the clone if the target a "fixed" position', () => {
   const ref = jest.fn();
   const wrapper = mount(
     <SpotlightManager>

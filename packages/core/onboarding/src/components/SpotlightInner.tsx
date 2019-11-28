@@ -10,6 +10,7 @@ import Clone from './Clone';
 import SpotlightDialog from './SpotlightDialog';
 import { SpotlightTransitionConsumer } from './SpotlightTransition';
 import { Props as SpotlightProps } from './Spotlight';
+import { ElementBox, ElementBoundingBox } from '../utils/use-element-box';
 
 export interface Props extends SpotlightProps {
   /** the spotlight tagert dom element */
@@ -61,7 +62,6 @@ class SpotlightInner extends React.Component<Props, State> {
     window.getComputedStyle(element).position === 'fixed';
 
   hasPositionFixedParent = (element: HTMLElement): boolean => {
-    // Cast to to any - offsetParent should be of interface "HTMLElement" instead of "Element"
     const { offsetParent } = element;
 
     if (!offsetParent) {
@@ -75,32 +75,28 @@ class SpotlightInner extends React.Component<Props, State> {
     return this.hasPositionFixedParent(offsetParent as HTMLElement);
   };
 
-  getTargetNodeStyle = () => {
+  getTargetNodeStyle = (box: ElementBoundingBox) => {
     if (!canUseDOM) {
       return {};
     }
     const { targetNode } = this.props;
-    const { height, left, top, width } = targetNode.getBoundingClientRect();
 
     if (
       this.isPositionFixed(targetNode) ||
       this.hasPositionFixedParent(targetNode)
     ) {
       return {
-        height,
-        left,
-        top,
-        width,
+        ...box,
         // fixed position holds the target in place if overflow/scroll is necessary
         position: 'fixed',
       };
     }
 
     return {
-      height,
-      left: left + window.pageXOffset,
-      top: top + window.pageYOffset,
-      width,
+      height: box.height,
+      left: box.left + window.pageXOffset,
+      top: box.top + window.pageYOffset,
+      width: box.width,
       position: 'absolute',
     };
   };
@@ -127,18 +123,26 @@ class SpotlightInner extends React.Component<Props, State> {
                   this.setState({ replacementElement: elem })
                 }
               >
-                <TargetReplacement {...this.getTargetNodeStyle()} />
+                <ElementBox element={targetNode}>
+                  {box => (
+                    <TargetReplacement {...this.getTargetNodeStyle(box)} />
+                  )}
+                </ElementBox>
               </NodeResovler>
             ) : (
-              <Clone
-                pulse={pulse}
-                target={target}
-                style={this.getTargetNodeStyle()}
-                targetBgColor={targetBgColor}
-                targetNode={targetNode}
-                targetOnClick={targetOnClick}
-                targetRadius={targetRadius}
-              />
+              <ElementBox element={targetNode}>
+                {box => (
+                  <Clone
+                    pulse={pulse}
+                    target={target}
+                    style={this.getTargetNodeStyle(box)}
+                    targetBgColor={targetBgColor}
+                    targetNode={targetNode}
+                    targetOnClick={targetOnClick}
+                    targetRadius={targetRadius}
+                  />
+                )}
+              </ElementBox>
             )}
             {TargetReplacement && !replacementElement ? null : (
               <Fade in={isOpen} onExited={onExited}>
