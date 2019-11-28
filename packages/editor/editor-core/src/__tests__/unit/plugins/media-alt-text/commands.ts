@@ -8,7 +8,6 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import {
   updateAltText,
-  closeMediaAltTextMenu,
   openMediaAltTextMenu,
 } from '../../../../plugins/media/pm-plugins/alt-text/commands';
 import { getFreshMediaProvider } from '../media/_utils';
