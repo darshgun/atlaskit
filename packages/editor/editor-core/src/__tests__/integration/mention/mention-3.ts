@@ -113,7 +113,6 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, {
       appearance: fullpage.appearance,
-      allowCodeBlocks: true,
     });
 
     await page.type(editable, '```');

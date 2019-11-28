@@ -52,7 +52,8 @@ import {
   historyPlugin,
   sharedContextPlugin,
   expandPlugin,
-  iOSScrollPlugin,
+  isExpandInsertionEnabled,
+  mobileScrollPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { ScrollGutterPluginOptions } from '../plugins/base/pm-plugins/scroll-gutter';
@@ -86,6 +87,7 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
     fakeTextCursorPlugin(),
     floatingToolbarPlugin(),
     sharedContextPlugin(),
+    codeBlockPlugin(),
   ];
 }
 
@@ -119,7 +121,6 @@ export default function createPluginsList(
   createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ): EditorPlugin[] {
   const isMobile = props.appearance === 'mobile';
-  const isIOS = isMobile && !!(window as any).webkit;
   const isFullPage = fullPageCheck(props.appearance);
   const plugins = getDefaultPluginsList(props);
 
@@ -141,19 +142,20 @@ export default function createPluginsList(
     plugins.push(textColorPlugin());
   }
 
-  if (props.allowLists) {
-    plugins.push(listsPlugin());
-  }
+  // Needs to be after allowTextColor as order of buttons in toolbar depends on it
+  plugins.push(listsPlugin());
 
   if (props.allowRule) {
     plugins.push(rulePlugin());
   }
 
   if (props.UNSAFE_allowExpand) {
-    plugins.push(expandPlugin());
+    plugins.push(
+      expandPlugin({ allowInsertion: isExpandInsertionEnabled(props) }),
+    );
   }
 
-  if (props.media || props.mediaProvider) {
+  if (props.media) {
     plugins.push(
       mediaPlugin(props.media, {
         allowLazyLoading: !isMobile,
@@ -168,11 +170,6 @@ export default function createPluginsList(
         fullWidthEnabled: props.appearance === 'full-width',
       }),
     );
-  }
-
-  if (props.allowCodeBlocks) {
-    const options = props.allowCodeBlocks !== true ? props.allowCodeBlocks : {};
-    plugins.push(codeBlockPlugin(options));
   }
 
   if (props.mentionProvider) {
@@ -233,7 +230,7 @@ export default function createPluginsList(
   if (props.legacyImageUploadProvider) {
     plugins.push(imageUploadPlugin());
 
-    if (!props.media && !props.mediaProvider) {
+    if (!props.media) {
       plugins.push(
         mediaPlugin({
           allowMediaSingle: { disableLayout: true },
@@ -322,6 +319,7 @@ export default function createPluginsList(
   plugins.push(
     insertBlockPlugin({
       allowTables: !!props.allowTables,
+      allowExpand: isExpandInsertionEnabled(props),
       insertMenuItems: props.insertMenuItems,
       horizontalRuleEnabled: props.allowRule,
       nativeStatusSupported: !statusMenuDisabled,
@@ -334,10 +332,7 @@ export default function createPluginsList(
 
   if (isMobile) {
     plugins.push(historyPlugin());
-  }
-
-  if (isIOS) {
-    plugins.push(iOSScrollPlugin());
+    plugins.push(mobileScrollPlugin());
   }
 
   return plugins;

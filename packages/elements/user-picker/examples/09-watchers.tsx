@@ -54,8 +54,6 @@ class UserValue extends React.PureComponent<UserValueProps> {
 type Props = {};
 
 export default class Example extends React.PureComponent<Props, State> {
-  private userPickerRef: React.RefObject<any> = React.createRef();
-
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -64,36 +62,22 @@ export default class Example extends React.PureComponent<Props, State> {
   }
 
   private handleOnChange = (user: Value) => {
-    this.setState(
-      ({ value }) => {
-        if (!Array.isArray(user) && user && isUser(user)) {
-          if (value.indexOf(user) === -1) {
-            return {
-              value: [...value, user],
-            };
-          }
+    this.setState(({ value }) => {
+      if (!Array.isArray(user) && user && isUser(user)) {
+        if (value.indexOf(user) === -1) {
+          return {
+            value: [...value, user],
+          };
         }
-        return null;
-      },
-      () => {
-        if (this.userPickerRef.current) {
-          this.userPickerRef.current.focus();
-        }
-      },
-    );
+      }
+      return null;
+    });
   };
 
   private handleRemoveUser = (toRemove: OptionData) => {
-    this.setState(
-      ({ value }) => ({
-        value: value.filter(user => user !== toRemove),
-      }),
-      () => {
-        if (this.userPickerRef.current) {
-          this.userPickerRef.current.blur();
-        }
-      },
-    );
+    this.setState(({ value }) => ({
+      value: value.filter(user => user !== toRemove),
+    }));
   };
 
   render() {
@@ -111,7 +95,6 @@ export default class Example extends React.PureComponent<Props, State> {
             ))}
             <UserPicker
               fieldId="example"
-              ref={this.userPickerRef}
               options={options.filter(user => value.indexOf(user) === -1)}
               value={null}
               onChange={this.handleOnChange}

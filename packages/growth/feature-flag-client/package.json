@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^8.1.8",
-    "enzyme": "^3.7.0"
+    "enzyme": "^3.10.0"
   },
   "peerDependencies": {
     "react": "^16.8.0",

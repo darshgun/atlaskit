@@ -2,6 +2,7 @@
 
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
+// $FlowFixMe
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 
 /* Url to test the example */
@@ -32,8 +33,7 @@ BrowserTestCase(
         );
       }
     } else {
-      // $FlowFixMe - type issue for waitSelector
-      await droplistTest.waitForSelector(droplist, 1000, true);
+      await droplistTest.waitForSelector(droplist, { timeout: 1000 }, true);
       expect(await droplistTest.isExisting(droplist)).toBe(false);
       await droplistTest.checkConsoleErrors();
     }

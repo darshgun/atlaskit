@@ -45,6 +45,6 @@
     "@atlaskit/docs": "^8.1.5",
     "@atlaskit/single-select": "^8.0.13",
     "@atlaskit/util-data-test": "^13.0.0",
-    "enzyme": "^3.7.0"
+    "enzyme": "^3.10.0"
   }
 }

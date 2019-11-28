@@ -1,5 +1,5 @@
 import { insertMedia as integrationInsertMedia } from '../../integration/_helpers';
-import { Page } from './_types';
+import { Page } from 'puppeteer';
 import { getBoundingRect, scrollToElement } from './_editor';
 
 import { snapshot } from '../../visual-regression/_utils';

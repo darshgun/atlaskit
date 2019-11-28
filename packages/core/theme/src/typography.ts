@@ -9,12 +9,7 @@ const baseHeading = (size: number, lineHeight: number) => `
   line-height: ${lineHeight / size};
 `;
 
-interface HeadingSize {
-  size: number;
-  lineHeight: number;
-}
-
-export const headingSizes: Record<string, HeadingSize> = {
+export const headingSizes = {
   h900: {
     size: 35,
     lineHeight: 40,

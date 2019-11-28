@@ -4,7 +4,7 @@ import {
   mountEditor,
   goToEditorTestingExample,
 } from '../../__helpers/testing-example-helpers';
-import { Page } from '../../__helpers/page-objects/_types';
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { KEY } from '../../__helpers/page-objects/_keyboard';
 
 const editorSelector = '.ProseMirror';
@@ -13,8 +13,8 @@ const insertHeadings = async (page: Page, modifierKeys: string[]) => {
   await page.click(editorSelector);
 
   for (let i = 1; i <= 6; i++) {
-    await page.browser.keys([...modifierKeys, `${i}`]);
-    await page.browser.keys(modifierKeys); // release modifier keys
+    await page.keys([...modifierKeys, `${i}`], true);
+    await page.keys(modifierKeys, true); // release modifier keys
     await page.type(editorSelector, 'A');
     await page.keys(['Enter']);
   }

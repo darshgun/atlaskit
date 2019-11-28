@@ -50,8 +50,6 @@ import WebBridge from '../../web-bridge';
 import { hasValue } from '../../utils';
 import { rejectPromise, resolvePromise } from '../../cross-platform-promise';
 
-import { version as packageVersion } from '../../version.json';
-
 export default class WebBridgeImpl extends WebBridge
   implements NativeToWebBridge {
   textFormatBridgeState: TextFormattingState | null = null;
@@ -64,10 +62,6 @@ export default class WebBridgeImpl extends WebBridge
   editorActions: EditorActions = new EditorActions();
   mediaPicker: CustomMediaPicker | undefined;
   mediaMap: Map<string, Function> = new Map();
-
-  currentVersion(): string {
-    return packageVersion;
-  }
 
   onBoldClicked() {
     if (this.textFormatBridgeState && this.editorView) {
@@ -189,11 +183,16 @@ export default class WebBridgeImpl extends WebBridge
   }
 
   onPromiseResolved(uuid: string, payload: string) {
-    resolvePromise(uuid, JSON.parse(payload));
+    try {
+      resolvePromise(uuid, JSON.parse(payload));
+    } catch (err) {
+      err.message = `${err.message}. Payload: ${JSON.stringify(payload)}`;
+      rejectPromise(uuid, err);
+    }
   }
 
-  onPromiseRejected(uuid: string) {
-    rejectPromise(uuid);
+  onPromiseRejected(uuid: string, err?: Error) {
+    rejectPromise(uuid, err);
   }
 
   onBlockSelected(blockType: string) {

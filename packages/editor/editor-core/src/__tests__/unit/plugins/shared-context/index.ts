@@ -9,9 +9,7 @@ describe('shared context plugin', () => {
     allowNewInsertionBehaviour: true,
     allowTextAlignment: false,
     allowPanel: true,
-    allowCodeBlocks: false,
     allowTables: true,
-    allowLists: false,
   };
 
   const editor = (doc: any) => {

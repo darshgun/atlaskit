@@ -1,6 +1,6 @@
 // @flow
 import queryString from 'query-string';
-import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
+import flattenChangesets from '@atlaskit/build-utils/flattenReleases';
 import yaml from 'js-yaml';
 
 import getChangesetsFromCommits from './get-commits';

@@ -4,6 +4,7 @@ import {
   camelCaseToKebabCase,
   defaultAttrs,
   toJSON,
+  createMediaSpec,
 } from '../../../../schema/nodes/media';
 import { fromHTML, toDOM, schema } from '../../../../../test-helpers';
 
@@ -301,6 +302,30 @@ describe(`${name}/schema media node`, () => {
           url: 'http://image.jpg',
         },
       });
+    });
+  });
+
+  describe('createMediaSpec', () => {
+    it('should return a media node spec supporting attributes provided', () => {
+      const el = document.createElement('div');
+      el.setAttribute('data-foo', 'test');
+
+      const attributes = {
+        ...defaultAttrs,
+        foo: 'test',
+      } as any;
+
+      const mediaNodeSpec = createMediaSpec(attributes);
+      expect(mediaNodeSpec.attrs).toBe(attributes);
+
+      const parseRule =
+        mediaNodeSpec.parseDOM &&
+        mediaNodeSpec.parseDOM.find(({ tag }) => 'div[data-node-type="media"]');
+      expect(parseRule && parseRule.getAttrs && parseRule.getAttrs(el)).toEqual(
+        {
+          foo: 'test',
+        },
+      );
     });
   });
 });

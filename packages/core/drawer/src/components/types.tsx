@@ -17,6 +17,8 @@ export interface BaseProps {
   icon?: ComponentType<any>;
   /** Available drawer sizes */
   width?: DrawerWidth;
+  /** A callback function that will be called when the drawer has finished its opening transition. */
+  onOpenComplete?: (node: HTMLElement) => void;
   /** A callback function that will be called when the drawer has finished its close transition. */
   onCloseComplete?: (node: HTMLElement) => void;
   /** Boolean that controls if drawer should be retained/discarded */
@@ -63,12 +65,9 @@ export interface FocusLockProps {
 }
 
 interface DnDType {
-  draggableProps: {
-    style: Object | null;
-    'data-react-beautiful-dnd-draggable': string;
-  };
+  draggableProps: Object;
   dragHandleProps: Object | null;
-  innerRef: Function;
+  innerRef: (ref: HTMLElement | null) => void;
   placeholder?: Node;
 }
 

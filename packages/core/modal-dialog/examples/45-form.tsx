@@ -43,25 +43,6 @@ export default class AtlaskitFormDemo extends React.Component<{}, State> {
       className?: string;
     }
 
-    interface FormProps {
-      onSubmit: (e: React.FormEvent | any) => void;
-      ref: React.RefObject<HTMLFormElement>;
-      onKeyDown: (e: React.KeyboardEvent) => void;
-    }
-
-    interface FieldProps {
-      id: string;
-      isRequired: boolean;
-      isDisabled: boolean;
-      isInvalid: boolean;
-      onChange: (e: any) => any;
-      onBlur: () => any;
-      onFocus: () => any;
-      value: any;
-      'aria-invalid': 'true' | 'false';
-      'aria-labelledby': string;
-    }
-
     return (
       <div>
         <Button onClick={this.open}>Open Modal</Button>
@@ -74,7 +55,7 @@ export default class AtlaskitFormDemo extends React.Component<{}, State> {
               components={{
                 Container: ({ children, className }: ContainerProps) => (
                   <Form onSubmit={this.onFormSubmit}>
-                    {({ formProps }: { formProps: FormProps }) => (
+                    {({ formProps }) => (
                       <form {...formProps} className={className}>
                         {children}
                       </form>
@@ -86,12 +67,10 @@ export default class AtlaskitFormDemo extends React.Component<{}, State> {
             >
               <p>Enter some text then submit the form to see the response.</p>
               <Field label="Name" name="my-name" defaultValue="">
-                {({ fieldProps }: { fieldProps: FieldProps }) => (
-                  <Textfield {...fieldProps} />
-                )}
+                {({ fieldProps }) => <Textfield {...fieldProps} />}
               </Field>
               <Field label="Email" name="my-email" defaultValue="">
-                {({ fieldProps }: { fieldProps: FieldProps }) => (
+                {({ fieldProps }) => (
                   <Textfield
                     autoComplete="off"
                     placeholder="gbelson@hooli.com"
@@ -101,17 +80,13 @@ export default class AtlaskitFormDemo extends React.Component<{}, State> {
               </Field>
 
               <CheckboxField name="checkbox" defaultIsChecked>
-                {({ fieldProps }: { fieldProps: FieldProps }) => (
+                {({ fieldProps }) => (
                   <Checkbox {...fieldProps} value="example" label="Checkbox" />
                 )}
               </CheckboxField>
 
               <Field name="radiogroup" defaultValue="">
-                {({
-                  fieldProps: { value, ...others },
-                }: {
-                  fieldProps: FieldProps;
-                }) => (
+                {({ fieldProps: { value, ...others } }) => (
                   <RadioGroup
                     items={radioItems}
                     label="Basic Radio Group Example"

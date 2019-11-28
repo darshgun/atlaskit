@@ -29,7 +29,7 @@ BrowserTestCase(
     await browser.type(editable, 'here is a link ');
 
     // // paste the link
-    await browser.paste(editable);
+    await browser.paste();
     await browser.type(editable, ' hello ');
 
     const doc = await browser.$eval(editable, getDocFromElement);

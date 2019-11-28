@@ -11,14 +11,7 @@ import { ReactNodeView, ForwardRef, getPosHandler } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import WithPluginState from '../../../ui/WithPluginState';
-import {
-  stateKey as taskPluginKey,
-  TaskDecisionPluginState,
-} from '../pm-plugins/main';
-import {
-  pluginKey as editorDisabledPluginKey,
-  EditorDisabledPluginState,
-} from '../../editor-disabled';
+import { stateKey as taskPluginKey } from '../pm-plugins/main';
 import { getPosHandlerNode } from '../../../nodeviews/ReactNodeView';
 
 export interface Props {
@@ -102,15 +95,9 @@ class Task extends ReactNodeView<Props> {
       >
         <WithPluginState
           plugins={{
-            editorDisabledPlugin: editorDisabledPluginKey,
             taskDecisionPlugin: taskPluginKey,
           }}
-          render={({
-            editorDisabledPlugin,
-          }: {
-            editorDisabledPlugin: EditorDisabledPluginState;
-            taskDecisionPlugin: TaskDecisionPluginState;
-          }) => {
+          render={() => {
             return (
               <TaskItem
                 taskId={localId}
@@ -119,7 +106,6 @@ class Task extends ReactNodeView<Props> {
                 onChange={this.handleOnChange}
                 showPlaceholder={this.isContentEmpty(this.node)}
                 providers={props.providerFactory}
-                disabled={(editorDisabledPlugin || {}).editorDisabled}
               />
             );
           }}

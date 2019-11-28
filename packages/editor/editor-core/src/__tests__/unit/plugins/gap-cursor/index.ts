@@ -35,7 +35,6 @@ describe('gap-cursor', () => {
         allowExtension: true,
         allowTables: true,
         allowTasksAndDecisions: true,
-        allowCodeBlocks: true,
         allowRule: true,
         allowPanel: true,
         media: { allowMediaSingle: true },

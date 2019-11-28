@@ -1,9 +1,12 @@
 import { keyframes } from 'styled-components';
 
 const gapCursorBlink = keyframes`
-to {
-  visibility: hidden;
-}
+  from, to {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 `;
 
 const gapCursor = '.ProseMirror-gapcursor';
@@ -28,7 +31,7 @@ export const gapCursorStyles = `
       }
 
       & span::after {
-        animation: 1.1s ${gapCursorBlink} steps(2, start) infinite;
+        animation: 1s ${gapCursorBlink} step-end infinite;
         border-left: 1px solid;
         content: '';
         display: block;

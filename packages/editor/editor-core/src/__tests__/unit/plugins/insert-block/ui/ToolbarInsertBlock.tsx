@@ -134,14 +134,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       pluginKey: blockTypePluginKey,
       editorProps: {
         analyticsHandler: analyticsHandlerSpy,
-        allowCodeBlocks: true,
         allowLayouts: true,
-        allowLists: true,
         allowPanel: true,
         allowRule: true,
         allowTables: true,
         allowStatus: true,
-        UNSAFE_allowExpand: true,
+        UNSAFE_allowExpand: { allowInsertion: true },
         allowAnalyticsGASV3: true,
         taskDecisionProvider: Promise.resolve(
           taskDecision.getMockTaskDecisionResource(),

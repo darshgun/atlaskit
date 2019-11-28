@@ -17,7 +17,10 @@ const plugin = new Plugin({
   view: () => {
     return {
       update(view: EditorView) {
-        if (view.state.selection instanceof GapCursorSelection) {
+        if (
+          view.state.selection instanceof GapCursorSelection &&
+          view.hasFocus()
+        ) {
           fixCursorAlignment(view);
         }
       },
@@ -45,7 +48,10 @@ const plugin = new Plugin({
         }
 
         return DecorationSet.create(doc, [
-          Decoration.widget(position, node, { key: `${JSON_ID}`, side: -1 }),
+          Decoration.widget(position, node, {
+            key: `${JSON_ID}-${side}`,
+            side: -1,
+          }),
         ]);
       }
 

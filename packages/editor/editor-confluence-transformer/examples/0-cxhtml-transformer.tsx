@@ -146,8 +146,6 @@ class Example extends Component<ExampleProps, ExampleState> {
                 <Editor
                   appearance="full-page"
                   analyticsHandler={analyticsHandler}
-                  allowCodeBlocks={true}
-                  allowLists={true}
                   allowTextColor={true}
                   allowTables={{
                     allowColumnResizing: true,

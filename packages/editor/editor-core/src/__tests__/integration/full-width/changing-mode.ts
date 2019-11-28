@@ -27,9 +27,6 @@ BrowserTestCase(
         allowBreakout: true,
         UNSAFE_addSidebarLayouts: true,
       },
-      allowCodeBlocks: {
-        enableKeybindingsForIDE: true,
-      },
     });
 
     await setProseMirrorTextSelection(page, { anchor: 314, head: 308 });

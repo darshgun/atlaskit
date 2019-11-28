@@ -29,7 +29,7 @@ describe('lists plugin -> commands', () => {
         doc: doc(
           ol(li(p('text')), li(p('{<>}', hardBreak(), date({ timestamp })))),
         ),
-        editorProps: { allowLists: true, allowDate: true },
+        editorProps: { allowDate: true },
       });
       enterKeyCommand(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
@@ -49,7 +49,6 @@ describe('lists plugin -> commands', () => {
       it('should not outdent a list', () => {
         const { editorView } = createEditor({
           doc: doc(ol(li(code_block()('{<>}text')))),
-          editorProps: { allowLists: true, allowCodeBlocks: true },
         });
 
         backspaceKeyCommand(editorView.state, editorView.dispatch);
@@ -64,10 +63,6 @@ describe('lists plugin -> commands', () => {
       it('should outdent a list', () => {
         const { editorView } = createEditor({
           doc: doc(ol(li(code_block()('{<>}text')))),
-          editorProps: {
-            allowLists: true,
-            allowCodeBlocks: true,
-          },
         });
 
         // enable gap cursor
@@ -86,10 +81,6 @@ describe('lists plugin -> commands', () => {
       it('should join codeBlock with the list', () => {
         const { editorView } = createEditor({
           doc: doc(ol(li(p('text'))), code_block()('{<>}code')),
-          editorProps: {
-            allowLists: true,
-            allowCodeBlocks: true,
-          },
         });
 
         // enable gap cursor
@@ -112,7 +103,6 @@ describe('lists plugin -> commands', () => {
       const { editorView } = createEditor({
         doc: doc(panel()(ol(li(p('text{<>}'))))),
         editorProps: {
-          allowLists: true,
           allowPanel: true,
         },
       });
@@ -134,7 +124,6 @@ describe('lists plugin -> commands', () => {
       const { editorView } = createEditor({
         doc: doc(panel()(ul(li(p('text{<>}'))))),
         editorProps: {
-          allowLists: true,
           allowPanel: true,
         },
       });

@@ -104,6 +104,8 @@ export class Article extends Component<Props & HelpContextInterface, State> {
               title={article.title}
               body={article.body}
               titleLinkUrl={article.productUrl}
+              onArticleRenderBegin={this.props.help.onArticleRenderBegin}
+              onArticleRenderDone={this.props.help.onArticleRenderDone}
             />
             <ArticleWasHelpfulForm />
             <RelatedArticles

@@ -64,7 +64,6 @@ BrowserTestCase(
 
     await mountEditor(page, {
       appearance: fullpage.appearance,
-      allowLists: true,
     });
 
     await page.click(fullpage.placeholder);
@@ -88,7 +87,6 @@ BrowserTestCase(
 
     await mountEditor(page, {
       appearance: fullpage.appearance,
-      allowLists: true,
     });
 
     await page.click(fullpage.placeholder);

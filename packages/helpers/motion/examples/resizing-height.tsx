@@ -37,6 +37,7 @@ export default () => {
       <div css={{ textAlign: 'center', '> *': { margin: '2px' } }}>
         {[1, 2, 3, 4, 5].map(number => (
           <Button
+            testId={`button--${number}`}
             key={number}
             isSelected={num === number}
             onClick={() => {
@@ -50,6 +51,7 @@ export default () => {
 
       <Centered>
         <div
+          data-testid="menu"
           {...useResizingHeight()}
           css={css`
             ${elevation.e500()};
@@ -67,7 +69,7 @@ export default () => {
             readOnly
             value={searchTerm[`s${num}`]}
             css={css`
-              ${focusRing(colors.b500, 2)};
+              ${focusRing(colors.B500, 2)};
               display: block;
               border-radius: 3px 3px 0 0;
               color: #172b4d;

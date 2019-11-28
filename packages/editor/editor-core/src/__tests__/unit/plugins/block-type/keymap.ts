@@ -49,9 +49,7 @@ describe('codeBlock - keymaps', () => {
       doc,
       editorProps: {
         analyticsHandler: analyticsHandler as any,
-        allowCodeBlocks: true,
         mentionProvider: new Promise(() => {}),
-        allowLists: true,
         allowTables: true,
         allowRule: true,
         allowAnalyticsGASV3: true,

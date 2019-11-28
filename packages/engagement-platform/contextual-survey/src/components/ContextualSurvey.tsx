@@ -6,6 +6,7 @@ import SignUpSuccess from './SignUpSuccess';
 import FeedbackAcknowledgement from './FeedbackAcknowledgement';
 import { FormValues } from '../types';
 import useEscapeToDismiss from './useEscapeToDismiss';
+import { FormApi, OnSubmitHandler } from '@atlaskit/form';
 
 export enum DismissTrigger {
   AutoDismiss = 'AUTO_DISMISS',
@@ -119,16 +120,17 @@ export default ({
     };
   }, [tryClearTimeout, tryDismiss]);
 
-  const onSurveySubmit = useCallback<
-    React.ComponentProps<typeof SurveyForm>['onSubmit']
-  >(
-    async (formValues, _, cleanup) => {
+  const onSurveySubmit = useCallback<OnSubmitHandler<FormValues>>(
+    async (
+      formValues: FormValues,
+      form: FormApi<FormValues>,
+      callback = () => {},
+    ) => {
       // Submitting form: Phase 1 complete
       await onSubmit(formValues);
 
-      // Note: need to call cleanup just before we navigate away
+      // Note: need to call callback just before we navigate away
       // It cleans up the form (required)
-      // It will also clear the
 
       // Optional Phase 2: Asking to join Atlassian Research Group
       // Only enter phase 2 if:
@@ -138,19 +140,19 @@ export default ({
 
       // Not entering phase 2: User has dismissed while the submit promise was resolving
       if (isDismissedRef.current) {
-        cleanup();
+        callback();
         return;
       }
 
       // Not entering phase 2: no permission given to respond to feedback
       if (!formValues.canContact) {
-        cleanup();
+        callback();
         trySetCurrentStep('POST_SURVEY_NO_CONSENT');
         return;
       }
 
       const userHasAnswered: boolean = await getUserHasAnsweredMailingList();
-      cleanup();
+      callback();
 
       // Not entering phase 2: user has already answered this question
       if (userHasAnswered) {
@@ -206,7 +208,7 @@ export default ({
 
   useEscapeToDismiss({ onDismiss: () => tryDismiss(DismissTrigger.Manual) });
 
-  const content: React.ReactNode = (() => {
+  const content = (() => {
     if (currentStep === 'SURVEY') {
       return (
         <SurveyForm

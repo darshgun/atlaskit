@@ -1,4 +1,3 @@
-import { name } from '../../../version.json';
 import { shallow, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { TextSelection } from 'prosemirror-state';
@@ -65,7 +64,7 @@ const payload: AnalyticsEventPayload = {
   eventType: EVENT_TYPE.UI,
 };
 
-describe(name, () => {
+describe('@atlaskit/editor-core', () => {
   let mockFire: ReturnType<typeof AnalyticsPlugin.fireAnalyticsEvent>;
 
   beforeEach(() => {
@@ -233,27 +232,14 @@ describe(name, () => {
     });
 
     describe('when an invalid transaction is dispatched', () => {
-      const documents = {
-        new: {
-          type: 'doc',
-          pos: 0,
-          nodeSize: 5,
-          content: [
-            {
-              type: 'codeBlock',
-              pos: 1,
-              nodeSize: 3,
-              content: [{ type: 'date', pos: 1, nodeSize: 1 }],
-            },
-          ],
-        },
-        prev: {
-          type: 'doc',
-          pos: 0,
-          nodeSize: 4,
-          content: [{ type: 'paragraph', pos: 1, nodeSize: 2 }],
-        },
-      };
+      function createInvalidCodeBlock(offset = 0) {
+        return {
+          type: 'codeBlock',
+          pos: offset,
+          nodeSize: 3,
+          content: [{ type: 'date', pos: offset, nodeSize: 1 }],
+        };
+      }
 
       /** dispatches an invalid transaction which adds a code block with a date node child */
       const dispatchInvalidTransaction = (tr = editor.view.state.tr) => {
@@ -276,7 +262,6 @@ describe(name, () => {
             {...requiredProps()}
             {...analyticsProps()}
             editorProps={{
-              allowCodeBlocks: true,
               allowDate: true,
               ...analyticsProps(),
             }}
@@ -296,7 +281,7 @@ describe(name, () => {
         expect(analyticsService.trackEvent).toHaveBeenCalledWith(
           'atlaskit.fabric.editor.invalidtransaction',
           {
-            documents: JSON.stringify(documents),
+            invalidNodes: JSON.stringify([createInvalidCodeBlock()]),
           },
         );
       });
@@ -333,7 +318,7 @@ describe(name, () => {
                   payload: analyticsEventPayload,
                 },
               ],
-              documents,
+              invalidNodes: [createInvalidCodeBlock()],
             },
           },
         });

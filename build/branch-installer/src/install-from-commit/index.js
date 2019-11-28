@@ -82,7 +82,6 @@ function validateOptions(commitHash /*:string */, options /*: Object */ = {}) {
 // i.e const logAlways = createLogger(true);
 // const logInDebugMode = createLogger(flags.debug);
 
-// TODO: To discuss with MB
 // eslint-disable-next-line no-unused-vars
 const createLogger = shouldLog => {
   if (shouldLog) {

@@ -16,9 +16,11 @@ export const InactivityDetectorWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  flex: 1;
   overflow: auto;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   .${hideControlsClassName} {
     ${handleControlsVisibility};

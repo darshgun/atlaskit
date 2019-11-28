@@ -1,9 +1,10 @@
 # @atlaskit/synchrony-test-helpers
 
 ## 1.0.1
+
 ### Patch Changes
 
-- [patch] [c20e926a6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c20e926a6c):
+- [patch][c20e926a6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c20e926a6c):
 
   ED-7971: fix deleting of nested task lists
 

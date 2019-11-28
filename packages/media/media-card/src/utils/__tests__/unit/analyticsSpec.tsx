@@ -97,11 +97,11 @@ describe('Media Analytics', () => {
   });
 
   it('should generate Media Card UI Analytics Context data', () => {
+    const fileStatus = 'processed';
     const metadata: FileDetails = {
       id: 'some-id',
       mediaType: 'video',
       size: 12345,
-      processingStatus: 'succeeded',
     };
 
     const expectedContextData = {
@@ -115,12 +115,12 @@ describe('Media Analytics', () => {
           fileMediatype: 'video',
           fileId: 'some-id',
           fileSize: 12345,
-          fileStatus: 'succeeded',
+          fileStatus: 'processed',
         },
       },
     };
 
-    const contextData = getUIAnalyticsContext('some-id', metadata);
+    const contextData = getUIAnalyticsContext('some-id', metadata, fileStatus);
     expect(contextData).toMatchObject(expectedContextData);
   });
 

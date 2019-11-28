@@ -10,6 +10,10 @@ The full list of components can be found in the [Atlaskit Registry][atlaskitregi
 
 **This project is bound by a [Code of Conduct][codeofconduct].**
 
+# Quick start for developing
+
+Please read [CONTRIBUTING.md][contributing_repo] under the **Development environment** section.
+
 # Installation and usage
 
 Atlaskit components and utilities are available as discrete npm packages.
@@ -83,7 +87,8 @@ Contribution is currently **only** available for Atlassian employees.
 
 We’re temporarily unable to grant contributor access to external developers.
 
-For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, [read the contribution guide on our website][contributing_site] to get started, and our [CONTRIBUTING.md][contributing_repo] for more details.
+For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, [read the contribution guide on our website][contributing_site] to get started,
+and read [CONTRIBUTING.md][contributing_repo] for information on how to get started developing in Atlaskit.
 
 ### Reporting issues
 

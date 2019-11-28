@@ -40,7 +40,7 @@
     "@atlaskit/theme": "^9.2.4",
     "@atlaskit/tooltip": "^15.1.1",
     "@types/uuid": "^3.4.4",
-    "perf-marks": "1.0.1",
+    "perf-marks": "^1.5.0",
     "tslib": "^1.9.3",
     "uuid": "^3.1.0"
   },
@@ -55,7 +55,7 @@
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/media-test-helpers": "^25.2.4",
     "@atlaskit/ssr": "^0.1.1",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "react-dom": "^16.8.0",
     "react-intl": "^2.6.0",
     "rxjs": "^5.5.0",

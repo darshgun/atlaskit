@@ -524,7 +524,10 @@ export default class Comment extends React.Component<Props, State> {
           providers={['emojiProvider', 'reactionsStore']}
           providerFactory={dataProviders}
           renderNode={({ emojiProvider, reactionsStore }) => {
-            if (!reactionsStore || !emojiProvider) {
+            if (
+              typeof emojiProvider === 'undefined' ||
+              typeof reactionsStore === 'undefined'
+            ) {
               return null;
             }
             return (

@@ -15,12 +15,19 @@ export interface ExpandDefinition {
   marks?: Array<BreakoutMarkDefinition>;
 }
 
+function getExpandAttrs(domNode: Node | string) {
+  const dom = domNode as HTMLElement;
+  return {
+    title: dom.getAttribute('data-title'),
+    __expanded: dom.getAttribute('data-expanded') === 'true',
+  };
+}
+
 export const expand: NodeSpec = {
   inline: false,
   group: 'block',
   content:
     '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | decisionList | taskList | table | blockCard | extension | unsupportedBlock)+',
-  defining: true,
   isolating: true,
   selectable: true,
   attrs: {
@@ -28,6 +35,11 @@ export const expand: NodeSpec = {
     __expanded: { default: true },
   },
   parseDOM: [
+    {
+      context: 'table//',
+      tag: 'div[data-node-type="expand"]',
+      getAttrs: getExpandAttrs,
+    },
     {
       context: 'expand//',
       tag: '[data-node-type="expand"]',
@@ -48,13 +60,7 @@ export const expand: NodeSpec = {
     },
     {
       tag: 'div[data-node-type="expand"]',
-      getAttrs: domNode => {
-        const dom = domNode as HTMLElement;
-        return {
-          title: dom.getAttribute('data-title'),
-          __expanded: dom.getAttribute('data-expanded') === 'true',
-        };
-      },
+      getAttrs: getExpandAttrs,
     },
   ],
   toDOM(node: PMNode) {

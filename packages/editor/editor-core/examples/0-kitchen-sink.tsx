@@ -7,8 +7,10 @@ import Button from '@atlaskit/button';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { ReactRenderer } from '@atlaskit/renderer';
 import { colors, AtlaskitThemeProvider } from '@atlaskit/theme';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import { extensionHandlers } from '@atlaskit/editor-test-helpers';
+import {
+  ProviderFactory,
+  combineExtensionProviders,
+} from '@atlaskit/editor-common';
 
 import enMessages from '../src/i18n/en';
 import languages from '../src/i18n/languages';
@@ -30,8 +32,11 @@ import KitchenSinkEditor from '../example-helpers/KitchenSinkEditor';
 import withSentry from '../example-helpers/withSentry';
 import FullWidthToggle from '../example-helpers/full-width-toggle';
 import { addGlobalEventEmitterListeners } from '@atlaskit/media-test-helpers';
+import { getXProductExtensionProvider } from '../example-helpers/fake-x-product-extensions';
 
 addGlobalEventEmitterListeners();
+
+const extensionProviders = [getXProductExtensionProvider()];
 
 const Container = styled.div`
   display: flex;
@@ -235,6 +240,9 @@ class FullPageRendererExample extends React.Component<Props, State> {
   private dataProviders = ProviderFactory.create({
     ...providers,
     mediaProvider,
+    extensionProvider: Promise.resolve(
+      combineExtensionProviders(extensionProviders),
+    ),
   });
 
   private inputRef?: HTMLTextAreaElement | null;
@@ -421,6 +429,7 @@ class FullPageRendererExample extends React.Component<Props, State> {
                           popupMountPoint={this.popupMountPoint || undefined}
                           onDocumentChanged={this.onDocumentChanged}
                           onDocumentValidated={this.onDocumentValidated}
+                          extensionProviders={extensionProviders}
                           primaryToolbarComponents={
                             <React.Fragment>
                               <LanguagePicker
@@ -456,7 +465,6 @@ class FullPageRendererExample extends React.Component<Props, State> {
                             document={this.state.adf}
                             adfStage="stage0"
                             dataProviders={this.dataProviders}
-                            extensionHandlers={extensionHandlers}
                             eventHandlers={this.legacyMediaEventHandlers()}
                             appearance={
                               this.state.appearance as Exclude<

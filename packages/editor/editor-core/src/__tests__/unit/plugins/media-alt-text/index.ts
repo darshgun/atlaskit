@@ -6,6 +6,7 @@ import {
   media,
   CreateEditorOptions,
   p,
+  Refs,
 } from '@atlaskit/editor-test-helpers';
 
 import { getFreshMediaProvider } from '../media/_utils';
@@ -17,6 +18,8 @@ import {
   closeMediaAltTextMenu,
 } from '../../../../plugins/media/pm-plugins/alt-text/commands';
 import { getPluginState } from '../../../../plugins/media/pm-plugins/alt-text';
+import { setGapCursorSelection } from '../../../../utils';
+import { Side } from '../../../../plugins/gap-cursor';
 
 describe('media alt text', () => {
   const createEditor = createEditorFactory<MediaEditorState>();
@@ -98,6 +101,77 @@ describe('media alt text', () => {
       openMediaAltTextMenu(view.state, view.dispatch);
 
       expect(getPluginState(view.state).isAltTextEditorOpen).toBeFalsy();
+    });
+  });
+
+  describe('when the selection change', () => {
+    let view: EditorView;
+    let refs: Refs;
+    const defaultDoc = doc(
+      '{<node>}',
+      mediaSingle({
+        layout: 'align-start',
+      })(
+        media({
+          id: 'abc',
+          type: 'file',
+          collection: 'xyz',
+        })(),
+      ),
+      p('Nothing {nextPos}here'),
+    );
+
+    beforeEach(() => {
+      const { editorView, refs: tmp } = editor(defaultDoc);
+      view = editorView;
+      refs = tmp;
+    });
+
+    it('should set isAltTextEditorOpen to false', () => {
+      getPluginState(view.state).isAltTextEditorOpen = true;
+
+      setGapCursorSelection(view, refs.nextPos, Side.RIGHT);
+
+      expect(getPluginState(view.state).isAltTextEditorOpen).toBeFalsy();
+    });
+
+    describe('to another media single', () => {
+      beforeEach(() => {
+        const { editorView, refs: tmp } = editor(
+          doc(
+            '{<node>}',
+            mediaSingle({
+              layout: 'align-start',
+            })(
+              media({
+                id: 'abc',
+                type: 'file',
+                collection: 'xyz',
+              })(),
+            ),
+            p('Nothing here'),
+            '{nextPos}',
+            mediaSingle({
+              layout: 'align-start',
+            })(
+              media({
+                id: 'cde',
+                type: 'file',
+                collection: 'xyz',
+              })(),
+            ),
+          ),
+        );
+        view = editorView;
+        refs = tmp;
+      });
+      it('should set isAltTextEditorOpen to false', () => {
+        getPluginState(view.state).isAltTextEditorOpen = true;
+
+        setGapCursorSelection(view, refs.nextPos, Side.RIGHT);
+
+        expect(getPluginState(view.state).isAltTextEditorOpen).toBeFalsy();
+      });
     });
   });
 });

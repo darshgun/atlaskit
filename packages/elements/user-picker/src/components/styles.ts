@@ -5,6 +5,7 @@ import { getAvatarSize } from './utils';
 
 export const BORDER_PADDING = 6;
 export const PLACEHOLDER_PADDING = 8;
+export const INDICATOR_WIDTH = 39;
 
 export const getStyles = memoizeOne((width: string | number) => ({
   menu: (css: any, state: any) => ({
@@ -12,47 +13,53 @@ export const getStyles = memoizeOne((width: string | number) => ({
     width,
     minWidth: state.selectProps.menuMinWidth,
   }),
-  control: (css: any, state: any) => ({
-    ...css,
-    width,
-    borderColor: state.isFocused
-      ? css.borderColor
-      : state.selectProps.subtle
-      ? 'transparent'
-      : colors.N40,
-    backgroundColor: state.isFocused
-      ? css['backgroundColor']
-      : state.selectProps.subtle
-      ? 'transparent'
-      : colors.N10,
-    '&:hover .fabric-user-picker__clear-indicator': { opacity: 1 },
-    ':hover': {
-      ...css[':hover'],
+  control: (css: any, state: any) => {
+    const isCompact = state.selectProps.appearance === 'compact';
+
+    return {
+      ...css,
+      width,
       borderColor: state.isFocused
-        ? css[':hover']
-          ? css[':hover'].borderColor
-          : colors.B100
+        ? css.borderColor
         : state.selectProps.subtle
-        ? state.selectProps.hoveringClearIndicator
-          ? colors.R50
-          : colors.N30
+        ? 'transparent'
         : colors.N40,
-      backgroundColor:
-        state.selectProps.subtle && state.selectProps.hoveringClearIndicator
-          ? colors.R50
-          : state.isFocused
+      backgroundColor: state.isFocused
+        ? css['backgroundColor']
+        : state.selectProps.subtle
+        ? 'transparent'
+        : colors.N10,
+      '&:hover .fabric-user-picker__clear-indicator': { opacity: 1 },
+      ':hover': {
+        ...css[':hover'],
+        borderColor: state.isFocused
           ? css[':hover']
-            ? css[':hover'].backgroundColor
-            : colors.N0
-          : state.isDisabled
-          ? colors.N10
-          : colors.N30,
-    },
-    padding: 0,
-    minHeight: state.selectProps.appearance === 'compact' ? 32 : 44,
-    alignItems: 'stretch',
-    maxWidth: '100%',
-  }),
+            ? css[':hover'].borderColor
+            : colors.B100
+          : state.selectProps.subtle
+          ? state.selectProps.hoveringClearIndicator
+            ? colors.R50
+            : colors.N30
+          : colors.N40,
+        backgroundColor:
+          state.selectProps.subtle && state.selectProps.hoveringClearIndicator
+            ? colors.R50
+            : state.isFocused
+            ? css[':hover']
+              ? css[':hover'].backgroundColor
+              : colors.N0
+            : state.isDisabled
+            ? colors.N10
+            : colors.N30,
+      },
+      padding: 0,
+      minHeight: isCompact ? 32 : 44,
+      /* IE 11 needs to set height explicitly to be vertical align when being in not compact mode */
+      height: isCompact ? '100%' : 44,
+      alignItems: 'stretch',
+      maxWidth: '100%',
+    };
+  },
   clearIndicator: ({
     paddingTop,
     paddingBottom,
@@ -103,6 +110,14 @@ export const getStyles = memoizeOne((width: string | number) => ({
   }),
   placeholder: (css: any, state: any) => {
     const avatarSize = getAvatarSize(state.selectProps.appearance);
+
+    // fix styling in IE 11: when the position is absolute and `left` prop is not defined,
+    // IE and other browsers auto calculate value of "left" prop differently,
+    // so we want to explicitly set value for the `left` property
+    if (css.position === 'absolute' && !css.left) {
+      css.left = `${BORDER_PADDING}px`;
+    }
+
     return {
       ...css,
       paddingLeft: !state.selectProps.isMulti
@@ -150,6 +165,19 @@ export const getPopupStyles = memoizeOne(
       ...css,
       display: flip ? 'flex' : 'block',
       flexDirection: 'column-reverse',
+    }),
+    // there is not any avatar on the left of the placeholder
+    placeholder: (css: any) => ({
+      ...css,
+      paddingLeft: PLACEHOLDER_PADDING,
+      paddingTop: 2,
+      paddingRight: INDICATOR_WIDTH,
+      display: 'block',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      maxWidth: '100%',
+      margin: 0,
     }),
   }),
 );

@@ -32,7 +32,7 @@
     "@atlaskit/field-text": "^9.0.13",
     "@atlaskit/lozenge": "^9.1.1",
     "@atlaskit/theme": "^9.2.4",
-    "@types/fetch-mock": "^6.0.3",
+    "@types/fetch-mock": "^7.3.1",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^7.3.3",
     "jest-fetch-mock": "^2.1.2"

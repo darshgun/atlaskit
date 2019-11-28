@@ -1,3 +1,5 @@
+import { version } from './version.json';
+
 type Padding = { top: number; right: number; bottom: number; left: number };
 
 export const defaultPadding = [32, 16, 32, 16];
@@ -32,5 +34,9 @@ export default abstract class WebBridge {
 
   reload(): void {
     window.location.reload();
+  }
+
+  currentVersion(): string {
+    return version;
   }
 }
