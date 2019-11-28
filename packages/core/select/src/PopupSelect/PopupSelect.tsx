@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import Select, { createFilter } from 'react-select';
+import Select from 'react-select';
 import createFocusTrap, { FocusTrap } from 'focus-trap';
 import { Manager, Reference, Popper, PopperProps } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
