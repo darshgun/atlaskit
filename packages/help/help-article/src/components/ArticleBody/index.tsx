@@ -91,7 +91,7 @@ export const ArticleBody = (props: Props) => {
                 if (newIframe !== null) {
                   const iframeDocument = newIframe.document;
                   iframeDocument.open();
-                  iframeDocument.write(body);
+                  iframeDocument.write(`<div>${body}</div>`);
                   iframeDocument.close();
 
                   const head =
