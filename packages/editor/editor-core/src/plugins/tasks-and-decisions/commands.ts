@@ -108,6 +108,8 @@ export const insertTaskDecision = (
   view: EditorView,
   listType: TaskDecisionListType,
   inputMethod: TOOLBAR_MENU_TYPE = INPUT_METHOD.TOOLBAR,
+  listLocalId?: string,
+  itemLocalId?: string,
 ): boolean => {
   const { state } = view;
   const { schema } = state;
@@ -157,6 +159,8 @@ export const insertTaskDecision = (
     inputMethod,
     addAndCreateList,
     addToList,
+    listLocalId,
+    itemLocalId,
   );
   if (tr) {
     view.dispatch(tr);

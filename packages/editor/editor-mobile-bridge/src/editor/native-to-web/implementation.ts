@@ -23,7 +23,7 @@ import {
   insertBlockTypesWithAnalytics,
   setBlockTypeWithAnalytics,
   createTable,
-  insertTaskDecisionWithAnalytics,
+  insertTaskDecision,
   changeColor,
   TypeAheadItem,
   selectItem as selectTypeAheadItem,
@@ -40,11 +40,10 @@ import {
   LinkInputMethod,
   ListInputMethod,
   TextFormattingInputMethodBasic,
-  TaskDecisionInputMethod,
 } from '@atlaskit/editor-core';
 import { EditorView } from 'prosemirror-view';
 import { EditorViewWithComposition } from '../../types';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState } from 'prosemirror-state';
 import {
   undo as pmHistoryUndo,
   redo as pmHistoryRedo,
@@ -356,27 +355,19 @@ export default class WebBridgeImpl extends WebBridge
         insertBlockTypesWithAnalytics('panel', inputMethod)(state, dispatch);
         return;
       case 'action':
-        insertTaskDecisionWithAnalytics(
-          state,
+        insertTaskDecision(
+          this.editorView,
           'taskList',
-          inputMethod as TaskDecisionInputMethod,
-          ({ tr }: { tr: Transaction }) => {
-            return tr;
-          },
-          undefined,
+          inputMethod as InsertBlockInputMethodToolbar,
           listLocalId,
           itemLocalId,
         );
         return;
       case 'decision':
-        insertTaskDecisionWithAnalytics(
-          state,
+        insertTaskDecision(
+          this.editorView,
           'decisionList',
-          inputMethod as TaskDecisionInputMethod,
-          ({ tr }: { tr: Transaction }) => {
-            return tr;
-          },
-          undefined,
+          inputMethod as InsertBlockInputMethodToolbar,
           listLocalId,
           itemLocalId,
         );
