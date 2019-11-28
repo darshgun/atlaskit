@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect } from 'react';
 import { render } from '@testing-library/react';
 import { useAnalyticsEvents } from '../../useAnalyticsEvents';
@@ -149,6 +150,14 @@ See: https://atlaskit.atlassian.com/packages/core/analytics-next/docs/reference#
         <Component />
       </AnalyticsListener>,
     );
+
+    expect(console.error).not.toHaveBeenCalled();
+  });
+
+  it('should not log anything in production builds', () => {
+    process.env.NODE_ENV = 'production';
+
+    render(<Component fire />);
 
     expect(console.error).not.toHaveBeenCalled();
   });

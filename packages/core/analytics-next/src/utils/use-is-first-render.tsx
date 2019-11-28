@@ -1,9 +1,9 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 export const useIsFirstRender = () => {
   const firstRender = useRef(true);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
     }
