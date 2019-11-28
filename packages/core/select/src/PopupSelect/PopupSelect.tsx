@@ -315,9 +315,6 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
       Control: showSearchControl ? mergedComponents.Control : DummyControl,
     };
 
-    // Prevent filtering when search control is hidden
-    const filterOption = !showSearchControl ? () => true : undefined;
-
     if (!portalDestination || !isOpen) return null;
 
     const popper = (
@@ -338,8 +335,8 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
                   tabSelectsValue={false}
                   menuIsOpen
                   ref={this.getSelectRef}
-                  filterOption={filterOption}
                   {...props}
+                  isSearchable={showSearchControl}
                   styles={{ ...defaultStyles, ...props.styles }}
                   maxMenuHeight={this.getMaxHeight()}
                   components={components}
