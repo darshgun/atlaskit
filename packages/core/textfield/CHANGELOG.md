@@ -1,5 +1,13 @@
 # @atlaskit/textfield
 
+## 3.1.3
+
+### Patch Changes
+
+- [patch][557a8e2451](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/557a8e2451):
+
+  Rebuilds package to fix typescript typing error.
+
 ## 3.1.2
 
 ### Patch Changes
