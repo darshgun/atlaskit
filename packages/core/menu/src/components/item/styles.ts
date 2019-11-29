@@ -11,7 +11,7 @@ import {
 } from '@atlaskit/theme/colors';
 import { headingSizes } from '@atlaskit/theme/typography';
 import { CSSObject } from '@emotion/core';
-import { Width } from './types';
+import { Width } from '../types';
 
 const gridSize = gridSizeFn();
 
@@ -213,28 +213,4 @@ export const itemSkeletonCSS = (
     borderRadius: 3,
     flexBasis: width || '100%',
   },
-});
-
-/* Item Group */
-export const menuGroupCSS = (maxHeight?: string | number): CSSObject => ({
-  display: 'flex',
-  flexDirection: 'column',
-  overflow: 'auto',
-  maxHeight,
-});
-
-export const sectionCSS = (
-  isScrollable?: boolean,
-  hasSeparator?: boolean,
-): CSSObject => ({
-  display: 'flex',
-  flexDirection: 'column',
-  marginTop: gridSize * 1.5,
-  ...(isScrollable
-    ? {
-        flexShrink: 1,
-        overflow: 'auto',
-      }
-    : { flexShrink: 0 }),
-  ...(hasSeparator && { borderTop: `2px solid ${N30}` }),
 });

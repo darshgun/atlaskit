@@ -25,7 +25,7 @@ export default () => {
         borderRadius: '4px',
       }}
     >
-      <MenuGroup maxHeight={700}>
+      <MenuGroup maxHeight={800}>
         <Section>
           <HeadingItem>Items with elemBefore and elemAfter</HeadingItem>
           <LinkItem
@@ -85,7 +85,7 @@ export default () => {
             Item
           </ButtonItem>
         </Section>
-        <Section>
+        <Section hasSeparator>
           <SkeletonHeadingItem />
           <SkeletonItem hasAvatar />
           <SkeletonItem hasAvatar />

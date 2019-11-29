@@ -5,6 +5,6 @@ export {
   HeadingItem,
   SkeletonItem,
   SkeletonHeadingItem,
-  MenuGroup,
-  Section,
-} from './components';
+} from './item';
+
+export { MenuGroup, Section } from './section';
