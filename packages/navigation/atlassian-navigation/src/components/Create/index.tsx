@@ -4,11 +4,14 @@ import Tooltip from '@atlaskit/tooltip';
 import { jsx } from '@emotion/core';
 import Button from '@atlaskit/button';
 import AddIcon from '@atlaskit/icon/glyph/add';
+import { gridSize } from '@atlaskit/theme/constants';
 
 import { useTheme } from '../../theme';
 import { IconButton } from '../IconButton';
 import { createButtonCSS, createIconCSS, getCreateButtonTheme } from './styles';
 import { CreateProps } from './types';
+
+const grid = gridSize();
 
 type TooltipSwitchProps = {
   buttonTooltip?: React.ReactNode;
@@ -36,6 +39,7 @@ export const Create = ({
       css={{
         display: 'flex',
         alignItems: 'center',
+        marginLeft: grid * 1.5,
       }}
     >
       <TooltipSwitch buttonTooltip={buttonTooltip}>
