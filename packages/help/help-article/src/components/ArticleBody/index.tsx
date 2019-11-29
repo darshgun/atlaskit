@@ -53,111 +53,103 @@ export const ArticleBody = (props: Props) => {
    * When the article content changes, update the content of the iframe and
    * resize the iframe based on the new content
    */
-  useEffect(
-    () => {
+  useEffect(() => {
+    /**
+     * Set iframe content
+     */
+
+    const setIframeContent = (
+      body: string = '',
+      onArticleRenderBegin?: () => void,
+    ) => {
       /**
-       * Set iframe content
+       * We update the content this way because we can't use srcdoc (Edge and IE don't support it)
+       * Every time the article content changes we replace the iframe with an empty div and right after the
+       * newly created div is rendered, we replace it with an iframe. Creating a new iframe allow us to
+       * fire the iframe's onload function (we need it to resize the iframe after all content is loaded).
+       * If we replace the content of the iframe directly, the onload function won't be fired
        */
 
-      const setIframeContent = (
-        body: string = '',
-        onArticleRenderBegin?: () => void,
-      ) => {
-        /**
-         * We update the content this way because we can't use srcdoc (Edge and IE don't support it)
-         * Every time the article content changes we replace the iframe with an empty div and right after the
-         * newly created div is rendered, we replace it with an iframe. Creating a new iframe allow us to
-         * fire the iframe's onload function (we need it to resize the iframe after all content is loaded).
-         * If we replace the content of the iframe directly, the onload function won't be fired
-         */
+      const currentIframe: HTMLIFrameElement | null = document.getElementById(
+        IFRAME_ID,
+      ) as HTMLIFrameElement;
 
-        const currentIframe: HTMLIFrameElement | null = document.getElementById(
-          IFRAME_ID,
-        ) as HTMLIFrameElement;
+      let divSyle: {
+        height: string;
+      } = {
+        height: 'auto',
+      };
 
-        let divSyle: {
-          height: string;
-        } = {
-          height: 'auto',
+      if (currentIframe !== null && currentIframe.contentWindow !== null) {
+        divSyle = {
+          height: `${currentIframe.contentWindow.document.body.scrollHeight}px`,
         };
+      }
 
-        if (currentIframe !== null && currentIframe.contentWindow !== null) {
-          divSyle = {
-            height: `${
-              currentIframe.contentWindow.document.body.scrollHeight
-            }px`,
-          };
-        }
+      ReactDOM.render(
+        <div style={divSyle} />,
+        document.getElementById(IFRAME_CONTAINER_ID),
+        () => {
+          ReactDOM.render(
+            <ArticleFrame
+              id={IFRAME_ID}
+              name={IFRAME_ID}
+              onLoad={() => {
+                resizeIframe(props.onArticleRenderDone);
+              }}
+              sandbox="allow-same-origin allow-popups"
+            />,
+            document.getElementById(IFRAME_CONTAINER_ID),
+            () => {
+              const iframeContainer: HTMLElement | null = document.getElementById(
+                IFRAME_CONTAINER_ID,
+              );
 
-        ReactDOM.render(
-          <div style={divSyle} />,
-          document.getElementById(IFRAME_CONTAINER_ID),
-          () => {
-            ReactDOM.render(
-              <ArticleFrame
-                id={IFRAME_ID}
-                name={IFRAME_ID}
-                onLoad={() => {
-                  resizeIframe(props.onArticleRenderDone);
-                }}
-                sandbox="allow-same-origin allow-popups"
-              />,
-              document.getElementById(IFRAME_CONTAINER_ID),
-              () => {
-                const iframeContainer: HTMLElement | null = document.getElementById(
-                  IFRAME_CONTAINER_ID,
-                );
+              if (iframeContainer) {
+                const newIframe: Window = (frames as { [key: string]: any })[
+                  IFRAME_ID
+                ] as Window;
 
-                if (iframeContainer) {
-                  const newIframe: Window = (frames as { [key: string]: any })[
-                    IFRAME_ID
-                  ] as Window;
+                if (newIframe !== null) {
+                  const iframeDocument = newIframe.document;
+                  iframeDocument.open();
+                  iframeDocument.write(`<div>${body}</div>`);
+                  iframeDocument.close();
 
-                  if (newIframe !== null) {
-                    const iframeDocument = newIframe.document;
-                    iframeDocument.open();
-                    iframeDocument.write(`<div>${body}</div>`);
-                    iframeDocument.close();
+                  const head =
+                    iframeDocument.head ||
+                    iframeDocument.getElementsByTagName('head')[0];
+                  const style = iframeDocument.createElement('style');
+                  style.innerText = resetCSS;
+                  head.appendChild(style);
 
-                    const head =
-                      iframeDocument.head ||
-                      iframeDocument.getElementsByTagName('head')[0];
-                    const style = iframeDocument.createElement('style');
-                    style.innerText = resetCSS;
-                    head.appendChild(style);
+                  resizeIframe();
 
-                    resizeIframe();
-
-                    if (onArticleRenderBegin) {
-                      onArticleRenderBegin();
-                    }
+                  if (onArticleRenderBegin) {
+                    onArticleRenderBegin();
                   }
                 }
-              },
-            );
-          },
-        );
-      };
+              }
+            },
+          );
+        },
+      );
+    };
 
-      setIframeContent(props.body, props.onArticleRenderBegin);
-    },
-    [props.body, props.onArticleRenderBegin, props.onArticleRenderDone],
-  );
+    setIframeContent(props.body, props.onArticleRenderBegin);
+  }, [props.body, props.onArticleRenderBegin, props.onArticleRenderDone]);
 
-  useEffect(
-    () => {
-      /**
-       * Resize the iframe when the browser window resizes
-       */
-      const onWindowResize = debounce(() => resizeIframe(), 500);
-      window.addEventListener('resize', onWindowResize);
+  useEffect(() => {
+    /**
+     * Resize the iframe when the browser window resizes
+     */
+    const onWindowResize = debounce(() => resizeIframe(), 500);
+    window.addEventListener('resize', onWindowResize);
 
-      return () => {
-        window.removeEventListener('resize', onWindowResize);
-      };
-    },
-    [props.onArticleRenderDone],
-  );
+    return () => {
+      window.removeEventListener('resize', onWindowResize);
+    };
+  }, [props.onArticleRenderDone]);
 
   return props.body ? <div id={IFRAME_CONTAINER_ID} /> : null;
 };

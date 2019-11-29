@@ -99,7 +99,7 @@ type AvailableProductDetails = Pick<
 >;
 
 export const AVAILABLE_PRODUCT_DATA_MAP: {
-  [productKey in WorklensProductType]: AvailableProductDetails
+  [productKey in WorklensProductType]: AvailableProductDetails;
 } = {
   [WorklensProductType.BITBUCKET]: {
     label: 'Bitbucket',
@@ -171,7 +171,7 @@ const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
 };
 
 export const TO_WORKLENS_PRODUCT_KEY: {
-  [Key in ProductKey]: WorklensProductType
+  [Key in ProductKey]: WorklensProductType;
 } = {
   [ProductKey.CONFLUENCE]: WorklensProductType.CONFLUENCE,
   [ProductKey.JIRA_CORE]: WorklensProductType.JIRA_BUSINESS,
