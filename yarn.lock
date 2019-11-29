@@ -21286,6 +21286,14 @@ prosemirror-markdown@^1.4.0:
     markdown-it "^10.0.0"
     prosemirror-model "^1.0.0"
 
+prosemirror-markdown@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.4.2.tgz#2507796cf316fe34308d409b38141d84bf4f74f4"
+  integrity sha512-dpWTMrJIkY4GPzsFYPCMXrgC14xprM3/9YuKvO9Qh+FtEGqrakealpFc/DnRljZj5hsQhlId8yLREcNTCHmAlw==
+  dependencies:
+    markdown-it "^10.0.0"
+    prosemirror-model "^1.0.0"
+
 prosemirror-model@>=1.0.0, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.7.0:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/prosemirror-model/-/prosemirror-model-1.7.1.tgz#f140a6e366e1e283aa7a94dbb8c2c7d13139689e"

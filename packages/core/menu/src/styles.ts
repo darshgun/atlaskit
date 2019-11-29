@@ -10,6 +10,7 @@ import {
   subtleText,
 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
+import { Width } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -142,20 +143,19 @@ export const itemHeadingCSS = {
   marginTop: gridSize,
 } as CSSObject;
 
-export const skeletonHeadingItemCSS = {
+export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   ...itemHeadingCSS,
   padding: gridSize / 2,
   '&::after': {
     backgroundColor: N20,
     height: gridSize * 1.75,
     margin: `${gridSize / 2}px 0`,
-    width: `calc(20% - ${gridSize / 2}px)`,
+    width: width || `calc(20% - ${gridSize / 2}px)`,
     borderRadius: 3,
     display: 'block',
     content: '""',
   },
-} as CSSObject;
-
+});
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
