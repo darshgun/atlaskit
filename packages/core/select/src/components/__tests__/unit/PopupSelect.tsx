@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, getByText } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { mount } from 'enzyme';
 
 import { PopupSelect, OptionsType } from '../../..';
@@ -99,7 +99,7 @@ describe('Popup Select', () => {
         target={({ ref }) => <button ref={ref}>Target</button>}
       />,
     );
-    const body = container.parentElement;
+    const body = container.parentElement as HTMLBodyElement;
     fireEvent.click(getByText('Target'));
     // popup renders in a portal outside the container
     const input = body.querySelector('input') as HTMLElement;
