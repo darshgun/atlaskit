@@ -9,7 +9,6 @@ import {
   SkeletonHeadingItem,
 } from '../src';
 
-// Temporarily imported from here until all components are ready.
 import StarIcon from '@atlaskit/icon/glyph/star';
 import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';

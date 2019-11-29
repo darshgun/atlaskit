@@ -138,11 +138,11 @@ export const customItemCSS = (
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
-  ...headingSizes.h200,
+  fontSize: headingSizes.h200.size,
+  lineHeight: `${headingSizes.h200.lineHeight}px`,
   color: subtleHeading(),
   marginTop: gridSize,
   marginBottom: 6,
-  lineHeight: '16px',
   padding: `0 ${gridSize * 2.5}px`,
 } as CSSObject;
 

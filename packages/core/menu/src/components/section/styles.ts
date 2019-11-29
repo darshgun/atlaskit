@@ -17,6 +17,9 @@ export const sectionCSS = (
   display: 'flex',
   flexDirection: 'column',
   marginTop: gridSize * 1.5,
+  '&:first-of-type': {
+    marginTop: 0,
+  },
   ...(isScrollable
     ? {
         flexShrink: 1,
