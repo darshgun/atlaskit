@@ -66,7 +66,6 @@ export const HELP_MSG = `
 
   ${chalk.green('Examples')}
     ${chalk.yellow('branch-deploy-product-integrator foo abcdef123456 --productCiPlanUrl https://bamboo.atlassian.com/rest/api/latest/plan/ABC-DEF')}
-
 `;
 
 function createBranchName(atlaskitBranchName: string, prefix: string) {
@@ -151,10 +150,12 @@ export async function push(
     dryRun,
   });
 
-  const commitInfo = await (await fetch(
-    `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/commit/${atlaskitCommitHash}`,
-    {},
-  )).json();
+  const commitInfo = await (
+    await fetch(
+      `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/commit/${atlaskitCommitHash}`,
+      {},
+    )
+  ).json();
   const emailRegex = /^.*<([A-z]+@atlassian.com)>$/;
 
   let authorEmail = 'no-reply@atlassian.com';
