@@ -235,7 +235,18 @@ const PrimaryDropdown = (props: PrimaryDropdownProps) => {
 };
 
 const primaryItems = [
-  <PrimaryButton href="#">Home</PrimaryButton>,
+  <PrimaryButton
+    href="http://www.atlassian.com"
+    onClick={e => {
+      if (e.ctrlKey || e.metaKey) {
+        return;
+      }
+      e.preventDefault();
+      console.log('onClick fired');
+    }}
+  >
+    Home
+  </PrimaryButton>,
   <PrimaryDropdown content={ProjectsContent} text="Projects" />,
   <PrimaryDropdown
     isHighlighted
