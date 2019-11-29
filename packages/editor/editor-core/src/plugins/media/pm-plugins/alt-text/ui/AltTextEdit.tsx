@@ -67,7 +67,6 @@ type Props = {
 
 export type AltTextEditComponentState = {
   showClearTextButton: boolean;
-  value?: string;
 };
 
 export class AltTextEditComponent extends React.Component<
@@ -76,7 +75,6 @@ export class AltTextEditComponent extends React.Component<
 > {
   state = {
     showClearTextButton: Boolean(this.props.value),
-    value: this.props.value,
   };
 
   prevValue: string | undefined;
