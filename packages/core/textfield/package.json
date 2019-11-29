@@ -23,7 +23,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-next": "^6.3.1",
-    "@atlaskit/theme": "^9.2.4",
+    "@atlaskit/theme": "^9.2.8",
     "@emotion/core": "^10.0.9",
     "tslib": "^1.9.3"
   },

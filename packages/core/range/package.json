@@ -21,7 +21,7 @@
     "team": "core"
   },
   "dependencies": {
-    "@atlaskit/theme": "^9.2.4",
+    "@atlaskit/theme": "^9.2.8",
     "@babel/runtime": "^7.0.0"
   },
   "peerDependencies": {
