@@ -14,41 +14,35 @@ export interface Props {
 }
 
 const IFRAME_CONTAINER_ID = 'help-iframe-container';
+const IFRAME_ID = 'help-iframe';
 
 export const ArticleBody = (props: Props) => {
   /**
    * Set article height
    */
   const resizeIframe = (onArticleRenderDone?: () => void) => {
-    const iframeContainer: HTMLElement | null = document.getElementById(
-      IFRAME_CONTAINER_ID,
-    );
+    const currentIframe: HTMLIFrameElement | null = document.getElementById(
+      IFRAME_ID,
+    ) as HTMLIFrameElement;
 
-    if (iframeContainer) {
-      const currentIframe: HTMLIFrameElement | null = iframeContainer.getElementsByTagName(
-        'iframe',
-      )[0];
+    if (!currentIframe) {
+      return;
+    }
 
-      if (!currentIframe) {
-        return;
-      }
-
-      if (currentIframe !== null && currentIframe.contentWindow !== null) {
-        if (currentIframe.contentWindow.document.body) {
-          //
-          const iframeContent: Element | null =
-            currentIframe.contentWindow.document.body.firstElementChild;
-          /* if the iframe has content, set the height of the iframe body
+    if (currentIframe !== null && currentIframe.contentWindow !== null) {
+      if (currentIframe.contentWindow.document.body) {
+        const iframeContent: Element | null =
+          currentIframe.contentWindow.document.body.firstElementChild;
+        /* if the iframe has content, set the height of the iframe body
            and of the iframe itself */
-          if (iframeContent) {
-            const contentHeight: number = iframeContent.scrollHeight;
-            currentIframe.style.height = contentHeight + 10 + 'px';
-            currentIframe.contentWindow.document.body.style.height =
-              contentHeight + 'px';
+        if (iframeContent) {
+          const contentHeight: number = iframeContent.scrollHeight;
+          currentIframe.style.height = contentHeight + 10 + 'px';
+          currentIframe.contentWindow.document.body.style.height =
+            contentHeight + 'px';
 
-            if (onArticleRenderDone) {
-              onArticleRenderDone();
-            }
+          if (onArticleRenderDone) {
+            onArticleRenderDone();
           }
         }
       }
@@ -63,18 +57,43 @@ export const ArticleBody = (props: Props) => {
     /**
      * Set iframe content
      */
+
     const setIframeContent = (
       body: string = '',
       onArticleRenderBegin?: () => void,
     ) => {
+      /**
+       * We update the content this way because we can't use srcdoc (Edge and IE don't support it)
+       * Every time the article content changes we replace the iframe with an empty div and right after the
+       * newly created div is rendered, we replace it with an iframe. Creating a new iframe allow us to
+       * fire the iframe's onload function (we need it to resize the iframe after all content is loaded).
+       * If we replace the content of the iframe directly, the onload function won't be fired
+       */
+
+      const currentIframe: HTMLIFrameElement | null = document.getElementById(
+        IFRAME_ID,
+      ) as HTMLIFrameElement;
+
+      let divSyle: {
+        height: string;
+      } = {
+        height: 'auto',
+      };
+
+      if (currentIframe !== null && currentIframe.contentWindow !== null) {
+        divSyle = {
+          height: `${currentIframe.contentWindow.document.body.scrollHeight}px`,
+        };
+      }
+
       ReactDOM.render(
-        <div></div>,
+        <div style={divSyle}></div>,
         document.getElementById(IFRAME_CONTAINER_ID),
         () => {
           ReactDOM.render(
             <ArticleFrame
-              id="help-iframe"
-              name="help-iframe"
+              id={IFRAME_ID}
+              name={IFRAME_ID}
               onLoad={() => {
                 resizeIframe(props.onArticleRenderDone);
               }}
@@ -88,7 +107,7 @@ export const ArticleBody = (props: Props) => {
 
               if (iframeContainer) {
                 const newIframe: Window = (frames as { [key: string]: any })[
-                  'help-iframe'
+                  IFRAME_ID
                 ] as Window;
 
                 if (newIframe !== null) {
