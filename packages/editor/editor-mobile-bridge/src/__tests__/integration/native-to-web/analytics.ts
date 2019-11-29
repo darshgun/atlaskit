@@ -208,8 +208,9 @@ BrowserTestCase(
       'onBulletListSelected',
       INPUT_METHOD.TOOLBAR,
     );
+    await browser.type(editor.placeholder, 'lol');
+    await browser.keys(['Enter']);
     await clearBridgeOutput(browser);
-    await callNativeBridge(browser, 'onOutdentList', INPUT_METHOD.TOOLBAR);
     await callNativeBridge(browser, 'onIndentList', INPUT_METHOD.TOOLBAR);
     await expectTrackEventsToMatchCustomSnapshot(browser, testName);
   },
