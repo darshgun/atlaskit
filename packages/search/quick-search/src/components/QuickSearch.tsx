@@ -1,4 +1,5 @@
 import * as React from 'react';
+import keycode from 'keycode';
 // @ts-ignore
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import { ResultData, SelectedResultId, ResultId } from './Results/types';
@@ -352,13 +353,15 @@ export class QuickSearch extends React.Component<Props, State> {
 
     this.lastKeyPressed = event.key;
 
-    if (event.key === 'ArrowUp') {
+    // Need to check for keyCode for up/down/enter in case user is composing using an IME
+    // fixes https://ecosystem.atlassian.net/browse/DS-6518
+    if (event.key === 'ArrowUp' && event.keyCode === keycode('up')) {
       event.preventDefault(); // Don't move cursor around in search input field
       this.selectPrevious();
-    } else if (event.key === 'ArrowDown') {
+    } else if (event.key === 'ArrowDown' && event.keyCode === keycode('down')) {
       event.preventDefault(); // Don't move cursor around in search input field
       this.selectNext();
-    } else if (event.key === 'Enter') {
+    } else if (event.key === 'Enter' && event.keyCode === keycode('enter')) {
       // shift key pressed or no result selected
       if (event.shiftKey || !this.state.selectedResultId) {
         if (firePrivateAnalyticsEvent) {

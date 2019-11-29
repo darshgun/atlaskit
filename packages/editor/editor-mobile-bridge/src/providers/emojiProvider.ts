@@ -1,6 +1,6 @@
 import { EmojiResource, EmojiResourceConfig } from '@atlaskit/emoji/resource';
 import { createPromise } from '../cross-platform-promise';
-import { ElementsConfig } from '../types';
+import { GetConfigPayload } from '../types';
 import { mockFetchFor } from './utils';
 
 /**
@@ -10,7 +10,7 @@ import { mockFetchFor } from './utils';
  * Note:
  * Currently, the user must be authenticated to resolve the elements config.
  */
-const elementsConfigPromise = createPromise<ElementsConfig>('getConfig');
+const elementsConfigPromise = createPromise('getConfig');
 
 function createEmojiProvider() {
   return elementsConfigPromise
@@ -43,7 +43,7 @@ function createEmojiProvider() {
 }
 
 function createEmojiConfig(
-  elementsConfig?: ElementsConfig,
+  elementsConfig?: GetConfigPayload,
 ): EmojiResourceConfig {
   const providers: { url: string }[] = [];
 

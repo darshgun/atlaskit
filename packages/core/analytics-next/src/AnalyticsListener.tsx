@@ -17,6 +17,8 @@ const ContextTypes = {
   getAtlaskitAnalyticsEventHandlers: PropTypes.func,
 };
 
+const noop = () => [];
+
 class AnalyticsListener extends Component<Props> {
   static contextTypes = ContextTypes;
   static childContextTypes = ContextTypes;
@@ -42,7 +44,7 @@ class AnalyticsListener extends Component<Props> {
   };
 
   render() {
-    const { getAtlaskitAnalyticsContext = () => [] } = this.context;
+    const { getAtlaskitAnalyticsContext = noop } = this.context;
     const { children } = this.props;
     return (
       <AnalyticsReactContext.Provider
