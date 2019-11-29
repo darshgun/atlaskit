@@ -38,6 +38,8 @@ type IPipelines = {
 }
 */
 
+const { BITBUCKET_REPO_FULL_NAME } = process.env;
+
 /* This function computes build time if build.duration_in_seconds returns 0, it is often applicable for 1 step build.
  * The Bitbucket computation is simple, they sum the longest step time with the shortest one.
  */
@@ -118,7 +120,7 @@ async function getPipelinesBuildEvents(
   buildId /*: string */,
 ) /*: Promise<IBuildEventProperties> */ {
   let payload /*: $Shape<IBuildEventProperties> */ = {};
-  const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}`;
+  const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}`;
   try {
     const res = await axios.get(apiEndpoint);
     const build = res.data;
@@ -174,7 +176,7 @@ async function getStepsEvents(
   buildId /*: string*/,
   buildType /*:? string */,
 ) /* IStepsDataType */ {
-  const url = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}/steps/`;
+  const url = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}/steps/`;
   try {
     const resp = await axios.get(url);
     return Promise.all(
@@ -241,7 +243,7 @@ async function getStepNamePerBuildType(buildId /*: string */) {
       fs.readFileSync('bitbucket-pipelines.yml', 'utf8'),
     );
     const indentedJson = JSON.parse(JSON.stringify(config, null, 4));
-    const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}`;
+    const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}`;
     const res = await axios.get(apiEndpoint);
     const buildType = res.data.target.selector.type || 'default';
     const buildName =
@@ -265,7 +267,7 @@ async function getStepNamePerBuildType(buildId /*: string */) {
 /* This function the final step payload when a build with parallel step is running in Bitbucket.*/
 // eslint-disable-next-line consistent-return
 async function getStepEvents(buildId /*: string*/) {
-  const stepsUrl = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}/steps/`;
+  const stepsUrl = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}/steps/`;
   try {
     const stepPayload = await getStepNamePerBuildType(buildId);
     const res = await axios.get(stepsUrl);

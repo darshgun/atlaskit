@@ -23,6 +23,8 @@ const packages = [
 const APP_USER = process.env.i18n_PR_BOT_USERNAME || '';
 const APP_KEY = process.env.i18n_PR_BOT_ACCESS || '';
 
+const { BITBUCKET_REPO_FULL_NAME } = process.env;
+
 const push = async ({ packagePath }) => {
   try {
     await spawn('yarn', ['--cwd', packagePath, 'i18n:push']);
@@ -117,7 +119,7 @@ async function createPullRequest(
   };
 
   await fetch(
-    'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pullrequests',
+    `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pullrequests`,
     {
       method: 'POST',
       headers: {

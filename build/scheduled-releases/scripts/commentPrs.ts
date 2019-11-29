@@ -62,11 +62,15 @@ const defaultOpts = {
  */
 export default async function main(
   commitHash: string,
-  repoFullName: string = 'atlassian/atlaskit-mk-2',
+  repoFullName: string = BITBUCKET_REPO_FULL_NAME,
   userOpts: Partial<Opts> = {},
 ) {
   const opts: Opts = { ...defaultOpts, ...userOpts };
-  const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
+  const {
+    BITBUCKET_USER,
+    BITBUCKET_PASSWORD,
+    BITBUCKET_REPO_FULL_NAME,
+  } = process.env;
   if (!BITBUCKET_USER || !BITBUCKET_PASSWORD) {
     throw Error(
       '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables not set',
