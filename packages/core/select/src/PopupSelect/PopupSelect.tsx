@@ -54,7 +54,7 @@ export interface PopupSelectProps<Option = OptionType>
   footer?: ReactNode;
   popperProps?: PopperPropsNoChildren;
   searchThreshold?: number;
-  target: (options: { ref: any; isOpen: boolean }) => ReactNode;
+  target?: (options: { ref: any; isOpen: boolean }) => ReactNode;
 }
 
 interface State {
@@ -105,7 +105,10 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
     options: [],
   };
 
-  getDerivedStateFromProps(props: PopupSelectProps<Option>, state: State) {
+  static getDerivedStateFromProps(
+    props: PopupSelectProps<OptionType>,
+    state: State,
+  ) {
     const newState: Partial<State> = {};
 
     // Merge consumer and default popper props
@@ -361,7 +364,9 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
     return (
       <Manager>
         <Reference>
-          {({ ref }) => target({ ref: this.resolveTargetRef(ref), isOpen })}
+          {({ ref }) =>
+            target && target({ ref: this.resolveTargetRef(ref), isOpen })
+          }
         </Reference>
         {this.renderSelect()}
       </Manager>

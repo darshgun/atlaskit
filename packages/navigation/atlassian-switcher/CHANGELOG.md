@@ -1,5 +1,21 @@
 # @atlaskit/atlassian-switcher
 
+## 4.8.2
+
+### Patch Changes
+
+- [patch][a5dd2b0188](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5dd2b0188):
+
+  Fixed href for jira products and replaced `products` key with `users` for JoinableSite
+
+## 4.8.1
+
+### Patch Changes
+
+- [patch][3478b25562](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3478b25562):
+
+  moved Join section above Discover section
+
 ## 4.8.0
 
 ### Minor Changes

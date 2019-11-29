@@ -40,7 +40,7 @@ type DefaultContentProps = {
 };
 
 export const DefaultContent = styled.div<DefaultContentProps>`
-  height: ${props => (props.isArticleVisible ? '100%' : 'auto')};
+  display: ${props => (props.isArticleVisible ? 'none' : 'block')};
   overflow: auto;
 `;
 

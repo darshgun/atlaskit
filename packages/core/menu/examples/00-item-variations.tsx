@@ -1,13 +1,23 @@
 import React from 'react';
+import { HashRouter, Link } from 'react-router-dom';
+import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
+import StarIcon from '@atlaskit/icon/glyph/star';
+
 import {
   ButtonItem,
   LinkItem,
+  CustomItem,
   HeadingItem,
   SkeletonItem,
   SkeletonHeadingItem,
 } from '../src';
-import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
-import StarIcon from '@atlaskit/icon/glyph/star';
+
+const CustomComponent = ({
+  wrapperClass,
+  ...rest
+}: {
+  wrapperClass: string;
+}) => <Link to="/my-route" className={wrapperClass} {...rest} />;
 
 const ItemVariants = () => {
   return (
@@ -21,18 +31,41 @@ const ItemVariants = () => {
         With elemAfter prop
       </ButtonItem>
       <ButtonItem
-        elemBefore={<EmojiCustomIcon label="Icon before" />}
-        elemAfter={<StarIcon label="Icon after" />}
+        elemBefore={<EmojiCustomIcon label="icon before" />}
+        elemAfter={<StarIcon label="icon after" />}
       >
         With both elemAfter and elemBefore prop
       </ButtonItem>
       <ButtonItem isDisabled>Disabled Item</ButtonItem>
+      <ButtonItem isSelected>Selected Item</ButtonItem>
       <ButtonItem description="Some textual description">
-        Disabled Item
+        Item with description
       </ButtonItem>
       <LinkItem href="//www.atlassian.com">
         Link item that takes you to atlassian home page
       </LinkItem>
+      <LinkItem href="//www.atlassian.com" isSelected>
+        Selected Link Item
+      </LinkItem>
+      <CustomItem
+        isDisabled
+        component={({ wrapperClass }: { wrapperClass: string }) => (
+          <em className={wrapperClass} tabIndex={0}>
+            Disabled custom element using em tag
+          </em>
+        )}
+      />
+      <HashRouter>
+        <CustomItem
+          component={(props: any) => <CustomComponent {...props} />}
+          description="some custom text"
+          isSelected
+          elemAfter={<StarIcon label="icon after" />}
+          elemBefore={<EmojiCustomIcon label="icon before" />}
+        >
+          I'm a react-router link rendered using CustomItem
+        </CustomItem>
+      </HashRouter>
       <SkeletonHeadingItem />
       <SkeletonItem />
       <SkeletonItem hasAvatar />

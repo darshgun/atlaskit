@@ -7,8 +7,10 @@ import {
   N20,
   N30,
   subtleHeading,
+  subtleText,
 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
+import { Width } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -20,6 +22,9 @@ const buttonOverrides = {
 const anchorOverrides = {
   color: 'currentColor',
 };
+const customItemOverrides = {
+  color: 'currentColor',
+};
 
 const disabledStyles = {
   cursor: 'not-allowed',
@@ -29,7 +34,16 @@ const disabledStyles = {
   },
 };
 
-const baseItemCSS = (isDisabled: boolean): CSSObject => ({
+const selectedStyles = {
+  color: N800,
+  backgroundColor: N20,
+  textDecoration: 'none',
+};
+
+const baseItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
   padding: `${gridSize}px ${gridSize * 1.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
@@ -53,12 +67,16 @@ const baseItemCSS = (isDisabled: boolean): CSSObject => ({
   '::-moz-focus-inner': {
     border: 0,
   },
+  ...(isSelected && selectedStyles),
   ...(isDisabled && disabledStyles),
 });
 
-export const itemCSS = (isDisabled: boolean): CSSObject => ({
+export const itemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
   ...buttonOverrides,
-  ...baseItemCSS(isDisabled),
+  ...baseItemCSS(isDisabled, isSelected),
 });
 
 /* Item subcomponents */
@@ -91,7 +109,7 @@ export const elemAfterCSS = {
 };
 export const descriptionCSS = {
   textAlign: 'left',
-  color: '#343434',
+  color: subtleText(),
   fontSize: fontSizeSmall(),
 } as CSSObject;
 export const contentCSSWrapper = {
@@ -100,9 +118,20 @@ export const contentCSSWrapper = {
 };
 
 /* Item variations */
-export const linkItemCSS = (isDisabled: boolean): CSSObject => ({
+export const linkItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
   ...anchorOverrides,
-  ...baseItemCSS(isDisabled),
+  ...baseItemCSS(isDisabled, isSelected),
+});
+
+export const customItemCSS = (
+  isDisabled?: boolean,
+  isSelected?: boolean,
+): CSSObject => ({
+  ...customItemOverrides,
+  ...baseItemCSS(isDisabled, isSelected),
 });
 
 export const itemHeadingCSS = {
@@ -114,26 +143,25 @@ export const itemHeadingCSS = {
   marginTop: gridSize,
 } as CSSObject;
 
-export const skeletonHeadingItemCSS = {
+export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   ...itemHeadingCSS,
   padding: gridSize / 2,
   '&::after': {
     backgroundColor: N20,
     height: gridSize * 1.75,
     margin: `${gridSize / 2}px 0`,
-    width: `calc(20% - ${gridSize / 2}px)`,
+    width: width || `calc(20% - ${gridSize / 2}px)`,
     borderRadius: 3,
     display: 'block',
     content: '""',
   },
-} as CSSObject;
-
+});
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
   width?: string | number,
 ): CSSObject => ({
-  ...itemCSS(false),
+  ...itemCSS(false, false),
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',

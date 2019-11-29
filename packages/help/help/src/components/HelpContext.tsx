@@ -66,6 +66,7 @@ export interface State {
   articleId: string;
   history: HistoryItem[]; // holds all the articles ID the user has navigated
   hasNavigatedToDefaultContent: boolean;
+  articleFullyVisible: boolean; // This will true only if an article 100% visible, that means, after the open animation and before close animation
   // Search
   searchValue: string;
   searchResult: ArticleItem[];
@@ -80,6 +81,7 @@ export interface HelpContextInterface {
     isFooter(): boolean;
     isSearchVisible(): boolean;
     loadArticle(id?: string): void;
+    setArticleFullyVisible(isVisible: boolean): void;
     isArticleVisible(): boolean;
     getCurrentArticle(): HistoryItem | undefined;
     articleIdSetter?(id: string): void;
@@ -110,6 +112,7 @@ export interface HelpContextInterface {
     searchState: REQUEST_STATE;
     searchValue: string;
     articleId?: string;
+    articleFullyVisible: boolean;
   };
 }
 
@@ -121,6 +124,7 @@ const defaultValues = {
   articleId: '',
   history: [], // holds all the articles ID the user has navigated
   hasNavigatedToDefaultContent: false,
+  articleFullyVisible: false,
   // Search values
   searchValue: '',
   searchResult: [],
@@ -382,6 +386,10 @@ class HelpContextProviderImplementation extends React.Component<
     return false;
   };
 
+  setArticleFullyVisible = (isVisible: boolean): void => {
+    this.setState({ articleFullyVisible: isVisible });
+  };
+
   isArticleVisible = (): boolean => {
     return (
       (this.state.view === VIEW.ARTICLE ||
@@ -397,7 +405,7 @@ class HelpContextProviderImplementation extends React.Component<
 
   isDefaultContent = (): boolean => {
     return (
-      this.state.defaultContent !== undefined ||
+      this.state.defaultContent !== undefined &&
       this.state.defaultContent !== null
     );
   };
@@ -421,6 +429,7 @@ class HelpContextProviderImplementation extends React.Component<
             isFooter: this.isFooter,
             isDefaultContent: this.isDefaultContent,
             isSearchVisible: this.isSearchVisible,
+            setArticleFullyVisible: this.setArticleFullyVisible,
             isArticleVisible: this.isArticleVisible,
             navigateBack: this.navigateBack,
             articleIdSetter: this.props.articleIdSetter,
@@ -435,6 +444,7 @@ class HelpContextProviderImplementation extends React.Component<
             footer: this.props.footer,
             defaultContent: this.props.defaultContent,
             articleId: this.state.articleId,
+            articleFullyVisible: this.state.articleFullyVisible,
           },
         }}
         children={this.props.children}
