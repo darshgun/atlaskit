@@ -70,7 +70,7 @@ export const isHighlightedCSS = (
       left: gridSize / 2,
       right: gridSize / 2,
       content: '""',
-      height: gridSize / 2,
+      height: 3,
       backgroundColor: primaryButton.selected.color,
       borderTopLeftRadius: 1,
       borderTopRightRadius: 1,
