@@ -247,8 +247,10 @@ pipelines:
       - step:
           image: node:10
           script:
+            - source ./build-setup.sh
             - curl -sSL https://download.sourceclear.com/ci.sh | bash
           after-script:
+            - bolt install --frozen-lockfile
             - yarn send:buildEvents
 
     # This will run the full suite of the webdriver tests on Browserstack.
