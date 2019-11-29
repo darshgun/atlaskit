@@ -2,4 +2,4 @@
 '@atlaskit/select': patch
 ---
 
-Added isSearchable prop to PopupSelect
+Disabled text entry into search filter when filter is hidden
