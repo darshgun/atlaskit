@@ -71,7 +71,6 @@ const ContainerStyles = css<StyleProps>`
 
   transition: background 0.3s ${akEditorSwoopCubicBezier};
   padding: ${gridSize}px;
-  cursor: pointer;
 
   &:hover {
     border: 1px solid ${colors.N50A};
