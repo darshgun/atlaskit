@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
-import EnteringMotion from '../../../entering/motion';
+import KeyframesMotion from '../../../entering/keyframes-motion';
 import ExitingPersistence from '../../../entering/exiting-persistence';
 import StaggeredEntrance from '../../../entering/staggered-entrance';
 
 jest.mock('../../../utils/accessibility');
 
-describe('<EnteringMotion />', () => {
+describe('<KeyframesMotion />', () => {
   const duration = 500;
 
   beforeEach(() => {
@@ -17,14 +17,14 @@ describe('<EnteringMotion />', () => {
     jest.useFakeTimers();
     const callback = jest.fn();
     render(
-      <EnteringMotion
+      <KeyframesMotion
         animationTimingFunction={() => 'linear'}
         duration={duration}
         enteringAnimation={{}}
         onFinish={callback}
       >
         {props => <div {...props} />}
-      </EnteringMotion>,
+      </KeyframesMotion>,
     );
 
     jest.runTimersToTime(duration);
@@ -38,21 +38,21 @@ describe('<EnteringMotion />', () => {
     const callback = jest.fn();
     render(
       <StaggeredEntrance delayStep={step} columns={1}>
-        <EnteringMotion
+        <KeyframesMotion
           animationTimingFunction={() => 'linear'}
           duration={duration}
           enteringAnimation={{}}
         >
           {props => <div {...props} />}
-        </EnteringMotion>
-        <EnteringMotion
+        </KeyframesMotion>
+        <KeyframesMotion
           animationTimingFunction={() => 'linear'}
           duration={duration}
           enteringAnimation={{}}
           onFinish={callback}
         >
           {props => <div {...props} />}
-        </EnteringMotion>
+        </KeyframesMotion>
       </StaggeredEntrance>,
     );
 
@@ -67,14 +67,14 @@ describe('<EnteringMotion />', () => {
     const callback = jest.fn();
     const { rerender } = render(
       <ExitingPersistence>
-        <EnteringMotion
+        <KeyframesMotion
           animationTimingFunction={() => 'linear'}
           duration={duration}
           enteringAnimation={{}}
           onFinish={callback}
         >
           {props => <div {...props} />}
-        </EnteringMotion>
+        </KeyframesMotion>
       </ExitingPersistence>,
     );
     jest.runAllTimers();
@@ -90,14 +90,14 @@ describe('<EnteringMotion />', () => {
     const callback = jest.fn();
     const { rerender } = render(
       <ExitingPersistence>
-        <EnteringMotion
+        <KeyframesMotion
           animationTimingFunction={() => 'linear'}
           duration={duration}
           enteringAnimation={{}}
           onFinish={callback}
         >
           {props => <div {...props} />}
-        </EnteringMotion>
+        </KeyframesMotion>
       </ExitingPersistence>,
     );
     jest.runAllTimers();
@@ -114,7 +114,7 @@ describe('<EnteringMotion />', () => {
     const callback = jest.fn();
     render(
       <ExitingPersistence>
-        <EnteringMotion
+        <KeyframesMotion
           animationTimingFunction={() => 'linear'}
           duration={duration}
           enteringAnimation={{}}
@@ -122,7 +122,7 @@ describe('<EnteringMotion />', () => {
           isPaused
         >
           {props => <div {...props} />}
-        </EnteringMotion>
+        </KeyframesMotion>
       </ExitingPersistence>,
     );
     jest.runAllTimers();

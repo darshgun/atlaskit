@@ -11,7 +11,7 @@ export type Direction = 'entering' | 'exiting';
  * These are props that motions should use as their external props for consumers.
  * See [FadeIn](packages/helpers/motion/src/entering/fade-in.tsx) for an example usage.
  */
-export interface EnteringMotionProps {
+export interface KeyframesMotionProps {
   /**
    * Duration in `ms`.
    * How long the motion will take.
@@ -41,7 +41,7 @@ export interface EnteringMotionProps {
   ) => JSX.Element;
 }
 
-interface InternalEnteringMotionProps extends EnteringMotionProps {
+interface InternalKeyframesMotionProps extends KeyframesMotionProps {
   /**
    * Timing function to be used with the animation.
    * Receives the `direction` and expects a `string` return value.
@@ -77,11 +77,16 @@ interface InternalEnteringMotionProps extends EnteringMotionProps {
 }
 
 /**
+ * Used to multipy the initial duration for exiting motions.
+ */
+const EXITING_MOTION_MULTIPLIER = 0.5;
+
+/**
  * This is the base INTERNAL component used for all other entering motions.
  * This does not need Javascript to execute on the client so it will run immediately
  * for any SSR rendered React apps before the JS has executed.
  */
-const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
+const EnteringMotion: React.FC<InternalKeyframesMotionProps> = ({
   children,
   animationTimingFunction,
   enteringAnimation,
@@ -89,14 +94,20 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
   isPaused,
   onFinish: onFinishMotion,
   duration = largeDurationMs,
-}: InternalEnteringMotionProps) => {
+}: InternalKeyframesMotionProps) => {
   const staggered = useStaggeredEntrance();
-  const { isExiting, onFinish: onExitFinished } = useExitingPersistence();
+  const {
+    isExiting,
+    onFinish: onExitFinished,
+    appear,
+  } = useExitingPersistence();
+  const paused = isPaused || !staggered.isReady;
   const delay = isExiting ? 0 : staggered.delay;
   const direction = isExiting ? 'exiting' : 'entering';
+  const actualDuration = appear === false ? 0 : duration;
 
   useEffect(() => {
-    if (isPaused) {
+    if (paused) {
       return;
     }
 
@@ -108,7 +119,9 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
 
         onFinishMotion && onFinishMotion(direction);
       },
-      isExiting ? duration * 0.5 : duration + delay,
+      isExiting
+        ? actualDuration * EXITING_MOTION_MULTIPLIER
+        : actualDuration + delay,
     );
 
     return () => {
@@ -119,9 +132,9 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
     onFinishMotion,
     direction,
     isExiting,
-    duration,
+    actualDuration,
     delay,
-    isPaused,
+    paused,
   ]);
 
   return (
@@ -139,9 +152,12 @@ const EnteringMotion: React.FC<InternalEnteringMotionProps> = ({
               animationTimingFunction: animationTimingFunction(direction),
               animationDelay: `${delay}ms`,
               animationFillMode: isExiting ? 'forwards' : 'backwards',
-              animationDuration: `${isExiting ? duration * 0.5 : duration}ms`,
-              animationPlayState:
-                staggered.isReady || !isPaused ? 'running' : 'paused',
+              animationDuration: `${
+                isExiting
+                  ? actualDuration * EXITING_MOTION_MULTIPLIER
+                  : actualDuration
+              }ms`,
+              animationPlayState: paused ? 'paused' : 'running',
               ...prefersReducedMotion(),
             }),
           },
