@@ -2,4 +2,4 @@
 '@atlaskit/motion': minor
 ---
 
-Renames Motion component to KeyframesMotion.
+The internal `Motion` component is now called `KeyframesMotion`.

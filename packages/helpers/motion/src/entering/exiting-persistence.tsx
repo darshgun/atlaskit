@@ -166,10 +166,12 @@ const hasAnyExitingChildMountedAgain = (
   return exitingChildMountedAgain;
 };
 
-const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
-  props: ExitingPersistenceProps,
-): any => {
-  const children = childrenToArray(props.children);
+const ExitingPersistence: React.FC<ExitingPersistenceProps> = ({
+  appear = false,
+  children: childs,
+  exitThenEnter,
+}: ExitingPersistenceProps): any => {
+  const children = childrenToArray(childs);
   const childrenObj = childrenToObj(children);
   const previousChildren = useRef<ElementWithKey[]>([]);
   const persistedChildren = useRef<ElementWithKey[]>([]);
@@ -193,11 +195,11 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
       persistedChildren.current = previousChildren.current;
     }
 
-    // We have persisted children now set from previous children. Let's update previous children
-    // so we have it available next render.
+    // We have persisted children now set from previous children.
+    // Let's update previous children so we have it available next render.
     previousChildren.current = children;
 
-    return (props.exitThenEnter
+    return (exitThenEnter
       ? persistedChildren.current
       : spliceNewElementsIntoPrevious(children, persistedChildren.current)
     ).map(child => {
@@ -228,6 +230,8 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
         });
       }
 
+      // This element isn't exiting.
+      // Wrap context and let's continue on our way.
       return wrapChildWithContextProvider(currentChild);
     });
   } else {
@@ -236,8 +240,8 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
 
   return children.map(child =>
     wrapChildWithContextProvider(child, {
+      appear,
       isExiting: false,
-      appear: props.appear || false,
     }),
   );
 };
