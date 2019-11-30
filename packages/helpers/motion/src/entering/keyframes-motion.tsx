@@ -4,6 +4,7 @@ import { useStaggeredEntrance } from './staggered-entrance';
 import { useExitingPersistence } from './exiting-persistence';
 import { largeDurationMs } from '../utils/durations';
 import { prefersReducedMotion } from '../utils/accessibility';
+import { useSetTimeout } from '../utils/timer-hooks';
 
 export type Direction = 'entering' | 'exiting';
 
@@ -101,6 +102,7 @@ const EnteringMotion: React.FC<InternalKeyframesMotionProps> = ({
     onFinish: onExitFinished,
     appear,
   } = useExitingPersistence();
+  const setTimeout = useSetTimeout();
   const paused = isPaused || !staggered.isReady;
   const delay = isExiting ? 0 : staggered.delay;
   const direction = isExiting ? 'exiting' : 'entering';
@@ -111,7 +113,7 @@ const EnteringMotion: React.FC<InternalKeyframesMotionProps> = ({
       return;
     }
 
-    const timeoutId = setTimeout(
+    setTimeout(
       () => {
         if (direction === 'exiting') {
           onExitFinished && onExitFinished();
@@ -123,18 +125,18 @@ const EnteringMotion: React.FC<InternalKeyframesMotionProps> = ({
         ? actualDuration * EXITING_MOTION_MULTIPLIER
         : actualDuration + delay,
     );
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    // We ignore this for onFinishMotion as consumers could potentially inline the function
+    // which would then trigger this effect every re-render.
+    // We want to make it easier for consumers so we go down this path unfortunately.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     onExitFinished,
-    onFinishMotion,
     direction,
     isExiting,
     actualDuration,
     delay,
     paused,
+    setTimeout,
   ]);
 
   return (
