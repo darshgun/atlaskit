@@ -31,24 +31,41 @@ interface ExitingPersistenceProps {
    * Defaults to `false`.
    */
   exitThenEnter?: boolean;
+
+  /**
+   * When initially mounting if set to `true` all child motions will animate in.
+   */
+  appear?: boolean;
 }
 
-interface ExitingMotionProps {
+/**
+ * Internal data passed to child motions.
+ */
+interface ExitingChildContext {
   /**
    * Will perform an exit animation instead of an enter animation.
    */
-  isExiting?: boolean;
+  isExiting: boolean;
 
   /**
    * Will be called when the animation has completed.
    */
   onFinish?: () => void;
+
+  /**
+   * Used to tell the child motions to animate in when initially mounting.
+   */
+  appear: boolean;
 }
 
 // We define empty context here so the object doesn't change.
-const emptyContext = {};
+const emptyContext: ExitingChildContext = {
+  // Motions will always appear if not inside a exiting persistence component.
+  appear: true,
+  isExiting: false,
+};
 
-const ExitingContext = createContext<ExitingMotionProps>(emptyContext);
+const ExitingContext = createContext<ExitingChildContext>(emptyContext);
 
 const isAnyPreviousKeysMissingFromCurrent = (
   currentMap: { [key: string]: ElementWithKey },
@@ -72,7 +89,7 @@ const isAnyPreviousKeysMissingFromCurrent = (
  */
 const wrapChildWithContextProvider = (
   child: JSX.Element,
-  value: ExitingMotionProps = emptyContext,
+  value: ExitingChildContext = emptyContext,
 ) => {
   return (
     <ExitingContext.Provider key={`${child.key}-provider`} value={value}>
@@ -191,6 +208,7 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
 
         return wrapChildWithContextProvider(child, {
           isExiting: true,
+          appear: true,
           onFinish: () => {
             delete exitingChildren.current[child.key];
 
@@ -216,7 +234,12 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = (
     previousChildren.current = children;
   }
 
-  return children.map(child => wrapChildWithContextProvider(child));
+  return children.map(child =>
+    wrapChildWithContextProvider(child, {
+      isExiting: false,
+      appear: props.appear || false,
+    }),
+  );
 };
 
 export const useExitingPersistence = () => {

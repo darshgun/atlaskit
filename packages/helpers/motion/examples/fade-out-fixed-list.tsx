@@ -73,7 +73,7 @@ export default () => {
           }}
         >
           <StaggeredEntrance>
-            <ExitingPersistence>
+            <ExitingPersistence appear>
               {count > 0 && (
                 <Card icon={<BitbucketIcon size="small" />} text="Bitbucket" />
               )}

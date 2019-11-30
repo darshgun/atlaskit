@@ -55,7 +55,7 @@ export default () => {
             <div css={{ position: 'relative' }}>
               <Route>
                 {route => (
-                  <ExitingPersistence>
+                  <ExitingPersistence appear>
                     {/* The magic sauce is giving switch a key that changes on route transition. */}
                     <Switch key={route.location.pathname}>
                       <Route path="/one" render={() => elements[1]} />
