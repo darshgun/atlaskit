@@ -262,7 +262,7 @@ test('should associate messages with field', () => {
     </Form>,
   );
   const labelledBy = wrapper
-    .find<typeof TextField>(TextField)
+    .find(TextField)
     .prop('aria-labelledby')
     .split(' ');
   expect(labelledBy).toContain(
@@ -296,7 +296,7 @@ test('should associate label with field', () => {
     </Form>,
   );
   const labelledBy = wrapper
-    .find<typeof TextField>(TextField)
+    .find(TextField)
     .prop('aria-labelledby')
     .split(' ');
   expect(labelledBy).toContain(wrapper.find(Label).prop('id'));
