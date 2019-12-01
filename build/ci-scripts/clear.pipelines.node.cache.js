@@ -18,7 +18,7 @@ const pipelinesCacheEndpoint = `https://api.bitbucket.org/internal/repositories/
   };
   try {
     console.log('Checking for existing caches');
-    const response = await axios.get(pipelinesCacheEndpoint);
+    const response = await axios.get(pipelinesCacheEndpoint, axiosConfig);
     if (
       !response.data ||
       !response.data.values ||

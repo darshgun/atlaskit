@@ -10,10 +10,18 @@ const pWaitFor = require('p-wait-for');
 */
 
 const BUILDS_PER_PAGE = 30;
-const { BITBUCKET_REPO_FULL_NAME } = process.env;
+const {
+  BITBUCKET_REPO_FULL_NAME,
+  BITBUCKET_USER,
+  BITBUCKET_PASSWORD,
+} = process.env;
 const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/`;
 
 const axiosRequestConfig = {
+  auth: {
+    username: BITBUCKET_USER,
+    password: BITBUCKET_PASSWORD,
+  },
   params: {
     pagelen: BUILDS_PER_PAGE,
     // get the most recent builds first

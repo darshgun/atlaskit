@@ -18,17 +18,34 @@ const https = require('https');
 const DEBUG = false; // NOTE: Turning this on will make the script output intermediate information
 // which will actually cause anything using this to break. This flag should only be used for debugging
 
-const { BITBUCKET_COMMIT, BITBUCKET_REPO_FULL_NAME } = process.env;
+const {
+  BITBUCKET_COMMIT,
+  BITBUCKET_REPO_FULL_NAME,
+  BITBUCKET_USER,
+  BITBUCKET_PASSWORD,
+} = process.env;
+
+// TODO: I am not sure if I need to hash this but it was recommended for Node.js https module.
+const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
+  'base64',
+);
+// or we can simply do - const auth = {username; BITBUCKET_USER, password: BITBUCKET_PASSWORD}
 
 const debugLog = DEBUG ? console.log : () => {};
 
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
-function httpGetRequest(url) {
+function httpGetRequest(url /*: string */) {
+  const options = {
+    path: url,
+    headers: {
+      Authorization: `Basic ${auth}`,
+    },
+  };
   return new Promise((resolve, reject) => {
     let data = '';
 
-    const req = https.get(url, resp => {
+    const req = https.get(options, resp => {
       // eslint-disable-next-line no-return-assign
       resp.on('data', chunk => (data += chunk));
       resp.on('end', () => resolve(JSON.parse(data)));

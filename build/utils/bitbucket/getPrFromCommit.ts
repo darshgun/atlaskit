@@ -1,13 +1,26 @@
 import https from 'https';
-import { PaginatedPullRequests, PullRequest } from './types';
+import { PaginatedPullRequests, PullRequest, AuthOptions } from './types';
+
+const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
+// TODO: I am not sure if I need to hash this but it was recommended for Node.js https module.
+const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
+  'base64',
+);
+// or we can simply do - const auth = {username; BITBUCKET_USER, password: BITBUCKET_PASSWORD}
 
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
 function httpGetRequest(url: string) {
+  const options: AuthOptions = {
+    path: url,
+    headers: {
+      Authorization: `Basic ${auth}`,
+    },
+  };
   return new Promise((resolve, reject) => {
     let data = '';
 
-    const req = https.get(url, resp => {
+    const req = https.get(options, resp => {
       resp.on('data', chunk => (data += chunk));
       resp.on('end', () => resolve(JSON.parse(data)));
     });

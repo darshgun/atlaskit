@@ -22,6 +22,12 @@ async function updatePrWithFutureRelease(
 ) {
   const git = simpleGit('./');
 
+  const {
+    BITBUCKET_USER,
+    BITBUCKET_PASSWORD,
+    BITBUCKET_REPO_FULL_NAME,
+  } = process.env;
+
   const nextReleaseTagPattern = `${NextReleaseTagPrefix}*`;
   // --abbrev=0 flag suppresses long format which appends commit & hash info
   // --first-parent follows only the first parent of merges, to filter out other branches merged in history
@@ -66,11 +72,6 @@ export default async function main(
   userOpts: Partial<Opts> = {},
 ) {
   const opts: Opts = { ...defaultOpts, ...userOpts };
-  const {
-    BITBUCKET_USER,
-    BITBUCKET_PASSWORD,
-    BITBUCKET_REPO_FULL_NAME,
-  } = process.env;
   if (!BITBUCKET_USER || !BITBUCKET_PASSWORD) {
     throw Error(
       '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables not set',
