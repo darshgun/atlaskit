@@ -247,7 +247,7 @@ pipelines:
           script:
             - source ./build-setup.sh
             # Install curl
-            - apt-get update; apt-get install curl
+            - apt-get update; apt-get install -y curl
             - curl -sSL https://download.sourceclear.com/ci.sh | bash
           after-script:
             - bolt install --frozen-lockfile
