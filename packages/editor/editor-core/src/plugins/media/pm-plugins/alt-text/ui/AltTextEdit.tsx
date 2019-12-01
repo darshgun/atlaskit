@@ -11,6 +11,16 @@ import Button from '../../../../floating-toolbar/ui/Button';
 import PanelTextInput from '../../../../../ui/PanelTextInput';
 import * as keymaps from '../../../../../keymaps';
 import { closeMediaAltTextMenu, updateAltText } from '../commands';
+import {
+  withAnalyticsEvents,
+  WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
+import { ALT_TEXT_ACTION } from '../../../../analytics/types/media-events';
+import {
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+  EVENT_TYPE,
+} from '../../../../analytics';
 
 export const CONTAINER_WIDTH_IN_PX = 350;
 const SupportText = styled.p`
@@ -55,17 +65,37 @@ type Props = {
   value?: string;
 };
 
-type State = {
+export type AltTextEditComponentState = {
   showClearTextButton: boolean;
 };
 
-class AltTextEditComponent extends React.Component<
-  Props & InjectedIntlProps,
-  State
+export class AltTextEditComponent extends React.Component<
+  Props & InjectedIntlProps & WithAnalyticsEventsProps,
+  AltTextEditComponentState
 > {
   state = {
     showClearTextButton: Boolean(this.props.value),
   };
+
+  prevValue: string | undefined;
+
+  componentDidMount() {
+    this.prevValue = this.props.value;
+  }
+
+  componentWillUnmount() {
+    this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLOSED);
+    if (!this.prevValue && this.props.value) {
+      this.fireAnalyticsEvent(ALT_TEXT_ACTION.ADDED);
+    }
+    if (this.prevValue && !this.props.value) {
+      this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLEARED);
+    }
+    if (this.prevValue && this.prevValue !== this.props.value) {
+      this.fireAnalyticsEvent(ALT_TEXT_ACTION.EDITED);
+    }
+  }
+
   render() {
     const {
       intl: { formatMessage },
@@ -96,7 +126,6 @@ class AltTextEditComponent extends React.Component<
           <PanelTextInput
             placeholder={formatMessage(messages.placeholder)}
             defaultValue={value ? value : ''}
-            onBlur={this.dispatchCancelEvent}
             onCancel={this.dispatchCancelEvent}
             onChange={this.handleOnChange}
             onSubmit={this.closeMediaAltTextMenu}
@@ -125,6 +154,19 @@ class AltTextEditComponent extends React.Component<
     closeMediaAltTextMenu(view.state, view.dispatch);
   };
 
+  private fireAnalyticsEvent(actionType: ALT_TEXT_ACTION) {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const analyticsEvent = createAnalyticsEvent({
+        action: actionType,
+        actionSubject: ACTION_SUBJECT.MEDIA,
+        actionSubjectId: ACTION_SUBJECT_ID.MEDIA,
+        eventType: EVENT_TYPE.UI,
+      });
+      analyticsEvent.fire();
+    }
+  }
+
   private dispatchCancelEvent = (event: KeyboardEvent) => {
     const { view } = this.props;
 
@@ -152,4 +194,4 @@ class AltTextEditComponent extends React.Component<
   };
 }
 
-export default injectIntl(AltTextEditComponent);
+export default withAnalyticsEvents()(injectIntl(AltTextEditComponent));

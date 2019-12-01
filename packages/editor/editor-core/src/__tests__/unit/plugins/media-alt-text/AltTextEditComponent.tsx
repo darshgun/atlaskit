@@ -9,11 +9,22 @@ jest.mock('../../../../plugins/media/pm-plugins/alt-text/commands', () => ({
 import React from 'react';
 import { mountWithIntl } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import AltTextEdit from '../../../../plugins/media/pm-plugins/alt-text/ui/AltTextEdit';
+import AltTextEdit, {
+  AltTextEditComponent,
+  AltTextEditComponentState,
+} from '../../../../plugins/media/pm-plugins/alt-text/ui/AltTextEdit';
+import { InjectedIntl } from 'react-intl';
+import {
+  CreateUIAnalyticsEvent,
+  UIAnalyticsEvent,
+} from '../../../../../../../core/analytics-next/src';
+import { ReactWrapper } from 'enzyme';
+let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
 describe('AltTextEditComponent', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    createAnalyticsEvent = jest.fn(() => ({ fire() {} } as UIAnalyticsEvent));
   });
   const mockView = jest.fn(
     () =>
@@ -23,6 +34,108 @@ describe('AltTextEditComponent', () => {
         someProp: jest.fn(),
       } as { state: {}; dispatch: Function }) as EditorView),
   );
+
+  describe('fires respective alt text analytics events', () => {
+    const defaultMediaEvent = {
+      action: 'alttext.edited',
+      actionSubject: 'media',
+      actionSubjectId: 'media',
+      eventType: 'ui',
+    };
+
+    function setupWrapper(
+      value: string,
+    ): {
+      view: EditorView<any>;
+      wrapper: ReactWrapper<
+        ReactIntl.InjectedIntlProps,
+        AltTextEditComponentState,
+        any
+      >;
+    } {
+      const view = new mockView();
+      const intl = {} as InjectedIntl;
+      const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
+        <AltTextEditComponent
+          view={view}
+          value={value}
+          intl={intl}
+          createAnalyticsEvent={createAnalyticsEvent}
+        />,
+      );
+      return { view, wrapper };
+    }
+
+    it('fires closed event after alt text component is removed', () => {
+      const { wrapper } = setupWrapper('value');
+      wrapper.unmount();
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.closed',
+      });
+    });
+
+    it('fires cleared and edited events after clearing value and closing popup editor', () => {
+      const { wrapper } = setupWrapper('value');
+      // @ts-ignore
+      wrapper.setProps({ value: '' });
+
+      wrapper.unmount();
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.cleared',
+      });
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.edited',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.added',
+      });
+    });
+
+    it('fires edited event after updating value and closing popup editor', () => {
+      const { wrapper } = setupWrapper('value');
+      // @ts-ignore
+      wrapper.setProps({ value: 'test changed' });
+
+      wrapper.unmount();
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.edited',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.cleared',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.added',
+      });
+    });
+
+    it('fires added event after updating value and closing popup editor', () => {
+      const { wrapper } = setupWrapper('');
+
+      // @ts-ignore
+      wrapper.setProps({ value: 'value added' });
+
+      wrapper.unmount();
+      expect(createAnalyticsEvent).toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.added',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.edited',
+      });
+      expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
+        ...defaultMediaEvent,
+        action: 'alttext.cleared',
+      });
+    });
+  });
 
   describe('when the back button is clicked', () => {
     it('should call the closeMediaAltText command', () => {
@@ -88,8 +201,10 @@ describe('AltTextEditComponent', () => {
     describe('when new value is empty string', () => {
       it('should set state showClearTextButton=false', () => {
         const view = new mockView();
-        const wrapper = mountWithIntl(<AltTextEdit view={view} value="test" />);
-
+        const intl = {} as InjectedIntl;
+        const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
+          <AltTextEditComponent view={view} value={'test'} intl={intl} />,
+        );
         expect(wrapper.state('showClearTextButton')).toBeTruthy();
         const input = wrapper.find('input');
         // @ts-ignore
@@ -103,8 +218,10 @@ describe('AltTextEditComponent', () => {
     describe('when there was an empty string, and new text is nonempty', () => {
       it('should set state showClearTextButton=true', () => {
         const view = new mockView();
-        const wrapper = mountWithIntl(<AltTextEdit view={view} />);
-
+        const intl = {} as InjectedIntl;
+        const wrapper = mountWithIntl<{}, AltTextEditComponentState>(
+          <AltTextEditComponent view={view} intl={intl} />,
+        );
         expect(wrapper.state('showClearTextButton')).toBeFalsy();
         const input = wrapper.find('input');
         // @ts-ignore
