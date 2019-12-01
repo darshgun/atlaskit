@@ -16,17 +16,17 @@ import {
 import { createSpyObject } from '@atlaskit/build-utils/logging';
 import { capitalise, addReleaseComment } from '../utils';
 
+const {
+  BITBUCKET_USER,
+  BITBUCKET_PASSWORD,
+  BITBUCKET_REPO_FULL_NAME,
+} = process.env;
+
 async function updatePrWithFutureRelease(
   prClient: PullRequestClient,
   matchedPr: PullRequest,
 ) {
   const git = simpleGit('./');
-
-  const {
-    BITBUCKET_USER,
-    BITBUCKET_PASSWORD,
-    BITBUCKET_REPO_FULL_NAME,
-  } = process.env;
 
   const nextReleaseTagPattern = `${NextReleaseTagPrefix}*`;
   // --abbrev=0 flag suppresses long format which appends commit & hash info
