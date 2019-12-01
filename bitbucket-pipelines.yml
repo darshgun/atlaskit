@@ -629,6 +629,7 @@ pipelines:
           name: Merges master into the target branch
           script:
             - source ./build-setup.sh
+            - if [[ "$TARGET_BRANCH" == "master" ]]; then echo "This build does not need to run on master build."; exit 0; fi
             - git fetch origin master
             - git merge origin/master
             - git push origin HEAD
