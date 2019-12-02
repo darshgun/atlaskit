@@ -20,6 +20,7 @@ export const expandStyles = css`
     ${sharedExpandStyles.ContainerStyles}
     margin-top: ${blockNodesVerticalMargin}rem;
     overflow: hidden;
+    cursor: pointer;
 
     td > & {
       margin-top: 0;
@@ -39,6 +40,7 @@ export const expandStyles = css`
 
   .${expandClassNames.content} {
     ${sharedExpandStyles.ContentStyles}
+    cursor: text;
     padding-top: 0px;
   }
 
@@ -87,8 +89,5 @@ export const expandStyles = css`
         background: ${EXPAND_SELECTED_BACKGROUND};
       }
     }
-
   }
-
-
 `;
