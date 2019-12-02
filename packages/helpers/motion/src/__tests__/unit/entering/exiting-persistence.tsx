@@ -7,9 +7,11 @@ import { isReducedMotion } from '../../../utils/accessibility';
 
 jest.mock('../../../utils/accessibility');
 
-const Motion = (props: { id: string; color?: string }) => {
+const Motion = (props: { id: string; color?: string; onRender?: Function }) => {
   const exiting = useExitingPersistence();
   useEffect(() => {
+    props.onRender && props.onRender();
+
     const id = setTimeout(
       () => exiting.isExiting && exiting.onFinish && exiting.onFinish(),
       100,
@@ -464,5 +466,45 @@ describe('<ExitingPersistence />', () => {
     act(() => jest.runAllTimers());
 
     expect(getByTestId('element2')).toBeDefined();
+  });
+
+  it('should re-render once', () => {
+    const onRender = jest.fn();
+    const { rerender } = render(
+      <ExitingPersistence>
+        <Motion id="target" onRender={onRender} />
+      </ExitingPersistence>,
+    );
+
+    rerender(
+      <ExitingPersistence>
+        <Motion id="target" onRender={onRender} />
+      </ExitingPersistence>,
+    );
+
+    // Once for initial render, twice for rerender
+    expect(onRender).toHaveBeenCalledTimes(2);
+  });
+
+  it('should re-render non-exiting element once', () => {
+    jest.useFakeTimers();
+    const onRender = jest.fn();
+    const { rerender } = render(
+      <ExitingPersistence>
+        <Motion id="persisted" onRender={onRender} />
+        <Motion id="target" />
+      </ExitingPersistence>,
+    );
+
+    rerender(
+      <ExitingPersistence>
+        <Motion id="persisted" onRender={onRender} />
+        {false}
+      </ExitingPersistence>,
+    );
+    act(() => jest.runAllTimers());
+
+    // Once for initial render, twice for rerender
+    expect(onRender).toHaveBeenCalledTimes(2);
   });
 });

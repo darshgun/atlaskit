@@ -1,4 +1,10 @@
-import React, { useRef, useContext, createContext, Children } from 'react';
+import React, {
+  useRef,
+  useMemo,
+  useContext,
+  createContext,
+  Children,
+} from 'react';
 import { isReducedMotion } from '../utils/accessibility';
 import { useForceRender } from '../utils/use-force-render';
 
@@ -177,6 +183,13 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = ({
   const persistedChildren = useRef<ElementWithKey[]>([]);
   const forceRender = useForceRender();
   const exitingChildren = useRef<{ [key: string]: boolean }>({});
+  const defaultContextValue: ExitingChildContext = useMemo(
+    () => ({
+      appear,
+      isExiting: false,
+    }),
+    [appear],
+  );
 
   if (isReducedMotion()) {
     return children;
@@ -232,17 +245,14 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = ({
 
       // This element isn't exiting.
       // Wrap context and let's continue on our way.
-      return wrapChildWithContextProvider(currentChild);
+      return wrapChildWithContextProvider(currentChild, defaultContextValue);
     });
   } else {
     previousChildren.current = children;
   }
 
   return children.map(child =>
-    wrapChildWithContextProvider(child, {
-      appear,
-      isExiting: false,
-    }),
+    wrapChildWithContextProvider(child, defaultContextValue),
   );
 };
 
