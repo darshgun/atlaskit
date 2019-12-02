@@ -483,13 +483,15 @@ describe('layout', () => {
     });
 
     it('fires analytics event', () => {
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'layout',
-        eventType: 'track',
-        attributes: { inputMethod: 'quickInsert' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'layout',
+          eventType: 'track',
+          attributes: { inputMethod: 'quickInsert' },
+        }),
+      );
     });
   });
 });

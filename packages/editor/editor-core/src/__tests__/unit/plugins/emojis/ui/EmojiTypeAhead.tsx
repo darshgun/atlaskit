@@ -169,13 +169,15 @@ describe('EmojiTypeAhead', () => {
         }),
       );
 
-      expect(dispatchAnalyticsSpy).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'emoji',
-        attributes: { inputMethod: 'typeAhead' },
-        eventType: 'track',
-      });
+      expect(dispatchAnalyticsSpy).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'emoji',
+          attributes: { inputMethod: 'typeAhead' },
+          eventType: 'track',
+        }),
+      );
     });
   });
 });

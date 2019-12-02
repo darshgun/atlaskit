@@ -323,8 +323,8 @@ describe('tasks and decisions - commands', () => {
         const { editorView } = editorFactory(doc(p('{<>}')));
         await contextIdentifierProvider;
         insertTaskDecision(editorView, 'taskList');
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(
-          generatePayload(0, 1),
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(generatePayload(0, 1)),
         );
       });
 
@@ -335,12 +335,13 @@ describe('tasks and decisions - commands', () => {
         insertText(editorView, 'task 1', sel + 1);
         insertTaskDecision(editorView, 'taskList');
         insertText(editorView, 'task 2', sel + 9);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(
-          generatePayload(1, 2),
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(generatePayload(1, 2)),
         );
+
         insertTaskDecision(editorView, 'taskList');
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(
-          generatePayload(2, 3),
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(generatePayload(2, 3)),
         );
       });
     });

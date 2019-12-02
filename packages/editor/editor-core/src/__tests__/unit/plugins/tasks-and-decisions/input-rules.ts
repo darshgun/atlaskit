@@ -278,15 +278,17 @@ describe('tasks and decisions - input rules', () => {
         const { editorView, sel } = editorFactory(doc(p('{<>}')));
         insertText(editorView, input, sel);
 
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: name,
-          attributes: expect.objectContaining({
-            inputMethod: 'autoformatting',
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: name,
+            attributes: expect.objectContaining({
+              inputMethod: 'autoformatting',
+            }),
+            eventType: 'track',
           }),
-          eventType: 'track',
-        });
+        );
       });
     });
   });

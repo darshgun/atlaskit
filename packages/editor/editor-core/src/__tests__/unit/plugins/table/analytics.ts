@@ -101,13 +101,15 @@ describe('Table analytic events', () => {
     });
 
     it('should fire v3 analytics', () => {
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'table',
-        attributes: { inputMethod: 'quickInsert' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'table',
+          attributes: { inputMethod: 'quickInsert' },
+          eventType: 'track',
+        }),
+      );
     });
   });
 

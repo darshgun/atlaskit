@@ -71,6 +71,9 @@ Array [
       "userContext": "new",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -98,6 +101,9 @@ Array [
       "userContext": "new",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -208,6 +214,9 @@ Array [
       "packageVersion": "999.9.9",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -230,6 +239,9 @@ Array [
       "packageVersion": "999.9.9",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -257,6 +269,9 @@ Array [
       "userContext": "new",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -284,6 +299,9 @@ Array [
       "userContext": "new",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -306,9 +324,12 @@ Array [
       "packageVersion": "999.9.9",
     },
     "eventType": "track",
+    "insertLocation": "doc",
     "nonPrivacySafeAttributes": Object {
       "linkDomain": "test.link.url",
     },
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -331,9 +352,12 @@ Array [
       "packageVersion": "999.9.9",
     },
     "eventType": "track",
+    "insertLocation": "doc",
     "nonPrivacySafeAttributes": Object {
       "linkDomain": "test.link.url",
     },
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -401,6 +425,9 @@ Array [
       "panelType": "info",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -424,6 +451,9 @@ Array [
       "panelType": "info",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -854,6 +884,9 @@ Array [
       "packageVersion": "999.9.9",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",
@@ -876,6 +909,9 @@ Array [
       "packageVersion": "999.9.9",
     },
     "eventType": "track",
+    "insertLocation": "doc",
+    "selectionPosition": "start",
+    "selectionType": "cursor",
     "source": "unknown",
     "tags": Array [
       "fabricEditor",

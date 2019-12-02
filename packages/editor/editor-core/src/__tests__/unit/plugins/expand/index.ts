@@ -40,41 +40,47 @@ describe('expand actions', () => {
       insertText(editorView, '/expand', sel);
       sendKeyToPm(editorView, 'Enter');
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'expand',
-        attributes: {
-          inputMethod: 'quickInsert',
-        },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'expand',
+          attributes: {
+            inputMethod: 'quickInsert',
+          },
+          eventType: 'track',
+        }),
+      );
     });
 
     it('fires analytics when inserted from insert menu', () => {
       const { editorView } = editor(doc(p('{<>}')));
       insertExpand(editorView.state, editorView.dispatch);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'expand',
-        attributes: {
-          inputMethod: 'insertMenu',
-        },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'expand',
+          attributes: {
+            inputMethod: 'insertMenu',
+          },
+          eventType: 'track',
+        }),
+      );
     });
 
     it('fires analytics when deleted with floating toolbar', () => {
       const { editorView } = editor(doc(expand()(p('{<>}'))));
 
       deleteExpand()(editorView.state, editorView.dispatch);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'deleted',
-        actionSubject: 'expand',
-        attributes: { inputMethod: 'toolbar' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'deleted',
+          actionSubject: 'expand',
+          attributes: { inputMethod: 'toolbar' },
+          eventType: 'track',
+        }),
+      );
     });
   });
 
@@ -84,29 +90,33 @@ describe('expand actions', () => {
       insertText(editorView, '/expand', sel);
       sendKeyToPm(editorView, 'Enter');
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'nestedExpand',
-        attributes: {
-          inputMethod: 'quickInsert',
-        },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'nestedExpand',
+          attributes: {
+            inputMethod: 'quickInsert',
+          },
+          eventType: 'track',
+        }),
+      );
     });
 
     it('fires analytics when inserted from insert menu', () => {
       const { editorView } = editor(doc(table()(tr(td({})(p('{<>}'))))));
       insertExpand(editorView.state, editorView.dispatch);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'nestedExpand',
-        attributes: {
-          inputMethod: 'insertMenu',
-        },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'nestedExpand',
+          attributes: {
+            inputMethod: 'insertMenu',
+          },
+          eventType: 'track',
+        }),
+      );
     });
 
     it('fires analytics when deleted with floating toolbar', () => {
@@ -115,12 +125,14 @@ describe('expand actions', () => {
       );
 
       deleteExpand()(editorView.state, editorView.dispatch);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'deleted',
-        actionSubject: 'nestedExpand',
-        attributes: { inputMethod: 'toolbar' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'deleted',
+          actionSubject: 'nestedExpand',
+          attributes: { inputMethod: 'toolbar' },
+          eventType: 'track',
+        }),
+      );
     });
   });
 });
