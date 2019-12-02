@@ -634,4 +634,5 @@ pipelines:
             - git merge origin/master
             - git push origin HEAD
           after-script:
+            - bolt install --frozen-lockfile
             - yarn send:buildEvents
