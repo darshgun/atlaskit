@@ -173,6 +173,34 @@ export default (
     );
   }
 
+  function filterValidators(validators: any) {
+    const ANY_STAGE_VALIDATOR_REGEXP = RegExp(`^(.*)_stage_(:?.*)$`);
+    const CURRENT_STAGE_VALIDATOR_REGEXP = RegExp(
+      `^(.*)_stage_${flags.stage}$`,
+    );
+    const currentStageValidators = Object.entries(validators).reduce(
+      (result, [key, value]) => {
+        const match = key.match(CURRENT_STAGE_VALIDATOR_REGEXP);
+        if (match) {
+          result[match[1]] = value;
+        }
+        return result;
+      },
+      {},
+    );
+    const filteredValidators = Object.entries(validators).reduce(
+      (result, [key, value]) => {
+        const match = key.match(ANY_STAGE_VALIDATOR_REGEXP);
+        if (!match) {
+          result[key] = value;
+        }
+        return result;
+      },
+      {},
+    );
+    return { ...filteredValidators, ...currentStageValidators };
+  }
+
   function getSchemaNodeFromType(
     type: ts.Type,
     validators: any = {},
@@ -185,17 +213,18 @@ export default (
       return;
     }
 
+    const filteredValidators = filterValidators(validators);
     const nodeName = typeIdToDefName.get(typeId)!;
     if (typeIdToDefName.has(typeId)) {
       // Found a $ref
       jsonSchema.markAsUsed(nodeName);
       return new RefSchemaNode(nodeName);
     } else if (isStringType(type)) {
-      return new StringSchemaNode(validators);
+      return new StringSchemaNode(filteredValidators);
     } else if (isBooleanType(type)) {
       return new PrimitiveSchemaNode('boolean');
     } else if (isNumberType(type)) {
-      return new PrimitiveSchemaNode('number', validators);
+      return new PrimitiveSchemaNode('number', filteredValidators);
     } else if (isUnionType(type)) {
       const isEnum = type.types.every(t => isStringLiteralType(t));
       if (isEnum) {
@@ -217,7 +246,7 @@ export default (
           .filter(Boolean),
       );
     } else if (isArrayType(type)) {
-      const node = new ArraySchemaNode([], validators);
+      const node = new ArraySchemaNode([], filteredValidators);
       // [X, X | Y]
       if (!type.typeArguments) {
         const types = type.getNumberIndexType()!;
@@ -251,7 +280,7 @@ export default (
     } else if (isObjectType(type)) {
       const obj = new ObjectSchemaNode(
         {},
-        { additionalProperties: false, ...validators },
+        { additionalProperties: false, ...filteredValidators },
       );
       // Use node's queue to prevent circular dependency
       process.nextTick(() => {
