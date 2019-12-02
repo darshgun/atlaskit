@@ -179,7 +179,7 @@ export default (
       `^(.*)_stage_${flags.stage}$`,
     );
     const currentStageValidators = Object.entries(validators).reduce(
-      (result, [key, value]) => {
+      (result: any, [key, value]) => {
         const match = key.match(CURRENT_STAGE_VALIDATOR_REGEXP);
         if (match) {
           result[match[1]] = value;
@@ -189,7 +189,7 @@ export default (
       {},
     );
     const filteredValidators = Object.entries(validators).reduce(
-      (result, [key, value]) => {
+      (result: any, [key, value]) => {
         const match = key.match(ANY_STAGE_VALIDATOR_REGEXP);
         if (!match) {
           result[key] = value;
