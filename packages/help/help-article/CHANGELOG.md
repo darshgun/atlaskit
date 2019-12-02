@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 0.7.4
+
+### Patch Changes
+
+- [patch][5a35773cba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a35773cba):
+
+  Bugfix - Fix iframe scroll in Safari
+
 ## 0.7.3
 
 ### Patch Changes
