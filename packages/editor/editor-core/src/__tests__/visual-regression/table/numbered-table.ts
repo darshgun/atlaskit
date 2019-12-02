@@ -10,6 +10,7 @@ import {
   editorCommentContentSelector,
 } from '../_utils';
 import adf from './__fixtures__/numbered-table.adf.json';
+import tableWithContentAdf from './__fixtures__/numbered-table-with-content.adf.json';
 import multipleTablesAdf from './__fixtures__/numbered-table-multiple.adf.json';
 import { Page } from '../../__helpers/page-objects/_types';
 
@@ -38,6 +39,11 @@ describe('Snapshot Test: numbered table', () => {
     await clickFirstCell(page);
     await page.hover(tableSelectors.nthRowControl(2));
     await page.waitFor(tableSelectors.insertRowButton);
+    await snapshot(page);
+  });
+
+  it('should show numbered column correctly', async () => {
+    await initFullPageEditorWithAdf(page, tableWithContentAdf);
     await snapshot(page);
   });
 });
