@@ -13,6 +13,7 @@ import {
   INPUT_METHOD,
   EVENT_TYPE,
 } from '../analytics';
+import { GapCursorSelection, Side } from '../gap-cursor';
 
 export const setExpandRef = (ref?: HTMLDivElement | null): Command =>
   createCommand(
@@ -25,16 +26,18 @@ export const setExpandRef = (ref?: HTMLDivElement | null): Command =>
     tr => tr.setMeta('addToHistory', false),
   );
 
-export const deleteExpand = (): Command => (state, dispatch) => {
-  const expandNode = findExpand(state);
-  if (!expandNode) {
+export const deleteExpandAtPos = (
+  expandNodePos: number,
+  expandNode: PMNode,
+): Command => (state, dispatch) => {
+  if (!expandNode || isNaN(expandNodePos)) {
     return false;
   }
 
   const payload: AnalyticsEventPayload = {
     action: ACTION.DELETED,
     actionSubject:
-      expandNode.node.type === state.schema.nodes.expand
+      expandNode.type === state.schema.nodes.expand
         ? ACTION_SUBJECT.EXPAND
         : ACTION_SUBJECT.NESTED_EXPAND,
     attributes: { inputMethod: INPUT_METHOD.TOOLBAR },
@@ -45,15 +48,22 @@ export const deleteExpand = (): Command => (state, dispatch) => {
     dispatch(
       addAnalytics(
         state,
-        state.tr.delete(
-          expandNode.pos,
-          expandNode.pos + expandNode.node.nodeSize,
-        ),
+        state.tr.delete(expandNodePos, expandNodePos + expandNode.nodeSize),
         payload,
       ),
     );
   }
+
   return true;
+};
+
+export const deleteExpand = (): Command => (state, dispatch) => {
+  const expandNode = findExpand(state);
+  if (!expandNode) {
+    return false;
+  }
+
+  return deleteExpandAtPos(expandNode.pos, expandNode.node)(state, dispatch);
 };
 
 export const selectExpand = (pos: number): Command => (state, dispatch) => {
@@ -92,15 +102,28 @@ export const toggleExpandExpanded = (
   const node = state.doc.nodeAt(pos);
   if (node && node.type === nodeType && dispatch) {
     const { tr } = state;
+    const isExpandedNext = !node.attrs.__expanded;
     tr.setNodeMarkup(
       pos,
       node.type,
       {
         ...node.attrs,
-        __expanded: !node.attrs.__expanded,
+        __expanded: isExpandedNext,
       },
       node.marks,
     );
+
+    // If we're going to collapse the expand and our cursor is currently inside
+    // Move to a right gap cursor, if the toolbar is interacted (or an API),
+    // it will insert below rather than inside (which will be invisible).
+    if (isExpandedNext === false && findExpand(state)) {
+      tr.setSelection(
+        new GapCursorSelection(
+          state.doc.resolve(pos + node.nodeSize),
+          Side.RIGHT,
+        ),
+      );
+    }
     // `isRemote` meta prevents this step from being
     // sync'd between sessions in collab edit
     dispatch(tr.setMeta('isRemote', true));

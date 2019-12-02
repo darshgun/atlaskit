@@ -116,8 +116,8 @@ export const themes: Themes = [
         },
       },
       skeleton: {
-        backgroundColor: 'rgba(13, 20, 36, 0.97)',
-        opacity: 0.15,
+        backgroundColor: '#F4F5F7',
+        opacity: 1,
       },
     },
   },

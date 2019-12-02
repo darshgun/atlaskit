@@ -1,5 +1,30 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.6.2
+
+### Patch Changes
+
+- [patch][d396ae22c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d396ae22c2):
+
+  Rename wiki representation of blockCard from block-link to smart-card
+
+## 4.6.1
+
+### Patch Changes
+
+- [patch][4aac2fe2d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4aac2fe2d5):
+
+  fix up the url encoding/decoding of commas in text links
+
+## 4.6.0
+
+### Minor Changes
+
+- [minor][f7a20e9f3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7a20e9f3a):
+
+  Add transformation of adf blockcard to wikimarkup compatible smart-link
+  Add logic for converting inlinecard to blockcard when it is on its own line
+
 ## 4.5.9
 
 - Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):

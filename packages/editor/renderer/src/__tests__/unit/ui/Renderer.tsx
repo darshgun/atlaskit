@@ -75,38 +75,103 @@ describe('@atlaskit/renderer/ui/Renderer', () => {
   });
 
   describe('Stage0', () => {
-    const docWithStage0Mark = {
-      type: 'doc',
-      version: 1,
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'Hello World',
-              marks: [
-                {
-                  type: 'confluenceInlineComment',
-                  attrs: {
-                    reference: 'ref',
+    describe('marks', () => {
+      const docWithStage0Mark = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
                   },
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    };
+                ],
+              },
+            ],
+          },
+        ],
+      };
 
-    it('should remove stage0 marks if flag is not explicitly set to "stage0"', () => {
-      renderer = initRenderer(docWithStage0Mark);
-      expect(renderer.find('ConfluenceInlineComment')).toHaveLength(0);
+      it('should remove stage0 marks if flag is not explicitly set to "stage0"', () => {
+        renderer = initRenderer(docWithStage0Mark);
+        expect(renderer.find('ConfluenceInlineComment')).toHaveLength(0);
+      });
+
+      it('should keep stage0 marks if flag is explicitly set to "stage0"', () => {
+        renderer = initRenderer(docWithStage0Mark, { adfStage: 'stage0' });
+        expect(renderer.find('ConfluenceInlineComment')).toHaveLength(1);
+      });
     });
 
-    it('should keep stage0 marks if flag is explicitly set to "stage0"', () => {
-      renderer = initRenderer(docWithStage0Mark, { adfStage: 'stage0' });
-      expect(renderer.find('ConfluenceInlineComment')).toHaveLength(1);
+    describe('alt text', () => {
+      const docWithStage0AltText = {
+        version: 1,
+        type: 'doc',
+        content: [
+          {
+            type: 'mediaSingle',
+            attrs: {
+              layout: 'center',
+            },
+            content: [
+              {
+                type: 'media',
+                attrs: {
+                  id: '0a7b3495-d1e5-4b27-90fb-a2589cd96e3b',
+                  type: 'file',
+                  collection: 'MediaServicesSample',
+                  width: 1874,
+                  height: 1078,
+                  alt: 'This is an alt text',
+                },
+              },
+            ],
+          },
+          {
+            type: 'paragraph',
+            content: [],
+          },
+        ],
+      };
+
+      it('should support alt text on images if flag adfStage is explicitly set to "stage0"', () => {
+        renderer = initRenderer(docWithStage0AltText, {
+          adfStage: 'stage0',
+          UNSAFE_allowAltTextOnImages: true,
+        });
+        expect(
+          renderer.find('MediaSingle [alt="This is an alt text"]'),
+        ).toHaveLength(1);
+      });
+
+      it('should remove alt text on images if flag UNSAFE_allowAltTextOnImages is not provided', () => {
+        renderer = initRenderer(docWithStage0AltText, {
+          adfStage: 'stage0',
+        });
+        expect(
+          renderer
+            .find('Media')
+            .find('MediaCardInternal')
+            .prop('alt'),
+        ).toBeUndefined();
+      });
+
+      it('should remove alt text on images if flag adfStage is not explicitly set to "stage0"', () => {
+        renderer = initRenderer(docWithStage0AltText, {
+          UNSAFE_allowAltTextOnImages: true,
+        });
+        expect(
+          renderer.find('MediaSingle [alt="This is an alt text"]'),
+        ).toHaveLength(0);
+      });
     });
   });
 

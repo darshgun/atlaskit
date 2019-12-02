@@ -5,11 +5,11 @@ import SectionMessage from '@atlaskit/section-message';
 
 export default md`
 ${(
-  <SectionMessage
-    appearance="warning"
-    title="Note: @atlaskit/droplist is deprecated."
-  >
-    This is an internal component and should not be used directly.
+  <SectionMessage appearance="error" title="WARNING: DROPLIST IS DEPRECATED">
+    Do not use this component - there are better more robust components waiting
+    just for you! For the pop up behaviour please use{' '}
+    <a href="/packages/core/popup">@atlaskit/popup</a> and for common menu
+    components please use <a href="/packages/core/menu">@atlaskit/menu</a>.
   </SectionMessage>
 )}
 

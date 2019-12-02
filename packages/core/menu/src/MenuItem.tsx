@@ -1,8 +1,9 @@
 /** @jsx jsx */
 import { Fragment } from 'react';
-import { jsx } from '@emotion/core';
+import { jsx, ClassNames } from '@emotion/core';
 import {
   linkItemCSS,
+  customItemCSS,
   itemCSS,
   itemHeadingCSS,
   skeletonHeadingItemCSS,
@@ -14,12 +15,22 @@ import {
   truncateCSS,
   contentCSSWrapper,
 } from './styles';
-import { ButtonItemProps, LinkItemProps, SkeletonItemProps } from './types';
+import {
+  ButtonItemProps,
+  LinkItemProps,
+  BaseItemProps,
+  CustomItemProps,
+  SkeletonItemProps,
+  Width,
+} from './types';
 
 export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
   <div css={itemHeadingCSS}>{children}</div>
 );
-export const SkeletonHeadingItem = () => <div css={skeletonHeadingItemCSS} />;
+
+export const SkeletonHeadingItem = ({ width }: { width?: Width }) => (
+  <div css={skeletonHeadingItemCSS(width)} />
+);
 export const SkeletonItem = ({
   hasAvatar,
   hasIcon,
@@ -28,12 +39,12 @@ export const SkeletonItem = ({
   <div css={itemSkeletonCSS(hasAvatar, hasIcon, width)} />
 );
 
-const ItemBase = ({
+const BaseItem = ({
   elemBefore,
   elemAfter,
   children,
   description,
-}: ButtonItemProps) => {
+}: BaseItemProps) => {
   return (
     <Fragment>
       <div css={contentCSSWrapper}>
@@ -57,6 +68,7 @@ export const ButtonItem = (props: ButtonItemProps) => {
     children,
     description,
     isDisabled = false,
+    isSelected = false,
     ...others
   } = props;
 
@@ -69,16 +81,16 @@ export const ButtonItem = (props: ButtonItemProps) => {
   return (
     <Tag
       type={isDisabled ? undefined : 'button'}
-      css={itemCSS(isDisabled)}
+      css={itemCSS(isDisabled, isSelected)}
       {...others}
     >
-      <ItemBase
+      <BaseItem
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
       >
         {children}
-      </ItemBase>
+      </BaseItem>
     </Tag>
   );
 };
@@ -90,6 +102,7 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
     children,
     description,
     isDisabled = false,
+    isSelected = false,
     ...others
   } = rest;
 
@@ -101,17 +114,38 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
 
   return (
     <Tag
-      css={linkItemCSS(isDisabled)}
+      css={linkItemCSS(isDisabled, isSelected)}
       href={isDisabled ? undefined : href}
       {...others}
     >
-      <ItemBase
+      <BaseItem
         elemBefore={elemBefore}
         elemAfter={elemAfter}
         description={description}
       >
         {children}
-      </ItemBase>
+      </BaseItem>
     </Tag>
+  );
+};
+
+export const CustomItem = ({
+  component: Component,
+  isDisabled,
+  isSelected,
+  ...rest
+}: CustomItemProps) => {
+  if (!Component) {
+    return null;
+  }
+
+  return (
+    <ClassNames>
+      {({ css }) => (
+        <Component wrapperClass={css(customItemCSS(isDisabled, isSelected))}>
+          <BaseItem {...rest} />
+        </Component>
+      )}
+    </ClassNames>
   );
 };

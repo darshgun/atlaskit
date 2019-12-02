@@ -35,7 +35,7 @@ BrowserTestCase(
     await quickInsert(page, 'Info panel');
     await page.waitForSelector(selectors.PANEL_EDITOR_CONTAINER);
 
-    await page.paste(editable);
+    await page.paste();
     const doc = await page.$eval(editable, getDocFromElement);
     await new Promise(resolve => setTimeout(resolve, 2000));
 

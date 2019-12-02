@@ -46,12 +46,12 @@ BrowserTestCase(
       '.ProseMirror .mediaGroupView-content-wrap .overlay';
     await page.waitForSelector(fileCardSelector);
     await page.click(fileCardSelector);
-    await page.copy(editable);
+    await page.copy();
 
     await page.click(editable);
     await page.type(editable, 'pasting');
 
-    await page.paste(editable);
+    await page.paste();
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testCase);

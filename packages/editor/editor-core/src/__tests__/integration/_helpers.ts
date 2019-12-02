@@ -1,3 +1,5 @@
+import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import { Page as PuppeteerPage } from 'puppeteer';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
 import { ToolbarFeatures } from '../../../example-helpers/ToolsDrawer';
@@ -9,7 +11,6 @@ import {
   getSelectorForTableCell,
 } from '../__helpers/page-objects/_table';
 import { TableCssClassName } from '../../plugins/table/types';
-
 /**
  * This function will in browser context. Make sure you call `toJSON` otherwise you will get:
  * unknown error: Maximum call stack size exceeded
@@ -115,14 +116,14 @@ export const copyAsHTMLButton = '.copy-as-html';
  * Copies plain text or HTML to clipboard for tests that need to paste
  */
 export const copyToClipboard = async (
-  browser: any,
+  page: Page,
   text: string,
   copyAs: 'plain' | 'html' = 'plain',
 ) => {
-  await browser.goto(clipboardHelper);
-  await browser.isVisible(clipboardInput);
-  await browser.type(clipboardInput, text);
-  await browser.click(
+  await page.goto(clipboardHelper);
+  await page.isVisible(clipboardInput);
+  await page.type(clipboardInput, text);
+  await page.click(
     copyAs === 'html' ? copyAsHTMLButton : copyAsPlaintextButton,
   );
 };
@@ -130,45 +131,45 @@ export const copyToClipboard = async (
 export const mediaInsertDelay = 1000;
 
 const mediaPickerMock = '.mediaPickerMock';
-export const setupMediaMocksProviders = async (browser: any) => {
+export const setupMediaMocksProviders = async (page: Page) => {
   // enable the media picker mock
-  await browser.waitForSelector(mediaPickerMock);
-  await browser.click(mediaPickerMock);
+  await page.waitForSelector(mediaPickerMock);
+  await page.click(mediaPickerMock);
 
   // since we're mocking and aren't uploading a real endpoint, skip authenticating
   // (this also skips loading from a https endpoint which we can't do from inside the http-only netlify environment)
-  await browser.click('.mediaProvider-resolved-no-auth-provider');
+  await page.click('.mediaProvider-resolved-no-auth-provider');
 
   // reload the editor so that media provider changes take effect
-  await rerenderEditor(browser);
+  await rerenderEditor(page);
 };
 
 /**
  * Toggles a given feature on a page with a toolbar.
  */
 export const toggleFeature = async (
-  browser: any,
+  page: Page,
   name: keyof ToolbarFeatures,
 ) => {
   const selector = `.toggleFeature-${name}`;
-  await browser.waitForSelector(selector);
-  await browser.click(selector);
+  await page.waitForSelector(selector);
+  await page.click(selector);
 };
 
 /**
  * Enables or disables a given feature on a page with a toolbar.
  */
 export const setFeature = async (
-  browser: any,
+  page: Page,
   name: keyof ToolbarFeatures,
   enable: boolean,
 ) => {
   const enableSelector = `.disableFeature-${name}`;
-  const isEnabled = get$$Length(await browser.$$(enableSelector));
+  const isEnabled = get$$Length(await page.$$(enableSelector));
 
   // toggle it if it requires enabling
   if ((enable && !isEnabled) || (!enable && isEnabled)) {
-    await toggleFeature(browser, name);
+    await toggleFeature(page, name);
   }
 };
 
@@ -179,75 +180,81 @@ export const rerenderEditor = async (browser: any) => {
   await browser.click('.reloadEditorButton');
 };
 
+const isPage = (page: Page | PuppeteerPage): page is Page => {
+  return !!(page as any).hasCapabilities;
+};
+
 // This function assumes the media picker modal is already shown.
 export const insertMediaFromMediaPicker = async (
-  browser: any,
+  page: Page | PuppeteerPage,
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
   const insertMediaButton = '[data-testid="media-picker-insert-button"]';
   const mediaCardSelector = `${editable} .img-wrapper`;
-  const existingMediaCards = await browser.$$(mediaCardSelector);
+  const existingMediaCards = await page.$$(mediaCardSelector);
   // wait for media item, and select it
-  await browser.waitForSelector(
+  await page.waitForSelector(
     '[data-testid="media-picker-popup"] [data-testid="media-file-card-view"] [aria-label="one.svg"]',
   );
   if (filenames) {
     for (const filename of filenames) {
       const selector = fileSelector.replace('%s', filename);
-      await browser.waitFor(selector);
-      await browser.click(selector);
+      await page.waitFor(selector);
+      await page.click(selector);
     }
   }
   // wait for insert button to show up and
   // insert it from the picker dialog
-  await browser.waitForSelector(insertMediaButton);
-  await browser.click(insertMediaButton);
-  await browser.waitFor('.img-wrapper');
+  await page.waitForSelector(insertMediaButton);
+  await page.click(insertMediaButton);
+  await page.waitFor('.img-wrapper');
 
   // Wait until we have found media-cards for all inserted items.
   const mediaCardCount = get$$Length(existingMediaCards) + filenames.length;
 
-  // Workaround - we need to use different wait methods depending on where we are running.
-  if (browser.browser.capabilities) {
-    await browser.browser.waitUntil(async () => {
-      const mediaCards = await browser.$$(mediaCardSelector);
+  if (isPage(page)) {
+    // Workaround - we need to use different wait methods depending on where we are running.
+    if (page.hasCapabilities()) {
+      await page.waitUntil(async () => {
+        const mediaCards = await page.$$(mediaCardSelector);
 
-      // media picker can still be displayed after inserting an image after some small time
-      // wait until it's completely disappeared before continuing
-      const insertButtons = await browser.$$(insertMediaButton);
-      return (
-        get$$Length(mediaCards) === mediaCardCount &&
-        get$$Length(insertButtons) === 0
+        // media picker can still be displayed after inserting an image after some small time
+        // wait until it's completely disappeared before continuing
+        const insertButtons = await page.$$(insertMediaButton);
+        return (
+          get$$Length(mediaCards) === mediaCardCount &&
+          get$$Length(insertButtons) === 0
+        );
+      });
+    } else {
+      await page.execute(() => {
+        window.scrollBy(0, window.innerHeight);
+      });
+      await page.waitUntil(() =>
+        page.execute(
+          (mediaCardSelector: any, mediaCardCount: any) => {
+            const mediaCards = document.querySelectorAll(mediaCardSelector);
+            return mediaCards.length === mediaCardCount;
+          },
+          mediaCardSelector,
+          mediaCardCount,
+        ),
       );
-    });
-  } else {
-    browser.evaluate(() => {
-      window.scrollBy(0, window.innerHeight);
-    });
-    await browser.waitFor(
-      (mediaCardSelector: any, mediaCardCount: any) => {
-        const mediaCards = document.querySelectorAll(mediaCardSelector);
-        return mediaCards.length === mediaCardCount;
-      },
-      {},
-      mediaCardSelector,
-      mediaCardCount,
-    );
+    }
   }
 };
 
 export const insertMedia = async (
-  browser: any,
+  page: Page | PuppeteerPage,
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
   const openMediaPopup = `[aria-label="${insertBlockMessages.filesAndImages.defaultMessage}"]`;
-
   // wait for media button in toolbar and click it
-  await browser.waitForSelector(openMediaPopup);
-  await browser.click(openMediaPopup);
-  await insertMediaFromMediaPicker(browser, filenames, fileSelector);
+  await page.waitForSelector(openMediaPopup);
+  await page.click(openMediaPopup);
+  await insertMediaFromMediaPicker(page, filenames, fileSelector);
 };
 
 /**
@@ -297,7 +304,7 @@ export const changeSelectedNodeLayout = async (
   layoutName: string,
 ) => {
   const buttonSelector = `div[aria-label="Floating Toolbar"] span[aria-label="${layoutName}"]`;
-  await page.waitForSelector(buttonSelector, 3000);
+  await page.waitForSelector(buttonSelector, { timeout: 3000 });
   await page.click(buttonSelector);
 };
 

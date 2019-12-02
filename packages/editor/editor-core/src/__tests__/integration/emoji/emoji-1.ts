@@ -19,7 +19,7 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, { appearance: 'full-page' });
     await insertEmoji(page, 'grinning');
-    await page.waitForSelector(emojiItem('grinning'), 1000);
+    await page.waitForSelector(emojiItem('grinning'), { timeout: 1000 });
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },
@@ -36,7 +36,7 @@ BrowserTestCase(
     await page.type(editable, '# ');
     await page.type(editable, 'heading ');
     await page.type(editable, ':) ');
-    await page.waitForSelector(emojiItem('slight_smile'), 1000);
+    await page.waitForSelector(emojiItem('slight_smile'), { timeout: 1000 });
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },
@@ -111,7 +111,7 @@ BrowserTestCase(
     await page.type(editable, 'this ');
     await insertEmoji(page, 'a');
     await insertEmoji(page, 'light_bulb_on');
-    await page.waitForSelector(emojiItem('a'), 1000);
+    await page.waitForSelector(emojiItem('a'), { timeout: 1000 });
     await page.type(editable, ['ArrowLeft', 'ArrowLeft']);
     await page.type(editable, ' that ');
     const doc = await page.$eval(editable, getDocFromElement);

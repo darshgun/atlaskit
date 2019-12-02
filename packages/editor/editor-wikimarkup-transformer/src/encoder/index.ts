@@ -12,6 +12,7 @@ import { paragraph } from './nodes/paragraph';
 import { rule } from './nodes/rule';
 import { table } from './nodes/table';
 import { unknown } from './nodes/unknown';
+import { blockCard } from './nodes/block-card';
 
 export type MarkEncoder = (text: string, attrs: any) => string;
 export type NodeEncoder = (node: PMNode, parent?: PMNode) => string;
@@ -29,6 +30,7 @@ const nodeEncoderMapping: { [key: string]: NodeEncoder } = {
   paragraph,
   rule,
   table,
+  blockCard,
 };
 
 export function encode(node: PMNode): string {

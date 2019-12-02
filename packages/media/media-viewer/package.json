@@ -33,7 +33,7 @@
     "@atlaskit/theme": "^9.2.4",
     "deep-equal": "^1.0.1",
     "exenv": "^1.2.2",
-    "pdfjs-dist": "2.0.489",
+    "pdfjs-dist": "2.0.943",
     "perf-marks": "^1.5.0",
     "tslib": "^1.9.3"
   },
@@ -53,6 +53,7 @@
     "@atlaskit/modal-dialog": "^10.3.3",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/visual-regression": "^0.1.4",
+    "@atlaskit/webdriver-runner": "^0.1.5",
     "@types/enzyme": "^3.1.15",
     "enzyme": "^3.10.0",
     "jsverify": "^0.8.3",

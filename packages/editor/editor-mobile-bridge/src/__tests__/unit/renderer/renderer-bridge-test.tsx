@@ -1,6 +1,7 @@
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import MobileRenderer from '../../../renderer/mobile-renderer-element';
+import WebBridgeImpl from '../../../renderer/native-to-web/implementation';
 
 const initialDocument = JSON.stringify({
   version: 1,
@@ -32,6 +33,19 @@ const invalidDocument = JSON.stringify({
       ],
     },
   ],
+});
+
+jest.mock('../../../version.json', () => ({
+  name: '@atlaskit/editor-mobile-bridge',
+  version: '1.2.3.4',
+}));
+
+describe('general', () => {
+  const bridge: any = new WebBridgeImpl();
+
+  it('should return valid bridge version', () => {
+    expect(bridge.currentVersion()).toEqual('1.2.3.4');
+  });
 });
 
 describe('renderer bridge', () => {

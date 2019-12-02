@@ -30,16 +30,19 @@ export class CardFilesMockedPage {
      * This is going to load the source into another <img> and
      * see if it can be loaded successfully
      */
-    return this.page.executeAsync((src: string, done: any) => {
-      const img = new Image();
-      img.onload = function() {
-        done(true);
-      };
-      img.onerror = function() {
-        done(false);
-      };
-      img.setAttribute('src', src);
-    }, source);
+    return this.page.executeAsync(
+      (src: string, done: (result: boolean) => void) => {
+        const img = new Image();
+        img.onload = function() {
+          done(true);
+        };
+        img.onerror = function() {
+          done(false);
+        };
+        img.setAttribute('src', src);
+      },
+      source,
+    );
   }
 }
 

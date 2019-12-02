@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/badge",
-  "version": "13.1.2",
+  "version": "13.1.3",
   "description": "A React component that indicates values",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -22,7 +22,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^9.2.4",
+    "@atlaskit/theme": "^9.2.8",
     "@babel/runtime": "^7.0.0",
     "tslib": "^1.9.3"
   },

@@ -82,7 +82,7 @@ export const callRendererBridge = async (
   );
 };
 
-const clearBridgeOutput = async (browser: any) => {
+export const clearBridgeOutput = async (browser: any) => {
   await browser.execute(() => {
     // @ts-ignore
     window.logBridge = [];

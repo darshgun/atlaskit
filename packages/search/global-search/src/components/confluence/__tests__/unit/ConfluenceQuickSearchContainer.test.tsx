@@ -681,7 +681,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     const mockSearchSessionId = 'someSearchSessionId';
 
     it('should call onAdvancedSearch call', () => {
-      const spy = jest.fn<{}, []>();
+      const spy = jest.fn();
       const handleSearchSubmit = mountComponent(spy);
       const mockedEvent = mockEvent();
       handleSearchSubmit(mockedEvent, mockSearchSessionId);

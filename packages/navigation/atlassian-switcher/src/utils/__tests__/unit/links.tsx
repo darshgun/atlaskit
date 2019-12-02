@@ -1,4 +1,6 @@
 import {
+  AVAILABLE_PRODUCT_DATA_MAP,
+  TO_WORKLENS_PRODUCT_KEY,
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
@@ -6,9 +8,9 @@ import {
 } from '../../links';
 import {
   Product,
-  WorklensProductType,
   ProvisionedProducts,
   ProductKey,
+  WorklensProductType,
 } from '../../../types';
 
 import { resolveRecommendations } from '../../../providers/recommendations';
@@ -222,6 +224,48 @@ describe('utils/links', () => {
         ),
       );
       expect(result.length).toBe(3);
+    });
+
+    it('should use instance base url for jira products', () => {
+      const mockData = [
+        ProductKey.JIRA_CORE,
+        ProductKey.CONFLUENCE,
+        ProductKey.OPSGENIE,
+      ].map((productKey, index) => {
+        const siteData = mockJoinableSites.sites[index];
+        return Object.assign({}, siteData, {
+          relevance: 10,
+          users: {
+            [productKey]: siteData.users[ProductKey.JIRA_SOFTWARE],
+          },
+        });
+      });
+
+      const result = getJoinableSiteLinks(mockData);
+
+      result.forEach((site, index) => {
+        const siteData = mockData[index];
+
+        let expectUrl = siteData.url;
+
+        const productKey = Object.keys(siteData.users)[0];
+
+        let productData =
+          AVAILABLE_PRODUCT_DATA_MAP[
+            TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey]
+          ];
+
+        if (productKey === ProductKey.CONFLUENCE) {
+          expectUrl = siteData.url + productData.href;
+        } else if (
+          productKey !== ProductKey.JIRA_CORE &&
+          productKey !== ProductKey.JIRA_SOFTWARE
+        ) {
+          expectUrl = productData.href;
+        }
+
+        expect(site.href).toEqual(expectUrl);
+      });
     });
   });
 });

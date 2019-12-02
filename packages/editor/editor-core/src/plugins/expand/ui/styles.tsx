@@ -12,10 +12,15 @@ import { BreakoutCssClassName } from '../../breakout/constants';
 const EXPAND_SELECTED_BACKGROUND = 'rgba(255, 255, 255, 0.6)';
 
 export const expandStyles = css`
+  .${expandClassNames.icon} > div {
+    display: flex;
+  }
+
   .${expandClassNames.prefix} {
     ${sharedExpandStyles.ContainerStyles}
     margin-top: ${blockNodesVerticalMargin}rem;
     overflow: hidden;
+    cursor: pointer;
 
     td > & {
       margin-top: 0;
@@ -35,6 +40,7 @@ export const expandStyles = css`
 
   .${expandClassNames.content} {
     ${sharedExpandStyles.ContentStyles}
+    cursor: text;
     padding-top: 0px;
   }
 
@@ -43,7 +49,8 @@ export const expandStyles = css`
   }
 
   .${expandClassNames.titleContainer} {
-    ${sharedExpandStyles.TitleContainerStyles}
+    ${sharedExpandStyles.TitleContainerStyles};
+    overflow: visible;
   }
 
   .${expandClassNames.expanded} {
@@ -62,7 +69,7 @@ export const expandStyles = css`
   .${expandClassNames.prefix}:not(.${expandClassNames.expanded}) {
     .ak-editor-expand__content {
       position: absolute;
-      height: 1px; 
+      height: 1px;
       width: 1px;
       overflow: hidden;
       clip: rect(1px, 1px, 1px, 1px);
@@ -82,8 +89,5 @@ export const expandStyles = css`
         background: ${EXPAND_SELECTED_BACKGROUND};
       }
     }
-
   }
-
-  
 `;

@@ -7,17 +7,24 @@ import {
   ACTION,
   ACTION_SUBJECT,
   EVENT_TYPE,
-  analyticsPluginKey,
-  AnalyticsEventPayloadWithChannel,
+  getAnalyticsEventsFromTransaction,
+  AnalyticsEventPayload,
 } from '../../../../../plugins/analytics';
 import {
   findChangedNodesFromTransaction,
   validateNodes,
+  validNode,
 } from '../../../../../utils/nodes';
 import { compose, toJSON } from '../../../../../utils';
 import { sanitizeNode } from '../../../../../utils/filter/node-filter';
 import { EditorSharedConfig } from '../../context/shared-config';
 import { getDocStructure } from '../../../../../utils/document-logger';
+import { Dispatch } from '../../../../../event-dispatcher';
+
+// Helper to assure correct payload when dispatch analytics
+function dispatchAnalytics(dispatch: Dispatch, payload: AnalyticsEventPayload) {
+  dispatch(analyticsEventKey, payload);
+}
 
 export function createDispatchTransaction(
   editorSharedConfig: EditorSharedConfig,
@@ -38,24 +45,21 @@ export function createDispatchTransaction(
         onChange(getEditorValue(editorView, transformer));
       }
     } else {
-      // If invalid document, send analytics event with its sructure before and after transaction
+      // If invalid document, send analytics event with the structure of the nodes
       if (dispatch) {
-        const documents = {
-          new: getDocStructure(transaction.doc),
-          prev: getDocStructure(transaction.docs[0]),
-        };
+        const invalidNodes = nodes
+          .filter(node => !validNode(node))
+          .map(node => getDocStructure(node));
 
-        dispatch(analyticsEventKey, {
-          payload: {
-            action: ACTION.DISPATCHED_INVALID_TRANSACTION,
-            actionSubject: ACTION_SUBJECT.EDITOR,
-            eventType: EVENT_TYPE.OPERATIONAL,
-            attributes: {
-              analyticsEventPayloads: transaction.getMeta(
-                analyticsPluginKey,
-              ) as AnalyticsEventPayloadWithChannel[],
-              documents,
-            },
+        dispatchAnalytics(dispatch, {
+          action: ACTION.DISPATCHED_INVALID_TRANSACTION,
+          actionSubject: ACTION_SUBJECT.EDITOR,
+          eventType: EVENT_TYPE.OPERATIONAL,
+          attributes: {
+            analyticsEventPayloads: getAnalyticsEventsFromTransaction(
+              transaction,
+            ),
+            invalidNodes,
           },
         });
       }

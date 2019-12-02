@@ -10,30 +10,36 @@ import {
   outdentList,
   toggleOrderedList,
   toggleBulletList,
-  toggleSuperscript,
-  toggleSubscript,
-  toggleStrike,
-  toggleCode,
-  toggleUnderline,
-  toggleEm,
-  toggleStrong,
+  toggleSuperscriptWithAnalytics,
+  toggleSubscriptWithAnalytics,
+  toggleStrikeWithAnalytics,
+  toggleCodeWithAnalytics,
+  toggleUnderlineWithAnalytics,
+  toggleEmWithAnalytics,
+  toggleStrongWithAnalytics,
   StatusState,
-  updateStatus,
+  updateStatusWithAnalytics,
   commitStatusPicker,
-  insertBlockType,
-  setBlockType,
+  insertBlockTypesWithAnalytics,
+  setBlockTypeWithAnalytics,
   createTable,
   insertTaskDecision,
   changeColor,
   TypeAheadItem,
   selectItem as selectTypeAheadItem,
-  insertLink,
+  insertLinkWithAnalytics,
   isTextAtPos,
   isLinkAtPos,
   setLinkHref,
   setLinkText,
   clearEditorContent,
   setKeyboardHeight,
+  INPUT_METHOD,
+  BlockTypeInputMethod,
+  InsertBlockInputMethodToolbar,
+  LinkInputMethod,
+  ListInputMethod,
+  TextFormattingInputMethodBasic,
 } from '@atlaskit/editor-core';
 import { EditorView } from 'prosemirror-view';
 import { EditorViewWithComposition } from '../../types';
@@ -50,8 +56,6 @@ import WebBridge from '../../web-bridge';
 import { hasValue } from '../../utils';
 import { rejectPromise, resolvePromise } from '../../cross-platform-promise';
 
-import { version as packageVersion } from '../../version.json';
-
 export default class WebBridgeImpl extends WebBridge
   implements NativeToWebBridge {
   textFormatBridgeState: TextFormattingState | null = null;
@@ -65,49 +69,80 @@ export default class WebBridgeImpl extends WebBridge
   mediaPicker: CustomMediaPicker | undefined;
   mediaMap: Map<string, Function> = new Map();
 
-  currentVersion(): string {
-    return packageVersion;
-  }
-
-  onBoldClicked() {
+  onBoldClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleStrong()(this.editorView.state, this.editorView.dispatch);
+      toggleStrongWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
-  onItalicClicked() {
+  onItalicClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleEm()(this.editorView.state, this.editorView.dispatch);
+      toggleEmWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
-  onUnderlineClicked() {
+  onUnderlineClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleUnderline()(this.editorView.state, this.editorView.dispatch);
+      toggleUnderlineWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
-  onCodeClicked() {
+  onCodeClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleCode()(this.editorView.state, this.editorView.dispatch);
+      toggleCodeWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
-  onStrikeClicked() {
+  onStrikeClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleStrike()(this.editorView.state, this.editorView.dispatch);
+      toggleStrikeWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
-  onSuperClicked() {
+  onSuperClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleSuperscript()(this.editorView.state, this.editorView.dispatch);
+      toggleSuperscriptWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
-  onSubClicked() {
+  onSubClicked(
+    inputMethod: TextFormattingInputMethodBasic = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.textFormatBridgeState && this.editorView) {
-      toggleSubscript()(this.editorView.state, this.editorView.dispatch);
+      toggleSubscriptWithAnalytics({ inputMethod })(
+        this.editorView.state,
+        this.editorView.dispatch,
+      );
     }
   }
 
@@ -117,9 +152,14 @@ export default class WebBridgeImpl extends WebBridge
 
   onMentionPickerDismissed() {}
 
-  onStatusUpdate(text: string, color: StatusColor, uuid: string) {
+  onStatusUpdate(
+    text: string,
+    color: StatusColor,
+    uuid: string,
+    inputMethod: InsertBlockInputMethodToolbar = INPUT_METHOD.TOOLBAR,
+  ) {
     if (this.statusBridgeState && this.editorView) {
-      updateStatus({
+      updateStatusWithAnalytics(inputMethod, {
         text,
         color,
         localId: uuid,
@@ -189,44 +229,56 @@ export default class WebBridgeImpl extends WebBridge
   }
 
   onPromiseResolved(uuid: string, payload: string) {
-    resolvePromise(uuid, JSON.parse(payload));
+    try {
+      resolvePromise(uuid, JSON.parse(payload));
+    } catch (err) {
+      err.message = `${err.message}. Payload: ${JSON.stringify(payload)}`;
+      rejectPromise(uuid, err);
+    }
   }
 
-  onPromiseRejected(uuid: string) {
-    rejectPromise(uuid);
+  onPromiseRejected(uuid: string, err?: Error) {
+    rejectPromise(uuid, err);
   }
 
-  onBlockSelected(blockType: string) {
+  onBlockSelected(
+    blockType: string,
+    inputMethod: BlockTypeInputMethod = INPUT_METHOD.INSERT_MENU,
+  ) {
     if (this.editorView) {
       const { state, dispatch } = this.editorView;
-      setBlockType(blockType)(state, dispatch);
+      setBlockTypeWithAnalytics(blockType, inputMethod)(state, dispatch);
     }
   }
 
-  onOrderedListSelected() {
+  onOrderedListSelected(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
     if (this.listBridgeState && this.editorView) {
-      toggleOrderedList(this.editorView);
+      toggleOrderedList(this.editorView, inputMethod);
     }
   }
-  onBulletListSelected() {
+  onBulletListSelected(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
     if (this.listBridgeState && this.editorView) {
-      toggleBulletList(this.editorView);
-    }
-  }
-
-  onIndentList() {
-    if (this.listBridgeState && this.editorView) {
-      indentList()(this.editorView.state, this.editorView.dispatch);
+      toggleBulletList(this.editorView, inputMethod);
     }
   }
 
-  onOutdentList() {
+  onIndentList(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
     if (this.listBridgeState && this.editorView) {
-      outdentList()(this.editorView.state, this.editorView.dispatch);
+      indentList(inputMethod)(this.editorView.state, this.editorView.dispatch);
     }
   }
 
-  onLinkUpdate(text: string, url: string) {
+  onOutdentList(inputMethod: ListInputMethod = INPUT_METHOD.TOOLBAR) {
+    if (this.listBridgeState && this.editorView) {
+      outdentList(inputMethod)(this.editorView.state, this.editorView.dispatch);
+    }
+  }
+
+  onLinkUpdate(
+    text: string,
+    url: string,
+    inputMethod: LinkInputMethod = INPUT_METHOD.MANUAL,
+  ) {
     if (!this.editorView) {
       return;
     }
@@ -235,7 +287,13 @@ export default class WebBridgeImpl extends WebBridge
     const { from, to } = state.selection;
 
     if (!isTextAtPos(from)(state)) {
-      insertLink(from, to, url, text)(state, dispatch);
+      insertLinkWithAnalytics(
+        inputMethod,
+        from,
+        to,
+        url,
+        text,
+      )(state, dispatch);
       return;
     }
 
@@ -268,7 +326,12 @@ export default class WebBridgeImpl extends WebBridge
       .forEach(cmd => cmd(this.editorView!.state, dispatch));
   }
 
-  insertBlockType(type: string) {
+  insertBlockType(
+    type: string,
+    inputMethod: BlockTypeInputMethod = INPUT_METHOD.INSERT_MENU,
+    listLocalId?: string,
+    itemLocalId?: string,
+  ) {
     if (!this.editorView) {
       return;
     }
@@ -277,19 +340,37 @@ export default class WebBridgeImpl extends WebBridge
 
     switch (type) {
       case 'blockquote':
-        insertBlockType('blockquote')(state, dispatch);
+        insertBlockTypesWithAnalytics('blockquote', inputMethod)(
+          state,
+          dispatch,
+        );
         return;
       case 'codeblock':
-        insertBlockType('codeblock')(state, dispatch);
+        insertBlockTypesWithAnalytics('codeblock', inputMethod)(
+          state,
+          dispatch,
+        );
         return;
       case 'panel':
-        insertBlockType('panel')(state, dispatch);
+        insertBlockTypesWithAnalytics('panel', inputMethod)(state, dispatch);
         return;
       case 'action':
-        insertTaskDecision(this.editorView, 'taskList');
+        insertTaskDecision(
+          this.editorView,
+          'taskList',
+          inputMethod as InsertBlockInputMethodToolbar,
+          listLocalId,
+          itemLocalId,
+        );
         return;
       case 'decision':
-        insertTaskDecision(this.editorView, 'decisionList');
+        insertTaskDecision(
+          this.editorView,
+          'decisionList',
+          inputMethod as InsertBlockInputMethodToolbar,
+          listLocalId,
+          itemLocalId,
+        );
         return;
       case 'table':
         createTable(state, dispatch);

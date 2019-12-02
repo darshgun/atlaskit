@@ -60,19 +60,36 @@ export {
   outdentList,
   toggleOrderedList,
   toggleBulletList,
+  InputMethod as ListInputMethod,
 } from './plugins/lists/commands';
 export {
+  InputMethodToolbar as TextFormattingInputMethodToolbar,
+  InputMethodBasic as TextFormattingInputMethodBasic,
   toggleSuperscript,
+  toggleSuperscriptWithAnalytics,
   toggleSubscript,
+  toggleSubscriptWithAnalytics,
   toggleStrike,
+  toggleStrikeWithAnalytics,
   toggleCode,
+  toggleCodeWithAnalytics,
   toggleUnderline,
+  toggleUnderlineWithAnalytics,
   toggleEm,
+  toggleEmWithAnalytics,
   toggleStrong,
+  toggleStrongWithAnalytics,
 } from './plugins/text-formatting/commands/text-formatting';
-export { insertBlockType, setBlockType } from './plugins/block-type/commands';
+export {
+  insertBlockType,
+  insertBlockTypesWithAnalytics,
+  setBlockType,
+  setBlockTypeWithAnalytics,
+  InputMethod as BlockTypeInputMethod,
+} from './plugins/block-type/commands';
 export { createTable } from './plugins/table/commands';
 export { insertTaskDecision } from './plugins/tasks-and-decisions/commands';
+export { TaskDecisionInputMethod } from './plugins/tasks-and-decisions/types';
 export { EventDispatcher } from './event-dispatcher';
 export {
   pluginKey as statusPluginKey,
@@ -83,19 +100,31 @@ export {
   commitStatusPicker,
   setStatusPickerAt,
   updateStatus,
+  updateStatusWithAnalytics,
 } from './plugins/status/actions';
 export { typeAheadPluginKey, TypeAheadPluginState } from './plugins/type-ahead';
 export { TypeAheadItem } from './plugins/type-ahead/types';
 export { selectItem } from './plugins/type-ahead/commands/select-item';
 export {
   insertLink,
+  insertLinkWithAnalytics,
   isTextAtPos,
   isLinkAtPos,
   setLinkHref,
   setLinkText,
 } from './plugins/hyperlink/commands';
+export { LinkInputType as LinkInputMethod } from './plugins/hyperlink/ui/HyperlinkAddToolbar/HyperlinkAddToolbar';
 export { historyPluginKey, HistoryPluginState } from './plugins/history';
-export { setKeyboardHeight } from './plugins/ios-scroll/commands';
+export { setKeyboardHeight } from './plugins/mobile-scroll/commands';
+export {
+  INPUT_METHOD,
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+  EVENT_TYPE,
+  AnalyticsEventPayload,
+} from './plugins/analytics';
+export { TOOLBAR_MENU_TYPE as InsertBlockInputMethodToolbar } from './plugins/insert-block/ui/ToolbarInsertBlock';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';

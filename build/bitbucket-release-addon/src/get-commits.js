@@ -1,5 +1,5 @@
 // @flow
-import parseChangesetCommit from '@atlaskit/build-releases/changeset/parseChangesetCommit';
+import parseChangesetCommit from '@atlaskit/build-utils/parseChangesetCommit';
 
 function commitsToValues(response /*: Object */) {
   return response.values;
@@ -12,7 +12,7 @@ function commitUrl(repoName /*: string */, pullrequestid /*: string */) {
 function getCommits(
   repoName /*: string */,
   pullrequestid /*: string */,
-  urlNext? /*: string */,
+  urlNext /*: ?string */,
 ) {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
@@ -38,7 +38,7 @@ function getCommits(
 export default function getChangesetsFromCommits(
   repoName /*: string */,
   pullrequestid /*: string */,
-  urlNext? /*: string */,
+  urlNext /*: ?string */,
 ) {
   return getCommits(repoName, pullrequestid, urlNext).then(commits =>
     commits

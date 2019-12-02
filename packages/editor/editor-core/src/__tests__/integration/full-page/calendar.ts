@@ -39,7 +39,7 @@ BrowserTestCase(
     await page.waitForSelector(dateView);
     await page.click(dateView);
     // wait for element to disappear
-    await page.waitFor(calendar, '5000', true);
+    await page.waitFor(calendar, 5000, true);
     expect(await page.isExisting(calendar)).toBe(false);
   },
 );

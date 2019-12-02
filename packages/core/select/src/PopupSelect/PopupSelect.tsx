@@ -2,13 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import Select from 'react-select';
 import createFocusTrap, { FocusTrap } from 'focus-trap';
-import {
-  Manager,
-  Reference,
-  Popper,
-  PopperProps,
-  RefHandler,
-} from 'react-popper';
+import { Manager, Reference, Popper, PopperProps } from 'react-popper';
 import NodeResolver from 'react-node-resolver';
 import shallowEqualObjects from 'shallow-equal/objects';
 import { N80 } from '@atlaskit/theme/colors';
@@ -60,7 +54,7 @@ export interface PopupSelectProps<Option = OptionType>
   footer?: ReactNode;
   popperProps?: PopperPropsNoChildren;
   searchThreshold?: number;
-  target: (options: { ref: any; isOpen: boolean }) => ReactNode;
+  target?: (options: { ref: any; isOpen: boolean }) => ReactNode;
 }
 
 interface State {
@@ -111,7 +105,10 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
     options: [],
   };
 
-  getDerivedStateFromProps(props: PopupSelectProps<Option>, state: State) {
+  static getDerivedStateFromProps(
+    props: PopupSelectProps<OptionType>,
+    state: State,
+  ) {
     const newState: Partial<State> = {};
 
     // Merge consumer and default popper props
@@ -234,17 +231,31 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
   // Refs
   // ==============================
 
-  resolveTargetRef = (popperRef: RefHandler) => (ref: HTMLElement) => {
+  resolveTargetRef = (popperRef: React.Ref<HTMLElement>) => (
+    ref: HTMLElement,
+  ) => {
     // avoid thrashing fn calls
     if (!this.targetRef && popperRef && ref) {
       this.targetRef = ref;
-      popperRef(ref);
+
+      if (typeof popperRef === 'function') {
+        popperRef(ref);
+      } else {
+        (popperRef as React.MutableRefObject<HTMLElement>).current = ref;
+      }
     }
   };
 
-  resolveMenuRef = (popperRef: RefHandler) => (ref: HTMLElement) => {
+  resolveMenuRef = (popperRef: React.Ref<HTMLElement>) => (
+    ref: HTMLElement,
+  ) => {
     this.menuRef = ref;
-    popperRef(ref);
+
+    if (typeof popperRef === 'function') {
+      popperRef(ref);
+    } else {
+      (popperRef as React.MutableRefObject<HTMLElement>).current = ref;
+    }
   };
 
   getSelectRef = (ref: Select<Option>) => {
@@ -353,7 +364,9 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
     return (
       <Manager>
         <Reference>
-          {({ ref }) => target({ ref: this.resolveTargetRef(ref), isOpen })}
+          {({ ref }) =>
+            target && target({ ref: this.resolveTargetRef(ref), isOpen })
+          }
         </Reference>
         {this.renderSelect()}
       </Manager>

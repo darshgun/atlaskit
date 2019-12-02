@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import {
-  default as ProviderFactory,
+  ProviderFactory,
   WithProviders,
   Providers,
-} from '../../../providerFactory';
+} from '../../../provider-factory';
 
 describe('WithProviders', () => {
   it('should pass multiple providers to UI component', () => {

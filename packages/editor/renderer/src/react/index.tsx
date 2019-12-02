@@ -152,7 +152,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         } else if (['tableHeader', 'tableRow'].indexOf(node.type.name) > -1) {
           props = this.getTableChildrenProps(node);
         } else if (node.type.name === 'media') {
-          props = this.getMediaProps(node);
+          props = this.getMediaProps(node, parentInfo && parentInfo.path);
         } else {
           props = this.getProps(node);
         }
@@ -269,10 +269,29 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       parentIsIncompleteTask: parentInfo && parentInfo.parentIsIncompleteTask,
     };
   }
-  private getMediaProps(node: Node) {
+
+  private getMediaProps(node: Node, path: Array<Node> = []) {
+    const {
+      marks: { link },
+      nodes: { mediaSingle },
+    } = node.type.schema;
+
+    const isLinkMark = (mark: Mark) => mark.type.name === link.name;
+
+    const parentMediaNode: Node | null =
+      path.length > 0 ? path[path.length - 1] : null;
+
+    const parentNodeHasLinkMark: boolean =
+      parentMediaNode !== null &&
+      parentMediaNode.type.name === mediaSingle.name &&
+      parentMediaNode.marks.some(isLinkMark);
+
+    const shouldOpenMediaViewer =
+      !parentNodeHasLinkMark && this.shouldOpenMediaViewer;
+
     return {
       ...this.getProps(node),
-      shouldOpenMediaViewer: this.shouldOpenMediaViewer,
+      shouldOpenMediaViewer,
       UNSAFE_allowAltTextOnImages: this.UNSAFE_allowAltTextOnImages,
     };
   }
@@ -410,6 +429,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
       allowColumnSorting,
+      shouldOpenMediaViewer,
     }: ConstructorParams,
   ): ReactSerializer {
     // TODO: Do we actually need the schema here?
@@ -422,6 +442,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       allowDynamicTextSizing,
       allowHeadingAnchorLinks,
       allowColumnSorting,
+      shouldOpenMediaViewer,
     });
   }
 }

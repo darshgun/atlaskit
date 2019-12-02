@@ -9,7 +9,6 @@ import {
   fullpage,
   insertBlockMenuItem,
 } from '../_helpers';
-import { Page } from '../../__helpers/page-objects/_types';
 import placeholderAdf from './__fixtures__/placeholder.adf.json';
 
 const placeholderInputSelector = 'input[placeholder="Add placeholder text"]';
@@ -19,7 +18,7 @@ BrowserTestCase(
   'placeholder text: can insert placeholder',
   { skip: ['ie'] },
   async (client: any, testName: string) => {
-    const page: Page = await goToEditorTestingExample(client);
+    const page = await goToEditorTestingExample(client);
     await mountEditor(page, {
       appearance: fullpage.appearance,
       allowTemplatePlaceholders: {
@@ -42,7 +41,7 @@ BrowserTestCase(
   'placeholder text: can type inside placeholder and replace with text',
   { skip: ['ie'] },
   async (client: any, testName: string) => {
-    const page: Page = await goToEditorTestingExample(client);
+    const page = await goToEditorTestingExample(client);
     await mountEditor(page, {
       appearance: fullpage.appearance,
       allowTemplatePlaceholders: {

@@ -62,7 +62,7 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, { appearance: 'full-page' });
     await page.type(editable, '```');
-    await page.waitForSelector('pre', 1000);
+    await page.waitForSelector('pre', { timeout: 1000 });
     await page.type(editable, ':smile:');
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
@@ -78,7 +78,7 @@ BrowserTestCase(
     await mountEditor(page, { appearance: 'full-page' });
     await page.type(editable, '[] ');
     await insertEmoji(page, 'smile');
-    await page.waitForSelector(emojiItem('smile'), 1000);
+    await page.waitForSelector(emojiItem('smile'), { timeout: 1000 });
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },

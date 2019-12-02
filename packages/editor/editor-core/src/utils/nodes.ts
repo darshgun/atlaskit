@@ -31,16 +31,18 @@ export const findChangedNodesFromTransaction = (tr: Transaction): PMNode[] => {
   return nodes;
 };
 
+export const validNode = (node: PMNode): boolean => {
+  try {
+    node.check(); // this will throw an error if the node is invalid
+  } catch (error) {
+    return false;
+  }
+  return true;
+};
+
 /** Validates prosemirror nodes, and returns true only if all nodes are valid */
 export const validateNodes = (nodes: PMNode[]): boolean =>
-  nodes.every(node => {
-    try {
-      node.check(); // this will throw an error if the node is invalid
-    } catch (error) {
-      return false;
-    }
-    return true;
-  });
+  nodes.every(validNode);
 
 export const isNodeTypeParagraph = (node: PMNode | undefined | null): boolean =>
   Boolean(node && node.type && node.type.name === 'paragraph');

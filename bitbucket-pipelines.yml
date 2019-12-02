@@ -19,7 +19,7 @@ pipelines:
             - (cd build/ci-scripts && yarn stop-if-older-build)
             - yarn build
             # Bump all packages and their dependents using saved changesets.
-            - yarn changeset bump
+            - yarn changeset version
             # We push the bumped packages to master now as it's much better to fail whilst BB is
             # ahead of npm, than the other way round.
             - git push
@@ -32,7 +32,7 @@ pipelines:
             # which contains our changeset bump rather than the actual changes.
             - yarn build:editor-mobile-bridge
             # Release all unreleased packages.
-            - yarn changeset release --public
+            - yarn changeset publish
             - git push --tags # Push only the tags.
             - (cd build/ci-scripts && yarn restart-stopped-build)
           after-script:
@@ -241,6 +241,18 @@ pipelines:
           caches:
             - node
 
+    # This will run the security check using SourceClear acroos the repository.
+    # We need to pull a new docker image(node 10) to avoid installing curl.
+    security-check:
+      - step:
+          image: node:10
+          script:
+            - source ./build-setup.sh
+            - curl -sSL https://download.sourceclear.com/ci.sh | bash
+          after-script:
+            - bolt install --frozen-lockfile
+            - yarn send:buildEvents
+
     # This will run the full suite of the webdriver tests on Browserstack.
     build-webdriver:
       - step:
@@ -386,7 +398,7 @@ pipelines:
                 - echo "We do this so that we know if the repo will be in an inconsistent state when this branch hits master"
                 - echo "If the step below fails, it's because a changeset may be bumping a package that is depended upon by a package that didn't exist when the changeset was created"
                 - echo "Read the very last error message, it will tell you exactly what is wrong (ignore all the first warnings you'll see)"
-                - yarn changeset bump
+                - yarn changeset version
               after-script:
                 - yarn send:stepFailureEvents
           - step:
@@ -454,9 +466,11 @@ pipelines:
               artifacts:
                 - imageSnapshotFailures/**
       - step:
-          name: Wait until no master is running
+          name: Wait until no master is running - except if develop
           script:
             - source ./build-setup.sh
+            - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+            - if [[ "$TARGET_BRANCH" != "master" ]]; then echo "This build does not need to wait for master build."; exit 0; fi
             - cd build/ci-scripts
             - yarn --ignore-engines
             - node ./wait.until.no.master.build.running.js
@@ -515,6 +529,7 @@ pipelines:
           caches:
             - node
 
+    # This build allow to push the bundle size results as ratchet file to s3.
     push-bundle-size-to-s3:
       - parallel:
           - step:

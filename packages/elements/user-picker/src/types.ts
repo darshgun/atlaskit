@@ -144,6 +144,7 @@ export interface GroupHighlight {
 }
 
 export interface OptionData {
+  avatarUrl?: any;
   id: string;
   name: string;
   type?: 'user' | 'team' | 'email' | 'group';
