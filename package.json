@@ -264,7 +264,7 @@
     "validator": "^9.4.1",
     "wait-for-expect": "^1.2.0",
     "wdio-chromedriver-service": "^5.0.0",
-    "webdriverio": "^5.16.7",
+    "webdriverio": "5.11.0",
     "webpack": "^4.16.1",
     "webpack-bundle-analyzer": "^2.13.0",
     "webpack-dev-server": "^3.1.4",
@@ -592,6 +592,11 @@
     "yarn-deduplicate": "^1.0.5"
   },
   "resolutions": {
+    "webdriver": "5.11.0",
+    "@wdio/config": "5.11.0",
+    "@wdio/logger": "5.11.0",
+    "@wdio/repl": "5.11.0",
+
     "**/@atlaskit/theme/styled-components": "^3.2.6",
     "**/expand-range/fill-range": "2.2.3",
     "react":"16.8.6",
