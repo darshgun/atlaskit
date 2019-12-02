@@ -72,22 +72,25 @@ const headingPluginOptions = ({
     };
   });
 
-interface BlockTypePluginOptions {
+export interface BlockTypePluginOptions {
   lastNodeMustBeParagraph?: boolean;
+  allowBlockType?: { exclude?: Array<AllowedBlockTypes> };
 }
 
 const blockTypePlugin = (options?: BlockTypePluginOptions): EditorPlugin => ({
   name: 'blockType',
 
-  nodes({ allowBlockType }) {
+  nodes() {
     const nodes: BlockTypeNode[] = [
       { name: 'heading', node: heading },
       { name: 'blockquote', node: blockquote },
       { name: 'hardBreak', node: hardBreak },
     ];
 
-    if (allowBlockType) {
-      const exclude = allowBlockType.exclude ? allowBlockType.exclude : [];
+    if (options && options.allowBlockType) {
+      const exclude = options.allowBlockType.exclude
+        ? options.allowBlockType.exclude
+        : [];
       return nodes.filter(node => exclude.indexOf(node.name) === -1);
     }
 

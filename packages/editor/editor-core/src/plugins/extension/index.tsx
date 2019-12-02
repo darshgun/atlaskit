@@ -3,12 +3,15 @@ import {
   extension,
   bodiedExtension,
 } from '@atlaskit/adf-schema';
+import { ExtensionHandlers } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import createPlugin from './plugin';
 import { getToolbarConfig } from './toolbar';
 
 interface ExtensionPluginOptions {
   breakoutEnabled?: boolean;
+  stickToolbarToBottom?: boolean;
+  extensionHandlers?: ExtensionHandlers;
 }
 
 const extensionPlugin = (options?: ExtensionPluginOptions): EditorPlugin => ({
@@ -26,23 +29,18 @@ const extensionPlugin = (options?: ExtensionPluginOptions): EditorPlugin => ({
     return [
       {
         name: 'extension',
-        plugin: ({ props, dispatch, providerFactory, portalProviderAPI }) => {
-          let allowBreakout =
-            (typeof props.allowExtension === 'object'
-              ? props.allowExtension
-              : { allowBreakout: false }
-            ).allowBreakout &&
-            options &&
-            options.breakoutEnabled;
+        plugin: ({ dispatch, providerFactory, portalProviderAPI }) => {
+          const allowBreakout = options && options.breakoutEnabled;
+          const stickToolbarToBottom = options && options.stickToolbarToBottom;
+          const extensionHandlers = options && options.extensionHandlers;
 
           return createPlugin(
             dispatch,
             providerFactory,
-            props.extensionHandlers || {},
+            extensionHandlers || {},
             portalProviderAPI,
-            typeof props.allowExtension === 'object'
-              ? { ...props.allowExtension, allowBreakout }
-              : props.allowExtension,
+            stickToolbarToBottom,
+            allowBreakout,
           );
         },
       },

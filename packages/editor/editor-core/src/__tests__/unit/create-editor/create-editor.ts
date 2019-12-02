@@ -75,7 +75,6 @@ describe(name, () => {
           createPMPlugins({
             editorConfig: editorConfig as any,
             schema: {} as any,
-            props: {} as any,
             dispatch: () => {},
             eventDispatcher: {} as any,
             providerFactory: {} as any,
@@ -105,7 +104,7 @@ describe(name, () => {
           },
         },
       ];
-      processPluginsList(plugins, {});
+      processPluginsList(plugins);
       expect(spy).toHaveBeenCalledWith([options]);
     });
   });

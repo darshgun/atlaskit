@@ -18,6 +18,7 @@ interface BasePluginOptions {
   allowScrollGutter?: ScrollGutterPluginOptions;
   allowInlineCursorTarget?: boolean;
   addRunTimePerformanceCheck?: boolean;
+  inputSamplingLimit?: number;
 }
 
 const basePlugin = (options?: BasePluginOptions): EditorPlugin => ({
@@ -47,9 +48,9 @@ const basePlugin = (options?: BasePluginOptions): EditorPlugin => ({
       { name: 'reactNodeView', plugin: () => reactNodeView },
       {
         name: 'frozenEditor',
-        plugin: ({ dispatchAnalyticsEvent, props }) =>
+        plugin: ({ dispatchAnalyticsEvent }) =>
           options && options.addRunTimePerformanceCheck
-            ? frozenEditor(dispatchAnalyticsEvent, props.inputSamplingLimit)
+            ? frozenEditor(dispatchAnalyticsEvent, options.inputSamplingLimit)
             : undefined,
       },
       { name: 'decorationPlugin', plugin: () => decorationPlugin() },

@@ -4,10 +4,10 @@ import { EditorPlugin } from '../../../../types';
 import { mediaWithAltText, media } from '@atlaskit/adf-schema';
 
 const getNodeNames = (plugin: EditorPlugin) =>
-  plugin.nodes ? plugin.nodes({}).map(node => node.name) : [];
+  plugin.nodes ? plugin.nodes().map(node => node.name) : [];
 
 const getNode = (plugin: EditorPlugin, nodeName: string) =>
-  plugin.nodes && plugin.nodes({}).find(({ name }) => name === nodeName);
+  plugin.nodes && plugin.nodes().find(({ name }) => name === nodeName);
 
 describe(name, () => {
   describe('Plugins -> Media', () => {

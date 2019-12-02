@@ -3,13 +3,13 @@ import { EditorPlugin, EditorProps } from '../../types';
 
 export const pluginKey = new PluginKey('sharedContextPlugin');
 
-const sharedContextPlugin = (): EditorPlugin => ({
+const sharedContextPlugin = (props: EditorProps): EditorPlugin => ({
   name: 'sharedContext',
   pmPlugins() {
     return [
       {
         name: 'sharedContextPlugin',
-        plugin: ({ props }) =>
+        plugin: () =>
           new Plugin({
             key: pluginKey,
             state: {

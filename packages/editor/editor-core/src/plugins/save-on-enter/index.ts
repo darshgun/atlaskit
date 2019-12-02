@@ -72,14 +72,16 @@ const analyticsPayload = (
   },
 });
 
-const saveOnEnterPlugin = (): EditorPlugin => ({
+const saveOnEnterPlugin = (
+  onSave?: (editorView: EditorView) => void,
+): EditorPlugin => ({
   name: 'saveOnEnter',
 
   pmPlugins() {
     return [
       {
         name: 'saveOnEnter',
-        plugin: ({ props, dispatch }) => createPlugin(dispatch, props.onSave),
+        plugin: ({ dispatch }) => createPlugin(dispatch, onSave),
       },
     ];
   },

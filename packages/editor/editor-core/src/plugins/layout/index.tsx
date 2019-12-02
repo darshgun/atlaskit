@@ -22,7 +22,15 @@ import {
 
 export { pluginKey };
 
-const layoutPlugin = (): EditorPlugin => ({
+export type LayoutsConfig = {
+  allowBreakout: boolean;
+  UNSAFE_addSidebarLayouts?: boolean;
+};
+
+const layoutPlugin = (layoutsConfig?: {
+  allowBreakout: boolean;
+  UNSAFE_addSidebarLayouts?: boolean;
+}): EditorPlugin => ({
   name: 'layout',
 
   nodes() {
@@ -36,7 +44,7 @@ const layoutPlugin = (): EditorPlugin => ({
     return [
       {
         name: 'layout',
-        plugin: ({ props }) => createLayoutPlugin(props.allowLayouts),
+        plugin: () => createLayoutPlugin(layoutsConfig),
       },
     ];
   },

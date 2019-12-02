@@ -32,6 +32,8 @@ import { CardOptions } from '../plugins/card/types';
 import { QuickInsertOptions } from '../plugins/quick-insert/types';
 import { AutoformattingProvider } from '../plugins/custom-autoformat/types';
 import { AnnotationProvider } from '../plugins/annotation/types';
+import { BlockTypePluginOptions } from '../plugins/block-type';
+import { LayoutsConfig } from '../plugins/layout';
 
 export type EditorAppearance =
   | 'comment'
@@ -90,7 +92,7 @@ export interface EditorProps {
   secondaryToolbarComponents?: ReactComponents;
   allowAnalyticsGASV3?: boolean;
   // Configure allowed blocks in the editor, currently only supports `heading`, `blockquote`, `hardBreak` and `codeBlock`.
-  allowBlockType?: { exclude?: Array<AllowedBlockTypes> };
+  allowBlockType?: BlockTypePluginOptions['allowBlockType'];
 
   // Whether or not you want to allow Action and Decision elements in the editor. You can currently only enable both or disable both.
   // To enable, you need to also provide a `taskDecisionProvider`. You will most likely need backend ADF storage for this feature.
@@ -146,12 +148,7 @@ export interface EditorProps {
 
   // Temporary flag to enable layouts while it's under development
   // Use object form to enable breakout for layouts, and to enable the newer layouts - left sidebar & right sidebar
-  allowLayouts?:
-    | boolean
-    | {
-        allowBreakout: boolean;
-        UNSAFE_addSidebarLayouts?: boolean;
-      };
+  allowLayouts?: boolean | LayoutsConfig;
 
   // Enable status, if menuDisabled is passed then plugin is enabled by default
   allowStatus?:

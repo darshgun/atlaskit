@@ -42,7 +42,7 @@ export function createEditor({
 
   const eventDispatcher = new EventDispatcher();
   const dispatch = createDispatch(eventDispatcher);
-  const editorConfig = processPluginsList(plugins || [], {});
+  const editorConfig = processPluginsList(plugins || []);
   const schema = createSchema(editorConfig);
   const transformerInstance = transformer && transformer(schema);
   const pmPlugins = createPMPlugins({
@@ -52,9 +52,6 @@ export function createEditor({
 
     dispatch,
     eventDispatcher,
-
-    // TODO: ED-8132 Useless at this point, as we've changed how props are being passed.
-    props: {},
 
     portalProviderAPI: portalProviderAPI,
     providerFactory,
