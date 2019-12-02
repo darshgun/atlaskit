@@ -2,11 +2,10 @@ import {
   createEditorFactory,
   scrollIntoView,
 } from '@atlaskit/editor-test-helpers';
-import { EditorView } from 'prosemirror-view';
-import { mobileScrollPluginKey } from '../../../../plugins/mobile-scroll';
-import { setKeyboardHeight } from '../../../../plugins/mobile-scroll/commands';
+import { iOSScrollPluginKey } from '../../../../plugins/ios-scroll';
+import { setKeyboardHeight } from '../../../../plugins/ios-scroll/commands';
 
-describe('Mobile Scroll Plugin', () => {
+describe('iOS Scroll Plugin', () => {
   const defaultScrollMargin = {
     top: 5,
     bottom: 5,
@@ -19,56 +18,48 @@ describe('Mobile Scroll Plugin', () => {
     right: 0,
     left: 0,
   };
+  let _webkit: any;
   let _windowInnerHeight: number;
   let _scrollingEl: Element;
-  let editorView: EditorView;
-  let plugin: any;
-  let appendTrSpy: jest.SpyInstance;
-  let contentComponents: any[];
 
   const createEditor = createEditorFactory();
   const editor = () => {
     const editor = createEditor({
       editorProps: { appearance: 'mobile' },
-      pluginKey: mobileScrollPluginKey,
+      pluginKey: iOSScrollPluginKey,
     });
     const { editorView } = editor;
     setKeyboardHeight(0)(editorView.state, editorView.dispatch);
     scrollIntoView(editor.editorView);
     return editor;
   };
-  const getAppendedTr = () => appendTrSpy.mock.results[0].value;
 
   beforeEach(() => {
+    _webkit = (window as any).webkit;
     _windowInnerHeight = (window as any).innerHeight;
     _scrollingEl = (document as any).scrollingElement;
     (window as any).webkit = {};
     (window as any).innerHeight = 600;
     (document as any).scrollingElement = { clientHeight: 600 };
-
-    ({ editorView, plugin, contentComponents } = editor());
-    contentComponents.forEach(component => {
-      component({ editorView });
-    });
-    appendTrSpy = jest.spyOn(plugin.spec, 'appendTransaction');
   });
 
   afterEach(() => {
+    (window as any).webkit = _webkit;
     (window as any).window.innerHeight = _windowInnerHeight;
     (document as any).scrollingElement = _scrollingEl;
   });
 
   it("initially leaves scroll values so we use ProseMirror's default", () => {
+    const { plugin } = editor();
     const { scrollMargin, scrollThreshold } = plugin.spec.props;
     expect([scrollMargin, scrollThreshold]).toEqual([undefined, undefined]);
   });
 
   describe("when keyboard's height changes", () => {
-    beforeEach(() => {
-      setKeyboardHeight(350)(editorView.state, editorView.dispatch);
-    });
-
     it('updates scroll values', () => {
+      const { editorView, plugin } = editor();
+      setKeyboardHeight(350)(editorView.state, editorView.dispatch);
+
       const { scrollMargin, scrollThreshold } = plugin.props;
       expect([scrollMargin, scrollThreshold]).toEqual([
         { ...defaultScrollMargin, bottom: 394 },
@@ -77,35 +68,27 @@ describe('Mobile Scroll Plugin', () => {
     });
 
     describe('and window.innerHeight changes', () => {
-      beforeEach(() => {
-        appendTrSpy.mockClear();
+      it('updates scroll values', () => {
+        const { editorView, plugin } = editor();
+        setKeyboardHeight(350)(editorView.state, editorView.dispatch);
         (window as any).innerHeight = 800;
         scrollIntoView(editorView);
-      });
 
-      it('updates scroll values', () => {
         const { scrollMargin, scrollThreshold } = plugin.props;
         expect([scrollMargin, scrollThreshold]).toEqual([
           { ...defaultScrollMargin, bottom: 594 },
           { ...defaultScrollThreshold, bottom: 594 },
         ]);
       });
-
-      // window.innerHeight changes as user is scrolling on iOS
-      // to call scrollIntoView here would give a weird experience
-      it("doesn't scroll selection into view", () => {
-        expect(getAppendedTr()).toBeUndefined();
-      });
     });
   });
 
   describe('when window.innerHeight changes', () => {
-    beforeEach(() => {
+    it('updates scroll values', () => {
+      const { editorView, plugin } = editor();
       (window as any).innerHeight = 800;
       scrollIntoView(editorView);
-    });
 
-    it('updates scroll values', () => {
       const { scrollMargin, scrollThreshold } = plugin.props;
       expect([scrollMargin, scrollThreshold]).toEqual([
         { ...defaultScrollMargin, bottom: 244 },
@@ -113,42 +96,18 @@ describe('Mobile Scroll Plugin', () => {
       ]);
     });
 
-    // window.innerHeight changes as user is scrolling on iOS
-    // to call scrollIntoView here would give a weird experience
-    it("doesn't scroll selection into view", () => {
-      expect(getAppendedTr()).toBeUndefined();
-    });
-
     describe('and keyboard height changes', () => {
-      beforeEach(() => {
-        appendTrSpy.mockClear();
-        setKeyboardHeight(350)(editorView.state, editorView.dispatch);
-      });
-
       it('updates scroll values', () => {
+        const { editorView, plugin } = editor();
+        (window as any).innerHeight = 800;
+        scrollIntoView(editorView);
+        setKeyboardHeight(350)(editorView.state, editorView.dispatch);
+
         const { scrollMargin, scrollThreshold } = plugin.props;
         expect([scrollMargin, scrollThreshold]).toEqual([
           { ...defaultScrollMargin, bottom: 594 },
           { ...defaultScrollThreshold, bottom: 594 },
         ]);
-      });
-    });
-  });
-
-  describe('when window resizes', () => {
-    describe('and height is smaller ie. keyboard is shown', () => {
-      it('scrolls selection into view', () => {
-        (window as any).innerHeight = 400;
-        window.dispatchEvent(new Event('resize'));
-        expect(getAppendedTr().scrolledIntoView).toEqual(true);
-      });
-    });
-
-    describe('and height is bigger ie. keyboard is hidden', () => {
-      it("doesn't scroll selection into view", () => {
-        (window as any).innerHeight = 800;
-        window.dispatchEvent(new Event('resize'));
-        expect(getAppendedTr()).toBeUndefined();
       });
     });
   });
