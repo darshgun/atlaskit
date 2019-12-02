@@ -21,6 +21,7 @@ export interface Props {
   boundariesElement?: HTMLElement;
   scrollableElement?: HTMLElement;
   layout?: TableLayout;
+  isNumberColumnEnabled?: boolean;
 }
 
 const ButtonWrapper = styled.div`
@@ -82,7 +83,8 @@ class FloatingContextualButton extends React.Component<
     return (
       this.props.targetCellPosition !== nextProps.targetCellPosition ||
       this.props.layout !== nextProps.layout ||
-      this.props.isContextualMenuOpen !== nextProps.isContextualMenuOpen
+      this.props.isContextualMenuOpen !== nextProps.isContextualMenuOpen ||
+      this.props.isNumberColumnEnabled !== nextProps.isNumberColumnEnabled
     );
   }
 
