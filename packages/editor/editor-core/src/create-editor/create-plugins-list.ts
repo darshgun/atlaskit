@@ -53,7 +53,7 @@ import {
   sharedContextPlugin,
   expandPlugin,
   isExpandInsertionEnabled,
-  mobileScrollPlugin,
+  iOSScrollPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { ScrollGutterPluginOptions } from '../plugins/base/pm-plugins/scroll-gutter';
@@ -121,6 +121,7 @@ export default function createPluginsList(
   createAnalyticsEvent?: CreateUIAnalyticsEvent,
 ): EditorPlugin[] {
   const isMobile = props.appearance === 'mobile';
+  const isIOS = isMobile && !!(window as any).webkit;
   const isFullPage = fullPageCheck(props.appearance);
   const plugins = getDefaultPluginsList(props);
 
@@ -332,7 +333,10 @@ export default function createPluginsList(
 
   if (isMobile) {
     plugins.push(historyPlugin());
-    plugins.push(mobileScrollPlugin());
+  }
+
+  if (isIOS) {
+    plugins.push(iOSScrollPlugin());
   }
 
   return plugins;

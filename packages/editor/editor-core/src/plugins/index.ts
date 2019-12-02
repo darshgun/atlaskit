@@ -50,4 +50,4 @@ export { default as feedbackDialogPlugin } from './feedback-dialog';
 export { default as historyPlugin } from './history';
 export { default as sharedContextPlugin } from './shared-context';
 export { default as expandPlugin, isExpandInsertionEnabled } from './expand';
-export { default as mobileScrollPlugin } from './mobile-scroll';
+export { default as iOSScrollPlugin } from './ios-scroll';

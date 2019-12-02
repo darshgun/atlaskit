@@ -1,25 +1,22 @@
 import { Plugin, PluginKey, PluginSpec } from 'prosemirror-state';
-import rafSchedule from 'raf-schd';
 import { pluginFactory } from '../../utils/plugin-state-factory';
 import { Dispatch } from '../../event-dispatcher';
 import { EditorPlugin } from '../../types';
 import reducer from './reducer';
-import { MobileScrollAction, MobileScrollActionTypes } from './actions';
-import { setHeightDiff, setWindowHeight } from './commands';
+import { IOSScrollAction, IOSScrollActionTypes } from './actions';
+import { setHeightDiff } from './commands';
 
 /**
- * Plugin to help fix behaviour of scrolling on mobile devices:
+ * Plugin to help fix behaviour of scrolling on iOS devices - ensures the user does
+ * not end up typing behind the on-screen keyboard
  *
- * 1. Ensures selection is scrolled into view when keyboards are shown
- * 2. On iOS devices it ensures the user does not end up typing behind the on-screen keyboard
- *    The viewport height on iOS does not change if the keyboard is showing or not,
- *    it is always the full height. There is a bridge method which informs us of
- *    the current height taken up by the keyboard which works with this plugin to
- *    set the scroll margin/threshold to match
- *
+ * The viewport height on iOS does not change if the keyboard is showing or not,
+ * it is always the full height. There is a bridge method which informs us of
+ * the current height taken up by the keyboard which works with this plugin to
+ * set the scroll margin/threshold to match
  */
 
-export const mobileScrollPluginKey = new PluginKey('mobileScroll');
+export const iOSScrollPluginKey = new PluginKey('iosScroll');
 
 // 44 pixels squared is the minimum size for a tap target as per Apple's UX design guidelines
 export const MIN_TAP_SIZE_PX = 44;
@@ -28,7 +25,7 @@ export type ScrollValue =
   | number
   | { top: number; bottom: number; left: number; right: number };
 
-export type MobileScrollPluginState = {
+export type IOSScrollPluginState = {
   /** Current height of keyboard (+ custom toolbar) in iOS app */
   keyboardHeight: number;
   /**
@@ -37,26 +34,23 @@ export type MobileScrollPluginState = {
    * user scrolls - we need to factor this into our calculations
    */
   heightDiff: number;
-  /** Current value of window.innerHeight, on Android this changes when keyboards shows/hides */
-  windowHeight: number;
 };
 
-const getInitialState = (): MobileScrollPluginState => ({
+const getInitialState = (): IOSScrollPluginState => ({
   keyboardHeight: -1,
   heightDiff: -1,
-  windowHeight: window.innerHeight,
 });
 
 const { createPluginState, getPluginState, createCommand } = pluginFactory<
-  MobileScrollPluginState,
-  MobileScrollAction,
-  MobileScrollPluginState
->(mobileScrollPluginKey, reducer);
+  IOSScrollPluginState,
+  IOSScrollAction,
+  IOSScrollPluginState
+>(iOSScrollPluginKey, reducer);
 
 const createPlugin = (dispatch: Dispatch) =>
   new Plugin({
     state: createPluginState(dispatch, getInitialState()),
-    key: mobileScrollPluginKey,
+    key: iOSScrollPluginKey,
     props: {
       scrollThreshold: undefined,
       scrollMargin: undefined,
@@ -85,50 +79,23 @@ const createPlugin = (dispatch: Dispatch) =>
       },
     },
     appendTransaction(transactions, oldState, newState) {
-      const scrollTr = transactions.find(tr => {
-        const mobileScrollAction = tr.getMeta(mobileScrollPluginKey);
+      const setKeyboardHeightTr = transactions.find(tr => {
+        const iosScrollAction = tr.getMeta(iOSScrollPluginKey);
         return (
-          mobileScrollAction &&
-          (mobileScrollAction.type ===
-            MobileScrollActionTypes.SET_KEYBOARD_HEIGHT ||
-            mobileScrollAction.type ===
-              MobileScrollActionTypes.SET_WINDOW_HEIGHT)
+          iosScrollAction &&
+          iosScrollAction.type === IOSScrollActionTypes.SET_KEYBOARD_HEIGHT
         );
       });
-      if (scrollTr) {
-        const { keyboardHeight, windowHeight } = getPluginState(oldState);
+      if (setKeyboardHeightTr) {
+        const { keyboardHeight } = getPluginState(oldState);
         const {
           keyboardHeight: newKeyboardHeight,
           heightDiff,
-          windowHeight: newWindowHeight,
         } = getPluginState(newState);
         if (keyboardHeight !== newKeyboardHeight) {
           updateScrollValues.call(this, newKeyboardHeight, heightDiff);
         }
-
-        // scroll selection into view if viewport is now smaller
-        if (newWindowHeight < windowHeight) {
-          return newState.tr.scrollIntoView();
-        }
       }
-    },
-
-    view(editorView) {
-      const handleResize = () =>
-        rafSchedule(
-          setWindowHeight(window.innerHeight)(
-            editorView.state,
-            editorView.dispatch,
-          ),
-        );
-      // the window will resize on Android when the keyboard shows/hides
-      window.addEventListener('resize', handleResize);
-
-      return {
-        destroy() {
-          window.removeEventListener('resize', handleResize);
-        },
-      };
     },
   });
 
@@ -173,17 +140,17 @@ const calculateScrollValues = (
   },
 });
 
-const mobileScrollPlugin = (): EditorPlugin => ({
-  name: 'mobileScroll',
+const iOSScrollPlugin = (): EditorPlugin => ({
+  name: 'iOSScroll',
   pmPlugins() {
     return [
       {
-        name: 'mobileScroll',
+        name: 'iOSScroll',
         plugin: ({ dispatch }) => createPlugin(dispatch),
       },
     ];
   },
 });
 
-export default mobileScrollPlugin;
+export default iOSScrollPlugin;
 export { createCommand, getPluginState };
