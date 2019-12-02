@@ -2,20 +2,20 @@
 const axios = require('axios');
 const queryString = require('querystring');
 
-const {
-  BITBUCKET_REPO_FULL_NAME,
-  BITBUCKET_PASSWORD,
-  BITBUCKET_USER,
-} = process.env;
-
-const pipelinesCacheEndpoint = `https://api.bitbucket.org/internal/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines_caches/`;
-
 (async () => {
+  const {
+    BITBUCKET_REPO_FULL_NAME,
+    BITBUCKET_PASSWORD,
+    BITBUCKET_USER,
+  } = process.env;
+
   if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
     throw Error(
       '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
     );
   }
+  const pipelinesCacheEndpoint = `https://api.bitbucket.org/internal/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines_caches/`;
+
   const axiosConfig = {
     auth: {
       username: BITBUCKET_USER,

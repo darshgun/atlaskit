@@ -20,7 +20,6 @@ const {
   BITBUCKET_REPO_FULL_NAME,
 } = process.env;
 
-const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/`;
 const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
 const axiosRequestConfig = {
@@ -52,7 +51,7 @@ function stopPipelineBuild(pipelineUUID) {
       '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH or $BITBUCKET_BUILD_NUMBER environment variables are not set',
     );
   }
-  const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${pipelineUUID}/stopPipeline`;
+  const stopPipelinesEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${pipelineUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(
@@ -67,8 +66,15 @@ function stopPipelineBuild(pipelineUUID) {
   );
 }
 
+if (!BITBUCKET_REPO_FULL_NAME) {
+  throw Error('$BITBUCKET_REPO_FULL_NAME environment variables are not set');
+}
+
 axios
-  .get(PIPELINES_ENDPOINT, axiosRequestConfig)
+  .get(
+    `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/`,
+    axiosRequestConfig,
+  )
   .then(response => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines.find(
@@ -86,6 +92,11 @@ axios
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
+      if (!BITBUCKET_REPO_FULL_NAME) {
+        throw Error(
+          '$BITBUCKET_REPO_FULL_NAME environment variables are not set',
+        );
+      }
       const olderRunningPipelineURL = `https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
       console.log(
         `Another master branch is already running: ${olderRunningPipelineURL}`,

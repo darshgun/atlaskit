@@ -14,12 +14,24 @@ const axios = require('axios');
 */
 
 const BUILDS_TO_FETCH = 10;
+
 const {
   BITBUCKET_BRANCH,
   BITBUCKET_USER,
   BITBUCKET_PASSWORD,
   BITBUCKET_REPO_FULL_NAME,
 } = process.env;
+
+if (
+  !BITBUCKET_REPO_FULL_NAME ||
+  !BITBUCKET_USER ||
+  !BITBUCKET_PASSWORD ||
+  !BITBUCKET_BRANCH
+) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH environment variables are not set',
+  );
+}
 
 const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/`;
 
@@ -52,16 +64,6 @@ function pipelineFailedOrStopped(pipelineState) {
   return false;
 }
 
-if (
-  !BITBUCKET_REPO_FULL_NAME ||
-  !BITBUCKET_USER ||
-  !BITBUCKET_PASSWORD ||
-  !BITBUCKET_BRANCH
-) {
-  throw Error(
-    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH environment variables are not set',
-  );
-}
 axios
   .get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then(response => {

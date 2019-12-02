@@ -101,6 +101,9 @@ async function createPullRequest(
     );
     process.exit(1);
   }
+  if (!BITBUCKET_REPO_FULL_NAME) {
+    throw Error('$BITBUCKET_REPO_FULL_NAME environment variable is not set');
+  }
 
   const data = {
     title,
