@@ -76,7 +76,7 @@ describe('Snapshot Test', () => {
     // It increased with the number of elements in the menu.
     // @ts-ignore Expected 0 arguments, but got 1.
     expect(image).toMatchProdImageSnapshot({
-      failureThreshold: '100',
+      failureThreshold: '250',
       failureThresholdType: 'pixel',
     });
   });
