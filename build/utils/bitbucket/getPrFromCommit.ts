@@ -1,17 +1,10 @@
 import https from 'https';
-import { PaginatedPullRequests, PullRequest, AuthOptions } from './types';
-
-const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
-// TODO: I am not sure if I need to hash this but it was recommended for Node.js https module.
-const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
-  'base64',
-);
-// or we can simply do - const auth = {username; BITBUCKET_USER, password: BITBUCKET_PASSWORD}
+import { PaginatedPullRequests, PullRequest } from './types';
 
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
-function httpGetRequest(url: string) {
-  const options: AuthOptions = {
+function httpGetRequest(url: string, auth: string) {
+  const options = {
     path: url,
     headers: {
       Authorization: `Basic ${auth}`,
@@ -37,8 +30,14 @@ export async function getPrFromCommit(
   commitHash: string,
   repoFullName: string,
 ) {
-  if (!commitHash || !repoFullName) {
-    throw Error('Missing commitHash or repoFullName');
+  const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
+
+  const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
+    'base64',
+  );
+
+  if (!commitHash || !repoFullName || !auth) {
+    throw Error('Missing commitHash or repoFullName or auth');
   }
 
   // We sort descending on created_on to get newest first and only look at open PRs
@@ -53,7 +52,7 @@ export async function getPrFromCommit(
     if (!endpoint) {
       throw Error('Missing endpoint');
     }
-    response = (await httpGetRequest(endpoint)) as PaginatedPullRequests;
+    response = (await httpGetRequest(endpoint, auth)) as PaginatedPullRequests;
     if (!response || !response.values) {
       throw Error(
         `Response is not in the format we expected. Received:\n${response}`,

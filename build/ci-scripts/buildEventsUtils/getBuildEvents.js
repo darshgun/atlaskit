@@ -131,6 +131,11 @@ async function getPipelinesBuildEvents(
   buildId /*: string */,
 ) /*: Promise<IBuildEventProperties> */ {
   let payload /*: $Shape<IBuildEventProperties> */ = {};
+  if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+    throw Error(
+      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+    );
+  }
   const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}`;
   try {
     const res = await axios.get(apiEndpoint, axiosRequestConfig);
@@ -187,6 +192,11 @@ async function getStepsEvents(
   buildId /*: string*/,
   buildType /*:? string */,
 ) /* IStepsDataType */ {
+  if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+    throw Error(
+      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+    );
+  }
   const url = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}/steps/`;
   try {
     const resp = await axios.get(url, axiosRequestConfig);
@@ -254,6 +264,11 @@ async function getStepNamePerBuildType(buildId /*: string */) {
       fs.readFileSync('bitbucket-pipelines.yml', 'utf8'),
     );
     const indentedJson = JSON.parse(JSON.stringify(config, null, 4));
+    if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+      throw Error(
+        '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+      );
+    }
     const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}`;
     const res = await axios.get(apiEndpoint, axiosRequestConfig);
     const buildType = res.data.target.selector.type || 'default';
@@ -278,6 +293,11 @@ async function getStepNamePerBuildType(buildId /*: string */) {
 /* This function the final step payload when a build with parallel step is running in Bitbucket.*/
 // eslint-disable-next-line consistent-return
 async function getStepEvents(buildId /*: string*/) {
+  if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+    throw Error(
+      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+    );
+  }
   const stepsUrl = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}/steps/`;
   try {
     const stepPayload = await getStepNamePerBuildType(buildId);

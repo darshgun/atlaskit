@@ -18,6 +18,8 @@ const https = require('https');
 const DEBUG = false; // NOTE: Turning this on will make the script output intermediate information
 // which will actually cause anything using this to break. This flag should only be used for debugging
 
+const debugLog = DEBUG ? console.log : () => {};
+
 const {
   BITBUCKET_COMMIT,
   BITBUCKET_REPO_FULL_NAME,
@@ -25,17 +27,9 @@ const {
   BITBUCKET_PASSWORD,
 } = process.env;
 
-// TODO: I am not sure if I need to hash this but it was recommended for Node.js https module.
-const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
-  'base64',
-);
-// or we can simply do - const auth = {username; BITBUCKET_USER, password: BITBUCKET_PASSWORD}
-
-const debugLog = DEBUG ? console.log : () => {};
-
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
-function httpGetRequest(url /*: string */) {
+function httpGetRequest(url /*: string */, auth /*: string */) {
   const options = {
     path: url,
     headers: {
@@ -55,26 +49,31 @@ function httpGetRequest(url /*: string */) {
   });
 }
 
-if (!BITBUCKET_COMMIT || !BITBUCKET_REPO_FULL_NAME) {
-  console.error(
-    `Expected $BITBUCKET_COMMIT and $BITBUCKET_REPO_FULL_NAME variables to be set but they were not found`,
-  );
-  console.error('Exiting');
-  process.exit(1);
-}
-
 async function main() {
+  if (
+    !BITBUCKET_REPO_FULL_NAME ||
+    !BITBUCKET_USER ||
+    !BITBUCKET_PASSWORD ||
+    !BITBUCKET_COMMIT
+  ) {
+    throw Error(
+      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_COMMIT environment variables are not set',
+    );
+  }
   const bbRepoFullName = BITBUCKET_REPO_FULL_NAME || '';
   const bbCommit = BITBUCKET_COMMIT || '';
   // We sort descending to on created_on to get neweset first and only look at open PRs
   let endpoint = `https://api.bitbucket.org/2.0/repositories/${bbRepoFullName}/pullrequests?sort=-created_on&state=OPEN&pagelen=20`;
   let response;
   let targetBranch = '';
+  const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
+    'base64',
+  );
 
   do {
     // $FlowFixMe - fix logger
     debugLog(`Fetching...${endpoint}`);
-    response = await httpGetRequest(endpoint);
+    response = await httpGetRequest(endpoint, auth);
     if (!response || !response.values) {
       console.error('Response is not in the format we expected. Received:');
       console.log(response);

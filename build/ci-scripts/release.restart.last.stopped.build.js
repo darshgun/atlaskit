@@ -14,23 +14,25 @@ const axios = require('axios');
 */
 
 const BUILDS_TO_FETCH = 10;
-const BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
-const BB_USERNAME = process.env.BITBUCKET_USER;
-const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
-const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER || '';
-const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG || '';
-const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines/`;
+const {
+  BITBUCKET_BRANCH,
+  BITBUCKET_USER,
+  BITBUCKET_PASSWORD,
+  BITBUCKET_REPO_FULL_NAME,
+} = process.env;
+
+const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/`;
 
 const axiosRequestConfig = {
   auth: {
-    username: BB_USERNAME,
-    password: BB_PASSWORD,
+    username: BITBUCKET_USER,
+    password: BITBUCKET_PASSWORD,
   },
   params: {
     pagelen: BUILDS_TO_FETCH,
     // get the most recent builds first
     sort: '-created_on',
-    'target.ref_name': BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR,
+    'target.ref_name': BITBUCKET_BRANCH,
     'target.ref_type': 'BRANCH',
   },
 };
@@ -50,6 +52,16 @@ function pipelineFailedOrStopped(pipelineState) {
   return false;
 }
 
+if (
+  !BITBUCKET_REPO_FULL_NAME ||
+  !BITBUCKET_USER ||
+  !BITBUCKET_PASSWORD ||
+  !BITBUCKET_BRANCH
+) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH environment variables are not set',
+  );
+}
 axios
   .get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then(response => {
@@ -80,15 +92,15 @@ axios
             type: 'commit',
             hash: mostRecentPipeline.target.commit.hash,
           },
-          ref_name: BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR,
+          ref_name: BITBUCKET_BRANCH,
           ref_type: 'branch',
           type: 'pipeline_ref_target',
         },
       };
       return axios.post(PIPELINES_ENDPOINT, postData, {
         auth: {
-          username: BB_USERNAME,
-          password: BB_PASSWORD,
+          username: BITBUCKET_USER,
+          password: BITBUCKET_PASSWORD,
         },
       });
     }

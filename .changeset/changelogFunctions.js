@@ -1,7 +1,9 @@
 const { BITBUCKET_REPO_FULL_NAME } = process.env;
 
-const getLinkMD = commit =>
-  `[${commit}](https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/${commit})`;
+const getLinkMD = commit => {
+  if (BITBUCKET_REPO_FULL_NAME)
+    `[${commit}](https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/${commit})`;
+};
 
 const getReleaseLine = async (changeset, versionType) => {
   const indentedSummary = changeset.summary

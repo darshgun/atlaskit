@@ -7,13 +7,13 @@ import getChangesetsFromCommits from './get-commits';
 import getChangesetsFromFiles from './get-changesets';
 import { legacyChangesetRepos } from './config';
 
-const { BITBUCKET_REPO_FULL_NAME } = process.env;
-
+// TODO: Replace the static url `atlassian/atlaskit-mk-2` by  `atlassian/atlassian-frontend`.
+// https://product-fabric.atlassian.net/browse/AFP-1373
 const noChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">
   <p><strong>Warning:</strong> No packages will be released with this PR</p>
   <p>It is now a requirement that all PRs <strong>must</strong> include a changeset.</p>
   <p>Run \`yarn changeset\` to create one, or \`yarn changeset:empty\` to create an empty one that releases nothing.</p>
-  <p>See <a href="https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/src/HEAD/docs/guides/07-releasing-packages.md" target="_parent">this guide</a> for more details.</p>
+  <p>See <a href="https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/docs/guides/07-releasing-packages.md" target="_parent">this guide</a> for more details.</p>
 </div>`;
 
 const noReleaseEmtpyChangesetMessage = `<div style="border: 2px solid red; padding: 10px; border-radius: 10px; display: inline-block;">

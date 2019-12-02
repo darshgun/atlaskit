@@ -118,12 +118,3 @@ export type PaginatedResponse<T> = {
 export type PaginatedPrComments = PaginatedResponse<PrComment>;
 
 export type PaginatedPullRequests = PaginatedResponse<PullRequest>;
-
-export type AuthOptions = {
-  host?: string;
-  port?: number;
-  path: string;
-  headers: {
-    Authorization: string;
-  };
-};
