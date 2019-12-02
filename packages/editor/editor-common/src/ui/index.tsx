@@ -48,5 +48,5 @@ export {
   messages as expandMessages,
   sharedExpandStyles,
   ExpandIconWrapper,
-  ExpandTooltipWrapper,
+  ExpandLayoutWrapper,
 } from './Expand';
