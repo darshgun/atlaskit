@@ -1,5 +1,5 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
-import { getDocFromElement } from '../_helpers';
+import { fullpage, getDocFromElement } from '../_helpers';
 import {
   mountEditor,
   goToEditorTestingExample,
@@ -27,6 +27,7 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, { appearance: 'full-page' });
     await page.type(editorSelector, '[link](https://hello.com)');
+    await page.pause(100);
 
     await page.waitForSelector('a');
     const doc = await page.$eval(editorSelector, getDocFromElement);
@@ -40,11 +41,13 @@ BrowserTestCase(
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, { appearance: 'full-page' });
+    await page.click(fullpage.placeholder);
     const markdown = '__bold__ _italics_ **starbold** *staritalics*';
-    // Investigate why string based input (without an array) fails in firefox
-    // https://product-fabric.atlassian.net/browse/ED-7044
+    // // Investigate why string based input (without an array) fails in firefox
+    // // https://product-fabric.atlassian.net/browse/ED-7044
     const input = markdown.split('');
-    await page.type(editorSelector, input);
+    await page.keys(input);
+    await page.pause(100);
 
     await page.waitForSelector('strong');
     const doc = await page.$eval(editorSelector, getDocFromElement);
