@@ -17,10 +17,18 @@ export class CardActionIconButton extends Component<CardActionIconButtonProps> {
       <CardActionButton
         data-testid="media-card-primary-action"
         onClick={onClick}
+        onMouseDown={this.onMouseDown}
         style={{ color: triggerColor }}
       >
         {icon}
       </CardActionButton>
     );
   }
+
+  // this is to prevent currently focused text to loose cursor on clicking card action
+  // this does not prevent onclick behavior
+  private onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
 }

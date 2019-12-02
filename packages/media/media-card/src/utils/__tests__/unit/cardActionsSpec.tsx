@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
@@ -192,6 +192,19 @@ describe('CardActions', () => {
     const { iconButtons } = setup([deleteAction], triggerColor);
 
     expect(iconButtons.prop('triggerColor')).toEqual(triggerColor);
+  });
+
+  it('should prevent default of mousedown event to avoid changing currently focused element', () => {
+    const { iconButtons } = setup([annotateAction], 'some-color-string');
+    const mockedEvent = {
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+    };
+
+    iconButtons.simulate('mousedown', mockedEvent);
+
+    expect(mockedEvent.preventDefault).toHaveBeenCalled();
+    expect(mockedEvent.stopPropagation).toHaveBeenCalled();
   });
 
   describe('Analytics Events', () => {
