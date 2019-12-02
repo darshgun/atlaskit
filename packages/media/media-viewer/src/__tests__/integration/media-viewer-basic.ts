@@ -91,7 +91,7 @@ const executeTimes = async (n: number, callback: () => Promise<any>) => {
 BrowserTestCase(
   'media-viewer-basic.ts: Navigation should navigate back and forth',
   { skip: [] },
-  async (client: BrowserObject) => {
+  async (client: ConstructorParameters<typeof Page>[0]) => {
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
@@ -132,7 +132,7 @@ BrowserTestCase(
 BrowserTestCase(
   'media-viewer-basic.ts: Should close on Close click',
   { skip: [] },
-  async (client: BrowserObject) => {
+  async (client: ConstructorParameters<typeof Page>[0]) => {
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
@@ -143,7 +143,7 @@ BrowserTestCase(
 BrowserTestCase(
   'media-viewer-basic.ts: Should close on Escape press',
   { skip: [] },
-  async (client: BrowserObject) => {
+  async (client: ConstructorParameters<typeof Page>[0]) => {
     const testPage = new MVExamplePage(new Page(client));
     await testPage.init();
 
