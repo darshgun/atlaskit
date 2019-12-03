@@ -14,6 +14,7 @@ import {
   getFileStreamsCache,
   MediaClient,
   globalMediaEventEmitter,
+  safeUnsubscribe,
 } from '@atlaskit/media-client';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 import { EventEmitter2 } from 'eventemitter2';
@@ -185,7 +186,7 @@ export class UploadServiceImpl implements UploadService {
             }
 
             if (state.status === 'processing') {
-              setTimeout(() => subscription.unsubscribe(), 0);
+              safeUnsubscribe(subscription);
               if (shouldCopyFileToRecents) {
                 mediaClient.emit('file-added', state);
                 globalMediaEventEmitter.emit('file-added', state);
