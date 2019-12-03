@@ -1,5 +1,13 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 4.6.3
+
+### Patch Changes
+
+- [patch][0ec8f5f9ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ec8f5f9ce):
+
+  wikimarkup auto-linkify text should include tilde, hat and exclamation marks
+
 ## 4.6.2
 
 ### Patch Changes
