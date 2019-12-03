@@ -40,11 +40,10 @@ function noMasterRunning() {
   }
   return axios
     .get(
-      `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/}?${+new Date()}`,
+      `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/?${+new Date()}`,
       axiosRequestConfig,
     )
     .then(response => {
-      console.log(response);
       const allPipelines = response.data.values;
       const runningPipelines = allPipelines
         .filter(
@@ -56,7 +55,8 @@ function noMasterRunning() {
         .filter(job => job.trigger.name !== 'SCHEDULE');
       console.log(runningPipelines.length, 'master build running');
       return runningPipelines.length === 0;
-    });
+    })
+    .catch(err => console.error(`${err}`));
 }
 
 console.log(
