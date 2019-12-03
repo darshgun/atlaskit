@@ -6,6 +6,11 @@ const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
 function httpGetRequest(url: string) {
+  if (!BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+    throw Error(
+      '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+    );
+  }
   const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
     'base64',
   );
@@ -17,7 +22,7 @@ function httpGetRequest(url: string) {
   return new Promise((resolve, reject) => {
     let data = '';
 
-    const req = https.get(options, resp => {
+    const req = https.get(url, options, resp => {
       resp.on('data', chunk => (data += chunk));
       resp.on('end', () => resolve(JSON.parse(data)));
     });
@@ -34,12 +39,6 @@ export async function getPrFromCommit(
   commitHash: string,
   repoFullName: string,
 ) {
-  if (!BITBUCKET_USER || !BITBUCKET_PASSWORD) {
-    throw Error(
-      '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
-    );
-  }
-
   if (!commitHash || !repoFullName) {
     throw Error('Missing commitHash or repoFullName');
   }

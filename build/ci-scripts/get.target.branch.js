@@ -30,6 +30,16 @@ const {
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
 function httpGetRequest(url /*: string */) {
+  if (
+    !BITBUCKET_REPO_FULL_NAME ||
+    !BITBUCKET_USER ||
+    !BITBUCKET_PASSWORD ||
+    !BITBUCKET_COMMIT
+  ) {
+    throw Error(
+      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_COMMIT environment variables are not set',
+    );
+  }
   const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
     'base64',
   );
@@ -40,7 +50,7 @@ function httpGetRequest(url /*: string */) {
   };
   return new Promise((resolve, reject) => {
     let data = '';
-
+    // $FlowFixMe - options bound to callback because a callable signature is missing in object literal.
     const req = https.get(url, options, resp => {
       // eslint-disable-next-line no-return-assign
       resp.on('data', chunk => (data += chunk));
@@ -52,22 +62,11 @@ function httpGetRequest(url /*: string */) {
 }
 
 async function main() {
-  if (
-    !BITBUCKET_REPO_FULL_NAME ||
-    !BITBUCKET_USER ||
-    !BITBUCKET_PASSWORD ||
-    !BITBUCKET_COMMIT
-  ) {
-    throw Error(
-      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_COMMIT environment variables are not set',
-    );
-  }
   const bbRepoFullName = BITBUCKET_REPO_FULL_NAME || '';
-  const bbCommit =
-    BITBUCKET_COMMIT || '4701673cb0e949908d00fe194791cb83433c3b96';
+  const bbCommit = BITBUCKET_COMMIT || '';
   // We sort descending to on created_on to get neweset first and only look at open PRs
   let endpoint = `https://api.bitbucket.org/2.0/repositories/${bbRepoFullName}/pullrequests?sort=-created_on&state=OPEN&pagelen=20`;
-  let response;
+  let response = {};
   let targetBranch = '';
 
   do {
