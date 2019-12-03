@@ -82,7 +82,9 @@ export default class SpotlightDialogPlacementExample extends Component<
             property.
           </p>
           <p>
-            <button onClick={this.start}>Show</button>
+            <button data-testid="open-spotlight" onClick={this.start}>
+              Show
+            </button>
           </p>
 
           <SpotlightTransition>

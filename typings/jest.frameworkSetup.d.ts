@@ -15,7 +15,10 @@ declare namespace jest {
     toEqualDocument(expected: any): R;
     toEqualDocumentAndSelection(expected: any): R;
     toMatchDocSnapshot(): R;
-    toMatchProdImageSnapshot(): R;
+    toMatchProdImageSnapshot(opts?: {
+      failureThreshold?: string;
+      failureThresholdType?: string;
+    }): R;
     toMatchCustomSnapshot(testName: string): R;
     toMatchCustomDocSnapshot(testName: string): R;
     toHaveStyleDeclaration(
