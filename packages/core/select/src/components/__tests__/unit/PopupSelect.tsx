@@ -1,4 +1,5 @@
 import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
 import { mount } from 'enzyme';
 
 import { PopupSelect, OptionsType } from '../../..';
@@ -87,5 +88,21 @@ describe('Popup Select', () => {
     expect(addedListeners().length).toBe(3);
     atlaskitSelectWrapper.unmount();
     expect(removedListeners().length).toBe(4);
+  });
+
+  test('renders a read only input when isSearchable is false', async () => {
+    const { container, getByText } = render(
+      <PopupSelect
+        options={OPTIONS}
+        value={OPTIONS[0]}
+        isSearchable={false}
+        target={({ ref }) => <button ref={ref}>Target</button>}
+      />,
+    );
+    const body = container.parentElement as HTMLBodyElement;
+    fireEvent.click(getByText('Target'));
+    // popup renders in a portal outside the container
+    const input = body.querySelector('input') as HTMLElement;
+    expect(input.hasAttribute('readonly')).toBe(true);
   });
 });

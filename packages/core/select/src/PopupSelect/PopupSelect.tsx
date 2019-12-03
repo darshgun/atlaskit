@@ -339,6 +339,7 @@ export default class PopupSelect<Option = OptionType> extends PureComponent<
                   menuIsOpen
                   ref={this.getSelectRef}
                   {...props}
+                  isSearchable={showSearchControl}
                   styles={{ ...defaultStyles, ...props.styles }}
                   maxMenuHeight={this.getMaxHeight()}
                   components={components}
