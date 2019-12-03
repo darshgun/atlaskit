@@ -19,6 +19,11 @@ export interface CloneProps {
   }) => void;
   /** The border-radius of the element being highlighted */
   targetRadius?: number;
+
+  /**
+   * Adds data-testid={testId} to the container element.
+   */
+  testId?: string;
 }
 
 function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
@@ -43,10 +48,12 @@ const Clone = (props: CloneProps) => {
     targetOnClick,
     targetNode,
     targetRadius,
+    testId,
   } = props;
 
   return (
     <TargetInner
+      data-testid={testId}
       pulse={pulse}
       bgColor={targetBgColor}
       radius={targetRadius}

@@ -125,7 +125,10 @@ class SpotlightInner extends React.Component<Props, State> {
               >
                 <ElementBox element={targetNode}>
                   {box => (
-                    <TargetReplacement {...this.getTargetNodeStyle(box)} />
+                    <TargetReplacement
+                      data-testid="spotlight-target"
+                      {...this.getTargetNodeStyle(box)}
+                    />
                   )}
                 </ElementBox>
               </NodeResovler>
@@ -133,6 +136,7 @@ class SpotlightInner extends React.Component<Props, State> {
               <ElementBox element={targetNode}>
                 {box => (
                   <Clone
+                    testId="spotlight-target"
                     pulse={pulse}
                     target={target}
                     style={this.getTargetNodeStyle(box)}
@@ -148,6 +152,7 @@ class SpotlightInner extends React.Component<Props, State> {
               <Fade in={isOpen} onExited={onExited}>
                 {animationStyles => (
                   <SpotlightDialog
+                    testId="spotlight-dialog"
                     actions={this.props.actions}
                     actionsBeforeElement={this.props.actionsBeforeElement}
                     children={this.props.children}

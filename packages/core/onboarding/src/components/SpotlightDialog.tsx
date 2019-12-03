@@ -54,6 +54,11 @@ export interface SpotlightDialogProps extends WithAnalyticsEventsProps {
   targetNode: HTMLElement;
   /** js object containing the animation styles to apply to component */
   animationStyles: Object;
+
+  /**
+   * Adds data-testid={testId} to the container element.
+   */
+  testId?: string;
 }
 
 interface State {
@@ -92,6 +97,7 @@ class SpotlightDialog extends Component<SpotlightDialogProps, State> {
       heading,
       image,
       targetNode,
+      testId,
     } = this.props;
     const { focusLockDisabled } = this.state;
 
@@ -123,6 +129,7 @@ class SpotlightDialog extends Component<SpotlightDialogProps, State> {
             >
               <SpotlightCard
                 ref={ref}
+                testId={testId}
                 theme={parent => {
                   const { container, ...others } = parent({});
                   return {

@@ -32,6 +32,11 @@ interface Props {
   width?: number;
 
   innerRef?: Ref<HTMLElement> | null;
+
+  /**
+   * Adds data-testid={testId} to the container element.
+   */
+  testId?: string;
 }
 
 class SpotlightCard extends React.Component<Props> {
@@ -55,10 +60,12 @@ class SpotlightCard extends React.Component<Props> {
       innerRef,
       theme,
       width,
+      testId,
     } = this.props;
     return (
       <ButtonTheme.Provider value={spotlightButtonTheme}>
         <Card
+          testId={testId}
           ref={innerRef}
           heading={heading}
           headingAfterElement={headingAfterElement}

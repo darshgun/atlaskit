@@ -35,6 +35,11 @@ interface Props {
   theme?: ThemeProp<CardTokens, {}>;
 
   innerRef?: React.Ref<HTMLElement>;
+
+  /**
+   * Adds data-testid={testId} to the container element.
+   */
+  testId?: string;
 }
 
 const Container = styled.div`
@@ -85,15 +90,19 @@ const Card: FC<Props> = ({
   headingAfterElement,
   theme,
   innerRef,
+  testId,
 }) => {
   const { Header = DefaultHeader, Footer = DefaultFooter } = components;
-
   return (
     <Theme.Provider value={theme}>
       <Theme.Consumer>
         {({ container }) => {
           return (
-            <Container theme={container} innerRef={innerRef!}>
+            <Container
+              theme={container}
+              innerRef={innerRef!}
+              data-testid={testId}
+            >
               {typeof image === 'string' ? <img src={image} alt="" /> : image}
               <Body>
                 {heading || headingAfterElement ? (
