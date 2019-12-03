@@ -82,11 +82,27 @@ https://app.datadoghq.com/screen/282018/product-fabric-adf-service?tv_mode=true#
     ],
     [
       'should auto-linkify text links with tilde character in it',
-      'text prefix https://example.com/~abc/def/^xyz!bang$#!bang text suffix',
+      'text prefix https://example.com/~abc/def/^xyz!bang$.#!.bang text suffix',
     ],
     [
       'should auto-linkify monospace formatted text',
-      '{{text prefix https://example.com/~abc/def/^xyz!bang$#!bang text suffix}}',
+      '{{text prefix https://example.com/~abc/def/^xyz!bang$.#!.bang text suffix}}',
+    ],
+    [
+      'should not let auto-links end with a period',
+      'text prefix https://example.com. text suffix',
+    ],
+    [
+      'should not let auto-links end with a bang',
+      'text prefix https://example.com! text suffix',
+    ],
+    [
+      'should let auto-links end with parenthesis',
+      'text prefix https://example.com/abc) text suffix',
+    ],
+    [
+      'should let auto-links end with parenthesis in url hash segment',
+      'text prefix https://example.com/abc#abc) text suffix',
     ],
   ];
 
