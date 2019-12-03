@@ -242,12 +242,12 @@ pipelines:
             - node
 
     # This will run the security check using SourceClear acroos the repository.
-    # We need to pull a new docker image(node 10) to avoid installing curl.
     security-check:
       - step:
-          image: node:10
           script:
             - source ./build-setup.sh
+            # Install curl
+            - apt-get update; apt-get install -y curl
             - curl -sSL https://download.sourceclear.com/ci.sh | bash
           after-script:
             - bolt install --frozen-lockfile
@@ -627,13 +627,16 @@ pipelines:
             # Validate packages will produce false positives and is for manual analysis so we always return true
             - yarn validate-packages || true
 
+# For branches like develop, we need to merge master daily.
     merge-master:
       - step:
           name: Merges master into the target branch
           script:
             - source ./build-setup.sh
+            - if [[ "$TARGET_BRANCH" == "master" ]]; then echo "This build does not need to run on master build."; exit 0; fi
             - git fetch origin master
             - git merge origin/master
             - git push origin HEAD
           after-script:
+            - bolt install --frozen-lockfile
             - yarn send:buildEvents
