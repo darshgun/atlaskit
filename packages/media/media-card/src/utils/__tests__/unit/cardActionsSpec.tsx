@@ -198,13 +198,11 @@ describe('CardActions', () => {
     const { iconButtons } = setup([annotateAction], 'some-color-string');
     const mockedEvent = {
       preventDefault: jest.fn(),
-      stopPropagation: jest.fn(),
     };
 
     iconButtons.simulate('mousedown', mockedEvent);
 
     expect(mockedEvent.preventDefault).toHaveBeenCalled();
-    expect(mockedEvent.stopPropagation).toHaveBeenCalled();
   });
 
   describe('Analytics Events', () => {

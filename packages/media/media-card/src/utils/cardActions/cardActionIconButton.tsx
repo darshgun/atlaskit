@@ -29,6 +29,5 @@ export class CardActionIconButton extends Component<CardActionIconButtonProps> {
   // this does not prevent onclick behavior
   private onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    event.stopPropagation();
   };
 }
