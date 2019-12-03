@@ -5,7 +5,7 @@ const spawndamnit = require('spawndamnit');
 const fse = require('fs-extra');
 const path = require('path');
 const bolt = require('bolt');
-const git = require('../utils/git');
+const git = require('@atlaskit/build-utils/git');
 const {
   getChangedPackagesSinceMaster,
   getChangedPackagesSincePublishCommit,

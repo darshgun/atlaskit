@@ -40,6 +40,7 @@ exports[`ResizeControlBase should not render GrabArea when \`isGrabAreaDisabled\
         }
         isVisible={false}
         onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <ChevronLeftIcon />
       </Button>
@@ -95,6 +96,7 @@ exports[`ResizeControlBase should render correctly 1`] = `
         }
         isVisible={false}
         onClick={[Function]}
+        onMouseDown={[Function]}
       >
         <ChevronLeftIcon />
       </Button>
