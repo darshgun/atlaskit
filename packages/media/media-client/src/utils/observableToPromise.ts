@@ -8,7 +8,8 @@ export const observableToPromise = <T>(
     const subscription = observable.subscribe({
       next: state => {
         resolve(state);
-        setTimeout(() => subscription.unsubscribe(), 0);
+        // We unsubscribe on the next tick since "next" callback gets called sync and "subscribe" didn't return anything yet
+        setTimeout(() => subscription && subscription.unsubscribe(), 0);
       },
     });
   });
