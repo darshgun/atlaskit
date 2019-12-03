@@ -36,21 +36,22 @@ const axiosRequestConfig = {
   },
 };
 
+if (
+  !BITBUCKET_REPO_FULL_NAME ||
+  !BITBUCKET_USER ||
+  !BITBUCKET_PASSWORD ||
+  !BITBUCKET_BRANCH ||
+  !BITBUCKET_BUILD_NUMBER
+) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH or $BITBUCKET_BUILD_NUMBER environment variables are not set',
+  );
+}
+
 // Stops a currently running Pipelines build
 // Related documentation
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
-  if (
-    !BITBUCKET_REPO_FULL_NAME ||
-    !BITBUCKET_USER ||
-    !BITBUCKET_PASSWORD ||
-    !BITBUCKET_BRANCH ||
-    !BITBUCKET_BUILD_NUMBER
-  ) {
-    throw Error(
-      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH or $BITBUCKET_BUILD_NUMBER environment variables are not set',
-    );
-  }
   const stopPipelinesEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${pipelineUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
@@ -92,11 +93,6 @@ axios
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
-      if (!BITBUCKET_REPO_FULL_NAME) {
-        throw Error(
-          '$BITBUCKET_REPO_FULL_NAME environment variables are not set',
-        );
-      }
       const olderRunningPipelineURL = `https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
       console.log(
         `Another master branch is already running: ${olderRunningPipelineURL}`,

@@ -27,19 +27,20 @@ const {
   BITBUCKET_PASSWORD,
 } = process.env;
 
+if (
+  !BITBUCKET_REPO_FULL_NAME ||
+  !BITBUCKET_USER ||
+  !BITBUCKET_PASSWORD ||
+  !BITBUCKET_COMMIT
+) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_COMMIT environment variables are not set',
+  );
+}
+
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
 function httpGetRequest(url /*: string */) {
-  if (
-    !BITBUCKET_REPO_FULL_NAME ||
-    !BITBUCKET_USER ||
-    !BITBUCKET_PASSWORD ||
-    !BITBUCKET_COMMIT
-  ) {
-    throw Error(
-      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_COMMIT environment variables are not set',
-    );
-  }
   const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
     'base64',
   );

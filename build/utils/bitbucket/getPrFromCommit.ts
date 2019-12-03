@@ -3,14 +3,15 @@ import { PaginatedPullRequests, PullRequest } from './types';
 
 const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
 
+if (!BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+  throw Error(
+    '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+  );
+}
+
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
 function httpGetRequest(url: string) {
-  if (!BITBUCKET_USER || !BITBUCKET_PASSWORD) {
-    throw Error(
-      '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
-    );
-  }
   const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
     'base64',
   );

@@ -25,6 +25,10 @@ const APP_KEY = process.env.i18n_PR_BOT_ACCESS || '';
 
 const { BITBUCKET_REPO_FULL_NAME } = process.env;
 
+if (!BITBUCKET_REPO_FULL_NAME) {
+  throw Error('$BITBUCKET_REPO_FULL_NAME environment variable is not set');
+}
+
 const push = async ({ packagePath }) => {
   try {
     await spawn('yarn', ['--cwd', packagePath, 'i18n:push']);
@@ -100,9 +104,6 @@ async function createPullRequest(
       'Failed to create pull request: Could not find BitBucket auth keys',
     );
     process.exit(1);
-  }
-  if (!BITBUCKET_REPO_FULL_NAME) {
-    throw Error('$BITBUCKET_REPO_FULL_NAME environment variable is not set');
   }
 
   const data = {
