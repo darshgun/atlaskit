@@ -46,6 +46,11 @@ export interface Props {
     event?: React.MouseEvent<HTMLElement, MouseEvent>,
     analyticsEvent?: UIAnalyticsEvent,
   ): void;
+  // Event handler for the "Back" button. This prop is optional
+  onBackButtonClick?(
+    event?: React.MouseEvent<HTMLElement, MouseEvent>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ): void;
   // Function executed when the article rendering begins
   onArticleRenderBegin?(): void;
   // Function executed when the article rendering finishes
@@ -94,6 +99,10 @@ export interface HelpContextInterface {
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
     onWasHelpfulNoButtonClick?(
+      event?: React.MouseEvent<HTMLElement, MouseEvent>,
+      analyticsEvent?: UIAnalyticsEvent,
+    ): void;
+    onBackButtonClick?(
       event?: React.MouseEvent<HTMLElement, MouseEvent>,
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
@@ -439,6 +448,7 @@ class HelpContextProviderImplementation extends React.Component<
             onWasHelpfulSubmit: this.props.onWasHelpfulSubmit,
             onWasHelpfulYesButtonClick: this.props.onWasHelpfulYesButtonClick,
             onWasHelpfulNoButtonClick: this.props.onWasHelpfulNoButtonClick,
+            onBackButtonClick: this.props.onBackButtonClick,
             onArticleRenderBegin: this.props.onArticleRenderBegin,
             onArticleRenderDone: this.props.onArticleRenderDone,
             footer: this.props.footer,
