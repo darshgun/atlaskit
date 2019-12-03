@@ -105,7 +105,7 @@ export const getValidContent = (
   return content.map(node => getValidNode(node, schema, adfStage));
 };
 
-const TEXT_COLOR_PATTERN = /^#[0-9a-f]{6}$/i;
+const TEXT_COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/;
 const RELATIVE_LINK = /^\//;
 
 const flattenUnknownBlockTree = (
