@@ -18,7 +18,16 @@ export interface ThemeProps {
 }
 
 export interface ThemeTokens {
+  /**
+   * The background color for the badge.
+   * Please use a color from [@atlaskit/theme](/packages/core/theme).
+   */
   backgroundColor: string;
+
+  /**
+   * The text color for the badge.
+   * Please use a color from [@atlaskit/theme](/packages/core/theme).
+   */
   textColor: string;
 }
 

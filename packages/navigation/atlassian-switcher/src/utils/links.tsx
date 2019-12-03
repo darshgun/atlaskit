@@ -27,6 +27,9 @@ import {
   Product,
   ProvisionedProducts,
   CurrentSite,
+  JoinableSite,
+  JoinableSiteUser,
+  JoinableSiteUserAvatarPropTypes,
 } from '../types';
 import messages from './messages';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
@@ -46,6 +49,11 @@ export type SwitcherItemType = {
   childItems?: SwitcherChildItem[];
   productType?: WorklensProductType;
   analyticsAttributes?: { [key: string]: string };
+};
+
+export type JoinableSiteItemType = SwitcherItemType & {
+  cloudId: string;
+  users: JoinableSiteUserAvatarPropTypes[];
 };
 
 export type RecentItemType = SwitcherItemType & {
@@ -91,7 +99,7 @@ type AvailableProductDetails = Pick<
 >;
 
 export const AVAILABLE_PRODUCT_DATA_MAP: {
-  [productKey in WorklensProductType]: AvailableProductDetails
+  [productKey in WorklensProductType]: AvailableProductDetails;
 } = {
   [WorklensProductType.BITBUCKET]: {
     label: 'Bitbucket',
@@ -162,7 +170,9 @@ const BROWSE_APPS_URL: { [Key in Product]?: string | undefined } = {
     '/wiki/plugins/servlet/ac/com.atlassian.confluence.emcee/discover',
 };
 
-const TO_WORKLENS_PRODUCT_KEY: { [Key in ProductKey]: WorklensProductType } = {
+export const TO_WORKLENS_PRODUCT_KEY: {
+  [Key in ProductKey]: WorklensProductType;
+} = {
   [ProductKey.CONFLUENCE]: WorklensProductType.CONFLUENCE,
   [ProductKey.JIRA_CORE]: WorklensProductType.JIRA_BUSINESS,
   [ProductKey.JIRA_SERVICE_DESK]: WorklensProductType.JIRA_SERVICE_DESK,
@@ -442,4 +452,63 @@ export const getRecentLinkItems = (
       type: customLink.type,
       description: getObjectTypeLabel(customLink.type),
     }));
+};
+
+// Design decision from
+// https://hello.atlassian.net/wiki/spaces/~kgalek/pages/563815188/Join+from+Atlassian+switcher%3A+design+so+far
+const MAX_JOINABLE_SITES = 3;
+
+export const getJoinableSiteLinks = (
+  joinableSites: JoinableSite[] = [],
+): JoinableSiteItemType[] => {
+  let joinableSiteLinks = [];
+
+  for (let site of joinableSites) {
+    for (let productKey in site.users) {
+      const users: JoinableSiteUser[] = site.users[productKey] || [];
+      const productType: WorklensProductType =
+        TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey];
+      const {
+        label,
+        Icon,
+        href,
+      }: AvailableProductDetails = AVAILABLE_PRODUCT_DATA_MAP[productType];
+
+      let productUrl = href;
+
+      if (
+        productKey === ProductKey.JIRA_SOFTWARE ||
+        productKey === ProductKey.JIRA_CORE
+      ) {
+        productUrl = site.url;
+      } else if (productKey === ProductKey.CONFLUENCE) {
+        productUrl = site.url + href;
+      }
+
+      joinableSiteLinks.push({
+        key: site.cloudId,
+        label,
+        description: site.displayName,
+        Icon,
+        href: productUrl,
+        users: users.map(
+          (user: JoinableSiteUser): JoinableSiteUserAvatarPropTypes => ({
+            name: user.displayName,
+            src: user.avatarUrl,
+            appearance: 'circle' as 'circle',
+            size: 'small' as 'small',
+            enableTooltip: true,
+          }),
+        ),
+        cloudId: site.cloudId,
+        productType,
+      });
+
+      if (joinableSiteLinks.length >= MAX_JOINABLE_SITES) {
+        return joinableSiteLinks;
+      }
+    }
+  }
+
+  return joinableSiteLinks;
 };

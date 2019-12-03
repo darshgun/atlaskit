@@ -47,7 +47,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         analyticsHandler,
         allowAnalyticsGASV3: true,
         allowPanel: true,
-        allowCodeBlocks: true,
       },
       createAnalyticsEvent: createAnalyticsEvent as any,
     });

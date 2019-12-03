@@ -42,7 +42,7 @@ interface Props {
   onAvatarClick?: AvatarClickType;
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behavior. */
-  onMoreClick?: (event: React.MouseEvent) => unknown;
+  onMoreClick?: (event: React.MouseEvent) => void;
   /** Provide additional props to the MoreButton. Example use cases: altering
    tab order by providing tabIndex; adding onClick behaviour without losing the
    default dropdown */
@@ -83,7 +83,7 @@ export default class AvatarGroup extends Component<Props> {
         count={total - max}
         isStack={appearance === 'stack'}
         size={size}
-        {...props as any}
+        {...(props as any)}
       />
     );
 

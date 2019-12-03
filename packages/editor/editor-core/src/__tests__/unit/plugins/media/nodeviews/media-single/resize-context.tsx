@@ -52,7 +52,7 @@ describe('media resizing', () => {
         width={123}
         selected={() => 1}
         mediaOptions={mediaOptions}
-        mediaProvider={editorProps.mediaProvider}
+        mediaProvider={(editorProps.media || {}).provider}
         contextIdentifierProvider={editorProps.contextIdentifierProvider}
         mediaPluginState={pluginState}
         mediaPluginOptions={{

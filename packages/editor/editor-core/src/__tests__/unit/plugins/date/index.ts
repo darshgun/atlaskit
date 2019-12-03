@@ -93,13 +93,15 @@ describe('date plugin', () => {
       it('should fire analytics event', () => {
         const { editorView: view } = editor(doc(paragraph('{<>}')));
         insertDate(undefined, INPUT_METHOD.TOOLBAR)(view.state, view.dispatch);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: 'date',
-          eventType: 'track',
-          attributes: { inputMethod: 'toolbar' },
-        });
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: 'date',
+            eventType: 'track',
+            attributes: { inputMethod: 'toolbar' },
+          }),
+        );
       });
     });
 
@@ -165,13 +167,15 @@ describe('date plugin', () => {
     });
 
     it('fires analytics event', () => {
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'date',
-        eventType: 'track',
-        attributes: { inputMethod: 'quickInsert' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'date',
+          eventType: 'track',
+          attributes: { inputMethod: 'quickInsert' },
+        }),
+      );
     });
   });
 });

@@ -15,8 +15,8 @@ export type TextFieldStyleMap =
     }
   | {
       [appearance in TextFieldStyleAppearance]: {
-        [state in TextFieldStyleState]?: string
-      }
+        [state in TextFieldStyleState]?: string;
+      };
     }
   | undefined;
 

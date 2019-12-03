@@ -308,6 +308,13 @@ export function defaultActionHandler({
   const isAllowed = isMarkTypeAllowedInCurrentSelection(typeAheadQuery, state);
 
   if (!isAllowed && !isActive) {
+    if (
+      pluginState &&
+      pluginState.active === isActive &&
+      pluginState.isAllowed === isAllowed
+    ) {
+      return pluginState;
+    }
     const newPluginState = createInitialPluginState(
       pluginState.active,
       isAllowed,
@@ -378,9 +385,9 @@ export function defaultActionHandler({
     }
 
     if ((typeAheadItems as Promise<Array<TypeAheadItem>>).then) {
-      itemsLoader = createItemsLoader(typeAheadItems as Promise<
-        Array<TypeAheadItem>
-      >);
+      itemsLoader = createItemsLoader(
+        typeAheadItems as Promise<Array<TypeAheadItem>>,
+      );
       typeAheadItems = pluginState.items;
     }
   } catch (e) {}

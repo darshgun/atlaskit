@@ -189,10 +189,12 @@ export function createPlugin(
 
         // If we're in a code block, append the text contents of clipboard inside it
         if (
-          handleCodeBlockWithAnalytics(view, event, slice, text)(
-            state,
-            dispatch,
-          )
+          handleCodeBlockWithAnalytics(
+            view,
+            event,
+            slice,
+            text,
+          )(state, dispatch)
         ) {
           return true;
         }
@@ -221,10 +223,11 @@ export function createPlugin(
             return true;
           }
 
-          return handleMarkdownWithAnalytics(view, event, markdownSlice)(
-            state,
-            dispatch,
-          );
+          return handleMarkdownWithAnalytics(
+            view,
+            event,
+            markdownSlice,
+          )(state, dispatch);
         }
 
         // finally, handle rich-text copy-paste
@@ -295,10 +298,11 @@ export function createPlugin(
             slice = transformSliceNestedExpandToExpand(slice, state.schema);
           }
 
-          return handleRichTextWithAnalytics(view, event, slice)(
-            state,
-            dispatch,
-          );
+          return handleRichTextWithAnalytics(
+            view,
+            event,
+            slice,
+          )(state, dispatch);
         }
 
         return false;

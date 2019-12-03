@@ -1,5 +1,82 @@
 ## 0.1.0
 
+## 0.21.6
+
+### Patch Changes
+
+- [patch][d752bf7ae9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d752bf7ae9):
+
+  Dependency bump atlaskit/help-article
+
+## 0.21.5
+
+### Patch Changes
+
+- [patch][dfe328a14b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe328a14b):
+
+  Updated dependency @atlaskit/help-article
+
+## 0.21.4
+
+### Patch Changes
+
+- [patch][86198c3e5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86198c3e5d):
+
+  Bugfix - Fix voice-over accessibility issues
+
+## 0.21.3
+
+### Patch Changes
+
+- [patch][da00b546cb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da00b546cb):
+
+  Bugfix - Hide DefaultContent if an article is fully visible
+
+## 0.21.2
+
+### Patch Changes
+
+- [patch][bb95b5ff7e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb95b5ff7e):
+
+  Updated dependency help-article
+
+## 0.21.1
+
+### Patch Changes
+
+- [patch][bd17edc20c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bd17edc20c):
+
+  Bugfix - hide back button if therere is only one article in the history and there isn't default content
+
+## 0.21.0
+
+### Minor Changes
+
+- [minor][e3b6e83622](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3b6e83622):
+
+  Added onArticleRenderBegin and onArticleRenderDone props
+
+## 0.20.14
+
+- Updated dependencies [87d67944cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d67944cc):
+  - @atlaskit/help-article@0.7.0
+
+## 0.20.13
+
+### Patch Changes
+
+- [patch][35236f6049](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/35236f6049):
+
+  Don't render DefaultContent if is Null
+
+## 0.20.12
+
+### Patch Changes
+
+- [patch][bf5be91872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf5be91872):
+
+  handle rejected getArticle promises
+
 ## 0.20.11
 
 ### Patch Changes

@@ -9,11 +9,11 @@
       }]
   }, {
       "type": "layoutSection",
-      "attrs": {
-          "layoutType": "two_equal"
-      },
       "content": [{
           "type": "layoutColumn",
+          "attrs": {
+            "width": 50
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -35,6 +35,9 @@
           }]
       }, {
           "type": "layoutColumn",
+          "attrs": {
+            "width": 50
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -63,11 +66,11 @@
       }]
   }, {
       "type": "layoutSection",
-      "attrs": {
-          "layoutType": "three_equal"
-      },
       "content": [{
           "type": "layoutColumn",
+          "attrs": {
+            "width": 33
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -87,6 +90,9 @@
           }]
       }, {
           "type": "layoutColumn",
+          "attrs": {
+            "width": 33
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -108,6 +114,9 @@
           }]
       }, {
           "type": "layoutColumn",
+          "attrs": {
+            "width": 33
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -170,11 +179,11 @@
       }]
   }, {
       "type": "layoutSection",
-      "attrs": {
-          "layoutType": "two_left_sidebar"
-      },
       "content": [{
           "type": "layoutColumn",
+          "attrs": {
+            "width": 30
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -196,6 +205,9 @@
           }]
       }, {
           "type": "layoutColumn",
+          "attrs": {
+            "width": 70
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -230,10 +242,10 @@
       }]
   }, {
       "type": "layoutSection",
-      "attrs": {
-          "layoutType": "two_right_sidebar"
-      },
       "content": [{
+        "attrs": {
+          "width": 70
+        },
           "type": "layoutColumn",
           "content": [{
               "type": "paragraph",
@@ -253,6 +265,9 @@
           }]
       }, {
           "type": "layoutColumn",
+          "attrs": {
+            "width": 30
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -287,11 +302,11 @@
       }]
   }, {
       "type": "layoutSection",
-      "attrs": {
-          "layoutType": "three_with_sidebars"
-      },
       "content": [{
           "type": "layoutColumn",
+          "attrs": {
+            "width": 40
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -322,6 +337,9 @@
           }]
       }, {
           "type": "layoutColumn",
+          "attrs": {
+            "width": 40
+          },
           "content": [{
               "type": "paragraph",
               "content": [{
@@ -341,6 +359,9 @@
           }]
       }, {
           "type": "layoutColumn",
+          "attrs": {
+            "width": 20
+          },
           "content": [{
               "type": "paragraph",
               "content": [{

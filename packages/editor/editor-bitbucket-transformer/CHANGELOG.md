@@ -1,5 +1,30 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 6.2.9
+
+### Patch Changes
+
+- [patch][aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  ED-8042 upgrade prosemirror-markdown to remove ES modules workaround- Updated dependencies [aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  - @atlaskit/editor-core@114.1.3
+
+## 6.2.8
+
+### Patch Changes
+
+- [patch][a76c0e3081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a76c0e3081):
+
+  ED-8042 fix: bump markdown-it and prosemirror-markdown to avoid ReDoS vulnerability
+
+## 6.2.7
+
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+  - @atlaskit/editor-core@114.1.0
+  - @atlaskit/editor-test-helpers@10.2.0
+  - @atlaskit/editor-common@42.0.0
+
 ## 6.2.6
 
 - Updated dependencies [f28c191f4a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28c191f4a):

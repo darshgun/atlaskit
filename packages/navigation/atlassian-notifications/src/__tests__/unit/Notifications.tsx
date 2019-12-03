@@ -48,4 +48,15 @@ describe('NotificationDrawerContents', () => {
       '/home/notificationsDrawer/iframe.html?locale=en&product=jira',
     );
   });
+
+  it.only('should add override the default URL when passing the `_url` prop', () => {
+    const notifications = mount(
+      <Notifications
+        _url="http://example.com/foo.html?foo=bar&bar=baz"
+        locale="en"
+        product="jira"
+      />,
+    );
+    testIframeUrl(notifications, 'http://example.com/foo.html?foo=bar&bar=baz');
+  });
 });

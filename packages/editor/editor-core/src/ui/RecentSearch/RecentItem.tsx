@@ -8,9 +8,8 @@ interface ContainerProps {
   selected: boolean;
 }
 
-const Container: ComponentClass<
-  HTMLAttributes<{}> & ContainerProps
-> = styled.li`
+const Container: ComponentClass<HTMLAttributes<{}> &
+  ContainerProps> = styled.li`
   background-color: ${(props: ContainerProps) =>
     props.selected ? colors.N20 : 'transparent'};
   padding: 5px 8px;
@@ -29,9 +28,7 @@ export const Name: ComponentClass<HTMLAttributes<{}>> = styled.div`
   white-space: nowrap;
 `;
 
-export const ContainerName: ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.div`
+export const ContainerName: ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   color: ${colors.N100};
   font-size: 12px;
 `;

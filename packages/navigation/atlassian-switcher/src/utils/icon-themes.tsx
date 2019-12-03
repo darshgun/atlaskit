@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { colors, elevation, gridSize } from '@atlaskit/theme';
+import { colors, elevation, gridSize, ThemedValue } from '@atlaskit/theme';
 import { ComponentType } from 'react';
 
 interface IconBaseProps {
   bgColor?: string;
-  iconElevation?: string;
+  iconElevation?: ThemedValue<string>;
 }
 
 const IconBase = styled.div<IconBaseProps>`
@@ -16,7 +16,7 @@ const IconBase = styled.div<IconBaseProps>`
   height: ${4 * gridSize()}px;
   border-radius: ${gridSize()}px;
   ${({ iconElevation }) => (iconElevation ? iconElevation : '')};
-  background-color: ${({ bgColor }) => bgColor}
+  background-color: ${({ bgColor }) => bgColor};
   overflow: hidden;
 `;
 
@@ -43,9 +43,9 @@ interface IconBackgroundTheme {
 }
 
 interface IconTheme {
-  primaryColor?: string;
-  iconColor?: string;
-  iconElevation?: string;
+  primaryColor?: string | ThemedValue<string>;
+  iconColor?: string | ThemedValue<string>;
+  iconElevation?: ThemedValue<string>;
   iconGradientStart?: string;
   iconGradientStop?: string;
 }

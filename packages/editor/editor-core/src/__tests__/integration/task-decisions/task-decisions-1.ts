@@ -27,7 +27,7 @@ BrowserTestCase(
     await browser.waitFor(editable);
     await browser.type(editable, '<> ');
     await browser.waitForSelector('ol');
-    await browser.paste(editable);
+    await browser.paste();
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },
@@ -46,7 +46,7 @@ BrowserTestCase(
     await browser.waitFor(editable);
     await browser.type(editable, '<> ');
     await browser.waitForSelector('ol');
-    await browser.paste(editable);
+    await browser.paste();
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
   },

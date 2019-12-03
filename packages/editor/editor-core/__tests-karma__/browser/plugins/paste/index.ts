@@ -27,7 +27,6 @@ describe('paste', () => {
       doc,
       editorProps: {
         legacyImageUploadProvider: Promise.resolve(() => {}),
-        allowLists: true,
       },
     });
 

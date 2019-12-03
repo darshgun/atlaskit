@@ -1,10 +1,13 @@
-const constants = require('karma').constants;
+// @flow
+const { constants } = require('karma');
 const puppeteer = require('puppeteer');
 const ChromiumRevision = require('puppeteer/package.json').puppeteer
   .chromium_revision;
 
 const boltQuery = require('bolt-query');
+
 const path = require('path');
+
 const babelPolyfill = require.resolve('@babel/polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
@@ -53,6 +56,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
   const revisionInfo = await browserFetcher.download(ChromiumRevision);
   process.env.CHROME_BIN = revisionInfo.executablePath;
 
+  // eslint-disable-next-line global-require
   const moduleResolveMapBuilder = require('@atlaskit/multi-entry-tools/module-resolve-map-builder');
 
   const alternativeEntries = await moduleResolveMapBuilder();
@@ -148,9 +152,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
         localIdentifier: `${process.env.BITBUCKET_COMMIT}_unit_tests`,
         project: 'Atlaskit Karma Tests',
-        build: `${process.env.BITBUCKET_BRANCH} ${time} ${
-          process.env.BITBUCKET_COMMIT
-        }`,
+        build: `${process.env.BITBUCKET_BRANCH} ${time} ${process.env.BITBUCKET_COMMIT}`,
       },
       captureTimeout: 120000,
       browserNoActivityTimeout: 120000,

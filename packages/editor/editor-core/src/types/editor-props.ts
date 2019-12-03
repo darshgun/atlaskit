@@ -8,8 +8,9 @@ import {
   ContextIdentifierProvider,
   ExtensionHandlers,
   ErrorReportingHandler,
-  MediaProvider,
+  ExtensionProvider,
 } from '@atlaskit/editor-common';
+
 import { ActivityProvider } from '@atlaskit/activity';
 import { MentionProvider } from '@atlaskit/mention/resource';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
@@ -27,11 +28,12 @@ import { MacroProvider } from '../plugins/macro/types';
 import { MediaOptions } from '../plugins/media';
 import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit/types';
-import { CodeBlockOptions } from '../plugins/code-block';
-import { CardProvider, CardOptions } from '../plugins/card/types';
+import { CardOptions } from '../plugins/card/types';
 import { QuickInsertOptions } from '../plugins/quick-insert/types';
 import { AutoformattingProvider } from '../plugins/custom-autoformat/types';
 import { AnnotationProvider } from '../plugins/annotation/types';
+import { BlockTypePluginOptions } from '../plugins/block-type';
+import { LayoutsConfig } from '../plugins/layout';
 
 export type EditorAppearance =
   | 'comment'
@@ -88,10 +90,9 @@ export interface EditorProps {
   contentComponents?: ReactComponents;
   primaryToolbarComponents?: ReactComponents;
   secondaryToolbarComponents?: ReactComponents;
-  addonToolbarComponents?: ReactComponents;
   allowAnalyticsGASV3?: boolean;
   // Configure allowed blocks in the editor, currently only supports `heading`, `blockquote`, `hardBreak` and `codeBlock`.
-  allowBlockType?: { exclude?: Array<AllowedBlockTypes> };
+  allowBlockType?: BlockTypePluginOptions['allowBlockType'];
 
   // Whether or not you want to allow Action and Decision elements in the editor. You can currently only enable both or disable both.
   // To enable, you need to also provide a `taskDecisionProvider`. You will most likely need backend ADF storage for this feature.
@@ -103,12 +104,6 @@ export interface EditorProps {
 
   // Enables horizontal rules.
   allowRule?: boolean;
-
-  // Enables code blocks. This is different to inline code, it is a block element and support languages.
-  allowCodeBlocks?: boolean | CodeBlockOptions;
-
-  // Enables bullet and numbered lists.
-  allowLists?: boolean;
 
   // Enables text colour. Ew are you sure you want to enable this?
   allowTextColor?: boolean | TextColorPluginConfig;
@@ -141,7 +136,6 @@ export interface EditorProps {
   allowExtension?: boolean | ExtensionConfig;
 
   allowConfluenceInlineComment?: boolean;
-  allowPlaceholderCursor?: boolean;
 
   // Enable placeholder text which is handy for things like a template editor.
   // Placeholder text is an inline text element that is removed when a user clicks on it.
@@ -154,12 +148,7 @@ export interface EditorProps {
 
   // Temporary flag to enable layouts while it's under development
   // Use object form to enable breakout for layouts, and to enable the newer layouts - left sidebar & right sidebar
-  allowLayouts?:
-    | boolean
-    | {
-        allowBreakout: boolean;
-        UNSAFE_addSidebarLayouts?: boolean;
-      };
+  allowLayouts?: boolean | LayoutsConfig;
 
   // Enable status, if menuDisabled is passed then plugin is enabled by default
   allowStatus?:
@@ -189,7 +178,9 @@ export interface EditorProps {
 
   UNSAFE_cards?: CardOptions;
 
-  UNSAFE_allowExpand?: boolean;
+  UNSAFE_allowExpand?:
+    | boolean
+    | { allowInsertion?: boolean; allowInteractiveExpand?: boolean };
 
   // Submits on the enter key. Probably useful for an inline comment editor use case.
   saveOnEnter?: boolean;
@@ -216,14 +207,12 @@ export interface EditorProps {
 
   legacyImageUploadProvider?: Promise<ImageUploadHandler>;
   mentionProvider?: Promise<MentionProvider>;
-  mediaProvider?: Promise<MediaProvider>;
 
   // Allows you to define custom autoformatting rules.
   autoformattingProvider?: Promise<AutoformattingProvider>;
 
   // This is temporary for Confluence. **Please do not use**.
   macroProvider?: Promise<MacroProvider>;
-  cardProvider?: Promise<CardProvider>;
 
   // Set if you want to wait for media file uploads before save.
   waitForMediaUpload?: boolean;
@@ -282,4 +271,8 @@ export interface EditorProps {
   // The nth keystroke after which an input time taken event is sent, 0 to disable it
   // default: 100
   inputSamplingLimit?: number;
+
+  // New extension API
+  // This eventually is going to replace `quickInsert.provider`, `extensionHandlers`, `macroProvider`.
+  extensionProviders?: Array<ExtensionProvider>;
 }

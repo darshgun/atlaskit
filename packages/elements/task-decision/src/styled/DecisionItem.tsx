@@ -8,9 +8,8 @@ export interface EditorIconWrapperProps {
   showPlaceholder?: boolean;
 }
 
-export const EditorIconWrapper: ComponentClass<
-  HTMLAttributes<{}> & EditorIconWrapperProps
-> = styled.span`
+export const EditorIconWrapper: ComponentClass<HTMLAttributes<{}> &
+  EditorIconWrapperProps> = styled.span`
   flex: 0 0 16px;
   height: 16px;
   width: 16px;

@@ -177,7 +177,6 @@ const inlineCommentEditor = (
   <Editor
     appearance="chromeless"
     annotationProvider={{}}
-    allowLists={true}
     defaultValue={adf}
     onChange={onChange}
   />
@@ -296,7 +295,7 @@ import { ExampleInlineCommentComponent } from '@atlaskit/editor-test-helpers';
 
 class MyEditor extends React.Component {
   render() {
-    return <Editor 
+    return <Editor
             // ... other providers and props here
             annotationProvider={{
               component: ExampleInlineCommentComponent,
@@ -346,7 +345,7 @@ Note that the \`annotations\` prop provides an array. This is because text can h
 This array is *ordered* so that the inner-most appears first. If you always want to display the outer one, for instance, just reverse the order. Here's an example of a document with multiple annotations. They are rendered slightly transparent.
 
 
-${<SplitExample initialAdf={nestedExample} />}
+${(<SplitExample initialAdf={nestedExample} />)}
 
 ### Annotation types
 

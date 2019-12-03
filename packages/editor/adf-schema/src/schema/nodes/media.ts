@@ -7,7 +7,7 @@ export type DisplayType = 'file' | 'thumbnail';
 export type DefaultAttributes<T> = {
   [P in keyof T]: {
     default?: T[P] | null;
-  }
+  };
 };
 
 /**
@@ -46,6 +46,9 @@ export interface MediaBaseAttributes {
   __displayType?: DisplayType | null;
   // For copy & paste
   __contextId?: string;
+
+  // is set to true when new external media is inserted, false for external media in existing documents
+  __external?: boolean;
 }
 
 export interface MediaAttributes extends MediaBaseAttributes {
@@ -57,6 +60,7 @@ export interface ExternalMediaAttributes {
   url: string;
   width?: number;
   height?: number;
+  __external?: boolean;
 }
 
 export const defaultAttrs: DefaultAttributes<
@@ -74,39 +78,55 @@ export const defaultAttrs: DefaultAttributes<
   __fileMimeType: { default: null },
   __displayType: { default: null },
   __contextId: { default: null },
+  __external: { default: false },
 };
 
-export const media: NodeSpec = {
+export const defaultAttrsWithAltText: DefaultAttributes<
+  MediaAttributes | ExternalMediaAttributes
+> = {
+  ...defaultAttrs,
+  alt: { default: null },
+};
+
+interface MutableMediaAttributes extends MediaAttributes {
+  [key: string]: string | number | undefined | null | boolean;
+}
+
+export const createMediaSpec = (
+  attributes: Partial<NodeSpec['attrs']>,
+): NodeSpec => ({
   selectable: true,
-  attrs: defaultAttrs as any,
+  attrs: attributes as NodeSpec['attrs'],
   parseDOM: [
     {
       tag: 'div[data-node-type="media"]',
       getAttrs: dom => {
-        const attrs = {} as Record<string, any>;
+        const attrs = {} as MutableMediaAttributes;
 
-        (Object.keys(defaultAttrs) as Array<keyof MediaAttributes>).forEach(
-          k => {
+        if (attributes) {
+          Object.keys(attributes).forEach(k => {
             const key = camelCaseToKebabCase(k).replace(/^__/, '');
             const value =
               (dom as HTMLElement).getAttribute(`data-${key}`) || '';
             if (value) {
               attrs[k] = value;
             }
-          },
-        );
+          });
+        }
 
         // Need to do validation & type conversion manually
         if (attrs.__fileSize) {
           attrs.__fileSize = +attrs.__fileSize;
         }
 
-        if (typeof attrs.width !== 'undefined' && !isNaN(attrs.width)) {
-          attrs.width = Number(attrs.width);
+        const width = Number(attrs.width);
+        if (typeof width !== 'undefined' && !isNaN(width)) {
+          attrs.width = width;
         }
 
-        if (typeof attrs.height !== 'undefined' && !isNaN(attrs.height)) {
-          attrs.height = Number(attrs.height);
+        const height = Number(attrs.height);
+        if (typeof height !== 'undefined' && !isNaN(height)) {
+          attrs.height = height;
         }
 
         return attrs as MediaAttributes;
@@ -155,15 +175,12 @@ export const media: NodeSpec = {
 
     return ['div', attrs];
   },
-};
+});
 
-export const mediaWithAltText: NodeSpec = {
-  ...media,
-  attrs: {
-    ...defaultAttrs,
-    alt: { default: null },
-  } as any,
-};
+export const media: NodeSpec = createMediaSpec(defaultAttrs);
+export const mediaWithAltText: NodeSpec = createMediaSpec(
+  defaultAttrsWithAltText,
+);
 
 export const camelCaseToKebabCase = (str: string) =>
   str.replace(/([^A-Z]+)([A-Z])/g, (_, x, y) => `${x}-${y.toLowerCase()}`);

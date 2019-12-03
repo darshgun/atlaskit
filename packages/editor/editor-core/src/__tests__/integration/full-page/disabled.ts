@@ -25,8 +25,8 @@ BrowserTestCase(
     await browser.goto(fullpageDisabled.path);
     await browser.waitForSelector(fullpageDisabled.placeholder);
 
-    const elem = browser.$$('.ak-editor-panel__content');
-    return expect(elem.click()).rejects.toThrowError(
+    const elem = await browser.$('.ak-editor-panel__content');
+    return expect(() => elem.click()).rejects.toThrowError(
       'unknown error: Element is not clickable at point',
     );
   },

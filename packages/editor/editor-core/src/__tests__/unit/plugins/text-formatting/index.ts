@@ -42,7 +42,6 @@ describe('text-formatting', () => {
       doc,
       editorProps: {
         analyticsHandler: trackEvent,
-        allowCodeBlocks: true,
         allowAnalyticsGASV3: true,
         mentionProvider: new Promise(() => {}),
       },
@@ -639,18 +638,19 @@ describe('text-formatting', () => {
 
   describe('subscript', () => {
     it('should dispatch analytics event', () => {
+      const inputMethod = INPUT_METHOD.TOOLBAR;
       const expectedPayload: AnalyticsEventPayload = {
         action: ACTION.FORMATTED,
         actionSubject: ACTION_SUBJECT.TEXT,
         actionSubjectId: ACTION_SUBJECT_ID.FORMAT_SUB,
         eventType: EVENT_TYPE.TRACK,
         attributes: {
-          inputMethod: INPUT_METHOD.TOOLBAR,
+          inputMethod,
         },
       };
       const { editorView } = editor(doc(p('{<}t{>}ext')));
 
-      commands.toggleSubscriptWithAnalytics()(
+      commands.toggleSubscriptWithAnalytics({ inputMethod })(
         editorView.state,
         editorView.dispatch,
       );
@@ -709,18 +709,19 @@ describe('text-formatting', () => {
 
   describe('superscript', () => {
     it('should dispatch analytics event', () => {
+      const inputMethod = INPUT_METHOD.TOOLBAR;
       const expectedPayload: AnalyticsEventPayload = {
         action: ACTION.FORMATTED,
         actionSubject: ACTION_SUBJECT.TEXT,
         actionSubjectId: ACTION_SUBJECT_ID.FORMAT_SUPER,
         eventType: EVENT_TYPE.TRACK,
         attributes: {
-          inputMethod: INPUT_METHOD.TOOLBAR,
+          inputMethod,
         },
       };
       const { editorView } = editor(doc(p('{<}t{>}ext')));
 
-      commands.toggleSuperscriptWithAnalytics()(
+      commands.toggleSuperscriptWithAnalytics({ inputMethod })(
         editorView.state,
         editorView.dispatch,
       );

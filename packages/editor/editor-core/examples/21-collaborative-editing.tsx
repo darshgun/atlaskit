@@ -162,9 +162,7 @@ export default class Example extends React.Component<Props, State> {
                 analyticsHandler={analyticsHandler}
                 allowStatus={true}
                 allowAnalyticsGASV3={true}
-                allowCodeBlocks={true}
                 allowLayouts={true}
-                allowLists={true}
                 allowTextColor={true}
                 allowTables={{
                   allowColumnResizing: true,

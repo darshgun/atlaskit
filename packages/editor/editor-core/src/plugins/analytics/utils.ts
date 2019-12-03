@@ -1,15 +1,24 @@
+import { Step } from 'prosemirror-transform';
+import { findParentNode } from 'prosemirror-utils';
+import { CellSelection } from 'prosemirror-tables';
+import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { Command } from '../../types';
+import { InputRuleWithHandler } from '../../utils/input-rules';
+import { GapCursorSelection, Side } from '../gap-cursor/selection';
+import { analyticsPluginKey } from './plugin';
+import { AnalyticsStep } from './analytics-step';
 import {
   AnalyticsEventPayloadWithChannel,
   editorAnalyticsChannel,
 } from './index';
-import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { AnalyticsEventPayload } from './types';
-import { EditorState, Transaction } from 'prosemirror-state';
-import { Command } from '../../types';
-import { InputRuleWithHandler } from '../../utils/input-rules';
-import { analyticsPluginKey } from './plugin';
-import { AnalyticsStep } from './analytics-step';
-import { Step } from 'prosemirror-transform';
+import {
+  AnalyticsEventPayload,
+  ACTION,
+  ACTION_SUBJECT,
+  SELECTION_TYPE,
+  SELECTION_POSITION,
+} from './types';
 
 export type DispatchAnalyticsEvent = (payload: AnalyticsEventPayload) => void;
 export type HigherOrderCommand = (command: Command) => Command;
@@ -23,6 +32,80 @@ function getAnalyticsState(
     | undefined;
 }
 
+export function getStateContext(
+  state: EditorState,
+  payload: AnalyticsEventPayload,
+): AnalyticsEventPayload {
+  if (
+    payload.action === ACTION.INSERTED &&
+    payload.actionSubject === ACTION_SUBJECT.DOCUMENT
+  ) {
+    const { type, position } = getSelectionType(state);
+    payload.selectionType = type;
+    if (position) {
+      payload.selectionPosition = position;
+    }
+    payload.insertLocation = findInsertLocation(state);
+  }
+
+  return payload;
+}
+
+export function getSelectionType(
+  state: EditorState,
+): { type: SELECTION_TYPE; position?: SELECTION_POSITION } {
+  const { selection } = state;
+  let type: SELECTION_TYPE;
+  let position: SELECTION_POSITION | undefined;
+
+  if (selection instanceof GapCursorSelection) {
+    type = SELECTION_TYPE.GAP_CURSOR;
+    position =
+      selection.side === Side.LEFT
+        ? SELECTION_POSITION.LEFT
+        : SELECTION_POSITION.RIGHT;
+  } else if (selection instanceof CellSelection) {
+    type = SELECTION_TYPE.CELL;
+  } else if (selection instanceof NodeSelection) {
+    type = SELECTION_TYPE.NODE;
+  } else if (selection.from !== selection.to) {
+    type = SELECTION_TYPE.RANGED;
+  } else {
+    type = SELECTION_TYPE.CURSOR;
+    const { from, $from } = selection;
+    if (from === $from.start()) {
+      position = SELECTION_POSITION.START;
+    } else if (from === $from.end()) {
+      position = SELECTION_POSITION.END;
+    } else {
+      position = SELECTION_POSITION.MIDDLE;
+    }
+  }
+
+  return {
+    type,
+    position,
+  };
+}
+
+export function findInsertLocation(state: EditorState): string {
+  const { selection } = state;
+  if (selection instanceof NodeSelection) {
+    return selection.node.type.name;
+  }
+
+  if (selection instanceof CellSelection) {
+    return state.schema.nodes.table.name;
+  }
+
+  // Text selection
+  const parentNodeInfo = findParentNode(
+    node => node.type !== state.schema.nodes.paragraph,
+  )(state.selection);
+
+  return parentNodeInfo ? parentNodeInfo.node.type.name : state.doc.type.name;
+}
+
 export function addAnalytics(
   state: EditorState,
   tr: Transaction,
@@ -30,6 +113,7 @@ export function addAnalytics(
   channel: string = editorAnalyticsChannel,
 ): Transaction {
   const createAnalyticsEvent = getAnalyticsState(state);
+  payload = getStateContext(state, payload);
 
   if (createAnalyticsEvent) {
     const { storedMarks } = tr;
@@ -111,15 +195,13 @@ export function ruleWithAnalytics(
 
 export type FireAnalyticsEvent = (
   createAnalyticsEvent?: CreateUIAnalyticsEvent | undefined,
-) => (
-  {
-    payload,
-    channel,
-  }: {
-    payload: AnalyticsEventPayload;
-    channel?: string | undefined;
-  },
-) => void | undefined;
+) => ({
+  payload,
+  channel,
+}: {
+  payload: AnalyticsEventPayload;
+  channel?: string | undefined;
+}) => void | undefined;
 
 export const fireAnalyticsEvent: FireAnalyticsEvent = createAnalyticsEvent => ({
   payload,

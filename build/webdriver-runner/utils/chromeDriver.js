@@ -1,5 +1,5 @@
 // @flow
-'use strict';
+
 const chromedriver = require('chromedriver');
 
 /*

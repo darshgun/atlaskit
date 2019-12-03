@@ -14,7 +14,7 @@ const ReactionsSource = require('!!raw-loader!../examples/00-picker-and-reaction
 const ReactionsProps = require('!!extract-react-types-loader!../examples/examples-util/ReactionsExampleWrapper');
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   The main purpose of the Reactions component is to provide users the ability to react to pieces of content.
 
@@ -75,6 +75,6 @@ export default md`
     />
   )}
 
-  ${<Props props={ReactionsProps} />}
+  ${(<Props props={ReactionsProps} />)}
 
 `;

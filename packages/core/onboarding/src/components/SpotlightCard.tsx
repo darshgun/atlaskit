@@ -39,7 +39,7 @@ class SpotlightCard extends React.Component<Props> {
     width: 400,
     isFlat: false,
     components: {},
-    theme: (themeFn: () => unknown) => themeFn(),
+    theme: (themeFn: Function) => themeFn(),
   };
 
   render() {

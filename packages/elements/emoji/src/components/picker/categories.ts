@@ -33,7 +33,7 @@ export type CategoryId =
 export type CategoryGroupKey = CategoryId | 'USER_CUSTOM' | 'SEARCH';
 
 export type CategoryDescriptionMap = {
-  [key in CategoryGroupKey]: CategoryDescription
+  [key in CategoryGroupKey]: CategoryDescription;
 };
 
 export const CategoryDescriptionMap: CategoryDescriptionMap = {

@@ -18,7 +18,6 @@ export const nestedExpand: NodeSpec = {
   group: 'block',
   content:
     '(paragraph | heading | mediaSingle | mediaGroup | unsupportedBlock)+',
-  defining: true,
   isolating: true,
   selectable: true,
   attrs: {
@@ -28,11 +27,6 @@ export const nestedExpand: NodeSpec = {
   parseDOM: [
     {
       context: 'nestedExpand//',
-      tag: '[data-node-type="nestedExpand"]',
-      skip: true,
-    },
-    {
-      context: 'expand//',
       tag: '[data-node-type="nestedExpand"]',
       skip: true,
     },

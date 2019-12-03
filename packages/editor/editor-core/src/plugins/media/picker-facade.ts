@@ -38,9 +38,9 @@ export type PickerFacadeConfig = {
 export type MediaStateEvent = MediaState;
 export type MediaStateEventListener = (evt: MediaStateEvent) => void;
 
-export type MediaStateEventSubscriber = ((
+export type MediaStateEventSubscriber = (
   listener: MediaStateEventListener,
-) => void);
+) => void;
 export type NewMediaEvent = (
   state: MediaState,
   onStateChanged: MediaStateEventSubscriber,

@@ -6,18 +6,6 @@ import { TableCssClassName } from '../table/types';
 import { tableInsertColumnButtonSize } from '../table/ui/styles';
 import { closestElement } from '../../utils';
 
-// we don't show gap cursor for those nodes
-const IGNORED_NODES = [
-  'paragraph',
-  'bulletList',
-  'orderedList',
-  'listItem',
-  'taskItem',
-  'decisionItem',
-  'heading',
-  'blockquote',
-];
-
 // Returns DOM node's vertical margin. It descents into the node and reads margins of nested DOM nodes
 const getDomNodeVerticalMargin = (
   ref: HTMLElement | null,
@@ -33,14 +21,6 @@ const getDomNodeVerticalMargin = (
     ref = ref[side === 'top' ? 'firstChild' : 'lastChild'] as HTMLElement;
   }
   return margin;
-};
-
-export const isIgnored = (node?: PMNode | null): boolean => {
-  return !!node && IGNORED_NODES.indexOf(node.type.name) !== -1;
-};
-
-export const isValidTargetNode = (node?: PMNode | null): boolean => {
-  return !!node && !isIgnored(node);
 };
 
 export function getMediaNearPos(
@@ -283,7 +263,10 @@ export const fixCursorAlignment = (view: EditorView) => {
   // breakout mode
   const breakoutMode = getBreakoutModeFromTargetNode(targetNode);
   const hasBreakoutEnable = /full-width|wide/i.test(breakoutMode);
-  if (hasBreakoutEnable) {
+  if (
+    hasBreakoutEnable &&
+    gapCursorRef.getAttribute('layout') !== breakoutMode
+  ) {
     gapCursorRef.setAttribute('layout', breakoutMode);
   }
 

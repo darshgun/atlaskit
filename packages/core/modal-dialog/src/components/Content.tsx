@@ -5,8 +5,8 @@ import React from 'react';
 import rafSchedule from 'raf-schd';
 import ScrollLock from 'react-scrolllock';
 
-import Footer from './Footer';
-import Header from './Header';
+import Footer, { FooterComponentProps } from './Footer';
+import Header, { HeaderComponentProps } from './Header';
 
 import { AppearanceType, KeyboardOrMouseEvent, ActionProps } from '../types';
 import {
@@ -45,19 +45,19 @@ interface Props {
     Object describing internal components. Use this to swap out the default components.
   */
   components: {
-    Header?: React.ElementType;
+    Header?: React.ElementType<HeaderComponentProps>;
     Body?: React.ElementType;
-    Footer?: React.ElementType;
+    Footer?: React.ElementType<FooterComponentProps>;
     Container?: React.ElementType;
   };
   /**
     Deprecated, use components prop: Component to render the header of the modal.
   */
-  header?: React.ElementType;
+  header?: React.ElementType<HeaderComponentProps>;
   /**
     Deprecated, use components prop: Component to render the footer of the moda.l
   */
-  footer?: React.ElementType;
+  footer?: React.ElementType<FooterComponentProps>;
   /**
     Function that will be called to initiate the exit transition.
   */

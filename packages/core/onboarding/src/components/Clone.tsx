@@ -13,12 +13,10 @@ export interface CloneProps {
   /** The background color of the element being highlighted */
   targetBgColor?: string;
   /** Function to fire when a user clicks on the cloned target */
-  targetOnClick?: (
-    eventData: {
-      event: MouseEvent<HTMLElement>;
-      target?: string;
-    },
-  ) => unknown;
+  targetOnClick?: (eventData: {
+    event: MouseEvent<HTMLElement>;
+    target?: string;
+  }) => void;
   /** The border-radius of the element being highlighted */
   targetRadius?: number;
 }

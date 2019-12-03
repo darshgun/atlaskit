@@ -34,7 +34,7 @@ export function keymapPlugin(): Plugin | undefined {
     keymaps.indentList.common!!,
     trackAndInvoke(
       'atlassian.editor.format.list.indent.keyboard',
-      indentList(),
+      indentList(INPUT_METHOD.KEYBOARD),
     ),
     list,
   );
@@ -42,7 +42,7 @@ export function keymapPlugin(): Plugin | undefined {
     keymaps.outdentList.common!!,
     trackAndInvoke(
       'atlassian.editor.format.list.outdent.keyboard',
-      outdentList(),
+      outdentList(INPUT_METHOD.KEYBOARD),
     ),
     list,
   );

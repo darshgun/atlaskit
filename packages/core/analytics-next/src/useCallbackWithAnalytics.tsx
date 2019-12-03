@@ -20,13 +20,10 @@ export const useCallbackWithAnalytics: UseCallbackWithAnalyticsHook = (
   const methodRef = useRef(method);
   const payloadRef = useRef(payload);
 
-  useEffect(
-    () => {
-      methodRef.current = method;
-      payloadRef.current = payload;
-    },
-    [method, payload],
-  );
+  useEffect(() => {
+    methodRef.current = method;
+    payloadRef.current = payload;
+  }, [method, payload]);
 
   return useCallback(
     (...args) => {

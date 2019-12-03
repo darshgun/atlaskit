@@ -1,5 +1,5 @@
+/* eslint-disable global-require */
 // @flow
-'use strict';
 
 const path = require('path');
 const isReachable = require('is-reachable');
@@ -25,7 +25,7 @@ process.env.NODE_ENV = 'test';
 process.env.INTEGRATION_TESTS = 'true';
 
 const isBrowserStack = process.env.TEST_ENV === 'browserstack';
-const maxWorkers = isBrowserStack ? 5 : 1;
+const maxWorkers = isBrowserStack ? 10 : 1;
 
 const cli = meow({
   flags: {
@@ -203,7 +203,7 @@ async function main() {
     await webpack.startDevServer();
   }
 
-  let client = initClient();
+  const client = initClient();
 
   client
     .startServer()

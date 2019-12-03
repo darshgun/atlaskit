@@ -76,11 +76,9 @@ async function visualiseInvisibleElements(page: any) {
 function getEditorProps(appearance: Appearance) {
   const enableAllEditorProps = {
     allowPanel: true,
-    allowLists: true,
     allowTextColor: true,
     allowTextAlignment: true,
     quickInsert: true,
-    allowCodeBlocks: { enableKeybindingsForIDE: true },
     allowTables: {
       advanced: true,
     },
@@ -103,7 +101,7 @@ function getEditorProps(appearance: Appearance) {
       'Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule.',
     shouldFocus: false,
     UNSAFE_cards: true,
-    UNSAFE_allowExpand: true,
+    UNSAFE_allowExpand: { allowInsertion: true },
     allowHelpDialog: true,
   };
 
@@ -297,7 +295,7 @@ export const updateEditorProps = async (
 ) => {
   await page.evaluate((props: EditorProps) => {
     (window as any).__updateEditorProps(props);
-  }, newProps);
+  }, newProps as any);
 };
 
 export const clearEditor = async (page: any) => {

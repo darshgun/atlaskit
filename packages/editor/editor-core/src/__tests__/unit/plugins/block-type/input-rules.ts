@@ -36,7 +36,6 @@ describe('inputrules', () => {
       editorProps: {
         analyticsHandler: trackEvent as any,
         allowAnalyticsGASV3: true,
-        allowCodeBlocks: true,
         allowIndentation: true,
       },
       createAnalyticsEvent,
@@ -327,7 +326,9 @@ describe('inputrules', () => {
 
       it('should fire analytics event', () => {
         expect(trackEvent).toHaveBeenCalledWith(analyticsV2Event);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(analyticsV3Payload);
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(analyticsV3Payload),
+        );
       });
     });
 
@@ -345,7 +346,9 @@ describe('inputrules', () => {
 
       it('should fire analytics event', () => {
         expect(trackEvent).toHaveBeenCalledWith(analyticsV2Event);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(analyticsV3Payload);
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(analyticsV3Payload),
+        );
       });
     });
 
@@ -363,7 +366,9 @@ describe('inputrules', () => {
 
       it('should fire analytics event', () => {
         expect(trackEvent).toHaveBeenCalledWith(analyticsV2Event);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(analyticsV3Payload);
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(analyticsV3Payload),
+        );
       });
     });
 
@@ -381,7 +386,9 @@ describe('inputrules', () => {
 
       it('should fire analytics event', () => {
         expect(trackEvent).toHaveBeenCalledWith(analyticsV2Event);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(analyticsV3Payload);
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(analyticsV3Payload),
+        );
       });
     });
 
@@ -399,7 +406,9 @@ describe('inputrules', () => {
 
       it('should fire analytics event', () => {
         expect(trackEvent).toHaveBeenCalledWith(analyticsV2Event);
-        expect(createAnalyticsEvent).toHaveBeenCalledWith(analyticsV3Payload);
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining(analyticsV3Payload),
+        );
       });
     });
   });

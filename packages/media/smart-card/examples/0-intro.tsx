@@ -61,7 +61,7 @@ class Example extends React.Component<{}, ExampleState> {
     });
   };
 
-  renderCard(url: string, isSelected: boolean, appearance: any) {
+  renderCard(url: string, isSelected: boolean, appearance: CardAppearance) {
     if (url) {
       return <Card isSelected={isSelected} appearance={appearance} url={url} />;
     }
@@ -141,9 +141,7 @@ class Example extends React.Component<{}, ExampleState> {
                     &nbsp;
                     <a href={example.url}>
                       {example.description ||
-                        `${example.provider} ${example.visibility} ${
-                          example.type
-                        }`}
+                        `${example.provider} ${example.visibility} ${example.type}`}
                     </a>
                   </p>
                 ))}

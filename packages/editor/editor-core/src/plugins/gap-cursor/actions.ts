@@ -8,11 +8,8 @@ import { removeNodeBefore } from 'prosemirror-utils';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import { Direction, isBackward, isForward } from './direction';
 import { GapCursorSelection, Side } from './selection';
-import {
-  isTextBlockNearPos,
-  isValidTargetNode,
-  getMediaNearPos,
-} from './utils';
+import { isTextBlockNearPos, getMediaNearPos } from './utils';
+import { isValidTargetNode } from './utils/is-valid-target-node';
 import { Command } from '../../types';
 import {
   atTheBeginningOfDoc,
@@ -264,12 +261,10 @@ export const setGapCursorAtPos = (
 const captureCursorCoords = (
   event: React.MouseEvent<any>,
   editorRef: HTMLElement,
-  posAtCoords: (
-    coords: {
-      left: number;
-      top: number;
-    },
-  ) => { pos: number; inside: number } | null | void,
+  posAtCoords: (coords: {
+    left: number;
+    top: number;
+  }) => { pos: number; inside: number } | null | void,
   state: EditorState,
 ): { position?: number; side: Side } | null => {
   const rect = editorRef.getBoundingClientRect();
@@ -310,12 +305,10 @@ const captureCursorCoords = (
 export const setCursorForTopLevelBlocks = (
   event: React.MouseEvent<any>,
   editorRef: HTMLElement,
-  posAtCoords: (
-    coords: {
-      left: number;
-      top: number;
-    },
-  ) => { pos: number; inside: number } | null | void,
+  posAtCoords: (coords: {
+    left: number;
+    top: number;
+  }) => { pos: number; inside: number } | null | void,
   editorFocused: boolean,
 ): Command => (state, dispatch) => {
   // plugin is disabled

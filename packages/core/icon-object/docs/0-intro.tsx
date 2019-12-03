@@ -40,7 +40,7 @@ const MyComponent = () => (
 )
 `}
 
-${<PitchSentence />}
+${(<PitchSentence />)}
 
 ${(
   <Example

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @flow
 const axios = require('axios');
 
 /*
@@ -14,9 +15,9 @@ const BUILDS_PER_PAGE = 30;
 const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
-const BITBUCKET_BUILD_NUMBER = process.env.BITBUCKET_BUILD_NUMBER;
-const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER;
-const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG;
+const { BITBUCKET_BUILD_NUMBER } = process.env;
+const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER || '';
+const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG || '';
 const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines/`;
 const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
@@ -72,9 +73,7 @@ axios
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
-      const olderRunningPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/addon/pipelines/home#!/results/${
-        olderRunningPipelines[0].uuid
-      }`;
+      const olderRunningPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
       console.log(
         `Another master branch is already running: ${olderRunningPipelineURL}`,
       );

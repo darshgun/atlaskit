@@ -1,11 +1,6 @@
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-
-declare global {
-  interface Window {
-    bridge?: any;
-    rendererBridge?: any;
-  }
-}
+import RendererBridgeImpl from '../../renderer/native-to-web/implementation';
+import WebBridgeImpl from '../../editor/native-to-web';
 
 // FIXME Ideally these would be mobile browsers
 // Safari & Chrome should suffice for now.
@@ -50,32 +45,36 @@ export const clipboardHelper = {
 export const clipboardInput = 'textarea[data-id=clipboardInput]';
 export const copyButton = 'button[aria-label="copy"]';
 
+type WebBridgeMethods = keyof typeof WebBridgeImpl['prototype'];
+
 export const callNativeBridge = async (
   browser: any,
-  bridgeFn: string,
+  bridgeFn: WebBridgeMethods,
   ...args: any[]
 ) => {
   return await browser.execute(
-    (bridgeFn: any, args: any[]) => {
+    (bridgeFn: WebBridgeMethods, args: any[]) => {
       if (window.bridge && window.bridge[bridgeFn]) {
-        window.bridge[bridgeFn].apply(window.bridge, args);
+        (window.bridge[bridgeFn] as any).apply(window.bridge, args);
       }
     },
     bridgeFn,
     args || [],
   );
 };
+
+type RenderBridgeMethods = keyof typeof RendererBridgeImpl['prototype'];
 
 export const callRendererBridge = async (
   browser: any,
-  bridgeFn: string,
+  bridgeFn: RenderBridgeMethods,
   ...args: any[]
 ) => {
   return await browser.execute(
-    (bridgeFn: any, args: any[]) => {
-      let bridge = window.rendererBridge || {};
+    (bridgeFn: RenderBridgeMethods, args: any[]) => {
+      let bridge = window.rendererBridge || ({} as RendererBridgeImpl);
       if (bridgeFn in bridge) {
-        return bridge[bridgeFn].apply(bridge, args);
+        return (bridge as any)[bridgeFn].apply(bridge, args);
       }
     },
     bridgeFn,
@@ -83,7 +82,7 @@ export const callRendererBridge = async (
   );
 };
 
-const clearBridgeOutput = async (browser: any) => {
+export const clearBridgeOutput = async (browser: any) => {
   await browser.execute(() => {
     // @ts-ignore
     window.logBridge = [];

@@ -10,6 +10,7 @@ import { QuickSearchContainer } from '../../../components/common/QuickSearchCont
 import { ABTestProvider } from '../../../components/AbTestProvider';
 import LocaleIntlProvider from '../../../../example-helpers/components/LocaleIntlProvider';
 import { ResultBase } from '@atlaskit/quick-search';
+import keycode from 'keycode';
 
 import { mount, ReactWrapper } from 'enzyme';
 
@@ -139,6 +140,7 @@ const getRecentItems = (product: string) =>
       input.simulate('keyDown', {
         key,
         shiftKey: false,
+        keyCode: keycode(key.replace('Arrow', '')),
       });
     };
 

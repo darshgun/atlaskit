@@ -79,8 +79,8 @@ export function randomJiraIconUrl() {
 
 export function randomConfluenceIconUrl() {
   const urls = [
-    'https://home.useast.atlassian.io/confluence-page-icon.svg',
-    'https://home.useast.atlassian.io/confluence-blogpost-icon.svg',
+    'https://home-static.us-east-1.prod.public.atl-paas.net/confluence-page-icon.svg',
+    'https://home-static.us-east-1.prod.public.atl-paas.net/confluence-blogpost-icon.svg',
   ];
 
   return pickRandom(urls);

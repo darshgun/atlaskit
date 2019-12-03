@@ -30,14 +30,10 @@ export const tableSelectors = {
   nthNumberedColumnRowControl: (n: number) =>
     `.${ClassName.NUMBERED_COLUMN_BUTTON}:nth-child(${n})`,
   firstRowControl: `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}:nth-child(1) button`,
-  firstColumnControl: `.${
-    ClassName.COLUMN_CONTROLS_DECORATIONS
-  }[data-start-index='0'] `,
+  firstColumnControl: `.${ClassName.COLUMN_CONTROLS_DECORATIONS}[data-start-index='0'] `,
   lastRowControl: `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}:nth-child(3) button`,
   rowControlSelector: ClassName.ROW_CONTROLS_BUTTON_WRAP,
-  deleteButtonSelector: `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP} .${
-    ClassName.CONTROLS_DELETE_BUTTON
-  }`,
+  deleteButtonSelector: `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP} .${ClassName.CONTROLS_DELETE_BUTTON}`,
   rowControls: ClassName.ROW_CONTROLS_WRAPPER,
   insertColumnButton: `.${ClassName.CONTROLS_INSERT_COLUMN}`,
   insertRowButton: `.${ClassName.CONTROLS_INSERT_ROW}`,
@@ -59,13 +55,9 @@ export const tableSelectors = {
   wideState: `.ProseMirror table[data-layout="wide"]`,
   fullWidthState: `.ProseMirror table[data-layout="full-width"]`,
   defaultState: `.ProseMirror table[data-layout="center"]`,
-  fullWidthSelector: `div[aria-label="${
-    messages.layoutFullWidth.defaultMessage
-  }"]`,
+  fullWidthSelector: `div[aria-label="${messages.layoutFullWidth.defaultMessage}"]`,
   wideSelector: `div[aria-label="${messages.layoutWide.defaultMessage}"]`,
-  defaultSelector: `div[aria-label="${
-    messages.layoutFixedWidth.defaultMessage
-  }"]`,
+  defaultSelector: `div[aria-label="${messages.layoutFixedWidth.defaultMessage}"]`,
   tableTd: 'table td',
   tableTh: 'table th',
   cellBackgroundText: 'Cell background',
@@ -261,16 +253,12 @@ export const insertColumn = async (
 };
 
 export const deleteRow = async (page: any, atIndex: number) => {
-  const controlSelector = `.${tableSelectors.rowControls} .${
-    ClassName.ROW_CONTROLS_BUTTON_WRAP
-  }:nth-child(${atIndex}) .${ClassName.CONTROLS_BUTTON}`;
+  const controlSelector = `.${tableSelectors.rowControls} .${ClassName.ROW_CONTROLS_BUTTON_WRAP}:nth-child(${atIndex}) .${ClassName.CONTROLS_BUTTON}`;
   await deleteRowOrColumn(page, controlSelector);
 };
 
 export const deleteColumn = async (page: any, atIndex: number) => {
-  const controlSelector = `.${
-    ClassName.COLUMN_CONTROLS_DECORATIONS
-  }[data-start-index="${atIndex}"]`;
+  const controlSelector = `.${ClassName.COLUMN_CONTROLS_DECORATIONS}[data-start-index="${atIndex}"]`;
   await deleteRowOrColumn(page, controlSelector);
 };
 

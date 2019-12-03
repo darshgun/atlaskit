@@ -67,6 +67,20 @@ this is a new line text, not in the table`,
 |Empty cell on the right ->| |<- Empty cell on the left|
 |Empty cell on the right ->| |<- Empty cell on the left|`,
     ],
+    [
+      'should not terminate non-empty cell on whitespace at end of line',
+      `
+||*H1*||*H2*||*H3*||
+|Trailing space on this line 
+* Dot point|foo|foo|`,
+    ],
+    [
+      'should terminate empty cell on whitespace at end of line',
+      `
+||*H1*||*H2*||*H3*||
+| 
+|* Dot point|foo|foo|`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

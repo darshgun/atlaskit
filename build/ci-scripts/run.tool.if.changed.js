@@ -1,11 +1,12 @@
 // @flow
-const { getChangedPackagesSinceMaster } = require('../utils/packages');
 const spawndamnit = require('spawndamnit');
-const { getPackagesWithKarmaTests } = require('../karma-config');
 const {
   getPackagesInfo,
   TOOL_NAME_TO_FILTERS,
 } = require('@atlaskit/build-utils/tools');
+const {
+  getChangedPackagesSinceMaster,
+} = require('@atlaskit/build-utils/packages');
 
 /**
  * This is a helper script to return whether or not a certain tool should be run.
@@ -14,12 +15,12 @@ const {
  * `node build/ci-scripts/run.tool.if.changed.js toolName -- yarn toolName`.
  */
 (async () => {
-  let cwd = process.cwd();
-  let args = process.argv.slice(2);
+  const cwd = process.cwd();
+  const args = process.argv.slice(2);
 
-  let dashdashIndex = args.indexOf('--');
-  let command = args.slice(dashdashIndex + 1);
-  let toolNames = args.slice(0, dashdashIndex);
+  const dashdashIndex = args.indexOf('--');
+  const command = args.slice(dashdashIndex + 1);
+  const toolNames = args.slice(0, dashdashIndex);
 
   if (dashdashIndex < 0 || command.length === 0) {
     console.error('Incorrect usage, run it like this:\n');
@@ -30,8 +31,8 @@ const {
     throw process.exit(1);
   }
 
-  let filters = toolNames.map(toolName => {
-    let filterFn = TOOL_NAME_TO_FILTERS[toolName];
+  const filters = toolNames.map(toolName => {
+    const filterFn = TOOL_NAME_TO_FILTERS[toolName];
 
     if (!filterFn) {
       console.error(
@@ -45,23 +46,23 @@ const {
     return filterFn;
   });
 
-  let [packages, changedPackages] = await Promise.all([
+  const [packages, changedPackages] = await Promise.all([
     getPackagesInfo(cwd),
     getChangedPackagesSinceMaster(),
   ]);
 
-  let changedPackageDirs = changedPackages.map(pkg => pkg.dir);
+  const changedPackageDirs = changedPackages.map(pkg => pkg.dir);
 
   filters.push(pkg => changedPackageDirs.includes(pkg.dir));
 
-  let matched = !!packages.find(pkg => filters.every(filter => filter(pkg)));
+  const matched = !!packages.find(pkg => filters.every(filter => filter(pkg)));
 
   if (!matched) {
     throw process.exit(0);
   }
 
   try {
-    let res = await spawndamnit(command[0], command.slice(1), {
+    const res = await spawndamnit(command[0], command.slice(1), {
       stdio: 'inherit',
       tty: (process.stdout && process.stdout.isTTY) || false,
     });

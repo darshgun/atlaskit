@@ -19,7 +19,6 @@ import { parseToken } from './';
 */
 const CELL_REGEXP = /^([ \t]*)([|]+)([ \t]*)/;
 const EMPTY_LINE_REGEXP = /^[ \t]*\r?\n/;
-const EMPTY_CELL_REGEXP = /^([ \t]+)/;
 
 const processState = {
   END_TABLE: 2,
@@ -104,8 +103,13 @@ export const table: TokenParser = ({ input, position, schema, context }) => {
       case processState.BUFFER: {
         const length = parseNewlineOnly(substring);
         if (length) {
-          const charBefore = input.charAt(index - 1);
-          if (charBefore === '|' || charBefore.match(EMPTY_CELL_REGEXP)) {
+          // Calculate the index of the end of the current cell,
+          // upto and including the new line
+          const endIndex = index - 1 + length;
+          // Calculate the index of the start of the current cell
+          const startIndex = input.lastIndexOf('|', endIndex) + 1;
+          const charsBefore = input.substring(startIndex, endIndex);
+          if (charsBefore === '' || charsBefore.match(EMPTY_LINE_REGEXP)) {
             currentState = processState.CLOSE_ROW;
           } else {
             currentState = processState.LINE_BREAK;

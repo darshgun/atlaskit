@@ -153,6 +153,37 @@ export interface AvailableProductsResponse {
   sites: AvailableSite[];
 }
 
+export interface JoinableSiteUser {
+  avatarUrl: string;
+  displayName: string;
+  relevance?: number;
+}
+
+export interface JoinableSiteUserAvatarPropTypes {
+  name: string;
+  src: string;
+  appearance: 'circle';
+  size: 'small';
+  enableTooltip: boolean;
+}
+
+export interface JoinableSiteUsersKeyedByProduct {
+  [key: string]: JoinableSiteUser[];
+}
+
+export interface JoinableSite {
+  cloudId: string;
+  displayName: string;
+  users: JoinableSiteUsersKeyedByProduct;
+  url: string;
+  avatarUrl?: string;
+  relevance?: number;
+}
+
+export interface JoinableSitesResponse {
+  sites: JoinableSite[];
+}
+
 export enum ProductKey {
   CONFLUENCE = 'confluence.ondemand',
   JIRA_CORE = 'jira-core.ondemand',
@@ -177,6 +208,10 @@ export interface SwitcherChildItem {
   avatar: string | null;
 }
 
+export interface JoinableSiteClickHandler {
+  (returnUrl?: string): void;
+}
+
 export type AtlassianSwitcherProps = WithTheme & {
   // Product name used for analytics events
   product: string;
@@ -190,4 +225,8 @@ export type AtlassianSwitcherProps = WithTheme & {
   recommendationsFeatureFlags?: RecommendationsFeatureFlags;
   // Optional custom provider for available products
   availableProductsDataProvider?: AvailableProductsDataProvider;
+  // Optional custom provider for joinable sites
+  joinableSitesDataProvider?: any;
+  // Optional callback provided to handle
+  onJoinableSiteClicked?: JoinableSiteClickHandler;
 } & FeatureFlagProps;

@@ -5,7 +5,6 @@ import { ErrorReporter, ErrorReportingHandler } from '@atlaskit/editor-common';
 import { analyticsService, AnalyticsHandler } from '../analytics';
 import {
   EditorPlugin,
-  EditorProps,
   EditorConfig,
   PluginsOptions,
   PMPluginCreateConfig,
@@ -41,28 +40,22 @@ export function fixExcludes(marks: {
   return marks;
 }
 
-export function processPluginsList(
-  plugins: EditorPlugin[],
-  editorProps: EditorProps,
-): EditorConfig {
+export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
   /**
    * First pass to collect pluginsOptions
    */
-  const pluginsOptions = plugins.reduce(
-    (acc, plugin) => {
-      if (plugin.pluginsOptions) {
-        Object.keys(plugin.pluginsOptions).forEach(pluginName => {
-          if (!acc[pluginName]) {
-            acc[pluginName] = [];
-          }
-          acc[pluginName].push(plugin.pluginsOptions![pluginName]);
-        });
-      }
+  const pluginsOptions = plugins.reduce((acc, plugin) => {
+    if (plugin.pluginsOptions) {
+      Object.keys(plugin.pluginsOptions).forEach(pluginName => {
+        if (!acc[pluginName]) {
+          acc[pluginName] = [];
+        }
+        acc[pluginName].push(plugin.pluginsOptions![pluginName]);
+      });
+    }
 
-      return acc;
-    },
-    {} as PluginsOptions,
-  );
+    return acc;
+  }, {} as PluginsOptions);
 
   /**
    * Process plugins
@@ -78,11 +71,11 @@ export function processPluginsList(
       }
 
       if (plugin.nodes) {
-        acc.nodes.push(...plugin.nodes(editorProps));
+        acc.nodes.push(...plugin.nodes());
       }
 
       if (plugin.marks) {
-        acc.marks.push(...plugin.marks(editorProps));
+        acc.marks.push(...plugin.marks());
       }
 
       if (plugin.contentComponent) {
@@ -112,22 +105,16 @@ export function processPluginsList(
 
 export function createSchema(editorConfig: EditorConfig) {
   const marks = fixExcludes(
-    editorConfig.marks.sort(sortByOrder('marks')).reduce(
-      (acc, mark) => {
-        acc[mark.name] = mark.mark;
-        return acc;
-      },
-      {} as { [nodeName: string]: MarkSpec },
-    ),
+    editorConfig.marks.sort(sortByOrder('marks')).reduce((acc, mark) => {
+      acc[mark.name] = mark.mark;
+      return acc;
+    }, {} as { [nodeName: string]: MarkSpec }),
   );
   const nodes = sanitizeNodes(
-    editorConfig.nodes.sort(sortByOrder('nodes')).reduce(
-      (acc, node) => {
-        acc[node.name] = node.node;
-        return acc;
-      },
-      {} as { [nodeName: string]: NodeSpec },
-    ),
+    editorConfig.nodes.sort(sortByOrder('nodes')).reduce((acc, node) => {
+      acc[node.name] = node.node;
+      return acc;
+    }, {} as { [nodeName: string]: NodeSpec }),
     marks,
   );
 
@@ -137,8 +124,6 @@ export function createSchema(editorConfig: EditorConfig) {
 export function createPMPlugins({
   editorConfig,
   schema,
-  props,
-  prevProps,
   dispatch,
   eventDispatcher,
   providerFactory,
@@ -152,8 +137,6 @@ export function createPMPlugins({
     .map(({ plugin }) =>
       plugin({
         schema,
-        props,
-        prevProps,
         dispatch,
         providerFactory,
         errorReporter,

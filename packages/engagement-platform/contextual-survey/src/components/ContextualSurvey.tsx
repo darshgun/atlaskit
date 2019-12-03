@@ -6,6 +6,7 @@ import SignUpSuccess from './SignUpSuccess';
 import FeedbackAcknowledgement from './FeedbackAcknowledgement';
 import { FormValues } from '../types';
 import useEscapeToDismiss from './useEscapeToDismiss';
+import { FormApi, OnSubmitHandler } from '@atlaskit/form';
 
 export enum DismissTrigger {
   AutoDismiss = 'AUTO_DISMISS',
@@ -98,12 +99,9 @@ export default ({
 
   // using a ref so that we don't break all of our caches if a consumer is using an arrow function
   const onDismissRef = useRef<(args: OnDismissArgs) => void>(onDismiss);
-  useEffect(
-    () => {
-      onDismissRef.current = onDismiss;
-    },
-    [onDismiss],
-  );
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
 
   const tryClearTimeout = useCallback(() => {
     const id: Optional<number> = autoDisappearTimeoutRef.current;
@@ -115,26 +113,24 @@ export default ({
   }, []);
 
   // Cleanup any auto dismiss after dismiss
-  useEffect(
-    () => {
-      return function unmount() {
-        tryClearTimeout();
-        tryDismiss(DismissTrigger.Unmount);
-      };
-    },
-    [tryClearTimeout, tryDismiss],
-  );
+  useEffect(() => {
+    return function unmount() {
+      tryClearTimeout();
+      tryDismiss(DismissTrigger.Unmount);
+    };
+  }, [tryClearTimeout, tryDismiss]);
 
-  const onSurveySubmit = useCallback<
-    React.ComponentProps<typeof SurveyForm>['onSubmit']
-  >(
-    async (formValues, _, cleanup) => {
+  const onSurveySubmit = useCallback<OnSubmitHandler<FormValues>>(
+    async (
+      formValues: FormValues,
+      form: FormApi<FormValues>,
+      callback = () => {},
+    ) => {
       // Submitting form: Phase 1 complete
       await onSubmit(formValues);
 
-      // Note: need to call cleanup just before we navigate away
+      // Note: need to call callback just before we navigate away
       // It cleans up the form (required)
-      // It will also clear the
 
       // Optional Phase 2: Asking to join Atlassian Research Group
       // Only enter phase 2 if:
@@ -144,19 +140,19 @@ export default ({
 
       // Not entering phase 2: User has dismissed while the submit promise was resolving
       if (isDismissedRef.current) {
-        cleanup();
+        callback();
         return;
       }
 
       // Not entering phase 2: no permission given to respond to feedback
       if (!formValues.canContact) {
-        cleanup();
+        callback();
         trySetCurrentStep('POST_SURVEY_NO_CONSENT');
         return;
       }
 
       const userHasAnswered: boolean = await getUserHasAnsweredMailingList();
-      cleanup();
+      callback();
 
       // Not entering phase 2: user has already answered this question
       if (userHasAnswered) {
@@ -185,37 +181,34 @@ export default ({
   );
 
   // Start the auto disappear when we are finished
-  useEffect(
-    () => {
-      // Already dismissed
-      if (isDismissedRef.current) {
-        return;
-      }
+  useEffect(() => {
+    // Already dismissed
+    if (isDismissedRef.current) {
+      return;
+    }
 
-      // Timeout already scheduled
-      if (autoDisappearTimeoutRef.current) {
-        return;
-      }
+    // Timeout already scheduled
+    if (autoDisappearTimeoutRef.current) {
+      return;
+    }
 
-      if (
-        [
-          'SIGN_UP_SUCCESS',
-          'POST_SURVEY_NO_CONSENT',
-          'POST_SURVEY_HAS_SIGN_UP',
-        ].includes(currentStep)
-      ) {
-        autoDisappearTimeoutRef.current = window.setTimeout(
-          () => tryDismiss(DismissTrigger.AutoDismiss),
-          AUTO_DISAPPEAR_DURATION,
-        );
-      }
-    },
-    [currentStep, tryDismiss],
-  );
+    if (
+      [
+        'SIGN_UP_SUCCESS',
+        'POST_SURVEY_NO_CONSENT',
+        'POST_SURVEY_HAS_SIGN_UP',
+      ].includes(currentStep)
+    ) {
+      autoDisappearTimeoutRef.current = window.setTimeout(
+        () => tryDismiss(DismissTrigger.AutoDismiss),
+        AUTO_DISAPPEAR_DURATION,
+      );
+    }
+  }, [currentStep, tryDismiss]);
 
   useEscapeToDismiss({ onDismiss: () => tryDismiss(DismissTrigger.Manual) });
 
-  const content: React.ReactNode = (() => {
+  const content = (() => {
     if (currentStep === 'SURVEY') {
       return (
         <SurveyForm
@@ -243,14 +236,11 @@ export default ({
     return null;
   })();
 
-  const manualDismiss = useCallback(
-    () => {
-      // clear any pending timers
-      tryClearTimeout();
-      tryDismiss(DismissTrigger.Manual);
-    },
-    [tryDismiss, tryClearTimeout],
-  );
+  const manualDismiss = useCallback(() => {
+    // clear any pending timers
+    tryClearTimeout();
+    tryDismiss(DismissTrigger.Manual);
+  }, [tryDismiss, tryClearTimeout]);
 
   return <SurveyContainer onDismiss={manualDismiss}>{content}</SurveyContainer>;
 };

@@ -1,5 +1,45 @@
 # @atlaskit/help-article
 
+## 0.7.4
+
+### Patch Changes
+
+- [patch][5a35773cba](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5a35773cba):
+
+  Bugfix - Fix iframe scroll in Safari
+
+## 0.7.3
+
+### Patch Changes
+
+- [patch][6f156e8e80](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f156e8e80):
+
+  Bugfix - Add extra padding to the iframe. Replaced the article injection using srcdoc for a plain JS one (Microsoft Edge and IE11 doesn't support srcdoc)
+
+## 0.7.2
+
+### Patch Changes
+
+- [patch][c17a72abc4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c17a72abc4):
+
+  Bugfix - Added allow-popups to the sandbox attribute of the article iframe so we can open popups from within
+
+## 0.7.1
+
+### Patch Changes
+
+- [patch][a3d6edb757](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3d6edb757):
+
+  Added onArticleRenderBegin and onArticleRenderDone props
+
+## 0.7.0
+
+### Minor Changes
+
+- [minor][87d67944cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d67944cc):
+
+  Added onArticleRenderBegin and onArticleRenderDone props
+
 ## 0.6.3
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/help",
-  "version": "0.20.11",
+  "version": "0.21.6",
   "description": "A cross-product help component",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -23,7 +23,7 @@
     "@atlaskit/analytics-next": "^6.3.1",
     "@atlaskit/form": "^6.3.1",
     "@atlaskit/button": "^13.3.3",
-    "@atlaskit/help-article": "^0.6.3",
+    "@atlaskit/help-article": "^0.7.4",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/item": "^10.1.6",
     "@atlaskit/quick-search": "^7.8.1",
@@ -47,10 +47,10 @@
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/navigation": "^35.2.5",
     "@atlaskit/page": "^11.0.9",
-    "@atlaskit/section-message": "^4.1.1",
     "@atlaskit/right-side-panel": "^0.3.0",
+    "@atlaskit/section-message": "^4.1.1",
     "algoliasearch": "^3.33.0",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "react-test-renderer": "^16.8.0"
   },
   "keywords": [

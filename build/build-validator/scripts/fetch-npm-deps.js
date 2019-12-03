@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-
+// @flow
 const fse = require('fs-extra');
 const path = require('path');
 const util = require('util');
-const child_process = require('child_process');
+const childProcess = require('child_process');
 const rimraf = require('rimraf');
 const pLimit = require('p-limit');
 const { getNpmDistPath, getAllPublicPackages } = require('./utils');
 
-const exec = util.promisify(child_process.exec);
+const exec = util.promisify(childProcess.exec);
 
 // Limit fetches to at most 25 in parallel
 const limit = pLimit(25);
@@ -73,7 +73,7 @@ async function fetchDistFromNpm(pkgName, pkgVersion, forceRefetch) {
  *
  * --refetch - force refetch of bundle from npm
  */
-async function main(pkgName, opts) {
+async function main(pkgName /*:string */, opts /*: Object */) {
   const allPackages = await getAllPublicPackages(
     path.join(process.cwd(), '..'),
   );
@@ -86,16 +86,15 @@ async function main(pkgName, opts) {
       );
     }
     return fetchDistFromNpm(pkgName, resolvedPkg.version, opts.refetch);
-  } else {
-    const resolvedPromises = await Promise.all(
-      allPackages.map(({ name, version }) => {
-        return fetchDistFromNpm(name, version, opts.refetch);
-      }),
-    );
-
-    console.log(`Fetched ${resolvedPromises.filter(p => !!p).length} packages`);
-    return resolvedPromises;
   }
+  const resolvedPromises = await Promise.all(
+    allPackages.map(({ name, version }) => {
+      return fetchDistFromNpm(name, version, opts.refetch);
+    }),
+  );
+
+  console.log(`Fetched ${resolvedPromises.filter(p => !!p).length} packages`);
+  return resolvedPromises;
 }
 
 if (require.main === module) {

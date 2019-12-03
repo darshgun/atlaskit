@@ -74,11 +74,9 @@ describe('JSONTransformer:', () => {
         editorProps: {
           emojiProvider: new Promise(() => {}),
           mentionProvider: new Promise(() => {}),
-          allowCodeBlocks: true,
           media: {},
           allowTextColor: true,
           allowPanel: true,
-          allowLists: true,
           allowRule: true,
           allowTables: true,
           UNSAFE_allowExpand: true,

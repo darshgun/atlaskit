@@ -1,18 +1,23 @@
-import parseChangesetCommit from '@atlaskit/build-releases/changeset/parseChangesetCommit';
+// @flow
+import parseChangesetCommit from '@atlaskit/build-utils/parseChangesetCommit';
 
-function commitsToValues(response) {
+function commitsToValues(response /*: Object */) {
   return response.values;
 }
 
-function commitUrl(repoName, pullrequestid) {
+function commitUrl(repoName /*: string */, pullrequestid /*: string */) {
   return `/2.0/repositories/${repoName}/pullrequests/${pullrequestid}/commits`;
 }
 
-function getCommits(repoName, pullrequestid, urlNext) {
+function getCommits(
+  repoName /*: string */,
+  pullrequestid /*: string */,
+  urlNext /*: ?string */,
+) {
   return new Promise((resolve, reject) => {
     window.AP.require('request', request => {
       request({
-        url: urlNext || commitUrl(repoName, pullrequestid, urlNext),
+        url: urlNext || commitUrl(repoName, pullrequestid),
         success(response) {
           if (response.next) {
             getCommits(repoName, pullrequestid, response.next).then(commits => {
@@ -23,15 +28,19 @@ function getCommits(repoName, pullrequestid, urlNext) {
           }
         },
         error(ex) {
-          reject(`failed due to ${ex.toString()}`);
+          reject(new Error(`failed due to ${ex.toString()}`));
         },
       });
     });
   });
 }
 
-export default function getChangesetsFromCommits(repoName, pullrequestid) {
-  return getCommits(repoName, pullrequestid).then(commits =>
+export default function getChangesetsFromCommits(
+  repoName /*: string */,
+  pullrequestid /*: string */,
+  urlNext /*: ?string */,
+) {
+  return getCommits(repoName, pullrequestid, urlNext).then(commits =>
     commits
       .map(commit => commit.message)
       .filter(commit => !!commit.match(/^CHANGESET: .+?\n/))

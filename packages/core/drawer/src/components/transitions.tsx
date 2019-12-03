@@ -12,6 +12,7 @@ type Styles = { [index: string]: string | number | null };
 interface TransitionProps {
   component?: ComponentType<any> | string;
   onExited?: (node: HTMLElement) => void;
+  onEntered?: (node: HTMLElement, isAppearing: boolean) => void;
   shouldUnmountOnExit?: boolean;
   in: boolean;
 }
@@ -48,6 +49,7 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
       component = 'div',
       in: inProp,
       onExited,
+      onEntered,
       defaultStyles,
       transitionStyles,
       transitionProps,
@@ -59,6 +61,7 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
       <Transition
         in={inProp}
         onExited={onExited}
+        onEntered={onEntered}
         timeout={timeout}
         {...transitionProps}
       >

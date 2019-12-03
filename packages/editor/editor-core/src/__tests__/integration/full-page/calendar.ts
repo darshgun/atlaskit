@@ -3,10 +3,9 @@ import {
   mountEditor,
   goToEditorTestingExample,
 } from '../../__helpers/testing-example-helpers';
-import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
+import { insertBlockMenuItem } from '../_helpers';
 
 const editorSelector = '.ProseMirror';
-const dateMenu = `[aria-label="${messages.date.defaultMessage}"]`;
 const calendar = '[aria-label="calendar"]';
 const dateView = `span.dateView-content-wrap`;
 
@@ -18,7 +17,7 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, { appearance: 'full-page', allowDate: true });
     await page.click(editorSelector);
-    await page.click(dateMenu);
+    await insertBlockMenuItem(page, 'Date');
     await page.waitForSelector(calendar);
     expect(await page.isExisting(calendar)).toBe(true);
     await page.click(editorSelector);
@@ -34,13 +33,13 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, { appearance: 'full-page', allowDate: true });
     await page.click(editorSelector);
-    await page.click(dateMenu);
+    await insertBlockMenuItem(page, 'Date');
     await page.waitForSelector(calendar);
     expect(await page.isExisting(calendar)).toBe(true);
     await page.waitForSelector(dateView);
     await page.click(dateView);
     // wait for element to disappear
-    await page.waitFor(calendar, '5000', true);
+    await page.waitFor(calendar, 5000, true);
     expect(await page.isExisting(calendar)).toBe(false);
   },
 );
@@ -52,12 +51,12 @@ BrowserTestCase(
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, { appearance: 'full-page', allowDate: true });
     await page.click(editorSelector);
-    await page.click(dateMenu);
+    await insertBlockMenuItem(page, 'Date');
     expect(await page.isExisting(calendar)).toBe(true);
 
     await page.click(dateView);
     await page.keys(['ArrowRight', 'ArrowRight']);
-    await page.click(dateMenu);
+    await insertBlockMenuItem(page, 'Date');
     expect(await page.isExisting(calendar)).toBe(true);
 
     await page.waitForSelector(dateView);

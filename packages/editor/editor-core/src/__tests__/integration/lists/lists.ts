@@ -39,12 +39,11 @@ BrowserTestCase(
 
     // Investigate why string based input (without an array) fails in firefox
     // https://product-fabric.atlassian.net/browse/ED-7044
-    await page.type(editable, '* '.split(''));
+    await page.keys(['*', 'Space'], true);
     await page.type(editable, 'abc');
-    await page.keys('Return');
-    await page.keys('Tab');
+    await page.keys(['Return', 'Tab'], true);
     await page.type(editable, '123');
-    await page.keys('Tab');
+    await page.keys('Tab', true);
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);
@@ -57,7 +56,7 @@ BrowserTestCase(
   { skip: ['ie', 'edge', 'safari', 'firefox'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowLists: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.click(editable);
     await insertList(page, KEY.CONTROL, 'number');
     await insertList(page, KEY.CONTROL, 'bullet');
@@ -72,7 +71,7 @@ BrowserTestCase(
   { skip: ['ie', 'edge', 'chrome', 'firefox'] },
   async (client: any, testName: string) => {
     const page = await goToEditorTestingExample(client);
-    await mountEditor(page, { appearance: 'full-page', allowLists: true });
+    await mountEditor(page, { appearance: 'full-page' });
     await page.click(editable);
     await insertList(page, KEY.META, 'number');
     await insertList(page, KEY.META, 'bullet');
@@ -107,7 +106,6 @@ BrowserTestCase(
       media: {
         allowMediaSingle: true,
       },
-      allowLists: true,
       defaultValue: floatsAdf,
       shouldFocus: true,
     });

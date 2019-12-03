@@ -1,5 +1,13 @@
 # @atlaskit/media-core
 
+## 31.0.1
+
+### Patch Changes
+
+- [patch][336c1084d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/336c1084d9):
+
+  remove media-client dependency to prevent circular dependency between media-core - media-client
+
 ## 31.0.0
 
 ### Major Changes

@@ -1,5 +1,32 @@
 # @atlaskit/media-test-helpers
 
+## 25.2.5
+
+### Patch Changes
+
+- [patch][3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  Make PopupSelect correctly pass props. Forcing update of @atlaskit/select for all other packages- Updated dependencies [3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  - @atlaskit/select@11.0.2
+
+## 25.2.4
+
+### Patch Changes
+
+- [patch][b967e41a6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b967e41a6b):
+
+  Add empty file example to media-viewer
+
+- Updated dependencies [ae6408e1e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae6408e1e4):
+  - @atlaskit/media-picker@50.0.0
+
+## 25.2.3
+
+- Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+  - @atlaskit/select@11.0.0
+  - @atlaskit/media-picker@49.0.1
+
 ## 25.2.2
 
 - Updated dependencies [24b8ea2667](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24b8ea2667):

@@ -18,6 +18,7 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
         Object {
           "adminLinks": Array [],
           "fixedLinks": Array [],
+          "joinableSiteLinks": Array [],
           "licensedProducts": Array [],
           "numberOfSites": 0,
           "suggestedProducts": Array [],
@@ -28,6 +29,16 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
     <Component
       sectionId="switchTo"
       title={null}
+    />
+    <Component
+      sectionId="join"
+      title={
+        <Unknown
+          defaultMessage="Join"
+          description="Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators."
+          id="fabric.atlassianSwitcher.join"
+        />
+      }
     />
     )}
     <Component
@@ -60,6 +71,7 @@ exports[`Switcher should render sections with headers by default 1`] = `
         Object {
           "adminLinks": Array [],
           "fixedLinks": Array [],
+          "joinableSiteLinks": Array [],
           "licensedProducts": Array [],
           "numberOfSites": 0,
           "suggestedProducts": Array [],
@@ -74,6 +86,16 @@ exports[`Switcher should render sections with headers by default 1`] = `
           defaultMessage="Switch to"
           description="In a context in which users are able to switch between products, this text is the title of the category displaying the products the user is able to switch to."
           id="fabric.atlassianSwitcher.switchTo"
+        />
+      }
+    />
+    <Component
+      sectionId="join"
+      title={
+        <Unknown
+          defaultMessage="Join"
+          description="Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators."
+          id="fabric.atlassianSwitcher.join"
         />
       }
     />

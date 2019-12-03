@@ -6,7 +6,8 @@ export type ServerErrors =
   | 'InternalServerError'
   | 'ResolveBadRequestError'
   | 'ResolveUnsupportedError'
-  | 'ResolveAuthError';
+  | 'ResolveAuthError'
+  | 'ResolveTimeoutError';
 
 export interface CardAction<T = JsonLd> extends AnyAction {
   type: CardActionType;

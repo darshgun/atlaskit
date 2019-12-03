@@ -314,10 +314,14 @@ class ToolbarAdvancedTextFormatting extends PureComponent<
         })(state, dispatch);
         break;
       case 'subscript':
-        commands.toggleSubscriptWithAnalytics()(state, dispatch);
+        commands.toggleSubscriptWithAnalytics({
+          inputMethod: INPUT_METHOD.TOOLBAR,
+        })(state, dispatch);
         break;
       case 'superscript':
-        commands.toggleSuperscriptWithAnalytics()(state, dispatch);
+        commands.toggleSuperscriptWithAnalytics({
+          inputMethod: INPUT_METHOD.TOOLBAR,
+        })(state, dispatch);
         break;
       case 'clearFormatting':
         clearFormattingWithAnalytics(INPUT_METHOD.TOOLBAR)(state, dispatch);

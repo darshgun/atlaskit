@@ -39,7 +39,6 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       editorProps: {
         allowAnalyticsGASV3: true,
         allowPanel: true,
-        allowLists: true,
         allowTables: true,
       },
       pluginKey: panelPluginKey,
@@ -211,16 +210,18 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         insertText(editorView, `/${panelType}`, sel);
         sendKeyToPm(editorView, 'Enter');
 
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: 'panel',
-          attributes: {
-            inputMethod: 'quickInsert',
-            panelType,
-          },
-          eventType: 'track',
-        });
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: 'panel',
+            attributes: {
+              inputMethod: 'quickInsert',
+              panelType,
+            },
+            eventType: 'track',
+          }),
+        );
       });
     });
   });

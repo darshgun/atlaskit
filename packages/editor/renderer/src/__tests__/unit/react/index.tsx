@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, ReactWrapper } from 'enzyme';
 import { ReactSerializer } from '../../../index';
 import { defaultSchema as schema } from '@atlaskit/adf-schema';
 import { Heading } from '../../../react/nodes';
@@ -6,9 +6,21 @@ import { Emoji } from '../../../react/nodes';
 
 import * as doc from '../../__fixtures__/hello-world.adf.json';
 import * as headingDoc from '../../__fixtures__/heading-doc.adf.json';
+import * as mediaDoc from '../../__fixtures__/media.adf.json';
+import * as mediaFragment from '../../__fixtures__/media-fragment.json';
+import * as mediaGroupFragment from '../../__fixtures__/media-group-fragment.json';
+import { nextTick } from '../../../../../../media/media-test-helpers/src';
 
 const docFromSchema = schema.nodeFromJSON(doc);
 const headingDocFromSchema = schema.nodeFromJSON(headingDoc);
+const mediaDocFromSchema = schema.nodeFromJSON(mediaDoc);
+
+const getMedia = (wrapper: ReactWrapper) => {
+  return wrapper.findWhere(
+    (item: ReactWrapper) =>
+      item.is('LoadableComponent') && item.prop('nodeType') === 'media',
+  );
+};
 
 describe('Renderer - ReactSerializer', () => {
   beforeAll(async () => {
@@ -21,9 +33,9 @@ describe('Renderer - ReactSerializer', () => {
   describe('serializeFragment', () => {
     it('should render document', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {});
-      const reactDoc = mount(reactSerializer.serializeFragment(
-        docFromSchema.content,
-      ) as any);
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(docFromSchema.content) as any,
+      );
 
       const root = reactDoc.find('div');
       const paragraph = root.find('p');
@@ -152,12 +164,155 @@ describe('Renderer - ReactSerializer', () => {
     });
   });
 
+  describe('media', () => {
+    describe('when default shouldOpenMediaViewer is false', () => {
+      it('media node has shouldOpenMediaViewer set to default value when parent is not mediaSingle', async () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: false,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaGroupFragment).content,
+          ) as any,
+        );
+
+        // Media under media group takes 2 ticks to render.
+        await nextTick();
+        await nextTick();
+        reactDoc.update();
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(false);
+      });
+
+      it('media node without parent has shouldOpenMediaViewer set to false', () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: false,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaFragment).content,
+          ) as any,
+        );
+
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(false);
+      });
+    });
+
+    describe('when default shouldOpenMediaViewer is true', () => {
+      it('media node has shouldOpenMediaViewer set to default value when parent is not mediaSingle', async () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: true,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaGroupFragment).content,
+          ) as any,
+        );
+
+        // Media under media group takes 2 ticks to render.
+        await nextTick();
+        await nextTick();
+        reactDoc.update();
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(true);
+      });
+
+      it('media without parent has shouldOpenMediaViewer set to true', () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {
+          shouldOpenMediaViewer: true,
+        });
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaFragment).content,
+          ) as any,
+        );
+
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(true);
+      });
+    });
+
+    describe('when default shouldOpenMediaViewer is undefined', () => {
+      it('media node has shouldOpenMediaViewer set to undefined when parent is not mediaSingle', async () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {});
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaGroupFragment).content,
+          ) as any,
+        );
+
+        await nextTick();
+        await nextTick();
+        reactDoc.update();
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(
+          undefined,
+        );
+      });
+
+      it('media mode without parent has shouldOpenMediaViewer set to undefined', () => {
+        const reactSerializer = ReactSerializer.fromSchema(schema, {});
+
+        const reactDoc = mount(
+          reactSerializer.serializeFragment(
+            schema.nodeFromJSON(mediaFragment).content,
+          ) as any,
+        );
+
+        expect(getMedia(reactDoc).prop('shouldOpenMediaViewer')).toEqual(
+          undefined,
+        );
+      });
+    });
+
+    it('node has correct shouldOpenMediaViewer value when default is undefined', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {
+        shouldOpenMediaViewer: true,
+      });
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(mediaDocFromSchema.content) as any,
+      );
+
+      expect(
+        getMedia(reactDoc)
+          .first()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(true);
+
+      expect(
+        getMedia(reactDoc)
+          .last()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(false);
+    });
+
+    it('node has correct shouldOpenMediaViewer value when default is undefined', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {});
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(mediaDocFromSchema.content) as any,
+      );
+
+      expect(
+        getMedia(reactDoc)
+          .first()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(undefined);
+
+      expect(
+        getMedia(reactDoc)
+          .last()
+          .prop('shouldOpenMediaViewer'),
+      ).toEqual(false);
+    });
+  });
+
   describe('Heading IDs', () => {
     it('should render headings with unique ids based on node content', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {});
-      const reactDoc = shallow(reactSerializer.serializeFragment(
-        headingDocFromSchema.content,
-      ) as any);
+      const reactDoc = shallow(
+        reactSerializer.serializeFragment(headingDocFromSchema.content) as any,
+      );
 
       const headings = reactDoc.find(Heading);
       expect(headings.at(0).prop('headingId')).toEqual('Heading-1');
@@ -178,9 +333,9 @@ describe('Renderer - ReactSerializer', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {
         disableHeadingIDs: true,
       });
-      const reactDoc = shallow(reactSerializer.serializeFragment(
-        headingDocFromSchema.content,
-      ) as any);
+      const reactDoc = shallow(
+        reactSerializer.serializeFragment(headingDocFromSchema.content) as any,
+      );
 
       const headings = reactDoc.find(Heading);
       expect(headings.at(0).prop('headingId')).toEqual(undefined);
@@ -275,9 +430,9 @@ describe('Renderer - ReactSerializer', () => {
     it('should add an extra column for numbered rows', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {});
       const tableFromSchema = schema.nodeFromJSON(tableDoc);
-      const reactDoc = mount(reactSerializer.serializeFragment(
-        tableFromSchema.content,
-      ) as any);
+      const reactDoc = mount(
+        reactSerializer.serializeFragment(tableFromSchema.content) as any,
+      );
 
       expect(reactDoc.find('table').prop('data-number-column')).toEqual(true);
       expect(reactDoc.find('table[data-number-column]').length).toEqual(1);

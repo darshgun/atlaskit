@@ -1,5 +1,5 @@
+// @flow
 const fs = require('fs');
-const path = require('path');
 const updateBuildStatus = require('../utils/updateBuildStatus');
 
 const netlifyLinkPath = './netlify-link.txt';
@@ -19,6 +19,8 @@ try {
   };
 
   console.log('Updating build status with link: ', netlifyUrl);
+  // TODO: to discuss with Luke as some keys are missing.
+  // $FlowFixMe - issue with some missing property in the object
   updateBuildStatus(buildStatusOpts);
 } catch (e) {
   console.error('Unable to update build status');

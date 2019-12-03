@@ -11,6 +11,7 @@ import {
 import { default as Renderer } from '../src/ui/Renderer';
 import { document as defaultDoc } from './helper/story-data';
 import Sidebar from './helper/NavigationNext';
+import { MentionProvider } from '@atlaskit/mention/types';
 
 const mediaProvider = storyMediaProviderFactory();
 const emojiProvider = emoji.storyData.getEmojiResource();
@@ -18,7 +19,7 @@ const contextIdentifierProvider = storyContextIdentifierProviderFactory();
 const mentionProvider = Promise.resolve({
   shouldHighlightMention: (mention: { id: string }) =>
     mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE',
-});
+} as MentionProvider);
 const taskDecisionProvider = Promise.resolve(
   taskDecision.getMockTaskDecisionResource(),
 );

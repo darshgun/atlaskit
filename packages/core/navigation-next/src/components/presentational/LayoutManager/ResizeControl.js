@@ -13,7 +13,6 @@ import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import * as colors from '@atlaskit/theme/colors';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
-import MenuExpandIcon from '@atlaskit/icon/glyph/menu-expand';
 import Tooltip from '@atlaskit/tooltip';
 
 import { navigationExpandedCollapsed } from '../../../common/analytics';
@@ -34,6 +33,7 @@ const HANDLE_WIDTH = 2;
 const shouldResetGrabArea = (width: number) => {
   return width >= GLOBAL_NAV_COLLAPSE_THRESHOLD && width < CONTENT_NAV_WIDTH;
 };
+const preventDefault = event => event.preventDefault();
 
 export const BodyDragCursor = () => (
   <Global
@@ -381,7 +381,7 @@ class ResizeControl extends PureComponent<Props, State> {
     updateResizeAreaPosition(mutationRefs, width);
 
     // NOTE: hijack the maual resize and force collapse, cancels mouse events
-    if (event.screenX < window.screenX) {
+    if (event.clientX < 0) {
       this.setState({ width: CONTENT_NAV_WIDTH_COLLAPSED });
       this.handleResizeEnd();
     } else {
@@ -452,7 +452,6 @@ class ResizeControl extends PureComponent<Props, State> {
 
   render() {
     const {
-      didDragOpen,
       isDragging,
       mouseIsDown,
       mouseIsOverGrabArea,
@@ -471,12 +470,12 @@ class ResizeControl extends PureComponent<Props, State> {
 
     // the button shouldn't "flip" until the drag is complete
     let ButtonIcon = ChevronLeft;
-    if (isCollapsed || (didDragOpen && isDragging)) ButtonIcon = MenuExpandIcon;
-    if (isCollapsed && flyoutIsOpen) ButtonIcon = ChevronRight;
+    if (isCollapsed) ButtonIcon = ChevronRight;
 
     const button = (
       <Button
         onClick={this.onResizerChevronClick}
+        onMouseDown={preventDefault}
         hitAreaSize={onMouseOverButtonBuffer ? 'large' : 'small'}
         // maintain styles when user is dragging
         isVisible={isCollapsed || mouseIsDown}

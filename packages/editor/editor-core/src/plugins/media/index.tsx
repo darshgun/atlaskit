@@ -75,6 +75,8 @@ export interface MediaPMPluginOptions {
   allowDropzoneDropLine?: boolean;
   allowMarkingUploadsAsIncomplete?: boolean;
   fullWidthEnabled?: boolean;
+  uploadErrorHandler?: (state: MediaState) => void;
+  waitForMediaUpload?: boolean;
 }
 
 const mediaPlugin = (
@@ -116,7 +118,6 @@ const mediaPlugin = (
         name: 'media',
         plugin: ({
           schema,
-          props,
           dispatch,
           eventDispatcher,
           providerFactory,
@@ -134,7 +135,7 @@ const mediaPlugin = (
                   portalProviderAPI,
                   providerFactory,
                   pluginOptions && pluginOptions.allowLazyLoading,
-                  props.appearance,
+                  appearance,
                 ),
                 mediaSingle: ReactMediaSingleNode(
                   portalProviderAPI,
@@ -147,8 +148,10 @@ const mediaPlugin = (
                 ),
               },
               errorReporter,
-              uploadErrorHandler: props.uploadErrorHandler,
-              waitForMediaUpload: props.waitForMediaUpload,
+              uploadErrorHandler:
+                pluginOptions && pluginOptions.uploadErrorHandler,
+              waitForMediaUpload:
+                pluginOptions && pluginOptions.waitForMediaUpload,
               customDropzoneContainer:
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
@@ -281,6 +284,8 @@ const mediaPlugin = (
         allowLinking: options && options.allowLinking,
         allowAdvancedToolBarOptions:
           pluginOptions && pluginOptions.allowAdvancedToolBarOptions,
+        UNSAFE_allowAltTextOnImages:
+          options && options.UNSAFE_allowAltTextOnImages,
       }),
   },
 });

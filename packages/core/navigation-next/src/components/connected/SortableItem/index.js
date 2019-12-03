@@ -35,7 +35,8 @@ export default class SortableItem extends Component<SortableItemProps> {
             ...draggableProvided.dragHandleProps,
           };
 
-          // disable onClick if the intention was drag
+          // Disabling clicking while a drag is occurring
+          // rbd already handles this - but we are being super safe
           const onClick = draggableSnapshot.isDragging
             ? undefined
             : itemProps.onClick;

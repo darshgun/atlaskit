@@ -154,7 +154,7 @@ function scrollToGutterElement(
 
 export type ScrollGutterPluginOptions = {
   /** Element the page uses for scrolling */
-  getScrollElement?: ((view: EditorView) => HTMLElement | null);
+  getScrollElement?: (view: EditorView) => HTMLElement | null;
   /**
    * Whether to allow custom functionality to scroll to gutter element in
    * plugin's handleScrollToSelection function

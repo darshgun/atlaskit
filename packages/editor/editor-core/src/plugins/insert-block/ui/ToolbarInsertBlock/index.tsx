@@ -28,6 +28,7 @@ import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji/picker';
 import { EmojiProvider } from '@atlaskit/emoji/resource';
 import { EmojiId } from '@atlaskit/emoji/types';
 import { Popup, akEditorMenuZIndex } from '@atlaskit/editor-common';
+
 import EditorActions from '../../../../actions';
 import {
   analyticsService as analytics,
@@ -229,6 +230,16 @@ export const messages = defineMessages({
     defaultMessage: 'Insert',
     description:
       'Opens a menu of additional items that can be inserted into your document.',
+  },
+  help: {
+    id: 'fabric.editor.help',
+    defaultMessage: 'Help',
+    description: 'Opens up the help dialog',
+  },
+  helpDescription: {
+    id: 'fabric.editor.help.description',
+    defaultMessage: 'Browse all the keyboard shortcuts and markdown options',
+    description: 'Browse all the keyboard shortcuts and markdown options',
   },
 });
 
@@ -807,18 +818,15 @@ class ToolbarInsertBlock extends React.PureComponent<
     name: 'action' | 'decision',
     inputMethod: TOOLBAR_MENU_TYPE,
   ) =>
-    withAnalytics(
-      `atlassian.fabric.${name}.trigger.button`,
-      (): boolean => {
-        const { editorView } = this.props;
-        if (!editorView) {
-          return false;
-        }
-        const listType = name === 'action' ? 'taskList' : 'decisionList';
-        insertTaskDecision(editorView, listType, inputMethod);
-        return true;
-      },
-    );
+    withAnalytics(`atlassian.fabric.${name}.trigger.button`, (): boolean => {
+      const { editorView } = this.props;
+      if (!editorView) {
+        return false;
+      }
+      const listType = name === 'action' ? 'taskList' : 'decisionList';
+      insertTaskDecision(editorView, listType, inputMethod);
+      return true;
+    });
 
   private insertHorizontalRule = withAnalytics(
     'atlassian.editor.format.horizontalrule.button',
@@ -881,6 +889,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       onInsertMacroFromMacroBrowser,
       macroProvider,
       handleImageUpload,
+      expandEnabled,
     } = this.props;
 
     switch (item.value.name) {
@@ -914,9 +923,7 @@ class ToolbarInsertBlock extends React.PureComponent<
       case 'decision':
         this.insertTaskDecision(item.value.name, inputMethod)();
         break;
-      case 'expand':
-        this.insertExpand();
-        break;
+
       case 'horizontalrule':
         this.insertHorizontalRule(inputMethod);
         break;
@@ -941,6 +948,17 @@ class ToolbarInsertBlock extends React.PureComponent<
       case 'status':
         this.createStatus(inputMethod);
         break;
+
+      // https://product-fabric.atlassian.net/browse/ED-8053
+      // It's expected to fall through to default
+      // @ts-ignore
+      case 'expand':
+        if (expandEnabled) {
+          this.insertExpand();
+          break;
+        }
+
+      // eslint-disable-next-line no-fallthrough
       default:
         if (item && item.onClick) {
           item.onClick(editorActions);

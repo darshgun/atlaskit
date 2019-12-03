@@ -19,6 +19,7 @@ import Modal, {
   ModalBody as Body,
   ModalHeader as OgModalHeader,
   ModalTitle,
+  HeaderComponentProps,
 } from '@atlaskit/modal-dialog';
 import { colors, elevation, gridSize } from '@atlaskit/theme';
 
@@ -211,7 +212,7 @@ function toExampleUrl(
 
 interface ModalHeaderCompProps {
   afterDeployError: any;
-  showKeyline: boolean;
+  showKeyline?: boolean;
   packageId: string;
   example: any;
   examples: any;
@@ -394,7 +395,7 @@ export default class ExamplesModal extends React.Component<Props, State> {
       <Modal
         autoFocus={false}
         components={{
-          Header: ({ showKeyline }: { showKeyline: boolean }) => (
+          Header: ({ showKeyline }: HeaderComponentProps) => (
             <ModalHeaderComp
               afterDeployError={null}
               showKeyline={showKeyline}

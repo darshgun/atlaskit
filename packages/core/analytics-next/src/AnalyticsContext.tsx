@@ -12,7 +12,7 @@ interface Props {
   children: React.ReactNode;
   /** Arbitrary data. Any events created below this component in the tree will
    * have this added as an item in their context array. */
-  data: unknown;
+  data: Object;
 }
 
 interface State {

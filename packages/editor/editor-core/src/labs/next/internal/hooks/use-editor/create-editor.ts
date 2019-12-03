@@ -1,7 +1,6 @@
 import { EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EventDispatcher,
   createDispatch,
@@ -14,12 +13,15 @@ import {
 import { processRawValue } from '../../../../../utils';
 import { PortalProviderAPI } from '../../../../../ui/PortalProvider';
 import { EditorSharedConfig } from '../../context/shared-config';
-import { EditorProps } from '../../editor-props-type';
+import { EditorPropsExtended } from '../../components/EditorInternal';
+import { ProviderFactory } from '@atlaskit/editor-common/provider-factory';
 
 export function createEditor({
   context,
-  handleAnalyticsEvent,
+  onAnalyticsEvent,
   transformer,
+
+  providerFactory,
 
   plugins,
   portalProviderAPI,
@@ -39,21 +41,27 @@ export function createEditor({
   }
 
   const eventDispatcher = new EventDispatcher();
-  const providerFactory = new ProviderFactory();
   const dispatch = createDispatch(eventDispatcher);
-  const editorConfig = processPluginsList(plugins || [], {});
+  const editorConfig = processPluginsList(plugins || []);
   const schema = createSchema(editorConfig);
   const transformerInstance = transformer && transformer(schema);
   const pmPlugins = createPMPlugins({
     editorConfig,
+
     schema,
+
     dispatch,
     eventDispatcher,
-    props: {},
+
     portalProviderAPI: portalProviderAPI,
     providerFactory,
+
+    // Required to workaround issues with multiple react trees.
+    // Though it's kinda leaking react to outside world.
     reactContext: () => context,
-    dispatchAnalyticsEvent: () => {},
+
+    // TODO: ED-8133 Need to make types more generic otherwise it's not extensible.
+    dispatchAnalyticsEvent: onAnalyticsEvent as any,
   });
   const state = EditorState.create({
     schema,
@@ -80,7 +88,7 @@ export function createEditor({
     editorView,
 
     transformer: transformerInstance,
-    handleAnalyticsEvent,
+    dispatchAnalyticsEvent: onAnalyticsEvent,
 
     eventDispatcher,
     dispatch,
@@ -100,7 +108,7 @@ export function createEditor({
 }
 
 export type CreateEditorParams = Pick<
-  EditorProps,
+  EditorPropsExtended,
   | 'defaultValue'
   | 'plugins'
   | 'popupsMountPoint'
@@ -109,11 +117,12 @@ export type CreateEditorParams = Pick<
   | 'onChange'
   | 'disabled'
   | 'transformer'
-  | 'handleAnalyticsEvent'
+  | 'onAnalyticsEvent'
   | 'onDestroy'
 > & {
   context: any;
   ref?: HTMLDivElement | null;
+  providerFactory: ProviderFactory;
   portalProviderAPI: PortalProviderAPI;
   createAnalyticsEvent?: CreateUIAnalyticsEvent;
 };

@@ -45,9 +45,7 @@ describe('@atlaskit/editore-core/utils', () => {
         media: {
           allowMediaSingle: true,
         },
-        allowCodeBlocks: true,
         allowPanel: true,
-        allowLists: true,
         allowTasksAndDecisions: true,
         mentionProvider: Promise.resolve(new MockMentionResource({})),
       },
@@ -344,12 +342,14 @@ describe('@atlaskit/editore-core/utils', () => {
 
     it('should throw for unknown nodes', () => {
       expect(
-        checkEmptyNode((() =>
-          ({
-            type: {
-              name: 'unknown',
-            },
-          } as any)) as any),
+        checkEmptyNode(
+          (() =>
+            ({
+              type: {
+                name: 'unknown',
+              },
+            } as any)) as any,
+        ),
       ).toBeTruthy();
     });
   });
@@ -450,11 +450,7 @@ describe('@atlaskit/editore-core/utils', () => {
       const fn2 = (val: string) => `fn2(${val})`;
       const fn3 = (val: string) => `fn3(${val})`;
 
-      const pipedFunction = pipe(
-        fn1,
-        fn2,
-        fn3,
-      );
+      const pipedFunction = pipe(fn1, fn2, fn3);
 
       expect(pipedFunction('inner')).toBe('fn3(fn2(fn1(inner)))');
     });
@@ -463,11 +459,7 @@ describe('@atlaskit/editore-core/utils', () => {
       const fn1 = (val: string, num: number) => `fn1(${val}-${num})`;
       const fn2 = (val: string) => `fn2(${val})`;
       const fn3 = (val: string) => `fn3(${val})`;
-      const pipedFunction = pipe(
-        fn1,
-        fn2,
-        fn3,
-      );
+      const pipedFunction = pipe(fn1, fn2, fn3);
 
       expect(pipedFunction('inner', 2)).toBe('fn3(fn2(fn1(inner-2)))');
     });
@@ -477,11 +469,7 @@ describe('@atlaskit/editore-core/utils', () => {
       const fn2 = (val: number) => ({ number: val, string: val.toString() });
       const fn3 = (val: object) => `fn3(${JSON.stringify(val)})`;
 
-      const pipedFunction = pipe(
-        fn1,
-        fn2,
-        fn3,
-      );
+      const pipedFunction = pipe(fn1, fn2, fn3);
 
       expect(pipedFunction('2')).toBe('fn3({"number":2,"string":"2"})');
     });
@@ -492,12 +480,7 @@ describe('@atlaskit/editore-core/utils', () => {
       const f1 = (a: string) => `#${a}`;
       const f2 = (b: string) => `!${b}`;
 
-      expect(
-        compose(
-          f1,
-          f2,
-        )('test'),
-      ).toEqual('#!test');
+      expect(compose(f1, f2)('test')).toEqual('#!test');
     });
   });
 

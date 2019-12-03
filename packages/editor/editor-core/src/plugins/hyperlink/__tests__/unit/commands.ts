@@ -42,7 +42,6 @@ describe('hyperlink commands', () => {
     return createEditor({
       doc,
       editorProps: {
-        allowCodeBlocks: true,
         allowAnalyticsGASV3: true,
         UNSAFE_cards: {
           provider: Promise.resolve(cardProvider),
@@ -292,14 +291,16 @@ describe('hyperlink commands', () => {
         googleUrl,
         'Google',
       )(view.state, view.dispatch);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'link',
-        eventType: 'track',
-        attributes: { inputMethod: 'typeAhead' },
-        nonPrivacySafeAttributes: { linkDomain: 'google.com' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'link',
+          eventType: 'track',
+          attributes: { inputMethod: 'typeAhead' },
+          nonPrivacySafeAttributes: { linkDomain: 'google.com' },
+        }),
+      );
     });
   });
   describe('#removeLink', () => {

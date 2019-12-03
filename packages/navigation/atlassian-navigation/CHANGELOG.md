@@ -1,5 +1,71 @@
 # @atlaskit/atlassian-navigation
 
+## 0.6.6
+
+### Patch Changes
+
+- [patch][c86f02bcb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c86f02bcb3):
+
+  Added selected state to more menu
+
+## 0.6.5
+
+### Patch Changes
+
+- [patch][e419c3c01f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e419c3c01f):
+
+  Update color of skeleton in atlassian-navigation
+
+## 0.6.4
+
+### Patch Changes
+
+- [patch][1ef7f6bba9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ef7f6bba9):
+
+  Fixed nav height
+
+## 0.6.3
+
+### Patch Changes
+
+- [patch][8e8366be2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e8366be2c):
+
+      Update IconButton types from string to React.ReactNode.
+
+## 0.6.2
+
+### Patch Changes
+
+- [patch][02d05ff668](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02d05ff668):
+
+  - Fix types for the tooltip prop to allow React components.
+  - Introduce `buttonTooltip` and `iconButtonTooltip` to configure tooltip for create button.
+
+## 0.6.1
+
+### Patch Changes
+
+- [patch][042a5d87ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/042a5d87ea):
+
+  Reduced unnecessary deps for navigation, and added temp \_itemTheme export to style dropdown-menu items
+
+## 0.6.0
+
+### Minor Changes
+
+- [minor][355e7ca2ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/355e7ca2ea):
+
+  Breaking changes from previous version:
+
+  - Rename siteName to siteTitle to match what it is called in the products
+  - Rename isSelected prop to isHighlighted to avoid confusion with the CSS states of the button, which is also exposed as a prop to Button
+
+  Other visual changes:
+
+  - Primary buttons in the nav with dropdowns stay highlighted when the drop down is open.
+  - Fix active state in FF
+  - Gradients for Atlassian products works correctly
+
 ## 0.5.1
 
 ### Patch Changes

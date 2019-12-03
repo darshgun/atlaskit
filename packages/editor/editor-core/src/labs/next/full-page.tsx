@@ -89,9 +89,8 @@ interface MainToolbarProps {
   showKeyline: boolean;
 }
 
-const MainToolbar: React.ComponentClass<
-  React.HTMLAttributes<{}> & MainToolbarProps
-> = styled.div`
+const MainToolbar: React.ComponentClass<React.HTMLAttributes<{}> &
+  MainToolbarProps> = styled.div`
   position: relative;
   align-items: center;
   box-shadow: ${(props: MainToolbarProps) =>
@@ -178,7 +177,7 @@ function FullPage(props: FullPageProps) {
   const [showKeyline, scrollContainerRef] = useKeyline();
 
   return (
-    <Editor {...props} handleAnalyticsEvent={handleAnalyticsEvent}>
+    <Editor {...props} onAnalyticsEvent={handleAnalyticsEvent}>
       <BaseTheme dynamicTextSizing={allowDynamicTextSizing}>
         <FullPageEditorWrapper className="akEditor">
           <MainToolbar showKeyline={showKeyline}>

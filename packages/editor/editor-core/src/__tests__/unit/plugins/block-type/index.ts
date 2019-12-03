@@ -54,9 +54,7 @@ describe('block-type', () => {
       doc,
       editorProps: {
         allowAnalyticsGASV3: true,
-        allowCodeBlocks: true,
         allowPanel: true,
-        allowLists: true,
       },
       pluginKey: blockTypePluginKey,
       createAnalyticsEvent,
@@ -148,13 +146,15 @@ describe('block-type', () => {
         dispatch,
       );
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        eventType: 'track',
-        actionSubjectId: 'codeBlock',
-        attributes: { inputMethod: 'toolbar' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          eventType: 'track',
+          actionSubjectId: 'codeBlock',
+          attributes: { inputMethod: 'toolbar' },
+        }),
+      );
     });
   });
 
@@ -178,13 +178,25 @@ describe('block-type', () => {
         dispatch,
       );
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        eventType: 'track',
-        actionSubjectId: 'panel',
-        attributes: { inputMethod: 'toolbar', panelType: 'info' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          eventType: 'track',
+          actionSubjectId: 'panel',
+          attributes: { inputMethod: 'toolbar', panelType: 'info' },
+        }),
+      );
+
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          eventType: 'track',
+          actionSubjectId: 'panel',
+          attributes: { inputMethod: 'toolbar', panelType: 'info' },
+        }),
+      );
     });
   });
 
@@ -415,7 +427,7 @@ describe('block-type', () => {
     const editor = (doc: any) =>
       createEditor({
         doc,
-        editorProps: { appearance: 'comment', allowCodeBlocks: true },
+        editorProps: { appearance: 'comment' },
       });
 
     it('should create empty terminal empty paragraph when heading is created', () => {

@@ -1,3 +1,4 @@
+// @flow
 const bolt = require('bolt');
 
 (async () => {
@@ -23,6 +24,7 @@ const bolt = require('bolt');
   // apply split logic for editor pkgs
   if (input.includes('editor')) {
     const half = Math.floor(pkgs.length / 2);
+    let editorPkgs;
     if (process.argv[2].includes('part-1')) {
       editorPkgs = pkgs.slice(0, half);
     } else {

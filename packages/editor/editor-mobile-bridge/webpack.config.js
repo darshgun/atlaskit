@@ -1,51 +1,16 @@
-// @flow
-/* eslint import/no-extraneous-dependencies: 0 */
+/* eslint import/no-extraneous-dependencies: 0, flowtype/require-valid-file-annotation: 0 */
 const path = require('path');
 const webpack = require('webpack');
-const meow = require('meow');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const moduleResolveMapBuilder = require('@atlaskit/multi-entry-tools/module-resolve-map-builder');
 
-const envPlugins = [];
+module.exports = async function createWebpackConfig(_, args) {
+  const mode = typeof args.mode === 'undefined' ? 'development' : args.mode;
+  const devtool =
+    mode === 'development' && typeof args.devtool !== 'string'
+      ? 'source-map'
+      : args.devtool;
 
-const cli = meow({
-  flags: {
-    sourceMap: {
-      type: 'boolean',
-      alias: 's',
-    },
-    production: {
-      type: 'boolean',
-      alias: 'p',
-    },
-  },
-});
-
-const isProduction = cli.flags.production;
-const mode = isProduction ? 'production' : 'development';
-
-if (isProduction) {
-  envPlugins.push(
-    new UglifyJsPlugin({
-      test: /\.js($|\?)/i,
-      sourceMap: cli.flags.sourceMap,
-      uglifyOptions: {
-        mangle: {
-          keep_fnames: true,
-        },
-        compress: {
-          warnings: false,
-        },
-        output: {
-          beautify: false,
-        },
-      },
-    }),
-  );
-}
-
-module.exports = async function createWebpackConfig() {
   return {
     mode,
     entry: {
@@ -60,7 +25,7 @@ module.exports = async function createWebpackConfig() {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist/bundle'),
     },
-    devtool: !isProduction || cli.flags.sourceMap ? 'source-map' : false,
+    devtool,
     resolve: {
       mainFields: ['atlaskit:src', 'module', 'browser', 'main'],
       extensions: ['.js', '.json', '.ts', '.tsx'],
@@ -92,9 +57,6 @@ module.exports = async function createWebpackConfig() {
       ],
     },
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(mode),
-      }),
       new HtmlWebpackPlugin({
         template: path.join(__dirname, 'public/editor.html.ejs'),
         chunks: ['error-reporter', 'editor'],
@@ -110,6 +72,14 @@ module.exports = async function createWebpackConfig() {
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 1,
       }),
-    ].concat(envPlugins),
+    ],
+    optimization: {
+      nodeEnv: JSON.stringify(mode),
+      splitChunks: false,
+    },
+    devServer: {
+      host: '0.0.0.0',
+      allowedHosts: ['localhost', '10.0.2.2'],
+    },
   };
 };

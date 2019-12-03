@@ -2,7 +2,7 @@ import { Component } from 'react';
 import {
   DraggableProvidedDraggableProps,
   DraggableStateSnapshot,
-} from 'react-beautiful-dnd';
+} from 'react-beautiful-dnd-next';
 import { isSamePath } from '../../utils/path';
 import { sameProps } from '../../utils/react';
 import { Props, TreeDraggableProvided } from './TreeItem-types';
@@ -28,9 +28,7 @@ export default class TreeItem extends Component<Props> {
     if (snapshot.dropAnimation) {
       transitions.push(
         // @ts-ignore
-        `padding-left ${snapshot.dropAnimation.duration}s ${
-          snapshot.dropAnimation.curve
-        }`,
+        `padding-left ${snapshot.dropAnimation.duration}s ${snapshot.dropAnimation.curve}`,
       );
     }
     const transition = transitions.join(', ');

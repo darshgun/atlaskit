@@ -14,9 +14,8 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Spravovat seznam',
   'fabric.atlassianSwitcher.jiraProject': 'Projekt Jira',
   'fabric.atlassianSwitcher.confluenceSpace': 'Prostor Confluence',
-  'fabric.atlassianSwitcher.people': 'Lidé',
   'fabric.atlassianSwitcher.administration': 'Správa',
-  'fabric.atlassianSwitcher.discoverMore': 'Objevte více',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
   'fabric.atlassianSwitcher.browseApps': 'Procházet aplikace na Marketplace',
   'fabric.atlassianSwitcher.errorHeading': 'Něco se pokazilo',
   'fabric.atlassianSwitcher.errorText':
@@ -29,4 +28,13 @@ export default {
     'Byli jste odhlášeni. Přihlaste se znovu.',
   'fabric.atlassianSwitcher.login': 'Přihlášení',
   'fabric.atlassianSwitcher.show.more.sites': 'Zobrazit více stránek',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

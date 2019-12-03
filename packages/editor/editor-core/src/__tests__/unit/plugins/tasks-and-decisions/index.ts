@@ -69,16 +69,16 @@ describe('tasks and decisions', () => {
         );
       });
 
-      it(`should fire v3 analytics event when ${
-        scenario.name
-      } inserted`, () => {
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: scenario.name,
-          attributes: expect.objectContaining({ inputMethod: 'quickInsert' }),
-          eventType: 'track',
-        });
+      it(`should fire v3 analytics event when ${scenario.name} inserted`, () => {
+        expect(createAnalyticsEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: scenario.name,
+            attributes: expect.objectContaining({ inputMethod: 'quickInsert' }),
+            eventType: 'track',
+          }),
+        );
       });
     });
   });

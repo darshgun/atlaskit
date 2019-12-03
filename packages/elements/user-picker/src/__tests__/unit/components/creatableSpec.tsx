@@ -38,7 +38,11 @@ describe('getCreatableProps', () => {
   });
 
   describe('isValidOption', () => {
-    test.each([[false, 'INVALID'], [true, 'POTENTIAL'], [true, 'VALID']])(
+    test.each([
+      [false, 'INVALID'],
+      [true, 'POTENTIAL'],
+      [true, 'VALID'],
+    ])(
       'should return %p when isValidEmail returns "%s"',
       (expected, isValidEmailReturn) => {
         const someString = 'someValue';

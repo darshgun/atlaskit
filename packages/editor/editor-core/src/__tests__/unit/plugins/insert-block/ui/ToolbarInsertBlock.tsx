@@ -134,13 +134,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       pluginKey: blockTypePluginKey,
       editorProps: {
         analyticsHandler: analyticsHandlerSpy,
-        allowCodeBlocks: true,
         allowLayouts: true,
-        allowLists: true,
         allowPanel: true,
         allowRule: true,
         allowTables: true,
         allowStatus: true,
+        UNSAFE_allowExpand: { allowInsertion: true },
         allowAnalyticsGASV3: true,
         taskDecisionProvider: Promise.resolve(
           taskDecision.getMockTaskDecisionResource(),
@@ -261,6 +260,64 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       );
 
       expect(customItems[0].onClick).toHaveBeenCalled();
+    });
+  });
+
+  describe('item validation', () => {
+    it('should not conflict with disabled native expand', () => {
+      const customItems = [
+        {
+          content: 'Custom A',
+          value: { name: 'expand' },
+          onClick: jest.fn(),
+        },
+      ];
+
+      buildToolbar({
+        expandEnabled: false,
+        insertMenuItems: customItems,
+      });
+      const spy = jest.spyOn(toolbarOption.instance() as any, 'insertExpand');
+
+      const onItemActivated = toolbarOption
+        .find(DropdownMenu)
+        .prop('onItemActivated');
+
+      onItemActivated!.call(
+        { props: { insertMenuItems: customItems } },
+        { item: customItems[0] },
+      );
+
+      expect(spy).not.toHaveBeenCalled();
+      expect(customItems[0].onClick).toHaveBeenCalled();
+    });
+
+    it('should not conflict with enabled native expand', () => {
+      const customItems = [
+        {
+          content: 'Custom A',
+          value: { name: 'expand' },
+          onClick: jest.fn(),
+        },
+      ];
+
+      buildToolbar({
+        expandEnabled: true,
+        insertMenuItems: customItems,
+      });
+      const spy = jest.spyOn(toolbarOption.instance() as any, 'insertExpand');
+
+      const onItemActivated = toolbarOption
+        .find(DropdownMenu)
+        .prop('onItemActivated');
+
+      onItemActivated!.call(
+        { props: { insertMenuItems: customItems, expandEnabled: true } },
+        { item: customItems[0] },
+      );
+
+      expect(spy).toHaveBeenCalled();
+      expect(customItems[0].onClick).not.toHaveBeenCalled();
     });
   });
 
@@ -409,13 +466,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
             toolbarOption,
           );
 
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'divider',
-            attributes: { inputMethod: menu.name },
-            eventType: 'track',
-          });
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'divider',
+              attributes: { inputMethod: menu.name },
+              eventType: 'track',
+            }),
+          );
         });
       });
 
@@ -433,13 +492,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         });
 
         it('should fire v3 analytics event', () => {
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'table',
-            attributes: { inputMethod: menu.name },
-            eventType: 'track',
-          });
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'table',
+              attributes: { inputMethod: menu.name },
+              eventType: 'track',
+            }),
+          );
         });
       });
 
@@ -471,13 +532,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         });
 
         it('should fire v3 analytics event', () => {
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'action',
-            attributes: expect.objectContaining({ inputMethod: menu.name }),
-            eventType: 'track',
-          });
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'action',
+              attributes: expect.objectContaining({ inputMethod: menu.name }),
+              eventType: 'track',
+            }),
+          );
         });
       });
 
@@ -509,13 +572,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         });
 
         it('should fire v3 analytics event', () => {
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'decision',
-            attributes: expect.objectContaining({ inputMethod: menu.name }),
-            eventType: 'track',
-          });
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'decision',
+              attributes: expect.objectContaining({ inputMethod: menu.name }),
+              eventType: 'track',
+            }),
+          );
         });
       });
 
@@ -571,13 +636,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         });
 
         it('should fire v3 analytics event', () => {
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'layout',
-            attributes: expect.objectContaining({ inputMethod: menu.name }),
-            eventType: 'track',
-          });
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'layout',
+              attributes: expect.objectContaining({ inputMethod: menu.name }),
+              eventType: 'track',
+            }),
+          );
         });
       });
 
@@ -588,13 +655,15 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         });
 
         it('should fire v3 analytics event', () => {
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'status',
-            attributes: expect.objectContaining({ inputMethod: menu.name }),
-            eventType: 'track',
-          });
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'status',
+              attributes: expect.objectContaining({ inputMethod: menu.name }),
+              eventType: 'track',
+            }),
+          );
         });
       });
 

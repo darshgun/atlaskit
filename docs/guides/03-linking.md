@@ -15,7 +15,7 @@ To handle this problem, we provide two main ways of linking packages:
 - The package you've made changed to is a direct dependency of your target repo. I.e. it's directly imported by the repo, and not by another atlaskit package
 - The package does not rely on any local changes to its dependencies. I.e. you don't need to locally link the packages dependencies as well
 
-#### yarn link-pkg <repo> <pkg> + yarn watch <pkg>
+#### `yarn link-pkg <repo> <pkg>` + `yarn watch <pkg>`
 
 We provide a `yarn link-pkg` command to link a package to another repo, provided it is a direct dependency. Under the hood it uses [Yalc](https://www.npmjs.com/package/yalc)
 to copy packages to another repo as a `file:...` dependency.
@@ -45,7 +45,7 @@ Run the following steps:
 
 - You need to link a package that isn't directly imported from the target repo, e.g. usage of media-card inside editor-core, or a peer dependency, e.g. media-core.
 
-#### yarn link <repo> <pkg> + yarn build + yarn watch <pkg>
+#### `yarn link <repo> <pkg>` + `yarn build` + `yarn watch <pkg>`
 
 Linking a package and all of its dependencies, or linking a package that is only a transitive dependency, is a bit trickier to do in an efficient manner. This is because we need to build all transitive dependencies of the linked package that is a direct dependency of the target repo.
 

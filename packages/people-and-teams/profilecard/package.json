@@ -36,7 +36,7 @@
     "@atlaskit/dynamic-table": "^13.5.1",
     "@atlaskit/i18n-tools": "^0.6.0",
     "@atlaskit/util-data-test": "^13.0.0",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "fetch-mock": "^7.3.3",
     "loader-utils": "^1.1.0",
     "lodash.sample": "^4.2.1",

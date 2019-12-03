@@ -9,16 +9,7 @@ import {
   JsonLdResponse,
 } from './types';
 import DataLoader from 'dataloader';
-
-export type FetchErrorKind = 'fatal' | 'auth';
-export class FetchError extends Error {
-  public readonly kind: FetchErrorKind;
-  constructor(kind: FetchErrorKind, message: string) {
-    super(`${kind}: ${message}`);
-    this.kind = kind;
-    this.name = 'FetchError';
-  }
-}
+import { FetchError } from './errors';
 
 export default class CardClient implements CardClientInterface {
   private resolverUrl: string;
@@ -65,7 +56,16 @@ export default class CardClient implements CardClientInterface {
           'auth',
           `authentication required for URL ${url}, error: ${errorType}`,
         );
+      case 'ResolveBadRequestError':
+        throw new FetchError(
+          'fatal',
+          `Bad Request for ${url}, error: ${errorType}`,
+        );
       case 'InternalServerError': // Timeouts and ORS failures
+        throw new FetchError(
+          'fatal',
+          `Internal Server Error for ${url}, error: ${errorType}`,
+        );
       case 'ResolveUnsupportedError': // URL isn't supported
         throw new FetchError(
           'fatal',

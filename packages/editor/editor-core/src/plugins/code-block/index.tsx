@@ -16,11 +16,7 @@ import {
 import { IconCode } from '../quick-insert/assets';
 import { PMPluginFactoryParams, EditorPlugin } from '../../types';
 
-export interface CodeBlockOptions {
-  enableKeybindingsForIDE?: boolean;
-}
-
-const codeBlockPlugin = (options: CodeBlockOptions = {}): EditorPlugin => ({
+const codeBlockPlugin = (): EditorPlugin => ({
   name: 'codeBlock',
 
   nodes() {
@@ -32,7 +28,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}): EditorPlugin => ({
       { name: 'codeBlock', plugin: createPlugin },
       {
         name: 'codeBlockIDEKeyBindings',
-        plugin: () => (options.enableKeybindingsForIDE ? ideUX : undefined),
+        plugin: () => ideUX,
       },
       {
         name: 'codeBlockKeyMap',

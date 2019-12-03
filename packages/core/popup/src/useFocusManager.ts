@@ -8,27 +8,24 @@ export const useFocusManager = ({
   popupRef,
   initialFocusRef,
 }: FocusManagerHook): void => {
-  useEffect(
-    () => {
-      if (!popupRef) {
-        return noop;
-      }
+  useEffect(() => {
+    if (!popupRef) {
+      return noop;
+    }
 
-      const trapConfig = {
-        clickOutsideDeactivates: true,
-        escapeDeactivates: true,
-        initialFocus: initialFocusRef || popupRef,
-        fallbackFocus: popupRef,
-        returnFocusOnDeactivate: true,
-      };
+    const trapConfig = {
+      clickOutsideDeactivates: true,
+      escapeDeactivates: true,
+      initialFocus: initialFocusRef || popupRef,
+      fallbackFocus: popupRef,
+      returnFocusOnDeactivate: true,
+    };
 
-      const focusTrap = createFocusTrap(popupRef, trapConfig);
-      focusTrap.activate();
+    const focusTrap = createFocusTrap(popupRef, trapConfig);
+    focusTrap.activate();
 
-      return () => {
-        focusTrap.deactivate();
-      };
-    },
-    [popupRef, initialFocusRef],
-  );
+    return () => {
+      focusTrap.deactivate();
+    };
+  }, [popupRef, initialFocusRef]);
 };

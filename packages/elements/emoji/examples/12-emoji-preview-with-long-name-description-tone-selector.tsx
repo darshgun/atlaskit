@@ -16,9 +16,7 @@ const tongueEmoji = filters.byShortName(
 const longTongueEmoji = {
   ...tongueEmoji,
   name: `${tongueEmoji.name} ${tongueEmoji.name} ${tongueEmoji.name}`,
-  shortName: `${tongueEmoji.shortName}_${tongueEmoji.shortName}_${
-    tongueEmoji.shortName
-  }`,
+  shortName: `${tongueEmoji.shortName}_${tongueEmoji.shortName}_${tongueEmoji.shortName}`,
 };
 
 const toneEmoji = filters.toneEmoji(emojis);

@@ -65,34 +65,31 @@ const evaluateMode = function<TargetType, ResultType>(
   mode: string,
 ): ResultType {
   const traverse = function traverse(obj: any) {
-    return Object.keys(obj).reduce(
-      (acc: any, curr: string) => {
-        const value = obj[curr];
-        /** Return the value immediately if the value is:
-         * not an object
-         * an array
-         * null
-         * undefined
-         */
-        if (
-          typeof value !== 'object' ||
-          typeof value == null ||
-          Array.isArray(value)
-        ) {
-          acc[curr] = value;
-        } else if (Object.keys(value).includes(mode)) {
-          // if the object contains a member corresponding to the passed in mode argument
-          // return the value of that member.
-          acc[curr] = value[mode];
-        } else {
-          // otherwise keep traversing the object
-          acc[curr] = traverse(obj[curr]);
-        }
-        // return the accumulator
-        return acc;
-      },
-      {} as ResultType,
-    );
+    return Object.keys(obj).reduce((acc: any, curr: string) => {
+      const value = obj[curr];
+      /** Return the value immediately if the value is:
+       * not an object
+       * an array
+       * null
+       * undefined
+       */
+      if (
+        typeof value !== 'object' ||
+        typeof value == null ||
+        Array.isArray(value)
+      ) {
+        acc[curr] = value;
+      } else if (Object.keys(value).includes(mode)) {
+        // if the object contains a member corresponding to the passed in mode argument
+        // return the value of that member.
+        acc[curr] = value[mode];
+      } else {
+        // otherwise keep traversing the object
+        acc[curr] = traverse(obj[curr]);
+      }
+      // return the accumulator
+      return acc;
+    }, {} as ResultType);
   };
   return traverse(obj);
 };

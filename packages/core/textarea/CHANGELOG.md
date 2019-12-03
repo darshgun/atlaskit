@@ -1,5 +1,13 @@
 # @atlaskit/textarea
 
+## 2.2.2
+
+### Patch Changes
+
+- [patch][557a8e2451](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/557a8e2451):
+
+  Rebuilds package to fix typescript typing error.
+
 ## 2.2.1
 
 ### Patch Changes

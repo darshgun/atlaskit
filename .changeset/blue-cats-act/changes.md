@@ -1,1 +1,0 @@
-Provide standard empty adf when provided with empty wikimarkup/markdown/jira/cxhtml/prosemirror

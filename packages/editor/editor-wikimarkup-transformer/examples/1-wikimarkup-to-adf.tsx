@@ -16,6 +16,7 @@ import {
 } from '@atlaskit/util-data-test';
 import { ProfileClient, modifyResponse } from '@atlaskit/profilecard';
 import { Context } from '../src/parser/tokenize';
+import { MentionProvider } from '@atlaskit/mention/types';
 
 const Container = styled.div`
   display: grid;
@@ -53,7 +54,7 @@ const mentionProvider = Promise.resolve({
   shouldHighlightMention(mention: any) {
     return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
   },
-});
+} as MentionProvider);
 const mediaProvider = storyMediaProviderFactory();
 const emojiProvider = emoji.storyData.getEmojiResource();
 const taskDecisionProvider = Promise.resolve(

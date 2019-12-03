@@ -1,3 +1,4 @@
+// @flow
 /**
  * This file is used to resolve imports in eslint.
  */
@@ -6,12 +7,17 @@ const baseResolver = require('./base-resolver');
 
 exports.interfaceVersion = 2;
 
-exports.resolve = (source, file, config = {}) => {
+exports.resolve = (
+  source /*: string */,
+  file /*: string */,
+  config /*: Object */ = {},
+) => {
   let resolved;
 
   // Remove webpack loader prefix
   const lastExclam = source.lastIndexOf('!');
   if (lastExclam !== -1) {
+    // eslint-disable-next-line no-param-reassign
     source = source.slice(lastExclam + 1);
   }
 
@@ -27,6 +33,6 @@ exports.resolve = (source, file, config = {}) => {
 
   return {
     found: typeof resolved === 'string',
-    path: resolved ? resolved : null,
+    path: resolved || null,
   };
 };

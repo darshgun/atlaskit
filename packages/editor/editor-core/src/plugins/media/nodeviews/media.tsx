@@ -40,9 +40,10 @@ export interface MediaNodeProps extends ReactNodeProps, ImageLoaderProps {
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
   onClick?: CardOnClickCallback;
-  onExternalImageLoaded?: (
-    dimensions: { width: number; height: number },
-  ) => void;
+  onExternalImageLoaded?: (dimensions: {
+    width: number;
+    height: number;
+  }) => void;
   allowLazyLoading?: boolean;
   mediaProvider?: Promise<MediaProvider>;
   viewMediaClientConfig?: MediaClientConfig;

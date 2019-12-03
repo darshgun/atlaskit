@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/synchrony-test-helpers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Test Helpers for Atlassian Synchrony component",
   "license": "Apache-2.0",
@@ -20,11 +20,11 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^41.1.2",
+    "@atlaskit/editor-common": "^42.0.0",
     "@types/prosemirror-state": "^1.2.0",
     "@types/prosemirror-transform": "^1.1.0",
     "prosemirror-state": "^1.2.2",
-    "prosemirror-transform": "^1.1.3"
+    "prosemirror-transform": "^1.1.6"
   },
   "peerDependencies": {
     "@atlassian/prosemirror-synchrony-plugin": "^0.28.454"

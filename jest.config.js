@@ -100,15 +100,17 @@ const config = {
   testEnvironment: 'jest-environment-jsdom-fourteen',
   // The modules below cause problems when automocking.
   unmockedModulePathPatterns: [
-    'tslib',
-    'babel-runtime',
-    'es-abstract',
-    'graceful-fs',
-    'any-promise',
-    'globby',
-    'chalk',
-    'fs-extra',
-    'meow',
+    'node_modules/tslib/',
+    'node_modules/babel-runtime/',
+    'node_modules/@babel/runtime/',
+    'node_modules/es-abstract/',
+    'node_modules/graceful-fs/',
+    'node_modules/any-promise/',
+    'node_modules/globby/',
+    'node_modules/chalk/',
+    'node_modules/fs-extra/',
+    'node_modules/meow/',
+    'node_modules/colors/',
   ],
 };
 

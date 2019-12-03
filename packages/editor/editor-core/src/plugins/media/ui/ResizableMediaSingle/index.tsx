@@ -274,11 +274,19 @@ export default class ResizableMediaSingle extends React.Component<
 
   highlights = (newWidth: number, snapPoints: number[]) => {
     const snapWidth = snapTo(newWidth, snapPoints);
-    const { layoutColumn, table } = this.props.view.state.schema.nodes;
+    const {
+      layoutColumn,
+      table,
+      expand,
+      nestedExpand,
+    } = this.props.view.state.schema.nodes;
 
     if (
       this.$pos &&
-      !!findParentNodeOfTypeClosestToPos(this.$pos, [layoutColumn, table])
+      !!findParentNodeOfTypeClosestToPos(
+        this.$pos,
+        [layoutColumn, table, expand, nestedExpand].filter(Boolean),
+      )
     ) {
       return [];
     }
@@ -333,9 +341,9 @@ export default class ResizableMediaSingle extends React.Component<
       enable[side] =
         ['full-width', 'wide', 'center']
           .concat(`wrap-${oppositeSide}` as MediaSingleLayout)
-          .concat(`align-${
-            imageAlignmentMap[oppositeSide]
-          }` as MediaSingleLayout)
+          .concat(
+            `align-${imageAlignmentMap[oppositeSide]}` as MediaSingleLayout,
+          )
           .indexOf(layout) > -1;
 
       if (side === 'left' && this.insideInlineLike) {
@@ -345,8 +353,7 @@ export default class ResizableMediaSingle extends React.Component<
 
     return (
       <Wrapper
-        width={width}
-        height={height}
+        ratio={((height / width) * 100).toFixed(3)}
         layout={layout}
         isResized={!!pctWidth}
         containerWidth={containerWidth || origWidth}

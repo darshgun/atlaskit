@@ -1,5 +1,112 @@
 # @atlaskit/media-picker
 
+## 50.0.1
+
+### Patch Changes
+
+- [patch][95ee5ed122](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95ee5ed122):
+
+  Touch endpoint is now called synchronously for every file which prevents race condition on copy while preserving card insert times in editor
+
+## 50.0.0
+
+### Major Changes
+
+- [major][ae6408e1e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae6408e1e4):
+
+  # Move public types to media-picker/types entry point
+
+  We moved all the public types/interfaces into a new entry point **@atlaskit/media-picker/types**.
+  This is a breaking change only if you are using Typescript in your project. To update:
+
+  ## Before
+
+  ```typescript
+  import {
+    PopupUploadEventPayloadMap,
+    BrowserConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    Popup,
+    PopupConfig,
+    PopupConstructor,
+    UploadsStartEventPayload,
+    UploadStatusUpdateEventPayload,
+    UploadPreviewUpdateEventPayload,
+    UploadProcessingEventPayload,
+    UploadEndEventPayload,
+    UploadErrorEventPayload,
+    UploadEventPayloadMap,
+    isImagePreview,
+    MediaFile,
+    MediaProgress,
+    MediaError,
+    ImagePreview,
+    Preview,
+    NonImagePreview,
+    Popup,
+    UploadParams,
+    BrowserConfig,
+    PopupConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    PopupConstructor,
+  } from '@atlaskit/media-picker';
+  ```
+
+  ## After
+
+  ```typescript
+  import {
+    PopupUploadEventPayloadMap,
+    BrowserConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    Popup,
+    PopupConfig,
+    PopupConstructor,
+    UploadsStartEventPayload,
+    UploadStatusUpdateEventPayload,
+    UploadPreviewUpdateEventPayload,
+    UploadProcessingEventPayload,
+    UploadEndEventPayload,
+    UploadErrorEventPayload,
+    UploadEventPayloadMap,
+    isImagePreview,
+    MediaFile,
+    MediaProgress,
+    MediaError,
+    ImagePreview,
+    Preview,
+    NonImagePreview,
+    Popup,
+    UploadParams,
+    BrowserConfig,
+    PopupConfig,
+    ClipboardConfig,
+    DropzoneConfig,
+    PopupConstructor,
+  } from '@atlaskit/media-picker/types';
+  ```
+
+### Patch Changes
+
+- [patch][a4517c2de6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4517c2de6):
+
+  Pin perf-marks package, as it contains invalid es5 in latest release
+
+- [patch][5b2c89203e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b2c89203e):
+
+  Fix linting errors from prettier upgrade
+
+## 49.0.1
+
+### Patch Changes
+
+- [patch][30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+
+  @atlaskit/select has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 49.0.0
 
 ### Patch Changes

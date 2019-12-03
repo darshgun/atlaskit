@@ -11,7 +11,7 @@ interface ButtonProps extends WithAnalyticsEventsProps {
   onClick: (
     event: MouseEvent<HTMLButtonElement>,
     analyticsEvent?: UIAnalyticsEvent,
-  ) => unknown;
+  ) => void;
 }
 
 const Button: FC<ButtonProps> = ({ createAnalyticsEvent, ...props }) => (

@@ -28,7 +28,7 @@ BrowserTestCase(
     await browser.type(editable, 'hello have a link ');
 
     // paste the link
-    await browser.paste(editable);
+    await browser.paste();
 
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);

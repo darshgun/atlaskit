@@ -5,10 +5,16 @@ import {
 } from '../nodes/paragraph';
 
 export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
-  return normalizeInlineNodes(normalizeMediaGroups(nodes, schema), schema);
+  return [normalizeMediaGroups, normalizeInlineNodes].reduce(
+    (currentNodes, normFunc) => normFunc(currentNodes, schema),
+    nodes,
+  );
 }
 
-function normalizeInlineNodes(nodes: PMNode[], schema: Schema): PMNode[] {
+export function normalizeInlineNodes(
+  nodes: PMNode[],
+  schema: Schema,
+): PMNode[] {
   const output: PMNode[] = [];
   let inlineNodeBuffer: PMNode[] = [];
   for (const node of nodes) {

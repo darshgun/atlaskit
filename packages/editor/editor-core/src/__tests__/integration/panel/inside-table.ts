@@ -17,9 +17,7 @@ BrowserTestCase(
   'inside-table.ts: Insert panel into table, add text, change panel type',
   { skip: ['edge', 'ie'] },
   async (client: any, testName: string) => {
-    const insertTableMenu = `[aria-label="${
-      insertBlockMessages.table.defaultMessage
-    }"]`;
+    const insertTableMenu = `[aria-label="${insertBlockMessages.table.defaultMessage}"]`;
     const tableControls = '[aria-label="Table floating controls"]';
 
     const page = await goToEditorTestingExample(client);

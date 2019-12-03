@@ -25,13 +25,17 @@ export const fireSmartLinkEvent = (
   }
 };
 
-export const resolvedEvent = (definitionId?: string): AnalyticsPayload => ({
+export const resolvedEvent = (
+  definitionId?: string,
+  cached = false,
+): AnalyticsPayload => ({
   action: 'resolved',
   actionSubject: 'smartLink',
   eventType: 'operational',
   attributes: {
     ...context,
     ...(definitionId ? { definitionId: definitionId } : {}),
+    cached,
   },
 });
 

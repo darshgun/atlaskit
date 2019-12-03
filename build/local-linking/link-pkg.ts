@@ -11,7 +11,8 @@ import path from 'path';
 import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
 import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
-import { isDefined, ValidationError } from './utils';
+import { ValidationError } from '@atlaskit/build-utils/errors';
+import { isDefined } from './utils';
 
 export type Options = {
   cwd?: string;

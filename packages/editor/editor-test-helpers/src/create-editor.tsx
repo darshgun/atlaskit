@@ -134,56 +134,64 @@ export default function createEditorFactoryForTests<T = any>() {
 
     let refs: Refs | undefined;
 
+    const positionExists = (position: number | undefined): boolean =>
+      typeof position === 'number';
+
     if (doc && editorView) {
       const { dispatch } = editorView;
       const defaultDoc = doc(editorView.state.schema);
-      const tr = editorView!.state.tr.replaceWith(
+      const tr = editorView.state.tr.replaceWith(
         0,
-        editorView!.state.doc.nodeSize - 2,
+        editorView.state.doc.nodeSize - 2,
         defaultDoc.content,
       );
 
       tr.setMeta('addToHistory', false);
-      editorView!.dispatch(tr);
+      editorView.dispatch(tr);
 
       refs = defaultDoc.refs;
       if (refs) {
         const { doc, tr } = editorView.state;
         // Collapsed selection.
-        if ('<>' in refs) {
+        if (positionExists(refs['<>'])) {
           setTextSelection(editorView!, refs['<>']);
           // Expanded selection
-        } else if ('<' in refs || '>' in refs) {
-          if ('<' in refs === false) {
+        } else if (positionExists(refs['<']) || positionExists(refs['>'])) {
+          if (!positionExists(refs['<'])) {
             throw new Error('A `<` ref must complement a `>` ref.');
           }
-          if ('>' in refs === false) {
+          if (!positionExists(refs['>'])) {
             throw new Error('A `>` ref must complement a `<` ref.');
           }
           setTextSelection(editorView!, refs['<'], refs['>']);
         }
         // CellSelection
-        else if (refs['<cell'] && refs['cell>']) {
+        else if (
+          positionExists(refs['<cell']) &&
+          positionExists(refs['cell>'])
+        ) {
           const anchorCell = findCellClosestToPos(doc.resolve(refs['<cell']));
           const headCell = findCellClosestToPos(doc.resolve(refs['cell>']));
           if (anchorCell && headCell) {
             dispatch(
-              tr.setSelection(new CellSelection(
-                doc.resolve(anchorCell.pos),
-                doc.resolve(headCell.pos),
-              ) as any),
+              tr.setSelection(
+                new CellSelection(
+                  doc.resolve(anchorCell.pos),
+                  doc.resolve(headCell.pos),
+                ) as any,
+              ),
             );
           }
         }
         // NodeSelection
-        else if (refs['<node>']) {
+        else if (positionExists(refs['<node>'])) {
           dispatch(tr.setSelection(NodeSelection.create(doc, refs['<node>'])));
         }
         // GapCursor right
         // This may look the wrong way around here, but looks correct in the tests. Eg:
         // doc(hr(), '{<|gap>}') = Horizontal rule with a gap cursor on its right
         // The | denotes the gap cursor's side, based on the node on the side of the |.
-        else if (refs['<|gap>']) {
+        else if (positionExists(refs['<|gap>'])) {
           dispatch(
             tr.setSelection(
               new GapCursorSelection(
@@ -194,7 +202,7 @@ export default function createEditorFactoryForTests<T = any>() {
           );
         }
         // GapCursor left
-        else if (refs['<gap|>']) {
+        else if (positionExists(refs['<gap|>'])) {
           dispatch(
             tr.setSelection(
               new GapCursorSelection(

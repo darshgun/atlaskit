@@ -14,9 +14,8 @@ export default {
   'fabric.atlassianSwitcher.manageList': '管理列表',
   'fabric.atlassianSwitcher.jiraProject': 'Jira 项目',
   'fabric.atlassianSwitcher.confluenceSpace': 'Confluence 空间',
-  'fabric.atlassianSwitcher.people': '人员',
   'fabric.atlassianSwitcher.administration': '管理',
-  'fabric.atlassianSwitcher.discoverMore': '发现更多',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
   'fabric.atlassianSwitcher.browseApps': '浏览 Marketplace 应用',
   'fabric.atlassianSwitcher.errorHeading': '出错了',
   'fabric.atlassianSwitcher.errorText':
@@ -28,4 +27,13 @@ export default {
   'fabric.atlassianSwitcher.errorTextLoggedOut': '您已注销。请再次登录。',
   'fabric.atlassianSwitcher.login': '登录',
   'fabric.atlassianSwitcher.show.more.sites': '显示更多站点',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

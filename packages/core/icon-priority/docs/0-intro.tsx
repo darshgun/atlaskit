@@ -31,7 +31,7 @@ ${(
   />
 )}
 
-${<PitchSentence />}
+${(<PitchSentence />)}
 
 ${(
   <Props

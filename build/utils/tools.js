@@ -1,54 +1,56 @@
+// @flow
 const bolt = require('bolt');
 const path = require('path');
 const { exists } = require('./fs');
 
-async function getPackagesInfo(cwd, opts) {
-  let project = await bolt.getProject({ cwd });
-  let packages = await bolt.getWorkspaces({ cwd, ...opts });
+async function getPackagesInfo(cwd /*:string*/, opts /*: ?Object */) {
+  const project = await bolt.getProject({ cwd });
+  const packages = await bolt.getWorkspaces({ cwd, ...opts });
 
-  return await Promise.all(packages.map(pkg => getPackageInfo(pkg, project)));
+  return Promise.all(packages.map(pkg => getPackageInfo(pkg, project)));
 }
 
-async function getPackageInfo(pkg, project) {
-  let resolvedProject = project || (await bolt.getProject({ cwd }));
-  let relativeDir = path.relative(resolvedProject.dir, pkg.dir);
-  let srcExists = await exists(path.join(pkg.dir, 'src'));
-  let tsConfigExists = await exists(path.join(pkg.dir, 'tsconfig.json'));
-  let tsConfigCliExists = await exists(
+async function getPackageInfo(pkg /*: Object */, project /*: Object*/) {
+  const cwd = process.cwd();
+  const resolvedProject = project || (await bolt.getProject({ cwd }));
+  const relativeDir = path.relative(resolvedProject.dir, pkg.dir);
+  const srcExists = await exists(path.join(pkg.dir, 'src'));
+  const tsConfigExists = await exists(path.join(pkg.dir, 'tsconfig.json'));
+  const tsConfigCliExists = await exists(
     path.join(pkg.dir, 'build', 'cli', 'tsconfig.json'),
   );
-  let testBrowserExists = await exists(path.join(pkg.dir, '__tests-karma__'));
-  let testWebdriverExists = await exists(
+  const testBrowserExists = await exists(path.join(pkg.dir, '__tests-karma__'));
+  const testWebdriverExists = await exists(
     path.join(pkg.dir, 'src', '__tests__', 'integration'),
   );
-  let testVisualRegressionExists = await exists(
+  const testVisualRegressionExists = await exists(
     path.join(pkg.dir, 'src', '__tests__', 'visual-regression'),
   );
 
-  let isBrowserPackage = !relativeDir.startsWith('build');
-  let isWebsitePackage = relativeDir.startsWith('website');
+  const isBrowserPackage = !relativeDir.startsWith('build');
+  const isWebsitePackage = relativeDir.startsWith('website');
 
-  let allDependencies = Object.assign(
+  const allDependencies = Object.assign(
     {},
     pkg.config.dependencies,
     pkg.config.devDependencies,
     pkg.config.peerDependencies,
   );
 
-  let hasKarmaDep = !!allDependencies.karma;
+  const hasKarmaDep = !!allDependencies.karma;
 
-  let isTypeScriptCLI = tsConfigCliExists;
-  let isTypeScript = tsConfigExists && !isWebsitePackage; // The website does not need to be built
+  const isTypeScriptCLI = tsConfigCliExists;
+  const isTypeScript = tsConfigExists && !isWebsitePackage; // The website does not need to be built
 
-  let isBabel = srcExists && !isTypeScript && !isWebsitePackage;
-  let isFlow = isBabel || isWebsitePackage;
-  let isESLint = srcExists || isWebsitePackage || !isBrowserPackage;
+  const isBabel = srcExists && !isTypeScript && !isWebsitePackage;
+  const isFlow = isBabel || isWebsitePackage;
+  const isESLint = srcExists || isWebsitePackage || !isBrowserPackage;
 
-  let isKarma = testBrowserExists || hasKarmaDep;
-  let isBrowserStack = isKarma;
-  let isStylelint = srcExists && isBrowserPackage;
-  let isWebdriver = testWebdriverExists;
-  let isVisualRegression = testVisualRegressionExists;
+  const isKarma = testBrowserExists || hasKarmaDep;
+  const isBrowserStack = isKarma;
+  const isStylelint = srcExists && isBrowserPackage;
+  const isWebdriver = testWebdriverExists;
+  const isVisualRegression = testVisualRegressionExists;
 
   return {
     dir: pkg.dir,
@@ -82,10 +84,11 @@ const TOOL_NAME_TO_FILTERS /*: { [key: string]: (pkg: Object) => boolean } */ = 
   vr: pkg => pkg.isVisualRegression,
 };
 
-async function getPackageDirsForTools(cwd) {
-  let packages = await getPackagesInfo(cwd);
-  let toolGroups = {};
+async function getPackageDirsForTools(cwd /*: string */) {
+  const packages = await getPackagesInfo(cwd);
+  const toolGroups = {};
 
+  // eslint-disable-next-line array-callback-return
   Object.keys(TOOL_NAME_TO_FILTERS).map(toolName => {
     toolGroups[toolName] = packages
       .filter(TOOL_NAME_TO_FILTERS[toolName])

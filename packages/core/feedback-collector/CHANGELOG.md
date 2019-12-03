@@ -1,5 +1,26 @@
 # @atlaskit/feedback-collector
 
+## 4.0.21
+
+### Patch Changes
+
+- [patch][3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  Make PopupSelect correctly pass props. Forcing update of @atlaskit/select for all other packages- Updated dependencies [3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  - @atlaskit/select@11.0.2
+  - @atlaskit/navigation-next@7.1.3
+
+## 4.0.20
+
+- Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+  - @atlaskit/form@6.3.2
+  - @atlaskit/modal-dialog@10.3.6
+  - @atlaskit/navigation-next@7.1.1
+  - @atlaskit/select@11.0.0
+  - @atlaskit/button@13.3.4
+  - @atlaskit/logo@12.2.2
+
 ## 4.0.19
 
 - Updated dependencies [4778521db3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4778521db3):

@@ -8,9 +8,8 @@ export interface WrapperProps {
   type: 'success' | 'failure';
 }
 
-export const Wrapper: ComponentClass<
-  HTMLAttributes<{}> & ThemedOuterStyledProps<WrapperProps, {}>
-> = styled.div`
+export const Wrapper: ComponentClass<HTMLAttributes<{}> &
+  ThemedOuterStyledProps<WrapperProps, {}>> = styled.div`
   position: absolute;
   left: 0;
   right: 0;

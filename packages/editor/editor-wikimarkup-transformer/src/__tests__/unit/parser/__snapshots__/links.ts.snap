@@ -467,7 +467,7 @@ Object {
             Object {
               "attrs": Object {
                 "__confluenceMetadata": null,
-                "href": "http://www.atlassian.com",
+                "href": "http://www.atlassian.com/",
               },
               "type": "link",
             },
@@ -531,7 +531,7 @@ Object {
             Object {
               "attrs": Object {
                 "__confluenceMetadata": null,
-                "href": "https://www.atlassian.com",
+                "href": "https://www.atlassian.com/",
               },
               "type": "link",
             },
@@ -573,6 +573,7 @@ Object {
           "attrs": Object {
             "__contextId": null,
             "__displayType": null,
+            "__external": false,
             "__fileMimeType": null,
             "__fileName": null,
             "__fileSize": null,

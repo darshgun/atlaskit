@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { borderRadius, colors, typography } from '@atlaskit/theme';
 
-export const MentionListErrorStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const MentionListErrorStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   align-items: center;
   display: flex;
   justify-content: center;
@@ -17,9 +15,7 @@ export const MentionListErrorStyle: ComponentClass<
   border-radius: ${borderRadius()}px;
 `;
 
-export const GenericErrorVisualStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const GenericErrorVisualStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: 108px;
   margin-bottom: 8px;
   margin-top: 36px;
@@ -27,15 +23,11 @@ export const GenericErrorVisualStyle: ComponentClass<
 `;
 
 // TODO: Figure out why the themed css function is causing type errors when passed prop children
-export const MentionListErrorHeadlineStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const MentionListErrorHeadlineStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   ${typography.h400()};
   margin-bottom: 8px;
 `;
 
-export const MentionListAdviceStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const MentionListAdviceStyle: ComponentClass<HTMLAttributes<{}>> = styled.div`
   margin-bottom: 48px;
 `;

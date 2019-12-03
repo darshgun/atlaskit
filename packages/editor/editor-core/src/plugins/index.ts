@@ -1,9 +1,7 @@
 export { default as basePlugin } from './base';
 export { default as blockTypePlugin } from './block-type';
 export { pluginKey as blockPluginStateKey, BlockTypeState } from './block-type';
-export {
-  default as clearMarksOnChangeToEmptyDocumentPlugin,
-} from './clear-marks-on-change-to-empty-document';
+export { default as clearMarksOnChangeToEmptyDocumentPlugin } from './clear-marks-on-change-to-empty-document';
 export { default as codeBlockPlugin } from './code-block';
 export { default as collabEditPlugin, CollabEditProvider } from './collab-edit';
 export { default as datePlugin } from './date';
@@ -51,5 +49,5 @@ export { default as customAutoformatPlugin } from './custom-autoformat';
 export { default as feedbackDialogPlugin } from './feedback-dialog';
 export { default as historyPlugin } from './history';
 export { default as sharedContextPlugin } from './shared-context';
-export { default as expandPlugin } from './expand';
-export { default as iOSScrollPlugin } from './ios-scroll';
+export { default as expandPlugin, isExpandInsertionEnabled } from './expand';
+export { default as mobileScrollPlugin } from './mobile-scroll';

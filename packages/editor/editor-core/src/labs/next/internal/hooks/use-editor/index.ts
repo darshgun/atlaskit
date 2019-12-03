@@ -100,20 +100,17 @@ function useApplyEditorViewProps(
   editorSharedConfig: EditorSharedConfig | null,
   disabled?: boolean,
 ) {
-  React.useEffect(
-    () => {
-      if (editorSharedConfig) {
-        editorSharedConfig.editorView.setProps({
-          dispatchTransaction: createDispatchTransaction(editorSharedConfig),
-        } as DirectEditorProps);
+  React.useEffect(() => {
+    if (editorSharedConfig) {
+      editorSharedConfig.editorView.setProps({
+        dispatchTransaction: createDispatchTransaction(editorSharedConfig),
+      } as DirectEditorProps);
 
-        editorSharedConfig.editorView.setProps({
-          editable: _state => !disabled,
-        } as DirectEditorProps);
-      }
-    },
-    [editorSharedConfig, disabled],
-  );
+      editorSharedConfig.editorView.setProps({
+        editable: _state => !disabled,
+      } as DirectEditorProps);
+    }
+  }, [editorSharedConfig, disabled]);
 }
 
 /**
@@ -122,51 +119,48 @@ function useApplyEditorViewProps(
 export function useHandleEditorUnmount(
   editorSharedConfigRef: React.MutableRefObject<EditorSharedConfig | null>,
 ) {
-  React.useEffect(
-    () => {
-      // Need to keep this reference in order to make "react-hooks/exhaustive-deps" eslint rule happy
-      const editorSharedConfig = editorSharedConfigRef;
+  React.useEffect(() => {
+    // Need to keep this reference in order to make "react-hooks/exhaustive-deps" eslint rule happy
+    const editorSharedConfig = editorSharedConfigRef;
 
-      // Will unmount
-      return () => {
-        if (!editorSharedConfig.current) {
-          return;
+    // Will unmount
+    return () => {
+      if (!editorSharedConfig.current) {
+        return;
+      }
+
+      const {
+        eventDispatcher,
+        editorView,
+        onDestroy,
+      } = editorSharedConfig.current;
+
+      if (eventDispatcher) {
+        eventDispatcher.destroy();
+      }
+
+      if (editorView) {
+        // Prevent any transactions from coming through when unmounting
+        editorView.setProps({
+          dispatchTransaction: _tr => {},
+        } as DirectEditorProps);
+
+        if (onDestroy) {
+          onDestroy();
         }
 
-        const {
-          eventDispatcher,
-          editorView,
-          onDestroy,
-        } = editorSharedConfig.current;
-
-        if (eventDispatcher) {
-          eventDispatcher.destroy();
-        }
-
-        if (editorView) {
-          // Prevent any transactions from coming through when unmounting
-          editorView.setProps({
-            dispatchTransaction: _tr => {},
-          } as DirectEditorProps);
-
-          if (onDestroy) {
-            onDestroy();
+        // Destroy plugin states and editor state
+        // when the editor is being unmounted
+        const editorState = editorView.state;
+        editorState.plugins.forEach(plugin => {
+          const state = plugin.getState(editorState);
+          if (state && state.destroy) {
+            state.destroy();
           }
+        });
 
-          // Destroy plugin states and editor state
-          // when the editor is being unmounted
-          const editorState = editorView.state;
-          editorState.plugins.forEach(plugin => {
-            const state = plugin.getState(editorState);
-            if (state && state.destroy) {
-              state.destroy();
-            }
-          });
-
-          editorView.destroy();
-        }
-      };
-    },
-    [editorSharedConfigRef],
-  );
+        editorView.destroy();
+      }
+    };
+  }, [editorSharedConfigRef]);
 }

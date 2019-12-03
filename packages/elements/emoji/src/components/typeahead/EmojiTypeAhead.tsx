@@ -14,7 +14,9 @@ import EmojiTypeAheadComponent, {
 } from './EmojiTypeAheadComponent';
 
 const emojiTypeAheadModuleLoader = () =>
-  import(/* webpackChunkName:"@atlaskit-internal_emojiTypeAheadComponent" */ './EmojiTypeAheadComponent');
+  import(
+    /* webpackChunkName:"@atlaskit-internal_emojiTypeAheadComponent" */ './EmojiTypeAheadComponent'
+  );
 
 const emojiTypeAheadComponentLoader: () => Promise<
   ComponentClass<ComponentProps>

@@ -4,6 +4,7 @@ import {
   B400,
   DN10A,
   N0,
+  N20,
   N40,
   N200,
   N500,
@@ -55,7 +56,7 @@ const defaultTheme: { mode: Mode } = {
         boxShadow: `0 0 0 2px ${B200}`,
       },
       hover: {
-        color: N500,
+        color: B400,
         backgroundColor: hexToRGBA(B50, 0.9),
         boxShadow: '',
       },
@@ -87,7 +88,7 @@ const defaultTheme: { mode: Mode } = {
         boxShadow: `0 0 0 2px ${B200}`,
       },
       hover: {
-        color: N600,
+        color: B400,
         backgroundColor: hexToRGBA(B50, 0.9),
         boxShadow: '0 0 0 2px transparent',
       },
@@ -108,7 +109,7 @@ const defaultTheme: { mode: Mode } = {
         borderColor: B200,
       },
     },
-    skeleton: { backgroundColor: DN10A, opacity: 0.15 },
+    skeleton: { backgroundColor: N20, opacity: 1 },
   },
 };
 

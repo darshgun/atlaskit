@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-const log = console.log;
+// @flow
+/* eslint-disable no-shadow */
 const meow = require('meow');
 const chalk = require('chalk');
-const measure = require('./measure');
 const bolt = require('bolt');
 const minimatch = require('minimatch');
+const measure = require('./measure');
 
-let c = meow(
+const c = meow(
   `
     Usage
         $ measure <[paths]>
@@ -72,17 +73,17 @@ async function resolvePaths(paths) {
     .map(ws => ws.dir);
 }
 
-async function executeMeasure(paths, c, errors = [], results = []) {
+async function executeMeasure(paths, cParam, errors = [], results = []) {
   const path = paths.pop();
 
   try {
     const result = await measure(
       path,
-      c.flags.analyze,
-      c.flags.json,
-      c.flags.lint,
-      c.flags.updateSnapshot,
-      c.flags.s3,
+      cParam.flags.analyze,
+      cParam.flags.json,
+      cParam.flags.lint,
+      cParam.flags.updateSnapshot,
+      cParam.flags.s3,
     );
     results.push(result);
   } catch (error) {
@@ -90,10 +91,9 @@ async function executeMeasure(paths, c, errors = [], results = []) {
   }
 
   if (paths.length > 0) {
-    return executeMeasure(paths, c, errors, results);
-  } else {
-    return { errors, results };
+    return executeMeasure(paths, cParam, errors, results);
   }
+  return { errors, results };
 }
 
 function handleMeasureResult({ errors, results }) {
@@ -105,7 +105,7 @@ function handleMeasureResult({ errors, results }) {
     );
 
     errors.forEach(error => {
-      console.log('  ' + chalk.red(error));
+      console.log(`  ${chalk.red(error)}`);
     });
 
     logInvalidUse();

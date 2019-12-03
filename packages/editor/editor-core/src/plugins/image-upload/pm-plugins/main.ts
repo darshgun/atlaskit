@@ -14,7 +14,7 @@ import { EditorView } from 'prosemirror-view';
 import { startImageUpload, insertExternalImage } from './commands';
 import { PMPluginFactoryParams } from '../../../types';
 
-type DOMHandlerPredicate = ((e: Event) => boolean);
+type DOMHandlerPredicate = (e: Event) => boolean;
 const createDOMHandler = (pred: DOMHandlerPredicate, eventName: string) => (
   view: EditorView,
   event: Event,

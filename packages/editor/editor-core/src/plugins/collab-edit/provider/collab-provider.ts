@@ -195,9 +195,7 @@ export class CollabProvider implements CollabEditProvider {
       this.processRemoteData(data, forceApply);
     } else if (data.version > expectedVersion) {
       logger(
-        `Version too high. Expected ${expectedVersion} but got ${
-          data.version
-        }. Current local version is ${currentVersion}`,
+        `Version too high. Expected ${expectedVersion} but got ${data.version}. Current local version is ${currentVersion}`,
       );
       this.queueData(data);
     }

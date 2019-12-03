@@ -144,6 +144,7 @@ export interface GroupHighlight {
 }
 
 export interface OptionData {
+  avatarUrl?: any;
   id: string;
   name: string;
   type?: 'user' | 'team' | 'email' | 'group';
@@ -202,10 +203,10 @@ export type OnPicker = (sessionId?: string) => void;
 
 export type OnOption = (value: Value, sessionId?: string) => void;
 
-export type Option = {
+export type Option<Data = OptionData> = {
   label: string;
   value: string;
-  data: OptionData;
+  data: Data;
 };
 
 export interface LoadOptions {

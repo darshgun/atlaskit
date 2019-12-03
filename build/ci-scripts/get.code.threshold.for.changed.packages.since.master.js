@@ -1,5 +1,5 @@
-const bolt = require('bolt');
-const packages = require('../utils/packages');
+// @flow
+const packages = require('@atlaskit/build-utils/packages');
 const codeCoverageByPackage = require('./jest.codeCoverageThreshold');
 /**
  * NOTE: This prints the coverage threshold list by changed packages since master ONLY if they have been commited.
@@ -17,8 +17,6 @@ const codeCoverageByPackage = require('./jest.codeCoverageThreshold');
  * }
  * */
 (async () => {
-  const cwd = process.cwd();
-  const allPackages = await bolt.getWorkspaces({ cwd });
   const changedPackages = await packages.getChangedPackagesSinceMaster();
 
   const changedPackagesName = changedPackages.map(

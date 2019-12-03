@@ -9,6 +9,7 @@ Object {
           "attrs": Object {
             "__contextId": "DUMMY-OBJECT-ID",
             "__displayType": null,
+            "__external": false,
             "__fileMimeType": null,
             "__fileName": "example.png",
             "__fileSize": null,
@@ -40,6 +41,7 @@ Object {
           "attrs": Object {
             "__contextId": "DUMMY-OBJECT-ID",
             "__displayType": null,
+            "__external": false,
             "__fileMimeType": null,
             "__fileName": "example.png",
             "__fileSize": null,

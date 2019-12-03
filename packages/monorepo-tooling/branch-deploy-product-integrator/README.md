@@ -3,11 +3,12 @@
 This is a CLI for automatically creating branches installing Atlaskit branch deploys in products.
 
 ## CLI Flags
-`--branchPrefix`       Prefix for the generated branch [default=atlaskit-branch-deploy/]
 
-`--workingPath`    Working path of the product repo installing a branch in [default=./]
+`--branchPrefix` Prefix for the generated branch [default=atlaskit-branch-deploy/]
 
-`--atlaskitCommitHash`       Atlaskit commit hash of the branch deploy that needs to be installed
+`--workingPath` Working path of the product repo installing a branch in [default=./]
+
+`--atlaskitCommitHash` Atlaskit commit hash of the branch deploy that needs to be installed
 
 `--atlaskitBranchName` The branch with which to compare the current branch, when git reporting is enabled can detect PR target branch. [default=master]
 
@@ -15,14 +16,13 @@ This is a CLI for automatically creating branches installing Atlaskit branch dep
 
 `--packages` comma delimited list of packages to install branch deploy of
 
-`--dedupe` !yarn only! run yarn deduplicate at the end to deduplicate the lock file 
+`--dedupe` !yarn only! run yarn deduplicate at the end to deduplicate the lock file
 
+## Bamboo example implementation:
 
-## Bamboo example implementation: 
-
-1. Create a build plan that is linked to the Atlaskit repo AND the product repo. 
-2. Check out Atlaskit repo in the root 
-3. Check out the product repo in a sub-dir and make sure it has write-rights. 
+1. Create a build plan that is linked to the Atlaskit repo AND the product repo.
+2. Check out Atlaskit repo in the root
+3. Check out the product repo in a sub-dir and make sure it has write-rights.
 4. Then run the following shell script in the sub-dir of the product checkout:
 
 ```sh

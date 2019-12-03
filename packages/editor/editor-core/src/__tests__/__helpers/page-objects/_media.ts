@@ -1,5 +1,5 @@
 import { insertMedia as integrationInsertMedia } from '../../integration/_helpers';
-import { Page } from './_types';
+import { Page } from 'puppeteer';
 import { getBoundingRect, scrollToElement } from './_editor';
 
 import { snapshot } from '../../visual-regression/_utils';
@@ -50,64 +50,40 @@ const mediaImageSelected = `.ProseMirror-selectednode .${mediaSingleClassName} .
 const insertMediaFileSelector = 'div[aria-label="%s"]';
 
 export const LinkToolbarSelectors = {
-  [MediaToolbarButton.addLink]: `[aria-label="Media floating controls"] [aria-label="${
-    linkToolbarMessages.addLink.defaultMessage
-  }"]`,
-  [MediaToolbarButton.editLink]: `[aria-label="Media floating controls"] [aria-label="${
-    linkToolbarMessages.editLink.defaultMessage
-  }"]`,
-  [MediaToolbarButton.openLink]: `[aria-label="Media floating controls"] [aria-label="${
-    linkToolbarMessages.openLink.defaultMessage
-  }"]`,
-  [MediaToolbarButton.unlink]: `[aria-label="Media floating controls"] [aria-label="${
-    linkToolbarMessages.unlink.defaultMessage
-  }"]`,
-  [MediaToolbarButton.backLink]: `[aria-label="Media floating controls"] [aria-label="${
-    mediaLinkToolbarMessages.backLink.defaultMessage
-  }"]`,
+  [MediaToolbarButton.addLink]: `[aria-label="Media floating controls"] [aria-label="${linkToolbarMessages.addLink.defaultMessage}"]`,
+  [MediaToolbarButton.editLink]: `[aria-label="Media floating controls"] [aria-label="${linkToolbarMessages.editLink.defaultMessage}"]`,
+  [MediaToolbarButton.openLink]: `[aria-label="Media floating controls"] [aria-label="${linkToolbarMessages.openLink.defaultMessage}"]`,
+  [MediaToolbarButton.unlink]: `[aria-label="Media floating controls"] [aria-label="${linkToolbarMessages.unlink.defaultMessage}"]`,
+  [MediaToolbarButton.backLink]: `[aria-label="Media floating controls"] [aria-label="${mediaLinkToolbarMessages.backLink.defaultMessage}"]`,
 };
 
 const LayoutSelectors = {
   [MediaLayout.center]: {
-    button: `[aria-label="Media floating controls"] [aria-label="${
-      commonMessages.alignImageCenter.defaultMessage
-    }"]`,
+    button: `[aria-label="Media floating controls"] [aria-label="${commonMessages.alignImageCenter.defaultMessage}"]`,
     modifier: `.${mediaSingleClassName}.image-center`,
   },
   [MediaLayout.wrapLeft]: {
-    button: `[aria-label="Media floating controls"] [aria-label="${
-      mediaLayoutToolbarMessages.wrapLeft.defaultMessage
-    }"]`,
+    button: `[aria-label="Media floating controls"] [aria-label="${mediaLayoutToolbarMessages.wrapLeft.defaultMessage}"]`,
     modifier: `.${mediaSingleClassName}.image-wrap-left`,
   },
   [MediaLayout.wrapRight]: {
-    button: `[aria-label="Media floating controls"] [aria-label="${
-      mediaLayoutToolbarMessages.wrapRight.defaultMessage
-    }"]`,
+    button: `[aria-label="Media floating controls"] [aria-label="${mediaLayoutToolbarMessages.wrapRight.defaultMessage}"]`,
     modifier: `.${mediaSingleClassName}.image-wrap-right`,
   },
   [MediaLayout.wide]: {
-    button: `[aria-label="Media floating controls"] [aria-label="${
-      commonMessages.layoutWide.defaultMessage
-    }"]`,
+    button: `[aria-label="Media floating controls"] [aria-label="${commonMessages.layoutWide.defaultMessage}"]`,
     modifier: `.${mediaSingleClassName}.image-wide`,
   },
   [MediaLayout.fullWidth]: {
-    button: `[aria-label="Media floating controls"] [aria-label="${
-      commonMessages.layoutFullWidth.defaultMessage
-    }"]`,
+    button: `[aria-label="Media floating controls"] [aria-label="${commonMessages.layoutFullWidth.defaultMessage}"]`,
     modifier: `.${mediaSingleClassName}.image-full-width`,
   },
   [MediaLayout.alignStart]: {
-    button: `[aria-label="Media floating controls"] [aria-label="${
-      commonMessages.alignImageLeft.defaultMessage
-    }"]`,
+    button: `[aria-label="Media floating controls"] [aria-label="${commonMessages.alignImageLeft.defaultMessage}"]`,
     modifier: `.${mediaSingleClassName}.image-align-start`,
   },
   [MediaLayout.alignEnd]: {
-    button: `[aria-label="Media floating controls"] [aria-label="${
-      commonMessages.alignImageRight.defaultMessage
-    }"]`,
+    button: `[aria-label="Media floating controls"] [aria-label="${commonMessages.alignImageRight.defaultMessage}"]`,
     modifier: `.${mediaSingleClassName}.image-align-end`,
   },
 };

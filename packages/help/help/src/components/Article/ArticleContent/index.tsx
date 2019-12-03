@@ -8,10 +8,19 @@ export interface Props {
   title?: string;
   body?: string;
   titleLinkUrl?: string;
+  onArticleRenderBegin?(): void;
+  onArticleRenderDone?(): void;
 }
 
 const ArticleContent = (props: Props) => {
-  const { isLoading = false, title = '', body = '', titleLinkUrl = '' } = props;
+  const {
+    isLoading = false,
+    title = '',
+    body = '',
+    titleLinkUrl = '',
+    onArticleRenderBegin,
+    onArticleRenderDone,
+  } = props;
 
   return isLoading ? (
     <>
@@ -24,7 +33,13 @@ const ArticleContent = (props: Props) => {
       </div>
     </>
   ) : (
-    <HelpArticle title={title} body={body} titleLinkUrl={titleLinkUrl} />
+    <HelpArticle
+      title={title}
+      body={body}
+      titleLinkUrl={titleLinkUrl}
+      onArticleRenderBegin={onArticleRenderBegin}
+      onArticleRenderDone={onArticleRenderDone}
+    />
   );
 };
 

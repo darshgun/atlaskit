@@ -9,7 +9,9 @@ import { BaseViewer } from '../base-viewer';
 import { getObjectUrlFromFileState } from '../../utils/getObjectUrlFromFileState';
 
 const moduleLoader = () =>
-  import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
+  import(
+    /* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer'
+  );
 
 const componentLoader: () => Promise<ComponentClass<RendererProps>> = () =>
   moduleLoader().then(module => module.PDFRenderer);
@@ -21,6 +23,7 @@ export type Props = {
   onClose?: () => void;
   onError?: (error: Error) => void;
   onSuccess?: () => void;
+  isSidebarVisible?: boolean;
 };
 
 export type State = {
@@ -90,7 +93,7 @@ export class DocViewer extends BaseViewer<string, Props> {
   }
 
   protected renderSuccessful(content: string) {
-    const { onClose, onSuccess, onError } = this.props;
+    const { onClose, onSuccess, onError, isSidebarVisible } = this.props;
     const { PDFComponent } = DocViewer;
 
     if (!PDFComponent) {
@@ -102,6 +105,7 @@ export class DocViewer extends BaseViewer<string, Props> {
         onSuccess={onSuccess}
         onError={onError}
         onClose={onClose}
+        isSidebarVisible={isSidebarVisible}
       />
     );
   }

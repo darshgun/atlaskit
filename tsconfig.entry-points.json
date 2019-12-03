@@ -551,6 +551,26 @@
         "../../core/lozenge/src/theme",
         "./packages/core/lozenge/src/theme"
       ],
+      "@atlaskit/menu/Group": [
+        "../../core/menu/src/Group",
+        "./packages/core/menu/src/Group"
+      ],
+      "@atlaskit/menu": [
+        "../../core/menu/src/",
+        "./packages/core/menu/src/"
+      ],
+      "@atlaskit/menu/MenuItem": [
+        "../../core/menu/src/MenuItem",
+        "./packages/core/menu/src/MenuItem"
+      ],
+      "@atlaskit/menu/styles": [
+        "../../core/menu/src/styles",
+        "./packages/core/menu/src/styles"
+      ],
+      "@atlaskit/menu/types": [
+        "../../core/menu/src/types",
+        "./packages/core/menu/src/types"
+      ],
       "@atlaskit/modal-dialog": [
         "../../core/modal-dialog/src/",
         "./packages/core/modal-dialog/src/"
@@ -815,6 +835,14 @@
         "../../core/select/src/Select",
         "./packages/core/select/src/Select"
       ],
+      "@atlaskit/select/styles": [
+        "../../core/select/src/styles",
+        "./packages/core/select/src/styles"
+      ],
+      "@atlaskit/select/types": [
+        "../../core/select/src/types",
+        "./packages/core/select/src/types"
+      ],
       "@atlaskit/single-select": [
         "../../core/single-select/src/",
         "./packages/core/single-select/src/"
@@ -914,6 +942,10 @@
       "@atlaskit/textfield/types": [
         "../../core/textfield/src/types",
         "./packages/core/textfield/src/types"
+      ],
+      "@atlaskit/theme/color-palettes": [
+        "../../core/theme/src/color-palettes",
+        "./packages/core/theme/src/color-palettes"
       ],
       "@atlaskit/theme/colors": [
         "../../core/theme/src/colors",
@@ -1083,13 +1115,13 @@
         "../../editor/editor-bitbucket-transformer/src/util",
         "./packages/editor/editor-bitbucket-transformer/src/util"
       ],
-      "@atlaskit/editor-common/color": [
-        "../../editor/editor-common/src/color",
-        "./packages/editor/editor-common/src/color"
-      ],
       "@atlaskit/editor-common": [
         "../../editor/editor-common/src/",
         "./packages/editor/editor-common/src/"
+      ],
+      "@atlaskit/editor-common/provider-factory": [
+        "../../editor/editor-common/src/provider-factory",
+        "./packages/editor/editor-common/src/provider-factory"
       ],
       "@atlaskit/editor-common/validator": [
         "../../editor/editor-common/src/validator",
@@ -1203,9 +1235,17 @@
         "../../editor/editor-mobile-bridge/src/cross-platform-promise",
         "./packages/editor/editor-mobile-bridge/src/cross-platform-promise"
       ],
+      "@atlaskit/editor-mobile-bridge/editor-arch-v3": [
+        "../../editor/editor-mobile-bridge/src/editor-arch-v3",
+        "./packages/editor/editor-mobile-bridge/src/editor-arch-v3"
+      ],
       "@atlaskit/editor-mobile-bridge/error-reporter": [
         "../../editor/editor-mobile-bridge/src/error-reporter",
         "./packages/editor/editor-mobile-bridge/src/error-reporter"
+      ],
+      "@atlaskit/editor-mobile-bridge/globals.d": [
+        "../../editor/editor-mobile-bridge/src/globals.d",
+        "./packages/editor/editor-mobile-bridge/src/globals.d"
       ],
       "@atlaskit/editor-mobile-bridge/types": [
         "../../editor/editor-mobile-bridge/src/types",
@@ -2274,6 +2314,14 @@
       "@atlaskit/progress-bar/types": [
         "../../server/progress-bar/src/types",
         "./packages/server/progress-bar/src/types"
+      ],
+      "@atlaskit/router/examples": [
+        "../../spa/router/src/examples",
+        "./packages/spa/router/src/examples"
+      ],
+      "@atlaskit/router": [
+        "../../spa/router/src/",
+        "./packages/spa/router/src/"
       ],
       "@atlaskit/outbound-auth-flow-client": [
         "../../teamwork-ecosystem/outbound-auth-flow-client/src/",

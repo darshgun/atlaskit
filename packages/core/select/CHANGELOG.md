@@ -1,5 +1,29 @@
 # @atlaskit/select
 
+## 11.0.2
+
+### Patch Changes
+
+- [patch][3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  Make PopupSelect correctly pass props. Forcing update of @atlaskit/select for all other packages
+
+## 11.0.1
+
+### Patch Changes
+
+- [patch][b9e23d337a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e23d337a):
+
+  @types/react-select is now explicitly listed as a dependency
+
+## 11.0.0
+
+### Major Changes
+
+- [major][30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+
+  @atlaskit/select has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
 ## 10.2.2
 
 ### Patch Changes

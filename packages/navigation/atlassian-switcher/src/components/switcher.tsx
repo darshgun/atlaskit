@@ -11,9 +11,14 @@ import {
   Skeleton,
   TryLozenge,
   FormattedMessage,
+  ItemWithAvatarGroup,
 } from '../primitives';
 
-import { SwitcherItemType, RecentItemType } from '../utils/links';
+import {
+  SwitcherItemType,
+  RecentItemType,
+  JoinableSiteItemType,
+} from '../utils/links';
 import {
   analyticsAttributes,
   NavigationAnalyticsContext,
@@ -24,7 +29,11 @@ import {
 import now from '../utils/performance-now';
 import { urlToHostname } from '../utils/url-to-hostname';
 import { Appearance } from '../theme/types';
-import { TriggerXFlowCallback, DiscoverMoreCallback } from '../types';
+import {
+  TriggerXFlowCallback,
+  DiscoverMoreCallback,
+  JoinableSiteClickHandler,
+} from '../types';
 
 const noop = () => void 0;
 
@@ -44,6 +53,7 @@ export type SwitcherProps = {
   suggestedProductLinks: SwitcherItemType[];
   fixedLinks: SwitcherItemType[];
   adminLinks: SwitcherItemType[];
+  joinableSiteLinks?: JoinableSiteItemType[];
   recentLinks: RecentItemType[];
   customLinks: SwitcherItemType[];
   manageLink?: string;
@@ -58,6 +68,7 @@ export type SwitcherProps = {
    */
   isDiscoverSectionEnabled?: boolean;
   discoverSectionLinks: SwitcherItemType[];
+  onJoinableSiteClicked?: JoinableSiteClickHandler;
 };
 
 const getAnalyticsContext = (itemsCount: number) => ({
@@ -138,6 +149,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
       appearance,
       isDiscoverSectionEnabled,
       discoverSectionLinks,
+      onJoinableSiteClicked,
     } = this.props;
     /**
      * It is essential that switchToLinks reflects the order corresponding nav items
@@ -150,11 +162,14 @@ export default class Switcher extends React.Component<SwitcherProps> {
       ...adminLinks,
     ];
 
+    const joinableSiteLinks = this.props.joinableSiteLinks || [];
+
     const itemsCount =
       switchToLinks.length +
       recentLinks.length +
       customLinks.length +
-      discoverSectionLinks.length;
+      discoverSectionLinks.length +
+      joinableSiteLinks.length;
 
     const firstContentArrived = Boolean(licensedProductLinks.length);
 
@@ -184,6 +199,7 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 suggestedProducts: suggestedProductLinks.map(item => item.key),
                 adminLinks: adminLinks.map(item => item.key),
                 fixedLinks: fixedLinks.map(item => item.key),
+                joinableSiteLinks: joinableSiteLinks.map(item => item.key),
                 numberOfSites,
               }}
             />
@@ -290,6 +306,45 @@ export default class Switcher extends React.Component<SwitcherProps> {
                 </SwitcherThemedItemWithEvents>
               </NavigationAnalyticsContext>
             ))}
+          </Section>
+          <Section
+            sectionId="join"
+            title={<FormattedMessage {...messages.join} />}
+          >
+            {joinableSiteLinks.map(
+              (
+                { cloudId, description, href, Icon, label, productType, users },
+                groupIndex: number,
+              ) => (
+                <NavigationAnalyticsContext
+                  key={groupIndex}
+                  data={getItemAnalyticsContext(
+                    groupIndex,
+                    cloudId,
+                    'join',
+                    href,
+                    productType,
+                  )}
+                >
+                  <ItemWithAvatarGroup
+                    icon={<Icon theme="product" />}
+                    description={description}
+                    users={users}
+                    href={href}
+                    onItemClick={(event: React.SyntheticEvent) => {
+                      if (onJoinableSiteClicked) {
+                        event.preventDefault();
+                        onJoinableSiteClicked(href);
+                      }
+                    }}
+                    target={onJoinableSiteClicked ? undefined : '_blank'}
+                    rel={onJoinableSiteClicked ? undefined : 'noreferrer'}
+                  >
+                    {label}
+                  </ItemWithAvatarGroup>
+                </NavigationAnalyticsContext>
+              ),
+            )}
           </Section>
           )}
           {isDiscoverSectionEnabled && (

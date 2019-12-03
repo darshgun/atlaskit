@@ -15,7 +15,7 @@ const StatusPickerSource = require('!!raw-loader!../examples/01-status-picker');
 const StatusPickerProps = require('!!extract-react-types-loader!../src/components/StatusPicker');
 
 export default md`
-${<AtlassianInternalWarning />}
+${(<AtlassianInternalWarning />)}
 
 This component is the implementation of the Status element in React.
 
@@ -47,7 +47,7 @@ This component is the implementation of the Status element in React.
     />
   )}
 
-  ${<Props heading="StatusPicker Props" props={StatusPickerProps} />}
+  ${(<Props heading="StatusPicker Props" props={StatusPickerProps} />)}
 `;
 
 // TODO: Add Props for Status when pretty prop types support function.

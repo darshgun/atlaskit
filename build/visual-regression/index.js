@@ -1,5 +1,4 @@
 // @flow
-'use strict';
 
 const path = require('path');
 const isReachable = require('is-reachable');
@@ -232,6 +231,7 @@ function runTestsWithRetry() {
 }
 
 async function main() {
+  // eslint-disable-next-line no-unused-vars
   const exitHandler = exitCode => {
     console.log(chalk.dim(cli.help));
   };
@@ -243,6 +243,7 @@ async function main() {
     process.on('exit', exitHandler);
   }
 
+  // eslint-disable-next-line no-unused-expressions
   startServer ? await webpack.startDevServer() : console.log('start server');
   await isReachable('http://localhost:9000');
 
@@ -259,6 +260,7 @@ async function main() {
       ),
     );
   }
+  // eslint-disable-next-line no-unused-expressions
   startServer ? await webpack.stopDevServer() : console.log('test completed');
   process.exit(code);
 }

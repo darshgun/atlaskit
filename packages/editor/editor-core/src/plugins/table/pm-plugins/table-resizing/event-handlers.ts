@@ -88,8 +88,11 @@ export const handleMouseDown = (
     return true;
   }
 
-  const width = currentColWidth(view, localResizeHandlePos, cell!
-    .attrs as CellAttributes);
+  const width = currentColWidth(
+    view,
+    localResizeHandlePos,
+    cell!.attrs as CellAttributes,
+  );
 
   setDragging({ startX: event.clientX, startWidth: width })(state, dispatch);
 

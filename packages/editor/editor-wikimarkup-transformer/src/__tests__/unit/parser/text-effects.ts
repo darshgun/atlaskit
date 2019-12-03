@@ -57,6 +57,22 @@ https://app.datadoghq.com/screen/282018/product-fabric-adf-service?tv_mode=true#
       'text http://example.com/query=some%20text%20with%20encoded%20space text',
     ],
     [
+      'should not double url-encode text links with a url-encoded comma',
+      'text https://example.com/test%2C%20space text',
+    ],
+    [
+      'should not double url-encode text links with raw comma',
+      'text https://example.com/test,%20space text',
+    ],
+    [
+      'should differentiate raw comma from url-encoded comma',
+      'text https://example.com/test%2C,%20space text',
+    ],
+    [
+      'should differentiate raw comma from url-encoded comma in a mailto:',
+      'text mailto:test%2C,%20space@example.com text',
+    ],
+    [
       '[CS-576] should allow {color} macro in formatters',
       'This is _{color:red}*Strong Red and Italic*{color}_',
     ],

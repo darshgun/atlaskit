@@ -14,6 +14,8 @@ import {
   UserWithEmail,
 } from '../types';
 
+type InviteWarningType = 'ADMIN' | 'DIRECT';
+
 const matchAllowedDomains = memoizeOne(
   (domain: string, config: ConfigResponse | undefined) => {
     return (
@@ -53,30 +55,59 @@ const checkDomains = (
 };
 
 /**
- * Decides if the warn message should be shown in the share form.
+ * Decides if the admin notified flag should be shown
  *
  * @param config share configuration object
  * @param selectedUsers selected users in the user picker
  */
-export const showInviteWarning = (
+export const showAdminNotifiedFlag = (
   config: ConfigResponse | undefined,
   selectedUsers: Value,
-): boolean => {
+): boolean => getInviteWarningType(config, selectedUsers) === 'ADMIN';
+
+const extractUsersByEmail = (users: Value): Email[] => {
+  if (users == null) return [];
+
+  return Array.isArray(users) ? users.filter(isEmail) : [users].filter(isEmail);
+};
+
+/**
+ * Returns the invite warning message type
+ *
+ * @param config share configuration object
+ * @param selectedUsers selected users in the user picker
+ */
+export const getInviteWarningType = (
+  config: ConfigResponse | undefined,
+  selectedUsers: Value,
+): InviteWarningType | null => {
   if (config && selectedUsers) {
     const mode: ConfigResponseMode = config.mode;
-    const selectedEmails: Email[] = Array.isArray(selectedUsers)
-      ? selectedUsers.filter(isEmail)
-      : [selectedUsers].filter(isEmail);
-    return (
-      selectedEmails.length > 0 &&
-      (mode === 'EXISTING_USERS_ONLY' ||
-        mode === 'INVITE_NEEDS_APPROVAL' ||
-        ((mode === 'ONLY_DOMAIN_BASED_INVITE' ||
-          mode === 'DOMAIN_BASED_INVITE') &&
-          checkDomains(config, selectedEmails)))
-    );
+    const selectedEmails: Email[] = extractUsersByEmail(selectedUsers);
+
+    if (!selectedEmails.length) {
+      return null;
+    }
+
+    const isDomainBasedMode =
+      mode === 'ONLY_DOMAIN_BASED_INVITE' || mode === 'DOMAIN_BASED_INVITE';
+
+    if (
+      mode === 'EXISTING_USERS_ONLY' ||
+      mode === 'INVITE_NEEDS_APPROVAL' ||
+      (isDomainBasedMode && checkDomains(config, selectedEmails))
+    ) {
+      return 'ADMIN';
+    } else if (
+      mode === 'ANYONE' ||
+      (isDomainBasedMode && !checkDomains(config, selectedEmails))
+    ) {
+      // https://product-fabric.atlassian.net/browse/PTC-2576
+      return 'DIRECT';
+    }
   }
-  return false;
+
+  return null;
 };
 
 export const optionDataToUsers = (optionDataArray: OptionData[]): User[] =>

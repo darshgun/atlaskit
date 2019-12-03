@@ -1,5 +1,192 @@
 # @atlaskit/editor-core
 
+## 114.1.4
+
+### Patch Changes
+
+- [patch][3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  Make PopupSelect correctly pass props. Forcing update of @atlaskit/select for all other packages- Updated dependencies [3a20e9a596](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a20e9a596):
+
+  - @atlaskit/select@11.0.2
+  - @atlaskit/user-picker@4.1.5
+  - @atlaskit/media-test-helpers@25.2.5
+
+## 114.1.3
+
+### Patch Changes
+
+- [patch][aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  ED-8042 upgrade prosemirror-markdown to remove ES modules workaround- Updated dependencies [aed7d2a980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aed7d2a980):
+
+  - @atlaskit/editor-bitbucket-transformer@6.2.9
+  - @atlaskit/editor-markdown-transformer@3.1.11
+
+## 114.1.2
+
+### Patch Changes
+
+- [patch][f4b7363a8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4b7363a8e):
+
+  ED-8137: Fix rendering of hyperlink toolbar without any activity provider set
+
+## 114.1.1
+
+### Patch Changes
+
+- [patch][a76c0e3081](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a76c0e3081):
+
+  ED-8042 fix: bump markdown-it and prosemirror-markdown to avoid ReDoS vulnerability
+
+## 114.1.0
+
+### Minor Changes
+
+- [minor][166dd996a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/166dd996a8):
+
+  ED-7949: Migrate expand react component to renderer from common to avoid extra deps being added to common
+
+- [minor][292651c91c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/292651c91c):
+
+  [ED-7739] UI for add or edit alt text in media
+
+- [minor][f68c80d51a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68c80d51a):
+
+  FM-2211 Implement scrolling improvements to prevent user typing behind keyboard on iOS
+
+  New editor plugin IOSScroll is added into the plugins list for users on iOS mobile devices
+  This works with a new native-to-web bridge method `setKeyboardControlsHeight` to add an extra buffer to the bottom of the page when the on-screen keyboard is showing
+
+- [minor][3a4aa18da6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a4aa18da6):
+
+  ED-7878 Add expand analytics v1
+
+- [minor][f1a06fc2fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a06fc2fd):
+
+  ED-7876 Implement expand and nestedExpand in Editor and Renderer
+
+  A **work in progress** implementation of the new `expand` and `nestedExpand` nodes. These are currently **disabled** by default, but can be tested by enabling an editor prop.
+
+  `UNSAFE_allowExpand={true}`
+
+  Note, `expand` and `nestedExpand` are only in the `stage-0` ADF schema (as of this changeset).
+
+- [minor][041306acf5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/041306acf5):
+
+  ED-7494: split plain text by linebreaks into paragraphs on paste, convert text bullet into lists
+
+  When pasting plain text with "paragraphs" separated by line breaks, we now paste those as
+  multiple, real, paragraphs instead.
+
+  When pasting plain text that contains Markdown-looking numbered or unordered lists, or lines
+  that start with Unicode bullets, we now convert those to an actual list.
+
+  This fixes pasting from Google Keep, or something like Notepad.
+
+- [minor][b3b743040b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3b743040b):
+
+  ED-7911: Uploads new external media to media services
+
+- [minor][ae42b1ba1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae42b1ba1e):
+
+  Adf schema changes (for stage-0) to support alt text on media nodes.
+  `editor-core` changes are wrapped under the editor prop `UNSAFE_allowAltTextOnImages`. There is no alt text implementation yet, so the user won't be able to add alt text to images just yet.
+
+- [minor][1377a45225](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1377a45225):
+
+  ED-7492 add support to indent actions
+
+  This version adds support for indenting actions using the keyboard shortcuts Tab and Shift-Tab. You can also unindent items by backspacing them at the start, or deleting forwards within the task.
+
+  There is no new behaviour if the feature flag (`allowNestedTasks`) is turned off.
+
+- [minor][40efe6f043](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/40efe6f043):
+
+  ED-7792: Add performance analytics to new arch editor
+
+### Patch Changes
+
+- [patch][c20e926a6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c20e926a6c):
+
+  ED-7971: fix deleting of nested task lists
+
+  Upgrades prosemirror-view to 1.1.6.
+
+  See (this discussion)[https://discuss.prosemirror.net/t/collapsing-empty-nodes-on-delete/2306/4] for more details and screenshots of the behaviour it fixes.
+
+- [patch][c276ecfa22](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c276ecfa22):
+
+  Check for optional values when using WithProviders component
+
+- [patch][60e2652dc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60e2652dc7):
+
+  Use media-picker types entry poin
+
+- [patch][b7c432e8b9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b7c432e8b9):
+
+  FM-2353 Fix issue where links copied from iOS Safari share button were not pasted
+
+- [patch][e76d2904b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e76d2904b4):
+
+  Adding support for alt text on editor and renderer
+
+- [patch][a01023d4b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a01023d4b3):
+
+  ED-7938: allow pasting tasks within task lists
+
+- [patch][d51d5cabc6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d51d5cabc6):
+
+  ED-7867 Prevent infinite loop on table trying to apply bold mark
+
+- [patch][e93cb269a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e93cb269a9):
+
+  ED-8036 Prevent plugin conflicts in insert menu
+
+- [patch][e3e615b10e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3e615b10e):
+
+  ED-8002: Remove types of nodes from performance analytics
+
+- [patch][5b2c89203e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b2c89203e):
+
+  Fix linting errors from prettier upgrade
+
+- [patch][e283b821f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e283b821f0):
+
+  ED-7980: Fixes styling of expands inside layouts (also caters for gap cursor navigation)
+
+- [patch][583d344097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/583d344097):
+
+  ED-7677 Pick color with best contrast for color palette checkmarks
+
+- Updated dependencies [6d9c8a9073](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d9c8a9073):
+- Updated dependencies [70e1055b8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/70e1055b8f):
+- Updated dependencies [ae6408e1e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae6408e1e4):
+  - @atlaskit/adf-schema@4.3.0
+  - @atlaskit/editor-common@42.0.0
+  - @atlaskit/renderer@53.1.0
+  - @atlaskit/editor-json-transformer@7.0.0
+  - @atlaskit/editor-bitbucket-transformer@6.2.7
+  - @atlaskit/editor-markdown-transformer@3.1.9
+  - @atlaskit/editor-test-helpers@10.2.0
+  - @atlaskit/synchrony-test-helpers@1.0.1
+  - @atlaskit/task-decision@16.0.3
+  - @atlaskit/media-test-helpers@25.2.4
+  - @atlaskit/media-picker@50.0.0
+
+## 114.0.4
+
+### Patch Changes
+
+- [patch][30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):
+
+  @atlaskit/select has been converted to Typescript. Typescript consumers will now get static type safety. Flow types are no longer provided. No API or behavioural changes.
+
+## 114.0.3
+
+- Updated dependencies [4e487b59a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e487b59a1):
+  - @atlaskit/share@0.7.0
+
 ## 114.0.2
 
 ### Patch Changes

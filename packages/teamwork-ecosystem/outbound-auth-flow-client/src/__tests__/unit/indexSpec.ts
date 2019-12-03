@@ -61,7 +61,10 @@ describe('auth()', () => {
       }),
     );
 
-    promise.then(() => done.fail(), () => done.fail());
+    promise.then(
+      () => done.fail(),
+      () => done.fail(),
+    );
 
     window.setTimeout(() => {
       expect(true).toBe(true);
@@ -83,7 +86,10 @@ describe('auth()', () => {
       }),
     );
 
-    promise.then(() => done.fail(), () => done.fail());
+    promise.then(
+      () => done.fail(),
+      () => done.fail(),
+    );
 
     window.setTimeout(() => {
       expect(true).toBe(true);

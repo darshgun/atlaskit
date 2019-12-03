@@ -159,9 +159,10 @@ export const insertMediaSingleNode = (
 
   const { state, dispatch } = view;
   const grandParent = state.selection.$from.node(-1);
-  const node = createMediaSingleNode(state.schema, collection)(
-    mediaState as MediaSingleState,
-  );
+  const node = createMediaSingleNode(
+    state.schema,
+    collection,
+  )(mediaState as MediaSingleState);
   const shouldSplit =
     grandParent && grandParent.type.validContent(Fragment.from(node));
   let fileExtension: string | undefined;
@@ -235,22 +236,39 @@ export function transformSliceForMedia(slice: Slice, schema: Schema) {
     table,
     bulletList,
     orderedList,
+    media,
+    expand,
   } = schema.nodes;
 
   return (selection: Selection) => {
+    let newSlice = slice;
     if (
-      hasParentNodeOfType([layoutSection, table, bulletList, orderedList])(
-        selection,
-      )
+      hasParentNodeOfType([
+        layoutSection,
+        table,
+        bulletList,
+        orderedList,
+        expand,
+      ])(selection)
     ) {
-      return mapSlice(slice, node =>
+      newSlice = mapSlice(newSlice, node =>
         node.type.name === 'mediaSingle'
           ? mediaSingle.createChecked({}, node.content, node.marks)
           : node,
       );
     }
 
-    return slice;
+    newSlice = mapSlice(newSlice, node =>
+      node.type.name === 'media' && node.attrs.type === 'external'
+        ? media.createChecked(
+            { ...node.attrs, __external: true },
+            node.content,
+            node.marks,
+          )
+        : node,
+    );
+
+    return newSlice;
   };
 }
 

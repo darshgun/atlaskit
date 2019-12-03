@@ -45,22 +45,22 @@ type ConfluenceContainerResults = Scope.ConfluenceSpace;
  * Eventually we want all the scopes to be typed in some way
  */
 export type TypePeopleResults = {
-  [S in PeopleScopes]: PeopleResults | undefined
+  [S in PeopleScopes]: PeopleResults | undefined;
 };
 
 export type TypeConfluenceObjectResults = {
-  [S in ConfluenceObjectScopes]: ConfluenceObjectResults | undefined
+  [S in ConfluenceObjectScopes]: ConfluenceObjectResults | undefined;
 };
 
 export type TypeConfluenceContainerResults = {
-  [S in ConfluenceContainerResults]: Results | undefined
+  [S in ConfluenceContainerResults]: Results | undefined;
 };
 
 /**
  * Temporary type as we start typing all our results
  */
 export type GenericResults = {
-  [S in Exclude<Scope, PeopleScopes>]: Results | undefined
+  [S in Exclude<Scope, PeopleScopes>]: Results | undefined;
 };
 
 /**
@@ -434,29 +434,26 @@ export default class CachingCrossProductSearchClientImpl
     let abTest: ABTest | undefined;
     const results: SearchResultsMap = response.scopes
       .filter(scope => scope.results)
-      .reduce(
-        (resultsMap, scopeResult) => {
-          const items = scopeResult.results.map(result =>
-            mapItemToResult(scopeResult.id as Scope, result),
-          );
+      .reduce((resultsMap, scopeResult) => {
+        const items = scopeResult.results.map(result =>
+          mapItemToResult(scopeResult.id as Scope, result),
+        );
 
-          //@ts-ignore mapItemToResult returns a generic result type, technically we can't guarantee that the
-          //           type returned by `mapItemToResult` can be coerced into the expected type, e.g. there's
-          //           no guarantee the `Result` can be casted to `ConfluenceObjectResult`. We just make the assumption
-          //           here for now and suppress the typescript error
-          resultsMap[scopeResult.id] = {
-            items,
-            totalSize:
-              scopeResult.size !== undefined ? scopeResult.size : items.length,
-          };
+        //@ts-ignore mapItemToResult returns a generic result type, technically we can't guarantee that the
+        //           type returned by `mapItemToResult` can be coerced into the expected type, e.g. there's
+        //           no guarantee the `Result` can be casted to `ConfluenceObjectResult`. We just make the assumption
+        //           here for now and suppress the typescript error
+        resultsMap[scopeResult.id] = {
+          items,
+          totalSize:
+            scopeResult.size !== undefined ? scopeResult.size : items.length,
+        };
 
-          if (!abTest) {
-            abTest = scopeResult.abTest;
-          }
-          return resultsMap;
-        },
-        {} as SearchResultsMap,
-      );
+        if (!abTest) {
+          abTest = scopeResult.abTest;
+        }
+        return resultsMap;
+      }, {} as SearchResultsMap);
 
     return { results, abTest };
   }

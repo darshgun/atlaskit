@@ -46,6 +46,10 @@ export interface Props {
     event?: React.MouseEvent<HTMLElement, MouseEvent>,
     analyticsEvent?: UIAnalyticsEvent,
   ): void;
+  // Function executed when the article rendering begins
+  onArticleRenderBegin?(): void;
+  // Function executed when the article rendering finishes
+  onArticleRenderDone?(): void;
   // Default content. This prop is optional
   defaultContent?: React.ReactNode;
   // Footer content. This prop is optional
@@ -62,6 +66,7 @@ export interface State {
   articleId: string;
   history: HistoryItem[]; // holds all the articles ID the user has navigated
   hasNavigatedToDefaultContent: boolean;
+  articleFullyVisible: boolean; // This will true only if an article 100% visible, that means, after the open animation and before close animation
   // Search
   searchValue: string;
   searchResult: ArticleItem[];
@@ -76,6 +81,7 @@ export interface HelpContextInterface {
     isFooter(): boolean;
     isSearchVisible(): boolean;
     loadArticle(id?: string): void;
+    setArticleFullyVisible(isVisible: boolean): void;
     isArticleVisible(): boolean;
     getCurrentArticle(): HistoryItem | undefined;
     articleIdSetter?(id: string): void;
@@ -91,6 +97,8 @@ export interface HelpContextInterface {
       event?: React.MouseEvent<HTMLElement, MouseEvent>,
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
+    onArticleRenderBegin?(): void;
+    onArticleRenderDone?(): void;
     history: HistoryItem[]; // holds all the articles ID the user has navigated
     footer?: React.ReactNode;
     defaultContent?: React.ReactNode;
@@ -104,6 +112,7 @@ export interface HelpContextInterface {
     searchState: REQUEST_STATE;
     searchValue: string;
     articleId?: string;
+    articleFullyVisible: boolean;
   };
 }
 
@@ -115,6 +124,7 @@ const defaultValues = {
   articleId: '',
   history: [], // holds all the articles ID the user has navigated
   hasNavigatedToDefaultContent: false,
+  articleFullyVisible: false,
   // Search values
   searchValue: '',
   searchResult: [],
@@ -298,22 +308,28 @@ class HelpContextProviderImplementation extends React.Component<
         }
 
         // get the article
-        this.props.onGetArticle(articleId).then(article => {
-          if (article) {
-            // add the article value to the last historyItem
-            // and update the state of the last historyItem to done
-            updateNewLastItem(uid, {
-              state: REQUEST_STATE.done,
-              article: article,
-            });
-          } else {
-            // If we don't get any article, set the state of
-            // the last historyItem to error
-            updateNewLastItem(uid, { state: REQUEST_STATE.error });
-          }
+        this.props.onGetArticle(articleId).then(
+          article => {
+            if (article) {
+              // add the article value to the last historyItem
+              // and update the state of the last historyItem to done
+              updateNewLastItem(uid, {
+                state: REQUEST_STATE.done,
+                article: article,
+              });
+            } else {
+              // If we don't get any article, set the state of
+              // the last historyItem to error
+              updateNewLastItem(uid, { state: REQUEST_STATE.error });
+            }
 
-          clearTimeout(this.requestLoadingTimeout);
-        });
+            clearTimeout(this.requestLoadingTimeout);
+          },
+          () => {
+            updateNewLastItem(uid, { state: REQUEST_STATE.error });
+            clearTimeout(this.requestLoadingTimeout);
+          },
+        );
       } catch (error) {
         updateNewLastItem(uid, { state: REQUEST_STATE.error });
         clearTimeout(this.requestLoadingTimeout);
@@ -370,6 +386,10 @@ class HelpContextProviderImplementation extends React.Component<
     return false;
   };
 
+  setArticleFullyVisible = (isVisible: boolean): void => {
+    this.setState({ articleFullyVisible: isVisible });
+  };
+
   isArticleVisible = (): boolean => {
     return (
       (this.state.view === VIEW.ARTICLE ||
@@ -384,7 +404,10 @@ class HelpContextProviderImplementation extends React.Component<
   };
 
   isDefaultContent = (): boolean => {
-    return this.state.defaultContent !== undefined;
+    return (
+      this.state.defaultContent !== undefined &&
+      this.state.defaultContent !== null
+    );
   };
 
   getCurrentArticle = () => {
@@ -406,6 +429,7 @@ class HelpContextProviderImplementation extends React.Component<
             isFooter: this.isFooter,
             isDefaultContent: this.isDefaultContent,
             isSearchVisible: this.isSearchVisible,
+            setArticleFullyVisible: this.setArticleFullyVisible,
             isArticleVisible: this.isArticleVisible,
             navigateBack: this.navigateBack,
             articleIdSetter: this.props.articleIdSetter,
@@ -415,9 +439,12 @@ class HelpContextProviderImplementation extends React.Component<
             onWasHelpfulSubmit: this.props.onWasHelpfulSubmit,
             onWasHelpfulYesButtonClick: this.props.onWasHelpfulYesButtonClick,
             onWasHelpfulNoButtonClick: this.props.onWasHelpfulNoButtonClick,
+            onArticleRenderBegin: this.props.onArticleRenderBegin,
+            onArticleRenderDone: this.props.onArticleRenderDone,
             footer: this.props.footer,
             defaultContent: this.props.defaultContent,
             articleId: this.state.articleId,
+            articleFullyVisible: this.state.articleFullyVisible,
           },
         }}
         children={this.props.children}

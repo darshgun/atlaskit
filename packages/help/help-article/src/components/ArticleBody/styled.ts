@@ -2,6 +2,8 @@
 import styled from '@emotion/styled';
 
 export const ArticleFrame = styled.iframe`
-  width: 100%;
+  display: block;
+  width: calc(100% + 10px);
+  margin: -5px;
   border: none;
 `;

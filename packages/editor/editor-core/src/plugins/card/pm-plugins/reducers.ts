@@ -18,16 +18,13 @@ const queue = (state: CardPluginState, action: Queue) => {
 };
 
 const resolve = (state: CardPluginState, action: Resolve) => {
-  const requests = state.requests.reduce(
-    (requests, request) => {
-      if (request.url !== action.url) {
-        requests.push(request);
-      }
+  const requests = state.requests.reduce((requests, request) => {
+    if (request.url !== action.url) {
+      requests.push(request);
+    }
 
-      return requests;
-    },
-    [] as Request[],
-  );
+    return requests;
+  }, [] as Request[]);
 
   return {
     ...state,

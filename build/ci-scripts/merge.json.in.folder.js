@@ -1,3 +1,4 @@
+// @flow
 /* 
 Util function to merge json files under folder provided as input
 Usage:
@@ -7,6 +8,7 @@ node <path_to_this_file>/merge.json.in.folder.js .folderWithJsonFiles
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').execSync;
+
 const input = path.join(process.cwd(), process.argv[2]);
 
 const mergeJSONFiles = () => {
@@ -15,13 +17,16 @@ const mergeJSONFiles = () => {
     console.log('remove file if exist', output);
     try {
       exec(`rm -rf ${output}`);
-    } catch (e) {}
+    } catch (e) {
+      console.error(`${e}`);
+    }
   }
 
   const files = fs.readdirSync(input);
 
   const jsonFiles = files.reduce((acc, filename) => {
     if (filename.includes('.json')) {
+      // $FlowFixMe - Object issue with JSON.parse maybe using JSON.sringify
       const content = JSON.parse(fs.readFileSync(path.join(input, filename)));
       acc.push(...content);
     }

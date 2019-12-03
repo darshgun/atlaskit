@@ -68,6 +68,8 @@ export class CardBase extends Component<
   private hasBeenMounted: boolean = false;
   private lastAction?: AnalyticsLoadingAction = undefined;
   private lastErrorState?: AnalyticsErrorStateAttributes = {};
+  // Stores last retrieved file state for logging purposes
+  private lastFileState?: FileState;
   private resolvedId: string = '';
   cardRef: React.RefObject<CardViewBase | InlinePlayerBase> = React.createRef();
 
@@ -259,6 +261,7 @@ export class CardBase extends Component<
             dataURI,
             previewOrientation = 1,
           } = this.state;
+          this.lastFileState = fileState;
           const { contextId, alt } = this.props;
           const metadata = extendMetadata(fileState, this.state.metadata);
 
@@ -332,7 +335,6 @@ export class CardBase extends Component<
           this.fireLoadingStatusAnalyticsEvent({
             resolvedId: this.resolvedId,
             status,
-            fileState,
             metadata,
           });
 
@@ -376,19 +378,20 @@ export class CardBase extends Component<
   fireLoadingStatusAnalyticsEvent = ({
     resolvedId,
     status,
-    fileState,
     metadata,
     error,
   }: {
     resolvedId: string;
     status: CardStatus;
-    fileState?: FileState;
     metadata?: FileDetails;
     error?: Error;
   }) => {
     const { createAnalyticsEvent } = this.props;
     const action = getAnalyticsStatusFromCardStatus(status);
-    const errorState = getAnalyticsErrorStateAttributes(fileState, error);
+    const errorState = getAnalyticsErrorStateAttributes(
+      this.lastFileState,
+      error,
+    );
 
     if (action && this.shouldFireAnalyticsEvent(action, errorState)) {
       this.lastAction = action;
@@ -400,7 +403,10 @@ export class CardBase extends Component<
           actionSubject: 'mediaCardRender',
           actionSubjectId: resolvedId,
           attributes: {
-            fileAttributes: getFileAttributes(metadata),
+            fileAttributes: getFileAttributes(
+              metadata,
+              this.lastFileState && this.lastFileState.status,
+            ),
             ...errorState,
           },
         },
@@ -667,7 +673,13 @@ export class CardBase extends Component<
           Second context provides data to be merged with any other context down in the tree and the event's payload.
           This data is usually not available at the time of firing the event, though it is needed to be sent to the backend.
        */
-      <AnalyticsContext data={getUIAnalyticsContext(this.resolvedId, metadata)}>
+      <AnalyticsContext
+        data={getUIAnalyticsContext(
+          this.resolvedId,
+          metadata,
+          this.lastFileState && this.lastFileState.status,
+        )}
+      >
         {this.renderContent()}
       </AnalyticsContext>
     );
@@ -712,8 +724,6 @@ export class CardBase extends Component<
   This Context provides data needed to build packageHierarchy in Atlaskit Analytics Listener and Media Analytics Listener.
   This data is not added to the final GASv3 payload
 */
-export const Card: React.ComponentType<
-  CardWithAnalyticsEventsProps
-> = withAnalyticsContext(getBaseAnalyticsContext())(
-  withAnalyticsEvents()(CardBase),
-);
+export const Card: React.ComponentType<CardWithAnalyticsEventsProps> = withAnalyticsContext(
+  getBaseAnalyticsContext(),
+)(withAnalyticsEvents()(CardBase));

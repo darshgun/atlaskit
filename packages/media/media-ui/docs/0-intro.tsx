@@ -8,7 +8,7 @@ import {
 } from '@atlaskit/docs';
 
 export default md`
-  ${<AtlassianInternalWarning />}
+  ${(<AtlassianInternalWarning />)}
 
   This package includes common components and utilities used by other media packages.
 

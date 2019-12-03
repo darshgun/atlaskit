@@ -35,6 +35,7 @@ Object {
                       "attrs": Object {
                         "__contextId": null,
                         "__displayType": null,
+                        "__external": false,
                         "__fileMimeType": null,
                         "__fileName": null,
                         "__fileSize": null,
@@ -52,6 +53,7 @@ Object {
                       "attrs": Object {
                         "__contextId": null,
                         "__displayType": null,
+                        "__external": false,
                         "__fileMimeType": null,
                         "__fileName": null,
                         "__fileSize": null,
@@ -83,6 +85,7 @@ Object {
                       "attrs": Object {
                         "__contextId": null,
                         "__displayType": null,
+                        "__external": false,
                         "__fileMimeType": null,
                         "__fileName": null,
                         "__fileSize": null,
@@ -100,6 +103,7 @@ Object {
                       "attrs": Object {
                         "__contextId": null,
                         "__displayType": null,
+                        "__external": false,
                         "__fileMimeType": null,
                         "__fileName": null,
                         "__fileSize": null,
@@ -1845,6 +1849,188 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Tables should not terminate non-empty cell on whitespace at end of line 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "__autoSize": false,
+        "isNumberColumnEnabled": false,
+        "layout": "default",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "marks": Array [
+                        Object {
+                          "type": "strong",
+                        },
+                      ],
+                      "text": "H1",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableHeader",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "marks": Array [
+                        Object {
+                          "type": "strong",
+                        },
+                      ],
+                      "text": "H2",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableHeader",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "marks": Array [
+                        Object {
+                          "type": "strong",
+                        },
+                      ],
+                      "text": "H3",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableHeader",
+            },
+          ],
+          "type": "tableRow",
+        },
+        Object {
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": "Trailing space on this line ",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "content": Array [
+                            Object {
+                              "text": "Dot point",
+                              "type": "text",
+                            },
+                          ],
+                          "type": "paragraph",
+                        },
+                      ],
+                      "type": "listItem",
+                    },
+                  ],
+                  "type": "bulletList",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": "foo",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": "foo",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableCell",
+            },
+          ],
+          "type": "tableRow",
+        },
+      ],
+      "type": "table",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Tables should parse properly links inside a cell 1`] = `
 Object {
   "content": Array [
@@ -2013,6 +2199,7 @@ Object {
                       "attrs": Object {
                         "__contextId": null,
                         "__displayType": null,
+                        "__external": false,
                         "__fileMimeType": null,
                         "__fileName": null,
                         "__fileSize": null,
@@ -2132,6 +2319,198 @@ Object {
                   "content": Array [
                     Object {
                       "text": "cell 4 ",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableCell",
+            },
+          ],
+          "type": "tableRow",
+        },
+      ],
+      "type": "table",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Tables should terminate empty cell on whitespace at end of line 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "__autoSize": false,
+        "isNumberColumnEnabled": false,
+        "layout": "default",
+      },
+      "content": Array [
+        Object {
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "marks": Array [
+                        Object {
+                          "type": "strong",
+                        },
+                      ],
+                      "text": "H1",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableHeader",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "marks": Array [
+                        Object {
+                          "type": "strong",
+                        },
+                      ],
+                      "text": "H2",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableHeader",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "marks": Array [
+                        Object {
+                          "type": "strong",
+                        },
+                      ],
+                      "text": "H3",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableHeader",
+            },
+          ],
+          "type": "tableRow",
+        },
+        Object {
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableCell",
+            },
+          ],
+          "type": "tableRow",
+        },
+        Object {
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "content": Array [
+                        Object {
+                          "content": Array [
+                            Object {
+                              "text": "Dot point",
+                              "type": "text",
+                            },
+                          ],
+                          "type": "paragraph",
+                        },
+                      ],
+                      "type": "listItem",
+                    },
+                  ],
+                  "type": "bulletList",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": "foo",
+                      "type": "text",
+                    },
+                  ],
+                  "type": "paragraph",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "attrs": Object {
+                "background": null,
+                "colspan": 1,
+                "colwidth": null,
+                "rowspan": 1,
+              },
+              "content": Array [
+                Object {
+                  "content": Array [
+                    Object {
+                      "text": "foo",
                       "type": "text",
                     },
                   ],

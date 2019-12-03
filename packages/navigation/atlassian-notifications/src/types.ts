@@ -6,7 +6,9 @@ type IframeProps = DetailedHTMLProps<
 >;
 
 export type NotificationsProps = Omit<IframeProps, 'src'> & {
-  locale?: 'confluence' | 'jira' | string;
-  product?: string;
+  // Reserved for testing, avoid using this
+  _url?: string;
+  locale?: string;
+  product?: 'confluence' | 'jira' | string;
   testId?: string;
 };

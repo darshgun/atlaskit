@@ -1,10 +1,12 @@
 import React, {
-  cloneElement,
   useState,
   useRef,
   useLayoutEffect,
-  Children,
+  createContext,
+  Ref,
+  useContext,
 } from 'react';
+import { useUniqueId } from '../utils/use-unique-id';
 
 interface StaggeredEntranceProps {
   /**
@@ -16,11 +18,12 @@ interface StaggeredEntranceProps {
   delayStep?: number;
 
   /**
-   * Number of columns the children elements will be displayed over.
-   * Use `"responsive"` to have it calculate dynamically on the client side.
-   * **NOTE:** This has a big caveat that the elements will be invisible until the client side Javascript executes.
-   * If you have a fixed grid or list, set this to a specific number.
-   * Defaults to `"responsive"`.
+   Number of columns the children elements will be displayed over.
+   Use `"responsive"` to have it calculate dynamically on the client side.
+
+   **NOTE:** This has a big caveat that the elements will be invisible until the client side Javascript executes.
+   If you have a fixed grid or list, set this to a specific number.
+   Defaults to `"responsive"`.
    */
   columns?: number | 'responsive';
 
@@ -32,10 +35,20 @@ interface StaggeredEntranceProps {
   column?: number;
 
   /**
-   * Child entering elements, for example the `FadeIn` component.
+   * Any valid react child with an entrance motion somewhere in the tree as a descendant.
    */
   children: JSX.Element | JSX.Element[];
 }
+
+const StaggeredEntranceContext = createContext<
+  (id: string) => { isReady: boolean; delay: number; ref: Ref<any> }
+>(() => ({ isReady: true, delay: 0, ref: () => {} }));
+
+export const useStaggeredEntrance = () => {
+  const indentifier = useUniqueId();
+  const context = useContext(StaggeredEntranceContext);
+  return context(indentifier);
+};
 
 /**
  * For a list of elements that need to animate in,
@@ -52,6 +65,8 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
   delayStep = 50,
 }: StaggeredEntranceProps) => {
   const elementRefs = useRef<(HTMLElement | null)[]>([]);
+  const indexes: string[] = [];
+
   const [actualColumns, setActualColumns] = useState(() => {
     if (typeof columns === 'number') {
       // A hardcoded columns is set so bail out and set it to that!
@@ -118,26 +133,37 @@ const StaggeredEntrance: React.FC<StaggeredEntranceProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return Children.toArray(children).map((child, index) => {
-    const currentColumn = column || index % actualColumns;
-    const currentRow = Math.floor(index / actualColumns);
-    const distanceFromTopLeftElement = currentRow + currentColumn;
-    // We don't want loads of elements to have the same staggered delay as it ends up looking slow for users.
-    // To get around that we calculate the logarithm using `distanceFromTopLeftElement` which ends making
-    // elements appear faster the further away from the top left element.
-    const delay = Math.ceil(
-      Math.log(distanceFromTopLeftElement + 1) * delayStep * 1.5,
-    );
+  return (
+    <StaggeredEntranceContext.Provider
+      value={id => {
+        if (!indexes.includes(id)) {
+          indexes.push(id);
+        }
 
-    return cloneElement(child as JSX.Element, {
-      delay,
-      isPaused: actualColumns === 0,
-      ref: (element: HTMLElement | null) =>
-        (elementRefs.current[index] = element),
-    });
-    // Types don't support returning an array unfortunately.
-    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20356
-  }) as any;
+        const isReady = actualColumns > 0;
+        const index = indexes.indexOf(id);
+        const currentColumn = column || index % actualColumns;
+        const currentRow = Math.floor(index / actualColumns);
+        const distanceFromTopLeftElement = currentRow + currentColumn;
+        // We don't want loads of elements to have the same staggered delay as it ends up looking slow for users.
+        // To get around that we calculate the logarithm using `distanceFromTopLeftElement` which ends making
+        // elements appear faster the further away from the top left element.
+        const delay =
+          Math.ceil(
+            Math.log(distanceFromTopLeftElement + 1) * delayStep * 1.5,
+          ) || 0;
+
+        return {
+          delay,
+          isReady,
+          ref: (element: HTMLElement | null) =>
+            (elementRefs.current[index] = element),
+        };
+      }}
+    >
+      {children}
+    </StaggeredEntranceContext.Provider>
+  );
 };
 
 export default StaggeredEntrance;

@@ -1,10 +1,12 @@
-const chalk = require('chalk').default;
+// @flow
+const chalk = require('chalk');
 
+// eslint-disable-next-line no-unused-expressions
 chalk.bgRedBright;
 
 function printHowToReadStats() {
-  let vl = chalk.gray('|');
-  let hl = chalk.gray('└─');
+  const vl = chalk.gray('|');
+  const hl = chalk.gray('└─');
   console.log(
     chalk.dim(
       `${chalk.yellow(

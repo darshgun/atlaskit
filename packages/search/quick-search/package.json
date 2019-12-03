@@ -24,7 +24,8 @@
     "@atlaskit/item": "^10.1.6",
     "@atlaskit/spinner": "^12.1.1",
     "@atlaskit/theme": "^9.2.4",
-    "@babel/runtime": "^7.0.0"
+    "@babel/runtime": "^7.0.0",
+    "keycode": "^2.1.7"
   },
   "peerDependencies": {
     "react": "^16.8.0",
@@ -35,7 +36,7 @@
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/drawer": "^5.0.13",
     "@atlaskit/navigation": "^35.2.5",
-    "enzyme": "^3.7.0",
+    "enzyme": "^3.10.0",
     "prop-types": "^15.5.10",
     "react": "^16.8.0",
     "sinon": "^2.2.0",

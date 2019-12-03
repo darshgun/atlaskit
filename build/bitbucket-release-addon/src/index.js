@@ -1,5 +1,6 @@
+// @flow
 import queryString from 'query-string';
-import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
+import flattenChangesets from '@atlaskit/build-utils/flattenReleases';
 import yaml from 'js-yaml';
 
 import getChangesetsFromCommits from './get-commits';
@@ -63,7 +64,7 @@ const yamlToReleases = changesets => {
   if (!changesets || changesets.length === 0) return [];
   return changesets
     .map(changeset => {
-      let lines = changeset.split('\n');
+      const lines = changeset.split('\n');
       let yamlStr = '';
       if (lines[0] !== '---') return null; // if we don't have a frontmatter block, skip this file
       let lineIdx = 1; // skip the first line, we know it is '---'
@@ -118,13 +119,15 @@ async function main() {
 
   if (releases.length === 0) {
     if (changesetsPresent) {
+      // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
       document.body.innerHTML = noReleaseEmtpyChangesetMessage;
     } else {
+      // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
       document.body.innerHTML = noChangesetMessage;
     }
     return;
   }
-
+  // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
   document.body.innerHTML = releasedPackagesMessage(
     releases,
     shouldWarnAboutChangesetsV2,
@@ -135,5 +138,6 @@ try {
   main();
 } catch (e) {
   console.error('error in changeset', e);
+  // $FlowFixMe - document.body.innerHTML does not exist in noReleaseEmtpyChangesetMessage.
   document.body.innerHTML = errorLoadingChangesetMessage;
 }

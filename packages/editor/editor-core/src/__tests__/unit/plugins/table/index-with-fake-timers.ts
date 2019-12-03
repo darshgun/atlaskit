@@ -31,8 +31,6 @@ describe('TableView', () => {
       editorProps: {
         analyticsHandler: trackEvent,
         allowTables: tableOptions,
-        allowLists: true,
-        allowCodeBlocks: true,
         media: {
           allowMediaSingle: true,
         },

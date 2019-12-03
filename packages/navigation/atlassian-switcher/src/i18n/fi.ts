@@ -14,9 +14,8 @@ export default {
   'fabric.atlassianSwitcher.manageList': 'Hallinnoi luetteloa',
   'fabric.atlassianSwitcher.jiraProject': 'Jira-projekti',
   'fabric.atlassianSwitcher.confluenceSpace': 'Confluence-työtila',
-  'fabric.atlassianSwitcher.people': 'Henkilöt',
   'fabric.atlassianSwitcher.administration': 'Hallinto',
-  'fabric.atlassianSwitcher.discoverMore': 'Löydä enemmän',
+  'fabric.atlassianSwitcher.discoverMore': 'More Atlassian products',
   'fabric.atlassianSwitcher.browseApps': 'Selaa Marketplace-sovelluksia',
   'fabric.atlassianSwitcher.errorHeading': 'Jotain meni pieleen',
   'fabric.atlassianSwitcher.errorText':
@@ -29,4 +28,13 @@ export default {
     'Sinut on kirjattu ulos. Kirjaudu sisään uudelleen.',
   'fabric.atlassianSwitcher.login': 'Kirjaudu sisään',
   'fabric.atlassianSwitcher.show.more.sites': 'Näytä lisää sivustoja',
+  'fabric.atlassianSwitcher.discover': 'Discover',
+  'fabric.atlassianSwitcher.product.description.confluence':
+    'Document collaboration',
+  'fabric.atlassianSwitcher.product.description.jsd':
+    'IT service desk and customer service',
+  'fabric.atlassianSwitcher.product.description.jsw':
+    'Project and issue tracking',
+  'fabric.atlassianSwitcher.product.description.opsgenie':
+    'Modern incident management',
 };

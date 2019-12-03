@@ -29,6 +29,7 @@ import {
 } from '../../../../model/Result';
 import uuid from 'uuid/v4';
 import { DEFAULT_FEATURES } from '../../../../util/features';
+import keycode from 'keycode';
 
 const defaultAutocompleteData = ['autocomplete', 'automock', 'automation'];
 const defaultReferralContext = {
@@ -112,7 +113,7 @@ describe('QuickSearchContainer', () => {
       CreateAnalyticsEventFn,
       ABTest,
       ReferralContextIdentifiers?,
-      boolean?
+      boolean?,
     ]
   >;
   let firePostQueryShownEventSpy: jest.SpyInstance<
@@ -125,7 +126,7 @@ describe('QuickSearchContainer', () => {
       { [filter: string]: boolean },
       CreateAnalyticsEventFn,
       ABTest,
-      ReferralContextIdentifiers?
+      ReferralContextIdentifiers?,
     ]
   >;
   let fireExperimentExposureEventSpy: jest.SpyInstance<
@@ -235,7 +236,9 @@ describe('QuickSearchContainer', () => {
 
   it('should add searchSessionId to handleSearchSubmit', async () => {
     const wrapper = await mountQuickSearchContainerWaitingForRender();
-    wrapper.find('input').simulate('keydown', { key: 'Enter' });
+    wrapper
+      .find('input')
+      .simulate('keydown', { key: 'Enter', keyCode: keycode('enter') });
     wrapper.update();
 
     const { searchSessionId } = wrapper.find(QuickSearchContainer).props();
@@ -304,14 +307,14 @@ describe('QuickSearchContainer', () => {
       let eagerResolveFn = () => {};
       let lazyResolveFn = () => {};
 
-      const eagerRecentItemsPromise: Promise<
-        ResultsWithTiming<GenericResultMap>
-      > = new Promise(resolve => {
+      const eagerRecentItemsPromise: Promise<ResultsWithTiming<
+        GenericResultMap
+      >> = new Promise(resolve => {
         eagerResolveFn = () => resolve({ results: recentItems as any });
       });
-      const lazyLoadedRecentItemsPromise: Promise<
-        Partial<GenericResultMap>
-      > = new Promise(resolve => {
+      const lazyLoadedRecentItemsPromise: Promise<Partial<
+        GenericResultMap
+      >> = new Promise(resolve => {
         lazyResolveFn = () => resolve(lazyLoadedRecentItems as any);
       });
 

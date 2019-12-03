@@ -192,15 +192,16 @@ describe('JiraClient', () => {
       });
     });
 
-    [[[], []], [JiraRecentResponse, TransformedResponse]].forEach(
-      ([jiraResponse, transformedResponse]) => {
-        it('should transform valid response without error', async () => {
-          requestSpy.mockReturnValue(Promise.resolve(jiraResponse));
-          const result = await jiraClient.getRecentItems('session');
-          expect(result).toEqual(transformedResponse);
-        });
-      },
-    );
+    [
+      [[], []],
+      [JiraRecentResponse, TransformedResponse],
+    ].forEach(([jiraResponse, transformedResponse]) => {
+      it('should transform valid response without error', async () => {
+        requestSpy.mockReturnValue(Promise.resolve(jiraResponse));
+        const result = await jiraClient.getRecentItems('session');
+        expect(result).toEqual(transformedResponse);
+      });
+    });
 
     describe('Jira responses with attributes', () => {
       beforeEach(() => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 
-import Select from '@atlaskit/select';
+import Select, { ValueType } from '@atlaskit/select';
 
 export interface RenderOptionsPropsT<T> {
   hide: () => void;
@@ -17,26 +17,16 @@ export interface SelectOption {
   hidden?: boolean;
 }
 
-export type SelectOptions<T> =
-  | Array<SelectOption>
-  | {
-      render: ((
-        props: RenderOptionsPropsT<T>,
-      ) => React.ReactElement<any> | null);
-      height: number;
-      width: number;
-    };
-
 export interface Props {
   hideExpandIcon?: boolean;
-  options: SelectOptions<Function>;
+  options: SelectOption[];
   dispatchCommand: (command: Function) => void;
   mountPoint?: HTMLElement;
   boundariesElement?: HTMLElement;
   scrollableElement?: HTMLElement;
   defaultValue?: SelectOption;
   placeholder?: string;
-  onChange?: (change: SelectOption) => void;
+  onChange?: (change: ValueType<SelectOption>) => void;
   width?: number;
 }
 
@@ -44,9 +34,9 @@ export interface State {
   isOpen: boolean;
 }
 
-const SelectWrapper: ComponentClass<
-  HTMLAttributes<{}> & { width: number }
-> = styled.div`
+const SelectWrapper: ComponentClass<HTMLAttributes<{}> & {
+  width: number;
+}> = styled.div`
   width: ${props => props.width}px;
 `;
 
@@ -62,7 +52,7 @@ export default class Search extends Component<Props, State> {
     } = this.props;
     return (
       <SelectWrapper width={width}>
-        <Select
+        <Select<SelectOption>
           options={options}
           value={defaultValue}
           onChange={onChange}

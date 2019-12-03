@@ -6,7 +6,7 @@ import { BORDER_WIDTH } from './constants';
 
 interface OuterProps {
   size?: SizeType;
-  bgColor?: string | (() => any);
+  bgColor?: string | (() => string);
   children?: React.ReactNode;
 }
 

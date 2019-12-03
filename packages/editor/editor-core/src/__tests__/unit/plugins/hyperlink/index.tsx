@@ -137,28 +137,32 @@ describe('hyperlink', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, 'https://www.atlassian.com ', sel);
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'link',
-        attributes: { inputMethod: 'autoDetect' },
-        nonPrivacySafeAttributes: { linkDomain: 'atlassian.com' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'link',
+          attributes: { inputMethod: 'autoDetect' },
+          nonPrivacySafeAttributes: { linkDomain: 'atlassian.com' },
+          eventType: 'track',
+        }),
+      );
     });
 
     it('should fire event when insert link via autoformatting', async () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '[Atlassian](https://www.atlassian.com)', sel);
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'link',
-        attributes: { inputMethod: 'autoformatting' },
-        nonPrivacySafeAttributes: { linkDomain: 'atlassian.com' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'link',
+          attributes: { inputMethod: 'autoformatting' },
+          nonPrivacySafeAttributes: { linkDomain: 'atlassian.com' },
+          eventType: 'track',
+        }),
+      );
     });
   });
 });

@@ -7,13 +7,10 @@ import getTheme from './utils/getTheme';
 import themed from './utils/themed';
 import AtlaskitThemeProvider from './components/AtlaskitThemeProvider';
 
-const typedColors: Record<string, string> = colors as any;
-const typedElevation: Record<string, string> = elevation as any;
-
 export {
-  typedColors as colors,
+  colors,
   colorPalettes,
-  typedElevation as elevation,
+  elevation,
   typography,
   math,
   getTheme,

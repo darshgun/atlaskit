@@ -1,6 +1,6 @@
-'use strict';
 // @flow
 const uniqIdentifierStamp = process.env.LOCAL_IDENTIFIER || '';
+// eslint-disable-next-line no-nested-ternary
 const commit = process.env.BITBUCKET_COMMIT
   ? process.env.BITBUCKET_COMMIT + uniqIdentifierStamp
   : process.env.USER
@@ -10,7 +10,7 @@ const commit = process.env.BITBUCKET_COMMIT
 let BUILD_BRANCH_NAME = process.env.BITBUCKET_BRANCH;
 
 if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-  BUILD_BRANCH_NAME = process.env.USER + '_local_run';
+  BUILD_BRANCH_NAME = `${process.env.USER}_local_run`;
 }
 
 if (process.env.LANDKID) {
@@ -19,7 +19,7 @@ if (process.env.LANDKID) {
 
 function setBrowserStackClients() /*: Array<?Object>*/ {
   const RESOLUTION = '1920x1080';
-  let launchers = {
+  const launchers = {
     chrome: {
       os: 'Windows',
       os_version: '10',
@@ -95,10 +95,12 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
 }
 
 function setLocalClients() /*: Array<?Object>*/ {
-  const port = require('./chromeDriver').port;
-  let isHeadless = process.env.HEADLESS !== 'false';
-  // Keep only chrome for watch mode
-  if (process.env.WATCH === 'true') isHeadless === 'false';
+  // eslint-disable-next-line global-require
+  const { port } = require('./chromeDriver');
+  const { WATCH, HEADLESS } = process.env;
+  const isWatch = WATCH === 'true';
+  const isHeadless = HEADLESS !== 'false' && !isWatch;
+
   const windowSize = '--window-size=1920,1200';
   const options = {
     port,

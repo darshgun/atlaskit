@@ -8,14 +8,14 @@ import {
   customProductLogoCSS,
   productIconCSS,
   productLogoCSS,
-  siteNameCSS,
+  siteTitleCSS,
 } from './styles';
 import { CustomProductHomeProps, ProductHomeProps } from './types';
 
 export const ProductHome = ({
   icon: Icon,
   logo: Logo,
-  siteName,
+  siteTitle,
   onClick = () => {},
 }: ProductHomeProps) => {
   const theme = useTheme();
@@ -44,18 +44,22 @@ export const ProductHome = ({
           />
         </div>
       </div>
-      {siteName && <div css={siteNameCSS(theme)}>{siteName}</div>}
+      {siteTitle && <div css={siteTitleCSS(theme)}>{siteTitle}</div>}
     </Fragment>
   );
 };
 
 export const CustomProductHome = (props: CustomProductHomeProps) => {
-  const { iconAlt, iconUrl, logoAlt, logoUrl, onClick } = props;
+  const { iconAlt, iconUrl, logoAlt, logoUrl, onClick, siteTitle } = props;
+  const theme = useTheme();
 
   return (
-    <div css={containerCSS} onClick={onClick}>
-      <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
-      <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
-    </div>
+    <Fragment>
+      <div css={containerCSS} onClick={onClick}>
+        <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
+        <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
+      </div>
+      {siteTitle && <div css={siteTitleCSS(theme)}>{siteTitle}</div>}
+    </Fragment>
   );
 };

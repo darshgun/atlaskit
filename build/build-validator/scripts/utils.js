@@ -1,21 +1,23 @@
+// @flow
 const path = require('path');
 const bolt = require('bolt');
 
-const getNpmDistPath = pkgName => path.join(process.cwd(), 'dists', pkgName);
+const getNpmDistPath = (pkgName /*: string */) =>
+  path.join(process.cwd(), 'dists', pkgName);
 
-async function getAllPublicPackages(cwd) {
+async function getAllPublicPackages(cwd /*: string */) {
   const allWorkspaces = await bolt.getWorkspaces({
     cwd,
   });
 
   return allWorkspaces
-    .map(({ dir, config: { name, private, version } }) => ({
+    .map(({ dir, config: { name, private: isPrivate, version } }) => ({
       dir,
       name,
       version,
-      private,
+      isPrivate,
     }))
-    .filter(p => !p.private);
+    .filter(p => !p.isPrivate);
 }
 
 module.exports = {

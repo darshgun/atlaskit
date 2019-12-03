@@ -104,16 +104,13 @@ const standardGroups = (dirs: Array<Directory>, pathname: string): NavGroup[] =>
     const packages = fs.getDirectories(group.children);
     return {
       title: group.id,
-      items: packages.reduce(
-        (items, pkg) => {
-          const details = getItemDetails(pkg, group, pathname);
-          if (details) {
-            return items.concat(details);
-          }
-          return items;
-        },
-        [] as Array<NavGroupItem>,
-      ),
+      items: packages.reduce((items, pkg) => {
+        const details = getItemDetails(pkg, group, pathname);
+        if (details) {
+          return items.concat(details);
+        }
+        return items;
+      }, [] as Array<NavGroupItem>),
     };
   });
 

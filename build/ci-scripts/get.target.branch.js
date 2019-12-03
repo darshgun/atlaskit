@@ -1,3 +1,4 @@
+// @flow
 /**
  * This script is used in CI to check if the current build is for a PR and if so returns the destination
  * branch of that PR. This is used during landkid builds to know which branch landkid should rebase on
@@ -13,6 +14,7 @@
  */
 
 const https = require('https');
+
 const DEBUG = false; // NOTE: Turning this on will make the script output intermediate information
 // which will actually cause anything using this to break. This flag should only be used for debugging
 
@@ -27,6 +29,7 @@ function httpGetRequest(url) {
     let data = '';
 
     const req = https.get(url, resp => {
+      // eslint-disable-next-line no-return-assign
       resp.on('data', chunk => (data += chunk));
       resp.on('end', () => resolve(JSON.parse(data)));
     });
@@ -44,13 +47,16 @@ if (!BITBUCKET_COMMIT || !BITBUCKET_REPO_FULL_NAME) {
 }
 
 async function main() {
+  const bbRepoFullName = BITBUCKET_REPO_FULL_NAME || '';
+  const bbCommit = BITBUCKET_COMMIT || '';
   // We sort descending to on created_on to get neweset first and only look at open PRs
-  let endpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pullrequests?sort=-created_on&state=OPEN&pagelen=20`;
+  let endpoint = `https://api.bitbucket.org/2.0/repositories/${bbRepoFullName}/pullrequests?sort=-created_on&state=OPEN&pagelen=20`;
   let response;
   let targetBranch = '';
 
   do {
-    debugLog('Fetching', endpoint);
+    // $FlowFixMe - fix logger
+    debugLog(`Fetching...${endpoint}`);
     response = await httpGetRequest(endpoint);
     if (!response || !response.values) {
       console.error('Response is not in the format we expected. Received:');
@@ -62,7 +68,7 @@ async function main() {
         pr.source &&
         pr.source.commit &&
         pr.source.commit.hash &&
-        BITBUCKET_COMMIT.startsWith(pr.source.commit.hash),
+        bbCommit.startsWith(pr.source.commit.hash),
     );
     if (matchingPr) {
       targetBranch = matchingPr.destination.branch.name;
@@ -71,7 +77,7 @@ async function main() {
   } while (!targetBranch && response.next);
 
   if (!targetBranch) {
-    console.error(`Error: No PR found for commit ${BITBUCKET_COMMIT}`);
+    console.error(`Error: No PR found for commit ${bbCommit}`);
     process.exit(1);
   }
   console.log(targetBranch);

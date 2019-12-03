@@ -1,12 +1,13 @@
 import { EditorPresetProps, PluginsPreset } from './types';
 import { EditorPlugin } from '../../../types';
 import { compose } from '../../../utils';
+import { ProviderFactory } from '@atlaskit/editor-common/provider-factory';
 
 export const removeExcludes = (excludes: EditorPresetProps['excludes']) => (
   plugins: EditorPlugin[],
 ) => {
   if (excludes) {
-    return plugins.filter(plugin => excludes.indexOf(plugin.name) === -1);
+    return plugins.filter(plugin => !excludes.has(plugin.name));
   }
   return plugins;
 };
@@ -55,6 +56,27 @@ export const processPluginPreset = (preset: PluginsPreset) => {
   });
 
   return plugins;
+};
+
+export const addExcludesFromProviderFactory = (
+  providerFactory: ProviderFactory,
+  excludes: EditorPresetProps['excludes'] = new Set(),
+) => {
+  // TODO: Should I make this function pure?
+  if (!providerFactory.hasProvider('mentionProvider')) {
+    excludes.add('mention');
+  }
+  if (!providerFactory.hasProvider('emojiProvider')) {
+    excludes.add('emoji');
+  }
+  if (!providerFactory.hasProvider('macroProvider')) {
+    excludes.add('macro');
+  }
+  if (!providerFactory.hasProvider('autoformattingProvider')) {
+    excludes.add('customAutoformat');
+  }
+
+  return excludes;
 };
 
 export const getPluginsFromPreset = (

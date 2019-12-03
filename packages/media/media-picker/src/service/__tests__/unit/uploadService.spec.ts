@@ -98,9 +98,6 @@ describe('UploadService', () => {
     );
 
     if (mediaClient.config.userAuthProvider) {
-      jest
-        .spyOn((uploadService as any).userMediaStore, 'createFile')
-        .mockResolvedValue({ data: { id: 'some-new-user-file-id' } });
       const userMediaClient: MediaClient = (uploadService as any)[
         'userMediaClient'
       ];
@@ -108,9 +105,9 @@ describe('UploadService', () => {
         .spyOn(userMediaClient.file, 'touchFiles')
         .mockResolvedValue(touchedFiles);
       const userMediaClientUpload = jest.spyOn(userMediaClient.file, 'upload');
-      userMediaClientUpload.mockReturnValue(defaultUploadMock as Observable<
-        FileState
-      >);
+      userMediaClientUpload.mockReturnValue(
+        defaultUploadMock as Observable<FileState>,
+      );
 
       return { uploadService, filesAddedPromise, mediaClient, userMediaClient };
     } else {

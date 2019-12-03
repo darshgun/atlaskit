@@ -56,9 +56,7 @@ describe('layout actions', () => {
     layouts.forEach(currentLayout => {
       layouts.forEach(newLayout => {
         if (currentLayout.name !== newLayout.name) {
-          it(`handles switching from "${currentLayout.name}" to "${
-            newLayout.name
-          }"`, () => {
+          it(`handles switching from "${currentLayout.name}" to "${newLayout.name}"`, () => {
             ({ editorView } = editor(
               doc(buildLayoutForWidths(currentLayout.widths, true)),
             ));
@@ -122,13 +120,15 @@ describe('layout actions', () => {
     });
 
     it('fires analytics event', () => {
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'layout',
-        eventType: 'track',
-        attributes: { inputMethod: 'insertMenu' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'layout',
+          eventType: 'track',
+          attributes: { inputMethod: 'insertMenu' },
+        }),
+      );
     });
   });
 });
