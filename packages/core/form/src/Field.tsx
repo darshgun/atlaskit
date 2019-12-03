@@ -326,8 +326,8 @@ function Field<
   ]);
 
   const fieldId = useMemo(
-    () => (props.id ? props.id : `${name}-${uid({ id: name })}`),
-    [props.id],
+    () => (props.id ? props.id : `${props.name}-${uid({ id: props.name })}`),
+    [props.id, props.name],
   );
 
   const extendedFieldProps = {
