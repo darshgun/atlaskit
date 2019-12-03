@@ -35,6 +35,40 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Text effects should auto-link ftp urls 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "text prefix ",
+          "type": "text",
+        },
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "__confluenceMetadata": null,
+                "href": "ftp://example.com/~abc/",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "ftp://example.com/~abc/",
+          "type": "text",
+        },
+        Object {
+          "text": " text suffix",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Text effects should auto-linkify monospace formatted text 1`] = `
 Object {
   "content": Array [

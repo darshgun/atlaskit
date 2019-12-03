@@ -104,6 +104,10 @@ https://app.datadoghq.com/screen/282018/product-fabric-adf-service?tv_mode=true#
       'should let auto-links end with parenthesis in url hash segment',
       'text prefix https://example.com/abc#abc) text suffix',
     ],
+    [
+      'should auto-link ftp urls',
+      'text prefix ftp://example.com/~abc/ text suffix',
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {
