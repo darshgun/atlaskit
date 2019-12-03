@@ -49,4 +49,29 @@ describe('recommendations-provider-recommendations', () => {
       { productKey: ProductKey.OPSGENIE },
     ]);
   });
+
+  it('should return trello specific recommendations if product store in trello feature flag is matched', () => {
+    expect(
+      resolveRecommendations({
+        isProductStoreInTrelloEnabled: true,
+      }),
+    ).toEqual([
+      { productKey: ProductKey.CONFLUENCE },
+      { productKey: ProductKey.JIRA_SOFTWARE },
+      { productKey: ProductKey.JIRA_SERVICE_DESK },
+    ]);
+  });
+
+  it('should return product store recommendations if feature flag is matched', () => {
+    expect(
+      resolveRecommendations({
+        isDiscoverSectionEnabled: true,
+      }),
+    ).toEqual([
+      { productKey: ProductKey.JIRA_SOFTWARE },
+      { productKey: ProductKey.CONFLUENCE },
+      { productKey: ProductKey.JIRA_SERVICE_DESK },
+      { productKey: ProductKey.OPSGENIE },
+    ]);
+  });
 });

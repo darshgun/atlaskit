@@ -205,7 +205,8 @@ function asUserSiteDataProviderResult(
           (cloudId && site.cloudId === cloudId) ||
           (product &&
             product === Product.BITBUCKET &&
-            site.cloudId === Product.BITBUCKET),
+            site.cloudId === Product.BITBUCKET) ||
+          (product && product === Product.TRELLO),
       );
 
       if (!site) {

@@ -6,6 +6,7 @@ import {
 
 import {
   jswOgExpandsExperiment,
+  productStoreInTrelloRecommendation,
   productStoreRecommendation,
 } from './experiments';
 
@@ -31,6 +32,10 @@ export function resolveRecommendations(
     )
   ) {
     return jswOgExpandsExperiment.recommendations();
+  }
+
+  if (featureFlags.isProductStoreInTrelloEnabled) {
+    return productStoreInTrelloRecommendation();
   }
 
   if (featureFlags.isDiscoverSectionEnabled) {

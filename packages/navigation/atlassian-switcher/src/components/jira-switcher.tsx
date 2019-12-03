@@ -10,10 +10,10 @@ import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-prop
 import {
   FeatureMap,
   AvailableProductsResponse,
-  RecommendationsFeatureFlags,
   DiscoverMoreCallback,
   TriggerXFlowCallback,
   Product,
+  WithRecommendationsFeatureFlags,
 } from '../types';
 import { ProviderResult } from '../providers/as-data-provider';
 import {
@@ -23,15 +23,15 @@ import {
 import { AvailableProductsProvider } from '../providers/products-data-provider';
 import { WithTheme } from '../theme/types';
 
-type JiraSwitcherProps = WithTheme & {
-  cloudId: string;
-  messages: Messages;
-  features: FeatureMap;
-  triggerXFlow: TriggerXFlowCallback;
-  onDiscoverMoreClicked: DiscoverMoreCallback;
-  recommendationsFeatureFlags?: RecommendationsFeatureFlags;
-  joinableSitesDataProvider?: JoinableSitesDataProvider;
-};
+type JiraSwitcherProps = WithTheme &
+  Partial<WithRecommendationsFeatureFlags> & {
+    cloudId: string;
+    messages: Messages;
+    features: FeatureMap;
+    triggerXFlow: TriggerXFlowCallback;
+    onDiscoverMoreClicked: DiscoverMoreCallback;
+    joinableSitesDataProvider?: JoinableSitesDataProvider;
+  };
 
 export default (props: JiraSwitcherProps) => (
   <JoinableSitesProvider
