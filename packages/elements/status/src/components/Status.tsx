@@ -64,10 +64,12 @@ class StatusInternal extends PureComponent<Props, any> {
     }
 
     const appearance = colorToLozengeAppearanceMap[color] || DEFAULT_APPEARANCE;
-    // note: ommitted data-local-id attribute to avoid copying/pasting the same localId
+    // Note: ommitted data-local-id attribute to avoid copying/pasting the same localId
     return (
       <span
         className="status-lozenge-span"
+        // Using title here as `@atlaskit/tooltip` adds too much overhead
+        title={text}
         onClick={onClick}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
