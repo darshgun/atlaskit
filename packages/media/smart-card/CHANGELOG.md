@@ -1,5 +1,19 @@
 # @atlaskit/smart-card
 
+## 12.6.1
+
+### Patch Changes
+
+- [patch][5b8a074ce6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b8a074ce6):
+
+  ED-7848: Stop re-creating smart card's redux store on every render
+
+- Updated dependencies [c1d4898af5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1d4898af5):
+- Updated dependencies [3c0f6feee5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c0f6feee5):
+- Updated dependencies [f9c291923c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c291923c):
+  - @atlaskit/icon@19.0.11
+  - @atlaskit/theme@9.3.0
+
 ## 12.6.0
 
 ### Minor Changes
