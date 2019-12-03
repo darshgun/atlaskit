@@ -76,7 +76,7 @@ async function main() {
     try {
       response = await httpGetRequest(endpoint);
     } catch (err) {
-      console.error(
+      throw Error(
         `Something went wrong trying to get this endpoint: ${endpoint} with this error: ${err}`,
       );
     }

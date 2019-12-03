@@ -12,6 +12,7 @@ const axios = require('axios');
 */
 
 const BUILDS_PER_PAGE = 30;
+
 const {
   BITBUCKET_BRANCH,
   BITBUCKET_USER,
@@ -19,6 +20,18 @@ const {
   BITBUCKET_BUILD_NUMBER,
   BITBUCKET_REPO_FULL_NAME,
 } = process.env;
+
+if (
+  !BITBUCKET_REPO_FULL_NAME ||
+  !BITBUCKET_USER ||
+  !BITBUCKET_PASSWORD ||
+  !BITBUCKET_BRANCH ||
+  !BITBUCKET_BUILD_NUMBER
+) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH or $BITBUCKET_BUILD_NUMBER environment variables are not set',
+  );
+}
 
 const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
@@ -35,18 +48,6 @@ const axiosRequestConfig = {
     'target.ref_type': 'BRANCH',
   },
 };
-
-if (
-  !BITBUCKET_REPO_FULL_NAME ||
-  !BITBUCKET_USER ||
-  !BITBUCKET_PASSWORD ||
-  !BITBUCKET_BRANCH ||
-  !BITBUCKET_BUILD_NUMBER
-) {
-  throw Error(
-    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH or $BITBUCKET_BUILD_NUMBER environment variables are not set',
-  );
-}
 
 // Stops a currently running Pipelines build
 // Related documentation
