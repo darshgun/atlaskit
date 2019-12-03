@@ -1,8 +1,12 @@
 const { BITBUCKET_REPO_FULL_NAME } = process.env;
 
 const getLinkMD = commit => {
-  if (BITBUCKET_REPO_FULL_NAME)
-    `[${commit}](https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/${commit})`;
+  if (!BITBUCKET_REPO_FULL_NAME) {
+    throw Error(
+      '$BITBUCKET_REPO_FULL_NAME environment variable needs to be set',
+    );
+  }
+  return `[${commit}](https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/${commit})`;
 };
 
 const getReleaseLine = async (changeset, versionType) => {
