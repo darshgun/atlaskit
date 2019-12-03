@@ -1,11 +1,10 @@
 const { BITBUCKET_REPO_FULL_NAME } = process.env;
 
+if (!BITBUCKET_REPO_FULL_NAME) {
+  throw Error('$BITBUCKET_REPO_FULL_NAME environment variable needs to be set');
+}
+
 const getLinkMD = commit => {
-  if (!BITBUCKET_REPO_FULL_NAME) {
-    throw Error(
-      '$BITBUCKET_REPO_FULL_NAME environment variable needs to be set',
-    );
-  }
   return `[${commit}](https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/${commit})`;
 };
 
