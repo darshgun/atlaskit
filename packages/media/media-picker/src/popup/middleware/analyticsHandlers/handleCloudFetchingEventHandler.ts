@@ -7,6 +7,11 @@ import { State } from '../../domain';
 import { isHandleCloudFetchingEventAction } from '../../actions/handleCloudFetchingEvent';
 import { MediaFile } from '../../../types';
 import { HandlerResult } from '.';
+import {
+  FailurePayload,
+  SuccessPayload,
+} from '../../../components/localUploadReact';
+import { RemoteUploadFailPayload } from '../../tools/websocket/upload/wsUploadEvents';
 
 const commonPayload = {
   actionSubject: 'mediaUpload',
@@ -27,6 +32,10 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
     const { timeStarted } = remoteUpload || { timeStarted: undefined };
     const uploadDurationMsec =
       timeStarted !== undefined ? Date.now() - timeStarted : -1;
+    const commonAttributes = {
+      sourceType: 'cloud',
+      serviceName: payload.serviceName,
+    };
     if (event === 'RemoteUploadStart') {
       return [
         {
@@ -34,6 +43,7 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
+            ...commonAttributes,
           },
           eventType: OPERATIONAL_EVENT_TYPE,
         },
@@ -45,9 +55,10 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
+            ...commonAttributes,
             status: 'success',
             uploadDurationMsec,
-          },
+          } as SuccessPayload,
           eventType: TRACK_EVENT_TYPE,
         },
       ];
@@ -58,9 +69,11 @@ export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
           ...commonPayload,
           attributes: {
             fileAttributes: fileAttributes(file),
+            ...commonAttributes,
             status: 'fail',
             uploadDurationMsec,
-          },
+            failReason: (payload as RemoteUploadFailPayload).description,
+          } as FailurePayload,
           eventType: TRACK_EVENT_TYPE,
         },
       ];

@@ -172,6 +172,14 @@ type TypeAheadQuickInsertAEP = TypeAheadAEP<
   { inputMethod: INPUT_METHOD.KEYBOARD }
 >;
 
+type HelpQuickInsertAEP = UIAEP<
+  ACTION.HELP_OPENED,
+  ACTION_SUBJECT.HELP,
+  ACTION_SUBJECT_ID.HELP_QUICK_INSERT,
+  { inputMethod: INPUT_METHOD.QUICK_INSERT },
+  undefined
+>;
+
 type TypeAheadEmojiAEP = TypeAheadAEP<
   ACTION_SUBJECT_ID.TYPEAHEAD_EMOJI,
   { inputMethod: INPUT_METHOD.QUICK_INSERT | INPUT_METHOD.KEYBOARD }
@@ -228,4 +236,5 @@ export type GeneralEventPayload =
   | BrowserFreezePayload
   | SlowInputAEP
   | UploadExternalFailedAEP
-  | InputPerfSamlingAEP;
+  | InputPerfSamlingAEP
+  | HelpQuickInsertAEP;

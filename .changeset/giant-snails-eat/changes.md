@@ -1,0 +1,1 @@
+MS-2423 add retries on 5xx errors and network errors to HTTP calls

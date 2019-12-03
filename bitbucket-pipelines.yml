@@ -466,9 +466,11 @@ pipelines:
               artifacts:
                 - imageSnapshotFailures/**
       - step:
-          name: Wait until no master is running
+          name: Wait until no master is running - except if develop
           script:
             - source ./build-setup.sh
+            - export TARGET_BRANCH="$(node build/ci-scripts/get.target.branch.js)" && echo "$TARGET_BRANCH"
+            - if [[ "$TARGET_BRANCH" != "master" ]]; then echo "This build does not need to wait for master build."; exit 0; fi
             - cd build/ci-scripts
             - yarn --ignore-engines
             - node ./wait.until.no.master.build.running.js
@@ -580,12 +582,13 @@ pipelines:
                 - source ./build-setup.sh
                 - git fetch origin $BITBUCKET_BRANCH && git checkout $BITBUCKET_BRANCH && git checkout - && git merge $BITBUCKET_BRANCH --no-edit
                 - bolt install --frozen-lockfile
-                - export input=elements,bitbucket,css-packs,growth,help,helpers,home,jira,navigation,people-and-teams,search,teamwork-ecosystem,engagement-platform,server
+                - export input=elements,bitbucket,css-packs,growth,help,helpers,home,jira,navigation,people-and-teams,search,teamwork-ecosystem,engagement-platform,server,spa
                 - node build/ci-scripts/get.pkgs.in.team.js $input| xargs -n1 -P2 yarn measure --updateSnapshot --s3
               after-script:
                 - yarn send:bundleSize
               caches:
                 - node
+
     # A pipeline to update a package's i18n translation messages.
     # Per package, it will push i18n messages and pull translations. This is based on the package.json (i18n:push, i18n:pull)
     # A pull request is created and assigned to defined reviewers.
@@ -611,6 +614,7 @@ pipelines:
             # Run validation in quiet mode as well to easily check file differences
             # Validate packages will produce false positives and is for manual analysis so we always return true
             - cd build/build-validator && (yarn validate-packages || yarn validate-packages --quiet) || true
+
     # This replicates builds that would happen locally on a clean slate for a single package
     run-build-validator-per-package:
       - step:

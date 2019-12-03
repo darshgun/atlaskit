@@ -60,6 +60,11 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}> & {
     ${inlineNodeSharedStyle};
   }
 
+  .ProseMirror[contenteditable=false] .taskItemView-content-wrap {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
   .ProseMirror-hideselection *::selection {
     background: transparent;
   }

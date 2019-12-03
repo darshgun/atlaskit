@@ -267,7 +267,6 @@ describe('utils -> commands', () => {
       it('returns true with selection in first', () => {
         const { editorView } = createEditor({
           doc: doc(ul(li(p('{<>}hello'), p('world')))),
-          editorProps: { allowLists: true },
         });
 
         expect(isFirstChildOfParent(editorView.state)).toBe(true);
@@ -276,7 +275,6 @@ describe('utils -> commands', () => {
       it('returns false with selection in second', () => {
         const { editorView } = createEditor({
           doc: doc(ul(li(p('hello'), p('wo{<>}rld')))),
-          editorProps: { allowLists: true },
         });
 
         expect(isFirstChildOfParent(editorView.state)).toBe(false);
@@ -287,7 +285,6 @@ describe('utils -> commands', () => {
       it('returns true with selection in start of second li', () => {
         const { editorView } = createEditor({
           doc: doc(ul(li(p('first')), li(p('{<>}hello')))),
-          editorProps: { allowLists: true },
         });
 
         expect(isFirstChildOfParent(editorView.state)).toBe(true);
@@ -296,7 +293,6 @@ describe('utils -> commands', () => {
       it('returns true with selection in first p of first nested li', () => {
         const { editorView } = createEditor({
           doc: doc(ul(li(p('first'), ul(li(p('{<>}hello'), p('world')))))),
-          editorProps: { allowLists: true },
         });
 
         expect(isFirstChildOfParent(editorView.state)).toBe(true);
@@ -305,7 +301,6 @@ describe('utils -> commands', () => {
       it('returns false with selection in second p of first nested li', () => {
         const { editorView } = createEditor({
           doc: doc(ul(li(p('first'), ul(li(p('hello'), p('{<>}world')))))),
-          editorProps: { allowLists: true },
         });
 
         expect(isFirstChildOfParent(editorView.state)).toBe(false);
@@ -321,7 +316,6 @@ describe('utils -> commands', () => {
               ),
             ),
           ),
-          editorProps: { allowLists: true },
         });
 
         expect(isFirstChildOfParent(editorView.state)).toBe(true);
@@ -333,7 +327,6 @@ describe('utils -> commands', () => {
     it('finds a split in a balanced tree', () => {
       const { editorView } = createEditor({
         doc: doc(ul(li(p('first')), li(p('{<>}second')))),
-        editorProps: { allowLists: true },
       });
 
       const { $from } = editorView.state.selection;
@@ -352,7 +345,6 @@ describe('utils -> commands', () => {
     it('finds a split in an unbalanced tree above', () => {
       const { editorView } = createEditor({
         doc: doc(ul(li(p('first'), ul(li(p('nested')))), li(p('{<>}second')))),
-        editorProps: { allowLists: true },
       });
 
       const { $from } = editorView.state.selection;
@@ -376,7 +368,6 @@ describe('utils -> commands', () => {
             li(p('second'), p('nested'), ul(li(p('{<>}child')))),
           ),
         ),
-        editorProps: { allowLists: true },
       });
 
       const { $from } = editorView.state.selection;
@@ -392,7 +383,7 @@ describe('utils -> commands', () => {
     it('does not search across isolating boundaries', () => {
       const { editorView } = createEditor({
         doc: doc(table()(tr(td()(p('{<>}hey'))))),
-        editorProps: { allowLists: true, allowTables: true },
+        editorProps: { allowTables: true },
       });
 
       const { $from } = editorView.state.selection;

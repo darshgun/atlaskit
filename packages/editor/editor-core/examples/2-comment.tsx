@@ -127,9 +127,7 @@ class CommentEditorWithFeedbackComponent extends React.Component<Props, State> {
                     allowAnalyticsGASV3={true}
                     shouldFocus={true}
                     quickInsert={true}
-                    allowCodeBlocks={true}
                     allowTextColor={true}
-                    allowLists={true}
                     allowRule={true}
                     allowTables={{
                       allowControls: true,

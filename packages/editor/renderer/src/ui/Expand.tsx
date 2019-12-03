@@ -38,6 +38,7 @@ const Title = styled.span`
   flex: 1;
   margin: 0;
   padding: 0 0 0 ${gridSize() / 2}px;
+  text-align: left;
 `;
 
 const Container = styled.div<StyleProps>`

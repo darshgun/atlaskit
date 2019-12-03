@@ -13,7 +13,6 @@ describe('Breakout Commands: remove-breakout', () => {
     const { editorView } = createEditor({
       doc: doc(breakout({ mode: 'wide' })(code_block()('Hel{<>}lo'))),
       editorProps: {
-        allowCodeBlocks: true,
         allowBreakout: true,
         appearance: 'full-page',
       },

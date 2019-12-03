@@ -108,12 +108,16 @@ const shouldHideLayoutToolbar = (
   { nodes }: Schema,
   allowResizingInTables?: boolean,
 ) => {
-  return hasParentNodeOfType([
-    nodes.bodiedExtension,
-    nodes.layoutSection,
-    nodes.listItem,
-    ...(allowResizingInTables ? [] : [nodes.table]),
-  ])(selection);
+  return hasParentNodeOfType(
+    [
+      nodes.bodiedExtension,
+      nodes.layoutSection,
+      nodes.listItem,
+      nodes.expand,
+      nodes.nestedExpand,
+      ...(allowResizingInTables ? [] : [nodes.table]),
+    ].filter(Boolean),
+  )(selection);
 };
 
 const buildLayoutButtons = (

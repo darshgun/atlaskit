@@ -37,8 +37,6 @@ export interface EditorAppearanceComponentProps {
   customSecondaryToolbarComponents?: ReactComponents;
   insertMenuItems?: InsertMenuCustomItem[];
 
-  addonToolbarComponents?: ReactComponents;
-
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;

@@ -42,8 +42,6 @@ describe('@atlaskit/editor-core/utils insert', () => {
         allowPanel: true,
         allowRule: true,
         allowLayouts: true,
-        allowLists: true,
-        allowCodeBlocks: true,
         allowNewInsertionBehaviour: true,
         media: {
           allowMediaSingle: true,

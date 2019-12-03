@@ -2,6 +2,7 @@ import {
   doc,
   createEditorFactory,
   mediaGroup,
+  mediaSingle,
   media,
   p,
   hr,
@@ -17,6 +18,7 @@ import { setNodeSelection } from '../../../../utils';
 import {
   removeMediaNode,
   splitMediaGroup,
+  getMediaNodeFromSelection,
 } from '../../../../plugins/media/utils/media-common';
 
 const testCollectionName = `media-plugin-mock-collection-${randomId()}`;
@@ -34,7 +36,9 @@ describe('media-common', () => {
     createEditor({
       doc,
       editorProps: {
-        media: {},
+        media: {
+          allowMediaSingle: true,
+        },
         mentionProvider: Promise.resolve(new MockMentionResource({})),
         allowRule: true,
       },
@@ -525,6 +529,51 @@ describe('media-common', () => {
             );
           });
         });
+      });
+    });
+  });
+
+  describe('#getMediaNodeFromSelection', () => {
+    describe('when selection is not a  media node', () => {
+      it('returns null', () => {
+        const { editorView } = editor(
+          doc(
+            p('H {<>} i'),
+            mediaSingle({
+              layout: 'align-start',
+            })(
+              media({
+                id: 'abc',
+                type: 'file',
+                collection: 'xyz',
+              })(),
+            ),
+          ),
+        );
+
+        const result = getMediaNodeFromSelection(editorView.state);
+        expect(result).toBeNull();
+      });
+    });
+    describe('when selection is a media node', () => {
+      it('returns the media node', () => {
+        const partialMedia = media({
+          id: 'abc',
+          type: 'file',
+          collection: 'xyz',
+        })();
+        const { editorView } = editor(
+          doc(
+            '{<node>}',
+            mediaSingle({
+              layout: 'align-start',
+            })(partialMedia),
+          ),
+        );
+
+        const result = getMediaNodeFromSelection(editorView.state);
+
+        expect(result).toStrictEqual(partialMedia(editorView.state.schema));
       });
     });
   });

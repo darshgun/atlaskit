@@ -1,6 +1,6 @@
 import { EventEmitter2 } from 'eventemitter2';
 import { WsActivity, WsActivityEvents } from '../wsActivity';
-import { WsUploadEvents } from './wsUploadEvents';
+import { WsUploadEvents, RemoteUploadBasePayload } from './wsUploadEvents';
 import {
   WsUploadMessageData,
   isRemoteUploadStartData,
@@ -9,6 +9,7 @@ import {
   isRemoteUploadErrorData,
   isNotifyMetadata,
 } from '../wsMessageData';
+import { ServiceName } from '../../../domain';
 
 export type DispatchUploadEvent<T extends keyof WsUploadEvents> = (
   event: T,
@@ -20,6 +21,7 @@ export class RemoteUploadActivity implements WsActivity {
 
   constructor(
     private readonly uploadId: string,
+    private readonly serviceName: ServiceName,
     private readonly dispatchEvent: DispatchUploadEvent<keyof WsUploadEvents>,
   ) {}
 
@@ -28,35 +30,40 @@ export class RemoteUploadActivity implements WsActivity {
       return;
     }
 
+    const basePayload: RemoteUploadBasePayload = {
+      // First try to use alternative response shape
+      // Will be removed after backend unifies response schema
+      uploadId: (data.data && data.data.uploadId) || data.uploadId,
+      serviceName: this.serviceName,
+    };
+
     if (isRemoteUploadStartData(data)) {
       this.dispatchEvent('RemoteUploadStart', {
-        uploadId: data.uploadId,
+        ...basePayload,
       });
       this.notifyActivityStarted();
     } else if (isRemoteUploadProgressData(data)) {
       this.dispatchEvent('RemoteUploadProgress', {
-        uploadId: data.uploadId,
         bytes: data.currentAmount,
         fileSize: data.totalAmount,
+        ...basePayload,
       });
     } else if (isRemoteUploadEndData(data)) {
       this.dispatchEvent('RemoteUploadEnd', {
         fileId: data.fileId,
-        uploadId: data.uploadId,
+        ...basePayload,
       });
       this.notifyActivityCompleted();
     } else if (isRemoteUploadErrorData(data)) {
       this.dispatchEvent('RemoteUploadFail', {
-        // First try to use alternative response shape
-        // Will be removed after backend unifies response schema
-        uploadId: (data.data && data.data.uploadId) || data.uploadId,
         description: (data.data && data.data.reason) || data.reason,
+        ...basePayload,
       });
       this.notifyActivityCompleted();
     } else if (isNotifyMetadata(data)) {
       this.dispatchEvent('NotifyMetadata', {
-        uploadId: data.uploadId,
         metadata: data.metadata,
+        ...basePayload,
       });
     }
   }
@@ -66,6 +73,7 @@ export class RemoteUploadActivity implements WsActivity {
       this.dispatchEvent('RemoteUploadFail', {
         uploadId: this.uploadId,
         description: 'Websocket connection lost',
+        serviceName: this.serviceName,
       });
     }
   }

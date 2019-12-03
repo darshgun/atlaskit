@@ -308,6 +308,13 @@ export function defaultActionHandler({
   const isAllowed = isMarkTypeAllowedInCurrentSelection(typeAheadQuery, state);
 
   if (!isAllowed && !isActive) {
+    if (
+      pluginState &&
+      pluginState.active === isActive &&
+      pluginState.isAllowed === isAllowed
+    ) {
+      return pluginState;
+    }
     const newPluginState = createInitialPluginState(
       pluginState.active,
       isAllowed,

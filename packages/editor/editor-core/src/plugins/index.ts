@@ -49,5 +49,5 @@ export { default as customAutoformatPlugin } from './custom-autoformat';
 export { default as feedbackDialogPlugin } from './feedback-dialog';
 export { default as historyPlugin } from './history';
 export { default as sharedContextPlugin } from './shared-context';
-export { default as expandPlugin } from './expand';
+export { default as expandPlugin, isExpandInsertionEnabled } from './expand';
 export { default as iOSScrollPlugin } from './ios-scroll';

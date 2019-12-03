@@ -68,8 +68,6 @@ export class CommentEditorJiraBento extends React.Component<Props, State> {
                   provider: mediaProvider,
                   allowMediaSingle: true,
                 }}
-                allowLists={true}
-                allowCodeBlocks={true}
                 allowRule={true}
                 allowTextColor={true}
                 allowTables={{

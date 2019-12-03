@@ -1,7 +1,7 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import {
   editable,
-  getDocFromElement,
+  expectToMatchDocument,
   fullpage,
   quickInsert,
 } from '../_helpers';
@@ -27,7 +27,6 @@ BrowserTestCase(
 
     await page.type(editable, 'this text should be in the panel');
 
-    const doc = await page.$eval(editable, getDocFromElement);
-    expect(doc).toMatchCustomDocSnapshot(testName);
+    await expectToMatchDocument(page, testName);
   },
 );

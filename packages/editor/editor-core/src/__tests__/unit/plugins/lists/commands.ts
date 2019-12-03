@@ -10,6 +10,10 @@ import {
   sendKeyToPm,
   panel,
   ul,
+  expand,
+  breakout,
+  layoutColumn,
+  layoutSection,
 } from '@atlaskit/editor-test-helpers';
 import {
   enterKeyCommand,
@@ -29,7 +33,7 @@ describe('lists plugin -> commands', () => {
         doc: doc(
           ol(li(p('text')), li(p('{<>}', hardBreak(), date({ timestamp })))),
         ),
-        editorProps: { allowLists: true, allowDate: true },
+        editorProps: { allowDate: true },
       });
       enterKeyCommand(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
@@ -49,7 +53,6 @@ describe('lists plugin -> commands', () => {
       it('should not outdent a list', () => {
         const { editorView } = createEditor({
           doc: doc(ol(li(code_block()('{<>}text')))),
-          editorProps: { allowLists: true, allowCodeBlocks: true },
         });
 
         backspaceKeyCommand(editorView.state, editorView.dispatch);
@@ -64,10 +67,6 @@ describe('lists plugin -> commands', () => {
       it('should outdent a list', () => {
         const { editorView } = createEditor({
           doc: doc(ol(li(code_block()('{<>}text')))),
-          editorProps: {
-            allowLists: true,
-            allowCodeBlocks: true,
-          },
         });
 
         // enable gap cursor
@@ -86,10 +85,6 @@ describe('lists plugin -> commands', () => {
       it('should join codeBlock with the list', () => {
         const { editorView } = createEditor({
           doc: doc(ol(li(p('text'))), code_block()('{<>}code')),
-          editorProps: {
-            allowLists: true,
-            allowCodeBlocks: true,
-          },
         });
 
         // enable gap cursor
@@ -112,7 +107,6 @@ describe('lists plugin -> commands', () => {
       const { editorView } = createEditor({
         doc: doc(panel()(ol(li(p('text{<>}'))))),
         editorProps: {
-          allowLists: true,
           allowPanel: true,
         },
       });
@@ -134,7 +128,6 @@ describe('lists plugin -> commands', () => {
       const { editorView } = createEditor({
         doc: doc(panel()(ul(li(p('text{<>}'))))),
         editorProps: {
-          allowLists: true,
           allowPanel: true,
         },
       });
@@ -149,6 +142,70 @@ describe('lists plugin -> commands', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(panel()(ol(li(p('text{<>}'))))),
+      );
+    });
+
+    it('should keep breakout marks where they are valid on expands', () => {
+      const { editorView } = createEditor({
+        doc: doc(breakout({ mode: 'wide' })(expand()(p('{<>}')))),
+        editorProps: {
+          UNSAFE_allowExpand: true,
+          allowBreakout: true,
+          appearance: 'full-page',
+        },
+      });
+
+      const { state, dispatch } = editorView;
+
+      toggleList(
+        state,
+        dispatch,
+        editorView,
+        'bulletList',
+        INPUT_METHOD.TOOLBAR,
+      );
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc('{expandPos}', breakout({ mode: 'wide' })(expand()(ul(li(p()))))),
+      );
+    });
+
+    it('should keep breakout marks where they are valid on layouts', () => {
+      const { editorView } = createEditor({
+        doc: doc(
+          breakout({ mode: 'wide' })(
+            layoutSection(
+              layoutColumn({ width: 50 })(p('{<>}')),
+              layoutColumn({ width: 50 })(p()),
+            ),
+          ),
+        ),
+        editorProps: {
+          allowLayouts: true,
+          allowBreakout: true,
+          appearance: 'full-page',
+        },
+      });
+
+      const { state, dispatch } = editorView;
+
+      toggleList(
+        state,
+        dispatch,
+        editorView,
+        'bulletList',
+        INPUT_METHOD.TOOLBAR,
+      );
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          breakout({ mode: 'wide' })(
+            layoutSection(
+              layoutColumn({ width: 50 })(ul(li(p()))),
+              layoutColumn({ width: 50 })(p()),
+            ),
+          ),
+        ),
       );
     });
   });

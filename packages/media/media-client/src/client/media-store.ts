@@ -6,7 +6,6 @@ import {
 } from '@atlaskit/media-core';
 import {
   MediaFile,
-  MediaCollection,
   MediaCollectionItems,
   MediaUpload,
   MediaChunksProbe,
@@ -53,28 +52,6 @@ const jsonHeaders = {
 
 export class MediaStore {
   constructor(private readonly config: MediaApiConfig) {}
-
-  createCollection(
-    collectionName: string,
-  ): Promise<MediaStoreResponse<MediaCollection>> {
-    return this.request('/collection', {
-      method: 'POST',
-      body: JSON.stringify({ name: collectionName }),
-      authContext: { collectionName },
-      headers: jsonHeaders,
-    }).then(mapResponseToJson);
-  }
-
-  getCollection(
-    collectionName: string,
-  ): Promise<MediaStoreResponse<MediaCollection>> {
-    return this.request(`/collection/${collectionName}`, {
-      authContext: { collectionName },
-      headers: {
-        Accept: 'application/json',
-      },
-    }).then(mapResponseToJson);
-  }
 
   async getCollectionItems(
     collectionName: string,
@@ -201,35 +178,6 @@ export class MediaStore {
       method: 'POST',
       headers: jsonHeaders,
       body: JSON.stringify(body),
-      authContext: { collectionName: params.collection },
-    }).then(mapResponseToJson);
-  }
-
-  createFile(
-    params: MediaStoreCreateFileParams = {},
-  ): Promise<MediaStoreResponse<EmptyFile>> {
-    return this.request('/file', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-      },
-      params,
-      authContext: { collectionName: params.collection },
-    }).then(mapResponseToJson);
-  }
-
-  createFileFromBinary(
-    blob: Blob,
-    params: MediaStoreCreateFileFromBinaryParams = {},
-  ): Promise<MediaStoreResponse<MediaFile>> {
-    return this.request('/file/binary', {
-      method: 'POST',
-      body: blob,
-      params,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': blob.type,
-      },
       authContext: { collectionName: params.collection },
     }).then(mapResponseToJson);
   }

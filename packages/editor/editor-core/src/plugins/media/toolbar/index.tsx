@@ -22,7 +22,6 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { MediaLinkingState, getMediaLinkingState } from '../pm-plugins/linking';
 import { getPluginState as getMediaAltTextPluginState } from '../pm-plugins/alt-text';
 import { altTextButton, getAltTextToolbar } from './alt-text';
-import { getEditorProps } from '../../shared-context';
 
 const remove: Command = (state, dispatch) => {
   if (dispatch) {
@@ -38,6 +37,7 @@ export type MediaFloatingToolbarOptions = {
   allowLinking?: boolean;
   allowAdvancedToolBarOptions?: boolean;
   allowResizingInTables?: boolean;
+  UNSAFE_allowAltTextOnImages?: boolean;
 };
 
 export const floatingToolbar = (
@@ -52,6 +52,7 @@ export const floatingToolbar = (
     allowLinking,
     allowAdvancedToolBarOptions,
     allowResizingInTables,
+    UNSAFE_allowAltTextOnImages,
   } = options;
   const { mediaSingle } = state.schema.nodes;
   const pluginState: MediaPluginState | undefined = stateKey.getState(state);
@@ -115,14 +116,12 @@ export const floatingToolbar = (
     }
   }
 
-  const mediaAltTextPluginState = getMediaAltTextPluginState(state);
-  const editorProps = getEditorProps(state);
-  const media = editorProps && editorProps.media;
-  if (media && media.UNSAFE_allowAltTextOnImages) {
+  if (UNSAFE_allowAltTextOnImages) {
+    const mediaAltTextPluginState = getMediaAltTextPluginState(state);
     if (mediaAltTextPluginState.isAltTextEditorOpen) {
       return getAltTextToolbar(baseToolbar);
     } else {
-      toolbarButtons.push(altTextButton(intl), { type: 'separator' });
+      toolbarButtons.push(altTextButton(intl, state), { type: 'separator' });
     }
   }
 

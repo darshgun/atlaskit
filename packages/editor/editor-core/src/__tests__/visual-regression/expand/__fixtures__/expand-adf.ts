@@ -399,3 +399,383 @@ export const expandADF = (breakoutMode = 'default') => ({
     },
   ],
 });
+
+export const tableMediaADF = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'expand',
+      attrs: {
+        title: '',
+      },
+      content: [
+        {
+          type: 'table',
+          attrs: {
+            isNumberColumnEnabled: false,
+            layout: 'default',
+          },
+          content: [
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableHeader',
+                  attrs: {},
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Row One',
+                          marks: [
+                            {
+                              type: 'strong',
+                            },
+                          ],
+                        },
+                        {
+                          type: 'emoji',
+                          attrs: {
+                            shortName: ':grinning:',
+                            id: '1f600',
+                            text: '😀',
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableHeader',
+                  attrs: {},
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableHeader',
+                  attrs: {},
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableCell',
+                  attrs: {},
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableCell',
+                  attrs: {},
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableCell',
+                  attrs: {},
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [],
+    },
+  ],
+};
+
+export const nestedExpandOverflowInTable = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'table',
+      attrs: {
+        isNumberColumnEnabled: false,
+        layout: 'default',
+      },
+      content: [
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              attrs: {
+                colwidth: [54],
+              },
+              content: [
+                {
+                  type: 'nestedExpand',
+                  attrs: {
+                    title: '',
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Lorem',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colwidth: [512],
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'emoji',
+                      attrs: {
+                        shortName: ':grinning:',
+                        id: '1f600',
+                        text: '😀',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'tableCell',
+              attrs: {
+                colwidth: [283],
+              },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [],
+    },
+  ],
+};
+
+export const wrappingMediaADF = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'expand',
+      attrs: {
+        title: 'Hello media',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [],
+        },
+        {
+          type: 'mediaSingle',
+          attrs: {
+            width: 50,
+            layout: 'wrap-right',
+          },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'external',
+                width: 320,
+                height: 320,
+                url:
+                  'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
+              },
+            },
+          ],
+        },
+        {
+          type: 'mediaSingle',
+          attrs: {
+            layout: 'center',
+          },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'external',
+                width: 320,
+                height: 320,
+                url:
+                  'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const mediaInExpandADF = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'expand',
+      attrs: {
+        title: 'Hello media',
+      },
+      content: [
+        {
+          type: 'paragraph',
+          content: [],
+        },
+        {
+          type: 'mediaSingle',
+          attrs: {
+            layout: 'center',
+          },
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'external',
+                width: 320,
+                height: 320,
+                url:
+                  'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const mediaInNestedExpandADF = {
+  type: 'doc',
+  content: [
+    {
+      type: 'table',
+      attrs: {
+        layout: 'default',
+      },
+      content: [
+        {
+          type: 'tableRow',
+          content: [
+            {
+              type: 'tableCell',
+              content: [
+                {
+                  type: 'nestedExpand',
+                  attrs: {
+                    title: 'I have media!',
+                  },
+                  content: [
+                    {
+                      type: 'mediaSingle',
+                      attrs: {
+                        width: 33,
+                        layout: 'center',
+                      },
+                      content: [
+                        {
+                          type: 'media',
+                          attrs: {
+                            type: 'external',
+                            width: 320,
+                            height: 320,
+                            url:
+                              'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==',
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const extensionInsideExpandADF = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'expand',
+      attrs: {
+        title: '',
+      },
+      content: [
+        {
+          type: 'extension',
+          attrs: {
+            extensionType: 'com.atlassian.confluence.macro.core',
+            extensionKey: 'block-eh',
+            parameters: {
+              macroParams: {},
+              macroMetadata: {
+                placeholder: [
+                  {
+                    data: {
+                      url: '',
+                    },
+                    type: 'icon',
+                  },
+                ],
+              },
+            },
+            text: 'Block extension demo',
+            layout: 'default',
+          },
+        },
+      ],
+    },
+  ],
+};

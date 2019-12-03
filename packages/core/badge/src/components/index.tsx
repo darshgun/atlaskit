@@ -15,6 +15,7 @@ export interface BadgeProps {
    * Supersedes the `value` props. The value displayed within the badge. A string can be provided for
    * custom-formatted numbers, however badge should only be used in cases where you want to represent
    * a number.
+   * Use a [lozenge](/packages/core/lozenge) for non-numeric information.
    */
   children?: number | string;
 
@@ -34,7 +35,7 @@ const Badge: FC<BadgeProps> = ({
   children = 0,
   max = 99,
   testId,
-}) => {
+}: BadgeProps) => {
   return (
     <Theme.Provider value={theme}>
       <GlobalTheme.Consumer>

@@ -4,9 +4,16 @@ import Extension from '../../../../react/nodes/extension';
 import { RendererContext } from '../../../../react';
 import ReactSerializer from '../../../../react';
 import { defaultSchema } from '@atlaskit/adf-schema';
-import { ExtensionHandlers } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  ExtensionHandlers,
+  combineExtensionProviders,
+} from '@atlaskit/editor-common';
+import { createFakeExtensionProvider } from '@atlaskit/editor-test-helpers/src/extensions';
+import Loadable from 'react-loadable';
 
 describe('Renderer - React/Nodes/Extension', () => {
+  const providerFactory = ProviderFactory.create({});
   const extensionHandlers: ExtensionHandlers = {
     'com.atlassian.fabric': (param: any) => {
       switch (param.extensionKey) {
@@ -74,6 +81,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should be able to fall back to default content', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -95,6 +103,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should be able to render React.Element from extensionHandler', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -115,6 +124,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should be able to render Atlassian Document from extensionHandler', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -135,6 +145,7 @@ describe('Renderer - React/Nodes/Extension', () => {
   it('should render the default content if extensionHandler throws an exception', () => {
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -160,6 +171,7 @@ describe('Renderer - React/Nodes/Extension', () => {
 
     const extension = mount(
       <Extension
+        providers={providerFactory}
         serializer={serializer}
         extensionHandlers={extensionHandlers}
         rendererContext={rendererContext}
@@ -177,5 +189,95 @@ describe('Renderer - React/Nodes/Extension', () => {
     });
 
     extension.unmount();
+  });
+
+  describe('extension providers', () => {
+    const ExtensionHandlerFromProvider = ({ extensionParams }: any) => (
+      <div>Extension provider: {extensionParams.content}</div>
+    );
+
+    const confluenceMacrosExtensionProvider = createFakeExtensionProvider(
+      'fake.confluence',
+      'macro',
+      ExtensionHandlerFromProvider,
+    );
+
+    const providers = ProviderFactory.create({
+      extensionProvider: Promise.resolve(
+        combineExtensionProviders([confluenceMacrosExtensionProvider]),
+      ),
+    });
+
+    it('should be able to render extensions with the extension provider', async () => {
+      const extension = mount(
+        <Extension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence"
+          extensionKey="macro"
+          text="Hello extension"
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.text()).toEqual('Extension provider: Hello extension');
+
+      extension.unmount();
+    });
+
+    it('should prioritize extension handlers (sync) over extension provider', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence': (extensionParams: any) => (
+          <div>Extension handler: {extensionParams.content}</div>
+        ),
+      };
+
+      const extension = mount(
+        <Extension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence"
+          extensionKey="macro"
+          text="Hello extension"
+        />,
+      );
+
+      expect(extension.text()).toEqual('Extension handler: Hello extension');
+
+      extension.unmount();
+    });
+
+    it('should fallback to extension provider if not handled by extension handler', async () => {
+      const extensionHandlers: ExtensionHandlers = {
+        'fake.confluence': (extensionParams: any) => null,
+      };
+
+      const extension = mount(
+        <Extension
+          providers={providers}
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="fake.confluence"
+          extensionKey="macro"
+          text="Hello extension"
+        />,
+      );
+
+      await Loadable.preloadAll();
+
+      extension.update();
+
+      expect(extension.text()).toEqual('Extension provider: Hello extension');
+
+      extension.unmount();
+    });
   });
 });

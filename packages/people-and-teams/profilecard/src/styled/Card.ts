@@ -4,7 +4,6 @@ import {
   gridSize,
   math,
   elevation,
-  // @ts-ignore - it's exported the type is just missing
   fontSizeSmall,
 } from '@atlaskit/theme';
 
@@ -43,10 +42,18 @@ interface CardElevationWrapperProps {
 export const CardElevationWrapper = styled.div<CardElevationWrapperProps>`
   background-color: ${bgColor};
   border-radius: ${borderRadius}px;
-  ${props =>
-    props.customElevation
-      ? elevation[props.customElevation] || ''
-      : elevation.e200};
+  ${props => {
+    if (props.customElevation === 'none') {
+      return '';
+    }
+
+    if (typeof props.customElevation === 'string') {
+      return elevation[props.customElevation];
+    }
+
+    // If customElevation is undefined it will default to this.
+    return elevation.e200;
+  }};
   width: ${math.multiply(gridSize, 45)}px;
 `;
 

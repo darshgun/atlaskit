@@ -65,6 +65,7 @@ describe('Browser analytics instrumentation', () => {
           actionSubject: 'mediaUpload',
           actionSubjectId: 'localMedia',
           attributes: {
+            sourceType: 'local',
             fileAttributes: {
               fileMimetype: 'text/plain',
               fileSize: 13,
@@ -126,6 +127,7 @@ describe('Browser analytics instrumentation', () => {
           actionSubject: 'mediaUpload',
           actionSubjectId: 'localMedia',
           attributes: {
+            sourceType: 'local',
             fileAttributes: {
               fileMimetype: 'text/plain',
               fileSize: 13,
@@ -182,6 +184,7 @@ describe('Browser analytics instrumentation', () => {
           actionSubject: 'mediaUpload',
           actionSubjectId: 'localMedia',
           attributes: {
+            sourceType: 'local',
             fileAttributes: {
               fileMimetype: 'text/plain',
               fileSize: 13,
@@ -252,6 +255,7 @@ describe('Browser analytics instrumentation', () => {
           actionSubject: 'mediaUpload',
           actionSubjectId: 'localMedia',
           attributes: {
+            sourceType: 'local',
             fileAttributes: {
               fileMimetype: 'text/plain',
               fileSize: 13,
@@ -281,6 +285,7 @@ describe('Browser analytics instrumentation', () => {
           actionSubject: 'mediaUpload',
           actionSubjectId: 'localMedia',
           attributes: {
+            sourceType: 'local',
             fileAttributes: {
               fileMimetype: 'text/plain',
               fileSize: 13,
