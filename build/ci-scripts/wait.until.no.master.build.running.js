@@ -57,7 +57,9 @@ function noMasterRunning() {
       console.log(runningPipelines.length, 'master build running');
       return runningPipelines.length === 0;
     })
-    .catch(err => console.error(`${err}`));
+    .catch(err => {
+      throw Error(`${err}`);
+    });
 }
 
 console.log(

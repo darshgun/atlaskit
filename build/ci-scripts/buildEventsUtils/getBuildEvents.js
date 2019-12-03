@@ -44,6 +44,12 @@ const {
   BITBUCKET_PASSWORD,
 } = process.env;
 
+if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+  );
+}
+
 const axiosRequestConfig = {
   auth: {
     username: BITBUCKET_USER,
@@ -51,11 +57,6 @@ const axiosRequestConfig = {
   },
 };
 
-if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
-  throw Error(
-    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
-  );
-}
 /* This function computes build time if build.duration_in_seconds returns 0, it is often applicable for 1 step build.
  * The Bitbucket computation is simple, they sum the longest step time with the shortest one.
  */

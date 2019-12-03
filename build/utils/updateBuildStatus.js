@@ -23,8 +23,16 @@ const defaultRepoOwner = String(process.env.BITBUCKET_REPO_OWNER);
 const defaultRepoSlug = String(process.env.BITBUCKET_REPO_SLUG);
 const defaultBuildName = 'Custom build status';
 const defaultDescription = 'No description given';
+
 const { BITBUCKET_REPO_FULL_NAME } = process.env;
-const defaultUrl = `bitbucket.org/${String(BITBUCKET_REPO_FULL_NAME)}/`;
+
+if (!BITBUCKET_REPO_FULL_NAME) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME environment variables needs to be set',
+  );
+}
+
+const defaultUrl = `bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/`;
 const defaultBuildKey = (commit /*: string */, buildName /*: string */) =>
   `${buildName} - ${commit.substr(0, 6)}`;
 
