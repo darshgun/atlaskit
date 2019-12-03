@@ -10,8 +10,13 @@ import { Props, TreeDraggableProvided } from './TreeItem-types';
 export default class TreeItem extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
     return (
-      !sameProps(this.props, nextProps, ['item', 'provided', 'snapshot']) ||
-      !isSamePath(this.props.path, nextProps.path)
+      !sameProps(this.props, nextProps, [
+        'item',
+        'provided',
+        'snapshot',
+        'onCollapse',
+        'onExpand',
+      ]) || !isSamePath(this.props.path, nextProps.path)
     );
   }
 
