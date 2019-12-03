@@ -3,7 +3,7 @@ const bolt = require('bolt');
 const path = require('path');
 const meow = require('meow');
 const flattenDeep = require('lodash.flattendeep');
-const packages = require('../utils/packages');
+const packages = require('@atlaskit/build-utils/packages');
 
 // /**
 //  * NOTE: This prints the list of changed packages and dependent packages since master ONLY if they have been commited.

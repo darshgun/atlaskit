@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.6.6
+
+### Patch Changes
+
+- [patch][c86f02bcb3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c86f02bcb3):
+
+  Added selected state to more menu
+
 ## 0.6.5
 
 ### Patch Changes
