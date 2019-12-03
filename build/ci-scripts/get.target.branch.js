@@ -29,9 +29,11 @@ const {
 
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
-function httpGetRequest(url /*: string */, auth /*: string */) {
+function httpGetRequest(url /*: string */) {
+  const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
+    'base64',
+  );
   const options = {
-    path: url,
     headers: {
       Authorization: `Basic ${auth}`,
     },
@@ -39,7 +41,7 @@ function httpGetRequest(url /*: string */, auth /*: string */) {
   return new Promise((resolve, reject) => {
     let data = '';
 
-    const req = https.get(options, resp => {
+    const req = https.get(url, options, resp => {
       // eslint-disable-next-line no-return-assign
       resp.on('data', chunk => (data += chunk));
       resp.on('end', () => resolve(JSON.parse(data)));
@@ -61,19 +63,24 @@ async function main() {
     );
   }
   const bbRepoFullName = BITBUCKET_REPO_FULL_NAME || '';
-  const bbCommit = BITBUCKET_COMMIT || '';
+  const bbCommit =
+    BITBUCKET_COMMIT || '4701673cb0e949908d00fe194791cb83433c3b96';
   // We sort descending to on created_on to get neweset first and only look at open PRs
   let endpoint = `https://api.bitbucket.org/2.0/repositories/${bbRepoFullName}/pullrequests?sort=-created_on&state=OPEN&pagelen=20`;
   let response;
   let targetBranch = '';
-  const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
-    'base64',
-  );
 
   do {
     // $FlowFixMe - fix logger
     debugLog(`Fetching...${endpoint}`);
-    response = await httpGetRequest(endpoint, auth);
+    try {
+      response = await httpGetRequest(endpoint);
+    } catch (err) {
+      console.error(
+        `Something went wrong trying to get this endpoint: ${endpoint} with this error: ${err}`,
+      );
+    }
+
     if (!response || !response.values) {
       console.error('Response is not in the format we expected. Received:');
       console.log(response);

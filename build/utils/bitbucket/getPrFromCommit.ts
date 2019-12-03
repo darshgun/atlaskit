@@ -1,11 +1,15 @@
 import https from 'https';
 import { PaginatedPullRequests, PullRequest } from './types';
 
+const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
+
 // We use the node https library so that we can run this script without installing any dependencies
 // even though we have to add some extra wrapping functions
-function httpGetRequest(url: string, auth: string) {
+function httpGetRequest(url: string) {
+  const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
+    'base64',
+  );
   const options = {
-    path: url,
     headers: {
       Authorization: `Basic ${auth}`,
     },
@@ -30,11 +34,11 @@ export async function getPrFromCommit(
   commitHash: string,
   repoFullName: string,
 ) {
-  const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
-
-  const auth = Buffer.from(`${BITBUCKET_USER}:${BITBUCKET_PASSWORD}`).toString(
-    'base64',
-  );
+  if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+    throw Error(
+      '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+    );
+  }
 
   if (!commitHash || !repoFullName || !auth) {
     throw Error('Missing commitHash or repoFullName or auth');
@@ -52,7 +56,7 @@ export async function getPrFromCommit(
     if (!endpoint) {
       throw Error('Missing endpoint');
     }
-    response = (await httpGetRequest(endpoint, auth)) as PaginatedPullRequests;
+    response = (await httpGetRequest(endpoint)) as PaginatedPullRequests;
     if (!response || !response.values) {
       throw Error(
         `Response is not in the format we expected. Received:\n${response}`,

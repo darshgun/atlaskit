@@ -44,6 +44,7 @@ function noMasterRunning() {
       axiosRequestConfig,
     )
     .then(response => {
+      console.log(response);
       const allPipelines = response.data.values;
       const runningPipelines = allPipelines
         .filter(
