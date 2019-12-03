@@ -22,12 +22,6 @@ const {
   BITBUCKET_REPO_FULL_NAME,
 } = process.env;
 
-if (!BITBUCKET_USER || !BITBUCKET_PASSWORD || !BITBUCKET_REPO_FULL_NAME) {
-  throw Error(
-    '$BITBUCKET_USER or $BITBUCKET_PASSWORD or $BITBUCKET_REPO_FULL_NAME environment variables not set',
-  );
-}
-
 async function updatePrWithFutureRelease(
   prClient: PullRequestClient,
   matchedPr: PullRequest,
@@ -77,6 +71,11 @@ export default async function main(
   repoFullName: string,
   userOpts: Partial<Opts> = {},
 ) {
+  if (!BITBUCKET_USER || !BITBUCKET_PASSWORD || !BITBUCKET_REPO_FULL_NAME) {
+    throw Error(
+      '$BITBUCKET_USER or $BITBUCKET_PASSWORD or $BITBUCKET_REPO_FULL_NAME environment variables not set',
+    );
+  }
   const opts: Opts = { ...defaultOpts, ...userOpts };
 
   const matchedPr: PullRequest | undefined = await getPrFromCommit(
