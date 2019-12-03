@@ -16,7 +16,7 @@ export interface CloneProps {
   targetOnClick?: (eventData: {
     event: MouseEvent<HTMLElement>;
     target?: string;
-  }) => unknown;
+  }) => void;
   /** The border-radius of the element being highlighted */
   targetRadius?: number;
 }

@@ -26,7 +26,7 @@ interface Props extends WithAnalyticsEventsProps {
   onSelect?: (eventData: {
     event: React.MouseEvent<HTMLButtonElement>;
     index: number;
-  }) => unknown;
+  }) => void;
   /** Which indicator is currently selected */
   selectedIndex: number;
   /** Corresponds to the width & height of each indicator */

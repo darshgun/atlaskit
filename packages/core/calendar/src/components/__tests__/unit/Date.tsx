@@ -4,7 +4,7 @@ import DateComponent from '../../Date';
 import { DateDiv, DateTd, DateProps } from '../../../styled/Date';
 
 const create = (
-  props: { disabled?: boolean; onClick?: (e: any) => unknown } = {},
+  props: { disabled?: boolean; onClick?: (e: any) => void } = {},
 ) =>
   shallow(
     <DateComponent month={1} year={2017} {...props}>

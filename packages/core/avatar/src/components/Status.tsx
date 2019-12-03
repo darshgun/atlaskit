@@ -6,7 +6,7 @@ import { StatusType, SizeType } from '../types';
 interface StatusProps {
   /** Used to override the default border color of the status indicator.
    Accepts any color argument that the border-color CSS property accepts. */
-  borderColor?: string | (() => unknown);
+  borderColor?: string | (() => string);
   /** Content to use as a custom status indicator (usually not required if
    consuming Status separate to Avatar). */
   children?: ReactNode;
