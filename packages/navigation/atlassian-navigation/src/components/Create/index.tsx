@@ -44,6 +44,7 @@ export const Create = ({
     >
       <TooltipSwitch buttonTooltip={buttonTooltip}>
         <Button
+          id="createGlobalItem"
           css={createButtonCSS}
           onClick={onClick}
           theme={getCreateButtonTheme(theme)}
@@ -52,6 +53,7 @@ export const Create = ({
         </Button>
       </TooltipSwitch>
       <IconButton
+        id="createGlobalItemIconButton"
         css={createIconCSS}
         icon={<AddIcon label={text} />}
         onClick={onClick}
