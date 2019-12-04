@@ -358,6 +358,7 @@ class ExampleEditorComponent extends React.Component<
       allowMediaSingle: true,
       allowResizing: true,
       allowAnnotation: true,
+      UNSAFE_allowAltTextOnImages: true,
     };
 
     return (
@@ -373,8 +374,6 @@ class ExampleEditorComponent extends React.Component<
                   quickInsert={{
                     provider: Promise.resolve(quickInsertProvider),
                   }}
-                  allowCodeBlocks={{ enableKeybindingsForIDE: true }}
-                  allowLists={true}
                   allowTextColor={true}
                   allowTables={{
                     advanced: true,

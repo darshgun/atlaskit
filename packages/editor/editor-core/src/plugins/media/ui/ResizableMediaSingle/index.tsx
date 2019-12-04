@@ -274,11 +274,19 @@ export default class ResizableMediaSingle extends React.Component<
 
   highlights = (newWidth: number, snapPoints: number[]) => {
     const snapWidth = snapTo(newWidth, snapPoints);
-    const { layoutColumn, table } = this.props.view.state.schema.nodes;
+    const {
+      layoutColumn,
+      table,
+      expand,
+      nestedExpand,
+    } = this.props.view.state.schema.nodes;
 
     if (
       this.$pos &&
-      !!findParentNodeOfTypeClosestToPos(this.$pos, [layoutColumn, table])
+      !!findParentNodeOfTypeClosestToPos(
+        this.$pos,
+        [layoutColumn, table, expand, nestedExpand].filter(Boolean),
+      )
     ) {
       return [];
     }

@@ -49,7 +49,9 @@ export type RendererWrapperProps = {
   theme?: any;
 };
 
-const getLineHeight = (fontCode: string): number =>
+type HeadingSizes = keyof typeof typography.headingSizes;
+
+const getLineHeight = <T extends HeadingSizes>(fontCode: T): number =>
   typography.headingSizes[fontCode].lineHeight /
   typography.headingSizes[fontCode].size;
 

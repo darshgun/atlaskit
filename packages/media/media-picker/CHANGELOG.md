@@ -1,5 +1,33 @@
 # @atlaskit/media-picker
 
+## 50.0.2
+
+### Patch Changes
+
+- [patch][4427e6c8cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4427e6c8cf):
+
+  bumping perf-marks to 1.5.0
+
+- [patch][df2280531d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df2280531d):
+
+  MS-2723 Adds source type into analytic event
+
+- [patch][7540cdff80](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7540cdff80):
+
+  fixing types for cloud analytics success and failure events
+
+- Updated dependencies [2e711adfa9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e711adfa9):
+- Updated dependencies [c1d4898af5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1d4898af5):
+- Updated dependencies [579779f5aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/579779f5aa):
+- Updated dependencies [3c0f6feee5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c0f6feee5):
+- Updated dependencies [1b8e3a1412](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b8e3a1412):
+- Updated dependencies [f9c291923c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c291923c):
+  - @atlaskit/media-viewer@44.0.3
+  - @atlaskit/icon@19.0.11
+  - @atlaskit/media-client@4.1.1
+  - @atlaskit/theme@9.3.0
+  - @atlaskit/media-editor@37.0.3
+
 ## 50.0.1
 
 ### Patch Changes

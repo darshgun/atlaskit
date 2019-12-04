@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { createStore, Reducer } from 'redux';
 import { cardReducer } from '../reducers';
 import { SmartCardContext } from '.';
@@ -9,39 +9,37 @@ import { CardStore } from '../types';
 import CardClient from '../../client';
 
 export function SmartCardProvider({
-  client = new CardClient(),
-  cacheOptions = {
-    maxAge: MAX_RELOAD_DELAY,
-    maxLoadingDelay: MAX_LOADING_DELAY,
-  },
-  storeOptions = { initialState: {} },
-  authFlow = 'oauth2',
+  storeOptions,
+  client: customClient,
+  cacheOptions: customCacheOptions,
+  authFlow: customAuthFlow,
   children,
 }: CardProviderProps) {
-  const context = useContext(SmartCardContext);
-  if (context) {
-    return (
-      <SmartCardContext.Provider value={context}>
-        {children}
-      </SmartCardContext.Provider>
-    );
-  } else {
-    const { initialState } = storeOptions;
+  const parentContext = useContext(SmartCardContext);
+  const providerValue = useMemo(() => {
+    const { initialState } = storeOptions || { initialState: {} };
+    const client = customClient || new CardClient();
     const store = createStore(cardReducer as Reducer<CardStore>, initialState);
-    return (
-      <SmartCardContext.Provider
-        value={{
-          store,
-          connections: {
-            client,
-          },
-          config: { ...cacheOptions, authFlow },
-        }}
-      >
-        {children}
-      </SmartCardContext.Provider>
-    );
-  }
+    const authFlow = customAuthFlow || 'oauth2';
+    const cacheOptions = customCacheOptions || {
+      maxAge: MAX_RELOAD_DELAY,
+      maxLoadingDelay: MAX_LOADING_DELAY,
+    };
+
+    return {
+      store,
+      connections: {
+        client,
+      },
+      config: { ...cacheOptions, authFlow },
+    };
+  }, [customClient, customCacheOptions, customAuthFlow, storeOptions]);
+
+  return (
+    <SmartCardContext.Provider value={parentContext || providerValue}>
+      {children}
+    </SmartCardContext.Provider>
+  );
 }
 export { CardProviderProps as ProviderProps };
 export default SmartCardProvider;

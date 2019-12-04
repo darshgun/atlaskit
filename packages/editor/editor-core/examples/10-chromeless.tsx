@@ -68,13 +68,12 @@ export default function Example() {
               allowAnalyticsGASV3={true}
               disabled={disabled}
               shouldFocus={true}
-              allowCodeBlocks={true}
               saveOnEnter={true}
               mentionProvider={mentionProvider}
               emojiProvider={emojiProvider}
               taskDecisionProvider={taskDecisionProvider}
               contextIdentifierProvider={contextIdentifierProvider}
-              mediaProvider={mediaProvider}
+              media={{ provider: mediaProvider }}
               onChange={onChange}
               onSave={SAVE_ACTION}
               quickInsert={true}

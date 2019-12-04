@@ -1,7 +1,6 @@
 import {
   AbstractResource,
   OnProviderChange,
-  Provider,
   ServiceConfig,
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
@@ -11,6 +10,7 @@ import { isMediaEmoji, isPromise, toEmojiId } from '../util/type-helpers';
 import {
   EmojiDescription,
   EmojiId,
+  EmojiProvider,
   EmojiResponse,
   EmojiSearchResult,
   EmojiUpload,
@@ -18,12 +18,15 @@ import {
   OptionalUser,
   SearchOptions,
   ToneSelection,
+  UploadingEmojiProvider,
   User,
 } from '../types';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository from './EmojiRepository';
 import SiteEmojiResource from './media/SiteEmojiResource';
+
+export { EmojiProvider, UploadingEmojiProvider } from '../types'; // Re-exporting to not cause a breaking change
 
 export interface EmojiResourceConfig {
   /**
@@ -64,151 +67,6 @@ export interface Retry<T> {
 export interface ResolveReject<T> {
   resolve(result: T): void;
   reject(reason?: any): void;
-}
-
-export interface EmojiProvider
-  extends Provider<string, EmojiSearchResult, any, undefined, SearchOptions> {
-  /**
-   * Returns the first matching emoji matching the shortName, or null if none found.
-   *
-   * Will load media api images before returning.
-   */
-  findByShortName(
-    shortName: string,
-  ): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
-
-  /**
-   * Returns the first matching emoji matching the emojiId.id.
-   *
-   * If not found or emojiId.id is undefined, fallback to a search by shortName.
-   *
-   * Will load media api images before returning.
-   */
-  findByEmojiId(
-    emojiId: EmojiId,
-  ): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
-
-  /**
-   * Return the emoji that matches the supplied id or undefined. As with findByEmojiId, this call should load
-   * the media api images before returning.
-   */
-  findById(
-    id: string,
-  ): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
-
-  /**
-   * Finds emojis belonging to specified category.
-   *
-   * Does not automatically load Media API images.
-   */
-  findInCategory(categoryId: string): Promise<EmojiDescription[]>;
-
-  /**
-   * Returns a map matching ascii representations to their corresponding EmojiDescription.
-   */
-  getAsciiMap(): Promise<Map<string, EmojiDescription>>;
-
-  /**
-   * Returns, in a Promise, an array of the most frequently used emoji, ordered from most frequent to least frequent.
-   * If there is no frequently used data then an empty array should be returned.
-   *
-   * @param options supply options to be applied to the request.
-   */
-  getFrequentlyUsed(options?: SearchOptions): Promise<EmojiDescription[]>;
-
-  /**
-   * Records an emoji selection, for example for using in tracking recent emoji.
-   * If no recordConfig is configured then a resolved promise should be returned
-   *
-   * Optional.
-   */
-  recordSelection?(emoji: EmojiDescription): Promise<any>;
-
-  /**
-   * Deletes the given emoji from the site emoji service
-   * No changes are made if it is not a media emoji, no siteEmojiResource has been initialised
-   * or the user is not authorised.
-   * It should also be removed from the EmojiResource so it cannot be returned via search
-   *
-   * Optional.
-   *
-   * @return a boolean indicating whether the delete was successful
-   */
-  deleteSiteEmoji(emoji: EmojiDescription): Promise<boolean>;
-
-  /**
-   * Load media emoji that may require authentication to download, producing
-   * a new EmojiDescription to be used for rendering, if necessary.
-   *
-   * Future results may be returned from a cache.
-   *
-   * Acts as a no-op if not a media emoji.
-   *
-   * Downloads and caches the altRepresentation image if useAlt is passed in
-   *
-   * @return an OptionalEmojiDescription or a promise for one, may be the same as the input,
-   *   or updated with a new url to cached image data. Will return the original EmojiDescription
-   *   if not a custom emoji.
-   */
-  loadMediaEmoji(
-    emoji: EmojiDescription,
-    useAlt?: boolean,
-  ): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
-
-  /**
-   * Indicates if media emoji should be rendered optimistically,
-   * i.e. assume the url can be rendered directly from the URL, and
-   * only explicitly loaded via loadEmojiImageData if it fails to load.
-   *
-   * If useAlt is provided, the altRepresentation image URL is used
-   */
-  optimisticMediaRendering(emoji: EmojiDescription, useAlt?: boolean): boolean;
-
-  /**
-   * Used by the picker and typeahead to obtain a skin tone preference
-   * if the user has previously selected one via the Tone Selector
-   */
-  getSelectedTone(): ToneSelection;
-
-  /**
-   * Used by Tone Selector to indicate to the provider that the user
-   * has selected a skin tone preference that should be remembered
-   */
-  setSelectedTone(tone: ToneSelection): void;
-
-  /**
-   * Returns a list of all the non-standard categories with emojis in the EmojiRepository
-   * e.g. 'FREQUENT', 'ATLASSIAN' and 'CUSTOM'
-   */
-  calculateDynamicCategories?(): Promise<string[]>;
-
-  /**
-   * Returns the logged user passed by the Product
-   */
-  getCurrentUser(): OptionalUser;
-}
-
-export interface UploadingEmojiProvider extends EmojiProvider {
-  /**
-   * Returns true if upload is supported.
-   *
-   * Waits until resources have loaded before returning.
-   */
-  isUploadSupported(): Promise<boolean>;
-
-  /**
-   * Uploads an emoji to the configured repository.
-   *
-   * Will return a promise with the EmojiDescription once completed.
-   *
-   * The last search will be re-run to ensure the new emoji is considered in the search.
-   */
-  uploadCustomEmoji(upload: EmojiUpload): Promise<EmojiDescription>;
-
-  /**
-   * Allows the preloading of data (e.g. authentication tokens) to speed the uploading of emoji.
-   */
-  prepareForUpload(): Promise<void>;
 }
 
 /**

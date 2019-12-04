@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 export interface TruncatedWrapperProps {
   height?: number;
+  fadeHeight?: number;
   backgroundColor?: string;
 }
 
@@ -12,6 +13,7 @@ interface FadeOutProps {
   fadeHeight: number;
   backgroundColor: string;
 }
+
 const FadeOut: ComponentClass<FadeOutProps & HTMLAttributes<{}>> = styled.div`
   position: relative;
   overflow-y: hidden;
@@ -35,11 +37,16 @@ export class TruncatedWrapper extends Component<TruncatedWrapperProps, {}> {
   }
 
   render() {
-    const { height = 95, backgroundColor = 'white', children } = this.props;
+    const {
+      height = 95,
+      fadeHeight = 24,
+      backgroundColor = 'white',
+      children,
+    } = this.props;
     return (
       <FadeOut
         height={height}
-        fadeHeight={24}
+        fadeHeight={fadeHeight}
         backgroundColor={backgroundColor}
       >
         {children}

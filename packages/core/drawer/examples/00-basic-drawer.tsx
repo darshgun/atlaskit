@@ -28,12 +28,16 @@ export default class DrawersExample extends Component<{}, State> {
   onCloseComplete = (...args: [HTMLElement]) =>
     console.log('onCloseComplete', args);
 
+  onOpenComplete = (...args: [HTMLElement]) =>
+    console.log('onOpenComplete', args);
+
   render() {
     return (
       <div css={{ padding: '2rem' }}>
         <Drawer
           onClose={this.onClose}
           onCloseComplete={this.onCloseComplete}
+          onOpenComplete={this.onOpenComplete}
           isOpen={this.state.isDrawerOpen}
           width="wide"
         >

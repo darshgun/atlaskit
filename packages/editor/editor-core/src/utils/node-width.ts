@@ -87,6 +87,7 @@ const getNestedParentNode = (
   const parent = findParentNodeOfTypeClosestToPos($pos, [
     state.schema.nodes.bodiedExtension,
     state.schema.nodes.layoutSection,
+    state.schema.nodes.expand,
   ]);
 
   return parent ? parent.node : null;

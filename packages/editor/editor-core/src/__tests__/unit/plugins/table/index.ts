@@ -65,8 +65,6 @@ describe('table plugin', () => {
         analyticsHandler: trackEvent,
         allowTables: tableOptions,
         allowAnalyticsGASV3: true,
-        allowLists: true,
-        allowCodeBlocks: true,
         media: {
           allowMediaSingle: true,
         },

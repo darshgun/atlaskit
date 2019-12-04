@@ -8,6 +8,13 @@ export const pluginKey = new PluginKey('mediaAltTextPlugin');
 const { createPluginState, createCommand, getPluginState } = pluginFactory(
   pluginKey,
   reducer,
+  {
+    onSelectionChanged: () => {
+      return {
+        isAltTextEditorOpen: false,
+      };
+    },
+  },
 );
 
 export const createPlugin = ({

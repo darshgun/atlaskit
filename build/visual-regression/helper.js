@@ -273,9 +273,13 @@ async function loadPage(page /*:any*/, url /*:string*/) {
   await page.waitForSelector(pageSelector);
 }
 
-async function takeScreenShot(page /*:any*/, url /*:string*/) {
+async function takeScreenShot(
+  page /*:any*/,
+  url /*:string*/,
+  opts /*:Object */ = {},
+) {
   await loadPage(page, url);
-  return page.screenshot();
+  return page.screenshot(opts);
 }
 
 async function takeElementScreenShot(page /*:any*/, selector /*:string*/) {

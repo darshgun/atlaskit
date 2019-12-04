@@ -23,9 +23,7 @@ describe('codeBlock - keymaps', () => {
       doc,
       editorProps: {
         appearance: 'full-page',
-        allowCodeBlocks: true,
         allowBreakout: true,
-        allowLists: true,
         allowTables: true,
         allowLayouts: true,
       },

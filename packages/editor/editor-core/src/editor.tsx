@@ -14,6 +14,8 @@ import {
   startMeasure,
   stopMeasure,
   clearMeasure,
+  ExtensionProvider,
+  combineExtensionProviders,
 } from '@atlaskit/editor-common';
 import { Context as CardContext } from '@atlaskit/smart-card';
 import { FabricEditorAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
@@ -29,6 +31,10 @@ import { PortalProvider, PortalRenderer } from './ui/PortalProvider';
 import { nextMajorVersion } from './version-wrapper';
 import { createContextAdapter } from './nodeviews';
 import measurements from './utils/performance/measure-enum';
+import {
+  combineQuickInsertProviders,
+  extensionProviderToQuickInsertProvider,
+} from './utils/extensions';
 import {
   fireAnalyticsEvent,
   EVENT_TYPE,
@@ -54,6 +60,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     appearance: 'comment',
     disabled: false,
     extensionHandlers: {},
+    allowHelpDialog: true,
     allowNewInsertionBehaviour: true,
   };
 
@@ -117,39 +124,18 @@ export default class Editor extends React.Component<EditorProps, {}> {
   private deprecationWarnings(props: EditorProps) {
     const nextVersion = nextMajorVersion();
     const deprecatedProperties = {
-      mediaProvider: {
-        message:
-          'To pass media provider use media property – <Editor media={{ provider }} />',
-        type: 'removed',
-      },
       allowTasksAndDecisions: {
         message:
           'To allow tasks and decisions use taskDecisionProvider – <Editor taskDecisionProvider={{ provider }} />',
         type: 'removed',
       },
-      allowPlaceholderCursor: {
-        type: 'removed',
-      },
+
       allowConfluenceInlineComment: {
         message:
           'To integrate inline comments use experimental annotationProvider – <Editor annotationProvider={{ provider }} />',
         type: 'removed',
       },
-      addonToolbarComponents: {
-        type: 'removed',
-      },
-      cardProvider: {
-        type: 'removed',
-      },
-      allowCodeBlocks: {
-        message:
-          'To disable codeBlocks use - <Editor allowBlockTypes={{ exclude: ["codeBlocks"] }} />',
-      },
-      allowLists: {},
-      allowHelpDialog: {},
-      allowGapCursor: {
-        type: 'removed',
-      },
+
       allowUnsupportedContent: {
         message: 'Deprecated. Defaults to true.',
         type: 'removed',
@@ -219,11 +205,10 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-  private handleProviders(props: EditorProps) {
+  private async handleProviders(props: EditorProps) {
     const {
       emojiProvider,
       mentionProvider,
-      mediaProvider,
       taskDecisionProvider,
       contextIdentifierProvider,
       collabEditProvider,
@@ -235,8 +220,10 @@ export default class Editor extends React.Component<EditorProps, {}> {
       collabEdit,
       quickInsert,
       autoformattingProvider,
+      extensionProviders,
       UNSAFE_cards,
     } = props;
+
     this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.providerFactory.setProvider(
@@ -247,10 +234,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       'contextIdentifierProvider',
       contextIdentifierProvider,
     );
-    this.providerFactory.setProvider(
-      'mediaProvider',
-      media && media.provider ? media.provider : mediaProvider,
-    );
+    this.providerFactory.setProvider('mediaProvider', media && media.provider);
     this.providerFactory.setProvider(
       'imageUploadProvider',
       legacyImageUploadProvider,
@@ -274,10 +258,27 @@ export default class Editor extends React.Component<EditorProps, {}> {
       autoformattingProvider,
     );
 
+    let extensionProvider: ExtensionProvider | undefined;
+
+    if (extensionProviders) {
+      extensionProvider = combineExtensionProviders(extensionProviders);
+      this.providerFactory.setProvider(
+        'extensionProvider',
+        Promise.resolve(extensionProvider),
+      );
+    }
+
     if (quickInsert && typeof quickInsert !== 'boolean') {
+      const quickInsertProvider = extensionProvider
+        ? combineQuickInsertProviders([
+            quickInsert.provider,
+            extensionProviderToQuickInsertProvider(extensionProvider),
+          ])
+        : quickInsert.provider;
+
       this.providerFactory.setProvider(
         'quickInsertProvider',
-        quickInsert.provider,
+        Promise.resolve(quickInsertProvider),
       );
     }
   }
@@ -399,9 +400,6 @@ export default class Editor extends React.Component<EditorProps, {}> {
                                     }
                                     customSecondaryToolbarComponents={
                                       this.props.secondaryToolbarComponents
-                                    }
-                                    addonToolbarComponents={
-                                      this.props.addonToolbarComponents
                                     }
                                     collabEdit={this.props.collabEdit}
                                     allowAnnotation={

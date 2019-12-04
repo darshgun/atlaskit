@@ -29,9 +29,7 @@ describe('alignment', () => {
       editorProps: {
         allowTextAlignment: true,
         allowPanel: true,
-        allowCodeBlocks: true,
         allowTables: true,
-        allowLists: true,
       },
     });
 

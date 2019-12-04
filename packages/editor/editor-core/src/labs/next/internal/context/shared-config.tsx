@@ -6,12 +6,16 @@ import { EventDispatcher, Dispatch } from '../../../../event-dispatcher';
 import { EditorAppearanceComponentProps } from '../../../../types';
 import { EditorProps, AnalyticsEventHandler } from '../editor-props-type';
 
+/**
+ * Provides access to most commonly used configurations and instances of classes,
+ * that most editor components rely on.
+ */
 export type EditorSharedConfig = {
   editorView: EditorView;
   eventDispatcher: EventDispatcher;
   dispatch: Dispatch;
   transformer?: Transformer<any>;
-  handleAnalyticsEvent?: AnalyticsEventHandler;
+  dispatchAnalyticsEvent?: AnalyticsEventHandler;
 
   primaryToolbarComponents: EditorAppearanceComponentProps['primaryToolbarComponents'];
   contentComponents: EditorAppearanceComponentProps['contentComponents'];

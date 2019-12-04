@@ -41,6 +41,11 @@ export interface Props extends WithAnalyticsEventsProps {
     event?: React.MouseEvent<HTMLElement, MouseEvent>,
     analyticsEvent?: UIAnalyticsEvent,
   ): void;
+  // Event handler for the "Back" button. This prop is optional
+  onBackButtonClick?(
+    event?: React.MouseEvent<HTMLElement, MouseEvent>,
+    analyticsEvent?: UIAnalyticsEvent,
+  ): void;
   // Function executed when the article rendering begins
   onArticleRenderBegin?(): void;
   // Function executed when the article rendering finishes

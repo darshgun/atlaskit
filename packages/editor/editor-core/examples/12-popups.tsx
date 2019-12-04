@@ -28,7 +28,6 @@ class CustomBoundryExample extends PureComponent<any, any> {
       <Boundary innerRef={this.handleBoundryRef}>
         <Editor
           appearance="comment"
-          allowCodeBlocks
           analyticsHandler={props.analyticsHandler}
           onCancel={props.onCancel}
           onSave={props.onSave}
@@ -59,7 +58,6 @@ class PortalExample extends PureComponent<any, any> {
         <div style={{ overflow: 'hidden' }}>
           <Editor
             appearance="comment"
-            allowCodeBlocks
             analyticsHandler={props.analyticsHandler}
             onCancel={props.onCancel}
             onSave={props.onSave}
@@ -95,7 +93,6 @@ class PortalWithCustomBoundaryExample extends PureComponent<any, any> {
           <div style={{ overflow: 'hidden' }}>
             <Editor
               appearance="comment"
-              allowCodeBlocks
               analyticsHandler={props.analyticsHandler}
               onCancel={props.onCancel}
               onSave={props.onSave}
@@ -141,7 +138,6 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
           <Editor
             appearance="comment"
             analyticsHandler={props.analyticsHandler}
-            allowCodeBlocks
             onCancel={props.onCancel}
             onSave={props.onSave}
             mentionProvider={props.mentionProvider}
@@ -157,7 +153,6 @@ class PortalInScrollContainerExample extends PureComponent<any, any> {
         <Editor
           appearance="comment"
           analyticsHandler={props.analyticsHandler}
-          allowCodeBlocks
           onCancel={props.onCancel}
           onSave={props.onSave}
           mentionProvider={props.mentionProvider}
@@ -240,7 +235,6 @@ export default function Example() {
           <Editor
             appearance="comment"
             analyticsHandler={analyticsHandler}
-            allowCodeBlocks
             onCancel={CANCEL_ACTION}
             onSave={SAVE_ACTION}
             mentionProvider={mentionProvider}
@@ -261,7 +255,6 @@ export default function Example() {
           <Editor
             appearance="comment"
             analyticsHandler={analyticsHandler}
-            allowCodeBlocks
             onCancel={CANCEL_ACTION}
             onSave={SAVE_ACTION}
             mentionProvider={mentionProvider}

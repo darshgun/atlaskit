@@ -6,11 +6,17 @@ import {
   copyAsHTML,
 } from '../../__helpers/testing-example-helpers';
 import { document } from './__fixtures__/document-with-table';
+import {
+  documentWithExpand,
+  documentWithExpandAndTables,
+  tableWithPanel,
+} from './__fixtures__/document-with-expand';
 
 const editorSelector = '.ProseMirror';
 const expandSelector = '[data-node-type="expand"]';
 const nestedExpandSelector = '[data-node-type="nestedExpand"]';
 const controlSelector = 'tbody tr:first-child th:nth-child(1)';
+const panelSelector = '.ak-editor-panel__content';
 
 BrowserTestCase(
   'expand.ts: expand copied from renderer and pasted on full-page',
@@ -142,6 +148,165 @@ BrowserTestCase(
     await page.click(fullpage.placeholder);
     await page.paste();
     await page.waitForSelector(expandSelector);
+
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'expand.ts: table with nestedExpand pasted on top level',
+  { skip: ['ie'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data =
+      '<table data-number-column="false" data-layout="default" data-autosize="false" data-pm-slice="1 1 []"><tbody><tr><th class="pm-table-header-content-wrap"><p></p></th></tr><tr><td class="pm-table-cell-content-wrap"><div data-node-type="nestedExpand" data-title="title" data-expanded="true"><p>content</p></div></td></tr></tbody></table>';
+    await copyAsHTML(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      UNSAFE_allowExpand: true,
+      allowTables: true,
+    });
+
+    await page.click(fullpage.placeholder);
+    await page.paste();
+    await page.waitForSelector(nestedExpandSelector);
+
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'expand.ts: expand with table with nestedExpand pasted on top level',
+  { skip: ['ie'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data =
+      '<div data-node-type="expand" data-title="title 1" data-expanded="true" data-pm-slice="0 0 []"><table data-number-column="false" data-layout="default" data-autosize="false"><tbody><tr><td class="pm-table-cell-content-wrap"><div data-node-type="nestedExpand" data-title="title 2" data-expanded="true"><p>content</p></div></td></tr></tbody></table></div>';
+    await copyAsHTML(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      UNSAFE_allowExpand: true,
+      allowTables: true,
+    });
+
+    await page.click(fullpage.placeholder);
+    await page.paste();
+    await page.waitForSelector(nestedExpandSelector);
+
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'expand.ts: table with nestedExpand pasted inside an expand',
+  { skip: ['ie'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data =
+      '<table data-number-column="false" data-layout="default" data-autosize="false" data-pm-slice="1 1 []"><tbody><tr><th class="pm-table-header-content-wrap"><p></p></th><th class="pm-table-header-content-wrap"><p></p></th><th class="pm-table-header-content-wrap"><p></p></th></tr><tr><td class="pm-table-cell-content-wrap"><div data-node-type="nestedExpand" data-title="111" data-expanded="true"><p>content</p></div></td><td class="pm-table-cell-content-wrap"><p></p></td><td class="pm-table-cell-content-wrap"><p></p></td></tr><tr><td class="pm-table-cell-content-wrap"><p></p></td><td class="pm-table-cell-content-wrap"><p></p></td><td class="pm-table-cell-content-wrap"><p></p></td></tr></tbody></table>';
+    await copyAsHTML(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      UNSAFE_allowExpand: true,
+      allowTables: true,
+      defaultValue: JSON.stringify(documentWithExpand),
+    });
+
+    await page.waitForSelector(expandSelector);
+    await page.click(`${expandSelector} p`);
+    await page.paste();
+    await page.waitForSelector(nestedExpandSelector);
+
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'expand.ts: expand pasted inside a table inside an expand',
+  { skip: ['ie'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data = `<meta charset='utf-8'><div data-node-type="expand" data-title="Copy me nested" data-expanded="true" data-pm-slice="0 0 []"><p>Hello <span data-mention-id="6" data-access-level="" contenteditable="false">@April</span> </p></div>`;
+    await copyAsHTML(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      UNSAFE_allowExpand: true,
+      allowTables: true,
+      shouldFocus: true,
+      defaultValue: JSON.stringify(documentWithExpandAndTables),
+    });
+
+    await page.waitForSelector(controlSelector);
+    await page.click(controlSelector);
+    await page.paste();
+    await page.waitForSelector(nestedExpandSelector);
+
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'expand.ts: expand pasted inside a panel inside a table should paste below',
+  { skip: ['ie'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data = `<meta charset='utf-8'><div data-node-type="expand" data-title="Copy me nested" data-expanded="true" data-pm-slice="0 0 []"><p>Hello <span data-mention-id="6" data-access-level="" contenteditable="false">@April</span> </p></div>`;
+    await copyAsHTML(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      UNSAFE_allowExpand: true,
+      allowTables: true,
+      allowPanel: true,
+      shouldFocus: true,
+      defaultValue: JSON.stringify(tableWithPanel),
+    });
+
+    await page.waitForSelector(panelSelector);
+    await page.click(panelSelector);
+    await page.paste();
+    await page.waitForSelector(nestedExpandSelector);
+
+    const doc = await page.$eval(editorSelector, getDocFromElement);
+    expect(doc).toMatchCustomDocSnapshot(testName);
+  },
+);
+
+BrowserTestCase(
+  'expand.ts: expand content pasted inside a panel inside a table should paste text inside',
+  { skip: ['ie'] },
+  async (client: any, testName: string) => {
+    const page = await goToEditorTestingExample(client);
+
+    const data = `<meta charset='utf-8'><p data-pm-slice="1 1 [&quot;expand&quot;,null]">sda</p>`;
+    await copyAsHTML(page, data);
+
+    await mountEditor(page, {
+      appearance: fullpage.appearance,
+      UNSAFE_allowExpand: true,
+      allowTables: true,
+      allowPanel: true,
+      shouldFocus: true,
+      defaultValue: JSON.stringify(tableWithPanel),
+    });
+
+    await page.waitForSelector(panelSelector);
+    await page.click(panelSelector);
+    await page.paste();
 
     const doc = await page.$eval(editorSelector, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testName);

@@ -54,7 +54,6 @@ describe('ToolbarLists', () => {
       editorProps: {
         analyticsHandler,
         allowAnalyticsGASV3: true,
-        allowLists: true,
         allowTasksAndDecisions: true,
       },
       pluginKey,

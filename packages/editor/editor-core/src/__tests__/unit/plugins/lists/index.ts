@@ -47,10 +47,8 @@ describe('lists', () => {
       editorProps: {
         appearance: 'full-page',
         analyticsHandler: analyticsHandler,
-        allowCodeBlocks: true,
         allowAnalyticsGASV3: true,
         allowPanel: true,
-        allowLists: true,
         allowBreakout: true,
         allowLayouts: { allowBreakout: true },
         media: { allowMediaSingle: true },

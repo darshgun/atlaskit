@@ -1,5 +1,17 @@
 # @atlaskit/icon
 
+## 19.0.11
+
+### Patch Changes
+
+- [patch][c1d4898af5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1d4898af5):
+
+  Added Stopwatch and Sprint icons
+
+- Updated dependencies [3c0f6feee5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c0f6feee5):
+- Updated dependencies [f9c291923c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c291923c):
+  - @atlaskit/theme@9.3.0
+
 ## 19.0.10
 
 ### Patch Changes

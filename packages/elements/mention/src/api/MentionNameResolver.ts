@@ -1,5 +1,9 @@
 import { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
-import { MentionNameDetails, MentionNameStatus } from '../types';
+import {
+  MentionNameDetails,
+  MentionNameResolver,
+  MentionNameStatus,
+} from '../types';
 import { MentionNameClient } from './MentionNameClient';
 import { fireAnalyticsMentionHydrationEvent } from '../util/analytics';
 
@@ -7,10 +11,7 @@ interface Callback {
   (value?: MentionNameDetails): void;
 }
 
-export interface MentionNameResolver {
-  lookupName(id: string): Promise<MentionNameDetails> | MentionNameDetails;
-  cacheName(id: string, name: string): void;
-}
+export { MentionNameResolver } from '../types';
 
 export class DefaultMentionNameResolver implements MentionNameResolver {
   public static waitForBatch = 100; // ms

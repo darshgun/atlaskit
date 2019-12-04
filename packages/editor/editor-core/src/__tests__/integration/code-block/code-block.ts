@@ -22,7 +22,6 @@ const floatingToolbarLanguageSelector = 'div[aria-label="Floating Toolbar"]';
 
       await mountEditor(page, {
         appearance: editor as EditorAppearance,
-        allowCodeBlocks: true,
       });
 
       await page.click(`[aria-label="${messages.codeblock.defaultMessage}"]`);
@@ -43,7 +42,6 @@ const floatingToolbarLanguageSelector = 'div[aria-label="Floating Toolbar"]';
 
       await mountEditor(page, {
         appearance: editor as EditorAppearance,
-        allowCodeBlocks: true,
       });
 
       // Insert code block
@@ -73,7 +71,6 @@ const floatingToolbarLanguageSelector = 'div[aria-label="Floating Toolbar"]';
 
       await mountEditor(page, {
         appearance: editor as EditorAppearance,
-        allowCodeBlocks: true,
       });
 
       // Insert code block

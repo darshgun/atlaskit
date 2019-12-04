@@ -25,7 +25,6 @@ describe('Quick Insert', () => {
       editorProps: {
         quickInsert: true,
         allowPanel: true,
-        allowCodeBlocks: true,
         allowAnalyticsGASV3: true,
       },
       createAnalyticsEvent,

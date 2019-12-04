@@ -13,7 +13,6 @@ describe('Breakout Commands: getBreakoutMode', () => {
     const { editorView } = createEditor({
       doc: doc(code_block()('Hel{<>}lo')),
       editorProps: {
-        allowCodeBlocks: true,
         allowBreakout: true,
         appearance: 'full-page',
       },
@@ -26,7 +25,6 @@ describe('Breakout Commands: getBreakoutMode', () => {
     const { editorView } = createEditor({
       doc: doc(p('Hel{<>}lo')),
       editorProps: {
-        allowCodeBlocks: true,
         allowBreakout: true,
         appearance: 'full-page',
       },
