@@ -43,6 +43,7 @@ export default forwardRef((
       position: 'absolute',
       transform: 'translate(-50%, -50%)',
       top: '50%',
+      pointerEvents: 'none',
     }}
     data-testid={testId}
   />
