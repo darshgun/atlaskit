@@ -55,6 +55,7 @@ export const ProfilePopup = () => {
         <Profile
           icon={<Avatar src={avatarUrl} />}
           onClick={onClick}
+          isSelected={isOpen}
           tooltip="Your profile and settings"
           {...triggerProps}
         />

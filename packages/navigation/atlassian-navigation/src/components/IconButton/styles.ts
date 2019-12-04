@@ -41,6 +41,7 @@ export const getIconButtonTheme = ({
       '&&': {
         ...(props.state === 'active' && iconButton.active),
       },
+      ...(props.state === 'selected' && iconButton.active),
       '> span > span': {
         margin: 0,
       },
