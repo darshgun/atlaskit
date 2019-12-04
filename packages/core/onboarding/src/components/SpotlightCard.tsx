@@ -32,6 +32,13 @@ interface Props {
   width?: number;
 
   innerRef?: Ref<HTMLElement> | null;
+
+  /**
+   * A `testId` prop is provided for specified elements,
+   * which is a unique string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests.
+   */
+  testId?: string;
 }
 
 class SpotlightCard extends React.Component<Props> {
@@ -55,10 +62,12 @@ class SpotlightCard extends React.Component<Props> {
       innerRef,
       theme,
       width,
+      testId,
     } = this.props;
     return (
       <ButtonTheme.Provider value={spotlightButtonTheme}>
         <Card
+          testId={testId}
           ref={innerRef}
           heading={heading}
           headingAfterElement={headingAfterElement}
