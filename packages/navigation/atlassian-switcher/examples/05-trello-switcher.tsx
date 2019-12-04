@@ -10,7 +10,7 @@ import {
   AvailableSite,
   AvailableProductsResponse,
   WorklensProductType,
-} from '../types';
+} from '../src/types';
 import AtlassianSwitcher from '../src';
 import { createProviderWithCustomFetchData } from '../src/providers/create-data-provider';
 import { DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT } from '../src/providers/default-available-products-provider';
