@@ -50,6 +50,9 @@ const PickerContainer = styled.div`
   padding: ${gridSize()}px 0;
   border-radius: ${borderRadius()}px;
   ${dropShadow};
+  input {
+    text-transform: uppercase;
+  }
 `;
 
 export class StatusPickerWithoutAnalytcs extends React.Component<Props, State> {
