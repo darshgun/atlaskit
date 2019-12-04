@@ -80,22 +80,25 @@ const mockProviderWithCustomFetchData = () =>
     mockTrelloDataProvider,
   );
 
-const mockEndpointsDataTransformer: DataTransformer = originalMockData => ({
-  ...originalMockData,
-  AVAILABLE_PRODUCTS_DATA: {
-    // Excluding JSD here to rather display it in the recommended products list
-    sites: originalMockData.AVAILABLE_PRODUCTS_DATA.sites
-      .map(site => {
-        site.availableProducts = site.availableProducts.filter(
-          availableProduct =>
-            availableProduct.productType !==
-            WorklensProductType.JIRA_SERVICE_DESK,
-        );
-        return site;
-      })
-      .filter(site => site.availableProducts.length),
-  },
-});
+const mockEndpointsDataTransformer: DataTransformer = originalMockData => {
+  const availableProducts = originalMockData.AVAILABLE_PRODUCTS_DATA as AvailableProductsResponse;
+  return {
+    ...originalMockData,
+    AVAILABLE_PRODUCTS_DATA: {
+      sites: availableProducts.sites
+        .map((site: AvailableSite) => {
+          // Excluding JSD here to rather display it in the recommended products list
+          site.availableProducts = site.availableProducts.filter(
+            availableProduct =>
+              availableProduct.productType !==
+              WorklensProductType.JIRA_SERVICE_DESK,
+          );
+          return site;
+        })
+        .filter((site: AvailableSite) => site.availableProducts.length),
+    },
+  };
+};
 
 class InlineDialogSwitcherExample extends React.Component {
   state = {

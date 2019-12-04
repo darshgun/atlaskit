@@ -127,9 +127,7 @@ export type AvailableProduct =
         | WorklensProductType.JIRA_BUSINESS
         | WorklensProductType.JIRA_SERVICE_DESK
         | WorklensProductType.JIRA_SOFTWARE
-        | WorklensProductType.CONFLUENCE
-        | WorklensProductType.BITBUCKET
-        | WorklensProductType.TRELLO;
+        | WorklensProductType.CONFLUENCE;
     }
   | AvailableProductWithUrl;
 
@@ -195,6 +193,7 @@ export enum ProductKey {
   BITBUCKET = 'bitbucket',
   OPSGENIE = 'opsgenie',
   STATUSPAGE = 'statuspage',
+  TRELLO = 'trello',
 }
 
 export type RecommendationsEngineResponse = RecommendationItem[];
