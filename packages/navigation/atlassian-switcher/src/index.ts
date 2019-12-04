@@ -4,9 +4,4 @@ export { default as AtlassianSwitcherPrefetchTrigger } from './components/prefet
 
 export { createCustomTheme } from './theme/theme-builder';
 export { createProviderWithCustomFetchData } from './providers/create-data-provider';
-export {
-  AvailableProductsResponse,
-  WorklensProductType as ProductType,
-  TriggerXFlowCallback,
-  DiscoverMoreCallback,
-} from './types';
+export { TriggerXFlowCallback, DiscoverMoreCallback } from './types';
