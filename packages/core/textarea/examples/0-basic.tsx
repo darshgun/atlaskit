@@ -19,9 +19,9 @@ export default class extends React.Component {
     return (
       <Div>
         <p>Disabled:</p>
-        <TextArea value="hello" isDisabled />
+        <TextArea value="hello" name="text" isDisabled />
         <p>Invalid, resize: auto, compact:</p>
-        <TextArea resize="auto" isInvalid isCompact />
+        <TextArea resize="auto" name="area" isInvalid isCompact />
         <p>Smart, ref:</p>
         <div id="smart">
           {/*
