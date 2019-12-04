@@ -173,7 +173,7 @@ const hasAnyExitingChildMountedAgain = (
 };
 
 const ExitingPersistence: React.FC<ExitingPersistenceProps> = ({
-  appear = false,
+  appear: appearFromProp = false,
   children: childs,
   exitThenEnter,
 }: ExitingPersistenceProps): any => {
@@ -183,16 +183,26 @@ const ExitingPersistence: React.FC<ExitingPersistenceProps> = ({
   const persistedChildren = useRef<ElementWithKey[]>([]);
   const forceRender = useForceRender();
   const exitingChildren = useRef<{ [key: string]: boolean }>({});
+  const appear = useRef(appearFromProp);
   const defaultContextValue: ExitingChildContext = useMemo(
     () => ({
-      appear,
+      appear: appear.current,
       isExiting: false,
     }),
-    [appear],
+    // React rules of hooks says this isn't needed because mutating appear won't cause a re-render.
+    // While technically true - it will trigger this to make a new object on the _next_ render which is what we want.
+    // Remove this or use appear instead of appear.current and you will notice a test breaks.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [appear.current],
   );
 
   if (isReducedMotion()) {
     return children;
+  }
+
+  if (!appear.current) {
+    // We always want child motions to appear after the initial mount.
+    appear.current = true;
   }
 
   // This entire block can't be an effect because we need it to run synchronously during a render
