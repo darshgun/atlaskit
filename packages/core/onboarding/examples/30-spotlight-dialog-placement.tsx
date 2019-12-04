@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
+import Button from '@atlaskit/button';
 import {
   Spotlight,
   SpotlightManager,
@@ -82,9 +82,9 @@ export default class SpotlightDialogPlacementExample extends Component<
             property.
           </p>
           <p>
-            <button data-testid="open-spotlight" onClick={this.start}>
+            <Button testId="open-spotlight" onClick={this.start}>
               Show
-            </button>
+            </Button>
           </p>
 
           <SpotlightTransition>

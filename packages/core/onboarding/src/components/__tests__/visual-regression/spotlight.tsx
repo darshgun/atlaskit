@@ -4,8 +4,8 @@ import {
 } from '@atlaskit/visual-regression/helper';
 
 const openButtonSelector = '[data-testid="open-spotlight"]';
-const spotlightTargetSelector = '[data-testid="spotlight-target"]';
-const spotlightDialogSelector = '[data-testid="spotlight-dialog"]';
+const spotlightTargetSelector = '[data-testid="spotlight--target"]';
+const spotlightDialogSelector = '[data-testid="spotlight--dialog"]';
 
 describe('onboarding spotlight visual regression', () => {
   it('should render a spotlight next to a target', async () => {

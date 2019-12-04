@@ -19,6 +19,7 @@ export interface Props extends SpotlightProps {
   onOpened: () => any;
   /** Called when the component has been unmounted */
   onClosed: () => any;
+  testId: string;
 }
 
 interface State {
@@ -116,6 +117,7 @@ class SpotlightInner extends React.Component<Props, State> {
       targetBgColor,
       targetOnClick,
       targetRadius,
+      testId,
       targetReplacement: TargetReplacement,
     } = this.props;
     const { replacementElement } = this.state;
@@ -133,7 +135,7 @@ class SpotlightInner extends React.Component<Props, State> {
                 <ElementBox element={targetNode}>
                   {box => (
                     <TargetReplacement
-                      data-testid="spotlight-target"
+                      data-testid={`${testId}--target`}
                       {...this.getTargetNodeStyle(box)}
                     />
                   )}
@@ -143,7 +145,7 @@ class SpotlightInner extends React.Component<Props, State> {
               <ElementBox element={targetNode}>
                 {box => (
                   <Clone
-                    testId="spotlight-target"
+                    testId={`${testId}--target`}
                     pulse={pulse}
                     target={target}
                     style={this.getTargetNodeStyle(box)}
@@ -159,7 +161,7 @@ class SpotlightInner extends React.Component<Props, State> {
               <Fade in={isOpen} onExited={onExited}>
                 {animationStyles => (
                   <SpotlightDialog
-                    testId="spotlight-dialog"
+                    testId={`${testId}--dialog`}
                     actions={this.props.actions}
                     actionsBeforeElement={this.props.actionsBeforeElement}
                     children={this.props.children}

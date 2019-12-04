@@ -88,17 +88,17 @@ describe('<Spotlight />', () => {
   it('should position the cloned target ontop of the original', () => {
     const { getByTestId } = render(buildOnboardingMarkup('target-one'));
 
-    expect(getByTestId('spotlight-target').style.position).toEqual('absolute');
-    expect(getByTestId('spotlight-target').style.height).toEqual('50px');
-    expect(getByTestId('spotlight-target').style.width).toEqual('100px');
-    expect(getByTestId('spotlight-target').style.left).toEqual('50px');
-    expect(getByTestId('spotlight-target').style.top).toEqual('100px');
+    expect(getByTestId('spotlight--target').style.position).toEqual('absolute');
+    expect(getByTestId('spotlight--target').style.height).toEqual('50px');
+    expect(getByTestId('spotlight--target').style.width).toEqual('100px');
+    expect(getByTestId('spotlight--target').style.left).toEqual('50px');
+    expect(getByTestId('spotlight--target').style.top).toEqual('100px');
   });
 
   it('should render the spotlight dialog', () => {
     const { getByTestId } = render(buildOnboardingMarkup('target-one'));
 
-    expect(getByTestId('spotlight-dialog').innerText).toEqual(
+    expect(getByTestId('spotlight--dialog').innerText).toEqual(
       'Spotlight for target-one',
     );
   });
@@ -110,9 +110,9 @@ describe('<Spotlight />', () => {
 
     rerender(buildOnboardingMarkup('target-two'));
 
-    expect(getByTestId('spotlight-target').style.left).toEqual('100px');
-    expect(getByTestId('spotlight-target').style.top).toEqual('100px');
-    expect(getByTestId('spotlight-dialog').innerText).toEqual(
+    expect(getByTestId('spotlight--target').style.left).toEqual('100px');
+    expect(getByTestId('spotlight--target').style.top).toEqual('100px');
+    expect(getByTestId('spotlight--dialog').innerText).toEqual(
       'Spotlight for target-two',
     );
   });
@@ -125,9 +125,9 @@ describe('<Spotlight />', () => {
     rerender(buildOnboardingMarkup('target-two'));
     rerender(buildOnboardingMarkup('target-three'));
 
-    expect(getByTestId('spotlight-target').style.left).toEqual('150px');
-    expect(getByTestId('spotlight-target').style.top).toEqual('100px');
-    expect(getByTestId('spotlight-dialog').innerText).toEqual(
+    expect(getByTestId('spotlight--target').style.left).toEqual('150px');
+    expect(getByTestId('spotlight--target').style.top).toEqual('100px');
+    expect(getByTestId('spotlight--dialog').innerText).toEqual(
       'Spotlight for target-three',
     );
   });
@@ -170,7 +170,7 @@ describe('<Spotlight />', () => {
       </SpotlightManager>,
     );
 
-    expect(getByTestId('spotlight-target').style.position).toEqual('fixed');
+    expect(getByTestId('spotlight--target').style.position).toEqual('fixed');
   });
 
   it('should not log any errors when rendering the spotlight', () => {
