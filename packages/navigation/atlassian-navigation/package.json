@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "@atlaskit/analytics-next": "*",
-    "@atlaskit/avatar": "*",
     "@atlaskit/atlassian-switcher": "*",
     "@atlaskit/atlassian-switcher-test-utils": "*",
     "@atlaskit/atlassian-notifications": "*",

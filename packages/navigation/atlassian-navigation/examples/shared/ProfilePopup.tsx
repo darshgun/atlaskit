@@ -34,6 +34,11 @@ const ProfileContent = () => (
   </Fragment>
 );
 
+const imgCSS = {
+  borderRadius: '100%',
+  height: 24,
+  width: 24,
+};
 export const ProfilePopup = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -53,7 +58,7 @@ export const ProfilePopup = () => {
       onClose={onClose}
       trigger={triggerProps => (
         <Profile
-          icon={<Avatar src={avatarUrl} />}
+          icon={<img alt="fake avatar" style={imgCSS} src={avatarUrl} />}
           onClick={onClick}
           isSelected={isOpen}
           tooltip="Your profile and settings"
