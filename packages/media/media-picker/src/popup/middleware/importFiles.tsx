@@ -12,6 +12,7 @@ import {
   globalMediaEventEmitter,
   observableToPromise,
   isErrorFileState,
+  safeUnsubscribe,
 } from '@atlaskit/media-client';
 import { RECENTS_COLLECTION } from '@atlaskit/media-client/constants';
 
@@ -123,7 +124,7 @@ const getPreviewByService = (
         const subscription = observable.subscribe({
           next(state) {
             if (state.status !== 'error') {
-              setTimeout(() => subscription.unsubscribe(), 0);
+              safeUnsubscribe(subscription);
               resolve(state.preview);
             }
           },

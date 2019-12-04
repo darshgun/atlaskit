@@ -4,6 +4,7 @@ import { State } from '../domain';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
 import { getPreviewFromMetadata } from '../../domain/preview';
 import { NonImagePreview, Preview } from '../../types';
+import { safeUnsubscribe } from '@atlaskit/media-client';
 
 export default function(): Middleware {
   return store => (next: Dispatch<State>) => (action: any) => {
@@ -45,9 +46,7 @@ export function getPreview(store: Store<State>, action: GetPreviewAction) {
         }
 
         const { mediaType } = state;
-        // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
-        window.setTimeout(() => subscription.unsubscribe());
-
+        safeUnsubscribe(subscription);
         if (mediaType === 'image' || mediaType === 'video') {
           const metadata = await userMediaClient.getImageMetadata(file.id, {
             collection,

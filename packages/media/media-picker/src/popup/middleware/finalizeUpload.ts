@@ -6,6 +6,7 @@ import {
   MediaStoreCopyFileWithTokenParams,
   FileState,
   MediaFile as MediaClientFile,
+  safeUnsubscribe,
 } from '@atlaskit/media-client';
 import {
   FinalizeUploadAction,
@@ -88,7 +89,7 @@ const emitProcessedState = async (
     ) {
       const subscription = tenantSubject.subscribe({
         next(currentState) {
-          setTimeout(() => subscription.unsubscribe(), 0);
+          safeUnsubscribe(subscription);
           setTimeout(() => {
             const {
               artifacts,
@@ -147,8 +148,7 @@ async function copyFile({
     );
     const subscription = tenantSubject.subscribe({
       next: fileState => {
-        setTimeout(() => subscription.unsubscribe(), 0);
-
+        safeUnsubscribe(subscription);
         if (fileState.status === 'processing') {
           store.dispatch(
             sendUploadEvent({
