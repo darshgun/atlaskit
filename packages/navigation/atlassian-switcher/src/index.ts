@@ -7,4 +7,6 @@ export { createProviderWithCustomFetchData } from './providers/create-data-provi
 export {
   AvailableProductsResponse,
   WorklensProductType as ProductType,
+  TriggerXFlowCallback,
+  DiscoverMoreCallback,
 } from './types';
