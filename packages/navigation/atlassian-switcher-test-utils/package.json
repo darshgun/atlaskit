@@ -22,6 +22,7 @@
     "team": "navigation"
   },
   "dependencies": {
+    "@atlaskit/atlassian-switcher": "^4.8.2",
     "fetch-mock": "^7.3.3",
     "memoize-one": "^5.1.0"
   }
