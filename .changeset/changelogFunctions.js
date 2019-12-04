@@ -1,5 +1,12 @@
-const getLinkMD = commit =>
-  `[${commit}](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/${commit})`;
+const { BITBUCKET_REPO_FULL_NAME } = process.env;
+
+if (!BITBUCKET_REPO_FULL_NAME) {
+  throw Error('$BITBUCKET_REPO_FULL_NAME environment variable needs to be set');
+}
+
+const getLinkMD = commit => {
+  return `[${commit}](https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/commits/${commit})`;
+};
 
 const getReleaseLine = async (changeset, versionType) => {
   const indentedSummary = changeset.summary
