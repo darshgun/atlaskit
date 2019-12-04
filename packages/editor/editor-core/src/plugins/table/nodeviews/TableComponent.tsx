@@ -53,6 +53,7 @@ interface TableState {
   scroll: number;
   tableContainerWidth: string;
   parentWidth?: number;
+  isLoading: boolean;
 }
 
 class TableComponent extends React.Component<ComponentProps, TableState> {
@@ -60,6 +61,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
     scroll: 0,
     tableContainerWidth: 'inherit',
     parentWidth: undefined,
+    isLoading: true,
   };
 
   private wrapper?: HTMLDivElement | null;
@@ -97,6 +99,11 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
         }
       });
     }
+
+    // @see ED-7945
+    requestAnimationFrame(() => {
+      this.setState({ isLoading: false });
+    });
   }
 
   componentDidMount() {
@@ -167,7 +174,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
       tableResizingPluginState,
       width,
     } = this.props;
-
+    const { isLoading, tableContainerWidth } = this.state;
     const {
       pluginConfig: { allowControls = true },
     } = pluginState;
@@ -204,7 +211,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
     return (
       <div
         style={{
-          width: this.state.tableContainerWidth,
+          width: tableContainerWidth,
         }}
         className={classnames(ClassName.TABLE_CONTAINER, {
           [ClassName.WITH_CONTROLS]: allowControls && tableActive,
@@ -215,7 +222,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
         data-number-column={node.attrs.isNumberColumnEnabled}
         data-layout={node.attrs.layout}
       >
-        {allowControls && rowControls}
+        {allowControls && !isLoading && rowControls}
         <div
           ref={elem => {
             this.leftShadow = elem;
