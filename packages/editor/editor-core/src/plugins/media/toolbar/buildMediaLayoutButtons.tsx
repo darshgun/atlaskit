@@ -81,7 +81,13 @@ const makeAlign = (layout: MediaSingleLayout): Command => {
       layout,
       mediaSingleNode.attrs as MediaSingleAttributes,
     );
-    dispatch(state.tr.setNodeMarkup(state.selection.from, undefined, newAttrs));
+    const tr = state.tr.setNodeMarkup(
+      state.selection.from,
+      undefined,
+      newAttrs,
+    );
+    tr.setMeta('scrollIntoView', false);
+    dispatch(tr);
     return true;
   };
 };

@@ -54,6 +54,7 @@ import {
   expandPlugin,
   isExpandInsertionEnabled,
   mobileScrollPlugin,
+  scrollIntoViewPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { ScrollGutterPluginOptions } from '../plugins/base/pm-plugins/scroll-gutter';
@@ -356,6 +357,10 @@ export default function createPluginsList(
   if (isMobile) {
     plugins.push(historyPlugin());
     plugins.push(mobileScrollPlugin());
+  }
+
+  if (props.autoScrollIntoView !== false) {
+    plugins.push(scrollIntoViewPlugin());
   }
 
   return plugins;

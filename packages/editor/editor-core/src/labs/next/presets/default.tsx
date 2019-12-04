@@ -16,6 +16,7 @@ import {
   fakeTextCursorPlugin,
   sharedContextPlugin,
   floatingToolbarPlugin,
+  scrollIntoViewPlugin,
 } from '../../../plugins';
 import { PresetProvider } from '../Editor';
 import { EditorPresetProps, PluginsPreset } from './types';
@@ -43,6 +44,7 @@ export function useDefaultPreset() {
     fakeTextCursorPlugin,
     sharedContextPlugin,
     floatingToolbarPlugin,
+    scrollIntoViewPlugin,
   ];
 
   return [preset];

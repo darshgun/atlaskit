@@ -1,4 +1,9 @@
-import { EditorState, TextSelection, NodeSelection } from 'prosemirror-state';
+import {
+  EditorState,
+  TextSelection,
+  NodeSelection,
+  Selection,
+} from 'prosemirror-state';
 import { findChildrenByType, NodeWithPos } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 import {
@@ -70,6 +75,13 @@ describe('status plugin: plugin', () => {
     });
   };
 
+  const generateStatus = (text = '') =>
+    status({
+      text,
+      color: 'blue',
+      localId: `local-status-id-${text}`,
+    });
+
   describe('Edge cases', () => {
     it('StatusPicker should be dismissed if cursor is outside the Status node selection', () => {
       const { editorView } = editorFactory(doc(p('Status: {<>}')));
@@ -114,64 +126,41 @@ describe('status plugin: plugin', () => {
       const { editorView } = editorFactory(
         doc(
           p(
-            'Status: {<>}',
-            status({
-              text: '',
-              color: 'blue',
-              localId: '040fe0df-dd11-45ab-bc0c-8220c814f716',
-            }),
-            'WW',
-            status({
-              text: 'boo',
-              color: 'yellow',
-              localId: '040fe0df-dd11-45ab-bc0c-8220c814f720',
-            }),
-            'ZZ',
+            'Status: ',
+            '{<node>}',
+            generateStatus(''),
+            'And another: ',
+            generateStatus('hello'),
           ),
         ),
       );
-      const cursorPos = editorView.state.tr.selection.from;
-
-      // select the first status (empty text)
-      let state = setSelectionAndPickerAt(cursorPos)(editorView);
-      validateSelection(cursorPos)(state);
-      getStatusesInDocument(state, 2); // ensure there are two status nodes in the document
 
       // simulate the scenario where user selects another status
-      state = setSelectionAndPickerAt(cursorPos + 3)(editorView);
+      const cursorPos = editorView.state.tr.selection.from;
+      setSelectionAndPickerAt(cursorPos + 14)(editorView);
 
-      const statuses = getStatusesInDocument(state, 1);
-      expect(statuses[0].node.attrs).toMatchObject({
-        text: 'boo',
-        color: 'yellow',
-        localId: expect.stringMatching(StatusLocalIdRegex),
-      });
+      expect(editorView.state).toEqualDocumentAndSelection(
+        doc(
+          p('Status: ', 'And another: ', '{<node>}', generateStatus('hello')),
+        ),
+      );
     });
 
     it('Empty status node should be removed when a text node is selected', () => {
       const { editorView } = editorFactory(
-        doc(
-          p(
-            'Status: {<>}',
-            status({
-              text: '',
-              color: 'blue',
-              localId: '040fe0df-dd11-45ab-bc0c-8220c814f716',
-            }),
-            'WW',
-          ),
-        ),
+        doc(p('Status: ', '{<node>}', generateStatus())),
       );
-      const cursorPos = editorView.state.tr.selection.from;
-
-      // select the first status (empty text)
-      let state = setSelectionAndPickerAt(cursorPos)(editorView);
-      validateSelection(cursorPos)(state);
-      getStatusesInDocument(state, 1);
 
       // simulate the scenario where user selects a text node
-      state = setSelectionAndPickerAt(cursorPos + 2)(editorView);
-      getStatusesInDocument(state, 0);
+      editorView.dispatch(
+        editorView.state.tr.setSelection(
+          Selection.near(editorView.state.doc.resolve(1)),
+        ),
+      );
+
+      expect(editorView.state).toEqualDocumentAndSelection(
+        doc(p('{<>}Status: ')),
+      );
     });
   });
 
