@@ -56,9 +56,6 @@ function noMasterRunning() {
         .filter(job => job.trigger.name !== 'SCHEDULE');
       console.log(runningPipelines.length, 'master build running');
       return runningPipelines.length === 0;
-    })
-    .catch(err => {
-      throw Error(`${err}`);
     });
 }
 

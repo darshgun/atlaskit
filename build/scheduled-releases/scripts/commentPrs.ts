@@ -16,11 +16,7 @@ import {
 import { createSpyObject } from '@atlaskit/build-utils/logging';
 import { capitalise, addReleaseComment } from '../utils';
 
-const {
-  BITBUCKET_USER,
-  BITBUCKET_PASSWORD,
-  BITBUCKET_REPO_FULL_NAME,
-} = process.env;
+const { BITBUCKET_USER, BITBUCKET_PASSWORD } = process.env;
 
 async function updatePrWithFutureRelease(
   prClient: PullRequestClient,
@@ -71,9 +67,9 @@ export default async function main(
   repoFullName: string,
   userOpts: Partial<Opts> = {},
 ) {
-  if (!BITBUCKET_USER || !BITBUCKET_PASSWORD || !BITBUCKET_REPO_FULL_NAME) {
+  if (!BITBUCKET_USER || !BITBUCKET_PASSWORD) {
     throw Error(
-      '$BITBUCKET_USER or $BITBUCKET_PASSWORD or $BITBUCKET_REPO_FULL_NAME environment variables not set',
+      '$BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables not set',
     );
   }
   const opts: Opts = { ...defaultOpts, ...userOpts };

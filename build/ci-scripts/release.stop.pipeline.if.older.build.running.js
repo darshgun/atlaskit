@@ -68,10 +68,6 @@ function stopPipelineBuild(pipelineUUID) {
   );
 }
 
-if (!BITBUCKET_REPO_FULL_NAME) {
-  throw Error('$BITBUCKET_REPO_FULL_NAME environment variables are not set');
-}
-
 axios
   .get(
     `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/`,
