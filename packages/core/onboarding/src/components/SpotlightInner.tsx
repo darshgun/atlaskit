@@ -61,10 +61,14 @@ class SpotlightInner extends React.Component<Props, State> {
   isPositionFixed = (element: Element) =>
     window.getComputedStyle(element).position === 'fixed';
 
-  hasPositionFixedParent = (element: HTMLElement): boolean => {
+  hasPositionFixedParent = (
+    element: HTMLElement,
+    // We cap this method to be called to 1000 times to prevent flooding the stack.
+    // In reality this only seems to be a problem in CI.
+    _maxTries: number = 1000,
+  ): boolean => {
     const { offsetParent } = element;
-
-    if (!offsetParent) {
+    if (!offsetParent || _maxTries === 0) {
       return false;
     }
 
@@ -72,7 +76,10 @@ class SpotlightInner extends React.Component<Props, State> {
       return true;
     }
 
-    return this.hasPositionFixedParent(offsetParent as HTMLElement);
+    return this.hasPositionFixedParent(
+      offsetParent as HTMLElement,
+      _maxTries - 1,
+    );
   };
 
   getTargetNodeStyle = (box: ElementBoundingBox) => {
