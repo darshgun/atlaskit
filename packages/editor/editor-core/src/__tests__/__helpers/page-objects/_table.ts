@@ -91,6 +91,11 @@ export const clickTableOptions = async (page: any) => {
   });
 };
 
+export const selectTableOption = async (page: any, option: string) => {
+  await clickTableOptions(page);
+  await clickElementWithText({ page, tag: 'span', text: option });
+};
+
 export const clickCellOptions = async (page: any) => {
   await page.waitForSelector(tableSelectors.contextualMenu);
   await page.click(tableSelectors.contextualMenu);
