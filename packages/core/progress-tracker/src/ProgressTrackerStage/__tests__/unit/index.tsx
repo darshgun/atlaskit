@@ -243,5 +243,12 @@ describe('ak-progress-tracker/progress-tracker-stage', () => {
         // @ts-ignore
         .props().timeout,
     ).toBe(transitionDelay + transitionSpeed);
+    expect(
+      wrapper
+        .find('CSSTransition')
+        .first()
+        // @ts-ignore
+        .props().classNames,
+    ).toBe('fade');
   });
 });
