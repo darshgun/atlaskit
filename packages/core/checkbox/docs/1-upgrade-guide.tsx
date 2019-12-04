@@ -21,9 +21,9 @@ export default md`
 
   @atlaskit/checkbox 10.x includes the following changes: 
   * Replaced previous theme implementation with new @atlaskit/theme v2 implementation 
-    * Please read more about this implementation in the [theming guide](https://atlaskit.atlassian.com/packages/core/theme/docs/theming-guide)
+    * Please read more about this implementation in the [theming guide](https://atlaskit.atlassian.com/packages/core/checkbox/docs/theming-guide)
   * Added overrides prop which enables targeted customisations of key components in the @atlaskit/checkbox package. 
-    * Please read more about this implementation in the [overrides guide](https://atlaskit.atlassian.com/packages/core/theme/docs/overrides-guide)
+    * Please read more about this implementation in the [overrides guide](https://atlaskit.atlassian.com/packages/core/checkbox/docs/overrides-guide)
 
   ### Breaking Changes
   *HiddenCheckbox and spread props*
@@ -52,11 +52,11 @@ export default md`
   `}
 
   While this may be more code, with the introduction of the overrides prop, users have more granular control over how custom props
-  are passed down to components, for more detail on this, please see the [overrides guide](https://atlaskit.atlassian.com/packages/core/theme/docs/overrides).
+  are passed down to components, for more detail on this, please see the [overrides guide](https://atlaskit.atlassian.com/packages/core/checkbox/docs/overrides-guide).
 
   *Theme*
   @atlaskit/checkbox 10.x implements a new version of the @atlaskit/theme api, if you were leveraging the previous theme mechanism, note that this will be a breaking change for you.
-  For detail on how to use the new theme implementation in @atlaskit/checkbox, please see the [theming guide](https://atlaskit.atlassian.com/packages/core/theme/docs/theming).
+  For detail on how to use the new theme implementation in @atlaskit/checkbox, please see the [theming guide](https://atlaskit.atlassian.com/packages/core/checkbox/docs/theming-guide).
   
 
   ## 4.x -> 5.x
