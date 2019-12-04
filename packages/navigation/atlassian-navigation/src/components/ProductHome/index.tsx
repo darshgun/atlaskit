@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Fragment } from 'react';
+import { Fragment, MouseEvent } from 'react';
 import { useTheme } from '../../theme';
 import {
   containerCSS,
@@ -12,11 +12,24 @@ import {
 } from './styles';
 import { CustomProductHomeProps, ProductHomeProps } from './types';
 
+const getTag = (onClick?: (arg: any) => void, href?: string) => {
+  if (href) {
+    return 'a';
+  }
+
+  if (onClick) {
+    return 'button';
+  }
+
+  return 'div';
+};
+
 export const ProductHome = ({
   icon: Icon,
   logo: Logo,
   siteTitle,
-  onClick = () => {},
+  onClick,
+  href,
 }: ProductHomeProps) => {
   const theme = useTheme();
   const {
@@ -25,9 +38,12 @@ export const ProductHome = ({
     gradientStop = 'inherit',
     textColor = theme.mode.productHome.color,
   } = theme.mode.productHome;
+
+  const Tag = getTag(onClick, href);
+
   return (
     <Fragment>
-      <div css={containerCSS} onClick={onClick}>
+      <Tag css={containerCSS(theme)} href={href} onClick={onClick}>
         <div css={productLogoCSS}>
           <Logo
             gradientStart={gradientStart}
@@ -43,22 +59,31 @@ export const ProductHome = ({
             iconColor={iconColor}
           />
         </div>
-      </div>
+      </Tag>
       {siteTitle && <div css={siteTitleCSS(theme)}>{siteTitle}</div>}
     </Fragment>
   );
 };
 
 export const CustomProductHome = (props: CustomProductHomeProps) => {
-  const { iconAlt, iconUrl, logoAlt, logoUrl, onClick, siteTitle } = props;
+  const {
+    iconAlt,
+    iconUrl,
+    logoAlt,
+    logoUrl,
+    href,
+    onClick,
+    siteTitle,
+  } = props;
   const theme = useTheme();
+  const Tag = getTag(href, onClick);
 
   return (
     <Fragment>
-      <div css={containerCSS} onClick={onClick}>
+      <Tag css={containerCSS(theme)} onClick={onClick}>
         <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
         <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
-      </div>
+      </Tag>
       {siteTitle && <div css={siteTitleCSS(theme)}>{siteTitle}</div>}
     </Fragment>
   );

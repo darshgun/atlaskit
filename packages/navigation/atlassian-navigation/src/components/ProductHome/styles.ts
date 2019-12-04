@@ -5,15 +5,25 @@ import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-export const containerCSS = {
-  alignItems: 'center',
-  display: 'flex',
-  [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
-    margin: `0 ${gridSize}px`,
-  },
-  [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
-    margin: `0 ${gridSize * 2}px`,
-  },
+export const containerCSS = ({ mode: { productHome } }: NavigationTheme) => {
+  return {
+    alignItems: 'center',
+    padding: 0,
+    background: 'none',
+    display: 'flex',
+    ':hover': productHome.hover,
+    ':focus': productHome.focus,
+    ':active': productHome.active,
+    'div&': {
+      pointerEvents: 'none',
+    },
+    [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
+      margin: `0 ${gridSize}px`,
+    },
+    [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
+      margin: `0 ${gridSize * 2}px`,
+    },
+  };
 };
 
 export const containerSkeletonCSS = containerCSS;

@@ -24,6 +24,7 @@ export const getPrimaryButtonTheme = ({
 ) => {
   const { buttonStyles, spinnerStyles } = current(props);
 
+  console.log(buttonStyles);
   return {
     buttonStyles: {
       ...buttonStyles,
