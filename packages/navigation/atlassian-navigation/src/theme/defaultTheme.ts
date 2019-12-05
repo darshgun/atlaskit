@@ -7,7 +7,6 @@ import {
   N20,
   N40,
   N200,
-  N500,
   N600,
 } from '@atlaskit/theme/colors';
 
