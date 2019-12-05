@@ -174,13 +174,13 @@ export default class MediaSingleNode extends Component<
     if (typeof pos === 'undefined') {
       return;
     }
-    return dispatch(
-      state.tr.setNodeMarkup(pos, undefined, {
-        ...this.props.node.attrs,
-        layout,
-        width,
-      }),
-    );
+    const tr = state.tr.setNodeMarkup(pos, undefined, {
+      ...this.props.node.attrs,
+      layout,
+      width,
+    });
+    tr.setMeta('scrollIntoView', false);
+    return dispatch(tr);
   };
 
   render() {

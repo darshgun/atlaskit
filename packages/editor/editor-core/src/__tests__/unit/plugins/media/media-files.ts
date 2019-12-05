@@ -24,10 +24,16 @@ import {
   temporaryFileId,
   temporaryMedia,
   insertMediaGroupItem,
+  getFreshMediaProvider,
 } from './_utils';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 describe('media-files', () => {
   const createEditor = createEditorFactory();
+  const providerFactory = new ProviderFactory();
+  const mediaProvider = getFreshMediaProvider();
+  providerFactory.setProvider('mediaProvider', mediaProvider);
+
   const editor = (doc: any) =>
     createEditor({
       doc,
@@ -37,6 +43,7 @@ describe('media-files', () => {
         allowRule: true,
         allowPanel: true,
       },
+      providerFactory,
     });
 
   describe('when cursor is at the end of a text block', () => {

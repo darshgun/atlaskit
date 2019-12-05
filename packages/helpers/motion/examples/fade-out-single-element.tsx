@@ -16,7 +16,7 @@ export default () => {
         </Button>
 
         <Centered>
-          <ExitingPersistence>
+          <ExitingPersistence appear>
             {isIn && <FadeIn>{props => <Block {...props} />}</FadeIn>}
           </ExitingPersistence>
         </Centered>

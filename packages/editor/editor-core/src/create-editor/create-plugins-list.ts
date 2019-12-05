@@ -54,6 +54,7 @@ import {
   expandPlugin,
   isExpandInsertionEnabled,
   iOSScrollPlugin,
+  scrollIntoViewPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { ScrollGutterPluginOptions } from '../plugins/base/pm-plugins/scroll-gutter';
@@ -360,6 +361,10 @@ export default function createPluginsList(
 
   if (isIOS) {
     plugins.push(iOSScrollPlugin());
+  }
+
+  if (props.autoScrollIntoView !== false) {
+    plugins.push(scrollIntoViewPlugin());
   }
 
   return plugins;

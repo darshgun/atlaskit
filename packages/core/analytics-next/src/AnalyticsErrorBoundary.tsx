@@ -21,9 +21,6 @@ type AnalyticsErrorBoundaryPayload = {
   [key: string]: any;
 };
 
-const isObject = (o: any) =>
-  typeof o === 'object' && o !== null && !Array.isArray(o);
-
 export class BaseAnalyticsErrorBoundary extends Component<
   AnalyticsErrorBoundaryProps,
   {}
@@ -40,7 +37,7 @@ export class BaseAnalyticsErrorBoundary extends Component<
             ? window.navigator.userAgent
             : 'unknown',
         ...data,
-        ...(isObject(analyticsErrorPayload) ? analyticsErrorPayload : {}),
+        ...analyticsErrorPayload,
       },
     }).fire(channel);
   };

@@ -6,6 +6,14 @@ import PanelTextInput from '../../../ui/PanelTextInput';
 const noop = () => {};
 
 describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   it('should call onSubmit when ENTER key is pressed', () => {
     const onSubmitHandler = jest.fn();
     const panel = mount(<PanelTextInput onSubmit={onSubmitHandler} />);
@@ -61,5 +69,21 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
 
     expect(onKeyDownHandler).toHaveBeenCalled();
     panel.unmount();
+  });
+
+  it('should focus input if autoFocus prop set to true', () => {
+    const panel = mount(<PanelTextInput autoFocus />);
+    const inputNode: any = panel.find('input').instance();
+    jest.spyOn(inputNode, 'focus');
+    jest.runAllTimers();
+    expect(inputNode.focus).toHaveBeenCalled();
+  });
+
+  it('should focus input passing through focus options if autoFocus prop set to options', () => {
+    const panel = mount(<PanelTextInput autoFocus={{ preventScroll: true }} />);
+    const inputNode: any = panel.find('input').instance();
+    jest.spyOn(inputNode, 'focus');
+    jest.runAllTimers();
+    expect(inputNode.focus).toHaveBeenCalledWith({ preventScroll: true });
   });
 });

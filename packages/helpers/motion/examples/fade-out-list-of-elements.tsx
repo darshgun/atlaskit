@@ -48,7 +48,7 @@ export default () => {
           }}
         >
           <StaggeredEntrance>
-            <ExitingPersistence>
+            <ExitingPersistence appear>
               {items.map(logo => (
                 // Gotcha #1 set propery keys YO
                 <FadeIn key={logo[1] as string}>

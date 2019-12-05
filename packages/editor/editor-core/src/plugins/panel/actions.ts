@@ -60,16 +60,18 @@ export const changePanelType = (panelType: PanelType): Command => (
     `atlassian.editor.format.panel.${panelType}.button`,
   );
 
+  const changePanelTypeTr = addAnalytics(
+    state,
+    setParentNodeMarkup(nodes.panel, null, { panelType })(tr).setMeta(
+      pluginKey,
+      { activePanelType: panelType },
+    ),
+    payload,
+  );
+  changePanelTypeTr.setMeta('scrollIntoView', false);
+
   if (dispatch) {
-    dispatch(
-      addAnalytics(
-        state,
-        setParentNodeMarkup(nodes.panel, null, { panelType })(
-          tr,
-        ).setMeta(pluginKey, { activePanelType: panelType }),
-        payload,
-      ),
-    );
+    dispatch(changePanelTypeTr);
   }
   return true;
 };

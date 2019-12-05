@@ -1,7 +1,10 @@
 import React, { ReactNode } from 'react';
 import { Transition } from 'react-transition-group';
 
-const duration = 100;
+const duration = {
+  enter: 0,
+  exit: 100,
+};
 
 interface Animation {
   [key: string]: { opacity: number };
@@ -23,7 +26,7 @@ export const Fade = ({ in: hasEntered, children, onExited }: Props) => (
   >
     {(status: string) => {
       const base = {
-        transition: `opacity ${duration}ms`,
+        transition: `opacity ${duration.exit}ms`,
         opacity: 0,
       };
       const anim: Animation = {

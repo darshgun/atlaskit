@@ -12,6 +12,10 @@ import {
   pluginKey as typeAheadPluginKey,
 } from './main';
 
+// We cannot set a proper plugin key on input rule plugins, so instead, once
+// the plugin is created we save its key to this variable
+export let typeAheadInputRulesPluginKey = '';
+
 export function inputRulePlugin(
   schema: Schema,
   typeAheads: TypeAheadHandler[],
@@ -58,7 +62,10 @@ export function inputRulePlugin(
     );
   });
 
-  return inputRules({ rules: [typeAheadInputRule] });
+  const plugin = inputRules({ rules: [typeAheadInputRule] });
+  typeAheadInputRulesPluginKey = (plugin as any).key;
+
+  return plugin;
 }
 
 export default inputRulePlugin;

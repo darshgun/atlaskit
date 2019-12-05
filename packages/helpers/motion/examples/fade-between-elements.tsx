@@ -46,6 +46,7 @@ const elements = [
 
 export default () => {
   const [index, setIndex] = useState(0);
+  const [appear, setAppear] = useState(true);
   const [exitThenEnter, setExitThenEnter] = useState(false);
 
   return (
@@ -56,6 +57,13 @@ export default () => {
             onClick={() => setIndex(prev => (prev + 1) % elements.length)}
           >
             Switch
+          </Button>
+
+          <Button
+            isSelected={appear}
+            onClick={() => setAppear(appear => !appear)}
+          >
+            {appear ? 'Appears on mount' : 'Immediately appear on mount'}
           </Button>
 
           <Button
@@ -76,7 +84,7 @@ export default () => {
 
         <Centered>
           <div css={{ position: 'relative' }}>
-            <ExitingPersistence exitThenEnter={exitThenEnter}>
+            <ExitingPersistence appear={appear} exitThenEnter={exitThenEnter}>
               <div key={index}>{elements[index](exitThenEnter)}</div>
             </ExitingPersistence>
           </div>
