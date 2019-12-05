@@ -12,25 +12,39 @@ const axios = require('axios');
 */
 
 const BUILDS_PER_PAGE = 30;
-const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
-const BB_USERNAME = process.env.BITBUCKET_USER;
-const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
-const { BITBUCKET_BUILD_NUMBER } = process.env;
-const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER || '';
-const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG || '';
-const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines/`;
+
+const {
+  BITBUCKET_BRANCH,
+  BITBUCKET_USER,
+  BITBUCKET_PASSWORD,
+  BITBUCKET_BUILD_NUMBER,
+  BITBUCKET_REPO_FULL_NAME,
+} = process.env;
+
+if (
+  !BITBUCKET_REPO_FULL_NAME ||
+  !BITBUCKET_USER ||
+  !BITBUCKET_PASSWORD ||
+  !BITBUCKET_BRANCH ||
+  !BITBUCKET_BUILD_NUMBER
+) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD  or $BITBUCKET_BRANCH or $BITBUCKET_BUILD_NUMBER environment variables are not set',
+  );
+}
+
 const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
 const axiosRequestConfig = {
   auth: {
-    username: BB_USERNAME,
-    password: BB_PASSWORD,
+    username: BITBUCKET_USER,
+    password: BITBUCKET_PASSWORD,
   },
   params: {
     pagelen: BUILDS_PER_PAGE,
     // get the most recent builds first
     sort: '-created_on',
-    'target.ref_name': BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR,
+    'target.ref_name': BITBUCKET_BRANCH,
     'target.ref_type': 'BRANCH',
   },
 };
@@ -39,7 +53,7 @@ const axiosRequestConfig = {
 // Related documentation
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
-  const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${pipelineUUID}/stopPipeline`;
+  const stopPipelinesEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${pipelineUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(
@@ -47,15 +61,18 @@ function stopPipelineBuild(pipelineUUID) {
     {},
     {
       auth: {
-        username: BB_USERNAME,
-        password: BB_PASSWORD,
+        username: BITBUCKET_USER,
+        password: BITBUCKET_PASSWORD,
       },
     },
   );
 }
 
 axios
-  .get(PIPELINES_ENDPOINT, axiosRequestConfig)
+  .get(
+    `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/`,
+    axiosRequestConfig,
+  )
   .then(response => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines.find(
@@ -73,7 +90,7 @@ axios
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
-      const olderRunningPipelineURL = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
+      const olderRunningPipelineURL = `https://bitbucket.org/${BITBUCKET_REPO_FULL_NAME}/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
       console.log(
         `Another master branch is already running: ${olderRunningPipelineURL}`,
       );

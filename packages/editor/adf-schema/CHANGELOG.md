@@ -1,5 +1,37 @@
 # @atlaskit/adf-schema
 
+## 4.3.1
+
+### Patch Changes
+
+- [patch][161a30be16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/161a30be16):
+
+  ED-7974: fix copying expand with tables that contain nestedExpand
+
+- [patch][ef2ba36d5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef2ba36d5c):
+
+  Add alt text support for renderer
+
+- [patch][6e4b678428](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e4b678428):
+
+  ED-8077: Fixes pasting expands into a table that is inside an expand
+
+- [patch][b3fd0964f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3fd0964f2):
+
+  Fix an issue in the media node spec with alt text
+
+- [patch][9a261337b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a261337b5):
+
+  Add a fixture of a document with different cases of unsupported content- [patch][cc1b89d310](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc1b89d310):
+
+  ED-8162: Prevent the editor from locking up when navigating from gap-cursor to an expand title- [patch][938f1c2902](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/938f1c2902):
+
+  ED-8186: Fix incorrect mark filtering when toggling lists- Updated dependencies [10425b84b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10425b84b4):
+
+- Updated dependencies [926798632e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926798632e):
+  - @atlaskit/editor-test-helpers@10.3.0
+  - @atlaskit/editor-json-transformer@7.0.1
+
 ## 4.3.0
 
 ### Minor Changes

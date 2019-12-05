@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/router",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "SPA Router",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",

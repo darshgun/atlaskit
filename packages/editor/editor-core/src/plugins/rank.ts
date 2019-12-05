@@ -90,7 +90,7 @@ export default {
     'maxContentSize',
     'multilineContent',
     'grid',
-    'mobileScroll',
+    'iOSScroll',
     'scrollGutterPlugin',
     'analytics',
     'history',

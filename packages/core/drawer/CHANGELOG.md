@@ -1,5 +1,22 @@
 # @atlaskit/drawer
 
+## 5.1.0
+
+### Minor Changes
+
+- [minor][d438b16fbc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d438b16fbc):
+
+  Added an onOpenComplete callback to the @atlaskit/drawer that is called when the drawer finishes opening.
+
+### Patch Changes
+
+- Updated dependencies [c1d4898af5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1d4898af5):
+- Updated dependencies [3c0f6feee5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c0f6feee5):
+- Updated dependencies [f9c291923c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c291923c):
+  - @atlaskit/icon@19.0.11
+  - @atlaskit/theme@9.3.0
+  - @atlaskit/portal@3.1.3
+
 ## 5.0.14
 
 ### Patch Changes

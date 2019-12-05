@@ -10,11 +10,23 @@ const pWaitFor = require('p-wait-for');
 */
 
 const BUILDS_PER_PAGE = 30;
-const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER || 'atlassian';
-const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG || 'atlaskit-mk-2';
-const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines/`;
+const {
+  BITBUCKET_REPO_FULL_NAME,
+  BITBUCKET_USER,
+  BITBUCKET_PASSWORD,
+} = process.env;
+
+if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+  );
+}
 
 const axiosRequestConfig = {
+  auth: {
+    username: BITBUCKET_USER,
+    password: BITBUCKET_PASSWORD,
+  },
   params: {
     pagelen: BUILDS_PER_PAGE,
     // get the most recent builds first
@@ -28,7 +40,10 @@ function noMasterRunning() {
   console.log(+new Date(), 'Checking if master is running...');
   // We add a queryString to ensure we dont get cached responses
   return axios
-    .get(`${PIPELINES_ENDPOINT}?${+new Date()}`, axiosRequestConfig)
+    .get(
+      `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/?${+new Date()}`,
+      axiosRequestConfig,
+    )
     .then(response => {
       const allPipelines = response.data.values;
       const runningPipelines = allPipelines

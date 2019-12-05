@@ -294,7 +294,6 @@
     "@emotion/css": "^10.0.14",
     "@emotion/styled": "^10.0.7",
     "@manypkg/gatsby-source-workspace": "^0.3.0",
-    "@marionebl/prosemirror-markdown": "^1.4.2",
     "@mdx-js/react": "^1.5.1",
     "@sentry/browser": "^4.6.3",
     "@types/algoliasearch": "^3.30.8",

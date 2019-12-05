@@ -1,5 +1,19 @@
 # @atlaskit/theme
 
+## 9.3.0
+
+### Minor Changes
+
+- [minor][f9c291923c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c291923c):
+
+  Corrects the type exports for typography, colors, elevation and layers. If you were doing any dynamic code it may break you. Refer to the [upgrade guide](/packages/core/theme/docs/upgrade-guide) for help upgrading.
+
+### Patch Changes
+
+- [patch][3c0f6feee5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c0f6feee5):
+
+  Fixes types property in package json to point to the correct location.
+
 ## 9.2.8
 
 ### Patch Changes

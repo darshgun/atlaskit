@@ -83,6 +83,7 @@ describe('Expand: full-page', () => {
       nestedExpandOverflowInTable,
       Device.LaptopMDPI,
     );
+    await page.waitForSelector(selectors.nestedExpand);
   });
 });
 

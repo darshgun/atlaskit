@@ -18,7 +18,6 @@ import {
   listsPlugin,
   mediaPlugin,
   mentionsPlugin,
-  mobileScrollPlugin,
   panelPlugin,
   placeholderPlugin,
   rulePlugin,
@@ -75,7 +74,6 @@ export function useMobilePreset({
     [placeholderPlugin, { placeholder }],
     annotationPlugin,
     cardPlugin,
-    mobileScrollPlugin,
     // Begin -> This would be exclude if the provider doesnt exist in the factory
     [mentionsPlugin, { useInlineWrapper: true }],
     [emojiPlugin, { useInlineWrapper: true }],

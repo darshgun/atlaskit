@@ -1,5 +1,13 @@
 # @atlaskit/media-client
 
+## 4.1.1
+
+### Patch Changes
+
+- [patch][579779f5aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/579779f5aa):
+
+  MS-2423 add retries on 5xx errors and network errors to HTTP calls
+
 ## 4.1.0
 
 ### Minor Changes

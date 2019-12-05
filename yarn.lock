@@ -3044,13 +3044,6 @@
     fs-extra "^8.1.0"
     get-workspaces "^0.5.0"
 
-"@marionebl/prosemirror-markdown@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@marionebl/prosemirror-markdown/-/prosemirror-markdown-1.4.2.tgz#045129fdb89afb2e981acba307e7ff22f63c631e"
-  integrity sha512-hQMRzeeAW1e+e4ctxNrEKPbpmCBTh9TCSqOx5SkCnSAm6nIO9h3n6CtsCZo2uV5AFt3cQ5OVqAUUgNbGjUvyJg==
-  dependencies:
-    prosemirror-markdown "^1.4.0"
-
 "@mdx-js/loader@^0.17.5":
   version "0.17.5"
   resolved "https://registry.yarnpkg.com/@mdx-js/loader/-/loader-0.17.5.tgz#26ce463142acaf66c9a286f2e794b04a510a4488"
@@ -21269,14 +21262,6 @@ prosemirror-keymap@^1.0.0, prosemirror-keymap@^1.0.1:
   dependencies:
     prosemirror-state "^1.0.0"
     w3c-keyname "^1.1.8"
-
-prosemirror-markdown@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/prosemirror-markdown/-/prosemirror-markdown-1.4.0.tgz#3de6b90f01adb32a655bae5255a2bd2332f21f99"
-  integrity sha512-iADBWGRS1HG5hqfAdedIDkzDDCuIaP2jKD11kqY+aRoo7+Wv3EchaviDH06aVSfUyU+gQqgGjM0cYk/+6wuRpQ==
-  dependencies:
-    markdown-it "^10.0.0"
-    prosemirror-model "^1.0.0"
 
 prosemirror-markdown@^1.4.2:
   version "1.4.2"

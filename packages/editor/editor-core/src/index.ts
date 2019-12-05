@@ -115,7 +115,6 @@ export {
 } from './plugins/hyperlink/commands';
 export { LinkInputType as LinkInputMethod } from './plugins/hyperlink/ui/HyperlinkAddToolbar/HyperlinkAddToolbar';
 export { historyPluginKey, HistoryPluginState } from './plugins/history';
-export { setKeyboardHeight } from './plugins/mobile-scroll/commands';
 export {
   INPUT_METHOD,
   ACTION,

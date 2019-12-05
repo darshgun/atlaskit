@@ -27,7 +27,11 @@ import {
   isFirstChildOfParent,
   findCutBefore,
 } from '../../utils/commands';
-import { isRangeOfType, compose, sanitizeSelectionMarks } from '../../utils';
+import {
+  isRangeOfType,
+  compose,
+  sanitiseSelectionMarksForWrapping,
+} from '../../utils';
 import { liftFollowingList, liftSelectionList } from './transforms';
 import { Command } from '../../types';
 import { GapCursorSelection } from '../gap-cursor';
@@ -729,9 +733,12 @@ export function toggleListCommand(
       }
 
       // Remove any invalid marks that are not supported
-      const tr = sanitizeSelectionMarks(state);
-      if (tr) {
-        dispatch!(tr);
+      const tr = sanitiseSelectionMarksForWrapping(
+        state,
+        state.schema.nodes[listType],
+      );
+      if (tr && dispatch) {
+        dispatch(tr);
         state = view.state;
       }
       // Wraps selection in list
