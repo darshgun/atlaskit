@@ -1,1 +1,0 @@
-[ED-7903] Implement alt text update on UI
