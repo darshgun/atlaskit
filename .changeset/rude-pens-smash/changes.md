@@ -1,1 +1,0 @@
-FEF-9891 Fix being unable to click inside and type in placeholders
