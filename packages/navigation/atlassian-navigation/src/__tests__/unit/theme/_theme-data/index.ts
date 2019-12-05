@@ -76,6 +76,32 @@ export const themes: Themes = [
         gradientStart: '#0052CC',
         gradientStop: '#2684FF',
         iconColor: '#2684FF',
+        active: {
+          backgroundColor: 'rgba(222, 235, 255, 0.7)',
+          color: '#0052CC',
+          boxShadow: '0 0 0 2px transparent',
+        },
+        default: {
+          color: '#344563',
+          backgroundColor: 'transparent',
+          boxShadow: '0 0 0 2px transparent',
+        },
+        focus: {
+          color: '#344563',
+          backgroundColor: '',
+          boxShadow: '0 0 0 2px #2684FF',
+        },
+        hover: {
+          color: '#0052CC',
+          backgroundColor: 'rgba(222, 235, 255, 0.9)',
+          boxShadow: '0 0 0 2px transparent',
+        },
+        selected: {
+          color: '#0052CC',
+          backgroundColor: '',
+          boxShadow: '',
+          bordorBottom: '4px solid #0052CC',
+        },
       },
       primaryButton: {
         active: {
