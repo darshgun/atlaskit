@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.21.7
+
+### Patch Changes
+
+- [patch][9f54cbb921](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f54cbb921):
+
+  Added onBackButtonClick prop. Enable back button click function only after fade-in animation
+
 ## 0.21.6
 
 ### Patch Changes

@@ -243,8 +243,11 @@ class Editor extends React.Component<
               <Button
                 appearance="primary"
                 onClick={this.handleSave}
+                testId="comment-save-button"
                 isDisabled={
-                  disabled || (mediaState && !mediaState.allUploadsFinished)
+                  disabled
+                  // TODO: ED-8171 Disabled this until we fixed race condition
+                  // || (mediaState && !mediaState.allUploadsFinished)
                 }
               >
                 {intl.formatMessage(messages.saveButton)}

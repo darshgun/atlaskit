@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/empty-state",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "description": "A React component used for presenting various empty states (no items, empty search, broken link, welcome screen etc.)",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -22,7 +22,7 @@
   "dependencies": {
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/spinner": "^12.1.1",
-    "@atlaskit/theme": "^9.2.4",
+    "@atlaskit/theme": "^9.3.0",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {

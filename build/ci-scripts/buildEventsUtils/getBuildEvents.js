@@ -38,6 +38,25 @@ type IPipelines = {
 }
 */
 
+const {
+  BITBUCKET_REPO_FULL_NAME,
+  BITBUCKET_USER,
+  BITBUCKET_PASSWORD,
+} = process.env;
+
+if (!BITBUCKET_REPO_FULL_NAME || !BITBUCKET_USER || !BITBUCKET_PASSWORD) {
+  throw Error(
+    '$BITBUCKET_REPO_FULL_NAME or $BITBUCKET_USER or $BITBUCKET_PASSWORD environment variables are not set',
+  );
+}
+
+const axiosRequestConfig = {
+  auth: {
+    username: BITBUCKET_USER,
+    password: BITBUCKET_PASSWORD,
+  },
+};
+
 /* This function computes build time if build.duration_in_seconds returns 0, it is often applicable for 1 step build.
  * The Bitbucket computation is simple, they sum the longest step time with the shortest one.
  */
@@ -118,9 +137,9 @@ async function getPipelinesBuildEvents(
   buildId /*: string */,
 ) /*: Promise<IBuildEventProperties> */ {
   let payload /*: $Shape<IBuildEventProperties> */ = {};
-  const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}`;
+  const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}`;
   try {
-    const res = await axios.get(apiEndpoint);
+    const res = await axios.get(apiEndpoint, axiosRequestConfig);
     const build = res.data;
     const stepsData = await getStepsEvents(
       buildId,
@@ -174,9 +193,9 @@ async function getStepsEvents(
   buildId /*: string*/,
   buildType /*:? string */,
 ) /* IStepsDataType */ {
-  const url = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}/steps/`;
+  const url = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}/steps/`;
   try {
-    const resp = await axios.get(url);
+    const resp = await axios.get(url, axiosRequestConfig);
     return Promise.all(
       // eslint-disable-next-line consistent-return
       resp.data.values.map(async step => {
@@ -241,8 +260,8 @@ async function getStepNamePerBuildType(buildId /*: string */) {
       fs.readFileSync('bitbucket-pipelines.yml', 'utf8'),
     );
     const indentedJson = JSON.parse(JSON.stringify(config, null, 4));
-    const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}`;
-    const res = await axios.get(apiEndpoint);
+    const apiEndpoint = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}`;
+    const res = await axios.get(apiEndpoint, axiosRequestConfig);
     const buildType = res.data.target.selector.type || 'default';
     const buildName =
       res.data.target.selector.pattern || res.data.target.ref_name;
@@ -265,10 +284,10 @@ async function getStepNamePerBuildType(buildId /*: string */) {
 /* This function the final step payload when a build with parallel step is running in Bitbucket.*/
 // eslint-disable-next-line consistent-return
 async function getStepEvents(buildId /*: string*/) {
-  const stepsUrl = `https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit-mk-2/pipelines/${buildId}/steps/`;
+  const stepsUrl = `https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_FULL_NAME}/pipelines/${buildId}/steps/`;
   try {
     const stepPayload = await getStepNamePerBuildType(buildId);
-    const res = await axios.get(stepsUrl);
+    const res = await axios.get(stepsUrl, axiosRequestConfig);
     // Filter returns an array and we need the first value.
     if (stepPayload) {
       const stepObject = res.data.values.filter(

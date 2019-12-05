@@ -33,7 +33,6 @@ import {
   setLinkHref,
   setLinkText,
   clearEditorContent,
-  setKeyboardHeight,
   INPUT_METHOD,
   BlockTypeInputMethod,
   InsertBlockInputMethodToolbar,
@@ -461,15 +460,6 @@ export default class WebBridgeImpl extends WebBridge
   redo() {
     if (this.editorView) {
       pmHistoryRedo(this.editorView.state, this.editorView.dispatch);
-    }
-  }
-
-  setKeyboardControlsHeight(height: string) {
-    if (this.editorView) {
-      setKeyboardHeight(+height)(
-        this.editorView.state,
-        this.editorView.dispatch,
-      );
     }
   }
 

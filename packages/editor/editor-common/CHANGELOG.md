@@ -1,5 +1,76 @@
 # @atlaskit/editor-common
 
+## 43.0.0
+
+### Major Changes
+
+- [major][271945fd08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/271945fd08):
+
+  ED-8005 ProviderFactory now has types for mentionProvider and emojiProvider
+
+  BREAKING CHANGE:
+
+  Before:
+  `ProviderFactory.mentionProvider` -> `any`
+  `ProviderFactory.emojiProvider` -> `any`
+
+  Now:
+  `ProviderFactory.mentionProvider` -> `Promise<MentionProvider> | undefined`
+  `ProviderFactory.emojiProvider` -> `Promise<EmojiProvider> | undefined`
+
+### Minor Changes
+
+- [minor][10425b84b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10425b84b4):
+
+  Add support to extensions v2 (using manifests and extension providers)
+
+- [minor][926798632e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926798632e):
+
+  ED-7962: Build ADF node from actions - remove "insert" from node
+
+### Patch Changes
+
+- [patch][ea0e619cc7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea0e619cc7):
+
+  ED-8017: Fix expand overflow issues with tables and text
+
+- [patch][bb164fbd1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb164fbd1e):
+
+  ED-8073 ED-8074: Align expand title to the left when it wraps and align the expand chevron to the top
+
+- [patch][4700477bbe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4700477bbe):
+
+  ED-8094: Fix cursor issues relating to mobile and toolbar insertion issues
+
+- Updated dependencies [161a30be16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/161a30be16):
+- Updated dependencies [2d1aee3e47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d1aee3e47):
+- Updated dependencies [4427e6c8cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4427e6c8cf):
+- Updated dependencies [49fbe3d3bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49fbe3d3bf):
+- Updated dependencies [c1d4898af5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c1d4898af5):
+- Updated dependencies [579779f5aa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/579779f5aa):
+- Updated dependencies [df2280531d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df2280531d):
+- Updated dependencies [ef2ba36d5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef2ba36d5c):
+- Updated dependencies [6e4b678428](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e4b678428):
+- Updated dependencies [3c0f6feee5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3c0f6feee5):
+- Updated dependencies [b3fd0964f2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b3fd0964f2):
+- Updated dependencies [7540cdff80](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7540cdff80):
+- Updated dependencies [10425b84b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/10425b84b4):
+- Updated dependencies [f9c291923c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c291923c):
+- Updated dependencies [9a261337b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a261337b5):
+- Updated dependencies [cc1b89d310](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc1b89d310):
+- Updated dependencies [938f1c2902](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/938f1c2902):
+- Updated dependencies [926798632e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/926798632e):
+  - @atlaskit/adf-schema@4.3.1
+  - @atlaskit/emoji@62.6.0
+  - @atlaskit/media-picker@50.0.2
+  - @atlaskit/mention@18.16.0
+  - @atlaskit/icon@19.0.11
+  - @atlaskit/media-client@4.1.1
+  - @atlaskit/theme@9.3.0
+  - @atlaskit/editor-test-helpers@10.3.0
+  - @atlaskit/profilecard@12.3.5
+  - @atlaskit/editor-json-transformer@7.0.1
+
 ## 42.0.0
 
 ### Major Changes
