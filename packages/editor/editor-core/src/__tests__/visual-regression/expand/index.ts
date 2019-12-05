@@ -123,7 +123,7 @@ describe('Expand: Media', () => {
   });
 });
 
-describe('Expand: allowInteractiveExpand', () => {
+describe.skip('Expand: allowInteractiveExpand', () => {
   let page: Page;
 
   beforeAll(async () => {

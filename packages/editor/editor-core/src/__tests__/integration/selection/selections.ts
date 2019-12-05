@@ -1,3 +1,4 @@
+/*
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import { editable, getDocFromElement, fullpage } from '../_helpers';
 
@@ -110,3 +111,4 @@ const testDocuments: { [key: string]: string } = {
     },
   );
 });
+*/
