@@ -92,9 +92,10 @@ export const CustomProductHome = (props: CustomProductHomeProps) => {
   } = props;
   const theme = useTheme();
   const Tag = getTag(onClick, href);
-  const preventFocusRing = e => {
-    e.preventDefault();
-    onMouseDown(e);
+
+  const preventFocusRing = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    onMouseDown && onMouseDown(event);
   };
 
   return (
