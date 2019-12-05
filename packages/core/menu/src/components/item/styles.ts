@@ -139,7 +139,7 @@ export const customItemCSS = (
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
   fontSize: headingSizes.h200.size,
-  lineHeight: `${headingSizes.h200.lineHeight}px`,
+  lineHeight: headingSizes.h200.lineHeight / headingSizes.h200.size,
   color: subtleHeading(),
   marginTop: gridSize,
   marginBottom: 6,
