@@ -1,5 +1,13 @@
 # @atlaskit/menu
 
+## 0.1.2
+
+### Patch Changes
+
+- [patch][3b785fa323](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b785fa323):
+
+  Various UI fixes
+
 ## 0.1.1
 
 ### Patch Changes

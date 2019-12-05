@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/atlassian-navigation",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -19,7 +19,7 @@
     "@atlaskit/analytics-namespaced-context": "^4.1.9",
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/icon": "^19.0.4",
-    "@atlaskit/popup": "^0.2.0",
+    "@atlaskit/popup": "^0.2.4",
     "@atlaskit/theme": "^9.2.4",
     "@atlaskit/tooltip": "^15.1.1",
     "@atlaskit/width-detector": "^2.0.9",

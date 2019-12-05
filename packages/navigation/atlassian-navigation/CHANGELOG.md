@@ -1,5 +1,15 @@
 # @atlaskit/atlassian-navigation
 
+## 0.6.7
+
+### Patch Changes
+
+- [patch][38a300c7e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38a300c7e0):
+
+  Misc UI changes- Updated dependencies [d0415ae306](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0415ae306):
+
+  - @atlaskit/popup@0.2.4
+
 ## 0.6.6
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @atlaskit/popup
 
+## 0.2.4
+
+### Patch Changes
+
+- [patch][d0415ae306](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0415ae306):
+
+  Popup now uses the correct e200 shadow
+
 ## 0.2.3
 
 ### Patch Changes
