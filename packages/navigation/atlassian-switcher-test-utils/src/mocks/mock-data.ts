@@ -201,20 +201,6 @@ const ORIGINAL_MOCK_DATA: MockData = {
         url: 'https://statuspage.io',
         avatar: null,
       },
-      {
-        adminAccess: false,
-        availableProducts: [
-          {
-            activityCount: 0,
-            productType: 'TRELLO',
-            url: 'https://trello.com',
-          },
-        ],
-        cloudId: 'trello',
-        displayName: 'Trello',
-        url: 'https://trello.com',
-        avatar: null,
-      },
     ],
   },
   RECENT_CONTAINERS_DATA: {

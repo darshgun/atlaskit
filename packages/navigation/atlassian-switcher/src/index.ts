@@ -3,3 +3,5 @@ export { AtlassianSwitcherLoader as default } from './components/loaders';
 export { default as AtlassianSwitcherPrefetchTrigger } from './components/prefetch-trigger';
 
 export { createCustomTheme } from './theme/theme-builder';
+export { createProviderWithCustomFetchData } from './providers/create-data-provider';
+export { TriggerXFlowCallback, DiscoverMoreCallback } from './types';

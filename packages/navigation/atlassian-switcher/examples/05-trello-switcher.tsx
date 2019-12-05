@@ -1,9 +1,20 @@
 import * as React from 'react';
-import { mockEndpoints } from '@atlaskit/atlassian-switcher-test-utils';
-import { withAnalyticsLogger, withIntlProvider } from './helpers';
-import AtlassianSwitcher from '../src';
+import {
+  mockEndpoints,
+  DataTransformer,
+} from '@atlaskit/atlassian-switcher-test-utils';
 import styled from 'styled-components';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import { withAnalyticsLogger, withIntlProvider } from './helpers';
+import {
+  AvailableSite,
+  AvailableProductsResponse,
+  WorklensProductType,
+} from '../src/types';
+import AtlassianSwitcher from '../src';
+import { createProviderWithCustomFetchData } from '../src/providers/create-data-provider';
+import { DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT } from '../src/providers/default-available-products-provider';
+import { fetchJson } from '../src/utils/fetch';
 
 const FakeTrelloInlineDialog = styled.div`
   width: 360px;
@@ -28,11 +39,67 @@ const Header = styled.div`
   font-weight: 400;
 `;
 
+const Content = styled.div`
+  padding-top: 24px;
+`;
+
 const CloseButtonWrapper = styled.div`
   position: absolute;
   right: 0px;
   top: 7px;
 `;
+
+const AVAILABLE_SITE_TRELLO: AvailableSite = {
+  adminAccess: false,
+  availableProducts: [
+    {
+      activityCount: 0,
+      productType: WorklensProductType.TRELLO,
+      url: 'https://trello.com',
+    },
+  ],
+  cloudId: 'trello',
+  displayName: 'Trello',
+  url: 'https://trello.com',
+  avatar: null,
+};
+
+const mockTrelloDataProvider = async () => {
+  const response = await fetchJson<AvailableProductsResponse>(
+    DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT,
+  );
+  if (response && response.sites) {
+    response.sites.push(AVAILABLE_SITE_TRELLO);
+  }
+  return response;
+};
+
+const mockProviderWithCustomFetchData = () =>
+  createProviderWithCustomFetchData<AvailableProductsResponse>(
+    'availableProducts',
+    mockTrelloDataProvider,
+  );
+
+const mockEndpointsDataTransformer: DataTransformer = originalMockData => {
+  const availableProducts = originalMockData.AVAILABLE_PRODUCTS_DATA as AvailableProductsResponse;
+  return {
+    ...originalMockData,
+    AVAILABLE_PRODUCTS_DATA: {
+      sites: availableProducts.sites
+        .map((site: AvailableSite) => {
+          // Excluding JSD here to rather display it in the recommended products list
+          site.availableProducts = site.availableProducts.filter(
+            availableProduct =>
+              availableProduct.productType !==
+              WorklensProductType.JIRA_SERVICE_DESK,
+          );
+          return site;
+        })
+        .filter((site: AvailableSite) => site.availableProducts.length),
+    },
+  };
+};
+
 class InlineDialogSwitcherExample extends React.Component {
   state = {
     isLoaded: false,
@@ -42,7 +109,7 @@ class InlineDialogSwitcherExample extends React.Component {
     this.loadData();
   }
   loadData = () => {
-    mockEndpoints('trello');
+    mockEndpoints('trello', mockEndpointsDataTransformer);
     this.setState({
       isLoaded: true,
     });
@@ -52,14 +119,22 @@ class InlineDialogSwitcherExample extends React.Component {
     return (
       <FakeTrelloInlineDialog>
         <Header>
-          Switch to
+          More from Atlassian
           <CloseButtonWrapper>
             <EditorCloseIcon label="Close" />
           </CloseButtonWrapper>
         </Header>
-        {content}
+        <Content>{content}</Content>
       </FakeTrelloInlineDialog>
     );
+  }
+
+  onTriggerXFlow() {
+    console.log('triggerXFlow');
+  }
+
+  onDiscoverMoreClicked() {
+    console.log('discoverMoreClicked');
   }
 
   render() {
@@ -78,9 +153,16 @@ class InlineDialogSwitcherExample extends React.Component {
           product="trello"
           disableCustomLinks
           disableRecentContainers
-          disableHeadings
           appearance="standalone"
           theme={trelloTheme}
+          isDiscoverSectionEnabled
+          availableProductsDataProvider={mockProviderWithCustomFetchData()}
+          recommendationsFeatureFlags={{
+            isProductStoreInTrelloEnabled: true,
+          }}
+          isDiscoverMoreForEveryoneEnabled
+          onDiscoverMoreClicked={this.onDiscoverMoreClicked}
+          triggerXFlow={this.onTriggerXFlow}
         />,
       )
     );

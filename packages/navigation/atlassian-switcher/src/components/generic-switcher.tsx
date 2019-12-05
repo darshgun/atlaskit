@@ -7,6 +7,7 @@ import {
   FeatureMap,
   DiscoverMoreCallback,
   TriggerXFlowCallback,
+  WithRecommendationsFeatureFlags,
 } from '../types';
 import { mapResultsToSwitcherProps } from '../utils/map-results-to-switcher-props';
 import {
@@ -19,16 +20,17 @@ import {
 } from '../providers/joinable-sites-data-provider';
 import { WithTheme } from '../theme/types';
 
-type GenericSwitcherProps = WithTheme & {
-  cloudId?: string;
-  messages: Messages;
-  features: FeatureMap;
-  triggerXFlow: TriggerXFlowCallback;
-  onDiscoverMoreClicked: DiscoverMoreCallback;
-  product: Exclude<Product, Product.JIRA | Product.CONFLUENCE>;
-  availableProductsDataProvider?: AvailableProductsDataProvider;
-  joinableSitesDataProvider?: JoinableSitesDataProvider;
-};
+export type GenericSwitcherProps = WithTheme &
+  Partial<WithRecommendationsFeatureFlags> & {
+    cloudId?: string;
+    messages: Messages;
+    features: FeatureMap;
+    triggerXFlow: TriggerXFlowCallback;
+    onDiscoverMoreClicked: DiscoverMoreCallback;
+    product: Exclude<Product, Product.JIRA | Product.CONFLUENCE>;
+    availableProductsDataProvider?: AvailableProductsDataProvider;
+    joinableSitesDataProvider?: JoinableSitesDataProvider;
+  };
 
 export default (props: GenericSwitcherProps) => (
   <JoinableSitesProvider
@@ -42,6 +44,9 @@ export default (props: GenericSwitcherProps) => (
           <CommonDataProvider
             cloudId={props.cloudId}
             disableRecentContainers={props.features.disableRecentContainers}
+            recommendationsFeatureFlags={{
+              ...props.recommendationsFeatureFlags,
+            }}
           >
             {providerResults => {
               const switcherLinks = mapResultsToSwitcherProps(

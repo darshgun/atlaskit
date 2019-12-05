@@ -178,6 +178,9 @@ export const TO_WORKLENS_PRODUCT_KEY: {
   [ProductKey.JIRA_SERVICE_DESK]: WorklensProductType.JIRA_SERVICE_DESK,
   [ProductKey.JIRA_SOFTWARE]: WorklensProductType.JIRA_SOFTWARE,
   [ProductKey.OPSGENIE]: WorklensProductType.OPSGENIE,
+  [ProductKey.BITBUCKET]: WorklensProductType.BITBUCKET,
+  [ProductKey.STATUSPAGE]: WorklensProductType.STATUSPAGE,
+  [ProductKey.TRELLO]: WorklensProductType.TRELLO,
 };
 
 interface ConnectedSite {

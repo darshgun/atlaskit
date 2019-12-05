@@ -2,7 +2,7 @@ import fetchMock from 'fetch-mock';
 import ORIGINAL_MOCK_DATA, { MockData } from './mock-data';
 import memoizeOne from 'memoize-one';
 
-interface DataTransformer {
+export interface DataTransformer {
   (originalMockData: MockData): MockData;
 }
 
