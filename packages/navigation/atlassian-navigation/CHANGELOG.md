@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.7.0
+
+### Minor Changes
+
+- [minor][63b9f324df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63b9f324df):
+
+  Change the way ProductHome is rendered
+
 ## 0.6.7
 
 ### Patch Changes
