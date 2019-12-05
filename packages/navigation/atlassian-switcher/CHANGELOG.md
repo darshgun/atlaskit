@@ -1,5 +1,18 @@
 # @atlaskit/atlassian-switcher
 
+## 4.9.0
+
+### Minor Changes
+
+- [minor][54588e51df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54588e51df):
+
+  Add recommendationsFeatureFlags to generic-switcher
+
+### Patch Changes
+
+- Updated dependencies [54588e51df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54588e51df):
+  - @atlaskit/atlassian-switcher-test-utils@0.1.0
+
 ## 4.8.3
 
 ### Patch Changes

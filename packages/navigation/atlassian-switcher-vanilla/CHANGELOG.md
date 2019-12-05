@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher-vanilla
 
+## 2.1.6
+
+### Patch Changes
+
+- Updated dependencies [54588e51df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/54588e51df):
+  - @atlaskit/atlassian-switcher@4.9.0
+  - @atlaskit/atlassian-switcher-test-utils@0.1.0
+
 ## 2.1.5
 
 ### Patch Changes
