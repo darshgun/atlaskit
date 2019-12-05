@@ -6,7 +6,6 @@ import {
 } from '@atlaskit/analytics-next';
 import { JiraIcon, JiraLogo } from '@atlaskit/logo';
 import Badge from '@atlaskit/badge';
-import Avatar from '@atlaskit/avatar';
 import {
   AtlassianNavigation,
   PrimaryButton,
@@ -94,7 +93,7 @@ const ProfileAnalytics = () => {
   const onClick = useNavigationAnalytics('profile');
   return (
     <Profile
-      icon={<Avatar src={avatarUrl} />}
+      icon={<img src={avatarUrl} />}
       onClick={onClick}
       tooltip="Your profile and settings"
     />
