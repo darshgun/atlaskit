@@ -90,6 +90,7 @@ export const themes: Themes = [
           color: '#344563',
           backgroundColor: '',
           boxShadow: '0 0 0 2px #2684FF',
+          outline: 0,
         },
         hover: {
           color: '#0052CC',

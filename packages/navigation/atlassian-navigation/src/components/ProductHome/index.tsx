@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Fragment, MouseEvent } from 'react';
+import { Fragment } from 'react';
 import { useTheme } from '../../theme';
 import {
   containerCSS,
@@ -76,11 +76,11 @@ export const CustomProductHome = (props: CustomProductHomeProps) => {
     siteTitle,
   } = props;
   const theme = useTheme();
-  const Tag = getTag(href, onClick);
+  const Tag = getTag(onClick, href);
 
   return (
     <Fragment>
-      <Tag css={containerCSS(theme)} onClick={onClick}>
+      <Tag href={href} css={containerCSS(theme)} onClick={onClick}>
         <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
         <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
       </Tag>

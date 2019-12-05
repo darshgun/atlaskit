@@ -51,12 +51,18 @@ const Logo = () => {
       iconGradientStop={productHome.gradientStop}
       iconColor={productHome.iconColor}
       textColor={productHome.color}
+      size="small"
     />
   );
 };
 
 const ProductHomeExample = () => (
-  <ProductHome href="#" icon={Icon} logo={Logo} siteTitle="Hello" />
+  <ProductHome
+    onClick={console.log}
+    icon={Icon}
+    logo={Logo}
+    siteTitle="Hello"
+  />
 );
 
 const SearchDrawer = () => {

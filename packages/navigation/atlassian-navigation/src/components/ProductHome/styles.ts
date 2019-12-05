@@ -1,3 +1,4 @@
+import { CSSObject } from '@emotion/core';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { PRODUCT_HOME_BREAKPOINT } from '../../common/constants';
 import { skeletonCSS } from '../../common/styles';
@@ -5,15 +6,20 @@ import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-export const containerCSS = ({ mode: { productHome } }: NavigationTheme) => {
+export const containerCSS = ({
+  mode: { productHome },
+}: NavigationTheme): CSSObject => {
   return {
     alignItems: 'center',
-    padding: 0,
+    padding: gridSize / 2,
+    borderRadius: 3,
+    border: 0,
     background: 'none',
     display: 'flex',
-    ':hover': productHome.hover,
-    ':focus': productHome.focus,
-    ':active': productHome.active,
+    cursor: 'pointer',
+    '&:hover': productHome.hover,
+    '&:focus': productHome.focus,
+    '&:active': productHome.active,
     'div&': {
       pointerEvents: 'none',
     },
@@ -28,10 +34,10 @@ export const containerCSS = ({ mode: { productHome } }: NavigationTheme) => {
 
 export const containerSkeletonCSS = containerCSS;
 
-const height = 40;
+const maxHeight = 40;
 
 const heightCSS = {
-  height: `${height}px`,
+  maxHeight: `${maxHeight}px`,
 };
 
 export const productIconCSS = {
