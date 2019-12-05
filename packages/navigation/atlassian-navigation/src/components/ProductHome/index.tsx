@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Fragment } from 'react';
+import { Fragment, MouseEvent } from 'react';
 import { useTheme } from '../../theme';
 import {
   containerCSS,
@@ -30,6 +30,8 @@ export const ProductHome = ({
   siteTitle,
   onClick,
   href,
+  onMouseDown,
+  ...rest
 }: ProductHomeProps) => {
   const theme = useTheme();
   const {
@@ -41,9 +43,20 @@ export const ProductHome = ({
 
   const Tag = getTag(onClick, href);
 
+  const preventFocusRing = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    onMouseDown && onMouseDown(e);
+  };
+
   return (
     <Fragment>
-      <Tag css={containerCSS(theme)} href={href} onClick={onClick}>
+      <Tag
+        css={containerCSS(theme)}
+        href={href}
+        onClick={onClick}
+        onMouseDown={preventFocusRing}
+        {...rest}
+      >
         <div css={productLogoCSS}>
           <Logo
             gradientStart={gradientStart}
@@ -74,15 +87,31 @@ export const CustomProductHome = (props: CustomProductHomeProps) => {
     href,
     onClick,
     siteTitle,
+    onMouseDown,
+    ...rest
   } = props;
   const theme = useTheme();
   const Tag = getTag(onClick, href);
+  const preventFocusRing = e => {
+    e.preventDefault();
+    onMouseDown(e);
+  };
 
   return (
     <Fragment>
-      <Tag href={href} css={containerCSS(theme)} onClick={onClick}>
-        <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
-        <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
+      <Tag
+        href={href}
+        css={containerCSS(theme)}
+        onClick={onClick}
+        onMouseDown={preventFocusRing}
+        {...rest}
+      >
+        {logoUrl && (
+          <img css={customProductLogoCSS} src={logoUrl} alt={logoAlt} />
+        )}
+        {iconUrl && (
+          <img css={customProductIconCSS} src={iconUrl} alt={iconAlt} />
+        )}
       </Tag>
       {siteTitle && <div css={siteTitleCSS(theme)}>{siteTitle}</div>}
     </Fragment>

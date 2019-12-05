@@ -14,25 +14,52 @@ import {
 } from '@atlaskit/logo';
 import React from 'react';
 
-import { CustomProductHome, ProductHome } from '../../src';
+import { CustomProductHome, ProductHome, atlassianTheme } from '../../src';
 
 import atlassianIconUrl from './assets/atlassian-icon.png';
 import atlassianLogoUrl from './assets/atlassian-logo.png';
 
+const Icon = ({ icon: Icon }: { icon: React.ComponentType<any> }) => {
+  const {
+    mode: { productHome },
+  } = atlassianTheme;
+  return (
+    <Icon
+      iconGradientStart={productHome.gradientStart}
+      iconGradientStop={productHome.gradientStop}
+      iconColor={productHome.iconColor}
+      textColor={productHome.color}
+    />
+  );
+};
+
+const Logo = ({ logo: Logo }: { logo: React.ComponentType<any> }) => {
+  const {
+    mode: { productHome },
+  } = atlassianTheme;
+  return (
+    <Logo
+      iconGradientStart={productHome.gradientStart}
+      iconGradientStop={productHome.gradientStop}
+      iconColor={productHome.iconColor}
+      textColor={productHome.color}
+    />
+  );
+};
 export const BitbucketProductHome = () => (
   <ProductHome
     onClick={console.log}
     siteTitle="Extranet"
-    icon={BitbucketIcon}
-    logo={BitbucketLogo}
+    icon={() => <Icon icon={BitbucketIcon} />}
+    logo={() => <Logo logo={BitbucketLogo} />}
   />
 );
 
 export const ConfluenceProductHome = () => (
   <ProductHome
     siteTitle="Extranet"
-    icon={ConfluenceIcon}
-    logo={ConfluenceLogo}
+    icon={() => <Icon icon={ConfluenceIcon} />}
+    logo={() => <Logo logo={ConfluenceLogo} />}
     href="#"
   />
 );
@@ -41,16 +68,16 @@ export const JiraProductHome = () => (
   <ProductHome
     onClick={console.log}
     siteTitle="Extranet"
-    icon={JiraIcon}
-    logo={JiraLogo}
+    icon={() => <Icon icon={JiraIcon} />}
+    logo={() => <Logo logo={JiraLogo} />}
   />
 );
 
 export const JiraServiceDeskProductHome = () => (
   <ProductHome
     siteTitle="Extranet"
-    icon={JiraServiceDeskIcon}
-    logo={JiraServiceDeskLogo}
+    icon={() => <Icon icon={JiraServiceDeskIcon} />}
+    logo={() => <Logo logo={JiraServiceDeskLogo} />}
     href="#"
   />
 );
@@ -58,8 +85,8 @@ export const JiraServiceDeskProductHome = () => (
 export const JiraSoftwareProductHome = () => (
   <ProductHome
     siteTitle="Extranet"
-    icon={JiraSoftwareIcon}
-    logo={JiraSoftwareLogo}
+    icon={() => <Icon icon={JiraSoftwareIcon} />}
+    logo={() => <Logo logo={JiraSoftwareLogo} />}
     href="#"
   />
 );
@@ -68,8 +95,8 @@ export const OpsGenieProductHome = () => (
   <ProductHome
     siteTitle="Extranet"
     onClick={console.log}
-    icon={OpsGenieIcon}
-    logo={OpsGenieLogo}
+    icon={() => <Icon icon={OpsGenieIcon} />}
+    logo={() => <Logo logo={OpsGenieLogo} />}
   />
 );
 
@@ -79,8 +106,8 @@ export const DefaultCustomProductHome = () => (
   <CustomProductHome
     href="#"
     siteTitle="Extranet"
-    // iconAlt="Custom icon"
-    // iconUrl={atlassianIconUrl}
+    iconAlt="Custom icon"
+    iconUrl={atlassianIconUrl}
     logoAlt="Custom logo"
     logoUrl={atlassianLogoUrl}
   />

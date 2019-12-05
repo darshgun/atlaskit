@@ -84,7 +84,6 @@ const defaultTheme: { mode: Mode } = {
         color: N600,
         backgroundColor: '',
         boxShadow: `0 0 0 2px ${B200}`,
-        outline: 0,
       },
       hover: {
         color: B400,

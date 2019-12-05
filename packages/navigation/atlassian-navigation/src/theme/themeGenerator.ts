@@ -13,7 +13,7 @@ type Colors = {
   highlightColor: string;
 };
 
-type ButtonType = 'create' | 'iconButton' | 'primaryButton';
+type ButtonType = 'create' | 'iconButton' | 'primaryButton' | 'productHome';
 const generateButtonCSSStates = (
   colors: Colors,
   buttonType: ButtonType,
@@ -93,6 +93,7 @@ export const generateTheme = (
         color,
         backgroundColor: highlightColor,
         borderRight: `1px solid ${hexToRGBA(color, 0.5)}`,
+        ...generateButtonCSSStates(colors, 'productHome'),
       },
       search: {
         default: {

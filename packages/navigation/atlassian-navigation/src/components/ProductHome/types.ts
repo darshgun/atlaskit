@@ -17,6 +17,8 @@ export type ProductHomeProps = {
   }>;
   /** Optional onClick handler */
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  /** Optional mouseDown handler */
+  onMouseDown?: (event: MouseEvent<HTMLElement>) => void;
   /** Href to be passed to product home */
   href?: string;
   /** Name of the site that appears next to the logo **/
@@ -30,6 +32,8 @@ export type CustomProductHomeProps = {
   logoUrl: string;
   /** Optional onClick handler */
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  /** Optional mouseDown handler */
+  onMouseDown?: (event: MouseEvent<HTMLElement>) => void;
   /** Href to be passed to product home */
   href?: string;
   /** Name of the site that appears next to the logo **/

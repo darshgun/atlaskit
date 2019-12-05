@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import Drawer from '@atlaskit/drawer';
-import Button from '@atlaskit/button';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import { JiraIcon, JiraLogo } from '@atlaskit/logo';
 import Popup from '@atlaskit/popup';
@@ -51,7 +50,6 @@ const Logo = () => {
       iconGradientStop={productHome.gradientStop}
       iconColor={productHome.iconColor}
       textColor={productHome.color}
-      size="small"
     />
   );
 };

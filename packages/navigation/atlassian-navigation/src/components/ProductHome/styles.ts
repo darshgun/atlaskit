@@ -17,8 +17,12 @@ export const containerCSS = ({
     background: 'none',
     display: 'flex',
     cursor: 'pointer',
+    color: 'inherit',
+    '&::-moz-focus-inner': {
+      border: 0,
+    },
     '&:hover': productHome.hover,
-    '&:focus': productHome.focus,
+    '&:focus': { ...(productHome.focus as CSSObject), outline: 0 },
     '&:active': productHome.active,
     'div&': {
       pointerEvents: 'none',
@@ -34,10 +38,10 @@ export const containerCSS = ({
 
 export const containerSkeletonCSS = containerCSS;
 
-const maxHeight = 40;
+const iconHeight = 28;
 
 const heightCSS = {
-  maxHeight: `${maxHeight}px`,
+  maxHeight: `${iconHeight}px`,
 };
 
 export const productIconCSS = {
@@ -45,13 +49,12 @@ export const productIconCSS = {
   // productHome is aligned correctly
   '& > *': {
     display: 'flex',
+    height: `${iconHeight}px`,
   },
   [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
     display: 'none',
   },
 };
-
-const iconHeight = 28;
 
 export const productIconSkeletonCSS = (theme: NavigationTheme) => ({
   borderRadius: '50%',
@@ -71,9 +74,15 @@ export const productLogoCSS = {
   // productHome is aligned correctly
   '& > *': {
     display: 'flex',
+    height: `${iconHeight}px`,
   },
   [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
     display: 'none',
+  },
+  // Continue to display custom logo
+  // if custom icon is missing.
+  '&:only-child': {
+    display: 'flex',
   },
 };
 
@@ -101,7 +110,7 @@ export const siteTitleSkeletonCSS = (theme: NavigationTheme) => ({
   '&:after': {
     content: '""',
     width: '100%',
-    height: height / 2,
+    height: iconHeight / 2,
     backgroundColor: theme.mode.skeleton.backgroundColor,
     borderRadius: 4,
   },
