@@ -3,13 +3,16 @@ import { render, act } from '@testing-library/react';
 import ExitingPersistence, {
   useExitingPersistence,
 } from '../../../entering/exiting-persistence';
+import KeyframesMotion from '../../../entering/keyframes-motion';
 import { isReducedMotion } from '../../../utils/accessibility';
 
 jest.mock('../../../utils/accessibility');
 
-const Motion = (props: { id: string; color?: string }) => {
+const Motion = (props: { id: string; color?: string; onRender?: Function }) => {
   const exiting = useExitingPersistence();
   useEffect(() => {
+    props.onRender && props.onRender();
+
     const id = setTimeout(
       () => exiting.isExiting && exiting.onFinish && exiting.onFinish(),
       100,
@@ -464,5 +467,146 @@ describe('<ExitingPersistence />', () => {
     act(() => jest.runAllTimers());
 
     expect(getByTestId('element2')).toBeDefined();
+  });
+
+  it('should re-render once', () => {
+    const onRender = jest.fn();
+    const { rerender } = render(
+      <ExitingPersistence>
+        <Motion id="target" onRender={onRender} />
+      </ExitingPersistence>,
+    );
+
+    rerender(
+      <ExitingPersistence>
+        <Motion id="target" onRender={onRender} />
+      </ExitingPersistence>,
+    );
+
+    // Once for initial render, twice for rerender
+    expect(onRender).toHaveBeenCalledTimes(2);
+  });
+
+  it('should re-render non-exiting element once', () => {
+    jest.useFakeTimers();
+    const onRender = jest.fn();
+    const { rerender } = render(
+      <ExitingPersistence>
+        <Motion id="persisted" onRender={onRender} />
+        <Motion id="target" />
+      </ExitingPersistence>,
+    );
+
+    rerender(
+      <ExitingPersistence>
+        <Motion id="persisted" onRender={onRender} />
+        {false}
+      </ExitingPersistence>,
+    );
+    act(() => jest.runAllTimers());
+
+    // Once for initial render, twice for rerender
+    expect(onRender).toHaveBeenCalledTimes(2);
+  });
+
+  it('should allow child motions to appear on initial mount', () => {
+    const { getByTestId } = render(
+      <ExitingPersistence appear>
+        <KeyframesMotion
+          enteringAnimation={{}}
+          animationTimingFunction={() => 'linear'}
+          duration={100}
+        >
+          {props => <div {...props} data-testid="target" />}
+        </KeyframesMotion>
+      </ExitingPersistence>,
+    );
+
+    expect(getByTestId('target')).toHaveStyleDeclaration(
+      'animation-duration',
+      '100ms',
+    );
+  });
+
+  it('should immediately show child motions on initial mount', () => {
+    const { getByTestId } = render(
+      <ExitingPersistence>
+        <KeyframesMotion
+          enteringAnimation={{}}
+          animationTimingFunction={() => 'linear'}
+          duration={100}
+        >
+          {props => <div {...props} data-testid="target" />}
+        </KeyframesMotion>
+      </ExitingPersistence>,
+    );
+
+    expect(getByTestId('target')).toHaveStyleDeclaration(
+      'animation-duration',
+      '0ms',
+    );
+  });
+
+  it('should have child elements appear after the initial mount when initial mount was immediate', () => {
+    const { getByTestId, rerender } = render(
+      <ExitingPersistence>{false}</ExitingPersistence>,
+    );
+
+    rerender(
+      <ExitingPersistence>
+        <KeyframesMotion
+          enteringAnimation={{}}
+          animationTimingFunction={() => 'linear'}
+          duration={100}
+        >
+          {props => <div {...props} data-testid="target" />}
+        </KeyframesMotion>
+      </ExitingPersistence>,
+    );
+
+    expect(getByTestId('target')).toHaveStyleDeclaration(
+      'animation-duration',
+      '100ms',
+    );
+  });
+
+  it('should have child elements appear after the initial mount when initial mount they appeared', () => {
+    const { getByTestId, rerender } = render(
+      <ExitingPersistence appear>{false}</ExitingPersistence>,
+    );
+
+    rerender(
+      <ExitingPersistence appear>
+        <KeyframesMotion
+          enteringAnimation={{}}
+          animationTimingFunction={() => 'linear'}
+          duration={100}
+        >
+          {props => <div {...props} data-testid="target" />}
+        </KeyframesMotion>
+      </ExitingPersistence>,
+    );
+
+    expect(getByTestId('target')).toHaveStyleDeclaration(
+      'animation-duration',
+      '100ms',
+    );
+  });
+
+  it('should let motions appear by default outside of a exiting persistence', () => {
+    const { getByTestId } = render(
+      <KeyframesMotion
+        enteringAnimation={{}}
+        animationTimingFunction={() => 'linear'}
+        duration={100}
+      >
+        {props => <div {...props} data-testid="target" />}
+      </KeyframesMotion>,
+    );
+
+    expect(getByTestId('target')).toHaveStyleDeclaration(
+      'animation-duration',
+      '100ms',
+    );
   });
 });
