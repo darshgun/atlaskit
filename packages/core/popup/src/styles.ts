@@ -1,12 +1,12 @@
-import { N0, N40A } from '@atlaskit/theme/colors';
+import { N0, N50A, N60A } from '@atlaskit/theme/colors';
 import { borderRadius, layers } from '@atlaskit/theme/constants';
 
-const shadow = N40A;
+const e200 = `0 4px 8px -2px ${N50A}, 0 0 1px ${N60A};`;
 
 export const popupCSS = {
   backgroundColor: N0,
   borderRadius: `${borderRadius()}px`,
-  boxShadow: `0 0 0 1px ${shadow}, 0 4px 11px ${shadow}`,
+  boxShadow: e200,
   boxSizing: 'border-box',
   display: 'block',
   flex: '1 1 auto',

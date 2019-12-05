@@ -1,4 +1,3 @@
-import Avatar from '@atlaskit/avatar';
 import React from 'react';
 import { Profile } from '../../src';
 
@@ -11,7 +10,7 @@ const onClick = (...args: any[]) => {
 
 export const DefaultProfile = () => (
   <Profile
-    icon={<Avatar src={avatarUrl} />}
+    icon={<img src={avatarUrl} />}
     onClick={onClick}
     tooltip="Your profile and settings"
   />

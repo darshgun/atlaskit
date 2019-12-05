@@ -7,7 +7,6 @@ import {
   N20,
   N40,
   N200,
-  N500,
   N600,
 } from '@atlaskit/theme/colors';
 
@@ -41,7 +40,7 @@ const defaultTheme: { mode: Mode } = {
     },
     iconButton: {
       active: {
-        color: N500,
+        color: B400,
         backgroundColor: hexToRGBA(B50, 0.6),
         boxShadow: '',
       },
@@ -73,7 +72,7 @@ const defaultTheme: { mode: Mode } = {
     },
     primaryButton: {
       active: {
-        color: N600,
+        color: B400,
         backgroundColor: hexToRGBA(B50, 0.7),
         boxShadow: '0 0 0 2px transparent',
       },

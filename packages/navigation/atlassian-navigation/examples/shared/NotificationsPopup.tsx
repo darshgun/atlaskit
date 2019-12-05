@@ -75,6 +75,7 @@ export const NotificationsPopup = () => {
           badge={NotificationsBadge}
           onClick={onClick}
           tooltip={`Notifications (${buttonLabel})`}
+          isSelected={isOpen}
           {...triggerProps}
         />
       )}

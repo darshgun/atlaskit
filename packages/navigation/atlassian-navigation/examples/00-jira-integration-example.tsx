@@ -106,7 +106,7 @@ const SettingsDrawer = () => {
   return (
     <ThemeProvider theme={_itemTheme}>
       <Fragment>
-        <Settings onClick={onClick} tooltip="Settings" />
+        <Settings isSelected={isOpen} onClick={onClick} tooltip="Settings" />
         <Drawer isOpen={isOpen} onClose={onClose}>
           settings drawer
         </Drawer>

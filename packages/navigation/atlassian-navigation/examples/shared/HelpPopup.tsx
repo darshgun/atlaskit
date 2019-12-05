@@ -42,7 +42,12 @@ export const HelpPopup = () => {
       isOpen={isOpen}
       onClose={onClose}
       trigger={triggerProps => (
-        <Help onClick={onClick} tooltip="Help" {...triggerProps} />
+        <Help
+          isSelected={isOpen}
+          onClick={onClick}
+          tooltip="Help"
+          {...triggerProps}
+        />
       )}
     />
   );

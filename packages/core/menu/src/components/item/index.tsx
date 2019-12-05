@@ -15,6 +15,7 @@ import {
   truncateCSS,
   contentCSSWrapper,
 } from './styles';
+
 import {
   ButtonItemProps,
   LinkItemProps,
@@ -22,7 +23,7 @@ import {
   CustomItemProps,
   SkeletonItemProps,
   Width,
-} from './types';
+} from '../types';
 
 export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
   <div css={itemHeadingCSS}>{children}</div>

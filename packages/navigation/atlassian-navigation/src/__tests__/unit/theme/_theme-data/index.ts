@@ -47,7 +47,7 @@ export const themes: Themes = [
       },
       iconButton: {
         active: {
-          color: '#42526E',
+          color: '#0052CC',
           backgroundColor: 'rgba(222, 235, 255, 0.6)',
           boxShadow: '',
         },
@@ -79,7 +79,7 @@ export const themes: Themes = [
       },
       primaryButton: {
         active: {
-          color: '#344563',
+          color: '#0052CC',
           backgroundColor: 'rgba(222, 235, 255, 0.7)',
           boxShadow: '0 0 0 2px transparent',
         },

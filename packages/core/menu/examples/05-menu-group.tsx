@@ -9,7 +9,6 @@ import {
   SkeletonHeadingItem,
 } from '../src';
 
-// Temporarily imported from here until all components are ready.
 import StarIcon from '@atlaskit/icon/glyph/star';
 import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
@@ -25,7 +24,7 @@ export default () => {
         borderRadius: '4px',
       }}
     >
-      <MenuGroup maxHeight={700}>
+      <MenuGroup maxHeight={800}>
         <Section>
           <HeadingItem>Items with elemBefore and elemAfter</HeadingItem>
           <LinkItem
@@ -85,7 +84,7 @@ export default () => {
             Item
           </ButtonItem>
         </Section>
-        <Section>
+        <Section hasSeparator>
           <SkeletonHeadingItem />
           <SkeletonItem hasAvatar />
           <SkeletonItem hasAvatar />

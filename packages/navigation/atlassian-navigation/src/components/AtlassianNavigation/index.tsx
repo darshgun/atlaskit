@@ -46,8 +46,8 @@ export const AtlassianNavigation = (
           <div css={rightCSS}>
             {Search && <Search />}
             {Notifications && <Notifications />}
-            {Settings && <Settings />}
             {Help && <Help />}
+            {Settings && <Settings />}
             {SignIn && <SignIn />}
             {Profile && <Profile />}
           </div>

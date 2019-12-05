@@ -9,8 +9,9 @@ import {
   subtleHeading,
   subtleText,
 } from '@atlaskit/theme/colors';
+import { headingSizes } from '@atlaskit/theme/typography';
 import { CSSObject } from '@emotion/core';
-import { Width } from './types';
+import { Width } from '../types';
 
 const gridSize = gridSizeFn();
 
@@ -44,7 +45,7 @@ const baseItemCSS = (
   isDisabled?: boolean,
   isSelected?: boolean,
 ): CSSObject => ({
-  padding: `${gridSize}px ${gridSize * 1.5}px`,
+  padding: `${gridSize}px ${gridSize * 2.5}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
   display: 'block',
@@ -110,6 +111,7 @@ export const elemAfterCSS = {
 export const descriptionCSS = {
   textAlign: 'left',
   color: subtleText(),
+  marginTop: 5,
   fontSize: fontSizeSmall(),
 } as CSSObject;
 export const contentCSSWrapper = {
@@ -136,16 +138,18 @@ export const customItemCSS = (
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
-  fontSize: fontSizeSmall(),
-  fontWeight: 500,
+  fontSize: headingSizes.h200.size,
+  lineHeight: headingSizes.h200.lineHeight / headingSizes.h200.size,
   color: subtleHeading(),
-  marginLeft: gridSize / 2,
   marginTop: gridSize,
+  marginBottom: 6,
+  padding: `0 ${gridSize * 2.5}px`,
 } as CSSObject;
 
 export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   ...itemHeadingCSS,
-  padding: gridSize / 2,
+  paddingTop: gridSize / 2,
+  paddingBottom: gridSize / 2,
   '&::after': {
     backgroundColor: N20,
     height: gridSize * 1.75,
@@ -209,27 +213,4 @@ export const itemSkeletonCSS = (
     borderRadius: 3,
     flexBasis: width || '100%',
   },
-});
-
-/* Item Group */
-export const menuGroupCSS = (maxHeight?: string | number): CSSObject => ({
-  display: 'flex',
-  flexDirection: 'column',
-  overflow: 'auto',
-  maxHeight,
-});
-
-export const sectionCSS = (
-  isScrollable?: boolean,
-  hasSeparator?: boolean,
-): CSSObject => ({
-  display: 'flex',
-  flexDirection: 'column',
-  ...(isScrollable
-    ? {
-        flexShrink: 1,
-        overflow: 'auto',
-      }
-    : { flexShrink: 0 }),
-  ...(hasSeparator && { borderTop: `1px solid ${N30}` }),
 });
