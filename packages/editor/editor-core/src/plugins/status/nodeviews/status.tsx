@@ -5,14 +5,12 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { Color, Status, StatusStyle } from '@atlaskit/status/element';
 import { borderRadius, colors } from '@atlaskit/theme';
-import { pluginKey } from '../plugin';
 import { ReactNodeView, getPosHandler } from '../../../nodeviews';
 import InlineNodeWrapper, {
   createMobileInlineDomRef,
 } from '../../../ui/InlineNodeWrapper';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { ZeroWidthSpace } from '../../../utils';
-import WithPluginState from '../../../ui/WithPluginState';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { StatusPluginOptions } from '../index';
 
@@ -82,38 +80,26 @@ class StatusContainerView extends React.Component<
   }
 
   render() {
-    const { eventDispatcher, view } = this.props;
+    const {
+      text,
+      color,
+      localId,
+      style,
+      intl: { formatMessage },
+    } = this.props;
+
+    const statusText = text ? text : formatMessage(messages.placeholder);
+
     return (
-      <WithPluginState
-        plugins={{
-          pluginState: pluginKey,
-        }}
-        editorView={view}
-        eventDispatcher={eventDispatcher}
-        render={() => {
-          const {
-            text,
-            color,
-            localId,
-            style,
-            intl: { formatMessage },
-          } = this.props;
-
-          const statusText = text ? text : formatMessage(messages.placeholder);
-
-          return (
-            <StyledStatus placeholderStyle={!text}>
-              <Status
-                text={statusText}
-                color={color}
-                localId={localId}
-                style={style}
-                onClick={this.handleClick}
-              />
-            </StyledStatus>
-          );
-        }}
-      />
+      <StyledStatus placeholderStyle={!text}>
+        <Status
+          text={statusText}
+          color={color}
+          localId={localId}
+          style={style}
+          onClick={this.handleClick}
+        />
+      </StyledStatus>
     );
   }
 
