@@ -21,7 +21,6 @@ describe('generateTheme', () => {
       Object.keys(theme).forEach(component => {
         it(`should match theme object for "${component}"`, () => {
           const componentTheme = theme[component as Component];
-
           expect(Object.keys(componentTheme)).toEqual(
             Object.keys(themes[i].mode[component as Component]),
           );

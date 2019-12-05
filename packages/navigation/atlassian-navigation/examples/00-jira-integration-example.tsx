@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import Drawer from '@atlaskit/drawer';
-import Button from '@atlaskit/button';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import { JiraIcon, JiraLogo } from '@atlaskit/logo';
 import Popup from '@atlaskit/popup';
@@ -32,17 +31,11 @@ const Icon = () => {
     mode: { productHome },
   } = atlassianTheme;
   return (
-    <Button
-      appearance="subtle-link"
-      href="#"
-      iconBefore={
-        <JiraIcon
-          iconGradientStart={productHome.gradientStart}
-          iconGradientStop={productHome.gradientStop}
-          iconColor={productHome.iconColor}
-          textColor={productHome.color}
-        />
-      }
+    <JiraIcon
+      iconGradientStart={productHome.gradientStart}
+      iconGradientStop={productHome.gradientStop}
+      iconColor={productHome.iconColor}
+      textColor={productHome.color}
     />
   );
 };
@@ -52,23 +45,22 @@ const Logo = () => {
     mode: { productHome },
   } = atlassianTheme;
   return (
-    <Button
-      appearance="subtle-link"
-      href="#"
-      iconBefore={
-        <JiraLogo
-          iconGradientStart={productHome.gradientStart}
-          iconGradientStop={productHome.gradientStop}
-          iconColor={productHome.iconColor}
-          textColor={productHome.color}
-        />
-      }
+    <JiraLogo
+      iconGradientStart={productHome.gradientStart}
+      iconGradientStop={productHome.gradientStop}
+      iconColor={productHome.iconColor}
+      textColor={productHome.color}
     />
   );
 };
 
 const ProductHomeExample = () => (
-  <ProductHome icon={Icon} logo={Logo} siteTitle="Hello" />
+  <ProductHome
+    onClick={console.log}
+    icon={Icon}
+    logo={Logo}
+    siteTitle="Hello"
+  />
 );
 
 const SearchDrawer = () => {

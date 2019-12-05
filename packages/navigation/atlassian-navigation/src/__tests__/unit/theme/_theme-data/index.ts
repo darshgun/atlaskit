@@ -76,6 +76,32 @@ export const themes: Themes = [
         gradientStart: '#0052CC',
         gradientStop: '#2684FF',
         iconColor: '#2684FF',
+        active: {
+          backgroundColor: 'rgba(222, 235, 255, 0.7)',
+          color: '#0052CC',
+          boxShadow: '0 0 0 2px transparent',
+        },
+        default: {
+          color: '#344563',
+          backgroundColor: 'transparent',
+          boxShadow: '0 0 0 2px transparent',
+        },
+        focus: {
+          color: '#344563',
+          backgroundColor: '',
+          boxShadow: '0 0 0 2px #2684FF',
+        },
+        hover: {
+          color: '#0052CC',
+          backgroundColor: 'rgba(222, 235, 255, 0.9)',
+          boxShadow: '0 0 0 2px transparent',
+        },
+        selected: {
+          color: '#0052CC',
+          backgroundColor: '',
+          boxShadow: '',
+          bordorBottom: '4px solid #0052CC',
+        },
       },
       primaryButton: {
         active: {
@@ -209,6 +235,31 @@ export const themes: Themes = [
         color: '#000000',
         backgroundColor: '#333333',
         borderRight: '1px solid rgba(0, 0, 0, 0.5)',
+        active: {
+          backgroundColor: 'rgba(159, 150, 152, 0.3)',
+          boxShadow: '0 0 0 2px transparent',
+          color: '#000000',
+        },
+        default: {
+          backgroundColor: '#E8CBD2',
+          boxShadow: '0 0 0 2px transparent',
+          color: '#000000',
+        },
+        focus: {
+          boxShadow: '0 0 0 2px rgba(51, 51, 51, 0.5)',
+          color: '#000000',
+          backgroundColor: '#E8CBD2',
+        },
+        hover: {
+          backgroundColor: 'rgba(138, 135, 136, 0.3)',
+          boxShadow: '0 0 0 2px transparent',
+          color: '#000000',
+        },
+        selected: {
+          color: '#333333',
+          backgroundColor: '#E8CBD2',
+          boxShadow: '0 0 0 2px transparent',
+        },
       },
       search: {
         default: {
@@ -309,6 +360,31 @@ export const themes: Themes = [
         color: '#ffffff',
         backgroundColor: '#E94E34',
         borderRight: '1px solid rgba(255, 255, 255, 0.5)',
+        active: {
+          backgroundColor: 'rgba(101, 101, 101, 0.6)',
+          boxShadow: '0 0 0 2px transparent',
+          color: '#ffffff',
+        },
+        default: {
+          backgroundColor: '#272727',
+          boxShadow: '0 0 0 2px transparent',
+          color: '#ffffff',
+        },
+        focus: {
+          boxShadow: '0 0 0 2px rgba(233, 78, 52, 0.5)',
+          color: '#ffffff',
+          backgroundColor: '#272727',
+        },
+        hover: {
+          backgroundColor: 'rgba(119, 119, 119, 0.6)',
+          boxShadow: '0 0 0 2px transparent',
+          color: '#ffffff',
+        },
+        selected: {
+          color: '#E94E34',
+          backgroundColor: '#272727',
+          boxShadow: '0 0 0 2px transparent',
+        },
       },
       search: {
         default: {

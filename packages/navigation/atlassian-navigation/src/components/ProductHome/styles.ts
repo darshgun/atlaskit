@@ -1,3 +1,4 @@
+import { CSSObject } from '@emotion/core';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { PRODUCT_HOME_BREAKPOINT } from '../../common/constants';
 import { skeletonCSS } from '../../common/styles';
@@ -5,23 +6,42 @@ import { NavigationTheme } from '../../theme';
 
 const gridSize = gridSizeFn();
 
-export const containerCSS = {
-  alignItems: 'center',
-  display: 'flex',
-  [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
-    margin: `0 ${gridSize}px`,
-  },
-  [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
-    margin: `0 ${gridSize * 2}px`,
-  },
+export const containerCSS = ({
+  mode: { productHome },
+}: NavigationTheme): CSSObject => {
+  return {
+    alignItems: 'center',
+    padding: gridSize / 2,
+    borderRadius: 3,
+    border: 0,
+    background: 'none',
+    display: 'flex',
+    cursor: 'pointer',
+    color: 'inherit',
+    '&::-moz-focus-inner': {
+      border: 0,
+    },
+    '&:hover': productHome.hover,
+    '&:focus': { ...(productHome.focus as CSSObject), outline: 0 },
+    '&:active': productHome.active,
+    'div&': {
+      pointerEvents: 'none',
+    },
+    [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
+      margin: `0 ${gridSize}px`,
+    },
+    [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
+      margin: `0 ${gridSize * 2}px`,
+    },
+  };
 };
 
 export const containerSkeletonCSS = containerCSS;
 
-const height = 40;
+const iconHeight = 28;
 
 const heightCSS = {
-  height: `${height}px`,
+  maxHeight: `${iconHeight}px`,
 };
 
 export const productIconCSS = {
@@ -29,13 +49,12 @@ export const productIconCSS = {
   // productHome is aligned correctly
   '& > *': {
     display: 'flex',
+    height: `${iconHeight}px`,
   },
   [`@media (min-width: ${PRODUCT_HOME_BREAKPOINT}px)`]: {
     display: 'none',
   },
 };
-
-const iconHeight = 28;
 
 export const productIconSkeletonCSS = (theme: NavigationTheme) => ({
   borderRadius: '50%',
@@ -55,9 +74,15 @@ export const productLogoCSS = {
   // productHome is aligned correctly
   '& > *': {
     display: 'flex',
+    height: `${iconHeight}px`,
   },
   [`@media (max-width: ${PRODUCT_HOME_BREAKPOINT - 1}px)`]: {
     display: 'none',
+  },
+  // Continue to display custom logo
+  // if custom icon is missing.
+  '&:only-child': {
+    display: 'flex',
   },
 };
 
@@ -85,7 +110,7 @@ export const siteTitleSkeletonCSS = (theme: NavigationTheme) => ({
   '&:after': {
     content: '""',
     width: '100%',
-    height: height / 2,
+    height: iconHeight / 2,
     backgroundColor: theme.mode.skeleton.backgroundColor,
     borderRadius: 4,
   },
