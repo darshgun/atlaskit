@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from 'react';
 import Popup from '@atlaskit/popup';
-import Avatar from '@atlaskit/avatar';
 import { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 
 import { Profile } from '../../src';
@@ -11,7 +10,7 @@ const onClick = (...args: any[]) => {
 
 export const DefaultProfile = () => (
   <Profile
-    icon={<Avatar src={avatarUrl} />}
+    icon={<img src={avatarUrl} />}
     onClick={onClick}
     tooltip="Your profile and settings"
   />
