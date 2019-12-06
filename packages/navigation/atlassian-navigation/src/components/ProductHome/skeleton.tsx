@@ -19,7 +19,7 @@ export const ProductHomeSkeleton = ({
 
   return (
     <Fragment>
-      <div css={containerSkeletonCSS}>
+      <div css={containerSkeletonCSS(theme)}>
         <div css={productLogoSkeletonCSS(theme)} />
         <div css={productIconSkeletonCSS(theme)} />
       </div>
