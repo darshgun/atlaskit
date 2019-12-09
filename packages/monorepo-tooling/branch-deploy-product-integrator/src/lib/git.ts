@@ -28,6 +28,38 @@ export async function commitAndPush(
   return true;
 }
 
+export async function mergeAndReApply(
+  git: SimpleGit,
+  branchName: string,
+  files: string[],
+) {
+  let mergeError;
+  try {
+    await git.merge([`${branchName}`]);
+  } catch (error) {
+    // Conflicts or another type of error
+    mergeError = error;
+  }
+
+  if (mergeError != null) {
+    const status = await git.status();
+    const conflicts = status.conflicted;
+    if (conflicts.length === 0) {
+      // If we have no conflicts, the merge failed for another reason
+      throw mergeError;
+    }
+    if (conflicts.some(c => !files.includes(c))) {
+      throw new Error(`Found conflicts other than ${files}. Cannot proceed`);
+    }
+
+    await git.checkout(['--theirs', ...files]);
+    await git.add(files);
+
+    // --no-edit uses the default commit message
+    await git.commit([], undefined, { '--no-edit': true });
+  }
+}
+
 export async function checkoutOrCreate(git: SimpleGit, branchName: string) {
   let branchExists;
 

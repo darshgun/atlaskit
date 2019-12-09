@@ -10,7 +10,12 @@ import installFromCommit from '@atlaskit/branch-installer';
 
 import fetch from 'node-fetch';
 import { triggerProductBuild } from '../lib/ci';
-import { commitAndPush, checkoutOrCreate, isInsideRepo } from '../lib/git';
+import {
+  commitAndPush,
+  checkoutOrCreate,
+  isInsideRepo,
+  mergeAndReApply,
+} from '../lib/git';
 import { ValidationError, ErrorType } from '../types';
 
 const exec = util.promisify(childProcess.exec);
@@ -139,6 +144,7 @@ export async function push(
   }
 
   await checkoutOrCreate(git, branchName);
+  await mergeAndReApply(git, 'master', ['package.json', 'yarn.lock']);
 
   console.log(`Installing packages branch deployed from ${atlaskitCommitHash}`);
   await installFromCommit(atlaskitCommitHash, {
