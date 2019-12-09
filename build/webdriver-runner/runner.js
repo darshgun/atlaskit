@@ -27,6 +27,11 @@ if (isBrowserStack) {
   clients = setupClients.setLocalClients();
 }
 
+const displayBrowserName = browserName =>
+  browserName === 'ie'
+    ? browserName.toUpperCase()
+    : browserName.replace(/^\w/, cb => cb.toUpperCase());
+
 const launchClient = client => {
   if (client && client.driver && client.driver.sessionId) {
     return client.driver;
@@ -97,7 +102,7 @@ function BrowserTestCase(
       }
 
       // eslint-disable-next-line no-loop-func
-      describe(client.browserName, () => {
+      describe(displayBrowserName(client.browserName), () => {
         test.concurrent(testCase, async () => {
           // We need to wait for the driver be
           // ready to start
