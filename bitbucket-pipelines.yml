@@ -492,7 +492,7 @@ pipelines:
       - step:
           name: Clearing old cache
           script:
-            - ([[ "$BITBUCKET_BRANCH" == "master" ]]) || (echo "This build should only be run on master" && exit 1)
+            - ([ "$BITBUCKET_BRANCH" == "master" -o "$BITBUCKET_BRANCH" == "develop" ]) || (echo "This build should only be run on master or develop" && exit 1)
             - cd build/ci-scripts
             - bolt install --frozen-lockfile
             - node clear.pipelines.node.cache.js
@@ -627,7 +627,7 @@ pipelines:
             # Validate packages will produce false positives and is for manual analysis so we always return true
             - yarn validate-packages || true
 
-# For branches like develop, we need to merge master daily.
+    # For branches like develop, we need to merge master daily.
     merge-master:
       - step:
           name: Merges master into the target branch
