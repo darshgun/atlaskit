@@ -35,7 +35,7 @@ export async function mergeAndReApply(
 ) {
   let mergeError;
   try {
-    await git.merge([`${branchName}`]);
+    await git.merge([branchName]);
   } catch (error) {
     // Conflicts or another type of error
     mergeError = error;
@@ -58,6 +58,9 @@ export async function mergeAndReApply(
     // --no-edit uses the default commit message
     await git.commit([], undefined, { '--no-edit': true });
   }
+
+  // Reset the files to their version on branchName
+  await git.checkout([branchName, '--', ...files]);
 }
 
 export async function checkoutOrCreate(git: SimpleGit, branchName: string) {
