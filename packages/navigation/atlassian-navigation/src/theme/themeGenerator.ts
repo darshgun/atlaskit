@@ -105,7 +105,7 @@ export const generateTheme = (
           borderColor: hexToRGBA(highlightColor, 0.8),
         },
       },
-      skeleton: { backgroundColor: color, opacity: 0.3 },
+      skeleton: { backgroundColor: color, opacity: 0.08 },
     },
   };
 };
