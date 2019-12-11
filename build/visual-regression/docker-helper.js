@@ -11,7 +11,12 @@ const log = true;
 
 async function startDocker() {
   console.log('starting docker');
-  return compose.upAll({ cwd, log, env: { HOST_IP: ip.address() } });
+  try {
+    compose.upAll({ cwd, log, env: { HOST_IP: ip.address() } });
+  } catch (err) {
+    err.message = `docker-compose up failed. Visit go/ak-vr-setup and join go/ak-build-channel for help.\n${err.message}`;
+    throw err;
+  }
 }
 
 async function stopDocker() {
