@@ -1,30 +1,64 @@
 // @flow
-import {
-  isLatestVersion,
-  getDockerImageProdVersion,
-  getDockerImageLocalVersion,
-} from '../../docker-helper';
+import { isSameVersion, getDockerImageLocalVersion } from '../../docker-helper';
 
-test('The latest image version should always be a string', async () => {
-  const latestVersion = await getDockerImageLocalVersion();
-  expect(latestVersion).toBeDefined();
-  expect(latestVersion).not.toBe('<none>');
-  expect(typeof latestVersion).toBe('string');
+let mockImages = `REPOSITORY    TAG    IMAGE ID    CREATED    SIZE`;
+
+jest.mock('child_process', () => {
+  return {
+    execSync: jest.fn(command => {
+      if (command === 'docker images') {
+        return mockImages;
+      }
+      return '';
+    }),
+  };
 });
-describe('Delete old docker image', () => {
-  test('should be called when the localVersion is different from the productionVersion', async () => {
-    const isLatest = await isLatestVersion('1.0.12');
-    expect(isLatest).toBe(false);
+
+describe('getDockerImageLocalVersion', () => {
+  test('returns undefined for empty image list', async () => {
+    const latestVersion = await getDockerImageLocalVersion();
+    expect(latestVersion).toBeUndefined();
   });
-  test('should not be called when the localVersion is the same as the productionVersion', async () => {
-    const prodVersion = getDockerImageProdVersion();
-    const isLatest = await isLatestVersion(prodVersion);
-    expect(isLatest).toBe(true);
+
+  test('returns tag of atlassianlabs/atlaskit-mk-2-vr image', async () => {
+    mockImages = `
+      REPOSITORY                      TAG      IMAGE ID      CREATED       SIZE
+      atlassianlabs/atlaskit-mk-2-vr  1.33.7  b98b50bdcd9a   2 months ago  861MB
+    `;
+    const latestVersion = await getDockerImageLocalVersion();
+    expect(latestVersion).toBe('1.33.7');
   });
-  test('should not be called when the localVersion is undefined', async () => {
-    const localVersion = undefined;
-    // $FlowFixMe - localVersion cannot be undefined but we are testing an edge case
-    const isLatest = await isLatestVersion(localVersion);
-    expect(isLatest).toBe(false);
+
+  test('returns tag of latest atlassianlabs/atlaskit-mk-2-vr image', async () => {
+    mockImages = `
+      REPOSITORY                       TAG      IMAGE ID      CREATED       SIZE
+      atlassianlabs/atlaskit-mk-2-vr   1.33.7   b98b50bdcd9a  2 months ago  861MB
+      atlassianlabs/atlaskit-mk-2-vr   1.33.8   b98b50bdcd9a  2 months ago  861MB
+    `;
+    const latestVersion = await getDockerImageLocalVersion();
+    expect(latestVersion).toBe('1.33.8');
+  });
+
+  test('discards <none> tags', async () => {
+    mockImages = `
+      REPOSITORY                       TAG      IMAGE ID      CREATED       SIZE
+      atlassianlabs/atlaskit-mk-2-vr   <none>   b98b50bdcd9a  2 months ago  861MB
+    `;
+    const latestVersion = await getDockerImageLocalVersion();
+    expect(latestVersion).toBeUndefined();
+  });
+});
+
+describe('isSameVersion', () => {
+  test('returns false for version < production version', async () => {
+    expect(await isSameVersion('99.99.98', '99.99.99')).toBe(false);
+  });
+
+  test('returns true for version === production version', async () => {
+    expect(await isSameVersion('99.99.99', '99.99.99')).toBe(true);
+  });
+
+  test('returns false for undefined version', async () => {
+    expect(await isSameVersion(undefined, '99.99.99')).toBe(false);
   });
 });
