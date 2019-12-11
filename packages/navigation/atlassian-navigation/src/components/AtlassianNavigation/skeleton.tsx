@@ -31,9 +31,9 @@ export const NavigationSkeleton = ({
           />
           <ProductHomeSkeleton showSiteName={showSiteName} />
           <PrimaryItemsContainerSkeleton count={primaryItemsCount} />
+          <CreateSkeleton />
         </div>
         <div css={rightCSS}>
-          <CreateSkeleton />
           <SearchSkeleton />
           {Array.from({ length: secondaryItemsCount }, (_, index) => (
             <IconButtonSkeleton
