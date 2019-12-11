@@ -16,10 +16,7 @@
   "atlaskit": {
     "internal": true,
     "name": "Dependency Version Analytics",
-    "team": "monorepo tooling",
-    "build": {
-      "targets": ["cjs"]
-    }
+    "team": "monorepo tooling"
   },
   "dependencies": {
     "@yarnpkg/lockfile": "^1.1.0",

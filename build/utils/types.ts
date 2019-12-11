@@ -10,8 +10,7 @@ export type PackageInfo = {
   config: PkgJson;
   relativeDir: string;
   isBrowserPackage: boolean;
-  runTypeScriptCjs: boolean;
-  runTypeScriptEsm: boolean;
+  runTypeScriptBuild: boolean;
   runTypecheck: boolean;
   runBabel: boolean;
   runFlow: boolean;
@@ -25,8 +24,7 @@ export type PackageInfo = {
 
 export type Tool =
   | 'typecheck'
-  | 'typescriptcjs'
-  | 'typescriptesm'
+  | 'typescriptbuild'
   | 'babel'
   | 'flow'
   | 'eslint'

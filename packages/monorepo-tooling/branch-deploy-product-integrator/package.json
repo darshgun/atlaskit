@@ -15,10 +15,7 @@
   "atlaskit": {
     "internal": true,
     "name": "Branch deploy product integrator",
-    "team": "AFP",
-    "build": {
-      "targets": ["cjs"]
-    }
+    "team": "AFP"
   },
   "dependencies": {
     "@atlaskit/branch-installer": "^0.3.1",

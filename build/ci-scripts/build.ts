@@ -53,8 +53,8 @@ async function getPkgGlob(
 
 function getDistCommands(
   commands: {
-    cjs: string | null;
-    esm: string | null;
+    cjs: string;
+    esm: string;
   },
   distType: DistType | undefined,
 ): string[] {
@@ -204,9 +204,8 @@ async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
 }
 
 async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
-  const cjsPkgGlob = await getPkgGlob(['typescriptcjs'], pkg, { cwd });
-  const esmPkgGlob = await getPkgGlob(['typescriptesm'], pkg, { cwd });
-  if (!cjsPkgGlob && !esmPkgGlob) {
+  const pkgGlob = await getPkgGlob(['typescriptbuild'], pkg, { cwd });
+  if (!pkgGlob) {
     return [];
   }
   // preserveWatchOutput prevents watch from clearing console output on every change
@@ -223,12 +222,8 @@ async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
    * The CJS builds still require the default bolt topological ordering.
    */
   const commands = {
-    cjs: cjsPkgGlob
-      ? `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${cjsPkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`
-      : null,
-    esm: esmPkgGlob
-      ? `NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "${esmPkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`
-      : null,
+    cjs: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`,
+    esm: `NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
   };
 
   return getDistCommands(commands, distType);
@@ -369,7 +364,7 @@ export default async function main(
   log('Running post-build scripts for packages...');
   await buildExceptionPackages({ pkg, ...options });
   log('Copying version.json...');
-  await copyVersion(fullPackageName, { cwd });
+  await copyVersion(fullPackageName);
   log('Validating dists...');
   await runValidateDists({
     cwd,

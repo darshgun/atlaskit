@@ -1,18 +1,7 @@
 // @flow
 const bolt = require('bolt');
 const path = require('path');
-const get = require('lodash.get');
 const { exists } = require('./fs');
-
-/**
- * Retrieve build targets for a package. We reuse the same tsconfig to build both cjs & esm by default.
- * However, the default behaviour can be overridden by specifying targets in package.json, to only build one target for example.
- */
-function getBuildTargets(pkg) {
-  const defaultTargets = ['cjs', 'esm'];
-
-  return get(pkg.config, 'atlaskit.build.targets', defaultTargets);
-}
 
 async function getPackagesInfo(cwd /*:string*/, opts /*: ?Object */) {
   const project = await bolt.getProject({ cwd });
@@ -50,10 +39,8 @@ async function getPackageInfo(pkg /*: Object */, project /*: Object*/) {
 
   const hasKarmaDep = !!allDependencies.karma;
 
-  const buildTargets = getBuildTargets(pkg);
   const runTypecheck = tsConfigExists;
-  const runTypeScriptCjs = tsBuildConfigExists && buildTargets.includes('cjs');
-  const runTypeScriptEsm = tsBuildConfigExists && buildTargets.includes('esm');
+  const runTypeScriptBuild = tsBuildConfigExists;
 
   const runBabel = srcExists && !runTypecheck && !isWebsitePackage;
   const runFlow = runBabel || isWebsitePackage;
@@ -70,8 +57,7 @@ async function getPackageInfo(pkg /*: Object */, project /*: Object*/) {
     name: pkg.name,
     config: pkg.config,
     relativeDir,
-    runTypeScriptCjs,
-    runTypeScriptEsm,
+    runTypeScriptBuild,
     runTypecheck,
     runBabel,
     runFlow,
@@ -87,8 +73,7 @@ async function getPackageInfo(pkg /*: Object */, project /*: Object*/) {
 
 const TOOL_NAME_TO_FILTERS /*: { [key: string]: (pkg: Object) => boolean } */ = {
   typecheck: pkg => pkg.runTypecheck,
-  typescriptcjs: pkg => pkg.runTypeScriptCjs,
-  typescriptesm: pkg => pkg.runTypeScriptEsm,
+  typescriptbuild: pkg => pkg.runTypeScriptBuild,
   babel: pkg => pkg.runBabel,
   flow: pkg => pkg.runFlow,
   eslint: pkg => pkg.runESLint,
