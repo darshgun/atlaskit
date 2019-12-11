@@ -193,15 +193,17 @@ export function ruleWithAnalytics(
   };
 }
 
-export type FireAnalyticsEvent = (
-  createAnalyticsEvent?: CreateUIAnalyticsEvent | undefined,
-) => ({
+export type FireAnalyticsCallback = ({
   payload,
   channel,
 }: {
   payload: AnalyticsEventPayload;
   channel?: string | undefined;
 }) => void | undefined;
+
+export type FireAnalyticsEvent = (
+  createAnalyticsEvent?: CreateUIAnalyticsEvent | undefined,
+) => FireAnalyticsCallback;
 
 export const fireAnalyticsEvent: FireAnalyticsEvent = createAnalyticsEvent => ({
   payload,

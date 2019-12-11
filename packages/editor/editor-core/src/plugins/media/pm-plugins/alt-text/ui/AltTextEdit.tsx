@@ -15,11 +15,14 @@ import {
   withAnalyticsEvents,
   WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
-import { ALT_TEXT_ACTION } from '../../../../analytics/types/media-events';
 import {
   ACTION_SUBJECT,
   ACTION_SUBJECT_ID,
   EVENT_TYPE,
+  fireAnalyticsEvent,
+  ACTION,
+  MediaAltTextActionType,
+  FireAnalyticsCallback,
 } from '../../../../analytics';
 
 export const CONTAINER_WIDTH_IN_PX = 350;
@@ -63,19 +66,28 @@ const ClearText = styled.span`
 type Props = {
   view: EditorView;
   value?: string;
-};
+} & InjectedIntlProps &
+  WithAnalyticsEventsProps;
 
 export type AltTextEditComponentState = {
   showClearTextButton: boolean;
 };
 
 export class AltTextEditComponent extends React.Component<
-  Props & InjectedIntlProps & WithAnalyticsEventsProps,
+  Props,
   AltTextEditComponentState
 > {
+  private fireCustomAnalytics?: FireAnalyticsCallback;
   state = {
     showClearTextButton: Boolean(this.props.value),
   };
+
+  constructor(props: Props) {
+    super(props);
+
+    const { createAnalyticsEvent } = props;
+    this.fireCustomAnalytics = fireAnalyticsEvent(createAnalyticsEvent);
+  }
 
   prevValue: string | undefined;
 
@@ -84,15 +96,15 @@ export class AltTextEditComponent extends React.Component<
   }
 
   componentWillUnmount() {
-    this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLOSED);
+    this.fireAnalytics(ACTION.CLOSED);
     if (!this.prevValue && this.props.value) {
-      this.fireAnalyticsEvent(ALT_TEXT_ACTION.ADDED);
+      this.fireAnalytics(ACTION.ADDED);
     }
     if (this.prevValue && !this.props.value) {
-      this.fireAnalyticsEvent(ALT_TEXT_ACTION.CLEARED);
+      this.fireAnalytics(ACTION.CLEARED);
     }
     if (this.prevValue && this.prevValue !== this.props.value) {
-      this.fireAnalyticsEvent(ALT_TEXT_ACTION.EDITED);
+      this.fireAnalytics(ACTION.EDITED);
     }
   }
 
@@ -154,16 +166,17 @@ export class AltTextEditComponent extends React.Component<
     closeMediaAltTextMenu(view.state, view.dispatch);
   };
 
-  private fireAnalyticsEvent(actionType: ALT_TEXT_ACTION) {
+  private fireAnalytics(actionType: MediaAltTextActionType) {
     const { createAnalyticsEvent } = this.props;
-    if (createAnalyticsEvent) {
-      const analyticsEvent = createAnalyticsEvent({
-        action: actionType,
-        actionSubject: ACTION_SUBJECT.MEDIA,
-        actionSubjectId: ACTION_SUBJECT_ID.MEDIA,
-        eventType: EVENT_TYPE.UI,
+    if (createAnalyticsEvent && this.fireCustomAnalytics) {
+      this.fireCustomAnalytics({
+        payload: {
+          action: actionType,
+          actionSubject: ACTION_SUBJECT.MEDIA,
+          actionSubjectId: ACTION_SUBJECT_ID.ALT_TEXT,
+          eventType: EVENT_TYPE.TRACK,
+        },
       });
-      analyticsEvent.fire();
     }
   }
 

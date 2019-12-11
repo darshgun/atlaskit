@@ -13,13 +13,12 @@ import {
   EVENT_TYPE,
   TABLE_ACTION,
   ACTION,
-  ALT_TEXT_ACTION,
 } from './types';
 import { fireAnalyticsEvent } from './utils';
 
 export const analyticsStepType = 'atlaskit-analytics';
 
-const actionsToIgnore: (ACTION | TABLE_ACTION | ALT_TEXT_ACTION)[] = [
+const actionsToIgnore: (ACTION | TABLE_ACTION)[] = [
   ACTION.INVOKED,
   ACTION.OPENED,
 ];

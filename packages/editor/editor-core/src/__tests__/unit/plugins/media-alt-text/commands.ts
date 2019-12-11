@@ -15,6 +15,12 @@ import { pluginKey as mediaEditorPluginKey } from '../../../../plugins/media/pm-
 
 import { MediaEditorState } from '../../../../plugins/media/types';
 import {
+  EVENT_TYPE,
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+} from '../../../../plugins/analytics';
+import {
   CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
@@ -128,10 +134,10 @@ describe('commands', () => {
         const { editorView } = editor(defaultDoc);
         openMediaAltTextMenu(editorView.state, editorView.dispatch);
         expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'alttext.opened',
-          actionSubject: 'media',
-          actionSubjectId: 'media',
-          eventType: 'ui',
+          action: ACTION.OPENED,
+          actionSubject: ACTION_SUBJECT.MEDIA,
+          actionSubjectId: ACTION_SUBJECT_ID.ALT_TEXT,
+          eventType: EVENT_TYPE.TRACK,
         });
       });
     });

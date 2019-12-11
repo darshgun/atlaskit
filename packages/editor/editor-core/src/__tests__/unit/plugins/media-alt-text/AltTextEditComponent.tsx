@@ -15,16 +15,20 @@ import AltTextEdit, {
 } from '../../../../plugins/media/pm-plugins/alt-text/ui/AltTextEdit';
 import { InjectedIntl } from 'react-intl';
 import {
-  CreateUIAnalyticsEvent,
-  UIAnalyticsEvent,
-} from '../../../../../../../core/analytics-next/src';
+  EVENT_TYPE,
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+} from '../../../../plugins/analytics';
+import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { ReactWrapper } from 'enzyme';
-let createAnalyticsEvent: CreateUIAnalyticsEvent;
 
 describe('AltTextEditComponent', () => {
+  let createAnalyticsEvent: CreateUIAnalyticsEvent;
+
   beforeEach(() => {
     jest.clearAllMocks();
-    createAnalyticsEvent = jest.fn(() => ({ fire() {} } as UIAnalyticsEvent));
+    createAnalyticsEvent = jest.fn().mockReturnValue({ fire() {} });
   });
   const mockView = jest.fn(
     () =>
@@ -37,10 +41,10 @@ describe('AltTextEditComponent', () => {
 
   describe('fires respective alt text analytics events', () => {
     const defaultMediaEvent = {
-      action: 'alttext.edited',
-      actionSubject: 'media',
-      actionSubjectId: 'media',
-      eventType: 'ui',
+      action: ACTION.EDITED,
+      actionSubject: ACTION_SUBJECT.MEDIA,
+      actionSubjectId: ACTION_SUBJECT_ID.ALT_TEXT,
+      eventType: EVENT_TYPE.TRACK,
     };
 
     function setupWrapper(
@@ -71,7 +75,7 @@ describe('AltTextEditComponent', () => {
       wrapper.unmount();
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.closed',
+        action: ACTION.CLOSED,
       });
     });
 
@@ -83,15 +87,15 @@ describe('AltTextEditComponent', () => {
       wrapper.unmount();
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.cleared',
+        action: ACTION.CLEARED,
       });
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.edited',
+        action: ACTION.EDITED,
       });
       expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.added',
+        action: ACTION.ADDED,
       });
     });
 
@@ -103,15 +107,15 @@ describe('AltTextEditComponent', () => {
       wrapper.unmount();
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.edited',
+        action: ACTION.EDITED,
       });
       expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.cleared',
+        action: ACTION.CLEARED,
       });
       expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.added',
+        action: ACTION.ADDED,
       });
     });
 
@@ -124,15 +128,15 @@ describe('AltTextEditComponent', () => {
       wrapper.unmount();
       expect(createAnalyticsEvent).toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.added',
+        action: ACTION.ADDED,
       });
       expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.edited',
+        action: ACTION.EDITED,
       });
       expect(createAnalyticsEvent).not.toHaveBeenCalledWith({
         ...defaultMediaEvent,
-        action: 'alttext.cleared',
+        action: ACTION.CLEARED,
       });
     });
   });

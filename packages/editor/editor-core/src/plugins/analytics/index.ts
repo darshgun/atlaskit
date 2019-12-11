@@ -17,6 +17,7 @@ export {
   getSelectionType,
   getStateContext,
   ruleWithAnalytics,
+  FireAnalyticsCallback,
 } from './utils';
 
 export const analyticsPluginKey = pluginKey;
