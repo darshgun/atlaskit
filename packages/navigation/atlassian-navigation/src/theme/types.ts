@@ -32,8 +32,8 @@ export type PrimaryButtonCSS = ButtonCSSContext;
 export type NavigationCSS = CSSProperties;
 
 type LogoStyleProps = {
-  gradientStart?: string;
-  gradientStop?: string;
+  iconGradientStart?: string;
+  iconGradientStop?: string;
   iconColor?: string;
   textColor?: string;
 };

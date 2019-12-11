@@ -34,6 +34,7 @@ import {
 } from './StatuspageLogo';
 import { StrideLogo, StrideIcon, StrideWordmark } from './StrideLogo';
 import { TrelloLogo, TrelloIcon, TrelloWordmark } from './TrelloLogo';
+import { Props as LogoProps } from './constants';
 
 export {
   AtlassianLogo,
@@ -72,4 +73,5 @@ export {
   TrelloLogo,
   TrelloIcon,
   TrelloWordmark,
+  LogoProps,
 };

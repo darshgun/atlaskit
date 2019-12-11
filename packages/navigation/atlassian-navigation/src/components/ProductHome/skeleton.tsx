@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { jsx } from '@emotion/core';
 import { useTheme } from '../../theme';
 import {
-  containerSkeletonCSS,
+  productHomeButtonSkeletonCSS,
   productIconSkeletonCSS,
   siteTitleSkeletonCSS,
   productLogoSkeletonCSS,
@@ -19,7 +19,7 @@ export const ProductHomeSkeleton = ({
 
   return (
     <Fragment>
-      <div css={containerSkeletonCSS(theme)}>
+      <div css={productHomeButtonSkeletonCSS(theme)}>
         <div css={productLogoSkeletonCSS(theme)} />
         <div css={productIconSkeletonCSS(theme)} />
       </div>

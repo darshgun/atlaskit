@@ -93,7 +93,6 @@ export const generateTheme = (
         color,
         backgroundColor: highlightColor,
         borderRight: `1px solid ${hexToRGBA(color, 0.5)}`,
-        ...generateButtonCSSStates(colors, 'productHome'),
       },
       search: {
         default: {
@@ -105,7 +104,7 @@ export const generateTheme = (
           borderColor: hexToRGBA(highlightColor, 0.8),
         },
       },
-      skeleton: { backgroundColor: color, opacity: 0.3 },
+      skeleton: { backgroundColor: color, opacity: 0.08 },
     },
   };
 };

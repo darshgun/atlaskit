@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 import { Fragment, MouseEvent } from 'react';
 import { useTheme } from '../../theme';
 import {
-  containerCSS,
+  productHomeButtonCSS,
   customProductIconCSS,
   customProductLogoCSS,
   productIconCSS,
@@ -36,8 +36,8 @@ export const ProductHome = ({
   const theme = useTheme();
   const {
     iconColor = 'inherit',
-    gradientStart = 'inherit',
-    gradientStop = 'inherit',
+    iconGradientStart = 'inherit',
+    iconGradientStop = 'inherit',
     textColor = theme.mode.productHome.color,
   } = theme.mode.productHome;
 
@@ -51,7 +51,7 @@ export const ProductHome = ({
   return (
     <Fragment>
       <Tag
-        css={containerCSS(theme)}
+        css={productHomeButtonCSS(theme)}
         href={href}
         onClick={onClick}
         onMouseDown={preventFocusRing}
@@ -59,16 +59,16 @@ export const ProductHome = ({
       >
         <div css={productLogoCSS}>
           <Logo
-            gradientStart={gradientStart}
-            gradientStop={gradientStop}
+            iconGradientStart={iconGradientStart}
+            iconGradientStop={iconGradientStop}
             iconColor={iconColor}
             textColor={textColor}
           />
         </div>
         <div css={productIconCSS}>
           <Icon
-            gradientStart={gradientStart}
-            gradientStop={gradientStop}
+            iconGradientStart={iconGradientStart}
+            iconGradientStop={iconGradientStop}
             iconColor={iconColor}
           />
         </div>
@@ -102,7 +102,7 @@ export const CustomProductHome = (props: CustomProductHomeProps) => {
     <Fragment>
       <Tag
         href={href}
-        css={containerCSS(theme)}
+        css={productHomeButtonCSS(theme)}
         onClick={onClick}
         onMouseDown={preventFocusRing}
         {...rest}
