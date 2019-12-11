@@ -9,12 +9,16 @@
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Marco J"
+    "Marco J",
+    "Michael B"
   ],
   "atlaskit": {
     "internal": true,
     "name": "Branch deploy product integrator",
-    "team": "AFP"
+    "team": "AFP",
+    "build": {
+      "targets": ["cjs"]
+    }
   },
   "dependencies": {
     "@atlaskit/branch-installer": "^0.3.1",
