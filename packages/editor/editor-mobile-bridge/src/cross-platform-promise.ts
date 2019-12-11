@@ -57,9 +57,13 @@ export function createPromise<T>(
   pendingPromises.set(uuid, holder);
   return {
     submit(): Promise<T> {
-      const serializedArgs =
-        typeof args === 'string' ? args : JSON.stringify(args);
-      toNativeBridge.submitPromise(name, uuid, serializedArgs);
+      if (typeof args === 'undefined') {
+        toNativeBridge.submitPromise(name, uuid);
+      } else {
+        const serializedArgs =
+          typeof args === 'string' ? args : JSON.stringify(args);
+        toNativeBridge.submitPromise(name, uuid, serializedArgs);
+      }
       return holder.promise
         .then(data => {
           pendingPromises.delete(uuid);
