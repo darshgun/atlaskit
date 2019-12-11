@@ -93,7 +93,6 @@ export const generateTheme = (
         color,
         backgroundColor: highlightColor,
         borderRight: `1px solid ${hexToRGBA(color, 0.5)}`,
-        ...generateButtonCSSStates(colors, 'productHome'),
       },
       search: {
         default: {
