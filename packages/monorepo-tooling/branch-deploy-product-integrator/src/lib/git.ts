@@ -28,6 +28,11 @@ export async function commitAndPush(
   return true;
 }
 
+/**
+ * This function merges `branchName` and reapplies `files` to their original state from `branchName`.
+ * If merge conflicts arise and the only conlicts are those in `files`, they will be resolved by resetting
+ * to their state since that will happen regardless.
+ */
 export async function mergeAndReApply(
   git: SimpleGit,
   branchName: string,
@@ -35,13 +40,17 @@ export async function mergeAndReApply(
 ) {
   let mergeError;
   try {
+    console.log(`Merging ${branchName} into current branch`);
     await git.merge([branchName]);
   } catch (error) {
     // Conflicts or another type of error
     mergeError = error;
   }
 
-  if (mergeError != null) {
+  if (mergeError == null) {
+    console.log('Merge succeeded with no conflicts');
+  } else {
+    console.log('Found merge conflicts...attempting to resolve');
     const status = await git.status();
     const conflicts = status.conflicted;
     if (conflicts.length === 0) {
@@ -60,6 +69,7 @@ export async function mergeAndReApply(
   }
 
   // Reset the files to their version on branchName
+  console.log(`Resetting ${files} back to their state on ${branchName}`);
   await git.checkout([branchName, '--', ...files]);
 }
 

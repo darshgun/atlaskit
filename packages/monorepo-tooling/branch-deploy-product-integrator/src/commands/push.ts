@@ -144,6 +144,10 @@ export async function push(
   }
 
   await checkoutOrCreate(git, branchName);
+  /* We merge master so that the branch remains relatively up to date.
+   * We also reset package.json/yarn.lock back to their state on master before running
+   * a branch install to prevent previous branch installs lingering in package.json.
+   */
   await mergeAndReApply(git, 'master', ['package.json', 'yarn.lock']);
 
   console.log(`Installing packages branch deployed from ${atlaskitCommitHash}`);
