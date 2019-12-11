@@ -17,6 +17,7 @@ export const createButtonSkeletonCSS = (theme: NavigationTheme) => ({
   height: `${buttonHeight}px`,
   width: '68px',
   borderRadius: '3px',
+  marginLeft: 12,
   ...createButtonCSS,
   ...skeletonCSS(theme),
 });
