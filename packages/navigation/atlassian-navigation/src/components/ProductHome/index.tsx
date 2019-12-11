@@ -36,8 +36,8 @@ export const ProductHome = ({
   const theme = useTheme();
   const {
     iconColor = 'inherit',
-    gradientStart = 'inherit',
-    gradientStop = 'inherit',
+    iconGradientStart = 'inherit',
+    iconGradientStop = 'inherit',
     textColor = theme.mode.productHome.color,
   } = theme.mode.productHome;
 
@@ -59,16 +59,16 @@ export const ProductHome = ({
       >
         <div css={productLogoCSS}>
           <Logo
-            gradientStart={gradientStart}
-            gradientStop={gradientStop}
+            iconGradientStart={iconGradientStart}
+            iconGradientStop={iconGradientStop}
             iconColor={iconColor}
             textColor={textColor}
           />
         </div>
         <div css={productIconCSS}>
           <Icon
-            gradientStart={gradientStart}
-            gradientStop={gradientStop}
+            iconGradientStart={iconGradientStart}
+            iconGradientStop={iconGradientStop}
             iconColor={iconColor}
           />
         </div>
