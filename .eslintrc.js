@@ -129,6 +129,8 @@ module.exports = {
     // TODO: Might be worth re-enabling it at some stage (or using stricter instead)
     'import/no-cycle': 'off',
 
+    'max-classes-per-file': 'off', // 2159 -
+
     'no-labels': 'off',
     'no-restricted-syntax': 'off',
     'no-underscore-dangle': 'off',
@@ -138,26 +140,38 @@ module.exports = {
 
     'spaced-comment': 'off',
 
+    'no-async-promise-executor': 'off',
     'no-await-in-loop': 'off',
 
     'no-mixed-operators': 'off',
     'no-plusplus': 'off',
 
+    'prefer-object-spread': 'off',
+
     '@wordpress/react-no-unsafe-timeout': 'error',
 
+    'react/button-has-type': 'off',
     'react/sort-comp': 'off',
+    'react/jsx-curly-brace-presence': 'off',
+    'react/jsx-curly-newline': 'off',
     'react/jsx-filename-extension': 'off',
+    'react/jsx-fragments': 'off',
+    'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
     // TODO: https://ecosystem.atlassian.net/browse/AK-6060
     // enable rules after fixing linting issue after upgrade
     'react/destructuring-assignment': 'off',
     'react/default-props-match-prop-types': 'off',
+    'react/no-did-update-set-state': 'off',
     'react/no-unescaped-entities': 'off',
-    'react/button-has-type': 'off',
     'react/no-unused-state': 'off',
     'react/no-access-state-in-setstate': 'off',
+    'react/no-this-in-sfc': 'off',
     'react/prefer-stateless-function': 'off',
-    'jsx-a11y/label-has-for': 'off',
+    'react/require-render-return': 'off',
+    'react/static-property-placement': 'off',
+    'react/state-in-constructor': 'off',
+    'jsx-a11y/control-has-associated-label': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/mouse-events-have-key-events': 'off',
 
@@ -230,6 +244,7 @@ module.exports = {
         '@typescript-eslint/array-type': 'off',
         '@typescript-eslint/explicit-member-accessibility': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
+        '@typescript-eslint/no-empty-function': 'off', // ~108
         '@typescript-eslint/no-empty-interface': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-inferrable-types': 'off',
@@ -262,7 +277,9 @@ module.exports = {
         // disabled temporarily during tslint -> eslint transition
         'import/no-named-as-default': 'off',
         '@typescript-eslint/ban-types': 'off',
+        '@typescript-eslint/ban-ts-ignore': 'off', // ~362
         '@typescript-eslint/camelcase': 'off',
+        '@typescript-eslint/consistent-type-assertions': 'off', // ~20
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-object-literal-type-assertion': 'off',
         '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
@@ -331,6 +348,7 @@ module.exports = {
         'no-lonely-if': 'off',
         'no-loop-func': 'off',
         'no-irregular-whitespace': 'off',
+        'no-misleading-character-class': 'off',
         'no-multi-assign': 'off',
         'no-named-default': 'off',
         'no-nested-ternary': 'off',
@@ -366,7 +384,6 @@ module.exports = {
         'prefer-template': 'off',
         radix: 'off',
         'react/jsx-boolean-value': 'off',
-        'react/jsx-curly-brace-presence': 'off',
         'react/jsx-no-bind': 'off',
         'react/jsx-no-target-blank': 'off',
         'react/no-array-index-key': 'off',
@@ -394,6 +411,8 @@ module.exports = {
       ],
       rules: {
         'no-console': 'off',
+        'max-classes-per-file': 'off',
+        '@typescript-eslint/no-empty-function': 'off',
       },
     },
     {
@@ -423,6 +442,8 @@ module.exports = {
       rules: {
         'global-require': 'off',
         'no-restricted-imports': 'off',
+        'max-classes-per-file': 'off',
+        '@typescript-eslint/no-empty-function': 'off',
       },
     },
     {
