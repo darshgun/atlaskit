@@ -23,7 +23,7 @@ const ThemingExample = () => (
           renderCreate={DefaultCreate}
           renderHelp={HelpPopup}
           renderNotifications={NotificationsPopup}
-          renderProductHome={DefaultProductHome}
+          renderProductHome={() => <DefaultProductHome theme={theme} />}
           renderProfile={ProfilePopup}
           renderSearch={DefaultSearch}
           renderSettings={DefaultSettings}

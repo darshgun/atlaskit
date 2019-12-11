@@ -69,32 +69,6 @@ const defaultTheme: { mode: Mode } = {
       gradientStart: B400,
       gradientStop: B200,
       iconColor: B200,
-      active: {
-        color: B400,
-        backgroundColor: hexToRGBA(B50, 0.7),
-        boxShadow: '0 0 0 2px transparent',
-      },
-      default: {
-        color: N600,
-        backgroundColor: 'transparent',
-        boxShadow: '0 0 0 2px transparent',
-      },
-      focus: {
-        color: N600,
-        backgroundColor: '',
-        boxShadow: `0 0 0 2px ${B200}`,
-      },
-      hover: {
-        color: B400,
-        backgroundColor: hexToRGBA(B50, 0.9),
-        boxShadow: '0 0 0 2px transparent',
-      },
-      selected: {
-        color: B400,
-        backgroundColor: '',
-        boxShadow: '',
-        bordorBottom: `4px solid ${B400}`,
-      },
     },
     primaryButton: {
       active: {

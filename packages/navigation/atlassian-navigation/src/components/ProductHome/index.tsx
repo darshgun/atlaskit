@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 import { Fragment, MouseEvent } from 'react';
 import { useTheme } from '../../theme';
 import {
-  containerCSS,
+  productHomeButtonCSS,
   customProductIconCSS,
   customProductLogoCSS,
   productIconCSS,
@@ -51,7 +51,7 @@ export const ProductHome = ({
   return (
     <Fragment>
       <Tag
-        css={containerCSS(theme)}
+        css={productHomeButtonCSS(theme)}
         href={href}
         onClick={onClick}
         onMouseDown={preventFocusRing}
@@ -102,7 +102,7 @@ export const CustomProductHome = (props: CustomProductHomeProps) => {
     <Fragment>
       <Tag
         href={href}
-        css={containerCSS(theme)}
+        css={productHomeButtonCSS(theme)}
         onClick={onClick}
         onMouseDown={preventFocusRing}
         {...rest}
