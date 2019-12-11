@@ -509,13 +509,15 @@ pipelines:
 
     # This build allow to deploy branch dists to easily tests new version of components into consumers / products code base.
     branch-deploy:
+      - variables:
+          - name: Packages
       - step:
           name: Branch deploy
           script:
             - source ./build-setup.sh
             - bolt install --frozen-lockfile
             - yarn build
-            - export CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js)
+            - export CHANGED_PACKAGES=$([[ -z "${Packages}" ]] && node build/ci-scripts/get.changed.packages.since.master.js || echo "${Packages}")
             # Change into a glob pattern (removing brackets, spaces and quotes).
             - export CHANGED_PACKAGES_GLOB=$(echo "$CHANGED_PACKAGES" | sed 's/[][" ]//g')
             - node build/ci-scripts/branch-deploys/update.changed.packages.deps.to.cdn.js
@@ -627,7 +629,7 @@ pipelines:
             # Validate packages will produce false positives and is for manual analysis so we always return true
             - yarn validate-packages || true
 
-# For branches like develop, we need to merge master daily.
+    # For branches like develop, we need to merge master daily.
     merge-master:
       - step:
           name: Merges master into the target branch
