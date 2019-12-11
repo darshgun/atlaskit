@@ -6,13 +6,17 @@ export enum EVENT_TYPE {
 }
 
 export enum ACTION {
+  ADDED = 'added',
   CHANGED_FULL_WIDTH_MODE = 'changedFullWidthMode',
   CHANGED_LAYOUT = 'changedLayout',
   CHANGED_TYPE = 'changedType',
   CHANGED_URL = 'changedUrl',
+  CLEARED = 'cleared',
   CLICKED = 'clicked',
+  CLOSED = 'closed',
   DELETED = 'deleted',
   DISPATCHED_INVALID_TRANSACTION = 'dispatchedInvalidTransaction',
+  EDITED = 'edited',
   EDITOR_MOUNTED = 'mounted',
   EDITOR_CRASHED = 'unhandledErrorCaught',
   FORMATTED = 'formatted',
@@ -80,6 +84,7 @@ export enum ACTION_SUBJECT {
 
 export enum ACTION_SUBJECT_ID {
   ACTION = 'action',
+  ALT_TEXT = 'altText',
   ANNOTATE_BUTTON = 'annotateButton',
   BLOCK_QUOTE = 'blockQuote',
   BUTTON_HELP = 'helpButton',

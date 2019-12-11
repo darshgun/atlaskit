@@ -8,13 +8,11 @@ import {
   EVENT_TYPE,
   withAnalytics,
   ACTION_SUBJECT_ID,
+  ACTION,
 } from '../../../analytics';
 import { EditorState, Transaction } from 'prosemirror-state';
 
-import {
-  ALT_TEXT_ACTION,
-  MediaImageAltTextAEP,
-} from '../../../analytics/types/media-events';
+import { MediaAltTextActionType } from '../../../analytics/types/media-events';
 import {
   OpenMediaAltTextMenu,
   CloseMediaAltTextMenu,
@@ -22,20 +20,17 @@ import {
 } from './actions';
 
 const createCommandWithAnalytics = (
-  actionType: ALT_TEXT_ACTION,
+  actionType: MediaAltTextActionType,
   action: (
     state: Readonly<EditorState<any>>,
   ) => false | OpenMediaAltTextMenu | CloseMediaAltTextMenu | UpdateAltText,
   transform?: (tr: Transaction, state: EditorState) => Transaction,
 ) => {
-  return withAnalytics(state => {
-    const altTextAEP: MediaImageAltTextAEP = {
-      action: actionType,
-      actionSubject: ACTION_SUBJECT.MEDIA,
-      actionSubjectId: ACTION_SUBJECT_ID.MEDIA,
-      eventType: EVENT_TYPE.UI,
-    };
-    return altTextAEP;
+  return withAnalytics({
+    action: actionType,
+    actionSubject: ACTION_SUBJECT.MEDIA,
+    actionSubjectId: ACTION_SUBJECT_ID.ALT_TEXT,
+    eventType: EVENT_TYPE.TRACK,
   })(createCommand(action, transform));
 };
 
@@ -47,7 +42,7 @@ export const closeMediaAltTextMenu = createCommand(state => {
 });
 
 export const openMediaAltTextMenu = createCommandWithAnalytics(
-  ALT_TEXT_ACTION.OPENED,
+  ACTION.OPENED,
   state => {
     if (isSelectionMediaSingleNode(state)) {
       return { type: 'openMediaAltTextMenu' };
