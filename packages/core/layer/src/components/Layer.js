@@ -2,8 +2,7 @@
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
 import rafSchedule from 'raf-schd';
-
-import Popper from 'popper.js';
+import Popper from 'popper.js'; // eslint-disable-line import/extensions
 import ScrollBlock from './internal/ScrollBlock';
 import {
   getFlipBehavior,

@@ -19,6 +19,8 @@ module.exports = {
     'import/extensions': ['.js', '.ts', '.tsx'],
     // Required to resolve atlaskit deps to src and remove webpack loader prefixes
     'import/resolver': {
+      // node needs to be declared first. see https://github.com/benmosher/eslint-plugin-import/issues/1396
+      node: {},
       [resolverPath]: {
         debug: false,
       },
@@ -99,7 +101,7 @@ module.exports = {
   plugins: ['flowtype', 'jest', 'prettier', 'react-hooks', '@wordpress'],
   rules: {
     'import/no-extraneous-dependencies': [
-      'error',
+      'off', // ~10
       {
         devDependencies: [
           '**/docs/**/*.js',
@@ -129,7 +131,7 @@ module.exports = {
     // TODO: Might be worth re-enabling it at some stage (or using stricter instead)
     'import/no-cycle': 'off',
 
-    'max-classes-per-file': 'off', // 2159 -
+    'max-classes-per-file': 'off', // ~2159
 
     'no-labels': 'off',
     'no-restricted-syntax': 'off',
@@ -140,38 +142,37 @@ module.exports = {
 
     'spaced-comment': 'off',
 
-    'no-async-promise-executor': 'off',
+    'no-async-promise-executor': 'off', // ~11
     'no-await-in-loop': 'off',
 
     'no-mixed-operators': 'off',
     'no-plusplus': 'off',
 
-    'prefer-object-spread': 'off',
+    'prefer-object-spread': 'off', // ~20
 
     '@wordpress/react-no-unsafe-timeout': 'error',
 
-    'react/button-has-type': 'off',
+    'react/button-has-type': 'off', // ~111
     'react/sort-comp': 'off',
-    'react/jsx-curly-brace-presence': 'off',
-    'react/jsx-curly-newline': 'off',
+    'react/jsx-curly-brace-presence': 'off', // ~91
+    'react/jsx-curly-newline': 'off', // ~104
     'react/jsx-filename-extension': 'off',
-    'react/jsx-fragments': 'off',
-    'react/jsx-props-no-spreading': 'off',
+    'react/jsx-fragments': 'off', // ~128
+    'react/jsx-props-no-spreading': 'off', // ~904
     'react/require-default-props': 'off',
     // TODO: https://ecosystem.atlassian.net/browse/AK-6060
     // enable rules after fixing linting issue after upgrade
     'react/destructuring-assignment': 'off',
     'react/default-props-match-prop-types': 'off',
-    'react/no-did-update-set-state': 'off',
     'react/no-unescaped-entities': 'off',
     'react/no-unused-state': 'off',
     'react/no-access-state-in-setstate': 'off',
-    'react/no-this-in-sfc': 'off',
+    'react/no-this-in-sfc': 'off', // ~3
     'react/prefer-stateless-function': 'off',
-    'react/require-render-return': 'off',
-    'react/static-property-placement': 'off',
-    'react/state-in-constructor': 'off',
-    'jsx-a11y/control-has-associated-label': 'off',
+    'react/require-render-return': 'off', // ~2
+    'react/static-property-placement': 'off', // ~395
+    'react/state-in-constructor': 'off', // ~591
+    'jsx-a11y/control-has-associated-label': 'off', // ~13
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/mouse-events-have-key-events': 'off',
 
@@ -191,9 +192,9 @@ module.exports = {
       },
     ],
 
-    'react/no-multi-comp': [true, { ignoreStateless: false }],
+    'react/no-multi-comp': ['off', { ignoreStateless: true }], // ~36 / ~469
     'react/forbid-prop-types': [
-      'on',
+      'error',
       {
         forbid: ['any', 'array'],
         checkContextTypes: true,
@@ -295,14 +296,13 @@ module.exports = {
         'guard-for-in': 'off',
         'lines-around-directive': 'off',
         'import/export': 'off',
-        'import/extensions': 'off',
         'import/first': 'off',
         'import/newline-after-import': 'off',
         'import/no-commonjs': 'off',
         'import/no-duplicates': 'off',
         'import/no-dynamic-require': 'off',
         'import/no-extraneous-dependencies': [
-          'error',
+          'off', // ~17
           {
             devDependencies: [
               // Top level dirs that aren't src - can't have ** either side
@@ -348,7 +348,6 @@ module.exports = {
         'no-lonely-if': 'off',
         'no-loop-func': 'off',
         'no-irregular-whitespace': 'off',
-        'no-misleading-character-class': 'off',
         'no-multi-assign': 'off',
         'no-named-default': 'off',
         'no-nested-ternary': 'off',
@@ -389,7 +388,7 @@ module.exports = {
         'react/no-array-index-key': 'off',
         'react/no-children-prop': 'off',
         'react/no-danger': 'off',
-        'react/no-did-update-set-state': 'off',
+        'react/no-did-update-set-state': 'off', // ~12
         'react/no-will-update-set-state': 'off',
         'react/no-find-dom-node': 'off',
         'react/no-string-refs': 'off',
