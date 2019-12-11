@@ -21,44 +21,15 @@ import {
   ProductHome,
   Search,
   Settings,
-  atlassianTheme,
   _itemTheme,
 } from '../src';
 import { useOverflowStatus } from '../src/controllers/overflow';
 
-const Icon = () => {
-  const {
-    mode: { productHome },
-  } = atlassianTheme;
-  return (
-    <JiraIcon
-      iconGradientStart={productHome.gradientStart}
-      iconGradientStop={productHome.gradientStop}
-      iconColor={productHome.iconColor}
-      textColor={productHome.color}
-    />
-  );
-};
-
-const Logo = () => {
-  const {
-    mode: { productHome },
-  } = atlassianTheme;
-  return (
-    <JiraLogo
-      iconGradientStart={productHome.gradientStart}
-      iconGradientStop={productHome.gradientStop}
-      iconColor={productHome.iconColor}
-      textColor={productHome.color}
-    />
-  );
-};
-
 const ProductHomeExample = () => (
   <ProductHome
     onClick={console.log}
-    icon={Icon}
-    logo={Logo}
+    icon={JiraIcon}
+    logo={JiraLogo}
     siteTitle="Hello"
   />
 );
