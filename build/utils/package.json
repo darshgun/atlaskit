@@ -24,6 +24,7 @@
     "inquirer": "^3.3.0",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "inquirer-checkbox-plus-prompt": "^1.0.1",
+    "lodash.get": "^4.4.2",
     "npm-run": "^4.1.2",
     "projector-spawn": "^1.0.1",
     "query-string": "^4.3.2",
