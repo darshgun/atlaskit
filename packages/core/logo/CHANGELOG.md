@@ -1,5 +1,13 @@
 # @atlaskit/logo
 
+## 12.3.0
+
+### Minor Changes
+
+- [minor][308708081a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/308708081a):
+
+  Export LogoProps
+
 ## 12.2.2
 
 ### Patch Changes

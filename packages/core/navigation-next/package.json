@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "7.2.1",
+  "version": "7.2.2",
   "description": "The Atlassian navigation component.",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^6.2.2",
-    "@atlaskit/atlassian-navigation": "^0.7.0",
+    "@atlaskit/atlassian-navigation": "^0.8.0",
     "@atlaskit/badge": "^13.1.2",
     "@atlaskit/banner": "^10.1.1",
     "@atlaskit/build-utils": "^2.2.7",
@@ -60,7 +60,7 @@
     "@atlaskit/global-navigation": "^8.0.4",
     "@atlaskit/icon-object": "^5.0.0",
     "@atlaskit/inline-dialog": "^12.1.5",
-    "@atlaskit/logo": "^12.2.2",
+    "@atlaskit/logo": "^12.3.0",
     "@atlaskit/lozenge": "^9.1.1",
     "@atlaskit/modal-dialog": "^10.3.6",
     "@atlaskit/onboarding": "^9.0.3",
