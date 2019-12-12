@@ -9,10 +9,12 @@ const semver = require('semver');
 const cwd = path.join(__dirname);
 const log = true;
 
+process.env.HOST_IP = ip.address();
+
 async function startDocker() {
   console.log('starting docker');
   try {
-    compose.upAll({ cwd, log, env: { HOST_IP: ip.address() } });
+    await compose.upAll({ cwd, log });
   } catch (err) {
     err.message = `docker-compose up failed. Visit go/ak-vr-setup and join go/ak-build-channel for help.\n${err.message}`;
     throw err;
@@ -21,7 +23,7 @@ async function startDocker() {
 
 async function stopDocker() {
   console.log('stopping docker');
-  return compose.stop({ cwd, log, env: { HOST_IP: ip.address() } });
+  return compose.stop({ cwd, log });
 }
 
 const getDockerImageProdVersion = () =>
