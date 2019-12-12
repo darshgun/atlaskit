@@ -22,6 +22,7 @@
     "@types/node-fetch": "^2.1.4",
     "@types/url-parse": "^1.4.3",
     "@yarnpkg/lockfile": "^1.1.0",
+    "bolt": "^0.24.3",
     "chalk": "^2.1.0",
     "meow": "^5.0.0",
     "node-fetch": "^2.2.0",

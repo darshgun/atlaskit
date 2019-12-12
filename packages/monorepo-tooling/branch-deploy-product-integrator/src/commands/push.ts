@@ -17,6 +17,7 @@ import {
   mergeAndReApply,
 } from '../lib/git';
 import { ValidationError, ErrorType } from '../types';
+import { getWorkspaceDirs } from '../lib/packageEngine';
 
 const exec = util.promisify(childProcess.exec);
 const writeFile = util.promisify(fs.writeFile);
@@ -144,11 +145,18 @@ export async function push(
   }
 
   await checkoutOrCreate(git, branchName);
+  const workspacePkgJsons = (await getWorkspaceDirs(packageEngine)).map(
+    dir => `${dir}/package.json`,
+  );
   /* We merge master so that the branch remains relatively up to date.
    * We also reset package.json/yarn.lock back to their state on master before running
    * a branch install to prevent previous branch installs lingering in package.json.
    */
-  await mergeAndReApply(git, 'origin/master', ['package.json', 'yarn.lock']);
+  await mergeAndReApply(git, 'origin/master', [
+    'package.json',
+    'yarn.lock',
+    ...workspacePkgJsons,
+  ]);
 
   console.log(`Installing packages branch deployed from ${atlaskitCommitHash}`);
   await installFromCommit(atlaskitCommitHash, {
