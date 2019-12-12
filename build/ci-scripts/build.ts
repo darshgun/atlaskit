@@ -9,8 +9,12 @@ import chalk from 'chalk';
 import meow from 'meow';
 import * as yalc from 'yalc';
 
-import { PackageInfo } from '@atlaskit/build-utils/types';
-import { getPackagesInfo } from '@atlaskit/build-utils/tools';
+import { isDefined } from '@atlaskit/build-utils/guards';
+import { PackageInfo, Tool } from '@atlaskit/build-utils/types';
+import {
+  getPackagesInfo,
+  TOOL_NAME_TO_FILTERS,
+} from '@atlaskit/build-utils/tools';
 import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
 import getGlobPackagesForTools from './get.glob.packages.for.tools';
 import createEntryPointsDirectories from './create.entry.points.directories';
@@ -35,11 +39,16 @@ function log(...msg: any[]) {
 }
 
 async function getPkgGlob(
-  tools: string[],
+  tools: Tool[],
   pkg: PackageInfo | undefined,
   { cwd }: { cwd?: string },
-) {
-  return pkg ? pkg.relativeDir : await getGlobPackagesForTools(tools, { cwd });
+): Promise<string | null> {
+  if (pkg) {
+    return tools.every(tool => TOOL_NAME_TO_FILTERS[tool](pkg))
+      ? pkg.relativeDir
+      : null;
+  }
+  return getGlobPackagesForTools(tools, { cwd });
 }
 
 function getDistCommands(
@@ -52,9 +61,9 @@ function getDistCommands(
   if (distType === 'none') {
     return [];
   } else if (!distType) {
-    return Object.values(commands).filter(Boolean);
+    return Object.values(commands).filter(isDefined);
   } else {
-    return [commands[distType]].filter(Boolean);
+    return [commands[distType]].filter(isDefined);
   }
 }
 
@@ -142,10 +151,10 @@ async function generateFlowTypeCommands({
   pkg,
   watch,
 }: StepArgs) {
-  if (pkg && !(pkg.isBabel && pkg.isFlow)) {
+  const pkgGlob = await getPkgGlob(['babel', 'flow'], pkg, { cwd });
+  if (!pkgGlob) {
     return [];
   }
-  const pkgGlob = await getPkgGlob(['babel', 'flow'], pkg, { cwd });
   const watchFlag = watch ? ' -w' : '';
   const commands = {
     cjs: `bolt workspaces exec --only-fs "${pkgGlob}" -- flow-copy-source -i '**/__tests__/**' src dist/cjs${watchFlag}`,
@@ -156,10 +165,10 @@ async function generateFlowTypeCommands({
 }
 
 async function babelCommands({ cwd, distType, pkg, watch }: StepArgs) {
-  if (pkg && !pkg.isBabel) {
+  const pkgGlob = await getPkgGlob(['babel'], pkg, { cwd });
+  if (!pkgGlob) {
     return [];
   }
-  const pkgGlob = await getPkgGlob(['babel'], pkg, { cwd });
   // Watch mode does not output anything on recompile, so we have to use verbose to signal something has happened
   // https://github.com/babel/babel/issues/7926
   const watchFlag = watch ? ' -w --verbose' : '';
@@ -194,27 +203,11 @@ async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
   );
 }
 
-async function cliTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
-  if (pkg && !pkg.isTypeScriptCLI) {
-    return [];
-  }
-
-  const pkgGlob = await getPkgGlob(['typescriptcli'], pkg, { cwd });
-  const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
-  const commands = {
-    cjs: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/cli${watchFlag} && echo Success || true'`,
-    esm: '',
-  };
-
-  return getDistCommands(commands, distType);
-}
-
 async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
-  if (pkg && !pkg.isTypeScript) {
+  const pkgGlob = await getPkgGlob(['typescriptbuild'], pkg, { cwd });
+  if (!pkgGlob) {
     return [];
   }
-
-  const pkgGlob = await getPkgGlob(['typescript'], pkg, { cwd });
   // preserveWatchOutput prevents watch from clearing console output on every change
   const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
   /* The `|| true` at the end of each typescript command was knowingly added in https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/5722/update-tsconfig/diff
@@ -260,10 +253,7 @@ async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
   }
 
   return runCommands(
-    [
-      ...(await standardTsCommands({ cwd, distType, pkg, watch })),
-      ...(await cliTsCommands({ cwd, distType, pkg, watch })),
-    ],
+    await standardTsCommands({ cwd, distType, pkg, watch }),
     /* When building all packages we run the ts commands sequentially  as the `types` field in package.json
      * references the main index.d.ts in the cjs directory. Resulting in cjs needing to be built before esm/cli
      * so that packages can properly utilise the types of their atlaskit dependencies.
@@ -374,7 +364,7 @@ export default async function main(
   log('Running post-build scripts for packages...');
   await buildExceptionPackages({ pkg, ...options });
   log('Copying version.json...');
-  await copyVersion(fullPackageName, { cwd });
+  await copyVersion(fullPackageName);
   log('Validating dists...');
   await runValidateDists({
     cwd,

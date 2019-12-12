@@ -3,7 +3,10 @@ import * as bolt from 'bolt';
 import * as yalc from 'yalc';
 import runCommands from '@atlaskit/build-utils/runCommands';
 import { prefixConsoleLog } from '@atlaskit/build-utils/logging';
-import { getPackagesInfo } from '@atlaskit/build-utils/tools';
+import {
+  getPackagesInfo,
+  TOOL_NAME_TO_FILTERS,
+} from '@atlaskit/build-utils/tools';
 import createEntryPointsDirectories from '../../create.entry.points.directories';
 import copyVersion from '../../copy.version';
 import validateDists from '../../validate.dists';
@@ -11,6 +14,7 @@ import validateDists from '../../validate.dists';
 import build from '../../build';
 
 jest.unmock('../../build');
+jest.unmock('@atlaskit/build-utils/guards');
 jest.mock('../../validate.dists', () =>
   jest.fn(() => Promise.resolve({ success: true })),
 );
@@ -34,6 +38,15 @@ describe('Build', () => {
     consoleErrorSpy = jest.spyOn(console, 'error');
     // Mock to return a function as the impl returns an unsubscribe fn that is called
     (prefixConsoleLog as any).mockImplementation(() => () => {});
+    // Unmock the TOOL_NAME_TO_FILTERS function map so we don't have to change the mock impl
+    // for each different package
+    Object.keys(TOOL_NAME_TO_FILTERS).forEach(toolName => {
+      TOOL_NAME_TO_FILTERS[toolName].mockImplementation(
+        jest.requireActual('@atlaskit/build-utils/tools').TOOL_NAME_TO_FILTERS[
+          toolName
+        ],
+      );
+    });
   });
   afterAll(() => {
     consoleLogSpy.mockRestore();
@@ -47,7 +60,7 @@ describe('Build', () => {
         name: '@atlaskit/editor-core',
         dir: '/Users/dev/atlaskit-mk-2/packages/editor/editor-core',
         relativeDir: 'packages/editor/editor-core',
-        isTypeScript: true,
+        runTypeScriptBuild: true,
       },
     ]);
   });
@@ -81,9 +94,8 @@ describe('Build', () => {
       expect(runCommands).toHaveBeenNthCalledWith(
         2,
         [
-          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
-          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
-          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptcli-glob" -- bash -c \'tsc --project ./build/cli && echo Success || true\'',
+          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
         ],
         { cwd: '/Users/dev/atlaskit-mk-2', sequential: true },
       );
@@ -107,9 +119,7 @@ describe('Build', () => {
       expect(copyVersion).not.toHaveBeenCalled();
       await build(undefined, { cwd: '/Users/dev/atlaskit-mk-2' });
       expect(copyVersion).toHaveBeenCalledTimes(1);
-      expect(copyVersion).toHaveBeenCalledWith(undefined, {
-        cwd: '/Users/dev/atlaskit-mk-2',
-      });
+      expect(copyVersion).toHaveBeenCalledWith(undefined);
     });
     it('should validate dists', async () => {
       // Success
@@ -149,8 +159,8 @@ describe('Build', () => {
         {
           name: '@atlaskit/navigation-next',
           relativeDir: 'packages/core/navigation-next',
-          isBabel: true,
-          isFlow: true,
+          runBabel: true,
+          runFlow: true,
         },
       ]);
 
@@ -186,6 +196,7 @@ describe('Build', () => {
       // Does not try to build JS
       expect(runCommands).toHaveBeenNthCalledWith(1, [], expect.any(Object));
     });
+
     it('should run exception postbuild for package, if one exists', async () => {
       expect(bolt.workspacesRun).not.toHaveBeenCalled();
       await build('editor-core', { cwd: '/Users/dev/atlaskit-mk-2' });
@@ -205,9 +216,7 @@ describe('Build', () => {
       expect(copyVersion).not.toHaveBeenCalled();
       await build('editor-core', { cwd: '/Users/dev/atlaskit-mk-2' });
       expect(copyVersion).toHaveBeenCalledTimes(1);
-      expect(copyVersion).toHaveBeenCalledWith('@atlaskit/editor-core', {
-        cwd: '/Users/dev/atlaskit-mk-2',
-      });
+      expect(copyVersion).toHaveBeenCalledWith('@atlaskit/editor-core');
     });
     it('should validate dist', async () => {
       expect(validateDists).not.toHaveBeenCalled();
@@ -259,12 +268,14 @@ describe('Build', () => {
           {
             name: '@atlaskit/editor-core',
             relativeDir: 'packages/editor/editor-core',
-            isTypeScript: true,
+            runTypeScriptCjs: true,
+            runTypeScriptEsm: true,
           },
           {
             name: '@atlaskit/editor-common',
             relativeDir: 'packages/editor/editor-common',
-            isTypeScript: true,
+            runTypeScriptCjs: true,
+            runTypeScriptEsm: true,
           },
         ]);
 
@@ -315,8 +326,8 @@ describe('Build', () => {
             name: '@atlaskit/navigation-next',
             dir: '/Users/dev/atlaskit-mk-2/packages/core/navigation-next',
             relativeDir: 'packages/core/navigation-next',
-            isBabel: true,
-            isFlow: true,
+            runBabel: true,
+            runFlow: true,
           },
         ]);
       });
@@ -738,8 +749,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
-            'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
-            'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptcli-glob" -- bash -c \'tsc --project ./build/cli && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
           ],
           {
             cwd: '/Users/dev/atlaskit-mk-2',
@@ -766,7 +776,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
-            'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescript-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
           ],
           {
             cwd: '/Users/dev/atlaskit-mk-2',
