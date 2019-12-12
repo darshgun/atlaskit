@@ -148,7 +148,7 @@ export async function push(
    * We also reset package.json/yarn.lock back to their state on master before running
    * a branch install to prevent previous branch installs lingering in package.json.
    */
-  await mergeAndReApply(git, 'master', ['package.json', 'yarn.lock']);
+  await mergeAndReApply(git, 'origin/master', ['package.json', 'yarn.lock']);
 
   console.log(`Installing packages branch deployed from ${atlaskitCommitHash}`);
   await installFromCommit(atlaskitCommitHash, {
