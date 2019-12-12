@@ -1,6 +1,7 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { N40A, N30A, N900 } from '@atlaskit/theme/colors';
 import { CSSObject } from '@emotion/core';
+import { AppSwitcher } from '../../components/AppSwitcher';
 
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
 import { NavigationTheme, hexToRGBA } from '../../theme';
