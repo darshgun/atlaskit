@@ -14,7 +14,7 @@ process.env.HOST_IP = ip.address();
 async function startDocker() {
   console.log('starting docker');
   try {
-    compose.upAll({ cwd, log });
+    await compose.upAll({ cwd, log });
   } catch (err) {
     err.message = `docker-compose up failed. Visit go/ak-vr-setup and join go/ak-build-channel for help.\n${err.message}`;
     throw err;
