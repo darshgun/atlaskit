@@ -146,13 +146,15 @@ describe('block-type', () => {
         dispatch,
       );
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        eventType: 'track',
-        actionSubjectId: 'codeBlock',
-        attributes: { inputMethod: 'toolbar' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          eventType: 'track',
+          actionSubjectId: 'codeBlock',
+          attributes: { inputMethod: 'toolbar' },
+        }),
+      );
     });
   });
 
@@ -176,13 +178,25 @@ describe('block-type', () => {
         dispatch,
       );
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        eventType: 'track',
-        actionSubjectId: 'panel',
-        attributes: { inputMethod: 'toolbar', panelType: 'info' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          eventType: 'track',
+          actionSubjectId: 'panel',
+          attributes: { inputMethod: 'toolbar', panelType: 'info' },
+        }),
+      );
+
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          eventType: 'track',
+          actionSubjectId: 'panel',
+          attributes: { inputMethod: 'toolbar', panelType: 'info' },
+        }),
+      );
     });
   });
 

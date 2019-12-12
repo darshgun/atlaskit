@@ -86,6 +86,10 @@ declare module '@atlaskit/flag' {
   declare module.exports: any;
 }
 
+declare module '@atlaskit/form' {
+  declare module.exports: any;
+}
+
 declare module '@atlaskit/icon' {
   declare module.exports: any;
 }

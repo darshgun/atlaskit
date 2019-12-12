@@ -23,7 +23,7 @@
     "ora": "^3.0.0",
     "promise-queue": "^2.2.5",
     "watchpack": "^1.6.0",
-    "webdriverio": "^5.7.14",
+    "webdriverio": "5.11.0",
     "webpack": "^4.16.1",
     "webpack-dev-server": "^3.1.4"
   },

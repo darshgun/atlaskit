@@ -15,7 +15,7 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 BrowserTestCase(
   'upload-external-media.ts: Uploads external media when pasted',
   { skip: ['edge', 'ie', 'safari', 'chrome', 'firefox'] },
-  async (client: any, testCase: string) => {
+  async (client: ConstructorParameters<typeof Page>[0], testCase: string) => {
     const sample = new Page(client);
     await copyToClipboard(
       sample,
@@ -30,7 +30,7 @@ BrowserTestCase(
         allowMediaSingle: true,
       },
     });
-    await page.paste(editable);
+    await page.paste();
     await sleep(0);
     //waits until blob is available
     await page.waitForSelector('.ProseMirror img[src^="blob"]');

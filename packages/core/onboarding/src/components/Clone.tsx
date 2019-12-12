@@ -16,9 +16,16 @@ export interface CloneProps {
   targetOnClick?: (eventData: {
     event: MouseEvent<HTMLElement>;
     target?: string;
-  }) => unknown;
+  }) => void;
   /** The border-radius of the element being highlighted */
   targetRadius?: number;
+
+  /**
+   * A `testId` prop is provided for specified elements,
+   * which is a unique string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests.
+   */
+  testId?: string;
 }
 
 function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
@@ -43,10 +50,12 @@ const Clone = (props: CloneProps) => {
     targetOnClick,
     targetNode,
     targetRadius,
+    testId,
   } = props;
 
   return (
     <TargetInner
+      data-testid={testId}
       pulse={pulse}
       bgColor={targetBgColor}
       radius={targetRadius}

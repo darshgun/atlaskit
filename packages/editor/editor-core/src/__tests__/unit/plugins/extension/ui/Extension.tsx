@@ -38,24 +38,6 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     extension.unmount();
   });
 
-  it('should pass macroProvider into ExtensionComponent', () => {
-    const extension = mount(
-      <Extension
-        editorView={{} as any}
-        node={node}
-        providerFactory={providerFactory}
-        handleContentDOMRef={noop}
-        extensionHandlers={{}}
-      />,
-    );
-    const component = extension.find(ExtensionComponent);
-
-    expect(component.prop('providers').macroProvider).toBe(
-      macroProviderPromise,
-    );
-    extension.unmount();
-  });
-
   it('should render from the extension handler when possible', () => {
     const GalleryComponent = () => <div>Gallery Extension</div>;
 
@@ -256,7 +238,6 @@ describe('@atlaskit/editor-core/ui/Extension', () => {
     );
 
     const providerFactory = ProviderFactory.create({
-      macroProvider: macroProviderPromise,
       extensionProvider: Promise.resolve(
         combineExtensionProviders([confluenceMacrosExtensionProvider]),
       ),

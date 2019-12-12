@@ -23,7 +23,8 @@
   "dependencies": {
     "@atlaskit/type-helpers": "^4.2.2",
     "prop-types": "^15.5.10",
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "use-memo-one": "^1.1.1"
   },
   "peerDependencies": {
     "react": "^16.8.0"
@@ -35,6 +36,7 @@
     "@atlaskit/field-text": "^9.0.13",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/type-helpers": "^4.2.2",
+    "@testing-library/react": "^8.0.1",
     "enzyme": "^3.10.0",
     "react-dom": "^16.8.0",
     "redux": "^3.7.2"

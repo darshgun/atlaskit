@@ -1,19 +1,22 @@
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
+import { CardOptions } from '../card';
 
-const pastePlugin = (): EditorPlugin => ({
+const pastePlugin = ({
+  cardOptions,
+  sanitizePrivateContent,
+}: {
+  cardOptions?: CardOptions;
+  sanitizePrivateContent?: boolean;
+}): EditorPlugin => ({
   name: 'paste',
 
   pmPlugins() {
     return [
       {
         name: 'paste',
-        plugin: ({ schema, props }) =>
-          createPlugin(
-            schema,
-            props.UNSAFE_cards,
-            props.sanitizePrivateContent,
-          ),
+        plugin: ({ schema }) =>
+          createPlugin(schema, cardOptions, sanitizePrivateContent),
       },
     ];
   },

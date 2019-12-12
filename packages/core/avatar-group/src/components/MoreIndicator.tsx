@@ -16,7 +16,7 @@ export interface MoreIndicatorProps {
   /** When true, provides a gutter for the adjacent avatar */
   isStack?: boolean;
   /** Handle user interaction */
-  onClick?: (event: MouseEvent) => unknown;
+  onClick?: (event: MouseEvent) => void;
   /** Defines the size of the indicator */
   size?: SizeType;
   /** TODO */

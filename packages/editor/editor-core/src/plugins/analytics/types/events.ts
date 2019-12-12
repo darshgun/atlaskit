@@ -17,7 +17,8 @@ type AEP<
   ActionSubjectID,
   Attributes,
   NonPrivacySafeAttributes,
-  EventType
+  EventType,
+  ImplicitAttributes extends {} = {}
 > = {
   action: Action;
   actionSubject: ActionSubject;
@@ -25,7 +26,7 @@ type AEP<
   attributes?: Attributes;
   eventType: EventType;
   nonPrivacySafeAttributes?: NonPrivacySafeAttributes;
-};
+} & { [key in keyof ImplicitAttributes]?: ImplicitAttributes[key] };
 
 export type UIAEP<
   Action,
@@ -47,14 +48,16 @@ export type TrackAEP<
   ActionSubject,
   ActionSubjectID,
   Attributes,
-  NonPrivacySafeAttributes
+  NonPrivacySafeAttributes,
+  ImplicitAttributes extends {} = {}
 > = AEP<
   Action,
   ActionSubject,
   ActionSubjectID,
   Attributes,
   NonPrivacySafeAttributes,
-  EVENT_TYPE.TRACK
+  EVENT_TYPE.TRACK,
+  ImplicitAttributes
 >;
 
 export type OperationalAEP<

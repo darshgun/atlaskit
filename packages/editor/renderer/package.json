@@ -31,7 +31,6 @@
     "@atlaskit/media-client": "^4.1.1",
     "@atlaskit/media-filmstrip": "^36.0.0",
     "@atlaskit/mention": "^18.16.0",
-    "@atlaskit/smart-card": "^12.6.1",
     "@atlaskit/status": "^0.9.17",
     "@atlaskit/task-decision": "^16.0.4",
     "@atlaskit/theme": "^9.3.0",
@@ -44,6 +43,7 @@
     "url-parse": "^1.4.3"
   },
   "peerDependencies": {
+    "@atlaskit/smart-card": "^12.6.0",
     "@atlaskit/media-core": "^31.0.1",
     "react": "^16.8.0",
     "styled-components": "^3.2.6"
@@ -59,6 +59,7 @@
     "@atlaskit/media-test-helpers": "^25.2.4",
     "@atlaskit/navigation-next": "^7.0.4",
     "@atlaskit/profilecard": "^12.3.5",
+    "@atlaskit/smart-card": "^12.6.0",
     "@atlaskit/util-data-test": "^13.0.0",
     "@atlaskit/visual-regression": "^0.1.4",
     "@types/prosemirror-model": "^1.7.2",

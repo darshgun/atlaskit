@@ -192,7 +192,6 @@ export class ExpandNodeView implements NodeView {
     );
   }
 
-  // @see ED-8164
   private isAllowInteractiveExpandEnabled = () => {
     const { state } = this.view;
     const editorProps = getEditorProps(state);

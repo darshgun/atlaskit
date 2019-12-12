@@ -34,7 +34,7 @@ export default class Extension extends Component<Props, any> {
     }
   }
 
-  private renderWithProvider = (providers: Providers) => {
+  private renderWithProvider = ({ extensionProvider }: Providers) => {
     const {
       node,
       editorView,
@@ -46,7 +46,7 @@ export default class Extension extends Component<Props, any> {
       <ExtensionComponent
         editorView={editorView}
         node={node}
-        providers={providers}
+        extensionProvider={extensionProvider}
         handleContentDOMRef={handleContentDOMRef}
         extensionHandlers={extensionHandlers}
       />
@@ -56,7 +56,7 @@ export default class Extension extends Component<Props, any> {
   render() {
     return (
       <WithProviders
-        providers={['macroProvider', 'extensionProvider']}
+        providers={['extensionProvider']}
         providerFactory={this.providerFactory}
         renderNode={this.renderWithProvider}
       />

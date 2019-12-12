@@ -51,6 +51,16 @@ export interface Props {
   targetRadius?: number;
   /** Alternative element to render than the wrapped target */
   targetReplacement?: ComponentType<any>;
+  /**
+    This prop is a unique string that appears as an attribute `data-testid` in the rendered HTML output serving as a hook for automated tests.
+    As this component is composed of multiple components we use this `testId` as a prefix:
+
+    * `"${testId}--dialog"` to identify the spotlight dialog
+    * `"${testId}--target"` to identify the spotlight target clone
+
+    Defaults to `"spotlight"`.
+   */
+  testId?: string;
 }
 
 class Spotlight extends React.Component<Props> {
@@ -60,7 +70,7 @@ class Spotlight extends React.Component<Props> {
   };
 
   render() {
-    const { targetNode, target, ...rest } = this.props;
+    const { targetNode, target, testId = 'spotlight', ...rest } = this.props;
     return (
       <SpotlightConsumer>
         {({ opened, closed, targets }) => {
@@ -76,6 +86,7 @@ class Spotlight extends React.Component<Props> {
               target={target}
               onOpened={opened}
               onClosed={closed}
+              testId={testId}
             />
           ) : null;
         }}

@@ -97,10 +97,10 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
 function setLocalClients() /*: Array<?Object>*/ {
   // eslint-disable-next-line global-require
   const { port } = require('./chromeDriver');
-  const isHeadless = process.env.HEADLESS !== 'false';
-  // Keep only chrome for watch mode
-  // eslint-disable-next-line no-unused-expressions
-  if (process.env.WATCH === 'true') isHeadless === 'false';
+  const { WATCH, HEADLESS } = process.env;
+  const isWatch = WATCH === 'true';
+  const isHeadless = HEADLESS !== 'false' && !isWatch;
+
   const windowSize = '--window-size=1920,1200';
   const options = {
     port,

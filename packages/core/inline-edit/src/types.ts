@@ -3,6 +3,7 @@ import {
   UIAnalyticsEvent,
   WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
+import { FieldProps } from '@atlaskit/form';
 
 interface CommonProps extends WithAnalyticsEventsProps {
   /** Label above the input. */
@@ -30,11 +31,11 @@ interface CommonProps extends WithAnalyticsEventsProps {
   cancelButtonLabel?: string;
 }
 
-export interface InlineEditUncontrolledProps extends CommonProps {
+export interface InlineEditUncontrolledProps<FieldValue> extends CommonProps {
   /** Component to be shown when not in edit view. */
   readView: () => React.ReactNode;
   /** Component to be shown when editing. */
-  editView: (fieldProps: FieldProps) => React.ReactNode;
+  editView: (fieldProps: FieldProps<FieldValue>) => React.ReactNode;
   /** Whether the component shows the readView or the editView. */
   isEditing: boolean;
   /** The value shown in the editView when it is entered. Should be updated by onConfirm. */
@@ -50,12 +51,12 @@ export interface InlineEditUncontrolledProps extends CommonProps {
   onCancel: () => void;
 }
 
-export interface InlineEditProps extends CommonProps {
+export interface InlineEditProps<FieldValue> extends CommonProps {
   /** Component to be shown when not in edit view. */
   readView: () => React.ReactNode;
   /** Component to be shown when editing. */
   editView: (
-    fieldProps: FieldProps,
+    fieldProps: FieldProps<FieldValue>,
     ref: React.RefObject<any>,
   ) => React.ReactNode;
   /**
@@ -83,48 +84,6 @@ export interface InlineEditableTextfieldProps extends CommonProps {
   startWithEditViewOpen?: boolean;
   /** Sets height to compact. */
   isCompact?: boolean;
-}
-
-/** These interfaces will be exported from the Form package once it is converted to Typescript */
-export interface FormProps {
-  onSubmit: (e: React.FormEvent | any) => void;
-  ref: React.RefObject<HTMLFormElement>;
-  onKeyDown: (e: React.KeyboardEvent) => void;
-}
-
-export interface FormChildProps {
-  formProps: FormProps;
-  dirty: boolean;
-  submitting: boolean;
-  disabled: boolean;
-  getValues: () => {};
-}
-
-export interface FieldProps {
-  id: string;
-  isRequired: boolean;
-  isDisabled: boolean;
-  isInvalid: boolean;
-  onChange: (e: any) => any;
-  onBlur: () => any;
-  onFocus: () => any;
-  value: any;
-  'aria-invalid': 'true' | 'false';
-  'aria-labelledby': string;
-}
-
-export interface Meta {
-  dirty: boolean;
-  touched: boolean;
-  valid: boolean;
-  error: any;
-  submitError: any;
-}
-
-export interface FieldChildProps {
-  fieldProps: FieldProps;
-  error: any;
-  meta: Meta;
 }
 
 /** This interface will be exported once Inline Dialog is converted to Typescript */

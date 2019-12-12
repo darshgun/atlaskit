@@ -205,7 +205,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
     }
   }
 
-  private async handleProviders(props: EditorProps) {
+  private handleProviders(props: EditorProps) {
     const {
       emojiProvider,
       mentionProvider,
@@ -313,22 +313,23 @@ export default class Editor extends React.Component<EditorProps, {}> {
     };
 
     const editor = (
-      <ErrorBoundary
-        contextIdentifierProvider={this.props.contextIdentifierProvider}
+      <FabricEditorAnalyticsContext
+        data={{
+          packageName: name,
+          packageVersion: version,
+          componentName: 'editorCore',
+          appearance: getAnalyticsAppearance(this.props.appearance),
+        }}
       >
-        <WidthProvider>
-          <EditorContext editorActions={this.editorActions}>
-            <FabricEditorAnalyticsContext
-              data={{
-                packageName: name,
-                packageVersion: version,
-                componentName: 'editorCore',
-                appearance: getAnalyticsAppearance(this.props.appearance),
-              }}
-            >
-              <WithCreateAnalyticsEvent
-                render={createAnalyticsEvent =>
-                  (this.createAnalyticsEvent = createAnalyticsEvent) && (
+        <WithCreateAnalyticsEvent
+          render={createAnalyticsEvent =>
+            (this.createAnalyticsEvent = createAnalyticsEvent) && (
+              <ErrorBoundary
+                createAnalyticsEvent={createAnalyticsEvent}
+                contextIdentifierProvider={this.props.contextIdentifierProvider}
+              >
+                <WidthProvider>
+                  <EditorContext editorActions={this.editorActions}>
                     <ContextAdapter>
                       <PortalProvider
                         render={portalProviderAPI => (
@@ -416,13 +417,13 @@ export default class Editor extends React.Component<EditorProps, {}> {
                         )}
                       />
                     </ContextAdapter>
-                  )
-                }
-              />
-            </FabricEditorAnalyticsContext>
-          </EditorContext>
-        </WidthProvider>
-      </ErrorBoundary>
+                  </EditorContext>
+                </WidthProvider>
+              </ErrorBoundary>
+            )
+          }
+        />
+      </FabricEditorAnalyticsContext>
     );
 
     return this.context.intl ? (

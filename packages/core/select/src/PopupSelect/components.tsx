@@ -32,7 +32,7 @@ export const MenuDialog: FC<MenuDialogProps> = ({
       boxShadow: `0 0 0 1px ${N40A}, 0 4px 11px ${N40A}`,
       maxWidth,
       minWidth,
-      zIndex: layers.layer(),
+      zIndex: layers.modal(),
     }}
     {...props}
   />

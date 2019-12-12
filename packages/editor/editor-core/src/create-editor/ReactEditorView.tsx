@@ -16,7 +16,11 @@ import {
 
 import { createDispatch, Dispatch, EventDispatcher } from '../event-dispatcher';
 import { processRawValue } from '../utils';
-import { findChangedNodesFromTransaction, validateNodes } from '../utils/nodes';
+import {
+  findChangedNodesFromTransaction,
+  validateNodes,
+  validNode,
+} from '../utils/nodes';
 import createPluginList from './create-plugins-list';
 import {
   ACTION,
@@ -50,7 +54,7 @@ import {
   initAnalytics,
   processPluginsList,
 } from './create-editor';
-import { getDocStructure } from '../utils/document-logger';
+import { getDocStructure, SimplifiedNode } from '../utils/document-logger';
 import { isFullPage } from '../utils/is-full-page';
 import measurements from '../utils/performance/measure-enum';
 import { getNodesCount } from '../utils/document';
@@ -238,7 +242,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
         this.props.editorProps,
         props.createAnalyticsEvent,
       ),
-      props.editorProps,
     );
 
     const state = this.editorState;
@@ -247,8 +250,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
       dispatch: this.dispatch,
       errorReporter: this.errorReporter,
       editorConfig: this.config,
-      props: props.editorProps,
-      prevProps: this.props.editorProps,
       eventDispatcher: this.eventDispatcher,
       providerFactory: props.providerFactory,
       portalProviderAPI: props.portalProviderAPI,
@@ -356,7 +357,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
         undefined,
         options.props.createAnalyticsEvent,
       ),
-      options.props.editorProps,
     );
     const schema = createSchema(this.config);
 
@@ -370,7 +370,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
       dispatch: this.dispatch,
       errorReporter: this.errorReporter,
       editorConfig: this.config,
-      props: options.props.editorProps,
       eventDispatcher: this.eventDispatcher,
       providerFactory: options.props.providerFactory,
       portalProviderAPI: this.props.portalProviderAPI,
@@ -429,13 +428,13 @@ export default class ReactEditorView<T = {}> extends React.Component<
       }
       this.editorState = editorState;
     } else {
-      const documents = {
-        new: getDocStructure(transaction.doc),
-        prev: getDocStructure(transaction.docs[0]),
-      };
+      const invalidNodes = nodes
+        .filter(node => !validNode(node))
+        .map<SimplifiedNode | string>(node => getDocStructure(node));
+
       analyticsService.trackEvent(
         'atlaskit.fabric.editor.invalidtransaction',
-        { documents: JSON.stringify(documents) }, // V2 events don't support object properties
+        { invalidNodes: JSON.stringify(invalidNodes) }, // V2 events don't support object properties
       );
 
       this.dispatchAnalyticsEvent({
@@ -446,7 +445,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
           analyticsEventPayloads: getAnalyticsEventsFromTransaction(
             transaction,
           ),
-          documents,
+          invalidNodes,
         },
       });
     }

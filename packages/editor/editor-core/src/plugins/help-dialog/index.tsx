@@ -18,6 +18,7 @@ import {
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { openHelp, tooltip } from '../../keymaps';
+import { ImageUploadHandler } from '../image-upload/types';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
 
@@ -61,14 +62,16 @@ export function createPlugin(dispatch: Function, imageEnabled: boolean) {
   });
 }
 
-const helpDialog = (): EditorPlugin => ({
+const helpDialog = (
+  legacyImageUploadProvider?: Promise<ImageUploadHandler>,
+): EditorPlugin => ({
   name: 'helpDialog',
 
   pmPlugins() {
     return [
       {
         name: 'helpDialog',
-        plugin: ({ dispatch, props: { legacyImageUploadProvider } }) =>
+        plugin: ({ dispatch }) =>
           createPlugin(dispatch, !!legacyImageUploadProvider),
       },
       {

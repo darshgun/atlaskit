@@ -87,7 +87,7 @@ export const ArticleBody = (props: Props) => {
       }
 
       ReactDOM.render(
-        <div style={divSyle}></div>,
+        <div style={divSyle} />,
         document.getElementById(IFRAME_CONTAINER_ID),
         () => {
           ReactDOM.render(

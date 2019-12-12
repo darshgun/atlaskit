@@ -128,7 +128,7 @@ export default class ProgressTrackerStage extends PureComponent<
             in={this.state.transitioning}
             onEntered={onEntered}
             timeout={transitionDelay + transitionSpeed}
-            classNames="CSSTransition"
+            classNames="fade"
           >
             <ProgressTrackerStageMarker
               oldMarkerColor={this.state.oldMarkerColor}
@@ -143,7 +143,7 @@ export default class ProgressTrackerStage extends PureComponent<
             in={this.state.transitioning}
             onEntered={onEntered}
             timeout={transitionDelay + transitionSpeed}
-            classNames="CSSTransition"
+            classNames="fade"
           >
             <ProgressTrackerStageBar
               oldPercentageComplete={this.state.oldPercentageComplete}
@@ -158,7 +158,7 @@ export default class ProgressTrackerStage extends PureComponent<
             in={this.state.transitioning}
             onEntered={onEntered}
             timeout={transitionDelay + transitionSpeed}
-            classNames="CSSTransition"
+            classNames="fade"
           >
             <ProgressTrackerStageTitle
               color={getTextColor(item.status)}

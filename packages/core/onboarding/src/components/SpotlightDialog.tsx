@@ -54,6 +54,13 @@ export interface SpotlightDialogProps extends WithAnalyticsEventsProps {
   targetNode: HTMLElement;
   /** js object containing the animation styles to apply to component */
   animationStyles: Object;
+
+  /**
+   * A `testId` prop is provided for specified elements,
+   * which is a unique string that appears as a data attribute `data-testid` in the rendered code,
+   * serving as a hook for automated tests.
+   */
+  testId?: string;
 }
 
 interface State {
@@ -92,6 +99,7 @@ class SpotlightDialog extends Component<SpotlightDialogProps, State> {
       heading,
       image,
       targetNode,
+      testId,
     } = this.props;
     const { focusLockDisabled } = this.state;
 
@@ -123,6 +131,7 @@ class SpotlightDialog extends Component<SpotlightDialogProps, State> {
             >
               <SpotlightCard
                 ref={ref}
+                testId={testId}
                 theme={parent => {
                   const { container, ...others } = parent({});
                   return {

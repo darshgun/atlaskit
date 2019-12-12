@@ -49,7 +49,7 @@ export const ExpandIconWrapper = styled.div<{ expanded: boolean }>`
   }
 `;
 
-export const ExpandTooltipWrapper = styled.div`
+export const ExpandLayoutWrapper = styled.div`
   width: ${gridSize() * 3}px;
   height: ${gridSize() * 3}px;
 `;
@@ -71,7 +71,6 @@ const ContainerStyles = css<StyleProps>`
 
   transition: background 0.3s ${akEditorSwoopCubicBezier};
   padding: ${gridSize}px;
-  cursor: pointer;
 
   &:hover {
     border: 1px solid ${colors.N50A};

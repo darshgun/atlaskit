@@ -52,7 +52,6 @@
     "@atlaskit/mention": "^18.16.0",
     "@atlaskit/modal-dialog": "^10.3.6",
     "@atlaskit/select": "^11.0.2",
-    "@atlaskit/smart-card": "^12.6.1",
     "@atlaskit/spinner": "^12.1.2",
     "@atlaskit/status": "^0.9.17",
     "@atlaskit/task-decision": "^16.0.4",
@@ -103,6 +102,7 @@
     "w3c-keyname": "^2.1.0"
   },
   "peerDependencies": {
+    "@atlaskit/smart-card": "^12.6.0",
     "@atlaskit/media-core": "^31.0.1",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
@@ -123,6 +123,7 @@
     "@atlaskit/renderer": "^53.2.0",
     "@atlaskit/section-message": "^4.1.2",
     "@atlaskit/share": "^0.7.1",
+    "@atlaskit/smart-card": "^12.6.0",
     "@atlaskit/synchrony-test-helpers": "^1.0.2",
     "@atlaskit/textarea": "^2.2.1",
     "@atlaskit/toggle": "^8.1.1",

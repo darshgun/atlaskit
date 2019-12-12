@@ -866,11 +866,11 @@ class ToolbarInsertBlock extends React.PureComponent<
   private handleSelectedEmoji = withAnalytics(
     'atlassian.editor.emoji.button',
     (emojiId: EmojiId): boolean => {
+      this.props.editorView.focus();
       insertEmoji(emojiId, INPUT_METHOD.PICKER)(
         this.props.editorView.state,
         this.props.editorView.dispatch,
       );
-      this.props.editorView.focus();
       this.toggleEmojiPicker();
       return true;
     },
@@ -891,6 +891,11 @@ class ToolbarInsertBlock extends React.PureComponent<
       handleImageUpload,
       expandEnabled,
     } = this.props;
+
+    // need to do this before inserting nodes so scrollIntoView works properly
+    if (!editorView.hasFocus()) {
+      editorView.focus();
+    }
 
     switch (item.value.name) {
       case 'link':
@@ -966,9 +971,6 @@ class ToolbarInsertBlock extends React.PureComponent<
         }
     }
     this.setState({ isOpen: false });
-    if (!editorView.hasFocus()) {
-      editorView.focus();
-    }
   };
 
   private insertToolbarMenuItem = (btn: any) =>

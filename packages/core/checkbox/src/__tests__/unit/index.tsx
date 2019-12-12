@@ -97,6 +97,11 @@ describe(name, () => {
       });
       expect(cb.find('input').prop('data-foo')).toBe('checkbox-bar');
     });
+    it('should have no pointer-events on HiddenCheckbox', () => {
+      const cb = mountCheckbox({});
+
+      expect(cb.find('input')).toHaveStyleDeclaration('pointer-events', 'none');
+    });
   });
   describe('<Checkbox defaultChecked/>', () => {
     it('should render defaultChecked', () => {
@@ -110,6 +115,13 @@ describe(name, () => {
       // @ts-ignore - Property 'checkbox' does not exist
       const element = cb.find('Checkbox').instance().checkbox;
       expect(element.checked).toBe(false);
+    });
+  });
+  describe('<Checkbox disabled/>', () => {
+    it('should show a not-allowed cursor', () => {
+      const cb = mountCheckbox({ isDisabled: true });
+
+      expect(cb.find('label')).toHaveStyleDeclaration('cursor', 'not-allowed');
     });
   });
 });

@@ -237,5 +237,53 @@ describe('request', () => {
       );
       expect(fetchMock.calls().length).toEqual(5);
     });
+
+    it('should not retry if request is aborted (using DOMException)', async () => {
+      const abortException = new DOMException(
+        'The user aborted a request.',
+        'AbortError',
+      );
+      let error;
+
+      fetchMock.mock(
+        url,
+        new Promise((resolve, reject) => reject(abortException)),
+      );
+
+      try {
+        await request(url, {
+          retryOptions: { factor: 1, startTimeoutInMs: 1 },
+        });
+      } catch (e) {
+        error = e;
+      }
+
+      expect(error).toBeInstanceOf(DOMException);
+      expect(error.name).toEqual('AbortError');
+
+      // should not retry on aborted requests
+      expect(fetchMock.calls().length).toEqual(1);
+    });
+
+    it('should not retry if request is aborted (using Error)', async () => {
+      const abortError = new Error('request_cancelled');
+      let error;
+
+      fetchMock.mock(url, new Promise((resolve, reject) => reject(abortError)));
+
+      try {
+        await request(url, {
+          retryOptions: { factor: 1, startTimeoutInMs: 1 },
+        });
+      } catch (e) {
+        error = e;
+      }
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toEqual('request_cancelled');
+
+      // should not retry on aborted requests
+      expect(fetchMock.calls().length).toEqual(1);
+    });
   });
 });

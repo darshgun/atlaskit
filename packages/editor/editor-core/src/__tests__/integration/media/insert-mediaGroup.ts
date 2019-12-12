@@ -9,7 +9,10 @@ import {
   BrowserTestCase(
     `insert-mediaGroup.ts: Inserts a media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
-    async (client: any, testName: string) => {
+    async (
+      client: Parameters<typeof goToEditorTestingExample>[0],
+      testName: string,
+    ) => {
       const page = await goToEditorTestingExample(client);
       await mountEditor(page, {
         appearance: editor.appearance,

@@ -6,20 +6,38 @@ import {
   CreateEditorOptions,
   p,
 } from '@atlaskit/editor-test-helpers';
-import { updateAltText } from '../../../../plugins/media/pm-plugins/alt-text/commands';
+import {
+  updateAltText,
+  openMediaAltTextMenu,
+} from '../../../../plugins/media/pm-plugins/alt-text/commands';
 import { getFreshMediaProvider } from '../media/_utils';
 import { pluginKey as mediaEditorPluginKey } from '../../../../plugins/media/pm-plugins/media-editor';
 
 import { MediaEditorState } from '../../../../plugins/media/types';
+import {
+  EVENT_TYPE,
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+} from '../../../../plugins/analytics';
+import {
+  CreateUIAnalyticsEvent,
+  UIAnalyticsEvent,
+} from '@atlaskit/analytics-next';
 
 describe('commands', () => {
   const createEditor = createEditorFactory<MediaEditorState>();
   const mediaProvider = getFreshMediaProvider();
+  let createAnalyticsEvent: CreateUIAnalyticsEvent = jest.fn(
+    () => ({ fire() {} } as UIAnalyticsEvent),
+  );
+
   const editor = (doc: any, createEditorOptions?: CreateEditorOptions) => {
     return createEditor({
       ...createEditorOptions,
       doc,
       editorProps: {
+        allowAnalyticsGASV3: true,
         media: {
           allowAnnotation: true,
           allowMediaSingle: true,
@@ -27,6 +45,7 @@ describe('commands', () => {
           provider: mediaProvider,
         },
       },
+      createAnalyticsEvent,
       pluginKey: mediaEditorPluginKey,
     });
   };
@@ -109,6 +128,17 @@ describe('commands', () => {
             ),
           ),
         );
+      });
+
+      it('fires analytics event on open alt text edit popup', () => {
+        const { editorView } = editor(defaultDoc);
+        openMediaAltTextMenu(editorView.state, editorView.dispatch);
+        expect(createAnalyticsEvent).toHaveBeenCalledWith({
+          action: ACTION.OPENED,
+          actionSubject: ACTION_SUBJECT.MEDIA,
+          actionSubjectId: ACTION_SUBJECT_ID.ALT_TEXT,
+          eventType: EVENT_TYPE.TRACK,
+        });
       });
     });
   });

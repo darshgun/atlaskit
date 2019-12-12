@@ -298,14 +298,17 @@ describe('ascii emojis - input rules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, ':D ', sel);
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith(analyticsPayload);
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining(analyticsPayload),
+      );
     });
-
     it('should fire analytics event when emoji not starting with colon is inserted', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '(y)', sel);
 
-      expect(createAnalyticsEvent).toHaveBeenCalledWith(analyticsPayload);
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining(analyticsPayload),
+      );
     });
   });
 });

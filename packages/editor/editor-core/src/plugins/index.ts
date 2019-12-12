@@ -51,3 +51,4 @@ export { default as historyPlugin } from './history';
 export { default as sharedContextPlugin } from './shared-context';
 export { default as expandPlugin, isExpandInsertionEnabled } from './expand';
 export { default as iOSScrollPlugin } from './ios-scroll';
+export { default as scrollIntoViewPlugin } from './scroll-into-view';

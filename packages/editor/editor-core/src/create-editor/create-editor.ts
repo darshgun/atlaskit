@@ -5,7 +5,6 @@ import { ErrorReporter, ErrorReportingHandler } from '@atlaskit/editor-common';
 import { analyticsService, AnalyticsHandler } from '../analytics';
 import {
   EditorPlugin,
-  EditorProps,
   EditorConfig,
   PluginsOptions,
   PMPluginCreateConfig,
@@ -41,10 +40,7 @@ export function fixExcludes(marks: {
   return marks;
 }
 
-export function processPluginsList(
-  plugins: EditorPlugin[],
-  editorProps: EditorProps,
-): EditorConfig {
+export function processPluginsList(plugins: EditorPlugin[]): EditorConfig {
   /**
    * First pass to collect pluginsOptions
    */
@@ -75,11 +71,11 @@ export function processPluginsList(
       }
 
       if (plugin.nodes) {
-        acc.nodes.push(...plugin.nodes(editorProps));
+        acc.nodes.push(...plugin.nodes());
       }
 
       if (plugin.marks) {
-        acc.marks.push(...plugin.marks(editorProps));
+        acc.marks.push(...plugin.marks());
       }
 
       if (plugin.contentComponent) {
@@ -128,8 +124,6 @@ export function createSchema(editorConfig: EditorConfig) {
 export function createPMPlugins({
   editorConfig,
   schema,
-  props,
-  prevProps,
   dispatch,
   eventDispatcher,
   providerFactory,
@@ -143,8 +137,6 @@ export function createPMPlugins({
     .map(({ plugin }) =>
       plugin({
         schema,
-        props,
-        prevProps,
         dispatch,
         providerFactory,
         errorReporter,

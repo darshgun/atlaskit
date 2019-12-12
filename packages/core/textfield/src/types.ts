@@ -35,6 +35,8 @@ export interface PublicProps
    * string that appears as a data attribute `data-testid` in the rendered code,
    * serving as a hook for automated tests */
   testId?: string;
+  /** Name of the input form control */
+  name?: string;
 }
 
 export interface InternalProps extends PublicProps {

@@ -1,19 +1,21 @@
 import { mount, configure } from 'enzyme';
 //@ts-ignore
 import Adapter from 'enzyme-adapter-react-16';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   DropResult,
   DragUpdate,
   DragStart,
   Droppable,
-} from 'react-beautiful-dnd';
+} from 'react-beautiful-dnd-next';
 import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
 // import { Props as TreeProps } from '../../Tree-types';
 import { mutateTree } from '../../../../utils/tree';
 import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../../../../mockdata/treeWithTwoBranches';
+import { treeInitiallyClosed } from '../../../../../mockdata/treeInitiallyClosed';
+import { RenderItemParams } from '../../../TreeItem/TreeItem-types';
 
 configure({ adapter: new Adapter() });
 
@@ -149,6 +151,62 @@ describe('@atlaskit/tree - Tree', () => {
       mockRender.mock.calls[0][0].onExpand(firstItem);
       expect(mockOnExpand).toHaveBeenCalledTimes(1);
       expect(mockOnExpand).toBeCalledWith(firstItem, [0]);
+    });
+    it('shows only the relevant children', () => {
+      const DynamicTree = () => {
+        const [tree, setTree] = useState(treeInitiallyClosed);
+
+        const renderItem = (params: RenderItemParams) => {
+          const { item, provided, onCollapse, onExpand } = params;
+          return (
+            <div
+              data-testid={item.id}
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              onClick={() => {
+                if (item.isExpanded) {
+                  onCollapse(item.id);
+                } else {
+                  onExpand(item.id);
+                }
+              }}
+            >
+              {item.id}
+            </div>
+          );
+        };
+
+        const onExpand = (itemId: React.ReactText) => {
+          const newTree = mutateTree(tree, itemId, { isExpanded: true });
+          setTree(newTree);
+        };
+
+        const onCollapse = (itemId: React.ReactText) => {
+          const newTree = mutateTree(tree, itemId, { isExpanded: false });
+          setTree(newTree);
+        };
+
+        return (
+          <Tree
+            tree={tree}
+            renderItem={renderItem}
+            onExpand={onExpand}
+            onCollapse={onCollapse}
+          />
+        );
+      };
+
+      const wrapper = mount(<DynamicTree />);
+
+      wrapper.find('[data-testid="a"]').simulate('click');
+      wrapper.find('[data-testid="a"]').simulate('click');
+      wrapper.find('[data-testid="b"]').simulate('click');
+      wrapper.find('[data-testid="b"]').simulate('click');
+      wrapper.find('[data-testid="a"]').simulate('click');
+
+      expect(wrapper.find('[data-testid="a"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="c"]').exists()).toBe(true);
+      expect(wrapper.find('[data-testid="d"]').exists()).toBe(false);
     });
   });
 

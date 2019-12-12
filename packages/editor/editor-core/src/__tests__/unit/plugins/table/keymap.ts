@@ -585,13 +585,15 @@ describe('table keymap', () => {
     });
 
     it('should dispatch analytics event', () => {
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'table',
-        attributes: { inputMethod: 'shortcut' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'table',
+          attributes: { inputMethod: 'shortcut' },
+          eventType: 'track',
+        }),
+      );
     });
   });
 });

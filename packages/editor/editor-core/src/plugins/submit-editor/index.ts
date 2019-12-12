@@ -64,14 +64,16 @@ const analyticsPayload = (
   },
 });
 
-const submitEditorPlugin = (): EditorPlugin => ({
+const submitEditorPlugin = (
+  onSave?: (editorView: EditorView) => void,
+): EditorPlugin => ({
   name: 'submitEditor',
 
   pmPlugins() {
     return [
       {
         name: 'submitEditor',
-        plugin: ({ props, dispatch }) => createPlugin(dispatch, props.onSave),
+        plugin: ({ dispatch }) => createPlugin(dispatch, onSave),
       },
     ];
   },

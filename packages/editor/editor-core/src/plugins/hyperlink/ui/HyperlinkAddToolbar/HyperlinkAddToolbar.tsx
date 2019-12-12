@@ -212,7 +212,7 @@ class LinkAddToolbar extends PureComponent<Props & InjectedIntlProps, State> {
               placeholder={placeholder}
               onSubmit={this.handleSubmit}
               onChange={this.updateInput}
-              autoFocus={true}
+              autoFocus={{ preventScroll: true }}
               onCancel={this.urlBlur}
               onBlur={this.urlBlur}
               defaultValue={text}

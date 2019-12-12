@@ -54,6 +54,7 @@ import {
   expandPlugin,
   isExpandInsertionEnabled,
   iOSScrollPlugin,
+  scrollIntoViewPlugin,
 } from '../plugins';
 import { isFullPage as fullPageCheck } from '../utils/is-full-page';
 import { ScrollGutterPluginOptions } from '../plugins/base/pm-plugins/scroll-gutter';
@@ -66,13 +67,20 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
   const isFullPage = fullPageCheck(appearance);
 
   return [
-    pastePlugin(),
+    pastePlugin({
+      cardOptions: props.UNSAFE_cards,
+      sanitizePrivateContent: props.sanitizePrivateContent,
+    }),
     basePlugin({
       allowInlineCursorTarget: appearance !== 'mobile',
       allowScrollGutter: getScrollGutterOptions(props),
       addRunTimePerformanceCheck: isFullPage,
+      inputSamplingLimit: props.inputSamplingLimit,
     }),
-    blockTypePlugin({ lastNodeMustBeParagraph: appearance === 'comment' }),
+    blockTypePlugin({
+      lastNodeMustBeParagraph: appearance === 'comment',
+      allowBlockType: props.allowBlockType,
+    }),
     placeholderPlugin({ placeholder }),
     clearMarksOnChangeToEmptyDocumentPlugin(),
     hyperlinkPlugin(),
@@ -83,10 +91,10 @@ export function getDefaultPluginsList(props: EditorProps): EditorPlugin[] {
     editorDisabledPlugin(),
     gapCursorPlugin(),
     gridPlugin({ shouldCalcBreakoutGridLines: isFullPage }),
-    submitEditorPlugin(),
+    submitEditorPlugin(props.onSave),
     fakeTextCursorPlugin(),
     floatingToolbarPlugin(),
-    sharedContextPlugin(),
+    sharedContextPlugin(props),
     codeBlockPlugin(),
   ];
 }
@@ -140,7 +148,7 @@ export default function createPluginsList(
   }
 
   if (props.allowTextColor) {
-    plugins.push(textColorPlugin());
+    plugins.push(textColorPlugin(props.allowTextColor));
   }
 
   // Needs to be after allowTextColor as order of buttons in toolbar depends on it
@@ -169,6 +177,8 @@ export default function createPluginsList(
         // so a bit of guess for now.
         allowMarkingUploadsAsIncomplete: isMobile,
         fullWidthEnabled: props.appearance === 'full-width',
+        uploadErrorHandler: props.uploadErrorHandler,
+        waitForMediaUpload: props.waitForMediaUpload,
       }),
     );
   }
@@ -213,7 +223,7 @@ export default function createPluginsList(
   }
 
   if (props.allowTasksAndDecisions || props.taskDecisionProvider) {
-    plugins.push(tasksAndDecisionsPlugin());
+    plugins.push(tasksAndDecisionsPlugin(props.allowNestedTasks));
   }
 
   if (props.feedbackInfo) {
@@ -221,11 +231,11 @@ export default function createPluginsList(
   }
 
   if (props.allowHelpDialog) {
-    plugins.push(helpDialogPlugin());
+    plugins.push(helpDialogPlugin(props.legacyImageUploadProvider));
   }
 
   if (props.saveOnEnter) {
-    plugins.push(saveOnEnterPlugin());
+    plugins.push(saveOnEnterPlugin(props.onSave));
   }
 
   if (props.legacyImageUploadProvider) {
@@ -248,7 +258,7 @@ export default function createPluginsList(
   }
 
   if (props.maxContentSize) {
-    plugins.push(maxContentSizePlugin());
+    plugins.push(maxContentSizePlugin(props.maxContentSize));
   }
 
   if (props.allowJiraIssue) {
@@ -260,8 +270,16 @@ export default function createPluginsList(
   }
 
   if (props.allowExtension) {
+    const extensionConfig =
+      typeof props.allowExtension === 'object' ? props.allowExtension : {};
     plugins.push(
-      extensionPlugin({ breakoutEnabled: props.appearance === 'full-page' }),
+      extensionPlugin({
+        breakoutEnabled:
+          props.appearance === 'full-page' &&
+          extensionConfig.allowBreakout !== false,
+        stickToolbarToBottom: extensionConfig.stickToolbarToBottom,
+        extensionHandlers: props.extensionHandlers,
+      }),
     );
   }
 
@@ -286,7 +304,13 @@ export default function createPluginsList(
   }
 
   if (props.allowLayouts) {
-    plugins.push(layoutPlugin());
+    plugins.push(
+      layoutPlugin(
+        typeof props.allowLayouts === 'boolean'
+          ? undefined
+          : props.allowLayouts,
+      ),
+    );
   }
 
   if (props.UNSAFE_cards) {
@@ -337,6 +361,10 @@ export default function createPluginsList(
 
   if (isIOS) {
     plugins.push(iOSScrollPlugin());
+  }
+
+  if (props.autoScrollIntoView !== false) {
+    plugins.push(scrollIntoViewPlugin());
   }
 
   return plugins;

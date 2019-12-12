@@ -77,5 +77,9 @@ module.exports = async function createWebpackConfig(_, args) {
       nodeEnv: JSON.stringify(mode),
       splitChunks: false,
     },
+    devServer: {
+      host: '0.0.0.0',
+      allowedHosts: ['localhost', '10.0.2.2'],
+    },
   };
 };

@@ -2,8 +2,21 @@
     "name": "@atlaskit/website-constellation",
     "version": "0.0.0",
     "private": true,
+    "scripts": {
+        "pre:gatsby": "node write-resolution-map && brisk build-pages",
+        "start": "yarn pre:gatsby && gatsby develop",
+        "build": "yarn pre:gatsby && gatsby build",
+        "deploy:local": "netlify deploy",
+        "deploy:staging": "netlify deploy --auth $NETLIFY_TOKEN --site $CONSTELLATION_ID",
+        "deploy:production": "netlify deploy --auth $NETLIFY_TOKEN --site $CONSTELLATION_ID --prod"
+    },
     "dependencies": {
         "@atlaskit/multi-entry-tools": "^0.0.3",
-        "fs-extra": "^4.0.2"
+        "@brisk-docs/gatsby-generator": "^1.1.0",
+        "@brisk-docs/gatsby-plugin": "^0.1.0",
+        "@manypkg/gatsby-source-workspace": "^0.3.0",
+        "fs-extra": "^4.0.2",
+        "gatsby": "^2.17.10",
+        "gatsby-core-utils": "^1.0.21"
     }
 }

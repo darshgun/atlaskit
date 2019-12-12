@@ -163,25 +163,29 @@ describe('inputrules', () => {
     it('should fire analytics event when convert "---" to rule', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '---', sel);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'divider',
-        attributes: { inputMethod: 'autoformatting' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'divider',
+          attributes: { inputMethod: 'autoformatting' },
+          eventType: 'track',
+        }),
+      );
     });
 
     it('should fire analytics event when convert "***" to rule', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '***', sel);
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'divider',
-        attributes: { inputMethod: 'autoformatting' },
-        eventType: 'track',
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'inserted',
+          actionSubject: 'document',
+          actionSubjectId: 'divider',
+          attributes: { inputMethod: 'autoformatting' },
+          eventType: 'track',
+        }),
+      );
     });
   });
 });

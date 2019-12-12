@@ -15,7 +15,7 @@ export const clickOnLayoutColumn = async (
   paragraph: number = 1,
 ) => {
   const elementPath = getColumnElementXPath(column, paragraph);
-  await page.waitForXPath(elementPath, 5000);
+  await page.waitForXPath(elementPath, { timeout: 5000 });
   const target = await page.$x(elementPath);
   expect(target.length).toBeGreaterThan(0);
   await target[0].click();

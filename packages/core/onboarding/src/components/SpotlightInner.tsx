@@ -10,6 +10,7 @@ import Clone from './Clone';
 import SpotlightDialog from './SpotlightDialog';
 import { SpotlightTransitionConsumer } from './SpotlightTransition';
 import { Props as SpotlightProps } from './Spotlight';
+import { ElementBox, ElementBoundingBox } from '../utils/use-element-box';
 
 export interface Props extends SpotlightProps {
   /** the spotlight tagert dom element */
@@ -18,6 +19,7 @@ export interface Props extends SpotlightProps {
   onOpened: () => any;
   /** Called when the component has been unmounted */
   onClosed: () => any;
+  testId: string;
 }
 
 interface State {
@@ -60,11 +62,14 @@ class SpotlightInner extends React.Component<Props, State> {
   isPositionFixed = (element: Element) =>
     window.getComputedStyle(element).position === 'fixed';
 
-  hasPositionFixedParent = (element: HTMLElement): boolean => {
-    // Cast to to any - offsetParent should be of interface "HTMLElement" instead of "Element"
+  hasPositionFixedParent = (
+    element: HTMLElement,
+    // We cap this method to be called to 1000 times to prevent flooding the stack.
+    // In reality this only seems to be a problem in CI.
+    _maxTries: number = 1000,
+  ): boolean => {
     const { offsetParent } = element;
-
-    if (!offsetParent) {
+    if (!offsetParent || _maxTries === 0) {
       return false;
     }
 
@@ -72,35 +77,34 @@ class SpotlightInner extends React.Component<Props, State> {
       return true;
     }
 
-    return this.hasPositionFixedParent(offsetParent as HTMLElement);
+    return this.hasPositionFixedParent(
+      offsetParent as HTMLElement,
+      _maxTries - 1,
+    );
   };
 
-  getTargetNodeStyle = () => {
+  getTargetNodeStyle = (box: ElementBoundingBox) => {
     if (!canUseDOM) {
       return {};
     }
     const { targetNode } = this.props;
-    const { height, left, top, width } = targetNode.getBoundingClientRect();
 
     if (
       this.isPositionFixed(targetNode) ||
       this.hasPositionFixedParent(targetNode)
     ) {
       return {
-        height,
-        left,
-        top,
-        width,
+        ...box,
         // fixed position holds the target in place if overflow/scroll is necessary
         position: 'fixed',
       };
     }
 
     return {
-      height,
-      left: left + window.pageXOffset,
-      top: top + window.pageYOffset,
-      width,
+      height: box.height,
+      left: box.left + window.pageXOffset,
+      top: box.top + window.pageYOffset,
+      width: box.width,
       position: 'absolute',
     };
   };
@@ -113,6 +117,7 @@ class SpotlightInner extends React.Component<Props, State> {
       targetBgColor,
       targetOnClick,
       targetRadius,
+      testId,
       targetReplacement: TargetReplacement,
     } = this.props;
     const { replacementElement } = this.state;
@@ -127,23 +132,36 @@ class SpotlightInner extends React.Component<Props, State> {
                   this.setState({ replacementElement: elem })
                 }
               >
-                <TargetReplacement {...this.getTargetNodeStyle()} />
+                <ElementBox element={targetNode}>
+                  {box => (
+                    <TargetReplacement
+                      data-testid={`${testId}--target`}
+                      {...this.getTargetNodeStyle(box)}
+                    />
+                  )}
+                </ElementBox>
               </NodeResovler>
             ) : (
-              <Clone
-                pulse={pulse}
-                target={target}
-                style={this.getTargetNodeStyle()}
-                targetBgColor={targetBgColor}
-                targetNode={targetNode}
-                targetOnClick={targetOnClick}
-                targetRadius={targetRadius}
-              />
+              <ElementBox element={targetNode}>
+                {box => (
+                  <Clone
+                    testId={`${testId}--target`}
+                    pulse={pulse}
+                    target={target}
+                    style={this.getTargetNodeStyle(box)}
+                    targetBgColor={targetBgColor}
+                    targetNode={targetNode}
+                    targetOnClick={targetOnClick}
+                    targetRadius={targetRadius}
+                  />
+                )}
+              </ElementBox>
             )}
             {TargetReplacement && !replacementElement ? null : (
               <Fade in={isOpen} onExited={onExited}>
                 {animationStyles => (
                   <SpotlightDialog
+                    testId={`${testId}--dialog`}
                     actions={this.props.actions}
                     actionsBeforeElement={this.props.actionsBeforeElement}
                     children={this.props.children}

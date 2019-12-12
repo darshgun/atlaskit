@@ -301,15 +301,17 @@ describe('media', () => {
                 .props()
                 .onSubmit(googleUrl, { inputMethod: INPUT_METHOD.MANUAL });
 
-              expect(createAnalyticsEvent).toBeCalledWith({
-                eventType: 'track',
-                action: 'inserted',
-                actionSubject: 'document',
-                actionSubjectId: 'mediaLink',
-                attributes: {
-                  inputMethod: 'manual',
-                },
-              });
+              expect(createAnalyticsEvent).toBeCalledWith(
+                expect.objectContaining({
+                  eventType: 'track',
+                  action: 'inserted',
+                  actionSubject: 'document',
+                  actionSubjectId: 'mediaLink',
+                  attributes: {
+                    inputMethod: 'manual',
+                  },
+                }),
+              );
             });
 
             it('should create analytics event with input method typeahead ', () => {
@@ -317,15 +319,17 @@ describe('media', () => {
                 .props()
                 .onSubmit(googleUrl, { inputMethod: INPUT_METHOD.TYPEAHEAD });
 
-              expect(createAnalyticsEvent).toBeCalledWith({
-                eventType: 'track',
-                action: 'inserted',
-                actionSubject: 'document',
-                actionSubjectId: 'mediaLink',
-                attributes: {
-                  inputMethod: 'typeAhead',
-                },
-              });
+              expect(createAnalyticsEvent).toBeCalledWith(
+                expect.objectContaining({
+                  eventType: 'track',
+                  action: 'inserted',
+                  actionSubject: 'document',
+                  actionSubjectId: 'mediaLink',
+                  attributes: {
+                    inputMethod: 'typeAhead',
+                  },
+                }),
+              );
             });
           });
         });

@@ -50,4 +50,4 @@ test -z "$(cat yarn.lock | grep "packages.atlassian")" || (echo "Private registr
 
 # React Popper needs to be pinned due to a history of breaking changes released in minor/patch releases.
 # (check their repo https://github.com/FezVrasta/react-popper)
-test -n "$(cat package.json | grep "\"react-popper\": \"1.3.4\"")" || (echo "React Popper needs to be pinned due to a history of breaking changes released in minor/patch releases.)" && false)
+test -n "$(cat package.json | grep "\"react-popper\": \"1.3.6\"")" || (echo "React Popper needs to be pinned due to a history of breaking changes released in minor/patch releases.)" && false)

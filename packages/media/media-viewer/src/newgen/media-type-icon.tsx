@@ -32,7 +32,10 @@ export class MediaTypeIcon extends React.Component<FileIconProps, {}> {
     const Icon = icons[typeWithDefault] || icons[defaultType];
 
     return (
-      <IconWrapper type={typeWithDefault}>
+      <IconWrapper
+        data-testid="media-viewer-file-type-icon"
+        type={typeWithDefault}
+      >
         <Icon label="media-type" size="large" />
       </IconWrapper>
     );

@@ -5,11 +5,6 @@ import {
   sendKeyToPm,
   status,
 } from '@atlaskit/editor-test-helpers';
-import {
-  setSelectionAndPickerAt,
-  validateSelection,
-  getStatusesInDocument,
-} from './plugin';
 
 describe('status - keymaps', () => {
   const createEditor = createEditorFactory();
@@ -23,12 +18,13 @@ describe('status - keymaps', () => {
     });
 
   describe('Consume Enter/Tab keys in status node', () => {
-    it('When status node is selected and enter key is pressed then the node should not move', () => {
-      const { editorView } = editorFactory(
-        doc(
+    ['Tab', 'Enter'].forEach(key => {
+      it(`When status node is selected and ${key} key is pressed then the node should not move`, () => {
+        const adf = doc(
           p('boo something'),
           p(
-            'Status: {<>}',
+            'Status: ',
+            '{<node>}',
             status({
               text: 'Hello',
               color: 'blue',
@@ -36,18 +32,12 @@ describe('status - keymaps', () => {
             }),
             'WW',
           ),
-        ),
-      );
-      const cursorPos = editorView.state.tr.selection.from;
-      let state = setSelectionAndPickerAt(cursorPos)(editorView);
-      validateSelection(cursorPos)(state);
-      let nodes = getStatusesInDocument(state, 1);
-      const pos = nodes[0].pos;
+        );
+        const { editorView } = editorFactory(adf);
 
-      sendKeyToPm(editorView, 'Enter'); // Tab key uses the same solution but somehow sending Tab key event does not seem to work
-
-      nodes = getStatusesInDocument(editorView.state, 1);
-      expect(nodes[0].pos).toBe(pos);
+        sendKeyToPm(editorView, key);
+        expect(editorView.state).toEqualDocumentAndSelection(adf);
+      });
     });
   });
 });

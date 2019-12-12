@@ -86,7 +86,10 @@ const baseADF = {
 BrowserTestCase(
   'copy-mediaSingle-replacement.ts: Copies and pastes mediaSingle on fullpage',
   { skip: ['edge', 'ie', 'safari'] },
-  async (client: any, testCase: string) => {
+  async (
+    client: Parameters<typeof goToEditorTestingExample>[0],
+    testCase: string,
+  ) => {
     const page = await goToEditorTestingExample(client);
     await mountEditor(page, {
       appearance: fullpage.appearance,
@@ -102,12 +105,12 @@ BrowserTestCase(
     // use the .wrapper selector if we're able to resolve the image
     await page.waitForSelector('.ProseMirror :nth-child(3) .wrapper');
     await page.click('.ProseMirror :nth-child(3) .wrapper');
-    await page.copy(editable);
+    await page.copy();
 
     // select the last one and replace it
     await page.waitForSelector('.ProseMirror :nth-child(4) .wrapper');
     await page.click('.ProseMirror :nth-child(4) .wrapper');
-    await page.paste(editable);
+    await page.paste();
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchCustomDocSnapshot(testCase);

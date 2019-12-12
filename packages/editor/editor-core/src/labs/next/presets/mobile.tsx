@@ -1,58 +1,52 @@
 // #region Imports
 import * as React from 'react';
-import { EmojiProvider } from '@atlaskit/emoji';
-import { MentionProvider } from '@atlaskit/mention/resource';
-import { TaskDecisionProvider } from '@atlaskit/task-decision';
+import {
+  useProvider,
+  useProviderFactory,
+} from '@atlaskit/editor-common/provider-factory';
 
 import {
-  tablesPlugin,
-  codeBlockPlugin,
-  panelPlugin,
-  listsPlugin,
-  textColorPlugin,
-  extensionPlugin,
-  rulePlugin,
-  datePlugin,
-  layoutPlugin,
+  annotationPlugin,
+  basePlugin,
   cardPlugin,
-  statusPlugin,
+  codeBlockPlugin,
+  datePlugin,
+  emojiPlugin,
+  extensionPlugin,
+  insertBlockPlugin,
+  layoutPlugin,
+  listsPlugin,
   mediaPlugin,
   mentionsPlugin,
-  emojiPlugin,
-  tasksAndDecisionsPlugin,
-  insertBlockPlugin,
-  basePlugin,
+  panelPlugin,
   placeholderPlugin,
-  annotationPlugin,
-  iOSScrollPlugin,
+  rulePlugin,
+  statusPlugin,
+  tablesPlugin,
+  tasksAndDecisionsPlugin,
+  textColorPlugin,
 } from '../../../plugins';
-import { MediaProvider, CustomMediaPicker } from '../../../plugins/media';
+import { CustomMediaPicker } from '../../../plugins/media';
 import { PresetProvider } from '../Editor';
 import { EditorPresetProps } from './types';
 import { useDefaultPreset } from './default';
-import { getPluginsFromPreset } from './utils';
+import { addExcludesFromProviderFactory, getPluginsFromPreset } from './utils';
+
 // #endregion
 
 interface EditorPresetMobileProps {
   children?: React.ReactNode;
   placeholder?: string;
-  mentionProvider?: Promise<MentionProvider>;
-  emojiProvider?: Promise<EmojiProvider>;
-  taskDecisionProvider?: Promise<TaskDecisionProvider>;
   media?: {
-    provider?: Promise<MediaProvider>;
     picker?: CustomMediaPicker;
   };
 }
 
 export function useMobilePreset({
-  mentionProvider,
-  emojiProvider,
   media,
   placeholder,
 }: EditorPresetMobileProps & EditorPresetProps) {
-  const isIOS = !!(window as any).webkit;
-
+  const mediaProvider = useProvider('mediaProvider');
   const [preset] = useDefaultPreset();
 
   preset.push(
@@ -80,31 +74,23 @@ export function useMobilePreset({
     [placeholderPlugin, { placeholder }],
     annotationPlugin,
     cardPlugin,
+    // Begin -> This would be exclude if the provider doesnt exist in the factory
+    [mentionsPlugin, { useInlineWrapper: true }],
+    [emojiPlugin, { useInlineWrapper: true }],
+    // End
   );
-
-  if (mentionProvider) {
-    preset.push([mentionsPlugin, { useInlineWrapper: true }]);
-  }
-
-  if (emojiProvider) {
-    preset.push([emojiPlugin, { useInlineWrapper: true }]);
-  }
 
   if (media) {
     preset.push([
       mediaPlugin,
       {
-        provider: media.provider,
+        provider: mediaProvider,
         customMediaPicker: media.picker,
         allowMediaSingle: true,
       },
       // TODO: ED-7891 Align media plugin constructor with other plugins
       // { allowMarkingUploadsAsIncomplete: true },
     ]);
-  }
-
-  if (isIOS) {
-    preset.push(iOSScrollPlugin);
   }
 
   return [preset];
@@ -115,7 +101,13 @@ export function EditorPresetMobile(
 ) {
   const { children, excludes, experimental } = props;
   const [preset] = useMobilePreset(props);
-  const plugins = getPluginsFromPreset(preset, excludes, experimental);
+  const providerFactory = useProviderFactory();
+
+  const plugins = getPluginsFromPreset(
+    preset,
+    addExcludesFromProviderFactory(providerFactory, excludes),
+    experimental,
+  );
 
   return <PresetProvider value={plugins}>{children}</PresetProvider>;
 }

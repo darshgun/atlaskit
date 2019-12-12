@@ -4,7 +4,7 @@ import { Input } from './styles';
 import { FocusEvent } from 'react';
 
 export interface Props {
-  autoFocus?: boolean;
+  autoFocus?: boolean | FocusOptions;
   defaultValue?: string;
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
@@ -79,7 +79,9 @@ export default class PanelTextInput extends PureComponent<Props, State> {
   focus() {
     const { input } = this;
     if (input) {
-      input.focus();
+      const focusOpts =
+        typeof this.props.autoFocus === 'object' ? this.props.autoFocus : {};
+      input.focus(focusOpts);
     }
   }
 
@@ -114,7 +116,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
       this.input = input;
       if (this.props.autoFocus) {
         // Need this to prevent jumping when we render TextInput inside Portal @see ED-2992
-        this.focusTimeoutId = window.setTimeout(() => input.focus());
+        this.focusTimeoutId = window.setTimeout(() => this.focus());
       }
     } else {
       this.input = undefined;

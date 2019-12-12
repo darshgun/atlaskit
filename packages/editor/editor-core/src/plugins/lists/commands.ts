@@ -47,6 +47,8 @@ import {
   addAnalytics,
 } from '../analytics';
 
+export type InputMethod = INPUT_METHOD.KEYBOARD | INPUT_METHOD.TOOLBAR;
+
 const maxIndentation = 5;
 
 const deletePreviousEmptyListItem: Command = (state, dispatch) => {
@@ -222,7 +224,7 @@ export const enterKeyCommand: Command = (state, dispatch): boolean => {
       /** Check if the wrapper has any visible content */
       const wrapperHasContent = hasVisibleContent(wrapper);
       if (isNodeEmpty(node) && !wrapperHasContent) {
-        return outdentList()(state, dispatch);
+        return outdentList(INPUT_METHOD.KEYBOARD)(state, dispatch);
       } else if (!hasParentNodeOfType(codeBlock)(selection)) {
         return splitListItem(listItem)(state, dispatch);
       }
@@ -242,7 +244,10 @@ export const backspaceKeyCommand = baseCommand.chainCommands(
       isFirstChildOfParent,
       canOutdent,
     ],
-    baseCommand.chainCommands(deletePreviousEmptyListItem, outdentList()),
+    baseCommand.chainCommands(
+      deletePreviousEmptyListItem,
+      outdentList(INPUT_METHOD.KEYBOARD),
+    ),
   ),
 
   // if we're just inside a paragraph node (or gapcursor is shown) and backspace, then try to join
@@ -392,7 +397,9 @@ function mergeLists(listItem: NodeType, range: NodeRange) {
   };
 }
 
-export function outdentList(): Command {
+export function outdentList(
+  inputMethod: InputMethod = INPUT_METHOD.KEYBOARD,
+): Command {
   return function(state, dispatch) {
     const { listItem } = state.schema.nodes;
     const { $from, $to } = state.selection;
@@ -423,7 +430,7 @@ export function outdentList(): Command {
           actionSubjectId: ACTION_SUBJECT_ID.FORMAT_INDENT,
           eventType: EVENT_TYPE.TRACK,
           attributes: {
-            inputMethod: INPUT_METHOD.KEYBOARD,
+            inputMethod,
             previousIndentationLevel: initialIndentationLevel,
             newIndentLevel: initialIndentationLevel - 1,
             direction: INDENT_DIR.OUTDENT,
@@ -472,7 +479,9 @@ function canSink(initialIndentationLevel: number, state: EditorState): boolean {
   return true;
 }
 
-export function indentList(): Command {
+export function indentList(
+  inputMethod: InputMethod = INPUT_METHOD.KEYBOARD,
+): Command {
   return function(state, dispatch) {
     const { listItem } = state.schema.nodes;
     if (isInsideListItem(state)) {
@@ -491,7 +500,7 @@ export function indentList(): Command {
             actionSubjectId: ACTION_SUBJECT_ID.FORMAT_INDENT,
             eventType: EVENT_TYPE.TRACK,
             attributes: {
-              inputMethod: INPUT_METHOD.KEYBOARD,
+              inputMethod,
               previousIndentationLevel: initialIndentationLevel,
               newIndentLevel: initialIndentationLevel + 1,
               direction: INDENT_DIR.INDENT,
@@ -625,7 +634,7 @@ export const toggleList = (
   dispatch: (tr: Transaction) => void,
   view: EditorView,
   listType: 'bulletList' | 'orderedList',
-  inputMethod: INPUT_METHOD.KEYBOARD | INPUT_METHOD.TOOLBAR,
+  inputMethod: InputMethod,
 ): boolean => {
   const { selection } = state;
   const fromNode = selection.$from.node(selection.$from.depth - 2);
@@ -741,7 +750,7 @@ export function toggleListCommand(
 // TODO: Toggle list command dispatch more than one time, so commandWithAnalytics doesn't work as expected.
 // This is a helper to fix that.
 export const toggleListCommandWithAnalytics = (
-  inputMethod: INPUT_METHOD.KEYBOARD | INPUT_METHOD.TOOLBAR,
+  inputMethod: InputMethod,
   listType: 'bulletList' | 'orderedList',
 ): Command => {
   const listTypeActionSubjectId = {
@@ -773,18 +782,14 @@ export const toggleListCommandWithAnalytics = (
 
 export function toggleBulletList(
   view: EditorView,
-  inputMethod:
-    | INPUT_METHOD.TOOLBAR
-    | INPUT_METHOD.KEYBOARD = INPUT_METHOD.TOOLBAR,
+  inputMethod: InputMethod = INPUT_METHOD.TOOLBAR,
 ) {
   return toggleList(view.state, view.dispatch, view, 'bulletList', inputMethod);
 }
 
 export function toggleOrderedList(
   view: EditorView,
-  inputMethod:
-    | INPUT_METHOD.TOOLBAR
-    | INPUT_METHOD.KEYBOARD = INPUT_METHOD.TOOLBAR,
+  inputMethod: InputMethod = INPUT_METHOD.TOOLBAR,
 ) {
   return toggleList(
     view.state,

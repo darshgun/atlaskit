@@ -35,6 +35,7 @@ export default class HoverIntent extends React.Component<{}, State> {
                 onClick={this.handleClick}
                 color={c}
                 style={{ marginRight: 8 }}
+                tabIndex={0}
               >
                 Target {i + 1}
               </Target>

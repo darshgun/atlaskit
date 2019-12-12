@@ -37,7 +37,7 @@ BrowserTestCase(
     // Check for css property - green is #008000.
     expect(
       (await lozengeTest.getCSSProperty(themedLozenge, 'background-color'))
-        .parsed.hex,
+        .parsed!.hex,
     ).toContain('#008000');
   },
 );

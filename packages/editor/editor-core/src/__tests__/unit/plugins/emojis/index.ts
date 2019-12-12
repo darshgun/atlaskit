@@ -141,14 +141,14 @@ describe('emojis', () => {
         editorView.state,
         editorView.dispatch,
       );
-
-      expect(createAnalyticsEvent).toHaveBeenCalledWith({
-        action: 'inserted',
-        actionSubject: 'document',
-        actionSubjectId: 'emoji',
-        eventType: 'track',
-        attributes: { inputMethod: 'picker' },
-      });
+      expect(createAnalyticsEvent).toBeCalledWith(
+        expect.objectContaining({
+          actionSubject: 'document',
+          actionSubjectId: 'emoji',
+          eventType: 'track',
+          attributes: { inputMethod: 'picker' },
+        }),
+      );
     });
   });
 

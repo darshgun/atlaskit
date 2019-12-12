@@ -29,6 +29,7 @@ import {
 } from '../../../../model/Result';
 import uuid from 'uuid/v4';
 import { DEFAULT_FEATURES } from '../../../../util/features';
+import keycode from 'keycode';
 
 const defaultAutocompleteData = ['autocomplete', 'automock', 'automation'];
 const defaultReferralContext = {
@@ -235,7 +236,9 @@ describe('QuickSearchContainer', () => {
 
   it('should add searchSessionId to handleSearchSubmit', async () => {
     const wrapper = await mountQuickSearchContainerWaitingForRender();
-    wrapper.find('input').simulate('keydown', { key: 'Enter' });
+    wrapper
+      .find('input')
+      .simulate('keydown', { key: 'Enter', keyCode: keycode('enter') });
     wrapper.update();
 
     const { searchSessionId } = wrapper.find(QuickSearchContainer).props();

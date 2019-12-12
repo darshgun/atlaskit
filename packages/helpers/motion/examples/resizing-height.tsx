@@ -37,6 +37,7 @@ export default () => {
       <div css={{ textAlign: 'center', '> *': { margin: '2px' } }}>
         {[1, 2, 3, 4, 5].map(number => (
           <Button
+            testId={`button--${number}`}
             key={number}
             isSelected={num === number}
             onClick={() => {
@@ -50,6 +51,7 @@ export default () => {
 
       <Centered>
         <div
+          data-testid="menu"
           {...useResizingHeight()}
           css={css`
             ${elevation.e500()};

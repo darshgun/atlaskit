@@ -2,7 +2,7 @@ import { Component } from 'react';
 import {
   DraggableProvidedDraggableProps,
   DraggableStateSnapshot,
-} from 'react-beautiful-dnd';
+} from 'react-beautiful-dnd-next';
 import { isSamePath } from '../../utils/path';
 import { sameProps } from '../../utils/react';
 import { Props, TreeDraggableProvided } from './TreeItem-types';
@@ -10,8 +10,13 @@ import { Props, TreeDraggableProvided } from './TreeItem-types';
 export default class TreeItem extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
     return (
-      !sameProps(this.props, nextProps, ['item', 'provided', 'snapshot']) ||
-      !isSamePath(this.props.path, nextProps.path)
+      !sameProps(this.props, nextProps, [
+        'item',
+        'provided',
+        'snapshot',
+        'onCollapse',
+        'onExpand',
+      ]) || !isSamePath(this.props.path, nextProps.path)
     );
   }
 

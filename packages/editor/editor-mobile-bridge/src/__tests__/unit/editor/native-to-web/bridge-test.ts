@@ -12,7 +12,7 @@ const mockEditorCore = {
   outdentList: jest.fn(() => () => {}),
   toggleOrderedList: jest.fn(() => () => {}),
   toggleBulletList: jest.fn(() => () => {}),
-  insertLink: jest.fn(() => () => {}),
+  insertLinkWithAnalytics: jest.fn(() => () => {}),
   isTextAtPos: jest.fn(pos => () => [2, 6].indexOf(pos) !== -1),
   isLinkAtPos: jest.fn(pos => () => pos === 6),
   setLinkHref: jest.fn(() => () => mockCalls.push('setLinkHref')),
@@ -29,11 +29,12 @@ jest.mock('../../../../version.json', () => ({
 jest.mock('@atlaskit/editor-core', () => mockEditorCore);
 
 import {
+  INPUT_METHOD,
   indentList,
   outdentList,
   toggleOrderedList,
   toggleBulletList,
-  insertLink,
+  insertLinkWithAnalytics,
   isTextAtPos,
   isLinkAtPos,
   setLinkHref,
@@ -152,14 +153,14 @@ describe('links should work', () => {
   afterEach(() => {
     bridge.editorView = undefined;
 
-    ((insertLink as Function) as jest.Mock<{}>).mockClear();
+    ((insertLinkWithAnalytics as Function) as jest.Mock<{}>).mockClear();
     ((isTextAtPos as Function) as jest.Mock<{}>).mockClear();
     ((isLinkAtPos as Function) as jest.Mock<{}>).mockClear();
     ((setLinkHref as Function) as jest.Mock<{}>).mockClear();
     ((setLinkText as Function) as jest.Mock<{}>).mockClear();
   });
 
-  it('should call insertLink when not on text node', () => {
+  it('should call insertLinkWithAnalytics when not on text node', () => {
     bridge.editorView = {
       state: {
         selection: {
@@ -169,10 +170,16 @@ describe('links should work', () => {
       },
     };
 
-    bridge.onLinkUpdate('text', 'url');
+    bridge.onLinkUpdate('text', 'url', INPUT_METHOD.KEYBOARD);
 
     expect(isTextAtPos).toHaveBeenCalledWith(1);
-    expect(insertLink).toHaveBeenCalledWith(1, 3, 'url', 'text');
+    expect(insertLinkWithAnalytics).toHaveBeenCalledWith(
+      INPUT_METHOD.KEYBOARD,
+      1,
+      3,
+      'url',
+      'text',
+    );
   });
 
   it('should call setLinkHref then setLinkText when on text node', () => {

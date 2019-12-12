@@ -26,7 +26,7 @@ export function Card(
   SmartCardComponent: React.ComponentType<SmartCardProps>,
   UnsupportedComponent: React.ComponentType,
 ): React.ComponentType<CardProps> {
-  return class extends React.PureComponent<CardProps> {
+  return class extends React.Component<CardProps> {
     static contextTypes = {
       contextAdapter: PropTypes.object,
     };

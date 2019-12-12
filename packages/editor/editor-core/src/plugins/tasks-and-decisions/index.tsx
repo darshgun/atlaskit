@@ -54,15 +54,15 @@ const quickInsertItem = (
   ) as Transaction;
 };
 
-const tasksAndDecisionsPlugin = (): EditorPlugin => ({
+const tasksAndDecisionsPlugin = (allowNestedTasks?: boolean): EditorPlugin => ({
   name: 'taskDecision',
-  nodes(editorProps) {
+  nodes() {
     return [
       { name: 'decisionList', node: decisionList },
       { name: 'decisionItem', node: decisionItem },
       {
         name: 'taskList',
-        node: editorProps.allowNestedTasks ? nestableTaskList : taskList,
+        node: allowNestedTasks ? nestableTaskList : taskList,
       },
       { name: 'taskItem', node: taskItem },
     ];

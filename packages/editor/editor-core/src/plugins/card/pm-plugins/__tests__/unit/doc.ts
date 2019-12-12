@@ -538,16 +538,18 @@ describe('card', () => {
 
         await providerWrapper.waitForRequests();
 
-        expect(createAnalyticsEvent).toHaveBeenCalledWith({
-          action: 'inserted',
-          actionSubject: 'document',
-          actionSubjectId: 'smartLink',
-          eventType: 'track',
-          attributes: expect.objectContaining({
-            domainName: 'www.atlassian.com',
-            nodeType: 'inlineCard',
+        expect(createAnalyticsEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'inserted',
+            actionSubject: 'document',
+            actionSubjectId: 'smartLink',
+            eventType: 'track',
+            attributes: expect.objectContaining({
+              domainName: 'www.atlassian.com',
+              nodeType: 'inlineCard',
+            }),
           }),
-        });
+        );
       });
 
       function testWithContext(initialDoc: object, expectedContext: string) {
@@ -565,15 +567,17 @@ describe('card', () => {
 
           await providerWrapper.waitForRequests();
 
-          expect(createAnalyticsEvent).toHaveBeenCalledWith({
-            action: 'inserted',
-            actionSubject: 'document',
-            actionSubjectId: 'smartLink',
-            eventType: 'track',
-            attributes: expect.objectContaining({
-              nodeContext: expectedContext,
+          expect(createAnalyticsEvent).toBeCalledWith(
+            expect.objectContaining({
+              action: 'inserted',
+              actionSubject: 'document',
+              actionSubjectId: 'smartLink',
+              eventType: 'track',
+              attributes: expect.objectContaining({
+                nodeContext: expectedContext,
+              }),
             }),
-          });
+          );
         });
       }
 

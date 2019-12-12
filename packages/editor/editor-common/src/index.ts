@@ -13,7 +13,6 @@ export {
   CollabEventRemoteData,
   CollabSendableSelection,
   CollabEventTelepointerData, // End Collab Types
-  MediaProvider,
 } from './types';
 
 export {
@@ -31,10 +30,11 @@ export * from './extensions';
 export * from './contextIdentifier';
 
 export {
-  default as ProviderFactory,
+  ProviderFactory,
   WithProviders,
   Providers,
-} from './providerFactory';
+  MediaProvider,
+} from './provider-factory';
 
 export { combineProviders } from './provider-helpers';
 

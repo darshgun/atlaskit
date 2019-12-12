@@ -34,11 +34,11 @@ declare module '@atlaskit/field-text' {
     /** The value of the input. */
     value?: string | number;
     /** Handler to be called when the input loses focus. */
-    onBlur?: (e: React.FormEvent<HTMLInputElement>) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
     /** Handler to be called when the input changes. */
     onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
     /** Handler to be called when the input receives focus. */
-    onFocus?: (e: React.FormEvent<HTMLInputElement>) => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
     /** Standard input onkeydown event. */
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     /** Standard input onkeypress event. */

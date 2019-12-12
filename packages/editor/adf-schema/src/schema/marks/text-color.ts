@@ -19,6 +19,7 @@ import {
 export interface TextColorAttributes {
   /**
    * @pattern "^#[0-9a-f]{6}$"
+   * @pattern_stage_0 "^#[0-9a-fA-F]{6}$"
    */
   color: string;
 }

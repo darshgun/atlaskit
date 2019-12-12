@@ -160,11 +160,10 @@ export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
     content: '""',
   },
 });
-
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
-  width?: Width,
+  width?: string | number,
 ): CSSObject => ({
   ...itemCSS(false, false),
   pointerEvents: 'none',
@@ -173,22 +172,22 @@ export const itemSkeletonCSS = (
 
   // Stagger alternate skeleton items if no width is passed
   ...(!width && {
-    '&:nth-of-type(1n)::after': {
+    '&:nth-child(1n)::after': {
       flexBasis: '70%',
     },
-    '&:nth-of-type(2n)::after': {
+    '&:nth-child(2n)::after': {
       flexBasis: '50%',
     },
-    '&:nth-of-type(3n)::after': {
+    '&:nth-child(3n)::after': {
       flexBasis: '60%',
     },
-    '&:nth-of-type(4n)::after': {
+    '&:nth-child(4n)::after': {
       flexBasis: '90%',
     },
-    '&:nth-of-type(5n)::after': {
+    '&:nth-child(5n)::after': {
       flexBasis: '35%',
     },
-    '&:nth-of-type(6n)::after': {
+    '&:nth-child(6n)::after': {
       flexBasis: '77%',
     },
   }),
@@ -211,6 +210,6 @@ export const itemSkeletonCSS = (
     backgroundColor: N20,
     height: gridSize * 1.75,
     borderRadius: 3,
-    flexBasis: width || '100%',
+    flexBasis: '100%' || width,
   },
 });

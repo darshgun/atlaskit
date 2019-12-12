@@ -11,7 +11,7 @@ const mockRoutes = [
 
 const mockLocation = {
   pathname: '/baz',
-  search: '?param=cool',
+  search: '?iam=cool',
   hash: '',
 };
 
@@ -44,24 +44,14 @@ describe('SPA Router getRouteContext util', () => {
     // @ts-ignore not passing a full route
     const context = getRouteContext(unknownLocation, mockRoutes, mockAction);
 
-    expect(context).toEqual(
-      expect.objectContaining({
-        location: unknownLocation,
-        route: expect.objectContaining({
-          path: expect.any(String),
-          component: expect.any(Function),
-          name: expect.any(String),
-          navigation: null,
-        }),
-        match: expect.objectContaining({
-          isExact: false,
-          path: expect.any(String),
-          url: expect.any(String),
-          params: expect.any(Object),
-          query: expect.any(Object),
-        }),
-        action: mockAction,
-      }),
-    );
+    expect(context).toEqual({
+      location: unknownLocation,
+      route: null,
+      match: null,
+      action: mockAction,
+      query: {
+        iam: 'cool',
+      },
+    });
   });
 });

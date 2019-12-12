@@ -6,11 +6,10 @@ import {
   MentionDescription,
   MentionResource,
 } from '@atlaskit/mention/resource';
-import { AccountId } from '../types';
 import { createPromise } from '../cross-platform-promise';
 
 function createMentionProvider() {
-  return createPromise<AccountId>('getAccountId')
+  return createPromise('getAccountId')
     .submit()
     .then(
       accountId =>
@@ -24,7 +23,16 @@ function createMentionProvider() {
             return false;
           },
         }),
-    );
+    )
+    .catch(err => {
+      // eslint-disable-next-line no-console
+      console.error(
+        `Could not construct a MentionProvider, the following exception occurred:`,
+        err,
+      );
+
+      return new MentionResource({ url: 'http://' });
+    });
 }
 
 export default createMentionProvider();

@@ -8,10 +8,7 @@ type InvalidTransactionErrorAEP = OperationalAEP<
   undefined,
   {
     analyticsEventPayloads: AnalyticsEventPayloadWithChannel[];
-    documents: {
-      new: SimplifiedNode | string;
-      prev: SimplifiedNode | string;
-    };
+    invalidNodes: (SimplifiedNode | string)[];
   },
   undefined
 >;

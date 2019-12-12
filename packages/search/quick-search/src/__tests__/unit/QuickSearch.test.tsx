@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+import keycode from 'keycode';
 import * as PropTypes from 'prop-types';
 import { QuickSearch, ResultItemGroup, PersonResult } from '../..';
 import AkSearch from '../../components/Search/Search';
@@ -133,7 +134,11 @@ describe('<QuickSearch />', () => {
       });
 
       it('should fire submit analytics on shortcut submit', () => {
-        searchInput.simulate('keydown', { key: 'Enter', shiftKey: true });
+        searchInput.simulate('keydown', {
+          key: 'Enter',
+          keyCode: keycode('enter'),
+          shiftKey: true,
+        });
         expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT, {
           newTab: false, // enter always open in the same tab
           resultCount: 3,
@@ -145,13 +150,25 @@ describe('<QuickSearch />', () => {
     describe('submit/keyboard event', () => {
       it('should fire event on submit ENTER key stroke when an item is selected', () => {
         wrapper.setProps({ selectedResultId: '1' });
-        searchInput.simulate('keydown', { key: 'Enter' });
+        searchInput.simulate('keydown', {
+          key: 'Enter',
+          keyCode: keycode('enter'),
+        });
         expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT);
+      });
+
+      it('should NOT fire event on submit ENTER key stroke when composing using an IME', () => {
+        wrapper.setProps({ selectedResultId: '1' });
+        searchInput.simulate('keydown', { key: 'Enter', keyCode: 229 });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_OPEN);
       });
 
       it('should carry payload of resultCount, queryLength, index and type when an item is selected', () => {
         wrapper.setProps({ selectedResultId: '1' });
-        searchInput.simulate('keydown', { key: 'Enter' });
+        searchInput.simulate('keydown', {
+          key: 'Enter',
+          keyCode: keycode('enter'),
+        });
         const eventData = getLastEventFired()[1];
         expect(eventData).toMatchObject({
           index: expect.any(Number),
@@ -163,27 +180,55 @@ describe('<QuickSearch />', () => {
     });
     describe('keyboard-controls-used event', () => {
       it('ArrowUp', () => {
-        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        searchInput.simulate('keydown', {
+          key: 'ArrowUp',
+          keyCode: keycode('up'),
+        });
         expectEventFiredLastToBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
+      it('ArrowUp while composing using an IME', () => {
+        searchInput.simulate('keydown', { key: 'ArrowUp', keyCode: 229 });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_OPEN);
+      });
+
       it('ArrowDown', () => {
-        searchInput.simulate('keydown', { key: 'ArrowDown' });
+        searchInput.simulate('keydown', {
+          key: 'ArrowDown',
+          keyCode: keycode('down'),
+        });
         expectEventFiredLastToBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
+      });
+
+      it('ArrowDown while composing using an IME', () => {
+        searchInput.simulate('keydown', { key: 'ArrowDown', keyCode: 229 });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_OPEN);
       });
 
       it('Enter (when a result is selected)', () => {
         wrapper.setProps({ selectedResultId: '1' });
-        searchInput.simulate('keydown', { key: 'Enter' });
+        searchInput.simulate('keydown', {
+          key: 'Enter',
+          keyCode: keycode('enter'),
+        });
         const calls = onAnalyticsEventSpy.mock.calls;
         // -2 because the MOST recent event should be the submit event
         expect(calls[calls.length - 2][0]).toBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
       it('should fire event every press', () => {
-        searchInput.simulate('keydown', { key: 'ArrowUp' });
-        searchInput.simulate('keydown', { key: 'ArrowUp' });
-        searchInput.simulate('keydown', { key: 'ArrowUp' });
+        searchInput.simulate('keydown', {
+          key: 'ArrowUp',
+          keyCode: keycode('up'),
+        });
+        searchInput.simulate('keydown', {
+          key: 'ArrowUp',
+          keyCode: keycode('up'),
+        });
+        searchInput.simulate('keydown', {
+          key: 'ArrowUp',
+          keyCode: keycode('up'),
+        });
         const kbCtrlsUsedEventsFired = onAnalyticsEventSpy.mock.calls.filter(
           call => call[0] === QS_ANALYTICS_EV_KB_CTRLS_USED,
         );
@@ -245,7 +290,7 @@ describe('<QuickSearch />', () => {
       wrapper
         .find(AkSearch)
         .find('input')
-        .simulate('keydown', { key: 'ArrowDown' });
+        .simulate('keydown', { key: 'ArrowDown', keyCode: keycode('down') });
 
       wrapper.update();
       expect(
@@ -261,8 +306,8 @@ describe('<QuickSearch />', () => {
       wrapper
         .find(AkSearch)
         .find('input')
-        .simulate('keydown', { key: 'ArrowDown' })
-        .simulate('keydown', { key: 'ArrowDown' });
+        .simulate('keydown', { key: 'ArrowDown', keyCode: keycode('down') })
+        .simulate('keydown', { key: 'ArrowDown', keyCode: keycode('down') });
 
       wrapper.update();
       expect(
@@ -275,9 +320,18 @@ describe('<QuickSearch />', () => {
     });
 
     it('should select the previous result on UP keystroke', () => {
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
-      searchInput.simulate('keydown', { key: 'ArrowUp' });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
+      searchInput.simulate('keydown', {
+        key: 'ArrowUp',
+        keyCode: keycode('up'),
+      });
       wrapper.update();
       expect(
         wrapper
@@ -289,10 +343,22 @@ describe('<QuickSearch />', () => {
     });
 
     it('should wrap around to the top when traversing forward past the last result', () => {
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
       wrapper.update();
       expect(
         wrapper
@@ -304,8 +370,14 @@ describe('<QuickSearch />', () => {
     });
 
     it('should wrap around to the end when traversing backward past the first result', () => {
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
-      searchInput.simulate('keydown', { key: 'ArrowUp' });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
+      searchInput.simulate('keydown', {
+        key: 'ArrowUp',
+        keyCode: keycode('up'),
+      });
       expect(
         wrapper
           .find(ResultItem)
@@ -316,8 +388,14 @@ describe('<QuickSearch />', () => {
     });
 
     it('should select the last result when traversing backward when no result is selected', () => {
-      searchInput.simulate('keydown', { key: 'ArrowDown' });
-      searchInput.simulate('keydown', { key: 'ArrowUp' });
+      searchInput.simulate('keydown', {
+        key: 'ArrowDown',
+        keyCode: keycode('down'),
+      });
+      searchInput.simulate('keydown', {
+        key: 'ArrowUp',
+        keyCode: keycode('up'),
+      });
       expect(
         wrapper
           .find(ResultItem)
@@ -338,7 +416,10 @@ describe('<QuickSearch />', () => {
           ),
           selectedResultId: 'b',
         });
-        searchInput.simulate('keydown', { key: 'Enter' });
+        searchInput.simulate('keydown', {
+          key: 'Enter',
+          keyCode: keycode('enter'),
+        });
         wrapper.update();
         expect(locationAssignSpy).toHaveBeenCalledWith(url);
       } finally {
@@ -347,7 +428,10 @@ describe('<QuickSearch />', () => {
     });
 
     it('should trigger the onClick handler with the same parameters when a result is submitted via keyboards as when clicked', () => {
-      searchInput.simulate('keydown', { key: 'Enter' });
+      searchInput.simulate('keydown', {
+        key: 'Enter',
+        keyCode: keycode('enter'),
+      });
       // @ts-ignore - args property not recognised
       const paramsKeyboard = onClickSpy.args;
       onClickSpy.mockClear();
@@ -360,7 +444,10 @@ describe('<QuickSearch />', () => {
     });
 
     it('should run the onSearchSubmit callback prop on ENTER keystroke (when no item is selected)', () => {
-      searchInput.simulate('keydown', { key: 'Enter' });
+      searchInput.simulate('keydown', {
+        key: 'Enter',
+        keyCode: keycode('enter'),
+      });
       wrapper.update();
       expect(onSearchSubmitSpy).toHaveBeenCalledTimes(1);
       expect(isInputFocused(searchInput)).toBe(true);
@@ -368,7 +455,11 @@ describe('<QuickSearch />', () => {
 
     it('should run the onSearchSubmit callback prop on Shift+ENTER keystroke (even when an item is selected)', () => {
       wrapper.setProps({ selectedResultId: '1' });
-      searchInput.simulate('keydown', { key: 'Enter', shiftKey: true });
+      searchInput.simulate('keydown', {
+        key: 'Enter',
+        keyCode: keycode('enter'),
+        shiftKey: true,
+      });
       wrapper.update();
       expect(onSearchSubmitSpy).toHaveBeenCalledTimes(1);
       expect(isInputFocused(searchInput)).toBe(true);
@@ -376,7 +467,10 @@ describe('<QuickSearch />', () => {
 
     it("should run the onClick callback with the result's data on ENTER keystroke (when an item is selected)", () => {
       wrapper.setProps({ selectedResultId: '1' });
-      searchInput.simulate('keydown', { key: 'Enter' });
+      searchInput.simulate('keydown', {
+        key: 'Enter',
+        keyCode: keycode('enter'),
+      });
       wrapper.update();
       expect(onClickSpy).toHaveBeenCalledTimes(1);
       expect(isInputFocused(searchInput)).toBe(true);

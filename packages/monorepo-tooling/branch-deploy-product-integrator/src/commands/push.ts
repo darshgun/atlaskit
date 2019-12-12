@@ -66,7 +66,6 @@ export const HELP_MSG = `
 
   ${chalk.green('Examples')}
     ${chalk.yellow('branch-deploy-product-integrator foo abcdef123456 --productCiPlanUrl https://bamboo.atlassian.com/rest/api/latest/plan/ABC-DEF')}
-
 `;
 
 function createBranchName(atlaskitBranchName: string, prefix: string) {

@@ -3,7 +3,7 @@ import Button from '@atlaskit/button';
 import {
   akEditorSwoopCubicBezier,
   expandMessages,
-  ExpandTooltipWrapper,
+  ExpandLayoutWrapper,
 } from '@atlaskit/editor-common';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import { colors } from '@atlaskit/theme';
@@ -33,7 +33,7 @@ const withTooltip = (WrapperComponent: React.ElementType) => {
       const { label } = this.props;
 
       return (
-        <Tooltip content={label} position="top" tag={ExpandTooltipWrapper}>
+        <Tooltip content={label} position="top" tag={ExpandLayoutWrapper}>
           <WrapperComponent {...this.props} />
         </Tooltip>
       );
@@ -89,5 +89,9 @@ export const ExpandIconButton = (props: ExpandIconButtonProps) => {
     return <ButtonWithTooltip label={label} {...props} />;
   }
 
-  return <ButtonWithoutTooltip label={label} {...props} />;
+  return (
+    <ExpandLayoutWrapper>
+      <ButtonWithoutTooltip label={label} {...props} />
+    </ExpandLayoutWrapper>
+  );
 };

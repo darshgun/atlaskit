@@ -22,10 +22,10 @@ import {
   destroyPluginListeners,
 } from './plugin-subscription';
 import {
-  MediaProvider,
-  MentionProvider,
-  TaskDecisionProvider,
-  EmojiProvider,
+  mediaProvider,
+  mentionProvider,
+  createTaskDecisionProvider,
+  emojiProvider,
 } from '../providers';
 import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
 import { cardClient, cardProvider } from '../providers/cardProvider';
@@ -95,11 +95,11 @@ export default function mobileEditor(props: Props) {
         <AtlaskitThemeProvider mode={mode}>
           <EditorWithState
             appearance="mobile"
-            mentionProvider={Promise.resolve(MentionProvider)}
-            emojiProvider={Promise.resolve(EmojiProvider)}
+            mentionProvider={Promise.resolve(mentionProvider)}
+            emojiProvider={Promise.resolve(emojiProvider)}
             media={{
               customMediaPicker: new MobilePicker(),
-              provider: props.mediaProvider || MediaProvider,
+              provider: props.mediaProvider || mediaProvider,
               allowMediaSingle: true,
             }}
             allowConfluenceInlineComment={true}
@@ -125,7 +125,7 @@ export default function mobileEditor(props: Props) {
             }}
             allowAnalyticsGASV3={true}
             UNSAFE_allowExpand={true}
-            taskDecisionProvider={Promise.resolve(TaskDecisionProvider())}
+            taskDecisionProvider={Promise.resolve(createTaskDecisionProvider())}
             {...props}
           />
         </AtlaskitThemeProvider>
