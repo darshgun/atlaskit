@@ -1,5 +1,15 @@
 # @atlaskit/icon-object
 
+## 5.0.1
+
+### Patch Changes
+
+- [patch][65c8aab025](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c8aab025):
+
+  Fix main/module fields in package.json pointing to the wrong place- Updated dependencies [ccbd1b390b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ccbd1b390b):
+
+  - @atlaskit/build-utils@2.6.0
+
 ## 5.0.0
 
 ### Major Changes
