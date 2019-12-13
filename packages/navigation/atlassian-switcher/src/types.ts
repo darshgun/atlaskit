@@ -168,14 +168,17 @@ export interface JoinableSiteUserAvatarPropTypes {
   enableTooltip: boolean;
 }
 
-export interface JoinableSiteUsersKeyedByProduct {
-  [key: string]: JoinableSiteUser[];
+export interface JoinableProducts {
+  [key: string]: {
+    users: JoinableSiteUser[];
+    url: string;
+  };
 }
 
 export interface JoinableSite {
   cloudId: string;
   displayName: string;
-  users: JoinableSiteUsersKeyedByProduct;
+  products: JoinableProducts;
   url: string;
   avatarUrl?: string;
   relevance?: number;

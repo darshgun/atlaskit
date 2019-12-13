@@ -467,26 +467,12 @@ export const getJoinableSiteLinks = (
   let joinableSiteLinks = [];
 
   for (let site of joinableSites) {
-    for (let productKey in site.users) {
-      const users: JoinableSiteUser[] = site.users[productKey] || [];
+    for (let productKey in site.products) {
+      const { users = [], url: productUrl } = site.products[productKey] || {};
       const productType: WorklensProductType =
         TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey];
-      const {
-        label,
-        Icon,
-        href,
-      }: AvailableProductDetails = AVAILABLE_PRODUCT_DATA_MAP[productType];
-
-      let productUrl = href;
-
-      if (
-        productKey === ProductKey.JIRA_SOFTWARE ||
-        productKey === ProductKey.JIRA_CORE
-      ) {
-        productUrl = site.url;
-      } else if (productKey === ProductKey.CONFLUENCE) {
-        productUrl = site.url + href;
-      }
+      const { label, Icon }: AvailableProductDetails =
+        AVAILABLE_PRODUCT_DATA_MAP[productType] || {};
 
       joinableSiteLinks.push({
         key: site.cloudId,
