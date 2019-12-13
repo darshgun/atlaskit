@@ -57,8 +57,11 @@ export async function mergeAndReApply(
       // If we have no conflicts, the merge failed for another reason
       throw mergeError;
     }
-    if (conflicts.some(c => !files.includes(c))) {
-      throw new Error(`Found conflicts other than ${files}. Cannot proceed`);
+    const otherConflicts = conflicts.filter(c => !files.includes(c));
+    if (otherConflicts.length > 0) {
+      throw new Error(
+        `Found unsupported file conflicts, you will need to do a manual merge: ${otherConflicts}. Only the following files can automatically be merged: ${files}.`,
+      );
     }
 
     await git.checkout(['--theirs', ...files]);

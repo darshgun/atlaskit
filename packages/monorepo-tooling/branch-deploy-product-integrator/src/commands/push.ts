@@ -133,8 +133,9 @@ export async function push(
     dryRun,
     productCiPlanUrl,
   } = flags;
+  const cwd = process.cwd();
 
-  const git = dryRun ? (debugMock('git') as SimpleGit) : simpleGit('./');
+  const git = dryRun ? (debugMock('git') as SimpleGit) : simpleGit(cwd);
   const branchName = createBranchName(atlaskitBranchName, branchPrefix);
 
   const insideAtlaskit =
@@ -145,7 +146,7 @@ export async function push(
   }
 
   await checkoutOrCreate(git, branchName);
-  const workspacePkgJsons = (await getWorkspaceDirs(packageEngine)).map(
+  const workspacePkgJsons = (await getWorkspaceDirs(packageEngine, cwd)).map(
     dir => `${dir}/package.json`,
   );
   /* We merge master so that the branch remains relatively up to date.

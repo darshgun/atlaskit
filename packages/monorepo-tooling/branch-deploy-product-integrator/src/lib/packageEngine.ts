@@ -1,9 +1,10 @@
+import path from 'path';
 import * as bolt from 'bolt';
 
-export async function getWorkspaceDirs(packageEngine: string) {
+export async function getWorkspaceDirs(packageEngine: string, cwd: string) {
   if (packageEngine === 'bolt') {
     const ws = await bolt.getWorkspaces();
-    return ws.map(pkg => pkg.dir);
+    return ws.map(pkg => path.relative(cwd, pkg.dir));
   } else if (packageEngine === 'yarn') {
     console.log('getWorkspaceDirs not implemented for yarn workspaces');
     return [];
