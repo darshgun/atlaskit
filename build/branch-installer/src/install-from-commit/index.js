@@ -170,8 +170,8 @@ async function _installFromCommit(
   commitHash /*: string */ = '',
   options /*: Object */ = {},
 ) {
-  const { log } = options;
-  const { verboseLog } = options;
+  const log = createLogger(true);
+  const verboseLog = createLogger(options.verbose);
 
   verboseLog('Running with options:');
   verboseLog({ ...options, commitHash });
