@@ -68,7 +68,9 @@ export async function mergeAndReApply(
     await git.add(files);
 
     // --no-edit uses the default commit message
-    await git.commit([], undefined, { '--no-edit': true });
+    // --no-verify to bypass pre-commit hooks that fail when new packages are merged in that don't exist locally
+    // because of yarn/bolt not being run afterwards
+    await git.commit([], undefined, { '--no-edit': true, '--no-verify': true });
   }
 
   // Reset the files to their version on branchName
