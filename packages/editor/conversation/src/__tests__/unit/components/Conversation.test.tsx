@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import { CreateUIAnalyticsEvent } from '@atlaskit/analytics-next';
 import {
   mockConversation,
