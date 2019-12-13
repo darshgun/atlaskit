@@ -140,17 +140,21 @@ export default class Editor extends React.Component<Props, State> {
       !showBeforeUnloadWarning &&
       prevProps.showBeforeUnloadWarning !== showBeforeUnloadWarning
     ) {
-      window.removeEventListener('beforeunload', this.beforeUnloadHandler);
+      this.removeBeforeUnloadListener();
     }
   }
 
   componentWillUnmount() {
-    if (this.props.showBeforeUnloadWarning) {
-      window.removeEventListener('beforeunload', this.beforeUnloadHandler);
-    }
+    this.removeBeforeUnloadListener();
 
     if (this.props.onClose) {
       this.props.onClose();
+    }
+  }
+
+  private removeBeforeUnloadListener() {
+    if (this.props.showBeforeUnloadWarning) {
+      window.removeEventListener('beforeunload', this.beforeUnloadHandler);
     }
   }
 
@@ -160,6 +164,11 @@ export default class Editor extends React.Component<Props, State> {
   private onCancel = () => {
     if (this.props.onCancel) {
       this.props.onCancel();
+      // Make sure to remove the listener since canceling
+      // clears the editor content. This fixes a bug where the
+      // alert was showing even though a user didn't have any
+      // in-progress content in the current editor.
+      this.removeBeforeUnloadListener();
     }
 
     this.setState({
@@ -178,6 +187,7 @@ export default class Editor extends React.Component<Props, State> {
       ) {
         this.props.onSave(value);
         actions.clear();
+        this.removeBeforeUnloadListener();
       } else {
         this.onCancel();
         return;
@@ -190,14 +200,18 @@ export default class Editor extends React.Component<Props, State> {
     });
   };
 
-  private isEditorValueEmpty = (value: any): boolean =>
-    value.content.length === 1 && value.content[0].content.length === 0;
+  private isEditorValueEmpty = (value: any): boolean => {
+    return (
+      value.content.length === 0 ||
+      (value.content.length === 1 && value.content[0].content.length === 0)
+    );
+  };
 
   private onChange = async (actions: EditorActions) => {
     const value = await actions.getValue();
 
     if (!!this.isEditorValueEmpty(value)) {
-      window.removeEventListener('beforeunload', this.beforeUnloadHandler);
+      this.removeBeforeUnloadListener();
     } else {
       if (this.props.showBeforeUnloadWarning) {
         window.addEventListener('beforeunload', this.beforeUnloadHandler);
