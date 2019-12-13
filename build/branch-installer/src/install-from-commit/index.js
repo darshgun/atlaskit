@@ -83,7 +83,7 @@ function validateOptions(commitHash /*:string */, options /*: Object */ = {}) {
 // const logInDebugMode = createLogger(flags.debug);
 
 // eslint-disable-next-line no-unused-vars
-const createLogger = shouldLog => {
+const createLogger /*: any */ = shouldLog => {
   if (shouldLog) {
     return message => {
       if (typeof message === 'string') {
