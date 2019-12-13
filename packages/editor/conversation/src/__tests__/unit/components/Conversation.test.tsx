@@ -104,29 +104,5 @@ describe('Conversation', () => {
         expect(conversation.find(Editor).length).toBe(0);
       });
     });
-
-    describe('beforeUnload behavior', () => {
-      let editor: ShallowWrapper;
-
-      beforeEach(() => {
-        window.addEventListener = jest.fn();
-        window.removeEventListener = jest.fn();
-      });
-
-      const props = {
-        showBeforeUnloadWarning: true,
-      };
-
-      beforeAll(() => {
-        editor = shallow(<Editor {...props} />);
-      });
-
-      it('should remove the beforeunload event listener when set showBeforeUnloadWarning as False', () => {
-        editor.setProps({ showBeforeUnloadWarning: false });
-        editor.update();
-
-        expect(window.removeEventListener).toHaveBeenCalled();
-      });
-    });
   });
 });
