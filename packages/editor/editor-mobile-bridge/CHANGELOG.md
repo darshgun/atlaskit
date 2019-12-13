@@ -1,5 +1,21 @@
 # @atlaskit/editor-mobile-bridge
 
+## 11.0.2
+
+### Patch Changes
+
+- [patch][f9f9b6bf1b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9f9b6bf1b):
+
+  ED-8290 fix: avoid sending superfluous arguments to remote when args is undefined- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+
+- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+- Updated dependencies [7bf6a29563](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bf6a29563):
+- Updated dependencies [fbff0b7e41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fbff0b7e41):
+- Updated dependencies [7519b2a816](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7519b2a816):
+- Updated dependencies [9902932114](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9902932114):
+  - @atlaskit/editor-test-helpers@10.3.1
+  - @atlaskit/editor-core@115.1.0
+
 ## 11.0.1
 
 ### Patch Changes

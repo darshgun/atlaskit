@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "66.1.0",
+  "version": "66.1.1",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -22,7 +22,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-gas-types": "^4.0.12",
-    "@atlaskit/analytics-next": "^6.3.1",
+    "@atlaskit/analytics-next": "^6.3.2",
     "@atlaskit/dropdown-menu": "^8.1.4",
     "@atlaskit/icon": "^19.0.6",
     "@atlaskit/media-client": "^4.0.0",

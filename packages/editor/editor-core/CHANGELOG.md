@@ -1,5 +1,35 @@
 # @atlaskit/editor-core
 
+## 115.1.0
+
+### Minor Changes
+
+- [minor][7519b2a816](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7519b2a816):
+
+  FM-2694 Scroll user's selection (cursor) into view whenever they insert/delete nodes, format text, undo/redo or paste content
+
+  Add new editor plugin: `ScrollIntoView`
+  This hooks into each transaction applied and calls ProseMirror's [scrollIntoView](https://prosemirror.net/docs/ref/#state.Transaction.scrollIntoView) if the transaction is a primary action from the user that updates the document
+  This behaviour is on by default and should be opted out of on a per-transaction basis, initially we have opted out of any interactions with the floating toolbar or breakout buttons and resizing, as to perform these actions you are in the context of what you are editing already
+
+### Patch Changes
+
+- [patch][768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+
+  Convert editor error boundary from GasV2 to GasV3 analytics. Support graceful recovery for intermittent issues.- [patch][7bf6a29563](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bf6a29563):
+
+  ED-8217: Prevent unnecessery re-renders in a status node- [patch][fbff0b7e41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fbff0b7e41):
+
+  [ED-8286] Fix analytics configuration to AltText- [patch][9902932114](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9902932114):
+
+  ED-7480: fix contextual menu position when enabling numbered column- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+
+- Updated dependencies [139ab68e90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/139ab68e90):
+- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+  - @atlaskit/editor-test-helpers@10.3.1
+  - @atlaskit/media-card@66.1.1
+  - @atlaskit/analytics-next@6.3.2
+
 ## 115.0.0
 
 ### Major Changes

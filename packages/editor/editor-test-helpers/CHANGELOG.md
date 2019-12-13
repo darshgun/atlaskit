@@ -1,5 +1,21 @@
 # @atlaskit/editor-test-helpers
 
+## 10.3.1
+
+### Patch Changes
+
+- [patch][768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+
+  Add faux product name to context-identifier-provider- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+
+- Updated dependencies [7bf6a29563](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7bf6a29563):
+- Updated dependencies [fbff0b7e41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fbff0b7e41):
+- Updated dependencies [7519b2a816](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7519b2a816):
+- Updated dependencies [9902932114](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9902932114):
+- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+  - @atlaskit/editor-core@115.1.0
+  - @atlaskit/analytics-next@6.3.2
+
 ## 10.3.0
 
 ### Minor Changes

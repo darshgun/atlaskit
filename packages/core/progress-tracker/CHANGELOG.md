@@ -1,5 +1,13 @@
 # @atlaskit/progress-tracker
 
+## 6.1.2
+
+### Patch Changes
+
+- [patch][68c39bdac6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68c39bdac6):
+
+  Fixes ProgressTracker not showing transition animations
+
 ## 6.1.1
 
 ### Patch Changes

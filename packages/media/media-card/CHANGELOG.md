@@ -1,5 +1,15 @@
 # @atlaskit/media-card
 
+## 66.1.1
+
+### Patch Changes
+
+- [patch][139ab68e90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/139ab68e90):
+
+  ED-4359 fix focus being reset on remove mediagroup- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+
+  - @atlaskit/analytics-next@6.3.2
+
 ## 66.1.0
 
 ### Minor Changes

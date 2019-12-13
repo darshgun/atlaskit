@@ -1,5 +1,17 @@
 # @atlaskit/onboarding
 
+## 9.0.6
+
+### Patch Changes
+
+- [patch][532f7c03fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/532f7c03fd):
+
+  Fixes spotlight taking a while to animate into view.- [patch][864f4891dc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/864f4891dc):
+
+  Fixes spotlight target not updating its position when resizing the viewport.- Updated dependencies [768bac6d81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/768bac6d81):
+
+  - @atlaskit/analytics-next@6.3.2
+
 ## 9.0.5
 
 ### Patch Changes
