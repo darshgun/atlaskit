@@ -1,12 +1,11 @@
 import {
-  AVAILABLE_PRODUCT_DATA_MAP,
-  TO_WORKLENS_PRODUCT_KEY,
   getFixedProductLinks,
   getAdministrationLinks,
   getSuggestedProductLink,
   getJoinableSiteLinks,
 } from '../../links';
 import {
+  JoinableProducts,
   Product,
   ProvisionedProducts,
   ProductKey,
@@ -15,7 +14,6 @@ import {
 
 import { resolveRecommendations } from '../../../providers/recommendations';
 import mockJoinableSites from '../../../../test-helpers/mockJoinableSites';
-import { JoinableProducts } from '@atlaskit/atlassian-switcher/types';
 
 const generateProvisionedProducts = (
   activeProducts: WorklensProductType[],
