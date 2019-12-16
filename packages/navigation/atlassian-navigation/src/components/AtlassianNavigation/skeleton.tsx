@@ -31,7 +31,6 @@ export const NavigationSkeleton = ({
           />
           <ProductHomeSkeleton showSiteName={showSiteName} />
           <PrimaryItemsContainerSkeleton count={primaryItemsCount} />
-          <CreateSkeleton />
         </div>
         <div css={rightCSS}>
           <SearchSkeleton />

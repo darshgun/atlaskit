@@ -118,7 +118,7 @@ export const siteTitleSkeletonCSS = (theme: NavigationTheme) => ({
 
 export const productLogoSkeletonCSS = (theme: NavigationTheme) => ({
   width: '120px',
-  height: iconHeight,
+  height: 24,
   ...heightCSS,
   ...productLogoCSS,
   ...skeletonCSS(theme),
