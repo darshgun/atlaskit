@@ -1,5 +1,13 @@
 # @atlaskit/help-article
 
+## 1.0.0
+
+### Major Changes
+
+- [major][4a1af8b733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a1af8b733):
+
+  Clean up code and delete unused files
+
 ## 0.7.4
 
 ### Patch Changes

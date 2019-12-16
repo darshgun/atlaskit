@@ -1,5 +1,12 @@
 ## 0.1.0
 
+## 0.21.9
+
+### Patch Changes
+
+- Updated dependencies [4a1af8b733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a1af8b733):
+  - @atlaskit/help-article@1.0.0
+
 ## 0.21.8
 
 ### Patch Changes
