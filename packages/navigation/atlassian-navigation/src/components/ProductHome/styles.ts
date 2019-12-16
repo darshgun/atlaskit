@@ -18,7 +18,7 @@ export const productHomeButtonCSS = ({
     display: 'flex',
     cursor: 'pointer',
     color: 'inherit',
-    '&:first-child': {
+    '&:first-of-type': {
       marginLeft: 0,
     },
     '&::-moz-focus-inner': {
