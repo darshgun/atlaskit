@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.8.2
+
+### Patch Changes
+
+- [patch][9af7977678](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9af7977678):
+
+  Fixing visual tweaks for top nav and menu spacing
+
 ## 0.8.1
 
 ### Patch Changes
