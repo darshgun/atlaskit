@@ -334,7 +334,8 @@ async function runValidateDists(opts: {
         packageDistErrors.length
       } errors detected in package dists:\n * ${packageDistErrors.join('\n * ')}
 
-      If dist has included dependencies and changed the file structure, run yarn build:multi-entry-point-tsconfig and try again.`,
+      If a lot of errors have been detected, you most likely have introduced a circular dependency which has malformed the dist structure entirely. Remove the circular dependency to resolve the issue.
+      Otherwise if only a few errors are reported, they may be caused by adding new entry points that haven't been included in tsconfig.entry-points.json. Run yarn build:multi-entry-point-tsconfig to resolve this.`,
     );
   }
 }
