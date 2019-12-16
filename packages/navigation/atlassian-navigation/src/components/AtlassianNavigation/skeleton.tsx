@@ -4,7 +4,6 @@ import { jsx } from '@emotion/core';
 
 import { ThemeProvider, defaultTheme } from '../../theme';
 
-import { CreateSkeleton } from '../Create/skeleton';
 import { IconButtonSkeleton } from '../IconButton/skeleton';
 import { PrimaryItemsContainerSkeleton } from '../PrimaryItemsContainer/skeleton';
 import { ProductHomeSkeleton } from '../ProductHome/skeleton';
