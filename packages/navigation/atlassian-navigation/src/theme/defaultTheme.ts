@@ -2,12 +2,12 @@ import {
   B50,
   B200,
   B400,
-  DN10A,
   N0,
   N20,
   N40,
   N200,
   N600,
+  N700,
 } from '@atlaskit/theme/colors';
 
 import { Mode } from './types';
@@ -64,7 +64,7 @@ const defaultTheme: { mode: Mode } = {
     navigation: { backgroundColor: N0, color: N200 },
     productHome: {
       backgroundColor: B400,
-      color: DN10A,
+      color: N700,
       borderRight: `1px solid ${hexToRGBA(N200, 0.3)}`,
       iconGradientStart: B400,
       iconGradientStop: B200,
