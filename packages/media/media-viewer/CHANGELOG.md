@@ -1,5 +1,76 @@
 # @atlaskit/media-viewer
 
+## 44.1.0
+
+### Minor Changes
+
+- [minor][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Expose new property: extensions.sidebar.renderer to allow Sidebar integration
+
+  > MediaViewer will call sidebarRenderer each time a navigation happens, and will provide the selected identifier.
+
+  **New api**
+
+  The new addition has been the, extensions field, which looks like:
+
+  ```typescript
+  interface MediaViewerExtensions {
+    sidebar?: {
+      icon: ReactNode;
+      renderer: (selectedIdentifier: Identifier) => ReactNode;
+    };
+  }
+  ```
+
+  **Usage**
+
+  ```typescript
+  import { MediaViewer } from '@atlaskit/media-viewer';
+  import { Identifier } from '@atlaskit/media-client';
+  import EditorPanelIcon from '@atlaskit/icon/glyph/editor/panel';
+
+  const sidebarRenderer = (selectedIdentifier: Identifier) => {
+    return <div>{selectedIdentifier.id}</div>;
+  };
+
+  <MediaViewer
+    extensions={{
+      sidebar: {
+        icon: <EditorPanelIcon />,
+        renderer: sidebarRenderer,
+      },
+    }}
+  />;
+  ```
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Fix testid properties on Media Viewer's components
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  fixed media client retrying aborted request- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  update pdfjs-dist to 2.2.228- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/analytics-next@6.3.3
+  - @atlaskit/media-client@4.2.0
+  - @atlaskit/modal-dialog@10.5.0
+  - @atlaskit/media-card@66.1.2
+  - @atlaskit/media-ui@11.7.2
+
 ## 44.0.3
 
 ### Patch Changes

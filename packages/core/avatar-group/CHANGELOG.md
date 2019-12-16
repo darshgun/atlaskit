@@ -1,5 +1,21 @@
 # @atlaskit/avatar-group
 
+## 5.0.2
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Fixes onMoreClick return type to void- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Fixes return type of onClick in MoreIndicator to void- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/avatar@17.1.5
+  - @atlaskit/field-base@13.0.16
+  - @atlaskit/item@10.2.0
+
 ## 5.0.1
 
 ### Patch Changes

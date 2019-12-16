@@ -1,5 +1,13 @@
 # @atlaskit/popper
 
+## 3.1.8
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Updates react-popper dependency to a safe version.
+
 ## 3.1.7
 
 ### Patch Changes

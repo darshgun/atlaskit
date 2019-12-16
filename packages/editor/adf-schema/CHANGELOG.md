@@ -1,5 +1,16 @@
 # @atlaskit/adf-schema
 
+## 4.3.2
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Relax text color mark validation to allow upper case characters
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/json-schema-generator@2.2.0
+
 ## 4.3.1
 
 ### Patch Changes

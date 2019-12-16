@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/textarea",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Textarea Component",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -22,7 +22,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^6.3.0",
+    "@atlaskit/analytics-next": "^6.3.3",
     "@atlaskit/theme": "^9.2.8",
     "@atlaskit/type-helpers": "^4.2.1",
     "tslib": "^1.9.3"

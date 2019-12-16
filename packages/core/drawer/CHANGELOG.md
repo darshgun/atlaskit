@@ -1,5 +1,25 @@
 # @atlaskit/drawer
 
+## 5.2.0
+
+### Minor Changes
+
+- [minor][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Allowing support for using with new react-beautiful-dnd 12.x API
+
+### Patch Changes
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/quick-search@7.8.2
+  - @atlaskit/analytics-next@6.3.3
+  - @atlaskit/avatar@17.1.5
+  - @atlaskit/item@10.2.0
+
 ## 5.1.0
 
 ### Minor Changes

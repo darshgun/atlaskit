@@ -1,5 +1,13 @@
 # @atlaskit/json-schema-generator
 
+## 2.2.0
+
+### Minor Changes
+
+- [minor][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Relax text color mark validation to allow upper case characters
+
 ## 2.1.5
 
 ### Patch Changes

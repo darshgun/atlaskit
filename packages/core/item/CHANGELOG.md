@@ -1,5 +1,21 @@
 # @atlaskit/item
 
+## 10.2.0
+
+### Minor Changes
+
+- [minor][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Allowing support for using with new react-beautiful-dnd 12.x API
+
+### Patch Changes
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/tooltip@15.2.0
+  - @atlaskit/avatar@17.1.5
+
 ## 10.1.6
 
 ### Patch Changes
