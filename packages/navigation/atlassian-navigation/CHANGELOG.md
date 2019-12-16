@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.8.1
+
+### Patch Changes
+
+- [patch][65e4e8a5ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65e4e8a5ec):
+
+  Removing left margin for ProductHome when there's no Switcher before it.
+
 ## 0.8.0
 
 ### Minor Changes
