@@ -94,8 +94,8 @@ describe('Build', () => {
       expect(runCommands).toHaveBeenNthCalledWith(
         2,
         [
-          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
-          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success\'',
+          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success\'',
         ],
         { cwd: '/Users/dev/atlaskit-mk-2', sequential: true },
       );
@@ -226,6 +226,39 @@ describe('Build', () => {
         cwd: '/Users/dev/atlaskit-mk-2',
         packageName: '@atlaskit/editor-core',
       });
+    });
+    it('should ignore TS errors by default', async () => {
+      expect(runCommands).not.toHaveBeenCalled();
+      await build('editor-core', { cwd: '/Users/dev/atlaskit-mk-2' });
+      expect(runCommands).toHaveBeenNthCalledWith(
+        2,
+        [
+          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+        ],
+        {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          sequential: false,
+        },
+      );
+    });
+    it('should not ignore TS errors if strict flag is set', async () => {
+      expect(runCommands).not.toHaveBeenCalled();
+      await build('editor-core', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+        strict: true,
+      });
+      expect(runCommands).toHaveBeenNthCalledWith(
+        2,
+        [
+          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success\'',
+          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success\'',
+        ],
+        {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          sequential: false,
+        },
+      );
     });
 
     describe('Package names', () => {
@@ -749,7 +782,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
-            'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success\'',
           ],
           {
             cwd: '/Users/dev/atlaskit-mk-2',
@@ -776,7 +809,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
-            'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success\'',
           ],
           {
             cwd: '/Users/dev/atlaskit-mk-2',
