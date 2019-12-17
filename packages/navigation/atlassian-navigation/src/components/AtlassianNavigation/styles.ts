@@ -26,6 +26,7 @@ export const leftCSS = {
   alignItems: 'center',
   display: 'flex',
   flexGrow: 1,
+  minWidth: 0,
   height: 'inherit',
   '& > *': {
     flexShrink: 0,
@@ -36,7 +37,6 @@ export const rightCSS = {
   alignItems: 'center',
   display: 'flex',
   flexShrink: 0,
-  right: gridSize * 4,
   '& > *': {
     flexShrink: 0,
     marginRight: gridSize / 2,

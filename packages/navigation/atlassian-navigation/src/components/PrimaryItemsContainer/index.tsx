@@ -13,12 +13,14 @@ import { PrimaryDropdownButton } from '../PrimaryDropdownButton';
 
 import { containerCSS, widthDetectorContainerStyle } from './styles';
 import { PrimaryItemsContainerProps } from './types';
+import { NavigationTheme } from '../../theme';
 
 export const PrimaryItemsContainer = ({
   moreLabel,
   items,
   create: Create,
-}: PrimaryItemsContainerProps) => {
+  theme,
+}: PrimaryItemsContainerProps & { theme: NavigationTheme }) => {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const { updateWidth, visibleItems, overflowItems } = useOverflowController(
     items,
@@ -53,7 +55,7 @@ export const PrimaryItemsContainer = ({
   );
 
   return (
-    <div css={containerCSS}>
+    <div css={containerCSS(theme)}>
       <OverflowProvider isVisible>{visibleItems}</OverflowProvider>
       {overflowItems.length > 0 && (
         <Popup
