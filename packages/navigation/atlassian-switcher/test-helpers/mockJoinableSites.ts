@@ -4,7 +4,7 @@ export default {
       cloudId: '05b02b6f-aad5-449e-b4e2-8d6a0c632e26',
       products: {
         'jira-software.ondemand': {
-          users: [
+          collaborators: [
             {
               avatarUrl:
                 'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
@@ -30,7 +30,7 @@ export default {
               relevance: 0,
             },
           ],
-          url: 'https://atl-jsoler-20190708v3.jira-dev.com',
+          productUrl: 'https://atl-jsoler-20190708v3.jira-dev.com',
         },
       },
       url: 'https://atl-jsoler-20190708v3.jira-dev.com',
@@ -41,24 +41,21 @@ export default {
     },
     {
       cloudId: '0b080b56-bb7f-4572-b5bc-d44c33c2d54a',
-      products: {
-        'jira-software.ondemand': {
-          users: [
-            {
-              avatarUrl:
-                'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
-              displayName: 'Yoni Gozman1',
-              relevance: 10,
-            },
-            {
-              avatarUrl:
-                'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
-              displayName: 'Yoni Gozman2',
-              relevance: 0,
-            },
-          ],
-          url: 'https://fake-saml-scim.jira-dev.com',
-        },
+      users: {
+        'jira-software.ondemand': [
+          {
+            avatarUrl:
+              'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
+            displayName: 'Yoni Gozman1',
+            relevance: 10,
+          },
+          {
+            avatarUrl:
+              'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
+            displayName: 'Yoni Gozman2',
+            relevance: 0,
+          },
+        ],
       },
       url: 'https://fake-saml-scim.jira-dev.com',
       displayName: 'fake-saml-scim-and-i-am-too-long-to-be-displayed',
@@ -70,7 +67,7 @@ export default {
       cloudId: '0c7e15f2-f933-463b-b818-10a18fa0f173',
       products: {
         'jira-software.ondemand': {
-          users: [
+          collaborators: [
             {
               avatarUrl:
                 'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
@@ -78,7 +75,7 @@ export default {
               relevance: 10,
             },
           ],
-          url: 'https://14122.jira-dev.com',
+          productUrl: 'https://14122.jira-dev.com',
         },
       },
       url: 'https://14122.jira-dev.com',
@@ -91,7 +88,7 @@ export default {
       cloudId: '11915d9c-23a0-4eb5-8feb-cb7446b3737e',
       products: {
         'jira-software.ondemand': {
-          users: [
+          collaborators: [
             {
               avatarUrl:
                 'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
@@ -99,7 +96,7 @@ export default {
               relevance: 10,
             },
           ],
-          url: 'https://people-and-teams.jira-dev.com',
+          productUrl: 'https://people-and-teams.jira-dev.com',
         },
       },
       url: 'https://people-and-teams.jira-dev.com',
@@ -112,8 +109,8 @@ export default {
       cloudId: '1102cbc0-3189-4f02-9c94-756c0ffc858a',
       products: {
         'jira-software.ondemand': {
-          users: [],
-          url: 'https://atl-xflow-release-332.jira-dev.com',
+          collaborators: [],
+          productUrl: 'https://atl-xflow-release-332.jira-dev.com',
         },
       },
       url: 'https://atl-xflow-release-332.jira-dev.com',

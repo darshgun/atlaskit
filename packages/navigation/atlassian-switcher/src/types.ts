@@ -170,19 +170,32 @@ export interface JoinableSiteUserAvatarPropTypes {
 
 export interface JoinableProducts {
   [key: string]: {
-    users: JoinableSiteUser[];
-    url: string;
+    collaborators: JoinableSiteUser[];
+    productUrl: string;
   };
 }
 
-export interface JoinableSite {
+export interface JoinableSiteUsersKeyedByProduct {
+  [key: string]: JoinableSiteUser[];
+}
+
+export interface JoinableSiteWithProducts {
+  products: JoinableProducts;
+  users?: JoinableSiteUsersKeyedByProduct;
+}
+
+export interface JoinableSiteWithUsers {
+  products?: JoinableProducts;
+  users: JoinableSiteUsersKeyedByProduct;
+}
+
+export type JoinableSite = {
   cloudId: string;
   displayName: string;
-  products: JoinableProducts;
   url: string;
   avatarUrl?: string;
   relevance?: number;
-}
+} & (JoinableSiteWithProducts | JoinableSiteWithUsers);
 
 export interface JoinableSitesResponse {
   sites: JoinableSite[];
