@@ -203,6 +203,33 @@ describe('MediaNodeUpdater', () => {
     });
   });
 
+  describe('hasDifferentContextId()', () => {
+    it('should return true if current node context id is different than page context id', async () => {
+      const { mediaNodeUpdater } = setup();
+
+      expect(mediaNodeUpdater.getNodeContextId()).toEqual('source-context-id');
+      expect(await mediaNodeUpdater.getObjectId()).toEqual('object-id');
+      expect(await mediaNodeUpdater.hasDifferentContextId()).toBeTruthy();
+    });
+
+    it('should return false if current node context id is the same as page context id', async () => {
+      const { mediaNodeUpdater } = setup({
+        node: {
+          attrs: {
+            id: 'some-source-file-id',
+            collection: 'source-collection',
+            __contextId: 'object-id',
+            type: 'file',
+          },
+        } as any,
+      });
+
+      expect(mediaNodeUpdater.getNodeContextId()).toEqual('object-id');
+      expect(await mediaNodeUpdater.getObjectId()).toEqual('object-id');
+      expect(await mediaNodeUpdater.hasDifferentContextId()).toBeFalsy();
+    });
+  });
+
   describe('copyNode()', () => {
     it('should use getAuthFromContext to get auth', async () => {
       const { mediaNodeUpdater, uploadMediaClientConfig } = setup();
@@ -252,6 +279,7 @@ describe('MediaNodeUpdater', () => {
         {
           id: 'copied-file-id',
           collection: 'destination-collection',
+          __contextId: 'object-id',
         },
         false,
       );

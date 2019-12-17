@@ -509,14 +509,14 @@ describe('nodeviews/mediaSingle', () => {
 
     const instances: MediaNodeUpdater[] = (MediaNodeUpdater as any).instances;
 
-    instances[0].isNodeFromDifferentCollection &&
+    instances[0].hasDifferentContextId &&
       asMockReturnValue(
-        instances[0].isNodeFromDifferentCollection,
+        instances[0].hasDifferentContextId,
         Promise.resolve(true),
       );
 
     await instance.componentDidMount();
-    expect(instances[0].isNodeFromDifferentCollection).toHaveBeenCalled();
+    expect(instances[0].hasDifferentContextId).toHaveBeenCalled();
     expect(instances[0].copyNode).toHaveBeenCalled();
   });
 

@@ -107,7 +107,7 @@ describe('nodeviews/mediaGroup', () => {
 
     it('should call MediaNodeUpdater.updateContextId when node contextId is not found', async () => {
       (MediaNodeUpdater as any).setMock(
-        'getCurrentContextId',
+        'getNodeContextId',
         jest.fn().mockReturnValue(undefined),
       );
       await setup(mediaNode);
@@ -117,7 +117,7 @@ describe('nodeviews/mediaGroup', () => {
 
     it('should only call MediaNodeUpdater.copyNode when node from different collection', async () => {
       (MediaNodeUpdater as any).setMock(
-        'isNodeFromDifferentCollection',
+        'hasDifferentContextId',
         jest.fn().mockResolvedValue(false),
       );
       await setup(mediaNode);

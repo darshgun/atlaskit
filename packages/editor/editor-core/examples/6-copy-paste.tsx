@@ -99,40 +99,54 @@ export type State = {
   disabled: boolean;
   title?: string;
   appearance: EditorAppearance;
-  mediaOptions: Map<string, Promise<MediaProvider>>;
+  mediaOptions: Map<string, Providers>;
 };
-const contextIdentifierProvider = storyContextIdentifierProviderFactory();
-const providers: any = {
-  emojiProvider: emoji.storyData.getEmojiResource({
-    uploadSupported: true,
-    currentUser: {
-      id: emoji.storyData.loggedUser,
-    },
-  }) as Promise<EmojiProvider>,
-  mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
-  taskDecisionProvider: Promise.resolve(
-    taskDecision.getMockTaskDecisionResource(),
-  ),
-  contextIdentifierProvider,
-  activityProvider: Promise.resolve(new MockActivityResource()),
-  macroProvider: Promise.resolve(macroProvider),
-  autoformattingProvider: Promise.resolve(autoformattingProvider),
-};
-const mediaProviders = new Map<string, Promise<MediaProvider>>();
-const getMediaProvider = (collectionName: string): Promise<MediaProvider> => {
+interface Providers {
+  mediaProvider: Promise<MediaProvider>;
+  editorProviders: any;
+}
+
+const mediaProviders = new Map<string, Providers>();
+const getProviders = (collectionName: string): Providers => {
   // It's important to keep the same provider instance for Editor
-  let provider = mediaProviders.get(collectionName);
-  if (provider) {
-    return provider;
+  let providers = mediaProviders.get(collectionName);
+  if (providers) {
+    return providers;
   } else {
-    provider = storyMediaProviderFactory({
+    const contextIdentifierProvider = storyContextIdentifierProviderFactory({
+      objectId: `${collectionName}-OBJECT-ID`,
+      containerId: `${collectionName}-CONTAINER-ID`,
+      childObjectId: `${collectionName}-CHILD-OBJECT-ID`,
+      product: `${collectionName}-atlaskit-examples`,
+    });
+    const editorProviders: any = {
+      emojiProvider: emoji.storyData.getEmojiResource({
+        uploadSupported: true,
+        currentUser: {
+          id: emoji.storyData.loggedUser,
+        },
+      }) as Promise<EmojiProvider>,
+      mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
+      taskDecisionProvider: Promise.resolve(
+        taskDecision.getMockTaskDecisionResource(),
+      ),
+      contextIdentifierProvider,
+      activityProvider: Promise.resolve(new MockActivityResource()),
+      macroProvider: Promise.resolve(macroProvider),
+      autoformattingProvider: Promise.resolve(autoformattingProvider),
+    };
+    const mediaProvider = storyMediaProviderFactory({
       collectionName,
       includeUserAuthProvider: true,
     });
+    providers = {
+      mediaProvider,
+      editorProviders,
+    };
 
-    mediaProviders.set(collectionName, provider);
+    mediaProviders.set(collectionName, providers);
 
-    return provider;
+    return providers;
   }
 };
 
@@ -264,10 +278,12 @@ const rendererDoc = {
     },
   ],
 };
-const mediaProvider = getMediaProvider(defaultCollectionName);
+const defaultCollectionNameProviders = getProviders(defaultCollectionName);
+const mediaProvider = defaultCollectionNameProviders.mediaProvider;
 const dataProviders = ProviderFactory.create({
   mediaProvider,
-  contextIdentifierProvider,
+  contextIdentifierProvider:
+    defaultCollectionNameProviders.editorProviders.contextIdentifierProvider,
 });
 
 class ExampleEditorComponent extends React.Component<
@@ -291,11 +307,11 @@ class ExampleEditorComponent extends React.Component<
     });
     mediaOptions.set(
       defaultCollectionName,
-      getMediaProvider(defaultCollectionName),
+      getProviders(defaultCollectionName),
     );
     mediaOptions.set(
       defaultMediaPickerCollectionName,
-      getMediaProvider(defaultMediaPickerCollectionName),
+      getProviders(defaultMediaPickerCollectionName),
     );
     this.setState({ mediaOptions });
   }
@@ -353,8 +369,13 @@ class ExampleEditorComponent extends React.Component<
       undefined;
     const SaveAndCancelButtons = createSaveAndCancelButtons(collectionName);
     const { mediaOptions } = this.state;
+    const providers = mediaOptions.get(collectionName);
+    if (!providers) {
+      return null;
+    }
+
     const media: MediaOptions = {
-      provider: mediaOptions.get(collectionName),
+      provider: providers.mediaProvider,
       allowMediaSingle: true,
       allowResizing: true,
       allowAnnotation: true,
@@ -399,7 +420,7 @@ class ExampleEditorComponent extends React.Component<
                     provider: Promise.resolve(cardProvider),
                   }}
                   allowStatus={true}
-                  {...providers}
+                  {...providers.editorProviders}
                   editorActions={actions}
                   media={media}
                   placeholder="Use markdown shortcuts to format your page as you type, like * for lists, # for headers, and *** for a horizontal rule."
