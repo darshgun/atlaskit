@@ -6905,10 +6905,10 @@ bolt@^0.20.6:
     typeable-promisify "^2.0.1"
     yarn "^1.6.0"
 
-bolt@^0.24.3:
-  version "0.24.3"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.24.3.tgz#425da5330aedf145b330ad1f3a779c01cd846db5"
-  integrity sha512-lvSfUBsH1Hko6tUiqmrzZGqheQKD8imCvDNuND7EjO+mhGpu1Ejbz65ur20GqpFG+BtubrgDTDFK5rewpLM1pw==
+bolt@^0.24.4:
+  version "0.24.4"
+  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.24.4.tgz#0b6080b8dff84415f194e6e3067e9361042f3514"
+  integrity sha512-Y4adoDkT/HtdlGWaMM35qi7JV30dAGCyseNnUvKT5BJVlsBODMOCEkNLTDtKwtyuCuUhWaDdIuLwYQgW8HdMlw==
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"

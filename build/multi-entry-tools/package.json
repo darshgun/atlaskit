@@ -9,7 +9,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "bolt": "^0.24.3",
+    "bolt": "^0.24.4",
     "glob": "^7.1.2"
   },
   "bin": {
