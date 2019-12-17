@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-navigation
 
+## 0.8.3
+
+### Patch Changes
+
+- [patch][666ecab6c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/666ecab6c9):
+
+  Improve styles for Atlassian Navigation when SSRd
+
 ## 0.8.2
 
 ### Patch Changes
