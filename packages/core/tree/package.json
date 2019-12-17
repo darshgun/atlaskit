@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tree",
-  "version": "7.0.2",
+  "version": "7.1.0",
   "description": "A React Component for displaying expandable and sortable tree hierarchies",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
@@ -32,7 +32,7 @@
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/icon": "^19.0.6",
-    "@atlaskit/navigation": "^35.2.5",
+    "@atlaskit/navigation": "^35.3.0",
     "@atlaskit/spinner": "^12.1.1",
     "@atlaskit/ssr": "^0.1.1",
     "@atlaskit/theme": "^9.2.4",

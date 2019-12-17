@@ -3,11 +3,13 @@ import simpleGit from 'simple-git/promise';
 import { push } from '../../../commands/push';
 import fetch from 'node-fetch';
 import * as gitUtil from '../../../lib/git';
+import { getWorkspaceDirs } from '../../../lib/packageEngine';
 
 jest.unmock('../../../commands/push');
 
 const mockSimpleGit: jest.Mock = simpleGit as any;
 const mockFetch: jest.Mock = fetch as any;
+const mockGetWorkspaceDirs: jest.Mock = getWorkspaceDirs as any;
 
 describe('Push command', () => {
   let mockGitMethods: any;
@@ -34,6 +36,7 @@ describe('Push command', () => {
     mockFetch.mockImplementation(() => ({
       json: jest.fn(() => ({ author: { raw: 'Test <test@atlassian.com>' } })),
     }));
+    mockGetWorkspaceDirs.mockImplementation(() => []);
     // Comment out the mockImplementation to read console.logs for debugging
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
   });
@@ -46,6 +49,8 @@ describe('Push command', () => {
     );
   });
   it.skip('should reuse existing branch in product if one exists', () => {});
+  it.skip('should merge master and reset package.json/yarn.lock to master', () => {});
+  it.skip('should merge master and reset workspace package.jsons to master', () => {});
   it.skip('should install branch deployed versions from supplied commit hash', () => {});
   it.skip('should create a version file in the root', () => {});
   it.skip('should commit and push changes', () => {});

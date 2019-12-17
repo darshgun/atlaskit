@@ -1,5 +1,13 @@
 # @atlaskit/conversation
 
+## 15.4.4
+
+### Patch Changes
+
+- [patch][6b95bb9a5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b95bb9a5e):
+
+  Fixes a bug where the beforeunload alert was showing when editor content was empty, a user had cancelled, or a user had saved a comment. It should only be shown if a user has unsaved content in the editor.
+
 ## 15.4.3
 
 ### Patch Changes

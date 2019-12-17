@@ -5,7 +5,6 @@ import {
   Example,
   Props,
   AtlassianInternalWarning,
-  DevPreviewWarning,
 } from '@atlaskit/docs';
 
 export default md`
@@ -13,9 +12,6 @@ export default md`
     <>
       <div style={{ marginBottom: '0.5rem' }}>
         <AtlassianInternalWarning />
-      </div>
-      <div style={{ marginTop: '0.5rem' }}>
-        <DevPreviewWarning />
       </div>
     </>
   )}
@@ -37,7 +33,7 @@ export default md`
       );
     }
   }
-  
+
   `}
 
   ${(

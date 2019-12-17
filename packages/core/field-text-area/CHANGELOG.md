@@ -1,5 +1,18 @@
 # @atlaskit/field-text-area
 
+## 6.0.15
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Form has been converted to Typescript. TypeScript consumers will now get static type safety. Flow types are no longer provided. No API changes.- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/analytics-next@6.3.3
+  - @atlaskit/field-base@13.0.16
+
 ## 6.0.14
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @atlaskit/quick-search
 
+## 7.8.2
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Fix quicksearch text input when using an IME (affects Japanese/Chinese users)
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/avatar@17.1.5
+  - @atlaskit/drawer@5.2.0
+  - @atlaskit/item@10.2.0
+  - @atlaskit/navigation@35.3.0
+
 ## 7.8.1
 
 ### Patch Changes

@@ -18,6 +18,9 @@ export const productHomeButtonCSS = ({
     display: 'flex',
     cursor: 'pointer',
     color: 'inherit',
+    '&:first-of-type': {
+      marginLeft: 0,
+    },
     '&::-moz-focus-inner': {
       border: 0,
     },
@@ -118,7 +121,7 @@ export const siteTitleSkeletonCSS = (theme: NavigationTheme) => ({
 
 export const productLogoSkeletonCSS = (theme: NavigationTheme) => ({
   width: '120px',
-  height: iconHeight,
+  height: 24,
   ...heightCSS,
   ...productLogoCSS,
   ...skeletonCSS(theme),

@@ -1,5 +1,15 @@
 # @atlaskit/field-base
 
+## 13.0.16
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Fixes onClick return type to void- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  - @atlaskit/inline-dialog@12.1.6
+
 ## 13.0.15
 
 ### Patch Changes

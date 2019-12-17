@@ -1,5 +1,21 @@
 # @atlaskit/status
 
+## 0.9.18
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  ED-8143: Add browser native tooltip to a status node
+
+  Now it's possible to read status text when it's truncated because of either being too long or being placed in a small container.- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/analytics-next@6.3.3
+  - @atlaskit/textfield@3.1.4
+
 ## 0.9.17
 
 ### Patch Changes

@@ -51,6 +51,11 @@ describe('create promise', () => {
       'collection',
     );
   });
+
+  it('calls sendToPromise without args when unary', () => {
+    createPromise('getConfig').submit();
+    expect(toNativeBridge.submitPromise).toBeCalledWith('getConfig', '0');
+  });
 });
 
 describe('resolve promise', () => {

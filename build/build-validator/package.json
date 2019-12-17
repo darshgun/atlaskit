@@ -7,7 +7,7 @@
     "validate-packages": "node scripts/validate-packages.js"
   },
   "dependencies": {
-    "bolt": "^0.24.3",
+    "bolt": "^0.24.4",
     "fs-extra": "^4.0.2",
     "npm-packlist": "^1.4.4",
     "p-limit": "^2.2.1",

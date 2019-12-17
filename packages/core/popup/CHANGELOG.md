@@ -1,5 +1,17 @@
 # @atlaskit/popup
 
+## 0.2.5
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Updates react-popper dependency to a safe version.- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/radio@3.1.5
+  - @atlaskit/popper@3.1.8
+
 ## 0.2.4
 
 ### Patch Changes

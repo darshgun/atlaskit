@@ -83,7 +83,7 @@ function validateOptions(commitHash /*:string */, options /*: Object */ = {}) {
 // const logInDebugMode = createLogger(flags.debug);
 
 // eslint-disable-next-line no-unused-vars
-const createLogger = shouldLog => {
+const createLogger /*: any */ = shouldLog => {
   if (shouldLog) {
     return message => {
       if (typeof message === 'string') {
@@ -170,8 +170,8 @@ async function _installFromCommit(
   commitHash /*: string */ = '',
   options /*: Object */ = {},
 ) {
-  const { log } = options;
-  const { verboseLog } = options;
+  const log = createLogger(true);
+  const verboseLog = createLogger(options.verbose);
 
   verboseLog('Running with options:');
   verboseLog({ ...options, commitHash });

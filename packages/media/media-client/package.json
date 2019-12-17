@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-client",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "Media API Web Client Library",
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
@@ -38,7 +38,7 @@
     "@atlaskit/build-utils": "^2.2.7",
     "@atlaskit/button": "^13.3.3",
     "@atlaskit/docs": "^8.1.8",
-    "@atlaskit/media-card": "^66.0.1",
+    "@atlaskit/media-card": "^66.1.2",
     "@atlaskit/media-core": "^31.0.0",
     "@atlaskit/media-test-helpers": "^25.2.2",
     "@atlaskit/ssr": "^0.1.1",

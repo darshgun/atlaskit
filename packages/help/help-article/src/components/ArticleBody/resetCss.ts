@@ -4,7 +4,18 @@ import RESET_CSS from '@atlaskit/css-reset/reset';
 import TABLES_CSS from '@atlaskit/css-reset/tables';
 import UTILS_CSS from '@atlaskit/css-reset/utils';
 
-const IFRAME_FIX_CSS = `html{width: calc(100% - 10px); padding: 5px; overflow: hidden; height: auto;} body {margin: 0; padding: 0;}`;
+const IFRAME_FIX_CSS = `
+  html{
+    width: calc(100% - 10px);
+    padding: 5px;
+    overflow: hidden;
+    height: auto;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }`;
 
 const DEFAULT_CSS =
   BASE_CSS +

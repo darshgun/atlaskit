@@ -1,5 +1,21 @@
 # @atlaskit/tree
 
+## 7.1.0
+
+### Minor Changes
+
+- [minor][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Moving to react-beautiful-dnd-next in order to lock package to 11.x API. Tree is not compatible with 12.x for now
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Fixes a bug in Tree that causes children of other nodes to show unexpectedly when clicking on a parent- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  - @atlaskit/navigation@35.3.0
+
 ## 7.0.2
 
 ### Patch Changes

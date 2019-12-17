@@ -1,5 +1,37 @@
 ## 0.1.0
 
+## 0.21.9
+
+### Patch Changes
+
+- Updated dependencies [4a1af8b733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4a1af8b733):
+  - @atlaskit/help-article@1.0.0
+
+## 0.21.8
+
+### Patch Changes
+
+- [patch][24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+  Pull in update to form to fix a bug which could cause the internal fieldId to be incorrectly set- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+- Updated dependencies [24865cfaff](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/24865cfaff):
+  - @atlaskit/quick-search@7.8.2
+  - @atlaskit/tooltip@15.2.0
+  - @atlaskit/analytics-next@6.3.3
+  - @atlaskit/form@7.0.0
+  - @atlaskit/radio@3.1.5
+  - @atlaskit/item@10.2.0
+  - @atlaskit/navigation@35.3.0
+  - @atlaskit/textarea@2.2.3
+
 ## 0.21.7
 
 ### Patch Changes

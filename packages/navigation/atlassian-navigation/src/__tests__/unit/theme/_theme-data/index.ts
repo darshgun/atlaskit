@@ -71,7 +71,7 @@ export const themes: Themes = [
       navigation: { backgroundColor: '#FFFFFF', color: '#6B778C' },
       productHome: {
         backgroundColor: '#0052CC',
-        color: 'rgba(13, 20, 36, 0.97)',
+        color: '#253858',
         borderRight: '1px solid rgba(107, 119, 140, 0.3)',
         iconGradientStart: '#0052CC',
         iconGradientStop: '#2684FF',
