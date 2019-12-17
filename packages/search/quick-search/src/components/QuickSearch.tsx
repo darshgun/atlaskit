@@ -1,7 +1,6 @@
 import * as React from 'react';
 import keycode from 'keycode';
-// @ts-ignore
-import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
+import { withAnalytics } from '@atlaskit/analytics';
 import { ResultData, SelectedResultId, ResultId } from './Results/types';
 import AkSearch from './Search/Search';
 import {
@@ -109,8 +108,7 @@ export type Props = {
   /** Optional way of being notified when the selected result changes due to keyboard nav */
   onSelectedResultIdChanged?: (id: SelectedResultId) => void;
   // Internal: injected by withAnalytics(). Fire a private analytics event
-  // @ts-ignore
-  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
+  firePrivateAnalyticsEvent?: (eventName: string, eventData: Object) => void;
   /** React component to be used for rendering links */
   linkComponent?: React.ComponentType<any>;
   /** The elements to render to the right of the search input. */
