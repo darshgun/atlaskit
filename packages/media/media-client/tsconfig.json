@@ -9,5 +9,8 @@
   "compilerOptions": {
     "baseUrl": "./"
   },
-  "files": []
+  "files": [
+    "../../../typings/deep-equal.d.ts",
+    "../../../typings/rusha.d.ts"
+  ]
 }
