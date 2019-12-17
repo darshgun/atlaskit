@@ -3563,8 +3563,8 @@
 
 "@types/deep-equal@^1.0.1":
   version "1.0.1"
-  resolved "https://packages.atlassian.com/api/npm/npm-remote/@types/deep-equal/-/deep-equal-1.0.1.tgz#71cfabb247c22bcc16d536111f50c0ed12476b03"
-  integrity sha1-cc+rskfCK8wW1TYRH1DA7RJHawM=
+  resolved "https://registry.yarnpkg.com/@types/deep-equal/-/deep-equal-1.0.1.tgz#71cfabb247c22bcc16d536111f50c0ed12476b03"
+  integrity sha512-mMUu4nWHLBlHtxXY17Fg6+ucS/MnndyOWyOe7MmwkoMYxvfQU2ajtRaEvqSUv+aVkMqH/C0NCI8UoVfRNQ10yg==
 
 "@types/enzyme@^3.1.15":
   version "3.1.15"
