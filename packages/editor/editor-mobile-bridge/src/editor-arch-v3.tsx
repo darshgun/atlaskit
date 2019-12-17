@@ -2,8 +2,10 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { determineMode } from './bridge-utils';
 import { EditorActions, EditorContext } from '@atlaskit/editor-core';
-import { EditorPresetMobile } from '@atlaskit/editor-core/src/labs/next/presets/mobile';
-import { Mobile as MobileEditor } from '@atlaskit/editor-core/src/labs/next/mobile';
+import {
+  EditorPresetMobile,
+  Mobile as MobileEditor,
+} from '@atlaskit/editor-core/labs-next';
 import { AtlaskitThemeProvider } from '@atlaskit/theme/components';
 import { Provider as SmartCardProvider } from '@atlaskit/smart-card';
 import { analyticsBridgeClient } from './analytics-client';
