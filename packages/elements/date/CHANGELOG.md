@@ -1,5 +1,13 @@
 # @atlaskit/date
 
+## 0.7.9
+
+### Patch Changes
+
+- [patch][36f6e99c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f6e99c5b):
+
+  Fix type errors caused when generating declaration files
+
 ## 0.7.8
 
 ### Patch Changes

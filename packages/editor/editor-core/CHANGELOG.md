@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 115.2.1
+
+### Patch Changes
+
+- [patch][36f6e99c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f6e99c5b):
+
+  Fix type errors caused when generating declaration files- Updated dependencies [36f6e99c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f6e99c5b):
+
+  - @atlaskit/calendar@9.2.2
+  - @atlaskit/editor-test-helpers@10.3.2
+  - @atlaskit/renderer@53.2.2
+  - @atlaskit/date@0.7.9
+  - @atlaskit/media-client@4.2.1
+
 ## 115.2.0
 
 ### Minor Changes
