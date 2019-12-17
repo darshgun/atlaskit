@@ -98,8 +98,7 @@ export const siteTitleCSS = ({
   marginLeft: `${gridSize * 0.5}px`,
   display: 'flex',
   alignItems: 'center',
-
-  paddingRight: gridSize * 3,
+  paddingRight: gridSize * 2,
   marginRight: gridSize / 2,
   borderRight: borderRight,
 });
