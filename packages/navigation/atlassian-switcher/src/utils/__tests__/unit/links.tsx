@@ -1,4 +1,5 @@
 import {
+  AvailableProductDetails,
   AVAILABLE_PRODUCT_DATA_MAP,
   TO_WORKLENS_PRODUCT_KEY,
   getFixedProductLinks,
@@ -7,6 +8,7 @@ import {
   getJoinableSiteLinks,
 } from '../../links';
 import {
+  JoinableProductDetails,
   JoinableProducts,
   Product,
   ProvisionedProducts,
@@ -245,30 +247,41 @@ describe('utils/links', () => {
         const siteData = mockData[index];
 
         let productKey = '';
+        let productData:
+          | JoinableProductDetails
+          | string[]
+          | AvailableProductDetails = [];
 
         if (siteData.products) {
           productKey = Object.keys(siteData.products!)[0];
-          const productData = (siteData.products as JoinableProducts)[
-            productKey
-          ];
-          expect(site.href).toEqual(productData.productUrl);
+          productData = (siteData.products as JoinableProducts)[productKey];
         } else if (siteData.users) {
           productKey = Object.keys(siteData.users!)[0];
-
-          let expectUrl = siteData.url;
-
-          const productData =
+          productData =
             AVAILABLE_PRODUCT_DATA_MAP[
               TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey]
             ];
+        }
+
+        if (
+          siteData.products &&
+          !Array.isArray(productData) &&
+          (productData as JoinableProductDetails).productUrl
+        ) {
+          expect(site.href).toEqual(
+            (productData as JoinableProductDetails).productUrl,
+          );
+        } else {
+          let expectUrl = siteData.url;
 
           if (productKey === ProductKey.CONFLUENCE) {
-            expectUrl = siteData.url + productData.href;
+            expectUrl =
+              siteData.url + (productData as AvailableProductDetails).href;
           } else if (
             productKey !== ProductKey.JIRA_CORE &&
             productKey !== ProductKey.JIRA_SOFTWARE
           ) {
-            expectUrl = productData.href;
+            expectUrl = (productData as AvailableProductDetails).href;
           }
 
           expect(site.href).toEqual(expectUrl);

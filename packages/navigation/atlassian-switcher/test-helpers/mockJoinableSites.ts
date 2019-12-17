@@ -30,7 +30,8 @@ export default {
               relevance: 0,
             },
           ],
-          productUrl: 'https://atl-jsoler-20190708v3.jira-dev.com',
+          productUrl:
+            'https://atl-jsoler-20190708v3.jira-dev.com/product-landing-page',
         },
       },
       url: 'https://atl-jsoler-20190708v3.jira-dev.com',
@@ -66,17 +67,7 @@ export default {
     {
       cloudId: '0c7e15f2-f933-463b-b818-10a18fa0f173',
       products: {
-        'jira-software.ondemand': {
-          collaborators: [
-            {
-              avatarUrl:
-                'https://secure.gravatar.com/avatar/8d798826168832a434df4285c75d2e07?d=https%3A%2F%2Favatar-management--avatars.us-west-2.staging.public.atl-paas.net%2Finitials%2FYG-1.png',
-              displayName: 'Yoni Gozman2',
-              relevance: 10,
-            },
-          ],
-          productUrl: 'https://14122.jira-dev.com',
-        },
+        'jira-software.ondemand': ['user-id-1', 'user-id-2'],
       },
       url: 'https://14122.jira-dev.com',
       displayName: '14122-and-i-am-too-long-to-be-displayed',
@@ -96,7 +87,8 @@ export default {
               relevance: 10,
             },
           ],
-          productUrl: 'https://people-and-teams.jira-dev.com',
+          productUrl:
+            'https://people-and-teams.jira-dev.com/product-landing-page',
         },
       },
       url: 'https://people-and-teams.jira-dev.com',

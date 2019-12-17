@@ -30,6 +30,7 @@ import {
   JoinableSite,
   JoinableSiteUser,
   JoinableSiteUserAvatarPropTypes,
+  JoinableProductDetails,
 } from '../types';
 import messages from './messages';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
@@ -93,7 +94,7 @@ const getDiscoverMoreLink = (
   };
 };
 
-type AvailableProductDetails = Pick<
+export type AvailableProductDetails = Pick<
   SwitcherItemType,
   'label' | 'Icon' | 'href' | 'description'
 >;
@@ -490,12 +491,24 @@ export const getJoinableSiteLinks = (
         productUrl = site.url + href;
       }
 
+      // in Bitbucket, it uses site.users as an array of JoinableUser
       if (site.users) {
         users = site.users[productKey];
       } else if (site.products) {
-        const product = site.products[productKey] || {};
-        users = product.collaborators || [];
-        productUrl = product.productUrl;
+        const product: JoinableProductDetails | string[] =
+          site.products[productKey] || [];
+
+        // in Trello, it is currently an empty array (stripped off from an array of user id string)
+        if (Array.isArray(product)) {
+          users = [];
+        } else if (Object.keys(product).length) {
+          users = product.collaborators || [];
+
+          // if productUrl is not given somehow, it falls back to the href from AVAILABLE_PRODUCT_DATA_MAP
+          if (product.productUrl) {
+            productUrl = product.productUrl;
+          }
+        }
       }
 
       joinableSiteLinks.push({

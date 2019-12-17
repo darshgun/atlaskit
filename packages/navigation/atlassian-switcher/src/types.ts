@@ -168,16 +168,26 @@ export interface JoinableSiteUserAvatarPropTypes {
   enableTooltip: boolean;
 }
 
-export interface JoinableProducts {
-  [key: string]: {
-    collaborators: JoinableSiteUser[];
-    productUrl: string;
-  };
+export interface JoinableProductDetails {
+  collaborators: JoinableSiteUser[];
+  productUrl: string;
+}
+
+export interface JoinableProductsWithProductUrl {
+  [key: string]: JoinableProductDetails;
+}
+
+export interface JoinableProductsWithUserIds {
+  [key: string]: string[];
 }
 
 export interface JoinableSiteUsersKeyedByProduct {
   [key: string]: JoinableSiteUser[];
 }
+
+export type JoinableProducts =
+  | JoinableProductsWithProductUrl
+  | JoinableProductsWithUserIds;
 
 export interface JoinableSiteWithProducts {
   products: JoinableProducts;
