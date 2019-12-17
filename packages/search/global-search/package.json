@@ -68,6 +68,7 @@
     "@atlaskit/navigation-next": "^7.0.4",
     "@atlaskit/page": "^11.0.9",
     "@atlaskit/quick-search": "^7.8.1",
+    "@types/deep-equal": "^1.0.1",
     "@types/seedrandom": "^2.4.27",
     "enzyme": "^3.10.0",
     "fetch-mock": "^7.3.3",
