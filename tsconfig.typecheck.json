@@ -1,7 +1,9 @@
 {
   "extends": "./tsconfig",
   "include": [
-    "./packages/navigation/atlassian-switcher/**/*",
+    "./build/**/*",
+    "./packages/**/*",
+    "./website/**/*",
   ],
   "exclude": [
     "./packages/**/**/dist",
