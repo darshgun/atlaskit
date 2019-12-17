@@ -9,7 +9,7 @@ import {
   WithSmartCardStorageProps,
 } from '../../ui/SmartCardStorage';
 
-interface InlineCardProps {
+export interface InlineCardProps {
   url?: string;
   data?: object;
   eventHandlers?: EventHandlers;

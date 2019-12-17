@@ -30,6 +30,7 @@ type DistType = 'cjs' | 'esm' | 'none';
 type Options = {
   cwd: string | undefined;
   distType: DistType | undefined;
+  strict: boolean | undefined;
   watch: boolean | undefined;
 };
 type StepArgs = Options & { pkg: PackageInfo | undefined };
@@ -180,7 +181,13 @@ async function babelCommands({ cwd, distType, pkg, watch }: StepArgs) {
   return getDistCommands(commands, distType);
 }
 
-async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
+async function buildJSPackages({
+  cwd,
+  distType,
+  strict,
+  pkg,
+  watch,
+}: StepArgs) {
   let commandOptions: RunOptions = { cwd };
   if (watch) {
     commandOptions = {
@@ -196,34 +203,51 @@ async function buildJSPackages({ cwd, distType, pkg, watch }: StepArgs) {
   }
   return runCommands(
     [
-      ...(await babelCommands({ cwd, pkg, watch, distType })),
-      ...(await generateFlowTypeCommands({ cwd, pkg, watch, distType })),
+      ...(await babelCommands({ cwd, pkg, strict, watch, distType })),
+      ...(await generateFlowTypeCommands({
+        cwd,
+        strict,
+        pkg,
+        watch,
+        distType,
+      })),
     ],
     commandOptions,
   );
 }
 
-async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
+async function standardTsCommands({
+  cwd,
+  distType,
+  strict,
+  pkg,
+  watch,
+}: StepArgs) {
   const pkgGlob = await getPkgGlob(['typescriptbuild'], pkg, { cwd });
   if (!pkgGlob) {
     return [];
   }
   // preserveWatchOutput prevents watch from clearing console output on every change
   const watchFlag = watch ? ' -w --preserveWatchOutput' : '';
-  /* The `|| true` at the end of each typescript command was knowingly added in https://bitbucket.org/atlassian/atlaskit-mk-2/pull-requests/5722/update-tsconfig/diff
-   * to suppress multi-entry point related failures, relying on the separate `typecheck` command to catch typecheck errors. Unfortunately, this also
-   * suppresses legitimate errors caused by things like dependencies not being built before dependents and means we create inaccurate index.d.ts files.
-   * We want to fix this by changing the way we do multi entry points, using typescript project references or another way as error suppression is not a good idea.
+  const ignoreErrors = !!(pkg && !strict);
+  /* We only ignore typescript errors when building single packages only since they produce 'Cannot find module' errors when any dependency
+   * is not built. This can be opted out of with the --no-ignore flag.
    *
-   * We use the '--excludeFromGraph devDependencies' flag to exclude devDependencies from affecting the topological execution bolt does over workspaces using their dependency graph.
-   * We only need to factor in dependencies and peerDependencies. This prevents all but one cyclic dependency and speeds up the build quite a lot.
+   * We use the '--excludeFromGraph devDependencies' flag to exclude devDependencies from bolt's topological execution order over workspaces
+   * where it executes dependencies before their dependents. This prevents false positive cyclic dependencies between workspaces and avoids
+   * 'Cannot find module' TS errors that occur when building a dependent before all of its dependencies.
    *
-   * Finally, we execute the ESM build in parallel because the esm builds only rely on their CJS dependencies being built because of the types field in package.json's referencing CJS.
-   * The CJS builds still require the default bolt topological ordering.
+   * The CJS builds use bolt's topological ordering mentioned above. We execute the ESM build in full parallel mode however because the
+   * typescript compiler references dependencies via the CJS build, denoted by the types field of each package.json pointing to dist/cjs,
+   * which are already built.
    */
   const commands = {
-    cjs: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success || true'`,
-    esm: `NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success || true'`,
+    cjs: `NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs${watchFlag} && echo Success${
+      ignoreErrors ? ' || true' : ''
+    }'`,
+    esm: `NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "${pkgGlob}" -- bash -c 'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext${watchFlag} && echo Success${
+      ignoreErrors ? ' || true' : ''
+    }'`,
   };
 
   return getDistCommands(commands, distType);
@@ -238,7 +262,13 @@ async function standardTsCommands({ cwd, distType, pkg, watch }: StepArgs) {
  *  - The topological order factors in devDependencies when they are not required for building source -https://github.com/boltpkg/bolt/pull/244
  *  - At least one circular dependency exists between packages in the repo, which makes a pure topological sort impossible
  */
-async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
+async function buildTSPackages({
+  cwd,
+  distType,
+  strict,
+  pkg,
+  watch,
+}: StepArgs) {
   let commandOptions: RunOptions = { cwd };
   if (watch) {
     commandOptions = {
@@ -253,7 +283,7 @@ async function buildTSPackages({ cwd, distType, pkg, watch }: StepArgs) {
   }
 
   return runCommands(
-    await standardTsCommands({ cwd, distType, pkg, watch }),
+    await standardTsCommands({ cwd, distType, strict, pkg, watch }),
     /* When building all packages we run the ts commands sequentially  as the `types` field in package.json
      * references the main index.d.ts in the cjs directory. Resulting in cjs needing to be built before esm/cli
      * so that packages can properly utilise the types of their atlaskit dependencies.
@@ -304,7 +334,8 @@ async function runValidateDists(opts: {
         packageDistErrors.length
       } errors detected in package dists:\n * ${packageDistErrors.join('\n * ')}
 
-      If dist has included dependencies and changed the file structure, run yarn build:multi-entry-point-tsconfig and try again.`,
+      If a lot of errors have been detected, you most likely have introduced a circular dependency which has malformed the dist structure entirely. Remove the circular dependency to resolve the issue.
+      Otherwise if only a few errors are reported, they may be caused by adding new entry points that haven't been included in tsconfig.entry-points.json. Run yarn build:multi-entry-point-tsconfig to resolve this.`,
     );
   }
 }
@@ -333,6 +364,7 @@ export default async function main(
   const options: Options = {
     cwd: opts.cwd,
     distType: opts.distType,
+    strict: opts.strict,
     watch: opts.watch,
   };
   const { cwd, watch } = options;
@@ -389,6 +421,7 @@ if (require.main === module) {
 
       Options
         -d, --distType <cjs|esm|none> Run the build only for a specific distType, cjs or esm, or specify 'none' to not compile a dist type and only run other build steps
+        -s, --strict                  Do not ignore typescript errors when building single packages. (They are always unignored for full builds)
         -w, --watch                   Run the build in watch mode. Note this only reruns the compilation step (tsc/babel) and only works with a single package
 
       Examples
@@ -403,6 +436,10 @@ if (require.main === module) {
         distType: {
           alias: 'd',
           type: 'string',
+        },
+        strict: {
+          alias: 's',
+          type: 'boolean',
         },
         watch: {
           alias: 'w',

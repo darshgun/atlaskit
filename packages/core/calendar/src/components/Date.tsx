@@ -1,4 +1,4 @@
-import React, { Component, MouseEvent } from 'react';
+import React, { Component } from 'react';
 import { DateDiv, DateTd } from '../styled/Date';
 
 interface Props {
@@ -35,7 +35,7 @@ export default class extends Component<Props, State> {
     isActive: false,
   };
 
-  onMouseDown = (e: MouseEvent) => {
+  onMouseDown = (e: React.MouseEvent) => {
     // Prevent mousedown triggering an ancestor onBlur event in IE11 resulting
     // in dates not being selectable.
     e.preventDefault();

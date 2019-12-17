@@ -94,8 +94,8 @@ describe('Build', () => {
       expect(runCommands).toHaveBeenNthCalledWith(
         2,
         [
-          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
-          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success\'',
+          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success\'',
         ],
         { cwd: '/Users/dev/atlaskit-mk-2', sequential: true },
       );
@@ -136,11 +136,14 @@ describe('Build', () => {
         success: false,
         packageDistErrors: ['Missing entry point directory for foo'],
       }));
-      await expect(
-        build(undefined, { cwd: '/Users/dev/atlaskit-mk-2' }),
-      ).rejects.toThrow(
-        /1 errors detected in package dists:\n.*\* Missing entry point directory for foo\n\n.*If dist has included dependencies and changed the file structure, run yarn build:multi-entry-point-tsconfig and try again./,
-      );
+      await expect(build(undefined, { cwd: '/Users/dev/atlaskit-mk-2' }))
+        .rejects.toMatchInlineSnapshot(`
+              [Error: 1 errors detected in package dists:
+               * Missing entry point directory for foo
+
+                    If a lot of errors have been detected, you most likely have introduced a circular dependency which has malformed the dist structure entirely. Remove the circular dependency to resolve the issue.
+                    Otherwise if only a few errors are reported, they may be caused by adding new entry points that haven't been included in tsconfig.entry-points.json. Run yarn build:multi-entry-point-tsconfig to resolve this.]
+            `);
     });
   });
 
@@ -226,6 +229,39 @@ describe('Build', () => {
         cwd: '/Users/dev/atlaskit-mk-2',
         packageName: '@atlaskit/editor-core',
       });
+    });
+    it('should ignore TS errors by default', async () => {
+      expect(runCommands).not.toHaveBeenCalled();
+      await build('editor-core', { cwd: '/Users/dev/atlaskit-mk-2' });
+      expect(runCommands).toHaveBeenNthCalledWith(
+        2,
+        [
+          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+        ],
+        {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          sequential: false,
+        },
+      );
+    });
+    it('should not ignore TS errors if strict flag is set', async () => {
+      expect(runCommands).not.toHaveBeenCalled();
+      await build('editor-core', {
+        cwd: '/Users/dev/atlaskit-mk-2',
+        strict: true,
+      });
+      expect(runCommands).toHaveBeenNthCalledWith(
+        2,
+        [
+          'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success\'',
+          'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "packages/editor/editor-core" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success\'',
+        ],
+        {
+          cwd: '/Users/dev/atlaskit-mk-2',
+          sequential: false,
+        },
+      );
     });
 
     describe('Package names', () => {
@@ -749,7 +785,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
-            'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/cjs --module commonjs && echo Success\'',
           ],
           {
             cwd: '/Users/dev/atlaskit-mk-2',
@@ -776,7 +812,7 @@ describe('Build', () => {
         expect(runCommands).toHaveBeenNthCalledWith(
           2,
           [
-            'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success || true\'',
+            'NODE_ENV=production bolt workspaces exec --parallel --no-bail --excludeFromGraph devDependencies --only-fs "typescriptbuild-glob" -- bash -c \'tsc --project ./build/tsconfig.json --outDir ./dist/esm --module esnext && echo Success\'',
           ],
           {
             cwd: '/Users/dev/atlaskit-mk-2',
