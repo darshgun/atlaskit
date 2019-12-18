@@ -40,6 +40,7 @@ export function productStoreInTrelloRecommendation(): RecommendationItem[] {
     { productKey: ProductKey.CONFLUENCE },
     { productKey: ProductKey.JIRA_SOFTWARE },
     { productKey: ProductKey.JIRA_SERVICE_DESK },
+    { productKey: ProductKey.OPSGENIE },
   ];
 }
 

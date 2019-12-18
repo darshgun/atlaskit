@@ -36,7 +36,7 @@ function collectAvailableProductLinks(
 ): SwitcherItemType[] | undefined {
   if (availableProducts) {
     if (isError(availableProducts)) {
-      return [];
+      throw availableProducts.error;
     }
     if (isComplete(availableProducts)) {
       return getAvailableProductLinks(availableProducts.data, cloudId);

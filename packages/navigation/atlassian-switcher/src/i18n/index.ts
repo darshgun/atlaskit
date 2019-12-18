@@ -8,8 +8,6 @@ export { default as zh } from './zh';
 export { default as cs } from './cs';
 export { default as da } from './da';
 export { default as nl } from './nl';
-export { default as en } from './en';
-export { default as en_GB } from './en_GB';
 export { default as et } from './et';
 export { default as fi } from './fi';
 export { default as fr } from './fr';

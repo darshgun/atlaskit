@@ -20,6 +20,11 @@ export const loadGenericSwitcher = () =>
     /* webpackChunkName: "@ak-switcher-chunk-generic-switcher" */ './generic-switcher'
   );
 
+export const loadTrelloSwitcher = () =>
+  import(
+    /* webpackChunkName: "@ak-switcher-chunk-generic-switcher" */ './trello-switcher'
+  );
+
 export const AtlassianSwitcherLoader = Loadable({
   loader: loadAtlassianSwitcher,
   loading: () => null,
@@ -37,5 +42,10 @@ export const ConfluenceSwitcherLoader = Loadable({
 
 export const GenericSwitcherLoader = Loadable({
   loader: loadGenericSwitcher,
+  loading: () => null,
+});
+
+export const TrelloSwitcherLoader = Loadable({
+  loader: loadTrelloSwitcher,
   loading: () => null,
 });

@@ -8,9 +8,11 @@ import {
 } from '@atlaskit/atlassian-switcher-test-utils';
 import { enrichFetchError } from '../src/utils/fetch';
 import AtlassianSwitcher from '../src';
+import { Appearance } from '../src/theme/types';
 
 class ErrorExample extends React.Component {
   state = {
+    appearance: 'drawer' as Appearance,
     isDrawerOpen: false,
   };
 

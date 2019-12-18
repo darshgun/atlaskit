@@ -24,6 +24,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
     }
   >
     <WithAnalyticsEvents(InjectIntl(ErrorBoundary))
+      appearance="drawer"
       messages={
         Object {
           "administration": Object {
@@ -56,6 +57,11 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "description": "Heading of the error screen which is shown when an unknown error happens in the Atlassian Switcher. Usually due to failed network requests.",
             "id": "fabric.atlassianSwitcher.errorHeading",
           },
+          "errorHeadingLoggedOut": Object {
+            "defaultMessage": "Your Atlassian account is logged out",
+            "description": "Heading of the error screen which is shown when an unknown error happens in the Atlassian Switcher. Usually due to failed network requests.",
+            "id": "fabric.atlassianSwitcher.errorHeadingLoggedOut",
+          },
           "errorImageAltText": Object {
             "defaultMessage": "A broken robot and a number of people busy fixing it.",
             "description": "Text displayed as alt text when an error occurs in the Atlassian Switcher",
@@ -67,7 +73,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
             "id": "fabric.atlassianSwitcher.errorText",
           },
           "errorTextLoggedOut": Object {
-            "defaultMessage": "You’ve been logged out. Please log in again.",
+            "defaultMessage": "Log in again to use the Atlassian switcher.",
             "description": "Text that is displayed when we detect user is logged out.",
             "id": "fabric.atlassianSwitcher.errorTextLoggedOut",
           },
@@ -148,8 +154,10 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
           },
         }
       }
+      product="jira"
     >
       <LoadableComponent
+        appearance="drawer"
         cloudId="CLOUD_ID"
         features={
           Object {
@@ -194,6 +202,11 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "description": "Heading of the error screen which is shown when an unknown error happens in the Atlassian Switcher. Usually due to failed network requests.",
               "id": "fabric.atlassianSwitcher.errorHeading",
             },
+            "errorHeadingLoggedOut": Object {
+              "defaultMessage": "Your Atlassian account is logged out",
+              "description": "Heading of the error screen which is shown when an unknown error happens in the Atlassian Switcher. Usually due to failed network requests.",
+              "id": "fabric.atlassianSwitcher.errorHeadingLoggedOut",
+            },
             "errorImageAltText": Object {
               "defaultMessage": "A broken robot and a number of people busy fixing it.",
               "description": "Text displayed as alt text when an error occurs in the Atlassian Switcher",
@@ -205,7 +218,7 @@ exports[`Atlassian Switcher basic snapshot 1`] = `
               "id": "fabric.atlassianSwitcher.errorText",
             },
             "errorTextLoggedOut": Object {
-              "defaultMessage": "You’ve been logged out. Please log in again.",
+              "defaultMessage": "Log in again to use the Atlassian switcher.",
               "description": "Text that is displayed when we detect user is logged out.",
               "id": "fabric.atlassianSwitcher.errorTextLoggedOut",
             },

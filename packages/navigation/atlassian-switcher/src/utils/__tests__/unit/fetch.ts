@@ -50,6 +50,48 @@ describe('utils fetch', () => {
     });
   });
 
+  it('should include credentials options', done => {
+    fetchJson(REQUEST_URL).then(() => {
+      expect(fetchMock.mock.calls[0][1]).toHaveProperty(
+        'credentials',
+        'include',
+      );
+      done();
+    });
+  });
+
+  it('should override fetch options', done => {
+    const customFetchOptions: RequestInit = {
+      credentials: 'same-origin',
+      headers: {
+        bla: 'bla',
+      },
+    };
+
+    fetchJson(REQUEST_URL, customFetchOptions).then(() => {
+      expect(fetchMock.mock.calls[0][1]).toEqual(customFetchOptions);
+      done();
+    });
+  });
+
+  it('should add credentials:include', done => {
+    const customFetchOptions: RequestInit = {
+      headers: {
+        bla: 'bla',
+      },
+    };
+
+    fetchJson(REQUEST_URL, customFetchOptions).then(() => {
+      expect(fetchMock.mock.calls[0][1]).toEqual({
+        credentials: 'include',
+        headers: {
+          bla: 'bla',
+        },
+      });
+      done();
+    });
+  });
+
   it('should add additional properties', () => {
     const error = enrichFetchError(new Error(), 400);
 
