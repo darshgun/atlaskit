@@ -96,9 +96,15 @@ const messages = defineMessages({
       'We couldn’t load this list. Please reload the page and try again.',
     description: 'Text that is displayed when we detect a network issue.',
   },
+  errorHeadingLoggedOut: {
+    id: 'fabric.atlassianSwitcher.errorHeadingLoggedOut',
+    defaultMessage: 'Your Atlassian account is logged out',
+    description:
+      'Heading of the error screen which is shown when an unknown error happens in the Atlassian Switcher. Usually due to failed network requests.',
+  },
   errorTextLoggedOut: {
     id: 'fabric.atlassianSwitcher.errorTextLoggedOut',
-    defaultMessage: 'You’ve been logged out. Please log in again.',
+    defaultMessage: 'Log in again to use the Atlassian\u00A0switcher.',
     description: 'Text that is displayed when we detect user is logged out.',
   },
   login: {

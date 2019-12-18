@@ -27,7 +27,7 @@ const RealRecentContainersProvider = asDataProvider(
   fetchRecentContainers,
 );
 
-const emptyRecentContainers: ResultComplete<RecentContainersResponse> = {
+export const emptyRecentContainers: ResultComplete<RecentContainersResponse> = {
   status: Status.COMPLETE,
   data: { data: [] },
 };

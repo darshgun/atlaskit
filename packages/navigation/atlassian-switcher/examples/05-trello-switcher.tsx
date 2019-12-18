@@ -1,23 +1,24 @@
 import * as React from 'react';
 import {
-  mockEndpoints,
   DataTransformer,
+  mockAvailableProductsEndpoint,
+  mockEndpoints,
 } from '@atlaskit/atlassian-switcher-test-utils';
 import styled from 'styled-components';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import {
-  AvailableSite,
   AvailableProductsResponse,
+  AvailableSite,
   WorklensProductType,
 } from '../src/types';
 import AtlassianSwitcher from '../src';
-import { createProviderWithCustomFetchData } from '../src/providers/create-data-provider';
-import { DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT } from '../src/providers/default-available-products-provider';
-import { fetchJson } from '../src/utils/fetch';
+import { Environment } from '../src/utils/environment';
+import { getAvailableProductsUrl } from '../src/providers/trello/products-provider';
+import { enrichFetchError } from '../src/utils/fetch';
 
 const FakeTrelloInlineDialog = styled.div`
-  width: 360px;
+  width: 280px;
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 0 8px;
@@ -49,37 +50,6 @@ const CloseButtonWrapper = styled.div`
   top: 7px;
 `;
 
-const AVAILABLE_SITE_TRELLO: AvailableSite = {
-  adminAccess: false,
-  availableProducts: [
-    {
-      activityCount: 0,
-      productType: WorklensProductType.TRELLO,
-      url: 'https://trello.com',
-    },
-  ],
-  cloudId: 'trello',
-  displayName: 'Trello',
-  url: 'https://trello.com',
-  avatar: null,
-};
-
-const mockTrelloDataProvider = async () => {
-  const response = await fetchJson<AvailableProductsResponse>(
-    DEFAULT_AVAILABLE_PRODUCTS_ENDPOINT,
-  );
-  if (response && response.sites) {
-    response.sites.push(AVAILABLE_SITE_TRELLO);
-  }
-  return response;
-};
-
-const mockProviderWithCustomFetchData = () =>
-  createProviderWithCustomFetchData<AvailableProductsResponse>(
-    'availableProducts',
-    mockTrelloDataProvider,
-  );
-
 const mockEndpointsDataTransformer: DataTransformer = originalMockData => {
   const availableProducts = originalMockData.AVAILABLE_PRODUCTS_DATA as AvailableProductsResponse;
   return {
@@ -90,13 +60,24 @@ const mockEndpointsDataTransformer: DataTransformer = originalMockData => {
           // Excluding JSD here to rather display it in the recommended products list
           site.availableProducts = site.availableProducts.filter(
             availableProduct =>
-              availableProduct.productType !==
-              WorklensProductType.JIRA_SERVICE_DESK,
+              ![
+                WorklensProductType.JIRA_SERVICE_DESK,
+                WorklensProductType.BITBUCKET,
+              ].includes(availableProduct.productType),
           );
           return site;
         })
         .filter((site: AvailableSite) => site.availableProducts.length),
     },
+  };
+};
+
+const mockAvailableProductsTransformer: DataTransformer = originalMockData => {
+  return {
+    ...originalMockData,
+    AVAILABLE_PRODUCTS_DATA: Promise.reject(
+      enrichFetchError(new Error('Failed to fetch'), 401),
+    ),
   };
 };
 
@@ -109,6 +90,10 @@ class InlineDialogSwitcherExample extends React.Component {
     this.loadData();
   }
   loadData = () => {
+    mockAvailableProductsEndpoint(
+      getAvailableProductsUrl(Environment.Staging),
+      mockAvailableProductsTransformer,
+    );
     mockEndpoints('trello', mockEndpointsDataTransformer);
     this.setState({
       isLoaded: true,
@@ -156,7 +141,6 @@ class InlineDialogSwitcherExample extends React.Component {
           appearance="standalone"
           theme={trelloTheme}
           isDiscoverSectionEnabled
-          availableProductsDataProvider={mockProviderWithCustomFetchData()}
           recommendationsFeatureFlags={{
             isProductStoreInTrelloEnabled: true,
           }}

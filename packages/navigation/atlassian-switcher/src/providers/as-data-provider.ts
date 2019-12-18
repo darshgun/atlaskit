@@ -34,6 +34,11 @@ export interface ResultError {
   data: null;
 }
 
+export const createResultComplete = <T>(data: T): ResultComplete<T> => ({
+  status: Status.COMPLETE,
+  data,
+});
+
 export const isComplete = <T>(
   result: ProviderResult<T>,
 ): result is ResultComplete<T> => result.status === Status.COMPLETE;

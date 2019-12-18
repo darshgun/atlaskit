@@ -16,6 +16,7 @@ import {
   JiraSwitcherLoader,
   ConfluenceSwitcherLoader,
   GenericSwitcherLoader,
+  TrelloSwitcherLoader,
 } from './loaders';
 
 const getAnalyticsContext = (attributes: object) => ({
@@ -25,8 +26,13 @@ const getAnalyticsContext = (attributes: object) => ({
   ...analyticsAttributes(attributes),
 });
 
-const AtlassianSwitcher = (props: AtlassianSwitcherProps) => {
-  const { product } = props;
+const defaultProps: Partial<AtlassianSwitcherProps> = {
+  appearance: 'drawer',
+};
+
+const AtlassianSwitcher = (rawProps: AtlassianSwitcherProps) => {
+  const props = Object.assign({}, defaultProps, rawProps);
+  const { product, appearance } = props;
 
   let Switcher: React.ElementType;
   switch (product) {
@@ -35,6 +41,9 @@ const AtlassianSwitcher = (props: AtlassianSwitcherProps) => {
       break;
     case Product.CONFLUENCE:
       Switcher = ConfluenceSwitcherLoader;
+      break;
+    case Product.TRELLO:
+      Switcher = TrelloSwitcherLoader;
       break;
     default:
       Switcher = GenericSwitcherLoader;
@@ -47,7 +56,11 @@ const AtlassianSwitcher = (props: AtlassianSwitcherProps) => {
       <NavigationAnalyticsContext
         data={getAnalyticsContext({ featureFlags: features })}
       >
-        <ErrorBoundary messages={messages}>
+        <ErrorBoundary
+          messages={messages}
+          appearance={appearance}
+          product={product as Product}
+        >
           <Switcher {...props} messages={messages} features={features} />
         </ErrorBoundary>
       </NavigationAnalyticsContext>
