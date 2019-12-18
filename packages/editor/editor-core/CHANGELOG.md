@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 115.2.2
+
+### Patch Changes
+
+- [patch][1b5cb65fd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b5cb65fd7):
+
+  Use contextId instead of collectionName to know when to copy a media node
+
 ## 115.2.1
 
 ### Patch Changes
