@@ -110,7 +110,7 @@ export default class extends React.Component {
           ],
           sumOrFiltersScores: true,
         },
-        (err, res = {}) => {
+        (err, res) => {
           if (err) {
             reject(err);
           }

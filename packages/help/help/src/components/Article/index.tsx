@@ -98,10 +98,6 @@ export class Article extends Component<Props & HelpContextInterface, State> {
   renderArticleContent() {
     const currentArticle = this.props.help.getCurrentArticle();
 
-    const handleOnClick = (articleId: string) => {
-      this.props.help.loadArticle(articleId);
-    };
-
     if (currentArticle) {
       const { article } = currentArticle;
 
