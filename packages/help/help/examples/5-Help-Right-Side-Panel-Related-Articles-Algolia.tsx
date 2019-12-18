@@ -108,6 +108,7 @@ export default class extends React.Component {
               `_tags:item_id_is_not_defined<score=1>`,
             ],
           ],
+          // @ts-ignore
           sumOrFiltersScores: true,
         },
         (err, res) => {
