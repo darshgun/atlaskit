@@ -1,5 +1,13 @@
 # @atlaskit/analytics-next
 
+## 6.3.4
+
+### Patch Changes
+
+- [patch][6940a2107f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6940a2107f):
+
+  Removes cycle in internal components.
+
 ## 6.3.3
 
 ### Patch Changes
