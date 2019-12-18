@@ -409,8 +409,10 @@ class TypedItemsRenderer<T: TypeShape = empty> extends PureComponent<
           : props.id;
 
       if (props.type === 'InlineComponent') {
+        // $FlowFixMe - component doesn't exisst
         const { type, component, ...componentProps } = props;
         // If they've provided a component as the type
+        // $FlowFixMe - component doesn't exisst
         const CustomComponent = this.getCustomComponent(props.component);
         return (
           <CustomComponent
