@@ -25,6 +25,7 @@ class DroplistGroup extends PureComponent<Props, State> {
 
   componentDidUpdate = () => {
     if (this.props.heading || this.props.elemAfter) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ ariaLabel: this.getAriaLabel() });
     }
   };

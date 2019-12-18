@@ -28,6 +28,56 @@ export async function commitAndPush(
   return true;
 }
 
+/**
+ * This function merges `branchName` and reapplies `files` to their original state from `branchName`.
+ * If merge conflicts arise and the only conlicts are those in `files`, they will be resolved by resetting
+ * to their state since that will happen regardless.
+ */
+export async function mergeAndReApply(
+  git: SimpleGit,
+  branchName: string,
+  files: string[],
+) {
+  let mergeError;
+  try {
+    console.log(`Merging ${branchName} into current branch`);
+    await git.merge([branchName]);
+  } catch (error) {
+    // Conflicts or another type of error
+    mergeError = error;
+  }
+
+  if (mergeError == null) {
+    console.log('Merge succeeded with no conflicts');
+  } else {
+    console.log('Found merge conflicts...attempting to resolve');
+    const status = await git.status();
+    const conflicts = status.conflicted;
+    if (conflicts.length === 0) {
+      // If we have no conflicts, the merge failed for another reason
+      throw mergeError;
+    }
+    const otherConflicts = conflicts.filter(c => !files.includes(c));
+    if (otherConflicts.length > 0) {
+      throw new Error(
+        `Found unsupported file conflicts, you will need to do a manual merge: ${otherConflicts}. Only the following files can automatically be merged: ${files}.`,
+      );
+    }
+
+    await git.checkout(['--theirs', ...files]);
+    await git.add(files);
+
+    // --no-edit uses the default commit message
+    // --no-verify to bypass pre-commit hooks that fail when new packages are merged in that don't exist locally
+    // because of yarn/bolt not being run afterwards
+    await git.commit([], undefined, { '--no-edit': true, '--no-verify': true });
+  }
+
+  // Reset the files to their version on branchName
+  console.log(`Resetting ${files} back to their state on ${branchName}`);
+  await git.checkout([branchName, '--', ...files]);
+}
+
 export async function checkoutOrCreate(git: SimpleGit, branchName: string) {
   let branchExists;
 

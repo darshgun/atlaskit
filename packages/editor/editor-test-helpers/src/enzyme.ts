@@ -4,7 +4,7 @@
  * These helper functions aim to address that and wrap a valid,
  * English-locale intl context around them.
  */
-import { mount, ReactWrapper, shallow } from 'enzyme';
+import { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { InjectedIntlProps, IntlProvider, intlShape } from 'react-intl';
@@ -23,7 +23,7 @@ function nodeWithIntlProp(node: ReactElement<any>) {
 export function shallowWithIntl<P>(
   node: ReactElement<P>,
   { context = {}, ...additionalOptions } = {},
-) {
+): ShallowWrapper<P & InjectedIntlProps, any> {
   if (typeof node.type !== 'string' && node.type.name === 'InjectIntl') {
     const unwrappedType = (node.type as any).WrappedComponent;
     (node as any) = React.createElement(unwrappedType, node.props);

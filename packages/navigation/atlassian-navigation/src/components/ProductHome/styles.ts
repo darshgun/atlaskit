@@ -18,6 +18,9 @@ export const productHomeButtonCSS = ({
     display: 'flex',
     cursor: 'pointer',
     color: 'inherit',
+    '&:first-of-type': {
+      marginLeft: 0,
+    },
     '&::-moz-focus-inner': {
       border: 0,
     },
@@ -95,8 +98,7 @@ export const siteTitleCSS = ({
   marginLeft: `${gridSize * 0.5}px`,
   display: 'flex',
   alignItems: 'center',
-
-  paddingRight: gridSize * 3,
+  paddingRight: gridSize * 2,
   marginRight: gridSize / 2,
   borderRight: borderRight,
 });
@@ -118,7 +120,7 @@ export const siteTitleSkeletonCSS = (theme: NavigationTheme) => ({
 
 export const productLogoSkeletonCSS = (theme: NavigationTheme) => ({
   width: '120px',
-  height: iconHeight,
+  height: 24,
   ...heightCSS,
   ...productLogoCSS,
   ...skeletonCSS(theme),

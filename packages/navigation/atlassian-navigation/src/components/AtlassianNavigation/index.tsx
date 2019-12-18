@@ -41,6 +41,7 @@ export const AtlassianNavigation = (
               moreLabel={moreLabel}
               items={primaryItems}
               create={create}
+              theme={theme}
             />
           </div>
           <div css={rightCSS}>

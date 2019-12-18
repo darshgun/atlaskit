@@ -1,5 +1,13 @@
 # @atlaskit/xregexp-transformer
 
+## 2.0.9
+
+### Patch Changes
+
+- [patch][36f6e99c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f6e99c5b):
+
+  Fix type errors caused when generating declaration files
+
 ## 2.0.8
 
 ### Patch Changes

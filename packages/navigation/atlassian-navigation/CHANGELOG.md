@@ -1,5 +1,29 @@
 # @atlaskit/atlassian-navigation
 
+## 0.8.3
+
+### Patch Changes
+
+- [patch][666ecab6c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/666ecab6c9):
+
+  Improve styles for Atlassian Navigation when SSRd
+
+## 0.8.2
+
+### Patch Changes
+
+- [patch][9af7977678](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9af7977678):
+
+  Fixing visual tweaks for top nav and menu spacing
+
+## 0.8.1
+
+### Patch Changes
+
+- [patch][65e4e8a5ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65e4e8a5ec):
+
+  Removing left margin for ProductHome when there's no Switcher before it.
+
 ## 0.8.0
 
 ### Minor Changes

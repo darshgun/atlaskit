@@ -1,5 +1,13 @@
 # @atlaskit/menu
 
+## 0.1.3
+
+### Patch Changes
+
+- [patch][9af7977678](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9af7977678):
+
+  Fixing visual tweaks for top nav and menu spacing
+
 ## 0.1.2
 
 ### Patch Changes

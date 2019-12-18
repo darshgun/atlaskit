@@ -1,5 +1,13 @@
 # @atlaskit/ci-scripts
 
+## 1.1.1
+
+### Patch Changes
+
+- [patch][6a22d73b24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a22d73b24):
+
+  Unignore typescript errors when building TS packages and add --strict flag to also unignore when building single packages
+
 ## 1.1.0
 
 ### Minor Changes

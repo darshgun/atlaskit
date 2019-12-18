@@ -1175,6 +1175,10 @@
         "../../editor/editor-core/src/",
         "./packages/editor/editor-core/src/"
       ],
+      "@atlaskit/editor-core/labs-next": [
+        "../../editor/editor-core/src/labs-next",
+        "./packages/editor/editor-core/src/labs-next"
+      ],
       "@atlaskit/editor-core/messages": [
         "../../editor/editor-core/src/messages",
         "./packages/editor/editor-core/src/messages"

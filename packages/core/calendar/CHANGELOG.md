@@ -1,5 +1,13 @@
 # @atlaskit/calendar
 
+## 9.2.2
+
+### Patch Changes
+
+- [patch][36f6e99c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f6e99c5b):
+
+  Fix type errors caused when generating declaration files
+
 ## 9.2.1
 
 - Updated dependencies [30acc30979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/30acc30979):

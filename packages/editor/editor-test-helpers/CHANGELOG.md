@@ -1,5 +1,15 @@
 # @atlaskit/editor-test-helpers
 
+## 10.3.2
+
+### Patch Changes
+
+- [patch][36f6e99c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f6e99c5b):
+
+  Fix type errors caused when generating declaration files- Updated dependencies [36f6e99c5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36f6e99c5b):
+
+  - @atlaskit/editor-core@115.2.1
+
 ## 10.3.1
 
 ### Patch Changes

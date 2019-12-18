@@ -1,4 +1,4 @@
-import React, { Component, KeyboardEvent, MouseEvent } from 'react';
+import React, { Component, KeyboardEvent } from 'react';
 import { Nav, NavLine, NavWrapper } from '../styled';
 import { TabData, TabsNavigationProps } from '../types';
 
@@ -32,7 +32,8 @@ export default class TabsNavigation extends Component<TabsNavigationProps> {
     this.props.onSelect(selected, selectedIndex);
   };
 
-  tabMouseDownHandler = (e: MouseEvent<HTMLElement>) => e.preventDefault();
+  tabMouseDownHandler = (e: React.MouseEvent<HTMLElement>) =>
+    e.preventDefault();
 
   render() {
     const { selected, component: Item, tabs } = this.props;
