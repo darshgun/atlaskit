@@ -1,4 +1,4 @@
-import * as namedColors from 'css-color-names';
+import * as namedColors from 'css-color-names'; // eslint-disable-line import/extensions
 
 /**
  * We're avoding importing these colors from @atlaskit/theme since we

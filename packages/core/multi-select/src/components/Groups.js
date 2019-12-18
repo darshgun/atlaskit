@@ -68,7 +68,6 @@ type Props = {
   loadingMessage: string,
 };
 
-/* eslint-disable react/prop-types*/
 const renderGroups = ({
   filterValue,
   focusedItemIndex,
@@ -114,6 +113,5 @@ const renderGroups = ({
     })
   );
 };
-/* eslint-enable prop-types */
 
 export default renderGroups;

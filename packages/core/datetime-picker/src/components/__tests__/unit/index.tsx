@@ -8,7 +8,7 @@ import {
   isValid,
   removeSpacer,
   convertTo24hrTime,
-} from '../../../internal/parseTime.ts';
+} from '../../../internal/parseTime';
 
 test('ClearIndicator', () => {
   expect(ClearIndicator).toBe(null);
