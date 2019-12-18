@@ -110,7 +110,7 @@ export class MediaNodeUpdater {
       return;
     }
 
-    const contextId = this.getCurrentContextId() || (await this.getObjectId());
+    const contextId = this.getNodeContextId() || (await this.getObjectId());
     const { name, mimeType, size } = fileState;
     const newAttrs = {
       __fileName: name,
@@ -151,7 +151,7 @@ export class MediaNodeUpdater {
     const mediaProvider = await this.props.mediaProvider;
 
     if (node && mediaProvider) {
-      const uploadMediaClientConfig = await mediaProvider.uploadMediaClientConfig;
+      const uploadMediaClientConfig = mediaProvider.uploadMediaClientConfig;
       if (!uploadMediaClientConfig || !node.attrs.url) {
         return;
       }
@@ -187,7 +187,7 @@ export class MediaNodeUpdater {
     }
   };
 
-  getCurrentContextId = (): string | undefined => {
+  getNodeContextId = (): string | undefined => {
     const attrs = this.getAttrs();
     if (!attrs || attrs.type !== 'file') {
       return undefined;
@@ -232,7 +232,7 @@ export class MediaNodeUpdater {
       };
     }
 
-    const viewMediaClientConfig = await mediaProvider.viewMediaClientConfig;
+    const viewMediaClientConfig = mediaProvider.viewMediaClientConfig;
     const mediaClient = getMediaClient(viewMediaClientConfig);
     const state = await mediaClient.getImageMetadata(id, {
       collection,
@@ -248,6 +248,21 @@ export class MediaNodeUpdater {
       width: state.original.width || DEFAULT_IMAGE_WIDTH,
     };
   }
+
+  hasDifferentContextId = async (): Promise<boolean> => {
+    const nodeContextId = this.getNodeContextId();
+    const currentContextId = await this.getObjectId();
+
+    if (
+      nodeContextId &&
+      currentContextId &&
+      nodeContextId !== currentContextId
+    ) {
+      return true;
+    }
+
+    return false;
+  };
 
   isNodeFromDifferentCollection = async (): Promise<boolean> => {
     const mediaProvider = await this.props.mediaProvider;
@@ -297,7 +312,7 @@ export class MediaNodeUpdater {
       name,
       size,
     } = mediaAttrs;
-    const uploadMediaClientConfig = await mediaProvider.uploadMediaClientConfig;
+    const uploadMediaClientConfig = mediaProvider.uploadMediaClientConfig;
     if (
       !uploadMediaClientConfig ||
       !uploadMediaClientConfig.getAuthFromContext
@@ -329,6 +344,7 @@ export class MediaNodeUpdater {
     })(this.props.view.state, this.props.view.dispatch);
   };
 
+  // Copies the pasted node into the current collection
   copyNode = async () => {
     const mediaProvider = await this.props.mediaProvider;
     const { isMediaSingle, view } = this.props;
@@ -342,23 +358,26 @@ export class MediaNodeUpdater {
       return;
     }
 
-    const currentCollectionName = mediaProvider.uploadParams.collection;
-    const contextId = this.getCurrentContextId() || (await this.getObjectId());
-    const uploadMediaClientConfig = await mediaProvider.uploadMediaClientConfig;
+    const nodeContextId = this.getNodeContextId();
+    const uploadMediaClientConfig = mediaProvider.uploadMediaClientConfig;
 
-    if (!uploadMediaClientConfig) {
-      return;
-    }
-    const mediaClient = getMediaClient(uploadMediaClientConfig);
-
-    if (uploadMediaClientConfig.getAuthFromContext && contextId) {
-      const auth = await uploadMediaClientConfig.getAuthFromContext(contextId);
+    if (
+      uploadMediaClientConfig &&
+      uploadMediaClientConfig.getAuthFromContext &&
+      nodeContextId
+    ) {
+      const mediaClient = getMediaClient(uploadMediaClientConfig);
+      const auth = await uploadMediaClientConfig.getAuthFromContext(
+        nodeContextId,
+      );
+      const objectId = await this.getObjectId();
       const { id, collection } = attrs;
       const source = {
         id,
         collection,
         authProvider: () => Promise.resolve(auth),
       };
+      const currentCollectionName = mediaProvider.uploadParams.collection;
       const destination = {
         collection: currentCollectionName,
         authProvider: uploadMediaClientConfig.authProvider,
@@ -371,6 +390,7 @@ export class MediaNodeUpdater {
         {
           id: mediaFile.id,
           collection: currentCollectionName,
+          __contextId: objectId,
         },
         isMediaSingle,
       )(view.state, view.dispatch);
