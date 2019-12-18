@@ -3,14 +3,11 @@ import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { ThemeProvider } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import { gridSize } from '@atlaskit/theme/constants';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
-
-import { messages } from '../../../messages';
 import { ArticleItem } from '../../../model/Article';
 
 import RelatedArticlesList from './RelatedArticlesList';
 import ShowMoreArticlesButton from './ShowMoreArticlesButton';
-import { ItemGroupTitle, RelatedArticlesContainer } from './styled';
+import { RelatedArticlesContainer } from './styled';
 
 const ITEM_THEME = {
   padding: {
@@ -23,12 +20,15 @@ const ITEM_THEME = {
   },
 };
 
-const MAX_ITEMS_TO_DISPLAY_TOGGLED_ON = 3;
-const MAX_ITEMS_TO_DISPLAY_TOGGLED_OFF = 5;
+const MIN_ITEMS_TO_DISPLAY = 3;
 
 interface Props {
   /* List of related articles. This prop is optional */
   relatedArticles?: ArticleItem[];
+  /* Minimun number of articles to display. This prop is optional (Default value = 3) */
+  minItemsToDisplay?: number;
+  /* Minimun number of articles to display. This prop is optional (Default value = number of related articles)*/
+  maxItemsToDisplay?: number;
   /* Function executed when the user clicks one of the related articles */
   onRelatedArticlesListItemClick?: (
     id: string,
@@ -40,18 +40,31 @@ interface State {
   showMoreToggled: boolean;
 }
 
-export class RelatedArticlesContent extends React.Component<
-  Props & InjectedIntlProps,
-  State
-> {
+export class RelatedArticlesContent extends React.Component<Props, State> {
   state = {
     showMoreToggled: true,
   };
 
   getNumberOfArticlesToDisplay = (showMoreToggeled: boolean) => {
     return showMoreToggeled
-      ? MAX_ITEMS_TO_DISPLAY_TOGGLED_ON
-      : MAX_ITEMS_TO_DISPLAY_TOGGLED_OFF;
+      ? this.getMinItemsToDisplay()
+      : this.getMaxItemsToDisplay();
+  };
+
+  getMinItemsToDisplay: () => number = () => {
+    return this.props.minItemsToDisplay
+      ? this.props.minItemsToDisplay
+      : MIN_ITEMS_TO_DISPLAY;
+  };
+
+  getMaxItemsToDisplay: () => number = () => {
+    if (this.props.relatedArticles) {
+      return this.props.maxItemsToDisplay
+        ? this.props.maxItemsToDisplay
+        : this.props.relatedArticles.length;
+    }
+
+    return 0;
   };
 
   toggleRelatedArticles = () => {
@@ -59,11 +72,7 @@ export class RelatedArticlesContent extends React.Component<
   };
 
   render() {
-    const {
-      intl: { formatMessage },
-      relatedArticles,
-      onRelatedArticlesListItemClick,
-    } = this.props;
+    const { relatedArticles, onRelatedArticlesListItemClick } = this.props;
 
     // if there are related articles, display list of related articles
     return (
@@ -72,10 +81,6 @@ export class RelatedArticlesContent extends React.Component<
         <RelatedArticlesContainer>
           <ThemeProvider theme={{ [itemThemeNamespace]: ITEM_THEME }}>
             <>
-              <ItemGroupTitle>
-                {formatMessage(messages.help_panel_related_article_title)}
-              </ItemGroupTitle>
-
               <RelatedArticlesList
                 onRelatedArticlesListItemClick={onRelatedArticlesListItemClick}
                 relatedArticles={relatedArticles}
@@ -83,8 +88,10 @@ export class RelatedArticlesContent extends React.Component<
                   this.state.showMoreToggled,
                 )}
               />
-              {relatedArticles.length > MAX_ITEMS_TO_DISPLAY_TOGGLED_ON && (
+              {relatedArticles.length > this.getMinItemsToDisplay() && (
                 <ShowMoreArticlesButton
+                  minItemsToDisplay={this.getMinItemsToDisplay()}
+                  maxItemsToDisplay={this.getMaxItemsToDisplay()}
                   toggleRelatedArticles={this.toggleRelatedArticles}
                   showMoreToggeled={this.state.showMoreToggled}
                 />
@@ -97,4 +104,4 @@ export class RelatedArticlesContent extends React.Component<
   }
 }
 
-export default injectIntl(RelatedArticlesContent);
+export default RelatedArticlesContent;

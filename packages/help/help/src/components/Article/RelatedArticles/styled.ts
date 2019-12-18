@@ -3,7 +3,6 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { gridSize } from '@atlaskit/theme/constants';
-import * as colors from '@atlaskit/theme/colors';
 
 export const truncate = (width: string = '100%') => css`
   overflow-x: hidden;
@@ -12,23 +11,12 @@ export const truncate = (width: string = '100%') => css`
   width: ${width};
 `;
 
-const ItemGroupTitleSize = 11;
-export const ItemGroupTitle = styled.div`
-  color: ${colors.N200};
-  font-size: ${ItemGroupTitleSize}px;
-  line-height: ${(gridSize() * 2) / ItemGroupTitleSize};
-  font-weight: 600;
-  padding-bottom: ${gridSize()}px;
-  ${truncate()}
-`;
-
 export const RelatedArticlesContainer = styled.div`
-  padding-bottom: ${2 * gridSize()}px;
   position: relative;
 `;
 
 export const ToggleShowMoreArticles = styled.a`
-  padding-top: ${gridSize()}px;
+  padding: ${gridSize()}px;
   display: inline-block;
   cursor: pointer;
 `;
@@ -37,7 +25,7 @@ export const ToggleShowMoreArticles = styled.a`
  * Loading styled-components
  */
 export const LoadignRelatedArticleSection = styled.div`
-  margin-top: 1.5rem;
+  margin-top: ${gridSize()}px;
 `;
 
 export const LoadignRelatedArticleList = styled.ul`
@@ -47,16 +35,8 @@ export const LoadignRelatedArticleList = styled.ul`
 `;
 
 export const LoadignRelatedArticleListItem = styled.li`
-  margin-top: 1rem;
-  display: inline-block;
+  display: block;
   width: 100%;
-
-  & > div {
-    display: inline-block;
-  }
-`;
-
-export const LoadignRelatedArticleListItemText = styled.div`
-  width: calc(100% - (40px + 0.5rem));
-  margin-left: 0.5rem;
+  padding: ${gridSize()}px;
+  margin-bottom: ${gridSize() * 2}px;
 `;

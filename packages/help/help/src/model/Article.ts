@@ -11,11 +11,16 @@ export interface Article {
   relatedArticles?: ArticleItem[];
 }
 
+export enum ARTICLE_ITEM_TYPES {
+  helpArticle = 'help-article',
+  whatsNew = 'whats-new',
+}
 export interface ArticleItem {
   id: string;
   title?: string;
   description?: string;
   href?: string;
+  type?: ARTICLE_ITEM_TYPES;
 }
 
 export interface ArticleFeedback {
