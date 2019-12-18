@@ -101,7 +101,7 @@ module.exports = {
   plugins: ['flowtype', 'jest', 'prettier', 'react-hooks', '@wordpress'],
   rules: {
     'import/no-extraneous-dependencies': [
-      'off', // ~10
+      'error',
       {
         devDependencies: [
           '**/docs/**/*.js',
@@ -302,7 +302,7 @@ module.exports = {
         'import/no-duplicates': 'off',
         'import/no-dynamic-require': 'off',
         'import/no-extraneous-dependencies': [
-          'off', // ~17
+          'error',
           {
             devDependencies: [
               // Top level dirs that aren't src - can't have ** either side
