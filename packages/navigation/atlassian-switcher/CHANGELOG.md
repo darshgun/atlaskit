@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.10.0
+
+### Minor Changes
+
+- [minor][4245cdfcc1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4245cdfcc1):
+
+  Update Switcher to include Trello specific design variation; Fix Switcher error screen to show up when critical requests are failed
+
 ## 4.9.1
 
 ### Patch Changes
