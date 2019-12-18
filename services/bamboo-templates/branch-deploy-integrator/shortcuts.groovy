@@ -24,7 +24,7 @@ createBranchDeployIntegrator([
                 repository(name:'#repo',checkoutDirectory:'product')
             }
             task(type:'script',description:'Install branch deploy',
-                script:'services/branch-deploy-integrators-plan-template/integrate.sh',
+                script:'services/bamboo-templates/branch-deploy-integrator/install-branch-deploy.sh',
                 environmentVariables:'TEST=123', interpreter:'RUN_AS_EXECUTABLE')
     }
     }
