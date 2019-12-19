@@ -1,6 +1,7 @@
 createBranchDeployIntegrator([
   'sourceRepo',
-  'productRepo'
+  'productRepo',
+  'productCiPlanUrl'
 ]) {
     project(key:'ABDPI',name:'AFP - Branch Deploy Product Integrators',
       description:'Branch deploy all the things')
@@ -24,7 +25,7 @@ createBranchDeployIntegrator([
             }
             task(type:'script',description:'Install branch deploy',
                 script:'services/bamboo-templates/branch-deploy-integrator/install-branch-deploy.sh',
-                environmentVariables:'TEST=123', interpreter:'RUN_AS_EXECUTABLE')
+                environmentVariables:'PRODUCT_CI_PLANURL=#productCiPlanUrl', interpreter:'RUN_AS_EXECUTABLE')
     }
     }
 }

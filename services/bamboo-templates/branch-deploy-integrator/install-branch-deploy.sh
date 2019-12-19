@@ -9,7 +9,7 @@ git fetch origin --prune
 
 yarn global add @atlaskit/branch-deploy-product-integrator@2.0.1
 
-PRODUCT_CI_USERNAME="$bamboo_build_doctor_username" PRODUCT_CI_PASSWORD="$bamboo_build_doctor_password" branch-deploy-product-integrator push ${bamboo_planRepository_branch} ${bamboo_planRepository_revision} --packageEngine bolt --productCiPlanUrl \'https://confluence-cloud-bamboo.internal.atlassian.com/rest/api/latest/plan/CONFMICRO-CFCPB\'
+PRODUCT_CI_USERNAME="$bamboo_build_doctor_username" PRODUCT_CI_PASSWORD="$bamboo_build_doctor_password" branch-deploy-product-integrator push ${bamboo_planRepository_branch} ${bamboo_planRepository_revision} --packageEngine bolt --productCiPlanUrl ${PRODUCT_CI_PLANURL}
 
 else
 echo "Current branch is master. Not going to branch deploy."
