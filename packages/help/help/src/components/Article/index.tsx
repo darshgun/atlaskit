@@ -7,7 +7,6 @@ import { withHelp, HelpContextInterface } from '../HelpContext';
 
 import ArticleContent from './ArticleContent';
 import ArticleWasHelpfulForm from './ArticleWasHelpfulForm';
-import RelatedArticles from './RelatedArticles';
 import LoadingError from './LoadingError';
 import { ArticleContainer } from './styled';
 import { TRANSITION_DURATION_MS, TRANSITION_STATUS } from '../constants';
@@ -99,10 +98,6 @@ export class Article extends Component<Props & HelpContextInterface, State> {
   renderArticleContent() {
     const currentArticle = this.props.help.getCurrentArticle();
 
-    const handleOnClick = (articleId: string) => {
-      this.props.help.loadArticle(articleId);
-    };
-
     if (currentArticle) {
       const { article } = currentArticle;
 
@@ -119,17 +114,12 @@ export class Article extends Component<Props & HelpContextInterface, State> {
               onArticleRenderDone={this.props.help.onArticleRenderDone}
             />
             <ArticleWasHelpfulForm />
-            <RelatedArticles
-              relatedArticles={article.relatedArticles}
-              onRelatedArticlesListItemClick={handleOnClick}
-            />
           </>
         );
       } else {
         return (
           <>
             <ArticleContent isLoading />
-            <RelatedArticles isLoading />
           </>
         );
       }

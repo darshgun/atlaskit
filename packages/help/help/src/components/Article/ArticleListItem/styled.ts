@@ -3,56 +3,57 @@ import styled from '@emotion/styled';
 import { fontSize, gridSize } from '@atlaskit/theme/constants';
 import * as colors from '@atlaskit/theme/colors';
 
-export const ArticlesListItemWrapper = styled.a`
-  position: relative;
-  box-sizing: border-box;
-  padding: ${gridSize() * 2}px ${gridSize() * 2}px ${gridSize() * 2}px
-    ${gridSize() * 1.5}px;
-  display: block;
-  text-decoration: none;
-  cursor: pointer;
-  color: ${colors.N200};
-  border-radius: 3px;
+type ArticlesListItemWrapperProps = {
+  styles: any;
+};
 
-  &:hover,
-  &:focus,
-  &:visited,
-  &:active {
-    text-decoration: none;
-    outline: none;
-    outline-offset: none;
-  }
+export const ArticlesListItemWrapper = styled.a<ArticlesListItemWrapperProps>(
+  {
+    position: `relative`,
+    boxSizing: `border-box`,
+    padding: `${gridSize()}px`,
+    display: `block`,
+    textDecoration: `none`,
+    cursor: `pointer`,
+    color: `${colors.N200}`,
+    borderRadius: `3px`,
 
-  &:focus {
-    box-shadow: ${colors.B100} 0px 0px 0px 2px inset;
-  }
+    '&:hover, &:focus, &:visited, &:active': {
+      textDecoration: `none`,
+      outline: `none`,
+      outlineOffset: `none`,
+    },
 
-  &:hover {
-    background: ${colors.backgroundHover};
-  }
+    '&:focus': {
+      boxShadow: `${colors.B100} 0px 0px 0px 2px inset`,
+    },
 
-  &:active {
-    background: ${colors.backgroundActive};
-  }
-`;
+    '&:hover': {
+      backgroundColor: `${colors.N30}`,
+    },
 
-export const ArticlesListItemTitle = styled.div`
+    '&:active': {
+      backgroundColor: `${colors.B50}`,
+    },
+  },
+  (props: any) => props.styles,
+);
+
+export const ArticlesListItemContainer = styled.div`
   width: 100%;
   white-space: nowrap;
 `;
 
-export const ArticlesListItemTitleIcon = styled.div`
-  align-self: auto;
-  padding-right: ${gridSize()}px;
-  display: inline-block;
-  vertical-align: top;
+export const ArticlesListItemTypeTitle = styled.div`
+  font-weight: bold;
+  font-size: 11px;
+  line-height: ${gridSize() * 2}px;
+  color: ${colors.N200};
+  padding-bottom: ${gridSize() / 2}px;
 `;
 
 export const ArticlesListItemLinkIcon = styled.div`
   align-self: auto;
-  padding-left: ${gridSize()}px;
-  display: inline-block;
-  vertical-align: top;
 `;
 
 export const ArticlesListItemTitleText = styled.span`
@@ -60,22 +61,16 @@ export const ArticlesListItemTitleText = styled.span`
   color: ${colors.N800};
   font-size: ${fontSize()}px;
   font-weight: 600;
-  display: inline-block;
-  vertical-align: top;
-  line-height: ${gridSize() * 3}px;
+  display: block;
+  line-height: ${gridSize() * 2.5}px;
   white-space: normal;
-  width: calc(100% - ${gridSize() * 7}px);
   overflow-x: hidden;
+  margin-bottom: ${gridSize()}px;
 `;
 
 export const ArticlesListItemDescription = styled.p`
   display: block;
+  line-height: ${gridSize() * 2.5}px;
   color: ${colors.N400};
-  padding-left: ${gridSize() * 4}px;
-  max-height: 3.6rem;
   margin: 0;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
 `;

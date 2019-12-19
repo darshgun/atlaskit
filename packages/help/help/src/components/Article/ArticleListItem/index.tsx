@@ -4,8 +4,8 @@ import {
   CreateUIAnalyticsEvent,
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
-import DocumentFilledIcon from '@atlaskit/icon/glyph/document-filled';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import {
   name as packageName,
@@ -13,45 +13,39 @@ import {
 } from '../../../version.json';
 import { withAnalyticsEvents, withAnalyticsContext } from '../../../analytics';
 import { Analytics } from '../../../model/Analytics';
+import { ArticleItem, ARTICLE_ITEM_TYPES } from '../../../model/Article';
+import { messages } from '../../../messages';
 
 import {
-  ArticlesListItemTitleIcon,
+  ArticlesListItemTypeTitle,
   ArticlesListItemWrapper,
-  ArticlesListItemTitle,
+  ArticlesListItemContainer,
   ArticlesListItemTitleText,
   ArticlesListItemDescription,
   ArticlesListItemLinkIcon,
 } from './styled';
 
 type Props = {
+  // Aditional Styles
+  styles?: {};
   /* Analytics event */
   createAnalyticsEvent: CreateUIAnalyticsEvent;
   /* Function executed when the user clicks the related article */
   onClick?: (id: string, analyticsEvent: UIAnalyticsEvent) => void;
-  /* Related article title. This prop is optional (default value is '') */
-  title?: string;
-  /* Related article description. This prop is optional (default value is '') */
-  description?: string;
-  /* Related article icon. This prop is optional (by default a DocumentFilledIcon is used) */
-  icon?: React.ReactNode;
-  /* Related article href. This prop is optional (default value is ''). If is defined, when
-  the user clicks in the related article a new tab will be open using the url defined in this prop */
-  href?: string;
-  /* Related article ID */
-  id: string;
 };
 
-const ArticlesListItem: React.SFC<Props & Analytics> = (
-  props: Props & Analytics,
-) => {
+const ArticlesListItem: React.SFC<Props &
+  ArticleItem &
+  InjectedIntlProps &
+  Analytics> = (props: Props & ArticleItem & InjectedIntlProps & Analytics) => {
   const {
+    intl: { formatMessage },
+    styles,
     id,
     title = '',
     description = '',
-    icon = (
-      <DocumentFilledIcon primaryColor={colors.P300} size="medium" label="" />
-    ),
     href = '',
+    type = ARTICLE_ITEM_TYPES.helpArticle,
     onClick = (id: string, analyticsEvent: UIAnalyticsEvent) => {},
     createAnalyticsEvent,
   } = props;
@@ -67,15 +61,31 @@ const ArticlesListItem: React.SFC<Props & Analytics> = (
     }
   };
 
+  const getTypeTitle = (itemType: ARTICLE_ITEM_TYPES) => {
+    switch (itemType) {
+      case ARTICLE_ITEM_TYPES.helpArticle:
+        return messages.help_panel_related_article_type_help_article;
+
+      case ARTICLE_ITEM_TYPES.whatsNew:
+        return messages.help_panel_related_article_type_whats_new;
+
+      default:
+        return messages.help_panel_related_article_type_help_article;
+    }
+  };
+
   return (
     <ArticlesListItemWrapper
+      styles={styles}
       aria-disabled="false"
       role="button"
       href={href}
       onClick={handleOnClick}
     >
-      <ArticlesListItemTitle>
-        <ArticlesListItemTitleIcon>{icon}</ArticlesListItemTitleIcon>
+      <ArticlesListItemContainer>
+        <ArticlesListItemTypeTitle>
+          {formatMessage(getTypeTitle(type))}
+        </ArticlesListItemTypeTitle>
         <ArticlesListItemTitleText>{title}</ArticlesListItemTitleText>
         {href && (
           <ArticlesListItemLinkIcon>
@@ -87,7 +97,7 @@ const ArticlesListItem: React.SFC<Props & Analytics> = (
             />
           </ArticlesListItemLinkIcon>
         )}
-      </ArticlesListItemTitle>
+      </ArticlesListItemContainer>
       <ArticlesListItemDescription>{description}</ArticlesListItemDescription>
     </ArticlesListItemWrapper>
   );
@@ -97,4 +107,4 @@ export default withAnalyticsContext({
   componentName: 'ArticleListItem',
   packageName,
   packageVersion,
-})(withAnalyticsEvents()(ArticlesListItem));
+})(withAnalyticsEvents()(injectIntl(ArticlesListItem)));

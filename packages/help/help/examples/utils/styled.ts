@@ -11,8 +11,7 @@ export const ExampleWrapper = styled.div`
 `;
 
 export const ExampleDefaultContent = styled.div`
-  padding: ${gridSize() * 2}px ${gridSize() * 3}px ${gridSize() * 2}px
-    ${gridSize() * 3}px;
+  padding: ${gridSize() * 2}px;
 `;
 
 export const FooterContent = styled.div`

@@ -67,19 +67,39 @@ export const messages = defineMessages({
     description: '',
   },
 
-  help_panel_related_article_title: {
-    id: 'global_help.related_article.title',
-    defaultMessage: 'RELATED',
-    description: '',
+  help_panel_related_article_type_whats_new: {
+    id: 'global_help.related_article.type.whats-new',
+    defaultMessage: `WHAT'S NEW`,
+    description: 'Article type title',
+  },
+  help_panel_related_article_type_help_article: {
+    id: 'global_help.related_article.type.help-article',
+    defaultMessage: `HELP ARTICLE`,
+    description: 'Article type title',
   },
   help_panel_related_article_show_more: {
     id: 'global_help.related_article.show_more',
-    defaultMessage: 'Show more related',
+    defaultMessage: 'Show {numberOfRelatedArticlesLeft} more related articles',
     description: '',
   },
   help_panel_related_article_show_less: {
     id: 'global_help.related_article.show_less',
-    defaultMessage: 'Show less related',
+    defaultMessage: 'Show less',
+    description: '',
+  },
+  help_panel_related_article_endpoint_error_title: {
+    id: 'global_help.related_article.endpoint-error.title',
+    defaultMessage: `We're having some trouble`,
+    description: '',
+  },
+  help_panel_related_article_endpoint_error_description: {
+    id: 'global_help.related_article.endpoint-error.description',
+    defaultMessage: `It's taking us longer than expected to show this content. It's provably a temporary problem.`,
+    description: '',
+  },
+  help_panel_related_article_endpoint_error_button_label: {
+    id: 'global_help.related_article.endpoint-error.button-label',
+    defaultMessage: `Try Again`,
     description: '',
   },
   help_panel_search_results_title: {

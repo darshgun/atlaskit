@@ -24,6 +24,11 @@ export interface Props {
   articleIdSetter?(id: string): void;
   // Function used to get an article content. This prop is optional, if is not defined the default content will be displayed
   onGetArticle?(id: string): Promise<Article>;
+  // Function used to get related articles. This prop is optional, if is not defined the related articles will not be displayed
+  onGetRelatedArticle?(
+    viewId?: string,
+    itemId?: string,
+  ): Promise<ArticleItem[]>;
   // Function used to search an article.  This prop is optional, if is not defined search input will be hidden
   onSearch?(value: string): Promise<ArticleItem[]>;
   // Event handler for the close button. This prop is optional, if this function is not defined the close button will not be displayed
@@ -65,13 +70,13 @@ export interface Props {
 
 export interface State {
   view: VIEW;
-  footer?: React.ReactNode;
-  defaultContent?: React.ReactNode;
+
   // Article
   articleId: string;
   history: HistoryItem[]; // holds all the articles ID the user has navigated
   hasNavigatedToDefaultContent: boolean;
   articleFullyVisible: boolean; // This will true only if an article 100% visible, that means, after the open animation and before close animation
+
   // Search
   searchValue: string;
   searchResult: ArticleItem[];
@@ -81,19 +86,41 @@ export interface State {
 export interface HelpContextInterface {
   help: {
     view: VIEW;
-    isBackbuttonVisible(): boolean;
-    isDefaultContent(): boolean;
-    isFooter(): boolean;
-    isSearchVisible(): boolean;
+
+    // Article
     loadArticle(id?: string): void;
     setArticleFullyVisible(isVisible: boolean): void;
     isArticleVisible(): boolean;
     getCurrentArticle(): HistoryItem | undefined;
     articleIdSetter?(id: string): void;
+    onArticleRenderBegin?(): void;
+    onArticleRenderDone?(): void;
+    history: HistoryItem[]; // holds all the articles ID the user has navigated
+    articleId?: string;
+    articleFullyVisible: boolean;
+
+    // Related Articles
+    onGetRelatedArticle?(
+      viewId?: string,
+      itemId?: string,
+    ): Promise<ArticleItem[]>;
+
+    // Default content / Home screen
+    defaultContent?: React.ReactNode;
+
+    // Header buttons
     onButtonCloseClick?(
       event?: React.MouseEvent<HTMLElement, MouseEvent>,
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
+    isBackbuttonVisible(): boolean;
+    onBackButtonClick?(
+      event?: React.MouseEvent<HTMLElement, MouseEvent>,
+      analyticsEvent?: UIAnalyticsEvent,
+    ): void;
+    navigateBack(): void;
+
+    // Feedback form
     onWasHelpfulYesButtonClick?(
       event?: React.MouseEvent<HTMLElement, MouseEvent>,
       analyticsEvent?: UIAnalyticsEvent,
@@ -102,38 +129,33 @@ export interface HelpContextInterface {
       event?: React.MouseEvent<HTMLElement, MouseEvent>,
       analyticsEvent?: UIAnalyticsEvent,
     ): void;
-    onBackButtonClick?(
-      event?: React.MouseEvent<HTMLElement, MouseEvent>,
-      analyticsEvent?: UIAnalyticsEvent,
-    ): void;
-    onArticleRenderBegin?(): void;
-    onArticleRenderDone?(): void;
-    history: HistoryItem[]; // holds all the articles ID the user has navigated
-    footer?: React.ReactNode;
-    defaultContent?: React.ReactNode;
-    navigateBack(): void;
     onWasHelpfulSubmit?(
       value: ArticleFeedback,
       analyticsEvent?: UIAnalyticsEvent,
     ): Promise<boolean>;
+
+    // Footer
+    isFooterDefined(): boolean;
+    footer?: React.ReactNode;
+
+    // Search
+    isSearchVisible(): boolean;
     onSearch(value: string): void;
     searchResult: ArticleItem[];
     searchState: REQUEST_STATE;
     searchValue: string;
-    articleId?: string;
-    articleFullyVisible: boolean;
   };
 }
 
 const defaultValues = {
   view: VIEW.DEFAULT_CONTENT,
-  footer: undefined,
-  defaultContent: undefined,
+
   // Article
   articleId: '',
   history: [], // holds all the articles ID the user has navigated
   hasNavigatedToDefaultContent: false,
   articleFullyVisible: false,
+
   // Search values
   searchValue: '',
   searchResult: [],
@@ -157,9 +179,9 @@ class HelpContextProviderImplementation extends React.Component<
 
     this.state = initialiseHelpData({
       ...defaultValues,
-      articleId: this.props.articleId ? this.props.articleId : '',
-      footer: this.props.footer,
-      defaultContent: this.props.defaultContent,
+      articleId: this.props.articleId
+        ? this.props.articleId
+        : defaultValues.articleId,
     });
   }
 
@@ -196,18 +218,17 @@ class HelpContextProviderImplementation extends React.Component<
   }
 
   onSearch = async (value: string) => {
-    const { onSearch } = this.props;
     const searchValue = value;
 
     await this.setState({ searchValue });
 
     // Execute this function only if the this.props.onSearch is defined
-    if (onSearch) {
+    if (this.props.onSearch) {
       // If the amount of caracters is > than the minimun defined to fire a search...
       if (searchValue.length > MIN_CHARACTERS_FOR_SEARCH) {
         try {
           this.setState({ searchState: REQUEST_STATE.loading });
-          const searchResult = await onSearch(searchValue);
+          const searchResult = await this.props.onSearch(searchValue);
           this.setState({
             searchResult,
             searchState: REQUEST_STATE.done,
@@ -374,7 +395,7 @@ class HelpContextProviderImplementation extends React.Component<
 
   isBackbuttonVisible = (): boolean => {
     if (
-      (this.state.history.length === 1 && !this.isDefaultContent()) ||
+      (this.state.history.length === 1 && !this.isDefaultContentDefined()) ||
       !this.props.articleIdSetter
     ) {
       return false;
@@ -408,15 +429,12 @@ class HelpContextProviderImplementation extends React.Component<
     );
   };
 
-  isFooter = (): boolean => {
-    return this.state.footer !== undefined;
+  isFooterDefined = (): boolean => {
+    return this.props.footer !== undefined;
   };
 
-  isDefaultContent = (): boolean => {
-    return (
-      this.state.defaultContent !== undefined &&
-      this.state.defaultContent !== null
-    );
+  isDefaultContentDefined = (): boolean => {
+    return this.props.defaultContent !== undefined;
   };
 
   getCurrentArticle = () => {
@@ -427,34 +445,51 @@ class HelpContextProviderImplementation extends React.Component<
   };
 
   render() {
-    const { hasNavigatedToDefaultContent, ...restState } = this.state;
     return (
       <HelpContext.Provider
         value={{
           help: {
-            ...restState,
+            view: this.state.view,
+
+            // Article
             loadArticle: this.loadArticle,
-            isBackbuttonVisible: this.isBackbuttonVisible,
-            isFooter: this.isFooter,
-            isDefaultContent: this.isDefaultContent,
-            isSearchVisible: this.isSearchVisible,
             setArticleFullyVisible: this.setArticleFullyVisible,
             isArticleVisible: this.isArticleVisible,
-            navigateBack: this.navigateBack,
-            articleIdSetter: this.props.articleIdSetter,
-            onSearch: this.onSearch,
             getCurrentArticle: this.getCurrentArticle,
-            onButtonCloseClick: this.props.onButtonCloseClick,
-            onWasHelpfulSubmit: this.props.onWasHelpfulSubmit,
-            onWasHelpfulYesButtonClick: this.props.onWasHelpfulYesButtonClick,
-            onWasHelpfulNoButtonClick: this.props.onWasHelpfulNoButtonClick,
-            onBackButtonClick: this.props.onBackButtonClick,
+            articleIdSetter: this.props.articleIdSetter,
             onArticleRenderBegin: this.props.onArticleRenderBegin,
             onArticleRenderDone: this.props.onArticleRenderDone,
-            footer: this.props.footer,
-            defaultContent: this.props.defaultContent,
+            history: this.state.history,
             articleId: this.state.articleId,
             articleFullyVisible: this.state.articleFullyVisible,
+
+            // Related Articles
+            onGetRelatedArticle: this.props.onGetRelatedArticle,
+
+            // Default content / Home screen
+            defaultContent: this.props.defaultContent,
+
+            // Header buttons
+            onButtonCloseClick: this.props.onButtonCloseClick,
+            isBackbuttonVisible: this.isBackbuttonVisible,
+            onBackButtonClick: this.props.onBackButtonClick,
+            navigateBack: this.navigateBack,
+
+            // Feedback form
+            onWasHelpfulYesButtonClick: this.props.onWasHelpfulYesButtonClick,
+            onWasHelpfulNoButtonClick: this.props.onWasHelpfulNoButtonClick,
+            onWasHelpfulSubmit: this.props.onWasHelpfulSubmit,
+
+            // Footer
+            isFooterDefined: this.isFooterDefined,
+            footer: this.props.footer,
+
+            // Search
+            isSearchVisible: this.isSearchVisible,
+            onSearch: this.onSearch,
+            searchResult: this.state.searchResult,
+            searchState: this.state.searchState,
+            searchValue: this.state.searchValue,
           },
         }}
         children={this.props.children}

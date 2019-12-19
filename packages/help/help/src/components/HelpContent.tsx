@@ -30,7 +30,9 @@ export const HelpContent = (props: Props & HelpContextInterface) => {
               {help.defaultContent}
             </DefaultContent>
           </HelpBody>
-          {help.isFooter() ? <HelpFooter>{help.footer}</HelpFooter> : null}
+          {help.isFooterDefined() ? (
+            <HelpFooter>{help.footer}</HelpFooter>
+          ) : null}
         </Section>
       </Container>
     </>

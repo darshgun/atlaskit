@@ -1,0 +1,202 @@
+import * as React from 'react';
+import { AnalyticsListener, UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import algoliasearch from 'algoliasearch';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import Page from '@atlaskit/page';
+import {
+  RightSidePanel,
+  FlexContainer,
+  ContentWrapper,
+} from '@atlaskit/right-side-panel';
+
+import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
+import {
+  ButtonsWrapper,
+  FooterContent,
+  ExampleDefaultContent,
+} from './utils/styled';
+
+import Help, { RelatedArticles } from '../src';
+
+const handleEvent = (analyticsEvent: { payload: any; context: any }) => {
+  const { payload, context } = analyticsEvent;
+  console.log('Received event:', { payload, context });
+};
+
+var client = algoliasearch('8K6J5OJIQW', 'c982b4b1a6ca921131d35edb63359b8c');
+var index = client.initIndex('product_help_prod');
+
+export default class extends React.Component {
+  state = {
+    isOpen: false,
+    searchText: 'test',
+    articleId: '',
+    viewId: '',
+    itemId: '',
+  };
+
+  openDrawer = async (articleId: string = '') => {
+    await this.setState({
+      isOpen: true,
+      articleId,
+    });
+  };
+
+  closeDrawer = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
+    event.preventDefault();
+    analyticsEvent.fire('help');
+    this.setState({
+      isOpen: false,
+    });
+  };
+
+  articleWasHelpfulNoButtonClick = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
+    event.preventDefault();
+    analyticsEvent.fire('help');
+  };
+
+  articleWasHelpfulYesButtonClick = (
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
+    event.preventDefault();
+    analyticsEvent.fire('help');
+  };
+
+  onGetArticle = async (articleId: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      index.getObjects([articleId], function(
+        err,
+        content: {
+          results: {}[];
+          message?: string;
+        },
+      ) {
+        if (err) {
+          reject(err);
+        } else {
+          const article = content.results[0];
+          if (article) {
+            resolve(article);
+          } else {
+            reject(content.message);
+          }
+        }
+      });
+    });
+  };
+
+  getRelatedArticle = (productView?: string, itemId?: string): Promise<any> => {
+    console.log(productView);
+    console.log(itemId);
+    return new Promise((resolve, reject) => {
+      index.search(
+        {
+          facetFilters: [
+            [
+              `productView:${productView || ''}<score=10>`,
+              `_tags:product_view_is_not_defined<score=1>`,
+            ],
+            [
+              `itemId:${itemId || ''}<score=5>`,
+              `_tags:item_id_is_not_defined<score=1>`,
+            ],
+          ],
+          // @ts-ignore
+          sumOrFiltersScores: true,
+        },
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+
+          resolve(res.hits);
+        },
+      );
+    });
+  };
+
+  articleIdSetter = (id: string): void => {
+    this.setState({
+      articleId: id,
+    });
+  };
+
+  render() {
+    const { isOpen, articleId } = this.state;
+    return (
+      <AnalyticsListener channel="help" onEvent={handleEvent}>
+        <FlexContainer id="helpExample">
+          <ContentWrapper>
+            <Page>
+              <ButtonsWrapper>
+                <ButtonGroup>
+                  <Button type="button" onClick={() => this.openDrawer()}>
+                    Open drawer - no ID
+                  </Button>
+
+                  <Button
+                    type="button"
+                    onClick={() => this.openDrawer('nbgju45fddcNAvvH9lhHc')}
+                  >
+                    Open drawer - article 1
+                  </Button>
+
+                  <Button
+                    type="button"
+                    onClick={() => this.openDrawer('fkXjwybosO2ev4g5lLsZw')}
+                  >
+                    Open drawer - article 2
+                  </Button>
+
+                  <Button
+                    type="button"
+                    onClick={() => this.openDrawer('11111111111111111111')}
+                  >
+                    Open drawer - wrong id
+                  </Button>
+
+                  <Button type="button" onClick={this.closeDrawer}>
+                    Close drawer
+                  </Button>
+                </ButtonGroup>
+              </ButtonsWrapper>
+              <RightSidePanel isOpen={isOpen} attachPanelTo="helpExample">
+                <LocaleIntlProvider locale={'en'}>
+                  <Help
+                    articleIdSetter={this.articleIdSetter}
+                    onButtonCloseClick={this.closeDrawer}
+                    articleId={articleId}
+                    onGetArticle={this.onGetArticle}
+                    onGetRelatedArticle={this.getRelatedArticle}
+                    onWasHelpfulYesButtonClick={
+                      this.articleWasHelpfulYesButtonClick
+                    }
+                    onWasHelpfulNoButtonClick={
+                      this.articleWasHelpfulNoButtonClick
+                    }
+                    footer={
+                      <FooterContent>
+                        <span>Footer</span>
+                      </FooterContent>
+                    }
+                  >
+                    <ExampleDefaultContent>
+                      <RelatedArticles />
+                    </ExampleDefaultContent>
+                  </Help>
+                </LocaleIntlProvider>
+              </RightSidePanel>
+            </Page>
+          </ContentWrapper>
+        </FlexContainer>
+      </AnalyticsListener>
+    );
+  }
+}
