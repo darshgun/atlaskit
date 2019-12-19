@@ -29,7 +29,7 @@ createBranchDeployIntegrator([
             }
             task(type:'script',description:'Install branch deploy',
                 script:'services/bamboo-templates/branch-deploy-integrator/install-branch-deploy.sh',
-                environmentVariables:'PRODUCT_CI_PLANURL=#productCiPlanUrl; PACKAGE_ENGINE=#packageEngine; PACKAGE_ENGINE_CMD=#integratorCmd; SKIP_INTEGRITY_CHECK=#skipIntegrityCheck', interpreter:'RUN_AS_EXECUTABLE')
+                environmentVariables:'PRODUCT_CI_PLANURL="#productCiPlanUrl" PACKAGE_ENGINE="#packageEngine" PACKAGE_ENGINE_CMD="#integratorCmd" SKIP_INTEGRITY_CHECK="#skipIntegrityCheck"', interpreter:'RUN_AS_EXECUTABLE')
     }
     }
 }
