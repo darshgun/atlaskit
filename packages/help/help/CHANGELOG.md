@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.22.0
+
+### Minor Changes
+
+- [minor][748d654809](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/748d654809):
+
+  Updated the design and behaviour of RelatedArticles component
+
 ## 0.21.9
 
 ### Patch Changes
