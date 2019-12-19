@@ -1,4 +1,4 @@
-plan(key:'ABDICC',name:'jira-frontend Atlaskit Branch Deploy Integrator',
+plan(key:'ABDIJC',name:'jira-frontend Atlaskit Branch Deploy Integrator',
     description:'Creates branches on jira-frontend pulling in Atlaskit branch deploys to give Atlaskit build results on their PRs. **NOTE**: Master is disabled but every other branch is enabled',
     enabled:'false') {
     createBranchDeployIntegrator(sourceRepo: 'Atlaskit-MK-2', productRepo: 'jira-frontend')
