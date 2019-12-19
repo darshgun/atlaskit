@@ -1,7 +1,8 @@
 createBranchDeployIntegrator([
   'sourceRepo',
   'productRepo',
-  'productCiPlanUrl'
+  'productCiPlanUrl',
+  'dockerContainer'
 ]) {
     project(key:'ABDPI',name:'AFP - Branch Deploy Product Integrators',
       description:'Branch deploy all the things')
@@ -14,7 +15,7 @@ createBranchDeployIntegrator([
     stage(name:'Default Stage') {
         job(key:'JOB1',name:'Default Job') {
             miscellaneousConfiguration() {
-                pbc(enabled:'true',image:'docker.atl-paas.net/sox/confluence/confluence-frontend-agent:latest',
+                pbc(enabled:'true',image:'docker.atl-paas.net/sox/#dockerContainer',
                 size:'small')
             }
             task(type:'checkout',description:'Checkout Default Repository') {

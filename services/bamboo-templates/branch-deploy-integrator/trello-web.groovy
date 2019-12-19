@@ -1,7 +1,7 @@
 plan(key:'ABDITR',name:'trello Atlaskit Branch Deploy Integrator',
     description:'Creates branches on trello pulling in Atlaskit branch deploys to give Atlaskit build results on their PRs. **NOTE**: Master is disabled but every other branch is enabled',
     enabled:'false') {
-    createBranchDeployIntegrator(sourceRepo: 'Atlaskit-MK-2', productRepo: 'trello-web', productCiPlanUrl: '')
+    createBranchDeployIntegrator(sourceRepo: 'Atlaskit-MK-2', productRepo: 'trello-web', productCiPlanUrl: '', dockerContainer: 'atlassianlabs/atlaskit-mk-2:latest')
     branchMonitoring() {
         createBranch(matchingPattern:'risky-.*|develop|release-candidate.*')
         inactiveBranchCleanup(periodInDays:'14')
