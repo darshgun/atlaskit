@@ -1,7 +1,7 @@
-plan(key:'ABDICC',name:'Confluence Cloud Atlaskit Branch Deploy Integrator',
-    description:'Creates branches on Confluence Cloud pulling in Atlaskit branch deploys to give Atlaskit build results on their PRs. **NOTE**: Master is disabled but every other branch is enabled',
+plan(key:'ABDICC',name:'confluence-frontend Atlaskit Branch Deploy Integrator',
+    description:'Creates branches on confluence-frontend pulling in Atlaskit branch deploys to give Atlaskit build results on their PRs. **NOTE**: Master is disabled but every other branch is enabled',
     enabled:'false') {
-    createBranchDeployIntegrator(key: 'BDICC', productName: 'Confluence Cloud', repo: 'confluence-frontend')
+    createBranchDeployIntegrator(sourceRepo: 'Atlaskit-MK-2', productRepo: 'confluence-frontend')
     branchMonitoring() {
         createBranch(matchingPattern:'risky-.*|develop|release-candidate.*')
         inactiveBranchCleanup(periodInDays:'14')
