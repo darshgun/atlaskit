@@ -18,7 +18,7 @@ createBranchDeployIntegrator([
     stage(name:'Default Stage') {
         job(key:'JOB1',name:'Default Job') {
             miscellaneousConfiguration() {
-                pbc(enabled:'true',image:'docker.atl-paas.net/sox/#dockerContainer',
+                pbc(enabled:'true',image:'#dockerContainer',
                 size:'small')
             }
             task(type:'checkout',description:'Checkout Default Repository') {
