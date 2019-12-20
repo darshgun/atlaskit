@@ -1,5 +1,13 @@
 # @atlaskit/atlassian-switcher
 
+## 4.10.1
+
+### Patch Changes
+
+- [patch][be97cdfc46](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/be97cdfc46):
+
+  updated the expected joinable site response type definition and replaced product landing url logic
+
 ## 4.10.0
 
 ### Minor Changes
