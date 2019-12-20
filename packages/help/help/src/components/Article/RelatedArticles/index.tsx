@@ -5,7 +5,6 @@ import Button from '@atlaskit/button';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 
 import { messages } from '../../../messages';
-import { withHelp, HelpContextInterface } from '../../HelpContext';
 import { ArticleItem } from '../../../model/Article';
 
 import RelatedArticlesContent from './RelatedArticlesContent';
@@ -17,7 +16,10 @@ interface Props {
   // itemId used to get the related articles. This prop is optional.
   itemId?: string;
   // Function used to get related articles. This prop is optional, if is not defined the related articles will not be displayed
-  onGetRelatedArticle?(viewId: string, itemId: string): Promise<ArticleItem[]>;
+  onGetRelatedArticle?(
+    viewId?: string,
+    itemId?: string,
+  ): Promise<ArticleItem[]>;
   /* function executed when the user clicks on of the related articles */
   onRelatedArticlesListItemClick?: (
     id: string,
@@ -42,10 +44,10 @@ const initialiseHelpData = (data: State) => {
 };
 
 export class RelatedArticles extends React.Component<
-  Props & HelpContextInterface & InjectedIntlProps,
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props & HelpContextInterface & InjectedIntlProps) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
 
     this.state = initialiseHelpData({
@@ -69,8 +71,8 @@ export class RelatedArticles extends React.Component<
   }
 
   updateRelatedArticles() {
-    if (this.props.help.onGetRelatedArticle) {
-      const promiseRelatedArticles = this.props.help.onGetRelatedArticle(
+    if (this.props.onGetRelatedArticle) {
+      const promiseRelatedArticles = this.props.onGetRelatedArticle(
         this.props.viewId,
         this.props.itemId,
       );
@@ -79,6 +81,8 @@ export class RelatedArticles extends React.Component<
           this.setState({ relatedArticles, isLoading: false, hasError: false }),
         )
         .catch(() => this.setState({ hasError: true }));
+    } else {
+      this.setState({ isLoading: false, hasError: false });
     }
   }
 
@@ -129,4 +133,4 @@ export class RelatedArticles extends React.Component<
   }
 }
 
-export default injectIntl(withHelp(RelatedArticles));
+export default injectIntl(RelatedArticles);

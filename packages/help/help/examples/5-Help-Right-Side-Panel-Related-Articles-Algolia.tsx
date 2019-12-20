@@ -174,7 +174,6 @@ export default class extends React.Component {
                     onButtonCloseClick={this.closeDrawer}
                     articleId={articleId}
                     onGetArticle={this.onGetArticle}
-                    onGetRelatedArticle={this.getRelatedArticle}
                     onWasHelpfulYesButtonClick={
                       this.articleWasHelpfulYesButtonClick
                     }
@@ -188,7 +187,11 @@ export default class extends React.Component {
                     }
                   >
                     <ExampleDefaultContent>
-                      <RelatedArticles />
+                      <RelatedArticles
+                        onGetRelatedArticle={this.getRelatedArticle}
+                        viewId="project/agility/index"
+                        itemId="roadmap"
+                      />
                     </ExampleDefaultContent>
                   </Help>
                 </LocaleIntlProvider>
