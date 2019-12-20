@@ -215,7 +215,7 @@ This commit was auto-generated.
       );
     }
 
-    if (productCiPlanUrl) {
+    if (productCiPlanUrl && productCiPlanUrl.length > 0) {
       const { PRODUCT_CI_USERNAME, PRODUCT_CI_PASSWORD } = process.env;
       if (!PRODUCT_CI_USERNAME || !PRODUCT_CI_PASSWORD) {
         throw Error(
