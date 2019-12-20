@@ -1,4 +1,5 @@
 import {
+  AvailableProductDetails,
   AVAILABLE_PRODUCT_DATA_MAP,
   TO_WORKLENS_PRODUCT_KEY,
   getFixedProductLinks,
@@ -7,6 +8,8 @@ import {
   getJoinableSiteLinks,
 } from '../../links';
 import {
+  JoinableProductDetails,
+  JoinableProducts,
   Product,
   ProvisionedProducts,
   ProductKey,
@@ -226,18 +229,15 @@ describe('utils/links', () => {
       expect(result.length).toBe(3);
     });
 
-    it('should use instance base url for jira products', () => {
+    it('should use the url in the data source as landing url if site.products exists, or use AVAILABLE_PRODUCT_DATA_MAP if site.users exists', () => {
       const mockData = [
         ProductKey.JIRA_CORE,
         ProductKey.CONFLUENCE,
         ProductKey.OPSGENIE,
-      ].map((productKey, index) => {
+      ].map((productKey: ProductKey, index) => {
         const siteData = mockJoinableSites.sites[index];
         return Object.assign({}, siteData, {
           relevance: 10,
-          users: {
-            [productKey]: siteData.users[ProductKey.JIRA_SOFTWARE],
-          },
         });
       });
 
@@ -246,25 +246,46 @@ describe('utils/links', () => {
       result.forEach((site, index) => {
         const siteData = mockData[index];
 
-        let expectUrl = siteData.url;
+        let productKey = '';
+        let productData:
+          | JoinableProductDetails
+          | string[]
+          | AvailableProductDetails = [];
 
-        const productKey = Object.keys(siteData.users)[0];
-
-        let productData =
-          AVAILABLE_PRODUCT_DATA_MAP[
-            TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey]
-          ];
-
-        if (productKey === ProductKey.CONFLUENCE) {
-          expectUrl = siteData.url + productData.href;
-        } else if (
-          productKey !== ProductKey.JIRA_CORE &&
-          productKey !== ProductKey.JIRA_SOFTWARE
-        ) {
-          expectUrl = productData.href;
+        if (siteData.products) {
+          productKey = Object.keys(siteData.products!)[0];
+          productData = (siteData.products as JoinableProducts)[productKey];
+        } else if (siteData.users) {
+          productKey = Object.keys(siteData.users!)[0];
+          productData =
+            AVAILABLE_PRODUCT_DATA_MAP[
+              TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey]
+            ];
         }
 
-        expect(site.href).toEqual(expectUrl);
+        if (
+          siteData.products &&
+          !Array.isArray(productData) &&
+          (productData as JoinableProductDetails).productUrl
+        ) {
+          expect(site.href).toEqual(
+            (productData as JoinableProductDetails).productUrl,
+          );
+        } else {
+          let expectUrl = siteData.url;
+
+          if (productKey === ProductKey.CONFLUENCE) {
+            expectUrl =
+              siteData.url + (productData as AvailableProductDetails).href;
+          } else if (
+            productKey !== ProductKey.JIRA_CORE &&
+            productKey !== ProductKey.JIRA_SOFTWARE
+          ) {
+            expectUrl = (productData as AvailableProductDetails).href;
+          }
+
+          expect(site.href).toEqual(expectUrl);
+        }
       });
     });
   });

@@ -168,18 +168,44 @@ export interface JoinableSiteUserAvatarPropTypes {
   enableTooltip: boolean;
 }
 
+export interface JoinableProductDetails {
+  collaborators: JoinableSiteUser[];
+  productUrl: string;
+}
+
+export interface JoinableProductsWithProductUrl {
+  [key: string]: JoinableProductDetails;
+}
+
+export interface JoinableProductsWithUserIds {
+  [key: string]: string[];
+}
+
 export interface JoinableSiteUsersKeyedByProduct {
   [key: string]: JoinableSiteUser[];
 }
 
-export interface JoinableSite {
+export type JoinableProducts =
+  | JoinableProductsWithProductUrl
+  | JoinableProductsWithUserIds;
+
+export interface JoinableSiteWithProducts {
+  products: JoinableProducts;
+  users?: JoinableSiteUsersKeyedByProduct;
+}
+
+export interface JoinableSiteWithUsers {
+  products?: JoinableProducts;
+  users: JoinableSiteUsersKeyedByProduct;
+}
+
+export type JoinableSite = {
   cloudId: string;
   displayName: string;
-  users: JoinableSiteUsersKeyedByProduct;
   url: string;
   avatarUrl?: string;
   relevance?: number;
-}
+} & (JoinableSiteWithProducts | JoinableSiteWithUsers);
 
 export interface JoinableSitesResponse {
   sites: JoinableSite[];

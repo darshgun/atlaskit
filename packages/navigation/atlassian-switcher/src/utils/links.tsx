@@ -30,6 +30,7 @@ import {
   JoinableSite,
   JoinableSiteUser,
   JoinableSiteUserAvatarPropTypes,
+  JoinableProductDetails,
 } from '../types';
 import messages from './messages';
 import { CustomLink, RecentContainer, SwitcherChildItem } from '../types';
@@ -93,7 +94,7 @@ const getDiscoverMoreLink = (
   };
 };
 
-type AvailableProductDetails = Pick<
+export type AvailableProductDetails = Pick<
   SwitcherItemType,
   'label' | 'Icon' | 'href' | 'description'
 >;
@@ -467,8 +468,9 @@ export const getJoinableSiteLinks = (
   let joinableSiteLinks = [];
 
   for (let site of joinableSites) {
-    for (let productKey in site.users) {
-      const users: JoinableSiteUser[] = site.users[productKey] || [];
+    const productKeys: string[] = Object.keys(site.users! || site.products!);
+
+    for (let productKey of productKeys) {
       const productType: WorklensProductType =
         TO_WORKLENS_PRODUCT_KEY[productKey as ProductKey];
       const {
@@ -477,7 +479,8 @@ export const getJoinableSiteLinks = (
         href,
       }: AvailableProductDetails = AVAILABLE_PRODUCT_DATA_MAP[productType];
 
-      let productUrl = href;
+      let productUrl: string = href;
+      let users: JoinableSiteUser[] = [];
 
       if (
         productKey === ProductKey.JIRA_SOFTWARE ||
@@ -486,6 +489,26 @@ export const getJoinableSiteLinks = (
         productUrl = site.url;
       } else if (productKey === ProductKey.CONFLUENCE) {
         productUrl = site.url + href;
+      }
+
+      // in Bitbucket, it uses site.users as an array of JoinableUser
+      if (site.users) {
+        users = site.users[productKey];
+      } else if (site.products) {
+        const product: JoinableProductDetails | string[] =
+          site.products[productKey] || [];
+
+        // in Trello, it is currently an empty array (stripped off from an array of user id string)
+        if (Array.isArray(product)) {
+          users = [];
+        } else if (Object.keys(product).length) {
+          users = product.collaborators || [];
+
+          // if productUrl is not given somehow, it falls back to the href from AVAILABLE_PRODUCT_DATA_MAP
+          if (product.productUrl) {
+            productUrl = product.productUrl;
+          }
+        }
       }
 
       joinableSiteLinks.push({
