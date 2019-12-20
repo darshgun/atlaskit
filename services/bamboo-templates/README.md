@@ -30,6 +30,13 @@ The plan is overriden everytime everytime the plan template is executed.
 When you wanna make changes to your plan I recommend making them on the generated plan and then viewing as plan template again.
 Any manual changes you've made to the plan will be blown away when the "Plan Template execution" runs again.
 
+#### Validating your changes
+
+Bamboo can validate your plan before it's merged. This is done on all branches that are not master.
+To reduce build noise on `atlassian-frontend` I've not made branch creation automatic.
+So if you're making a template change you will have to manually create a plan branch for your branch here:
+https://engservices-bamboo.internal.atlassian.com/branchStatus/
+
 #### Advanced mode: Shortcuts
 
 You can sort of create re-usable code by using shortcuts, see the shortcuts file in the branch-deploy-integrator directory for an example.
