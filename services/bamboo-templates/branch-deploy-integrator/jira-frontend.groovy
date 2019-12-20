@@ -6,7 +6,7 @@ plan(key:'ABDIJC',name:'jira-frontend Atlaskit Branch Deploy Integrator',
         sourceRepo: 'Atlaskit-MK-2',
         productRepo: 'jira-frontend',
         productCiPlanUrl: '',
-        dockerContainer: 'jira/jira-frontend-agent:latest',
+        dockerContainer: 'docker.atl-paas.net/sox/jira/jira-frontend-agent:latest',
         packageEngine: 'yarn', 
         integratorCmd: 'upgrade',
         skipIntegrityCheck: true)
