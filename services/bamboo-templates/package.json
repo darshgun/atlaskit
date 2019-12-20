@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/branch-deploy-integrators-plan-template",
+  "name": "@atlaskit/bamboo-templates",
   "version": "0.0.3",
   "description": "Plan templates used for setting up branch deploy integrators on Bamboo",
   "private": true,
