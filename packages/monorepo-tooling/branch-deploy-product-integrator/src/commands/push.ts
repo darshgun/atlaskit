@@ -223,7 +223,7 @@ This commit was auto-generated.
   }
 
   if (
-    !typeof productCiPlanUrl === 'string' ||
+    typeof productCiPlanUrl !== 'string' ||
     !productCiPlanUrl.match(/^https.*$/)
   ) {
     console.log(
