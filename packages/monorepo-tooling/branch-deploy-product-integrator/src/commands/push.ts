@@ -222,7 +222,10 @@ This commit was auto-generated.
     return;
   }
 
-  if (!productCiPlanUrl.match(/^https.*$/)) {
+  if (
+    typeof productCiPlanUrl !== 'string' ||
+    !productCiPlanUrl.match(/^https.*$/)
+  ) {
     console.log(
       `Not triggering product build - ${productCiPlanUrl} is not a valid URL`,
     );
