@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.22.1
+
+### Patch Changes
+
+- [patch][e9d3baa181](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9d3baa181):
+
+  Bugfix - Fix RelatedArticles component
+
 ## 0.22.0
 
 ### Minor Changes
