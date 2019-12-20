@@ -1,5 +1,13 @@
 # @atlaskit/branch-deploy-product-integrator
 
+## 2.0.3
+
+### Patch Changes
+
+- [patch][917c865a2a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/917c865a2a):
+
+  Meow is smarter than I thought and also converts "" to a boolean true, so had to add a typeof check
+
 ## 2.0.2
 
 ### Patch Changes
