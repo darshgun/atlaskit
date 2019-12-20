@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/branch-deploy-product-integrator",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Installs branch deployed atlaskit packages into products to run product CI.",
   "license": "Apache-2.0",
   "sideEffects": false,

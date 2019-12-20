@@ -1,5 +1,15 @@
 # @atlaskit/branch-deploy-product-integrator
 
+## 2.0.2
+
+### Patch Changes
+
+- [patch][ef95dce44d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef95dce44d):
+
+  Add some extra url checks- [patch][89cbaaf5a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89cbaaf5a2):
+
+  Add a length check to productCiPlanUrl
+
 ## 2.0.1
 
 ### Patch Changes
