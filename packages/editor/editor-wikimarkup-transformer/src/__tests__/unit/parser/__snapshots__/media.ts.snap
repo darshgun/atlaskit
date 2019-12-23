@@ -577,7 +577,7 @@ Object {
             "__fileMimeType": null,
             "__fileName": null,
             "__fileSize": null,
-            "collection": null,
+            "collection": "",
             "height": 183,
             "id": "",
             "occurrenceKey": null,
