@@ -17,7 +17,7 @@ Object {
             "__fileMimeType": null,
             "__fileName": "example.png",
             "__fileSize": null,
-            "collection": null,
+            "collection": "",
             "height": null,
             "id": "",
             "occurrenceKey": null,
