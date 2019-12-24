@@ -1,5 +1,13 @@
 # @atlaskit/adf-schema
 
+## 4.3.3
+
+### Patch Changes
+
+- [patch][ee262a5a37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee262a5a37):
+
+  default media collection to empty string instead of null
+
 ## 4.3.2
 
 ### Patch Changes
