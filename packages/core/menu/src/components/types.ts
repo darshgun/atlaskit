@@ -21,13 +21,16 @@ export interface BaseItemProps {
   isSelected?: boolean;
   children?: React.ReactNode;
   href?: string;
-  component?: React.ComponentType<{ wrapperClass: string }>;
+  component?: React.ComponentType<{
+    wrapperClass: string;
+    'data-testid'?: string;
+  }>;
   testId?: string;
 }
 
 export type ButtonItemProps = Omit<BaseItemProps, 'component' | 'href'>;
 export type LinkItemProps = Omit<BaseItemProps, 'component'>;
-export type CustomItemProps = Omit<BaseItemProps, 'href' | 'testId'>;
+export type CustomItemProps = Omit<BaseItemProps, 'href'>;
 
 export type SkeletonItemProps = {
   hasAvatar?: boolean;

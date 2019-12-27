@@ -176,6 +176,7 @@ export const itemSkeletonCSS = (
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
+  minHeight: '40px',
 
   // Stagger alternate skeleton items if no width is passed
   ...(!width && {
