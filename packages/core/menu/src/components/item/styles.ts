@@ -124,7 +124,6 @@ export const contentCSSWrapper = {
   alignItems: 'center',
 };
 
-/* Item variations */
 export const linkItemCSS = (
   isDisabled?: boolean,
   isSelected?: boolean,

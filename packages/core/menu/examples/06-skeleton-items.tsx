@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@atlaskit/avatar';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
@@ -42,26 +42,14 @@ const Heading = ({ isLoading }: any) => {
 
 export default () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isAutoLoading, setIsAutoLoading] = useState(true);
-
-  useEffect(() => {
-    if (!isAutoLoading) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsAutoLoading(false);
-    }, 1000);
-  }, [isAutoLoading]);
 
   return (
     <div>
       <ButtonGroup>
-        <Button onClick={() => setIsAutoLoading(true)}>Load again</Button>
-        <Button onClick={() => setIsLoading(prev => !prev)}>
+        <Button
+          testId="toggle-loading"
+          onClick={() => setIsLoading(prev => !prev)}
+        >
           Set {isLoading ? 'Loaded' : 'Loading'}
         </Button>
       </ButtonGroup>
@@ -79,7 +67,7 @@ export default () => {
             alignSelf: 'flex-start',
           }}
         >
-          <MenuGroup maxHeight={300}>
+          <MenuGroup maxHeight={300} testId="left-menu">
             <Section>
               <Heading isLoading={isLoading} />
               {Array(3)
@@ -106,7 +94,7 @@ export default () => {
             borderRadius: '4px',
           }}
         >
-          <MenuGroup maxHeight={300}>
+          <MenuGroup maxHeight={300} testId="right-menu">
             <Section>
               <Heading isLoading={isLoading} />
             </Section>
