@@ -2,7 +2,6 @@ import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
 import { fontSize } from '@atlaskit/theme/constants';
 import {
   N800,
-  N700,
   N0,
   N200,
   N20,
@@ -21,9 +20,11 @@ const buttonOverrides = {
   border: 'none',
   outline: 'none',
 };
+
 const anchorOverrides = {
   color: 'currentColor',
 };
+
 const customItemOverrides = {
   color: 'currentColor',
 };
@@ -81,7 +82,6 @@ export const itemCSS = (
   ...baseItemCSS(isDisabled, isSelected),
 });
 
-/* Item subcomponents */
 export const contentCSS = {
   flexGrow: 1,
   textAlign: 'left',
@@ -104,11 +104,13 @@ export const elemBeforeCSS = {
   flexShrink: 0,
   marginRight: 12,
 };
+
 export const elemAfterCSS = {
   display: 'flex',
   flexShrink: 0,
   marginLeft: 12,
 };
+
 export const descriptionCSS = {
   textAlign: 'left',
   color: subtleText(),
@@ -164,6 +166,7 @@ export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
     content: '""',
   },
 });
+
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
