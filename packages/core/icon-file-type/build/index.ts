@@ -39,12 +39,10 @@ tidy(config16)
   .then(() => Promise.all([build(config16), build(config24), build(config48)]))
   .then(([sixteen, twentyfour, fourtyeight]: any[]) => {
     let allIcons = [...sixteen, ...twentyfour, ...fourtyeight];
-    const iconDocs = createIconDocs(
-      allIcons,
-      '@atlaskit/icon-file-interface',
-      {},
-      ['file-interface', 'icon-file-interface'],
-    );
-    console.log('@atlaskit-icon-file-interface built');
+    const iconDocs = createIconDocs(allIcons, '@atlaskit/icon-file-type', {}, [
+      'file-type',
+      'icon-file-type',
+    ]);
+    console.log('@atlaskit/icon-file-type built');
     return fs.outputFile(path.resolve(root, 'src/metadata.ts'), iconDocs);
   });
