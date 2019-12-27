@@ -33,6 +33,7 @@
   "devDependencies": {
     "@atlaskit/icon": "^19.0.8",
     "@atlaskit/icon-object": "^5.0.0",
+    "@atlaskit/icon-file-type": "^5.0.0",
     "react-router-dom": "^4.2.2"
   },
   "keywords": [

@@ -12,16 +12,24 @@ import {
   SkeletonHeadingItem,
 } from '../src';
 
-const CustomComponent = ({
-  wrapperClass,
-  ...rest
-}: {
-  wrapperClass: string;
-}) => <Link to="/my-route" className={wrapperClass} {...rest} />;
+const RouterLink = ({ wrapperClass, ...rest }: { wrapperClass: string }) => (
+  <Link to="/my-route" className={wrapperClass} {...rest} />
+);
+
+const Emphasis = ({ wrapperClass, ...props }: { wrapperClass: string }) => (
+  <em className={wrapperClass} {...props} />
+);
 
 const ItemVariants = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: 500,
+        margin: '0 auto',
+      }}
+    >
       <HeadingItem>This is a heading Item</HeadingItem>
       <ButtonItem>Regular Item</ButtonItem>
       <ButtonItem elemBefore={<EmojiCustomIcon label="Icon before" />}>
@@ -47,17 +55,12 @@ const ItemVariants = () => {
       <LinkItem href="//www.atlassian.com" isSelected>
         Selected Link Item
       </LinkItem>
-      <CustomItem
-        isDisabled
-        component={({ wrapperClass }: { wrapperClass: string }) => (
-          <em className={wrapperClass} tabIndex={0}>
-            Disabled custom element using em tag
-          </em>
-        )}
-      />
+      <CustomItem isDisabled component={Emphasis}>
+        Disabled custom element using em tag
+      </CustomItem>
       <HashRouter>
         <CustomItem
-          component={(props: any) => <CustomComponent {...props} />}
+          component={RouterLink}
           description="some custom text"
           isSelected
           elemAfter={<StarIcon label="icon after" />}

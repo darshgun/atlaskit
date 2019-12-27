@@ -1,7 +1,8 @@
 import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
-import { fontSize, fontSizeSmall } from '@atlaskit/theme/constants';
+import { fontSize } from '@atlaskit/theme/constants';
 import {
   N800,
+  N700,
   N0,
   N200,
   N20,
@@ -101,21 +102,23 @@ export const truncateCSS = {
 export const elemBeforeCSS = {
   display: 'flex',
   flexShrink: 0,
-  marginRight: gridSize,
+  marginRight: 12,
 };
 export const elemAfterCSS = {
   display: 'flex',
   flexShrink: 0,
-  marginLeft: gridSize,
+  marginLeft: 12,
 };
 export const descriptionCSS = {
   textAlign: 'left',
   color: subtleText(),
-  marginTop: 5,
-  fontSize: fontSizeSmall(),
+  marginTop: 3,
+  fontSize: headingSizes.h200.size,
 } as CSSObject;
+
 export const contentCSSWrapper = {
   display: 'flex',
+  minHeight: '24px',
   alignItems: 'center',
 };
 
@@ -138,8 +141,9 @@ export const customItemCSS = (
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
-  fontSize: headingSizes.h200.size,
-  lineHeight: headingSizes.h200.lineHeight / headingSizes.h200.size,
+  fontSize: headingSizes.h100.size,
+  lineHeight: headingSizes.h100.lineHeight / headingSizes.h100.size,
+  fontWeight: 700,
   color: subtleHeading(),
   marginTop: gridSize,
   marginBottom: 6,
