@@ -31,6 +31,8 @@
     "react-dom": "^16.8.0"
   },
   "devDependencies": {
+    "@atlaskit/avatar": "^17.1.5",
+    "@atlaskit/button": "^13.3.3",
     "@atlaskit/icon": "^19.0.8",
     "@atlaskit/icon-object": "^5.0.0",
     "@atlaskit/icon-file-type": "^5.0.0",

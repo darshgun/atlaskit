@@ -154,13 +154,13 @@ export const itemHeadingCSS = {
 
 export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   ...itemHeadingCSS,
-  paddingTop: gridSize / 2,
-  paddingBottom: gridSize / 2,
+  marginTop: 6,
+  marginBottom: 2,
   '&::after': {
     backgroundColor: N20,
     height: gridSize * 1.75,
     margin: `${gridSize / 2}px 0`,
-    width: width || `calc(20% - ${gridSize / 2}px)`,
+    width: width || `calc(30% - ${gridSize / 2}px)`,
     borderRadius: 3,
     display: 'block',
     content: '""',
