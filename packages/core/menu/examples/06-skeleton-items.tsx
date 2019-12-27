@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import Avatar from '@atlaskit/avatar';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
+import UserAvatarCircleIcon from '@atlaskit/icon/glyph/user-avatar-circle';
+import { colors } from '@atlaskit/theme';
 import {
   MenuGroup,
   Section,
@@ -23,7 +24,7 @@ const Item = ({ isLoading, ...props }: any) => {
     icon = <EmojiCustomIcon label="" />;
     content = 'Create';
   } else if (props.hasAvatar) {
-    icon = <Avatar size="xsmall" />;
+    icon = <UserAvatarCircleIcon primaryColor={colors.N40} label="" />;
     content = 'John Smith';
   } else {
     content = 'Action name';

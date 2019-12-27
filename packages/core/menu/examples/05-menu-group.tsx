@@ -54,6 +54,7 @@ export default () => {
             elemAfter={<ArrowRightIcon label="" />}
             elemBefore={<Archive24Icon label="Quote icon" />}
             description="You have 16 archived items."
+            href="#"
           >
             Archived items
           </LinkItem>

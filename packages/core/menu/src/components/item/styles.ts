@@ -17,8 +17,9 @@ const gridSize = gridSizeFn();
 
 const buttonOverrides = {
   backgroundColor: 'transparent',
-  border: 'none',
-  outline: 'none',
+  border: 0,
+  outline: 0,
+  margin: 0,
 };
 
 const anchorOverrides = {
@@ -153,8 +154,8 @@ export const itemHeadingCSS = {
 
 export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   ...itemHeadingCSS,
-  marginTop: 6,
-  marginBottom: 2,
+  marginTop: 10,
+  marginBottom: 6,
   '&::after': {
     backgroundColor: N20,
     height: gridSize * 1.75,
@@ -204,10 +205,11 @@ export const itemSkeletonCSS = (
     '&::before': {
       content: '""',
       backgroundColor: N20,
-      marginRight: gridSize,
+      marginRight: 12,
       width: gridSize * 3,
       height: gridSize * 3,
       borderRadius: hasAvatar ? '100%' : 3,
+      flexShrink: 0,
     },
   }),
 

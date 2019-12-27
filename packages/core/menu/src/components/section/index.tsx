@@ -14,6 +14,9 @@ export const Section = ({
   ...rest
 }: SectionProps) => (
   <div
+    // Overflow hidden in the css causes the div to be able to gain focus/
+    // We set this to turn it off.
+    tabIndex={-1}
     css={sectionCSS(isScrollable, hasSeparator)}
     data-testid={testId}
     {...rest}
