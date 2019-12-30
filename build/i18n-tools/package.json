@@ -2,6 +2,9 @@
   "name": "@atlaskit/i18n-tools",
   "version": "0.6.2",
   "description": "A tool for extracting, pushing and pulling translation strings from react components",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "index.js",
   "bin": {
     "i18n-tools": "index.js"

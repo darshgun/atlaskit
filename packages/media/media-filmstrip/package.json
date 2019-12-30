@@ -2,6 +2,9 @@
   "name": "@atlaskit/media-filmstrip",
   "version": "36.0.0",
   "description": "Includes components that show media cards as a filmstrip",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.tsx",
   "module": "dist/esm/index.js",

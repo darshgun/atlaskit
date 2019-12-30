@@ -2,6 +2,9 @@
   "name": "@atlaskit/build-utils",
   "version": "2.6.0",
   "description": "Collection of utilities to used during the release process of Atlaskit",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -2,6 +2,9 @@
   "name": "@atlaskit/contextual-survey",
   "version": "1.0.5",
   "description": "A React component used to ask the user for feedback",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",

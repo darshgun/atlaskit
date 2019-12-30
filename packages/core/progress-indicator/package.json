@@ -2,6 +2,9 @@
   "name": "@atlaskit/progress-indicator",
   "version": "7.0.12",
   "description": "A set of UI elements for indicating progress through a user journey",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",

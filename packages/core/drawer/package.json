@@ -2,6 +2,9 @@
   "name": "@atlaskit/drawer",
   "version": "5.2.0",
   "description": "React component the renders a Drawer from the left of the screen",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "author": "Atlassian Pty Ltd",
   "maintainers": [

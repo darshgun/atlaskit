@@ -2,6 +2,9 @@
   "name": "@atlaskit/tag",
   "version": "9.0.10",
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",

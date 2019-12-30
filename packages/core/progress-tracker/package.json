@@ -2,6 +2,9 @@
   "name": "@atlaskit/progress-tracker",
   "version": "6.1.2",
   "description": "A React component that shows the steps and progress in a journey",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",

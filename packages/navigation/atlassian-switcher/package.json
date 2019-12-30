@@ -15,6 +15,9 @@
   },
   "author": "Atlassian Pty Ltd",
   "description": "App switcher component for Atlassian products.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "maintainers": [
     "Dmytro Chukhai",
     "Mario Maradiaga",

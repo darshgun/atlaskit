@@ -9,6 +9,9 @@
     "team": "activity-platform"
   },
   "description": "Interacts with Atlassian Frontend PubSub service to receive pubsub events.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",

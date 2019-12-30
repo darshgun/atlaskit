@@ -2,6 +2,9 @@
   "name": "@atlaskit/range",
   "version": "3.0.10",
   "description": "A styled version of the native input[range] element.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",

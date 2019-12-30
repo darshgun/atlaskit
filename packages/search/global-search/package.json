@@ -2,6 +2,9 @@
   "name": "@atlaskit/global-search",
   "version": "12.3.0",
   "description": "A cross-product search component (batteries included)",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",

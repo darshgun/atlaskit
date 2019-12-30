@@ -1,6 +1,9 @@
 {
   "name": "changelog-md-loader",
   "version": "0.0.2",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "index.js",
   "dependencies": {}
 }

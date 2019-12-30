@@ -2,6 +2,9 @@
   "name": "@atlaskit/toggle",
   "version": "8.1.2",
   "description": "A component to view and switch between enabled or disabled states",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",

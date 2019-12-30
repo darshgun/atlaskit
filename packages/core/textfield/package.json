@@ -2,6 +2,9 @@
   "name": "@atlaskit/textfield",
   "version": "3.1.4",
   "description": "Text Field Component",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",

@@ -2,6 +2,9 @@
   "name": "@atlaskit/media-client",
   "version": "4.2.1",
   "description": "Media API Web Client Library",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",

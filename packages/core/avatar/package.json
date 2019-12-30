@@ -2,6 +2,9 @@
   "name": "@atlaskit/avatar",
   "version": "17.1.5",
   "description": "A component that represents a user.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",

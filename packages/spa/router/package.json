@@ -2,6 +2,9 @@
   "name": "@atlaskit/router",
   "version": "0.0.3",
   "description": "SPA Router",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
