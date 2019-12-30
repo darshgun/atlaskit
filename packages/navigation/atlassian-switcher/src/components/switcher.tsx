@@ -25,6 +25,7 @@ import {
   SWITCHER_SUBJECT,
   RenderTracker,
   ViewedTracker,
+  NotRenderedTracker,
 } from '../utils/analytics';
 import now from '../utils/performance-now';
 import { urlToHostname } from '../utils/url-to-hostname';
@@ -192,17 +193,32 @@ export default class Switcher extends React.Component<SwitcherProps> {
       <NavigationAnalyticsContext data={getAnalyticsContext(itemsCount)}>
         <SwitcherWrapper appearance={appearance}>
           {hasLoaded && (
-            <ViewedTracker
-              subject={SWITCHER_SUBJECT}
-              data={{
-                licensedProducts: licensedProductLinks.map(item => item.key),
-                suggestedProducts: suggestedProductLinks.map(item => item.key),
-                adminLinks: adminLinks.map(item => item.key),
-                fixedLinks: fixedLinks.map(item => item.key),
-                joinableSiteLinks: joinableSiteLinks.map(item => item.key),
-                numberOfSites,
-              }}
-            />
+            <React.Fragment>
+              <ViewedTracker
+                subject={SWITCHER_SUBJECT}
+                data={{
+                  licensedProducts: licensedProductLinks.map(item => item.key),
+                  suggestedProducts: suggestedProductLinks.map(
+                    item => item.key,
+                  ),
+                  adminLinks: adminLinks.map(item => item.key),
+                  fixedLinks: fixedLinks.map(item => item.key),
+                  joinableSiteLinks: joinableSiteLinks.map(item => item.key),
+                  numberOfSites,
+                }}
+              />
+              {joinableSiteLinks.length > 0 ? (
+                <ViewedTracker
+                  subject={'atlassianSwitcherJoinableSites'}
+                  data={{ duration: this.timeSinceMounted() }}
+                />
+              ) : (
+                <NotRenderedTracker
+                  subject={'atlassianSwitcherJoinableSites'}
+                  data={{ duration: this.timeSinceMounted() }}
+                />
+              )}
+            </React.Fragment>
           )}
           {firstContentArrived && (
             <RenderTracker
@@ -309,7 +325,9 @@ export default class Switcher extends React.Component<SwitcherProps> {
           </Section>
           <Section
             sectionId="join"
-            title={<FormattedMessage {...messages.join} />}
+            title={
+              disableHeadings ? null : <FormattedMessage {...messages.join} />
+            }
           >
             {joinableSiteLinks.map(
               (

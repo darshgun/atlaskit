@@ -23,6 +23,10 @@ export const SWITCHER_SOURCE = 'atlassianSwitcher';
 export const TRIGGER_COMPONENT = 'atlassianSwitcherPrefetch';
 export const TRIGGER_SUBJECT = 'atlassianSwitcherPrefetch';
 
+const RENDERED_ACTION = 'rendered';
+const NOT_RENDERED_ACTION = 'not rendered';
+const VIEWED_ACTION = 'viewed';
+
 export const createAndFireNavigationEvent = createAndFireEvent(
   NAVIGATION_CHANNEL,
 );
@@ -58,7 +62,31 @@ export const RenderTracker = withAnalyticsEvents({
   ) => {
     return createAnalyticsEvent({
       eventType: OPERATIONAL_EVENT_TYPE,
-      action: 'rendered',
+      action: RENDERED_ACTION,
+      actionSubject: props.subject,
+      attributes: props.data,
+    }).fire(NAVIGATION_CHANNEL);
+  },
+})(
+  class extends React.Component<RenderTrackerProps> {
+    componentDidMount() {
+      this.props.onRender();
+    }
+
+    render() {
+      return null;
+    }
+  },
+);
+
+export const NotRenderedTracker = withAnalyticsEvents({
+  onRender: (
+    createAnalyticsEvent: CreateUIAnalyticsEvent,
+    props: RenderTrackerProps,
+  ) => {
+    return createAnalyticsEvent({
+      eventType: OPERATIONAL_EVENT_TYPE,
+      action: NOT_RENDERED_ACTION,
       actionSubject: props.subject,
       attributes: props.data,
     }).fire(NAVIGATION_CHANNEL);
@@ -82,8 +110,8 @@ export const ViewedTracker = withAnalyticsEvents({
   ) => {
     return createAnalyticsEvent({
       eventType: UI_EVENT_TYPE,
-      action: 'viewed',
-      actionSubject: SWITCHER_SUBJECT,
+      action: VIEWED_ACTION,
+      actionSubject: props.subject,
       attributes: props.data,
     }).fire(NAVIGATION_CHANNEL);
   },

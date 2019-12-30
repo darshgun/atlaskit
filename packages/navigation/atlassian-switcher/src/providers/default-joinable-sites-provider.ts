@@ -6,11 +6,11 @@ import { JoinableSitesResponse } from '../types';
 
 export type JoinableSiteDataFetcher = () => Promise<JoinableSitesResponse>;
 
-export const defaultFetchData: JoinableSiteDataFetcher = () =>
+export const fetchEmptyData: JoinableSiteDataFetcher = () =>
   Promise.resolve({ sites: [] });
 
 export const createJoinableSitesProvider = (
-  fetchData: JoinableSiteDataFetcher = defaultFetchData,
+  fetchData: JoinableSiteDataFetcher = fetchEmptyData,
 ): ExportedDataProvider<JoinableSitesResponse> => {
   return createProviderWithCustomFetchData<JoinableSitesResponse>(
     'joinableSites',

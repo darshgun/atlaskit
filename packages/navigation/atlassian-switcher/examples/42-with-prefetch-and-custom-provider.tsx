@@ -10,6 +10,9 @@ import AtlassianSwitcher, { AtlassianSwitcherPrefetchTrigger } from '../src';
 import { resetAll } from '../src/providers/instance-data-providers';
 import { resetAvailableProducts } from '../src/providers/products-data-provider';
 import { createAvailableProductsProvider } from '../src/providers/default-available-products-provider';
+import { createJoinableSitesProvider } from '../src/create-custom-provider';
+import mockJoinableSites from '../test-helpers/mockJoinableSites';
+import { JoinableSitesResponse } from '../src/types';
 
 const AVAILABLE_PRODUCTS_API_ENDPOINT =
   'https://api-private.atlassian.com/worklens/api/available-products';
@@ -17,6 +20,17 @@ const AVAILABLE_PRODUCTS_API_ENDPOINT =
 const customAvailableProductsDataProvider = createAvailableProductsProvider(
   AVAILABLE_PRODUCTS_API_ENDPOINT,
 );
+
+const fetchJoinableSites: () => Promise<JoinableSitesResponse> = () =>
+  new Promise(resolve => {
+    setTimeout(() => resolve({ sites: mockJoinableSites.sites }), 1000);
+  });
+
+const customJoinableSitesDataProvider = createJoinableSitesProvider(
+  fetchJoinableSites,
+);
+
+const identityTransformer = (originalMockData: any) => originalMockData;
 
 class GenericSwitcherExample extends React.Component {
   state = {
@@ -26,7 +40,7 @@ class GenericSwitcherExample extends React.Component {
   componentDidMount() {
     mockAvailableProductsEndpoint(
       AVAILABLE_PRODUCTS_API_ENDPOINT,
-      originalMockData => originalMockData,
+      identityTransformer,
       REQUEST_MEDIUM,
     );
   }
@@ -65,11 +79,13 @@ class GenericSwitcherExample extends React.Component {
             disableHeadings
             triggerXFlow={this.onTriggerXFlow}
             availableProductsDataProvider={customAvailableProductsDataProvider}
+            joinableSitesDataProvider={customJoinableSitesDataProvider}
           />
         </Drawer>
         <div style={{ display: 'flex' }}>
           <AtlassianSwitcherPrefetchTrigger
             availableProductsDataProvider={customAvailableProductsDataProvider}
+            joinableSitesDataProvider={customJoinableSitesDataProvider}
           >
             <Button type="button" onClick={this.openDrawer}>
               Open drawer

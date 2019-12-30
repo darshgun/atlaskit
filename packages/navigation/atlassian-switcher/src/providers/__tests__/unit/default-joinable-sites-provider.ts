@@ -1,5 +1,3 @@
-import { JoinableSiteDataFetcher } from '../../default-joinable-sites-provider';
-
 describe('default-joinabble-sites-provider', () => {
   const createProviderWithCustomFetchData = jest.fn();
 
@@ -7,15 +5,15 @@ describe('default-joinabble-sites-provider', () => {
     createProviderWithCustomFetchData,
   }));
 
-  test('should create a provider using the internal url (/gateway) by default', () => {
+  test('should create a provider (returns empty sites) by default', () => {
     const {
       createJoinableSitesProvider,
-      defaultFetchData,
+      fetchEmptyData,
     } = require('../../default-joinable-sites-provider');
     createJoinableSitesProvider();
     expect(createProviderWithCustomFetchData).toBeCalledWith(
       'joinableSites',
-      defaultFetchData,
+      fetchEmptyData,
     );
   });
 
@@ -23,7 +21,7 @@ describe('default-joinabble-sites-provider', () => {
     const {
       createJoinableSitesProvider,
     } = require('../../default-joinable-sites-provider');
-    const promise: JoinableSiteDataFetcher = () =>
+    const promise = () =>
       new Promise(resolve => ({
         sites: [],
       }));
