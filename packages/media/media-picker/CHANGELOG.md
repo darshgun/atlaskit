@@ -1,5 +1,13 @@
 # @atlaskit/media-picker
 
+## 50.0.4
+
+### Patch Changes
+
+- [patch][f09e2c2b33](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f09e2c2b33):
+
+  Prevent emitting the same event multiple times from MediaPicker
+
 ## 50.0.3
 
 ### Patch Changes
