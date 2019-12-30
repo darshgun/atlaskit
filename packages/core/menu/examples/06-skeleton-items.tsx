@@ -24,7 +24,18 @@ const Item = ({ isLoading, ...props }: any) => {
     icon = <EmojiCustomIcon label="" />;
     content = 'Create';
   } else if (props.hasAvatar) {
-    icon = <UserAvatarCircleIcon primaryColor={colors.N40} label="" />;
+    icon = (
+      <span
+        style={{
+          background: colors.N30,
+          borderRadius: '50%',
+          width: 24,
+          height: 24,
+        }}
+      >
+        <UserAvatarCircleIcon primaryColor={colors.N40} label="" />
+      </span>
+    );
     content = 'John Smith';
   } else {
     content = 'Action name';
