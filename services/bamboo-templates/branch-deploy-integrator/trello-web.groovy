@@ -8,7 +8,7 @@ plan(key:'ABDITR',name:'trello Atlaskit Branch Deploy Integrator',
         productCiPlanUrl: '',
         dockerContainer: 'atlassianlabs/atlaskit-mk-2:latest',
         packageEngine: 'yarn',
-        integratorCmd: 'upgrade',
+        integratorCmd: 'add',
         skipIntegrityCheck: false)
 
     branchMonitoring() {
