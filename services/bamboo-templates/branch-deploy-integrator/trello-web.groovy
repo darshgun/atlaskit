@@ -12,7 +12,7 @@ plan(key:'ABDITR',name:'trello Atlaskit Branch Deploy Integrator',
         skipIntegrityCheck: false)
 
     branchMonitoring() {
-        // createBranch(matchingPattern:'risky-.*|develop|release-candidate.*')
+        // createBranch()
         inactiveBranchCleanup(periodInDays:'14')
         deletedBranchCleanup(periodInDays:'7')
     }

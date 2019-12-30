@@ -10,7 +10,7 @@ plan(key:'ABDICC',name:'confluence-frontend Atlaskit Branch Deploy Integrator',
         integratorCmd: 'add',
         skipIntegrityCheck: false)
     branchMonitoring() {
-        createBranch(matchingPattern:'risky-.*|develop|release-candidate.*')
+        createBranch()
         inactiveBranchCleanup(periodInDays:'14')
         deletedBranchCleanup(periodInDays:'7')
     }
