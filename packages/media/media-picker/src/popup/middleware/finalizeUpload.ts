@@ -6,7 +6,6 @@ import {
   MediaStoreCopyFileWithTokenParams,
   FileState,
   MediaFile as MediaClientFile,
-  safeUnsubscribe,
   observableToPromise,
 } from '@atlaskit/media-client';
 import {
