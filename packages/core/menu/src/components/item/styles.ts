@@ -2,6 +2,7 @@ import {
   gridSize as gridSizeFn,
   fontSize,
   borderRadius,
+  skeletonShimmer,
 } from '@atlaskit/theme/constants';
 import {
   N800,
@@ -12,10 +13,9 @@ import {
   N30,
   subtleHeading,
   subtleText,
-  skeletonContent,
 } from '@atlaskit/theme/colors';
 import { headingSizes } from '@atlaskit/theme/typography';
-import { CSSObject } from '@emotion/core';
+import { CSSObject, keyframes } from '@emotion/core';
 import { Width } from '../types';
 
 const gridSize = gridSizeFn();
@@ -31,6 +31,7 @@ const itemContentMinHeight = itemMinHeight - itemTopBottomPadding * 2;
 const itemHeadingTopMargin = gridSize;
 const itemHeadingBottomMargin = gridSize * 0.75;
 const itemHeadingContentHeight = headingSizes.h100.lineHeight;
+const itemHeadingFontSize = headingSizes.h100.size;
 
 const skeletonContentHeight = gridSize * 1.75;
 // Skeleton content is slightly shorter than the real content.
@@ -67,6 +68,9 @@ const selectedStyles = {
   backgroundColor: N20,
   textDecoration: 'none',
 };
+
+const shimmer = skeletonShimmer();
+const shimmerKeyframes = keyframes(shimmer.keyframes);
 
 const baseItemCSS = (
   isDisabled?: boolean,
@@ -166,8 +170,8 @@ export const customItemCSS = (
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
-  fontSize: headingSizes.h100.size,
-  lineHeight: headingSizes.h100.lineHeight / headingSizes.h100.size,
+  fontSize: itemHeadingFontSize,
+  lineHeight: itemHeadingContentHeight / itemHeadingFontSize,
   fontWeight: 700,
   color: subtleHeading(),
   marginTop: itemHeadingTopMargin,
@@ -180,7 +184,8 @@ export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
   marginTop: skeletonHeadingTopMargin,
   '&::after': {
     // This renders the skeleton heading "text".
-    backgroundColor: skeletonContent(),
+    ...shimmer.css,
+    animationName: `${shimmerKeyframes}`,
     height: skeletonContentHeight,
     width: width || '30%',
     borderRadius: borderRadius(),
@@ -226,7 +231,8 @@ export const itemSkeletonCSS = (
     '&::before': {
       // This will render a skeleton in the "elemBefore" position.
       content: '""',
-      backgroundColor: skeletonContent(),
+      ...shimmer.css,
+      animationName: `${shimmerKeyframes}`,
       marginRight: itemElemSpacing,
       width: itemElemSize,
       height: itemElemSize,
@@ -238,7 +244,8 @@ export const itemSkeletonCSS = (
   '&::after': {
     // This will render the skeleton "text".
     content: '""',
-    backgroundColor: skeletonContent(),
+    ...shimmer.css,
+    animationName: `${shimmerKeyframes}`,
     height: skeletonContentHeight,
     borderRadius: borderRadius(),
     flexBasis: '100%' || width,
