@@ -4,18 +4,22 @@ import Drawer from '@atlaskit/drawer';
 import { mockEndpoints } from '@atlaskit/atlassian-switcher-test-utils';
 import { withAnalyticsLogger, withIntlProvider } from './helpers';
 import AtlassianSwitcher from '../src';
-import {
-  createJoinableSitesProvider,
-  defaultJoinableSitesFetch,
-} from '../src/index';
+import { createJoinableSitesProvider } from '../src/providers/default-joinable-sites-provider';
+import { JoinableSitesResponse } from '../src/types';
+import mockJoinableSites from '../test-helpers/mockJoinableSites';
+
+const fetchJoinableSites: () => Promise<JoinableSitesResponse> = () =>
+  new Promise(resolve => {
+    setTimeout(() => resolve({ sites: mockJoinableSites.sites }), 1000);
+  });
+
+const customJoinableSitesDataProvider = createJoinableSitesProvider(
+  fetchJoinableSites,
+);
 
 const onJoinableSiteClicked = (returnUrl?: string) => {
   console.log('joinable site clicked');
 };
-
-const joinableSitesDataProvider = createJoinableSitesProvider(
-  defaultJoinableSitesFetch('/gateway/api'),
-);
 
 class GenericSwitcherWithJoinExample extends React.Component {
   state = {
@@ -33,6 +37,7 @@ class GenericSwitcherWithJoinExample extends React.Component {
       permitted: 2000,
       appswitcher: 1500,
     });
+
     this.setState({
       isDrawerOpen: true,
     });
@@ -57,7 +62,7 @@ class GenericSwitcherWithJoinExample extends React.Component {
           <AtlassianSwitcher
             product="generic-product"
             cloudId="some-cloud-id"
-            joinableSitesDataProvider={joinableSitesDataProvider}
+            joinableSitesDataProvider={customJoinableSitesDataProvider}
             onJoinableSiteClicked={onJoinableSiteClicked}
           />
         </Drawer>

@@ -1,6 +1,7 @@
 import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { WithTheme } from './theme/types';
 import { AvailableProductsDataProvider } from './providers/products-data-provider';
+import { JoinableSitesDataProvider } from './providers/joinable-sites-data-provider';
 
 export interface TriggerXFlowCallback {
   (
@@ -260,7 +261,7 @@ export type AtlassianSwitcherProps = WithTheme &
     // Optional custom provider for available products
     availableProductsDataProvider?: AvailableProductsDataProvider;
     // Optional custom provider for joinable sites
-    joinableSitesDataProvider?: any;
+    joinableSitesDataProvider?: JoinableSitesDataProvider;
     // Optional callback provided to handle
     onJoinableSiteClicked?: JoinableSiteClickHandler;
   } & FeatureFlagProps;

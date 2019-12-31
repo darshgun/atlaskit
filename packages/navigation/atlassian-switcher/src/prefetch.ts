@@ -4,7 +4,10 @@ import {
   prefetchAvailableProducts,
   AvailableProductsDataProvider,
 } from './providers/products-data-provider';
-import { prefetchJoinableSites } from './providers/joinable-sites-data-provider';
+import {
+  prefetchJoinableSites,
+  JoinableSitesDataProvider,
+} from './providers/joinable-sites-data-provider';
 import prefetchSwitcherBundles from './utils/prefetch-bundles';
 import { FeatureFlagProps } from './types';
 
@@ -13,7 +16,7 @@ type PrefetchTriggerProps = {
   product?: string;
   Container?: React.ReactType;
   availableProductsDataProvider?: AvailableProductsDataProvider;
-  joinableSitesDataProvider?: any;
+  joinableSitesDataProvider?: JoinableSitesDataProvider;
 } & Partial<FeatureFlagProps>;
 
 export const prefetch = (props: PrefetchTriggerProps) => {

@@ -104,9 +104,13 @@ const flattenContext = (context: Record<string, any>[]) =>
 describe('Atlassian Switcher - Component Analytics', () => {
   let wrapper: ReactWrapper;
   let eventStream: Stream<UIAnalyticsEvent>;
+  let immediateIds: NodeJS.Immediate[] = [];
   beforeEach(() => {
     eventStream = createStream();
     wrapper = mount(<DefaultAtlassianSwitcher onEventFired={eventStream} />);
+  });
+  afterEach(() => {
+    immediateIds.every(immediateId => window.clearImmediate(immediateId));
   });
   it('should fire "atlassianSwitcher rendered and "atlassianSwitcher viewed"', async () => {
     // UI event when the Switcher is viewed at all (before content load)
@@ -124,15 +128,26 @@ describe('Atlassian Switcher - Component Analytics', () => {
       },
     });
 
-    // Operational event when the Switcher first displays content
-    const { payload } = await eventStream.next();
-    expect(payload).toMatchObject({
+    // Operational events when the Switcher first displays content
+    const { payload: renderJoinableSitesPayload } = await eventStream.next();
+    expect(renderJoinableSitesPayload).toMatchObject({
+      eventType: 'operational',
+      action: 'not rendered',
+      actionSubject: 'atlassianSwitcherJoinableSites',
+    });
+    expect(renderJoinableSitesPayload.attributes).toHaveProperty('duration');
+    expect(
+      renderJoinableSitesPayload.attributes.duration,
+    ).toBeGreaterThanOrEqual(0);
+
+    const { payload: renderSwitcherPayload } = await eventStream.next();
+    expect(renderSwitcherPayload).toMatchObject({
       eventType: 'operational',
       action: 'rendered',
       actionSubject: 'atlassianSwitcher',
     });
-    expect(payload.attributes).toHaveProperty('duration');
-    expect(payload.attributes.duration).toBeGreaterThanOrEqual(0);
+    expect(renderSwitcherPayload.attributes).toHaveProperty('duration');
+    expect(renderSwitcherPayload.attributes.duration).toBeGreaterThanOrEqual(0);
   });
 
   it('should fire "atlassianSwitcher viewed" with correct numberOfSites for site-centric', async () => {
@@ -243,7 +258,7 @@ describe('Atlassian Switcher - Component Analytics', () => {
       const appSwitcherLinkCategory = appSwitcherLinksCategories[i];
       it(appSwitcherLinkCategory.name, async () => {
         // skip viewed/rendered events
-        eventStream.skip(2);
+        eventStream.skip(3);
         const item = wrapper.find(Item);
         item.at(i).simulate('click');
         const { payload, context } = await eventStream.next();
@@ -272,7 +287,7 @@ describe('Atlassian Switcher - Component Analytics', () => {
     };
 
     // skip viewed/rendered events
-    eventStream.skip(2);
+    eventStream.skip(3);
 
     const expandToggle = wrapper
       .find(Item)
@@ -313,18 +328,20 @@ describe('Atlassian Switcher - Component Analytics', () => {
 
   it('should fire "button clicked - manageListButton"', async () => {
     // skip viewed/rendered events
-    await eventStream.skip(2);
+    await eventStream.skip(3);
     /*
       This is needed as there's a slight delay between the rendered event being fired
       and the last endpoint being proccessed. This can be removed once we instrument
       the data providers with analytics and we intentionally skip the events triggered
       by the fetch calls.
      */
-    process.nextTick(() => {
-      wrapper.update();
-      const manageButton = wrapper.find(ManageButton);
-      manageButton.simulate('click');
-    });
+    immediateIds.push(
+      window.setImmediate(() => {
+        wrapper.update();
+        const manageButton = wrapper.find(ManageButton);
+        manageButton.simulate('click');
+      }),
+    );
     const { payload, context } = await eventStream.next();
     expect(payload).toMatchObject({
       action: 'clicked',

@@ -17,6 +17,7 @@ import {
 import packageContext from '../utils/package-context';
 import { FeatureFlagProps } from '../types';
 import { AvailableProductsDataProvider } from '../providers/products-data-provider';
+import { JoinableSitesDataProvider } from '../../src/providers/joinable-sites-data-provider';
 
 const THROTTLE_EXPIRES = 60 * 1000; // 60 seconds
 const THROTTLE_OPTIONS = {
@@ -35,6 +36,7 @@ type PrefetchTriggerProps = {
   cloudId?: string;
   Container?: React.ReactType;
   availableProductsDataProvider?: AvailableProductsDataProvider;
+  joinableSitesDataProvider?: JoinableSitesDataProvider;
 } & Partial<FeatureFlagProps>;
 
 class PrefetchTrigger extends React.Component<

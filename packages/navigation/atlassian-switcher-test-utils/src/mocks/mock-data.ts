@@ -10,6 +10,7 @@ export interface MockData {
     'add-products': any;
   };
   XFLOW_SETTINGS: object;
+  JOINABLE_SITES_DATA: object;
 }
 // Mock data can be overriden in the story so be careful when testing.
 const ORIGINAL_MOCK_DATA: MockData = {
@@ -305,6 +306,28 @@ const ORIGINAL_MOCK_DATA: MockData = {
     },
   },
   XFLOW_SETTINGS: {},
+  JOINABLE_SITES_DATA: {
+    sites: [
+      {
+        cloudId: 'cloud-1',
+        url: 'https://teamsinspace.com',
+        products: {
+          'jira-software.ondemand': [],
+        },
+        displayName: 'Example',
+        avatarUrl: 'http://avatarSite/avatar',
+        relevance: 0,
+      },
+      {
+        cloudId: 'cloud-2',
+        url: 'https://teamsinspace2.com',
+        products: {},
+        displayName: 'Example 2',
+        avatarUrl: 'http://avatarSite/avatar',
+        relevance: 0,
+      },
+    ],
+  },
 };
 
 export default ORIGINAL_MOCK_DATA;

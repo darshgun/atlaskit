@@ -13,7 +13,7 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
   <SwitcherWrapper
     appearance="drawer"
   >
-    <WithAnalyticsEvents(class_2)
+    <WithAnalyticsEvents(class_3)
       data={
         Object {
           "adminLinks": Array [],
@@ -26,19 +26,21 @@ exports[`Switcher should be able to disable headers with "disableHeadings" 1`] =
       }
       subject="atlassianSwitcher"
     />
+    <WithAnalyticsEvents(class_2)
+      data={
+        Object {
+          "duration": 0,
+        }
+      }
+      subject="atlassianSwitcherJoinableSites"
+    />
     <Component
       sectionId="switchTo"
       title={null}
     />
     <Component
       sectionId="join"
-      title={
-        <Unknown
-          defaultMessage="Join"
-          description="Section Header in Atlassian Switcher. To set the expectation of what items would be shown in following section. Shown when an user has at least one joinable site via Domain Enabled Sign up with common collaborators."
-          id="fabric.atlassianSwitcher.join"
-        />
-      }
+      title={null}
     />
     )}
     <Component
@@ -66,7 +68,7 @@ exports[`Switcher should render sections with headers by default 1`] = `
   <SwitcherWrapper
     appearance="drawer"
   >
-    <WithAnalyticsEvents(class_2)
+    <WithAnalyticsEvents(class_3)
       data={
         Object {
           "adminLinks": Array [],
@@ -78,6 +80,14 @@ exports[`Switcher should render sections with headers by default 1`] = `
         }
       }
       subject="atlassianSwitcher"
+    />
+    <WithAnalyticsEvents(class_2)
+      data={
+        Object {
+          "duration": 0,
+        }
+      }
+      subject="atlassianSwitcherJoinableSites"
     />
     <Component
       sectionId="switchTo"

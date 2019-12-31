@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { defaultFetchData } from '../../default-joinable-sites-provider';
 import {
   JoinableSitesProvider,
   prefetchJoinableSites,
@@ -20,9 +19,10 @@ describe('joinable-sites-data-providers', () => {
   });
 
   test('should render using a custom provider', () => {
+    const fetchData = () => Promise.resolve({ sites: [] });
     const customProvider = createProviderWithCustomFetchData<
       JoinableSitesResponse
-    >('my-joinble-sites-provider', defaultFetchData);
+    >('my-joinble-sites-provider', fetchData);
     const wrapper = shallow(
       <JoinableSitesProvider joinableSitesDataProvider={customProvider}>
         {items => items}

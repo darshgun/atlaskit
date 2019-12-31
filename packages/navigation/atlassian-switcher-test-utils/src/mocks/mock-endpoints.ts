@@ -12,6 +12,7 @@ interface LoadTimes {
   permitted?: number;
   appswitcher?: number;
   availableProducts?: number;
+  joinableSites?: number;
 }
 
 export const REQUEST_SLOW = {
@@ -20,6 +21,7 @@ export const REQUEST_SLOW = {
   permitted: 500,
   appswitcher: 1500,
   availableProducts: 1000,
+  joinableSites: 7000,
 };
 
 export const REQUEST_MEDIUM = {
@@ -28,6 +30,7 @@ export const REQUEST_MEDIUM = {
   permitted: 250,
   appswitcher: 750,
   availableProducts: 400,
+  joinableSites: 2000,
 };
 
 export const REQUEST_FAST = {
@@ -36,6 +39,7 @@ export const REQUEST_FAST = {
   permitted: 125,
   appswitcher: 375,
   availableProducts: 200,
+  joinableSites: 500,
 };
 
 export const getMockData = memoizeOne((transformer?: DataTransformer) => {
@@ -58,6 +62,12 @@ export const mockEndpoints = (
 
   mockAvailableProductsEndpoint(
     '/gateway/api/worklens/api/available-products',
+    transformer,
+    loadTimes,
+  );
+
+  mockJoinableSitesEndpoint(
+    '/gateway/api/trello-cross-product-join/recommended-sites',
     transformer,
     loadTimes,
   );
@@ -130,5 +140,26 @@ export const mockAvailableProductsEndpoint = (
         ),
       ),
     { method: 'GET', overwriteRoutes: true },
+  );
+};
+
+export const mockJoinableSitesEndpoint = (
+  endpoint: string,
+  transformer?: DataTransformer,
+  loadTimes: LoadTimes = {},
+) => {
+  const mockData = getMockData(transformer);
+  const { JOINABLE_SITES_DATA } = mockData;
+  fetchMock.post(
+    endpoint,
+    () =>
+      new Promise(res =>
+        setTimeout(
+          () => res(JOINABLE_SITES_DATA),
+
+          loadTimes && loadTimes.joinableSites,
+        ),
+      ),
+    { method: 'POST', overwriteRoutes: true },
   );
 };
