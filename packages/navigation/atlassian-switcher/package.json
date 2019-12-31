@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/atlassian-switcher",
-  "version": "4.10.1",
+  "version": "4.11.0",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -44,7 +44,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@atlaskit/atlassian-switcher-test-utils": "^0.1.0",
+    "@atlaskit/atlassian-switcher-test-utils": "^0.1.1",
     "@atlaskit/docs": "^8.1.8",
     "@atlaskit/drawer": "^5.2.0",
     "@atlaskit/field-text": "^9.0.14",

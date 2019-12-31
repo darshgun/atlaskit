@@ -1,5 +1,18 @@
 # @atlaskit/atlassian-switcher
 
+## 4.11.0
+
+### Minor Changes
+
+- [minor][026ed7dadf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/026ed7dadf):
+
+  Export a new fetch function so clients can create a custom data provider for joinable sites section on the atlassian switcher
+
+### Patch Changes
+
+- Updated dependencies [026ed7dadf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/026ed7dadf):
+  - @atlaskit/atlassian-switcher-test-utils@0.1.1
+
 ## 4.10.1
 
 ### Patch Changes
