@@ -9,6 +9,9 @@
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
   "description": "Atlassian switcher wrapper for consumption on 'non-react' apps.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "maintainers": [
     "Anna Zhirnova",
     "Jimmy Kurniawan",

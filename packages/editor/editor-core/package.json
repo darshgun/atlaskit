@@ -2,6 +2,9 @@
   "name": "@atlaskit/editor-core",
   "version": "115.2.2",
   "description": "A package contains Atlassian editor core functionality",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",

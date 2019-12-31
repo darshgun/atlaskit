@@ -2,6 +2,9 @@
   "name": "@atlaskit/branch-installer",
   "version": "0.3.1",
   "description": "Installs the Atlaskit dependency versions from the given commit.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "src/index.js",
   "bin": {
     "atlaskit-branch-installer": "cli.js"

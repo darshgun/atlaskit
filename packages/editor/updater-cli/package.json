@@ -2,6 +2,9 @@
   "name": "@atlaskit/updater-cli",
   "version": "2.0.7",
   "description": "Updater CLI for Atlaskit components.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "sideEffects": false,
   "bin": {

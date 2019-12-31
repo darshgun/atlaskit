@@ -2,6 +2,9 @@
   "name": "@atlaskit/logo",
   "version": "12.3.0",
   "description": "A React component that highlights status for quick recognition",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "types": "dist/cjs/index.d.ts",

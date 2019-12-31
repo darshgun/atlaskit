@@ -2,6 +2,9 @@
   "name": "@atlaskit/media-ui",
   "version": "11.7.2",
   "description": "Includes common components and utilities used by other media packages",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",

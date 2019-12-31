@@ -2,6 +2,9 @@
   "name": "@atlaskit/media-card",
   "version": "66.1.2",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",

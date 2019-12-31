@@ -5,6 +5,9 @@
     "access": "private"
   },
   "description": "Analytics viewer for the examples",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/cjs/types.d.ts",

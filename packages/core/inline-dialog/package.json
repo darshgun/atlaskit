@@ -2,6 +2,9 @@
   "name": "@atlaskit/inline-dialog",
   "version": "12.1.6",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",

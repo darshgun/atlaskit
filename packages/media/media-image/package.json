@@ -2,6 +2,9 @@
   "name": "@atlaskit/media-image",
   "version": "15.0.2",
   "description": "Atlassian Editor component for JIRA",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "module": "dist/esm/index.js",

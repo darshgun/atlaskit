@@ -2,6 +2,9 @@
   "name": "@atlaskit/analytics-listeners",
   "version": "6.2.2",
   "description": "Fabric analytics listeners to be used by the products",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "config": {
     "access": "public"
   },

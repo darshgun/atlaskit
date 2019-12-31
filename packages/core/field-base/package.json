@@ -2,6 +2,9 @@
   "name": "@atlaskit/field-base",
   "version": "13.0.16",
   "description": "Wraps fields and provides styles for focus/hover states",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "index.d.ts",
   "module": "dist/esm/index.js",

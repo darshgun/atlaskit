@@ -5,6 +5,9 @@
     "access": "public"
   },
   "description": "Fabric Date React Components",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/cjs/index.d.ts",

@@ -2,6 +2,9 @@
   "name": "@atlaskit/editor-json-transformer",
   "version": "7.0.1",
   "description": "JSON transformer",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "types": "dist/cjs/index.d.ts",

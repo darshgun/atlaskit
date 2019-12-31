@@ -13,6 +13,9 @@
   },
   "author": "Atlassian Pty Ltd",
   "description": "App switcher test utilities.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "maintainers": [
     "Anna Zhirnova"
   ],

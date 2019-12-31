@@ -9,6 +9,9 @@
   "sideEffects": false,
   "author": "Atlassian Pty Ltd",
   "description": "Common navigation component for Atlassian products",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "maintainers": [],
   "atlaskit": {
     "internal": true,

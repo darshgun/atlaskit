@@ -2,6 +2,9 @@
   "name": "@atlaskit/media-test-helpers",
   "version": "25.2.5",
   "description": "Collection of test helpers used in media component stories and specs",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.tsx",
   "module": "dist/esm/index.js",

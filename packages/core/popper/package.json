@@ -2,6 +2,9 @@
   "name": "@atlaskit/popper",
   "version": "3.1.8",
   "description": "Wrapper for react-popper with common config and some helpers",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",

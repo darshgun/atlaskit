@@ -2,6 +2,9 @@
   "name": "@atlaskit/onboarding",
   "version": "9.0.7",
   "description": "Highlight elements of the UI to the user and display a complementary dialog.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",

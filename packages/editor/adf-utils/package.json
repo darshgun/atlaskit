@@ -2,6 +2,9 @@
   "name": "@atlaskit/adf-utils",
   "version": "7.3.1",
   "description": "Set of utilities to traverse, modify and create ADF documents.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "main": "dist/cjs/index.js",

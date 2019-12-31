@@ -2,6 +2,9 @@
   "name": "@atlaskit/breadcrumbs",
   "version": "9.2.4",
   "description": "A component used for navigation, with each item acting as a link",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",

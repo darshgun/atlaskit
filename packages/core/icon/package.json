@@ -2,6 +2,9 @@
   "name": "@atlaskit/icon",
   "version": "19.0.11",
   "description": "A React package that contains icons",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "license": "SEE LICENSE IN LICENSE",
   "types": "cjs/index.d.ts",

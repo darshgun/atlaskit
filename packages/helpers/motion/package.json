@@ -2,6 +2,9 @@
   "name": "@atlaskit/motion",
   "version": "0.1.1",
   "description": "Atlassian motion variables, components and more.",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",

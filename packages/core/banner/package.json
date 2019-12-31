@@ -2,6 +2,9 @@
   "name": "@atlaskit/banner",
   "version": "10.1.2",
   "description": "React component that displays a prominent banner message and icon",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "Apache-2.0",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",
