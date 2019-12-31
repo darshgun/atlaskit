@@ -6,6 +6,9 @@ import {
 declare var global: any;
 
 const buttonLink = "[data-testid='item-button']";
+const buttonLinkAtScale = "[data-testid='item-button-at-scale']";
+const buttonLinkAtScaleBeforeAfter =
+  "[data-testid='item-button-at-scale-before-after']";
 const buttonLinkDisabled = "[data-testid='item-button-disabled']";
 const buttonLinkSelected = "[data-testid='item-button-selected']";
 const buttonLinkBefore = "[data-testid='item-button-before']";
@@ -101,6 +104,22 @@ describe('<ButtonItem />', () => {
 
     expect(
       await takeElementScreenShot(global.page, buttonLinkDescription),
+    ).toMatchProdImageSnapshot();
+  });
+
+  it('should match item with lots of text', async () => {
+    await openExamplesAndWaitFor(buttonLinkAtScale);
+
+    expect(
+      await takeElementScreenShot(global.page, buttonLinkAtScale),
+    ).toMatchProdImageSnapshot();
+  });
+
+  it('should match item with lots of text with before and after icon', async () => {
+    await openExamplesAndWaitFor(buttonLinkAtScaleBeforeAfter);
+
+    expect(
+      await takeElementScreenShot(global.page, buttonLinkAtScaleBeforeAfter),
     ).toMatchProdImageSnapshot();
   });
 });

@@ -141,6 +141,7 @@ export const elemAfterCSS = {
 };
 
 export const descriptionCSS = {
+  ...truncateCSS,
   color: subtleText(),
   marginTop: itemDescriptionSpacing,
   fontSize: headingSizes.h200.size,

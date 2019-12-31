@@ -33,6 +33,24 @@ const ItemVariants = () => {
       <HeadingItem testId="heading-item">This is a heading Item</HeadingItem>
       <ButtonItem testId="item-button">Regular Item</ButtonItem>
       <ButtonItem
+        testId="item-button-at-scale"
+        description="The long title is intended to provide a summarised description of the purpose or scope of the instrument."
+      >
+        The long title (properly, the title in some jurisdictions) is the formal
+        title appearing at the head of a statute (such as an act of Parliament
+        or of Congress) or other legislative instrument.
+      </ButtonItem>
+      <ButtonItem
+        elemBefore={<StarIcon label="Icon before" />}
+        elemAfter={<StarIcon label="Icon after" />}
+        testId="item-button-at-scale-before-after"
+        description="The long title is intended to provide a summarised description of the purpose or scope of the instrument."
+      >
+        The long title (properly, the title in some jurisdictions) is the formal
+        title appearing at the head of a statute (such as an act of Parliament
+        or of Congress) or other legislative instrument.
+      </ButtonItem>
+      <ButtonItem
         testId="item-button-before"
         elemBefore={<EmojiCustomIcon label="Icon before" />}
       >
