@@ -12,7 +12,7 @@ plan(key:'ABDIJC',name:'jira-frontend Atlaskit Branch Deploy Integrator',
         skipIntegrityCheck: true)
 
     branchMonitoring() {
-        createBranch(matchingPattern:'risky-.*|develop|release-candidate.*')
+        createBranch()
         inactiveBranchCleanup(periodInDays:'14')
         deletedBranchCleanup(periodInDays:'7')
     }
