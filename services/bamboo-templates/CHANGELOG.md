@@ -1,5 +1,13 @@
 # @atlaskit/branch-deploy-integrators-plan-template
 
+## 0.0.5
+
+### Patch Changes
+
+- [patch][2b5f2b6825](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b5f2b6825):
+
+  Change upgrade command of all product plan templates to 'add'
+
 ## 0.0.4
 
 ### Patch Changes
