@@ -364,7 +364,7 @@ Please refer to [testing in atlaskit][testing] for more information about testin
 
 ## Building packages
 
-To build all packages, run `yarn build` - although this may take quite a while. See [individual package builds](#individual-package-builds) to build single packages only.
+To build all packages, run `yarn build` - although this may take quite a while. See [individual package builds][individual-package-builds] to build single packages only.
 
 Our build process has multiple steps, some of which are conditional based on the type of package being built. We infer the type of package
 based on rules defined in [build/utils/tools.js](./build/utils/tools.js). For example, packages still using JS + flow will be compiled using babel whereas
@@ -374,13 +374,9 @@ Some packages require additional build steps that are unique to that package. We
 build steps. The script will be executed after the main build step. We recommend talking to the build team in #atlaskit-build to discuss any alternatives before
 using this approach.
 
-### Individual package builds
-
-See [Individual package builds](individual-package-builds)
-
 ## Linking packages
 
-See the [Linking guide](local-linking).
+See the [Linking guide][local-linking].
 
 ## Documenting your code
 

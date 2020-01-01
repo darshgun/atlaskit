@@ -5,6 +5,7 @@ We provide a method of adding entry points to a package to aid in treeshaking.
 For example,
 
 Importing from the package normally: `import { colors } from '@atlaskit/theme';`
+
 Importing via an entry point: `import colors from @atlaskit/theme/colors;`
 
 Currently all files directly underneath `<package>/src` are generated as entry points. We will change this in the future to be configurable on a per-package basis, however, so that we do not needlessly create unnecessary entry points and ensure that explicit entry points are well documented.

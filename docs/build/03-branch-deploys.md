@@ -43,8 +43,8 @@ $ npx atlaskit-branch-installer 13793fa9939f
 
 ### Relevant sources:
 
-- [bitbucket-pipelines.yml](pipelines)
-- [branch-installer](branch-installer)
+- [bitbucket-pipelines.yml][pipelines]
+- [branch-installer][branch-installer]
 - [Announcement blog post](https://hello.atlassian.net/wiki/spaces/AFP/blog/2019/08/12/529888913/Atlaskit+Branch+Deployments+-+Announcement+FAQ)
 
 [pipelines]: https://bitbucket.org/atlassian/atlaskit-mk-2/src/HEAD/bitbucket-pipelines.yml

@@ -43,7 +43,7 @@ Run the following steps:
    E.g. `yarn watch editor-core`.
    The command just runs `yarn build <pkg>` in watch mode and pushes changes to any linked repos. Run `yarn watch --help` for more info.
 
-**Note**: Linking a single package suffers the same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds), namely type definitions from other packages in the repo will be coerced to any. If this is a problem for you, you can instead follow the steps in [Linking a package that is a transitive dependency of another repo](#Linking-a-package-that-is-a-transitive-dependency-of-another-repo) which does a full repo build instead.
+**Note**: Linking a single package suffers the same caveats as [individual package builds][individual-package-builds], namely type definitions from other packages in the repo will be coerced to any. If this is a problem for you, you can instead follow the steps in [Linking a package that is a transitive dependency of another repo](#Linking-a-package-that-is-a-transitive-dependency-of-another-repo) which does a full repo build instead.
 
 <a id="option-b"></a>
 
@@ -73,7 +73,7 @@ Run the following steps:
 
    To speed this up, you can specify that only a specific dist type is built with `yarn build --distType esm`.
 
-   Note that our packages expose their `d.ts` files through the `cjs` build, so if you only build `esm`, you will experience the same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds) and `link-pkg` where certain types are coerced to `any`.
+   Note that our packages expose their `d.ts` files through the `cjs` build, so if you only build `esm`, you will experience the same caveats as [individual package builds][individual-package-builds] and `link-pkg` where certain types are coerced to `any`.
 
 4. Run the package you're working on in watch mode: `yarn watch <package>`
 
@@ -82,7 +82,7 @@ Run the following steps:
 **Note**: Be careful with specifying the 'cjs' distType. If you have already built the 'esm' dists, the product repo will most likely only be reading that, resulting in no changes being picked up.
 
 **Note**: There is a chance your local full builds become stale if you haven't ran them in a while and depend on more recent code that hasn't been built. In that case,
-you can either rerun the full build or [build the individual packages](../../CONTRIBUTING.md#individual-package-builds) you know need to be rebuilt.
+you can either rerun the full build or [build the individual packages][individual-package-builds] you know need to be rebuilt.
 
 **Note**: This method uses native `yarn link`, you may experience problems with peer dependencies resolving to different locations depending on whether they are imported from within Atlaskit or the target repo, resulting in multiple instances of peer dependencies being instantiated. If that becomes a problem, you will have to try some of the solutions suggested here: https://stackoverflow.com/q/31169760/893630
 
@@ -145,7 +145,7 @@ Finally, ensure you're `yarn watch`ing the right package. If you are not watchin
 
 ### There are a lot of errors being reported in yarn watch
 
-This is a known issue related to the fact that we are building a single package in isolation. Other atlaskit package types are not built and so typescript reports 'module not found' errors. These just result in types being coerced to any where used, so shouldn't cause a problem in the target repo. See the caveat in same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds)
+This is a known issue related to the fact that we are building a single package in isolation. Other atlaskit package types are not built and so typescript reports 'module not found' errors. These just result in types being coerced to any where used, so shouldn't cause a problem in the target repo. See the caveat in same caveats as [individual package builds][individual-package-builds]
 
 <a id="stale-deps"></a>
 
@@ -184,3 +184,5 @@ E.g.
 confluence-frontend $ cd node_modules/styled-components && yarn link
 atlaskit $ yarn link styled-components
 ```
+
+[individual-package-builds]: https://atlaskit.atlassian.com/docs/build/individual-package-builds

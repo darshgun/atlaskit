@@ -20,7 +20,7 @@ Linking changes you've made on your local machine to another repo allows you to 
 
 It's recommended to use this approach when you need to develop a component directly inside a product or to debug an issue that can only be reproduced in that product.
 
-Read the [Local linking guide](linking-with-products) to learn how to do this.
+Read the [Local linking guide][linking-with-products] to learn how to do this.
 
 <a id="branch-deploys"></a>
 
@@ -28,20 +28,20 @@ Read the [Local linking guide](linking-with-products) to learn how to do this.
 
 Branch deploys are a way to publish changes to all packages you've made in your development branch to s3 as a published package bundle that can then be installed in a product via traditional `yarn` / `bolt` / `npm` commands.
 
-Read more about branch deploys [here](branch-deploys).
+Read more about branch deploys [here][branch-deploys].
 
 <a id="product-ci-integration"></a>
 
 ## Product CI Integration
 
-Product CI integration takes [branch deploys](branch-deploys) one step further by automatically creating a branch in product repos that contains an installed version of your branch deployed packages. Product CI is then automatically triggered and run on these branches and the result is linked back to the original Atlassian Frontend commit that was branch deployed.
+Product CI integration takes [branch deploys][branch-deploys] one step further by automatically creating a branch in product repos that contains an installed version of your branch deployed packages. Product CI is then automatically triggered and run on these branches and the result is linked back to the original Atlassian Frontend commit that was branch deployed.
 
 In short, this allows us to [run product tests against Atlaskit PRs](https://product-fabric.atlassian.net/wiki/spaces/AFP/pages/966233273/Run+product+tests+against+Atlaskit+PR+s).
 
 The process is roughly as follows:
 
 1. New commits are pushed for an AK branch
-2. This triggers a [branch deploy integrator](branch-deploy-integrator) bamboo build for each supported product
+2. This triggers a [branch deploy integrator][branch-deploy-integrator] bamboo build for each supported product
 3. The build:
 
    - Creates a new branch in product (or re-uses an existing branch) with the name `'atlaskit-branch-deploy-<ak-branch-name>'`
@@ -49,10 +49,10 @@ The process is roughly as follows:
    - Waits for the AK branch deploy to finish and then installs it
    - Pushes the branch and triggers product CI builds manually for cases when they don't trigger automatically (e.g. confluence PR builds)
 
-4. The [ak-product-ci-integrator](integrator-service) service sends the result of the product CI build
+4. The [ak-product-ci-integrator][integrator-service] service sends the result of the product CI build
    back to the original AK commit as a build status.
 
-See the [branch deploy integrator bamboo template docs](branch-deploy-integrator) for more detailed information on how this works.
+See the [branch deploy integrator bamboo template docs][branch-deploy-integrator] for more detailed information on how this works.
 
 ### Important information
 
@@ -65,10 +65,9 @@ There are a few important things to note about this process:
 
 #### Relevant sources:
 
-- [branch deploy integrator bamboo templates](branch-deploy-integrator)
-- [branch-deploy-product-integrator package](integrator-package)
-- [ak-product-ci-integrator service](integrator-service)
-- [Announcement blog post](https://hello.atlassian.net/wiki/spaces/AFP/blog/2019/08/12/529888913/Atlaskit+Branch+Deployments+-+Announcement+FAQ)
+- [branch deploy integrator bamboo templates][branch-deploy-integrator]
+- [branch-deploy-product-integrator package][integrator-package]
+- [ak-product-ci-integrator service][integrator-service]
 
 [linking-with-products]: https://atlaskit.atlassian.com/docs/build/local-linking-with-products
 [branch-deploys]: https://atlaskit.atlassian.com/docs/build/branch-deploys
