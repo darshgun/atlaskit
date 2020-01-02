@@ -13,6 +13,7 @@ import {
   N30,
   subtleHeading,
   subtleText,
+  skeleton as skeletonColor,
 } from '@atlaskit/theme/colors';
 import { headingSizes } from '@atlaskit/theme/typography';
 import { CSSObject, keyframes } from '@emotion/core';
@@ -180,13 +181,19 @@ export const itemHeadingCSS = {
   padding: `0 ${itemSidePadding}px`,
 } as CSSObject;
 
-export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
+export const skeletonHeadingItemCSS = (
+  width?: Width,
+  isShimmering?: boolean,
+): CSSObject => ({
   ...itemHeadingCSS,
   marginTop: skeletonHeadingTopMargin,
   '&::after': {
     // This renders the skeleton heading "text".
-    ...shimmer.css,
-    animationName: `${shimmerKeyframes}`,
+    backgroundColor: skeletonColor(),
+    ...(isShimmering && {
+      ...shimmer.css,
+      animationName: `${shimmerKeyframes}`,
+    }),
     height: skeletonContentHeight,
     width: width || '30%',
     borderRadius: borderRadius(),
@@ -199,6 +206,7 @@ export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
   width?: string | number,
+  isShimmering?: boolean,
 ): CSSObject => ({
   ...itemCSS(false, false),
   pointerEvents: 'none',
@@ -232,8 +240,11 @@ export const itemSkeletonCSS = (
     '&::before': {
       // This will render a skeleton in the "elemBefore" position.
       content: '""',
-      ...shimmer.css,
-      animationName: `${shimmerKeyframes}`,
+      backgroundColor: skeletonColor(),
+      ...(isShimmering && {
+        ...shimmer.css,
+        animationName: `${shimmerKeyframes}`,
+      }),
       marginRight: itemElemSpacing,
       width: itemElemSize,
       height: itemElemSize,
@@ -245,8 +256,11 @@ export const itemSkeletonCSS = (
   '&::after': {
     // This will render the skeleton "text".
     content: '""',
-    ...shimmer.css,
-    animationName: `${shimmerKeyframes}`,
+    backgroundColor: skeletonColor(),
+    ...(isShimmering && {
+      ...shimmer.css,
+      animationName: `${shimmerKeyframes}`,
+    }),
     height: skeletonContentHeight,
     borderRadius: borderRadius(),
     flexBasis: '100%' || width,

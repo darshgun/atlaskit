@@ -34,8 +34,9 @@ export const HeadingItem = ({ children, testId }: HeadingItemProps) => (
 export const SkeletonHeadingItem = ({
   width,
   testId,
+  isShimmering,
 }: SkeletonHeadingItemProps) => (
-  <div css={skeletonHeadingItemCSS(width)} data-testid={testId} />
+  <div css={skeletonHeadingItemCSS(width, isShimmering)} data-testid={testId} />
 );
 
 export const SkeletonItem = ({
@@ -43,8 +44,12 @@ export const SkeletonItem = ({
   hasIcon,
   width,
   testId,
+  isShimmering,
 }: SkeletonItemProps) => (
-  <div css={itemSkeletonCSS(hasAvatar, hasIcon, width)} data-testid={testId} />
+  <div
+    css={itemSkeletonCSS(hasAvatar, hasIcon, width, isShimmering)}
+    data-testid={testId}
+  />
 );
 
 const BaseItem = ({

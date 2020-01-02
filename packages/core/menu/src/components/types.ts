@@ -37,6 +37,7 @@ export type SkeletonItemProps = {
   hasIcon?: boolean;
   width?: string | number;
   testId?: string;
+  isShimmering?: boolean;
 };
 
 export type Width = string | number;
@@ -49,4 +50,5 @@ export interface HeadingItemProps {
 export interface SkeletonHeadingItemProps {
   width?: Width;
   testId?: string;
+  isShimmering?: boolean;
 }

@@ -14,7 +14,7 @@ import {
 
 const Item = ({ isLoading, ...props }: any) => {
   if (isLoading) {
-    return <SkeletonItem {...props} />;
+    return <SkeletonItem isShimmering {...props} />;
   }
 
   let icon;
@@ -46,7 +46,7 @@ const Item = ({ isLoading, ...props }: any) => {
 
 const Heading = ({ isLoading }: any) => {
   if (isLoading) {
-    return <SkeletonHeadingItem />;
+    return <SkeletonHeadingItem isShimmering />;
   }
 
   return <HeadingItem>Heading</HeadingItem>;
