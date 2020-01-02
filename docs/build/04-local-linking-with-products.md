@@ -1,8 +1,16 @@
-# Locally linking in Atlaskit
+# Locally linking in Atlaskit with products
 
-## Usage
+Linking changes you've made on your local machine to another repo allows you to test your changes rapidly in real-time without having to wait for a full branch build every time you wish to make a change.
 
-Linking packages in Atlaskit is more difficult than the standard workflow of running the built-in `yarn link` command. This is because of the majority of packages in the repo need to be built as `yarn link` uses symlinks and building all packages in the repo takes a significant amount of time.
+It's recommended to use this approach when you need to develop a component directly inside a product or to debug an issue that can only be reproduced in that product.
+
+## Finding the right product repo
+
+Before you start linking you need to have the desired product repo checked out and setup on your machine. If you have not done this, go [here](https://product-fabric.atlassian.net/wiki/spaces/AFP/pages/1026263059/Linking+with+product+repos) to find the product repo you are after and how to set it up.
+
+## Linking
+
+Linking packages in Atlaskit is more difficult than the standard workflow of running the built-in `yarn link` command because of it. This is because of the majority of packages in the repo need to be built as `yarn link` uses symlinks and building all packages in the repo takes a significant amount of time.
 
 To handle this problem, we provide two main ways of linking packages:
 
@@ -30,12 +38,12 @@ Run the following steps:
 
    You can run `yarn link-pkg --help` for more info.
 
-2. `yarn watch <package>`
+2. `yarn watch <package>` OR `yarn build <package>` for a one-off run
 
    E.g. `yarn watch editor-core`.
    The command just runs `yarn build <pkg>` in watch mode and pushes changes to any linked repos. Run `yarn watch --help` for more info.
 
-**Note**: Linking a single package suffers the same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds), namely type definitions from other packages in the repo will be coerced to any. If this is a problem for you, you can instead follow the steps in [Linking a package that is a transitive dependency of another repo](#Linking-a-package-that-is-a-transitive-dependency-of-another-repo) which does a full repo build instead.
+**Note**: Linking a single package suffers the same caveats as [individual package builds][individual-package-builds], namely type definitions from other packages in the repo will be coerced to any. If this is a problem for you, you can instead follow the steps in [Linking a package that is a transitive dependency of another repo](#Linking-a-package-that-is-a-transitive-dependency-of-another-repo) which does a full repo build instead.
 
 <a id="option-b"></a>
 
@@ -49,7 +57,7 @@ Run the following steps:
 
 Linking a package and all of its dependencies, or linking a package that is only a transitive dependency, is a bit trickier to do in an efficient manner. This is because we need to build all transitive dependencies of the linked package that is a direct dependency of the target repo.
 
-As a result, we need to do a full atlaskit project build. We are looking into improving this in the future though by using [Typescript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html) to enable incremental builds across the entire repo and allow building all of a packages dependencies.
+As a result, we need to do a one-off full atlaskit project build. We are looking into improving this in the future though by using [Typescript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html) to enable incremental builds across the entire repo and allow building all of a packages dependencies.
 
 Run the following steps:
 
@@ -65,7 +73,7 @@ Run the following steps:
 
    To speed this up, you can specify that only a specific dist type is built with `yarn build --distType esm`.
 
-   Note that our packages expose their `d.ts` files through the `cjs` build, so if you only build `esm`, you will experience the same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds) and `link-pkg` where certain types are coerced to `any`.
+   Note that our packages expose their `d.ts` files through the `cjs` build, so if you only build `esm`, you will experience the same caveats as [individual package builds][individual-package-builds] and `link-pkg` where certain types are coerced to `any`.
 
 4. Run the package you're working on in watch mode: `yarn watch <package>`
 
@@ -74,7 +82,7 @@ Run the following steps:
 **Note**: Be careful with specifying the 'cjs' distType. If you have already built the 'esm' dists, the product repo will most likely only be reading that, resulting in no changes being picked up.
 
 **Note**: There is a chance your local full builds become stale if you haven't ran them in a while and depend on more recent code that hasn't been built. In that case,
-you can either rerun the full build or [build the individual packages](../../CONTRIBUTING.md#individual-package-builds) you know need to be rebuilt.
+you can either rerun the full build or [build the individual packages][individual-package-builds] you know need to be rebuilt.
 
 **Note**: This method uses native `yarn link`, you may experience problems with peer dependencies resolving to different locations depending on whether they are imported from within Atlaskit or the target repo, resulting in multiple instances of peer dependencies being instantiated. If that becomes a problem, you will have to try some of the solutions suggested here: https://stackoverflow.com/q/31169760/893630
 
@@ -137,7 +145,7 @@ Finally, ensure you're `yarn watch`ing the right package. If you are not watchin
 
 ### There are a lot of errors being reported in yarn watch
 
-This is a known issue related to the fact that we are building a single package in isolation. Other atlaskit package types are not built and so typescript reports 'module not found' errors. These just result in types being coerced to any where used, so shouldn't cause a problem in the target repo. See the caveat in same caveats as [individual package builds](../../CONTRIBUTING.md#individual-package-builds)
+This is a known issue related to the fact that we are building a single package in isolation. Other atlaskit package types are not built and so typescript reports 'module not found' errors. These just result in types being coerced to any where used, so shouldn't cause a problem in the target repo. See the caveat in same caveats as [individual package builds][individual-package-builds]
 
 <a id="stale-deps"></a>
 
@@ -176,3 +184,5 @@ E.g.
 confluence-frontend $ cd node_modules/styled-components && yarn link
 atlaskit $ yarn link styled-components
 ```
+
+[individual-package-builds]: https://atlaskit.atlassian.com/docs/build/individual-package-builds

@@ -43,18 +43,4 @@ You can sort of create re-usable code by using shortcuts, see the shortcuts file
 Not everything is allowed in there but bamboo will yell it you if you get it wrong.
 Just look at how branch-deploy-integrator does things and you'll be able to figure it out.
 
-# Branch-deploy-integrator
-
-The builds that deploy ~atlaskit~ atlassian-frontend branch deploys into products.
-We deploy these plans to https://engservices-bamboo.internal.atlassian.com/browse/ABDPI.
-
-## Adding a new product
-
-1. Copy-pasta a existing product's groovy file
-2. Update the product names in the groovy file
-3. update the file with the right settings for the branch-deploy-integrator CLI
-4. Check the file in and push it
-5. Add a "Plan Template Execution" to https://engservices-bamboo.internal.atlassian.com/build/admin/edit/editBuildTasks.action?buildKey=ABDPI-BDIG-JOB1. Make sure it points to your new groovy.
-6. Boom done, if you wanna test it while in development set the jobs running strategy to: "Execute on both Master and Branches". But make sure to switch this back to "Execute on Master, validate only on Branches" when you are done.
-
 fin
