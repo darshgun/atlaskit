@@ -1,5 +1,15 @@
 # @atlaskit/atlassian-navigation
 
+## 0.8.4
+
+### Patch Changes
+
+- [patch][6c94b91976](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c94b91976):
+
+  Fixes avatar skeleton size.- [patch][64aefb016d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/64aefb016d):
+
+  Fixes overflow menu popup placement.
+
 ## 0.8.3
 
 ### Patch Changes
