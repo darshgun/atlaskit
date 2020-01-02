@@ -14,9 +14,8 @@ export const Section = ({
   ...rest
 }: SectionProps) => (
   <div
-    // Overflow hidden in the css causes the div to be able to gain focus/
-    // We set this to turn it off.
-    tabIndex={-1}
+    // NOTE: Firefox allows elements that have "overflow: auto" to gain focus (as if it had tab-index="0")
+    // We have made a deliberate choice to leave this behaviour as is.
     css={sectionCSS(isScrollable, hasSeparator)}
     data-testid={testId}
     {...rest}

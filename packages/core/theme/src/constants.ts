@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { B100, N30, skeletonContent } from './colors';
+import { B100, N30, skeleton as skeletonColor } from './colors';
 
 export const FLATTENED = '__FLATTENED__';
 export const CHANNEL = '__ATLASKIT_THEME__';
@@ -59,8 +59,8 @@ export const assistive = () => css`
 
 export const skeletonShimmer = () => ({
   css: {
-    backgroundColor: skeletonContent(),
-    backgroundImage: `linear-gradient(to right, ${skeletonContent()} 0%, ${N30} 20%, ${skeletonContent()} 40%, ${skeletonContent()} 100%)`,
+    backgroundColor: skeletonColor(),
+    backgroundImage: `linear-gradient(to right, ${skeletonColor()} 0%, ${N30} 20%, ${skeletonColor()} 40%, ${skeletonColor()} 100%)`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: '800px 104px',
     animationDuration: '1.5s',

@@ -2,4 +2,11 @@
 '@atlaskit/theme': minor
 ---
 
-Adds `skeletonContent` color. Import as use like `import { skeletonContent } from '@atlaskit/theme'; skeletonContent() // '#F4F5F7'`.
+Adds `skeleton` color.
+Import and use like:
+
+```js
+import { skeleton } from '@atlaskit/theme';
+
+skeleton(); // '#F4F5F7'
+```

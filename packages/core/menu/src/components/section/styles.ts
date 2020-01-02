@@ -27,8 +27,11 @@ export const sectionCSS = (
       : { flexShrink: 0 }),
     ...(hasSeparator && { borderTop: `2px solid ${N30}` }),
     '&:focus': {
-      // Since this element uses tab-index="-1" we need to turn the outline off.
-      outline: 0,
+      // NOTE: Firefox allows elements that have "overflow: auto" to gain focus (as if it had tab-index="0")
+      // We have made a deliberate choice to leave this behaviour as is.
+      // This makes the outline go inside by 1px so it can actually be displayed
+      // else it gets cut off from the overflow: scroll from the parent menu group.
+      outlineOffset: -1,
     },
     '&::after': {
       // This pseudo element will add extra spacing so we get the illusion of a bottom padding.
