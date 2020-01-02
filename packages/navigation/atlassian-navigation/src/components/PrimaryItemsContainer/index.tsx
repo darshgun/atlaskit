@@ -59,6 +59,7 @@ export const PrimaryItemsContainer = ({
       <OverflowProvider isVisible>{visibleItems}</OverflowProvider>
       {overflowItems.length > 0 && (
         <Popup
+          placement="bottom-start"
           content={content}
           isOpen={isMoreOpen}
           onClose={onMoreClose}
