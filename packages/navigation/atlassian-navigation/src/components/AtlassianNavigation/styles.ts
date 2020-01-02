@@ -4,6 +4,7 @@ import { CSSObject } from '@emotion/core';
 
 import { HORIZONTAL_GLOBAL_NAV_HEIGHT } from '../../common/constants';
 import { NavigationTheme, hexToRGBA } from '../../theme';
+
 const gridSize = gridSizeFn();
 
 export const containerCSS = ({

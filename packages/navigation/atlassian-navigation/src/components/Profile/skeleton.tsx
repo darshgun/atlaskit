@@ -3,5 +3,5 @@ import React from 'react';
 import { IconButtonSkeleton } from '../IconButton/skeleton';
 
 export const ProfileSkeleton = () => (
-  <IconButtonSkeleton marginLeft={6} marginRight={6} size={gridSize() * 4.75} />
+  <IconButtonSkeleton marginLeft={6} marginRight={6} size={gridSize() * 3.25} />
 );
