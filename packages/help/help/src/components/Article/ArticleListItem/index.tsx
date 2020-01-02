@@ -34,6 +34,19 @@ type Props = {
   onClick?: (id: string, analyticsEvent: UIAnalyticsEvent) => void;
 };
 
+const getTypeTitle = (itemType?: ARTICLE_ITEM_TYPES) => {
+  switch (itemType) {
+    case ARTICLE_ITEM_TYPES.helpArticle:
+      return messages.help_panel_related_article_type_help_article;
+
+    case ARTICLE_ITEM_TYPES.whatsNew:
+      return messages.help_panel_related_article_type_whats_new;
+
+    default:
+      return null;
+  }
+};
+
 const ArticlesListItem: React.SFC<Props &
   ArticleItem &
   InjectedIntlProps &
@@ -45,7 +58,7 @@ const ArticlesListItem: React.SFC<Props &
     title = '',
     description = '',
     href = '',
-    type = ARTICLE_ITEM_TYPES.helpArticle,
+    type, // This needs to come from algolia
     onClick = (id: string, analyticsEvent: UIAnalyticsEvent) => {},
     createAnalyticsEvent,
   } = props;
@@ -61,18 +74,7 @@ const ArticlesListItem: React.SFC<Props &
     }
   };
 
-  const getTypeTitle = (itemType: ARTICLE_ITEM_TYPES) => {
-    switch (itemType) {
-      case ARTICLE_ITEM_TYPES.helpArticle:
-        return messages.help_panel_related_article_type_help_article;
-
-      case ARTICLE_ITEM_TYPES.whatsNew:
-        return messages.help_panel_related_article_type_whats_new;
-
-      default:
-        return messages.help_panel_related_article_type_help_article;
-    }
-  };
+  const typeTitle = getTypeTitle(type);
 
   return (
     <ArticlesListItemWrapper
@@ -83,9 +85,11 @@ const ArticlesListItem: React.SFC<Props &
       onClick={handleOnClick}
     >
       <ArticlesListItemContainer>
-        <ArticlesListItemTypeTitle>
-          {formatMessage(getTypeTitle(type))}
-        </ArticlesListItemTypeTitle>
+        {typeTitle && (
+          <ArticlesListItemTypeTitle>
+            {formatMessage(typeTitle)}
+          </ArticlesListItemTypeTitle>
+        )}
         <ArticlesListItemTitleText>{title}</ArticlesListItemTitleText>
         {href && (
           <ArticlesListItemLinkIcon>
