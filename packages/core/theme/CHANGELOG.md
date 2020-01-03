@@ -1,5 +1,20 @@
 # @atlaskit/theme
 
+## 9.4.0
+
+### Minor Changes
+
+- [minor][429925f854](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/429925f854):
+
+  Adds `skeleton` color.
+  Import and use like:
+
+  ```js
+  import { skeleton } from '@atlaskit/theme';
+
+  skeleton(); // '#F4F5F7'
+  ```
+
 ## 9.3.0
 
 ### Minor Changes
