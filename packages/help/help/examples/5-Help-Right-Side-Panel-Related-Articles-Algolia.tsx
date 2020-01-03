@@ -93,8 +93,6 @@ export default class extends React.Component {
   };
 
   getRelatedArticle = (productView?: string, itemId?: string): Promise<any> => {
-    console.log(productView);
-    console.log(itemId);
     return new Promise((resolve, reject) => {
       index.search(
         {
@@ -115,6 +113,8 @@ export default class extends React.Component {
           if (err) {
             reject(err);
           }
+
+          console.log(res.hits);
 
           resolve(res.hits);
         },
