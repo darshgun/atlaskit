@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import { Fragment } from 'react';
 import { jsx, ClassNames } from '@emotion/core';
 import {
   linkItemCSS,
@@ -22,22 +21,35 @@ import {
   BaseItemProps,
   CustomItemProps,
   SkeletonItemProps,
-  Width,
+  HeadingItemProps,
+  SkeletonHeadingItemProps,
 } from '../types';
 
-export const HeadingItem = ({ children }: { children: React.ReactNode }) => (
-  <div css={itemHeadingCSS}>{children}</div>
+export const HeadingItem = ({ children, testId }: HeadingItemProps) => (
+  <div css={itemHeadingCSS} data-testid={testId}>
+    {children}
+  </div>
 );
 
-export const SkeletonHeadingItem = ({ width }: { width?: Width }) => (
-  <div css={skeletonHeadingItemCSS(width)} />
+export const SkeletonHeadingItem = ({
+  width,
+  testId,
+  isShimmering,
+}: SkeletonHeadingItemProps) => (
+  <div css={skeletonHeadingItemCSS(width, isShimmering)} data-testid={testId} />
 );
+
 export const SkeletonItem = ({
   hasAvatar,
   hasIcon,
   width,
+  testId,
+  isShimmering,
 }: SkeletonItemProps) => (
-  <div css={itemSkeletonCSS(hasAvatar, hasIcon, width)} />
+  <div
+    css={itemSkeletonCSS(hasAvatar, hasIcon, width, isShimmering)}
+    data-testid={testId}
+  />
 );
 
 const BaseItem = ({
@@ -47,18 +59,16 @@ const BaseItem = ({
   description,
 }: BaseItemProps) => {
   return (
-    <Fragment>
-      <div css={contentCSSWrapper}>
-        {elemBefore && <span css={elemBeforeCSS}>{elemBefore}</span>}
-        {children && (
-          <span css={contentCSS}>
-            <span css={truncateCSS}>{children}</span>
-            {description && <span css={descriptionCSS}>{description}</span>}
-          </span>
-        )}
-        {elemAfter && <span css={elemAfterCSS}>{elemAfter}</span>}
-      </div>
-    </Fragment>
+    <div css={contentCSSWrapper}>
+      {elemBefore && <span css={elemBeforeCSS}>{elemBefore}</span>}
+      {children && (
+        <span css={contentCSS}>
+          <span css={truncateCSS}>{children}</span>
+          {description && <span css={descriptionCSS}>{description}</span>}
+        </span>
+      )}
+      {elemAfter && <span css={elemAfterCSS}>{elemAfter}</span>}
+    </div>
   );
 };
 
@@ -70,6 +80,7 @@ export const ButtonItem = (props: ButtonItemProps) => {
     description,
     isDisabled = false,
     isSelected = false,
+    testId,
     ...others
   } = props;
 
@@ -77,12 +88,13 @@ export const ButtonItem = (props: ButtonItemProps) => {
     return null;
   }
 
-  const Tag = isDisabled ? 'span' : 'button';
+  const Container = isDisabled ? 'span' : 'button';
 
   return (
-    <Tag
+    <Container
       type={isDisabled ? undefined : 'button'}
       css={itemCSS(isDisabled, isSelected)}
+      data-testid={testId}
       {...others}
     >
       <BaseItem
@@ -92,7 +104,7 @@ export const ButtonItem = (props: ButtonItemProps) => {
       >
         {children}
       </BaseItem>
-    </Tag>
+    </Container>
   );
 };
 
@@ -104,6 +116,7 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
     description,
     isDisabled = false,
     isSelected = false,
+    testId,
     ...others
   } = rest;
 
@@ -111,12 +124,13 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
     return null;
   }
 
-  const Tag = isDisabled ? 'span' : 'a';
+  const Container = isDisabled ? 'span' : 'a';
 
   return (
-    <Tag
+    <Container
       css={linkItemCSS(isDisabled, isSelected)}
       href={isDisabled ? undefined : href}
+      data-testid={testId}
       {...others}
     >
       <BaseItem
@@ -126,7 +140,7 @@ export const LinkItem = ({ href, ...rest }: LinkItemProps) => {
       >
         {children}
       </BaseItem>
-    </Tag>
+    </Container>
   );
 };
 

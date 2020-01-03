@@ -1,28 +1,57 @@
-import { gridSize as gridSizeFn } from '@atlaskit/theme/constants';
-import { fontSize, fontSizeSmall } from '@atlaskit/theme/constants';
+import {
+  gridSize as gridSizeFn,
+  fontSize,
+  borderRadius,
+  skeletonShimmer,
+} from '@atlaskit/theme/constants';
 import {
   N800,
   N0,
+  B100,
   N200,
   N20,
   N30,
   subtleHeading,
   subtleText,
+  skeleton as skeletonColor,
 } from '@atlaskit/theme/colors';
 import { headingSizes } from '@atlaskit/theme/typography';
-import { CSSObject } from '@emotion/core';
+import { CSSObject, keyframes } from '@emotion/core';
 import { Width } from '../types';
 
 const gridSize = gridSizeFn();
 
+const itemElemSpacing = gridSize * 1.5;
+const itemElemSize = gridSize * 3;
+const itemTopBottomPadding = gridSize;
+const itemSidePadding = gridSize * 2.5;
+const itemDescriptionSpacing = gridSize * 0.375;
+const itemMinHeight = gridSize * 5;
+const itemContentMinHeight = itemMinHeight - itemTopBottomPadding * 2;
+
+const itemHeadingTopMargin = gridSize;
+const itemHeadingBottomMargin = gridSize * 0.75;
+const itemHeadingContentHeight = headingSizes.h100.lineHeight;
+const itemHeadingFontSize = headingSizes.h100.size;
+
+const skeletonContentHeight = gridSize * 1.75;
+// Skeleton content is slightly shorter than the real content.
+// Because of that we slightly increase the top margin to offset this so the
+// containing size both real and skeleton always equal approx 30px.
+const skeletonHeadingTopMargin =
+  itemHeadingTopMargin + (itemHeadingContentHeight - skeletonContentHeight);
+
 const buttonOverrides = {
   backgroundColor: 'transparent',
-  border: 'none',
-  outline: 'none',
+  border: 0,
+  outline: 0,
+  margin: 0,
 };
+
 const anchorOverrides = {
   color: 'currentColor',
 };
+
 const customItemOverrides = {
   color: 'currentColor',
 };
@@ -41,11 +70,14 @@ const selectedStyles = {
   textDecoration: 'none',
 };
 
+const shimmer = skeletonShimmer();
+const shimmerKeyframes = keyframes(shimmer.keyframes);
+
 const baseItemCSS = (
   isDisabled?: boolean,
   isSelected?: boolean,
 ): CSSObject => ({
-  padding: `${gridSize}px ${gridSize * 2.5}px`,
+  padding: `${itemTopBottomPadding}px ${itemSidePadding}px`,
   cursor: 'pointer',
   fontSize: fontSize(),
   display: 'block',
@@ -57,7 +89,7 @@ const baseItemCSS = (
     textDecoration: 'none',
   },
   '&:focus': {
-    boxShadow: 'rgb(76, 154, 255) 0px 0px 0px 2px inset',
+    boxShadow: `${B100} 0 0 0 2px inset`,
     outline: 'none',
   },
   '&:active': {
@@ -80,7 +112,6 @@ export const itemCSS = (
   ...baseItemCSS(isDisabled, isSelected),
 });
 
-/* Item subcomponents */
 export const contentCSS = {
   flexGrow: 1,
   textAlign: 'left',
@@ -101,25 +132,28 @@ export const truncateCSS = {
 export const elemBeforeCSS = {
   display: 'flex',
   flexShrink: 0,
-  marginRight: gridSize,
+  marginRight: itemElemSpacing,
 };
+
 export const elemAfterCSS = {
   display: 'flex',
   flexShrink: 0,
-  marginLeft: gridSize,
+  marginLeft: itemElemSpacing,
 };
+
 export const descriptionCSS = {
-  textAlign: 'left',
+  ...truncateCSS,
   color: subtleText(),
-  marginTop: 5,
-  fontSize: fontSizeSmall(),
+  marginTop: itemDescriptionSpacing,
+  fontSize: headingSizes.h200.size,
 } as CSSObject;
+
 export const contentCSSWrapper = {
   display: 'flex',
+  minHeight: itemContentMinHeight,
   alignItems: 'center',
 };
 
-/* Item variations */
 export const linkItemCSS = (
   isDisabled?: boolean,
   isSelected?: boolean,
@@ -138,37 +172,47 @@ export const customItemCSS = (
 
 export const itemHeadingCSS = {
   textTransform: 'uppercase',
-  fontSize: headingSizes.h200.size,
-  lineHeight: headingSizes.h200.lineHeight / headingSizes.h200.size,
+  fontSize: itemHeadingFontSize,
+  lineHeight: itemHeadingContentHeight / itemHeadingFontSize,
+  fontWeight: 700,
   color: subtleHeading(),
-  marginTop: gridSize,
-  marginBottom: 6,
-  padding: `0 ${gridSize * 2.5}px`,
+  marginTop: itemHeadingTopMargin,
+  marginBottom: itemHeadingBottomMargin,
+  padding: `0 ${itemSidePadding}px`,
 } as CSSObject;
 
-export const skeletonHeadingItemCSS = (width?: Width): CSSObject => ({
+export const skeletonHeadingItemCSS = (
+  width?: Width,
+  isShimmering?: boolean,
+): CSSObject => ({
   ...itemHeadingCSS,
-  paddingTop: gridSize / 2,
-  paddingBottom: gridSize / 2,
+  marginTop: skeletonHeadingTopMargin,
   '&::after': {
-    backgroundColor: N20,
-    height: gridSize * 1.75,
-    margin: `${gridSize / 2}px 0`,
-    width: width || `calc(20% - ${gridSize / 2}px)`,
-    borderRadius: 3,
+    // This renders the skeleton heading "text".
+    backgroundColor: skeletonColor(),
+    ...(isShimmering && {
+      ...shimmer.css,
+      animationName: `${shimmerKeyframes}`,
+    }),
+    height: skeletonContentHeight,
+    width: width || '30%',
+    borderRadius: borderRadius(),
     display: 'block',
     content: '""',
   },
 });
+
 export const itemSkeletonCSS = (
   hasAvatar?: boolean,
   hasIcon?: boolean,
   width?: string | number,
+  isShimmering?: boolean,
 ): CSSObject => ({
   ...itemCSS(false, false),
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
+  minHeight: itemMinHeight,
 
   // Stagger alternate skeleton items if no width is passed
   ...(!width && {
@@ -192,24 +236,33 @@ export const itemSkeletonCSS = (
     },
   }),
 
-  // Icon and Avatar styles
   ...((hasAvatar || hasIcon) && {
     '&::before': {
+      // This will render a skeleton in the "elemBefore" position.
       content: '""',
-      backgroundColor: N20,
-      marginRight: gridSize,
-      width: gridSize * 3,
-      height: gridSize * 3,
-      borderRadius: hasAvatar ? '100%' : 3,
+      backgroundColor: skeletonColor(),
+      ...(isShimmering && {
+        ...shimmer.css,
+        animationName: `${shimmerKeyframes}`,
+      }),
+      marginRight: itemElemSpacing,
+      width: itemElemSize,
+      height: itemElemSize,
+      borderRadius: hasAvatar ? '100%' : borderRadius(),
+      flexShrink: 0,
     },
   }),
 
-  // Skeleton text
   '&::after': {
+    // This will render the skeleton "text".
     content: '""',
-    backgroundColor: N20,
-    height: gridSize * 1.75,
-    borderRadius: 3,
+    backgroundColor: skeletonColor(),
+    ...(isShimmering && {
+      ...shimmer.css,
+      animationName: `${shimmerKeyframes}`,
+    }),
+    height: skeletonContentHeight,
+    borderRadius: borderRadius(),
     flexBasis: '100%' || width,
   },
 });

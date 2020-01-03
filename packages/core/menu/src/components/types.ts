@@ -1,12 +1,14 @@
 export type MenuGroupProps = {
   maxHeight?: number | string;
   children: React.ReactNode;
+  testId?: string;
 };
 
 export type SectionProps = {
   isScrollable?: boolean;
   hasSeparator?: boolean;
   children: React.ReactNode;
+  testId?: string;
 };
 
 export interface BaseItemProps {
@@ -19,7 +21,11 @@ export interface BaseItemProps {
   isSelected?: boolean;
   children?: React.ReactNode;
   href?: string;
-  component?: React.ComponentType<{ wrapperClass: string }>;
+  component?: React.ComponentType<{
+    wrapperClass: string;
+    'data-testid'?: string;
+  }>;
+  testId?: string;
 }
 
 export type ButtonItemProps = Omit<BaseItemProps, 'component' | 'href'>;
@@ -30,6 +36,19 @@ export type SkeletonItemProps = {
   hasAvatar?: boolean;
   hasIcon?: boolean;
   width?: string | number;
+  testId?: string;
+  isShimmering?: boolean;
 };
 
 export type Width = string | number;
+
+export interface HeadingItemProps {
+  children: React.ReactNode;
+  testId?: string;
+}
+
+export interface SkeletonHeadingItemProps {
+  width?: Width;
+  testId?: string;
+  isShimmering?: boolean;
+}
