@@ -1,5 +1,13 @@
 ## 0.1.0
 
+## 0.22.2
+
+### Patch Changes
+
+- [patch][e5dedf3ee4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5dedf3ee4):
+
+  ArticleListItem - Hide "article type header" if the type is not passed as a prop to the component or is invalid.
+
 ## 0.22.1
 
 ### Patch Changes
