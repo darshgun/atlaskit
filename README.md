@@ -1,114 +1,50 @@
-# Atlaskit
+# ⚠️ Atlaskit has moved ⚠️
 
-[![node v8.4.0+](https://img.shields.io/badge/node-v8.4.0%2B-brightgreen.svg)](https://nodejs.org/en/)
-[![bolt v0.20.6+](https://img.shields.io/badge/bolt-v0.20.6%2B-brightgreen.svg)](http://boltpkg.com/)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://ecosystem.atlassian.net/servicedesk/customer/portal/24)
+Hi there!
 
-Atlaskit is the technical implementation of the [Atlassian Design Guidelines][adg]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm.
+If you’re reading this, you’re probably looking for the source code of some Atlaskit components. Unfortunately, that code no longer resides here as it’s all been moved to a new closed source location. Not to worry though, you can simply do one of the following:
 
-The full list of components can be found in the [Atlaskit Registry][atlaskitregistry].
+## For non-Atlassian developers
 
-**This project is bound by a [Code of Conduct][codeofconduct].**
+To view the source of Atlaskit components, you can take a look at this public mirror. Currently it is a simple, manual, one way mirror of the packages that are exposed externally.
 
-# Quick start for developing
+- If you are looking to contribute back; this currently isn’t supported. Please raise an issue if you need to report a bug or suggest a feature.
 
-Please read [CONTRIBUTING.md][contributing_repo] under the **Development environment** section.
+## For Atlassian developers
 
-# Installation and usage
+If you’re looking to contribute to Atlaskit components, you can head over to the https://bitbucket.org/atlassian/atlassian-frontend and start working from there.
 
-Atlaskit components and utilities are available as discrete npm packages.
+- If you have a local checkout with any inflight work, you can update your remote to point to the new repo and push any branches up there too (if they were already pushed before the 6th of January, go to the next step instead!)
 
-The `@atlassiansox/analytics-web-client` and `@atlassian/prosemirror-synchrony-plugin` packages are peer dependencies as they are private packages and so must be installed alongside the tool.
-
-#### Pre-requisites
-
-It's strongly advised to use the Atlaskit CSS reset in your whole project, or some Atlaskit components
-may diverge in appearance:
-
-```javascript
-import '@atlaskit/css-reset';
+```
+git remote set-url origin git@bitbucket.org:atlassian/atlassian-frontend.git
+git push # do this for any branches you have locally
 ```
 
-In general, you should avoid directly styling base elements (ex. p, h1, h2) and uses classes instead.
+Otherwise, feel free to just check it out directly and start working:
 
-#### Example for React projects
-
-Atlaskit components are built for React. Here's an example of using the Avatar component:
-
-1. First, you specify a component into your project as a dependency using npm: `npm install @atlaskit/avatar`
-2. Then you can use it in your React projects like this:
-
-```javascript
-import React from 'react';
-import Avatar from '@atlaskit/avatar';
-
-export default (
-  <Avatar
-    src="https://design.atlassian.com/images/avatars/project-128.png"
-    presence="online"
-    size="large"
-  />
-);
+```
+git clone git@bitbucket.org:atlassian/atlassian-frontend.git
 ```
 
-Check out the [Atlaskit Registry][atlaskitregistry] to learn more.
+## FAQ
 
-#### Example for non-React projects
+### Why have these components all been moved / close sourced?
 
-There is a subset of components available as styles called the Reduced UI pack.
-To use:
+In an effort to improve how we manage frontend code across Atlassian, we needed to first co-locate all our front end code in the same place. As a result, we decided to close the Atlaskit repo for a short period of time before re-opening it. You can still view the source (Link coming very soon, this week for certain!)
 
-1. You include these into your the HTML projects.
+### What does this mean for the licensing of these components?
 
-```html
-<link rel="stylesheet" href="//unpkg.com/@atlaskit/css-reset@latest" />
-<link rel="stylesheet" href="//unpkg.com/@atlaskit/reduced-ui-pack@latest" />
-```
+We did not change the license of components as part of this move. Please refer to individual components for their licenses.
 
-2. Then you can style HTML with
+### Can i still use Atlaskit components in my project?
 
-`<button class="ak-button ak-button__appearance-primary">Submit</button>`
+Absolutely!
 
-Check out the [Reduced UI pack](http://go.atlassian.com/reduced-ui-pack) for more examples and details.
+### Where should I report any bugs?
 
-#### Upgrading components
+All bugs / feature requests should be reporting at our Service Desk.
 
-When upgrading an Atlaskit component, all changelogs can be found in the [Atlaskit Registry][atlaskitregistry].
+### Where can I find the docs for these components?
 
-# Documentation
-
-A comprehensive list of components and detailed usage of each can be found in the [Atlaskit Registry][atlaskitregistry], which contains both guides on contributing to atlaskit, as well as documentation for each package.
-
-You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][adg] website.
-
-# Contributing
-
-Contribution is currently **only** available for Atlassian employees.
-
-We’re temporarily unable to grant contributor access to external developers.
-
-For **Atlassians**, if you want to make a request, suggest an improvement or raise a bug about Atlaskit, [read the contribution guide on our website][contributing_site] to get started,
-and read [CONTRIBUTING.md][contributing_repo] for information on how to get started developing in Atlaskit.
-
-### Reporting issues
-
-Our [CONTRIBUTING.md][contributing_repo] includes links for where to raise issues in Atlaskit.
-
-# License
-
-This is a [mono-repo][monorepo], which means that different parts of this repository can have different licenses.
-
-The base level of the repository is licensed under [Apache 2.0][license]. There are separate license files (`LICENSE`) for each component under `/packages` that specify the license restrictions for each component. While most components are licensed under the Apache 2.0 license, please note packages containing styles, assets & icons are most likely licensed under the [Atlassian Design Guidelines license][adg_license].
-
-If you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions. If you want to redistribute this repository, you will need to replace these Atlassian Design Guidelines licensed components with your own implementation.
-
-Copyright (c) 2018 Atlassian and others.
-
-[adg]: http://atlassian.design/ 'Atlassian Design Guidelines'
-[adg_license]: https://atlassian.design/guidelines/handy/license
-[contributing_repo]: ./CONTRIBUTING.md
-[contributing_site]: https://atlaskit.atlassian.com/docs/guides/contributing
-[license]: ./LICENSE
-[atlaskitregistry]: https://atlaskit.atlassian.com/ 'Atlaskit Registry'
-[codeofconduct]: ./CODE_OF_CONDUCT.md
-[monorepo]: https://github.com/babel/babel/blob/master/doc/design/monorepo.md
+All the docs for Atlaskit components are still available at http://atlaskit.atlassian.com/ and will continue to remain up to date. Although, some components may eventually be removed from there (only internal ones that you’re very unlikely to have used, don’t worry!).
