@@ -6,7 +6,7 @@ If you’re reading this, you’re probably looking for the source code of some 
 
 ## For non-Atlassian developers
 
-To view the source of Atlaskit components, you can take a look at [this public mirror](https://bitbucket.org/atlassian/design-system-mirror-updater/). Currently it is a simple, manual, one way mirror of the packages that are exposed externally which is updated sporadically.
+To view the source of Atlaskit components, you can take a look at [this public mirror](https://bitbucket.org/atlassian/design-system-mirror/src/master/). Currently it is a simple, manual, one way mirror of the packages that are exposed externally which is updated sporadically.
 
 - If you are looking to contribute back; this currently isn’t supported. Please raise an issue if you need to report a bug or suggest a feature.
 
